@@ -1,0 +1,11 @@
+{
+    "packages": {
+        "packages/vlossom": {
+            "release-type": "node",
+            "package-name": "vlossom",
+            "draft": false,
+            "prerelease": true,
+            "include-v-in-tag": true
+        }
+    }
+}
