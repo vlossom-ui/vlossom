@@ -9,6 +9,9 @@ coverage
 # Production
 build
 dist
+visualizer.html
+dist
+dist-ssr
 
 # Misc
 .DS_Store
@@ -17,6 +20,7 @@ dist
 .env.development.local
 .env.test.local
 .env.production.local
+*.local
 
 # Debug logs
 npm-debug.log*
@@ -42,3 +46,4 @@ yarn-error.log*
 
 # Yarn Integrity file
 .yarn-integrity
+*storybook.log
