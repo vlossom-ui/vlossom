@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@vue/runtime-core':
+        specifier: ^3.5.13
+        version: 3.5.13
       '@vueuse/core':
         specifier: ^13.0.0
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))

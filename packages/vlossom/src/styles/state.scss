@@ -1,0 +1,31 @@
+@use 'palette' as *;
+
+:root {
+    --vs-state-box-color-info: var(--vs-light-blue-200);
+    --vs-state-box-color-success: var(--vs-green-200);
+    --vs-state-box-color-error: var(--vs-red-300);
+    --vs-state-box-color-warning: var(--vs-yellow-300);
+
+    .vs-dark {
+        --vs-state-box-color-info: var(--vs-light-blue-700);
+        --vs-state-box-color-success: var(--vs-green-700);
+        --vs-state-box-color-error: var(--vs-red-700);
+        --vs-state-box-color-warning: var(--vs-yellow-600);
+    }
+
+    .vs-state-box-info {
+        --vs-state-box-color: var(--vs-state-box-color-info);
+    }
+
+    .vs-state-box-success {
+        --vs-state-box-color: var(--vs-state-box-color-success);
+    }
+
+    .vs-state-box-error {
+        --vs-state-box-color: var(--vs-state-box-color-error);
+    }
+
+    .vs-state-box-warning {
+        --vs-state-box-color: var(--vs-state-box-color-warning);
+    }
+}

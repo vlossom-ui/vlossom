@@ -1,0 +1,50 @@
+$variables: (
+    // font
+    font-size-xs: 1rem,
+    font-size-sm: 1.2rem,
+    font-size: 1.4rem,
+    font-size-lg: 1.6rem,
+    font-size-xl: 1.8rem,
+
+    // radius
+    radius-ratio: 1,
+    radius-xs: 0.2rem,
+    radius-sm: 0.5rem,
+    radius: 0.8rem,
+    radius-lg: 1.2rem,
+    radius-xl: 1.6rem,
+
+    // responsive
+    grid-xs: 12,
+    width-xs: 100%,
+
+    // modal
+    modal-node-height-xs: 20%,
+    modal-node-height-sm: 30%,
+    modal-node-height-md: 50%,
+    modal-node-height-lg: 66%,
+    modal-node-height-xl: 80%,
+    modal-node-width-xs: 20%,
+    modal-node-width-sm: 30%,
+    modal-node-width-md: 45%,
+    modal-node-width-lg: 70%,
+    modal-node-width-xl: 90%,
+
+    // z-index
+    app-bar-z-index: 1000,
+    modal-z-index: 5000,
+    toast-z-index: 9999,
+
+    // input
+    input-comp-height-dense: 2.8rem,
+    input-comp-height: 3.2rem,
+    input-comp-height-large: 4rem
+);
+
+$sizes: xs, sm, md, lg, xl;
+
+:root {
+    @each $key, $value in $variables {
+        --vs-#{$key}: #{$value};
+    }
+}

@@ -32,9 +32,8 @@
         "lint": "eslint -c eslint.config.js",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "build-storybook:chromatic": "storybook build -c .storybook-chromatic",
         "test-storybook": "test-storybook --verbose",
-        "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes",
+        "chromatic": "chromatic --exit-zero-on-changes",
         "format": "prettier --write src/"
     },
     "files": [
@@ -54,6 +53,7 @@
         "./styles": "./dist/style.css"
     },
     "dependencies": {
+        "@vue/runtime-core": "^3.5.13",
         "@vueuse/core": "^13.0.0",
         "nanoid": "^5.1.5",
         "radash": "^12.1.0",
