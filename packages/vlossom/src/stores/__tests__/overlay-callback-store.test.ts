@@ -23,7 +23,7 @@ describe('OverlayCallbackStore', () => {
         it('빈 오버레이 배열로 초기화되어야 한다', () => {
             // given
             // when
-            const result = store.overlays.value;
+            const result = store.overlays;
 
             // then
             expect(result).toEqual([]);

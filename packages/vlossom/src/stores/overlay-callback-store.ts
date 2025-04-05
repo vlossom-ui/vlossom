@@ -30,7 +30,7 @@ export class OverlayCallbackStore {
 
     // Readonly access to overlays state
     get overlays() {
-        return readonly(this._overlays);
+        return readonly(this._overlays.value);
     }
 
     private updateOverlays(updater: (current: [string, Ref<EventCallbacks>][]) => [string, Ref<EventCallbacks>][]) {

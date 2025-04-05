@@ -67,7 +67,7 @@ describe('OverlayStackStore', () => {
             store.push({ id: 'test' });
 
             // then
-            expect(store.items.value).toEqual([{ id: 'test' }]);
+            expect(store.items).toEqual([{ id: 'test' }]);
         });
 
         it('중복된 아이템을 추가하지 않아야 한다', () => {
@@ -78,7 +78,7 @@ describe('OverlayStackStore', () => {
             store.push({ id: 'test' });
 
             // then
-            expect(store.items.value).toEqual([{ id: 'test' }]);
+            expect(store.items).toEqual([{ id: 'test' }]);
         });
     });
 
@@ -92,7 +92,7 @@ describe('OverlayStackStore', () => {
             store.pop();
 
             // then
-            expect(store.items.value).toEqual([{ id: '1' }]);
+            expect(store.items).toEqual([{ id: '1' }]);
         });
 
         it('스택이 비어있을 때 아무것도 하지 않아야 한다', () => {
@@ -102,7 +102,7 @@ describe('OverlayStackStore', () => {
 
             // then
             expect(attemptToPop).not.toThrow();
-            expect(store.items.value).toEqual([]);
+            expect(store.items).toEqual([]);
         });
     });
 
@@ -116,7 +116,7 @@ describe('OverlayStackStore', () => {
             store.remove('1');
 
             // then
-            expect(store.items.value).toEqual([{ id: '2' }]);
+            expect(store.items).toEqual([{ id: '2' }]);
         });
 
         it('아이템이 존재하지 않을 때 아무것도 하지 않아야 한다', () => {
@@ -126,7 +126,7 @@ describe('OverlayStackStore', () => {
 
             // then
             expect(attemptToRemove).not.toThrow();
-            expect(store.items.value).toEqual([]);
+            expect(store.items).toEqual([]);
         });
     });
 
@@ -140,7 +140,7 @@ describe('OverlayStackStore', () => {
             store.clear();
 
             // then
-            expect(store.items.value).toEqual([]);
+            expect(store.items).toEqual([]);
         });
     });
 });

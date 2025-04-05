@@ -4,7 +4,7 @@ export class OverlayStackStore<T extends { id: string; container?: string }> {
     private _items: Ref<T[]> = ref([]);
 
     get items() {
-        return readonly(this._items);
+        return readonly(this._items.value);
     }
 
     private updateItems(updater: (current: T[]) => T[]) {
