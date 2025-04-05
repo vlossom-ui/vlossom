@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, computed } from 'vue';
+import { type ComputedRef, type Ref, computed } from 'vue';
 import { utils } from '@/utils';
 
 export function useValueMatcher(

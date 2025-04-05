@@ -85,9 +85,9 @@ export interface StateMessage {
     text: string;
 }
 
-export type Rule<T = any> = ((v: T) => string) | ((v: T) => PromiseLike<string>);
-export type MessageHandler<T> = (value: T) => StateMessage | Promise<StateMessage>;
-export type Message<T> = StateMessage | MessageHandler<T>;
+export type Rule<T = unknown> = ((v: T) => string) | ((v: T) => PromiseLike<string>);
+export type MessageHandler<T = unknown> = (value: T) => StateMessage | Promise<StateMessage>;
+export type Message<T = unknown> = StateMessage | MessageHandler<T>;
 
 export interface InputComponentParams<T = unknown> {
     inputValue: Ref<T>;

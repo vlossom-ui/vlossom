@@ -1,4 +1,4 @@
-import { computed, onMounted, Ref, ref } from 'vue';
+import { computed, onMounted, type Ref, ref } from 'vue';
 import { utils } from '@/utils';
 
 // This composable is used to generate a unique ID for SSR components

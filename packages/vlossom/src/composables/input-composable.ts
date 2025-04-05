@@ -1,4 +1,4 @@
-import { ComputedRef, Ref, computed, nextTick, onMounted, ref, watch } from 'vue';
+import { type ComputedRef, type Ref, computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useLazyId } from '@/composables';
 import { useInputForm } from './input-form-composable';
 

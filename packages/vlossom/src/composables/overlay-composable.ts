@@ -1,9 +1,10 @@
-import { computed, Ref, ref, watch } from 'vue';
-import { store } from '@/stores';
+import { computed, type Ref, ref, watch } from 'vue';
 import { utils } from '@/utils';
-import { MODAL_DURATION, OverlayCallbacks } from '@/declaration';
+import { MODAL_DURATION, type EventCallbacks } from '@/declaration';
+import { useVlossom } from '@/vlossom-framework';
 
-export function useOverlay(id: Ref<string>, callbacks: Ref<OverlayCallbacks> = ref({}), escClose: Ref<boolean>) {
+export function useOverlay(id: Ref<string>, callbacks: Ref<EventCallbacks> = ref({}), escClose: Ref<boolean>) {
+    const $vs = useVlossom();
     const innerId = utils.string.createID();
     const overlayId = computed(() => id.value || innerId);
 
@@ -32,10 +33,10 @@ export function useOverlay(id: Ref<string>, callbacks: Ref<OverlayCallbacks> = r
 
     watch(isOpen, (o) => {
         if (o) {
-            store.overlay.push(overlayId.value, computedCallbacks);
+            $vs.stores.overlay.push(overlayId.value, computedCallbacks);
         } else {
             closing.value = true;
-            store.overlay.remove(overlayId.value);
+            $vs.stores.overlay.remove(overlayId.value);
 
             setTimeout(() => {
                 closing.value = false;

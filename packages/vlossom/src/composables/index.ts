@@ -1,6 +1,5 @@
 export * from './anchor-positioning-composable';
 export * from './color-scheme-composable';
-export * from './content-renderer-composable';
 export * from './form-provide-composable';
 export * from './index-selector-composable';
 export * from './input-composable';

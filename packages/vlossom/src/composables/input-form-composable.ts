@@ -1,5 +1,5 @@
-import { Ref, inject, onMounted, onBeforeUnmount, watch } from 'vue';
-import { VS_FORM, VsFormProvide } from '@/declaration';
+import { type Ref, inject, onMounted, onBeforeUnmount, watch } from 'vue';
+import { VS_FORM, type VsFormProvide } from '@/declaration';
 import { useFormProvide } from './form-provide-composable';
 
 export function useInputForm(

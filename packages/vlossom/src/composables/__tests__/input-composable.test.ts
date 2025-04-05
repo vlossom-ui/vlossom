@@ -1,7 +1,7 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { defineComponent, nextTick, ref, toRefs } from 'vue';
-import { getInputProps } from '@/models';
+import { getInputProps } from '@/props';
 import { useInput } from '@/composables/input-composable';
 
 import type { Message, StateMessage } from '@/declaration';

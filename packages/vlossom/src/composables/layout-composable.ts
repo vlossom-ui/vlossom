@@ -1,5 +1,5 @@
-import { Ref, ref } from 'vue';
-import { BarLayout, DrawerLayout, DrawerLayouts, VsLayoutProvide } from '@/declaration';
+import { type Ref, ref } from 'vue';
+import type { BarLayout, DrawerLayout, DrawerLayouts, VsLayoutProvide } from '@/declaration';
 import { utils } from '@/utils';
 
 export function useLayout() {

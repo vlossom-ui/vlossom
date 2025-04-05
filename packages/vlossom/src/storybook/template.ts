@@ -1,4 +1,4 @@
-import { COLORS, UIState } from '@/declaration';
+import { COLORS, type UIState } from '@/declaration';
 
 export const LOREM_IPSUM = `
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit.

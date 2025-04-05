@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { useStateClass } from '@/composables';
 import { ref } from 'vue';
-import { UIState } from '@/declaration';
+import type { UIState } from '@/declaration';
 
 describe('state-class-composable', () => {
     describe('stateClasses class', () => {

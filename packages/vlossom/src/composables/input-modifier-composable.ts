@@ -1,5 +1,5 @@
-import { Ref } from 'vue';
-import { StringModifiers } from '@/declaration';
+import { type Ref } from 'vue';
+import type { StringModifiers } from '@/declaration';
 
 export function useStringModifier(modifiers: Ref<StringModifiers>) {
     function modifyStringValue(value: string): string {

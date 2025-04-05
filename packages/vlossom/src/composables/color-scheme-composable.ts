@@ -1,12 +1,13 @@
-import { computed } from 'vue';
-import { store } from '@/stores';
+import { computed, type Ref } from 'vue';
+import { useVlossom } from '@/vlossom-framework';
 
-import type { Ref } from 'vue';
-import type { ColorScheme, VsComponent } from '@/declaration';
+import type { ColorScheme } from '@/declaration';
 
-export function useColorScheme(component: VsComponent | string, colorScheme: Ref<ColorScheme | undefined>) {
+export function useColorScheme(component: string, colorScheme: Ref<ColorScheme | undefined>) {
+    const $vs = useVlossom();
+
     const computedColorScheme = computed(
-        () => colorScheme.value || store.option.getGlobalColorScheme(component) || undefined,
+        () => colorScheme.value || $vs.stores.option.getGlobalColorScheme(component) || undefined,
     );
 
     const colorSchemeClass = computed(() => `vs-${computedColorScheme.value || 'none'}`);

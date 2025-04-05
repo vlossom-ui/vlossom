@@ -1,5 +1,5 @@
-import { Ref, computed } from 'vue';
-import { UIState } from '@/declaration';
+import { type Ref, computed } from 'vue';
+import type { UIState } from '@/declaration';
 
 export function useStateClass(state: Ref<UIState>) {
     const stateClasses = computed(() => {

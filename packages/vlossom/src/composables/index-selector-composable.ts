@@ -1,4 +1,4 @@
-import { computed, ref, Ref } from 'vue';
+import { computed, type Ref, ref } from 'vue';
 
 export function useIndexSelector(list: Ref<string[]>, disabled: Ref<number[]> = ref([])) {
     const selectedIndex = ref(0);

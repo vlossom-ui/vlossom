@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { ref } from 'vue';
-import { store } from '@/stores';
 import { VsComponent } from '@/declaration';
 import { useColorScheme } from './../color-scheme-composable';
+import { useVlossom } from '@/vlossom-framework';
 
 describe('useColorScheme composable', () => {
     describe('computedColorScheme', () => {
         it('use colorScheme prop first if it exists', () => {
             // given
-            store.option.setGlobalColorScheme({ VsButton: 'red' });
+            useVlossom().stores.option.setGlobalColorScheme({ VsButton: 'red' });
 
             // when
             const { computedColorScheme } = useColorScheme(VsComponent.VsButton, ref('green'));
@@ -19,7 +19,7 @@ describe('useColorScheme composable', () => {
 
         it('use a global color scheme value of component if it exists', () => {
             // given
-            store.option.setGlobalColorScheme({ VsInput: 'yellow' });
+            useVlossom().stores.option.setGlobalColorScheme({ VsInput: 'yellow' });
 
             // when
             const { computedColorScheme } = useColorScheme(VsComponent.VsInput, ref(undefined));
@@ -30,7 +30,7 @@ describe('useColorScheme composable', () => {
 
         it('use a default global color scheme value if it exists', () => {
             // given
-            store.option.setGlobalColorScheme({ default: 'blue' });
+            useVlossom().stores.option.setGlobalColorScheme({ default: 'blue' });
 
             // when
             const { computedColorScheme } = useColorScheme(VsComponent.VsSection, ref(undefined));

@@ -1,29 +1,33 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ref } from 'vue';
-import { VsComponent } from '@/declaration';
 import { useStyleSet } from './../style-set-composable';
-import { store } from '@/stores';
+import { useVlossom } from '@/vlossom-framework';
 
-import type { VsButtonStyleSet } from '@/components';
 import type { StyleSet } from '@/declaration';
 
-const vsButton: VsButtonStyleSet = {
+interface TestStyleSet {
+    backgroundColor?: string;
+    fontColor?: string;
+    fontSize?: string;
+}
+
+const vsTestStyleSet: TestStyleSet = {
     backgroundColor: '#1e88e5',
     fontColor: 'white',
 };
 
 const styleSet: StyleSet = {
-    VsButton: { myStyleSet: vsButton },
+    VsTest: { myStyleSet: vsTestStyleSet },
 };
 
 describe('useStyleSet composable', () => {
     beforeEach(() => {
-        store.option.registerStyleSet(styleSet);
+        useVlossom().stores.option.registerStyleSet(styleSet);
     });
 
     it('parse styleSet object and return custom properties successfully', () => {
         const myStyleSet = { backgroundColor: '#a5d6ad', fontSize: '2rem' };
-        const { computedStyleSet } = useStyleSet<VsButtonStyleSet>(VsComponent.VsButton, ref(myStyleSet));
+        const { computedStyleSet } = useStyleSet<TestStyleSet>('VsTest', ref(myStyleSet));
 
         expect(computedStyleSet.value).toEqual({
             '--vs-button-backgroundColor': '#a5d6ad',
@@ -32,7 +36,7 @@ describe('useStyleSet composable', () => {
     });
 
     it('find pre-defined styleSet and return custom properties successfully', () => {
-        const { computedStyleSet } = useStyleSet<VsButtonStyleSet>(VsComponent.VsButton, ref('myStyleSet'));
+        const { computedStyleSet } = useStyleSet<TestStyleSet>('VsTest', ref('myStyleSet'));
 
         expect(computedStyleSet.value).toEqual({
             '--vs-button-backgroundColor': '#1e88e5',
@@ -44,16 +48,12 @@ describe('useStyleSet composable', () => {
         // given
         const myStyleSet = { backgroundColor: '#a5d6ad', fontSize: '2rem' };
         const additionalStyleSet = { fontSize: '3rem' };
-        const { computedStyleSet } = useStyleSet<VsButtonStyleSet>(
-            VsComponent.VsButton,
-            ref(myStyleSet),
-            ref(additionalStyleSet),
-        );
+        const { computedStyleSet } = useStyleSet<TestStyleSet>('VsTest', ref(myStyleSet), ref(additionalStyleSet));
 
         // then
         expect(computedStyleSet.value).toEqual({
-            '--vs-button-backgroundColor': '#a5d6ad',
-            '--vs-button-fontSize': '3rem',
+            '--vs-test-backgroundColor': '#a5d6ad',
+            '--vs-test-fontSize': '3rem',
         });
     });
 });

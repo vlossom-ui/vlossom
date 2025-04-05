@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { SCROLLBAR_WIDTH } from '@/declaration';
 
+// TODO: element가 Ref일 필요가 있을지 검토 (PUBG-231196와 연관 있나)
 export function useScrollLock(element: HTMLElement | null) {
     const originalOverflow = ref('');
     const originalPaddingRight = ref('0');

@@ -1,18 +1,20 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import { utils } from '@/utils';
-import { store } from '@/stores';
+import { useVlossom } from '@/vlossom-framework';
 
 export function useStyleSet<T extends { [key: string]: any }>(
-    component: VsComponent | string,
+    component: string,
     styleSet: Ref<string | T | undefined>,
     additionalStyleSet?: Ref<T>,
 ) {
+    const $vs = useVlossom();
+
     const plainStyleSet: ComputedRef<T> = computed(() => {
         let resultStyleSet: T = {} as T;
         if (!styleSet.value) {
             resultStyleSet = {} as T;
         } else if (typeof styleSet.value === 'string') {
-            resultStyleSet = (store.option.getStyleSet(component, styleSet.value) || {}) as T;
+            resultStyleSet = ($vs.stores.option.getStyleSet(component, styleSet.value) || {}) as T;
         } else {
             resultStyleSet = styleSet.value;
         }

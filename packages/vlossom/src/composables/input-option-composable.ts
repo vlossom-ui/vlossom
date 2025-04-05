@@ -1,4 +1,4 @@
-import { watch, ref, type Ref } from 'vue';
+import { type Ref, watch, ref } from 'vue';
 import { utils } from '@/utils';
 
 export function useInputOption(
