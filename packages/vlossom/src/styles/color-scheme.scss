@@ -25,8 +25,8 @@ $colors: map.keys($palette);
         --vs-line-color: var(--vs-gray-400);
 
         --vs-area-bg: var(--vs-white);
-        --vs-area-bg-hover: #{darken(#ffffff, 5%)};
-        --vs-area-bg-active: #{darken(#ffffff, 10%)};
+        --vs-area-bg-hover: #{color.adjust(#ffffff, $lightness: -5%)};
+        --vs-area-bg-active: #{color.adjust(#ffffff, $lightness: -10%)};
         --vs-area-shadow-outer: 0 0 1rem 0 var(--vs-comp-shadow);
     }
 
@@ -51,8 +51,8 @@ $colors: map.keys($palette);
             --vs-line-color: var(--vs-gray-500);
 
             --vs-area-bg: var(--vs-black);
-            --vs-area-bg-hover: #{lighten(#000000, 12%)};
-            --vs-area-bg-active: #{lighten(#000000, 16%)};
+            --vs-area-bg-hover: #{color.adjust(#000000, $lightness: 12%)};
+            --vs-area-bg-active: #{color.adjust(#000000, $lightness: 16%)};
             --vs-area-shadow-outer: 0 0 0.5rem 0 var(--vs-comp-shadow);
         }
     }
@@ -63,7 +63,7 @@ $colors: map.keys($palette);
             --vs-comp-bg: #{map.get($palette, $color, 100)};
             --vs-comp-shadow: rgba(0, 0, 0, 0.25);
 
-            --vs-primary-comp-font: #{lighten(map.get($palette, $color, 50), 75%)};
+            --vs-primary-comp-font: #{color.adjust(map.get($palette, $color, 50), $lightness: 75%)};
             --vs-primary-comp-bg: #{map.get($palette, $color, 500)};
             --vs-primary-comp-shadow: rgba(0, 0, 0, 0.25);
 
@@ -71,8 +71,8 @@ $colors: map.keys($palette);
 
             --vs-line-color: #{map.get($palette, $color, 300)};
 
-            --vs-area-bg: #{lighten(map.get($palette, $color, 50), 5%)};
-            --vs-area-bg-hover: #{lighten(map.get($palette, $color, 50), 3%)};
+            --vs-area-bg: #{color.adjust(map.get($palette, $color, 50), $lightness: 5%)};
+            --vs-area-bg-hover: #{color.adjust(map.get($palette, $color, 50), $lightness: 3%)};
             --vs-area-bg-active: #{map.get($palette, $color, 50)};
             --vs-area-shadow-outer: 0 0 1rem 0 var(--vs-comp-shadow);
         }
@@ -85,17 +85,17 @@ $colors: map.keys($palette);
                 --vs-comp-bg: #{map.get($palette, $color, 900)};
                 --vs-comp-shadow: rgba(255, 255, 255, 0.25);
 
-                --vs-primary-comp-font: #{lighten(map.get($palette, $color, 50), 75%)};
+                --vs-primary-comp-font: #{color.adjust(map.get($palette, $color, 50), $lightness: 75%)};
                 --vs-primary-comp-bg: #{map.get($palette, $color, 600)};
                 --vs-primary-comp-shadow: rgba(0, 0, 0, 0.4);
 
-                --vs-font-color: #{lighten(map.get($palette, $color, 50), 75%)};
+                --vs-font-color: #{color.adjust(map.get($palette, $color, 50), $lightness: 75%)};
 
                 --vs-line-color: #{map.get($palette, $color, 600)};
 
-                --vs-area-bg: #{darken(map.get($palette, $color, 900), 5%)};
+                --vs-area-bg: #{color.adjust(map.get($palette, $color, 900), $lightness: -5%)};
                 --vs-area-bg-hover: #{map.get($palette, $color, 900)};
-                --vs-area-bg-active: #{lighten(map.get($palette, $color, 900), 5%)};
+                --vs-area-bg-active: #{color.adjust(map.get($palette, $color, 900), $lightness: 5%)};
                 --vs-area-shadow-outer: 0 0 0.5rem 0 var(--vs-comp-shadow);
             }
         }
