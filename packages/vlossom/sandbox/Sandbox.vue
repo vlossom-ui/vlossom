@@ -1,5 +1,5 @@
 <template>
-    <div>Sandbox</div>
+    <div>This is Vlossom Sandbox</div>
 </template>
 
 <script lang="ts">
