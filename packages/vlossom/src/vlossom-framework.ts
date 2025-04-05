@@ -1,17 +1,16 @@
+import { getCurrentInstance } from 'vue';
 import { store } from './stores';
 import { utils } from './utils';
-import { modalPlugin, toastPlugin, confirmPlugin } from '@/plugins';
 
 import type { App } from 'vue';
-import type { VlossomOptions } from '@/declaration';
-import type { ToastPlugin, ConfirmPlugin, ModalPlugin } from './plugins';
+import type { VlossomOptions, VsPlugins } from '@/declaration';
 
 export class Vlossom {
-    public app: App;
-    private darkThemeClass: string;
+    private _plugins: Partial<VsPlugins>;
+    private _darkThemeClass: string;
 
-    constructor(app: App, options?: VlossomOptions) {
-        this.app = app;
+    constructor(options?: VlossomOptions) {
+        this._plugins = {};
         const {
             colorScheme = {},
             styleSet = {},
@@ -21,7 +20,7 @@ export class Vlossom {
             radiusRatio = 1,
         } = options || {};
 
-        this.darkThemeClass = darkThemeClass;
+        this._darkThemeClass = darkThemeClass;
         this.theme = (this.getDefaultTheme(options) as 'light' | 'dark') || theme;
 
         store.option.setGlobalColorScheme(colorScheme);
@@ -64,8 +63,8 @@ export class Vlossom {
 
         localStorage.setItem('vlossom:theme', value);
         document.body.classList.toggle('vs-dark', value === 'dark');
-        if (this.darkThemeClass) {
-            document.body.classList.toggle(this.darkThemeClass, value === 'dark');
+        if (this._darkThemeClass) {
+            document.body.classList.toggle(this._darkThemeClass, value === 'dark');
         }
     }
 
@@ -93,35 +92,67 @@ export class Vlossom {
         this.theme = this.theme === 'dark' ? 'light' : 'dark';
     }
 
-    public toast: ToastPlugin = toastPlugin;
+    get plugins(): Readonly<Partial<VsPlugins>> {
+        return this._plugins;
+    }
 
-    public confirm: ConfirmPlugin = confirmPlugin;
-
-    public modal: ModalPlugin = modalPlugin;
+    addPlugin<K extends keyof VsPlugins>(name: K, plugin: VsPlugins[K]) {
+        this._plugins[name] = plugin;
+    }
 }
 
-let _vlossom: Vlossom;
+type VlossomProxy = Vlossom & {
+    [K in keyof VsPlugins]: VsPlugins[K] extends undefined ? never : VsPlugins[K];
+};
 
-function createVlossom(options?: VlossomOptions): any {
+function createVlossom(options?: VlossomOptions) {
+    const vlossom = new Vlossom(options);
+    const proxiedVlossom = new Proxy(vlossom, {
+        get(target, prop) {
+            if (prop in target.plugins) {
+                const plugin = target.plugins[prop as keyof VsPlugins];
+                if (plugin === undefined) {
+                    throw new Error(`Plugin '${String(prop)}' is not registered`);
+                }
+                return plugin;
+            }
+            return target[prop as keyof Vlossom];
+        },
+    }) as VlossomProxy;
+
     return {
         install(app: App) {
-            _vlossom = new Vlossom(app, options);
-
-            app.config.globalProperties.$vs = _vlossom;
-
+            app.config.globalProperties.$vs = proxiedVlossom;
             utils.componentRegistry.registerComponents(app, options?.components);
         },
     };
 }
 
-function useVlossom() {
-    return _vlossom;
+function hasPlugin<K extends keyof VsPlugins>(
+    vlossom: VlossomProxy,
+    name: K,
+): vlossom is VlossomProxy & { [P in K]: VsPlugins[P] } {
+    return name in vlossom.plugins && vlossom.plugins[name] !== undefined;
 }
 
-export { createVlossom, useVlossom };
+function useVlossom(): VlossomProxy {
+    const instance = getCurrentInstance();
+    if (!instance) {
+        throw new Error('useVlossom() must be called inside a component setup function');
+    }
+
+    const vlossom = instance.appContext.app.config.globalProperties.$vs;
+    if (!vlossom) {
+        throw new Error('Vlossom plugin is not installed');
+    }
+
+    return vlossom;
+}
+
+export { createVlossom, useVlossom, hasPlugin };
 
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $vs: Vlossom;
+        $vs: VlossomProxy;
     }
 }

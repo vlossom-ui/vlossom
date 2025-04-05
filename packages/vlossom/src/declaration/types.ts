@@ -1,12 +1,15 @@
-import type { COLORS, PLACEMENTS, ALIGNS, CSS_POSITION, SIZES } from './constants';
-
 import type { Component, Ref } from 'vue';
+import type { COLORS, PLACEMENTS, ALIGNS, CSS_POSITION, SIZES } from './constants';
 import type { VsComponentType } from './enums';
 
 export type ColorScheme = (typeof COLORS)[number];
 
-export type GlobalColorScheme = { default?: ColorScheme } & Record<VsComponentType, ColorScheme> &
-    Record<string, ColorScheme>;
+export type GlobalColorScheme = { default?: ColorScheme } & { [key in VsComponentType]?: ColorScheme } & {
+    [key: string]: ColorScheme;
+};
+
+// TODO: plugin type이 정의되면 추가할 예정
+export interface VsPlugins {}
 
 export interface VsBoxStyleSet {
     backgroundColor?: string;
@@ -16,6 +19,7 @@ export interface VsBoxStyleSet {
     padding?: string;
 }
 
+// TODO: 각 컴포넌트의 style set이 정의되면 추가할 예정
 export interface VsComponentStyleSet {
     // VsAccordion?: Record<string, VsAccordionStyleSet>;
     // VsAvatar?: Record<string, VsAvatarStyleSet>;
