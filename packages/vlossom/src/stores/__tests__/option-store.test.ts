@@ -8,7 +8,7 @@ describe('option store', () => {
         const store = new OptionStore();
 
         // when
-        const result = store.options.value;
+        const result = store.options;
 
         // then
         expect(result).toEqual({
@@ -28,7 +28,7 @@ describe('option store', () => {
             store.setTheme('dark');
 
             // then
-            expect(store.options.value.theme).toEqual('dark');
+            expect(store.options.theme).toEqual('dark');
         });
     });
 
@@ -41,7 +41,7 @@ describe('option store', () => {
             store.setGlobalColorScheme({ default: 'red' });
 
             // then
-            expect(store.options.value.globalColorScheme).toEqual({ default: 'red' });
+            expect(store.options.globalColorScheme).toEqual({ default: 'red' });
         });
 
         describe('getGlobalColorScheme', () => {
@@ -88,7 +88,7 @@ describe('option store', () => {
                 store.registerStyleSet(styleSet);
 
                 // then
-                expect(store.options.value.styleSets).toEqual(styleSet);
+                expect(store.options.styleSets).toEqual(styleSet);
             });
 
             it('styleSet을 등록할 수 있다 (기존에 등록된 styleSet이 있을 경우)', () => {
@@ -114,7 +114,7 @@ describe('option store', () => {
                 store.registerStyleSet(styleSet2);
 
                 // then
-                expect(store.options.value.styleSets).toEqual({
+                expect(store.options.styleSets).toEqual({
                     VsButton: {
                         primary: {
                             fontColor: 'red',
@@ -146,7 +146,7 @@ describe('option store', () => {
                 store.registerStyleSet(styleSet);
 
                 // then
-                expect(store.options.value.styleSets).toEqual(styleSet);
+                expect(store.options.styleSets).toEqual(styleSet);
             });
         });
 
@@ -222,7 +222,7 @@ describe('option store', () => {
             store.setGlobalRadiusRatio(0.5);
 
             // then
-            expect(store.options.value.globalRadiusRatio).toEqual(0.5);
+            expect(store.options.globalRadiusRatio).toEqual(0.5);
             expect(setPropertySpy).toBeCalledWith('--vs-radius-ratio', '0.5');
         });
 
@@ -285,7 +285,7 @@ describe('option store', () => {
             store.setGlobalRadiusRatio(0);
 
             // then
-            expect(store.options.value.globalRadiusRatio).toEqual(0);
+            expect(store.options.globalRadiusRatio).toEqual(0);
             expect(setPropertySpy).toBeCalledWith('--vs-radius-ratio', '0');
         });
 
@@ -300,7 +300,7 @@ describe('option store', () => {
             store.setGlobalRadiusRatio(1);
 
             // then
-            expect(store.options.value.globalRadiusRatio).toEqual(1);
+            expect(store.options.globalRadiusRatio).toEqual(1);
             expect(setPropertySpy).toBeCalledWith('--vs-radius-ratio', '1');
         });
     });

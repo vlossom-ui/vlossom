@@ -19,7 +19,7 @@ export class OptionStore {
     });
 
     get options() {
-        return readonly(this._options);
+        return readonly(this._options.value);
     }
 
     private updateOptions(updater: (current: OptionStoreState) => OptionStoreState) {

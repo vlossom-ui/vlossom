@@ -8,9 +8,6 @@ export type GlobalColorScheme = { default?: ColorScheme } & { [key in VsComponen
     [key: string]: ColorScheme;
 };
 
-// TODO: plugin type이 정의되면 추가할 예정
-export interface VsPlugins {}
-
 export interface VsBoxStyleSet {
     backgroundColor?: string;
     fontColor?: string;
