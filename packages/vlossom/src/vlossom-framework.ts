@@ -3,7 +3,7 @@ import { utils } from './utils';
 import { OptionStore, OverlayCallbackStore } from './stores';
 
 import type { App } from 'vue';
-import type { VlossomOptions } from '@/declaration';
+import type { StyleSet, VlossomOptions } from '@/declaration';
 
 interface VsStores {
     option: OptionStore;
@@ -131,6 +131,10 @@ export class Vlossom {
 
     toggleTheme(): void {
         this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    }
+
+    registerStyleSet(styleSet: StyleSet): void {
+        this.storesProxy.option.registerStyleSet(styleSet);
     }
 
     addStore<K extends keyof VsStores>(name: K, store: VsStores[K]): void {

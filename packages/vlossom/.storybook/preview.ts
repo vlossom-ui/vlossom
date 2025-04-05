@@ -1,13 +1,10 @@
 import { setup } from '@storybook/vue3';
-import { createVlossom, useVlossom } from './../src';
-import { styleSet } from './../src/storybook/style-sets';
-import './../src/styles/index.scss';
+import { createVlossom, useVlossom } from '@/vlossom-framework';
+import '@/styles/index.scss';
 
 import type { Preview } from '@storybook/vue3';
 
-const vlossom = createVlossom({
-    styleSet,
-});
+const vlossom = createVlossom();
 
 setup((app) => {
     app.use(vlossom);
