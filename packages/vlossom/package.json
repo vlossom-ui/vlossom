@@ -16,7 +16,10 @@
         "format": "prettier --write src/",
         "format:check": "prettier --check \"./**/*.{js,ts,vue,json}\"",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "storybook:chromatic": "storybook dev -p 6006 -c .storybook-chromatic",
+        "build-storybook": "storybook build",
+        "build-storybook:chromatic": "storybook build -c .storybook-chromatic",
+        "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes"
     },
     "dependencies": {
         "pinia": "^3.0.3",
