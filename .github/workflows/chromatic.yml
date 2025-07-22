@@ -1,0 +1,34 @@
+name: Chromatic
+
+on:
+    pull_request_review:
+        types: [submitted, edited]
+
+jobs:
+    chromatic-build:
+        if: ${{ contains(github.event.review.body, 'chromatic-build') }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install
+
+            - name: Publish to Chromatic
+              uses: chromaui/action@latest
+              with:
+                  projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+                  autoAcceptChanges: main
+                  workingDir: ./packages/vlossom
+                  buildScriptName: build-storybook:chromatic

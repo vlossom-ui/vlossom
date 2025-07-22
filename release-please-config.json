@@ -1,0 +1,12 @@
+{
+    "draft": false,
+    "prerelease": true,
+    "include-v-in-tag": true,
+    "packages": {
+        "packages/vlossom": {
+            "release-type": "node",
+            "package-name": "vlossom"
+        }
+    },
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}

@@ -1,0 +1,94 @@
+name: CI
+
+on: push
+
+jobs:
+    vlossom-lint:
+        timeout-minutes: 5
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install
+            - name: Run eslint
+              working-directory: ./packages/vlossom
+              run: pnpm lint
+
+    vlossom-build:
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install
+            - name: Run eslint
+              working-directory: ./packages/vlossom
+              run: pnpm lint
+            - name: Build vlossom
+              working-directory: ./packages/vlossom
+              run: pnpm build
+
+    vlossom-storybook:
+        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install
+            - name: Install Playwright
+              working-directory: ./packages/vlossom
+              run: npx playwright install --with-deps
+            - name: Build Storybook
+              working-directory: ./packages/vlossom
+              run: pnpm build-storybook --quiet
+
+    vlossom-test:
+        timeout-minutes: 20
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install
+            - name: Run tests
+              working-directory: ./packages/vlossom
+              run: pnpm test
