@@ -41,6 +41,12 @@ pnpm dev
 pnpm build
 ```
 
+### Storybook
+
+```sh
+pnpm storybook
+```
+
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
@@ -66,13 +72,4 @@ pnpm lint
 
 ```sh
 pnpm format
-```
-
-### Storybook
-
-```sh
-pnpm storybook
-
-// run Storybook tests
-pnpm test-storybook
 ```
