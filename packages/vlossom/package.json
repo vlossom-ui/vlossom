@@ -1,7 +1,23 @@
 {
     "name": "vlossom",
-    "version": "0.0.0",
-    "private": true,
+    "description": "Vlossom UI components for Vue",
+    "version": "2.0.0-alpha.1",
+    "author": "vlossom",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vlossom-ui/vlossom.git"
+    },
+    "bugs": {
+        "url": "https://github.com/vlossom-ui/vlossom/issues"
+    },
+    "license": "MIT",
+    "keywords": [
+        "vlossom",
+        "vue",
+        "components",
+        "ui framework",
+        "component library"
+    ],
     "type": "module",
     "scripts": {
         "dev": "vite --port 3000",
@@ -20,6 +36,22 @@
         "build-storybook": "storybook build",
         "build-storybook:chromatic": "storybook build -c .storybook-chromatic",
         "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes"
+    },
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/vlossom.umd.js",
+    "module": "./dist/vlossom.es.js",
+    "unpkg": "./dist/vlossom.umd.js",
+    "jsdelivr": "./dist/vlossom.umd.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/vlossom.es.js",
+            "require": "./dist/vlossom.umd.js"
+        },
+        "./styles": "./dist/style.css"
     },
     "dependencies": {
         "pinia": "^3.0.3",
