@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import dts from 'vite-plugin-dts';
+import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -17,6 +18,7 @@ export default defineConfig({
         vue(),
         vueDevTools(),
         dts(),
+        tailwindcss(),
         visualizer({
             filename: 'visualizer.html',
         }),
