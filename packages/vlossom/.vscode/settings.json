@@ -3,7 +3,7 @@
     "explorer.fileNesting.patterns": {
         ".env": ".env*, env.d.ts",
         "tsconfig.json": "tsconfig.*.json",
-        "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
+        "vite.config.*": "jsconfig*, vitest.*, cypress.config.*, playwright.config.*, visualizer.html",
         "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, .editorconfig, postcss*, tailwind*"
     },
     "editor.codeActionsOnSave": {

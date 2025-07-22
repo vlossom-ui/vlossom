@@ -72,7 +72,7 @@ jobs:
               working-directory: ./packages/vlossom
               run: pnpm build-storybook --quiet
 
-    vlossom-tests:
+    vlossom-test:
         timeout-minutes: 20
         runs-on: ubuntu-latest
         steps:
