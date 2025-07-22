@@ -6,12 +6,15 @@
     "scripts": {
         "dev": "vite --port 3000",
         "build": "run-p type-check \"build-only {@}\" --",
-        "preview": "vite preview",
-        "test:unit": "vitest",
         "build-only": "vite build",
         "type-check": "vue-tsc --build",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "test:snapshot": "vitest run --update",
         "lint": "eslint . --fix",
-        "format": "prettier --write src/"
+        "format": "prettier --write src/",
+        "format:check": "prettier --check \"./**/*.{js,ts,vue,json}\""
     },
     "dependencies": {
         "pinia": "^3.0.3",
