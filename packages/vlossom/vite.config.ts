@@ -1,8 +1,8 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath, URL } from 'node:url';
+import { visualizer } from 'rollup-plugin-visualizer';
+import dts from 'vite-plugin-dts';
 import { commonConfig } from './vite.config.common';
 
 // https://vite.dev/config/
@@ -17,7 +17,7 @@ export default defineConfig({
         ...commonConfig.plugins,
         dts(),
         visualizer({
-            filename: 'visualizer.html',
+            filename: 'visualizer-vlossom.html',
         }),
     ],
     build: {
