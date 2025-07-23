@@ -1,11 +1,9 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import vueDevTools from 'vite-plugin-vue-devtools';
 import dts from 'vite-plugin-dts';
-import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath, URL } from 'node:url';
+import { commonConfig } from './vite.config.common';
 
 // https://vite.dev/config/
 import path from 'node:path';
@@ -14,20 +12,14 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+    ...commonConfig,
     plugins: [
-        vue(),
-        vueDevTools(),
+        ...commonConfig.plugins,
         dts(),
-        tailwindcss(),
         visualizer({
             filename: 'visualizer.html',
         }),
     ],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-        },
-    },
     build: {
         lib: {
             entry: fileURLToPath(new URL('./src/main.ts', import.meta.url)),
