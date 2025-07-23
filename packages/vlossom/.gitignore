@@ -11,6 +11,7 @@ node_modules
 package-lock.json
 .DS_Store
 dist
+dist-sandbox
 dist-ssr
 coverage
 *.local
@@ -27,6 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-visualizer.html
+visualizer*
 *storybook.log
 storybook-static

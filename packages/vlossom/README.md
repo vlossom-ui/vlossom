@@ -29,6 +29,14 @@ Vlossom is a vibrant and versatile [Vue](https://vuejs.org/) UI library designed
 pnpm install
 ```
 
+## Configuration Files
+
+This project uses separate Vite configuration files for different build targets:
+
+- `vite.config.common.ts` - Shared configuration for both builds
+- `vite.config.ts` - Library build configuration
+- `vite.config.sandbox.ts` - Sandbox app build configuration
+
 ### Sandbox for Development
 
 ```sh
@@ -39,6 +47,12 @@ pnpm dev
 
 ```sh
 pnpm build
+```
+
+### Build Sandbox as Standalone App
+
+```sh
+pnpm build:sandbox
 ```
 
 ### Storybook
