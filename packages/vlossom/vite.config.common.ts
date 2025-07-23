@@ -11,4 +11,8 @@ export const commonConfig = {
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
+    server: {
+        port: 3000,
+        open: true,
+    },
 };
