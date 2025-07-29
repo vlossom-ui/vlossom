@@ -15,7 +15,11 @@ export default defineConfig({
     ...commonConfig,
     plugins: [
         ...commonConfig.plugins,
-        dts(),
+        dts({
+            tsconfigPath: './tsconfig.app.json',
+            rollupTypes: true,
+            insertTypesEntry: true,
+        }),
         visualizer({
             filename: 'visualizer-vlossom.html',
         }),

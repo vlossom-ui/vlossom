@@ -1,0 +1,12 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": ["sandbox"],
+    "compilerOptions": {
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.sandbox.tsbuildinfo",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "sourceMap": true
+    }
+}
