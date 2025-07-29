@@ -20,7 +20,6 @@ export default defineConfig({
         ...commonConfig.plugins,
         dts({
             tsconfigPath: './tsconfig.app.json',
-            rollupTypes: true,
             insertTypesEntry: true,
         }),
         visualizer({
