@@ -64,6 +64,7 @@
         "@storybook/addon-a11y": "9.0.17",
         "@storybook/addon-docs": "9.0.17",
         "@storybook/addon-vitest": "9.0.17",
+        "@storybook/builder-vite": "^9.0.18",
         "@storybook/vue3-vite": "9.0.17",
         "@tailwindcss/vite": "^4.1.11",
         "@tsconfig/node22": "^22.0.2",
