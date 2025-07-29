@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: 구현이 필요한 기능을 정의합니다
-title: "[Feat]"
+title: "[feat] "
 labels: feature
 assignees: ''
 

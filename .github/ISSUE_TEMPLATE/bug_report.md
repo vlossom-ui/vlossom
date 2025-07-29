@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: 버그를 신고합니다
-title: "[Bug]"
+title: "[bug] "
 labels: bug
 assignees: ''
 
