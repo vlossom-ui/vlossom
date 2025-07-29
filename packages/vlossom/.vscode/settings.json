@@ -1,7 +1,7 @@
 {
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
-        ".env": ".env*, env.d.ts",
+        ".env": ".env*",
         "tsconfig.json": "tsconfig.*.json",
         "vite.config.ts": "vite.config.common.ts, vite.config.sandbox.ts, jsconfig*, vitest.*, cypress.config.*, playwright.config.*, visualizer*",
         "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, .editorconfig, postcss*, tailwind*"
