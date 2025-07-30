@@ -1,31 +1,26 @@
-import type { App } from 'vue';
-import type { VlossomOptions, VsComponent } from '@/declaration';
+import type { App, Component } from 'vue';
 import { Vlossom } from './vlossom-class';
+import { type VsComponent, type VlossomOptions } from '@/declaration';
+import { componentsMap } from '@/components/components-map';
 
 let vlossom: Vlossom;
 
-// Component registration function with tree shaking support
-function registerComponents(app: App, components: VsComponent[] = []) {
-    // Explicit component imports for better tree shaking
-    const componentMap: Partial<Record<VsComponent, () => Promise<any>>> = {
-        // [VsComponent.VsButton]: () => import('./components/VsButton.vue'),
-        // [VsComponent.VsInput]: () => import('./components/VsInput.vue'),
-        // Add components here as they are created - this ensures only requested components are bundled
-    };
-
+// Synchronous component registration with async loading for better tree shaking
+function registerComponents(
+    app: App,
+    asyncComponentsMap: { [key in VsComponent]: Component } & { [key: string]: Component },
+    components: (VsComponent | string)[] = [],
+) {
     // If no specific components are requested, register all available components
-    const componentsToRegister = components.length === 0 ? (Object.keys(componentMap) as VsComponent[]) : components;
+    const componentsToRegister: string[] = components.length === 0 ? Object.keys(asyncComponentsMap) : components;
 
-    componentsToRegister.forEach(async (componentName) => {
-        if (componentMap[componentName]) {
-            try {
-                const component = await componentMap[componentName]!();
-                app.component(componentName, component);
-            } catch (err) {
-                console.warn(`[Vlossom] Failed to load component ${componentName}:`, err);
-            }
-        } else {
-            console.warn(`[Vlossom] Component ${componentName} not found in Component Map.`);
+    componentsToRegister.forEach((componentName) => {
+        try {
+            const component = asyncComponentsMap[componentName];
+            app.component(componentName, component);
+            console.log(`[Vlossom] Component ${componentName} registered`);
+        } catch (error) {
+            console.warn(`[Vlossom] Failed to register component ${componentName}:`, error);
         }
     });
 }
@@ -36,7 +31,7 @@ export function createVlossom(options?: VlossomOptions) {
     return {
         install: (app: App) => {
             app.config.globalProperties.$vs = vlossom;
-            registerComponents(app, options?.components || []);
+            registerComponents(app, componentsMap, options?.components || []);
         },
     };
 }

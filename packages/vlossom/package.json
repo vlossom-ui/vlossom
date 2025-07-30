@@ -19,6 +19,10 @@
         "component library"
     ],
     "type": "module",
+    "sideEffects": [
+        "*.css",
+        "*.vue"
+    ],
     "scripts": {
         "dev": "vite",
         "type-check": "vue-tsc --build",
