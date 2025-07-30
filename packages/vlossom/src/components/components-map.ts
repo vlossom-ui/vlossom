@@ -1,9 +1,10 @@
 import { VsComponent } from '@/declaration';
-import { VsButtonAsync } from './vs-button';
-import { VsSectionAsync } from './vs-section';
+import { defineAsyncComponent } from 'vue';
 import type { Component } from 'vue';
 
-export const componentsMap: { [key in VsComponent]: Component } = {
-    [VsComponent.VsButton]: VsButtonAsync,
-    [VsComponent.VsSection]: VsSectionAsync,
-};
+export function createComponentsMap(): { [key in VsComponent]: Component } {
+    return {
+        [VsComponent.VsButton]: defineAsyncComponent(() => import('./vs-button/VsButton.vue')),
+        [VsComponent.VsSection]: defineAsyncComponent(() => import('./vs-section/VsSection.vue')),
+    };
+}

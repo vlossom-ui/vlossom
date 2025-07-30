@@ -1,4 +1,3 @@
-import { defineAsyncComponent } from 'vue';
 import type VsButton from './VsButton.vue';
 
 declare module 'vue' {
@@ -6,7 +5,5 @@ declare module 'vue' {
         VsButton: typeof VsButton;
     }
 }
-
-export const VsButtonAsync = defineAsyncComponent(() => import('./VsButton.vue'));
 
 export * from './types';
