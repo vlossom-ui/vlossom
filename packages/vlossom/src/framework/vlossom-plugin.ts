@@ -1,24 +1,6 @@
 import type { App } from 'vue';
-import type { GlobalColorScheme, VlossomOptions, VsComponent } from './declaration';
-import { useOptionsStore } from './stores';
-
-export class Vlossom {
-    constructor(options?: VlossomOptions) {
-        const {
-            colorScheme = {},
-            // styleSet = {},
-            // theme = 'light',
-            // radiusRatio = 1,
-        } = options || {};
-
-        this.setColorScheme(colorScheme);
-    }
-
-    private setColorScheme(colorScheme: GlobalColorScheme) {
-        const optionsStore = useOptionsStore();
-        optionsStore.setColorScheme(colorScheme);
-    }
-}
+import type { VlossomOptions, VsComponent } from '@/declaration';
+import { Vlossom } from './vlossom-class';
 
 let vlossom: Vlossom;
 
