@@ -1,7 +1,7 @@
 import type { App } from 'vue';
 import { Vlossom } from './vlossom-class';
 import { type VsComponent, type VlossomOptions } from '@/declaration';
-import { createComponentsMap } from '@/components/components-map';
+import { createComponentsMap } from '@/components';
 
 let vlossom: Vlossom;
 

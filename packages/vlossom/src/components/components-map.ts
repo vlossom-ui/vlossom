@@ -1,6 +1,5 @@
+import { defineAsyncComponent, type Component } from 'vue';
 import { VsComponent } from '@/declaration';
-import { defineAsyncComponent } from 'vue';
-import type { Component } from 'vue';
 
 export function createComponentsMap(): { [key in VsComponent]: Component } {
     return {
