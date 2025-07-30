@@ -18,7 +18,6 @@ function registerComponents(
         try {
             const component = asyncComponentsMap[componentName];
             app.component(componentName, component);
-            console.log(`[Vlossom] Component ${componentName} registered`);
         } catch (error) {
             console.warn(`[Vlossom] Failed to register component ${componentName}:`, error);
         }
