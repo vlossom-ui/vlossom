@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, toRefs, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getStyleProps } from '@/props';
+import { getColorSchemeProps } from '@/props';
 import { useColorScheme } from '@/composables';
 
 const name = VsComponent.VsButton;
@@ -15,7 +15,7 @@ const name = VsComponent.VsButton;
 export default defineComponent({
     name,
     props: {
-        ...getStyleProps(),
+        ...getColorSchemeProps(),
         type: {
             type: String as PropType<'button' | 'submit' | 'reset'>,
             default: 'button',
@@ -23,6 +23,7 @@ export default defineComponent({
     },
     setup(props) {
         const { colorScheme } = toRefs(props);
+
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
         return { colorSchemeClass };
