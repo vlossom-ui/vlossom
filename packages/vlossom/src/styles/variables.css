@@ -1,0 +1,32 @@
+@layer base {
+    :root {
+        --vs-radius-ratio: 1;
+        --vs-radius-xs: 0.2rem;
+        --vs-radius-sm: 0.5rem;
+        --vs-radius: 0.8rem;
+        --vs-radius-lg: 1.2rem;
+        --vs-radius-xl: 1.6rem;
+
+        --vs-grid-xs: 12;
+        --vs-width-xs: 100%;
+
+        --vs-modal-height-xs: 20%;
+        --vs-modal-height-sm: 30%;
+        --vs-modal-height-md: 50%;
+        --vs-modal-height-lg: 66%;
+        --vs-modal-height-xl: 80%;
+        --vs-modal-width-xs: 20%;
+        --vs-modal-width-sm: 30%;
+        --vs-modal-width-md: 45%;
+        --vs-modal-width-lg: 70%;
+        --vs-modal-width-xl: 90%;
+
+        --vs-app-bar-z-index: 1000;
+        --vs-modal-z-index: 5000;
+        --vs-toast-z-index: 9999;
+
+        --vs-default-comp-height-small: 2.4rem;
+        --vs-default-comp-height: 3.2rem;
+        --vs-default-comp-height-large: 4rem;
+    }
+}

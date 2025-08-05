@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+@import './variables.css';
+@import './pallete.css';
+@import './state.css';
