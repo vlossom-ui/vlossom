@@ -1,7 +1,4 @@
 export const COLORS = [
-    'none',
-    'black',
-    'white',
     'red',
     'orange',
     'amber',

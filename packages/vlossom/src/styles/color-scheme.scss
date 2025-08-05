@@ -1,0 +1,101 @@
+$colors:
+    'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet',
+    'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone';
+
+:root {
+    --vs-no-color: var(--vs-white);
+    --vs-no-color-inverse: var(--vs-black);
+
+    --vs-app-bg: #f8f8f8;
+    --vs-dimmed-bg: rgba(0, 0, 0, 0.45);
+
+    .vs-none {
+        --vs-comp-font: var(--vs-gray-900);
+        --vs-comp-bg: var(--vs-white);
+        --vs-comp-shadow: rgba(0, 0, 0, 0.16);
+
+        --vs-primary-comp-font: var(--vs-white);
+        --vs-primary-comp-bg: var(--vs-black);
+        --vs-primary-comp-shadow: rgba(255, 255, 255, 0.3);
+
+        --vs-font-color: var(--vs-gray-900);
+
+        --vs-line-color: var(--vs-gray-400);
+
+        --vs-area-bg: var(--vs-white);
+        --vs-area-bg-hover: color-mix(in oklch, #ffffff 95%, black 5%);
+        --vs-area-bg-active: color-mix(in oklch, #ffffff 90%, black 10%);
+        --vs-area-shadow-outer: 0 0 1rem 0 var(--vs-comp-shadow);
+    }
+
+    .vs-dark {
+        --vs-no-color: var(--vs-black);
+        --vs-no-color-inverse: var(--vs-white);
+
+        --vs-app-bg: #14151f;
+        --vs-dimmed-bg: rgba(0, 0, 0, 0.6);
+
+        .vs-none {
+            --vs-comp-font: var(--vs-gray-50);
+            --vs-comp-bg: var(--vs-black);
+            --vs-comp-shadow: rgba(255, 255, 255, 0.25);
+
+            --vs-primary-comp-font: var(--vs-black);
+            --vs-primary-comp-bg: var(--vs-white);
+            --vs-primary-comp-shadow: rgba(0, 0, 0, 0.4);
+
+            --vs-font-color: var(--vs-gray-50);
+
+            --vs-line-color: var(--vs-gray-500);
+
+            --vs-area-bg: var(--vs-black);
+            --vs-area-bg-hover: color-mix(in oklch, #000000 88%, white 12%);
+            --vs-area-bg-active: color-mix(in oklch, #000000 84%, white 16%);
+            --vs-area-shadow-outer: 0 0 0.5rem 0 var(--vs-comp-shadow);
+        }
+    }
+}
+
+@each $color in $colors {
+    .vs-#{$color} {
+        --vs-comp-font: var(--vs-#{$color}-900);
+        --vs-comp-bg: var(--vs-#{$color}-100);
+        --vs-comp-shadow: rgba(0, 0, 0, 0.25);
+
+        --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
+        --vs-primary-comp-bg: var(--vs-#{$color}-500);
+        --vs-primary-comp-shadow: rgba(0, 0, 0, 0.25);
+
+        --vs-font-color: var(--vs-#{$color}-900);
+
+        --vs-line-color: var(--vs-#{$color}-300);
+
+        --vs-area-bg: color-mix(in oklch, var(--vs-#{$color}-50) 95%, white 5%);
+        --vs-area-bg-hover: color-mix(in oklch, var(--vs-#{$color}-50) 97%, white 3%);
+        --vs-area-bg-active: var(--vs-#{$color}-50);
+        --vs-area-shadow-outer: 0 0 1rem 0 var(--vs-comp-shadow);
+    }
+}
+
+.vs-dark {
+    @each $color in $colors {
+        .vs-#{$color} {
+            --vs-comp-font: var(--vs-#{$color}-200);
+            --vs-comp-bg: var(--vs-#{$color}-900);
+            --vs-comp-shadow: rgba(255, 255, 255, 0.25);
+
+            --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
+            --vs-primary-comp-bg: var(--vs-#{$color}-600);
+            --vs-primary-comp-shadow: rgba(0, 0, 0, 0.4);
+
+            --vs-font-color: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
+
+            --vs-line-color: var(--vs-#{$color}-600);
+
+            --vs-area-bg: color-mix(in oklch, var(--vs-#{$color}-900) 95%, black 5%);
+            --vs-area-bg-hover: var(--vs-#{$color}-900);
+            --vs-area-bg-active: color-mix(in oklch, var(--vs-#{$color}-900) 95%, white 5%);
+            --vs-area-shadow-outer: 0 0 0.5rem 0 var(--vs-comp-shadow);
+        }
+    }
+}
