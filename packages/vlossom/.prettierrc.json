@@ -9,5 +9,10 @@
     "bracketSpacing": true,
     "arrowParens": "always",
     "endOfLine": "auto",
-    "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-css-order"]
+    "plugins": [
+        "prettier-plugin-tailwindcss",
+        "prettier-plugin-css-order",
+        "prettier-plugin-classnames",
+        "prettier-plugin-merge"
+    ]
 }
