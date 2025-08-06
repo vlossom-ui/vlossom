@@ -50,6 +50,7 @@ export default defineConfig({
                     name: 'unit',
                     environment: 'jsdom',
                     root: fileURLToPath(new URL('./', import.meta.url)),
+                    setupFiles: ['src/test/test-setup.ts'],
                     include: ['src/**/*.test.ts'],
                     exclude: ['src/**/*.stories.ts'],
                 },

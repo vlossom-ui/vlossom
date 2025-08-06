@@ -1,28 +1,17 @@
-import { ref } from 'vue';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { ref, type Ref } from 'vue';
+import { describe, it, expect } from 'vitest';
 import { useColorScheme } from '../color-scheme-composable';
 import { VsComponent } from '@/declaration';
 import type { ColorScheme } from '@/declaration';
-
-const mockOptionsStore = {
-    colorScheme: ref({}),
-};
-
-vi.mock('@/stores', () => ({
-    useOptionsStore: () => mockOptionsStore,
-}));
+import { useOptionsStore } from '@/stores';
 
 describe('useColorScheme', () => {
-    beforeEach(() => {
-        mockOptionsStore.colorScheme.value = {};
-    });
-
     describe('computedColorScheme', () => {
         it('colorScheme.value가 있을 때 우선적으로 사용해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme>('red');
+            const colorScheme: Ref<ColorScheme> = ref('red');
             const component = VsComponent.VsButton;
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'blue',
             };
 
@@ -35,9 +24,9 @@ describe('useColorScheme', () => {
 
         it('colorScheme.value가 없을 때 옵션 스토어의 컴포넌트별 값을 사용해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'blue',
             };
 
@@ -50,9 +39,9 @@ describe('useColorScheme', () => {
 
         it('문자열 컴포넌트 이름으로도 동작해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = 'CustomComponent';
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'green',
             };
 
@@ -65,7 +54,7 @@ describe('useColorScheme', () => {
 
         it('colorScheme.value와 옵션 스토어 값이 모두 없을 때 undefined를 반환해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
 
             // when
@@ -77,7 +66,7 @@ describe('useColorScheme', () => {
 
         it('colorScheme.value 변경 시 반응적으로 업데이트되어야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
             const { computedColorScheme } = useColorScheme(component, colorScheme);
 
@@ -97,7 +86,7 @@ describe('useColorScheme', () => {
 
         it('옵션 스토어 값 변경 시 반응적으로 업데이트되어야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsSection;
             const { computedColorScheme } = useColorScheme(component, colorScheme);
 
@@ -105,14 +94,14 @@ describe('useColorScheme', () => {
             expect(computedColorScheme.value).toBe(undefined);
 
             // when
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'cyan',
             };
             // then
             expect(computedColorScheme.value).toBe('cyan');
 
             // when
-            mockOptionsStore.colorScheme.value = {};
+            useOptionsStore().colorScheme = {};
             // then
             expect(computedColorScheme.value).toBe(undefined);
         });
@@ -121,7 +110,7 @@ describe('useColorScheme', () => {
     describe('colorSchemeClass', () => {
         it('colorScheme 값이 있을 때 올바른 CSS 클래스를 생성해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme>('red');
+            const colorScheme: Ref<ColorScheme> = ref('red');
             const component = VsComponent.VsButton;
 
             // when
@@ -133,7 +122,7 @@ describe('useColorScheme', () => {
 
         it('colorScheme 값이 없을 때 vs-none 클래스를 생성해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
 
             // when
@@ -145,9 +134,9 @@ describe('useColorScheme', () => {
 
         it('옵션 스토어의 값으로 CSS 클래스를 생성해야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsSection;
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'emerald',
             };
 
@@ -160,7 +149,7 @@ describe('useColorScheme', () => {
 
         it('colorScheme 값 변경 시 CSS 클래스가 반응적으로 업데이트되어야 함', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
 
@@ -187,9 +176,9 @@ describe('useColorScheme', () => {
     describe('통합 테스트', () => {
         it('우선순위가 올바르게 적용되어야 함 (colorScheme.value > 옵션 스토어)', () => {
             // given
-            const colorScheme = ref<ColorScheme | undefined>(undefined);
+            const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            mockOptionsStore.colorScheme.value = {
+            useOptionsStore().colorScheme = {
                 [component]: 'blue',
             };
 
