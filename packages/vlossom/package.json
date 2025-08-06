@@ -60,6 +60,7 @@
         "./styles": "./dist/style.css"
     },
     "dependencies": {
+        "change-case": "^5.4.4",
         "vue": "^3.5.18"
     },
     "devDependencies": {
