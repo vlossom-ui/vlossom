@@ -1,3 +1,5 @@
+export const THEME_KEY = 'vlossom:theme';
+
 export const COLORS = [
     'red',
     'orange',
