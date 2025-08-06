@@ -1,5 +1,5 @@
 <template>
-    <button :type :class="['vs-button', colorSchemeClass]">
+    <button :type :class="['vs-button', colorSchemeClass]" :style="computedStyleSet">
         <slot />
     </button>
 </template>
@@ -7,8 +7,9 @@
 <script lang="ts">
 import { defineComponent, toRefs, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps } from '@/props';
-import { useColorScheme } from '@/composables';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { useColorScheme, useStyleSet } from '@/composables';
+import type { VsButtonStyleSet } from './types';
 
 const name = VsComponent.VsButton;
 
@@ -16,17 +17,20 @@ export default defineComponent({
     name,
     props: {
         ...getColorSchemeProps(),
+        ...getStyleSetProps<VsButtonStyleSet>(),
         type: {
             type: String as PropType<'button' | 'submit' | 'reset'>,
             default: 'button',
         },
     },
     setup(props) {
-        const { colorScheme } = toRefs(props);
+        const { colorScheme, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        return { colorSchemeClass };
+        const { computedStyleSet } = useStyleSet(name, styleSet);
+
+        return { colorSchemeClass, computedStyleSet };
     },
 });
 </script>
