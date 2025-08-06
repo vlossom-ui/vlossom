@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.vs-dark, .vs-dark *));
+
 @import './variables.css';
 @import './pallete.css';
 @import './state.css';
