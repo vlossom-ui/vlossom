@@ -93,6 +93,9 @@ importers:
       prettier:
         specifier: 3.5.3
         version: 3.5.3
+      prettier-plugin-classnames:
+        specifier: ^0.8.2
+        version: 0.8.2(prettier@3.5.3)
       prettier-plugin-css-order:
         specifier: ^2.1.2
         version: 2.1.2(postcss@8.5.6)(prettier@3.5.3)
@@ -2549,6 +2552,19 @@ packages:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
 
+  prettier-plugin-classnames@0.8.2:
+    resolution: {integrity: sha512-fmYMIIuahJKn7uy8DxMoG1LsB0WOWee1mB6PpHI8SFKSMD5QJEeJx7DppczEKRAtSTHVa58ze/DU+Xq2mLbMVQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      prettier: ^3
+      prettier-plugin-astro: '*'
+      prettier-plugin-svelte: '*'
+    peerDependenciesMeta:
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+
   prettier-plugin-css-order@2.1.2:
     resolution: {integrity: sha512-vomxPjHI6pOMYcBuouSJHxxQClJXaUpU9rsV9IAO2wrSTZILRRlrxAAR8t9UF6wtczLkLfNRFUwM+ZbGXOONUA==}
     engines: {node: '>=16'}
@@ -3318,6 +3334,9 @@ packages:
   yoctocolors@2.1.1:
     resolution: {integrity: sha512-GQHQqAopRhwU8Kt1DDM8NjibDXHC8eoh1erhGAJPEyveY9qqVeXvVikNKrDz69sHowPMorbPUrH/mx8c50eiBQ==}
     engines: {node: '>=18'}
+
+  zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
 
 snapshots:
 
@@ -5713,6 +5732,11 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
+  prettier-plugin-classnames@0.8.2(prettier@3.5.3):
+    dependencies:
+      prettier: 3.5.3
+      zod: 3.22.4
+
   prettier-plugin-css-order@2.1.2(postcss@8.5.6)(prettier@3.5.3):
     dependencies:
       css-declaration-sorter: 7.2.0(postcss@8.5.6)
@@ -6461,3 +6485,5 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yoctocolors@2.1.1: {}
+
+  zod@3.22.4: {}
