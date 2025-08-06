@@ -1,0 +1,28 @@
+@layer utilities {
+    :root {
+        --vs-state-color-info: var(--vs-blue-300);
+        --vs-state-color-success: var(--vs-green-500);
+        --vs-state-color-warning: var(--vs-amber-400);
+        --vs-state-color-error: var(--vs-red-500);
+
+        @variant dark {
+            --vs-state-color-info: var(--vs-blue-700);
+            --vs-state-color-success: var(--vs-green-800);
+            --vs-state-color-warning: var(--vs-yellow-600);
+            --vs-state-color-error: var(--vs-red-800);
+        }
+
+        .vs-state-info {
+            --vs-state-color: var(--vs-state-color-info);
+        }
+        .vs-state-success {
+            --vs-state-color: var(--vs-state-color-success);
+        }
+        .vs-state-warning {
+            --vs-state-color: var(--vs-state-color-warning);
+        }
+        .vs-state-error {
+            --vs-state-color: var(--vs-state-color-error);
+        }
+    }
+}
