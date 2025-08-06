@@ -8,5 +8,11 @@
     "trailingComma": "all",
     "bracketSpacing": true,
     "arrowParens": "always",
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "plugins": [
+        "prettier-plugin-tailwindcss",
+        "prettier-plugin-css-order",
+        "prettier-plugin-classnames",
+        "prettier-plugin-merge"
+    ]
 }
