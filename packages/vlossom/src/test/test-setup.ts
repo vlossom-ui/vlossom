@@ -33,14 +33,6 @@ vi.stubGlobal('matchMedia', (query: string) => ({
     dispatchEvent: vi.fn(),
 }));
 
-vi.stubGlobal('document', {
-    documentElement: {
-        classList: {
-            toggle: vi.fn(),
-        },
-    },
-});
-
 vi.stubGlobal('ResizeObserver', {
     observe: vi.fn(),
     unobserve: vi.fn(),

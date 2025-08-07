@@ -78,6 +78,7 @@ describe('Vlossom class', () => {
 
         it('theme을 light로 설정하면 dark 클래스가 제거된다', () => {
             // given
+            vi.spyOn(document.documentElement.classList, 'toggle');
 
             // when
             vlossom.theme = 'light';
@@ -89,6 +90,7 @@ describe('Vlossom class', () => {
 
         it('theme을 dark로 설정하면 dark 클래스가 추가된다', () => {
             // given
+            vi.spyOn(document.documentElement.classList, 'toggle');
 
             // when
             vlossom.theme = 'dark';

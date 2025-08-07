@@ -5,7 +5,7 @@ export default defineComponent({
     name: 'VsRender',
     props: {
         content: {
-            type: [String, Object, Function] as PropType<string | Component>,
+            type: [String, Object] as PropType<string | Component>,
             required: true,
         },
         props: {
@@ -26,7 +26,7 @@ export default defineComponent({
 
         const renderStringAsComponent = (htmlString: string) => {
             // HTML 태그가 없는 경우 텍스트만 렌더링
-            if (!/<[^>]*>/.test(htmlString)) {
+            if (!htmlString || !/<[^>]*>/.test(htmlString)) {
                 return () => h('span', htmlString);
             }
 
