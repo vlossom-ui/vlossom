@@ -1,5 +1,5 @@
-import type { GlobalColorSchemes, GlobalStyleSets, Theme } from '@/declaration';
 import { ref, type Ref } from 'vue';
+import type { GlobalColorSchemes, GlobalStyleSets, Theme, VsComponent } from '@/declaration';
 
 export class OptionsStore {
     private _colorScheme: Ref<GlobalColorSchemes> = ref({});
@@ -37,6 +37,13 @@ export class OptionsStore {
 
     set radiusRatio(radiusRatio: number) {
         this._radiusRatio.value = radiusRatio;
+    }
+
+    public getComponentStyleSet<T extends { [key: string]: any }>(
+        styleSetName: string,
+        component: VsComponent | string,
+    ): Partial<T> {
+        return this._styleSet.value[styleSetName]?.[component] || {};
     }
 }
 
