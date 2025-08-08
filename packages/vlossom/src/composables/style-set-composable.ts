@@ -6,7 +6,7 @@ import { objectUtil, stringUtil } from '@/utils';
 export function useStyleSet<T extends { [key: string]: any }>(
     component: VsComponent | string,
     styleSet: Ref<string | T | undefined>,
-    additionalStyleSet: Partial<T> = {},
+    defaultStyleSet: Partial<T> = {},
 ) {
     const plainStyleSet: ComputedRef<Partial<T>> = computed(() => {
         let resultStyleSet: Partial<T> = {};
@@ -19,7 +19,7 @@ export function useStyleSet<T extends { [key: string]: any }>(
             }
         }
 
-        return { ...resultStyleSet, ...additionalStyleSet };
+        return { ...defaultStyleSet, ...resultStyleSet };
     });
 
     const computedStyleSet: ComputedRef<Record<string, string>> = computed(() => {
