@@ -15,11 +15,7 @@ const decorators = [
         const backgrounds = context.globals.backgrounds;
 
         if (backgrounds) {
-            if (backgrounds.value === '#f8f8f8') {
-                useVlossom().theme = 'light';
-            } else {
-                useVlossom().theme = 'dark';
-            }
+            useVlossom().theme = backgrounds.value;
         }
 
         return {
