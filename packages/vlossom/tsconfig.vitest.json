@@ -1,8 +1,8 @@
 {
     "extends": "./tsconfig.app.json",
     "include": [
-        "src/**/__tests__/*.test.ts",
-        "src/**/__stories__/*.stories.ts",
+        "src/**/__tests__/*",
+        "src/**/__stories__/*",
         ".storybook/**/*",
         ".storybook-chromatic/**/*",
         "vitest.shims.d.ts"
