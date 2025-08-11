@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme } from '@/storybook';
 import VsAvatar from './../VsAvatar.vue';
 
-
 const meta: Meta<typeof VsAvatar> = {
     title: 'Chromatic/Base Components/VsAvatar',
     component: VsAvatar,

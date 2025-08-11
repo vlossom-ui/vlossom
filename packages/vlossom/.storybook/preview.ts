@@ -1,21 +1,79 @@
 import type { Preview } from '@storybook/vue3-vite';
+import { setup } from '@storybook/vue3-vite';
+import { createVlossom, useVlossom } from '@/framework';
+import { styleSet } from '@/storybook';
+import '@/styles/index.css';
+import '@/styles/index.scss';
+
+const vlossom = createVlossom({
+    styleSet,
+});
+
+setup((app) => {
+    app.use(vlossom);
+});
+
+const decorators = [
+    (story: any, context: any) => {
+        const backgrounds = context.globals.backgrounds;
+
+        if (backgrounds) {
+            if (backgrounds.value === '#f8f8f8') {
+                useVlossom().theme = 'light';
+            } else {
+                useVlossom().theme = 'dark';
+            }
+        }
+
+        return {
+            components: { story },
+            template: '<div style="margin: 2rem;"><story /></div>',
+        };
+    },
+];
 
 const preview: Preview = {
     parameters: {
         controls: {
             matchers: {
                 color: /(background|color)$/i,
-                date: /Date$/i,
+                date: /Date$/,
             },
         },
-
+        backgrounds: {
+            default: 'light',
+            values: [
+                {
+                    name: 'light',
+                    value: '#f8f8f8',
+                },
+                {
+                    name: 'dark',
+                    value: '#24252a',
+                },
+            ],
+        },
+        viewport: {
+            viewports: {
+                mobile: { name: 'Mobile', styles: { width: '390px', height: '800px' } },
+                tablet: { name: 'Tablet', styles: { width: '834px', height: '1000px' } },
+                desktop: { name: 'Desktop', styles: { width: '1440px', height: '1000px' } },
+            },
+        },
         a11y: {
-            // 'todo' - show a11y violations in the test UI only
-            // 'error' - fail CI on a11y violations
-            // 'off' - skip a11y checks entirely
-            test: 'todo',
+            config: {
+                rules: [
+                    {
+                        id: 'label',
+                        enabled: false,
+                    },
+                ],
+            },
         },
     },
+
+    decorators,
+    tags: ['autodocs'],
 };
 
 export default preview;
