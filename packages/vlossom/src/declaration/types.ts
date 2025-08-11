@@ -21,6 +21,11 @@ export interface VlossomOptions {
     radiusRatio?: number;
 }
 
+export interface BarLayout {
+    position: 'relative' | 'absolute' | 'fixed' | 'sticky' | 'static';
+    height: string;
+}
+
 export interface Breakpoints {
     xs?: string | number;
     sm?: string | number;
