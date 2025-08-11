@@ -6,9 +6,9 @@ import { objectUtil, stringUtil } from '@/utils';
 export function useStyleSet<T extends { [key: string]: any }>(
     component: VsComponent | string,
     styleSet: Ref<string | T | undefined>,
-    additionalStyleSet: Partial<T> = {},
+    additionalStyleSet?: Ref<Partial<T>>,
 ) {
-    const plainStyleSet: ComputedRef<Partial<T>> = computed(() => {
+    const componentStyleSet: ComputedRef<Partial<T>> = computed(() => {
         let resultStyleSet: Partial<T> = {};
 
         if (styleSet.value) {
@@ -19,11 +19,11 @@ export function useStyleSet<T extends { [key: string]: any }>(
             }
         }
 
-        return { ...resultStyleSet, ...additionalStyleSet };
+        return { ...resultStyleSet, ...(additionalStyleSet?.value ?? {}) };
     });
 
-    const computedStyleSet: ComputedRef<Record<string, string>> = computed(() => {
-        return Object.entries(plainStyleSet.value).reduce(
+    const styleSetVariables: ComputedRef<Record<string, string>> = computed(() => {
+        return Object.entries(componentStyleSet.value).reduce(
             (acc, [key, value]) => {
                 if (objectUtil.isObject(value)) {
                     const nestedStyleSet = value;
@@ -43,7 +43,7 @@ export function useStyleSet<T extends { [key: string]: any }>(
     });
 
     return {
-        plainStyleSet,
-        computedStyleSet,
+        componentStyleSet,
+        styleSetVariables,
     };
 }

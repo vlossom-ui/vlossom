@@ -1,0 +1,9 @@
+.vs-grid {
+    @apply relative grid;
+    grid-template-columns: repeat(var(--vs-grid-gridSize, 12), minmax(0, 1fr));
+    column-gap: var(--vs-grid-columnGap, 0);
+    row-gap: var(--vs-grid-rowGap, 0);
+    container-type: inline-size;
+    width: var(--vs-grid-width, 100%);
+    height: var(--vs-grid-height, 100%);
+}

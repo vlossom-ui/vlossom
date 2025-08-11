@@ -89,6 +89,9 @@ jobs:
             - name: Install dependencies
               working-directory: ./packages/vlossom
               run: pnpm install
+            - name: Install Playwright
+              working-directory: ./packages/vlossom
+              run: pnpm exec playwright install
             - name: Run tests
               working-directory: ./packages/vlossom
               run: pnpm test

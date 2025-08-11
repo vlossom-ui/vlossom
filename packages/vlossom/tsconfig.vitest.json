@@ -2,7 +2,7 @@
     "extends": "./tsconfig.app.json",
     "include": [
         "src/**/__tests__/*",
-        "src/**/*.stories.ts",
+        "src/**/__stories__/*",
         ".storybook/**/*",
         ".storybook-chromatic/**/*",
         "vitest.shims.d.ts"
