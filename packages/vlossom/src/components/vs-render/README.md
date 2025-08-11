@@ -4,17 +4,13 @@
 
 **Available Version**: 2.0.0+
 
-## 미리보기
-
-<!-- 컴포넌트 이미지 -->
-
 ## 기본 사용법
 
 ### HTML 문자열 렌더링
 
 ```html
 <template>
-  <VsRender content="<div>Hello World!</div>" />
+  <vs-render content="<div>Hello World!</div>" />
 </template>
 ```
 
@@ -22,7 +18,7 @@
 
 ```html
 <template>
-  <VsRender
+  <vs-render
     :content="MyComponent"
     :props="{ title: 'Dynamic Component' }"
   />
