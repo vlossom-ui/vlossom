@@ -1,0 +1,24 @@
+.vs-avatar {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--vs-avatar-width, 4rem);
+    height: var(--vs-avatar-height, 4rem);
+    border: var(--vs-avatar-border, 0.1rem solid var(--vs-line-color));
+    border-radius: var(--vs-avatar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-avatar-backgroundColor, var(--vs-comp-bg));
+    color: var(--vs-avatar-fontColor, var(--vs-comp-font));
+    font-size: var(--vs-avatar-fontSize, var(--vs-font-size));
+    font-weight: var(--vs-avatar-fontWeight, 400);
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+
+    :deep(img) {
+        display: block;
+        object-fit: var(--vs-avatar-objectFit, contain);
+        width: 100%;
+        height: 100%;
+    }
+}
