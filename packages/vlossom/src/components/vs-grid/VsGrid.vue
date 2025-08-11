@@ -18,8 +18,8 @@ export default defineComponent({
     props: {
         ...getGridProps(),
         ...getStyleSetProps<VsGridStyleSet>(),
-        width: { type: [String, Number], default: '100%' },
-        height: { type: [String, Number], default: '100%' },
+        width: { type: [String, Number] },
+        height: { type: [String, Number] },
         tag: { type: String, default: 'div' },
     },
     setup(props) {
