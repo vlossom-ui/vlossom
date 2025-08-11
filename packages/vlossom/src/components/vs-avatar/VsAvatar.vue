@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-avatar', colorSchemeClass]" :style="computedStyleSet">
+    <div :class="['vs-avatar', colorSchemeClass]" :style="styleSetVariables">
         <slot />
     </div>
 </template>
@@ -23,11 +23,11 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedStyleSet } = useStyleSet<VsAvatarStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsAvatarStyleSet>(name, styleSet);
 
         return {
             colorSchemeClass,
-            computedStyleSet,
+            styleSetVariables,
         };
     },
 });
