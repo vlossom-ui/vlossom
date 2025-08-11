@@ -118,30 +118,69 @@ describe('VsLoading', () => {
         });
     });
 
-    describe('props 조합', () => {
-        it('colorScheme과 styleSet이 함께 주어지면 둘 다 적용되어야 한다', () => {
+    describe('width, height props', () => {
+        it('width와 height props가 문자열로 주어지면 올바르게 적용되어야 한다', () => {
             // given
-            const colorScheme = 'blue';
+            const width = '200px';
+            const height = '150px';
+
+            // when
+            const wrapper = mount(VsLoading, {
+                props: {
+                    width,
+                    height,
+                },
+            });
+
+            // then
+            const style = wrapper.attributes('style');
+            expect(style).toContain('--vs-loading-width: 200px');
+            expect(style).toContain('--vs-loading-height: 150px');
+        });
+
+        it('width와 height props가 숫자로 주어지면 픽셀 단위로 변환되어야 한다', () => {
+            // given
+            const width = 300;
+            const height = 250;
+
+            // when
+            const wrapper = mount(VsLoading, {
+                props: {
+                    width,
+                    height,
+                },
+            });
+
+            // then
+            const style = wrapper.attributes('style');
+            expect(style).toContain('--vs-loading-width: 300px');
+            expect(style).toContain('--vs-loading-height: 250px');
+        });
+
+        it('width와 height props가 styleSet보다 우선순위가 높아야 한다', () => {
+            // given
+            const width = '400px';
+            const height = '300px';
             const styleSet = {
-                width: '80px',
-                color: '#0000ff',
+                width: '100px',
+                height: '80px',
             };
 
             // when
             const wrapper = mount(VsLoading, {
                 props: {
-                    colorScheme,
+                    width,
+                    height,
                     styleSet,
                 },
             });
 
             // then
-            expect(wrapper.classes()).toContain('vs-loading');
-            expect(wrapper.classes()).toContain('vs-blue');
-
             const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 80px');
-            expect(style).toContain('--vs-loading-color: #0000ff');
+            expect(style).toContain('--vs-loading-width: 400px');
+            expect(style).toContain('--vs-loading-height: 300px');
+            expect(style).not.toContain('--vs-loading-width: 100px');
+            expect(style).not.toContain('--vs-loading-height: 80px');
         });
     });
 });

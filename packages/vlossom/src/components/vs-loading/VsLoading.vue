@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-loading', colorSchemeClass]" :style="computedStyleSet">
+    <div :class="['vs-loading', colorSchemeClass]" :style="styleSetVariables">
         <div class="vs-loading-rect1" />
         <div class="vs-loading-rect2" />
         <div class="vs-loading-rect3" />
@@ -9,11 +9,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsLoadingStyleSet } from './types';
+import { objectUtil, stringUtil } from '@/utils';
 
 const name = VsComponent.VsLoading;
 
@@ -22,15 +23,24 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsLoadingStyleSet>(),
+        width: { type: [String, Number] },
+        height: { type: [String, Number] },
     },
     setup(props) {
-        const { colorScheme, styleSet } = toRefs(props);
+        const { colorScheme, styleSet, width, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedStyleSet } = useStyleSet(name, styleSet);
+        const additionalStyleSet = computed(() => {
+            return objectUtil.shake({
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+            });
+        });
 
-        return { colorSchemeClass, computedStyleSet };
+        const { styleSetVariables } = useStyleSet(name, styleSet, additionalStyleSet);
+
+        return { colorSchemeClass, styleSetVariables };
     },
 });
 </script>
