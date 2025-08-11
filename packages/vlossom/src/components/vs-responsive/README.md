@@ -10,11 +10,13 @@
 
 ```html
 <template>
-    <vs-responsive
-        :width="{ sm: '50%', md: '33.33%', lg: '25%' }"
-    >
-        <div>contents</div>
-    </vs-responsive>
+    <vs-grid>
+        <vs-responsive
+            :width="{ sm: '50%', md: '33.33%', lg: '25%' }"
+        >
+            <div>contents</div>
+        </vs-responsive>
+    </vs-grid>
 </template>
 ```
 
