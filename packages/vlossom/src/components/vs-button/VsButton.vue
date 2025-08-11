@@ -1,5 +1,5 @@
 <template>
-    <button :type :class="['vs-button', colorSchemeClass]" :style="computedStyleSet">
+    <button :type :class="['vs-button', colorSchemeClass]" :style="styleSetVariables">
         <slot />
     </button>
 </template>
@@ -28,9 +28,9 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedStyleSet } = useStyleSet(name, styleSet);
+        const { styleSetVariables } = useStyleSet(name, styleSet);
 
-        return { colorSchemeClass, computedStyleSet };
+        return { colorSchemeClass, styleSetVariables };
     },
 });
 </script>

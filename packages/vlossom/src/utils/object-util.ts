@@ -1,5 +1,6 @@
-import { isObject } from 'radash';
+import { isObject, shake } from 'radash';
 
 export const objectUtil = {
     isObject,
+    shake,
 };

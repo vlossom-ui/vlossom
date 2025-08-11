@@ -5,17 +5,17 @@ import { useOptionsStore } from '@/stores';
 import { VsComponent } from '@/declaration';
 
 describe('useStyleSet', () => {
-    describe('plainStyleSet', () => {
+    describe('componentStyleSet', () => {
         it('styleSet이 undefined이면 빈 객체를 반환해야 한다', () => {
             // given
             const styleSet = ref(undefined);
             const component = VsComponent.VsButton;
 
             // when
-            const { plainStyleSet } = useStyleSet(component, styleSet);
+            const { componentStyleSet } = useStyleSet(component, styleSet);
 
             // then
-            expect(plainStyleSet.value).toEqual({});
+            expect(componentStyleSet.value).toEqual({});
         });
 
         it('문자열 styleSet이 주어지면 옵션스토어에서 해당 컴포넌트의 스타일셋을 가져와야 한다', () => {
@@ -28,10 +28,10 @@ describe('useStyleSet', () => {
             optionStore.styleSet = { [styleSet.value]: { [component]: styles } };
 
             // when
-            const { plainStyleSet } = useStyleSet(component, styleSet);
+            const { componentStyleSet } = useStyleSet(component, styleSet);
 
             // then
-            expect(plainStyleSet.value).toEqual(styles);
+            expect(componentStyleSet.value).toEqual(styles);
         });
 
         it('객체 styleSet이 주어지면 해당 객체를 그대로 사용해야 한다', () => {
@@ -41,91 +41,58 @@ describe('useStyleSet', () => {
             const component = VsComponent.VsButton;
 
             // when
-            const { plainStyleSet } = useStyleSet(component, styleSet);
+            const { componentStyleSet } = useStyleSet(component, styleSet);
 
             // then
-            expect(plainStyleSet.value).toEqual(styles);
+            expect(componentStyleSet.value).toEqual(styles);
         });
 
-        it('기본 스타일셋이 주어지면 등록된 스타일셋과 병합되고 styleSet이 우선되어야 한다', () => {
+        it('추가 스타일셋이 주어지면 기존 스타일셋과 병합되고 추가 스타일셋이 우선되어야 한다', () => {
             // given
             const component = VsComponent.VsButton;
-            const defaultStyleSet = { backgroundColor: 'blue', fontSize: '16px' };
             const styles = { color: 'red', fontSize: '14px' };
             const styleSet = ref('primary');
+            const additionalStyleSet = ref({ backgroundColor: 'blue', fontSize: '16px' });
 
             const optionStore = useOptionsStore();
             optionStore.styleSet = { [styleSet.value]: { [component]: styles } };
 
             // when
-            const { plainStyleSet } = useStyleSet(component, styleSet, defaultStyleSet);
+            const { componentStyleSet } = useStyleSet(component, styleSet, additionalStyleSet);
 
             // then
-            expect(plainStyleSet.value).toEqual({
-                backgroundColor: 'blue',
+            expect(componentStyleSet.value).toEqual({
                 color: 'red',
-                fontSize: '14px',
+                fontSize: '16px',
+                backgroundColor: 'blue',
             });
         });
 
-        it('styleSet이 undefined이고 기본 스타일셋만 주어지면 기본 스타일셋만 반환해야 한다', () => {
+        it('styleSet이 undefined이고 추가 스타일셋만 주어지면 추가 스타일셋만 반환해야 한다', () => {
             // given
             const component = VsComponent.VsButton;
-            const defaultStyleSet = { color: 'purple', margin: '8px' };
             const styleSet = ref(undefined);
+            const additionalStyleSet = ref({ color: 'purple', margin: '8px' });
 
             // when
-            const { plainStyleSet } = useStyleSet(component, styleSet, defaultStyleSet);
+            const { componentStyleSet } = useStyleSet(component, styleSet, additionalStyleSet);
 
             // then
-            expect(plainStyleSet.value).toEqual(defaultStyleSet);
-        });
-
-        it('객체 styleSet과 기본 스타일셋이 모두 주어지면 병합되고 styleSet이 우선되어야 한다', () => {
-            // given
-            const component = VsComponent.VsButton;
-            const defaultStyleSet = { backgroundColor: 'blue', fontSize: '16px', margin: '4px' };
-            const styles = { color: 'red', fontSize: '14px', padding: '8px' };
-            const styleSet = ref(styles);
-
-            // when
-            const { plainStyleSet } = useStyleSet(component, styleSet, defaultStyleSet);
-
-            // then
-            expect(plainStyleSet.value).toEqual({
-                color: 'red',
-                fontSize: '14px',
-                padding: '8px',
-                backgroundColor: 'blue',
-                margin: '4px',
-            });
-        });
-
-        it('빈 객체 styleSet과 기본 스타일셋이 주어지면 기본 스타일셋만 반환해야 한다', () => {
-            // given
-            const component = VsComponent.VsButton;
-            const defaultStyleSet = { color: 'purple', margin: '8px' };
-            const styleSet = ref({});
-
-            // when
-            const { plainStyleSet } = useStyleSet(component, styleSet, defaultStyleSet);
-
-            // then
-            expect(plainStyleSet.value).toEqual(defaultStyleSet);
+            expect(componentStyleSet.value).toEqual(additionalStyleSet.value);
         });
     });
 
-    describe('computedStyleSet', () => {
+    describe('styleSetVariables', () => {
         it('빈 스타일셋에 대해 빈 객체를 반환해야 한다', () => {
             // given
             const component = VsComponent.VsButton;
             const styleSet = ref(undefined);
 
             // when
-            const { computedStyleSet } = useStyleSet(component, styleSet);
+            const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(computedStyleSet.value).toEqual({});
+            expect(styleSetVariables.value).toEqual({});
         });
 
         it('컴포넌트명을 kebab-case로 변환해야 한다', () => {
@@ -135,10 +102,10 @@ describe('useStyleSet', () => {
             const styleSet = ref(styles);
 
             // when
-            const { computedStyleSet } = useStyleSet(component, styleSet);
+            const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(computedStyleSet.value).toEqual({
+            expect(styleSetVariables.value).toEqual({
                 '--vs-complex-component-backgroundColor': 'white',
             });
         });
@@ -150,10 +117,10 @@ describe('useStyleSet', () => {
             const styleSet = ref(styles);
 
             // when
-            const { computedStyleSet } = useStyleSet(component, styleSet);
+            const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(computedStyleSet.value).toEqual({
+            expect(styleSetVariables.value).toEqual({
                 '--vs-button-color': 'red',
                 '--vs-button-fontSize': '14px',
             });
@@ -173,10 +140,10 @@ describe('useStyleSet', () => {
             const styleSet = ref(styles);
 
             // when
-            const { computedStyleSet } = useStyleSet(component, styleSet);
+            const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(computedStyleSet.value).toEqual({
+            expect(styleSetVariables.value).toEqual({
                 '--vs-input-color': 'blue',
                 '--vs-input-append-width': '2px',
                 '--vs-input-append-padding': '3px',

@@ -1,15 +1,15 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="computedStyleSet">
+    <component :is="tag" class="vs-grid" :style="styleSetVariables">
         <slot />
     </component>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import { getGridProps, getStyleSetProps } from '@/props';
-import { stringUtil } from '@/utils';
+import { stringUtil, objectUtil } from '@/utils';
 import type { VsGridStyleSet } from './types';
 
 const name = VsComponent.VsGrid;
@@ -25,16 +25,20 @@ export default defineComponent({
     setup(props) {
         const { width, height, gridSize, columnGap, rowGap, styleSet } = toRefs(props);
 
-        const { computedStyleSet } = useStyleSet(name, styleSet, {
-            width: stringUtil.toStringSize(width.value),
-            height: stringUtil.toStringSize(height.value),
-            gridSize: Number(gridSize.value),
-            columnGap: stringUtil.toStringSize(columnGap.value),
-            rowGap: stringUtil.toStringSize(rowGap.value),
+        const additionalStyleSet = computed(() => {
+            return objectUtil.shake({
+                width: width.value ? stringUtil.toStringSize(width.value) : undefined,
+                height: height.value ? stringUtil.toStringSize(height.value) : undefined,
+                gridSize: gridSize.value ? Number(gridSize.value) : undefined,
+                columnGap: columnGap.value ? stringUtil.toStringSize(columnGap.value) : undefined,
+                rowGap: rowGap.value ? stringUtil.toStringSize(rowGap.value) : undefined,
+            });
         });
 
+        const { styleSetVariables } = useStyleSet(name, styleSet, additionalStyleSet);
+
         return {
-            computedStyleSet,
+            styleSetVariables,
         };
     },
 });

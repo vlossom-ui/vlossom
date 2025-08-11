@@ -14,14 +14,8 @@ export function getResponsiveProps() {
 
 export function getGridProps() {
     return {
-        gridSize: { type: [String, Number], default: 12 },
-        columnGap: {
-            type: [Number, String],
-            default: 0,
-        },
-        rowGap: {
-            type: [Number, String],
-            default: 0,
-        },
+        gridSize: { type: [Number, String] },
+        columnGap: { type: [Number, String] },
+        rowGap: { type: [Number, String] },
     };
 }
