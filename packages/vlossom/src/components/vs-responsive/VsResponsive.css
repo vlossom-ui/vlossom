@@ -1,0 +1,50 @@
+.vs-responsive {
+    @apply relative box-border;
+    grid-column-start: span var(--vs-grid-xs, 12);
+    width: var(--vs-width-xs, 100%);
+
+    @container (min-width: 640px) {
+        &.vs-width-sm {
+            width: var(--vs-width-sm);
+        }
+        &.vs-grid-sm {
+            grid-column-start: span var(--vs-grid-sm);
+        }
+    }
+
+    @container (min-width: 768px) {
+        &.vs-width-md {
+            width: var(--vs-width-md);
+        }
+        &.vs-grid-md {
+            grid-column-start: span var(--vs-grid-md);
+        }
+    }
+
+    @container (min-width: 1024px) {
+        &.vs-width-lg {
+            width: var(--vs-width-lg);
+        }
+        &.vs-grid-lg {
+            grid-column-start: span var(--vs-grid-lg);
+        }
+    }
+
+    @container (min-width: 1280px) {
+        &.vs-width-xl {
+            width: var(--vs-width-xl);
+        }
+        &.vs-grid-xl {
+            grid-column-start: span var(--vs-grid-xl);
+        }
+    }
+
+    @container (min-width: 1536px) {
+        &.vs-width-2xl {
+            width: var(--vs-width-2xl);
+        }
+        &.vs-grid-2xl {
+            grid-column-start: span var(--vs-grid-2xl);
+        }
+    }
+}
