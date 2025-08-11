@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, toRefs } from 'vue';
+import { type PropType, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent, type ColorScheme } from '@/declaration';
-import { VsAvatarStyleSet } from './types';
+import { type VsAvatarStyleSet } from './types';
 
 const name = VsComponent.VsAvatar;
 export default defineComponent({
