@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import VsGrid from './../VsGrid.vue';
 
 const meta: Meta<typeof VsGrid> = {
-    title: 'Components/VsGrid',
+    title: 'Components/Layout Components/VsGrid',
     component: VsGrid,
     parameters: {
         layout: 'padded',
