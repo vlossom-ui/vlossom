@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { useVlossom } from '@/framework';
 import VsAvatar from './../VsAvatar.vue';
+import type { VsAvatarStyleSet } from '../types';
 
 const meta: Meta<typeof VsAvatar> = {
     title: 'Components/Base Components/VsAvatar',
@@ -8,6 +10,19 @@ const meta: Meta<typeof VsAvatar> = {
     render: (args: any) => ({
         components: { VsAvatar },
         setup() {
+            const preDefinedStyleSet: VsAvatarStyleSet = {
+                backgroundColor: '#1e88e5',
+                borderRadius: '50%',
+                fontColor: '#fff',
+                fontSize: '1.5rem',
+                fontWeight: '600',
+                width: '5rem',
+            } as const;
+
+            useVlossom().styleSet = {
+                myStyleSet: { VsAvatar: { ...preDefinedStyleSet } },
+            };
+
             return { args };
         },
         template: '<vs-avatar v-bind="args">VS</vs-avatar>',
