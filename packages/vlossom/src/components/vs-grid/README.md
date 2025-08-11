@@ -10,18 +10,18 @@ CSS Grid 레이아웃을 쉽게 구성할 수 있는 그리드 컴포넌트입�
 
 ```html
 <template>
-  <vs-grid
-    :grid-size="6"
-    :column-gap="16"
-    :row-gap="24"
-    width="800px"
-    height="400px"
-  >
-    <div>Grid Item 1</div>
-    <div>Grid Item 2</div>
-    <div>Grid Item 3</div>
-    <div>Grid Item 4</div>
-  </vs-grid>
+    <vs-grid
+        :grid-size="6"
+        :column-gap="16"
+        :row-gap="24"
+        width="800px"
+        height="400px"
+    >
+        <div>Grid Item 1</div>
+        <div>Grid Item 2</div>
+        <div>Grid Item 3</div>
+        <div>Grid Item 4</div>
+    </vs-grid>
 </template>
 ```
 
@@ -29,32 +29,32 @@ CSS Grid 레이아웃을 쉽게 구성할 수 있는 그리드 컴포넌트입�
 
 ```html
 <template>
-  <vs-grid tag="section" :grid-size="3">
-    <article>Article 1</article>
-    <article>Article 2</article>
-    <article>Article 3</article>
-  </vs-grid>
+    <vs-grid tag="section" :grid-size="3">
+        <article>Article 1</article>
+        <article>Article 2</article>
+        <article>Article 3</article>
+    </vs-grid>
 </template>
 ```
 
 ## Props
 
-| Prop        | Type               | Default | Required | Description             |
-| ----------- | ------------------ | ------- | -------- | ----------------------- |
-| `gridSize`  | `number \| string` | `12`    | -        | 그리드 컬럼 수          |
-| `columnGap` | `number \| string` | `0`     | -        | 컬럼 간 간격            |
-| `rowGap`    | `number \| string` | `0`     | -        | 행 간 간격              |
-| `width`     | `string \| number` | `100%`  | -        | 그리드 너비             |
-| `height`    | `string \| number` | `100%`  | -        | 그리드 높이             |
-| `tag`       | `string`           | `div`   | -        | 렌더링할 HTML 태그      |
-| `styleSet`  | `VsGridStyleSet`   | -       | -        | 커스텀 스타일 설정 객체 |
+| Prop        | Type                       | Default | Required | Description                      |
+| ----------- | -------------------------- | ------- | -------- | -------------------------------- |
+| `gridSize`  | `string \| number`         | -       | -        | 그리드 컬럼 수 (기본 12)         |
+| `columnGap` | `string \| number`         | -       | -        | 컬럼 간 간격 (기본 0)            |
+| `rowGap`    | `string \| number`         | -       | -        | 행 간 간격 (기본 0)              |
+| `width`     | `string \| number`         | -       | -        | VsGird 컴포넌트 너비 (기본 100%) |
+| `height`    | `string \| number`         | -       | -        | VsGird 컴포넌트 높이 (기본 100%) |
+| `tag`       | `string`                   | `div`   | -        | 렌더링할 HTML 태그               |
+| `styleSet`  | `string \| VsGridStyleSet` | -       | -        | 커스텀 스타일 설정 객체          |
 
 ## CSS 변수
 
 컴포넌트는 다음 CSS 변수를 생성합니다:
 
-- `--vs-grid-width`: 그리드 너비
-- `--vs-grid-height`: 그리드 높이
+- `--vs-grid-width`: VsGird 컴포넌트 너비
+- `--vs-grid-height`: VsGird 컴포넌트 높이
 - `--vs-grid-gridSize`: 그리드 컬럼 수
 - `--vs-grid-columnGap`: 컬럼 간격
 - `--vs-grid-rowGap`: 행 간격

@@ -10,7 +10,7 @@
 
 ```html
 <template>
-  <vs-render content="<div>Hello World!</div>" />
+    <vs-render content="<div>Hello World!</div>" />
 </template>
 ```
 
@@ -18,10 +18,10 @@
 
 ```html
 <template>
-  <vs-render
-    :content="MyComponent"
-    :props="{ title: 'Dynamic Component' }"
-  />
+    <vs-render
+        :content="MyComponent"
+        :props="{ title: 'Dynamic Component' }"
+    />
 </template>
 ```
 
