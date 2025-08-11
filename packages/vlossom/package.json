@@ -41,7 +41,8 @@
         "storybook:chromatic": "storybook dev -p 6006 -c .storybook-chromatic",
         "build-storybook": "storybook build",
         "build-storybook:chromatic": "storybook build -c .storybook-chromatic",
-        "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes"
+        "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes",
+        "component": "node scripts/create-component.js"
     },
     "files": [
         "dist"
