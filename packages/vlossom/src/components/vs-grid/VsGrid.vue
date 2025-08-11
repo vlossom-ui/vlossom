@@ -27,11 +27,11 @@ export default defineComponent({
 
         const additionalStyleSet = computed(() => {
             return objectUtil.shake({
-                width: width.value ? stringUtil.toStringSize(width.value) : undefined,
-                height: height.value ? stringUtil.toStringSize(height.value) : undefined,
-                gridSize: gridSize.value ? Number(gridSize.value) : undefined,
-                columnGap: columnGap.value ? stringUtil.toStringSize(columnGap.value) : undefined,
-                rowGap: rowGap.value ? stringUtil.toStringSize(rowGap.value) : undefined,
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
+                columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
+                rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
             });
         });
 
