@@ -5,17 +5,18 @@
 </template>
 
 <script lang="ts">
-import { type PropType, defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
-import { VsComponent, type ColorScheme } from '@/declaration';
+import { VsComponent } from '@/declaration';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { type VsAvatarStyleSet } from './types';
 
 const name = VsComponent.VsAvatar;
 export default defineComponent({
     name,
     props: {
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsAvatarStyleSet> },
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsAvatarStyleSet>(),
     },
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
