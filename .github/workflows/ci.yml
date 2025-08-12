@@ -91,7 +91,7 @@ jobs:
               run: pnpm install
             - name: Install Playwright
               working-directory: ./packages/vlossom
-              run: pnpm exec playwright install
+              run: pnpm playwright install --with-deps
             - name: Run tests
               working-directory: ./packages/vlossom
               run: pnpm test
