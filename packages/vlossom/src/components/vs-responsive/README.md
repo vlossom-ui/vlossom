@@ -68,6 +68,12 @@ interface Breakpoints {
 }
 ```
 
+## Slots
+
+| Slot      | Description        |
+| --------- | ------------------ |
+| `default` | vs-responsive 내용 |
+
 ## CSS 변수
 
 컴포넌트는 다음 CSS 변수들을 생성합니다:
