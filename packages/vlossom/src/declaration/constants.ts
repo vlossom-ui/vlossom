@@ -1,4 +1,5 @@
 export const THEME_KEY = 'vlossom:theme';
+export const LAYOUT_STORE_KEY = 'vlossom:layout-store';
 
 export const COLORS = [
     'red',

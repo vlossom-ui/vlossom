@@ -49,6 +49,12 @@ CSS Grid 레이아웃을 쉽게 구성할 수 있는 그리드 컴포넌트입�
 | `tag`       | `string`                   | `div`   | -        | 렌더링할 HTML 태그               |
 | `styleSet`  | `string \| VsGridStyleSet` | -       | -        | 커스텀 스타일 설정 객체          |
 
+## Slots
+
+| Slot      | Description                 |
+| --------- | --------------------------- |
+| `default` | 그리드 내부에 배치할 콘텐츠 |
+
 ## CSS 변수
 
 컴포넌트는 다음 CSS 변수를 생성합니다:

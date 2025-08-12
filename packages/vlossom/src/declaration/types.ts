@@ -26,6 +26,17 @@ export interface BarLayout {
     height: string;
 }
 
+export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
+
+export interface DrawerLayout {
+    isOpen: boolean;
+    responsive: boolean;
+    placement: DrawerPlacement;
+    size: string;
+}
+
+export type DrawerLayouts = { [key in DrawerPlacement]: DrawerLayout };
+
 export interface Breakpoints {
     xs?: string | number;
     sm?: string | number;
