@@ -1,7 +1,10 @@
 .vs-responsive {
+    --vs-grid-xs: 12;
+    --vs-width-xs: 100%;
+
     @apply relative box-border;
-    grid-column-start: span var(--vs-grid-xs, 12);
-    width: var(--vs-width-xs, 100%);
+    grid-column-start: span var(--vs-grid-xs);
+    width: var(--vs-width-xs);
 
     @container (min-width: 640px) {
         &.vs-width-sm {
@@ -36,15 +39,6 @@
         }
         &.vs-grid-xl {
             grid-column-start: span var(--vs-grid-xl);
-        }
-    }
-
-    @container (min-width: 1536px) {
-        &.vs-width-2xl {
-            width: var(--vs-width-2xl);
-        }
-        &.vs-grid-2xl {
-            grid-column-start: span var(--vs-grid-2xl);
         }
     }
 }

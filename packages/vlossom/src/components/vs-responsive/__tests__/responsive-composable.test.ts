@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import type { Breakpoints } from '@/declaration';
 import { useResponsive } from './../composables/responsive-composable';
 
@@ -7,8 +7,8 @@ describe('useResponsive', () => {
     describe('responsiveClasses', () => {
         it('width와 grid가 undefined이면 빈 배열을 반환해야 한다', () => {
             // given
-            const width = ref<Breakpoints | undefined>(undefined);
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const width: Ref<Breakpoints | undefined> = ref(undefined);
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveClasses } = useResponsive(width, grid);
@@ -19,13 +19,13 @@ describe('useResponsive', () => {
 
         it('width가 객체일 때 각 breakpoint에 대한 클래스를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: '100px',
                 md: '200px',
                 lg: '300px',
                 xl: '400px',
             });
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveClasses } = useResponsive(width, grid);
@@ -36,8 +36,8 @@ describe('useResponsive', () => {
 
         it('grid가 객체일 때 각 breakpoint에 대한 클래스를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints | undefined>(undefined);
-            const grid = ref<Breakpoints>({
+            const width: Ref<Breakpoints | undefined> = ref(undefined);
+            const grid: Ref<Breakpoints> = ref({
                 sm: 1,
                 md: 2,
                 lg: 3,
@@ -53,11 +53,11 @@ describe('useResponsive', () => {
 
         it('width와 grid가 모두 객체일 때 모든 클래스를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: '100px',
                 lg: '300px',
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 md: 2,
                 xl: 4,
             });
@@ -71,13 +71,13 @@ describe('useResponsive', () => {
 
         it('빈 값(undefined, null, "")은 클래스를 생성하지 않아야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: undefined,
                 md: null as any,
                 lg: '',
                 xl: '400px',
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 sm: 0,
                 md: '',
                 lg: null as any,
@@ -93,11 +93,11 @@ describe('useResponsive', () => {
 
         it('숫자 0은 유효한 값으로 처리해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: 0,
                 md: 100,
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 lg: 0,
                 xl: 5,
             });
@@ -113,8 +113,8 @@ describe('useResponsive', () => {
     describe('responsiveStyles', () => {
         it('width와 grid가 undefined이면 빈 객체를 반환해야 한다', () => {
             // given
-            const width = ref<Breakpoints | undefined>(undefined);
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const width: Ref<Breakpoints | undefined> = ref(undefined);
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveStyles } = useResponsive(width, grid);
@@ -125,14 +125,14 @@ describe('useResponsive', () => {
 
         it('width가 객체일 때 각 breakpoint에 대한 CSS 변수를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 xs: '50px',
                 sm: 100,
                 md: '200px',
                 lg: 300,
                 xl: '400px',
             });
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveStyles } = useResponsive(width, grid);
@@ -149,8 +149,8 @@ describe('useResponsive', () => {
 
         it('width가 단일 값일 때 width 스타일을 생성해야 한다', () => {
             // given
-            const width = ref<string | number>('150px');
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const width = ref('150px');
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveStyles } = useResponsive(width, grid);
@@ -163,8 +163,8 @@ describe('useResponsive', () => {
 
         it('width가 숫자일 때 px 단위를 추가해야 한다', () => {
             // given
-            const width = ref<number>(250);
-            const grid = ref<Breakpoints | undefined>(undefined);
+            const width = ref(250);
+            const grid: Ref<Breakpoints | undefined> = ref(undefined);
 
             // when
             const { responsiveStyles } = useResponsive(width, grid);
@@ -177,8 +177,8 @@ describe('useResponsive', () => {
 
         it('grid가 객체일 때 각 breakpoint에 대한 CSS 변수를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints | undefined>(undefined);
-            const grid = ref<Breakpoints>({
+            const width: Ref<Breakpoints | undefined> = ref(undefined);
+            const grid: Ref<Breakpoints> = ref({
                 xs: 1,
                 sm: '2',
                 md: 3,
@@ -201,8 +201,8 @@ describe('useResponsive', () => {
 
         it('grid가 단일 값일 때 xs breakpoint에 대한 CSS 변수를 생성해야 한다', () => {
             // given
-            const width = ref<Breakpoints | undefined>(undefined);
-            const grid = ref<string | number>('3');
+            const width: Ref<Breakpoints | undefined> = ref(undefined);
+            const grid = ref('3');
 
             // when
             const { responsiveStyles } = useResponsive(width, grid);
@@ -215,11 +215,11 @@ describe('useResponsive', () => {
 
         it('width와 grid가 모두 설정되었을 때 모든 스타일을 병합해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: 100,
                 lg: 300,
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 md: 2,
                 xl: 4,
             });
@@ -238,13 +238,13 @@ describe('useResponsive', () => {
 
         it('빈 값(undefined, null, "")은 CSS 변수를 생성하지 않아야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: undefined,
                 md: null as any,
                 lg: '',
                 xl: 400,
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 xs: 0,
                 sm: '',
                 md: null as any,
@@ -265,11 +265,11 @@ describe('useResponsive', () => {
 
         it('숫자 0은 유효한 값으로 처리해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: 0,
                 md: 100,
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 lg: 0,
                 xl: 5,
             });
@@ -290,13 +290,13 @@ describe('useResponsive', () => {
     describe('통합 테스트', () => {
         it('복잡한 시나리오에서 올바르게 작동해야 한다', () => {
             // given
-            const width = ref<Breakpoints>({
+            const width: Ref<Breakpoints> = ref({
                 sm: 100,
                 md: undefined,
                 lg: 300,
                 xl: null as any,
             });
-            const grid = ref<Breakpoints>({
+            const grid: Ref<Breakpoints> = ref({
                 xs: 1,
                 sm: '',
                 md: 3,
