@@ -13,6 +13,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
             return defineAsyncComponent(() => import('./vs-loading/VsLoading.vue'));
         case VsComponent.VsRender:
             return defineAsyncComponent(() => import('./vs-render/VsRender.vue'));
+        case VsComponent.VsResponsive:
+            return defineAsyncComponent(() => import('./vs-responsive/VsResponsive.vue'));
         case VsComponent.VsSection:
             return defineAsyncComponent(() => import('./vs-section/VsSection.vue'));
         default:
