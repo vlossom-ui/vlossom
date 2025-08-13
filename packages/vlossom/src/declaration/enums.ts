@@ -4,6 +4,7 @@ export enum VsComponent {
     VsGrid = 'VsGrid',
     VsLayout = 'VsLayout',
     VsLoading = 'VsLoading',
+    VsMenuButton = 'VsMenuButton',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
     VsSection = 'VsSection',
