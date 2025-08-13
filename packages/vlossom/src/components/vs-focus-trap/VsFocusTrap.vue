@@ -14,7 +14,7 @@ import {
     type PropType,
 } from 'vue';
 import { VsComponent } from '@/declaration';
-import { logUtil } from '@/utils';
+import { logUtil, stringUtil } from '@/utils';
 
 export default defineComponent({
     name: VsComponent.VsFocusTrap,
@@ -142,8 +142,9 @@ export default defineComponent({
                 }
             });
 
-            return h('div', { class: 'vs-focus-trap' }, [
-                h('div', { tabindex: -1, ref: focusTrapRef }),
+            const componentName = stringUtil.kebabCase(VsComponent.VsFocusTrap);
+            return h('div', { class: componentName }, [
+                h('div', { id: `${componentName}-anchor`, tabindex: -1, ref: focusTrapRef }),
                 cloneVNode(vNodes[0], { ref: wrapperRef }),
             ]);
         }
