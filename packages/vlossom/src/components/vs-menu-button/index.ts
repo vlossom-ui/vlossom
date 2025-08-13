@@ -6,4 +6,5 @@ declare module 'vue' {
     }
 }
 
+export * from './types';
 export type { VsMenuButton };
