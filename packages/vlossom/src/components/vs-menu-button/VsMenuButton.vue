@@ -4,13 +4,12 @@
         :style="{ ...styleSetVariables, width: size, height: size }"
         @click.prevent.stop="toggleOpen()"
     >
-        <vs-icon icon="menu" :size="iconSize" />
+        <!-- <vs-render :content="..." /> -->
     </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, type PropType, ref, toRefs, watch } from 'vue';
-import { VsIcon } from '@/icons';
 import { type ColorScheme, VsComponent } from '@/declaration';
 import { type VsMenuButtonStyleSet } from './types';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -18,7 +17,9 @@ import { useColorScheme, useStyleSet } from '@/composables';
 const name = VsComponent.VsMenuButton;
 export default defineComponent({
     name,
-    components: { VsIcon },
+    components: {
+        /* VsRender */
+    },
     props: {
         colorScheme: { type: String as PropType<ColorScheme> },
         styleSet: { type: [String, Object] as PropType<string | VsMenuButtonStyleSet> },
