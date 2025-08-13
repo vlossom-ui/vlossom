@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsAvatar from './../VsAvatar.vue';
 
-describe('vs-avatar', () => {
+describe('VaAvatar', () => {
     it('text contents를 slot에 넣을 수 있다', () => {
         // given
         const text = 'AVATAR';
