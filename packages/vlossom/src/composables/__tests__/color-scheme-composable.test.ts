@@ -117,10 +117,10 @@ describe('useColorScheme', () => {
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
 
             // then
-            expect(colorSchemeClass.value).toBe('vs-red');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-red');
         });
 
-        it('colorScheme 값이 없을 때 vs-none 클래스를 생성해야 함', () => {
+        it('colorScheme 값이 없을 때 vs-color-scheme-default 클래스를 생성해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
@@ -129,7 +129,7 @@ describe('useColorScheme', () => {
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
 
             // then
-            expect(colorSchemeClass.value).toBe('vs-none');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-default');
         });
 
         it('옵션 스토어의 값으로 CSS 클래스를 생성해야 함', () => {
@@ -144,7 +144,7 @@ describe('useColorScheme', () => {
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
 
             // then
-            expect(colorSchemeClass.value).toBe('vs-emerald');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-emerald');
         });
 
         it('colorScheme 값 변경 시 CSS 클래스가 반응적으로 업데이트되어야 함', () => {
@@ -154,22 +154,22 @@ describe('useColorScheme', () => {
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
 
             // then
-            expect(colorSchemeClass.value).toBe('vs-none');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-default');
 
             // when
             colorScheme.value = 'violet';
             // then
-            expect(colorSchemeClass.value).toBe('vs-violet');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-violet');
 
             // when
             colorScheme.value = 'amber';
             // then
-            expect(colorSchemeClass.value).toBe('vs-amber');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-amber');
 
             // when
             colorScheme.value = undefined;
             // then
-            expect(colorSchemeClass.value).toBe('vs-none');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-default');
         });
     });
 
@@ -187,19 +187,19 @@ describe('useColorScheme', () => {
 
             // then
             expect(computedColorScheme.value).toBe('blue');
-            expect(colorSchemeClass.value).toBe('vs-blue');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-blue');
 
             // when
             colorScheme.value = 'red';
             // then
             expect(computedColorScheme.value).toBe('red');
-            expect(colorSchemeClass.value).toBe('vs-red');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-red');
 
             // when
             colorScheme.value = undefined;
             // then
             expect(computedColorScheme.value).toBe('blue');
-            expect(colorSchemeClass.value).toBe('vs-blue');
+            expect(colorSchemeClass.value).toBe('vs-color-scheme-blue');
         });
     });
 });

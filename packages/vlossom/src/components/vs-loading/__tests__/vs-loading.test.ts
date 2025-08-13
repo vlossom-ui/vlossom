@@ -40,17 +40,7 @@ describe('VsLoading', () => {
 
             // then
             expect(wrapper.classes()).toContain('vs-loading');
-            expect(wrapper.classes()).toContain('vs-red');
-        });
-
-        it('colorScheme이 주어지지 않으면 기본 스타일이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsLoading);
-
-            // then
-            expect(wrapper.classes()).toContain('vs-loading');
-            expect(wrapper.classes()).not.toContain('vs-red');
-            expect(wrapper.classes()).not.toContain('vs-blue');
+            expect(wrapper.classes()).toContain('vs-color-scheme-red');
         });
     });
 

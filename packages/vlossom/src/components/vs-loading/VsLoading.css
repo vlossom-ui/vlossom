@@ -12,17 +12,22 @@
 }
 
 .vs-loading {
+    --vs-loading-width: 8rem;
+    --vs-loading-height: 10rem;
+    --vs-loading-color: var(--vs-primary-comp-bg);
+    --vs-loading-barWidth: 11.11%;
+
     @apply relative inline-flex justify-center items-center m-auto;
 
-    width: var(--vs-loading-width, 8rem);
-    height: var(--vs-loading-height, 10rem);
+    width: var(--vs-loading-width);
+    height: var(--vs-loading-height);
 
     [class^='vs-loading-rect'] {
         @apply inline-block h-full;
 
         animation: vs-loading-animation 1s infinite cubic-bezier(0.25, 0.25, 0.75, 0.75);
-        background-color: var(--vs-loading-color, var(--vs-primary-comp-bg));
-        width: var(--vs-loading-barWidth, 11.11%);
+        background-color: var(--vs-loading-color);
+        width: var(--vs-loading-barWidth);
     }
 
     .vs-loading-rect2 {
@@ -39,6 +44,6 @@
     }
 
     > div ~ div {
-        margin-left: calc((100% - (var(--vs-loading-barWidth, 11.11%) * 5)) / 4);
+        margin-left: calc((100% - (var(--vs-loading-barWidth) * 5)) / 4);
     }
 }

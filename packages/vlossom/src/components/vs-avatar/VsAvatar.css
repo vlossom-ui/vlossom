@@ -1,17 +1,27 @@
 .vs-avatar {
+    --vs-avatar-border: 0.1rem solid var(--vs-line-color);
+    --vs-avatar-borderRadius: calc(var(--vs-radius-ratio) * var(--vs-radius));
+    --vs-avatar-backgroundColor: var(--vs-comp-bg);
+    --vs-avatar-width: 4rem;
+    --vs-avatar-height: 4rem;
+    --vs-avatar-fontColor: var(--vs-comp-font);
+    --vs-avatar-fontWeight: 400;
+    --vs-avatar-fontSize: var(--vs-font-size);
+    --vs-avatar-objectFit: contain;
+
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
-    border: var(--vs-avatar-border, 0.1rem solid var(--vs-line-color));
-    border-radius: var(--vs-avatar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
-    background-color: var(--vs-avatar-backgroundColor, var(--vs-comp-bg));
-    width: var(--vs-avatar-width, 4rem);
-    height: var(--vs-avatar-height, 4rem);
-    color: var(--vs-avatar-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-avatar-fontWeight, 400);
-    font-size: var(--vs-avatar-fontSize, var(--vs-font-size));
+    border: var(--vs-avatar-border);
+    border-radius: var(--vs-avatar-borderRadius);
+    background-color: var(--vs-avatar-backgroundColor);
+    width: var(--vs-avatar-width);
+    height: var(--vs-avatar-height);
+    color: var(--vs-avatar-fontColor);
+    font-weight: var(--vs-avatar-fontWeight);
+    font-size: var(--vs-avatar-fontSize);
 
     :deep(img) {
         @apply block w-full h-full;
-        object-fit: var(--vs-avatar-objectFit, contain);
+        object-fit: var(--vs-avatar-objectFit);
     }
 }

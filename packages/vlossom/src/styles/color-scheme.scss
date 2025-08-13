@@ -3,13 +3,7 @@ $colors:
     'purple', 'fuchsia', 'pink', 'rose', 'slate', 'gray', 'zinc', 'neutral', 'stone';
 
 :root {
-    --vs-no-color: var(--vs-white);
-    --vs-no-color-inverse: var(--vs-black);
-
-    --vs-app-bg: #f8f8f8;
-    --vs-dimmed-bg: rgba(0, 0, 0, 0.45);
-
-    .vs-none {
+    .vs-color-scheme-default {
         --vs-comp-font: var(--vs-gray-900);
         --vs-comp-bg: var(--vs-white);
         --vs-comp-shadow: rgba(0, 0, 0, 0.16);
@@ -29,13 +23,7 @@ $colors:
     }
 
     &.vs-dark {
-        --vs-no-color: var(--vs-black);
-        --vs-no-color-inverse: var(--vs-white);
-
-        --vs-app-bg: #14151f;
-        --vs-dimmed-bg: rgba(0, 0, 0, 0.6);
-
-        .vs-none {
+        .vs-color-scheme-default {
             --vs-comp-font: var(--vs-gray-50);
             --vs-comp-bg: var(--vs-black);
             --vs-comp-shadow: rgba(255, 255, 255, 0.25);
@@ -56,7 +44,7 @@ $colors:
     }
 
     @each $color in $colors {
-        .vs-#{$color} {
+        .vs-color-scheme-#{$color} {
             --vs-comp-font: var(--vs-#{$color}-900);
             --vs-comp-bg: var(--vs-#{$color}-100);
             --vs-comp-shadow: rgba(0, 0, 0, 0.25);
@@ -78,7 +66,7 @@ $colors:
 
     &.vs-dark {
         @each $color in $colors {
-            .vs-#{$color} {
+            .vs-color-scheme-#{$color} {
                 --vs-comp-font: var(--vs-#{$color}-200);
                 --vs-comp-bg: var(--vs-#{$color}-900);
                 --vs-comp-shadow: rgba(255, 255, 255, 0.25);
