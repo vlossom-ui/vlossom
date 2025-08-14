@@ -36,4 +36,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" src="./VsSkeleton.scss" />
+<style src="./VsSkeleton.css" />
