@@ -1,4 +1,11 @@
 .vs-skeleton {
+    --vs-skeleton-width: initial;
+    --vs-skeleton-height: initial;
+    --vs-skeleton-borderRadius: initial;
+    --vs-skeleton-backgroundColor: initial;
+    --vs-skeleton-color: initial;
+    --vs-skeleton-fontSize: initial;
+
     @apply relative overflow-hidden;
     border-radius: var(--vs-skeleton-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
     width: var(--vs-skeleton-width, 100%);
