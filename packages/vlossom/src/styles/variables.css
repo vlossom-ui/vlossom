@@ -16,10 +16,10 @@
 
         --vs-radius-ratio: 1;
         --vs-radius-xs: 0.2rem;
-        --vs-radius-sm: 0.5rem;
-        --vs-radius: 0.8rem;
-        --vs-radius-lg: 1.2rem;
-        --vs-radius-xl: 1.6rem;
+        --vs-radius-sm: 0.4rem;
+        --vs-radius: 0.6rem;
+        --vs-radius-lg: 0.9rem;
+        --vs-radius-xl: 1.2rem;
 
         --vs-grid-size: 12;
         --vs-grid-xs: 12;

@@ -1,10 +1,10 @@
 .vs-responsive {
-    --vs-grid-xs: 12;
-    --vs-width-xs: 100%;
+    --vs-grid-xs: initial;
+    --vs-width-xs: initial;
 
     @apply relative box-border;
-    grid-column-start: span var(--vs-grid-xs);
-    width: var(--vs-width-xs);
+    grid-column-start: span var(--vs-grid-xs, 12);
+    width: var(--vs-width-xs, 100%);
 
     @container (min-width: 640px) {
         &.vs-width-sm {
