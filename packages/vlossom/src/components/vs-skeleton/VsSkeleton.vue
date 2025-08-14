@@ -11,7 +11,6 @@
 import { defineComponent, type PropType, toRefs } from 'vue';
 import { type ColorScheme, VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
-
 import type { VsSkeletonStyleSet } from './types';
 
 const name = VsComponent.VsSkeleton;
@@ -36,4 +35,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsSkeleton.css" />
+<style src="./VsSkeleton.css" scoped />

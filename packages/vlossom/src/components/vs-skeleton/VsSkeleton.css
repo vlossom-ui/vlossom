@@ -5,7 +5,7 @@
     height: var(--vs-skeleton-height, 100%);
 
     .vs-skeleton-bg {
-        @apply absolute inset-0 h-full w-full;
+        @apply absolute h-full w-full;
         animation: skeleton-blink 0.8s infinite alternate;
         background-color: var(--vs-skeleton-backgroundColor, var(--vs-line-color));
     }
