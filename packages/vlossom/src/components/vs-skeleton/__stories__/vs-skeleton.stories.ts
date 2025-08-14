@@ -112,7 +112,7 @@ export const StyleSetUsages: Story = {
                     </div>
                 </div>
                 <div class="flex flex-col items-center justify-center gap-2">
-                    <span v-if="!isLoading">${LOREM_IPSUM.slice(180, 230)}</span>
+                    <span v-if="!isLoading">${LOREM_IPSUM.slice(0, 50)}</span>
                     <div v-if="isLoading" class="w-[150px] h-[10px]">
                         <vs-skeleton  />
                     </div>
