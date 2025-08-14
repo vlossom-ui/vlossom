@@ -8,4 +8,5 @@ export enum VsComponent {
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
     VsSection = 'VsSection',
+    VsSkeleton = 'VsSkeleton',
 }
