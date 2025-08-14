@@ -1,4 +1,4 @@
 .vs-layout {
-    @apply relative w-full h-full;
+    @apply relative h-full w-full;
     transition: padding 0.3s;
 }
