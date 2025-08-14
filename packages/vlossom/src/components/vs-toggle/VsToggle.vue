@@ -18,6 +18,7 @@ export default defineComponent({
             default: false,
         },
     },
+    emits: ['update:modelValue', 'change'],
     setup() {
         return {};
     },
