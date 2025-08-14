@@ -21,6 +21,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
             return defineAsyncComponent(() => import('./vs-responsive/VsResponsive.vue'));
         case VsComponent.VsSection:
             return defineAsyncComponent(() => import('./vs-section/VsSection.vue'));
+        case VsComponent.VsSkeleton:
+            return defineAsyncComponent(() => import('./vs-skeleton/VsSkeleton.vue'));
         default:
             throw new Error(`[Vlossom] Unknown component: ${componentName}`);
     }
