@@ -1,10 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton
-            v-if="skeleton && isLoading"
-            class="vs-image-skeleton"
-            :style="{ width: 'var(--vs-image-width)', height: 'var(--vs-image-height)' }"
-        >
+        <vs-skeleton v-if="skeleton && isLoading">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
