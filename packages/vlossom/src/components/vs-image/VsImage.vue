@@ -1,6 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton v-if="isLoading && !noSkeleton">
+        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="styleSetVariables.skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
