@@ -9,6 +9,13 @@ export type GlobalColorSchemes = { default?: ColorScheme } & { [key in VsCompone
     [key: string]: ColorScheme;
 };
 
+export interface VsTextStyleSet {
+    fontColor?: string;
+    fontSize?: string;
+    fontWeight?: string | number;
+    whiteSpace?: string;
+}
+
 export type GlobalStyleSets = {
     [key: string]: { [key in VsComponent]?: any } & { [key: string]: any };
 };
