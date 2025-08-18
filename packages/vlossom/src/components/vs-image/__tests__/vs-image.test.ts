@@ -1,6 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
 import VsImage from './../VsImage.vue';
 
 describe('vs-image', () => {
@@ -15,21 +14,6 @@ describe('vs-image', () => {
 
             // then
             expect(wrapper.vm.computedSrc).toBe('image-src');
-        });
-
-        it('src 이미지를 불러오다가 error 발생할 시, fallback이 설정되지 않았다면 NO_IMAGE를 보여준다', async () => {
-            // given
-            const wrapper = mount(VsImage, {
-                props: {
-                    src: 'image-src',
-                },
-            });
-
-            await wrapper.find('img').trigger('error');
-
-            // then
-            expect(wrapper.vm.computedSrc).not.toBe('image-src');
-            expect(wrapper.vm.isNoImage).toBe(true);
         });
     });
 
@@ -48,26 +32,6 @@ describe('vs-image', () => {
 
             // then
             expect(wrapper.vm.computedSrc).toBe('fallback-src');
-        });
-
-        it('fallback 이미지를 불러오다가 error가 발생하면 NO_IMAGE를 보여준다', async () => {
-            // given
-            const wrapper = mount(VsImage, {
-                props: {
-                    src: 'image-src',
-                    fallback: 'fallback-src',
-                },
-            });
-
-            // when
-            await wrapper.find('img').trigger('error');
-            await nextTick();
-            await wrapper.find('img').trigger('error');
-
-            // then
-            expect(wrapper.vm.computedSrc).not.toBe('image-src');
-            expect(wrapper.vm.computedSrc).not.toBe('fallback-src');
-            expect(wrapper.vm.isNoImage).toBe(true);
         });
     });
 

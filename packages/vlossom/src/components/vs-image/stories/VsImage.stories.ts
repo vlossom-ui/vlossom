@@ -1,8 +1,7 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters } from '@/storybook/parameters';
 import { src, fallbackSrc, lazySrc } from './constants';
 import VsImage from './../VsImage.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsImage> = {
     title: 'Components/Base Components/VsImage',

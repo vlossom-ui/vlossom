@@ -1,7 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { src, fallbackSrc, lazySrc } from './constants';
 import VsImage from './../VsImage.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsImage> = {
     title: 'Chromatic/Base Components/VsImage',
@@ -18,7 +17,7 @@ const meta: Meta<typeof VsImage> = {
                 <vs-image v-bind="args" src='' :fallback="fallbackSrc" :style="{ marginBottom: '12px' }"/>
 
                 <vs-image v-bind="args" src='' alt="alternative text" :style="{ marginBottom: '12px' }"/>
-				
+
                 <vs-image v-bind="args" :src="lazySrc" lazy alt="lazy loading"/>
             </div>`,
     }),

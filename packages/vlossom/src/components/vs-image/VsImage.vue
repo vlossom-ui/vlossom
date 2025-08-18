@@ -14,7 +14,6 @@
             @load.stop="onImageLoad"
             @error.stop="onImageError"
         />
-        <span class="vs-alt-text" v-if="!isLoading && isNoImage">{{ alt }}</span>
     </div>
 </template>
 
@@ -23,7 +22,6 @@ import { type ComputedRef, type PropType, computed, defineComponent, ref, toRefs
 import { useStyleSet } from '@/composables';
 import { useIntersectionObserver } from '@vueuse/core';
 import { VsComponent } from '@/declaration';
-// import NO_IMAGE from '@/assets/no-image.png';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 import type { VsImageStyleSet } from './types';
@@ -53,13 +51,9 @@ export default defineComponent({
         const isLoading = ref(true); // check if img tag src is loaded
         const isLoaded = ref(hasIntersectionObserver && lazy.value ? false : true);
         const isFallback = ref(false);
-        const isNoImage = ref(false);
 
         const computedSrc: ComputedRef<string> = computed(() => {
             if (!isLoaded.value) {
-                return '';
-            }
-            if (isNoImage.value) {
                 return '';
             }
             if (isFallback.value) {
@@ -71,7 +65,6 @@ export default defineComponent({
 
         watch([src, fallback], () => {
             isFallback.value = false;
-            isNoImage.value = false;
         });
 
         function onImageLoad() {
@@ -90,7 +83,6 @@ export default defineComponent({
                 isFallback.value = true;
                 return;
             }
-            isNoImage.value = true;
         }
 
         if (hasIntersectionObserver && lazy.value) {
@@ -103,7 +95,7 @@ export default defineComponent({
             });
         }
 
-        return { styleSetVariables, computedSrc, vsImageRef, isLoading, isNoImage, onImageLoad, onImageError };
+        return { styleSetVariables, computedSrc, vsImageRef, isLoading, onImageLoad, onImageError };
     },
 });
 </script>
