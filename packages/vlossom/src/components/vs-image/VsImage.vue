@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, type PropType, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
 import { useStyleSet } from '@/composables';
 import { useIntersectionObserver } from '@vueuse/core';
 import { VsComponent } from '@/declaration';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
+import { getStyleSetProps } from '@/props';
 
 import type { VsImageStyleSet } from './types';
 
@@ -31,7 +32,7 @@ export default defineComponent({
     name,
     components: { VsSkeleton },
     props: {
-        styleSet: { type: [String, Object] as PropType<string | VsImageStyleSet> },
+        ...getStyleSetProps<VsImageStyleSet>(),
         alt: { type: String, default: '' },
         fallback: { type: String, default: '' },
         lazy: { type: Boolean, default: false },
