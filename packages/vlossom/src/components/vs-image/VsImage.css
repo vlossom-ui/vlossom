@@ -1,0 +1,34 @@
+.vs-image {
+    --vs-image-width: initial;
+    --vs-image-height: initial;
+    --vs-image-border: initial;
+    --vs-image-borderRadius: initial;
+    --vs-image-objectFit: initial;
+
+    @apply relative;
+    width: var(--vs-image-width, 100%);
+    height: var(--vs-image-height, 100%);
+
+    .vs-image-tag {
+        @apply relative;
+        border: var(--vs-image-border, none);
+        border-radius: var(--vs-image-borderRadius, 0);
+        width: var(--vs-image-width, 100%);
+        height: var(--vs-image-height, 100%);
+        object-fit: var(--vs-image-objectFit, contain);
+
+        &.vs-hidden {
+            @apply absolute opacity-0;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .vs-alt-text {
+        @apply absolute;
+        top: 0;
+        left: 0;
+        color: var(--vs-font-color);
+        font-size: var(--vs-font-size);
+    }
+}

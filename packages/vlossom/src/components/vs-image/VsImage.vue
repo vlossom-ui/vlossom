@@ -108,4 +108,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" src="./VsImage.scss" />
+<style src="./VsImage.css" scoped />

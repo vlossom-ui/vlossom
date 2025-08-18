@@ -1,7 +1,7 @@
 export interface VsImageStyleSet {
+    width?: string;
+    height?: string;
     border?: string;
     borderRadius?: string;
-    height?: string;
     objectFit?: string;
-    width?: string;
 }
