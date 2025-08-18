@@ -4,26 +4,29 @@ import VsImage from './../VsImage.vue';
 
 describe('vs-image', () => {
     describe('src', () => {
-        it('props로 설정한 src는 error가 발생하지 않았을 때 computedSrc의 값이 된다', () => {
+        it('props로 설정한 src는 error가 발생하지 않았을 때 computedSrc의 값이 되어야 한다', () => {
             // given
+            const imagePath = '/images/test.png';
             const wrapper = mount(VsImage, {
                 props: {
-                    src: 'image-src',
+                    src: imagePath,
                 },
             });
 
             // then
-            expect(wrapper.vm.computedSrc).toBe('image-src');
+            expect(wrapper.vm.computedSrc).toBe(imagePath);
         });
     });
 
     describe('fallback', () => {
-        it('src 이미지를 불러오다가 error 발생할 시, fallback이 설정되어 있다면 fallback 이미지를 보여준다', async () => {
+        it('<img /> error 발생 시, 설정되어 있는 fallback 이미지를 보여줘야 한다', async () => {
             // given
+            const imagePath = '/images/test.png';
+            const fallbackPath = '/images/fallback.png';
             const wrapper = mount(VsImage, {
                 props: {
-                    src: 'image-src',
-                    fallback: 'fallback-src',
+                    src: imagePath,
+                    fallback: fallbackPath,
                 },
             });
 
@@ -31,7 +34,8 @@ describe('vs-image', () => {
             await wrapper.find('img').trigger('error');
 
             // then
-            expect(wrapper.vm.computedSrc).toBe('fallback-src');
+            expect(wrapper.html()).not.toContain(imagePath);
+            expect(wrapper.vm.computedSrc).toBe(fallbackPath);
         });
     });
 
@@ -42,34 +46,36 @@ describe('vs-image', () => {
         };
         const originalIntersectionObserver = window.IntersectionObserver;
 
-        it('lazy:true일 때, IntersectionObserver가 존재하면 image를 lazy loading 한다', () => {
+        it('IntersectionObserver가 존재하면 image를 lazy loading 해야 한다', () => {
             // given
             window.IntersectionObserver = mockIntersectionObserver as any;
 
+            const imagePath = '/images/test.png';
             const wrapper = mount(VsImage, {
                 props: {
-                    src: 'image-src',
+                    src: imagePath,
                     lazy: true,
                 },
             });
 
             // then
-            expect(wrapper.html()).not.toContain('image-src');
+            expect(wrapper.html()).not.toContain(imagePath);
         });
 
-        it('lazy:true일 때, IntersectionObserver가 없으면 image를 eager loading 한다', () => {
+        it('IntersectionObserver를 사용할 수 없는 경우 image를 eager loading 해야 한다', () => {
             // given
             window.IntersectionObserver = undefined as any;
 
+            const imagePath = '/images/test.png';
             const wrapper = mount(VsImage, {
                 props: {
-                    src: 'image-src',
+                    src: imagePath,
                     lazy: true,
                 },
             });
 
             // then
-            expect(wrapper.html()).toContain('image-src');
+            expect(wrapper.html()).toContain(imagePath);
         });
 
         afterEach(() => {
