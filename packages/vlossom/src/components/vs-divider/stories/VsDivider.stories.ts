@@ -1,7 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
 import VsDivider from './../VsDivider.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsDivider> = {
     title: 'Components/Base Components/VsDivider',

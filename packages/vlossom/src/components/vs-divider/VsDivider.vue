@@ -1,9 +1,9 @@
 <template>
-    <div :class="['vs-divider', colorSchemeClass, classObj]" :style="computedStyleSet" />
+    <div :class="['vs-divider', colorSchemeClass, classObj]" :style="styleSetVariables" />
 </template>
 
 <script lang="ts">
-import { PropType, defineComponent, toRefs, computed } from 'vue';
+import { type PropType, defineComponent, toRefs, computed } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent, type ColorScheme } from '@/declaration';
 
@@ -23,7 +23,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedStyleSet } = useStyleSet<VsDividerStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsDividerStyleSet>(name, styleSet);
 
         const classObj = computed(() => ({
             'vs-horizontal': !vertical.value,
@@ -33,7 +33,7 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
-            computedStyleSet,
+            styleSetVariables,
             classObj,
         };
     },
