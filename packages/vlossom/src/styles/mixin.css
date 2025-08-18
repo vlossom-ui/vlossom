@@ -1,0 +1,22 @@
+@layer utilities {
+    .vs-disabled {
+        @apply pointer-events-none cursor-default opacity-50 grayscale-60;
+    }
+
+    .vs-readonly {
+        @apply pointer-events-none cursor-default;
+    }
+
+    .vs-focusable:focus-visible {
+        @apply outline-1 outline-offset-2 outline-(--vs-line-color);
+    }
+
+    .vs-hide-scroll {
+        overflow: scroll;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

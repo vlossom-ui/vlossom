@@ -45,17 +45,17 @@ $colors:
 
     @each $color in $colors {
         .vs-color-scheme-#{$color} {
-            --vs-comp-font: var(--vs-#{$color}-900);
-            --vs-comp-bg: var(--vs-#{$color}-100);
+            --vs-comp-font: var(--vs-#{$color}-950);
+            --vs-comp-bg: var(--vs-#{$color}-200);
             --vs-comp-shadow: rgba(0, 0, 0, 0.25);
 
             --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
             --vs-primary-comp-bg: var(--vs-#{$color}-500);
             --vs-primary-comp-shadow: rgba(0, 0, 0, 0.25);
 
-            --vs-font-color: var(--vs-#{$color}-900);
+            --vs-font-color: var(--vs-#{$color}-950);
 
-            --vs-line-color: var(--vs-#{$color}-300);
+            --vs-line-color: var(--vs-#{$color}-400);
 
             --vs-area-bg: color-mix(in oklch, var(--vs-#{$color}-50) 95%, white 5%);
             --vs-area-bg-hover: color-mix(in oklch, var(--vs-#{$color}-50) 97%, white 3%);

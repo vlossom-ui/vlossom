@@ -14,16 +14,18 @@
             --vs-dimmed-bg: rgba(0, 0, 0, 0.6);
         }
 
-        --vs-radius-ratio: 1;
-        --vs-radius-xs: 0.2rem;
-        --vs-radius-sm: 0.4rem;
-        --vs-radius: 0.6rem;
-        --vs-radius-lg: 0.9rem;
-        --vs-radius-xl: 1.2rem;
+        --vs-font-size-xs: 0.8rem;
+        --vs-font-size-sm: 0.9rem;
+        --vs-font-size: 1rem;
+        --vs-font-size-lg: 1.1rem;
+        --vs-font-size-xl: 1.2rem;
 
-        --vs-grid-size: 12;
-        --vs-grid-xs: 12;
-        --vs-width-xs: 100%;
+        --vs-radius-ratio: 1;
+        --vs-radius-xs: 0.3rem;
+        --vs-radius-sm: 0.4rem;
+        --vs-radius: 0.5rem;
+        --vs-radius-lg: 0.6rem;
+        --vs-radius-xl: 0.7rem;
 
         --vs-modal-height-xs: 20%;
         --vs-modal-height-sm: 30%;
@@ -40,8 +42,8 @@
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 9999;
 
-        --vs-default-comp-height-small: 2.4rem;
-        --vs-default-comp-height: 3.2rem;
-        --vs-default-comp-height-large: 4rem;
+        --vs-default-comp-height-small: 1.5rem;
+        --vs-default-comp-height: 2rem;
+        --vs-default-comp-height-large: 2.5rem;
     }
 }

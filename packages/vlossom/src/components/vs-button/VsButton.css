@@ -1,2 +1,115 @@
 .vs-button {
+    --vs-button-backgroundColor: initial;
+    --vs-button-border: initial;
+    --vs-button-borderRadius: initial;
+    --vs-button-fontColor: initial;
+    --vs-button-fontSize: initial;
+    --vs-button-fontWeight: initial;
+    --vs-button-height: initial;
+    --vs-button-padding: initial;
+    --vs-button-width: initial;
+
+    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
+
+    border: var(--vs-button-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+    padding: var(--vs-button-padding, 0 0.8rem);
+    width: var(--vs-button-width, auto);
+    height: var(--vs-button-height, var(--vs-default-comp-height));
+    color: var(--vs-button-fontColor, var(--vs-comp-font));
+    font-weight: var(--vs-button-fontWeight, 400);
+    font-size: var(--vs-button-fontSize, var(--vs-font-size));
+
+    .vs-button-loading {
+        @apply absolute flex h-full w-full items-center justify-center;
+        top: 0;
+        left: 0;
+    }
+
+    .vs-button-content {
+        @apply relative flex items-center justify-center whitespace-nowrap;
+    }
+
+    &.vs-loading {
+        @apply pointer-events-none cursor-default;
+
+        .vs-button-content {
+            @apply opacity-0;
+        }
+    }
+
+    &.vs-ghost {
+        @apply border-transparent bg-transparent;
+
+        color: var(--vs-button-fontColor, var(--vs-primary-comp-bg));
+
+        &:hover {
+            background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+        }
+    }
+
+    &.vs-large {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
+        padding: var(--vs-button-padding, 0 1rem);
+        height: var(--vs-button-height, var(--vs-default-comp-height-large));
+        font-size: var(--vs-button-fontSize, var(--vs-font-size-lg));
+    }
+
+    &.vs-outline {
+        @apply bg-transparent;
+
+        border: var(--vs-button-border, 1px solid var(--vs-primary-comp-bg));
+        color: var(--vs-button-fontColor, var(--vs-primary-comp-bg));
+
+        &:hover {
+            background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+        }
+    }
+
+    &.vs-primary {
+        @apply hover:brightness-104 active:brightness-108;
+
+        border: var(--vs-button-border, 1px solid var(--vs-primary-comp-bg));
+        background-color: var(--vs-button-backgroundColor, var(--vs-primary-comp-bg));
+        color: var(--vs-button-fontColor, var(--vs-primary-comp-font));
+        font-weight: var(--vs-button-fontWeight, 500);
+    }
+
+    &.vs-small {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+        padding: var(--vs-button-padding, 0 0.6rem);
+        height: var(--vs-button-height, var(--vs-default-comp-height-small));
+        font-size: var(--vs-button-fontSize, var(--vs-font-size-sm));
+    }
+
+    &.vs-circle {
+        @apply rounded-full;
+        width: var(--vs-button-width, var(--vs-default-comp-height));
+        height: var(--vs-button-height, var(--vs-default-comp-height));
+
+        &.vs-small {
+            width: var(--vs-button-width, var(--vs-default-comp-height-small));
+            height: var(--vs-button-height, var(--vs-default-comp-height-small));
+        }
+
+        &.vs-large {
+            width: var(--vs-button-width, var(--vs-default-comp-height-large));
+            height: var(--vs-button-height, var(--vs-default-comp-height-large));
+        }
+    }
+
+    @variant dark {
+        @apply hover:brightness-104 active:brightness-108;
+
+        &.vs-primary {
+            @apply hover:brightness-96 active:brightness-92;
+        }
+    }
+
+    @container (max-width: 768px) {
+        &.vs-responsive {
+            @apply w-full;
+        }
+    }
 }

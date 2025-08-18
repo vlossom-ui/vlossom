@@ -25,4 +25,8 @@
             --vs-state-color: var(--vs-state-color-error);
         }
     }
+
+    .vs-state-box {
+        @apply outline-3 outline-offset-2 outline-(--vs-state-color);
+    }
 }
