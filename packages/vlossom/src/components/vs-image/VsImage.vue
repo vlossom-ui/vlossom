@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-image" ref="vsImageRef" :style="computedStyleSet">
+    <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
         <vs-skeleton
             v-if="skeleton && isLoading"
             class="vs-image-skeleton"
@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-import { ComputedRef, PropType, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { type ComputedRef, type PropType, computed, defineComponent, ref, toRefs, watch } from 'vue';
 import { useStyleSet } from '@/composables';
 import { useIntersectionObserver } from '@vueuse/core';
 import { VsComponent } from '@/declaration';
-import NO_IMAGE from '@/assets/no-image.png';
+// import NO_IMAGE from '@/assets/no-image.png';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 import type { VsImageStyleSet } from './types';
@@ -44,7 +44,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, src, fallback, lazy } = toRefs(props);
 
-        const { computedStyleSet } = useStyleSet<VsImageStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsImageStyleSet>(name, styleSet);
 
         const vsImageRef = ref(null);
 
@@ -60,7 +60,7 @@ export default defineComponent({
                 return '';
             }
             if (isNoImage.value) {
-                return NO_IMAGE;
+                return '';
             }
             if (isFallback.value) {
                 return fallback.value;
@@ -103,7 +103,7 @@ export default defineComponent({
             });
         }
 
-        return { computedStyleSet, computedSrc, vsImageRef, isLoading, isNoImage, onImageLoad, onImageError };
+        return { styleSetVariables, computedSrc, vsImageRef, isLoading, isNoImage, onImageLoad, onImageError };
     },
 });
 </script>
