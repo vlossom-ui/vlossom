@@ -1,8 +1,8 @@
-export interface VsSkeletonStyleSet {
+import type { VsTextStyleSet } from '@/declaration';
+
+export interface VsSkeletonStyleSet extends VsTextStyleSet {
     backgroundColor?: string;
     borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
     height?: string;
     width?: string;
 }

@@ -3,8 +3,10 @@
     --vs-skeleton-height: initial;
     --vs-skeleton-borderRadius: initial;
     --vs-skeleton-backgroundColor: initial;
-    --vs-skeleton-color: initial;
     --vs-skeleton-fontSize: initial;
+    --vs-skeleton-fontWeight: initial;
+    --vs-skeleton-whiteSpace: initial;
+    --vs-skeleton-fontColor: initial;
 
     @apply relative overflow-hidden;
     border-radius: var(--vs-skeleton-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
@@ -18,8 +20,10 @@
     }
     .vs-skeleton-inner {
         @apply relative flex h-full w-full items-center justify-center;
-        color: var(--vs-skeleton-color, var(--vs-font-color));
+        color: var(--vs-skeleton-fontColor, var(--vs-font-color));
+        font-weight: var(--vs-skeleton-fontWeight, var(--vs-font-weight));
         font-size: var(--vs-skeleton-fontSize, var(--vs-font-size));
+        white-space: var(--vs-skeleton-whiteSpace, var(--vs-white-space));
     }
 }
 

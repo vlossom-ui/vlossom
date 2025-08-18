@@ -8,8 +8,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, toRefs } from 'vue';
-import { type ColorScheme, VsComponent } from '@/declaration';
+import { defineComponent, toRefs } from 'vue';
+import { VsComponent } from '@/declaration';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsSkeletonStyleSet } from './types';
 
@@ -17,8 +18,8 @@ const name = VsComponent.VsSkeleton;
 export default defineComponent({
     name,
     props: {
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsSkeletonStyleSet> },
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsSkeletonStyleSet>(),
     },
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
