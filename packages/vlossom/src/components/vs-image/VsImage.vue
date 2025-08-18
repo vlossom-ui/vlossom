@@ -1,6 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton v-if="skeleton && isLoading">
+        <vs-skeleton v-if="isLoading && !noSkeleton">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
@@ -32,7 +32,7 @@ export default defineComponent({
         alt: { type: String, default: '' },
         fallback: { type: String, default: '' },
         lazy: { type: Boolean, default: false },
-        skeleton: { type: Boolean, default: false },
+        noSkeleton: { type: Boolean, default: false },
         src: { type: String, required: true, default: '' },
     },
     emits: ['error'],
