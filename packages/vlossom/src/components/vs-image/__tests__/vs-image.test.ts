@@ -16,6 +16,28 @@ describe('vs-image', () => {
             // then
             expect(wrapper.vm.computedSrc).toBe(imagePath);
         });
+
+        it('다양한 이미지 타입을 지원해야 한다 (브라우져 네이티브에 위임)', () => {
+            // given
+            const imageTypes = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'bmp', 'ico', 'tiff'];
+
+            imageTypes.forEach((ext) => {
+                // when
+                const imagePath = `/images/test.${ext}`;
+                const wrapper = mount(VsImage, {
+                    props: {
+                        src: imagePath,
+                    },
+                });
+                wrapper.find('img').trigger('load');
+
+                // then
+                expect(wrapper.html()).toContain(imagePath);
+                expect(wrapper.find('img').attributes('src')).toBe(imagePath);
+                expect(wrapper.vm.isLoading).toBe(false);
+                expect(wrapper.vm.computedSrc).toBe(imagePath);
+            });
+        });
     });
 
     describe('fallback', () => {
