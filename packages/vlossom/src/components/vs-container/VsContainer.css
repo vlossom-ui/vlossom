@@ -1,0 +1,5 @@
+.vs-container {
+    @apply relative w-full;
+
+    container-type: inline-size;
+}
