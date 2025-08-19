@@ -8,7 +8,7 @@
         :tabindex="disabled || loading ? -1 : 0"
     >
         <div v-if="loading" class="vs-button-loading">
-            <vs-loading :color-scheme="colorScheme" :style-set="componentStyleSet.loading" width="30%" height="60%" />
+            <vs-loading :color-scheme="colorScheme" :style-set="loadingStyleSet" />
         </div>
         <div class="vs-button-content">
             <slot />
@@ -70,6 +70,14 @@ export default defineComponent({
             'vs-small': small.value,
         }));
 
+        const loadingStyleSet = computed(() => {
+            return {
+                width: '30%',
+                height: '60%',
+                ...componentStyleSet.value.loading,
+            };
+        });
+
         watch(loading, () => {
             // focus 상태일 때 loading이 true가 되어도 focus가 유지되는 버그 해결
             if (buttonRef.value && loading.value) {
@@ -77,7 +85,7 @@ export default defineComponent({
             }
         });
 
-        return { colorSchemeClass, componentStyleSet, styleSetVariables, classObj, buttonRef };
+        return { colorSchemeClass, styleSetVariables, classObj, buttonRef, loadingStyleSet };
     },
 });
 </script>
