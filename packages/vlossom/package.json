@@ -60,6 +60,7 @@
         "./styles": "./dist/style.css"
     },
     "dependencies": {
+        "@vueuse/core": "^13.6.0",
         "change-case": "^5.4.4",
         "radash": "^12.1.1",
         "vue": "^3.5.18"
