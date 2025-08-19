@@ -10,7 +10,6 @@ describe('vs-divider', () => {
 
             // then
             expect(wrapper.props('vertical')).toBe(false);
-            expect(wrapper.classes('vs-horizontal')).toBe(true);
             expect(wrapper.classes('vs-vertical')).toBe(false);
         });
 
@@ -24,7 +23,6 @@ describe('vs-divider', () => {
 
             // then
             expect(wrapper.props('vertical')).toBe(true);
-            expect(wrapper.classes('vs-horizontal')).toBe(false);
             expect(wrapper.classes('vs-vertical')).toBe(true);
         });
 
@@ -38,7 +36,6 @@ describe('vs-divider', () => {
             });
 
             // then
-            expect(wrapper.classes('vs-horizontal')).toBe(false);
             expect(wrapper.classes('vs-vertical')).toBe(true);
 
             expect(wrapper.attributes().style.includes('--vs-divider-verticalHeight: 4rem;')).toBe(true);

@@ -27,7 +27,6 @@ export default defineComponent({
         const { styleSetVariables } = useStyleSet<VsDividerStyleSet>(name, styleSet);
 
         const classObj = computed(() => ({
-            'vs-horizontal': !vertical.value,
             'vs-vertical': vertical.value,
             'vs-divider-responsive': responsive.value,
         }));

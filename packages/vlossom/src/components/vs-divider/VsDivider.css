@@ -1,11 +1,9 @@
-.vs-divider {
-    @apply opacity-50;
+@reference '@/styles/index.css';
 
-    &.vs-horizontal {
-        @apply h-0 w-full border-t border-l-0;
-        margin: var(--vs-divider-margin, 1.6rem 0);
-        border-top: var(--vs-divider-border, 1px solid var(--vs-primary-comp-bg));
-    }
+.vs-divider {
+    @apply h-0 w-full border-t border-l-0 opacity-50;
+    margin: var(--vs-divider-margin, 1.6rem 0);
+    border-top: var(--vs-divider-border, 1px solid var(--vs-primary-comp-bg));
 
     &.vs-vertical {
         @apply inline-block w-0 border-t-0 border-l align-top;
@@ -14,7 +12,6 @@
         height: var(--vs-divider-verticalHeight, 100%);
     }
 }
-
 @container (max-width: 768px) {
     .vs-divider.vs-vertical.vs-divider-responsive {
         @apply h-0 w-full border-t border-l-0;

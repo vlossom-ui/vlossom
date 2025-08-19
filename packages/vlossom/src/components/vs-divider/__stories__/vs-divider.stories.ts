@@ -44,12 +44,6 @@ export const ColorScheme: Story = {
     },
 };
 
-export const StyleSet: Story = {
-    args: {
-        styleSet: { border: '3px dashed #2d9596' },
-    },
-};
-
 export const Vertical: Story = {
     args: {
         vertical: true,
@@ -60,7 +54,7 @@ export const Vertical: Story = {
             return { args };
         },
         template: `
-            <div>
+            <div class="h-10">
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
@@ -71,6 +65,9 @@ export const Vertical: Story = {
 
 export const VerticalWithMobileFull: Story = {
     args: {
+        styleSet: {
+            verticalHeight: '40px',
+        },
         vertical: true,
         responsive: true,
     },
@@ -80,11 +77,11 @@ export const VerticalWithMobileFull: Story = {
             return { args };
         },
         template: `
-            <div>
+            <vs-grid>
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
-            </div>
+            </vs-grid>
         `,
     }),
     parameters: {
@@ -102,8 +99,8 @@ export const VerticalWithStyleSet: Story = {
     },
 };
 
-export const PreDefinedStyleSet: Story = {
+export const StyleSet: Story = {
     args: {
-        styleSet: 'myStyleSet',
+        styleSet: { border: '3px dashed #2d9596' },
     },
 };
