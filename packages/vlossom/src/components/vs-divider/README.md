@@ -84,11 +84,14 @@ const customDividerStyle = {
 ## Types
 
 ```typescript
+interface VsDividerVerticalStyleSet {
+    height?: string; // 세로 구분선 높이
+    margin?: string; // 세로 구분선 여백
+}
 interface VsDividerStyleSet {
     border?: string; // 구분선 스타일 (색상, 두께, 형태)
     margin?: string; // 가로 구분선 여백
-    marginVertical?: string; // 세로 구분선 여백
-    verticalHeight?: string; // 세로 구분선 높이
+    vertical?: VsDividerVerticalStyleSet;
 }
 ```
 
@@ -98,8 +101,8 @@ interface VsDividerStyleSet {
 
 - `--vs-divider-border`: 구분선 테두리 스타일 (기본값: `1px solid var(--vs-primary-comp-bg)`)
 - `--vs-divider-margin`: 가로 구분선 여백 (기본값: `1.6rem 0`)
-- `--vs-divider-marginVertical`: 세로 구분선 여백 (기본값: `0 1.2rem`)
-- `--vs-divider-verticalHeight`: 세로 구분선 높이 (기본값: `100%`)
+- `--vs-divider-vertical-margin`: 세로 구분선 여백 (기본값: `0 1.2rem`)
+- `--vs-divider-vertical-height`: 세로 구분선 높이 (기본값: `100%`)
 
 ## 특징
 

@@ -11,11 +11,11 @@ const meta: Meta<typeof VsDivider> = {
             return { args };
         },
         template: `
-            <div style="display:flex; flex-direction:column;">
+            <div class="h-10 w-[769px]">
                 <vs-divider v-bind="args"/>
-
                 <vs-divider v-bind="args" vertical/>
-            </div>`,
+            </div>
+        `,
     }),
     argTypes: {
         colorScheme,

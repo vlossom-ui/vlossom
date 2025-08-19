@@ -1,15 +1,20 @@
 @reference '@/styles/index.css';
 
 .vs-divider {
+    --vs-divider-margin: initial;
+    --vs-divider-border: initial;
+    --vs-divider-vertical-height: initial;
+    --vs-divider-vertical-margin: initial;
+
     @apply h-0 w-full border-t border-l-0 opacity-50;
     margin: var(--vs-divider-margin, 1.6rem 0);
     border-top: var(--vs-divider-border, 1px solid var(--vs-primary-comp-bg));
 
     &.vs-vertical {
         @apply inline-block w-0 border-t-0 border-l align-top;
-        margin: var(--vs-divider-marginVertical, 0 1.2rem);
+        margin: var(--vs-divider-vertical-margin, 0 1.2rem);
         border-left: var(--vs-divider-border, 1px solid var(--vs-primary-comp-bg));
-        height: var(--vs-divider-verticalHeight, 100%);
+        height: var(--vs-divider-vertical-height, 100%);
     }
 }
 @container (max-width: 768px) {

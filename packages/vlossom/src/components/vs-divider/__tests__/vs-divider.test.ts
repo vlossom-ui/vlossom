@@ -31,14 +31,14 @@ describe('vs-divider', () => {
             const wrapper = mount(VsDivider, {
                 props: {
                     vertical: true,
-                    styleSet: { verticalHeight: '4rem' },
+                    styleSet: { vertical: { height: '4rem' } },
                 },
             });
 
             // then
             expect(wrapper.classes('vs-vertical')).toBe(true);
 
-            expect(wrapper.attributes().style.includes('--vs-divider-verticalHeight: 4rem;')).toBe(true);
+            expect(wrapper.attributes().style.includes('--vs-divider-vertical-height: 4rem;')).toBe(true);
         });
     });
 

@@ -1,6 +1,10 @@
+interface VsDividerVerticalStyleSet {
+    height?: string;
+    margin?: string;
+}
+
 export interface VsDividerStyleSet {
     border?: string;
     margin?: string;
-    marginVertical?: string;
-    verticalHeight?: string;
+    vertical?: VsDividerVerticalStyleSet;
 }
