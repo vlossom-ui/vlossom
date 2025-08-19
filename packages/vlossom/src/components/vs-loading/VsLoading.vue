@@ -1,10 +1,10 @@
 <template>
     <div :class="['vs-loading', colorSchemeClass]" :style="styleSetVariables">
-        <div class="vs-loading-rect1" />
-        <div class="vs-loading-rect2" />
-        <div class="vs-loading-rect3" />
-        <div class="vs-loading-rect4" />
-        <div class="vs-loading-rect5" />
+        <div class="vs-loading-rect vs-loading-rect1" />
+        <div class="vs-loading-rect vs-loading-rect2" />
+        <div class="vs-loading-rect vs-loading-rect3" />
+        <div class="vs-loading-rect vs-loading-rect4" />
+        <div class="vs-loading-rect vs-loading-rect5" />
     </div>
 </template>
 
