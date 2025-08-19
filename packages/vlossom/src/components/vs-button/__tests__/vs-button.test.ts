@@ -177,7 +177,7 @@ describe('VsButton', () => {
                     loading: true,
                     styleSet: {
                         loading: {
-                            color: '#ffffff',
+                            width: '100%',
                             barWidth: '10px',
                         },
                     },
@@ -186,7 +186,7 @@ describe('VsButton', () => {
 
             // then
             const loadingComponent = wrapper.findComponent({ name: 'VsLoading' });
-            expect(loadingComponent.props('styleSet')).toEqual({ color: '#ffffff', barWidth: '10px' });
+            expect(loadingComponent.props('styleSet')).toEqual({ width: '100%', height: '60%', barWidth: '10px' });
         });
     });
 
