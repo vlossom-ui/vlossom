@@ -12,7 +12,7 @@ export class LayoutStore {
         bottom: { isOpen: false, responsive: false, placement: 'bottom', size: '' },
     });
 
-    public static getDefaultLayout(): LayoutStore {
+    public static getDefaultLayoutStore(): LayoutStore {
         return new LayoutStore();
     }
 
@@ -42,6 +42,10 @@ export class LayoutStore {
 
     public get drawers(): Ref<DrawerLayouts> {
         return this._drawers;
+    }
+
+    public set drawers(layouts: DrawerLayouts) {
+        this._drawers.value = layouts;
     }
 
     public set drawer(layout: DrawerLayout) {

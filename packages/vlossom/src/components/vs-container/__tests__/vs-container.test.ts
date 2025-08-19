@@ -10,7 +10,7 @@ describe('VsContainer', () => {
 
     beforeEach(() => {
         // 각 테스트마다 새로운 mock LayoutStore 인스턴스 생성
-        layoutStore = LayoutStore.getDefaultLayout();
+        layoutStore = LayoutStore.getDefaultLayoutStore();
     });
 
     describe('tag prop', () => {
@@ -62,8 +62,8 @@ describe('VsContainer', () => {
 
         it('header와 footer 모두 absolute/fixed일 때 두 패딩이 모두 적용되어야 한다', () => {
             // given
-            layoutStore.header.value = { position: 'fixed', height: '70px' };
-            layoutStore.footer.value = { position: 'absolute', height: '90px' };
+            layoutStore.header = { position: 'fixed', height: '70px' };
+            layoutStore.footer = { position: 'absolute', height: '90px' };
 
             // when
             const wrapper = mount(MockVsLayout, {

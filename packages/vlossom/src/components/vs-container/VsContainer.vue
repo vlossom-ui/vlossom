@@ -19,7 +19,7 @@ export default defineComponent({
         // only for vs-layout children
         const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
 
-        const { header, footer } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayout());
+        const { header, footer } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const layoutStyles = computed(() => {
             if (!isLayoutChild.value) {
                 return {};
