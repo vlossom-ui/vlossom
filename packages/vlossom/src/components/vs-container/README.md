@@ -1,6 +1,6 @@
 # VsContainer
 
-콘텐츠 영역을 담당하는 컨테이너 컴포넌트입니다. (CSS container query 사용 가능능)
+콘텐츠 영역을 담당하는 컨테이너 컴포넌트입니다. (CSS container query 사용 가능)
 `vs-layout`과 함께 사용될 때 헤더와 푸터의 위치에 따라 자동으로 패딩을 조정하여 콘텐츠가 겹치지 않도록 보장합니다.
 
 **Available Version**: 2.0.0+
