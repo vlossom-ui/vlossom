@@ -9,7 +9,9 @@ import { computed, defineComponent, getCurrentInstance, inject } from 'vue';
 import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import { LayoutStore } from '@/stores';
 
+const name = VsComponent.VsContainer;
 export default defineComponent({
+    name,
     props: {
         tag: { type: String, default: 'div' },
     },
