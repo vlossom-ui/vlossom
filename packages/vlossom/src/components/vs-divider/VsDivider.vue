@@ -3,9 +3,10 @@
 </template>
 
 <script lang="ts">
-import { type PropType, defineComponent, toRefs, computed } from 'vue';
+import { defineComponent, toRefs, computed } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
-import { VsComponent, type ColorScheme } from '@/declaration';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { VsComponent } from '@/declaration';
 
 import type { VsDividerStyleSet } from './types';
 
@@ -13,10 +14,10 @@ const name = VsComponent.VsDivider;
 export default defineComponent({
     name,
     props: {
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsDividerStyleSet> },
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsDividerStyleSet>(),
         responsive: { type: Boolean, default: false },
-        vertical: { type: Boolean, default: false },
+        vertical: { type: Boolean, default: false /* horizontal */ },
     },
     setup(props) {
         const { colorScheme, styleSet, responsive, vertical } = toRefs(props);
