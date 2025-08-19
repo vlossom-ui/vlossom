@@ -48,7 +48,6 @@
     <vs-image
         src="https://example.com/image.jpg"
         alt="Image with skeleton"
-        :skeleton="true"
     >
         <template #skeleton>
             로딩 중...
@@ -65,7 +64,7 @@
 | `alt`         | `string`                    | `''`    | -        | 이미지 대체 텍스트              |
 | `fallback`    | `string`                    | `''`    | -        | 로딩 실패 시 사용할 폴백 이미지 |
 | `lazy`        | `boolean`                   | `false` | -        | 지연 로딩 활성화                |
-| `skeleton`    | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 표시           |
+| `noSkeleton`  | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 표시를 무시    |
 | `colorScheme` | `ColorScheme`               | -       | -        | 컴포넌트 색상 테마              |
 | `styleSet`    | `string \| VsImageStyleSet` | -       | -        | 커스텀 스타일 설정 객체         |
 
