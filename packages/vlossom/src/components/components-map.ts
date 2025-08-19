@@ -13,6 +13,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
             return defineAsyncComponent(() => import('./vs-grid/VsGrid.vue'));
         case VsComponent.VsImage:
             return defineAsyncComponent(() => import('./vs-image/VsImage.vue'));
+        case VsComponent.VsInnerScroll:
+            return defineAsyncComponent(() => import('./vs-inner-scroll/VsInnerScroll.vue'));
         case VsComponent.VsLayout:
             return defineAsyncComponent(() => import('./vs-layout/VsLayout.vue'));
         case VsComponent.VsLoading:

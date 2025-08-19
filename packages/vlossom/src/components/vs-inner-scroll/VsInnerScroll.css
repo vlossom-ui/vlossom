@@ -1,0 +1,28 @@
+.vs-inner-scroll {
+    --vs-inner-scroll-header-padding: initial;
+    --vs-inner-scroll-padding: initial;
+    --vs-inner-scroll-footer-padding: initial;
+
+    @apply relative flex h-full w-full flex-col;
+
+    .vs-inner-scroll-header {
+        @apply relative;
+
+        flex-basis: content;
+        padding: var(--vs-inner-scroll-header-padding, 0);
+    }
+
+    .vs-inner-scroll-body {
+        @apply relative flex-1 overflow-auto;
+
+        container-type: inline-size;
+        padding: var(--vs-inner-scroll-padding, 0);
+    }
+
+    .vs-inner-scroll-footer {
+        @apply relative;
+
+        flex-basis: content;
+        padding: var(--vs-inner-scroll-footer-padding, 0);
+    }
+}
