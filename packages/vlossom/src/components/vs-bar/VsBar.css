@@ -1,0 +1,41 @@
+.vs-bar {
+    --vs-bar-backgroundColor: initial;
+    --vs-bar-border: initial;
+    --vs-bar-boxShadow: initial;
+    --vs-bar-fontColor: initial;
+    --vs-bar-fontSize: initial;
+    --vs-bar-fontWeight: initial;
+    --vs-bar-height: initial;
+    --vs-bar-padding: initial;
+    --vs-bar-position: initial;
+    --vs-bar-top: initial;
+    --vs-bar-bottom: initial;
+    --vs-bar-left: initial;
+    --vs-bar-right: initial;
+    --vs-bar-width: initial;
+    --vs-bar-zIndex: initial;
+
+    @apply relative box-border w-full;
+
+    position: var(--vs-bar-position, relative);
+    top: var(--vs-bar-top, auto);
+    right: var(--vs-bar-right, auto);
+    bottom: var(--vs-bar-bottom, auto);
+    left: var(--vs-bar-left, auto);
+    z-index: var(--vs-bar-zIndex, auto);
+    box-shadow: var(--vs-bar-boxShadow, none);
+    border: var(--vs-bar-border, 1px solid var(--vs-line-color));
+    background-color: var(--vs-bar-backgroundColor, var(--vs-comp-bg));
+    padding: var(--vs-bar-padding, 0);
+    width: var(--vs-bar-width, 100%);
+    height: var(--vs-bar-height, auto);
+    color: var(--vs-bar-fontColor, var(--vs-comp-font));
+    font-weight: var(--vs-bar-fontWeight, 400);
+    font-size: var(--vs-bar-fontSize, var(--vs-font-size));
+
+    &.vs-primary {
+        border: var(--vs-bar-border, 1px solid var(--vs-primary-comp-bg));
+        background-color: var(--vs-bar-backgroundColor, var(--vs-primary-comp-bg));
+        color: var(--vs-bar-fontColor, var(--vs-primary-comp-font));
+    }
+}

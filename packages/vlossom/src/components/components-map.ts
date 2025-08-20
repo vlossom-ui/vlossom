@@ -5,6 +5,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
     switch (componentName) {
         case VsComponent.VsAvatar:
             return defineAsyncComponent(() => import('./vs-avatar/VsAvatar.vue'));
+        case VsComponent.VsBar:
+            return defineAsyncComponent(() => import('./vs-bar/VsBar.vue'));
         case VsComponent.VsButton:
             return defineAsyncComponent(() => import('./vs-button/VsButton.vue'));
         case VsComponent.VsContainer:
