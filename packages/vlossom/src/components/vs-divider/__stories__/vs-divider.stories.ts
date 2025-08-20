@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+
+import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsDivider from './../VsDivider.vue';
 
 const meta: Meta<typeof VsDivider> = {
@@ -74,16 +76,16 @@ export const VerticalWithMobileFull: Story = {
         responsive: true,
     },
     render: (args: any) => ({
-        components: { VsDivider },
+        components: { VsContainer, VsDivider },
         setup() {
             return { args };
         },
         template: `
-            <vs-grid>
+            <vs-container>
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
                 <vs-divider v-bind="args" />
-            </vs-grid>
+            </vs-container>
         `,
     }),
     parameters: {
