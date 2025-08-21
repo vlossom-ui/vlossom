@@ -25,7 +25,7 @@ describe('useStyleSet', () => {
             const styleSet = ref('primary');
 
             const optionStore = useOptionsStore();
-            optionStore.styleSet = { [styleSet.value]: { [component]: styles } };
+            optionStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
 
             // when
             const { componentStyleSet } = useStyleSet(component, styleSet);
@@ -55,7 +55,7 @@ describe('useStyleSet', () => {
             const additionalStyleSet = ref({ backgroundColor: 'blue', fontSize: '16px' });
 
             const optionStore = useOptionsStore();
-            optionStore.styleSet = { [styleSet.value]: { [component]: styles } };
+            optionStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
 
             // when
             const { componentStyleSet } = useStyleSet(component, styleSet, additionalStyleSet);

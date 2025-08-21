@@ -11,9 +11,9 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme> = ref('red');
             const component = VsComponent.VsButton;
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'blue',
-            };
+            });
 
             // when
             const { computedColorScheme } = useColorScheme(component, colorScheme);
@@ -26,9 +26,9 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'blue',
-            };
+            });
 
             // when
             const { computedColorScheme } = useColorScheme(component, colorScheme);
@@ -41,9 +41,9 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = 'CustomComponent';
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'green',
-            };
+            });
 
             // when
             const { computedColorScheme } = useColorScheme(component, colorScheme);
@@ -94,14 +94,14 @@ describe('useColorScheme', () => {
             expect(computedColorScheme.value).toBe(undefined);
 
             // when
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'cyan',
-            };
+            });
             // then
             expect(computedColorScheme.value).toBe('cyan');
 
             // when
-            useOptionsStore().colorScheme = {};
+            useOptionsStore().setColorScheme({});
             // then
             expect(computedColorScheme.value).toBe(undefined);
         });
@@ -136,9 +136,9 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsSection;
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'emerald',
-            };
+            });
 
             // when
             const { colorSchemeClass } = useColorScheme(component, colorScheme);
@@ -178,9 +178,9 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            useOptionsStore().colorScheme = {
+            useOptionsStore().setColorScheme({
                 [component]: 'blue',
-            };
+            });
 
             // when
             const { computedColorScheme, colorSchemeClass } = useColorScheme(component, colorScheme);

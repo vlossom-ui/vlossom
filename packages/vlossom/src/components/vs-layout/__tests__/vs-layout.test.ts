@@ -35,12 +35,12 @@ describe('VsLayout', () => {
 
         it('responsive가 true인 drawer가 열려있을 때 해당하는 padding이 적용되어야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: true, placement: 'left', size: '250px', responsive: true },
                 top: { isOpen: false, placement: 'top', size: '60px', responsive: false },
                 right: { isOpen: true, placement: 'right', size: '250px', responsive: true },
                 bottom: { isOpen: false, placement: 'bottom', size: '60px', responsive: false },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);
@@ -54,12 +54,12 @@ describe('VsLayout', () => {
 
         it('모든 drawer가 responsive가 true이고 열려있을 때 모든 padding이 적용되어야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: true, placement: 'left', size: '250px', responsive: true },
                 top: { isOpen: true, placement: 'top', size: '60px', responsive: true },
                 right: { isOpen: true, placement: 'right', size: '250px', responsive: true },
                 bottom: { isOpen: true, placement: 'bottom', size: '60px', responsive: true },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);
@@ -75,12 +75,12 @@ describe('VsLayout', () => {
 
         it('모든 drawer가 닫혀있거나 responsive가 false일 때 padding이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: false, placement: 'left', size: '250px', responsive: false },
                 top: { isOpen: false, placement: 'top', size: '60px', responsive: false },
                 right: { isOpen: false, placement: 'right', size: '250px', responsive: false },
                 bottom: { isOpen: false, placement: 'bottom', size: '60px', responsive: false },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);
@@ -91,12 +91,12 @@ describe('VsLayout', () => {
 
         it('일부 drawer만 responsive가 true이고 열려있을 때 해당하는 padding만 적용되어야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: true, placement: 'left', size: '300px', responsive: true },
                 top: { isOpen: false, placement: 'top', size: '80px', responsive: false },
                 right: { isOpen: false, placement: 'right', size: '300px', responsive: false },
                 bottom: { isOpen: true, placement: 'bottom', size: '80px', responsive: true },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);
@@ -110,12 +110,12 @@ describe('VsLayout', () => {
 
         it('drawer size가 빈 문자열일 때 padding이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: true, placement: 'left', size: '', responsive: true },
                 top: { isOpen: true, placement: 'top', size: '', responsive: true },
                 right: { isOpen: true, placement: 'right', size: '', responsive: true },
                 bottom: { isOpen: true, placement: 'bottom', size: '', responsive: true },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);
@@ -126,12 +126,12 @@ describe('VsLayout', () => {
 
         it('drawer가 열려있어도 responsive가 false이면 padding이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.drawers = {
+            layoutStore.setDrawers({
                 left: { isOpen: true, placement: 'left', size: '250px', responsive: false },
                 top: { isOpen: true, placement: 'top', size: '60px', responsive: false },
                 right: { isOpen: true, placement: 'right', size: '250px', responsive: false },
                 bottom: { isOpen: true, placement: 'bottom', size: '60px', responsive: false },
-            };
+            });
 
             // when
             const wrapper = mount(VsLayout);

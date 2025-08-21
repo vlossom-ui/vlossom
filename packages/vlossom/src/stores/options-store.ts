@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, computed } from 'vue';
 import type { GlobalColorSchemes, GlobalStyleSets, Theme, VsComponent } from '@/declaration';
 
 export class OptionsStore {
@@ -7,35 +7,27 @@ export class OptionsStore {
     private _theme: Ref<Theme> = ref('light');
     private _radiusRatio: Ref<number> = ref(1);
 
-    get colorScheme(): Ref<GlobalColorSchemes> {
-        return this._colorScheme;
-    }
+    public colorScheme = computed(() => this._colorScheme.value);
 
-    set colorScheme(colorScheme: GlobalColorSchemes) {
+    public setColorScheme(colorScheme: GlobalColorSchemes) {
         this._colorScheme.value = colorScheme;
     }
 
-    get styleSet(): Ref<GlobalStyleSets> {
-        return this._styleSet;
-    }
+    public styleSet = computed(() => this._styleSet.value);
 
-    set styleSet(styleSet: GlobalStyleSets) {
+    public setStyleSet(styleSet: GlobalStyleSets) {
         this._styleSet.value = styleSet;
     }
 
-    get theme(): Ref<Theme> {
-        return this._theme;
-    }
+    public theme = computed(() => this._theme.value);
 
-    set theme(theme: Theme) {
+    public setTheme(theme: Theme) {
         this._theme.value = theme;
     }
 
-    get radiusRatio(): Ref<number> {
-        return this._radiusRatio;
-    }
+    public radiusRatio = computed(() => this._radiusRatio.value);
 
-    set radiusRatio(radiusRatio: number) {
+    public setRadiusRatio(radiusRatio: number) {
         this._radiusRatio.value = radiusRatio;
     }
 

@@ -51,7 +51,7 @@ export default defineComponent({
         watch(
             disabled,
             (value) => {
-                formStore.disabled = value;
+                formStore.setDisabled(value);
             },
             { immediate: true },
         );
@@ -59,7 +59,7 @@ export default defineComponent({
         watch(
             readonly,
             (value) => {
-                formStore.readonly = value;
+                formStore.setReadonly(value);
             },
             { immediate: true },
         );

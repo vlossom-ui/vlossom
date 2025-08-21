@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, computed } from 'vue';
 
 export class FormStore {
     private _disabled = ref(false);
@@ -12,49 +12,37 @@ export class FormStore {
         return new FormStore();
     }
 
-    public get disabled(): Ref<boolean> {
-        return this._disabled;
-    }
+    public disabled = computed(() => this._disabled.value);
 
-    public set disabled(value: boolean) {
+    public setDisabled(value: boolean) {
         this._disabled.value = value;
     }
 
-    public get readonly(): Ref<boolean> {
-        return this._readonly;
-    }
+    public readonly = computed(() => this._readonly.value);
 
-    public set readonly(value: boolean) {
+    public setReadonly(value: boolean) {
         this._readonly.value = value;
     }
 
-    public get changedObj(): Ref<Record<string, boolean>> {
-        return this._changedObj;
-    }
+    public changedObj = computed(() => this._changedObj.value);
 
-    public set changedObj(value: Record<string, boolean>) {
+    public setChangedObj(value: Record<string, boolean>) {
         this._changedObj.value = value;
     }
 
-    public get validObj(): Ref<Record<string, boolean>> {
-        return this._validObj;
-    }
+    public validObj = computed(() => this._validObj.value);
 
-    public set validObj(value: Record<string, boolean>) {
+    public setValidObj(value: Record<string, boolean>) {
         this._validObj.value = value;
     }
 
-    public get validateFlag(): Ref<boolean> {
-        return this._validateFlag;
-    }
-
-    public get clearFlag(): Ref<boolean> {
-        return this._clearFlag;
-    }
+    public validateFlag = computed(() => this._validateFlag.value);
 
     public toggleValidateFlag() {
         this._validateFlag.value = !this._validateFlag.value;
     }
+
+    public clearFlag = computed(() => this._clearFlag.value);
 
     public toggleClearFlag() {
         this._clearFlag.value = !this._clearFlag.value;

@@ -85,7 +85,7 @@ describe('VsForm', () => {
     describe('computed properties', () => {
         it('valid - 모든 validObj가 true일 때 valid가 true여야 한다', () => {
             // given
-            formStore.validObj = { field1: true, field2: true, field3: true };
+            formStore.setValidObj({ field1: true, field2: true, field3: true });
 
             // when
             const wrapper = mount(VsForm);
@@ -96,7 +96,7 @@ describe('VsForm', () => {
 
         it('valid - validObj 중 하나라도 false이면 valid가 false여야 한다', () => {
             // given
-            formStore.validObj = { field1: true, field2: false, field3: true };
+            formStore.setValidObj({ field1: true, field2: false, field3: true });
 
             // when
             const wrapper = mount(VsForm);
@@ -107,7 +107,7 @@ describe('VsForm', () => {
 
         it('valid - validObj가 빈 객체일 때 valid가 true여야 한다', () => {
             // given
-            formStore.validObj = {};
+            formStore.setValidObj({});
 
             // when
             const wrapper = mount(VsForm);
@@ -118,7 +118,7 @@ describe('VsForm', () => {
 
         it('changed - changedObj 중 하나라도 true이면 changed가 true여야 한다', () => {
             // given
-            formStore.changedObj = { field1: false, field2: true, field3: false };
+            formStore.setChangedObj({ field1: false, field2: true, field3: false });
 
             // when
             const wrapper = mount(VsForm);
@@ -129,7 +129,7 @@ describe('VsForm', () => {
 
         it('changed - 모든 changedObj가 false일 때 changed가 false여야 한다', () => {
             // given
-            formStore.changedObj = { field1: false, field2: false, field3: false };
+            formStore.setChangedObj({ field1: false, field2: false, field3: false });
 
             // when
             const wrapper = mount(VsForm);
@@ -140,7 +140,7 @@ describe('VsForm', () => {
 
         it('changed - changedObj가 빈 객체일 때 changed가 false여야 한다', () => {
             // given
-            formStore.changedObj = {};
+            formStore.setChangedObj({});
 
             // when
             const wrapper = mount(VsForm);
@@ -154,7 +154,7 @@ describe('VsForm', () => {
         describe('validate', () => {
             it('모든 필드가 유효할 때 true를 반환해야 한다', async () => {
                 // given
-                formStore.validObj = { field1: true, field2: true };
+                formStore.setValidObj({ field1: true, field2: true });
                 const wrapper = mount(VsForm);
 
                 // when
@@ -166,7 +166,7 @@ describe('VsForm', () => {
 
             it('유효하지 않은 필드가 있을 때 false를 반환하고 error 이벤트를 emit해야 한다', async () => {
                 // given
-                formStore.validObj = { field1: true, field2: false, field3: false };
+                formStore.setValidObj({ field1: true, field2: false, field3: false });
                 const wrapper = mount(VsForm);
 
                 // when
@@ -181,7 +181,7 @@ describe('VsForm', () => {
             it('validate 호출 시 FormStore의 validateFlag가 토글되어야 한다', async () => {
                 // given
                 const initialFlag = formStore.validateFlag.value;
-                formStore.validObj = { field1: true };
+                formStore.setValidObj({ field1: true });
                 const wrapper = mount(VsForm);
                 const toggleValidateFlagSpy = vi.spyOn(formStore, 'toggleValidateFlag');
 
@@ -214,11 +214,11 @@ describe('VsForm', () => {
     describe('events', () => {
         it('validate 실패 시 error 이벤트가 잘못된 필드 ID 배열과 함께 emit되어야 한다', async () => {
             // given
-            formStore.validObj = {
+            formStore.setValidObj({
                 validField: true,
                 invalidField1: false,
                 invalidField2: false,
-            };
+            });
             const wrapper = mount(VsForm);
 
             // when
@@ -232,7 +232,7 @@ describe('VsForm', () => {
 
         it('모든 필드가 유효할 때 error 이벤트가 emit되지 않아야 한다', async () => {
             // given
-            formStore.validObj = { field1: true, field2: true };
+            formStore.setValidObj({ field1: true, field2: true });
             const wrapper = mount(VsForm);
 
             // when
