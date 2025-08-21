@@ -7,6 +7,7 @@ export * from './vs-divider';
 export * from './vs-focus-trap';
 export * from './vs-grid';
 export * from './vs-image';
+export * from './vs-inner-scroll';
 export * from './vs-layout';
 export * from './vs-loading';
 export * from './vs-render';
