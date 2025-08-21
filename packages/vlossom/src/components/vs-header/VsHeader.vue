@@ -44,8 +44,8 @@ export default defineComponent({
                 ...componentStyleSet.value,
                 top: (isPositioned && componentStyleSet.value.top) || 0,
                 left: (isPositioned && componentStyleSet.value.left) || 0,
-                height: (isPositioned && componentStyleSet.value.height) || '3rem',
-                zIndex: (isPositioned && componentStyleSet.value.zIndex) || 'var(--vs-bar-z-index)',
+                height: componentStyleSet.value.height || '3rem',
+                zIndex: componentStyleSet.value.zIndex || 'var(--vs-bar-z-index)',
             });
         });
 
