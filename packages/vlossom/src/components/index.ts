@@ -5,6 +5,7 @@ export * from './vs-button';
 export * from './vs-container';
 export * from './vs-divider';
 export * from './vs-focus-trap';
+export * from './vs-form';
 export * from './vs-grid';
 export * from './vs-image';
 export * from './vs-inner-scroll';

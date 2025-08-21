@@ -13,15 +13,15 @@ export class Vlossom {
     constructor(options?: VlossomOptions) {
         const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options || {};
 
-        this.optionsStore.colorScheme = colorScheme;
-        this.optionsStore.styleSet = styleSet;
-        this.optionsStore.radiusRatio = radiusRatio;
+        this.optionsStore.setColorScheme(colorScheme);
+        this.optionsStore.setStyleSet(styleSet);
+        this.optionsStore.setRadiusRatio(radiusRatio);
 
         this.setDefaultTheme(theme);
     }
 
     set colorScheme(colorScheme: GlobalColorSchemes) {
-        this.optionsStore.colorScheme = colorScheme;
+        this.optionsStore.setColorScheme(colorScheme);
     }
 
     get colorScheme(): GlobalColorSchemes {
@@ -29,7 +29,7 @@ export class Vlossom {
     }
 
     set styleSet(styleSet: GlobalStyleSets) {
-        this.optionsStore.styleSet = styleSet;
+        this.optionsStore.setStyleSet(styleSet);
     }
 
     get styleSet(): GlobalStyleSets {
@@ -37,7 +37,7 @@ export class Vlossom {
     }
 
     set theme(theme: Theme) {
-        this.optionsStore.theme = theme;
+        this.optionsStore.setTheme(theme);
         document.documentElement.classList.toggle('vs-dark', theme === 'dark');
     }
 
@@ -46,7 +46,7 @@ export class Vlossom {
     }
 
     set radiusRatio(radiusRatio: number) {
-        this.optionsStore.radiusRatio = radiusRatio;
+        this.optionsStore.setRadiusRatio(radiusRatio);
     }
 
     get radiusRatio(): number {

@@ -13,6 +13,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
             return defineAsyncComponent(() => import('./vs-divider/VsDivider.vue'));
         case VsComponent.VsFocusTrap:
             return defineAsyncComponent(() => import('./vs-focus-trap/VsFocusTrap.vue'));
+        case VsComponent.VsForm:
+            return defineAsyncComponent(() => import('./vs-form/VsForm.vue'));
         case VsComponent.VsGrid:
             return defineAsyncComponent(() => import('./vs-grid/VsGrid.vue'));
         case VsComponent.VsImage:

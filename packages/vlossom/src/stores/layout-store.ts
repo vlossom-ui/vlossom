@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, computed } from 'vue';
 import type { BarLayout, DrawerLayout, DrawerLayouts } from '@/declaration';
 import { objectUtil } from '@/utils';
 
@@ -12,15 +12,13 @@ export class LayoutStore {
         bottom: { isOpen: false, responsive: false, placement: 'bottom', size: '' },
     });
 
-    public static getDefaultLayout(): LayoutStore {
+    public static getDefaultLayoutStore(): LayoutStore {
         return new LayoutStore();
     }
 
-    public get header(): Ref<BarLayout> {
-        return this._header;
-    }
+    public header = computed(() => this._header.value);
 
-    public set header(layout: BarLayout) {
+    public setHeader(layout: BarLayout) {
         if (objectUtil.isEqual(this._header.value, layout)) {
             return;
         }
@@ -28,11 +26,9 @@ export class LayoutStore {
         this._header.value = layout;
     }
 
-    public get footer(): Ref<BarLayout> {
-        return this._footer;
-    }
+    public footer = computed(() => this._footer.value);
 
-    public set footer(layout: BarLayout) {
+    public setFooter(layout: BarLayout) {
         if (objectUtil.isEqual(this._footer.value, layout)) {
             return;
         }
@@ -40,11 +36,13 @@ export class LayoutStore {
         this._footer.value = layout;
     }
 
-    public get drawers(): Ref<DrawerLayouts> {
-        return this._drawers;
+    public drawers = computed(() => this._drawers.value);
+
+    public setDrawers(layouts: DrawerLayouts) {
+        this._drawers.value = layouts;
     }
 
-    public set drawer(layout: DrawerLayout) {
+    public setDrawer(layout: DrawerLayout) {
         const targetDrawer = this._drawers.value[layout.placement];
 
         if (objectUtil.isEqual(targetDrawer, layout)) {

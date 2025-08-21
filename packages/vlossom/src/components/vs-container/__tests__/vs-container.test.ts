@@ -10,7 +10,7 @@ describe('VsContainer', () => {
 
     beforeEach(() => {
         // 각 테스트마다 새로운 mock LayoutStore 인스턴스 생성
-        layoutStore = LayoutStore.getDefaultLayout();
+        layoutStore = LayoutStore.getDefaultLayoutStore();
     });
 
     describe('tag prop', () => {
@@ -62,8 +62,8 @@ describe('VsContainer', () => {
 
         it('header와 footer 모두 absolute/fixed일 때 두 패딩이 모두 적용되어야 한다', () => {
             // given
-            layoutStore.header.value = { position: 'fixed', height: '70px' };
-            layoutStore.footer.value = { position: 'absolute', height: '90px' };
+            layoutStore.setHeader({ position: 'fixed', height: '70px' });
+            layoutStore.setFooter({ position: 'absolute', height: '90px' });
 
             // when
             const wrapper = mount(MockVsLayout, {
@@ -81,8 +81,8 @@ describe('VsContainer', () => {
 
         it('header와 footer position이 relative일 때 패딩이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.header = { position: 'relative', height: '60px' };
-            layoutStore.footer = { position: 'relative', height: '80px' };
+            layoutStore.setHeader({ position: 'relative', height: '60px' });
+            layoutStore.setFooter({ position: 'relative', height: '80px' });
 
             // when
             const wrapper = mount(MockVsLayout, {
@@ -99,8 +99,8 @@ describe('VsContainer', () => {
 
         it('header와 footer position이 static일 때 패딩이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.header = { position: 'static', height: '60px' };
-            layoutStore.footer = { position: 'static', height: '80px' };
+            layoutStore.setHeader({ position: 'static', height: '60px' });
+            layoutStore.setFooter({ position: 'static', height: '80px' });
 
             // when
             const wrapper = mount(MockVsLayout, {
@@ -117,8 +117,8 @@ describe('VsContainer', () => {
 
         it('header와 footer position이 sticky일 때 패딩이 적용되지 않아야 한다', () => {
             // given
-            layoutStore.header = { position: 'sticky', height: '60px' };
-            layoutStore.footer = { position: 'sticky', height: '80px' };
+            layoutStore.setHeader({ position: 'sticky', height: '60px' });
+            layoutStore.setFooter({ position: 'sticky', height: '80px' });
 
             // when
             const wrapper = mount(MockVsLayout, {
