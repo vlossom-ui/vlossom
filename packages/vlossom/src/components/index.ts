@@ -8,6 +8,7 @@ export * from './vs-divider';
 export * from './vs-focus-trap';
 export * from './vs-form';
 export * from './vs-grid';
+export * from './vs-header';
 export * from './vs-image';
 export * from './vs-inner-scroll';
 export * from './vs-layout';

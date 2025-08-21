@@ -6,6 +6,5 @@ declare module 'vue' {
     }
 }
 
+export * from './types';
 export type { VsHeader };
-export type { VsHeaderStyleSet } from './types';
-

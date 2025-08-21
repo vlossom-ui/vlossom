@@ -1,21 +1,11 @@
 <template>
-    <vs-bar ref="headerRef" :tag :class="['vs-header', colorSchemeClass, classObj]" :style-set="componentStyleSet">
+    <vs-bar :tag :class="['vs-header', colorSchemeClass, classObj]" :style-set="computedStyleSet">
         <slot />
     </vs-bar>
 </template>
 
 <script lang="ts">
-import {
-    computed,
-    defineComponent,
-    toRefs,
-    type ComputedRef,
-    getCurrentInstance,
-    inject,
-    watchEffect,
-    useTemplateRef,
-    onMounted,
-} from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef, getCurrentInstance, inject, watchEffect } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent, LAYOUT_STORE_KEY, type BarLayout } from '@/declaration';
 import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
@@ -33,20 +23,31 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsHeaderStyleSet>(),
         ...getPositionProps(),
+        height: { type: String },
         primary: { type: Boolean, default: false },
         tag: { type: String, default: 'header' },
     },
     setup(props) {
-        const { colorScheme, styleSet, primary, position } = toRefs(props);
+        const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
-        const headerRef = useTemplateRef<typeof VsBar>('headerRef');
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsHeaderStyleSet>> = computed(() => {
             return objectUtil.shake({
                 position: position.value ? position.value : undefined,
+                height: height.value ? height.value : undefined,
             });
         });
         const { componentStyleSet } = useStyleSet<VsHeaderStyleSet>(name, styleSet, additionalStyleSet);
+        const computedStyleSet: ComputedRef<VsHeaderStyleSet> = computed(() => {
+            const isPositioned = position.value && ['absolute', 'fixed', 'sticky'].includes(position.value);
+            return objectUtil.shake({
+                ...componentStyleSet.value,
+                top: (isPositioned && componentStyleSet.value.top) || 0,
+                left: (isPositioned && componentStyleSet.value.left) || 0,
+                height: (isPositioned && componentStyleSet.value.height) || '3rem',
+                zIndex: (isPositioned && componentStyleSet.value.zIndex) || 'var(--vs-bar-z-index)',
+            });
+        });
 
         const classObj = computed(() => ({
             'vs-primary': primary.value,
@@ -54,24 +55,20 @@ export default defineComponent({
 
         // only for vs-layout children
         const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
+
         const layoutStore = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
-
         watchEffect(() => {
-            if (isLayoutChild.value) {
-                const headerLayout: BarLayout = {
-                    position: position.value || 'relative',
-                    height: '',
-                };
-                layoutStore.setHeader(headerLayout);
+            if (!isLayoutChild.value) {
+                return;
             }
+            const headerLayout: BarLayout = {
+                position: computedStyleSet.value.position || 'relative',
+                height: computedStyleSet.value.height || '3rem',
+            };
+            layoutStore.setHeader(headerLayout);
         });
 
-        onMounted(() => {
-            console.log(headerRef.value);
-            console.log(isLayoutChild.value);
-        });
-
-        return { colorSchemeClass, componentStyleSet, classObj, headerRef, isLayoutChild };
+        return { colorSchemeClass, computedStyleSet, classObj, isLayoutChild };
     },
 });
 </script>

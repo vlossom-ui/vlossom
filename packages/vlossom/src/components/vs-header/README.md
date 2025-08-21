@@ -80,8 +80,9 @@
 | ------------- | ------------------------------------------------------------- | ------------ | -------- | -------------------------------------- |
 | `colorScheme` | `ColorScheme`                                                 | -            | -        | 컴포넌트 색상 테마                     |
 | `styleSet`    | `string \| VsHeaderStyleSet`                                  | -            | -        | 커스텀 스타일 설정 객체                |
-| `primary`     | `boolean`                                                     | `false`      | -        | 강조 스타일 적용                       |
 | `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position 속성 설정                 |
+| `height`      | `string`                                                      | -            | -        | 헤더의 높이 설정                       |
+| `primary`     | `boolean`                                                     | `false`      | -        | 강조 스타일 적용                       |
 | `tag`         | `string`                                                      | `'header'`   | -        | 렌더링할 HTML 태그 지정 (기본: header) |
 
 ## Types
@@ -115,11 +116,9 @@ interface VsHeaderStyleSet {
 
 ## 특징
 
-- **시멘틱 HTML**: 기본적으로 `<header>` 태그를 사용하여 시멘틱 마크업 지원
+- **시멘틱 HTML**: 기본적으로 `<header>` 태그를 사용하여 시멘틱 마크업 지원 (tag props로 변경 가능)
 - **레이아웃 통합**: `vs-layout`의 자식으로 사용하면 자동으로 레이아웃 스토어에 상태 등록
 - **자동 패딩 조정**: `position`이 `fixed`, `absolute`, `sticky`일 때 `vs-container`가 자동으로 패딩 조정
-- **기본 높이**: 기본 높이 3rem 제공으로 일관된 헤더 크기 보장
-- **유연한 위치 지정**: 다양한 CSS position 옵션 지원
 - **Primary 스타일**: 강조가 필요한 헤더에 적용할 수 있는 primary 스타일
 
 ## 레이아웃 스토어 연동
@@ -129,67 +128,3 @@ interface VsHeaderStyleSet {
 1. **자동 등록**: 헤더의 `position`과 `height` 정보가 레이아웃 스토어에 자동 등록
 2. **실시간 업데이트**: props나 styleSet이 변경되면 레이아웃 스토어도 자동 업데이트
 3. **컨테이너 연동**: `vs-container`가 헤더의 position과 height를 참조하여 적절한 패딩 적용
-
-```html
-<template>
-    <vs-layout>
-        <!-- 이 헤더의 상태는 자동으로 레이아웃 스토어에 등록됩니다 -->
-        <vs-header position="fixed" :style-set="{ height: '4rem' }">
-            Header Content
-        </vs-header>
-
-        <!-- 컨테이너가 자동으로 paddingTop: 4rem을 적용합니다 -->
-        <vs-container>
-            Main Content
-        </vs-container>
-    </vs-layout>
-</template>
-```
-
-## 사용 예시
-
-### 완전한 애플리케이션 헤더
-
-```html
-<template>
-    <vs-layout>
-        <vs-header
-            position="sticky"
-            primary
-            :style-set="{
-                height: '4rem',
-                padding: '0 2rem',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }"
-        >
-            <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-                <div style="display: flex; align-items: center;">
-                    <img src="/logo.svg" alt="Logo" style="height: 2rem; margin-right: 1rem;">
-                    <h1 style="margin: 0; font-size: 1.5rem;">My App</h1>
-                </div>
-
-                <nav style="display: flex; gap: 1rem;">
-                    <a href="#" style="text-decoration: none; color: inherit;">Home</a>
-                    <a href="#" style="text-decoration: none; color: inherit;">Products</a>
-                    <a href="#" style="text-decoration: none; color: inherit;">About</a>
-                    <a href="#" style="text-decoration: none; color: inherit;">Contact</a>
-                </nav>
-
-                <div>
-                    <button style="padding: 0.5rem 1rem; border: none; background: rgba(255,255,255,0.2); color: inherit; border-radius: 4px;">
-                        Login
-                    </button>
-                </div>
-            </div>
-        </vs-header>
-
-        <vs-container>
-            <main style="padding: 2rem;">
-                <h2>Welcome to My App</h2>
-                <p>헤더가 sticky 방식으로 동작하여 스크롤 시 상단에 고정됩니다.</p>
-            </main>
-        </vs-container>
-    </vs-layout>
-</template>
-```
-

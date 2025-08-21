@@ -38,7 +38,7 @@
         --vs-modal-width-lg: 70%;
         --vs-modal-width-xl: 90%;
 
-        --vs-app-bar-z-index: 1000;
+        --vs-bar-z-index: 1000;
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 9999;
 
