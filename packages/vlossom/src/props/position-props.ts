@@ -1,8 +1,9 @@
+import type { PropType } from 'vue';
+
 export function getPositionProps() {
     return {
-        absolute: { type: Boolean, default: false },
-        fixed: { type: Boolean, default: false },
-        sticky: { type: Boolean, default: false },
-        static: { type: Boolean, default: false },
+        position: {
+            type: String as PropType<'relative' | 'absolute' | 'fixed' | 'sticky' | 'static'>,
+        },
     };
 }

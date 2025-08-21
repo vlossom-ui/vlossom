@@ -1,7 +1,7 @@
 <template>
-    <div :class="['vs-bar', colorSchemeClass, classObj]" :style="styleSetVariables">
+    <component :is="tag" :class="['vs-bar', colorSchemeClass, classObj]" :style="styleSetVariables">
         <slot />
-    </div>
+    </component>
 </template>
 
 <script lang="ts">
@@ -10,6 +10,7 @@ import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import type { VsBarStyleSet } from './types';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
+import { objectUtil } from '@/utils';
 
 const name = VsComponent.VsBar;
 export default defineComponent({
@@ -19,26 +20,16 @@ export default defineComponent({
         ...getStyleSetProps<VsBarStyleSet>(),
         ...getPositionProps(),
         primary: { type: Boolean, default: false },
+        tag: { type: String, default: 'div' },
     },
     setup(props) {
-        const { colorScheme, styleSet, primary, absolute, fixed, sticky, static: staticPosition } = toRefs(props);
+        const { colorScheme, styleSet, primary, position } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsBarStyleSet>> = computed(() => {
-            const resultSet: Partial<VsBarStyleSet> = {};
-            if (absolute.value) {
-                resultSet.position = 'absolute';
-            }
-            if (fixed.value) {
-                resultSet.position = 'fixed';
-            }
-            if (sticky.value) {
-                resultSet.position = 'sticky';
-            }
-            if (staticPosition.value) {
-                resultSet.position = 'static';
-            }
-            return resultSet;
+            return objectUtil.shake({
+                position: position.value ? position.value : undefined,
+            });
         });
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsBarStyleSet>(name, styleSet, additionalStyleSet);
 

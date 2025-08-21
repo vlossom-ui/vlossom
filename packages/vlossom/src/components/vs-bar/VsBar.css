@@ -1,6 +1,7 @@
 .vs-bar {
     --vs-bar-backgroundColor: initial;
     --vs-bar-border: initial;
+    --vs-bar-borderRadius: initial;
     --vs-bar-boxShadow: initial;
     --vs-bar-fontColor: initial;
     --vs-bar-fontSize: initial;
@@ -25,6 +26,7 @@
     z-index: var(--vs-bar-zIndex, auto);
     box-shadow: var(--vs-bar-boxShadow, none);
     border: var(--vs-bar-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-bar-borderRadius, 0);
     background-color: var(--vs-bar-backgroundColor, var(--vs-comp-bg));
     padding: var(--vs-bar-padding, 0);
     width: var(--vs-bar-width, 100%);

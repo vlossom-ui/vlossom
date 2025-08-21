@@ -1,6 +1,7 @@
 export interface VsBarStyleSet {
     backgroundColor?: string;
     border?: string;
+    borderRadius?: string;
     boxShadow?: string;
     fontColor?: string;
     fontSize?: string;
@@ -8,10 +9,10 @@ export interface VsBarStyleSet {
     height?: string;
     padding?: string;
     position?: 'fixed' | 'absolute' | 'relative' | 'sticky' | 'static';
-    top?: string;
-    bottom?: string;
-    left?: string;
-    right?: string;
+    top?: string | number;
+    bottom?: string | number;
+    left?: string | number;
+    right?: string | number;
     width?: string;
     zIndex?: string;
 }
