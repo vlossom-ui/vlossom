@@ -3,6 +3,8 @@ import { VsComponent } from '@/declaration';
 
 export function createAsyncComponent(componentName: VsComponent): Component {
     switch (componentName) {
+        case VsComponent.VsAccordion:
+            return defineAsyncComponent(() => import('./vs-accordion/VsAccordion.vue'));
         case VsComponent.VsAvatar:
             return defineAsyncComponent(() => import('./vs-avatar/VsAvatar.vue'));
         case VsComponent.VsButton:

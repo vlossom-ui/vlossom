@@ -1,5 +1,6 @@
 export { createAsyncComponent } from './components-map';
 
+export * from './vs-accordion';
 export * from './vs-avatar';
 export * from './vs-button';
 export * from './vs-container';
