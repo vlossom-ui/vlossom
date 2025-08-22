@@ -48,18 +48,23 @@ export interface Breakpoints {
     xl?: string | number;
 }
 
-export interface SizeStyleSet {
-    width?: string;
-    height?: string;
-}
-
 export interface BoxStyleSet {
     display?: string;
+    width?: string;
+    height?: string;
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
     padding?: string;
     opacity?: string | number;
+}
+
+export interface TextStyleSet {
+    fontColor?: string;
+    fontSize?: string;
+    fontWeight?: string | number;
+    lineHeight?: string;
+    whiteSpace?: string;
 }
 
 export interface FlexStyleSet {
@@ -69,12 +74,4 @@ export interface FlexStyleSet {
     alignItems?: string;
     justifyContent?: string;
     gap?: string;
-}
-
-export interface TextStyleSet {
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    lineHeight?: string;
-    whiteSpace?: string;
 }
