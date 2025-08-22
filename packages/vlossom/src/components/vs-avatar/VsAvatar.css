@@ -1,16 +1,18 @@
 .vs-avatar {
+    --vs-avatar-backgroundColor: initial;
     --vs-avatar-border: initial;
     --vs-avatar-borderRadius: initial;
-    --vs-avatar-backgroundColor: initial;
-    --vs-avatar-width: initial;
-    --vs-avatar-height: initial;
+    --vs-avatar-opacity: initial;
     --vs-avatar-fontColor: initial;
     --vs-avatar-fontWeight: initial;
     --vs-avatar-fontSize: initial;
+    --vs-avatar-width: initial;
+    --vs-avatar-height: initial;
     --vs-avatar-objectFit: initial;
 
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
+    opacity: var(--vs-avatar-opacity, 1);
     border: var(--vs-avatar-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-avatar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-avatar-backgroundColor, var(--vs-comp-bg));
