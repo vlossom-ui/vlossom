@@ -10,8 +10,8 @@ import { useOptionsStore } from '@/stores';
 export class Vlossom {
     private optionsStore = useOptionsStore();
 
-    constructor(options?: VlossomOptions) {
-        const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options || {};
+    constructor(options: VlossomOptions) {
+        const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options;
 
         this.optionsStore.setColorScheme(colorScheme);
         this.optionsStore.setStyleSet(styleSet);

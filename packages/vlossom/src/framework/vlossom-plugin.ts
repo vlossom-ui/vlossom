@@ -10,23 +10,21 @@ declare module 'vue' {
 
 let vlossom: Vlossom;
 
-export function createVlossom(options?: VlossomOptions) {
+export function createVlossom(options: VlossomOptions) {
     vlossom = new Vlossom(options);
 
     return {
         install: (app: App) => {
             app.config.globalProperties.$vs = vlossom;
 
-            // 사용자가 전달한 컴포넌트들을 등록
-            if (options?.components) {
-                Object.entries(options.components).forEach(([name, component]) => {
-                    if (component && typeof component === 'object') {
-                        app.component(name, component);
-                    } else {
-                        console.warn('[Vlossom] Invalid component:', component);
-                    }
-                });
-            }
+            // 전달받은 컴포넌트들을 등록
+            Object.entries(options.components).forEach(([name, component]) => {
+                if (component && typeof component === 'object') {
+                    app.component(name, component);
+                } else {
+                    console.warn('[Vlossom] Invalid component:', component);
+                }
+            });
         },
     };
 }

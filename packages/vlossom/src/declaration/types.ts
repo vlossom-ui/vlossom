@@ -22,7 +22,7 @@ export type GlobalStyleSets = {
 };
 
 export interface VlossomOptions {
-    components?: { [key: string]: Component };
+    components: { [key: string]: Component };
     colorScheme?: GlobalColorSchemes;
     styleSet?: GlobalStyleSets;
     theme?: Theme;
