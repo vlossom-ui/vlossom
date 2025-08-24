@@ -5,3 +5,5 @@ declare module 'vue' {
         VsResponsive: typeof VsResponsive;
     }
 }
+
+export type { VsResponsive };

@@ -5,3 +5,5 @@ declare module 'vue' {
         VsFocusTrap: typeof VsFocusTrap;
     }
 }
+
+export type { VsFocusTrap };

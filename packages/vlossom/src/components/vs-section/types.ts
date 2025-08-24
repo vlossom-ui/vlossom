@@ -6,4 +6,6 @@ declare module 'vue' {
     }
 }
 
+export type { VsSection };
+
 export interface VsSectionStyleSet {}

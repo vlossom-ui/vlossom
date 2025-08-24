@@ -6,6 +6,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsInnerScroll };
+
 export interface VsInnerScrollStyleSet {
     header?: {
         padding?: string;

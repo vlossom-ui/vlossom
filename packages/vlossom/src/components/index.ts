@@ -1,3 +1,5 @@
+export * from './component-types';
+
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';

@@ -6,6 +6,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsGrid };
+
 export interface VsGridStyleSet {
     width?: string;
     height?: string;

@@ -6,6 +6,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsLoading };
+
 export interface VsLoadingStyleSet {
     color?: string;
     width?: string;

@@ -7,6 +7,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsButton };
+
 export interface VsButtonStyleSet {
     backgroundColor?: string;
     border?: string;

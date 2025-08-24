@@ -7,6 +7,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsImage };
+
 export interface VsImageStyleSet {
     width?: string;
     height?: string;

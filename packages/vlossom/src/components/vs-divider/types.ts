@@ -6,6 +6,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsDivider };
+
 interface VsDividerVerticalStyleSet {
     height?: string;
     margin?: string;

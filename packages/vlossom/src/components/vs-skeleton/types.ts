@@ -7,6 +7,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsSkeleton };
+
 export interface VsSkeletonStyleSet extends VsTextStyleSet {
     backgroundColor?: string;
     borderRadius?: string;

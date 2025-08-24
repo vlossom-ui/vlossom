@@ -5,3 +5,5 @@ declare module 'vue' {
         VsForm: typeof VsForm;
     }
 }
+
+export type { VsForm };

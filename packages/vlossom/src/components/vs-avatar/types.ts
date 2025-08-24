@@ -6,6 +6,8 @@ declare module 'vue' {
     }
 }
 
+export type { VsAvatar };
+
 export interface VsAvatarStyleSet {
     backgroundColor?: string;
     border?: string;
