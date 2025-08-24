@@ -5,5 +5,3 @@ declare module 'vue' {
         VsLayout: typeof VsLayout;
     }
 }
-
-export type { VsLayout };

@@ -1,4 +1,11 @@
 import type { VsTextStyleSet } from '@/declaration';
+import type VsSkeleton from './VsSkeleton.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsSkeleton: typeof VsSkeleton;
+    }
+}
 
 export interface VsSkeletonStyleSet extends VsTextStyleSet {
     backgroundColor?: string;

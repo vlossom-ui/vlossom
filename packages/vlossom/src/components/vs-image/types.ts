@@ -1,4 +1,11 @@
 import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
+import type VsImage from './VsImage.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsImage: typeof VsImage;
+    }
+}
 
 export interface VsImageStyleSet {
     width?: string;

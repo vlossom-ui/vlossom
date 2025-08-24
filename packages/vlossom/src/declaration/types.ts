@@ -1,3 +1,4 @@
+import type { Component } from 'vue';
 import type { COLORS } from './constants';
 import type { VsComponent } from './enums';
 
@@ -21,7 +22,7 @@ export type GlobalStyleSets = {
 };
 
 export interface VlossomOptions {
-    components?: VsComponent[];
+    components?: { [key: string]: Component };
     colorScheme?: GlobalColorSchemes;
     styleSet?: GlobalStyleSets;
     theme?: Theme;

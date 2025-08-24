@@ -5,5 +5,3 @@ declare module 'vue' {
         VsContainer: typeof VsContainer;
     }
 }
-
-export type { VsContainer };

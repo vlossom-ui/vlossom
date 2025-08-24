@@ -1,3 +1,11 @@
+import type VsGrid from './VsGrid.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsGrid: typeof VsGrid;
+    }
+}
+
 export interface VsGridStyleSet {
     width?: string;
     height?: string;
