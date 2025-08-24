@@ -10,11 +10,11 @@ declare module 'vue' {
 
 let vlossom: Vlossom;
 
-export function createVlossom(options: VlossomOptions) {
+export function createVlossom(options: VlossomOptions): any {
     vlossom = new Vlossom(options);
 
     return {
-        install: (app: App) => {
+        install: (app: App): any => {
             app.config.globalProperties.$vs = vlossom;
 
             // 전달받은 컴포넌트들을 등록
