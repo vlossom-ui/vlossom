@@ -1,3 +1,13 @@
+import type VsBar from './VsBar.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsBar: typeof VsBar;
+    }
+}
+
+export type { VsBar };
+
 export interface VsBarStyleSet {
     backgroundColor?: string;
     border?: string;

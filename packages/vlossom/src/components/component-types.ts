@@ -1,10 +1,13 @@
 export type * from './vs-avatar/types';
+export type * from './vs-bar/types';
 export type * from './vs-button/types';
 export type * from './vs-container/types';
 export type * from './vs-divider/types';
 export type * from './vs-focus-trap/types';
+export type * from './vs-footer/types';
 export type * from './vs-form/types';
 export type * from './vs-grid/types';
+export type * from './vs-header/types';
 export type * from './vs-image/types';
 export type * from './vs-inner-scroll/types';
 export type * from './vs-layout/types';

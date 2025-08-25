@@ -6,12 +6,15 @@
  */
 
 import VsAvatar from './vs-avatar/VsAvatar.vue';
+import VsBar from './vs-bar/VsBar.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsContainer from './vs-container/VsContainer.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
 import VsFocusTrap from './vs-focus-trap/VsFocusTrap.vue';
+import VsFooter from './vs-footer/VsFooter.vue';
 import VsForm from './vs-form/VsForm.vue';
 import VsGrid from './vs-grid/VsGrid.vue';
+import VsHeader from './vs-header/VsHeader.vue';
 import VsImage from './vs-image/VsImage.vue';
 import VsInnerScroll from './vs-inner-scroll/VsInnerScroll.vue';
 import VsLayout from './vs-layout/VsLayout.vue';
@@ -23,12 +26,15 @@ import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 
 export const VlossomComponents = {
     VsAvatar,
+    VsBar,
     VsButton,
     VsContainer,
     VsDivider,
     VsFocusTrap,
+    VsFooter,
     VsForm,
     VsGrid,
+    VsHeader,
     VsImage,
     VsInnerScroll,
     VsLayout,

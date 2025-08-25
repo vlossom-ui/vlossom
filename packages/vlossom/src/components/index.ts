@@ -1,12 +1,15 @@
 export * from './component-types';
 
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
+export { default as VsBar } from './vs-bar/VsBar.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';
 export { default as VsFocusTrap } from './vs-focus-trap/VsFocusTrap.vue';
+export { default as VsFooter } from './vs-footer/VsFooter.vue';
 export { default as VsForm } from './vs-form/VsForm.vue';
 export { default as VsGrid } from './vs-grid/VsGrid.vue';
+export { default as VsHeader } from './vs-header/VsHeader.vue';
 export { default as VsImage } from './vs-image/VsImage.vue';
 export { default as VsInnerScroll } from './vs-inner-scroll/VsInnerScroll.vue';
 export { default as VsLayout } from './vs-layout/VsLayout.vue';
