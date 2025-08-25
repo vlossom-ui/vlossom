@@ -10,13 +10,6 @@ export type GlobalColorSchemes = { default?: ColorScheme } & { [key in VsCompone
     [key: string]: ColorScheme;
 };
 
-export interface VsTextStyleSet {
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    whiteSpace?: string;
-}
-
 export type GlobalStyleSets = {
     [key: string]: { [key in VsComponent]?: any } & { [key: string]: any };
 };
@@ -29,8 +22,10 @@ export interface VlossomOptions {
     radiusRatio?: number;
 }
 
+export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+
 export interface BarLayout {
-    position: 'relative' | 'absolute' | 'fixed' | 'sticky' | 'static';
+    position: CssPosition;
     height: string;
 }
 
@@ -51,4 +46,32 @@ export interface Breakpoints {
     md?: string | number;
     lg?: string | number;
     xl?: string | number;
+}
+
+export interface BoxStyleSet {
+    display?: string;
+    width?: string;
+    height?: string;
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    opacity?: string | number;
+}
+
+export interface TextStyleSet {
+    fontColor?: string;
+    fontSize?: string;
+    fontWeight?: string | number;
+    lineHeight?: string;
+    whiteSpace?: string;
+}
+
+export interface FlexStyleSet {
+    flex?: string;
+    flexDirection?: string;
+    flexWrap?: string;
+    alignItems?: string;
+    justifyContent?: string;
+    gap?: string;
 }
