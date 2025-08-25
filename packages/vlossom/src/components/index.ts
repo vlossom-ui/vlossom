@@ -1,12 +1,15 @@
 export { createAsyncComponent } from './components-map';
 
 export * from './vs-avatar';
+export * from './vs-bar';
 export * from './vs-button';
 export * from './vs-container';
 export * from './vs-divider';
 export * from './vs-focus-trap';
+export * from './vs-footer';
 export * from './vs-form';
 export * from './vs-grid';
+export * from './vs-header';
 export * from './vs-image';
 export * from './vs-inner-scroll';
 export * from './vs-layout';

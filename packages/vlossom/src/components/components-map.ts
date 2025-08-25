@@ -5,6 +5,8 @@ export function createAsyncComponent(componentName: VsComponent): Component {
     switch (componentName) {
         case VsComponent.VsAvatar:
             return defineAsyncComponent(() => import('./vs-avatar/VsAvatar.vue'));
+        case VsComponent.VsBar:
+            return defineAsyncComponent(() => import('./vs-bar/VsBar.vue'));
         case VsComponent.VsButton:
             return defineAsyncComponent(() => import('./vs-button/VsButton.vue'));
         case VsComponent.VsContainer:
@@ -13,10 +15,14 @@ export function createAsyncComponent(componentName: VsComponent): Component {
             return defineAsyncComponent(() => import('./vs-divider/VsDivider.vue'));
         case VsComponent.VsFocusTrap:
             return defineAsyncComponent(() => import('./vs-focus-trap/VsFocusTrap.vue'));
+        case VsComponent.VsFooter:
+            return defineAsyncComponent(() => import('./vs-footer/VsFooter.vue'));
         case VsComponent.VsForm:
             return defineAsyncComponent(() => import('./vs-form/VsForm.vue'));
         case VsComponent.VsGrid:
             return defineAsyncComponent(() => import('./vs-grid/VsGrid.vue'));
+        case VsComponent.VsHeader:
+            return defineAsyncComponent(() => import('./vs-header/VsHeader.vue'));
         case VsComponent.VsImage:
             return defineAsyncComponent(() => import('./vs-image/VsImage.vue'));
         case VsComponent.VsInnerScroll:

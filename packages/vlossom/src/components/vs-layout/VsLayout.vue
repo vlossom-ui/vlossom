@@ -7,10 +7,12 @@
 <script lang="ts">
 import { computed, defineComponent, provide } from 'vue';
 import { LayoutStore } from '@/stores';
-import { LAYOUT_STORE_KEY } from '@/declaration';
+import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import { objectUtil } from '@/utils';
 
+const name = VsComponent.VsLayout;
 export default defineComponent({
+    name,
     setup() {
         const layoutStore = LayoutStore.getDefaultLayoutStore();
         provide(LAYOUT_STORE_KEY, layoutStore);
