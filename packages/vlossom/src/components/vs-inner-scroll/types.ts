@@ -1,3 +1,13 @@
+import type VsInnerScroll from './VsInnerScroll.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsInnerScroll: typeof VsInnerScroll;
+    }
+}
+
+export type { VsInnerScroll };
+
 export interface VsInnerScrollStyleSet {
     header?: {
         padding?: string;

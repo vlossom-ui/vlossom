@@ -1,29 +1,30 @@
 import type { App } from 'vue';
 import { Vlossom } from './vlossom-class';
-import { VsComponent, type VlossomOptions } from '@/declaration';
-import { createAsyncComponent } from '@/components';
+import type { VlossomOptions } from '@/declaration';
+
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        $vs: Vlossom;
+    }
+}
 
 let vlossom: Vlossom;
 
-function registerComponents(app: App, components: VsComponent[] = []) {
-    components.forEach((componentName) => {
-        try {
-            const component = createAsyncComponent(componentName);
-            app.component(componentName, component);
-        } catch (error) {
-            console.warn(`[Vlossom] Failed to register component ${componentName}:`, error);
-        }
-    });
-}
-
-export function createVlossom(options?: VlossomOptions) {
+export function createVlossom(options: VlossomOptions): any {
     vlossom = new Vlossom(options);
 
     return {
-        install: (app: App) => {
+        install: (app: App): any => {
             app.config.globalProperties.$vs = vlossom;
-            const componentsToRegister = options?.components || Object.values(VsComponent);
-            registerComponents(app, componentsToRegister);
+
+            // 전달받은 컴포넌트들을 등록
+            Object.entries(options.components).forEach(([name, component]) => {
+                if (component && typeof component === 'object') {
+                    app.component(name, component);
+                } else {
+                    console.warn('[Vlossom] Invalid component:', component);
+                }
+            });
         },
     };
 }
@@ -34,10 +35,4 @@ export function useVlossom() {
     }
 
     return vlossom;
-}
-
-declare module 'vue' {
-    interface ComponentCustomProperties {
-        $vs: Vlossom;
-    }
 }

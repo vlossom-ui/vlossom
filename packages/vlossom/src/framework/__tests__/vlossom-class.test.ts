@@ -2,14 +2,18 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Vlossom } from './../vlossom-class';
 import { THEME_KEY, type GlobalColorSchemes, type GlobalStyleSets, type VlossomOptions } from '@/declaration';
 
+const createDefaultOptions = (): VlossomOptions => ({
+    components: {},
+});
+
 describe('Vlossom class', () => {
     let vlossom: Vlossom;
 
     describe('생성자는 기본 설정으로 인스턴스를 생성한다', () => {
-        it('옵션 없이 생성할 때 기본값을 사용한다', () => {
+        it('기본 옵션으로 생성할 때 기본값을 사용한다', () => {
             // given
             // when
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
 
             // then
             expect(vlossom.colorScheme).toEqual({});
@@ -20,6 +24,7 @@ describe('Vlossom class', () => {
         it('옵션을 전달하면 해당 값으로 초기화된다', () => {
             // given
             const options: VlossomOptions = {
+                components: {},
                 colorScheme: { VsButton: 'red' },
                 styleSet: { myStyle: { VsButton: { border: '1px solid red' } } },
                 theme: 'dark',
@@ -39,7 +44,7 @@ describe('Vlossom class', () => {
 
     describe('colorScheme 속성은 색상 스키마를 관리한다', () => {
         beforeEach(() => {
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
         });
 
         it('colorScheme을 설정하고 조회할 수 있다', () => {
@@ -56,7 +61,7 @@ describe('Vlossom class', () => {
 
     describe('styleSet 속성은 스타일 세트를 관리한다', () => {
         beforeEach(() => {
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
         });
 
         it('styleSet을 설정하고 조회할 수 있다', () => {
@@ -73,7 +78,7 @@ describe('Vlossom class', () => {
 
     describe('theme 속성은 테마를 관리한다', () => {
         beforeEach(() => {
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
         });
 
         it('theme을 light로 설정하면 dark 클래스가 제거된다', () => {
@@ -103,7 +108,7 @@ describe('Vlossom class', () => {
 
     describe('radiusRatio 속성은 반지름 비율을 관리한다', () => {
         beforeEach(() => {
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
         });
 
         it('radiusRatio를 설정하고 조회할 수 있다', () => {
@@ -120,7 +125,7 @@ describe('Vlossom class', () => {
 
     describe('toggleTheme 메서드는 테마를 토글한다', () => {
         beforeEach(() => {
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
         });
 
         it('light 테마에서 호출하면 dark 테마로 변경된다', () => {
@@ -154,7 +159,7 @@ describe('Vlossom class', () => {
             localStorage.getItem = vi.fn().mockReturnValue('dark');
 
             // when
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
 
             // then
             expect(vlossom.theme).toBe('dark');
@@ -168,7 +173,7 @@ describe('Vlossom class', () => {
             }));
 
             // when
-            vlossom = new Vlossom();
+            vlossom = new Vlossom(createDefaultOptions());
 
             // then
             expect(vlossom.theme).toBe('dark');
@@ -182,7 +187,7 @@ describe('Vlossom class', () => {
             }));
 
             // when
-            vlossom = new Vlossom({ theme: 'dark' });
+            vlossom = new Vlossom({ ...createDefaultOptions(), theme: 'dark' });
 
             // then
             expect(vlossom.theme).toBe('dark');
@@ -196,7 +201,7 @@ describe('Vlossom class', () => {
             }));
 
             // when
-            vlossom = new Vlossom({ theme: 'light' });
+            vlossom = new Vlossom({ ...createDefaultOptions(), theme: 'light' });
 
             // then
             expect(vlossom.theme).toBe('light');

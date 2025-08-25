@@ -1,10 +1,11 @@
 import type { Preview } from '@storybook/vue3-vite';
 import { setup } from '@storybook/vue3-vite';
+import { VlossomComponents } from '@/components/component-map';
 import { createVlossom, useVlossom } from '@/framework';
 import '@/styles/index.css';
 import '@/styles/index.scss';
 
-const vlossom = createVlossom();
+const vlossom = createVlossom({ components: VlossomComponents });
 
 setup((app) => {
     app.use(vlossom);

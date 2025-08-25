@@ -1,3 +1,13 @@
+import type VsAvatar from './VsAvatar.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsAvatar: typeof VsAvatar;
+    }
+}
+
+export type { VsAvatar };
+
 export interface VsAvatarStyleSet {
     backgroundColor?: string;
     border?: string;

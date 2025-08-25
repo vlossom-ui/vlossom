@@ -1,3 +1,13 @@
+import type VsDivider from './VsDivider.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsDivider: typeof VsDivider;
+    }
+}
+
+export type { VsDivider };
+
 interface VsDividerVerticalStyleSet {
     height?: string;
     margin?: string;
