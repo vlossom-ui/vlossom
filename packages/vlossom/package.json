@@ -57,7 +57,7 @@
             "import": "./dist/vlossom.es.js",
             "require": "./dist/vlossom.umd.js"
         },
-        "./styles": "./dist/style.css"
+        "./styles": "./dist/vlossom.css"
     },
     "dependencies": {
         "@vueuse/core": "^13.6.0",
