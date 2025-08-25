@@ -19,7 +19,7 @@
     width: var(--vs-avatar-width, 3.6rem);
     height: var(--vs-avatar-height, 3.6rem);
     color: var(--vs-avatar-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-avatar-fontWeight, 400);
+    font-weight: var(--vs-avatar-fontWeight, --vs-font-weight);
     font-size: var(--vs-avatar-fontSize, var(--vs-font-size));
 
     :deep(img) {

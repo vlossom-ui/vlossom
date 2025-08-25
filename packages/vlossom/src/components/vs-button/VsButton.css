@@ -24,10 +24,10 @@
     width: var(--vs-button-width, auto);
     height: var(--vs-button-height, var(--vs-default-comp-height));
     color: var(--vs-button-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-button-fontWeight, 400);
+    font-weight: var(--vs-button-fontWeight, var(--vs-font-weight));
     font-size: var(--vs-button-fontSize, var(--vs-font-size));
-    line-height: var(--vs-button-lineHeight, 1.6);
-    white-space: var(--vs-button-whiteSpace, normal);
+    line-height: var(--vs-button-lineHeight, var(--vs-line-height));
+    white-space: var(--vs-button-whiteSpace, var(--vs-white-space));
 
     .vs-button-loading {
         @apply absolute flex h-full w-full items-center justify-center;
