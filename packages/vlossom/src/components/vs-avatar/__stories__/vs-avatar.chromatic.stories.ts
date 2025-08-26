@@ -11,7 +11,7 @@ const meta: Meta<typeof VsAvatar> = {
             return { args };
         },
         template: `
-            <div style="display:flex; align-items:center;">
+            <div class="flex items-center">
                 <vs-avatar v-bind="args">VS</vs-avatar>
 
                 <vs-avatar v-bind="args">

@@ -1,16 +1,22 @@
 .vs-button {
+    --vs-button-display: initial;
     --vs-button-backgroundColor: initial;
+    --vs-button-padding: initial;
     --vs-button-border: initial;
     --vs-button-borderRadius: initial;
+    --vs-button-opacity: initial;
     --vs-button-fontColor: initial;
     --vs-button-fontSize: initial;
     --vs-button-fontWeight: initial;
-    --vs-button-height: initial;
-    --vs-button-padding: initial;
+    --vs-button-lineHeight: initial;
+    --vs-button-whiteSpace: initial;
     --vs-button-width: initial;
+    --vs-button-height: initial;
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
 
+    display: var(--vs-button-display, inline-block);
+    opacity: var(--vs-button-opacity, 1);
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
@@ -18,8 +24,10 @@
     width: var(--vs-button-width, auto);
     height: var(--vs-button-height, var(--vs-default-comp-height));
     color: var(--vs-button-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-button-fontWeight, 400);
+    font-weight: var(--vs-button-fontWeight, var(--vs-font-weight));
     font-size: var(--vs-button-fontSize, var(--vs-font-size));
+    line-height: var(--vs-button-lineHeight, var(--vs-line-height));
+    white-space: var(--vs-button-whiteSpace, var(--vs-white-space));
 
     .vs-button-loading {
         @apply absolute flex h-full w-full items-center justify-center;

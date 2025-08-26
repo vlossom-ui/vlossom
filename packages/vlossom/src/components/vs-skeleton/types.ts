@@ -1,5 +1,5 @@
-import type { VsTextStyleSet } from '@/declaration';
 import type VsSkeleton from './VsSkeleton.vue';
+import type { BoxStyleSet, TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,9 +9,4 @@ declare module 'vue' {
 
 export type { VsSkeleton };
 
-export interface VsSkeletonStyleSet extends VsTextStyleSet {
-    backgroundColor?: string;
-    borderRadius?: string;
-    height?: string;
-    width?: string;
-}
+export interface VsSkeletonStyleSet extends Omit<BoxStyleSet, 'display' | 'opacity'>, TextStyleSet {}

@@ -14,6 +14,10 @@
             --vs-dimmed-bg: rgba(0, 0, 0, 0.6);
         }
 
+        --vs-line-height: 1.6;
+        --vs-font-weight: 400;
+        --vs-white-space: normal;
+
         --vs-font-size-xs: 0.8rem;
         --vs-font-size-sm: 0.9rem;
         --vs-font-size: 1rem;

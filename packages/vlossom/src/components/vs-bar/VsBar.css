@@ -7,12 +7,14 @@
     --vs-bar-fontSize: initial;
     --vs-bar-fontWeight: initial;
     --vs-bar-height: initial;
+    --vs-bar-lineHeight: initial;
     --vs-bar-padding: initial;
     --vs-bar-position: initial;
     --vs-bar-top: initial;
     --vs-bar-bottom: initial;
     --vs-bar-left: initial;
     --vs-bar-right: initial;
+    --vs-bar-whiteSpace: initial;
     --vs-bar-width: initial;
     --vs-bar-zIndex: initial;
 
@@ -34,6 +36,8 @@
     color: var(--vs-bar-fontColor, var(--vs-comp-font));
     font-weight: var(--vs-bar-fontWeight, 400);
     font-size: var(--vs-bar-fontSize, var(--vs-font-size));
+    line-height: var(--vs-bar-lineHeight, var(--vs-line-height));
+    white-space: var(--vs-bar-whiteSpace, normal);
 
     &.vs-primary {
         border: var(--vs-bar-border, 1px solid var(--vs-primary-comp-bg));
