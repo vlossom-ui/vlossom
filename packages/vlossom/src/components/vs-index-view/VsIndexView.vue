@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h, KeepAlive, toRefs, Comment, type VNode } from 'vue';
+import { defineComponent, h, KeepAlive, toRefs, Comment, Fragment, type VNode } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getResponsiveProps } from '@/props';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -17,6 +17,24 @@ export default defineComponent({
     emits: ['update:modelValue'],
     setup(props, { slots, emit, expose }) {
         const { width, grid, modelValue, keepAlive } = toRefs(props);
+
+        function flattenNodes(nodes: VNode[]): VNode[] {
+            const result: VNode[] = [];
+
+            function flatten(nodeList: VNode[]) {
+                for (const node of nodeList) {
+                    // Fragment 노드인 경우 children을 재귀적으로 flatten
+                    if (node.type === Fragment && Array.isArray(node.children)) {
+                        flatten(node.children as VNode[]);
+                    } else {
+                        result.push(node);
+                    }
+                }
+            }
+
+            flatten(nodes);
+            return result;
+        }
 
         function filterUselessNodes(nodes: VNode[]): VNode[] {
             return nodes.filter((node) => {
@@ -48,7 +66,9 @@ export default defineComponent({
                 return null;
             }
 
-            const filteredNodes = filterUselessNodes(slotNodes);
+            // Fragment 노드들을 평면화하고 불필요한 노드들을 제거
+            const flattenedNodes = flattenNodes(slotNodes);
+            const filteredNodes = filterUselessNodes(flattenedNodes);
             if (filteredNodes.length === 0) {
                 return null;
             }

@@ -36,6 +36,19 @@ const currentIndex = ref(0);
 </template>
 ```
 
+### v-for를 사용한 동적 콘텐츠
+
+```html
+<template>
+    <vs-index-view v-model="currentIndex">
+        <div v-for="item in items" :key="item.id" class="item-card">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+        </div>
+    </vs-index-view>
+</template>
+```
+
 ## Props
 
 | Prop         | Type                              | Default | Required | Description                                    |
@@ -79,6 +92,7 @@ interface Breakpoints {
 
 - **v-model 지원**: `modelValue` prop과 `update:modelValue` 이벤트를 통한 양방향 데이터 바인딩
 - **Keep-alive 옵션**: 컴포넌트 상태 보존 가능, 기본값은 `true`
+- **Fragment 노드 평면화**: `v-for`로 생성된 여러 요소들이 각각 개별 인덱스로 인식
 - **자동 주석 필터링**: HTML 주석과 빈 텍스트 노드는 자동으로 제외되어 정확한 인덱싱 보장
 - **반응형 지원**: `width`와 `grid` props를 통한 반응형 레이아웃 구현
 - **vs-responsive 래핑**: 내부적으로 vs-responsive 컴포넌트로 래핑되어 일관된 반응형 동작 제공
