@@ -16,6 +16,7 @@ import VsForm from './vs-form/VsForm.vue';
 import VsGrid from './vs-grid/VsGrid.vue';
 import VsHeader from './vs-header/VsHeader.vue';
 import VsImage from './vs-image/VsImage.vue';
+import VsIndexView from './vs-index-view/VsIndexView.vue';
 import VsInnerScroll from './vs-inner-scroll/VsInnerScroll.vue';
 import VsLayout from './vs-layout/VsLayout.vue';
 import VsLoading from './vs-loading/VsLoading.vue';
@@ -36,6 +37,7 @@ export const VlossomComponents = {
     VsGrid,
     VsHeader,
     VsImage,
+    VsIndexView,
     VsInnerScroll,
     VsLayout,
     VsLoading,
