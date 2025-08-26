@@ -54,14 +54,34 @@ export default defineComponent({
             }
 
             const currentIndex = modelValue.value || 0;
-            const currentNode = filteredNodes[currentIndex];
 
-            if (!currentNode) {
-                return null;
+            function renderContent() {
+                if (keepAlive.value) {
+                    return h(KeepAlive, {}, [
+                        h(
+                            'div',
+                            { class: 'vs-index-view-container' },
+                            filteredNodes.map((node, index) =>
+                                h(
+                                    'div',
+                                    {
+                                        key: index,
+                                        style: {
+                                            display: index === currentIndex ? 'block' : 'none',
+                                        },
+                                    },
+                                    [node],
+                                ),
+                            ),
+                        ),
+                    ]);
+                } else {
+                    const currentNode = filteredNodes[currentIndex];
+                    return currentNode || null;
+                }
             }
 
-            // keep-alive 적용 여부에 따라 렌더링
-            const content = keepAlive.value ? h(KeepAlive, {}, [currentNode]) : currentNode;
+            const content = renderContent();
 
             return h(
                 VsResponsive,
