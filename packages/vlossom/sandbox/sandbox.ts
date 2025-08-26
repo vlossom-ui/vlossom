@@ -3,7 +3,10 @@ import App from './App.vue';
 import { createVlossom } from '@/framework';
 import { VlossomComponents } from '@/components/component-map';
 
-// this will be replaced with "import 'vlossom/styles'"
+// component type 추론을 위해서 import
+import '@/components/component-types';
+
+// 실제 vlossom 사용할 때는 import 'vlossom/styles';
 import '@/styles/index.css';
 import '@/styles/index.scss';
 
