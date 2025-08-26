@@ -1,3 +1,4 @@
+import type { BoxStyleSet, TextStyleSet } from '@/declaration';
 import type VsBar from './VsBar.vue';
 
 declare module 'vue' {
@@ -8,21 +9,12 @@ declare module 'vue' {
 
 export type { VsBar };
 
-export interface VsBarStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    boxShadow?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string;
-    height?: string;
-    padding?: string;
+export interface VsBarStyleSet extends Omit<BoxStyleSet, 'display' | 'opacity'>, TextStyleSet {
     position?: 'fixed' | 'absolute' | 'relative' | 'sticky' | 'static';
+    boxShadow?: string;
     top?: string | number;
     bottom?: string | number;
     left?: string | number;
     right?: string | number;
-    width?: string;
     zIndex?: string;
 }

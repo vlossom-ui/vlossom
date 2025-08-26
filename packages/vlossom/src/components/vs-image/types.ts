@@ -1,5 +1,6 @@
-import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
 import type VsImage from './VsImage.vue';
+import type { BoxStyleSet } from '@/declaration';
+import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,11 +10,7 @@ declare module 'vue' {
 
 export type { VsImage };
 
-export interface VsImageStyleSet {
-    width?: string;
-    height?: string;
-    border?: string;
-    borderRadius?: string;
+export interface VsImageStyleSet extends Omit<BoxStyleSet, 'padding'> {
     objectFit?: string;
     skeleton?: VsSkeletonStyleSet;
 }
