@@ -1,3 +1,4 @@
+export type * from './vs-accordion/types';
 export type * from './vs-avatar/types';
 export type * from './vs-bar/types';
 export type * from './vs-button/types';

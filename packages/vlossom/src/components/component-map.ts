@@ -5,6 +5,7 @@
  * Tree shaking 최적화가 필요한 경우 개별 컴포넌트만 import하세요.
  */
 
+import VsAccordion from './vs-accordion/VsAccordion.vue';
 import VsAvatar from './vs-avatar/VsAvatar.vue';
 import VsBar from './vs-bar/VsBar.vue';
 import VsButton from './vs-button/VsButton.vue';
@@ -25,6 +26,7 @@ import VsSection from './vs-section/VsSection.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 
 export const VlossomComponents = {
+    VsAccordion,
     VsAvatar,
     VsBar,
     VsButton,
