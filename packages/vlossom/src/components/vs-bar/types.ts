@@ -1,5 +1,5 @@
-import type { BoxStyleSet, TextStyleSet } from '@/declaration';
 import type VsBar from './VsBar.vue';
+import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,7 +9,7 @@ declare module 'vue' {
 
 export type { VsBar };
 
-export interface VsBarStyleSet extends Omit<BoxStyleSet, 'display' | 'opacity'>, TextStyleSet {
+export interface VsBarStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'display' | 'opacity'>, TextStyleSet {
     position?: 'fixed' | 'absolute' | 'relative' | 'sticky' | 'static';
     boxShadow?: string;
     top?: string | number;

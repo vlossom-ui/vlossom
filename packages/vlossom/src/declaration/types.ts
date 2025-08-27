@@ -48,10 +48,13 @@ export interface Breakpoints {
     xl?: string | number;
 }
 
-export interface BoxStyleSet {
-    display?: string;
+export interface SizeStyleSet {
     width?: string;
     height?: string;
+}
+
+export interface BoxStyleSet {
+    display?: string;
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;

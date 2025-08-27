@@ -1,4 +1,5 @@
 import type VsGrid from './VsGrid.vue';
+import type { SizeStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,9 +9,7 @@ declare module 'vue' {
 
 export type { VsGrid };
 
-export interface VsGridStyleSet {
-    width?: string;
-    height?: string;
+export interface VsGridStyleSet extends SizeStyleSet {
     gridSize?: number;
     rowGap?: string;
     columnGap?: string;

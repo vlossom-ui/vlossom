@@ -1,5 +1,5 @@
 import type VsButton from './VsButton.vue';
-import type { BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
 import type { VsLoadingStyleSet } from '@/components/vs-loading/types';
 
 declare module 'vue' {
@@ -10,6 +10,6 @@ declare module 'vue' {
 
 export type { VsButton };
 
-export interface VsButtonStyleSet extends BoxStyleSet, TextStyleSet {
+export interface VsButtonStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
     loading?: VsLoadingStyleSet;
 }
