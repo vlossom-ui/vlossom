@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import VsIndexView from './../VsIndexView.vue';
 
 describe('VsIndexView', () => {
@@ -154,6 +155,7 @@ describe('VsIndexView', () => {
             });
 
             (wrapper.vm as any).updateIndex(1);
+            await nextTick(); // Vue의 반응성 시스템이 업데이트를 완료할 때까지 대기
 
             // then
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();

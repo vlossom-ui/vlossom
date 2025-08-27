@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h, KeepAlive, toRefs, Comment, Fragment, type VNode } from 'vue';
+import { defineComponent, h, KeepAlive, toRefs, Comment, Fragment, type VNode, ref, watch } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getResponsiveProps } from '@/props';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -17,6 +17,8 @@ export default defineComponent({
     emits: ['update:modelValue'],
     setup(props, { slots, emit, expose }) {
         const { width, grid, modelValue, keepAlive } = toRefs(props);
+
+        const index = ref(modelValue.value);
 
         function flattenNodes(nodes: VNode[]): VNode[] {
             const result: VNode[] = [];
@@ -54,7 +56,15 @@ export default defineComponent({
             emit('update:modelValue', newIndex);
         }
 
-        expose({ updateIndex });
+        watch(modelValue, (newValue) => {
+            index.value = newValue;
+        });
+
+        watch(index, (newValue) => {
+            emit('update:modelValue', newValue);
+        });
+
+        expose({ index, updateIndex });
 
         return () => {
             if (!slots.default) {
@@ -73,7 +83,7 @@ export default defineComponent({
                 return null;
             }
 
-            const currentIndex = modelValue.value || 0;
+            const currentIndex = index.value || 0;
 
             function renderContent() {
                 if (keepAlive.value) {
@@ -81,13 +91,13 @@ export default defineComponent({
                         h(
                             'div',
                             { class: 'vs-index-view-container' },
-                            filteredNodes.map((node, index) =>
+                            filteredNodes.map((node, nodeIndex) =>
                                 h(
                                     'div',
                                     {
-                                        key: index,
+                                        key: nodeIndex,
                                         style: {
-                                            display: index === currentIndex ? 'block' : 'none',
+                                            display: nodeIndex === currentIndex ? 'block' : 'none',
                                         },
                                     },
                                     [node],
