@@ -5,13 +5,10 @@
         :grid
         :style="componentStyleSet"
         :tabindex="disabled ? -1 : 0"
+        @keydown.enter.stop="toggle"
+        @keydown.space.prevent.stop="toggle"
     >
-        <div
-            class="vs-accordion-title"
-            @click="!disabled && toggle()"
-            @keydown.enter="!disabled && toggle()"
-            @keydown.space.prevent="!disabled && toggle()"
-        >
+        <div class="vs-accordion-title" @click.stop="toggle">
             <slot name="title" />
         </div>
         <VsExpandable :open="isOpen" :style-set="componentStyleSet.expand">
@@ -58,6 +55,9 @@ export default defineComponent({
         }));
 
         function toggle() {
+            if (disabled.value) {
+                return;
+            }
             isOpen.value = !isOpen.value;
         }
 

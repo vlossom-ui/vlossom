@@ -4,128 +4,175 @@ import VsAccordion from './../VsAccordion.vue';
 
 describe('VsAccordion', () => {
     let wrapper: any;
+    let defaultOptions: any;
 
     beforeEach(() => {
         wrapper = null;
+        defaultOptions = {
+            slots: {
+                title: '아코디언 제목',
+                default: '아코디언 내용',
+            },
+        };
     });
 
     describe('기본 렌더링', () => {
-        it('vs-responsive와 details 요소로 렌더링되어야 한다', () => {
+        it('vs-accordion과 vs-accordion-title 요소로 렌더링되어야 한다', () => {
             // given, when
-            wrapper = mount(VsAccordion, {
-                slots: {
-                    title: '아코디언 제목',
-                    default: '아코디언 내용',
-                },
-            });
+            wrapper = mount(VsAccordion, defaultOptions);
 
             // then
             expect(wrapper.find('.vs-accordion').exists()).toBe(true);
-            expect(wrapper.find('details').exists()).toBe(true);
-            expect(wrapper.find('summary').exists()).toBe(true);
-            expect(wrapper.find('.vs-accordion-content').exists()).toBe(true);
+            expect(wrapper.find('.vs-accordion-title').exists()).toBe(true);
+            expect(wrapper.findComponent({ name: 'VsExpandable' }).exists()).toBe(true);
         });
 
-        it('title 슬롯과 default 슬롯이 올바르게 렌더링되어야 한다', () => {
-            // given
-            const titleText = '테스트 아코디언 제목';
-            const contentText = '테스트 아코디언 내용';
-
-            // when
-            wrapper = mount(VsAccordion, {
-                slots: {
-                    title: titleText,
-                    default: contentText,
-                },
-            });
+        it('기본값으로 닫힌 상태로 렌더링되어야 한다', () => {
+            // given, when
+            wrapper = mount(VsAccordion, defaultOptions);
 
             // then
-            expect(wrapper.find('.vs-accordion-summary').text()).toBe(titleText);
-            expect(wrapper.find('.vs-accordion-content').text()).toBe(contentText);
+            expect(wrapper.vm.isOpen).toBe(false);
+            expect(wrapper.classes()).not.toContain('vs-accordion-open');
+        });
+    });
+
+    describe('disabled prop', () => {
+        function mountWithDisabled(disabled: boolean) {
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { disabled },
+            });
+        }
+
+        it('disabled가 false일 때 vs-focusable 클래스가 적용되어야 한다', () => {
+            // given, when
+            mountWithDisabled(false);
+
+            // then
+            expect(wrapper.classes()).toContain('vs-focusable');
+            expect(wrapper.classes()).not.toContain('vs-disabled');
+            expect(wrapper.attributes('tabindex')).toBe('0');
+        });
+
+        it('disabled가 true일 때 vs-disabled 클래스가 적용되고 tabindex가 -1이어야 한다', () => {
+            // given, when
+            mountWithDisabled(true);
+
+            // then
+            expect(wrapper.classes()).toContain('vs-disabled');
+            expect(wrapper.classes()).not.toContain('vs-focusable');
+            expect(wrapper.attributes('tabindex')).toBe('-1');
+        });
+
+        it('disabled 상태에서 클릭 이벤트가 무시되어야 한다', async () => {
+            // given
+            mountWithDisabled(true);
+            const initialState = wrapper.vm.isOpen;
+
+            // when
+            await wrapper.find('.vs-accordion-title').trigger('click');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(initialState);
+            expect(wrapper.emitted()).not.toHaveProperty('toggle');
+        });
+
+        it('disabled 상태에서 키보드 이벤트가 무시되어야 한다', async () => {
+            // given
+            mountWithDisabled(true);
+            const initialState = wrapper.vm.isOpen;
+
+            // when
+            await wrapper.find('.vs-accordion').trigger('keydown.enter');
+            await wrapper.find('.vs-accordion').trigger('keydown.space');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(initialState);
+            expect(wrapper.emitted()).not.toHaveProperty('toggle');
         });
     });
 
     describe('open prop', () => {
-        it('open prop이 true일 때 아코디언이 열린 상태로 렌더링되어야 한다', () => {
+        it('open prop이 true일 때 열린 상태로 렌더링되어야 한다', () => {
             // given, when
             wrapper = mount(VsAccordion, {
-                props: {
-                    open: true,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { open: true },
             });
 
             // then
             expect(wrapper.vm.isOpen).toBe(true);
-            expect(wrapper.find('details').attributes('open')).toBeDefined();
+            expect(wrapper.classes()).toContain('vs-accordion-open');
         });
 
-        it('open prop이 false일 때 아코디언이 닫힌 상태로 렌더링되어야 한다', () => {
+        it('open prop이 false일 때 닫힌 상태로 렌더링되어야 한다', () => {
             // given, when
             wrapper = mount(VsAccordion, {
-                props: {
-                    open: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { open: false },
             });
 
             // then
             expect(wrapper.vm.isOpen).toBe(false);
-            expect(wrapper.find('details').attributes('open')).toBeUndefined();
+            expect(wrapper.classes()).not.toContain('vs-accordion-open');
+        });
+    });
+
+    describe('primary prop', () => {
+        it('primary가 true일 때 vs-primary 클래스가 적용되어야 한다', () => {
+            // given, when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { primary: true },
+            });
+
+            // then
+            expect(wrapper.classes()).toContain('vs-primary');
+        });
+
+        it('primary가 false일 때 vs-primary 클래스가 적용되지 않아야 한다', () => {
+            // given, when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { primary: false },
+            });
+
+            // then
+            expect(wrapper.classes()).not.toContain('vs-primary');
         });
     });
 
     describe('modelValue prop (v-model)', () => {
-        it('modelValue가 true일 때 아코디언이 열린 상태로 렌더링되어야 한다', () => {
+        it('modelValue가 true일 때 열린 상태로 렌더링되어야 한다', () => {
             // given, when
             wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: true,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: true },
             });
 
             // then
             expect(wrapper.vm.isOpen).toBe(true);
-            expect(wrapper.find('details').attributes('open')).toBeDefined();
+            expect(wrapper.classes()).toContain('vs-accordion-open');
         });
 
-        it('modelValue가 false일 때 아코디언이 닫힌 상태로 렌더링되어야 한다', () => {
+        it('modelValue가 false일 때 닫힌 상태로 렌더링되어야 한다', () => {
             // given, when
             wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: false },
             });
 
             // then
             expect(wrapper.vm.isOpen).toBe(false);
-            expect(wrapper.find('details').attributes('open')).toBeUndefined();
+            expect(wrapper.classes()).not.toContain('vs-accordion-open');
         });
 
-        it('modelValue가 변경되면 아코디언 상태가 업데이트되어야 한다', async () => {
+        it('modelValue가 변경되면 컴포넌트 상태가 업데이트되어야 한다', async () => {
             // given
             wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: false },
             });
 
             // when
@@ -133,176 +180,208 @@ describe('VsAccordion', () => {
 
             // then
             expect(wrapper.vm.isOpen).toBe(true);
-            expect(wrapper.find('details').attributes('open')).toBeDefined();
+            expect(wrapper.classes()).toContain('vs-accordion-open');
+        });
+
+        it('open과 modelValue가 모두 주어진 경우 modelValue가 우선되어야 한다', () => {
+            // given, when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: {
+                    open: false,
+                    modelValue: true,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.classes()).toContain('vs-accordion-open');
         });
     });
 
-    describe('toggle 이벤트', () => {
-        it('아코디언을 클릭하면 toggle 이벤트가 발생해야 한다', async () => {
-            // given
+    describe('클릭 인터랙션', () => {
+        function setupClickTest(initialValue = false) {
             wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: initialValue },
             });
+        }
+
+        it('제목을 클릭하면 아코디언이 토글되어야 한다', async () => {
+            // given
+            setupClickTest(false);
 
             // when
-            await wrapper.find('details').trigger('toggle');
+            await wrapper.find('.vs-accordion-title').trigger('click');
 
             // then
-            const emitted = wrapper.emitted();
-            expect(emitted).toHaveProperty('update:modelValue');
-            expect(emitted).toHaveProperty('toggle');
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.classes()).toContain('vs-accordion-open');
         });
 
-        it('아코디언 상태가 변경되면 update:modelValue 이벤트를 올바른 값으로 emit해야 한다', async () => {
+        it('클릭 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
             // given
-            wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
-            });
-
-            const detailsElement = wrapper.find('details').element as HTMLDetailsElement;
-            detailsElement.open = true;
+            setupClickTest(false);
 
             // when
-            await wrapper.find('details').trigger('toggle');
+            await wrapper.find('.vs-accordion-title').trigger('click');
 
             // then
             const emitted = wrapper.emitted('update:modelValue');
-            expect(emitted).toHaveLength(1);
+            expect(emitted).toBeDefined();
             expect(emitted[0]).toEqual([true]);
         });
 
-        it('아코디언 상태가 변경되면 toggle 이벤트를 올바른 값으로 emit해야 한다', async () => {
+        it('클릭 시 toggle 이벤트가 emit되어야 한다', async () => {
             // given
-            wrapper = mount(VsAccordion, {
-                props: {
-                    modelValue: false,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
-            });
-
-            const detailsElement = wrapper.find('details').element as HTMLDetailsElement;
-            detailsElement.open = true;
+            setupClickTest(false);
 
             // when
-            await wrapper.find('details').trigger('toggle');
+            await wrapper.find('.vs-accordion-title').trigger('click');
 
             // then
             const emitted = wrapper.emitted('toggle');
-            expect(emitted).toHaveLength(1);
+            expect(emitted).toBeDefined();
             expect(emitted[0]).toEqual([true]);
         });
-    });
 
-    describe('colorScheme prop', () => {
-        it('colorScheme prop이 주어지면 해당 클래스가 적용되어야 한다', () => {
-            // given, when
-            wrapper = mount(VsAccordion, {
-                props: {
-                    colorScheme: 'blue',
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
-            });
-
-            // then
-            expect(wrapper.find('.vs-accordion-details').classes()).toContain('vs-color-scheme-blue');
-        });
-
-        it('다양한 colorScheme이 올바르게 적용되어야 한다', () => {
-            const colorSchemes = ['red', 'blue', 'green', 'purple', 'orange'] as const;
-
-            colorSchemes.forEach((scheme) => {
-                // given, when
-                wrapper = mount(VsAccordion, {
-                    props: {
-                        colorScheme: scheme,
-                    },
-                    slots: {
-                        title: '제목',
-                        default: '내용',
-                    },
-                });
-
-                // then
-                expect(wrapper.find('.vs-accordion-details').classes()).toContain(`vs-color-scheme-${scheme}`);
-            });
-        });
-    });
-
-    describe('styleSet prop', () => {
-        it('styleSet prop이 주어지면 스타일이 적용되어야 한다', () => {
+        it('연속 클릭 시 상태가 올바르게 토글되어야 한다', async () => {
             // given
-            const testStyleSet = {
-                backgroundColor: '#ff0000',
-                border: '2px solid #ff0000',
-            };
+            setupClickTest(false);
+            const titleElement = wrapper.find('.vs-accordion-title');
+
+            // when & then
+            await titleElement.trigger('click');
+            expect(wrapper.vm.isOpen).toBe(true);
+
+            await titleElement.trigger('click');
+            expect(wrapper.vm.isOpen).toBe(false);
+
+            await titleElement.trigger('click');
+            expect(wrapper.vm.isOpen).toBe(true);
+        });
+    });
+
+    describe('키보드 인터랙션', () => {
+        function setupKeyboardTest(initialValue = false) {
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { modelValue: initialValue },
+            });
+        }
+
+        it('Enter 키를 누르면 아코디언이 토글되어야 한다', async () => {
+            // given
+            setupKeyboardTest(false);
 
             // when
-            wrapper = mount(VsAccordion, {
-                props: {
-                    styleSet: testStyleSet,
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
-            });
+            await wrapper.find('.vs-accordion').trigger('keydown.enter');
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual(testStyleSet);
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.classes()).toContain('vs-accordion-open');
+        });
+
+        it('Space 키를 누르면 아코디언이 토글되어야 한다', async () => {
+            // given
+            setupKeyboardTest(false);
+
+            // when
+            await wrapper.find('.vs-accordion').trigger('keydown.space');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.classes()).toContain('vs-accordion-open');
+        });
+
+        it('Enter 키 입력 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
+            // given
+            setupKeyboardTest(false);
+
+            // when
+            await wrapper.find('.vs-accordion').trigger('keydown.enter');
+
+            // then
+            const emitted = wrapper.emitted('update:modelValue');
+            expect(emitted).toBeDefined();
+            expect(emitted[0]).toEqual([true]);
+        });
+
+        it('Space 키 입력 시 toggle 이벤트가 emit되어야 한다', async () => {
+            // given
+            setupKeyboardTest(true);
+
+            // when
+            await wrapper.find('.vs-accordion').trigger('keydown.space');
+
+            // then
+            const emitted = wrapper.emitted('toggle');
+            expect(emitted).toBeDefined();
+            expect(emitted[0]).toEqual([false]);
+        });
+
+        it('다른 키 입력 시에는 토글되지 않아야 한다', async () => {
+            // given
+            setupKeyboardTest(false);
+            const initialState = wrapper.vm.isOpen;
+
+            // when
+            await wrapper.find('.vs-accordion').trigger('keydown.tab');
+            await wrapper.find('.vs-accordion').trigger('keydown.escape');
+            await wrapper.find('.vs-accordion').trigger('keydown.arrow-down');
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(initialState);
+            expect(wrapper.emitted()).not.toHaveProperty('toggle');
         });
     });
 
-    describe('responsive props', () => {
-        it('width prop이 주어지면 vs-responsive 컴포넌트에 전달되어야 한다', () => {
-            // given, when
+    describe('상태 관리', () => {
+        it('isOpen 상태가 변경되면 VsExpandable 컴포넌트에 올바르게 전달되어야 한다', async () => {
+            // given
             wrapper = mount(VsAccordion, {
-                props: {
-                    width: '300px',
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: false },
             });
 
+            // when
+            await wrapper.find('.vs-accordion-title').trigger('click');
+
             // then
-            const responsiveComponent = wrapper.findComponent({ name: 'VsResponsive' });
-            expect(responsiveComponent.props('width')).toBe('300px');
+            const expandableComponent = wrapper.findComponent({ name: 'VsExpandable' });
+            expect(expandableComponent.props('open')).toBe(true);
         });
 
-        it('grid prop이 주어지면 vs-responsive 컴포넌트에 전달되어야 한다', () => {
-            // given, when
+        it('상태 변경 시 vs-accordion-open 클래스가 올바르게 적용/제거되어야 한다', async () => {
+            // given
             wrapper = mount(VsAccordion, {
-                props: {
-                    grid: { md: 6, lg: 4 },
-                },
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
+                ...defaultOptions,
+                props: { modelValue: false },
             });
 
-            // then
-            const responsiveComponent = wrapper.findComponent({ name: 'VsResponsive' });
-            expect(responsiveComponent.props('grid')).toEqual({ md: 6, lg: 4 });
+            // when & then
+            expect(wrapper.classes()).not.toContain('vs-accordion-open');
+
+            await wrapper.find('.vs-accordion-title').trigger('click');
+            expect(wrapper.classes()).toContain('vs-accordion-open');
+
+            await wrapper.find('.vs-accordion-title').trigger('click');
+            expect(wrapper.classes()).not.toContain('vs-accordion-open');
+        });
+
+        it('modelValue prop 변경 시 내부 상태가 즉시 동기화되어야 한다', async () => {
+            // given
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { modelValue: false },
+            });
+
+            // when & then
+            await wrapper.setProps({ modelValue: true });
+            expect(wrapper.vm.isOpen).toBe(true);
+
+            await wrapper.setProps({ modelValue: false });
+            expect(wrapper.vm.isOpen).toBe(false);
         });
     });
 });

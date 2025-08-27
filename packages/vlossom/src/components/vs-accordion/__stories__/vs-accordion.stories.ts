@@ -3,7 +3,7 @@ import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/stor
 import VsAccordion from '../VsAccordion.vue';
 
 const meta: Meta<typeof VsAccordion> = {
-    title: 'Components/VsAccordion',
+    title: 'Components/Base Components/VsAccordion',
     component: VsAccordion,
     parameters: {
         docs: {
@@ -37,6 +37,14 @@ const meta: Meta<typeof VsAccordion> = {
             control: 'boolean',
             description: 'v-model로 아코디언 상태 제어',
         },
+        disabled: {
+            control: 'boolean',
+            description: '아코디언 비활성화 상태',
+        },
+        primary: {
+            control: 'boolean',
+            description: 'primary 스타일 적용',
+        },
     },
 };
 
@@ -48,6 +56,32 @@ export const Default: Story = {};
 export const Open: Story = {
     args: {
         open: true,
+    },
+};
+
+export const Disabled: Story = {
+    args: {
+        disabled: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '비활성화된 아코디언입니다. 클릭해도 열리지 않습니다.',
+            },
+        },
+    },
+};
+
+export const Primary: Story = {
+    args: {
+        primary: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'primary 스타일이 적용된 아코디언입니다.',
+            },
+        },
     },
 };
 
@@ -74,30 +108,6 @@ export const ColorScheme: Story = {
                     </vs-accordion>
                 `)}
             </div>
-        `,
-    }),
-};
-
-export const LongContent: Story = {
-    render: () => ({
-        components: { VsAccordion },
-        template: `
-            <vs-accordion>
-                <template #title>긴 콘텐츠가 있는 아코디언</template>
-                <div>
-                    <h4>긴 콘텐츠 테스트</h4>
-                    <p>이 아코디언은 많은 내용을 포함하고 있어 애니메이션 효과를 더 잘 확인할 수 있습니다.</p>
-                    <ul>
-                        <li>리스트 항목 1</li>
-                        <li>리스트 항목 2</li>
-                        <li>리스트 항목 3</li>
-                        <li>리스트 항목 4</li>
-                        <li>리스트 항목 5</li>
-                    </ul>
-                    <p>더 많은 텍스트 내용이 여기 있습니다. 애니메이션이 부드럽게 작동하는지 확인해보세요.</p>
-                    <p>마지막 문단입니다. 이제 아코디언을 닫아보세요!</p>
-                </div>
-            </vs-accordion>
         `,
     }),
 };

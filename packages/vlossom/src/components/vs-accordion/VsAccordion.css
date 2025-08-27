@@ -51,7 +51,7 @@
             right: 1rem;
             transform: translateY(-50%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: 8px solid var(--vs-accordion-fontColor, var(--vs-comp-font));
+            border-top: 8px solid var(--vs-accordion-fontColor, var(--vs-primary-comp-bg));
             border-right: 5px solid transparent;
             border-left: 5px solid transparent;
             width: 0;
