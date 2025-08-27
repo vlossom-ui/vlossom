@@ -14,9 +14,9 @@
         >
             <slot name="title" />
         </div>
-        <VsExpandTransition :open="isOpen" :style-set="componentStyleSet.expand">
+        <VsExpandable :open="isOpen" :style-set="componentStyleSet.expand">
             <slot />
-        </VsExpandTransition>
+        </VsExpandable>
     </vs-responsive>
 </template>
 
@@ -27,12 +27,12 @@ import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsAccordionStyleSet } from './types';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
-import VsExpandTransition from '@/components/vs-expand-transition/VsExpandTransition.vue';
+import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';
 
 const name = VsComponent.VsAccordion;
 export default defineComponent({
     name,
-    components: { VsResponsive, VsExpandTransition },
+    components: { VsResponsive, VsExpandable },
     props: {
         ...getColorSchemeProps(),
         ...getResponsiveProps(),

@@ -1,14 +1,14 @@
 import type { BoxStyleSet, TextStyleSet } from '@/declaration';
-import type VsExpandTransition from './VsExpandTransition.vue';
+import type VsExpandable from './VsExpandable.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
-        VsExpandTransition: typeof VsExpandTransition;
+        VsExpandable: typeof VsExpandable;
     }
 }
 
-export type { VsExpandTransition };
+export type { VsExpandable };
 
-export interface VsExpandTransitionStyleSet
+export interface VsExpandableStyleSet
     extends Omit<BoxStyleSet, 'display' | 'border' | 'borderRadius' | 'opacity'>,
         TextStyleSet {}

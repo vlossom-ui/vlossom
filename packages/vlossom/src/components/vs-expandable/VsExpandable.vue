@@ -1,7 +1,7 @@
 <template>
     <Transition name="vs-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
-        <div v-if="open" class="vs-expand-transition-wrapper" :style="componentStyleSet">
-            <div class="vs-expand-transition-content">
+        <div v-if="open" class="vs-expandable-wrapper" :style="componentStyleSet">
+            <div class="vs-expandable-content">
                 <slot />
             </div>
         </div>
@@ -13,19 +13,19 @@ import { defineComponent, toRefs } from 'vue';
 import { getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
-import type { VsExpandTransitionStyleSet } from './types';
+import type { VsExpandableStyleSet } from './types';
 
-const name = VsComponent.VsExpandTransition;
+const name = VsComponent.VsExpandable;
 export default defineComponent({
     name,
     props: {
-        ...getStyleSetProps<VsExpandTransitionStyleSet>(),
+        ...getStyleSetProps<VsExpandableStyleSet>(),
         open: { type: Boolean, required: true, default: false },
     },
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet<VsExpandTransitionStyleSet>(name, styleSet);
+        const { componentStyleSet } = useStyleSet<VsExpandableStyleSet>(name, styleSet);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;
@@ -35,10 +35,10 @@ export default defineComponent({
 
         function enter(el: Element, done: () => void) {
             const element = el as HTMLElement;
-            const content = element.querySelector('.vs-expand-transition-content') as HTMLElement;
+            const content = element.querySelector('.vs-expandable-content') as HTMLElement;
 
             if (!content) {
-                console.warn('VsExpandTransition: content element not found');
+                console.warn('VsExpandable: content element not found');
                 done();
                 return;
             }
@@ -57,10 +57,10 @@ export default defineComponent({
 
         function beforeLeave(el: Element) {
             const element = el as HTMLElement;
-            const content = element.querySelector('.vs-expand-transition-content') as HTMLElement;
+            const content = element.querySelector('.vs-expandable-content') as HTMLElement;
 
             if (!content) {
-                console.warn('VsExpandTransition: content element not found');
+                console.warn('VsExpandable: content element not found');
                 return;
             }
 
@@ -93,4 +93,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsExpandTransition.css" />
+<style src="./VsExpandable.css" />
