@@ -1,19 +1,32 @@
 <template>
     <vs-responsive
-        tag="details"
-        :class="['vs-accordion', colorSchemeClass, classObj]"
+        :class="['vs-accordion', colorSchemeClass, classObj, { 'vs-accordion-open': isOpen }]"
         :width
         :grid
         :style="componentStyleSet"
-        :open="isOpen"
-        @toggle.stop="onToggle"
+        :tabindex="disabled ? -1 : 0"
     >
-        <summary :class="['vs-accordion-title', { 'vs-focusable': !disabled }]" :tabindex="disabled ? -1 : 0">
+        <div
+            class="vs-accordion-title"
+            @click="!disabled && toggle()"
+            @keydown.enter="!disabled && toggle()"
+            @keydown.space.prevent="!disabled && toggle()"
+        >
             <slot name="title" />
-        </summary>
-        <div class="vs-accordion-expand">
-            <slot />
         </div>
+        <Transition
+            name="vs-accordion"
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @before-leave="beforeLeave"
+            @leave="leave"
+        >
+            <div v-if="isOpen" class="vs-accordion-expand">
+                <div class="vs-accordion-expand-content">
+                    <slot />
+                </div>
+            </div>
+        </Transition>
     </vs-responsive>
 </template>
 
@@ -48,17 +61,55 @@ export default defineComponent({
         const isOpen = ref(open.value || modelValue.value);
 
         const classObj = computed(() => ({
+            'vs-focusable': !disabled.value,
             'vs-disabled': disabled.value,
             'vs-primary': primary.value,
         }));
 
-        function onToggle(event: Event) {
-            const element = event.target as HTMLDetailsElement;
-            isOpen.value = element.open;
-        }
-
         function toggle() {
             isOpen.value = !isOpen.value;
+        }
+
+        function beforeEnter(el: Element) {
+            const element = el as HTMLElement;
+            element.style.height = '0';
+            element.style.opacity = '0';
+        }
+
+        function enter(el: Element, done: () => void) {
+            const element = el as HTMLElement;
+            const content = element.querySelector('.vs-accordion-expand-content') as HTMLElement;
+            element.style.height = content.offsetHeight + 'px';
+            element.style.opacity = '1';
+
+            const handleTransitionEnd = () => {
+                element.removeEventListener('transitionend', handleTransitionEnd);
+                element.style.height = 'auto';
+                done();
+            };
+
+            element.addEventListener('transitionend', handleTransitionEnd);
+        }
+
+        function beforeLeave(el: Element) {
+            const element = el as HTMLElement;
+            const content = element.querySelector('.vs-accordion-expand-content') as HTMLElement;
+            element.style.height = content.offsetHeight + 'px';
+        }
+
+        function leave(el: Element, done: () => void) {
+            const element = el as HTMLElement;
+            // force reflow
+            void element.offsetHeight;
+            element.style.height = '0';
+            element.style.opacity = '0';
+
+            const handleTransitionEnd = () => {
+                element.removeEventListener('transitionend', handleTransitionEnd);
+                done();
+            };
+
+            element.addEventListener('transitionend', handleTransitionEnd);
         }
 
         watch(modelValue, (o) => {
@@ -75,8 +126,11 @@ export default defineComponent({
             componentStyleSet,
             isOpen,
             classObj,
-            onToggle,
             toggle,
+            beforeEnter,
+            enter,
+            beforeLeave,
+            leave,
         };
     },
 });

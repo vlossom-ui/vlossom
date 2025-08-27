@@ -12,11 +12,6 @@
         outline-offset: 2px !important;
     }
 
-    .vs-focusable:focus {
-        outline: 1px solid var(--vs-line-color) !important;
-        outline-offset: 2px !important;
-    }
-
     .vs-hide-scroll {
         overflow: scroll;
         -ms-overflow-style: none; /* IE and Edge */
