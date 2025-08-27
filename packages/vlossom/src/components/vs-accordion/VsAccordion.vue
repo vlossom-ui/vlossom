@@ -11,9 +11,9 @@
         <div class="vs-accordion-title" @click.stop="toggle">
             <slot name="title" />
         </div>
-        <VsExpandable :open="isOpen" :style-set="componentStyleSet.expand">
+        <vs-expandable :open="isOpen" :style-set="componentStyleSet.expand">
             <slot />
-        </VsExpandable>
+        </vs-expandable>
     </vs-responsive>
 </template>
 
