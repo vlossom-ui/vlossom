@@ -9,7 +9,7 @@ const meta: Meta<typeof VsAccordion> = {
         docs: {
             description: {
                 component:
-                    'VsAccordion은 details + summary 태그를 사용한 접을 수 있는 콘텐츠 영역 컴포넌트입니다. 부드러운 슬라이드 애니메이션을 제공합니다.',
+                    'VsAccordion은 접을 수 있는 콘텐츠 영역 컴포넌트입니다. 부드러운 슬라이드 애니메이션을 제공합니다.',
             },
         },
     },

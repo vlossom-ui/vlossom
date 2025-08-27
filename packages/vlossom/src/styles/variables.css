@@ -25,11 +25,11 @@
         --vs-font-size-xl: 1.2rem;
 
         --vs-radius-ratio: 1;
-        --vs-radius-xs: 0.3rem;
-        --vs-radius-sm: 0.4rem;
-        --vs-radius: 0.5rem;
-        --vs-radius-lg: 0.6rem;
-        --vs-radius-xl: 0.7rem;
+        --vs-radius-xs: 0.2rem;
+        --vs-radius-sm: 0.3rem;
+        --vs-radius: 0.4rem;
+        --vs-radius-lg: 0.5rem;
+        --vs-radius-xl: 0.6rem;
 
         --vs-modal-height-xs: 20%;
         --vs-modal-height-sm: 30%;

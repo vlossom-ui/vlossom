@@ -30,20 +30,6 @@
         font-size: var(--vs-accordion-fontSize, var(--vs-font-size));
         line-height: var(--vs-accordion-lineHeight, var(--vs-line-height));
 
-        /* 기본 marker 숨기기 */
-        list-style: none;
-        user-select: none;
-        white-space: var(--vs-accordion-whiteSpace, var(--vs-white-space));
-        &::-webkit-details-marker {
-            display: none;
-        }
-        &::marker {
-            display: none;
-        }
-        &::-moz-list-bullet {
-            display: none;
-        }
-
         /* 화살표 아이콘 추가 */
         &::after {
             position: absolute;
