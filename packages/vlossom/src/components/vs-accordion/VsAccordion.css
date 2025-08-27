@@ -13,14 +13,6 @@
     --vs-accordion-lineHeight: initial;
     --vs-accordion-whiteSpace: initial;
 
-    --vs-accordion-expand-backgroundColor: initial;
-    --vs-accordion-expand-padding: initial;
-    --vs-accordion-expand-fontColor: initial;
-    --vs-accordion-expand-fontSize: initial;
-    --vs-accordion-expand-fontWeight: initial;
-    --vs-accordion-expand-lineHeight: initial;
-    --vs-accordion-expand-whiteSpace: initial;
-
     @apply relative overflow-hidden;
 
     border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
@@ -76,20 +68,6 @@
         }
     }
 
-    .vs-accordion-expand {
-        @apply relative w-full overflow-hidden;
-        background-color: var(--vs-accordion-expand-backgroundColor, var(--vs-area-bg));
-    }
-
-    .vs-accordion-expand-content {
-        padding: var(--vs-accordion-expand-padding, 0.75rem 1rem);
-        color: var(--vs-accordion-expand-fontColor, var(--vs-comp-font));
-        font-weight: var(--vs-accordion-expand-fontWeight, var(--vs-font-weight));
-        font-size: var(--vs-accordion-expand-fontSize, var(--vs-font-size));
-        line-height: var(--vs-accordion-expand-lineHeight, var(--vs-line-height));
-        white-space: var(--vs-accordion-expand-whiteSpace, var(--vs-white-space));
-    }
-
     &.vs-accordion-open {
         .vs-accordion-title {
             border-bottom: var(--vs-accordion-border, 1px solid var(--vs-line-color));
@@ -97,15 +75,6 @@
         .vs-accordion-title::after {
             transform: translateY(-50%) rotate(180deg);
         }
-    }
-
-    /* Vue Transition 클래스들 */
-    .vs-accordion-enter-active,
-    .vs-accordion-leave-active {
-        transition:
-            height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            opacity 0.6s ease-out;
-        overflow: hidden;
     }
 
     &.vs-primary {

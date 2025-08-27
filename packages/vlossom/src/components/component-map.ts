@@ -11,6 +11,7 @@ import VsBar from './vs-bar/VsBar.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsContainer from './vs-container/VsContainer.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
+import VsExpandTransition from './vs-expand-transition/VsExpandTransition.vue';
 import VsFocusTrap from './vs-focus-trap/VsFocusTrap.vue';
 import VsFooter from './vs-footer/VsFooter.vue';
 import VsForm from './vs-form/VsForm.vue';
@@ -32,6 +33,7 @@ export const VlossomComponents = {
     VsButton,
     VsContainer,
     VsDivider,
+    VsExpandTransition,
     VsFocusTrap,
     VsFooter,
     VsForm,

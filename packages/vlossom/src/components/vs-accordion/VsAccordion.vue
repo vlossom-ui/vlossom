@@ -14,19 +14,9 @@
         >
             <slot name="title" />
         </div>
-        <Transition
-            name="vs-accordion"
-            @before-enter="beforeEnter"
-            @enter="enter"
-            @before-leave="beforeLeave"
-            @leave="leave"
-        >
-            <div v-if="isOpen" class="vs-accordion-expand">
-                <div class="vs-accordion-expand-content">
-                    <slot />
-                </div>
-            </div>
-        </Transition>
+        <VsExpandTransition :open="isOpen" :style-set="componentStyleSet.expand">
+            <slot />
+        </VsExpandTransition>
     </vs-responsive>
 </template>
 
@@ -37,11 +27,12 @@ import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsAccordionStyleSet } from './types';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
+import VsExpandTransition from '@/components/vs-expand-transition/VsExpandTransition.vue';
 
 const name = VsComponent.VsAccordion;
 export default defineComponent({
     name,
-    components: { VsResponsive },
+    components: { VsResponsive, VsExpandTransition },
     props: {
         ...getColorSchemeProps(),
         ...getResponsiveProps(),
@@ -70,48 +61,6 @@ export default defineComponent({
             isOpen.value = !isOpen.value;
         }
 
-        function beforeEnter(el: Element) {
-            const element = el as HTMLElement;
-            element.style.height = '0';
-            element.style.opacity = '0';
-        }
-
-        function enter(el: Element, done: () => void) {
-            const element = el as HTMLElement;
-            const content = element.querySelector('.vs-accordion-expand-content') as HTMLElement;
-            element.style.height = content.offsetHeight + 'px';
-            element.style.opacity = '1';
-
-            const handleTransitionEnd = () => {
-                element.removeEventListener('transitionend', handleTransitionEnd);
-                element.style.height = 'auto';
-                done();
-            };
-
-            element.addEventListener('transitionend', handleTransitionEnd);
-        }
-
-        function beforeLeave(el: Element) {
-            const element = el as HTMLElement;
-            const content = element.querySelector('.vs-accordion-expand-content') as HTMLElement;
-            element.style.height = content.offsetHeight + 'px';
-        }
-
-        function leave(el: Element, done: () => void) {
-            const element = el as HTMLElement;
-            // force reflow
-            void element.offsetHeight;
-            element.style.height = '0';
-            element.style.opacity = '0';
-
-            const handleTransitionEnd = () => {
-                element.removeEventListener('transitionend', handleTransitionEnd);
-                done();
-            };
-
-            element.addEventListener('transitionend', handleTransitionEnd);
-        }
-
         watch(modelValue, (o) => {
             isOpen.value = o;
         });
@@ -127,10 +76,6 @@ export default defineComponent({
             isOpen,
             classObj,
             toggle,
-            beforeEnter,
-            enter,
-            beforeLeave,
-            leave,
         };
     },
 });

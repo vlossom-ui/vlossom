@@ -5,6 +5,7 @@ export enum VsComponent {
     VsButton = 'VsButton',
     VsContainer = 'VsContainer',
     VsDivider = 'VsDivider',
+    VsExpandTransition = 'VsExpandTransition',
     VsFocusTrap = 'VsFocusTrap',
     VsFooter = 'VsFooter',
     VsForm = 'VsForm',
