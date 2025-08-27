@@ -1,38 +1,65 @@
 .vs-accordion {
-    /* 기본 스타일링 */
-    .vs-accordion-details {
-        border: 1px solid var(--vs-line-color);
-        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius));
-        background-color: var(--vs-area-bg);
-        overflow: hidden;
-    }
+    --vs-accordion-width: initial;
+    --vs-accordion-height: initial;
+    --vs-accordion-backgroundColor: initial;
+    --vs-accordion-border: initial;
+    --vs-accordion-borderRadius: initial;
+    --vs-accordion-padding: initial;
+    --vs-accordion-opacity: initial;
 
-    .vs-accordion-summary {
-        display: flex;
-        position: relative;
-        align-items: center;
-        transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        background-color: var(--vs-comp-bg);
-        padding: 0.75rem 1rem;
-        color: var(--vs-comp-font);
+    --vs-accordion-fontColor: initial;
+    --vs-accordion-fontSize: initial;
+    --vs-accordion-fontWeight: initial;
+    --vs-accordion-lineHeight: initial;
+    --vs-accordion-whiteSpace: initial;
+
+    --vs-accordion-expand-backgroundColor: initial;
+    --vs-accordion-expand-padding: initial;
+    --vs-accordion-expand-fontColor: initial;
+    --vs-accordion-expand-fontSize: initial;
+    --vs-accordion-expand-fontWeight: initial;
+    --vs-accordion-expand-lineHeight: initial;
+    --vs-accordion-expand-whiteSpace: initial;
+
+    @apply relative overflow-hidden;
+
+    border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-accordion-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    width: var(--vs-accordion-width, 100%);
+
+    .vs-accordion-title {
+        @apply relative w-full cursor-pointer outline-none hover:brightness-96 active:brightness-92;
+
+        background-color: var(--vs-accordion-backgroundColor, var(--vs-comp-bg));
+        padding: var(--vs-accordion-padding, 0.75rem 1rem);
+        height: var(--vs-accordion-height, auto);
+        color: var(--vs-accordion-fontColor, var(--vs-comp-font));
+        font-weight: var(--vs-accordion-fontWeight, var(--vs-font-weight));
+        font-size: var(--vs-accordion-fontSize, var(--vs-font-size));
+        line-height: var(--vs-accordion-lineHeight, var(--vs-line-height));
+
+        /* 기본 marker 숨기기 */
         list-style: none;
         user-select: none;
-
+        white-space: var(--vs-accordion-whiteSpace, var(--vs-white-space));
         &::-webkit-details-marker {
             display: none;
         }
-
         &::marker {
+            display: none;
+        }
+        &::-moz-list-bullet {
             display: none;
         }
 
         /* 화살표 아이콘 추가 */
         &::after {
             position: absolute;
+            top: 50%;
             right: 1rem;
+            transform: translateY(-50%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: 8px solid var(--vs-comp-font);
+            border-top: 8px solid var(--vs-accordion-fontColor, var(--vs-comp-font));
             border-right: 5px solid transparent;
             border-left: 5px solid transparent;
             width: 0;
@@ -40,47 +67,50 @@
             content: '';
         }
 
-        &:hover {
-            background-color: var(--vs-area-bg-hover);
-        }
+        @variant dark {
+            @apply hover:brightness-104 active:brightness-108;
 
-        &:active {
-            background-color: var(--vs-area-bg-active);
-        }
-    }
-
-    .vs-accordion-content {
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-        background-color: var(--vs-area-bg);
-        padding: 1rem;
-        color: var(--vs-font-color);
-    }
-
-    /* 열린 상태 */
-    .vs-accordion-details[open] {
-        .vs-accordion-summary::after {
-            transform: rotate(180deg);
-        }
-
-        .vs-accordion-content {
-            opacity: 1;
+            &.vs-primary {
+                @apply hover:brightness-96 active:brightness-92;
+            }
         }
     }
 
-    /* focus 상태 */
-    .vs-accordion-summary:focus-visible {
-        outline: 2px solid var(--vs-primary-comp-bg);
-        outline-offset: 2px;
+    .vs-accordion-expand {
+        @apply relative w-full overflow-hidden;
+
+        background-color: var(--vs-accordion-expand-backgroundColor, var(--vs-area-bg));
+        padding: var(--vs-accordion-expand-padding, 0.75rem 1rem);
+        color: var(--vs-accordion-expand-fontColor, var(--vs-comp-font));
+        font-weight: var(--vs-accordion-expand-fontWeight, var(--vs-font-weight));
+        font-size: var(--vs-accordion-expand-fontSize, var(--vs-font-size));
+        line-height: var(--vs-accordion-expand-lineHeight, var(--vs-line-height));
+        white-space: var(--vs-accordion-expand-whiteSpace, var(--vs-white-space));
     }
 
-    /* 비활성화된 상태 (필요시 추가) */
-    &.vs-disabled {
-        opacity: 0.6;
-        pointer-events: none;
+    &[open] {
+        .vs-accordion-title {
+            border-bottom: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+        }
+        .vs-accordion-title::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+    }
 
-        .vs-accordion-summary {
-            cursor: not-allowed;
+    &.vs-primary {
+        border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+
+        .vs-accordion-title {
+            @apply hover:brightness-104 active:brightness-108;
+
+            border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-accordion-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
+            font-weight: var(--vs-accordion-fontWeight, 500);
+
+            &::after {
+                border-top-color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
+            }
         }
     }
 }
