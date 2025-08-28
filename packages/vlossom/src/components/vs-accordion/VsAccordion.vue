@@ -40,6 +40,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: Boolean, default: false },
     },
+    emits: ['update:modelValue', 'toggle'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, open, modelValue, disabled, primary } = toRefs(props);
 
