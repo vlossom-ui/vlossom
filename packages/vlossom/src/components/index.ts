@@ -11,6 +11,7 @@ export { default as VsForm } from './vs-form/VsForm.vue';
 export { default as VsGrid } from './vs-grid/VsGrid.vue';
 export { default as VsHeader } from './vs-header/VsHeader.vue';
 export { default as VsImage } from './vs-image/VsImage.vue';
+export { default as VsIndexView } from './vs-index-view/VsIndexView.vue';
 export { default as VsInnerScroll } from './vs-inner-scroll/VsInnerScroll.vue';
 export { default as VsLayout } from './vs-layout/VsLayout.vue';
 export { default as VsLoading } from './vs-loading/VsLoading.vue';

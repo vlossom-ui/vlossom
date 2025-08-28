@@ -1,0 +1,7 @@
+.vs-index-view {
+    @apply relative w-full;
+}
+
+.vs-index-view-container {
+    @apply relative h-full w-full;
+}

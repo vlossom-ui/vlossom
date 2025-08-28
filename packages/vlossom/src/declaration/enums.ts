@@ -10,6 +10,7 @@ export enum VsComponent {
     VsGrid = 'VsGrid',
     VsHeader = 'VsHeader',
     VsImage = 'VsImage',
+    VsIndexView = 'VsIndexView',
     VsInnerScroll = 'VsInnerScroll',
     VsLayout = 'VsLayout',
     VsLoading = 'VsLoading',

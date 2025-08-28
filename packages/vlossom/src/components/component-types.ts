@@ -9,6 +9,7 @@ export type * from './vs-form/types';
 export type * from './vs-grid/types';
 export type * from './vs-header/types';
 export type * from './vs-image/types';
+export type * from './vs-index-view/types';
 export type * from './vs-inner-scroll/types';
 export type * from './vs-layout/types';
 export type * from './vs-loading/types';
