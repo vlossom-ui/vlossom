@@ -10,7 +10,7 @@ export default defineComponent({
     name,
     props: {
         ...getResponsiveProps(),
-        keepAlive: { type: Boolean, default: true },
+        keepAlive: { type: Boolean, default: false },
         // v-model
         modelValue: { type: Number, default: 0 },
     },

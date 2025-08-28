@@ -54,7 +54,7 @@ const currentIndex = ref(0);
 | Prop         | Type                              | Default | Required | Description                                    |
 | ------------ | --------------------------------- | ------- | -------- | ---------------------------------------------- |
 | `modelValue` | `number`                          | `0`     | -        | 현재 표시할 슬롯의 인덱스 (v-model로 바인딩)   |
-| `keepAlive`  | `boolean`                         | `true`  | -        | 컴포넌트 상태 보존을 위한 keep-alive 사용 여부 |
+| `keepAlive`  | `boolean`                         | `false` | -        | 컴포넌트 상태 보존을 위한 keep-alive 사용 여부 |
 | `width`      | `string \| number \| Breakpoints` | -       | -        | 반응형 너비 설정                               |
 | `grid`       | `string \| number \| Breakpoints` | -       | -        | 반응형 그리드 컬럼 수                          |
 
@@ -91,7 +91,7 @@ interface Breakpoints {
 ## 특징
 
 - **v-model 지원**: `modelValue` prop과 `update:modelValue` 이벤트를 통한 양방향 데이터 바인딩
-- **Keep-alive 옵션**: 컴포넌트 상태 보존 가능, 기본값은 `true`
+- **Keep-alive 옵션**: vue 내장 컴포넌트 KeepAlive를 이용해서 view 상태 보존 가능
 - **Fragment 노드 평면화**: `v-for`로 생성된 여러 요소들이 각각 개별 인덱스로 인식
 - **자동 주석 필터링**: HTML 주석과 빈 텍스트 노드는 자동으로 제외되어 정확한 인덱싱 보장
 - **반응형 지원**: `width`와 `grid` props를 통한 반응형 레이아웃 구현
