@@ -31,6 +31,8 @@ export interface BarLayout {
 
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
+export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
+
 export interface DrawerLayout {
     isOpen: boolean;
     responsive: boolean;
