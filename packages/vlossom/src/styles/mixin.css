@@ -1,6 +1,6 @@
 @layer utilities {
     .vs-disabled {
-        @apply pointer-events-none cursor-default opacity-50 grayscale-60;
+        @apply pointer-events-none cursor-default opacity-50 grayscale-60 select-none;
     }
 
     .vs-readonly {
@@ -8,7 +8,8 @@
     }
 
     .vs-focusable:focus-visible {
-        @apply outline-1 outline-offset-2 outline-(--vs-line-color);
+        outline: 1px solid var(--vs-line-color) !important;
+        outline-offset: 2px !important;
     }
 
     .vs-hide-scroll {

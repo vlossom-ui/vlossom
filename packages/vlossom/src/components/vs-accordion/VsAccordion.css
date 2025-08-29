@@ -1,0 +1,88 @@
+.vs-accordion {
+    --vs-accordion-width: initial;
+    --vs-accordion-height: initial;
+    --vs-accordion-backgroundColor: initial;
+    --vs-accordion-border: initial;
+    --vs-accordion-borderRadius: initial;
+    --vs-accordion-padding: initial;
+    --vs-accordion-opacity: initial;
+
+    --vs-accordion-fontColor: initial;
+    --vs-accordion-fontSize: initial;
+    --vs-accordion-fontWeight: initial;
+    --vs-accordion-lineHeight: initial;
+    --vs-accordion-whiteSpace: initial;
+
+    @apply relative overflow-hidden;
+
+    border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-accordion-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    width: var(--vs-accordion-width, 100%);
+
+    .vs-accordion-title {
+        @apply relative w-full cursor-pointer outline-none hover:brightness-96 active:brightness-92;
+
+        background-color: var(--vs-accordion-backgroundColor, var(--vs-comp-bg));
+        padding: var(--vs-accordion-padding, 0.75rem 1rem);
+        height: var(--vs-accordion-height, auto);
+        color: var(--vs-accordion-fontColor, var(--vs-comp-font));
+        font-weight: var(--vs-accordion-fontWeight, var(--vs-font-weight));
+        font-size: var(--vs-accordion-fontSize, var(--vs-font-size));
+        line-height: var(--vs-accordion-lineHeight, var(--vs-line-height));
+
+        /* 화살표 아이콘 추가 */
+        &::after {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 8px solid var(--vs-accordion-fontColor, var(--vs-primary-comp-bg));
+            border-right: 5px solid transparent;
+            border-left: 5px solid transparent;
+            width: 0;
+            height: 0;
+            content: '';
+        }
+
+        @variant dark {
+            @apply hover:brightness-104 active:brightness-108;
+
+            &.vs-primary {
+                @apply hover:brightness-96 active:brightness-92;
+            }
+        }
+    }
+
+    &.vs-accordion-open {
+        .vs-accordion-title {
+            border-bottom: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+        }
+        .vs-accordion-title::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+    }
+
+    &.vs-primary {
+        border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+
+        .vs-accordion-title {
+            @apply hover:brightness-104 active:brightness-108;
+
+            border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-accordion-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
+            font-weight: var(--vs-accordion-fontWeight, 500);
+
+            &::after {
+                border-top-color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
+            }
+        }
+
+        &.vs-accordion-open {
+            .vs-accordion-title {
+                border-bottom: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+            }
+        }
+    }
+}

@@ -1,9 +1,11 @@
 export enum VsComponent {
+    VsAccordion = 'VsAccordion',
     VsAvatar = 'VsAvatar',
     VsBar = 'VsBar',
     VsButton = 'VsButton',
     VsContainer = 'VsContainer',
     VsDivider = 'VsDivider',
+    VsExpandable = 'VsExpandable',
     VsFocusTrap = 'VsFocusTrap',
     VsFooter = 'VsFooter',
     VsForm = 'VsForm',

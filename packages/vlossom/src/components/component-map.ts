@@ -5,11 +5,13 @@
  * Tree shaking 최적화가 필요한 경우 개별 컴포넌트만 import하세요.
  */
 
+import VsAccordion from './vs-accordion/VsAccordion.vue';
 import VsAvatar from './vs-avatar/VsAvatar.vue';
 import VsBar from './vs-bar/VsBar.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsContainer from './vs-container/VsContainer.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
+import VsExpandable from './vs-expandable/VsExpandable.vue';
 import VsFocusTrap from './vs-focus-trap/VsFocusTrap.vue';
 import VsFooter from './vs-footer/VsFooter.vue';
 import VsForm from './vs-form/VsForm.vue';
@@ -26,11 +28,13 @@ import VsSection from './vs-section/VsSection.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 
 export const VlossomComponents = {
+    VsAccordion,
     VsAvatar,
     VsBar,
     VsButton,
     VsContainer,
     VsDivider,
+    VsExpandable,
     VsFocusTrap,
     VsFooter,
     VsForm,

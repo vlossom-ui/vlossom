@@ -1,10 +1,12 @@
 export * from './component-types';
 
+export { default as VsAccordion } from './vs-accordion/VsAccordion.vue';
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
 export { default as VsBar } from './vs-bar/VsBar.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';
+export { default as VsExpandable } from './vs-expandable/VsExpandable.vue';
 export { default as VsFocusTrap } from './vs-focus-trap/VsFocusTrap.vue';
 export { default as VsFooter } from './vs-footer/VsFooter.vue';
 export { default as VsForm } from './vs-form/VsForm.vue';

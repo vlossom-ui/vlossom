@@ -1,8 +1,10 @@
+export type * from './vs-accordion/types';
 export type * from './vs-avatar/types';
 export type * from './vs-bar/types';
 export type * from './vs-button/types';
 export type * from './vs-container/types';
 export type * from './vs-divider/types';
+export type * from './vs-expandable/types';
 export type * from './vs-focus-trap/types';
 export type * from './vs-footer/types';
 export type * from './vs-form/types';
