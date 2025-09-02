@@ -19,3 +19,4 @@ export type * from './vs-render/types';
 export type * from './vs-responsive/types';
 export type * from './vs-section/types';
 export type * from './vs-skeleton/types';
+export type * from './vs-toggle/types';
