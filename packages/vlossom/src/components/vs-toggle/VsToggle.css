@@ -1,7 +1,7 @@
 .vs-toggle {
-    @apply relative;
+    @apply h-full w-full;
 
     &.vs-invisible .vs-button {
-        @apply border-none bg-transparent opacity-0;
+        @apply h-full w-full border-none bg-transparent opacity-0;
     }
 }
