@@ -1,0 +1,7 @@
+.vs-toggle {
+    @apply relative;
+
+    &.vs-invisible .vs-button {
+        @apply border-none bg-transparent opacity-0;
+    }
+}
