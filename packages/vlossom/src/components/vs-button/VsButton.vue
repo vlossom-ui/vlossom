@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, watch, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getButtonModifierProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsButtonStyleSet } from './types';
 
@@ -34,20 +34,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsButtonStyleSet>(),
-        circle: { type: Boolean, default: false },
-        disabled: { type: Boolean, default: false },
-        ghost: { type: Boolean, default: false },
-        large: { type: Boolean, default: false },
-        loading: { type: Boolean, default: false },
-        outline: { type: Boolean, default: false },
-        primary: { type: Boolean, default: false },
-        responsive: { type: Boolean, default: false },
-        small: { type: Boolean, default: false },
-        type: {
-            type: String as PropType<'button' | 'submit' | 'reset'>,
-            default: 'button',
-        },
-        ariaLabel: { type: String, default: '' },
+        ...getButtonModifierProps(),
     },
     setup(props) {
         const { colorScheme, styleSet, circle, disabled, ghost, large, loading, outline, primary, responsive, small } =
