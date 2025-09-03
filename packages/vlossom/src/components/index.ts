@@ -21,3 +21,4 @@ export { default as VsRender } from './vs-render/VsRender.vue';
 export { default as VsResponsive } from './vs-responsive/VsResponsive.vue';
 export { default as VsSection } from './vs-section/VsSection.vue';
 export { default as VsSkeleton } from './vs-skeleton/VsSkeleton.vue';
+export { default as VsToggle } from './vs-toggle/VsToggle.vue';
