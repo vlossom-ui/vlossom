@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-toggle', classObj]">
+    <div :class="['vs-toggle']">
         <vs-button
             type="button"
             :color-scheme="colorScheme"
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -38,22 +38,17 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsToggleStyleSet>(),
         ...getButtonProps(),
-        invisible: { type: Boolean, default: false },
 
         // v-model
         modelValue: { type: Boolean, default: false },
     },
     emits: ['update:modelValue', 'toggle'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, modelValue, invisible } = toRefs(props);
+        const { colorScheme, styleSet, modelValue } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsToggleStyleSet>(name, styleSet);
-
-        const classObj = computed(() => ({
-            'vs-invisible': invisible.value,
-        }));
 
         function toggleOnOff() {
             const nextValue = !modelValue.value;
@@ -65,7 +60,6 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
-            classObj,
             toggleOnOff,
         };
     },
