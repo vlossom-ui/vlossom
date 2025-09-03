@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, watch, type PropType } from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, watch } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getButtonModifierProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';

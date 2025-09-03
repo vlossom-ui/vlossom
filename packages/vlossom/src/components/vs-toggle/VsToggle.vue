@@ -13,7 +13,7 @@
             :responsive="responsive"
             :small="small"
             :aria-label="ariaLabel"
-            @click.prevent.stop="toggleOnOff"
+            @click="toggleOnOff"
         >
             <slot />
         </vs-button>
