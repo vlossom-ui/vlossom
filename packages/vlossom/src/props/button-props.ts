@@ -1,6 +1,6 @@
 import type { PropType } from 'vue';
 
-export function getButtonModifierProps() {
+export function getButtonProps() {
     return {
         circle: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },

@@ -20,7 +20,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, watch } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getButtonModifierProps, getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsButtonStyleSet } from './types';
 
@@ -34,7 +34,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsButtonStyleSet>(),
-        ...getButtonModifierProps(),
+        ...getButtonProps(),
     },
     setup(props) {
         const { colorScheme, styleSet, circle, disabled, ghost, large, loading, outline, primary, responsive, small } =

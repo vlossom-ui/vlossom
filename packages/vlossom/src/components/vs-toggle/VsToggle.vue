@@ -24,7 +24,7 @@
 import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
-import { getButtonModifierProps, getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { VsToggleStyleSet } from './types';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
@@ -37,7 +37,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsToggleStyleSet>(),
-        ...getButtonModifierProps(),
+        ...getButtonProps(),
         invisible: { type: Boolean, default: false },
 
         // v-model
