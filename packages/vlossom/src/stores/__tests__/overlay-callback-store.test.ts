@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { OverlayCallbackStore } from '../overlay-callback-store';
 import { VS_OVERLAY_OPEN, VS_OVERLAY_CLOSE } from '@/declaration';
 import type { OverlayCallbacks } from '@/declaration';
@@ -32,7 +32,7 @@ describe('OverlayCallbackStore', () => {
             const overlayId = 'test-overlay-1';
             const openCallback = vi.fn();
             const vlossomOpenCallback = vi.fn();
-            const callbacks = ref<OverlayCallbacks>({
+            const callbacks: Ref<OverlayCallbacks> = ref({
                 open: openCallback,
                 [VS_OVERLAY_OPEN]: vlossomOpenCallback,
             });
@@ -52,8 +52,8 @@ describe('OverlayCallbackStore', () => {
             // given
             const overlay1 = 'overlay-1';
             const overlay2 = 'overlay-2';
-            const callbacks1 = ref<OverlayCallbacks>({ open: vi.fn() });
-            const callbacks2 = ref<OverlayCallbacks>({ open: vi.fn() });
+            const callbacks1: Ref<OverlayCallbacks> = ref({ open: vi.fn() });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ open: vi.fn() });
 
             // when
             await store.push(overlay1, callbacks1);
@@ -68,7 +68,7 @@ describe('OverlayCallbackStore', () => {
         it('open 콜백이 없어도 정상 작동해야 한다', async () => {
             // given
             const overlayId = 'test-overlay';
-            const callbacks = ref<OverlayCallbacks>({});
+            const callbacks: Ref<OverlayCallbacks> = ref({});
 
             // when & then
             expect(async () => {
@@ -83,7 +83,7 @@ describe('OverlayCallbackStore', () => {
             // given
             const overlay1 = 'overlay-1';
             const overlay2 = 'overlay-2';
-            const callbacks = ref<OverlayCallbacks>({});
+            const callbacks: Ref<OverlayCallbacks> = ref({});
 
             // when
             await store.push(overlay1, callbacks);
@@ -108,7 +108,7 @@ describe('OverlayCallbackStore', () => {
             const overlayId = 'test-overlay';
             const closeCallback = vi.fn();
             const vlossomCloseCallback = vi.fn();
-            const callbacks = ref<OverlayCallbacks>({
+            const callbacks: Ref<OverlayCallbacks> = ref({
                 close: closeCallback,
                 [VS_OVERLAY_CLOSE]: vlossomCloseCallback,
             });
@@ -127,7 +127,7 @@ describe('OverlayCallbackStore', () => {
             // given
             const overlayId = 'test-overlay';
             const closeCallback = vi.fn();
-            const callbacks = ref<OverlayCallbacks>({ close: closeCallback });
+            const callbacks: Ref<OverlayCallbacks> = ref({ close: closeCallback });
             await store.push(overlayId, callbacks);
             const args = ['arg1', 'arg2'];
 
@@ -148,7 +148,7 @@ describe('OverlayCallbackStore', () => {
         it('close 콜백이 없어도 정상 작동해야 한다', async () => {
             // given
             const overlayId = 'test-overlay';
-            const callbacks = ref<OverlayCallbacks>({});
+            const callbacks: Ref<OverlayCallbacks> = ref({});
             await store.push(overlayId, callbacks);
 
             // when & then
@@ -166,8 +166,8 @@ describe('OverlayCallbackStore', () => {
             const overlay2 = 'overlay-2';
             const closeCallback1 = vi.fn();
             const closeCallback2 = vi.fn();
-            const callbacks1 = ref<OverlayCallbacks>({ close: closeCallback1 });
-            const callbacks2 = ref<OverlayCallbacks>({ close: closeCallback2 });
+            const callbacks1: Ref<OverlayCallbacks> = ref({ close: closeCallback1 });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ close: closeCallback2 });
 
             await store.push(overlay1, callbacks1);
             await store.push(overlay2, callbacks2);
@@ -185,7 +185,7 @@ describe('OverlayCallbackStore', () => {
         it('존재하지 않는 ID로 제거를 시도해도 정상 작동해야 한다', async () => {
             // given
             const overlayId = 'existing-overlay';
-            const callbacks = ref<OverlayCallbacks>({});
+            const callbacks: Ref<OverlayCallbacks> = ref({});
             await store.push(overlayId, callbacks);
 
             // when & then
@@ -199,7 +199,7 @@ describe('OverlayCallbackStore', () => {
             // given
             const overlayId = 'test-overlay';
             const closeCallback = vi.fn();
-            const callbacks = ref<OverlayCallbacks>({ close: closeCallback });
+            const callbacks: Ref<OverlayCallbacks> = ref({ close: closeCallback });
             await store.push(overlayId, callbacks);
             const args = ['arg1', 'arg2'];
 
@@ -220,10 +220,13 @@ describe('OverlayCallbackStore', () => {
             const closeCallback1 = vi.fn();
             const closeCallback2 = vi.fn();
             const closeCallback3 = vi.fn();
+            const callbacks1: Ref<OverlayCallbacks> = ref({ close: closeCallback1 });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ close: closeCallback2 });
+            const callbacks3: Ref<OverlayCallbacks> = ref({ close: closeCallback3 });
 
-            await store.push(overlay1, ref({ close: closeCallback1 }));
-            await store.push(overlay2, ref({ close: closeCallback2 }));
-            await store.push(overlay3, ref({ close: closeCallback3 }));
+            await store.push(overlay1, callbacks1);
+            await store.push(overlay2, callbacks2);
+            await store.push(overlay3, callbacks3);
 
             // when
             await store.clear();
@@ -246,9 +249,11 @@ describe('OverlayCallbackStore', () => {
             const closeCallback2 = vi.fn(() => {
                 callOrder.push('close-2');
             });
+            const callbacks1: Ref<OverlayCallbacks> = ref({ close: closeCallback1 });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ close: closeCallback2 });
 
-            await store.push(overlay1, ref({ close: closeCallback1 }));
-            await store.push(overlay2, ref({ close: closeCallback2 }));
+            await store.push(overlay1, callbacks1);
+            await store.push(overlay2, callbacks2);
 
             // when
             await store.clear();
@@ -270,9 +275,11 @@ describe('OverlayCallbackStore', () => {
             const overlay2 = 'overlay-2';
             const closeCallback1 = vi.fn();
             const closeCallback2 = vi.fn();
+            const callbacks1: Ref<OverlayCallbacks> = ref({ close: closeCallback1 });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ close: closeCallback2 });
 
-            await store.push(overlay1, ref({ close: closeCallback1 }));
-            await store.push(overlay2, ref({ close: closeCallback2 }));
+            await store.push(overlay1, callbacks1);
+            await store.push(overlay2, callbacks2);
             const args = ['arg1', 'arg2'];
 
             // when
@@ -290,15 +297,15 @@ describe('OverlayCallbackStore', () => {
             const overlay1 = 'overlay-1';
             const overlay2 = 'overlay-2';
             const overlay3 = 'overlay-3';
-            const callbacks1 = ref<OverlayCallbacks>({
+            const callbacks1: Ref<OverlayCallbacks> = ref({
                 open: vi.fn(),
                 close: vi.fn(),
             });
-            const callbacks2 = ref<OverlayCallbacks>({
+            const callbacks2: Ref<OverlayCallbacks> = ref({
                 open: vi.fn(),
                 close: vi.fn(),
             });
-            const callbacks3 = ref<OverlayCallbacks>({
+            const callbacks3: Ref<OverlayCallbacks> = ref({
                 open: vi.fn(),
                 close: vi.fn(),
             });
@@ -330,8 +337,8 @@ describe('OverlayCallbackStore', () => {
         it('같은 ID로 중복 추가 후 제거가 올바르게 동작해야 한다', async () => {
             // given
             const overlayId = 'duplicate-overlay';
-            const callbacks1 = ref<OverlayCallbacks>({ close: vi.fn() });
-            const callbacks2 = ref<OverlayCallbacks>({ close: vi.fn() });
+            const callbacks1: Ref<OverlayCallbacks> = ref({ close: vi.fn() });
+            const callbacks2: Ref<OverlayCallbacks> = ref({ close: vi.fn() });
 
             // when
             await store.push(overlayId, callbacks1);
