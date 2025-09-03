@@ -138,13 +138,6 @@ describe('OverlayCallbackStore', () => {
             expect(closeCallback).toHaveBeenCalledWith(...args);
         });
 
-        it('overlay가 없을 때는 에러가 발생한다', () => {
-            // when & then
-            expect(() => {
-                store.pop();
-            }).toThrow(TypeError);
-        });
-
         it('close 콜백이 없어도 정상 작동해야 한다', async () => {
             // given
             const overlayId = 'test-overlay';

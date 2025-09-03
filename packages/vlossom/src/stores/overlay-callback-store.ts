@@ -1,20 +1,29 @@
 import { ref, type Ref, readonly } from 'vue';
-import { type OverlayCallbacks, VS_OVERLAY_CLOSE, VS_OVERLAY_OPEN } from '@/declaration';
+import { type OverlayTuple, type OverlayCallbacks, VS_OVERLAY_CLOSE, VS_OVERLAY_OPEN } from '@/declaration';
 
 export class OverlayCallbackStore {
     // overlay tuple: [id, { [eventName: callback }]
-    private _overlays: Ref<[string, Ref<OverlayCallbacks>][]> = ref([]);
+    private _overlays: Ref<OverlayTuple[]> = ref([]);
 
     public overlays = readonly(this._overlays);
 
     constructor() {
+        this.addOverlayCallbackKeyEventListener();
+    }
+
+    private addOverlayCallbackKeyEventListener() {
         document.addEventListener('keydown', (event: KeyboardEvent) => {
-            if (this._overlays.value.length === 0) {
+            if (this.overlays.value.length === 0) {
+                return;
+            }
+
+            const overlay = this.getLastOverlay();
+            if (!overlay) {
                 return;
             }
 
             const keyEventName = `key-${event.key}`;
-            const [lastOverlayId, callbacks] = this._overlays.value[this._overlays.value.length - 1];
+            const [lastOverlayId, callbacks] = overlay;
             if (!callbacks.value[keyEventName]) {
                 return;
             }
@@ -26,17 +35,25 @@ export class OverlayCallbackStore {
         });
     }
 
-    private async run<T = void>(id: string, eventName: string, ...args: any[]): Promise<T | void> {
+    public getLastOverlay(): [string, Ref<OverlayCallbacks>] | null {
+        return this._overlays.value.length > 0 ? this._overlays.value[this._overlays.value.length - 1] : null;
+    }
+
+    public getLastOverlayId(): string {
+        const overlay = this.getLastOverlay();
+        if (!overlay) {
+            return '';
+        }
+        return overlay[0];
+    }
+
+    public async run<T = void>(id: string, eventName: string, ...args: any[]): Promise<T | void> {
         const index = this._overlays.value.findIndex(([overlayId]) => overlayId === id);
         if (index === -1) {
             return;
         }
         const [, callbacks] = this._overlays.value[index];
         return await callbacks.value[eventName]?.(...args);
-    }
-
-    public getLastOverlayId() {
-        return this._overlays.value.length > 0 ? this._overlays.value[this._overlays.value.length - 1][0] : '';
     }
 
     public push(id: string, callbacks: Ref<OverlayCallbacks>) {
@@ -46,10 +63,15 @@ export class OverlayCallbackStore {
     }
 
     public pop(...args: any[]) {
-        const [targetId] = this._overlays.value[this._overlays.value.length - 1];
+        const overlay = this.getLastOverlay();
+        if (!overlay) {
+            return;
+        }
+        const [targetId] = overlay;
         this.run(targetId, VS_OVERLAY_CLOSE, ...args);
         const result = this.run(targetId, 'close', ...args);
         this._overlays.value.pop();
+
         return result;
     }
 
@@ -71,4 +93,10 @@ export class OverlayCallbackStore {
             this.pop(...args);
         }
     }
+}
+
+const overlayCallbackStore = new OverlayCallbackStore();
+
+export function useOverlayCallbackStore() {
+    return overlayCallbackStore;
 }

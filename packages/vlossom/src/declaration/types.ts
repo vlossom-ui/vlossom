@@ -1,4 +1,4 @@
-import type { Component } from 'vue';
+import type { Component, Ref } from 'vue';
 import type { COLORS } from './constants';
 import type { VsComponent } from './enums';
 
@@ -30,6 +30,8 @@ export interface BarLayout {
 }
 
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
+
+export type OverlayTuple = [string, Ref<OverlayCallbacks>];
 
 export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
 
