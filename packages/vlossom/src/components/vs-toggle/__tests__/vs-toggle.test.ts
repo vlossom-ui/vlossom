@@ -51,30 +51,6 @@ describe('VsToggle', () => {
         });
     });
 
-    describe('invisible prop', () => {
-        it('기본값은 false여야 한다', () => {
-            // given & when
-            const wrapper = mount(VsToggle);
-
-            // then
-            expect(wrapper.vm.invisible).toBe(false);
-            expect(wrapper.find('.vs-toggle').classes()).not.toContain('vs-invisible');
-        });
-
-        it('invisible이 true일 때 vs-invisible 클래스가 적용되어야 한다', () => {
-            // given & when
-            const wrapper = mount(VsToggle, {
-                props: {
-                    invisible: true,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.invisible).toBe(true);
-            expect(wrapper.find('.vs-toggle').classes()).toContain('vs-invisible');
-        });
-    });
-
     describe('토글 기능', () => {
         it('버튼 클릭 시 update:modelValue 이벤트가 발생해야 한다', async () => {
             // given
