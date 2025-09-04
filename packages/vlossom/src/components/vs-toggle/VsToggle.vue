@@ -1,6 +1,6 @@
 <template>
     <vs-button
-        :class="['vs-toggle']"
+        class="vs-toggle"
         type="button"
         :color-scheme="colorScheme"
         :style-set="componentStyleSet"
@@ -13,7 +13,7 @@
         :responsive="responsive"
         :small="small"
         :aria-label="ariaLabel"
-        @click="toggleOnOff"
+        @click.prevent.stop="toggleOnOff"
     >
         <slot />
     </vs-button>
