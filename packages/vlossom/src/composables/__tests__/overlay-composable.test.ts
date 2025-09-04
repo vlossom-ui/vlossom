@@ -1,23 +1,20 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ref, nextTick } from 'vue';
-import { OverlayCallbackStore } from '@/stores/overlay-callback-store';
-import { VS_ANIMATION_DURATION } from '@/declaration';
-import type { OverlayCallbacks } from '@/declaration';
+import * as stores from '@/stores';
+import { OverlayCallbackStore } from '@/stores';
+import { VS_ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
 import { useOverlay } from './../overlay-composable';
 
-// useOverlayCallbackStore를 새로운 인스턴스를 반환하도록 mock
-vi.mock('@/stores', () => ({
-    useOverlayCallbackStore: vi.fn(),
-}));
-
-const { useOverlayCallbackStore } = await import('@/stores');
-
 describe('useOverlay', () => {
-    let mockStore: OverlayCallbackStore;
+    let overlayCallbackStore: OverlayCallbackStore;
 
     beforeEach(() => {
-        mockStore = new OverlayCallbackStore();
-        vi.mocked(useOverlayCallbackStore).mockReturnValue(mockStore);
+        overlayCallbackStore = new OverlayCallbackStore();
+        vi.spyOn(stores, 'useOverlayCallbackStore').mockReturnValue(overlayCallbackStore);
+    });
+
+    afterEach(() => {
+        vi.clearAllMocks();
     });
 
     describe('초기 상태', () => {
@@ -71,7 +68,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
             const escClose = ref(true);
             const { open } = useOverlay(id, callbacks, escClose);
-            const pushSpy = vi.spyOn(mockStore, 'push');
+            const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
             open();
@@ -128,7 +125,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
             const escClose = ref(true);
             const { open, close } = useOverlay(id, callbacks, escClose);
-            const removeSpy = vi.spyOn(mockStore, 'remove');
+            const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             open();
             await nextTick();
@@ -149,7 +146,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
             const escClose = ref(true);
             const { isOpen } = useOverlay(id, callbacks, escClose);
-            const pushSpy = vi.spyOn(mockStore, 'push');
+            const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
             isOpen.value = true;
@@ -165,7 +162,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
             const escClose = ref(true);
             const { isOpen } = useOverlay(id, callbacks, escClose);
-            const removeSpy = vi.spyOn(mockStore, 'remove');
+            const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 먼저 열어두고
             isOpen.value = true;
@@ -192,8 +189,8 @@ describe('useOverlay', () => {
             const escClose = ref(true);
 
             const { isOpen, closing, open, overlayId } = useOverlay(id, callbacks, escClose);
-            const pushSpy = vi.spyOn(mockStore, 'push');
-            const removeSpy = vi.spyOn(mockStore, 'remove');
+            const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
+            const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 초기 상태 확인
             expect(isOpen.value).toBe(false);
