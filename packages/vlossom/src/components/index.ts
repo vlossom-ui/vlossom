@@ -1,4 +1,25 @@
-export * from './component-types';
+export type * from './vs-accordion/types';
+export type * from './vs-avatar/types';
+export type * from './vs-bar/types';
+export type * from './vs-button/types';
+export type * from './vs-container/types';
+export type * from './vs-divider/types';
+export type * from './vs-expandable/types';
+export type * from './vs-focus-trap/types';
+export type * from './vs-footer/types';
+export type * from './vs-form/types';
+export type * from './vs-grid/types';
+export type * from './vs-header/types';
+export type * from './vs-image/types';
+export type * from './vs-index-view/types';
+export type * from './vs-inner-scroll/types';
+export type * from './vs-layout/types';
+export type * from './vs-loading/types';
+export type * from './vs-render/types';
+export type * from './vs-responsive/types';
+export type * from './vs-section/types';
+export type * from './vs-skeleton/types';
+export type * from './vs-toggle/types';
 
 export { default as VsAccordion } from './vs-accordion/VsAccordion.vue';
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
