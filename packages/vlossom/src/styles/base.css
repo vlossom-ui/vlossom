@@ -1,9 +1,14 @@
 html {
+    /**
+     * default font-size: 16px;
+     * 62.5% = 10px;
+     */
     font-size: 62.5%;
 }
 
 body {
-    font-size: var(--vs-font-size);
+    color: var(--vs-no-color-inverse);
+    font-size: var(--vs-font-size); /* 15px */
 }
 
 html,
