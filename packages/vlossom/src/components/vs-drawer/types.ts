@@ -1,5 +1,5 @@
 import type VsDrawer from './VsDrawer.vue';
-import type { BoxStyleSet, CssPosition } from '@/declaration';
+import type { BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -10,7 +10,7 @@ declare module 'vue' {
 export type { VsDrawer };
 
 export interface VsDrawerStyleSet extends Omit<BoxStyleSet, 'display'> {
-    position?: CssPosition;
+    position?: 'absolute' | 'fixed';
     size?: string;
     dimmed?: {
         backgroundColor?: string;
