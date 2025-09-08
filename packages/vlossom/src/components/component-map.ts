@@ -27,6 +27,7 @@ import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
 import VsSection from './vs-section/VsSection.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
+import VsThemeButton from './vs-theme-button/VsThemeButton.vue';
 import VsToggle from './vs-toggle/VsToggle.vue';
 
 export const VlossomComponents = {
@@ -52,5 +53,6 @@ export const VlossomComponents = {
     VsResponsive,
     VsSection,
     VsSkeleton,
+    VsThemeButton,
     VsToggle,
 } as const;
