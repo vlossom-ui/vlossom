@@ -49,4 +49,4 @@
 
 - **유기적인 layout 제공**: `vs-header`, `vs-container`, `vs-drawer`, `vs-footer`와 함께 사용하면 쉽게 layout 구성 가능
 - **레이아웃 스토어 제공**: `LAYOUT_STORE_KEY`를 통해 하위 컴포넌트에 레이아웃 상태를 provide를 이용해 제공
-- **동적 패딩 조정**: 각 드로어의 `responsive` 속성이 활성화되면 열린 드로어에 따라 자동으로 패딩 조정 가능
+- **동적 패딩 조정**: 각 드로어의 `responsive` 속성이 활성화되면 열린 드로어에 따라 자동으로 vs-container의 패딩 조정 가능

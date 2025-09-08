@@ -27,6 +27,7 @@ export { default as VsBar } from './vs-bar/VsBar.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';
+export { default as VsDrawer } from './vs-drawer/VsDrawer.vue';
 export { default as VsExpandable } from './vs-expandable/VsExpandable.vue';
 export { default as VsFocusTrap } from './vs-focus-trap/VsFocusTrap.vue';
 export { default as VsFooter } from './vs-footer/VsFooter.vue';

@@ -1,5 +1,5 @@
 import { ref, type Ref, readonly } from 'vue';
-import { type OverlayTuple, type OverlayCallbacks, VS_OVERLAY_CLOSE, VS_OVERLAY_OPEN } from '@/declaration';
+import { type OverlayTuple, type OverlayCallbacks, OVERLAY_CLOSE, OVERLAY_OPEN } from '@/declaration';
 
 export class OverlayCallbackStore {
     // overlay tuple: [id, { [eventName: callback }]
@@ -30,6 +30,7 @@ export class OverlayCallbackStore {
 
             // Prevent default action for registered key event (ex. enter, esc)
             event.preventDefault();
+            event.stopPropagation();
 
             this.run(lastOverlayId, keyEventName, event);
         });
@@ -58,7 +59,7 @@ export class OverlayCallbackStore {
 
     public push(id: string, callbacks: Ref<OverlayCallbacks>) {
         this._overlays.value.push([id, callbacks]);
-        this.run(id, VS_OVERLAY_OPEN);
+        this.run(id, OVERLAY_OPEN);
         return this.run(id, 'open');
     }
 
@@ -68,7 +69,7 @@ export class OverlayCallbackStore {
             return;
         }
         const [targetId] = overlay;
-        this.run(targetId, VS_OVERLAY_CLOSE, ...args);
+        this.run(targetId, OVERLAY_CLOSE, ...args);
         const result = this.run(targetId, 'close', ...args);
         this._overlays.value.pop();
 
@@ -81,7 +82,7 @@ export class OverlayCallbackStore {
             return;
         }
         const [targetId] = this._overlays.value[index];
-        this.run(targetId, VS_OVERLAY_CLOSE, ...args);
+        this.run(targetId, OVERLAY_CLOSE, ...args);
         const result = this.run(targetId, 'close', ...args);
         this._overlays.value.splice(index, 1);
 

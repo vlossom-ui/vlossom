@@ -4,14 +4,12 @@
         --vs-no-color-inverse: var(--vs-black);
 
         --vs-app-bg: #f8f8f8;
-        --vs-dimmed-bg: rgba(0, 0, 0, 0.45);
 
         @variant dark {
             --vs-no-color: var(--vs-black);
             --vs-no-color-inverse: var(--vs-white);
 
             --vs-app-bg: #14151f;
-            --vs-dimmed-bg: rgba(0, 0, 0, 0.6);
         }
 
         --vs-line-height: 1.6;

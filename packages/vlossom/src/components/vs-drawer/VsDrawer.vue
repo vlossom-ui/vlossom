@@ -1,0 +1,200 @@
+<template>
+    <Transition name="drawer" :duration="ANIMATION_DURATION">
+        <div
+            v-show="isOpen"
+            ref="drawerRef"
+            :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
+            :style="styleSetVariables"
+        >
+            <div v-if="dimmed" class="vs-drawer-dimmed" aria-hidden="true" @click.prevent.stop="onClickDimmed" />
+            <vs-focus-trap
+                ref="focusTrapRef"
+                :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                :focus-lock="focusLock"
+            >
+                <vs-inner-scroll :hide-scroll>
+                    <template #header>
+                        <slot name="header" />
+                    </template>
+                    <slot />
+                    <template #footer>
+                        <slot name="footer" />
+                    </template>
+                </vs-inner-scroll>
+            </vs-focus-trap>
+        </div>
+    </Transition>
+</template>
+
+<script lang="ts">
+import {
+    computed,
+    defineComponent,
+    getCurrentInstance,
+    inject,
+    onBeforeMount,
+    toRefs,
+    useTemplateRef,
+    watch,
+    watchEffect,
+    type ComputedRef,
+    type PropType,
+} from 'vue';
+import {
+    LAYOUT_STORE_KEY,
+    ANIMATION_DURATION,
+    OVERLAY_CLOSE,
+    OVERLAY_OPEN,
+    VsComponent,
+    type DrawerPlacement,
+    type Focusable,
+    type SizeProp,
+    SIZES,
+    type Size,
+} from '@/declaration';
+import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
+import { getColorSchemeProps, getStyleSetProps, getOverlayProps, getPositionProps } from '@/props';
+import { LayoutStore } from '@/stores';
+import { objectUtil, stringUtil } from '@/utils';
+import type { VsDrawerStyleSet } from './types';
+import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
+import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
+
+const name = VsComponent.VsDrawer;
+export default defineComponent({
+    name,
+    components: { VsFocusTrap, VsInnerScroll },
+    props: {
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsDrawerStyleSet>(),
+        ...getOverlayProps(),
+        ...getPositionProps(),
+        layoutResponsive: { type: Boolean, default: false },
+        open: { type: Boolean, default: false },
+        placement: {
+            type: String as PropType<DrawerPlacement>,
+            default: 'left',
+        },
+        size: { type: [String, Number] as PropType<SizeProp> },
+        // v-model
+        modelValue: { type: Boolean, default: false },
+    },
+    emits: ['update:modelValue', 'open', 'close', 'click-dimmed'],
+    setup(props, { emit }) {
+        const {
+            colorScheme,
+            styleSet,
+            id,
+            callbacks,
+            dimClose,
+            escClose,
+            open: initialOpen,
+            modelValue,
+            position,
+            layoutResponsive,
+            placement,
+            size,
+        } = toRefs(props);
+
+        const drawerRef = useTemplateRef<HTMLElement>('drawerRef');
+        const focusTrapRef = useTemplateRef<Focusable>('focusTrapRef');
+        const DRAWER_SIZE: Record<Size, string> = {
+            xs: '12%',
+            sm: '20%',
+            md: '40%',
+            lg: '60%',
+            xl: '80%',
+        };
+
+        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const drawerSize = computed(() => {
+            if (!size.value) {
+                return DRAWER_SIZE.sm;
+            }
+            if (SIZES.includes(size.value as Size)) {
+                return DRAWER_SIZE[size.value as Size];
+            }
+            return stringUtil.toStringSize(size.value);
+        });
+
+        const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                position: position.value ? position.value : undefined,
+                size: drawerSize.value,
+            });
+        });
+
+        const { styleSetVariables } = useStyleSet<VsDrawerStyleSet>(name, styleSet, additionalStyleSet);
+
+        const computedCallbacks = computed(() => {
+            return {
+                ...callbacks.value,
+                [OVERLAY_OPEN]: () => {
+                    focusTrapRef.value?.focus();
+                },
+                [OVERLAY_CLOSE]: () => {
+                    focusTrapRef.value?.blur();
+                },
+            };
+        });
+
+        const { isOpen, open, close } = useOverlay(id, computedCallbacks, escClose);
+
+        function onClickDimmed() {
+            emit('click-dimmed');
+            if (dimClose.value) {
+                close();
+            }
+        }
+
+        // only for vs-layout children
+        const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
+
+        const layoutStore = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
+        watchEffect(() => {
+            if (!isLayoutChild.value) {
+                return;
+            }
+            layoutStore.setDrawer({
+                isOpen: isOpen.value,
+                placement: placement.value,
+                size: drawerSize.value || DRAWER_SIZE.sm,
+                responsive: layoutResponsive.value,
+            });
+        });
+
+        onBeforeMount(() => {
+            if (initialOpen.value || modelValue.value) {
+                open();
+            }
+        });
+
+        watch(isOpen, (o) => {
+            if (o) {
+                open();
+            } else {
+                close();
+            }
+
+            emit('update:modelValue', o);
+            emit(o ? 'open' : 'close');
+        });
+
+        watch(modelValue, (o) => {
+            isOpen.value = o;
+        });
+
+        return {
+            drawerRef,
+            focusTrapRef,
+            colorSchemeClass,
+            styleSetVariables,
+            isOpen,
+            ANIMATION_DURATION,
+            onClickDimmed,
+        };
+    },
+});
+</script>
+
+<style src="./VsDrawer.css" />

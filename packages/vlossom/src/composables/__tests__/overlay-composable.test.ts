@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ref, nextTick } from 'vue';
 import * as stores from '@/stores';
 import { OverlayCallbackStore } from '@/stores';
-import { VS_ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
+import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
 import { useOverlay } from './../overlay-composable';
 
 describe('useOverlay', () => {
@@ -113,7 +113,7 @@ describe('useOverlay', () => {
             expect(closing.value).toBe(true);
 
             // 애니메이션 시간이 지나면
-            vi.advanceTimersByTime(VS_ANIMATION_DURATION);
+            vi.advanceTimersByTime(ANIMATION_DURATION);
             expect(closing.value).toBe(false);
 
             vi.useRealTimers();
@@ -218,7 +218,7 @@ describe('useOverlay', () => {
             expect(removeSpy).toHaveBeenCalledWith('lifecycle-test');
 
             // when - 애니메이션 완료
-            vi.advanceTimersByTime(VS_ANIMATION_DURATION);
+            vi.advanceTimersByTime(ANIMATION_DURATION);
 
             // then - closing false
             expect(closing.value).toBe(false);

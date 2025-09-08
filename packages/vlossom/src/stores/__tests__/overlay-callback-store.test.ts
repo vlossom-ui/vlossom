@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ref, type Ref } from 'vue';
 import { OverlayCallbackStore } from '../overlay-callback-store';
-import { VS_OVERLAY_OPEN, VS_OVERLAY_CLOSE } from '@/declaration';
+import { OVERLAY_OPEN, OVERLAY_CLOSE } from '@/declaration';
 import type { OverlayCallbacks } from '@/declaration';
 
 describe('OverlayCallbackStore', () => {
@@ -34,7 +34,7 @@ describe('OverlayCallbackStore', () => {
             const vlossomOpenCallback = vi.fn();
             const callbacks: Ref<OverlayCallbacks> = ref({
                 open: openCallback,
-                [VS_OVERLAY_OPEN]: vlossomOpenCallback,
+                [OVERLAY_OPEN]: vlossomOpenCallback,
             });
 
             // when
@@ -110,7 +110,7 @@ describe('OverlayCallbackStore', () => {
             const vlossomCloseCallback = vi.fn();
             const callbacks: Ref<OverlayCallbacks> = ref({
                 close: closeCallback,
-                [VS_OVERLAY_CLOSE]: vlossomCloseCallback,
+                [OVERLAY_CLOSE]: vlossomCloseCallback,
             });
             await store.push(overlayId, callbacks);
 

@@ -1,5 +1,5 @@
 import type { Component, Ref } from 'vue';
-import type { COLORS } from './constants';
+import type { COLORS, SIZES } from './constants';
 import type { VsComponent } from './enums';
 
 export type ColorScheme = (typeof COLORS)[number];
@@ -44,6 +44,10 @@ export interface DrawerLayout {
 
 export type DrawerLayouts = { [key in DrawerPlacement]: DrawerLayout };
 
+export type Size = (typeof SIZES)[number];
+
+export type SizeProp = Size | string | number;
+
 export interface Breakpoints {
     xs?: string | number;
     sm?: string | number;
@@ -81,4 +85,9 @@ export interface FlexStyleSet {
     alignItems?: string;
     justifyContent?: string;
     gap?: string;
+}
+
+export interface Focusable {
+    focus(): void;
+    blur(): void;
 }
