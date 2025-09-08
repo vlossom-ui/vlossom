@@ -53,7 +53,7 @@ import {
     type Size,
 } from '@/declaration';
 import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
-import { getColorSchemeProps, getStyleSetProps, getOverlayProps, getPositionProps } from '@/props';
+import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsDrawerStyleSet } from './types';
@@ -68,7 +68,7 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDrawerStyleSet>(),
         ...getOverlayProps(),
-        ...getPositionProps(),
+        fixed: { type: Boolean, default: false },
         layoutResponsive: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
         placement: {
@@ -88,9 +88,9 @@ export default defineComponent({
             callbacks,
             dimClose,
             escClose,
+            fixed,
             open: initialOpen,
             modelValue,
-            position,
             layoutResponsive,
             placement,
             size,
@@ -119,7 +119,7 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
-                position: position.value ? position.value : undefined,
+                position: fixed.value ? 'fixed' : undefined,
                 size: drawerSize.value,
             });
         });
