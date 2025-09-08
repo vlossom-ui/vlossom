@@ -17,6 +17,7 @@ export enum VsComponent {
     VsInnerScroll = 'VsInnerScroll',
     VsLayout = 'VsLayout',
     VsLoading = 'VsLoading',
+    VsPage = 'VsPage',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
     VsSection = 'VsSection',
