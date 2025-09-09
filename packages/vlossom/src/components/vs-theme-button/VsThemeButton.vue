@@ -44,10 +44,10 @@ export default defineComponent({
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(name, styleSet);
 
         const toggleStyleSet = computed(() => ({
-            ...componentStyleSet.value.toggle,
             borderRadius: '50%',
             height: '3rem',
             width: '3rem',
+            ...componentStyleSet.value,
         }));
 
         const isDarkTheme: Ref<boolean> = computed(() => vlossom.theme === 'dark');

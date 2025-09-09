@@ -9,7 +9,6 @@ declare module 'vue' {
 
 export type { VsThemeButton };
 
-export interface VsThemeButtonStyleSet {
-    toggle?: VsToggleStyleSet;
+export interface VsThemeButtonStyleSet extends VsToggleStyleSet {
     iconColor?: string;
 }

@@ -47,11 +47,9 @@ export const ColorScheme: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            toggle: {
-                backgroundColor: '#DEB3AD',
-                borderRadius: '1rem',
-                width: '3rem',
-            },
+            backgroundColor: '#DEB3AD',
+            borderRadius: '1rem',
+            width: '3rem',
             iconColor: '#B95C50',
         },
     },
