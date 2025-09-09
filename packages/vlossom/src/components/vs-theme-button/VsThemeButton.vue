@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, ref, type Ref, watch } from 'vue';
+import { defineComponent, toRefs, ref, type Ref } from 'vue';
 import { useVlossom } from '@/framework';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
