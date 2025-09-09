@@ -1,4 +1,4 @@
-import type { VsToggleStyleSet } from '../component-types';
+import type { VsToggleStyleSet } from '@/main';
 import type VsThemeButton from './VsThemeButton.vue';
 
 declare module 'vue' {
