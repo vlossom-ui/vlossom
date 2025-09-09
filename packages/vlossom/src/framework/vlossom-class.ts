@@ -38,6 +38,7 @@ export class Vlossom {
 
     set theme(theme: Theme) {
         this.optionsStore.setTheme(theme);
+        localStorage.setItem(THEME_KEY, theme);
         document.documentElement.classList.toggle('vs-dark', theme === 'dark');
     }
 
@@ -55,7 +56,6 @@ export class Vlossom {
 
     public toggleTheme() {
         this.theme = this.optionsStore.theme.value === 'light' ? 'dark' : 'light';
-        localStorage.setItem(THEME_KEY, this.theme);
     }
 
     private setDefaultTheme(optionTheme: Theme = 'light') {
