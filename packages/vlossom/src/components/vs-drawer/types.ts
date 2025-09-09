@@ -12,6 +12,7 @@ export type { VsDrawer };
 export interface VsDrawerStyleSet extends Omit<BoxStyleSet, 'display'> {
     position?: 'absolute' | 'fixed';
     size?: string;
+    boxShadow?: string;
     dimmed?: {
         backgroundColor?: string;
         opacity?: number;

@@ -2,6 +2,7 @@
 
 .vs-drawer {
     --vs-drawer-size: initial;
+    --vs-drawer-boxShadow: initial;
 
     --vs-drawer-position: initial;
     --vs-drawer-backgroundColor: initial;
@@ -32,7 +33,7 @@
         @apply pointer-events-auto absolute;
 
         opacity: var(--vs-drawer-opacity, 1);
-        border: var(--vs-drawer-border, none);
+        box-shadow: var(--vs-drawer-boxShadow, none);
         border-radius: var(--vs-drawer-borderRadius, 0);
         background-color: var(--vs-drawer-backgroundColor, var(--vs-comp-bg));
         padding: var(--vs-drawer-padding, 0);
@@ -41,6 +42,7 @@
             @apply top-0 left-0;
 
             transform: translateX(0);
+            border-right: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-top-right-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
             width: var(--vs-drawer-size);
@@ -51,6 +53,7 @@
             @apply top-0 right-0;
 
             transform: translateX(0);
+            border-left: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-top-left-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
             width: var(--vs-drawer-size);
@@ -61,6 +64,7 @@
             @apply top-0 left-0;
 
             transform: translateY(0);
+            border-top: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
             width: 100%;
@@ -71,6 +75,7 @@
             @apply bottom-0 left-0;
 
             transform: translateY(0);
+            border-bottom: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-top-right-radius: var(--vs-drawer-borderRadius, 0);
             border-top-left-radius: var(--vs-drawer-borderRadius, 0);
             width: 100%;
