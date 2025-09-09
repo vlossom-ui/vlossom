@@ -15,6 +15,7 @@ const meta: Meta<typeof VsThemeButton> = {
             return { args };
         },
         template: `
+            <vs-theme-button v-bind="args" />
             ${getColorSchemeTemplate(`
                 <vs-theme-button v-bind="args" color-scheme="{{ color }}" />
             `)}

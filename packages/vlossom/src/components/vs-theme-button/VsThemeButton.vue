@@ -1,6 +1,6 @@
 <template>
     <vs-toggle
-        :v-model="isDarkTheme"
+        :model-value="isDarkTheme"
         class="vs-theme-button"
         :style="styleSetVariables"
         :color-scheme="colorScheme"

@@ -47,16 +47,6 @@ const onThemeChange = (isDark: boolean) => {
 </script>
 ```
 
-### 색상 테마 적용
-
-```html
-<template>
-    <vs-theme-button color-scheme="primary" />
-    <vs-theme-button color-scheme="success" />
-    <vs-theme-button color-scheme="warning" />
-</template>
-```
-
 ## Props
 
 | Prop          | Type                              | Default | Required | Description             |
@@ -112,13 +102,10 @@ interface VsToggleStyleSet extends VsButtonStyleSet {
 - **시각적 피드백**: 태양(☀️) 및 달(🌙) 아이콘으로 현재 테마 상태 표시
 - **애니메이션 효과**: 부드러운 아이콘 전환 애니메이션 제공
 - **VsToggle 기반**: VsToggle의 모든 기능과 스타일링 옵션 지원
-- **접근성**: ARIA label로 스크린 리더 지원 (`"Switch to light mode"` / `"Switch to dark mode"`)
 - **프레임워크 연동**: `useVlossom().toggleTheme()` 자동 호출
 - **이벤트 방출**: `change` 이벤트로 테마 변경 감지 가능
 
 ## 사용 예시
-
-### React스럽게 상태 관리
 
 ```html
 <template>
@@ -175,7 +162,6 @@ VsThemeButton은 다음과 같은 구조로 구성됩니다:
 ```
 
 - 현재 테마에 따라 해당 아이콘에 `vs-on` 클래스가 적용됩니다
-- 아이콘은 Material Design 스타일의 SVG를 사용합니다
 - 부드러운 `transform` 및 `opacity` 애니메이션이 적용됩니다
 
 ## 주의사항
