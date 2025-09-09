@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, watch } from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, watch, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -40,7 +40,7 @@ export default defineComponent({
         const { colorScheme, styleSet, circle, disabled, ghost, large, loading, outline, primary, responsive, small } =
             toRefs(props);
 
-        const buttonRef = useTemplateRef<HTMLButtonElement>('buttonRef');
+        const buttonRef: TemplateRef<HTMLButtonElement> = useTemplateRef('buttonRef');
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 

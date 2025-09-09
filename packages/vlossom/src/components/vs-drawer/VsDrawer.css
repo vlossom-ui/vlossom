@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-drawer {
     --vs-drawer-size: initial;
 
@@ -11,27 +13,23 @@
     --vs-drawer-dimmed-backgroundColor: initial;
     --vs-drawer-dimmed-opacity: initial;
 
-    @apply pointer-events-none h-full w-full overflow-hidden;
+    @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
 
     position: var(--vs-drawer-position, absolute);
-    top: 0;
-    left: 0;
 
     &.vs-drawer-dimmed {
         @apply pointer-events-auto;
     }
 
     .vs-drawer-dimmed {
-        @apply absolute h-full w-full;
+        @apply absolute top-0 left-0 h-full w-full;
 
-        top: 0;
-        left: 0;
         opacity: var(--vs-drawer-dimmed-opacity, 0.4);
         background-color: var(--vs-drawer-dimmed-backgroundColor, var(--vs-black));
     }
 
     .vs-drawer-content {
-        @apply absolute;
+        @apply pointer-events-auto absolute;
 
         opacity: var(--vs-drawer-opacity, 1);
         border: var(--vs-drawer-border, none);
@@ -40,8 +38,8 @@
         padding: var(--vs-drawer-padding, 0);
 
         &.vs-drawer-left {
-            top: 0;
-            left: 0;
+            @apply top-0 left-0;
+
             transform: translateX(0);
             border-top-right-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
@@ -50,8 +48,8 @@
         }
 
         &.vs-drawer-right {
-            top: 0;
-            right: 0;
+            @apply top-0 right-0;
+
             transform: translateX(0);
             border-top-left-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
@@ -60,8 +58,8 @@
         }
 
         &.vs-drawer-top {
-            top: 0;
-            left: 0;
+            @apply top-0 left-0;
+
             transform: translateY(0);
             border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
@@ -70,8 +68,8 @@
         }
 
         &.vs-drawer-bottom {
-            bottom: 0;
-            left: 0;
+            @apply bottom-0 left-0;
+
             transform: translateY(0);
             border-top-right-radius: var(--vs-drawer-borderRadius, 0);
             border-top-left-radius: var(--vs-drawer-borderRadius, 0);

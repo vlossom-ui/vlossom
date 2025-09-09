@@ -4,7 +4,7 @@ import { createVlossom } from '@/framework';
 import { VlossomComponents } from '@/components/component-map';
 
 // component type 추론을 위해서 import
-import '@/components/component-types';
+import '@/components';
 
 // 실제 vlossom 사용할 때는 import 'vlossom/styles';
 import '@/styles/index.css';

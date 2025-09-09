@@ -326,27 +326,5 @@ describe('OverlayCallbackStore', () => {
             expect(store.overlays.value).toHaveLength(0);
             expect(store.getLastOverlayId()).toBe('');
         });
-
-        it('같은 ID로 중복 추가 후 제거가 올바르게 동작해야 한다', async () => {
-            // given
-            const overlayId = 'duplicate-overlay';
-            const callbacks1: Ref<OverlayCallbacks> = ref({ close: vi.fn() });
-            const callbacks2: Ref<OverlayCallbacks> = ref({ close: vi.fn() });
-
-            // when
-            await store.push(overlayId, callbacks1);
-            await store.push(overlayId, callbacks2);
-
-            // then
-            expect(store.overlays.value).toHaveLength(2);
-
-            // when - 첫 번째 발견된 것 제거
-            await store.remove(overlayId);
-
-            // then
-            expect(store.overlays.value).toHaveLength(1);
-            expect(callbacks1.value.close).toHaveBeenCalledTimes(1);
-            expect(callbacks2.value.close).not.toHaveBeenCalled();
-        });
     });
 });

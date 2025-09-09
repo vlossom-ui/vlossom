@@ -39,6 +39,7 @@ import {
     watchEffect,
     type ComputedRef,
     type PropType,
+    type TemplateRef,
 } from 'vue';
 import {
     LAYOUT_STORE_KEY,
@@ -96,8 +97,8 @@ export default defineComponent({
             size,
         } = toRefs(props);
 
-        const drawerRef = useTemplateRef<HTMLElement>('drawerRef');
-        const focusTrapRef = useTemplateRef<Focusable>('focusTrapRef');
+        const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
+        const focusTrapRef: TemplateRef<Focusable> = useTemplateRef('focusTrapRef');
         const DRAWER_SIZE: Record<Size, string> = {
             xs: '12%',
             sm: '20%',
