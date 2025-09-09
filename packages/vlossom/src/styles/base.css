@@ -1,18 +1,3 @@
-html {
-    /**
-     * Vlossom default font size setup
-     * 
-     * usually browser default font-size: 16px
-     * 16px × 62.5% = 10px
-     * 
-     * this setting means:
-     * - 1rem = 10px (for convenience)
-     * - rem unit is easy to convert to pixels
-     * - example: 1.2rem = 12px, 0.8rem = 8px
-     */
-    font-size: 62.5%;
-}
-
 body {
     color: var(--vs-no-color-inverse);
     font-size: var(--vs-font-size);

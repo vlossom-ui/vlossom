@@ -1,6 +1,7 @@
+import VsThemeButton from './../VsThemeButton.vue';
+
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters } from '@/storybook';
-import VsThemeButton from '../VsThemeButton.vue';
+import { chromaticParameters, getColorSchemeTemplate } from '@/storybook';
 
 const meta: Meta<typeof VsThemeButton> = {
     title: 'Chromatic/Base Components/VsThemeButton',
@@ -13,7 +14,11 @@ const meta: Meta<typeof VsThemeButton> = {
         setup() {
             return { args };
         },
-        template: '<vs-theme-button v-bind="args">Theme Button</vs-theme-button>',
+        template: `
+            ${getColorSchemeTemplate(`
+                <vs-theme-button v-bind="args" color-scheme="{{ color }}" />
+            `)}
+        `,
     }),
 };
 

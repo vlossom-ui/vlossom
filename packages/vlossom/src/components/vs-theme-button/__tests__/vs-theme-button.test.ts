@@ -1,13 +1,12 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import VsThemeButton from '../VsThemeButton.vue';
-import { createVlossom, type Vlossom } from '@/framework';
+import { createVlossom } from '@/framework';
 import { nextTick } from 'vue';
 
 describe('vs-theme-button', () => {
-    let vlossom: Vlossom;
     beforeEach(() => {
-        vlossom = createVlossom({ components: {}, theme: 'light' });
+        createVlossom({ components: {}, theme: 'light' });
     });
 
     it('vlossom 초기화 시 vs-theme-button이 정상적으로 렌더링되어야 한다', () => {
