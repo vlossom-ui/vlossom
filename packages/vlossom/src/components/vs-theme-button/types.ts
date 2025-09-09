@@ -1,3 +1,4 @@
+import type { VsToggleStyleSet } from '../component-types';
 import type VsThemeButton from './VsThemeButton.vue';
 
 declare module 'vue' {
@@ -8,4 +9,7 @@ declare module 'vue' {
 
 export type { VsThemeButton };
 
-export interface VsThemeButtonStyleSet {}
+export interface VsThemeButtonStyleSet {
+    toggle?: VsToggleStyleSet;
+    iconColor?: string;
+}

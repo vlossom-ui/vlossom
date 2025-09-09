@@ -1,16 +1,6 @@
 @use '@/styles/mixin' as *;
 
 .vs-theme-button {
-    position: relative;
-    transition: all 0.2s ease-out;
-    border: 1px solid var(--vs-line-color);
-    border-radius: var(--vs-theme-button-borderRadius, 50%);
-    background-color: var(--vs-theme-button-backgroundColor, var(--vs-comp-bg));
-    width: 3rem;
-    min-width: 3rem;
-    height: 3rem;
-    min-height: 3rem;
-
     @include hover-active-darken;
 
     &:focus-visible {
@@ -30,11 +20,11 @@
         transition:
             opacity 0.4s ease-out,
             transform 0.4s ease-out;
-        width: 3rem;
-        min-width: 3rem;
-        height: 3rem;
-        min-height: 3rem;
-        color: var(--vs-theme-button-iconColor, var(--vs-orange));
+        width: 2rem;
+        min-width: 2rem;
+        height: 2rem;
+        min-height: 2rem;
+        color: var(--vs-theme-button-iconColor, var(--vs-orange-400));
 
         &.vs-on {
             transform: scale(1) rotate(0deg) translateX(-50%) translateY(-50%);
