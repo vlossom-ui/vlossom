@@ -105,30 +105,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {
 - **프레임워크 연동**: `useVlossom().toggleTheme()` 자동 호출
 - **이벤트 방출**: `change` 이벤트로 테마 변경 감지 가능
 
-## 사용 예시
-
-```html
-<template>
-    <div>
-        <h1>현재 테마: {{ currentTheme }}</h1>
-        <vs-theme-button @change="updateThemeDisplay" />
-    </div>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import { useVlossom } from '@/framework';
-
-const vlossom = useVlossom();
-const currentTheme = ref(vlossom.theme);
-
-const updateThemeDisplay = (isDark: boolean) => {
-    currentTheme.value = isDark ? 'dark' : 'light';
-    console.log(`테마가 ${currentTheme.value}로 변경되었습니다.`);
-};
-</script>
-```
-
 ### 스타일 커스터마이징
 
 ```html
@@ -149,20 +125,6 @@ const themeButtonStyle = {
 };
 </script>
 ```
-
-## 내부 구조
-
-VsThemeButton은 다음과 같은 구조로 구성됩니다:
-
-```html
-<vs-toggle class="vs-theme-button">
-    <i class="vs-theme-icon vs-theme-light" /> <!-- 태양 아이콘 -->
-    <i class="vs-theme-icon vs-theme-dark" />  <!-- 달 아이콘 -->
-</vs-toggle>
-```
-
-- 현재 테마에 따라 해당 아이콘에 `vs-on` 클래스가 적용됩니다
-- 부드러운 `transform` 및 `opacity` 애니메이션이 적용됩니다
 
 ## 주의사항
 
