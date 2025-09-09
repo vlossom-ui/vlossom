@@ -1,40 +1,18 @@
-@use '@/styles/mixin' as *;
-
 .vs-theme-button {
-    @include hover-active-darken;
-
-    &:focus-visible {
-        @include focus-outline;
-    }
+    --vs-theme-button-iconColor: initial;
 
     .vs-theme-icon {
-        display: flex;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        justify-content: center;
-        align-items: center;
+        @apply absolute top-1/2 left-1/2 flex h-[2rem] w-[2rem] items-center justify-center opacity-0;
         transform: scale(0.4) rotate(270deg) translateX(-50%) translateY(-50%);
         transform-origin: top left;
-        opacity: 0;
         transition:
             opacity 0.4s ease-out,
             transform 0.4s ease-out;
-        width: 2rem;
-        min-width: 2rem;
-        height: 2rem;
-        min-height: 2rem;
         color: var(--vs-theme-button-iconColor, var(--vs-orange-400));
 
         &.vs-on {
+            @apply opacity-100;
             transform: scale(1) rotate(0deg) translateX(-50%) translateY(-50%);
-            opacity: 1;
         }
-    }
-}
-
-.vs-dark {
-    .vs-theme-button {
-        @include hover-active-lighten;
     }
 }
