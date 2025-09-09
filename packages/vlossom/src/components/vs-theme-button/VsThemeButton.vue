@@ -80,7 +80,3 @@ export default defineComponent({
 </script>
 
 <style src="./VsThemeButton.css" />
-
-<!-- 다른 버튼에 대해서 갱신이 안되고 있음, vsToggle을 사용하여야 하는가 의문이 들기 시작 -->
-<!-- 아이콘이 크기별로 노출이 안됨 -->
-<!-- 어떤 스타일까지 허용하는 컴퍼넌트가 되어야 할지 잘모르겠음 -->
