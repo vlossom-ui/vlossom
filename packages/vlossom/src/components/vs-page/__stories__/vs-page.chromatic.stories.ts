@@ -8,6 +8,34 @@ const meta: Meta<typeof VsPage> = {
     parameters: {
         chromatic: chromaticParameters.theme,
     },
+    argTypes: {
+        title: {
+            control: 'text',
+            description: 'Title slot content',
+            table: {
+                category: 'slots',
+            },
+        },
+        description: {
+            control: 'text',
+            description: 'Description slot content',
+            table: {
+                category: 'slots',
+            },
+        },
+        default: {
+            control: 'text',
+            description: 'Default slot content',
+            table: {
+                category: 'slots',
+            },
+        },
+    } as any,
+    args: {
+        title: 'Page Title',
+        description: 'Page Description',
+        default: 'This is Page Content.',
+    } as any,
     render: (args: any) => ({
         components: { VsPage },
         setup() {
@@ -26,4 +54,8 @@ const meta: Meta<typeof VsPage> = {
 export default meta;
 type Story = StoryObj<typeof VsPage>;
 
-export const Default: Story = {};
+export const Default: Story = {
+    args: {
+        styleSet: {},
+    },
+};
