@@ -1,5 +1,6 @@
 .vs-container {
     @apply relative w-full;
 
+    transition: padding 0.3s ease-in-out;
     container-type: inline-size;
 }

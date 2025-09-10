@@ -1,0 +1,119 @@
+@reference 'tailwindcss';
+
+.vs-drawer {
+    --vs-drawer-size: initial;
+    --vs-drawer-boxShadow: initial;
+
+    --vs-drawer-position: initial;
+    --vs-drawer-backgroundColor: initial;
+    --vs-drawer-border: initial;
+    --vs-drawer-borderRadius: initial;
+    --vs-drawer-padding: initial;
+    --vs-drawer-opacity: initial;
+
+    --vs-drawer-dimmed-backgroundColor: initial;
+    --vs-drawer-dimmed-opacity: initial;
+
+    @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
+
+    position: var(--vs-drawer-position, absolute);
+
+    &.vs-drawer-dimmed {
+        @apply pointer-events-auto;
+    }
+
+    .vs-drawer-dimmed {
+        @apply absolute top-0 left-0 h-full w-full;
+
+        opacity: var(--vs-drawer-dimmed-opacity, 0.4);
+        background-color: var(--vs-drawer-dimmed-backgroundColor, var(--vs-black));
+    }
+
+    .vs-drawer-content {
+        @apply pointer-events-auto absolute;
+
+        opacity: var(--vs-drawer-opacity, 1);
+        box-shadow: var(--vs-drawer-boxShadow, none);
+        border-radius: var(--vs-drawer-borderRadius, 0);
+        background-color: var(--vs-drawer-backgroundColor, var(--vs-comp-bg));
+        padding: var(--vs-drawer-padding, 0);
+
+        &.vs-drawer-left {
+            @apply top-0 left-0;
+
+            transform: translateX(0);
+            border-right: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-top-right-radius: var(--vs-drawer-borderRadius, 0);
+            border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
+            width: var(--vs-drawer-size);
+            height: 100%;
+        }
+
+        &.vs-drawer-right {
+            @apply top-0 right-0;
+
+            transform: translateX(0);
+            border-left: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-top-left-radius: var(--vs-drawer-borderRadius, 0);
+            border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
+            width: var(--vs-drawer-size);
+            height: 100%;
+        }
+
+        &.vs-drawer-top {
+            @apply top-0 left-0;
+
+            transform: translateY(0);
+            border-top: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
+            border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
+            width: 100%;
+            height: var(--vs-drawer-size);
+        }
+
+        &.vs-drawer-bottom {
+            @apply bottom-0 left-0;
+
+            transform: translateY(0);
+            border-bottom: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-top-right-radius: var(--vs-drawer-borderRadius, 0);
+            border-top-left-radius: var(--vs-drawer-borderRadius, 0);
+            width: 100%;
+            height: var(--vs-drawer-size);
+        }
+    }
+}
+
+.drawer-enter-active .vs-drawer-dimmed,
+.drawer-leave-active .vs-drawer-dimmed {
+    transition: opacity 0.25s;
+}
+.drawer-enter-active .vs-drawer-content,
+.drawer-leave-active .vs-drawer-content {
+    transition: transform 0.25s ease-in-out;
+}
+
+.drawer-enter-from .vs-drawer-dimmed,
+.drawer-leave-to .vs-drawer-dimmed {
+    opacity: 0;
+}
+
+.drawer-enter-from .vs-drawer-content.vs-drawer-left,
+.drawer-leave-to .vs-drawer-content.vs-drawer-left {
+    transform: translateX(-100%);
+}
+
+.drawer-enter-from .vs-drawer-content.vs-drawer-right,
+.drawer-leave-to .vs-drawer-content.vs-drawer-right {
+    transform: translateX(100%);
+}
+
+.drawer-enter-from .vs-drawer-content.vs-drawer-bottom,
+.drawer-leave-to .vs-drawer-content.vs-drawer-bottom {
+    transform: translateY(100%);
+}
+
+.drawer-enter-from .vs-drawer-content.vs-drawer-top,
+.drawer-leave-to .vs-drawer-content.vs-drawer-top {
+    transform: translateY(-100%);
+}

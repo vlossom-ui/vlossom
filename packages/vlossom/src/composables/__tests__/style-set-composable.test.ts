@@ -1,10 +1,22 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
-import { useStyleSet } from '../style-set-composable';
-import { useOptionsStore } from '@/stores';
+import * as stores from '@/stores';
+import { OptionsStore } from '@/stores';
 import { VsComponent } from '@/declaration';
+import { useStyleSet } from './../style-set-composable';
 
 describe('useStyleSet', () => {
+    let optionsStore: OptionsStore;
+
+    beforeEach(() => {
+        optionsStore = new OptionsStore();
+        vi.spyOn(stores, 'useOptionsStore').mockReturnValue(optionsStore);
+    });
+
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
+
     describe('componentStyleSet', () => {
         it('styleSet이 undefined이면 빈 객체를 반환해야 한다', () => {
             // given
@@ -24,8 +36,7 @@ describe('useStyleSet', () => {
             const styles = { color: 'red', fontSize: '14px' };
             const styleSet = ref('primary');
 
-            const optionStore = useOptionsStore();
-            optionStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
+            optionsStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
 
             // when
             const { componentStyleSet } = useStyleSet(component, styleSet);
@@ -54,8 +65,7 @@ describe('useStyleSet', () => {
             const styleSet = ref('primary');
             const additionalStyleSet = ref({ backgroundColor: 'blue', fontSize: '16px' });
 
-            const optionStore = useOptionsStore();
-            optionStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
+            optionsStore.setStyleSet({ [styleSet.value]: { [component]: styles } });
 
             // when
             const { componentStyleSet } = useStyleSet(component, styleSet, additionalStyleSet);

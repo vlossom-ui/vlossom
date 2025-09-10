@@ -1,5 +1,5 @@
-import type { Component } from 'vue';
-import type { COLORS } from './constants';
+import type { Component, Ref } from 'vue';
+import type { COLORS, SIZES } from './constants';
 import type { VsComponent } from './enums';
 
 export type ColorScheme = (typeof COLORS)[number];
@@ -31,6 +31,10 @@ export interface BarLayout {
 
 export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
+export type OverlayTuple = [string, Ref<OverlayCallbacks>];
+
+export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
+
 export interface DrawerLayout {
     isOpen: boolean;
     responsive: boolean;
@@ -39,6 +43,10 @@ export interface DrawerLayout {
 }
 
 export type DrawerLayouts = { [key in DrawerPlacement]: DrawerLayout };
+
+export type Size = (typeof SIZES)[number];
+
+export type SizeProp = Size | string | number;
 
 export interface Breakpoints {
     xs?: string | number;
@@ -77,4 +85,9 @@ export interface FlexStyleSet {
     alignItems?: string;
     justifyContent?: string;
     gap?: string;
+}
+
+export interface Focusable {
+    focus(): void;
+    blur(): void;
 }

@@ -1,9 +1,10 @@
 import type { PropType } from 'vue';
+import type { CssPosition } from '@/declaration';
 
 export function getPositionProps() {
     return {
         position: {
-            type: String as PropType<'relative' | 'absolute' | 'fixed' | 'sticky' | 'static'>,
+            type: String as PropType<CssPosition>,
         },
     };
 }

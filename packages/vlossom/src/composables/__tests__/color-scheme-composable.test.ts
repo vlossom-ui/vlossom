@@ -1,17 +1,28 @@
 import { ref, type Ref } from 'vue';
-import { describe, it, expect } from 'vitest';
-import { useColorScheme } from '../color-scheme-composable';
-import { VsComponent } from '@/declaration';
-import type { ColorScheme } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
+import * as stores from '@/stores';
+import { VsComponent, type ColorScheme } from '@/declaration';
+import { OptionsStore } from '@/stores';
+import { useColorScheme } from './../color-scheme-composable';
 
 describe('useColorScheme', () => {
+    let optionsStore: OptionsStore;
+
+    beforeEach(() => {
+        optionsStore = new OptionsStore();
+        vi.spyOn(stores, 'useOptionsStore').mockReturnValue(optionsStore);
+    });
+
+    afterEach(() => {
+        vi.clearAllMocks();
+    });
+
     describe('computedColorScheme', () => {
         it('colorScheme.value가 있을 때 우선적으로 사용해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme> = ref('red');
             const component = VsComponent.VsButton;
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'blue',
             });
 
@@ -26,7 +37,7 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'blue',
             });
 
@@ -41,7 +52,7 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = 'CustomComponent';
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'green',
             });
 
@@ -94,14 +105,14 @@ describe('useColorScheme', () => {
             expect(computedColorScheme.value).toBe(undefined);
 
             // when
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'cyan',
             });
             // then
             expect(computedColorScheme.value).toBe('cyan');
 
             // when
-            useOptionsStore().setColorScheme({});
+            optionsStore.setColorScheme({});
             // then
             expect(computedColorScheme.value).toBe(undefined);
         });
@@ -136,7 +147,7 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsSection;
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'emerald',
             });
 
@@ -178,7 +189,7 @@ describe('useColorScheme', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
             const component = VsComponent.VsButton;
-            useOptionsStore().setColorScheme({
+            optionsStore.setColorScheme({
                 [component]: 'blue',
             });
 
