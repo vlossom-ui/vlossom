@@ -2,12 +2,14 @@
     --vs-theme-button-iconColor: initial;
 
     .vs-theme-icon {
-        @apply absolute top-1/2 left-1/2 flex h-[2rem] w-[2rem] items-center justify-center opacity-0;
+        @apply absolute top-1/2 left-1/2 flex items-center justify-center opacity-0;
         transform: scale(0.4) rotate(270deg) translateX(-50%) translateY(-50%);
         transform-origin: top left;
         transition:
             opacity 0.4s ease-out,
             transform 0.4s ease-out;
+        width: calc(var(--vs-button-width) * 2 / 3);
+        height: calc(var(--vs-button-height) * 2 / 3);
         color: var(--vs-theme-button-iconColor, var(--vs-orange-400));
 
         &.vs-on {
