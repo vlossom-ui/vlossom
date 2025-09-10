@@ -35,7 +35,7 @@ export default defineComponent({
     },
     emits: ['change'],
     setup(props, { emit }) {
-        const vlossom = useVlossom();
+        const $vs = useVlossom();
 
         const { colorScheme, styleSet } = toRefs(props);
 
@@ -50,10 +50,10 @@ export default defineComponent({
             ...componentStyleSet.value,
         }));
 
-        const isDarkTheme: Ref<boolean> = computed(() => vlossom.theme === 'dark');
+        const isDarkTheme: Ref<boolean> = computed(() => $vs.theme === 'dark');
 
         function changeTheme(isDark: boolean) {
-            vlossom.toggleTheme();
+            $vs.toggleTheme();
             emit('change', isDark);
         }
 
