@@ -8,15 +8,15 @@
         :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
         @toggle="changeTheme"
     >
-        <i class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }" v-html="iconSvgs.themeLight" />
-        <i class="vs-theme-icon vs-theme-dark" :class="{ 'vs-on': isDarkTheme }" v-html="iconSvgs.themeDark" />
+        <i class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }" v-html="themeLightIcon" />
+        <i class="vs-theme-icon vs-theme-dark" :class="{ 'vs-on': isDarkTheme }" v-html="themeDarkIcon" />
     </vs-toggle>
 </template>
 
 <script lang="ts">
 import { defineComponent, toRefs, type Ref, computed } from 'vue';
 import { useVlossom } from '@/framework';
-import { VsComponent, iconSvgs } from '@/declaration';
+import { VsComponent, themeDarkIcon, themeLightIcon } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsThemeButtonStyleSet } from './types';
@@ -57,7 +57,15 @@ export default defineComponent({
             emit('change', isDark);
         }
 
-        return { changeTheme, isDarkTheme, colorSchemeClass, toggleStyleSet, styleSetVariables, iconSvgs };
+        return {
+            changeTheme,
+            isDarkTheme,
+            colorSchemeClass,
+            toggleStyleSet,
+            styleSetVariables,
+            themeDarkIcon,
+            themeLightIcon,
+        };
     },
 });
 </script>
