@@ -91,3 +91,14 @@ export interface Focusable {
     focus(): void;
     blur(): void;
 }
+
+export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning' | 'selected';
+
+export interface StateMessage<T extends string = UIState> {
+    state: T;
+    text: string;
+}
+
+export type Rule<T = any> = ((v: T) => string) | ((v: T) => PromiseLike<string>);
+
+export type Message<T = any> = StateMessage | ((v: T) => StateMessage) | ((v: T) => PromiseLike<StateMessage>);
