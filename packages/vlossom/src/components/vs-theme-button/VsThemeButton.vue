@@ -1,6 +1,6 @@
 <template>
     <vs-toggle
-        :v-model="isDarkTheme"
+        :model-value="isDarkTheme"
         class="vs-theme-button"
         :style="styleSetVariables"
         :color-scheme="colorScheme"
@@ -48,6 +48,10 @@ export default defineComponent({
         const isDarkTheme: Ref<boolean> = computed(() => $vs.theme === 'dark');
 
         function changeTheme(isDark: boolean) {
+            if (isDarkTheme.value === isDark) {
+                return;
+            }
+
             $vs.toggleTheme();
             emit('change', isDark);
         }
