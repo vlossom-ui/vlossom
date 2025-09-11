@@ -1,4 +1,4 @@
-export const THEME_KEY = 'vlossom:theme';
+export const THEME_KEY = 'vlossom:theme-mode';
 export const LAYOUT_STORE_KEY = 'vlossom:layout-store';
 export const FORM_STORE_KEY = 'vlossom:form-store';
 

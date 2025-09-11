@@ -21,9 +21,6 @@ const meta: Meta<typeof VsToggle> = {
         setup() {
             const preDefinedStyleSet: VsToggleStyleSet = {
                 backgroundColor: '#1e88e5',
-                fontColor: '#fff',
-                fontSize: '1rem',
-                fontWeight: '600',
                 height: '3rem',
                 padding: '0 1.5rem',
                 width: 'auto',

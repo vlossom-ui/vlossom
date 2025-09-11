@@ -1,0 +1,25 @@
+body {
+    color: var(--vs-no-color-inverse);
+    font-size: var(--vs-font-size);
+}
+
+html,
+body {
+    @apply relative min-h-screen min-w-full leading-[1.5] font-normal;
+    background-color: var(--vs-app-bg);
+    font-family:
+        'Noto Sans',
+        'Nanum Gothic',
+        -apple-system,
+        BlinkMacSystemFont,
+        system-ui,
+        'Helvetica Neue',
+        'Segoe UI',
+        'Apple SD Gothic Neo',
+        'Noto Sans KR',
+        'Malgun Gothic',
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        sans-serif;
+}

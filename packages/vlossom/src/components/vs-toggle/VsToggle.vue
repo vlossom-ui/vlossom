@@ -8,6 +8,7 @@
         :disabled="disabled"
         :ghost="ghost"
         :large="large"
+        :loading="loading"
         :outline="outline"
         :primary="primary"
         :responsive="responsive"
