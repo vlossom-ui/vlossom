@@ -6,6 +6,8 @@
         :color-scheme="colorScheme"
         :style-set="componentStyleSet"
         :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
+        :disabled="disabled"
+        :loading="loading"
         @toggle="changeTheme"
     >
         <i class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }" v-html="themeLightIcon" />
