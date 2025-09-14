@@ -84,9 +84,9 @@ describe('VsPage', () => {
             const pageElement = wrapper.find('.vs-page');
             const children = pageElement.element.children;
 
-            expect(children[0]).toHaveClass('vs-page-title');
-            expect(children[1]).toHaveClass('vs-page-description');
-            expect(children[2]).toHaveClass('vs-page-content');
+            expect(children[0].classList.contains('vs-page-title')).toBe(true);
+            expect(children[1].classList.contains('vs-page-description')).toBe(true);
+            expect(children[2].classList.contains('vs-page-content')).toBe(true);
         });
     });
 
