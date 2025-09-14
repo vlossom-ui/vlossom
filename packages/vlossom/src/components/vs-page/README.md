@@ -162,19 +162,31 @@ useVlossom().styleSet = {
 
 ```typescript
 interface VsPageStyleSet extends TextStyleSet {
-    padding?: string; // 페이지 전체 패딩
-    title?: TextStyleSet & { padding?: string }; // 제목 영역 스타일
-    description?: TextStyleSet & { padding?: string }; // 설명 영역 스타일
-}
+    title?: {
+        padding?: string; // 제목 영역 패딩
+        fontColor?: string; // 제목 텍스트 색상
+        fontSize?: string; // 제목 폰트 크기
+        fontWeight?: string | number; // 제목 폰트 굵기
+        lineHeight?: string; // 제목 줄 간격
+        whiteSpace?: string; // 제목 공백 처리 방식
+    }; // 제목 영역 스타일
+    description?: {
+        padding?: string; // 설명 영역 패딩
+        fontColor?: string; // 설명 텍스트 색상
+        fontSize?: string; // 설명 폰트 크기
+        fontWeight?: string | number; // 설명 폰트 굵기
+        lineHeight?: string; // 설명 줄 간격
+        whiteSpace?: string; // 설명 공백 처리 방식
+    }; // 설명 영역 스타일
 
-interface TextStyleSet {
+    padding?: string; // 페이지 전체 패딩
     fontColor?: string; // 텍스트 색상
     fontSize?: string; // 폰트 크기
     fontWeight?: string | number; // 폰트 굵기
     lineHeight?: string; // 줄 간격
     whiteSpace?: string; // 공백 처리 방식
 }
-```
+
 
 ## Slots
 
@@ -233,3 +245,4 @@ interface TextStyleSet {
 - **개별 영역 스타일링**: title과 description 각각에 대해 독립적인 스타일 적용 가능
 - **유연한 스타일링**: 인라인 객체 또는 미리 정의된 스타일 세트 모두 지원
 - **선택적 슬롯**: title과 description은 필요에 따라 선택적으로 사용 가능
+```
