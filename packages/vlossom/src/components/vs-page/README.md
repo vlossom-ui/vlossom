@@ -11,29 +11,6 @@
 ```html
 <template>
     <vs-page>
-        <p>페이지의 메인 콘텐츠입니다.</p>
-    </vs-page>
-</template>
-```
-
-### 제목이 있는 페이지
-
-```html
-<template>
-    <vs-page>
-        <template #title>
-            <h1>페이지 제목</h1>
-        </template>
-        <p>페이지의 메인 콘텐츠입니다.</p>
-    </vs-page>
-</template>
-```
-
-### 제목과 설명이 있는 페이지
-
-```html
-<template>
-    <vs-page>
         <template #title>
             <h1>페이지 제목</h1>
         </template>
