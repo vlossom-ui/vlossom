@@ -107,14 +107,13 @@ describe('VsPage', () => {
             });
 
             // then
-            const pageElement = wrapper.find('.vs-page');
-            const style = pageElement.attributes('style');
-            expect(style).toContain('--vs-page-padding: 2rem');
-            expect(style).toContain('--vs-page-fontColor: #f0f0f0');
-            expect(style).toContain('--vs-page-fontWeight: 500');
-            expect(style).toContain('--vs-page-lineHeight: 1.5');
-            expect(style).toContain('--vs-page-whiteSpace: nowrap');
-            expect(style).toContain('--vs-page-fontSize: 1.2rem');
+            const styleVariables = wrapper.vm.styleSetVariables;
+            expect(styleVariables['--vs-page-padding']).toBe('2rem');
+            expect(styleVariables['--vs-page-fontColor']).toBe('#f0f0f0');
+            expect(styleVariables['--vs-page-fontWeight']).toBe('500');
+            expect(styleVariables['--vs-page-lineHeight']).toBe('1.5');
+            expect(styleVariables['--vs-page-whiteSpace']).toBe('nowrap');
+            expect(styleVariables['--vs-page-fontSize']).toBe('1.2rem');
         });
 
         it('styleSet의 title 스타일이 제공되면 해당 CSS 변수가 설정되어야 한다', () => {
