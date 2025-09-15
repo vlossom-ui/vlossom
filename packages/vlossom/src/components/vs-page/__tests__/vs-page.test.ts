@@ -134,14 +134,13 @@ describe('VsPage', () => {
             });
 
             // then
-            const pageElement = wrapper.find('.vs-page');
-            const style = pageElement.attributes('style');
-            expect(style).toContain('--vs-page-title-padding: 0 0 1.2rem 0');
-            expect(style).toContain('--vs-page-title-fontColor: #333333');
-            expect(style).toContain('--vs-page-title-fontSize: 2rem');
-            expect(style).toContain('--vs-page-title-fontWeight: bold');
-            expect(style).toContain('--vs-page-title-lineHeight: 1.5');
-            expect(style).toContain('--vs-page-title-whiteSpace: nowrap');
+            const styleVariables = wrapper.vm.styleSetVariables;
+            expect(styleVariables['--vs-page-title-padding']).toBe('0 0 1.2rem 0');
+            expect(styleVariables['--vs-page-title-fontColor']).toBe('#333333');
+            expect(styleVariables['--vs-page-title-fontSize']).toBe('2rem');
+            expect(styleVariables['--vs-page-title-fontWeight']).toBe('bold');
+            expect(styleVariables['--vs-page-title-lineHeight']).toBe('1.5');
+            expect(styleVariables['--vs-page-title-whiteSpace']).toBe('nowrap');
         });
 
         it('styleSet의 description 스타일이 제공되면 해당 CSS 변수가 설정되어야 한다', () => {
@@ -162,14 +161,13 @@ describe('VsPage', () => {
             });
 
             // then
-            const pageElement = wrapper.find('.vs-page');
-            const style = pageElement.attributes('style');
-            expect(style).toContain('--vs-page-description-padding: 0 0 1.2rem 0');
-            expect(style).toContain('--vs-page-description-fontColor: #666666');
-            expect(style).toContain('--vs-page-description-fontWeight: 300');
-            expect(style).toContain('--vs-page-description-fontSize: 1.1rem');
-            expect(style).toContain('--vs-page-description-lineHeight: 1.5');
-            expect(style).toContain('--vs-page-description-whiteSpace: nowrap');
+            const styleVariables = wrapper.vm.styleSetVariables;
+            expect(styleVariables['--vs-page-description-padding']).toBe('0 0 1.2rem 0');
+            expect(styleVariables['--vs-page-description-fontColor']).toBe('#666666');
+            expect(styleVariables['--vs-page-description-fontWeight']).toBe('300');
+            expect(styleVariables['--vs-page-description-fontSize']).toBe('1.1rem');
+            expect(styleVariables['--vs-page-description-lineHeight']).toBe('1.5');
+            expect(styleVariables['--vs-page-description-whiteSpace']).toBe('nowrap');
         });
 
         it('복합적인 styleSet이 제공되면 모든 CSS 변수가 올바르게 설정되어야 한다', () => {
@@ -204,25 +202,24 @@ describe('VsPage', () => {
             });
 
             // then
-            const pageElement = wrapper.find('.vs-page');
-            const style = pageElement.attributes('style');
-            expect(style).toContain('--vs-page-padding: 1rem');
-            expect(style).toContain('--vs-page-fontColor: #ffffff');
-            expect(style).toContain('--vs-page-fontWeight: 400');
-            expect(style).toContain('--vs-page-lineHeight: 1.6');
-            expect(style).toContain('--vs-page-whiteSpace: nowrap');
-            expect(style).toContain('--vs-page-title-fontColor: #000000');
-            expect(style).toContain('--vs-page-title-padding: 0 0 1.2rem 0');
-            expect(style).toContain('--vs-page-title-fontSize: 2.5rem');
-            expect(style).toContain('--vs-page-title-fontWeight: 700');
-            expect(style).toContain('--vs-page-title-lineHeight: 1.2');
-            expect(style).toContain('--vs-page-title-whiteSpace: nowrap');
-            expect(style).toContain('--vs-page-description-fontColor: #777777');
-            expect(style).toContain('--vs-page-description-fontWeight: 300');
-            expect(style).toContain('--vs-page-description-fontSize: 1rem');
-            expect(style).toContain('--vs-page-description-padding: 0 0 1.2rem 0');
-            expect(style).toContain('--vs-page-description-lineHeight: 1.5');
-            expect(style).toContain('--vs-page-description-whiteSpace: pre-wrap');
+            const styleVariables = wrapper.vm.styleSetVariables;
+            expect(styleVariables['--vs-page-padding']).toBe('1rem');
+            expect(styleVariables['--vs-page-fontColor']).toBe('#ffffff');
+            expect(styleVariables['--vs-page-fontWeight']).toBe('400');
+            expect(styleVariables['--vs-page-lineHeight']).toBe('1.6');
+            expect(styleVariables['--vs-page-whiteSpace']).toBe('nowrap');
+            expect(styleVariables['--vs-page-title-fontColor']).toBe('#000000');
+            expect(styleVariables['--vs-page-title-padding']).toBe('0 0 1.2rem 0');
+            expect(styleVariables['--vs-page-title-fontSize']).toBe('2.5rem');
+            expect(styleVariables['--vs-page-title-fontWeight']).toBe('700');
+            expect(styleVariables['--vs-page-title-lineHeight']).toBe('1.2');
+            expect(styleVariables['--vs-page-title-whiteSpace']).toBe('nowrap');
+            expect(styleVariables['--vs-page-description-fontColor']).toBe('#777777');
+            expect(styleVariables['--vs-page-description-fontWeight']).toBe('300');
+            expect(styleVariables['--vs-page-description-fontSize']).toBe('1rem');
+            expect(styleVariables['--vs-page-description-padding']).toBe('0 0 1.2rem 0');
+            expect(styleVariables['--vs-page-description-lineHeight']).toBe('1.5');
+            expect(styleVariables['--vs-page-description-whiteSpace']).toBe('pre-wrap');
         });
     });
 
@@ -249,10 +246,10 @@ describe('VsPage', () => {
             expect(wrapper.find('.vs-page-description p').text()).toBe('상세 설명');
             expect(wrapper.find('.vs-page-content main').text()).toBe('주요 내용');
 
-            const style = wrapper.find('.vs-page').attributes('style');
-            expect(style).toContain('--vs-page-padding: 2rem');
-            expect(style).toContain('--vs-page-title-fontSize: 3rem');
-            expect(style).toContain('--vs-page-description-fontColor: #888888');
+            const styleVariables = wrapper.vm.styleSetVariables;
+            expect(styleVariables['--vs-page-padding']).toBe('2rem');
+            expect(styleVariables['--vs-page-title-fontSize']).toBe('3rem');
+            expect(styleVariables['--vs-page-description-fontColor']).toBe('#888888');
         });
     });
 });
