@@ -92,16 +92,6 @@ interface VsImageStyleSet {
 }
 ```
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-- `--vs-image-width`: 이미지 너비 (기본값: 100%)
-- `--vs-image-height`: 이미지 높이 (기본값: 100%)
-- `--vs-image-border`: 테두리 스타일
-- `--vs-image-borderRadius`: 모서리 둥글기
-- `--vs-image-objectFit`: 이미지 맞춤 방식
-
 ## 특징
 
 - **지연 로딩**: IntersectionObserver를 사용한 효율적인 지연 로딩

@@ -186,7 +186,7 @@ interface VsPageStyleSet extends TextStyleSet {
     lineHeight?: string; // 줄 간격
     whiteSpace?: string; // 공백 처리 방식
 }
-
+```
 
 ## Slots
 
@@ -204,37 +204,6 @@ interface VsPageStyleSet extends TextStyleSet {
 - **description**: 라이트 웨이트(`font-weight: light`), 작은 사이즈(`font-size: sm`)로 설정되어 부가 설명 텍스트에 적합
 - **default(content)**: 시스템 기본 폰트 스타일을 사용하여 본문 콘텐츠에 적합한 가독성 제공
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-### 페이지 전체
-
-- `--vs-page-padding`: 페이지 내부 여백
-- `--vs-page-fontColor`: 메인 콘텐츠 텍스트 색상
-- `--vs-page-fontSize`: 메인 콘텐츠 폰트 크기
-- `--vs-page-fontWeight`: 메인 콘텐츠 폰트 굵기
-- `--vs-page-lineHeight`: 메인 콘텐츠 줄 간격
-- `--vs-page-whiteSpace`: 메인 콘텐츠 공백 처리
-
-### 제목 영역
-
-- `--vs-page-title-padding`: 제목 영역 패딩
-- `--vs-page-title-fontColor`: 제목 텍스트 색상
-- `--vs-page-title-fontSize`: 제목 폰트 크기
-- `--vs-page-title-fontWeight`: 제목 폰트 굵기
-- `--vs-page-title-lineHeight`: 제목 줄 간격
-- `--vs-page-title-whiteSpace`: 제목 공백 처리
-
-### 설명 영역
-
-- `--vs-page-description-padding`: 설명 영역 패딩
-- `--vs-page-description-fontColor`: 설명 텍스트 색상
-- `--vs-page-description-fontSize`: 설명 폰트 크기
-- `--vs-page-description-fontWeight`: 설명 폰트 굵기
-- `--vs-page-description-lineHeight`: 설명 줄 간격
-- `--vs-page-description-whiteSpace`: 설명 공백 처리
-
 ## 특징
 
 - **반응형 패딩**: TailwindCSS의 Container Query를 사용하여 화면 크기에 따라 자동으로 패딩 조정
@@ -245,4 +214,7 @@ interface VsPageStyleSet extends TextStyleSet {
 - **개별 영역 스타일링**: title과 description 각각에 대해 독립적인 스타일 적용 가능
 - **유연한 스타일링**: 인라인 객체 또는 미리 정의된 스타일 세트 모두 지원
 - **선택적 슬롯**: title과 description은 필요에 따라 선택적으로 사용 가능
+
+```
+
 ```

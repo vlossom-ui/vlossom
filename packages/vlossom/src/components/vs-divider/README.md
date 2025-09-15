@@ -95,15 +95,6 @@ interface VsDividerStyleSet {
 }
 ```
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-- `--vs-divider-border`: 구분선 테두리 스타일 (기본값: `1px solid var(--vs-primary-comp-bg)`)
-- `--vs-divider-margin`: 가로 구분선 여백 (기본값: `1.6rem 0`)
-- `--vs-divider-vertical-margin`: 세로 구분선 여백 (기본값: `0 1.2rem`)
-- `--vs-divider-vertical-height`: 세로 구분선 높이 (기본값: `100%`)
-
 ## 특징
 
 - **다양한 방향 지원**: 가로형과 세로형 구분선 모두 지원

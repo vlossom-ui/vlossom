@@ -76,14 +76,6 @@ interface VsInnerScrollStyleSet {
 | `header`  | 상단에 고정되는 헤더 콘텐츠      |
 | `footer`  | 하단에 고정되는 푸터 콘텐츠      |
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-- `--vs-inner-scroll-header-padding`: 헤더 영역 패딩
-- `--vs-inner-scroll-padding`: 본문 영역 패딩
-- `--vs-inner-scroll-footer-padding`: 푸터 영역 패딩
-
 ## 특징
 
 - **고정 헤더/푸터**: 헤더와 푸터 영역은 스크롤되지 않고 고정됨
