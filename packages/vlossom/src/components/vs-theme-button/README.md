@@ -88,14 +88,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {
 }
 ```
 
-## CSS 변수
-
-| CSS 변수                      | Default                | Description |
-| ----------------------------- | ---------------------- | ----------- |
-| `--vs-theme-button-iconColor` | `var(--vs-orange-400)` | 아이콘 색상 |
-
-**VsToggle 및 VsButton의 모든 CSS 변수도 지원됩니다.**
-
 ## 특징
 
 - **자동 테마 감지**: Vlossom 프레임워크의 현재 테마를 자동으로 반영

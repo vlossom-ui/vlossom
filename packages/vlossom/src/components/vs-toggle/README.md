@@ -108,14 +108,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {
 }
 ```
 
-## CSS 변수
-
-VsToggle은 VsButton을 기반으로 하므로, 모든 VsButton CSS 변수를 지원합니다.
-
-추가적으로 다음 CSS 클래스를 제공합니다:
-
-- `.vs-invisible`: `invisible` prop이 true일 때 적용되는 투명 스타일
-
 ## 특징
 
 - **v-model 지원**: 양방향 데이터 바인딩으로 토글 상태 관리

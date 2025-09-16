@@ -13,7 +13,11 @@
         }
 
         --vs-line-height: 1.6;
+
+        --vs-font-weight-light: 200;
         --vs-font-weight: 400;
+        --vs-font-weight-bold: 600;
+
         --vs-white-space: normal;
 
         --vs-font-size-xs: 0.8rem;

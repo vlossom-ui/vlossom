@@ -65,20 +65,6 @@ interface VsAvatarStyleSet {
 | --------- | --------------------------------------- |
 | `default` | 아바타 내용 (텍스트, 이미지, 아이콘 등) |
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-- `--vs-avatar-backgroundColor`: 배경 색상
-- `--vs-avatar-border`: 테두리 스타일
-- `--vs-avatar-borderRadius`: 모서리 둥글기
-- `--vs-avatar-fontColor`: 텍스트 색상
-- `--vs-avatar-fontSize`: 폰트 크기
-- `--vs-avatar-fontWeight`: 폰트 굵기
-- `--vs-avatar-height`: 높이
-- `--vs-avatar-width`: 너비
-- `--vs-avatar-objectFit`: 이미지 맞춤 방식
-
 ## 특징
 
 - **유연한 컨텐츠**: 텍스트, 이미지, 아이콘 등 다양한 컨텐츠 지원

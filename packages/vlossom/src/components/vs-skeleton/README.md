@@ -89,17 +89,6 @@ interface VsSkeletonStyleSet {
 }
 ```
 
-## CSS 변수
-
-컴포넌트는 다음 CSS 변수를 생성합니다:
-
-- `--vs-skeleton-backgroundColor`: 스켈레톤 배경색
-- `--vs-skeleton-borderRadius`: 모서리 둥글기
-- `--vs-skeleton-color`: 텍스트 색상
-- `--vs-skeleton-fontSize`: 폰트 크기
-- `--vs-skeleton-height`: 높이
-- `--vs-skeleton-width`: 너비
-
 ## 특징
 
 - **부드러운 애니메이션**: 0.8초 주기의 깜빡임 애니메이션으로 로딩 상태 표현
