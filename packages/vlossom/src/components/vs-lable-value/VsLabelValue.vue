@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="computedStyleSet"
+        :style="componentStyleSet"
         :width="width"
         :grid="grid"
     >
@@ -17,9 +17,9 @@
     </vs-responsive>
 </template>
 <script lang="ts">
-import { PropType, computed, defineComponent, toRefs } from 'vue';
+import { type PropType, computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
-import { getResponsiveProps } from '@/models';
+import { getResponsiveProps } from '@/props';
 import { VsComponent, type ColorScheme } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
@@ -42,7 +42,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedStyleSet } = useStyleSet<VsLabelValueStyleSet>(name, styleSet);
+        const { componentStyleSet } = useStyleSet<VsLabelValueStyleSet>(name, styleSet);
 
         const classObj = computed(() => ({
             'vs-inline': inline.value,
@@ -53,7 +53,7 @@ export default defineComponent({
         return {
             classObj,
             colorSchemeClass,
-            computedStyleSet,
+            componentStyleSet,
         };
     },
 });
