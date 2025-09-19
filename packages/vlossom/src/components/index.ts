@@ -20,7 +20,6 @@ export type * from './vs-loading/types';
 export type * from './vs-page/types';
 export type * from './vs-render/types';
 export type * from './vs-responsive/types';
-export type * from './vs-section/types';
 export type * from './vs-skeleton/types';
 export type * from './vs-toggle/types';
 
@@ -46,7 +45,6 @@ export { default as VsLoading } from './vs-loading/VsLoading.vue';
 export { default as VsPage } from './vs-page/VsPage.vue';
 export { default as VsRender } from './vs-render/VsRender.vue';
 export { default as VsResponsive } from './vs-responsive/VsResponsive.vue';
-export { default as VsSection } from './vs-section/VsSection.vue';
 export { default as VsSkeleton } from './vs-skeleton/VsSkeleton.vue';
 export { default as VsThemeButton } from './vs-theme-button/VsThemeButton.vue';
 export { default as VsToggle } from './vs-toggle/VsToggle.vue';

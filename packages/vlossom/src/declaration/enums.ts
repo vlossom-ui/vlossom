@@ -21,7 +21,6 @@ export enum VsComponent {
     VsPage = 'VsPage',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
-    VsSection = 'VsSection',
     VsSkeleton = 'VsSkeleton',
     VsThemeButton = 'VsThemeButton',
     VsToggle = 'VsToggle',
