@@ -1,0 +1,120 @@
+.vs-label-value {
+    display: flex;
+    position: relative;
+    border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-label-value-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    > .vs-cell {
+        display: flex;
+        position: relative;
+
+        &.vs-label {
+            flex-basis: var(--vs-label-value-label-width, 20%);
+            flex-direction: var(--vs-label-value-label-flexDirection, row);
+            flex-wrap: var(--vs-label-value-label-flexWrap, nowrap);
+            justify-content: var(--vs-label-value-label-justifyContent, flex-start);
+            align-items: var(--vs-label-value-label-alignItems, center);
+            border-right: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+            background-color: var(--vs-label-value-label-backgroundColor, var(--vs-comp-bg));
+            padding: var(--vs-label-value-label-padding, 0.6rem 1.2rem);
+            color: var(--vs-label-value-label-fontColor, var(--vs-comp-font));
+            font-weight: var(--vs-label-value-label-fontWeight, 500);
+            font-size: var(--vs-label-value-label-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
+            white-space: nowrap;
+            word-break: break-word;
+        }
+
+        &.vs-value {
+            flex: 1;
+            flex-direction: var(--vs-label-value-value-flexDirection, row);
+            flex-wrap: var(--vs-label-value-value-flexWrap, nowrap);
+            justify-content: var(--vs-label-value-value-justifyContent, flex-start);
+            align-items: var(--vs-label-value-value-alignItems, center);
+            background-color: var(--vs-label-value-value-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-label-value-value-padding, 0.6rem 1.2rem);
+            overflow-x: auto;
+            color: var(--vs-label-value-value-fontColor, var(--vs-comp-font));
+            font-weight: var(--vs-label-value-value-fontWeight, 500);
+            font-size: var(--vs-label-value-value-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
+        }
+
+        &.vs-actions {
+            flex-direction: var(--vs-label-value-actions-flexDirection, row);
+            flex-wrap: var(--vs-label-value-actions-flexWrap, wrap);
+            justify-content: var(--vs-label-value-actions-justifyContent, flex-end);
+            align-items: var(--vs-label-value-actions-alignItems, center);
+            background-color: var(--vs-label-value-actions-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-label-value-actions-padding, 0.6rem 1.2rem);
+            color: var(--vs-label-value-actions-fontColor, var(--vs-comp-font));
+            font-weight: var(--vs-label-value-actions-fontWeight, 500);
+            font-size: var(--vs-label-value-actions-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
+        }
+    }
+
+    &.vs-inline {
+        display: inline-flex;
+        width: auto;
+    }
+
+    &.vs-primary {
+        border: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+
+        .vs-label {
+            border-right: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-label-value-label-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-label-value-label-fontColor, var(--vs-primary-comp-font));
+        }
+    }
+
+    &.vs-dense {
+        > .vs-cell {
+            &.vs-label {
+                padding: var(--vs-label-value-label-padding, var(--vs-label-value-label-padding, 0.2rem 0.8rem));
+                font-size: var(--vs-label-value-label-fontSize, var(--vs-font-size-xs));
+            }
+
+            &.vs-value {
+                padding: var(--vs-label-value-value-padding, var(--vs-label-value-value-padding, 0.2rem 0.8rem));
+                font-size: var(--vs-label-value-value-fontSize, var(--vs-font-size-xs));
+            }
+
+            &.vs-actions {
+                padding: var(--vs-label-value-actions-padding, var(--vs-label-value-actions-padding, 0.2rem 0.8rem));
+                font-size: var(--vs-label-value-actions-fontSize, var(--vs-font-size-xs));
+            }
+        }
+    }
+}
+
+@container (max-width: 768px) {
+    .vs-label-value:not(.vs-inline) {
+        flex-direction: column;
+        width: 100%;
+
+        > .vs-cell {
+            justify-content: flex-start;
+            padding: 0.8rem 1.2rem;
+
+            &.vs-label {
+                flex-basis: auto;
+                border-right: none;
+                border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+            }
+
+            &.vs-actions {
+                justify-content: flex-end;
+            }
+        }
+
+        &.vs-primary {
+            > .vs-cell {
+                &.vs-label {
+                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+                }
+            }
+        }
+    }
+}
