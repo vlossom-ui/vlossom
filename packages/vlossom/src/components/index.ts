@@ -1,6 +1,7 @@
 export type * from './vs-accordion/types';
 export type * from './vs-avatar/types';
 export type * from './vs-bar/types';
+export type * from './vs-block/types';
 export type * from './vs-button/types';
 export type * from './vs-container/types';
 export type * from './vs-divider/types';
@@ -26,6 +27,7 @@ export type * from './vs-toggle/types';
 export { default as VsAccordion } from './vs-accordion/VsAccordion.vue';
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
 export { default as VsBar } from './vs-bar/VsBar.vue';
+export { default as VsBlock } from './vs-block/VsBlock.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';

@@ -8,6 +8,7 @@
 import VsAccordion from './vs-accordion/VsAccordion.vue';
 import VsAvatar from './vs-avatar/VsAvatar.vue';
 import VsBar from './vs-bar/VsBar.vue';
+import VsBlock from './vs-block/VsBlock.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsContainer from './vs-container/VsContainer.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
@@ -36,6 +37,7 @@ export const VlossomComponents = {
     VsAvatar,
     VsBar,
     VsButton,
+    VsBlock,
     VsContainer,
     VsDivider,
     VsDrawer,
