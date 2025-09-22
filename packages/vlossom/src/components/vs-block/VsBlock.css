@@ -39,7 +39,7 @@
         font-weight: var(--vs-block-title-fontWeight, var(--vs-font-weight-bold));
         font-size: var(--vs-block-title-fontSize, var(--vs-font-size-xl));
         line-height: var(--vs-block-title-lineHeight, var(--vs-line-height));
-        white-space: var(--vs-block-title-whiteSpace, var(--vs-white-space));
+        white-space: var(--vs-block-title-whiteSpace, nowrap);
     }
 
     .vs-block-content {
