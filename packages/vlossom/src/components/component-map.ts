@@ -23,6 +23,7 @@ import VsImage from './vs-image/VsImage.vue';
 import VsIndexView from './vs-index-view/VsIndexView.vue';
 import VsInnerScroll from './vs-inner-scroll/VsInnerScroll.vue';
 import VsInputWrapper from './vs-input-wrapper/VsInputWrapper.vue';
+import VsLabelValue from './vs-label-value/VsLabelValue.vue';
 import VsLayout from './vs-layout/VsLayout.vue';
 import VsLoading from './vs-loading/VsLoading.vue';
 import VsMessage from './vs-message/VsMessage.vue';
@@ -53,6 +54,7 @@ export const VlossomComponents = {
     VsIndexView,
     VsInnerScroll,
     VsInputWrapper,
+    VsLabelValue,
     VsLayout,
     VsLoading,
     VsMessage,
