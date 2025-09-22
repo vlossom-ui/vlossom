@@ -66,9 +66,32 @@
 ## Types
 
 ```typescript
-interface VsLabelValueStyleSet extends Omit<BoxStyleSet, 'backgroundColor'> {
-    label?: BoxStyleSet & FlexStyleSet & { width?: string }; // 레이블 영역 스타일
-    value?: BoxStyleSet & FlexStyleSet & { width?: string }; // 값 영역 스타일
+interface VsLabelValueStyleSet {
+    border?: string;
+    borderRadius?: string;
+    display?: string;
+    opacity?: string | number;
+
+    label: {
+        backgroundColor?: string;
+        fontColor?: string;
+        fontSize?: string;
+        fontWeight?: string | number;
+        lineHeight?: string;
+        padding?: string;
+        whiteSpace?: string;
+        width?: string;
+    };
+    value: {
+        backgroundColor?: string;
+        fontColor?: string;
+        fontSize?: string;
+        fontWeight?: string | number;
+        lineHeight?: string;
+        padding?: string;
+        whiteSpace?: string;
+        width?: string;
+    };
 }
 ```
 
