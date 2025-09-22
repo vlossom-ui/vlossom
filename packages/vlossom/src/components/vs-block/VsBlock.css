@@ -1,15 +1,16 @@
 .vs-block {
-    --vs-block-backgroundColor: initial;
+    --vs-block-boxShadow: initial;
     --vs-block-border: initial;
     --vs-block-borderRadius: initial;
-    --vs-block-padding: initial;
+    --vs-block-backgroundColor: initial;
     --vs-block-fontColor: initial;
+    --vs-block-whiteSpace: initial;
+    --vs-block-padding: initial;
     --vs-block-fontWeight: initial;
     --vs-block-fontSize: initial;
     --vs-block-lineHeight: initial;
-    --vs-block-whiteSpace: initial;
-    --vs-block-boxShadow: initial;
 
+    --vs-block-title-bottomBorder: initial;
     --vs-block-title-backgroundColor: initial;
     --vs-block-title-padding: initial;
     --vs-block-title-fontColor: initial;
@@ -17,7 +18,6 @@
     --vs-block-title-fontSize: initial;
     --vs-block-title-lineHeight: initial;
     --vs-block-title-whiteSpace: initial;
-    --vs-block-title-bottomBorder: initial;
 
     @apply relative w-full overflow-auto;
 

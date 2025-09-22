@@ -116,17 +116,8 @@ const customBlockStyle = {
 
 ```typescript
 interface VsBlockStyleSet {
-    backgroundColor?: string; // 배경색
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    padding?: string; // 내부 여백
-    fontColor?: string; // 텍스트 색상
-    fontWeight?: string | number; // 폰트 굵기
-    fontSize?: string; // 폰트 크기
-    lineHeight?: string; // 줄 높이
-    whiteSpace?: string; // 공백 처리 방식
-    boxShadow?: string; // 그림자 효과
     title?: {
+        bottomBorder?: string; // 제목 하단 테두리
         backgroundColor?: string; // 제목 배경색
         padding?: string; // 제목 여백
         fontColor?: string; // 제목 텍스트 색상
@@ -134,8 +125,18 @@ interface VsBlockStyleSet {
         fontSize?: string; // 제목 폰트 크기
         lineHeight?: string; // 제목 줄 높이
         whiteSpace?: string; // 제목 공백 처리 방식
-        bottomBorder?: string; // 제목 하단 테두리
     };
+
+    boxShadow?: string; // 그림자 효과
+    border?: string; // 테두리 스타일
+    borderRadius?: string; // 모서리 둥글기
+    backgroundColor?: string; // 배경색
+    fontColor?: string; // 텍스트 색상
+    whiteSpace?: string; // 공백 처리 방식
+    padding?: string; // 내부 여백
+    fontWeight?: string | number; // 폰트 굵기
+    fontSize?: string; // 폰트 크기
+    lineHeight?: string; // 줄 높이
 }
 ```
 
