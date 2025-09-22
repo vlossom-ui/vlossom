@@ -143,13 +143,13 @@ describe('VsBlock', () => {
 
             // then
             const style = wrapper.vm.styleSetVariables;
-            expect(style).toContain('--vs-block-backgroundColor: #f0f0f0');
-            expect(style).toContain('--vs-block-border: 2px solid #000');
-            expect(style).toContain('--vs-block-borderRadius: 8px');
-            expect(style).toContain('--vs-block-padding: 20px');
-            expect(style).toContain('--vs-block-fontColor: #333');
-            expect(style).toContain('--vs-block-fontSize: 16px');
-            expect(style).toContain('--vs-block-boxShadow: 0 2px 4px rgba(0,0,0,0.1)');
+            expect(style['--vs-block-backgroundColor']).toBe('#f0f0f0');
+            expect(style['--vs-block-border']).toBe('2px solid #000');
+            expect(style['--vs-block-borderRadius']).toBe('8px');
+            expect(style['--vs-block-padding']).toBe('20px');
+            expect(style['--vs-block-fontColor']).toBe('#333');
+            expect(style['--vs-block-fontSize']).toBe('16px');
+            expect(style['--vs-block-boxShadow']).toBe('0 2px 4px rgba(0,0,0,0.1)');
         });
 
         it('styleSet의 title 속성이 주어지면 title 관련 CSS 변수가 설정되어야 한다', () => {
@@ -171,12 +171,12 @@ describe('VsBlock', () => {
 
             // then
             const style = wrapper.vm.styleSetVariables;
-            expect(style).toContain('--vs-block-title-backgroundColor: #007bff');
-            expect(style).toContain('--vs-block-title-fontColor: #fff');
-            expect(style).toContain('--vs-block-title-fontSize: 18px');
-            expect(style).toContain('--vs-block-title-fontWeight: bold');
-            expect(style).toContain('--vs-block-title-padding: 15px');
-            expect(style).toContain('--vs-block-title-bottomBorder: 1px solid #ccc');
+            expect(style['--vs-block-title-backgroundColor']).toBe('#007bff');
+            expect(style['--vs-block-title-fontColor']).toBe('#fff');
+            expect(style['--vs-block-title-fontSize']).toBe('18px');
+            expect(style['--vs-block-title-fontWeight']).toBe('bold');
+            expect(style['--vs-block-title-padding']).toBe('15px');
+            expect(style['--vs-block-title-bottomBorder']).toBe('1px solid #ccc');
         });
 
         it('styleSet이 문자열로 주어지면 해당 스타일셋이 적용되어야 한다', () => {
@@ -330,10 +330,10 @@ describe('VsBlock', () => {
 
             // styleSet CSS 변수 확인
             const style = wrapper.vm.styleSetVariables;
-            expect(style).toContain('--vs-block-backgroundColor: #e3f2fd');
-            expect(style).toContain('--vs-block-padding: 24px');
-            expect(style).toContain('--vs-block-title-fontColor: #1976d2');
-            expect(style).toContain('--vs-block-title-fontSize: 20px');
+            expect(style['--vs-block-backgroundColor']).toBe('#e3f2fd');
+            expect(style['--vs-block-padding']).toBe('24px');
+            expect(style['--vs-block-title-fontColor']).toBe('#1976d2');
+            expect(style['--vs-block-title-fontSize']).toBe('20px');
 
             // 반응형 props 확인
             const responsive = wrapper.findComponent({ name: 'VsResponsive' });
