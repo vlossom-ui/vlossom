@@ -11,6 +11,7 @@ const meta: Meta<typeof VsPage> = {
     argTypes: {
         title: {
             control: 'text',
+            type: 'string',
             description: 'Title slot content',
             table: {
                 category: 'slots',
@@ -18,6 +19,7 @@ const meta: Meta<typeof VsPage> = {
         },
         description: {
             control: 'text',
+            type: 'string',
             description: 'Description slot content',
             table: {
                 category: 'slots',
@@ -25,6 +27,7 @@ const meta: Meta<typeof VsPage> = {
         },
         default: {
             control: 'text',
+            type: 'string',
             description: 'Default slot content',
             table: {
                 category: 'slots',
@@ -34,7 +37,7 @@ const meta: Meta<typeof VsPage> = {
     args: {
         title: 'Page Title',
         description: 'Page Description',
-        default: 'This is Page Content.',
+        default: 'This is Page Content. Page Title and Page Description is added via slot.',
     } as any,
     render: (args: any) => ({
         components: { VsPage },
@@ -43,9 +46,9 @@ const meta: Meta<typeof VsPage> = {
         },
         template: `
         <vs-page v-bind="args">
-            <template #title><h2>Page Title</h2></template>
-            <template #description>Page description content</template>
-            This is Page Content. Page Title and Page Description is added via slot.
+            <template #title>{{ args.title }}</template>
+            <template #description>{{ args.description }}</template>
+            {{ args.default }}
         </vs-page>
     `,
     }),
