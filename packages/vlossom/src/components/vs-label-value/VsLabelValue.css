@@ -1,13 +1,19 @@
 .vs-label-value {
-    @apply relative flex h-full w-full overflow-hidden;
+    @apply relative h-full w-full overflow-hidden;
+
+    display: var(--vs-label-value-display, flex);
+    opacity: var(--vs-label-value-opacity, 1);
     border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-label-value-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+    background-color: var(--vs-label-value-backgroundColor, var(--vs-comp-bg));
+    padding: var(--vs-label-value-padding, 0 0);
 
     > .vs-cell {
         @apply relative flex;
 
         &.vs-label {
             @apply break-words whitespace-nowrap;
+
             flex-basis: var(--vs-label-value-label-width, 20%);
             flex-direction: var(--vs-label-value-label-flexDirection, row);
             flex-wrap: var(--vs-label-value-label-flexWrap, nowrap);
@@ -23,6 +29,7 @@
 
         &.vs-value {
             @apply flex-1 overflow-x-auto;
+
             flex-direction: var(--vs-label-value-value-flexDirection, row);
             flex-wrap: var(--vs-label-value-value-flexWrap, nowrap);
             justify-content: var(--vs-label-value-value-justifyContent, flex-start);
