@@ -11,9 +11,6 @@
         <div v-if="$slots.default" class="vs-cell vs-value">
             <slot />
         </div>
-        <div v-if="$slots['actions']" class="vs-cell vs-actions">
-            <slot name="actions" />
-        </div>
     </vs-responsive>
 </template>
 <script lang="ts">

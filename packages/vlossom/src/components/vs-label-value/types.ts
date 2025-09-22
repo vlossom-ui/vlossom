@@ -5,5 +5,4 @@ export interface VsLabelValueStyleSet {
     borderRadius?: string;
     label?: BoxStyleSet & FlexStyleSet & { width?: string };
     value?: BoxStyleSet & FlexStyleSet & { width?: string };
-    actions?: BoxStyleSet & FlexStyleSet & { width?: string };
 }

@@ -40,18 +40,6 @@
             font-weight: var(--vs-label-value-value-fontWeight, 500);
             font-size: var(--vs-label-value-value-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
         }
-
-        &.vs-actions {
-            flex-direction: var(--vs-label-value-actions-flexDirection, row);
-            flex-wrap: var(--vs-label-value-actions-flexWrap, wrap);
-            justify-content: var(--vs-label-value-actions-justifyContent, flex-end);
-            align-items: var(--vs-label-value-actions-alignItems, center);
-            background-color: var(--vs-label-value-actions-backgroundColor, var(--vs-no-color));
-            padding: var(--vs-label-value-actions-padding, 0.6rem 1.2rem);
-            color: var(--vs-label-value-actions-fontColor, var(--vs-comp-font));
-            font-weight: var(--vs-label-value-actions-fontWeight, 500);
-            font-size: var(--vs-label-value-actions-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
-        }
     }
 
     &.vs-inline {
@@ -80,11 +68,6 @@
                 padding: var(--vs-label-value-value-padding, var(--vs-label-value-value-padding, 0.2rem 0.8rem));
                 font-size: var(--vs-label-value-value-fontSize, var(--vs-font-size-xs));
             }
-
-            &.vs-actions {
-                padding: var(--vs-label-value-actions-padding, var(--vs-label-value-actions-padding, 0.2rem 0.8rem));
-                font-size: var(--vs-label-value-actions-fontSize, var(--vs-font-size-xs));
-            }
         }
     }
 }
@@ -102,10 +85,6 @@
                 flex-basis: auto;
                 border-right: none;
                 border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-            }
-
-            &.vs-actions {
-                justify-content: flex-end;
             }
         }
 
