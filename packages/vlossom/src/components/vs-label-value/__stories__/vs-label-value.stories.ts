@@ -149,10 +149,10 @@ export const ColorScheme: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            border: '1px solid #10b981',
+            border: '2px solid #10b981',
             borderRadius: '8px',
             label: {
-                backgroundColor: '#d1fae5',
+                backgroundColor: '#a1e224',
                 fontColor: '#065f46',
                 padding: '0.75rem 1rem',
             },

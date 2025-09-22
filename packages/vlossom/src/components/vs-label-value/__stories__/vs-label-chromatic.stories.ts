@@ -57,7 +57,6 @@ export const AllVariants: Story = {
                         </vs-label-value>
                     </div>
                 </div>
-            </div>
         `,
     }),
 };
