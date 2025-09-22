@@ -3,21 +3,13 @@
     --vs-label-value-borderRadius: initial;
     --vs-label-value-display: initial;
     --vs-label-value-opacity: initial;
-    --vs-label-value-label-alignItems: initial;
     --vs-label-value-label-backgroundColor: initial;
-    --vs-label-value-label-flexDirection: initial;
-    --vs-label-value-label-flexWrap: initial;
-    --vs-label-value-label-justifyContent: initial;
     --vs-label-value-label-padding: initial;
     --vs-label-value-label-fontColor: initial;
     --vs-label-value-label-fontWeight: initial;
     --vs-label-value-label-fontSize: initial;
     --vs-label-value-label-width: initial;
-    --vs-label-value-value-alignItems: initial;
     --vs-label-value-value-backgroundColor: initial;
-    --vs-label-value-value-flexDirection: initial;
-    --vs-label-value-value-flexWrap: initial;
-    --vs-label-value-value-justifyContent: initial;
     --vs-label-value-value-padding: initial;
     --vs-label-value-value-fontColor: initial;
     --vs-label-value-value-fontWeight: initial;
@@ -38,30 +30,27 @@
             @apply break-words whitespace-nowrap;
 
             flex-basis: var(--vs-label-value-label-width, 20%);
-            flex-direction: var(--vs-label-value-label-flexDirection, row);
-            flex-wrap: var(--vs-label-value-label-flexWrap, nowrap);
-            justify-content: var(--vs-label-value-label-justifyContent, flex-start);
-            align-items: var(--vs-label-value-label-alignItems, center);
             border-right: var(--vs-label-value-border, 1px solid var(--vs-line-color));
             background-color: var(--vs-label-value-label-backgroundColor, var(--vs-comp-bg));
             padding: var(--vs-label-value-label-padding, 0.6rem 1.2rem);
             color: var(--vs-label-value-label-fontColor, var(--vs-comp-font));
             font-weight: var(--vs-label-value-label-fontWeight, 500);
             font-size: var(--vs-label-value-label-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
+            line-height: var(--vs-label-value-label-lineHeight, var(--vs-line-height));
+            white-space: var(--vs-label-value-label-whiteSpace, nowrap);
         }
 
         &.vs-value {
-            @apply flex-1 overflow-x-auto;
+            @apply overflow-x-auto;
 
-            flex-direction: var(--vs-label-value-value-flexDirection, row);
-            flex-wrap: var(--vs-label-value-value-flexWrap, nowrap);
-            justify-content: var(--vs-label-value-value-justifyContent, flex-start);
-            align-items: var(--vs-label-value-value-alignItems, center);
+            flex-basis: var(--vs-label-value-value-width, 80%);
             background-color: var(--vs-label-value-value-backgroundColor, var(--vs-no-color));
             padding: var(--vs-label-value-value-padding, 0.6rem 1.2rem);
             color: var(--vs-label-value-value-fontColor, var(--vs-comp-font));
             font-weight: var(--vs-label-value-value-fontWeight, 500);
             font-size: var(--vs-label-value-value-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
+            line-height: var(--vs-label-value-label-lineHeight, var(--vs-line-height));
+            white-space: var(--vs-label-value-label-whiteSpace, nowrap);
         }
     }
 
