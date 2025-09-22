@@ -18,6 +18,7 @@ export enum VsComponent {
     VsLayout = 'VsLayout',
     VsLoading = 'VsLoading',
     VsPage = 'VsPage',
+    VsProgress = 'VsProgress',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
     VsSection = 'VsSection',
