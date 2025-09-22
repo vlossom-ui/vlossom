@@ -30,6 +30,11 @@
             --vs-label-value-label-justifyContent: initial;
             --vs-label-value-label-padding: initial;
             --vs-label-value-label-width: initial;
+            --vs-label-value-label-fontColor: initial;
+            --vs-label-value-label-fontWeight: initial;
+            --vs-label-value-label-fontSize: initial;
+            --vs-label-value-label-lineHeight: initial;
+            --vs-label-value-label-whiteSpace: initial;
 
             @apply break-words whitespace-nowrap;
 
@@ -59,6 +64,11 @@
             --vs-label-value-value-justifyContent: initial;
             --vs-label-value-value-padding: initial;
             --vs-label-value-value-width: initial;
+            --vs-label-value-value-fontColor: initial;
+            --vs-label-value-value-fontWeight: initial;
+            --vs-label-value-value-fontSize: initial;
+            --vs-label-value-value-lineHeight: initial;
+            --vs-label-value-value-whiteSpace: initial;
 
             @apply flex-1 overflow-x-auto;
 
