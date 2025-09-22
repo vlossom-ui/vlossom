@@ -35,10 +35,6 @@
         }
     }
 
-    &.vs-inline {
-        @apply inline-flex w-auto;
-    }
-
     &.vs-primary {
         border: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
 
@@ -65,7 +61,7 @@
 }
 
 @container (max-width: 768px) {
-    .vs-label-value:not(.vs-inline) {
+    .vs-label-value {
         @apply w-full flex-col;
 
         > .vs-cell {

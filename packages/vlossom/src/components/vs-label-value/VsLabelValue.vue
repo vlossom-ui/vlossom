@@ -31,18 +31,16 @@ export default defineComponent({
         colorScheme: { type: String as PropType<ColorScheme> },
         styleSet: { type: [String, Object] as PropType<string | VsLabelValueStyleSet> },
         dense: { type: Boolean, default: false },
-        inline: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
     },
     setup(props) {
-        const { colorScheme, styleSet, dense, inline, primary } = toRefs(props);
+        const { colorScheme, styleSet, dense, primary } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { componentStyleSet } = useStyleSet<VsLabelValueStyleSet>(name, styleSet);
 
         const classObj = computed(() => ({
-            'vs-inline': inline.value,
             'vs-dense': dense.value,
             'vs-primary': primary.value,
         }));
