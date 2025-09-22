@@ -1,4 +1,10 @@
 .vs-label-value {
+    --vs-label-value-border: initial;
+    --vs-label-value-borderRadius: initial;
+    --vs-label-value-display: initial;
+    --vs-label-value-opacity: initial;
+    --vs-label-value-padding: initial;
+
     @apply relative h-full w-full overflow-hidden;
 
     display: var(--vs-label-value-display, flex);
@@ -12,6 +18,19 @@
         @apply relative flex;
 
         &.vs-label {
+            --vs-label-value-label-alignItems: initial;
+            --vs-label-value-label-backgroundColor: initial;
+            --vs-label-value-label-border: initial;
+            --vs-label-value-label-borderRadius: initial;
+            --vs-label-value-label-display: initial;
+            --vs-label-value-label-flex: initial;
+            --vs-label-value-label-flexDirection: initial;
+            --vs-label-value-label-flexWrap: initial;
+            --vs-label-value-label-gap: initial;
+            --vs-label-value-label-justifyContent: initial;
+            --vs-label-value-label-padding: initial;
+            --vs-label-value-label-width: initial;
+
             @apply break-words whitespace-nowrap;
 
             flex-basis: var(--vs-label-value-label-width, 20%);
@@ -28,6 +47,19 @@
         }
 
         &.vs-value {
+            --vs-label-value-value-alignItems: initial;
+            --vs-label-value-value-backgroundColor: initial;
+            --vs-label-value-value-border: initial;
+            --vs-label-value-value-borderRadius: initial;
+            --vs-label-value-value-display: initial;
+            --vs-label-value-value-flex: initial;
+            --vs-label-value-value-flexDirection: initial;
+            --vs-label-value-value-flexWrap: initial;
+            --vs-label-value-value-gap: initial;
+            --vs-label-value-value-justifyContent: initial;
+            --vs-label-value-value-padding: initial;
+            --vs-label-value-value-width: initial;
+
             @apply flex-1 overflow-x-auto;
 
             flex-direction: var(--vs-label-value-value-flexDirection, row);
