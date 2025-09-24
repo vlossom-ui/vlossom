@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-progress {
     --vs-progress-width: initial;
     --vs-progress-height: initial;
@@ -6,7 +8,14 @@
     --vs-progress-backgroundColor: initial;
     --vs-progress-valueColor: initial;
 
-    @apply appearance-none;
+    --vs-progress-label-fontColor: initial;
+    --vs-progress-label-fontSize: initial;
+    --vs-progress-label-fontWeight: initial;
+    --vs-progress-label-lineHeight: initial;
+    --vs-progress-label-whiteSpace: initial;
+    --vs-progress-label-textShadow: initial;
+
+    @apply relative appearance-none text-center;
 
     width: var(--vs-progress-width, 100%);
     height: var(--vs-progress-height, 1rem);
@@ -25,4 +34,25 @@
 
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background-color: var(--vs-progress-valueColor, var(--vs-primary-comp-bg));
+}
+
+.vs-progress:before {
+    @apply absolute right-0 left-0 z-10 flex h-full items-center justify-center;
+    vertical-align: 0;
+
+    content: attr(data-label);
+    color: var(--vs-progress-label-fontColor, var(--vs-no-color-inverse));
+    font-weight: var(--vs-progress-label-fontWeight, var(--vs-font-weight));
+    font-size: var(--vs-progress-label-fontSize, var(--vs-font-size-xs));
+    line-height: var(--vs-progress-label-lineHeight, var(--vs-line-height));
+    text-shadow: var(
+        --vs-progress-label-textShadow,
+        0 0 2px var(--vs-no-color),
+        0 0 4px var(--vs-no-color),
+        0 0 6px var(--vs-no-color),
+        0 0 8px var(--vs-no-color),
+        0 0 10px var(--vs-no-color),
+        0 0 12px var(--vs-no-color)
+    );
+    white-space: var(--vs-progress-label-whiteSpace, var(--vs-white-space));
 }
