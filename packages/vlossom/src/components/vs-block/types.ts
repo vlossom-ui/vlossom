@@ -12,6 +12,10 @@ export type { VsBlock };
 type BlockStyleSet = Omit<BoxStyleSet, 'display' | 'opacity'> & TextStyleSet;
 
 export interface VsBlockStyleSet extends BlockStyleSet {
-    title?: Omit<BlockStyleSet, 'border' | 'borderRadius'> & { bottomBorder?: string };
+    title?: TextStyleSet & {
+        backgroundColor?: string;
+        padding?: string;
+        bottomBorder?: string;
+    };
     boxShadow?: string;
 }
