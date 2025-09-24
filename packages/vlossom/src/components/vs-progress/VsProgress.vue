@@ -26,7 +26,7 @@ export default defineComponent({
             default: 100,
             validator: (value: number | string) => {
                 const num = Number(value);
-                return !isNaN(num) && num >= 0;
+                return !isFinite(num) && num >= 0;
             },
         },
         value: {
@@ -34,7 +34,7 @@ export default defineComponent({
             default: 0,
             validator: (value: number | string) => {
                 const num = Number(value);
-                return !isNaN(num) && num >= 0;
+                return !isFinite(num) && num >= 0;
             },
         },
         label: { type: String, default: '' },
@@ -47,7 +47,7 @@ export default defineComponent({
 
         const computedMax = computed(() => {
             const num = Number(max.value);
-            if (isNaN(num) || num < 0) {
+            if (isFinite(num) || num < 0) {
                 return 0;
             }
 
@@ -56,7 +56,7 @@ export default defineComponent({
 
         const computedValue = computed(() => {
             const num = Number(value.value);
-            if (isNaN(num) || num < 0) {
+            if (isFinite(num) || num < 0) {
                 return 0;
             }
             if (num > computedMax.value) {
