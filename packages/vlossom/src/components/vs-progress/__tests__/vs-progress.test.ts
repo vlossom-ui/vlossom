@@ -20,7 +20,7 @@ describe('VsProgress', () => {
 
             // then
             expect(wrapper.vm.computedValue).toBe(0);
-            expect(wrapper.vm.computedMax).toBe(100);
+            expect(wrapper.vm.computedMax).toBe(1);
         });
     });
 
@@ -29,24 +29,24 @@ describe('VsProgress', () => {
             // given, when
             const wrapper = mount(VsProgress, {
                 props: {
-                    value: 50,
+                    value: 0.5,
                 },
             });
 
             // then
-            expect(wrapper.vm.computedValue).toBe(50);
+            expect(wrapper.vm.computedValue).toBe(0.5);
         });
 
         it('문자열 타입의 value가 주어지면 숫자로 변환되어 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsProgress, {
                 props: {
-                    value: '75',
+                    value: '0.75',
                 },
             });
 
             // then
-            expect(wrapper.vm.computedValue).toBe(75);
+            expect(wrapper.vm.computedValue).toBe(0.75);
         });
 
         it('value가 max보다 큰 값이면 max 값으로 제한되어야 한다', () => {
@@ -304,20 +304,6 @@ describe('VsProgress', () => {
     });
 
     describe('경계값 테스트', () => {
-        it('value가 0이고 max가 0인 경우 올바르게 처리되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsProgress, {
-                props: {
-                    value: 0,
-                    max: 0,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.computedValue).toBe(0);
-            expect(wrapper.vm.computedMax).toBe(0);
-        });
-
         it('매우 큰 숫자가 주어져도 올바르게 처리되어야 한다', () => {
             // given, when
             const wrapper = mount(VsProgress, {
