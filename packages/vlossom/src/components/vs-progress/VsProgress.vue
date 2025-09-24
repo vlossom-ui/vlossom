@@ -1,9 +1,10 @@
 <template>
     <progress
         :class="['vs-progress', colorSchemeClass]"
-        :style="componentStyleSet"
+        :style="styleSetVariables"
         :value="computedValue"
         :max="computedMax"
+        :data-label="label"
     />
 </template>
 
@@ -20,26 +21,54 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsProgressStyleSet>(),
-        max: { type: [Number, String], default: 100 },
-        value: { type: [Number, String], default: 0 },
+        max: {
+            type: [Number, String],
+            default: 100,
+            validator: (value: number | string) => {
+                const num = Number(value);
+                return !isNaN(num) && num >= 0;
+            },
+        },
+        value: {
+            type: [Number, String],
+            default: 0,
+            validator: (value: number | string) => {
+                const num = Number(value);
+                return !isNaN(num) && num >= 0;
+            },
+        },
+        label: { type: String, default: '' },
     },
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { componentStyleSet } = useStyleSet<VsProgressStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsProgressStyleSet>(name, styleSet);
         const { value, max } = toRefs(props);
 
-        const computedValue = computed(() => {
-            return Number(value.value);
+        const computedMax = computed(() => {
+            const num = Number(max.value);
+            if (isNaN(num) || num < 0) {
+                return 0;
+            }
+
+            return num;
         });
 
-        const computedMax = computed(() => {
-            return Number(max.value);
+        const computedValue = computed(() => {
+            const num = Number(value.value);
+            if (isNaN(num) || num < 0) {
+                return 0;
+            }
+            if (num > computedMax.value) {
+                return computedMax.value;
+            }
+
+            return num;
         });
 
         return {
             colorSchemeClass,
-            componentStyleSet,
+            styleSetVariables,
             computedValue,
             computedMax,
         };
