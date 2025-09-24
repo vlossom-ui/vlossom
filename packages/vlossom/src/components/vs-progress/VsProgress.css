@@ -9,11 +9,11 @@
     --vs-progress-valueColor: initial;
 
     --vs-progress-label-fontColor: initial;
-    --vs-progress-label-fontSize: initial;
     --vs-progress-label-fontWeight: initial;
+    --vs-progress-label-fontSize: initial;
     --vs-progress-label-lineHeight: initial;
-    --vs-progress-label-whiteSpace: initial;
     --vs-progress-label-textShadow: initial;
+    --vs-progress-label-whiteSpace: initial;
 
     @apply relative appearance-none text-center;
 
