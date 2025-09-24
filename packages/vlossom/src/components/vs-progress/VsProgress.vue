@@ -26,7 +26,7 @@ export default defineComponent({
             default: 100,
             validator: (value: number | string) => {
                 const num = Number(value);
-                return !isFinite(num) && num >= 0;
+                return !isFinite(num) && num > 0;
             },
         },
         value: {
@@ -47,8 +47,8 @@ export default defineComponent({
 
         const computedMax = computed(() => {
             const num = Number(max.value);
-            if (isFinite(num) || num < 0) {
-                return 0;
+            if (isFinite(num) || num <= 0) {
+                return 1;
             }
 
             return num;

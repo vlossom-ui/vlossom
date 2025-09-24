@@ -112,7 +112,7 @@ describe('VsProgress', () => {
             expect(wrapper.vm.computedMax).toBe(150);
         });
 
-        it('음수 max가 주어지면 0으로 설정되어야 한다', () => {
+        it('음수 max가 주어지면 1로 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsProgress, {
                 props: {
@@ -121,10 +121,10 @@ describe('VsProgress', () => {
             });
 
             // then
-            expect(wrapper.vm.computedMax).toBe(0);
+            expect(wrapper.vm.computedMax).toBe(1);
         });
 
-        it('유효하지 않은 문자열 max가 주어지면 0으로 설정되어야 한다', () => {
+        it('유효하지 않은 문자열 max가 주어지면 1로 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsProgress, {
                 props: {
@@ -133,7 +133,7 @@ describe('VsProgress', () => {
             });
 
             // then
-            expect(wrapper.vm.computedMax).toBe(0);
+            expect(wrapper.vm.computedMax).toBe(1);
         });
     });
 
