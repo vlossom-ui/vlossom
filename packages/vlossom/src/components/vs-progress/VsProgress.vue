@@ -23,7 +23,7 @@ export default defineComponent({
         ...getStyleSetProps<VsProgressStyleSet>(),
         max: {
             type: [Number, String],
-            default: 100,
+            default: 1,
             validator: (value: number | string) => {
                 const num = Number(value);
                 return !isFinite(num) && num > 0;
