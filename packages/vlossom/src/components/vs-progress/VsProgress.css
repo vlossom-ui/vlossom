@@ -54,5 +54,5 @@
         0 0 10px var(--vs-no-color),
         0 0 12px var(--vs-no-color)
     );
-    white-space: var(--vs-progress-label-whiteSpace, var(--vs-white-space));
+    white-space: var(--vs-progress-label-whiteSpace, nowrap);
 }
