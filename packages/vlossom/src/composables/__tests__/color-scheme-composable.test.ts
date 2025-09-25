@@ -98,7 +98,7 @@ describe('useColorScheme', () => {
         it('옵션 스토어 값 변경 시 반응적으로 업데이트되어야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
-            const component = VsComponent.VsSection;
+            const component = VsComponent.VsBlock;
             const { computedColorScheme } = useColorScheme(component, colorScheme);
 
             // then
@@ -146,7 +146,7 @@ describe('useColorScheme', () => {
         it('옵션 스토어의 값으로 CSS 클래스를 생성해야 함', () => {
             // given
             const colorScheme: Ref<ColorScheme | undefined> = ref(undefined);
-            const component = VsComponent.VsSection;
+            const component = VsComponent.VsBlock;
             optionsStore.setColorScheme({
                 [component]: 'emerald',
             });

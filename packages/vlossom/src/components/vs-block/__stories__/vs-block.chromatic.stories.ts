@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters } from '@/storybook';
-import VsPage from './../VsPage.vue';
+import VsBlock from '@/components/vs-block/VsBlock.vue';
 
-const meta: Meta<typeof VsPage> = {
-    title: 'Chromatic/Layout Components/VsPage',
-    component: VsPage,
+const meta: Meta<typeof VsBlock> = {
+    title: 'Chromatic/Base Components/VsBlock',
+    component: VsBlock,
     parameters: {
         chromatic: chromaticParameters.theme,
     },
@@ -13,14 +13,6 @@ const meta: Meta<typeof VsPage> = {
             control: 'text',
             type: 'string',
             description: 'Title slot content',
-            table: {
-                category: 'slots',
-            },
-        },
-        description: {
-            control: 'text',
-            type: 'string',
-            description: 'Description slot content',
             table: {
                 category: 'slots',
             },
@@ -35,30 +27,25 @@ const meta: Meta<typeof VsPage> = {
         },
     } as any,
     args: {
-        title: 'Page Title',
-        description: 'Page Description',
-        default: 'This is Page Content. Page Title and Page Description is added via slot.',
+        styleSet: {},
+        title: 'Block Title',
+        default: 'This is Block Content. Title and Default is added via slot.',
     } as any,
     render: (args: any) => ({
-        components: { VsPage },
+        components: { VsBlock },
         setup() {
             return { args };
         },
         template: `
-        <vs-page v-bind="args">
+        <vs-block v-bind="args">
             <template #title>{{ args.title }}</template>
-            <template #description>{{ args.description }}</template>
             {{ args.default }}
-        </vs-page>
-    `,
+        </vs-block>
+        `,
     }),
 };
 
 export default meta;
-type Story = StoryObj<typeof VsPage>;
+type Story = StoryObj<typeof VsBlock>;
 
-export const Default: Story = {
-    args: {
-        styleSet: {},
-    },
-};
+export const Default: Story = {};

@@ -1,0 +1,86 @@
+.vs-block {
+    --vs-block-boxShadow: initial;
+    --vs-block-border: initial;
+    --vs-block-borderRadius: initial;
+    --vs-block-backgroundColor: initial;
+    --vs-block-fontColor: initial;
+    --vs-block-whiteSpace: initial;
+    --vs-block-padding: initial;
+    --vs-block-fontWeight: initial;
+    --vs-block-fontSize: initial;
+    --vs-block-lineHeight: initial;
+
+    --vs-block-title-bottomBorder: initial;
+    --vs-block-title-backgroundColor: initial;
+    --vs-block-title-padding: initial;
+    --vs-block-title-fontColor: initial;
+    --vs-block-title-fontWeight: initial;
+    --vs-block-title-fontSize: initial;
+    --vs-block-title-lineHeight: initial;
+    --vs-block-title-whiteSpace: initial;
+
+    @apply relative w-full overflow-auto;
+
+    container-type: inline-size;
+    box-shadow: var(--vs-block-boxShadow, var(--vs-area-shadow-outer));
+    border: var(--vs-block-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-block-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-block-backgroundColor, var(--vs-area-bg));
+    color: var(--vs-block-fontColor, var(--vs-font-color));
+    white-space: var(--vs-block-whiteSpace, var(--vs-white-space));
+
+    .vs-block-title {
+        @apply relative w-full;
+
+        border-bottom: var(--vs-block-title-bottomBorder, 1px solid var(--vs-line-color));
+        background-color: var(--vs-block-title-backgroundColor, var(--vs-comp-bg));
+        padding: var(--vs-block-title-padding, 0.8rem 1.6rem);
+        color: var(--vs-block-title-fontColor, var(--vs-comp-font));
+        font-weight: var(--vs-block-title-fontWeight, var(--vs-font-weight-bold));
+        font-size: var(--vs-block-title-fontSize, var(--vs-font-size-xl));
+        line-height: var(--vs-block-title-lineHeight, var(--vs-line-height));
+        white-space: var(--vs-block-title-whiteSpace, nowrap);
+    }
+
+    .vs-block-content {
+        @apply relative w-full;
+
+        padding: var(--vs-block-padding, 1.6rem 1.6rem);
+        font-weight: var(--vs-block-content-fontWeight, var(--vs-font-weight-light));
+        font-size: var(--vs-block-content-fontSize, var(--vs-font-size-sm));
+        line-height: var(--vs-block-content-lineHeight, var(--vs-line-height));
+    }
+}
+
+@container (max-width: 1024px) {
+    .vs-block {
+        .vs-block-title {
+            padding: var(--vs-block-title-padding, 0.6rem 1.4rem);
+        }
+        .vs-block-content {
+            padding: var(--vs-block-padding, 1.2rem 1.4rem);
+        }
+    }
+}
+
+@container (max-width: 768px) {
+    .vs-block {
+        .vs-block-title {
+            padding: var(--vs-block-title-padding, 0.6rem 1.2rem);
+        }
+        .vs-block-content {
+            padding: var(--vs-block-padding, 1rem 1.2rem);
+        }
+    }
+}
+
+@container (max-width: 640px) {
+    .vs-block {
+        .vs-block-title {
+            padding: var(--vs-block-title-padding, 0.6rem 1rem);
+        }
+        .vs-block-content {
+            padding: var(--vs-block-padding, 0.8rem 1rem);
+        }
+    }
+}
