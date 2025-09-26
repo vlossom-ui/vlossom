@@ -39,7 +39,7 @@ type Story = StoryObj<typeof VsProgress>;
 
 export const Default: Story = {
     args: {
-        value: 50,
+        value: 0.5,
         label: 'Progress Label',
         styleSet: {},
     },
