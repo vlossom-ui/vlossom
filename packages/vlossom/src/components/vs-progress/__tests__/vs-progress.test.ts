@@ -204,22 +204,20 @@ describe('VsProgress', () => {
             const wrapper = mount(VsProgress, {
                 props: {
                     styleSet: {
-                        label: {
-                            fontSize: '14px',
-                            fontWeight: 'bold',
-                            textAlign: 'center',
-                            textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-                        },
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
                     },
                 },
             });
 
             // then
             const style = wrapper.vm.styleSetVariables;
-            expect(style['--vs-progress-label-fontSize']).toBe('14px');
-            expect(style['--vs-progress-label-fontWeight']).toBe('bold');
-            expect(style['--vs-progress-label-textAlign']).toBe('center');
-            expect(style['--vs-progress-label-textShadow']).toBe('1px 1px 2px rgba(0,0,0,0.3)');
+            expect(style['--vs-progress-fontSize']).toBe('14px');
+            expect(style['--vs-progress-fontWeight']).toBe('bold');
+            expect(style['--vs-progress-textAlign']).toBe('center');
+            expect(style['--vs-progress-textShadow']).toBe('1px 1px 2px rgba(0,0,0,0.3)');
         });
 
         it('styleSet의 일부 속성만 주어져도 올바르게 적용되어야 한다', () => {

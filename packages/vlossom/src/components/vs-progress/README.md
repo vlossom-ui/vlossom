@@ -93,14 +93,12 @@ interface VsProgressStyleSet {
     backgroundColor?: string;
     border?: string;
     valueColor?: string; // 진행률 바의 색상
-    label?: {
-        fontColor?: string; // 라벨 텍스트 색상
-        fontWeight?: string | number; // 라벨 텍스트 굵기
-        fontSize?: string; // 라벨 텍스트 크기
-        lineHeight?: string; // 라벨 텍스트 줄 간격
-        textShadow?: string; // 라벨 텍스트 그림자
-        whiteSpace?: string; // 라벨 텍스트 공백 처리 방식
-    };
+    fontColor?: string; // 라벨 텍스트 색상
+    fontWeight?: string | number; // 라벨 텍스트 굵기
+    fontSize?: string; // 라벨 텍스트 크기
+    lineHeight?: string; // 라벨 텍스트 줄 간격
+    textShadow?: string; // 라벨 텍스트 그림자
+    whiteSpace?: string; // 라벨 텍스트 공백 처리 방식
 }
 ```
 

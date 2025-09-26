@@ -9,7 +9,10 @@ declare module 'vue' {
 
 export type { VsProgress };
 
-export interface VsProgressStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'display' | 'opacity' | 'padding'> {
+export interface VsProgressStyleSet
+    extends SizeStyleSet,
+        Omit<BoxStyleSet, 'display' | 'opacity' | 'padding'>,
+        TextStyleSet {
+    textShadow?: string;
     valueColor?: string;
-    label?: TextStyleSet & { textShadow?: string };
 }

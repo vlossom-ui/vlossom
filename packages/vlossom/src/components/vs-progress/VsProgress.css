@@ -7,13 +7,12 @@
     --vs-progress-borderRadius: initial;
     --vs-progress-backgroundColor: initial;
     --vs-progress-valueColor: initial;
-
-    --vs-progress-label-fontColor: initial;
-    --vs-progress-label-fontWeight: initial;
-    --vs-progress-label-fontSize: initial;
-    --vs-progress-label-lineHeight: initial;
-    --vs-progress-label-textShadow: initial;
-    --vs-progress-label-whiteSpace: initial;
+    --vs-progress-fontColor: initial;
+    --vs-progress-fontWeight: initial;
+    --vs-progress-fontSize: initial;
+    --vs-progress-lineHeight: initial;
+    --vs-progress-textShadow: initial;
+    --vs-progress-whiteSpace: initial;
 
     @apply relative appearance-none text-center;
 
@@ -41,12 +40,12 @@
     vertical-align: 0;
 
     content: attr(data-label);
-    color: var(--vs-progress-label-fontColor, var(--vs-no-color-inverse));
-    font-weight: var(--vs-progress-label-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-progress-label-fontSize, var(--vs-font-size-xs));
-    line-height: var(--vs-progress-label-lineHeight, var(--vs-line-height));
+    color: var(--vs-progress-fontColor, var(--vs-no-color-inverse));
+    font-weight: var(--vs-progress-fontWeight, var(--vs-font-weight));
+    font-size: var(--vs-progress-fontSize, var(--vs-font-size-xs));
+    line-height: var(--vs-progress-lineHeight, var(--vs-line-height));
     text-shadow: var(
-        --vs-progress-label-textShadow,
+        --vs-progress-textShadow,
         0 0 2px var(--vs-no-color),
         0 0 4px var(--vs-no-color),
         0 0 6px var(--vs-no-color),
@@ -54,5 +53,5 @@
         0 0 10px var(--vs-no-color),
         0 0 12px var(--vs-no-color)
     );
-    white-space: var(--vs-progress-label-whiteSpace, nowrap);
+    white-space: var(--vs-progress-whiteSpace, nowrap);
 }
