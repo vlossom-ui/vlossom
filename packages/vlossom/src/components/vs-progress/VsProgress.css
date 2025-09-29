@@ -1,0 +1,57 @@
+@reference 'tailwindcss';
+
+.vs-progress {
+    --vs-progress-width: initial;
+    --vs-progress-height: initial;
+    --vs-progress-border: initial;
+    --vs-progress-borderRadius: initial;
+    --vs-progress-backgroundColor: initial;
+    --vs-progress-valueColor: initial;
+    --vs-progress-fontColor: initial;
+    --vs-progress-fontWeight: initial;
+    --vs-progress-fontSize: initial;
+    --vs-progress-lineHeight: initial;
+    --vs-progress-textShadow: initial;
+    --vs-progress-whiteSpace: initial;
+
+    @apply relative appearance-none text-center;
+
+    width: var(--vs-progress-width, 100%);
+    height: var(--vs-progress-height, 1rem);
+}
+
+.vs-progress[value]::-webkit-progress-bar {
+    @apply overflow-hidden;
+
+    border: var(--vs-progress-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-progress-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-progress-backgroundColor, var(--vs-comp-bg));
+}
+
+.vs-progress[value]::-webkit-progress-value {
+    @apply relative;
+
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--vs-progress-valueColor, var(--vs-primary-comp-bg));
+}
+
+.vs-progress:before {
+    @apply absolute right-0 left-0 z-10 flex h-full items-center justify-center;
+    vertical-align: 0;
+
+    content: attr(data-label);
+    color: var(--vs-progress-fontColor, var(--vs-no-color-inverse));
+    font-weight: var(--vs-progress-fontWeight, var(--vs-font-weight));
+    font-size: var(--vs-progress-fontSize, var(--vs-font-size-xs));
+    line-height: var(--vs-progress-lineHeight, var(--vs-line-height));
+    text-shadow: var(
+        --vs-progress-textShadow,
+        0 0 2px var(--vs-no-color),
+        0 0 4px var(--vs-no-color),
+        0 0 6px var(--vs-no-color),
+        0 0 8px var(--vs-no-color),
+        0 0 10px var(--vs-no-color),
+        0 0 12px var(--vs-no-color)
+    );
+    white-space: var(--vs-progress-whiteSpace, nowrap);
+}
