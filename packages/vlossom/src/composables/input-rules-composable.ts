@@ -1,7 +1,7 @@
 import { ref, type Ref, computed, watch } from 'vue';
 import type { Rule, StateMessage } from '@/declaration';
 
-export function useInputRule<T>(
+export function useInputRules<T>(
     inputValue: Ref<T>,
     rules: Ref<Rule<T>[]>,
     defaultRules: Ref<Rule<T>[]>,

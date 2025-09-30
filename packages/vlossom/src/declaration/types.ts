@@ -102,3 +102,24 @@ export interface StateMessage<T extends string = UIState> {
 export type Rule<T = any> = ((v: T) => string) | ((v: T) => PromiseLike<string>);
 
 export type Message<T = any> = StateMessage | ((v: T) => StateMessage) | ((v: T) => PromiseLike<StateMessage>);
+
+export interface InputComponentParams<T = unknown> {
+    inputValue: Ref<T>;
+    modelValue: Ref<T>;
+    id?: Ref<string>;
+    disabled?: Ref<boolean>;
+    readonly?: Ref<boolean>;
+    messages?: Ref<Message<T>[]>;
+    rules?: Ref<Rule<T>[]>;
+    defaultRules?: Ref<Rule<T>[]>;
+    noDefaultRules?: Ref<boolean>;
+    state?: Ref<UIState>;
+    callbacks?: {
+        onBeforeMount?: () => void;
+        onMounted?: () => void;
+        onChange?: (newValue: T, oldValue: T) => void;
+        onClear?: () => void;
+        onBeforeUnmount?: () => void;
+        onUnmounted?: () => void;
+    };
+}

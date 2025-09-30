@@ -1,8 +1,13 @@
-import { ref, type Ref, watch } from 'vue';
+import { computed, type ComputedRef, ref, type Ref, watch } from 'vue';
 import type { Message, StateMessage } from '@/declaration';
 
-export function useInputMessages<T>(inputValue: Ref<T>, messages: Ref<Message<T>[]>) {
+export function useInputMessages<T>(
+    inputValue: Ref<T>,
+    messages: Ref<Message<T>[]>,
+    ruleMessages: Ref<StateMessage[]>,
+) {
     const innerMessages: Ref<StateMessage[]> = ref([]);
+    const showRuleMessages = ref(false);
 
     async function checkMessages() {
         innerMessages.value = [];
@@ -30,5 +35,13 @@ export function useInputMessages<T>(inputValue: Ref<T>, messages: Ref<Message<T>
 
     watch(messages, checkMessages, { deep: true });
 
-    return { innerMessages, checkMessages };
+    const computedMessages: ComputedRef<StateMessage[]> = computed(() => {
+        if (showRuleMessages.value) {
+            return [...innerMessages.value, ...ruleMessages.value];
+        }
+
+        return innerMessages.value;
+    });
+
+    return { showRuleMessages, computedMessages, checkMessages };
 }

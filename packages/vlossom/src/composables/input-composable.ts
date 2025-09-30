@@ -1,41 +1,9 @@
-import {
-    type ComputedRef,
-    type Ref,
-    computed,
-    nextTick,
-    onBeforeMount,
-    onMounted,
-    onBeforeUnmount,
-    onUnmounted,
-    ref,
-    watch,
-    useId,
-} from 'vue';
-import type { Message, Rule, StateMessage, UIState } from '@/declaration';
+import { computed, nextTick, onBeforeMount, onMounted, onBeforeUnmount, onUnmounted, ref, watch, useId } from 'vue';
+import type { InputComponentParams } from '@/declaration';
 import { useInputForm } from './input-form-composable';
 import { useInputMessages } from './input-messages-composable';
-import { useInputRule } from './input-rule-composable';
-
-export interface InputComponentParams<T = unknown> {
-    inputValue: Ref<T>;
-    modelValue: Ref<T>;
-    id?: Ref<string>;
-    disabled?: Ref<boolean>;
-    readonly?: Ref<boolean>;
-    messages?: Ref<Message<T>[]>;
-    rules?: Ref<Rule<T>[]>;
-    defaultRules?: Rule<T>[];
-    noDefaultRules?: Ref<boolean>;
-    state?: Ref<UIState>;
-    callbacks?: {
-        onBeforeMount?: () => void;
-        onMounted?: () => void;
-        onChange?: (newValue: T, oldValue: T) => void;
-        onClear?: () => void;
-        onBeforeUnmount?: () => void;
-        onUnmounted?: () => void;
-    };
-}
+import { useInputRules } from './input-rules-composable';
+import { objectUtil } from '@/utils';
 
 export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParams<T>) {
     const { emit } = ctx;
@@ -47,7 +15,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         readonly = ref(false),
         messages = ref([]),
         rules = ref([]),
-        defaultRules = [],
+        defaultRules = ref([]),
         noDefaultRules = ref(false),
         state = ref('idle'),
         callbacks = {},
@@ -59,19 +27,9 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     const changed = ref(false);
     const isInitialized = ref(false);
 
-    const { innerMessages, checkMessages } = useInputMessages(inputValue, messages);
+    const { ruleMessages, checkRules } = useInputRules<T>(inputValue, rules, defaultRules, noDefaultRules);
 
-    const { ruleMessages, checkRules } = useInputRule(inputValue, rules, defaultRules, noDefaultRules);
-
-    const showRuleMessages = ref(false);
-
-    const computedMessages: ComputedRef<StateMessage[]> = computed(() => {
-        if (showRuleMessages.value) {
-            return [...innerMessages.value, ...ruleMessages.value];
-        }
-
-        return innerMessages.value;
-    });
+    const { computedMessages, checkMessages, showRuleMessages } = useInputMessages(inputValue, messages, ruleMessages);
 
     watch(
         inputValue,
@@ -97,7 +55,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     watch(
         modelValue,
         (value) => {
-            if (value === inputValue.value) {
+            if (objectUtil.isEqual(value, inputValue.value)) {
                 return;
             }
             inputValue.value = value;
