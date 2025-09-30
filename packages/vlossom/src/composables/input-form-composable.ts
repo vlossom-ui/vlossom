@@ -9,41 +9,40 @@ export function useInputForm(
     validate: () => boolean,
     clear: () => void,
 ) {
-    const { disabled, readonly, validateFlag, clearFlag, updateChanged, updateValid, removeFromForm } =
-        inject<FormStore>(
-            FORM_STORE_KEY,
-            FormStore.getDefaultFormStore(), // for no provide error
-        );
+    const formStore = inject<FormStore>(
+        FORM_STORE_KEY,
+        FormStore.getDefaultFormStore(), // for no provide error
+    );
 
     watch(changed, () => {
-        updateChanged(id.value, changed.value);
+        formStore.updateChanged(id.value, changed.value);
     });
 
     watch(valid, () => {
-        updateValid(id.value, valid.value);
+        formStore.updateValid(id.value, valid.value);
     });
 
-    watch(validateFlag, validate);
+    watch(formStore.validateFlag, validate);
 
-    watch(clearFlag, clear);
+    watch(formStore.clearFlag, clear);
 
     onMounted(() => {
-        updateChanged(id.value, changed.value);
-        updateValid(id.value, valid.value);
+        formStore.updateChanged(id.value, changed.value);
+        formStore.updateValid(id.value, valid.value);
     });
 
     watch(id, (newId, oldId) => {
-        removeFromForm(oldId);
-        updateChanged(newId, changed.value);
-        updateValid(newId, valid.value);
+        formStore.removeFromForm(oldId);
+        formStore.updateChanged(newId, changed.value);
+        formStore.updateValid(newId, valid.value);
     });
 
     onBeforeUnmount(() => {
-        removeFromForm(id.value);
+        formStore.removeFromForm(id.value);
     });
 
     return {
-        formDisabled: disabled,
-        formReadonly: readonly,
+        formDisabled: formStore.disabled,
+        formReadonly: formStore.readonly,
     };
 }
