@@ -1,32 +1,29 @@
+import type { PropType } from 'vue';
 import type { Message, Rule, UIState } from '@/declaration';
 import { objectUtil } from '@/utils';
 
-import type { PropType } from 'vue';
-
-interface InputProps<T> {
-    disabled: { type: BooleanConstructor; default: boolean };
-    id: { type: StringConstructor; default: string };
-    label: { type: StringConstructor; default: string };
-    messages: { type: PropType<Message<T>[]>; default: () => Message<T>[] };
-    name: { type: StringConstructor; default: string };
-    noDefaultRules: { type: BooleanConstructor; default: boolean };
-    noMessage: { type: BooleanConstructor; default: boolean };
-    placeholder: { type: StringConstructor; default: string };
-    readonly: { type: BooleanConstructor; default: boolean };
-    required: { type: BooleanConstructor; default: boolean };
-    rules: { type: PropType<Rule<T>[]>; default: () => Rule<T>[] };
-    small: { type: BooleanConstructor; default: boolean };
+interface InputPropsDefinition {
+    disabled: { type: typeof Boolean; default: boolean };
+    id: { type: typeof String; default: string };
+    label: { type: typeof String; default: string };
+    messages: { type: PropType<Message<any>[]>; default: () => Message<any>[] };
+    name: { type: typeof String; default: string };
+    noDefaultRules: { type: typeof Boolean; default: boolean };
+    noMessage: { type: typeof Boolean; default: boolean };
+    placeholder: { type: typeof String; default: string };
+    readonly: { type: typeof Boolean; default: boolean };
+    required: { type: typeof Boolean; default: boolean };
+    rules: { type: PropType<Rule<any>[]>; default: () => Rule<any>[] };
+    small: { type: typeof Boolean; default: boolean };
     state: { type: PropType<UIState>; default: UIState };
-    visible: { type: BooleanConstructor; default: boolean };
-
-    // v-model
-    changed: { type: BooleanConstructor; default: boolean };
-    valid: { type: BooleanConstructor; default: boolean };
+    visible: { type: typeof Boolean; default: boolean };
+    changed: { type: typeof Boolean; default: boolean };
+    valid: { type: typeof Boolean; default: boolean };
 }
 
-export function getInputProps<T = unknown, K extends keyof InputProps<T> = never>(
+export function getInputProps<T = unknown, K extends keyof InputPropsDefinition = never>(
     ...excludes: K[]
-): Omit<InputProps<T>, K> {
+): Omit<InputPropsDefinition, K> {
     return objectUtil.omit(
         {
             disabled: { type: Boolean, default: false },
