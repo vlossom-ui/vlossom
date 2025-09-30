@@ -18,10 +18,11 @@
 <script lang="ts">
 import { defineComponent, toRefs, type Ref, computed } from 'vue';
 import { useVlossom } from '@/framework';
-import { VsComponent, themeDarkIcon, themeLightIcon } from '@/declaration';
+import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsThemeButtonStyleSet } from './types';
+import { themeDarkIcon, themeLightIcon } from './icons';
 
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 

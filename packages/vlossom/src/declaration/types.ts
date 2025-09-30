@@ -22,6 +22,8 @@ export interface VlossomOptions {
     radiusRatio?: number;
 }
 
+export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning' | 'selected';
+
 export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
 
 export interface BarLayout {
