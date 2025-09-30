@@ -34,6 +34,10 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     watch(
         inputValue,
         (value, oldValue) => {
+            if (objectUtil.isEqual(value, oldValue)) {
+                return;
+            }
+
             emit('update:modelValue', value);
             if (callbacks.onChange) {
                 callbacks.onChange(value, oldValue);

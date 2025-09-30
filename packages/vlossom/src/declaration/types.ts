@@ -123,3 +123,5 @@ export interface InputComponentParams<T = unknown> {
         onUnmounted?: () => void;
     };
 }
+
+export type ValueOrFunction<T = any, V = any> = V | ((value: T) => V) | ((value: T) => PromiseLike<V>);
