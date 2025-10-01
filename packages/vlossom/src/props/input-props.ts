@@ -4,19 +4,20 @@ import { objectUtil } from '@/utils';
 
 interface InputPropsDefinition {
     disabled: { type: typeof Boolean; default: boolean };
+    hidden: { type: typeof Boolean; default: boolean };
     id: { type: typeof String; default: string };
     label: { type: typeof String; default: string };
     messages: { type: PropType<Message<any>[]>; default: () => Message<any>[] };
     name: { type: typeof String; default: string };
     noDefaultRules: { type: typeof Boolean; default: boolean };
-    noMessage: { type: typeof Boolean; default: boolean };
+    noMessages: { type: typeof Boolean; default: boolean };
     placeholder: { type: typeof String; default: string };
     readonly: { type: typeof Boolean; default: boolean };
     required: { type: typeof Boolean; default: boolean };
     rules: { type: PropType<Rule<any>[]>; default: () => Rule<any>[] };
     small: { type: typeof Boolean; default: boolean };
     state: { type: PropType<UIState>; default: UIState };
-    visible: { type: typeof Boolean; default: boolean };
+
     changed: { type: typeof Boolean; default: boolean };
     valid: { type: typeof Boolean; default: boolean };
 }
@@ -27,19 +28,19 @@ export function getInputProps<T = unknown, K extends keyof InputPropsDefinition 
     return objectUtil.omit(
         {
             disabled: { type: Boolean, default: false },
+            hidden: { type: Boolean, default: false },
             id: { type: String, default: '' },
             label: { type: String, default: '' },
             messages: { type: Array as PropType<Message<T>[]>, default: () => [] },
             name: { type: String, default: '' },
             noDefaultRules: { type: Boolean, default: false },
-            noMessage: { type: Boolean, default: false },
+            noMessages: { type: Boolean, default: false },
             placeholder: { type: String, default: '' },
             readonly: { type: Boolean, default: false },
             required: { type: Boolean, default: false },
             rules: { type: Array as PropType<Rule<T>[]>, default: () => [] },
             small: { type: Boolean, default: false },
             state: { type: String as PropType<UIState>, default: 'idle' },
-            visible: { type: Boolean, default: true },
 
             // v-model
             changed: { type: Boolean, default: false },
