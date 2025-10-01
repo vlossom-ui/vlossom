@@ -26,14 +26,19 @@ export class FormStore {
 
     public changedObj = computed(() => this._changedObj.value);
 
-    public setChangedObj(value: Record<string, boolean>) {
-        this._changedObj.value = value;
+    public updateChanged(id: string, changed: boolean) {
+        this._changedObj.value[id] = changed;
     }
 
     public validObj = computed(() => this._validObj.value);
 
-    public setValidObj(value: Record<string, boolean>) {
-        this._validObj.value = value;
+    public updateValid(id: string, valid: boolean) {
+        this._validObj.value[id] = valid;
+    }
+
+    public removeFromForm(id: string) {
+        delete this._changedObj.value[id];
+        delete this._validObj.value[id];
     }
 
     public validateFlag = computed(() => this._validateFlag.value);
