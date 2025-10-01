@@ -24,6 +24,7 @@ import VsIndexView from './vs-index-view/VsIndexView.vue';
 import VsInnerScroll from './vs-inner-scroll/VsInnerScroll.vue';
 import VsLayout from './vs-layout/VsLayout.vue';
 import VsLoading from './vs-loading/VsLoading.vue';
+import VsMessage from './vs-message/VsMessage.vue';
 import VsPage from './vs-page/VsPage.vue';
 import VsProgress from './vs-progress/VsProgress.vue';
 import VsRender from './vs-render/VsRender.vue';
@@ -52,6 +53,7 @@ export const VlossomComponents = {
     VsInnerScroll,
     VsLayout,
     VsLoading,
+    VsMessage,
     VsPage,
     VsProgress,
     VsRender,

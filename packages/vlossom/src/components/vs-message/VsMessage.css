@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+.vs-message {
+    @apply flex items-center whitespace-nowrap;
+
+    color: var(--vs-primary-comp-bg);
+    fill: var(--vs-primary-comp-bg);
+    stroke: var(--vs-primary-comp-bg);
+
+    .vs-message-text {
+        @apply ml-1;
+    }
+}

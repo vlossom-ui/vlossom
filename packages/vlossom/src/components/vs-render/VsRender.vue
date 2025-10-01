@@ -24,6 +24,30 @@ export default defineComponent({
     setup(props) {
         const { content, props: contentProps } = toRefs(props);
 
+        // 요소를 재귀적으로 렌더링하는 함수 (최상위부터)
+        function renderElement(element: Element) {
+            // 요소의 속성들을 객체로 변환
+            const attributes: Record<string, any> = {};
+            Array.from(element.attributes).forEach((attr) => {
+                attributes[attr.name] = attr.value;
+            });
+
+            // 하위 노드들을 처리
+            const children: any[] = [];
+            Array.from(element.childNodes).forEach((child) => {
+                if (child.nodeType === Node.TEXT_NODE) {
+                    const text = child.textContent?.trim();
+                    if (text) {
+                        children.push(text);
+                    }
+                } else if (child.nodeType === Node.ELEMENT_NODE) {
+                    children.push(renderElement(child as Element));
+                }
+            });
+
+            return h(element.tagName.toLowerCase(), attributes, children);
+        }
+
         const renderStringAsComponent = (htmlString: string) => {
             // HTML 태그가 없는 경우 텍스트만 렌더링
             if (!htmlString || !/<[^>]*>/.test(htmlString)) {
@@ -40,13 +64,7 @@ export default defineComponent({
                     return () => h('span', htmlString);
                 }
 
-                // 요소의 속성들을 객체로 변환
-                const attributes: Record<string, any> = {};
-                Array.from(element.attributes).forEach((attr) => {
-                    attributes[attr.name] = attr.value;
-                });
-
-                return () => h(element.tagName.toLowerCase(), attributes, element.innerHTML);
+                return () => renderElement(element);
             } catch {
                 // 파싱 실패 시 텍스트 렌더링
                 return () => h('span', htmlString);
