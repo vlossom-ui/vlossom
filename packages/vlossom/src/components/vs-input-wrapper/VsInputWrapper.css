@@ -1,0 +1,27 @@
+@reference 'tailwindcss';
+
+.vs-input-wrapper {
+    .vs-label {
+        @apply flex items-center;
+        margin-bottom: 0.1rem;
+        min-height: 1.5rem;
+        font-size: var(--vs-font-size-sm);
+    }
+
+    .vs-required-star {
+        @apply relative;
+        top: 0.1rem;
+        margin-left: 0.2rem;
+        color: var(--vs-primary-comp-bg);
+    }
+
+    .vs-messages {
+        margin-top: 0.2rem;
+    }
+
+    &.vs-small {
+        .vs-label {
+            font-size: var(--vs-font-size-xs);
+        }
+    }
+}
