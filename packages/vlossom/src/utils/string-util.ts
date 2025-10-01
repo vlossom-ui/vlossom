@@ -10,10 +10,12 @@ export const stringUtil = {
         return nanoid();
     },
     toStringSize(value: number | string): string {
-        if (typeof value === 'number') {
-            return `${value}px`;
+        const stringValue = String(value);
+        // 단위가 없는 숫자인지 확인 (정수 및 소수점 포함)
+        if (/^\d+(\.\d+)?$/.test(stringValue)) {
+            return `${stringValue}px`;
         }
-        return value;
+        return stringValue;
     },
     kebabCase,
 };

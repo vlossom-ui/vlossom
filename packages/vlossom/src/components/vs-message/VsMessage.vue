@@ -1,9 +1,9 @@
 <template>
     <div :class="['vs-message', colorClass]">
-        <i :style="{ width: size, height: size }">
+        <i :style="{ width: sizeValue, height: sizeValue }">
             <vs-render :content="icon" />
         </i>
-        <span class="vs-message-text" :style="{ fontSize: size }">{{ text }}</span>
+        <span class="vs-message-text" :style="{ fontSize: sizeValue }">{{ text }}</span>
     </div>
 </template>
 
@@ -20,7 +20,7 @@ export default defineComponent({
     name,
     components: { VsRender },
     props: {
-        fontSize: { type: [String, Number], default: '1rem' },
+        size: { type: [String, Number], default: '1rem' },
         state: {
             type: String as PropType<Exclude<UIState, 'selected'>>,
             default: 'idle',
@@ -28,7 +28,7 @@ export default defineComponent({
         text: { type: String, default: '' },
     },
     setup(props) {
-        const { state, fontSize } = toRefs(props);
+        const { state, size } = toRefs(props);
 
         const colorClass = computed(() => {
             switch (state.value) {
@@ -45,17 +45,18 @@ export default defineComponent({
             }
         });
 
-        const size = computed(() => {
-            return stringUtil.toStringSize(fontSize.value);
+        const sizeValue = computed(() => {
+            console.log(size.value);
+            return stringUtil.toStringSize(size.value);
         });
 
         const icon = computed(() => {
-            return messageIcons[state.value] || messageIcons.idle;
+            return messageIcons[state.value];
         });
 
-        return { colorClass, icon, size };
+        return { colorClass, icon, sizeValue };
     },
 });
 </script>
 
-<style lang="scss" src="./VsMessage.css" />
+<style src="./VsMessage.css" />
