@@ -43,7 +43,6 @@
         &.vs-value {
             @apply overflow-x-auto;
 
-            flex-basis: var(--vs-label-value-value-width, 80%);
             background-color: var(--vs-label-value-value-backgroundColor, var(--vs-no-color));
             padding: var(--vs-label-value-value-padding, 0.6rem 1.2rem);
             color: var(--vs-label-value-value-fontColor, var(--vs-comp-font));

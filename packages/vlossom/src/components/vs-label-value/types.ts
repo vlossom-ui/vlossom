@@ -9,6 +9,5 @@ export interface VsLabelValueStyleSet extends Omit<BoxStyleSet, 'backgroundColor
     value?: TextStyleSet & {
         backgroundColor?: string;
         padding?: string;
-        width?: string;
     };
 }
