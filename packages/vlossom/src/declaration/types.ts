@@ -22,8 +22,6 @@ export interface VlossomOptions {
     radiusRatio?: number;
 }
 
-export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning' | 'selected';
-
 export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
 
 export interface BarLayout {
@@ -101,9 +99,11 @@ export interface StateMessage<T extends string = UIState> {
     text: string;
 }
 
+export type ValueOrFunction<T = any, V = any> = V | ((value: T) => V) | ((value: T) => PromiseLike<V>);
+
 export type Rule<T = any> = ((v: T) => string) | ((v: T) => PromiseLike<string>);
 
-export type Message<T = any> = StateMessage | ((v: T) => StateMessage) | ((v: T) => PromiseLike<StateMessage>);
+export type Message<T = any> = ValueOrFunction<T, StateMessage>;
 
 export interface InputComponentParams<T = unknown> {
     inputValue: Ref<T>;
@@ -125,5 +125,3 @@ export interface InputComponentParams<T = unknown> {
         onUnmounted?: () => void;
     };
 }
-
-export type ValueOrFunction<T = any, V = any> = V | ((value: T) => V) | ((value: T) => PromiseLike<V>);
