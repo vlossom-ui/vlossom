@@ -1,0 +1,3 @@
+.shake-horizontal{animation:shake-horizontal .6s cubic-bezier(.455,.03,.515,.955) both}
+
+@keyframes shake-horizontal{0%,100%{transform:translateX(0)}10%,30%,50%,70%{transform:translateX(-8px)}20%,40%,60%{transform:translateX(8px)}80%{transform:translateX(6px)}90%{transform:translateX(-6px)}}
