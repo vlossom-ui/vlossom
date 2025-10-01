@@ -46,7 +46,6 @@ export default defineComponent({
         });
 
         const sizeValue = computed(() => {
-            console.log(size.value);
             return stringUtil.toStringSize(size.value);
         });
 
