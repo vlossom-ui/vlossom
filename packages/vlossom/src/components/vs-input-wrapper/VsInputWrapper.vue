@@ -1,26 +1,32 @@
 <template>
-    <vs-responsive :class="['vs-input-wrapper', { 'shake-horizontal': needToShake, 'vs-small': small }]" :width :grid>
-        <component :is="groupLabel ? 'fieldset' : 'div'" v-if="!noLabel">
-            <component :is="groupLabel ? 'legend' : 'div'" class="vs-label">
+    <vs-responsive
+        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake, 'vs-small': small }]"
+        :width
+        :grid
+        :style="styleSetVariables"
+    >
+        <component :is="groupLabel ? 'fieldset' : 'div'" v-if="!noLabel || $slots.label">
+            <component :is="groupLabel ? 'legend' : 'div'" class="vs-label" :class="{ 'vs-disabled': disabled }">
                 <slot name="label">
-                    <span :class="{ 'vs-disabled': disabled }">{{ label }}</span>
+                    <span>{{ label }}</span>
                 </slot>
-                <i v-if="required" :class="['vs-required-star', 'vs-color-scheme-red', { 'vs-disabled': disabled }]">
-                    *
-                </i>
+                <i v-if="required" class="vs-required-star vs-color-scheme-red">*</i>
             </component>
 
             <slot />
         </component>
 
-        <div class="vs-messages" v-if="!noMessages && messages.length > 0">
+        <div
+            v-if="(!noMessages && messages.length > 0) || $slots.messages"
+            :class="['vs-messages', { 'vs-disabled': disabled }]"
+        >
             <slot name="messages">
                 <vs-message
                     v-for="({ state, text }, index) in messages"
                     :key="`${text}-${index}`"
                     :state
                     :text
-                    :size="small ? '0.8rem' : '0.9rem'"
+                    :size="messageSize"
                 />
             </slot>
         </div>
@@ -28,11 +34,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
 import { VsComponent, type StateMessage, type UIState } from '@/declaration';
-import { getInputWrapperProps, getResponsiveProps } from '@/props';
+import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { useStyleSet } from '@/composables';
+import type { VsInputWrapperStyleSet } from './types';
+
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsMessage from '@/components/vs-message/VsMessage.vue';
+import { stringUtil } from '@/utils';
 
 const name = VsComponent.VsInputWrapper;
 
@@ -42,6 +52,7 @@ export default defineComponent({
     props: {
         ...getResponsiveProps(),
         ...getInputWrapperProps(),
+        ...getStyleSetProps<VsInputWrapperStyleSet>(),
         groupLabel: { type: Boolean, default: false },
         messages: {
             type: Array as PropType<StateMessage<Exclude<UIState, 'selected'>>[]>,
@@ -50,7 +61,16 @@ export default defineComponent({
         shake: { type: Boolean, default: false },
     },
     setup(props) {
-        const { shake } = toRefs(props);
+        const { shake, styleSet, small } = toRefs(props);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet(name, styleSet);
+
+        const messageSize = computed(() => {
+            if (componentStyleSet.value?.messages?.fontSize) {
+                return stringUtil.toStringSize(componentStyleSet.value.messages.fontSize);
+            }
+            return small.value ? '0.8rem' : '0.9rem';
+        });
 
         const needToShake = ref(false);
         watch(shake, () => {
@@ -60,7 +80,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake };
+        return { needToShake, messageSize, styleSetVariables };
     },
 });
 </script>

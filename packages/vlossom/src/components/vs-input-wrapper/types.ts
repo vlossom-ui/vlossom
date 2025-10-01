@@ -7,3 +7,16 @@ declare module 'vue' {
 }
 
 export type { VsInputWrapper };
+
+export interface VsInputWrapperStyleSet {
+    label?: {
+        marginBottom?: string;
+        fontColor?: string;
+        fontSize?: string;
+        fontWeight?: string;
+    };
+    messages?: {
+        marginTop?: string;
+        fontSize?: string;
+    };
+}
