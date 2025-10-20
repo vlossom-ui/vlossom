@@ -60,7 +60,7 @@
 
     &.vs-large {
         border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
-        height: var(--vs-button-height, var(--vs-default-comp-height-large));
+        height: var(--vs-button-height, var(--vs-default-comp-height-lg));
         font-size: var(--vs-button-fontSize, var(--vs-font-size-lg));
 
         .vs-button-content {
@@ -98,19 +98,26 @@
         font-weight: var(--vs-button-fontWeight, 500);
     }
 
-    &.vs-circle {
+    <<<<<<< HEAD ======= &.vs-small {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+        padding: var(--vs-button-padding, 0 0.6rem);
+        height: var(--vs-button-height, var(--vs-default-comp-height-sm));
+        font-size: var(--vs-button-fontSize, var(--vs-font-size-sm));
+    }
+
+    >>>>>>>e5bd7f6 (update comp height variables) &.vs-circle {
         @apply rounded-full;
         width: var(--vs-button-width, var(--vs-default-comp-height));
         height: var(--vs-button-height, var(--vs-default-comp-height));
 
         &.vs-small {
-            width: var(--vs-button-width, var(--vs-default-comp-height-small));
-            height: var(--vs-button-height, var(--vs-default-comp-height-small));
+            width: var(--vs-button-width, var(--vs-default-comp-height-sm));
+            height: var(--vs-button-height, var(--vs-default-comp-height-sm));
         }
 
         &.vs-large {
-            width: var(--vs-button-width, var(--vs-default-comp-height-large));
-            height: var(--vs-button-height, var(--vs-default-comp-height-large));
+            width: var(--vs-button-width, var(--vs-default-comp-height-lg));
+            height: var(--vs-button-height, var(--vs-default-comp-height-lg));
         }
     }
 
