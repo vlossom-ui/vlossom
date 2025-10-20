@@ -117,3 +117,10 @@ export interface InputComponentParams<T = unknown> {
         onUnmounted?: () => void;
     };
 }
+
+export interface InputRef {
+    validate: () => void;
+    clear: () => void;
+    focus: () => void;
+    blur: () => void;
+}
