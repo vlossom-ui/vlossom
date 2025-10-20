@@ -4,6 +4,7 @@ export enum VsComponent {
     VsBar = 'VsBar',
     VsBlock = 'VsBlock',
     VsButton = 'VsButton',
+    VsChip = 'VsChip',
     VsContainer = 'VsContainer',
     VsDivider = 'VsDivider',
     VsDrawer = 'VsDrawer',

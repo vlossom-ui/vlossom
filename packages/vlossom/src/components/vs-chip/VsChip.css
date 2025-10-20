@@ -1,0 +1,104 @@
+.vs-chip {
+    --vs-chip-width: initial;
+    --vs-chip-height: initial;
+    --vs-chip-display: initial;
+    --vs-chip-backgroundColor: initial;
+    --vs-chip-padding: initial;
+    --vs-chip-border: initial;
+    --vs-chip-borderRadius: initial;
+    --vs-chip-opacity: initial;
+    --vs-chip-fontColor: initial;
+    --vs-chip-fontSize: initial;
+    --vs-chip-fontWeight: initial;
+    --vs-chip-lineHeight: initial;
+    --vs-chip-whiteSpace: initial;
+    --vs-chip-cursor: initial;
+
+    @apply relative box-border inline-flex cursor-pointer items-center justify-center select-none hover:brightness-96 active:brightness-92;
+
+    display: var(--vs-chip-display, inline-flex);
+    opacity: var(--vs-chip-opacity, 1);
+    cursor: var(--vs-chip-cursor, default);
+    border: var(--vs-chip-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height) / 2));
+    background-color: var(--vs-chip-backgroundColor, var(--vs-comp-bg));
+    padding: var(--vs-chip-padding, 0 0.6rem);
+    width: var(--vs-chip-width, auto);
+    height: var(--vs-chip-height, var(--vs-default-comp-height));
+    min-height: var(--vs-chip-height, var(--vs-default-comp-height));
+    color: var(--vs-chip-fontColor, var(--vs-comp-font));
+    font-weight: var(--vs-chip-fontWeight, 400);
+    font-size: var(--vs-chip-fontSize, var(--vs-font-size));
+    line-height: var(--vs-chip-lineHeight, var(--vs-line-height));
+    user-select: none;
+    white-space: var(--vs-chip-whiteSpace, nowrap);
+
+    .vs-icon-container {
+        @apply flex items-center justify-center;
+        border: var(--vs-chip-border, 1px solid var(--vs-line-color));
+        border-radius: 50%;
+        width: calc(var(--vs-chip-height, var(--vs-default-comp-height)) * 0.75);
+        height: calc(var(--vs-chip-height, var(--vs-default-comp-height)) * 0.75);
+        color: var(--vs-chip-fontColor, var(--vs-comp-font));
+    }
+
+    .vs-chip-close-button {
+        @apply cursor-pointer;
+    }
+
+    &:has(.vs-chip-icon) {
+        padding-left: 0.2rem;
+    }
+
+    &:has(.vs-chip-close-button) {
+        padding-right: 0.2rem;
+    }
+
+    .vs-chip-content {
+        @apply flex items-center justify-center;
+        padding: 0 0.5rem;
+        white-space: var(--vs-chip-whiteSpace, nowrap);
+    }
+
+    &.vs-small {
+        border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-small) / 2));
+        padding: var(--vs-chip-padding, 0 0.3rem);
+        height: var(--vs-chip-height, var(--vs-default-comp-height-small));
+        min-height: var(--vs-chip-height, var(--vs-default-comp-height-small));
+        font-size: var(--vs-chip-fontSize, var(--vs-font-size-sm));
+
+        .vs-icon-container {
+            width: calc(var(--vs-chip-height, var(--vs-default-comp-height-small)) * 0.75);
+            height: calc(var(--vs-chip-height, var(--vs-default-comp-height-small)) * 0.75);
+        }
+
+        &:has(.vs-chip-icon) {
+            padding-left: 0.2rem;
+        }
+
+        &:has(.vs-chip-close-button) {
+            padding-right: 0.2rem;
+        }
+    }
+
+    &.vs-primary {
+        @apply hover:brightness-104 active:brightness-108;
+
+        border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-bg));
+        background-color: var(--vs-chip-backgroundColor, var(--vs-primary-comp-bg));
+        color: var(--vs-chip-fontColor, var(--vs-primary-comp-font));
+
+        .vs-icon-container {
+            border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-font));
+            color: var(--vs-chip-fontColor, var(--vs-primary-comp-font));
+        }
+    }
+
+    @variant dark {
+        @apply hover:brightness-104 active:brightness-108;
+
+        &.vs-primary {
+            @apply hover:brightness-96 active:brightness-92;
+        }
+    }
+}
