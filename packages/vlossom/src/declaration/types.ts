@@ -118,9 +118,12 @@ export interface InputComponentParams<T = unknown> {
     };
 }
 
-export interface InputRef {
+export interface FormRef {
     validate: () => void;
     clear: () => void;
+}
+
+export interface InputRef extends FormRef {
     focus: () => void;
     blur: () => void;
 }
