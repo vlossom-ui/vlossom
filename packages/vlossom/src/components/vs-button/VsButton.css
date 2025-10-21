@@ -20,13 +20,12 @@
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-button-padding, 0 0.8rem);
     width: var(--vs-button-width, auto);
     height: var(--vs-button-height, var(--vs-default-comp-height));
     color: var(--vs-button-fontColor, var(--vs-comp-font));
     font-weight: var(--vs-button-fontWeight, var(--vs-font-weight));
     font-size: var(--vs-button-fontSize, var(--vs-font-size));
-    line-height: var(--vs-button-lineHeight, var(--vs-line-height));
+    line-height: var(--vs-button-lineHeight, 1);
     white-space: var(--vs-button-whiteSpace, var(--vs-white-space));
 
     .vs-button-loading {
@@ -36,7 +35,9 @@
     }
 
     .vs-button-content {
-        @apply relative flex items-center justify-center whitespace-nowrap;
+        @apply relative flex h-full w-full items-center justify-center whitespace-nowrap;
+
+        padding: var(--vs-button-padding, 0 0.8rem);
     }
 
     &.vs-loading {
@@ -59,9 +60,22 @@
 
     &.vs-large {
         border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
-        padding: var(--vs-button-padding, 0 1rem);
         height: var(--vs-button-height, var(--vs-default-comp-height-large));
         font-size: var(--vs-button-fontSize, var(--vs-font-size-lg));
+
+        .vs-button-content {
+            padding: var(--vs-button-padding, 0 1rem);
+        }
+    }
+
+    &.vs-small {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+        height: var(--vs-button-height, var(--vs-default-comp-height-small));
+        font-size: var(--vs-button-fontSize, var(--vs-font-size-sm));
+
+        .vs-button-content {
+            padding: var(--vs-button-padding, 0 0.6rem);
+        }
     }
 
     &.vs-outline {
@@ -82,13 +96,6 @@
         background-color: var(--vs-button-backgroundColor, var(--vs-primary-comp-bg));
         color: var(--vs-button-fontColor, var(--vs-primary-comp-font));
         font-weight: var(--vs-button-fontWeight, 500);
-    }
-
-    &.vs-small {
-        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
-        padding: var(--vs-button-padding, 0 0.6rem);
-        height: var(--vs-button-height, var(--vs-default-comp-height-small));
-        font-size: var(--vs-button-fontSize, var(--vs-font-size-sm));
     }
 
     &.vs-circle {

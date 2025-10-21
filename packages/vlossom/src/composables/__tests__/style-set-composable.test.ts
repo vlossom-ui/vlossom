@@ -90,6 +90,23 @@ describe('useStyleSet', () => {
             // then
             expect(componentStyleSet.value).toEqual(additionalStyleSet.value);
         });
+
+        it('additionalStyleSet이 중첩된 객체라도 componentStyleSet에 병합되어야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styleSet = ref({ padding: '10px', nested: { color: 'blue', backgroundColor: 'green' } });
+            const additionalStyleSet: any = ref({ color: 'purple', nested: { color: 'red' } });
+
+            // when
+            const { componentStyleSet } = useStyleSet(component, styleSet, additionalStyleSet);
+
+            // then
+            expect(componentStyleSet.value).toEqual({
+                padding: '10px',
+                color: 'purple',
+                nested: { color: 'red', backgroundColor: 'green' },
+            });
+        });
     });
 
     describe('styleSetVariables', () => {
@@ -145,6 +162,34 @@ describe('useStyleSet', () => {
                     width: '2px',
                     padding: '3px',
                     backgroundColor: 'gray',
+                },
+            };
+            const styleSet = ref(styles);
+
+            // when
+            const { styleSetVariables } = useStyleSet(component, styleSet);
+
+            // then
+            expect(styleSetVariables.value).toEqual({
+                '--vs-input-color': 'blue',
+                '--vs-input-append-width': '2px',
+                '--vs-input-append-padding': '3px',
+                '--vs-input-append-backgroundColor': 'gray',
+            });
+        });
+
+        it('중첩된 객체가 중첩된 객체를 포함하고 있으면 중첩된 객체의 값을 무시해야 한다', () => {
+            // given
+            const component = 'vs-input';
+            const styles = {
+                color: 'blue',
+                append: {
+                    width: '2px',
+                    padding: '3px',
+                    backgroundColor: 'gray',
+                    nested: {
+                        color: 'red',
+                    },
                 },
             };
             const styleSet = ref(styles);
