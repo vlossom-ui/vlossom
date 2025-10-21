@@ -9,3 +9,4 @@ export * from './positioning-composable';
 export * from './style-set-composable';
 export * from './state-class-composable';
 export * from './value-matcher-composable';
+export * from './string-modifier-composable';
