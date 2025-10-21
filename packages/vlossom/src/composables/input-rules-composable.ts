@@ -1,5 +1,5 @@
 import { ref, type Ref, computed, watch } from 'vue';
-import type { Rule, StateMessage } from '@/declaration';
+import type { Rule, StateMessage, UIState } from '@/declaration';
 
 export function useInputRules<T>(
     inputValue: Ref<T>,
@@ -15,7 +15,7 @@ export function useInputRules<T>(
         return [...defaultRules.value, ...rules.value];
     });
 
-    const ruleMessages: Ref<StateMessage[]> = ref([]);
+    const ruleMessages: Ref<StateMessage<Exclude<UIState, 'selected'>>[]> = ref([]);
     async function checkRules() {
         ruleMessages.value = [];
         const pendingRules: Promise<string>[] = [];
@@ -35,16 +35,19 @@ export function useInputRules<T>(
         if (pendingRules.length === 0) {
             return;
         }
-        const resolvedMessages = (await Promise.all(pendingRules)).reduce((acc: StateMessage[], resolved) => {
-            if (resolved) {
-                acc.push({
-                    state: 'error',
-                    text: resolved,
-                });
-            }
+        const resolvedMessages = (await Promise.all(pendingRules)).reduce(
+            (acc: StateMessage<Exclude<UIState, 'selected'>>[], resolved) => {
+                if (resolved) {
+                    acc.push({
+                        state: 'error',
+                        text: resolved,
+                    });
+                }
 
-            return acc;
-        }, []);
+                return acc;
+            },
+            [],
+        );
 
         ruleMessages.value.push(...resolvedMessages);
     }
