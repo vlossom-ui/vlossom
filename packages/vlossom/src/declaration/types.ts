@@ -127,3 +127,9 @@ export interface InputRef extends FormRef {
     focus: () => void;
     blur: () => void;
 }
+
+export interface StringModifiers {
+    capitalize?: boolean;
+    lower?: boolean;
+    upper?: boolean;
+}
