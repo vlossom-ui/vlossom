@@ -1,0 +1,112 @@
+@reference 'tailwindcss';
+
+.vs-input {
+    --vs-input-display: initial;
+    --vs-input-backgroundColor: initial;
+    --vs-input-border: initial;
+    --vs-input-borderRadius: initial;
+    --vs-input-fontColor: initial;
+    --vs-input-fontSize: initial;
+    --vs-input-height: initial;
+    --vs-input-padding: initial;
+    --vs-input-prepend-backgroundColor: initial;
+    --vs-input-prepend-fontColor: initial;
+    --vs-input-prepend-fontSize: initial;
+    --vs-input-prepend-padding: initial;
+    --vs-input-prepend-opacity: initial;
+    --vs-input-append-backgroundColor: initial;
+    --vs-input-append-fontColor: initial;
+    --vs-input-append-fontSize: initial;
+    --vs-input-append-padding: initial;
+    --vs-input-append-opacity: initial;
+
+    @apply relative box-border flex items-center overflow-hidden;
+
+    border: var(--vs-input-border, solid 1px var(--vs-line-color));
+    border-radius: var(--vs-input-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-input-backgroundColor, var(--vs-no-color));
+    height: var(--vs-input-height, var(--vs-input-comp-height));
+    color: var(--vs-input-fontColor, var(--vs-font-color));
+    font-size: var(--vs-input-fontSize, var(--vs-font-size));
+
+    input {
+        @apply w-full border-none bg-transparent outline-none;
+
+        padding: var(--vs-input-padding, 0 0.8rem);
+        color: var(--vs-input-fontColor, var(--vs-font-color));
+        font-size: var(--vs-input-fontSize, var(--vs-font-size));
+    }
+
+    .vs-prepend,
+    .vs-append {
+        @apply relative flex h-full flex-nowrap items-center justify-center border-none whitespace-nowrap;
+    }
+
+    .vs-prepend {
+        opacity: var(--vs-input-prepend-opacity, 1);
+        background-color: var(--vs-input-prepend-backgroundColor, var(--vs-primary-comp-bg));
+        padding: var(--vs-input-prepend-padding, 0 1rem);
+        color: var(--vs-input-prepend-fontColor, var(--vs-primary-comp-font));
+        font-size: var(--vs-input-prepend-fontSize, var(--vs-font-size));
+    }
+
+    .vs-append {
+        opacity: var(--vs-input-append-opacity, 1);
+        background-color: var(--vs-input-append-backgroundColor, var(--vs-primary-comp-bg));
+        padding: var(--vs-input-append-padding, 0 1rem);
+        color: var(--vs-input-append-fontColor, var(--vs-primary-comp-font));
+        font-size: var(--vs-input-append-fontSize, var(--vs-font-size));
+    }
+
+    .vs-clear-button {
+        @apply mr-2.5 flex items-center justify-center border-none opacity-0;
+        transition: opacity 0.4s;
+
+        background: none;
+        color: var(--vs-input-fontColor, var(--vs-font-color));
+    }
+
+    &:hover {
+        .vs-clear-button.show {
+            @apply opacity-100;
+        }
+    }
+
+    &.vs-disabled {
+        @apply pointer-events-none cursor-default opacity-50 select-none;
+        filter: grayscale(0.6);
+    }
+
+    &.vs-readonly {
+        @apply pointer-events-none cursor-default;
+    }
+
+    &.vs-state-box {
+        outline: 3px solid var(--vs-state-color);
+        outline-offset: 2px;
+    }
+
+    &:focus-within {
+        outline: 1px solid var(--vs-line-color) !important;
+        outline-offset: 2px !important;
+    }
+
+    &.vs-small {
+        height: var(--vs-input-height, var(--vs-default-comp-height-small));
+        font-size: var(--vs-input-fontSize, var(--vs-font-size-sm));
+
+        input {
+            font-size: var(--vs-input-fontSize, var(--vs-font-size-sm));
+        }
+    }
+}
+
+/* clears the 'X' */
+input[type='search']::-ms-clear,
+input[type='search']::-ms-reveal,
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+    @apply hidden;
+}
