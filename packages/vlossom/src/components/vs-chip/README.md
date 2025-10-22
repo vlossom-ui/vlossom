@@ -60,8 +60,9 @@ function handleClose() {
 | `colorScheme` | `string`                   | -       | -        | 칩의 색상 테마                          |
 | `styleSet`    | `string \| VsChipStyleSet` | -       | -        | 커스텀 스타일 설정 객체                 |
 | `closable`    | `boolean`                  | `false` | -        | 닫기 버튼 표시 여부                     |
-| `small`       | `boolean`                  | `false` | -        | 작은 크기 칩                            |
+| `outline`     | `boolean`                  | `false` | -        | outline 스타일 설정                     |
 | `primary`     | `boolean`                  | `false` | -        | 주요 정보를 위한 프라이머리 스타일 적용 |
+| `small`       | `boolean`                  | `false` | -        | 작은 크기 칩                            |
 
 ## Types
 
