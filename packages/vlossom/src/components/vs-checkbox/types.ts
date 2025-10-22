@@ -1,15 +1,13 @@
 import type VsCheckbox from './VsCheckbox.vue';
-import type VsCheckboxSet from './VsCheckboxSet.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet, FlexStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
         VsCheckbox: typeof VsCheckbox;
-        VsCheckboxSet: typeof VsCheckboxSet;
     }
 }
 
-export type { VsCheckbox, VsCheckboxSet };
+export type { VsCheckbox };
 
 export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
     // Checkbox specific styles
@@ -21,9 +19,4 @@ export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet, TextStyle
     label?: TextStyleSet;
     checkedLabel?: TextStyleSet;
     indeterminateLabel?: TextStyleSet;
-}
-
-export interface VsCheckboxSetStyleSet extends SizeStyleSet, BoxStyleSet, FlexStyleSet {
-    // Nested checkbox styles
-    checkbox?: VsCheckboxStyleSet;
 }
