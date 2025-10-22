@@ -55,7 +55,7 @@ export default defineComponent({
         ...getStyleSetProps<VsInputWrapperStyleSet>(),
         groupLabel: { type: Boolean, default: false },
         messages: {
-            type: Array as PropType<StateMessage<Exclude<UIState, 'selected'>>[]>,
+            type: Array as PropType<StateMessage<UIState>[]>,
             default: () => [],
         },
         shake: { type: Boolean, default: false },

@@ -12,6 +12,11 @@
         outline-offset: 2px !important;
     }
 
+    .vs-state-box {
+        outline: 3px solid var(--vs-state-box-color) !important;
+        outline-offset: 2px !important;
+    }
+
     .vs-hide-scroll {
         overflow: scroll;
         -ms-overflow-style: none; /* IE and Edge */

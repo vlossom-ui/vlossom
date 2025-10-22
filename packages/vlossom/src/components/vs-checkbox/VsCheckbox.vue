@@ -21,7 +21,7 @@
                 <input
                     ref="checkboxRef"
                     type="checkbox"
-                    :class="['vs-checkbox-input']"
+                    :class="['vs-checkbox-input', stateClasses]"
                     :aria-label="ariaLabel"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
@@ -46,8 +46,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import {
     computed,
     defineComponent,
@@ -61,7 +59,7 @@ import {
 } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStyleSet } from '@/composables';
+import { useColorScheme, useInput, useStyleSet, useStateClass } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
@@ -92,7 +90,7 @@ export default defineComponent({
         modelValue: { type: null, default: false },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    expose: ['clear', 'validate', 'focus', 'blur'],
+    // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
             beforeChange,
@@ -120,6 +118,8 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
+
+        const { stateClasses } = useStateClass(state);
 
         const inputValue = ref(modelValue.value);
 
@@ -273,6 +273,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             classObj,
+            stateClasses,
             computedId,
             computedDisabled,
             computedReadonly,
