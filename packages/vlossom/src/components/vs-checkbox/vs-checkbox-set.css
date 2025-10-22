@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-checkbox-set {
     --vs-checkbox-set-gap: initial;
     --vs-checkbox-set-flexWrap: initial;
@@ -19,4 +21,3 @@
         margin-bottom: var(--vs-checkbox-set-gap, 1rem);
     }
 }
-
