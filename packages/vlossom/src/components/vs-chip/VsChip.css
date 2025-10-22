@@ -47,22 +47,22 @@
     }
 
     &:has(.vs-chip-icon) {
-        padding-left: 0.2rem;
+        padding-left: 0.15rem;
     }
 
     &:has(.vs-chip-close-button) {
-        padding-right: 0.2rem;
+        padding-right: 0.15rem;
     }
 
     .vs-chip-content {
         @apply flex items-center justify-center;
-        padding: 0 0.5rem;
+        padding: 0 0.4rem;
         white-space: var(--vs-chip-whiteSpace, nowrap);
     }
 
     &.vs-small {
         border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-xs) / 2));
-        padding: var(--vs-chip-padding, 0 0.3rem);
+        padding: var(--vs-chip-padding, 0 0.2rem);
         height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
         min-height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
         font-size: var(--vs-chip-fontSize, var(--vs-font-size-xs));
@@ -73,11 +73,11 @@
         }
 
         &:has(.vs-chip-icon) {
-            padding-left: 0.2rem;
+            padding-left: 0.1rem;
         }
 
         &:has(.vs-chip-close-button) {
-            padding-right: 0.2rem;
+            padding-right: 0.1rem;
         }
     }
 
