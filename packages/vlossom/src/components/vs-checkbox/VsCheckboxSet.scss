@@ -1,0 +1,14 @@
+.vs-checkbox-set {
+    display: flex;
+    align-items: center;
+    flex-wrap: var(--vs-checkbox-set-flexWrap, wrap);
+
+    &.vs-vertical {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vs-checkbox-item:not(:last-child) {
+        margin-right: var(--vs-checkbox-set-gap, 2.4rem);
+    }
+}
