@@ -4,7 +4,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsCheckboxSet from './../VsCheckboxSet.vue';
-import { options } from './../__stories__/constants';
 
 describe('vs-checkbox-set', () => {
     describe('options', () => {

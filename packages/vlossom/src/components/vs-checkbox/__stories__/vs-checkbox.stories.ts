@@ -147,8 +147,9 @@ export const Indeterminate: Story = {
 export const BeforeChange: Story = {
     args: {
         beforeChange: async () => {
-            const $vs = useVlossom();
-            return await $vs.confirm.open('Are you sure?');
+            // const $vs = useVlossom();
+            // return await $vs.confirm.open('Are you sure?');
+            return true;
         },
     },
 };

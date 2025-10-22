@@ -139,8 +139,9 @@ export const Vertical: Story = {
 export const BeforeChange: Story = {
     args: {
         beforeChange: async () => {
-            const $vs = useVlossom();
-            return await $vs.confirm.open('Are you sure?');
+            // const $vs = useVlossom();
+            //return await $vs.confirm.open('Are you sure?'); // boolean 형 토글 상태에 따라 동작하는 예제로 변경
+            return true;
         },
     },
 };
@@ -185,18 +186,19 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             borderRadius: '0.1rem',
-            label: {
-                fontColor: '#a0b0b9',
-                fontSize: '1.2rem',
+            checkbox: {
+                label: {
+                    fontColor: '#a0b0b9',
+                    fontSize: '1.2rem',
+                },
+                checkboxColor: '#81c798',
+                checkboxSize: '2rem',
             },
-            checkboxColor: '#81c798',
-            checkboxSize: '2rem',
-            gap: '3rem',
             flexWrap: 'nowrap',
+            gap: '3rem',
         },
     },
 };
-
 export const PreDefinedStyleSet: Story = {
     args: {
         styleSet: 'myStyleSet',

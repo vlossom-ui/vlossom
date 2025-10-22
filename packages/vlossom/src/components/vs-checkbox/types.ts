@@ -16,7 +16,7 @@ export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet, TextStyle
     borderWidth?: string;
     checkboxColor?: string;
     checkboxSize?: string;
-    
+
     // Label styles for different states
     label?: TextStyleSet;
     checkedLabel?: TextStyleSet;

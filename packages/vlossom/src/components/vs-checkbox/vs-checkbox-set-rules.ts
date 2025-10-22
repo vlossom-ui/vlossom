@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 export function useVsCheckboxSetRules(required: Ref<boolean>, max: Ref<number | string>, min: Ref<number | string>) {
     function requiredCheck(v: any[]) {

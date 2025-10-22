@@ -67,7 +67,7 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStyleSet } from '@/composables';
 import { objectUtil } from '@/utils';
-import type { VsCheckboxSetStyleSet, VsCheckboxStyleSet } from './types';
+import type { VsCheckboxSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsCheckbox from './VsCheckbox.vue';
@@ -130,7 +130,6 @@ export default defineComponent({
             id,
             modelValue,
             messages,
-            options,
             optionLabel,
             optionValue,
             readonly,
@@ -142,7 +141,7 @@ export default defineComponent({
             noDefaultRules,
         } = toRefs(props);
 
-        const checkboxRefs: Ref<typeof VsCheckbox[]> = ref([]);
+        const checkboxRefs: Ref<(typeof VsCheckbox)[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
@@ -153,14 +152,22 @@ export default defineComponent({
         const inputValue = ref(modelValue.value);
 
         function getOptionLabel(option: any): string {
-            if (!option) return '';
-            if (typeof option === 'string' || typeof option === 'number') return String(option);
+            if (!option) {
+                return '';
+            }
+            if (typeof option === 'string' || typeof option === 'number') {
+                return String(option);
+            }
             return optionLabel.value && option[optionLabel.value] ? String(option[optionLabel.value]) : String(option);
         }
 
         function getOptionValue(option: any): any {
-            if (!option) return option;
-            if (typeof option === 'string' || typeof option === 'number') return option;
+            if (!option) {
+                return option;
+            }
+            if (typeof option === 'string' || typeof option === 'number') {
+                return option;
+            }
             return optionValue.value && option[optionValue.value] !== undefined ? option[optionValue.value] : option;
         }
 
@@ -216,7 +223,7 @@ export default defineComponent({
         async function onToggle(option: any, value: any) {
             const targetOptionValue = getOptionValue(option);
             const isCheckedNow = value !== null && value !== false;
-            
+
             const toValue = isCheckedNow
                 ? [...inputValue.value, targetOptionValue]
                 : inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue));
