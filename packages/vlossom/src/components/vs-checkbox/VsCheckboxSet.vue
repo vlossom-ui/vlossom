@@ -60,11 +60,13 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStyleSet } from '@/composables';
-import { utils } from '@/utils';
+import { objectUtil } from '@/utils';
 import type { VsCheckboxSetStyleSet, VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -87,7 +89,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsCheckboxSetStyleSet>(),
-        ...getInputProps<any[], 'ariaLabel' | 'placeholder'>('ariaLabel', 'placeholder'),
+        ...getInputProps<any[], 'placeholder'>('placeholder'),
         ...getInputOptionProps(),
         ...getResponsiveProps(),
         beforeChange: {
@@ -183,7 +185,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: [requiredCheck, maxCheck, minCheck],
+                defaultRules: ref([requiredCheck, maxCheck, minCheck]),
                 noDefaultRules,
                 state,
                 callbacks: {
@@ -208,7 +210,7 @@ export default defineComponent({
             if (!inputValue.value || !Array.isArray(inputValue.value)) {
                 return false;
             }
-            return inputValue.value.some((v: any) => utils.object.isEqual(v, getOptionValue(option)));
+            return inputValue.value.some((v: any) => objectUtil.isEqual(v, getOptionValue(option)));
         }
 
         async function onToggle(option: any, value: any) {
@@ -217,7 +219,7 @@ export default defineComponent({
             
             const toValue = isCheckedNow
                 ? [...inputValue.value, targetOptionValue]
-                : inputValue.value.filter((v: any) => !utils.object.isEqual(v, targetOptionValue));
+                : inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue));
 
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {

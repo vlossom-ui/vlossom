@@ -145,9 +145,7 @@ export default defineComponent({
         function getUpdatedValue(isCheckedNow: boolean) {
             if (multiple.value) {
                 if (isCheckedNow) {
-                    return Array.isArray(inputValue.value)
-                        ? [...inputValue.value, trueValue.value]
-                        : [trueValue.value];
+                    return Array.isArray(inputValue.value) ? [...inputValue.value, trueValue.value] : [trueValue.value];
                 } else {
                     return Array.isArray(inputValue.value)
                         ? inputValue.value.filter((v: any) => !objectUtil.isEqual(v, trueValue.value))
