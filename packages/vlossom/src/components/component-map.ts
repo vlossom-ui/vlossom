@@ -28,6 +28,7 @@ import VsLayout from './vs-layout/VsLayout.vue';
 import VsLoading from './vs-loading/VsLoading.vue';
 import VsMessage from './vs-message/VsMessage.vue';
 import VsPage from './vs-page/VsPage.vue';
+import VsPagination from './vs-pagination/VsPagination.vue';
 import VsProgress from './vs-progress/VsProgress.vue';
 import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
@@ -59,6 +60,7 @@ export const VlossomComponents = {
     VsLoading,
     VsMessage,
     VsPage,
+    VsPagination,
     VsProgress,
     VsRender,
     VsResponsive,

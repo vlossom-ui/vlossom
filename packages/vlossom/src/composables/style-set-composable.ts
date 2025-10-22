@@ -19,7 +19,7 @@ export function useStyleSet<T extends { [key: string]: any }>(
             }
         }
 
-        return { ...resultStyleSet, ...(additionalStyleSet?.value ?? {}) };
+        return objectUtil.assign(resultStyleSet, additionalStyleSet?.value ?? {});
     });
 
     const styleSetVariables: ComputedRef<Record<string, string>> = computed(() => {
@@ -28,6 +28,9 @@ export function useStyleSet<T extends { [key: string]: any }>(
                 if (objectUtil.isObject(value)) {
                     const nestedStyleSet = value;
                     Object.entries(nestedStyleSet).forEach(([nestedKey, nestedValue]) => {
+                        if (objectUtil.isObject(nestedValue)) {
+                            return;
+                        }
                         const variableName = `--${stringUtil.kebabCase(component)}-${key}-${nestedKey}`;
                         acc[variableName] = nestedValue;
                     });

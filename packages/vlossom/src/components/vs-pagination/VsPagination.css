@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+.vs-pagination {
+    --vs-pagination-gap: initial;
+
+    @apply relative flex items-center justify-center;
+
+    gap: var(--vs-pagination-gap, 0.5rem);
+
+    .vs-page-buttons {
+        @apply flex items-center justify-center overflow-x-auto select-none;
+
+        gap: var(--vs-pagination-gap, 0.5rem);
+
+        .vs-page-button {
+            min-width: 2rem;
+            min-height: 2rem;
+        }
+    }
+
+    .vs-pagination-control-button {
+        min-width: 2rem;
+        min-height: 2rem;
+    }
+}
