@@ -29,7 +29,7 @@
     color: var(--vs-chip-fontColor, var(--vs-comp-font));
     font-weight: var(--vs-chip-fontWeight, 400);
     font-size: var(--vs-chip-fontSize, var(--vs-font-size-sm));
-    line-height: var(--vs-chip-lineHeight, var(--vs-line-height));
+    line-height: var(--vs-chip-lineHeight, 1);
     user-select: none;
     white-space: var(--vs-chip-whiteSpace, nowrap);
 
@@ -79,6 +79,13 @@
         &:has(.vs-chip-close-button) {
             padding-right: 0.2rem;
         }
+    }
+
+    &.vs-outline {
+        @apply bg-transparent;
+
+        border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-bg));
+        color: var(--vs-chip-fontColor, var(--vs-primary-comp-bg));
     }
 
     &.vs-primary {

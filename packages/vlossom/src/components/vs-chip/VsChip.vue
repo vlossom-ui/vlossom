@@ -40,12 +40,13 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsChipStyleSet>(),
         closable: { type: Boolean, default: false },
-        small: { type: Boolean, default: false },
+        outline: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
+        small: { type: Boolean, default: false },
     },
     emits: ['close'],
     setup(props, { slots }) {
-        const { colorScheme, small, primary, styleSet } = toRefs(props);
+        const { colorScheme, small, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
@@ -54,8 +55,9 @@ export default defineComponent({
         const hasIcon = computed((): boolean => !!slots['icon']);
 
         const classObj = computed(() => ({
-            'vs-small': small.value,
+            'vs-outline': outline.value,
             'vs-primary': primary.value,
+            'vs-small': small.value,
         }));
 
         return {
