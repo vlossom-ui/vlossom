@@ -250,7 +250,7 @@ export const StyleSet: Story = {
                 width: '3rem',
                 height: '3rem',
             },
-            edgeButton: {
+            controlButton: {
                 borderRadius: '8px',
                 padding: '0.6rem',
             },

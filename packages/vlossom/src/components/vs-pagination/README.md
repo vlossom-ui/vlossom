@@ -109,7 +109,7 @@ interface VsPaginationStyleSet {
         lineHeight?: string;
         whiteSpace?: string;
     };
-    edgeButton?: {
+    controlButton?: {
         width?: string;
         height?: string;
         display?: string;

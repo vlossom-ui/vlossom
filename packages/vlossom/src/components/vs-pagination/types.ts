@@ -12,5 +12,5 @@ export type { VsPagination };
 export interface VsPaginationStyleSet {
     gap?: string;
     pageButton?: Omit<VsButtonStyleSet, 'loading'>;
-    edgeButton?: Omit<VsButtonStyleSet, 'loading'>;
+    controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }

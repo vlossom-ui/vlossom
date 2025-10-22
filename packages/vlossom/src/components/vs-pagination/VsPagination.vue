@@ -2,9 +2,9 @@
     <div :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]" :style="styleSetVariables">
         <vs-button
             v-if="edgeButtons"
-            class="vs-edge-button"
+            class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.edgeButton"
+            :style-set="componentStyleSet.controlButton"
             :disabled="disabled || selected <= 0"
             :ghost
             :outline
@@ -17,9 +17,9 @@
             </slot>
         </vs-button>
         <vs-button
-            class="vs-edge-button"
+            class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.edgeButton"
+            :style-set="componentStyleSet.controlButton"
             :disabled="disabled || selected <= 0"
             :ghost
             :outline
@@ -52,9 +52,9 @@
             </vs-button>
         </div>
         <vs-button
-            class="vs-edge-button"
+            class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.edgeButton"
+            :style-set="componentStyleSet.controlButton"
             :disabled="disabled || selected >= length - 1"
             :ghost
             :outline
@@ -68,9 +68,9 @@
         </vs-button>
         <vs-button
             v-if="edgeButtons"
-            class="vs-edge-button"
+            class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.edgeButton"
+            :style-set="componentStyleSet.controlButton"
             :disabled="disabled || selected >= length - 1"
             :ghost
             :outline
@@ -146,7 +146,7 @@ export default defineComponent({
             name,
             styleSet,
             ref({
-                edgeButton: { padding: '0.4rem' },
+                controlButton: { padding: '0.4rem' },
             }),
         );
 

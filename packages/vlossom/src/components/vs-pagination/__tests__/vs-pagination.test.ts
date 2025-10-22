@@ -25,7 +25,7 @@ describe('VsPagination', () => {
             });
 
             // then
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             expect(edgeButtons.length).toBe(2); // prev, next 2개
         });
 
@@ -98,7 +98,7 @@ describe('VsPagination', () => {
             });
 
             // then
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             // prev, next만 있어야 함 (first, last 없음)
             expect(edgeButtons.length).toBe(2);
         });
@@ -113,7 +113,7 @@ describe('VsPagination', () => {
             });
 
             // then
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             // first, prev, next, last 4개
             expect(edgeButtons.length).toBe(4);
         });
@@ -195,7 +195,7 @@ describe('VsPagination', () => {
             });
 
             // when
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             const prevButton = edgeButtons[0]; // 첫 번째가 prev 버튼
             await prevButton.trigger('click');
 
@@ -213,7 +213,7 @@ describe('VsPagination', () => {
             });
 
             // when
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             const nextButton = edgeButtons[1]; // 두 번째가 next 버튼
             await nextButton.trigger('click');
 
@@ -232,7 +232,7 @@ describe('VsPagination', () => {
             });
 
             // when
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             const firstButton = edgeButtons[0];
             await firstButton.trigger('click');
 
@@ -251,7 +251,7 @@ describe('VsPagination', () => {
             });
 
             // when
-            const edgeButtons = wrapper.findAll('.vs-edge-button');
+            const edgeButtons = wrapper.findAll('.vs-pagination-control-button');
             const lastButton = edgeButtons[3]; // first, prev, next, last
             await lastButton.trigger('click');
 
@@ -290,11 +290,11 @@ describe('VsPagination', () => {
             expect(wrapper.vm.componentStyleSet).toEqual({
                 gap: '2rem',
                 // edgeButton는 기본값이 있음
-                edgeButton: { padding: '0.4rem' },
+                controlButton: { padding: '0.4rem' },
             });
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-pagination-gap': '2rem',
-                '--vs-pagination-edgeButton-padding': '0.4rem',
+                '--vs-pagination-controlButton-padding': '0.4rem',
             });
         });
     });
