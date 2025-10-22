@@ -1,0 +1,140 @@
+.vs-checkbox {
+    --vs-checkbox-borderRadius: initial;
+    --vs-checkbox-borderWidth: initial;
+    --vs-checkbox-checkboxColor: initial;
+    --vs-checkbox-checkboxSize: initial;
+    --vs-checkbox-height: initial;
+    --vs-checkbox-width: initial;
+    --vs-checkbox-fontColor: initial;
+    --vs-checkbox-fontSize: initial;
+    --vs-checkbox-fontWeight: initial;
+    --vs-checkbox-lineHeight: initial;
+    --vs-checkbox-whiteSpace: initial;
+
+    @apply relative flex items-center justify-start;
+
+    min-height: var(--vs-checkbox-height, var(--vs-default-comp-height));
+
+    .vs-checkbox-wrap {
+        @apply relative flex flex-nowrap items-center justify-start select-none;
+
+        .vs-checkbox-input {
+            @apply m-0 flex cursor-pointer appearance-none items-center justify-center bg-transparent;
+
+            width: var(--vs-checkbox-checkboxSize, 2rem);
+            height: var(--vs-checkbox-checkboxSize, 2rem);
+            border: var(--vs-checkbox-borderWidth, 1px) solid
+                var(--vs-checkbox-checkboxColor, var(--vs-primary-comp-bg));
+            border-radius: var(--vs-checkbox-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+
+            &:focus-within {
+                @apply outline outline-2 outline-offset-2;
+                outline-color: var(--vs-focus-color);
+            }
+
+            &:before {
+                @apply block;
+                content: '';
+                width: calc(var(--vs-checkbox-checkboxSize, 2rem) * 0.6);
+                height: calc(var(--vs-checkbox-checkboxSize, 2rem) * 0.6);
+                transform: scale(0);
+                transform-origin: center center;
+                transition: 120ms all linear;
+            }
+        }
+
+        .vs-checkbox-label {
+            @apply cursor-pointer select-none;
+            padding-left: 0.5rem;
+            color: var(--vs-checkbox-label-fontColor, var(--vs-font-color));
+            font-size: var(--vs-checkbox-label-fontSize, var(--vs-font-size));
+            font-weight: var(--vs-checkbox-label-fontWeight, 400);
+            white-space: var(--vs-checkbox-label-whiteSpace, nowrap);
+        }
+    }
+
+    &.vs-indeterminate {
+        .vs-checkbox-wrap {
+            .vs-checkbox-input {
+                background-color: var(--vs-checkbox-checkboxColor, var(--vs-primary-comp-bg));
+
+                &:before {
+                    @apply scale-100;
+                    clip-path: polygon(0% 38%, 100% 38%, 100% 62%, 0% 62%);
+                    background-color: var(--vs-primary-comp-font);
+                }
+            }
+        }
+
+        .vs-checkbox-label {
+            color: var(
+                --vs-checkbox-indeterminateLabel-fontColor,
+                var(--vs-checkbox-checkedLabel-fontColor, var(--vs-primary-comp-bg))
+            );
+            font-size: var(
+                --vs-checkbox-indeterminateLabel-fontSize,
+                var(--vs-checkbox-checkedLabel-fontSize, var(--vs-font-size))
+            );
+            font-weight: var(
+                --vs-checkbox-indeterminateLabel-fontWeight,
+                var(--vs-checkbox-checkedLabel-fontWeight, 400)
+            );
+            white-space: var(
+                --vs-checkbox-indeterminateLabel-whiteSpace,
+                var(--vs-checkbox-checkedLabel-whiteSpace, nowrap)
+            );
+        }
+    }
+
+    &.vs-checked {
+        .vs-checkbox-wrap {
+            .vs-checkbox-input {
+                background-color: var(--vs-checkbox-checkboxColor, var(--vs-primary-comp-bg));
+
+                &:before {
+                    @apply scale-100;
+                    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+                    background-color: var(--vs-primary-comp-font);
+                    transform: scale(1) rotate(10deg) translateX(-3%);
+                }
+            }
+        }
+
+        .vs-checkbox-label {
+            color: var(--vs-checkbox-checkedLabel-fontColor, var(--vs-primary-comp-bg));
+            font-size: var(--vs-checkbox-checkedLabel-fontSize, var(--vs-font-size));
+            font-weight: var(--vs-checkbox-checkedLabel-fontWeight, 400);
+            white-space: var(--vs-checkbox-checkedLabel-whiteSpace, nowrap);
+        }
+    }
+
+    &.vs-small {
+        min-height: var(--vs-checkbox-height, var(--vs-default-comp-height-small));
+
+        .vs-checkbox-input {
+            width: var(--vs-checkbox-checkboxSize, 1.8rem);
+            height: var(--vs-checkbox-checkboxSize, 1.8rem);
+        }
+
+        .vs-checkbox-label {
+            font-size: var(--vs-checkbox-label-fontSize, var(--vs-font-size-sm));
+        }
+    }
+
+    &.vs-disabled {
+        @apply cursor-not-allowed opacity-50;
+
+        .vs-checkbox-wrap {
+            @apply cursor-not-allowed pointer-events-none;
+        }
+    }
+
+    &.vs-readonly {
+        @apply cursor-default;
+
+        .vs-checkbox-wrap {
+            @apply cursor-default pointer-events-none;
+        }
+    }
+}
+

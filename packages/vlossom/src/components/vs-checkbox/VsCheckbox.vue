@@ -1,71 +1,71 @@
 <template>
     <vs-input-wrapper
-        v-show="visible"
+        v-show="!hidden"
         :width="width"
         :grid="grid"
         :id="checkLabel ? '' : computedId"
         :label="label"
         :required="required"
         :disabled="computedDisabled"
-        :dense="dense"
+        :small="small"
         :messages="computedMessages"
-        :no-message="noMessage"
+        :no-messages="noMessages"
         :shake="shake"
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
         </template>
 
-        <vs-checkbox-node
-            ref="checkboxRef"
-            :color-scheme="computedColorScheme"
-            :style-set="checkboxNodeStyleSet"
-            :aria-label="ariaLabel"
-            :checked="isChecked"
-            :dense="dense"
-            :disabled="computedDisabled"
-            :id="computedId"
-            :indeterminate="indeterminate"
-            :label="checkLabel"
-            :name="name"
-            :readonly="computedReadonly"
-            :required="required"
-            :state="computedState"
-            :value="trueValue"
-            @toggle="onToggle"
-            @focus="onFocus"
-            @blur="onBlur"
-        >
-            <template #label v-if="$slots['check-label']">
-                <slot name="check-label" />
-            </template>
-        </vs-checkbox-node>
+        <div :class="['vs-checkbox', colorSchemeClass, classObj]" :style="styleSetVariables">
+            <label class="vs-checkbox-wrap" :for="computedId">
+                <input
+                    ref="checkboxRef"
+                    type="checkbox"
+                    :class="['vs-checkbox-input', stateClasses]"
+                    :aria-label="ariaLabel"
+                    :id="computedId"
+                    :disabled="computedDisabled || computedReadonly"
+                    :name="name"
+                    :value="convertToString(trueValue)"
+                    :checked="isChecked"
+                    :aria-required="required"
+                    @click.prevent.stop="toggle"
+                    @focus.stop="onFocus"
+                    @blur.stop="onBlur"
+                />
+                <div v-if="checkLabel || $slots['check-label']" class="vs-checkbox-label">
+                    <slot name="check-label">{{ checkLabel }}</slot>
+                </div>
+            </label>
+        </div>
 
-        <template #messages v-if="!noMessage">
+        <template #messages v-if="!noMessages">
             <slot name="messages" />
         </template>
     </vs-input-wrapper>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, Ref, ref, toRefs } from 'vue';
-import { useColorScheme, useStyleSet, useInput, useValueMatcher } from '@/composables';
-import { getInputProps, getResponsiveProps } from '@/models';
-import { VsComponent, type ColorScheme } from '@/declaration';
-import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsCheckboxNode from '@/components/vs-checkbox/VsCheckboxNode.vue';
+import { computed, defineComponent, nextTick, ref, toRefs, useTemplateRef, watch, type PropType, type TemplateRef } from 'vue';
+import { VsComponent } from '@/declaration';
+import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { useColorScheme, useInput, useStateClass, useStyleSet } from '@/composables';
+import { utils } from '@/utils';
+import type { VsCheckboxStyleSet } from './types';
 
-import type { VsCheckboxNodeStyleSet, VsCheckboxStyleSet } from './types';
+import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const name = VsComponent.VsCheckbox;
+
 export default defineComponent({
     name,
-    components: { VsInputWrapper, VsCheckboxNode },
+    components: { VsInputWrapper },
     props: {
-        ...getInputProps<any, 'placeholder' | 'noClear'>('placeholder', 'noClear'),
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsCheckboxStyleSet>(),
+        ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsCheckboxStyleSet> },
+        ariaLabel: { type: String, default: '' },
         beforeChange: {
             type: Function as PropType<(from: any, to: any) => Promise<boolean> | null>,
             default: null,
@@ -80,12 +80,13 @@ export default defineComponent({
         modelValue: { type: null, default: false },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    // expose: ['clear', 'validate', 'focus', 'blur'],
-    setup(props, context) {
+    expose: ['clear', 'validate', 'focus', 'blur'],
+    setup(props, { emit }) {
         const {
             beforeChange,
             checked,
             colorScheme,
+            styleSet,
             id,
             disabled,
             readonly,
@@ -97,31 +98,57 @@ export default defineComponent({
             trueValue,
             falseValue,
             multiple,
-            styleSet,
             noDefaultRules,
+            indeterminate,
+            small,
         } = toRefs(props);
-        const checkboxRef: Ref<HTMLInputElement | null> = ref(null);
 
-        const { emit } = context;
+        const checkboxRef: TemplateRef<HTMLInputElement> = useTemplateRef('checkboxRef');
 
-        const { computedColorScheme } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { plainStyleSet: checkboxStyleSet } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
-        const { plainStyleSet: checkboxNodeStyleSet } = useStyleSet<VsCheckboxNodeStyleSet>(
-            VsComponent.VsCheckboxNode,
-            styleSet,
-            checkboxStyleSet,
-        );
+        const { styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
+
+        const { stateClasses } = useStateClass(state);
 
         const inputValue = ref(modelValue.value);
 
-        const {
-            isMatched: isChecked,
-            getInitialValue,
-            getClearedValue,
-            getUpdatedValue,
-            addTrueValue,
-        } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
+        // Value matcher logic for checkbox
+        const isChecked = computed(() => {
+            if (multiple.value) {
+                return Array.isArray(inputValue.value) && inputValue.value.some((v: any) => utils.object.isEqual(v, trueValue.value));
+            }
+            return utils.object.isEqual(inputValue.value, trueValue.value);
+        });
+
+        function getInitialValue() {
+            return multiple.value ? [] : falseValue.value;
+        }
+
+        function getClearedValue() {
+            return multiple.value ? [] : falseValue.value;
+        }
+
+        function getUpdatedValue(checked: boolean) {
+            if (multiple.value) {
+                if (checked) {
+                    return Array.isArray(inputValue.value) ? [...inputValue.value, trueValue.value] : [trueValue.value];
+                } else {
+                    return Array.isArray(inputValue.value) 
+                        ? inputValue.value.filter((v: any) => !utils.object.isEqual(v, trueValue.value))
+                        : [];
+                }
+            }
+            return checked ? trueValue.value : falseValue.value;
+        }
+
+        function addTrueValue() {
+            if (Array.isArray(inputValue.value)) {
+                inputValue.value = [...inputValue.value, trueValue.value];
+            } else {
+                inputValue.value = [trueValue.value];
+            }
+        }
 
         function requiredCheck() {
             return required.value && !isChecked.value ? 'required' : '';
@@ -136,43 +163,58 @@ export default defineComponent({
             shake,
             validate,
             clear,
-        } = useInput(context, {
-            inputValue,
-            modelValue,
-            id,
-            disabled,
-            readonly,
-            messages,
-            rules,
-            defaultRules: [requiredCheck],
-            noDefaultRules,
-            state,
-            callbacks: {
-                onMounted: () => {
-                    if (checked.value) {
-                        if (multiple.value) {
-                            // 초기 input value를 공유할 수 없기 때문에 getUpdatedValue를 사용하지 않음
-                            addTrueValue();
+        } = useInput(
+            { emit },
+            {
+                inputValue,
+                modelValue,
+                id,
+                disabled,
+                readonly,
+                messages,
+                rules,
+                defaultRules: [requiredCheck],
+                noDefaultRules,
+                state,
+                callbacks: {
+                    onMounted: () => {
+                        if (checked.value) {
+                            if (multiple.value) {
+                                addTrueValue();
+                            } else {
+                                inputValue.value = getUpdatedValue(true);
+                            }
                         } else {
-                            inputValue.value = getUpdatedValue(true);
+                            inputValue.value = getInitialValue();
                         }
-                    } else {
-                        inputValue.value = getInitialValue();
-                    }
-                },
-                onChange: () => {
-                    if (inputValue.value === undefined || inputValue.value === null) {
+                    },
+                    onChange: () => {
+                        if (inputValue.value === undefined || inputValue.value === null) {
+                            inputValue.value = getClearedValue();
+                        }
+                    },
+                    onClear: () => {
                         inputValue.value = getClearedValue();
-                    }
-                },
-                onClear: () => {
-                    inputValue.value = getClearedValue();
+                    },
                 },
             },
-        });
+        );
 
-        async function onToggle(c: boolean) {
-            const toValue = getUpdatedValue(c);
+        const classObj = computed(() => ({
+            'vs-checked': isChecked.value,
+            'vs-disabled': computedDisabled.value,
+            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
+            'vs-indeterminate': indeterminate.value,
+            'vs-readonly': computedReadonly.value,
+            'vs-small': small.value,
+        }));
+
+        async function toggle() {
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            const toValue = getUpdatedValue(!isChecked.value);
 
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {
@@ -201,26 +243,43 @@ export default defineComponent({
             checkboxRef.value?.blur();
         }
 
-        return {
-            computedId,
-            checkboxRef,
+        watch(
             isChecked,
-            computedColorScheme,
-            computedState,
+            (value) => {
+                nextTick(() => {
+                    if (checkboxRef.value) {
+                        checkboxRef.value.checked = value;
+                    }
+                });
+            },
+            { immediate: true },
+        );
+
+        return {
+            checkboxRef,
+            colorSchemeClass,
+            styleSetVariables,
+            stateClasses,
+            classObj,
+            computedId,
             computedDisabled,
             computedReadonly,
-            checkboxNodeStyleSet,
-            inputValue,
             computedMessages,
+            computedState,
+            isChecked,
             shake,
-            validate,
-            clear,
-            onToggle,
+            convertToString: utils.string.convertToString,
+            toggle,
             onFocus,
             onBlur,
+            validate,
+            clear,
             focus,
             blur,
         };
     },
 });
 </script>
+
+<style src="./vs-checkbox.css" />
+</template>

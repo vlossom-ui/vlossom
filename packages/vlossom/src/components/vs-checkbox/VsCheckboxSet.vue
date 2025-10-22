@@ -1,14 +1,14 @@
 <template>
     <vs-input-wrapper
-        v-show="visible"
+        v-show="!hidden"
         :width="width"
         :grid="grid"
         :label="label"
         :required="required"
         :disabled="computedDisabled"
-        :dense="dense"
+        :small="small"
         :messages="computedMessages"
-        :no-message="noMessage"
+        :no-messages="noMessages"
         :shake="shake"
         group-label
     >
@@ -16,29 +16,33 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', { 'vs-vertical': vertical }]" :style="computedStyleSet">
-            <vs-checkbox-node
+        <div :class="['vs-checkbox-set', colorSchemeClass, { 'vs-vertical': vertical }]" :style="styleSetVariables">
+            <vs-checkbox
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
                 ref="checkboxRefs"
                 class="vs-checkbox-item"
-                :color-scheme="computedColorScheme"
-                :style-set="checkboxNodeStyleSet"
-                :checked="isChecked(option)"
-                :dense="dense"
+                :color-scheme="colorScheme"
+                :style-set="checkboxStyleSet"
+                :model-value="isChecked(option)"
+                :check-label="getOptionLabel(option)"
+                :small="small"
                 :disabled="computedDisabled"
                 :id="`${computedId}-${index}`"
-                :label="getOptionLabel(option)"
                 :name="name"
                 :readonly="computedReadonly"
                 :required="required"
                 :state="computedState"
-                :value="getOptionValue(option)"
-                @toggle="onToggle(option, $event)"
-                @focus="onFocus(option, $event)"
-                @blur="onBlur(option, $event)"
+                :true-value="getOptionValue(option)"
+                :false-value="null"
+                :aria-label="getOptionLabel(option)"
+                :no-messages="true"
+                :no-label="true"
+                @update:model-value="(value) => onToggle(option, value)"
+                @focus="(e) => onFocus(option, e)"
+                @blur="(e) => onBlur(option, e)"
             >
-                <template #label v-if="$slots['check-label']">
+                <template #check-label v-if="$slots['check-label']">
                     <slot
                         name="check-label"
                         :option="option"
@@ -46,37 +50,46 @@
                         :label="getOptionLabel(option)"
                     />
                 </template>
-            </vs-checkbox-node>
+            </vs-checkbox>
         </div>
 
-        <template #messages v-if="!noMessage">
+        <template #messages v-if="!noMessages">
             <slot name="messages" />
         </template>
     </vs-input-wrapper>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, Ref, ref, toRefs } from 'vue';
-import { useColorScheme, useStyleSet, useInput, useInputOption } from '@/composables';
-import { getInputProps, getInputOptionProps, getResponsiveProps } from '@/models';
-import { VsComponent, type ColorScheme } from '@/declaration';
+import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 'vue';
+import { VsComponent } from '@/declaration';
+import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { useColorScheme, useInput, useStyleSet } from '@/composables';
 import { utils } from '@/utils';
+import type { VsCheckboxSetStyleSet, VsCheckboxStyleSet } from './types';
+
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsCheckboxNode from '@/components/vs-checkbox/VsCheckboxNode.vue';
+import VsCheckbox from './VsCheckbox.vue';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 
-import type { VsCheckboxNodeStyleSet, VsCheckboxSetStyleSet } from './types';
-
 const name = VsComponent.VsCheckboxSet;
+
+function getInputOptionProps() {
+    return {
+        options: { type: Array as PropType<any[]>, required: true, default: () => [] },
+        optionLabel: { type: String, default: '' },
+        optionValue: { type: String, default: '' },
+    };
+}
+
 export default defineComponent({
     name,
-    components: { VsInputWrapper, VsCheckboxNode },
+    components: { VsInputWrapper, VsCheckbox },
     props: {
-        ...getInputProps<any[], 'ariaLabel' | 'noClear' | 'placeholder'>('ariaLabel', 'noClear', 'placeholder'),
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsCheckboxSetStyleSet>(),
+        ...getInputProps<any[], 'ariaLabel' | 'placeholder'>('ariaLabel', 'placeholder'),
         ...getInputOptionProps(),
         ...getResponsiveProps(),
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsCheckboxSetStyleSet> },
         beforeChange: {
             type: Function as PropType<(from: any, to: any, option: any) => Promise<boolean> | null>,
             default: null,
@@ -84,12 +97,18 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => utils.props.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => {
+                const num = Number(value);
+                return !isNaN(num) && num >= 0;
+            },
         },
         min: {
             type: [Number, String],
             default: 0,
-            validator: (value: number | string) => utils.props.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => {
+                const num = Number(value);
+                return !isNaN(num) && num >= 0;
+            },
         },
         vertical: { type: Boolean, default: false },
         // v-model
@@ -99,8 +118,8 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    // expose: ['clear', 'validate', 'focus', 'blur'],
-    setup(props, context) {
+    expose: ['clear', 'validate', 'focus', 'blur'],
+    setup(props, { emit }) {
         const {
             colorScheme,
             styleSet,
@@ -121,31 +140,27 @@ export default defineComponent({
             noDefaultRules,
         } = toRefs(props);
 
-        const checkboxRefs: Ref<HTMLInputElement[]> = ref([]);
+        const checkboxRefs: Ref<typeof VsCheckbox[]> = ref([]);
 
-        const { emit } = context;
+        const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { computedColorScheme } = useColorScheme(name, colorScheme);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(name, styleSet);
 
-        const { plainStyleSet: checkboxSetStyleSet, computedStyleSet } = useStyleSet<VsCheckboxSetStyleSet>(
-            name,
-            styleSet,
-        );
-        const { plainStyleSet: checkboxNodeStyleSet } = useStyleSet<VsCheckboxNodeStyleSet>(
-            VsComponent.VsCheckboxNode,
-            styleSet,
-            checkboxSetStyleSet,
-        );
+        const checkboxStyleSet = computed(() => componentStyleSet.value.checkbox || {});
 
         const inputValue = ref(modelValue.value);
 
-        const { getOptionLabel, getOptionValue } = useInputOption(
-            inputValue,
-            options,
-            optionLabel,
-            optionValue,
-            ref(true),
-        );
+        function getOptionLabel(option: any): string {
+            if (!option) return '';
+            if (typeof option === 'string' || typeof option === 'number') return String(option);
+            return optionLabel.value && option[optionLabel.value] ? String(option[optionLabel.value]) : String(option);
+        }
+
+        function getOptionValue(option: any): any {
+            if (!option) return option;
+            if (typeof option === 'string' || typeof option === 'number') return option;
+            return optionValue.value && option[optionValue.value] !== undefined ? option[optionValue.value] : option;
+        }
 
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
 
@@ -158,49 +173,49 @@ export default defineComponent({
             shake,
             validate,
             clear,
-        } = useInput(context, {
-            inputValue,
-            modelValue,
-            id,
-            disabled,
-            readonly,
-            messages,
-            rules,
-            defaultRules: [requiredCheck, maxCheck, minCheck],
-            noDefaultRules,
-            state,
-            callbacks: {
-                onMounted: () => {
-                    if (Array.isArray(inputValue.value) === false) {
+        } = useInput(
+            { emit },
+            {
+                inputValue,
+                modelValue,
+                id,
+                disabled,
+                readonly,
+                messages,
+                rules,
+                defaultRules: [requiredCheck, maxCheck, minCheck],
+                noDefaultRules,
+                state,
+                callbacks: {
+                    onMounted: () => {
+                        if (Array.isArray(inputValue.value) === false) {
+                            inputValue.value = [];
+                        }
+                    },
+                    onChange: () => {
+                        if (Array.isArray(inputValue.value) === false) {
+                            inputValue.value = [];
+                        }
+                    },
+                    onClear: () => {
                         inputValue.value = [];
-                    }
-                },
-                onChange: () => {
-                    if (Array.isArray(inputValue.value) === false) {
-                        inputValue.value = [];
-                    }
-                },
-                onClear: () => {
-                    inputValue.value = [];
+                    },
                 },
             },
-        });
+        );
 
-        const classObj = computed(() => ({
-            disabled: computedDisabled.value,
-            readonly: computedReadonly.value,
-        }));
-
-        function isChecked(option: any) {
-            if (!inputValue.value) {
+        function isChecked(option: any): boolean {
+            if (!inputValue.value || !Array.isArray(inputValue.value)) {
                 return false;
             }
             return inputValue.value.some((v: any) => utils.object.isEqual(v, getOptionValue(option)));
         }
 
-        async function onToggle(option: any, checked: boolean) {
+        async function onToggle(option: any, value: any) {
             const targetOptionValue = getOptionValue(option);
-            const toValue = checked
+            const isCheckedNow = value !== null && value !== false;
+            
+            const toValue = isCheckedNow
                 ? [...inputValue.value, targetOptionValue]
                 : inputValue.value.filter((v: any) => !utils.object.isEqual(v, targetOptionValue));
 
@@ -224,28 +239,26 @@ export default defineComponent({
         }
 
         function focus() {
-            checkboxRefs.value[0]?.focus();
+            checkboxRefs.value[0]?.focus?.();
         }
 
         function blur() {
-            checkboxRefs.value[0]?.blur();
+            checkboxRefs.value[0]?.blur?.();
         }
 
         return {
             computedId,
             checkboxRefs,
-            classObj,
-            computedColorScheme,
+            colorSchemeClass,
+            styleSetVariables,
+            checkboxStyleSet,
             computedState,
             computedDisabled,
             computedReadonly,
-            checkboxNodeStyleSet,
-            computedStyleSet,
+            computedMessages,
             isChecked,
             getOptionLabel,
             getOptionValue,
-            inputValue,
-            computedMessages,
             shake,
             validate,
             clear,
@@ -259,4 +272,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" src="./VsCheckboxSet.scss" />
+<style src="./vs-checkbox-set.css" />

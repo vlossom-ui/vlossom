@@ -1,20 +1,26 @@
-import { VsTextStyleSet } from '@/declaration';
+import type VsCheckbox from './VsCheckbox.vue';
+import type VsCheckboxSet from './VsCheckboxSet.vue';
+import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
 
-export interface VsCheckboxNodeStyleSet {
-    borderWidth?: string;
-    borderRadius?: string;
+declare module 'vue' {
+    interface GlobalComponents {
+        VsCheckbox: typeof VsCheckbox;
+        VsCheckboxSet: typeof VsCheckboxSet;
+    }
+}
+
+export type { VsCheckbox, VsCheckboxSet };
+
+export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
     checkboxColor?: string;
     checkboxSize?: string;
-    height?: string;
-    label?: VsTextStyleSet;
-    checkedLabel?: VsTextStyleSet;
+    label?: TextStyleSet;
+    checkedLabel?: TextStyleSet;
+    indeterminateLabel?: TextStyleSet;
 }
 
-export interface VsCheckboxStyleSet extends VsCheckboxNodeStyleSet {
-    indeterminateLabel?: VsTextStyleSet;
-}
-
-export interface VsCheckboxSetStyleSet extends VsCheckboxNodeStyleSet {
+export interface VsCheckboxSetStyleSet extends SizeStyleSet, BoxStyleSet {
     gap?: string;
     flexWrap?: string;
+    checkbox?: VsCheckboxStyleSet;
 }
