@@ -4,4 +4,6 @@ export * from './input-form-composable';
 export * from './input-messages-composable';
 export * from './input-rules-composable';
 export * from './overlay-composable';
+export * from './overlay-dom-composable';
+export * from './positioning-composable';
 export * from './style-set-composable';

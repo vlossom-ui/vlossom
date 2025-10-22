@@ -36,6 +36,7 @@ import VsResponsive from './vs-responsive/VsResponsive.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 import VsThemeButton from './vs-theme-button/VsThemeButton.vue';
 import VsToggle from './vs-toggle/VsToggle.vue';
+import VsTooltip from './vs-tooltip/VsTooltip.vue';
 
 export const VlossomComponents = {
     VsAccordion,
@@ -69,4 +70,5 @@ export const VlossomComponents = {
     VsSkeleton,
     VsThemeButton,
     VsToggle,
+    VsTooltip,
 } as const;

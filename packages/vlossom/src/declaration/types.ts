@@ -1,5 +1,5 @@
 import type { Component, Ref } from 'vue';
-import type { COLORS, SIZES } from './constants';
+import type { ALIGNMENTS, COLORS, PLACEMENTS, SIZES } from './constants';
 import type { VsComponent } from './enums';
 
 export type ColorScheme = (typeof COLORS)[number];
@@ -23,6 +23,10 @@ export interface VlossomOptions {
 }
 
 export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+
+export type Placement = (typeof PLACEMENTS)[number];
+
+export type Alignment = (typeof ALIGNMENTS)[number];
 
 export interface BarLayout {
     position: CssPosition;
