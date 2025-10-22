@@ -1,7 +1,6 @@
-import { colorScheme, getMetaArguments, state } from '@/storybook';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { colorScheme } from '@/storybook';
 import VsCheckbox from './../VsCheckbox.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsCheckbox> = {
     title: 'Chromatic/Input Components/VsCheckbox',
@@ -32,14 +31,12 @@ const meta: Meta<typeof VsCheckbox> = {
     }),
     argTypes: {
         colorScheme,
-        state,
     },
     args: {
         checkLabel: 'Checkbox',
     },
 };
 
-meta.args = getMetaArguments(VsCheckbox.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsCheckbox>;
 

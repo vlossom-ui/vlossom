@@ -1,16 +1,9 @@
-import {
-    chromaticParameters,
-    colorScheme,
-    getColorSchemeTemplate,
-    getMetaArguments,
-    state,
-    getStateTemplate,
-} from '@/storybook';
-import { useVlossom } from '@/vlossom-framework';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { useVlossom } from '@/framework';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsCheckbox from './../VsCheckbox.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
+import type { VsCheckboxStyleSet } from './../types';
 
 const meta: Meta<typeof VsCheckbox> = {
     title: 'Components/Input Components/VsCheckbox',
@@ -18,6 +11,20 @@ const meta: Meta<typeof VsCheckbox> = {
     render: (args: any) => ({
         components: { VsCheckbox },
         setup() {
+            const preDefinedStyleSet: VsCheckboxStyleSet = {
+                borderRadius: '1.3rem',
+                label: {
+                    fontColor: '#a0b0b9',
+                    fontSize: '0.8rem',
+                },
+                checkboxColor: '#81c798',
+                checkboxSize: '4rem',
+            } as const;
+
+            useVlossom().styleSet = {
+                myStyleSet: { VsCheckbox: { ...preDefinedStyleSet } },
+            };
+
             return { args };
         },
         template: '<vs-checkbox v-bind="args" />',
@@ -25,14 +32,28 @@ const meta: Meta<typeof VsCheckbox> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
-        state,
+        disabled: {
+            control: 'boolean',
+            description: 'Checkbox 비활성화',
+        },
+        readonly: {
+            control: 'boolean',
+            description: '읽기 전용 모드',
+        },
+        required: {
+            control: 'boolean',
+            description: '필수 입력 여부',
+        },
+        indeterminate: {
+            control: 'boolean',
+            description: '불확정 상태 표시',
+        },
     },
     args: {
         checkLabel: 'Checkbox',
     },
 };
 
-meta.args = getMetaArguments(VsCheckbox.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsCheckbox>;
 
@@ -62,13 +83,12 @@ export const State: Story = {
     render: (args: any) => ({
         components: { VsCheckbox },
         setup() {
-            return { args };
+            const states = ['success', 'info', 'error', 'warning'];
+            return { args, states };
         },
         template: `
             <div>
-                ${getStateTemplate(`
-                    <vs-checkbox v-bind="args" label="State ({{state}})" state="{{state}}" style="marginBottom: 16px" />
-                `)}
+                <vs-checkbox v-for="state in states" :key="state" v-bind="args" :label="\`State (\${state})\`" :state="state" style="margin-bottom: 16px" check-label="Checkbox" />
             </div>
         `,
     }),

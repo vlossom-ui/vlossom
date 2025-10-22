@@ -1,10 +1,10 @@
-import { chromaticParameters, colorScheme, getMetaArguments, state, getStateTemplate } from '@/storybook';
-import { useVlossom } from '@/vlossom-framework';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { chromaticParameters, colorScheme } from '@/storybook';
+import { useVlossom } from '@/framework';
 import { options } from './constants';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsCheckboxSet from './../VsCheckboxSet.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
+import type { VsCheckboxSetStyleSet } from './../types';
 
 const meta: Meta<typeof VsCheckboxSet> = {
     title: 'Components/Input Components/VsCheckboxSet',
@@ -12,6 +12,23 @@ const meta: Meta<typeof VsCheckboxSet> = {
     render: (args: any) => ({
         components: { VsCheckboxSet },
         setup() {
+            const preDefinedStyleSet: VsCheckboxSetStyleSet = {
+                gap: '3rem',
+                checkbox: {
+                    borderRadius: '1.3rem',
+                    label: {
+                        fontColor: '#a0b0b9',
+                        fontSize: '0.8rem',
+                    },
+                    checkboxColor: '#81c798',
+                    checkboxSize: '4rem',
+                },
+            } as const;
+
+            useVlossom().styleSet = {
+                myStyleSet: { VsCheckboxSet: { ...preDefinedStyleSet } },
+            };
+
             return { args };
         },
         template: '<vs-checkbox-set v-bind="args"  />',
@@ -19,14 +36,28 @@ const meta: Meta<typeof VsCheckboxSet> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
-        state,
+        disabled: {
+            control: 'boolean',
+            description: 'CheckboxSet 비활성화',
+        },
+        readonly: {
+            control: 'boolean',
+            description: '읽기 전용 모드',
+        },
+        required: {
+            control: 'boolean',
+            description: '필수 입력 여부',
+        },
+        vertical: {
+            control: 'boolean',
+            description: '수직 레이아웃',
+        },
     },
     args: {
         options,
     },
 };
 
-meta.args = getMetaArguments(VsCheckboxSet.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsCheckboxSet>;
 
@@ -54,13 +85,12 @@ export const State: Story = {
     render: (args: any) => ({
         components: { VsCheckboxSet },
         setup() {
-            return { args };
+            const states = ['success', 'info', 'error', 'warning'];
+            return { args, states };
         },
         template: `
             <div>
-                ${getStateTemplate(`
-                    <vs-checkbox-set v-bind="args" label="State ({{state}})" state="{{state}}" style="marginBottom: 16px" />
-                `)}
+                <vs-checkbox-set v-for="state in states" :key="state" v-bind="args" :label="\`State (\${state})\`" :state="state" style="margin-bottom: 16px" />
             </div>
         `,
     }),
