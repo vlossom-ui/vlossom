@@ -98,14 +98,7 @@
         font-weight: var(--vs-button-fontWeight, 500);
     }
 
-    <<<<<<< HEAD ======= &.vs-small {
-        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
-        padding: var(--vs-button-padding, 0 0.6rem);
-        height: var(--vs-button-height, var(--vs-default-comp-height-sm));
-        font-size: var(--vs-button-fontSize, var(--vs-font-size-sm));
-    }
-
-    >>>>>>>e5bd7f6 (update comp height variables) &.vs-circle {
+    &.vs-circle {
         @apply rounded-full;
         width: var(--vs-button-width, var(--vs-default-comp-height));
         height: var(--vs-button-height, var(--vs-default-comp-height));
