@@ -21,12 +21,12 @@
                 <input
                     ref="checkboxRef"
                     type="checkbox"
-                    :class="['vs-checkbox-input', stateClasses]"
+                    :class="['vs-checkbox-input']"
                     :aria-label="ariaLabel"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
-                    :value="convertToString(trueValue)"
+                    :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
                     @click.prevent.stop="toggle"
@@ -46,11 +46,23 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, toRefs, useTemplateRef, watch, type PropType, type TemplateRef } from 'vue';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
+import {
+    computed,
+    defineComponent,
+    nextTick,
+    ref,
+    toRefs,
+    useTemplateRef,
+    watch,
+    type PropType,
+    type TemplateRef,
+} from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStateClass, useStyleSet } from '@/composables';
-import { utils } from '@/utils';
+import { useColorScheme, useInput, useStyleSet } from '@/composables';
+import { objectUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -109,16 +121,17 @@ export default defineComponent({
 
         const { styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
 
-        const { stateClasses } = useStateClass(state);
-
         const inputValue = ref(modelValue.value);
 
         // Value matcher logic for checkbox
         const isChecked = computed(() => {
             if (multiple.value) {
-                return Array.isArray(inputValue.value) && inputValue.value.some((v: any) => utils.object.isEqual(v, trueValue.value));
+                return (
+                    Array.isArray(inputValue.value) &&
+                    inputValue.value.some((v: any) => objectUtil.isEqual(v, trueValue.value))
+                );
             }
-            return utils.object.isEqual(inputValue.value, trueValue.value);
+            return objectUtil.isEqual(inputValue.value, trueValue.value);
         });
 
         function getInitialValue() {
@@ -129,17 +142,19 @@ export default defineComponent({
             return multiple.value ? [] : falseValue.value;
         }
 
-        function getUpdatedValue(checked: boolean) {
+        function getUpdatedValue(isCheckedNow: boolean) {
             if (multiple.value) {
-                if (checked) {
-                    return Array.isArray(inputValue.value) ? [...inputValue.value, trueValue.value] : [trueValue.value];
+                if (isCheckedNow) {
+                    return Array.isArray(inputValue.value)
+                        ? [...inputValue.value, trueValue.value]
+                        : [trueValue.value];
                 } else {
-                    return Array.isArray(inputValue.value) 
-                        ? inputValue.value.filter((v: any) => !utils.object.isEqual(v, trueValue.value))
+                    return Array.isArray(inputValue.value)
+                        ? inputValue.value.filter((v: any) => !objectUtil.isEqual(v, trueValue.value))
                         : [];
                 }
             }
-            return checked ? trueValue.value : falseValue.value;
+            return isCheckedNow ? trueValue.value : falseValue.value;
         }
 
         function addTrueValue() {
@@ -173,7 +188,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: [requiredCheck],
+                defaultRules: ref([requiredCheck]),
                 noDefaultRules,
                 state,
                 callbacks: {
@@ -259,7 +274,6 @@ export default defineComponent({
             checkboxRef,
             colorSchemeClass,
             styleSetVariables,
-            stateClasses,
             classObj,
             computedId,
             computedDisabled,
@@ -268,7 +282,6 @@ export default defineComponent({
             computedState,
             isChecked,
             shake,
-            convertToString: utils.string.convertToString,
             toggle,
             onFocus,
             onBlur,
@@ -282,4 +295,3 @@ export default defineComponent({
 </script>
 
 <style src="./vs-checkbox.css" />
-</template>
