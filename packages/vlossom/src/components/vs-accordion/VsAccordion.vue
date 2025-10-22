@@ -5,10 +5,10 @@
         :grid
         :style="componentStyleSet"
         :tabindex="disabled ? -1 : 0"
-        @keydown.enter.stop="toggle"
+        @keydown.enter.prevent.stop="toggle"
         @keydown.space.prevent.stop="toggle"
     >
-        <div class="vs-accordion-title" @click.stop="toggle">
+        <div class="vs-accordion-title" @click.prevent.stop="toggle">
             <slot name="title" />
         </div>
         <vs-expandable :open="isOpen" :style-set="componentStyleSet.expand">
@@ -23,10 +23,12 @@ import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/pro
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsAccordionStyleSet } from './types';
+
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';
 
 const name = VsComponent.VsAccordion;
+
 export default defineComponent({
     name,
     components: { VsResponsive, VsExpandable },
