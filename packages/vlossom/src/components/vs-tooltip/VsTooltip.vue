@@ -96,7 +96,7 @@ export default defineComponent({
         const isClickOpened = ref(false);
 
         // setTimeout ID를 저장해서 취소할 수 있도록 함
-        let timer: NodeJS.Timeout | null = null;
+        let timer: any = null;
 
         const triggerRef: Ref<HTMLElement | null> = ref(null);
         const tooltipRef: Ref<HTMLElement | null> = ref(null);
