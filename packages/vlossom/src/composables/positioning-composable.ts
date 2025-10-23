@@ -99,6 +99,10 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
     }
 
     function appear(attachInfo: AttachInfo = {}) {
+        if (isVisible.value) {
+            return;
+        }
+
         isVisible.value = true;
 
         nextTick(() => {
@@ -128,6 +132,10 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
     }
 
     function disappear() {
+        if (!isVisible.value) {
+            return;
+        }
+
         if (throttledComputePosition) {
             resizeObserver?.disconnect();
             document.removeEventListener('scroll', throttledComputePosition, true);

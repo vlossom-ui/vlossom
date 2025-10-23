@@ -3,29 +3,25 @@
         <div
             ref="triggerRef"
             class="vs-tooltip-trigger"
+            tabindex="0"
             @mouseenter.stop="onTriggerEnter"
             @mouseleave.stop="onTriggerLeave"
             @click.prevent.stop="onTriggerClick"
             @focusin.stop="onTriggerEnter"
             @focusout.stop="onTriggerLeave"
-            tabindex="0"
-            style="border: 2px solid red; background: yellow"
         >
-            isVisible: {{ isVisible }}, computedShow: {{ computedShow }}, triggerOver: {{ triggerOver }}, tooltipOver:
-            {{ tooltipOver }}
             <slot />
         </div>
 
-        <Teleport :to="tooltipOverlayId" v-if="computedShow || isVisible">
+        <Teleport :to="tooltipOverlayId" v-if="isVisible">
             <div
                 ref="tooltipRef"
                 :class="['vs-tooltip-wrap', colorSchemeClass, `vs-placement-${computedPlacement}`, `vs-align-${align}`]"
+                :style="tooltipPadding"
                 @mouseenter.stop="onTooltipEnter"
                 @mouseleave.stop="onTooltipLeave"
-                style="border: 2px solid red; background: yellow"
-                :style="tooltipMargin"
             >
-                <div class="vs-tooltip-contents" :style="styleSetVariables" :class="animationClass">
+                <div class="vs-tooltip-contents" :style="tooltipStyle" :class="animationClass">
                     <slot name="tooltip" />
                 </div>
             </div>
@@ -40,15 +36,15 @@ import {
     ref,
     computed,
     watch,
-    nextTick,
     onBeforeUnmount,
     onBeforeMount,
     type PropType,
     type Ref,
+    type ComputedRef,
 } from 'vue';
 import { useColorScheme, useStyleSet, useOverlay, useOverlayDom, usePositioning } from '@/composables';
-import { VsComponent, type Placement, type Alignment } from '@/declaration';
-import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
+import { VsComponent, type Placement, type Alignment, type OverlayCallbacks } from '@/declaration';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
 
 import type { VsTooltipStyleSet } from './types';
 import { stringUtil } from '@/utils';
@@ -60,7 +56,6 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTooltipStyleSet>(),
-        ...getOverlayProps(),
         align: {
             type: String as PropType<Alignment>,
             default: 'center',
@@ -71,7 +66,7 @@ export default defineComponent({
         enterDelay: { type: Number, default: 100 },
         escClose: { type: Boolean, default: true },
         leaveDelay: { type: Number, default: 100 },
-        margin: { type: [String, Number], default: 50 },
+        margin: { type: [String, Number], default: 5 },
         noAnimation: { type: Boolean, default: false },
         placement: {
             type: String as PropType<Exclude<Placement, 'middle'>>,
@@ -92,19 +87,23 @@ export default defineComponent({
             leaveDelay,
             margin,
             escClose,
-            callbacks,
-            id,
         } = toRefs(props);
+
+        const id = ref(stringUtil.createID());
+        const triggerOver = ref(false);
+        const tooltipOver = ref(false);
+        const isMovingOut = ref(false);
+        const isClickOpened = ref(false);
+
+        // setTimeout ID를 저장해서 취소할 수 있도록 함
+        let timer: NodeJS.Timeout | null = null;
+
+        const triggerRef: Ref<HTMLElement | null> = ref(null);
+        const tooltipRef: Ref<HTMLElement | null> = ref(null);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(name, styleSet);
-
-        const triggerOver = ref(false);
-        const tooltipOver = ref(false);
-
-        const triggerRef: Ref<HTMLElement | null> = ref(null);
-        const tooltipRef: Ref<HTMLElement | null> = ref(null);
 
         const { appendOverlayDom } = useOverlayDom();
 
@@ -114,11 +113,31 @@ export default defineComponent({
         );
 
         const computedShow = computed(() => {
-            console.log(`triggerOver: ${triggerOver.value}, tooltipOver: ${tooltipOver.value}`);
             if (disabled.value) {
                 return false;
             }
-            return triggerOver.value || (contentsHover.value && tooltipOver.value);
+
+            // 1. basic tooltip
+            if (!clickable.value && !contentsHover.value) {
+                return triggerOver.value;
+            }
+
+            // 2. clickable only
+            if (clickable.value && !contentsHover.value) {
+                return triggerOver.value && isClickOpened.value;
+            }
+
+            // 3. contentsHover only
+            if (!clickable.value && contentsHover.value) {
+                return triggerOver.value || tooltipOver.value || isMovingOut.value;
+            }
+
+            // 4. clickable and contentsHover
+            if (clickable.value && contentsHover.value) {
+                return (triggerOver.value || tooltipOver.value || isMovingOut.value) && isClickOpened.value;
+            }
+
+            return false;
         });
 
         const animationClass = computed(() => {
@@ -129,50 +148,84 @@ export default defineComponent({
             return `fade-${direction}-${computedPlacement.value}`;
         });
 
-        const computedCallbacks = computed(() => {
+        const tooltipStyle = computed(() => {
+            const animationDelay = computedShow.value ? {} : { animationDelay: `${leaveDelay.value}ms` };
+            return { ...styleSetVariables.value, ...animationDelay };
+        });
+
+        const tooltipPadding = computed(() => {
+            const result: Record<string, string> = {};
+            const paddingSize = stringUtil.toStringSize(margin.value);
+
+            if (computedPlacement.value === 'top') {
+                result.paddingBottom = paddingSize;
+            } else if (computedPlacement.value === 'right') {
+                result.paddingLeft = paddingSize;
+            } else if (computedPlacement.value === 'bottom') {
+                result.paddingTop = paddingSize;
+            } else if (computedPlacement.value === 'left') {
+                result.paddingRight = paddingSize;
+            }
+
+            return result;
+        });
+
+        const computedCallbacks: ComputedRef<OverlayCallbacks> = computed(() => {
+            if (!escClose.value) {
+                return {} as OverlayCallbacks;
+            }
             return {
-                ...callbacks.value,
                 'key-Escape': () => {
-                    callbacks.value['key-Escape']?.();
-                    if (escClose.value) {
-                        triggerOver.value = false;
+                    if (clickable.value) {
+                        isClickOpened.value = false;
+                    } else {
                         tooltipOver.value = false;
+                        triggerOver.value = false;
                     }
                 },
             };
         });
 
-        const tooltipMargin = computed(() => {
-            const paddingSize = stringUtil.toStringSize(margin.value);
-
-            if (computedPlacement.value === 'top') {
-                return { paddingBottom: paddingSize };
-            } else if (computedPlacement.value === 'right') {
-                return { paddingLeft: paddingSize };
-            } else if (computedPlacement.value === 'bottom') {
-                return { paddingTop: paddingSize };
-            } else if (computedPlacement.value === 'left') {
-                return { paddingRight: paddingSize };
-            }
-            return {};
-        });
-
         const { open: openOverlay, close: closeOverlay } = useOverlay(id, computedCallbacks, escClose);
 
         function showTooltip() {
-            openOverlay();
-            nextTick(() => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+
+            timer = setTimeout(() => {
+                openOverlay();
                 appear({
                     placement: placement.value,
                     align: align.value,
                 });
-            });
+                timer = null;
+            }, enterDelay.value);
         }
 
         function hideTooltip() {
+            if (timer) {
+                clearTimeout(timer);
+            }
+
             closeOverlay();
-            setTimeout(disappear, noAnimation.value ? 0 : 400);
+            // + 250ms wait for the fade out animation.
+            const delay = noAnimation.value ? 0 : leaveDelay.value + 250;
+            timer = setTimeout(() => {
+                disappear();
+                timer = null;
+
+                tooltipOver.value = false;
+            }, delay);
         }
+
+        watch(isMovingOut, () => {
+            if (isMovingOut.value) {
+                setTimeout(() => {
+                    isMovingOut.value = false;
+                }, 100);
+            }
+        });
 
         watch(computedShow, (show) => {
             if (show) {
@@ -182,20 +235,21 @@ export default defineComponent({
             }
         });
 
-        function onTriggerEnter() {
-            if (clickable.value) {
-                return;
+        watch([triggerOver, tooltipOver], () => {
+            if (!triggerOver.value && !tooltipOver.value && !isMovingOut.value) {
+                isClickOpened.value = false;
             }
+        });
 
-            setTimeout(() => {
-                triggerOver.value = true;
-            }, enterDelay.value);
+        function onTriggerEnter() {
+            triggerOver.value = true;
         }
 
         function onTriggerLeave() {
-            setTimeout(() => {
-                triggerOver.value = false;
-            }, leaveDelay.value);
+            if (contentsHover.value) {
+                isMovingOut.value = true;
+            }
+            triggerOver.value = false;
         }
 
         function onTriggerClick() {
@@ -203,27 +257,18 @@ export default defineComponent({
                 return;
             }
 
-            if (isVisible.value) {
-                triggerOver.value = false;
-            } else {
-                triggerOver.value = true;
-            }
+            isClickOpened.value = !isClickOpened.value;
         }
 
         function onTooltipEnter() {
-            if (contentsHover.value) {
-                tooltipOver.value = true;
-            }
+            tooltipOver.value = true;
         }
 
         function onTooltipLeave() {
-            if (!contentsHover.value) {
-                return;
+            if (contentsHover.value) {
+                isMovingOut.value = true;
             }
-
-            setTimeout(() => {
-                tooltipOver.value = false;
-            }, leaveDelay.value);
+            tooltipOver.value = false;
         }
 
         const tooltipOverlayId = '#vs-tooltip-overlay';
@@ -231,7 +276,13 @@ export default defineComponent({
             appendOverlayDom(document.body, tooltipOverlayId, { zIndex: 10000 });
         });
 
-        onBeforeUnmount(hideTooltip);
+        onBeforeUnmount(() => {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+            hideTooltip();
+        });
 
         return {
             colorSchemeClass,
@@ -239,18 +290,16 @@ export default defineComponent({
             animationClass,
             triggerRef,
             tooltipRef,
-            isVisible,
-            computedShow,
             computedPlacement,
-            triggerOver,
-            tooltipOver,
             onTriggerEnter,
             onTriggerLeave,
             onTriggerClick,
             onTooltipEnter,
             onTooltipLeave,
             tooltipOverlayId,
-            tooltipMargin,
+            tooltipStyle,
+            tooltipPadding,
+            isVisible,
         };
     },
 });
