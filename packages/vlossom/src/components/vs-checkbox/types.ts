@@ -9,13 +9,10 @@ declare module 'vue' {
 
 export type { VsCheckbox };
 
-export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
-    // Checkbox specific styles
+export interface VsCheckboxStyleSet extends SizeStyleSet, BoxStyleSet {
     borderWidth?: string;
     checkboxColor?: string;
     checkboxSize?: string;
-
-    // Label styles for different states
     label?: TextStyleSet;
     checkedLabel?: TextStyleSet;
     indeterminateLabel?: TextStyleSet;
