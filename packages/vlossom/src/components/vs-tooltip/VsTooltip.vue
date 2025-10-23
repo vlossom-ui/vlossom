@@ -66,7 +66,7 @@ export default defineComponent({
         enterDelay: { type: Number, default: 100 },
         escClose: { type: Boolean, default: true },
         leaveDelay: { type: Number, default: 100 },
-        margin: { type: [String, Number], default: 5 },
+        margin: { type: [String, Number], default: '0.5rem' },
         noAnimation: { type: Boolean, default: false },
         placement: {
             type: String as PropType<Exclude<Placement, 'middle'>>,

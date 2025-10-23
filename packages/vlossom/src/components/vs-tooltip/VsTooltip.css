@@ -1,114 +1,96 @@
 .vs-tooltip {
-    --vs-tooltip-display: initial;
+    --vs-tooltip-arrowColor: initial;
+    --vs-tooltip-arrowSize: initial;
     --vs-tooltip-backgroundColor: initial;
-    --vs-tooltip-padding: initial;
     --vs-tooltip-border: initial;
     --vs-tooltip-borderRadius: initial;
+    --vs-tooltip-padding: initial;
     --vs-tooltip-opacity: initial;
-    --vs-tooltip-fontColor: initial;
-    --vs-tooltip-fontSize: initial;
-    --vs-tooltip-fontWeight: initial;
-    --vs-tooltip-lineHeight: initial;
-    --vs-tooltip-whiteSpace: initial;
     --vs-tooltip-width: initial;
     --vs-tooltip-height: initial;
-    --vs-tooltip-boxShadow: initial;
-    --vs-tooltip-arrowSize: initial;
-    --vs-tooltip-arrowColor: initial;
 
     @apply relative inline-flex;
-
-    display: var(--vs-tooltip-display, inline-flex);
-}
-
-.vs-tooltip-trigger {
-    @apply cursor-pointer;
 }
 
 .vs-tooltip-wrap {
     @apply pointer-events-auto absolute;
-}
 
-.vs-tooltip-contents {
-    @apply relative whitespace-nowrap;
-    opacity: var(--vs-tooltip-opacity, 1);
+    .vs-tooltip-contents {
+        @apply relative;
 
-    box-shadow: var(--vs-tooltip-boxShadow, 2px 2px 3px rgba(0, 0, 0, 0.3));
-    border: var(--vs-tooltip-border, 0.1rem solid var(--vs-primary-comp-bg));
-    border-radius: var(--vs-tooltip-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
-    background-color: var(--vs-tooltip-backgroundColor, var(--vs-area-bg));
-    padding: var(--vs-tooltip-padding, 0.8rem 1.2rem);
-    width: var(--vs-tooltip-width, auto);
-    height: var(--vs-tooltip-height, auto);
-    color: var(--vs-tooltip-fontColor, var(--vs-font-color));
-    font-weight: var(--vs-tooltip-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-tooltip-fontSize, var(--vs-font-size-sm));
-    line-height: var(--vs-tooltip-lineHeight, 1);
-    white-space: var(--vs-tooltip-whiteSpace, nowrap);
+        opacity: var(--vs-tooltip-opacity, 1);
+        border: var(--vs-tooltip-border, 0.1rem solid var(--vs-primary-comp-bg));
+        border-radius: var(--vs-tooltip-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+        background-color: var(--vs-tooltip-backgroundColor, var(--vs-area-bg));
+        padding: var(--vs-tooltip-padding, 0.2rem 0.6rem);
+        width: var(--vs-tooltip-width, auto);
+        height: var(--vs-tooltip-height, auto);
 
-    &::after {
-        @apply absolute;
-        border: var(--vs-tooltip-arrowSize, 0.4rem) solid transparent;
-        border-bottom: var(--vs-tooltip-arrowSize, 0.4rem) solid var(--vs-tooltip-arrowColor, var(--vs-primary-comp-bg));
-        width: 0;
-        height: 0;
-        content: '';
+        &::after {
+            @apply absolute;
+            border: var(--vs-tooltip-arrowSize, 0.4rem) solid transparent;
+            border-bottom: var(--vs-tooltip-arrowSize, 0.4rem) solid
+                var(--vs-tooltip-arrowColor, var(--vs-primary-comp-bg));
+            width: 0;
+            height: 0;
+            content: '';
+        }
     }
-}
 
-/* Placement styles */
-.vs-placement-top .vs-tooltip-contents::after {
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 100%) rotate(180deg);
-}
+    /* Placement styles */
+    &.vs-placement-top .vs-tooltip-contents::after {
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 100%) rotate(180deg);
+    }
 
-.vs-placement-top.vs-align-start .vs-tooltip-contents::after {
-    left: 20%;
-}
+    &.vs-placement-top.vs-align-start .vs-tooltip-contents::after {
+        left: 20%;
+    }
 
-.vs-placement-top.vs-align-end .vs-tooltip-contents::after {
-    left: 80%;
-}
+    &.vs-placement-top.vs-align-end .vs-tooltip-contents::after {
+        left: 80%;
+    }
 
-.vs-placement-right .vs-tooltip-contents::after {
-    top: 50%;
-    left: 0;
-    transform: translate(calc(-100%), -50%) rotate(270deg);
-}
+    &.vs-placement-right .vs-tooltip-contents::after {
+        top: 50%;
+        left: 0;
+        transform: translate(calc(-100%), -50%) rotate(270deg);
+    }
 
-.vs-placement-right.vs-align-start .vs-tooltip-contents::after {
-    top: 20%;
-}
+    &.vs-placement-right.vs-align-start .vs-tooltip-contents::after {
+        top: 20%;
+    }
 
-.vs-placement-right.vs-align-end .vs-tooltip-contents::after {
-    top: 80%;
-}
+    &.vs-placement-right.vs-align-end .vs-tooltip-contents::after {
+        top: 80%;
+    }
 
-.vs-placement-bottom .vs-tooltip-contents::after {
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -100%) rotate(0deg);
-}
+    &.vs-placement-bottom .vs-tooltip-contents::after {
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -100%) rotate(0deg);
+    }
 
-.vs-placement-bottom.vs-align-start .vs-tooltip-contents::after {
-    left: 20%;
-}
+    &.vs-placement-bottom.vs-align-start .vs-tooltip-contents::after {
+        left: 20%;
+    }
 
-.vs-placement-bottom.vs-align-end .vs-tooltip-contents::after {
-    left: 80%;
-}
+    &.vs-placement-bottom.vs-align-end .vs-tooltip-contents::after {
+        left: 80%;
+    }
 
-.vs-placement-left .vs-tooltip-contents::after {
-    top: 50%;
-    right: 0;
-    transform: translate(calc(100%), -50%) rotate(90deg);
-}
+    &.vs-placement-left .vs-tooltip-contents::after {
+        top: 50%;
+        right: 0;
+        transform: translate(calc(100%), -50%) rotate(90deg);
+    }
 
-.vs-placement-left.vs-align-start .vs-tooltip-contents::after {
-    top: 20%;
-}
+    &.vs-placement-left.vs-align-start .vs-tooltip-contents::after {
+        top: 20%;
+    }
 
-.vs-placement-left.vs-align-end .vs-tooltip-contents::after {
-    top: 80%;
+    &.vs-placement-left.vs-align-end .vs-tooltip-contents::after {
+        top: 80%;
+    }
 }

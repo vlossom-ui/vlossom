@@ -1,5 +1,5 @@
 import type VsTooltip from './VsTooltip.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,6 +9,7 @@ declare module 'vue' {
 
 export type { VsTooltip };
 
-export interface VsTooltipStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
-    contents?: BoxStyleSet & TextStyleSet;
+export interface VsTooltipStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'display'> {
+    arrowColor?: string;
+    arrowSize?: string;
 }
