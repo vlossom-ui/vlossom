@@ -30,7 +30,7 @@
             height: var(--vs-checkbox-checkboxSize, 1.2rem);
 
             &:focus-within {
-                @apply outline outline-2 outline-offset-2;
+                @apply outline-2 outline-offset-2;
                 outline-color: var(--vs-focus-color);
             }
 

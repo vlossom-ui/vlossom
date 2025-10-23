@@ -8,7 +8,7 @@ export function useStateClass(state: Ref<UIState>) {
         const isStated = stated.includes(state.value);
         return {
             'vs-state-box': isStated,
-            [`vs-state-box-${state.value}`]: isStated,
+            [`vs-state-${state.value}`]: isStated,
         };
     });
 

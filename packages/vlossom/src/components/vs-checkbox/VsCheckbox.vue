@@ -119,11 +119,8 @@ export default defineComponent({
 
         const { styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
 
-        const { stateClasses } = useStateClass(state);
-
         const inputValue = ref(modelValue.value);
 
-        // Value matcher logic for checkbox
         const isChecked = computed(() => {
             if (multiple.value) {
                 return (
@@ -212,6 +209,8 @@ export default defineComponent({
                 },
             },
         );
+
+        const { stateClasses } = useStateClass(computedState);
 
         const classObj = computed(() => ({
             'vs-checked': isChecked.value,
