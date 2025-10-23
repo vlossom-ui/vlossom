@@ -21,7 +21,8 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         callbacks = {},
     } = inputParams;
 
-    const computedId = computed(() => id.value || `vs-input-${stringUtil.createID()}`);
+    const innerId = `vs-input-${stringUtil.createID()}`;
+    const computedId = computed(() => id.value || innerId);
 
     const changed = ref(false);
     const isInitialized = ref(false);
