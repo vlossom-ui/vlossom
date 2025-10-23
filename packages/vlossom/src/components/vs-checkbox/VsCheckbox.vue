@@ -60,7 +60,7 @@ import {
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStyleSet, useStateClass } from '@/composables';
-import { objectUtil } from '@/utils';
+import { useValueMatcher } from '@/composables/value-matcher-composable';
 import type { VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -121,44 +121,13 @@ export default defineComponent({
 
         const inputValue = ref(modelValue.value);
 
-        const isChecked = computed(() => {
-            if (multiple.value) {
-                return (
-                    Array.isArray(inputValue.value) &&
-                    inputValue.value.some((v: any) => objectUtil.isEqual(v, trueValue.value))
-                );
-            }
-            return objectUtil.isEqual(inputValue.value, trueValue.value);
-        });
-
-        function getInitialValue() {
-            return multiple.value ? [] : falseValue.value;
-        }
-
-        function getClearedValue() {
-            return multiple.value ? [] : falseValue.value;
-        }
-
-        function getUpdatedValue(isCheckedNow: boolean) {
-            if (multiple.value) {
-                if (isCheckedNow) {
-                    return Array.isArray(inputValue.value) ? [...inputValue.value, trueValue.value] : [trueValue.value];
-                } else {
-                    return Array.isArray(inputValue.value)
-                        ? inputValue.value.filter((v: any) => !objectUtil.isEqual(v, trueValue.value))
-                        : [];
-                }
-            }
-            return isCheckedNow ? trueValue.value : falseValue.value;
-        }
-
-        function addTrueValue() {
-            if (Array.isArray(inputValue.value)) {
-                inputValue.value = [...inputValue.value, trueValue.value];
-            } else {
-                inputValue.value = [trueValue.value];
-            }
-        }
+        const {
+            isMatched: isChecked,
+            getInitialValue,
+            getClearedValue,
+            getUpdatedValue,
+            addTrueValue,
+        } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
 
         function requiredCheck() {
             return required.value && !isChecked.value ? 'required' : '';
@@ -190,6 +159,7 @@ export default defineComponent({
                     onMounted: () => {
                         if (checked.value) {
                             if (multiple.value) {
+                                // 초기 input value를 공유할 수 없기 때문에 getUpdatedValue를 사용하지 않음
                                 addTrueValue();
                             } else {
                                 inputValue.value = getUpdatedValue(true);
