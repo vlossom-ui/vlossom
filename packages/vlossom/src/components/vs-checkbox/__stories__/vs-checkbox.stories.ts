@@ -179,14 +179,16 @@ export const Grid: Story = {
             return { args };
         },
         template: `
-            <vs-container grid>
+            <vs-grid>
                 <vs-checkbox v-bind="args" />
                 <vs-checkbox v-bind="args" />
-            </vs-container>
+                <vs-checkbox v-bind="args" />
+                <vs-checkbox v-bind="args" />
+            </vs-grid>
         `,
     }),
     args: {
-        grid: { md: 6, lg: 3 },
+        grid: { md: 4, lg: 3 },
     },
 };
 
