@@ -10,6 +10,8 @@
             @focusout.stop="onTriggerLeave"
             tabindex="0"
         >
+            isVisible: {{ isVisible }}, computedShow: {{ computedShow }}, triggerOver: {{ triggerOver }}, tooltipOver:
+            {{ tooltipOver }}
             <slot />
         </div>
 
@@ -61,11 +63,12 @@ export default defineComponent({
         },
         clickable: { type: Boolean, default: false },
         contentsHover: { type: Boolean, default: false },
-        noAnimation: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },
         enterDelay: { type: Number, default: 100 },
+        escClose: { type: Boolean, default: true },
         leaveDelay: { type: Number, default: 100 },
         margin: { type: [String, Number], default: 5 },
+        noAnimation: { type: Boolean, default: false },
         placement: {
             type: String as PropType<Exclude<Placement, 'middle'>>,
             default: 'top',
@@ -105,11 +108,14 @@ export default defineComponent({
 
         const triggerOver = ref(false);
         const tooltipOver = ref(false);
-        let timer: any = null;
 
-        const computedShow = computed(() => !disabled.value && (triggerOver.value || tooltipOver.value));
+        const computedShow = computed(() => {
+            if (disabled.value) {
+                return false;
+            }
+            return triggerOver.value || (contentsHover.value && tooltipOver.value);
+        });
 
-        // ESC 키로 닫기 기능을 위한 useOverlay 사용
         const computedCallbacks = computed(() => {
             return {
                 ...callbacks.value,
@@ -123,7 +129,15 @@ export default defineComponent({
             };
         });
 
-        useOverlay(id, computedCallbacks, escClose);
+        const { open, close } = useOverlay(id, computedCallbacks, escClose);
+
+        watch(isVisible, (visible) => {
+            if (visible) {
+                open();
+            } else {
+                close();
+            }
+        });
 
         watch(computedShow, (show) => {
             if (show) {
@@ -150,45 +164,21 @@ export default defineComponent({
                 return null;
             }
             const direction = computedShow.value ? 'in' : 'out';
-            switch (computedPlacement.value) {
-                case 'top':
-                    return `fade-${direction}-bottom`;
-                case 'right':
-                    return `fade-${direction}-left`;
-                case 'bottom':
-                    return `fade-${direction}-top`;
-                case 'left':
-                    return `fade-${direction}-right`;
-                default:
-                    return null;
-            }
+            return `fade-${direction}-${computedPlacement.value}`;
         });
-
-        function clearTimer() {
-            clearTimeout(timer);
-            timer = null;
-        }
 
         function onTriggerEnter() {
             if (clickable.value) {
                 return;
             }
 
-            if (timer) {
-                clearTimer();
-            }
-
-            timer = setTimeout(() => {
+            setTimeout(() => {
                 triggerOver.value = true;
             }, enterDelay.value);
         }
 
         function onTriggerLeave() {
-            if (timer) {
-                clearTimer();
-            }
-
-            timer = setTimeout(() => {
+            setTimeout(() => {
                 triggerOver.value = false;
             }, leaveDelay.value);
         }
@@ -209,6 +199,7 @@ export default defineComponent({
             if (!contentsHover.value) {
                 return;
             }
+            // 툴팁 영역에 마우스가 들어왔을 때 즉시 tooltipOver를 true로 설정
             tooltipOver.value = true;
         }
 
@@ -216,6 +207,7 @@ export default defineComponent({
             if (!contentsHover.value) {
                 return;
             }
+
             setTimeout(() => {
                 tooltipOver.value = false;
             }, leaveDelay.value);
@@ -228,10 +220,6 @@ export default defineComponent({
 
         onBeforeUnmount(() => {
             disappear();
-
-            if (timer) {
-                clearTimer();
-            }
         });
 
         return {
@@ -243,6 +231,8 @@ export default defineComponent({
             isVisible,
             computedShow,
             computedPlacement,
+            triggerOver,
+            tooltipOver,
             onTriggerEnter,
             onTriggerLeave,
             onTriggerClick,
