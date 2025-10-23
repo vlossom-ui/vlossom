@@ -63,9 +63,9 @@ export default defineComponent({
         clickable: { type: Boolean, default: false },
         contentsHover: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },
-        enterDelay: { type: Number, default: 100 },
+        enterDelay: { type: Number, default: 0 },
         escClose: { type: Boolean, default: true },
-        leaveDelay: { type: Number, default: 100 },
+        leaveDelay: { type: Number, default: 0 },
         margin: { type: [String, Number], default: '0.5rem' },
         noAnimation: { type: Boolean, default: false },
         placement: {
