@@ -26,9 +26,7 @@
 }
 
 .vs-tooltip-wrap {
-    @apply absolute;
-    z-index: 10000;
-    padding: 0.2rem;
+    @apply pointer-events-auto absolute;
 }
 
 .vs-tooltip-contents {
