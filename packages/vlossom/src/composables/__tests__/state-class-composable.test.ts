@@ -14,10 +14,10 @@ describe('state-class-composable', () => {
 
             // then
             expect(classes).toEqual([
-                { 'vs-state-box': true, 'vs-state-box-info': true },
-                { 'vs-state-box': true, 'vs-state-box-success': true },
-                { 'vs-state-box': true, 'vs-state-box-error': true },
-                { 'vs-state-box': true, 'vs-state-box-warning': true },
+                { 'vs-state-box': true, 'vs-state-info': true },
+                { 'vs-state-box': true, 'vs-state-success': true },
+                { 'vs-state-box': true, 'vs-state-error': true },
+                { 'vs-state-box': true, 'vs-state-warning': true },
             ]);
         });
 
@@ -29,7 +29,7 @@ describe('state-class-composable', () => {
             const classes = notStated.map((state) => useStateClass(ref(state)).stateClasses.value);
 
             // then
-            expect(classes).toEqual([{ 'vs-state-box': false, 'vs-state-box-idle': false }]);
+            expect(classes).toEqual([{ 'vs-state-box': false, 'vs-state-idle': false }]);
         });
     });
 });

@@ -248,6 +248,7 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            inputValue,
             isChecked,
             shake,
             toggle,
