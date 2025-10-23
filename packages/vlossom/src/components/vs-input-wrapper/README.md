@@ -75,23 +75,23 @@
 
 ## Props
 
-| Prop          | Type                                           | Default | Required | Description                        |
-| ------------- | ---------------------------------------------- | ------- | -------- | ---------------------------------- |
-| `disabled`    | `boolean`                                      | `false` | -        | 입력 필드 비활성화                 |
-| `hidden`      | `boolean`                                      | `false` | -        | 입력 래퍼 숨김                     |
-| `id`          | `string`                                       | `''`    | -        | 입력 래퍼의 고유 ID                |
-| `label`       | `string`                                       | `''`    | -        | 입력 필드 라벨 텍스트              |
-| `noLabel`     | `boolean`                                      | `false` | -        | 라벨 표시 비활성화                 |
-| `noMessages`  | `boolean`                                      | `false` | -        | 메시지 표시 비활성화               |
-| `required`    | `boolean`                                      | `false` | -        | 필수 입력 필드 표시 (빨간 별표)    |
-| `small`       | `boolean`                                      | `false` | -        | 작은 크기 스타일 적용              |
-| `groupLabel`  | `boolean`                                      | `false` | -        | fieldset/legend 구조로 라벨 렌더링 |
-| `messages`    | `StateMessage<Exclude<UIState, 'selected'>>[]` | `[]`    | -        | 표시할 메시지 배열                 |
-| `shake`       | `boolean`                                      | `false` | -        | 흔들림 애니메이션 트리거           |
-| `width`       | `string \| number \| Breakpoints`              | -       | -        | 반응형 너비 설정                   |
-| `grid`        | `string \| number \| Breakpoints`              | -       | -        | 그리드 레이아웃 설정               |
-| `colorScheme` | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                 |
-| `styleSet`    | `string \| VsInputWrapperStyleSet`             | -       | -        | 커스텀 스타일 설정 객체            |
+| Prop          | Type                               | Default | Required | Description                        |
+| ------------- | ---------------------------------- | ------- | -------- | ---------------------------------- |
+| `disabled`    | `boolean`                          | `false` | -        | 입력 필드 비활성화                 |
+| `hidden`      | `boolean`                          | `false` | -        | 입력 래퍼 숨김                     |
+| `id`          | `string`                           | `''`    | -        | 입력 래퍼의 고유 ID                |
+| `label`       | `string`                           | `''`    | -        | 입력 필드 라벨 텍스트              |
+| `noLabel`     | `boolean`                          | `false` | -        | 라벨 표시 비활성화                 |
+| `noMessages`  | `boolean`                          | `false` | -        | 메시지 표시 비활성화               |
+| `required`    | `boolean`                          | `false` | -        | 필수 입력 필드 표시 (빨간 별표)    |
+| `small`       | `boolean`                          | `false` | -        | 작은 크기 스타일 적용              |
+| `groupLabel`  | `boolean`                          | `false` | -        | fieldset/legend 구조로 라벨 렌더링 |
+| `messages`    | `StateMessage<UIState>[]`          | `[]`    | -        | 표시할 메시지 배열                 |
+| `shake`       | `boolean`                          | `false` | -        | 흔들림 애니메이션 트리거           |
+| `width`       | `string \| number \| Breakpoints`  | -       | -        | 반응형 너비 설정                   |
+| `grid`        | `string \| number \| Breakpoints`  | -       | -        | 그리드 레이아웃 설정               |
+| `colorScheme` | `ColorScheme`                      | -       | -        | 컴포넌트 색상 테마                 |
+| `styleSet`    | `string \| VsInputWrapperStyleSet` | -       | -        | 커스텀 스타일 설정 객체            |
 
 ## Types
 
@@ -101,7 +101,7 @@ interface StateMessage<T extends string = UIState> {
     text: string;
 }
 
-type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error' | 'selected';
+type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
 interface VsInputWrapperStyleSet {
     label?: {
