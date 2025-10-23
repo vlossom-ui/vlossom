@@ -4,6 +4,7 @@ import { useVlossom } from '@/framework';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsCheckbox from './../VsCheckbox.vue';
 import type { VsCheckboxStyleSet } from './../types';
+import { computed, ref } from 'vue';
 
 const meta: Meta<typeof VsCheckbox> = {
     title: 'Components/Input Components/VsCheckbox',
@@ -145,13 +146,27 @@ export const Indeterminate: Story = {
 };
 
 export const BeforeChange: Story = {
-    args: {
-        beforeChange: async () => {
-            // const $vs = useVlossom();
-            // return await $vs.confirm.open('Are you sure?');
-            return true;
+    render: (args: any) => ({
+        components: { VsCheckbox },
+        setup() {
+            const modelValue = ref(false);
+            const toggleMessage = computed(() => {
+                if (modelValue.value) {
+                    return 'checkbox interact allowed';
+                }
+                return 'checkbox interact denied';
+            });
+
+            const beforeChange = async () => {
+                return modelValue.value;
+            };
+            return { args, modelValue, beforeChange, toggleMessage };
         },
-    },
+        template: `
+            <vs-toggle v-model="modelValue" style="margin-bottom: 16px">{{ toggleMessage }}</vs-toggle>
+            <vs-checkbox v-bind="args" :before-change="beforeChange" label="by before change logic" />
+        `,
+    }),
 };
 
 export const Width: Story = {
