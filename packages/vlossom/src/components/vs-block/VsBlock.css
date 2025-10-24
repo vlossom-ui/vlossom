@@ -46,7 +46,7 @@
         @apply relative w-full;
 
         padding: var(--vs-block-padding, 1.6rem 1.6rem);
-        font-weight: var(--vs-block-content-fontWeight, var(--vs-font-weight-light));
+        font-weight: var(--vs-block-content-fontWeight, var(--vs-font-weight));
         font-size: var(--vs-block-content-fontSize, var(--vs-font-size-sm));
         line-height: var(--vs-block-content-lineHeight, var(--vs-line-height));
     }

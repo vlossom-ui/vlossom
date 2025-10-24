@@ -22,25 +22,31 @@ vi.stubGlobal('localStorage', {
     clear: vi.fn(),
 });
 
-vi.stubGlobal('matchMedia', (query: string) => ({
+const matchMediaMock = vi.fn((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
 }));
 
-vi.stubGlobal('ResizeObserver', {
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-});
+vi.stubGlobal('matchMedia', matchMediaMock);
 
-vi.stubGlobal('IntersectionObserver', {
+const resizeObserverMock = vi.fn(() => ({
     observe: vi.fn(),
     unobserve: vi.fn(),
     disconnect: vi.fn(),
-});
+}));
+
+vi.stubGlobal('ResizeObserver', resizeObserverMock);
+
+const intersectionObserverMock = vi.fn(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+}));
+
+vi.stubGlobal('IntersectionObserver', intersectionObserverMock);
