@@ -10,7 +10,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: true,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                 },
             });
 
@@ -24,7 +24,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: false,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                 },
             });
 
@@ -43,7 +43,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: false,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                 },
             });
 
@@ -60,7 +60,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: null,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                 },
             });
 
@@ -77,7 +77,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: true,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'hello',
                     falseValue: 'world',
                 },
@@ -99,7 +99,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: 'A',
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                     falseValue: 'B',
                 },
@@ -115,7 +115,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: 'B',
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                     falseValue: 'B',
                 },
@@ -135,7 +135,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: 'A',
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                     falseValue: 'B',
                 },
@@ -156,7 +156,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: { id: 'A' },
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: { id: 'A' },
                     falseValue: { id: 'B' },
                 },
@@ -175,7 +175,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: ['A'],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                 },
             });
@@ -191,7 +191,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: [],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                 },
             });
@@ -212,7 +212,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: null,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                 },
             });
@@ -229,7 +229,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: ['A'],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                 },
             });
@@ -249,7 +249,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: [],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: 'A',
                 },
             });
@@ -268,7 +268,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: [{ id: 'A' }],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: { id: 'A' },
                 },
             });
@@ -286,7 +286,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: [],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: { id: 'A' },
                 },
             });
@@ -306,7 +306,7 @@ describe('vs-checkbox', () => {
                 props: {
                     multiple: true,
                     modelValue: [],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     trueValue: { id: 'A' },
                 },
             });
@@ -343,7 +343,7 @@ describe('vs-checkbox', () => {
                     multiple: true,
                     checked: true,
                     modelValue: [],
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                 },
             });
 
@@ -363,7 +363,7 @@ describe('vs-checkbox', () => {
                     props: {
                         multiple: true,
                         modelValue: ['A', 'B'],
-                        'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                        'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                         trueValue: 'A',
                     },
                 });
@@ -384,7 +384,7 @@ describe('vs-checkbox', () => {
                 const wrapper = mount(VsCheckbox, {
                     props: {
                         modelValue: true,
-                        'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                        'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     },
                 });
 
@@ -406,7 +406,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: true,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     required: true,
                 },
             });
@@ -427,7 +427,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: true,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     required: true,
                 },
             });
@@ -441,7 +441,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: false,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     required: true,
                 },
             });
@@ -479,7 +479,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: false,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     beforeChange: () => Promise.resolve(true),
                 },
             });
@@ -498,7 +498,7 @@ describe('vs-checkbox', () => {
             const wrapper = mount(VsCheckbox, {
                 props: {
                     modelValue: false,
-                    'update:modelValue': (e: boolean) => wrapper.setProps({ modelValue: e }),
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
                     beforeChange: () => Promise.resolve(false),
                 },
             });
