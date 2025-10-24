@@ -1,8 +1,7 @@
-import { colorScheme, getMetaArguments, state } from '@/storybook';
+import { colorScheme } from '@/storybook';
 import { ref } from 'vue';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import VsSwitch from './../VsSwitch.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsSwitch> = {
     title: 'Chromatic/Input Components/VsSwitch',
@@ -34,11 +33,9 @@ const meta: Meta<typeof VsSwitch> = {
     }),
     argTypes: {
         colorScheme,
-        state,
     },
 };
 
-meta.args = getMetaArguments(VsSwitch.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsSwitch>;
 

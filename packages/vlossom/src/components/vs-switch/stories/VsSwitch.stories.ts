@@ -1,23 +1,43 @@
 import { computed, ref } from 'vue';
-import {
-    chromaticParameters,
-    colorScheme,
-    getColorSchemeTemplate,
-    getMetaArguments,
-    state,
-    getStateTemplate,
-} from '@/storybook';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { useVlossom } from '@/framework';
 import VsSwitch from './../VsSwitch.vue';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
+import type { VsSwitchStyleSet } from './../types';
 
 const meta: Meta<typeof VsSwitch> = {
     title: 'Components/Input Components/VsSwitch',
     component: VsSwitch,
+    parameters: {
+        docs: {
+            description: {
+                component: 'VsSwitch는 ON/OFF 상태를 토글할 수 있는 스위치 컴포넌트입니다.',
+            },
+        },
+    },
     render: (args: any) => ({
         components: { VsSwitch },
         setup() {
+            const preDefinedStyleSet: VsSwitchStyleSet = {
+                false: {
+                    border: '3px solid blue',
+                    backgroundColor: '#000',
+                    fontColor: '#fff',
+                    handleColor: '#fff',
+                },
+                true: {
+                    border: '3px solid purple',
+                    backgroundColor: '#fff',
+                    fontColor: '#000',
+                    handleColor: '#000',
+                },
+            } as const;
+
+            useVlossom().styleSet = {
+                myStyleSet: { VsSwitch: { ...preDefinedStyleSet } },
+            };
+
             return { args };
         },
         template: '<vs-switch v-bind="args" />',
@@ -25,11 +45,9 @@ const meta: Meta<typeof VsSwitch> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
-        state,
     },
 };
 
-meta.args = getMetaArguments(VsSwitch.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsSwitch>;
 
@@ -61,10 +79,12 @@ export const State: Story = {
             return { args };
         },
         template: `
-            <div>
-                ${getStateTemplate(`
-                    <vs-switch v-bind="args" label="State ({{state}})" state="{{state}}" style="marginBottom: 16px" />
-                `)}
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-switch v-bind="args" label="State (idle)" state="idle" />
+                <vs-switch v-bind="args" label="State (success)" state="success" />
+                <vs-switch v-bind="args" label="State (info)" state="info" />
+                <vs-switch v-bind="args" label="State (warning)" state="warning" />
+                <vs-switch v-bind="args" label="State (error)" state="error" />
             </div>
         `,
     }),

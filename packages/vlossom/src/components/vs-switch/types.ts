@@ -1,4 +1,4 @@
-export interface VsSwitchTruthyStyleSet {
+export interface VsSwitchStateStyleSet {
     backgroundColor?: string;
     border?: string;
     fontColor?: string;
@@ -7,10 +7,10 @@ export interface VsSwitchTruthyStyleSet {
 
 export interface VsSwitchStyleSet {
     borderRadius?: string;
-    false: VsSwitchTruthyStyleSet;
+    false: VsSwitchStateStyleSet;
     fontSize?: string;
     handleSize?: string;
     height?: string;
-    true?: VsSwitchTruthyStyleSet;
+    true?: VsSwitchStateStyleSet;
     width?: string;
 }

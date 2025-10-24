@@ -1,0 +1,126 @@
+.vs-switch {
+    --vs-switch-width: initial;
+    --vs-switch-height: initial;
+    --vs-switch-borderRadius: initial;
+    --vs-switch-fontSize: initial;
+    --vs-switch-handleSize: initial;
+    --vs-switch-false-backgroundColor: initial;
+    --vs-switch-false-border: initial;
+    --vs-switch-false-fontColor: initial;
+    --vs-switch-false-handleColor: initial;
+    --vs-switch-true-backgroundColor: initial;
+    --vs-switch-true-border: initial;
+    --vs-switch-true-fontColor: initial;
+    --vs-switch-true-handleColor: initial;
+
+    @apply relative flex items-center;
+    min-height: var(--vs-input-comp-height);
+
+    .vs-switch-button {
+        @apply relative flex cursor-pointer items-center select-none;
+        transition: all 0.3s;
+        border: var(--vs-switch-false-border, 1px solid var(--vs-line-color));
+        border-radius: var(--vs-switch-borderRadius, 1.5rem);
+        background-color: var(--vs-switch-false-backgroundColor, var(--vs-area-bg));
+        padding: 0 0.8rem;
+
+        width: var(--vs-switch-width, fit-content);
+        height: var(--vs-switch-height, 1.8rem);
+        color: var(--vs-switch-false-fontColor, var(--vs-font-color));
+        font-size: var(--vs-switch-fontSize, var(--vs-font-size-sm));
+
+        .vs-status-label {
+            @apply block w-full text-center break-all whitespace-nowrap;
+            margin-left: 0.2rem;
+            padding-right: 0;
+            padding-left: calc(var(--vs-switch-handleSize, 1rem));
+            user-select: none;
+        }
+
+        &::before {
+            @apply absolute rounded-full;
+            left: 0.3rem;
+            transition: 0.3s;
+            background-color: var(--vs-switch-false-handleColor, var(--vs-primary-comp-bg));
+            width: calc(var(--vs-switch-handleSize, 1rem));
+            height: calc(var(--vs-switch-handleSize, 1rem));
+            content: '';
+        }
+    }
+
+    .vs-switch-input {
+        @apply pointer-events-none absolute opacity-0;
+        top: 0;
+        left: 0;
+    }
+
+    &.vs-checked {
+        .vs-switch-button {
+            border: var(--vs-switch-true-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-switch-true-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-switch-true-fontColor, var(--vs-primary-comp-font));
+
+            &::before {
+                left: calc(100% - (var(--vs-switch-handleSize, 1.5rem) + 0.3rem));
+                background-color: var(--vs-switch-true-handleColor, var(--vs-primary-comp-font));
+            }
+
+            .vs-status-label {
+                padding-right: calc(var(--vs-switch-handleSize, 1.5rem));
+                padding-left: 0;
+            }
+        }
+    }
+
+    &.vs-small {
+        height: var(--vs-input-comp-height-small);
+
+        .vs-switch-button {
+            border-radius: var(--vs-switch-borderRadius, 1rem);
+            padding: 0 0.6rem;
+            height: var(--vs-switch-height, 1.5rem);
+            font-size: var(--vs-switch-fontSize, var(--vs-font-size-xs));
+
+            .vs-status-label {
+                @apply relative;
+                top: 0.1rem;
+                margin-left: 0.2rem;
+                padding-left: calc(var(--vs-switch-handleSize, 0.8rem));
+            }
+
+            &::before {
+                left: 0.3rem;
+                width: calc(var(--vs-switch-handleSize, 0.8rem));
+                height: calc(var(--vs-switch-handleSize, 0.8rem));
+            }
+        }
+
+        &.vs-checked {
+            .vs-switch-button {
+                &::before {
+                    left: calc(100% - (var(--vs-switch-handleSize, 0.8rem) + 0.3rem));
+                }
+
+                .vs-status-label {
+                    padding-right: calc(var(--vs-switch-handleSize, 0.8rem));
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+
+    &:focus-within {
+        .vs-switch-button {
+            outline: 1px solid var(--vs-line-color) !important;
+            outline-offset: 2px !important;
+        }
+    }
+
+    &.vs-disabled {
+        @apply pointer-events-none cursor-default opacity-50 grayscale-60 select-none;
+    }
+
+    &.vs-readonly {
+        @apply pointer-events-none cursor-default;
+    }
+}
