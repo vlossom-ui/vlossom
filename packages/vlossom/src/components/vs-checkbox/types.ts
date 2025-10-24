@@ -1,5 +1,5 @@
 import type VsCheckbox from './VsCheckbox.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
