@@ -30,7 +30,6 @@ import type { VsToggleStyleSet } from './types';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const name = VsComponent.VsToggle;
-
 export default defineComponent({
     name,
     components: { VsButton },

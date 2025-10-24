@@ -49,14 +49,11 @@ const meta: Meta<typeof VsBlock> = {
                 borderRadius: '8px',
                 padding: '1.5rem',
                 title: {
-                    fontWeight: '600',
-                    fontSize: '1.2rem',
+                    backgroundColor: '#f8f9fa',
                     fontColor: '#212529',
-                    bottomBorder: '1px solid #e9ecef',
+                    padding: '1.5rem',
                 },
                 fontColor: '#495057',
-                fontSize: '1rem',
-                lineHeight: '1.6',
             } as const;
 
             useVlossom().styleSet = {
@@ -186,7 +183,7 @@ export const StyleSet: Story = {
         template: `
             <vs-block v-bind="args">
                 <template #title>커스텀 스타일 블록</template>
-                커스텀 스타일이 적용된 블록입니다. 
+                커스텀 스타일이 적용된 블록입니다.
                 배경색, 테두리, 폰트 등이 커스터마이징 되어 있습니다.
             </vs-block>
         `,
@@ -199,14 +196,11 @@ export const StyleSet: Story = {
             padding: '2rem',
             boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
             title: {
-                fontWeight: '700',
-                fontSize: '1.4rem',
+                backgroundColor: '#e3f2fd',
                 fontColor: '#1976d2',
-                bottomBorder: '2px solid #2196f3',
+                padding: '2rem',
             },
             fontColor: '#1565c0',
-            fontSize: '1.1rem',
-            lineHeight: '1.7',
         },
     },
 };

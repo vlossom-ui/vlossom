@@ -18,9 +18,9 @@ import { type PropType, computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getResponsiveProps } from '@/props';
 import { VsComponent, type ColorScheme } from '@/declaration';
-import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
-
 import type { VsLabelValueStyleSet } from './types';
+
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
 const name = VsComponent.VsLabelValue;
 export default defineComponent({

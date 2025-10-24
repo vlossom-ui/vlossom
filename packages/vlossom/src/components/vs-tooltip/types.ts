@@ -9,7 +9,7 @@ declare module 'vue' {
 
 export type { VsTooltip };
 
-export interface VsTooltipStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'display'> {
+export interface VsTooltipStyleSet extends SizeStyleSet, BoxStyleSet {
     arrowColor?: string;
     arrowSize?: string;
 }

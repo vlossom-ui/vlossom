@@ -32,16 +32,6 @@ const isToggled = ref(false);
 </template>
 ```
 
-### 투명 토글 버튼
-
-```html
-<template>
-    <vs-toggle v-model="isToggled" invisible>
-        투명한 토글 영역
-    </vs-toggle>
-</template>
-```
-
 ### 토글 이벤트 처리
 
 ```html
@@ -64,12 +54,11 @@ const handleToggle = (value: boolean) => {
 
 ## Props
 
-| Prop          | Type                         | Default | Required | Description                             |
-| ------------- | ---------------------------- | ------- | -------- | --------------------------------------- |
-| `modelValue`  | `boolean`                    | `false` | -        | v-model로 바인딩되는 토글 상태 값       |
-| `invisible`   | `boolean`                    | `false` | -        | 버튼을 투명하게 만들어 클릭 영역만 유지 |
-| `colorScheme` | `ColorScheme`                | -       | -        | 컴포넌트 색상 테마                      |
-| `styleSet`    | `string \| VsToggleStyleSet` | -       | -        | 커스텀 스타일 설정 객체                 |
+| Prop          | Type                         | Default | Required | Description                       |
+| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
+| `modelValue`  | `boolean`                    | `false` | -        | v-model로 바인딩되는 토글 상태 값 |
+| `colorScheme` | `ColorScheme`                | -       | -        | 컴포넌트 색상 테마                |
+| `styleSet`    | `string \| VsToggleStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
 
 **VsButton에서 상속받은 Props:**
 
@@ -93,18 +82,24 @@ const handleToggle = (value: boolean) => {
 ## Types
 
 ```typescript
-interface VsToggleStyleSet extends VsButtonStyleSet {
-    // VsButton의 모든 스타일 속성을 상속받음
+interface VsToggleStyleSet {
+    width?: string;
+    height?: string;
+
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    height?: string;
     padding?: string;
-    width?: string;
-    loading?: VsLoadingStyleSet;
+    opacity?: string;
+
+    fontColor?: string;
+
+    loading?: {
+        width?: string;
+        height?: string;
+        color?: string;
+        barWidth?: string;
+    };
 }
 ```
 
@@ -112,6 +107,5 @@ interface VsToggleStyleSet extends VsButtonStyleSet {
 
 - **v-model 지원**: 양방향 데이터 바인딩으로 토글 상태 관리
 - **VsButton 기반**: VsButton의 모든 스타일링 옵션을 완전히 지원
-- **투명 모드**: `invisible` prop으로 시각적으로 숨겨진 클릭 가능 영역 제공
 - **이벤트 처리**: `toggle` 이벤트로 상태 변화 감지
 - **접근성**: 버튼 기반으로 키보드 내비게이션 및 스크린 리더 지원

@@ -84,11 +84,22 @@
 
 ```typescript
 interface VsImageStyleSet {
-    width?: string; // 이미지 너비
-    height?: string; // 이미지 높이
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down'; // 이미지 맞춤 방식
+    width?: string;
+    height?: string;
+
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    opacity?: string | number;
+
+    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
+    skeleton?: {
+        width?: string;
+        height?: string;
+        backgroundColor?: string;
+        borderRadius?: string;
+        animation?: string;
+    };
 }
 ```
 

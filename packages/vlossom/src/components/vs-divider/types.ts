@@ -7,14 +7,17 @@ declare module 'vue' {
 }
 
 export type { VsDivider };
-
-interface VsDividerVerticalStyleSet {
-    height?: string;
-    margin?: string;
-}
-
 export interface VsDividerStyleSet {
     border?: string;
-    margin?: string;
-    vertical?: VsDividerVerticalStyleSet;
+    opacity?: number;
+
+    horizontal?: {
+        width?: string;
+        margin?: string;
+    };
+
+    vertical?: {
+        height?: string;
+        margin?: string;
+    };
 }

@@ -1,52 +1,20 @@
 .vs-page {
     --vs-page-padding: initial;
-    --vs-page-fontColor: initial;
-    --vs-page-fontSize: initial;
-    --vs-page-fontWeight: initial;
-    --vs-page-lineHeight: initial;
-    --vs-page-whiteSpace: initial;
 
     --vs-page-title-padding: initial;
-    --vs-page-title-fontColor: initial;
-    --vs-page-title-fontSize: initial;
-    --vs-page-title-fontWeight: initial;
-    --vs-page-title-lineHeight: initial;
-    --vs-page-title-whiteSpace: initial;
 
     --vs-page-description-padding: initial;
-    --vs-page-description-fontColor: initial;
-    --vs-page-description-fontSize: initial;
-    --vs-page-description-fontWeight: initial;
-    --vs-page-description-lineHeight: initial;
-    --vs-page-description-whiteSpace: initial;
 
-    @apply relative w-full;
+    @apply relative flex w-full flex-col;
+
     padding: var(--vs-page-padding, 2rem 3rem);
 
     .vs-page-title {
         padding: var(--vs-page-title-padding, 0 0 1.2rem 0);
-        color: var(--vs-page-title-fontColor, var(--vs-font-color));
-        font-weight: var(--vs-page-title-fontWeight, var(--vs-font-weight-bold));
-        font-size: var(--vs-page-title-fontSize, var(--vs-font-size-xl));
-        line-height: var(--vs-page-title-lineHeight, var(--vs-line-height));
-        white-space: var(--vs-page-title-whiteSpace, nowrap);
     }
 
     .vs-page-description {
         padding: var(--vs-page-description-padding, 0 0 1.2rem 0);
-        color: var(--vs-page-description-fontColor, var(--vs-font-color));
-        font-weight: var(--vs-page-description-fontWeight, var(--vs-font-weight-light));
-        font-size: var(--vs-page-description-fontSize, var(--vs-font-size-sm));
-        line-height: var(--vs-page-description-lineHeight, var(--vs-line-height));
-        white-space: var(--vs-page-description-whiteSpace, var(--vs-white-space));
-    }
-
-    .vs-page-content {
-        color: var(--vs-page-fontColor, var(--vs-font-color));
-        font-weight: var(--vs-page-fontWeight, var(--vs-font-weight));
-        font-size: var(--vs-page-fontSize, var(--vs-font-size));
-        line-height: var(--vs-page-lineHeight, var(--vs-line-height));
-        white-space: var(--vs-page-whiteSpace, var(--vs-white-space));
     }
 }
 

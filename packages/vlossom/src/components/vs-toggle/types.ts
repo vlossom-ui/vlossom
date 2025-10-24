@@ -1,5 +1,5 @@
 import type VsToggle from './VsToggle.vue';
-import type { VsButtonStyleSet } from '@/main';
+import type { VsButtonStyleSet } from '@/components/vs-button/types';
 
 declare module 'vue' {
     interface GlobalComponents {

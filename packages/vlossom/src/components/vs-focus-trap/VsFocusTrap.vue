@@ -16,8 +16,9 @@ import {
 import { VsComponent } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 
+const name = VsComponent.VsFocusTrap;
 export default defineComponent({
-    name: VsComponent.VsFocusTrap,
+    name,
     props: {
         focusLock: { type: Boolean, default: true },
         initialFocusRef: { type: Object as PropType<HTMLElement | null>, default: null },

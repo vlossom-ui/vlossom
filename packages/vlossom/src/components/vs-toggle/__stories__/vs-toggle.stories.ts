@@ -155,20 +155,13 @@ export const ToggleExample1: Story = {
                 return sizeValue;
             });
 
-            const menuButtonStyleSet = computed(() => ({
+            const menuButtonStyleSet: VsToggleStyleSet = {
                 width: size.value,
                 height: size.value,
                 borderRadius: '8px',
                 backgroundColor: 'transparent',
                 border: '1px solid #ddd',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                fontSize: iconSize.value,
-                color: isOpen.value ? '#fff' : '#333',
-            }));
+            };
 
             const onToggle = (value: boolean) => {
                 isOpen.value = value;
@@ -293,76 +286,6 @@ export const ToggleExample2: Story = {
                         Hamburger: {{ toggle1 ? 'Open' : 'Closed' }}<br>
                         Options: {{ toggle2 ? 'Open' : 'Closed' }}<br>
                         More: {{ toggle3 ? 'Open' : 'Closed' }}
-                    </div>
-                </div>
-            </div>
-        `,
-    }),
-};
-
-export const ToggleExample3: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '투명한 토글 버튼을 구현한 예제입니다, 모달의 뒷 배경을 클릭하여 모달을 닫을 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsToggle },
-        setup() {
-            const toggleValue = ref(args.modelValue ?? true);
-            const showModal = ref(true);
-            return {
-                args,
-                toggleValue,
-                showModal,
-                onToggle: (value: boolean) => {
-                    toggleValue.value = value;
-                    if (value) {
-                        showModal.value = true;
-                    } else {
-                        showModal.value = false;
-                    }
-                },
-            };
-        },
-        template: `
-            <vs-toggle v-model="toggleValue" @toggle="onToggle" class='mb-4'> visible toggle </vs-toggle>
-
-            <div class="h-24">
-                <div
-                    v-if="showModal"
-                    class="fixed inset-0 w-full h-full flex items-center justify-center"
-                    style="background: rgba(0, 0, 0, 0.65);"
-                >
-                    <div class="absolute inset-0 w-full h-full">
-                        <vs-toggle
-                            id="invisible-toggle"
-                            :style-set="{
-                                opacity: 0,
-                                height: '100%',
-                                width: '100%',
-                            }"
-                            v-model="toggleValue"
-                            @toggle="onToggle"
-                        />
-                    </div>
-
-                    <div class="relative w-[400px] h-[200px] bg-white rounded-xl p-5">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="m-0 text-gray-800 text-lg font-semibold">테스트 모달</h3>
-                        </div>
-
-                        <div class="mb-4">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                <strong class="text-gray-800">토글 상태: {{ toggleValue ? 'ON (활성화)' : 'OFF (비활성화)' }}</strong>
-                            </div>
-                            <p class="m-0 text-gray-600 text-sm">
-                                {{ '모달을 닫기 위해 모달 바깥쪽을 클릭하세요' }}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

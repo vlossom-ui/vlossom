@@ -27,9 +27,10 @@
 
 ```typescript
 interface VsLoadingStyleSet {
-    color?: string; // 로딩 바의 색상
     width?: string; // 로딩 컴포넌트의 전체 너비
     height?: string; // 로딩 컴포넌트의 전체 높이
+
+    color?: string; // 로딩 바의 색상
     barWidth?: string; // 개별 로딩 바의 너비
 }
 ```

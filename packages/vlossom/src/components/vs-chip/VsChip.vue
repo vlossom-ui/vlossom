@@ -32,7 +32,6 @@ import { closeIcon } from './icons';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
 const name = VsComponent.VsChip;
-
 export default defineComponent({
     name,
     components: { VsRender },

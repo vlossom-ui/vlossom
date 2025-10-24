@@ -6,9 +6,8 @@
         <div v-if="$slots['description']" class="vs-page-description">
             <slot name="description" />
         </div>
-        <div class="vs-page-content">
-            <slot />
-        </div>
+
+        <slot />
     </div>
 </template>
 
@@ -20,7 +19,6 @@ import { getStyleSetProps } from '@/props';
 import type { VsPageStyleSet } from './types';
 
 const name = VsComponent.VsPage;
-
 export default defineComponent({
     name,
     props: {
@@ -28,6 +26,7 @@ export default defineComponent({
     },
     setup(props) {
         const { styleSet } = toRefs(props);
+
         const { styleSetVariables } = useStyleSet<VsPageStyleSet>(name, styleSet);
 
         return {

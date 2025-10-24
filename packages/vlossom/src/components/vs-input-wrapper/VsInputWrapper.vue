@@ -38,14 +38,13 @@ import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vu
 import { VsComponent, type StateMessage, type UIState } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
+import { stringUtil } from '@/utils';
 import type { VsInputWrapperStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsMessage from '@/components/vs-message/VsMessage.vue';
-import { stringUtil } from '@/utils';
 
 const name = VsComponent.VsInputWrapper;
-
 export default defineComponent({
     name,
     components: { VsResponsive, VsMessage },

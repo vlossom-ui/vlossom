@@ -20,14 +20,13 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, watch, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
+import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { VsButtonStyleSet } from './types';
 
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 
 const name = VsComponent.VsButton;
-
 export default defineComponent({
     name,
     components: { VsLoading },

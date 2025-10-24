@@ -11,6 +11,7 @@ declare module 'vue' {
 export type { VsImage };
 
 export interface VsImageStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding'> {
-    objectFit?: string;
+    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
+
     skeleton?: VsSkeletonStyleSet;
 }

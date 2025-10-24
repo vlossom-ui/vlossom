@@ -1,34 +1,35 @@
 .vs-accordion {
-    --vs-accordion-width: initial;
-    --vs-accordion-height: initial;
     --vs-accordion-backgroundColor: initial;
     --vs-accordion-border: initial;
     --vs-accordion-borderRadius: initial;
     --vs-accordion-padding: initial;
     --vs-accordion-opacity: initial;
 
-    --vs-accordion-fontColor: initial;
-    --vs-accordion-fontSize: initial;
-    --vs-accordion-fontWeight: initial;
-    --vs-accordion-lineHeight: initial;
-    --vs-accordion-whiteSpace: initial;
+    --vs-accordion-width: initial;
+    --vs-accordion-arrowColor: initial;
+
+    --vs-accordion-title-backgroundColor: initial;
+    --vs-accordion-title-fontColor: initial;
+    --vs-accordion-title-height: initial;
+    --vs-accordion-title-padding: initial;
+
+    --vs-accordion-expand-fontColor: initial;
 
     @apply relative overflow-hidden;
 
+    opacity: var(--vs-accordion-opacity, 1);
     border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-accordion-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     width: var(--vs-accordion-width, 100%);
+    color: var(--vs-accordion-expand-fontColor, var(--vs-comp-font));
 
     .vs-accordion-title {
         @apply relative w-full cursor-pointer outline-none hover:brightness-96 active:brightness-92;
 
-        background-color: var(--vs-accordion-backgroundColor, var(--vs-comp-bg));
-        padding: var(--vs-accordion-padding, 0.75rem 1rem);
-        height: var(--vs-accordion-height, auto);
-        color: var(--vs-accordion-fontColor, var(--vs-comp-font));
-        font-weight: var(--vs-accordion-fontWeight, var(--vs-font-weight));
-        font-size: var(--vs-accordion-fontSize, var(--vs-font-size));
-        line-height: var(--vs-accordion-lineHeight, var(--vs-line-height));
+        background-color: var(--vs-accordion-title-backgroundColor, var(--vs-comp-bg));
+        padding: var(--vs-accordion-title-padding, 0.75rem 1rem);
+        height: var(--vs-accordion-title-height, auto);
+        color: var(--vs-accordion-title-fontColor, var(--vs-comp-font));
 
         /* 화살표 아이콘 추가 */
         &::after {
@@ -37,7 +38,7 @@
             right: 1rem;
             transform: translateY(-50%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: 8px solid var(--vs-accordion-fontColor, var(--vs-primary-comp-bg));
+            border-top: 8px solid var(--vs-accordion-arrowColor, var(--vs-primary-comp-bg));
             border-right: 5px solid transparent;
             border-left: 5px solid transparent;
             width: 0;
@@ -70,12 +71,11 @@
             @apply hover:brightness-104 active:brightness-108;
 
             border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-accordion-backgroundColor, var(--vs-primary-comp-bg));
-            color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
-            font-weight: var(--vs-accordion-fontWeight, 500);
+            background-color: var(--vs-accordion-title-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-accordion-title-fontColor, var(--vs-primary-comp-font));
 
             &::after {
-                border-top-color: var(--vs-accordion-fontColor, var(--vs-primary-comp-font));
+                border-top-color: var(--vs-accordion-arrowColor, var(--vs-primary-comp-font));
             }
         }
 

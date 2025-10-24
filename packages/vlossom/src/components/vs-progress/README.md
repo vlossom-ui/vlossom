@@ -32,34 +32,6 @@ const progress = ref(75);
 </script>
 ```
 
-### 커스텀 스타일링
-
-```html
-<template>
-    <vs-progress
-        :value="30"
-        :max="100"
-        :style-set="customStyle"
-        label="진행률"
-    />
-</template>
-
-<script setup>
-const customStyle = {
-    width: '300px',
-    height: '20px',
-    borderRadius: '10px',
-    backgroundColor: '#f0f0f0',
-    valueColor: '#4CAF50',
-    label: {
-        fontSize: '14px',
-        fontWeight: '600',
-        color: '#333'
-    }
-};
-</script>
-```
-
 ### 색상 테마 적용
 
 ```html
@@ -89,16 +61,14 @@ const customStyle = {
 interface VsProgressStyleSet {
     width?: string;
     height?: string;
-    borderRadius?: string;
+
     backgroundColor?: string;
     border?: string;
-    valueColor?: string; // 진행률 바의 색상
+    borderRadius?: string;
+
     fontColor?: string; // 라벨 텍스트 색상
-    fontWeight?: string | number; // 라벨 텍스트 굵기
-    fontSize?: string; // 라벨 텍스트 크기
-    lineHeight?: string; // 라벨 텍스트 줄 간격
     textShadow?: string; // 라벨 텍스트 그림자
-    whiteSpace?: string; // 라벨 텍스트 공백 처리 방식
+    valueColor?: string; // 진행률 바의 색상
 }
 ```
 

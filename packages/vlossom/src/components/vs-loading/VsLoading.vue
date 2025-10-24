@@ -13,11 +13,10 @@ import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
+import { stringUtil, objectUtil } from '@/utils';
 import type { VsLoadingStyleSet } from './types';
-import { objectUtil, stringUtil } from '@/utils';
 
 const name = VsComponent.VsLoading;
-
 export default defineComponent({
     name,
     props: {

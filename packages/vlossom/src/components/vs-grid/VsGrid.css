@@ -1,9 +1,10 @@
 .vs-grid {
+    --vs-grid-width: initial;
+    --vs-grid-height: initial;
+
     --vs-grid-gridSize: initial;
     --vs-grid-columnGap: initial;
     --vs-grid-rowGap: initial;
-    --vs-grid-width: initial;
-    --vs-grid-height: initial;
 
     @apply relative grid;
 

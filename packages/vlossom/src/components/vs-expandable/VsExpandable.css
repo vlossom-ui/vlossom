@@ -3,26 +3,15 @@
     --vs-expandable-backgroundColor: initial;
     --vs-expandable-padding: initial;
 
-    --vs-expandable-fontColor: initial;
-    --vs-expandable-fontSize: initial;
-    --vs-expandable-fontWeight: initial;
-    --vs-expandable-lineHeight: initial;
-    --vs-expandable-whiteSpace: initial;
-
     @apply relative w-full overflow-hidden;
 
     background-color: var(--vs-expandable-backgroundColor, var(--vs-area-bg));
-}
 
-.vs-expandable-content {
-    @apply w-full;
+    .vs-expandable-content {
+        @apply w-full;
 
-    padding: var(--vs-expandable-padding, 0.75rem 1rem);
-    color: var(--vs-expandable-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-expandable-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-expandable-fontSize, var(--vs-font-size));
-    line-height: var(--vs-expandable-lineHeight, var(--vs-line-height));
-    white-space: var(--vs-expandable-whiteSpace, var(--vs-white-space));
+        padding: var(--vs-expandable-padding, 0.75rem 1rem);
+    }
 }
 
 /* VsExpandable 기본 애니메이션 스타일 */

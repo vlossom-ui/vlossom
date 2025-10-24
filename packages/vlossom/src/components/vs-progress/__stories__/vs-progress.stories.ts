@@ -25,8 +25,6 @@ const meta: Meta<typeof VsProgress> = {
                 borderRadius: '8px',
                 backgroundColor: '#f0f0f0',
                 valueColor: '#1e88e5',
-                fontSize: '0.9rem',
-                fontWeight: '600',
                 fontColor: '#fff',
                 textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
             } as const;
@@ -185,8 +183,6 @@ export const StyleSet: Story = {
             borderRadius: '12px',
             backgroundColor: '#e0e0e0',
             valueColor: '#e188e5',
-            fontSize: '1rem',
-            fontWeight: '700',
             fontColor: '#fff',
             textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
         },

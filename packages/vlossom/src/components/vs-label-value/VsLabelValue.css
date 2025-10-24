@@ -1,24 +1,27 @@
 .vs-label-value {
     --vs-label-value-border: initial;
     --vs-label-value-borderRadius: initial;
-    --vs-label-value-display: initial;
     --vs-label-value-opacity: initial;
-    --vs-label-value-verticalAlign: initial;
+
+    --vs-label-value-label-fontColor: initial;
+    --vs-label-value-label-fontSize: initial;
+    --vs-label-value-label-fontWeight: initial;
+
     --vs-label-value-label-backgroundColor: initial;
     --vs-label-value-label-padding: initial;
-    --vs-label-value-label-fontColor: initial;
-    --vs-label-value-label-fontWeight: initial;
-    --vs-label-value-label-fontSize: initial;
+    --vs-label-value-label-verticalAlign: initial;
     --vs-label-value-label-width: initial;
+
+    --vs-label-value-value-fontColor: initial;
+    --vs-label-value-value-fontSize: initial;
+    --vs-label-value-value-fontWeight: initial;
+
     --vs-label-value-value-backgroundColor: initial;
     --vs-label-value-value-padding: initial;
-    --vs-label-value-value-fontColor: initial;
-    --vs-label-value-value-fontWeight: initial;
-    --vs-label-value-value-fontSize: initial;
+    --vs-label-value-value-verticalAlign: initial;
 
-    @apply relative h-full w-full overflow-hidden;
+    @apply relative flex h-full w-full overflow-hidden;
 
-    display: var(--vs-label-value-display, flex);
     opacity: var(--vs-label-value-opacity, 1);
     border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-label-value-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
@@ -29,29 +32,25 @@
         &.vs-label {
             @apply break-words whitespace-nowrap;
 
-            align-items: var(--vs-label-value-verticalAlign, center);
             flex-basis: var(--vs-label-value-label-width, 20%);
+            align-items: var(--vs-label-value-label-verticalAlign, center);
             border-right: var(--vs-label-value-border, 1px solid var(--vs-line-color));
             background-color: var(--vs-label-value-label-backgroundColor, var(--vs-comp-bg));
             padding: var(--vs-label-value-label-padding, 0.6rem 1.2rem);
             color: var(--vs-label-value-label-fontColor, var(--vs-comp-font));
             font-weight: var(--vs-label-value-label-fontWeight, 500);
-            font-size: var(--vs-label-value-label-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
-            line-height: var(--vs-label-value-label-lineHeight, var(--vs-line-height));
-            white-space: var(--vs-label-value-label-whiteSpace, nowrap);
+            font-size: var(--vs-label-value-label-fontSize, var(--vs-font-size));
         }
 
         &.vs-value {
-            @apply overflow-x-auto flex-1;
+            @apply flex-1 overflow-x-auto;
 
-            align-items: var(--vs-label-value-verticalAlign, center);
+            align-items: var(--vs-label-value-value-verticalAlign, center);
             background-color: var(--vs-label-value-value-backgroundColor, var(--vs-no-color));
             padding: var(--vs-label-value-value-padding, 0.6rem 1.2rem);
             color: var(--vs-label-value-value-fontColor, var(--vs-comp-font));
             font-weight: var(--vs-label-value-value-fontWeight, 500);
-            font-size: var(--vs-label-value-value-fontSize, var(--vs-label-value-fontSize, var(--vs-font-size)));
-            line-height: var(--vs-label-value-label-lineHeight, var(--vs-line-height));
-            white-space: var(--vs-label-value-label-whiteSpace, initial);
+            font-size: var(--vs-label-value-value-fontSize, var(--vs-font-size));
         }
     }
 

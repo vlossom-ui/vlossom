@@ -69,28 +69,27 @@
 interface VsLabelValueStyleSet {
     border?: string;
     borderRadius?: string;
-    display?: string;
     opacity?: string | number;
 
-    label: {
-        backgroundColor?: string;
+    label?: {
         fontColor?: string;
         fontSize?: string;
-        fontWeight?: string | number;
-        lineHeight?: string;
+        fontWeight?: number;
+
+        backgroundColor?: string;
         padding?: string;
-        whiteSpace?: string;
+        verticalAlign?: string;
         width?: string;
     };
-    value: {
-        backgroundColor?: string;
+
+    value?: {
         fontColor?: string;
         fontSize?: string;
-        fontWeight?: string | number;
-        lineHeight?: string;
+        fontWeight?: number;
+
+        backgroundColor?: string;
         padding?: string;
-        whiteSpace?: string;
-        width?: string;
+        verticalAlign?: string;
     };
 }
 ```

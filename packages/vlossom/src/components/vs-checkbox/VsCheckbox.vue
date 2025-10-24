@@ -2,6 +2,7 @@
     <vs-input-wrapper
         v-show="!hidden"
         :width="width"
+        :style="componentStyleSet.wrapper"
         :grid="grid"
         :id="checkLabel ? '' : computedId"
         :label="label"
@@ -59,14 +60,12 @@ import {
 } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStyleSet, useStateClass } from '@/composables';
-import { useValueMatcher } from '@/composables/value-matcher-composable';
+import { useColorScheme, useInput, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
 import type { VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const name = VsComponent.VsCheckbox;
-
 export default defineComponent({
     name,
     components: { VsInputWrapper },
@@ -86,6 +85,7 @@ export default defineComponent({
         multiple: { type: Boolean, default: false },
         trueValue: { type: null, default: true },
         falseValue: { type: null, default: false },
+
         // v-model
         modelValue: { type: null, default: false },
     },
@@ -117,7 +117,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
 
         const inputValue = ref(modelValue.value);
 
@@ -240,6 +240,7 @@ export default defineComponent({
         return {
             checkboxRef,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             classObj,
             stateClasses,

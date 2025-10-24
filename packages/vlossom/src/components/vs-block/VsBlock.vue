@@ -14,11 +14,11 @@ import { defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
-import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsBlockStyleSet } from './types';
 
-const name = VsComponent.VsBlock;
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
+const name = VsComponent.VsBlock;
 export default defineComponent({
     name,
     components: { VsResponsive },

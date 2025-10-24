@@ -16,26 +16,6 @@
 </template>
 ```
 
-### 커스텀 스타일링
-
-```html
-<template>
-    <vs-avatar :style-set="customStyle">Custom</vs-avatar>
-</template>
-
-<script setup>
-const customStyle = {
-    width: '5rem',
-    height: '5rem',
-    backgroundColor: '#e188e5',
-    fontColor: '#fff',
-    borderRadius: '50%',
-    fontSize: '1.5rem',
-    fontWeight: '600'
-};
-</script>
-```
-
 ## Props
 
 | Prop          | Type                         | Default | Required | Description             |
@@ -47,15 +27,16 @@ const customStyle = {
 
 ```typescript
 interface VsAvatarStyleSet {
+    width?: string; // 너비
+    height?: string; // 높이
+
     backgroundColor?: string; // 배경 색상
     border?: string; // 테두리 스타일
     borderRadius?: string; // 모서리 둥글기
+    opacity?: number; // 투명도
+
     fontColor?: string; // 텍스트 색상
-    fontSize?: string; // 폰트 크기
-    fontWeight?: string | number; // 폰트 굵기
-    height?: string; // 높이
     objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down'; // 이미지 맞춤 방식
-    width?: string; // 너비
 }
 ```
 

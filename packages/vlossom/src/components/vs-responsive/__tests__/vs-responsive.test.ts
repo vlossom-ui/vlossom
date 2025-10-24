@@ -13,8 +13,9 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            expect(responsive.attributes('style')).toContain('width: 300px');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                width: '300px',
+            });
         });
 
         it('숫자 width가 주어지면 width 스타일이 적용되어야 한다', () => {
@@ -26,8 +27,9 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            expect(responsive.attributes('style')).toContain('width: 500px');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                width: '500px',
+            });
         });
 
         it('Breakpoints 객체 width가 주어지면 반응형 CSS 변수와 클래스가 적용되어야 한다', () => {
@@ -44,20 +46,16 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
             // CSS 변수 확인
-            expect(style).toContain('--vs-width-sm: 400px');
-            expect(style).toContain('--vs-width-md: 600px');
-            expect(style).toContain('--vs-width-lg: 800px');
-            expect(style).toContain('--vs-width-xl: 1000px');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-width-sm': '400px',
+                '--vs-width-md': '600px',
+                '--vs-width-lg': '800px',
+                '--vs-width-xl': '1000px',
+            });
 
             // 클래스 확인
-            expect(responsive.classes()).toContain('vs-width-sm');
-            expect(responsive.classes()).toContain('vs-width-md');
-            expect(responsive.classes()).toContain('vs-width-lg');
-            expect(responsive.classes()).toContain('vs-width-xl');
+            expect(wrapper.vm.responsiveClasses).toEqual(['vs-width-sm', 'vs-width-md', 'vs-width-lg', 'vs-width-xl']);
         });
 
         it('일부 breakpoint만 주어진 width 객체가 주어지면 해당 값들만 적용되어야 한다', () => {
@@ -72,20 +70,14 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
             // 설정된 값들만 CSS 변수에 포함
-            expect(style).toContain('--vs-width-sm: 400px');
-            expect(style).toContain('--vs-width-lg: 800px');
-            expect(style).not.toContain('--vs-width-md');
-            expect(style).not.toContain('--vs-width-xl');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-width-sm': '400px',
+                '--vs-width-lg': '800px',
+            });
 
             // 설정된 값들만 클래스에 포함
-            expect(responsive.classes()).toContain('vs-width-sm');
-            expect(responsive.classes()).toContain('vs-width-lg');
-            expect(responsive.classes()).not.toContain('vs-width-md');
-            expect(responsive.classes()).not.toContain('vs-width-xl');
+            expect(wrapper.vm.responsiveClasses).toEqual(['vs-width-sm', 'vs-width-lg']);
         });
     });
 
@@ -99,8 +91,9 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            expect(responsive.attributes('style')).toContain('--vs-grid-xs: 12');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-grid-xs': '12',
+            });
         });
 
         it('숫자 grid가 주어지면 grid CSS 변수가 적용되어야 한다', () => {
@@ -112,8 +105,9 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            expect(responsive.attributes('style')).toContain('--vs-grid-xs: 8');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-grid-xs': '8',
+            });
         });
 
         it('Breakpoints 객체 grid가 주어지면 반응형 CSS 변수와 클래스가 적용되어야 한다', () => {
@@ -130,20 +124,16 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
             // CSS 변수 확인
-            expect(style).toContain('--vs-grid-sm: 6');
-            expect(style).toContain('--vs-grid-md: 8');
-            expect(style).toContain('--vs-grid-lg: 10');
-            expect(style).toContain('--vs-grid-xl: 12');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-grid-sm': '6',
+                '--vs-grid-md': '8',
+                '--vs-grid-lg': '10',
+                '--vs-grid-xl': '12',
+            });
 
             // 클래스 확인
-            expect(responsive.classes()).toContain('vs-grid-sm');
-            expect(responsive.classes()).toContain('vs-grid-md');
-            expect(responsive.classes()).toContain('vs-grid-lg');
-            expect(responsive.classes()).toContain('vs-grid-xl');
+            expect(wrapper.vm.responsiveClasses).toEqual(['vs-grid-sm', 'vs-grid-md', 'vs-grid-lg', 'vs-grid-xl']);
         });
 
         it('일부 breakpoint만 주어진 grid 객체가 주어지면 해당 값들만 적용되어야 한다', () => {
@@ -158,20 +148,14 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
             // 설정된 값들만 CSS 변수에 포함
-            expect(style).toContain('--vs-grid-md: 8');
-            expect(style).toContain('--vs-grid-xl: 12');
-            expect(style).not.toContain('--vs-grid-sm');
-            expect(style).not.toContain('--vs-grid-lg');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-grid-md': '8',
+                '--vs-grid-xl': '12',
+            });
 
             // 설정된 값들만 클래스에 포함
-            expect(responsive.classes()).toContain('vs-grid-md');
-            expect(responsive.classes()).toContain('vs-grid-xl');
-            expect(responsive.classes()).not.toContain('vs-grid-sm');
-            expect(responsive.classes()).not.toContain('vs-grid-lg');
+            expect(wrapper.vm.responsiveClasses).toEqual(['vs-grid-md', 'vs-grid-xl']);
         });
     });
 
@@ -186,11 +170,10 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
-            expect(style).toContain('width: 600px');
-            expect(style).toContain('--vs-grid-xs: 8');
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                width: '600px',
+                '--vs-grid-xs': '8',
+            });
         });
 
         it('width와 grid가 모두 Breakpoints 객체로 주어지면 모든 반응형 속성이 적용되어야 한다', () => {
@@ -209,24 +192,16 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
+            // width와 grid CSS 변수
+            expect(wrapper.vm.responsiveStyles).toEqual({
+                '--vs-width-sm': '400px',
+                '--vs-width-md': '600px',
+                '--vs-grid-sm': '6',
+                '--vs-grid-md': '8',
+            });
 
-            // width CSS 변수
-            expect(style).toContain('--vs-width-sm: 400px');
-            expect(style).toContain('--vs-width-md: 600px');
-
-            // grid CSS 변수
-            expect(style).toContain('--vs-grid-sm: 6');
-            expect(style).toContain('--vs-grid-md: 8');
-
-            // width 클래스
-            expect(responsive.classes()).toContain('vs-width-sm');
-            expect(responsive.classes()).toContain('vs-width-md');
-
-            // grid 클래스
-            expect(responsive.classes()).toContain('vs-grid-sm');
-            expect(responsive.classes()).toContain('vs-grid-md');
+            // width와 grid 클래스
+            expect(wrapper.vm.responsiveClasses).toEqual(['vs-width-sm', 'vs-width-md', 'vs-grid-sm', 'vs-grid-md']);
         });
     });
 
@@ -278,12 +253,8 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
-            expect(style).toBeUndefined();
-            expect(responsive.classes()).not.toContain('vs-width-sm');
-            expect(responsive.classes()).not.toContain('vs-grid-sm');
+            expect(wrapper.vm.responsiveStyles).toEqual({});
+            expect(wrapper.vm.responsiveClasses).toEqual([]);
         });
 
         it('undefined 값이 주어지면 스타일이나 클래스가 적용되지 않아야 한다', () => {
@@ -296,12 +267,8 @@ describe('VsResponsive', () => {
             });
 
             // then
-            const responsive = wrapper.find('.vs-responsive');
-            const style = responsive.attributes('style');
-
-            expect(style).toBeUndefined();
-            expect(responsive.classes()).not.toContain('vs-width-sm');
-            expect(responsive.classes()).not.toContain('vs-grid-sm');
+            expect(wrapper.vm.responsiveStyles).toEqual({});
+            expect(wrapper.vm.responsiveClasses).toEqual([]);
         });
     });
 });

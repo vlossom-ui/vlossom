@@ -1,15 +1,15 @@
 @reference 'tailwindcss';
 
 .vs-drawer {
-    --vs-drawer-size: initial;
-    --vs-drawer-boxShadow: initial;
-
-    --vs-drawer-position: initial;
     --vs-drawer-backgroundColor: initial;
     --vs-drawer-border: initial;
     --vs-drawer-borderRadius: initial;
     --vs-drawer-padding: initial;
     --vs-drawer-opacity: initial;
+
+    --vs-drawer-position: initial;
+    --vs-drawer-size: initial;
+    --vs-drawer-boxShadow: initial;
 
     --vs-drawer-dimmed-backgroundColor: initial;
     --vs-drawer-dimmed-opacity: initial;

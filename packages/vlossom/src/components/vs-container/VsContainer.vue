@@ -11,6 +11,7 @@ import { LayoutStore } from '@/stores';
 import { objectUtil } from '@/utils';
 
 const name = VsComponent.VsContainer;
+
 export default defineComponent({
     name,
     props: {

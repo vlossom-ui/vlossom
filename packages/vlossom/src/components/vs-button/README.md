@@ -72,16 +72,23 @@
 
 ```typescript
 interface VsButtonStyleSet {
+    width?: string;
+    height?: string;
+
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    height?: string;
     padding?: string;
-    width?: string;
-    loading?: VsLoadingStyleSet;
+    opacity?: string;
+
+    fontColor?: string;
+
+    loading?: {
+        width?: string;
+        height?: string;
+        color?: string;
+        barWidth?: string;
+    };
 }
 ```
 

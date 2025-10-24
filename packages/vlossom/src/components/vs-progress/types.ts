@@ -1,5 +1,5 @@
 import type VsProgress from './VsProgress.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,10 +9,8 @@ declare module 'vue' {
 
 export type { VsProgress };
 
-export interface VsProgressStyleSet
-    extends SizeStyleSet,
-        Omit<BoxStyleSet, 'display' | 'opacity' | 'padding'>,
-        TextStyleSet {
+export interface VsProgressStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'opacity' | 'padding'> {
+    fontColor?: string;
     textShadow?: string;
     valueColor?: string;
 }

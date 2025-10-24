@@ -9,10 +9,11 @@ declare module 'vue' {
 
 export type { VsDrawer };
 
-export interface VsDrawerStyleSet extends Omit<BoxStyleSet, 'display'> {
+export interface VsDrawerStyleSet extends BoxStyleSet {
     position?: 'absolute' | 'fixed';
     size?: string;
     boxShadow?: string;
+
     dimmed?: {
         backgroundColor?: string;
         opacity?: number;
