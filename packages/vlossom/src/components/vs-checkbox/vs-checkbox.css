@@ -82,11 +82,4 @@
             font-size: var(--vs-font-size-sm);
         }
     }
-
-    &.vs-disabled,
-    &.vs-readonly {
-        .vs-checkbox-wrap > .vs-checkbox-input {
-            @apply pointer-events-auto cursor-not-allowed opacity-50;
-        }
-    }
 }
