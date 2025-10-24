@@ -4,25 +4,11 @@ import VsInputWrapper from '../VsInputWrapper.vue';
 
 describe('VsInputWrapper', () => {
     describe('기본 props', () => {
-        it('label prop이 주어지면 라벨이 렌더링되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    label: '이름',
-                },
-            });
-
-            // then
-            const label = wrapper.find('.vs-label span');
-            expect(label.exists()).toBe(true);
-            expect(label.text()).toBe('이름');
-        });
-
         it('required prop이 true이면 필수 표시 별표가 렌더링되어야 한다', () => {
             // given, when
             const wrapper = mount(VsInputWrapper, {
                 props: {
-                    label: '이름',
+                    label: 'some label',
                     required: true,
                 },
             });
@@ -38,7 +24,7 @@ describe('VsInputWrapper', () => {
             // given, when
             const wrapper = mount(VsInputWrapper, {
                 props: {
-                    label: '이름',
+                    label: 'some label',
                     required: true,
                     disabled: true,
                     messages: [{ state: 'error', text: '에러 메시지' }],
@@ -64,37 +50,6 @@ describe('VsInputWrapper', () => {
             // then
             const inputWrapper = wrapper.find('.vs-input-wrapper');
             expect(inputWrapper.classes()).toContain('vs-small');
-        });
-
-        it('noLabel prop이 true이고 label 슬롯이 없으면 라벨 영역이 렌더링되지 않아야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    label: '이름',
-                    noLabel: true,
-                },
-            });
-
-            // then
-            const label = wrapper.find('.vs-label');
-            expect(label.exists()).toBe(false);
-        });
-
-        it('noLabel prop이 true여도 label 슬롯이 있으면 라벨 영역이 렌더링되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    noLabel: true,
-                },
-                slots: {
-                    label: '<span class="custom-label">커스텀 라벨</span>',
-                },
-            });
-
-            // then
-            const label = wrapper.find('.vs-label');
-            expect(label.exists()).toBe(true);
-            expect(wrapper.html()).toContain('커스텀 라벨');
         });
 
         it('noMessages prop이 true이고 messages 슬롯이 없으면 메시지 영역이 렌더링되지 않아야 한다', () => {
@@ -129,12 +84,81 @@ describe('VsInputWrapper', () => {
         });
     });
 
-    describe('groupLabel 기능', () => {
+    describe('label', () => {
+        it('label prop이 주어지면 라벨이 렌더링되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInputWrapper, {
+                props: {
+                    label: 'some label',
+                },
+            });
+
+            // then
+            const label = wrapper.find('.vs-label span');
+            expect(label.exists()).toBe(true);
+            expect(label.text()).toBe('some label');
+        });
+
+        it('label prop이 없으면 라벨 영역이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInputWrapper, {});
+
+            // then
+            const label = wrapper.find('.vs-label');
+            expect(label.exists()).toBe(false);
+        });
+
+        it('label slot이 있으면 라벨 영역이 렌더링되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInputWrapper, {
+                slots: {
+                    label: '<span class="custom-label">커스텀 라벨</span>',
+                },
+            });
+
+            // then
+            const label = wrapper.find('.vs-label');
+            expect(label.exists()).toBe(true);
+            expect(label.html()).toContain('커스텀 라벨');
+        });
+
+        it('noLabel prop이 true이면 label이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInputWrapper, {
+                props: {
+                    label: 'some label',
+                    noLabel: true,
+                },
+            });
+
+            // then
+            const label = wrapper.find('.vs-label');
+            expect(label.exists()).toBe(false);
+        });
+
+        it('noLabel prop이 true이면 label 슬롯이 있어도 라벨 영역이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInputWrapper, {
+                props: {
+                    noLabel: true,
+                },
+                slots: {
+                    label: '<span class="custom-label">커스텀 라벨</span>',
+                },
+            });
+
+            // then
+            const label = wrapper.find('.vs-label');
+            expect(label.exists()).toBe(false);
+        });
+    });
+
+    describe('groupLabel', () => {
         it('groupLabel이 false이면 div 구조로 렌더링되어야 한다', () => {
             // given, when
             const wrapper = mount(VsInputWrapper, {
                 props: {
-                    label: '이름',
+                    label: 'some label',
                     groupLabel: false,
                 },
             });
