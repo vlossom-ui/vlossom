@@ -96,7 +96,7 @@ export interface Focusable {
     blur(): void;
 }
 
-export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning' | 'selected';
+export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning';
 
 export interface StateMessage<T extends string = UIState> {
     state: T;

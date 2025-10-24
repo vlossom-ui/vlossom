@@ -22,7 +22,7 @@ export default defineComponent({
     props: {
         size: { type: [String, Number], default: '1rem' },
         state: {
-            type: String as PropType<Exclude<UIState, 'selected'>>,
+            type: String as PropType<UIState>,
             default: 'idle',
         },
         text: { type: String, default: '' },
