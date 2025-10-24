@@ -264,4 +264,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./vs-checkbox.css" />
+<style src="./VsCheckbox.css" />

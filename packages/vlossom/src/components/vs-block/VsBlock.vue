@@ -40,4 +40,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="css" src="./VsBlock.css" />
+<style src="./VsBlock.css" />
