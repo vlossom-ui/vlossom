@@ -103,8 +103,10 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
             return;
         }
 
+        // make the attachment visible
         isVisible.value = true;
 
+        // for waiting the attachment to be mounted
         nextTick(() => {
             try {
                 attachment.value.style.display = 'block';
