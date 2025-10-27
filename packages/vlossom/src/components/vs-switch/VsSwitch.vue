@@ -34,7 +34,6 @@
                 ref="switchRef"
                 type="checkbox"
                 class="vs-switch-input"
-                :aria-label="ariaLabel"
                 :id="computedId"
                 :disabled="computedDisabled || computedReadonly"
                 :name="name"
@@ -89,7 +88,6 @@ export default defineComponent({
         ...getStyleSetProps<VsSwitchStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        ariaLabel: { type: String, default: '' },
         beforeChange: {
             type: Function as PropType<(from: any, to: any) => Promise<boolean> | null>,
             default: null,
