@@ -130,16 +130,15 @@ export default defineComponent({
             noDefaultRules,
             state,
         } = toRefs(props);
+
+        const inputValue: Ref<InputValueType> = ref(modelValue.value);
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
+        const isNumberInput = computed(() => type.value === 'number');
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const { styleSetVariables } = useStyleSet<VsInputStyleSet>(name, styleSet);
         const { modifyStringValue } = useStringModifier(modelModifiers);
-
-        const isNumberInput = computed(() => type.value === 'number');
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
-
-        const inputValue: Ref<InputValueType> = ref(modelValue.value);
 
         function convertValue(v: InputValueType | undefined): InputValueType {
             if (v === undefined || v === null || v === '') {
@@ -203,10 +202,7 @@ export default defineComponent({
 
         function updateValue(event: Event) {
             const target = event.target as HTMLInputElement;
-            const value = target.value || '';
-            const convertedValue = convertValue(value);
-            inputValue.value = convertedValue;
-            emit('update:modelValue', convertedValue);
+            inputValue.value = target.value || '';
         }
 
         function focus() {
