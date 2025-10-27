@@ -18,29 +18,31 @@
         </template>
 
         <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
-            <input
-                ref="switchRef"
-                type="checkbox"
-                class="vs-switch-input"
-                :id="computedId"
-                :disabled="computedDisabled || computedReadonly"
-                :name="name"
-                :value="String(trueValue)"
-                :checked="isChecked"
-                :aria-required="required"
-                @focus.stop="onFocus"
-                @blur.stop="onBlur"
-                @click.prevent.stop="onClick"
-            />
+            <label class="vs-switch-wrap" :for="computedId">
+                <input
+                    ref="switchRef"
+                    type="checkbox"
+                    class="vs-switch-input"
+                    :id="computedId"
+                    :disabled="computedDisabled || computedReadonly"
+                    :name="name"
+                    :value="String(trueValue)"
+                    :checked="isChecked"
+                    :aria-required="required"
+                    @focus.stop="onFocus"
+                    @blur.stop="onBlur"
+                    @change.stop="onChange"
+                />
 
-            <div :class="['vs-switch-button', stateClasses]" @click.prevent.stop="onClick">
-                <span class="vs-status-label" data-value="true" v-show="isChecked">
-                    {{ trueLabel }}
-                </span>
-                <span class="vs-status-label" data-value="false" v-show="!isChecked">
-                    {{ falseLabel }}
-                </span>
-            </div>
+                <div :class="['vs-switch-button', stateClasses]">
+                    <span class="vs-status-label" data-value="true" v-show="isChecked">
+                        {{ trueLabel }}
+                    </span>
+                    <span class="vs-status-label" data-value="false" v-show="!isChecked">
+                        {{ falseLabel }}
+                    </span>
+                </div>
+            </label>
         </div>
         <template #messages v-if="!noMessages">
             <slot name="messages" />
@@ -178,7 +180,7 @@ export default defineComponent({
 
         const { stateClasses } = useStateClass(computedState);
 
-        async function onClick() {
+        async function onChange() {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
@@ -227,7 +229,7 @@ export default defineComponent({
             inputValue,
             isChecked,
             shake,
-            onClick,
+            onChange,
             onFocus,
             onBlur,
             validate,
