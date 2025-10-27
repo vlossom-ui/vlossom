@@ -116,12 +116,4 @@
             outline-offset: 2px !important;
         }
     }
-
-    &.vs-disabled {
-        @apply pointer-events-none cursor-default opacity-50 grayscale-60 select-none;
-    }
-
-    &.vs-readonly {
-        @apply pointer-events-none cursor-default;
-    }
 }
