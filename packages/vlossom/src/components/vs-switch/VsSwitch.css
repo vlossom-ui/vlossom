@@ -45,12 +45,12 @@
     &.vs-checked {
         .vs-switch-button {
             border: var(--vs-switch-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-primary-comp-bg);
+            background-color: var(--vs-switch-backgroundColor, var(--vs-primary-comp-bg));
             color: var(--vs-primary-comp-font);
 
             &::before {
                 left: calc(100% - (var(--vs-switch-handleSize, 1.3rem) + 0.3rem));
-                background-color: var(--vs-primary-comp-font);
+                background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-font));
             }
 
             .vs-status-label {
@@ -85,6 +85,7 @@
             .vs-switch-button {
                 &::before {
                     left: calc(100% - (var(--vs-switch-handleSize, 1rem) + 0.3rem));
+                    background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-font));
                 }
 
                 .vs-status-label {

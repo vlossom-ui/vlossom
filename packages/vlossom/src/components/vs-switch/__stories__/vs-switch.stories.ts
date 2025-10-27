@@ -4,7 +4,7 @@ import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/stor
 import { useVlossom } from '@/framework';
 import VsSwitch from './../VsSwitch.vue';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
-import type { VsSwitchStyleSet } from './../types';
+import type { VsSwitchStyleSet } from '../types';
 
 const meta: Meta<typeof VsSwitch> = {
     title: 'Components/Input Components/VsSwitch',
@@ -20,22 +20,14 @@ const meta: Meta<typeof VsSwitch> = {
         components: { VsSwitch },
         setup() {
             const preDefinedStyleSet: VsSwitchStyleSet = {
-                false: {
-                    border: '3px solid blue',
-                    backgroundColor: '#000',
-                    fontColor: '#fff',
-                    handleColor: '#fff',
-                },
-                true: {
-                    border: '3px solid purple',
-                    backgroundColor: '#fff',
-                    fontColor: '#000',
-                    handleColor: '#000',
-                },
+                backgroundColor: '#000',
+                border: '3px solid blue',
+                borderRadius: '8px',
+                handleColor: '#fff',
             } as const;
 
             useVlossom().styleSet = {
-                myStyleSet: { VsSwitch: { ...preDefinedStyleSet } },
+                mySwitchStyleSet: { VsSwitch: { ...preDefinedStyleSet } },
             };
 
             return { args };
@@ -151,10 +143,10 @@ export const Width: Story = {
             return { args };
         },
         template: `
-            <vs-container>
+            <vs-grid>
                 <vs-switch v-bind="args" />
                 <vs-switch v-bind="args"  style="margin-top: 5px"/>
-            </vs-container>
+            </vs-grid>
         `,
     }),
     args: {
@@ -169,10 +161,10 @@ export const Grid: Story = {
             return { args };
         },
         template: `
-            <vs-container grid row-gap="5px">
+            <vs-grid>
                 <vs-switch v-bind="args" />
                 <vs-switch v-bind="args" />
-            </vs-container>
+            </vs-grid>
         `,
     }),
     args: {
@@ -181,26 +173,35 @@ export const Grid: Story = {
 };
 
 export const StyleSet: Story = {
+    render: (args: any) => ({
+        components: { VsSwitch },
+        setup() {
+            return { args };
+        },
+        template: `
+            <vs-switch v-bind="args">
+                <template #true-label>
+                    <span class="text-red-500">True Slot</span>
+                </template>
+                <template #false-label>
+                    <span class="text-blue-500">False Slot</span>
+                </template>
+            </vs-switch>
+            `,
+    }),
     args: {
         styleSet: {
-            false: {
-                border: '3px solid blue',
-                backgroundColor: '#000',
-                fontColor: '#fff',
-                handleColor: '#fff',
-            },
-            true: {
-                border: '3px solid purple',
-                backgroundColor: '#fff',
-                fontColor: '#000',
-                handleColor: '#000',
-            },
+            border: '3px solid blue',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            handleColor: '#2ecc71',
+            handleSize: '16px',
         },
     },
 };
 
 export const PreDefinedStyleSet: Story = {
     args: {
-        styleSet: 'myStyleSet',
+        styleSet: 'mySwitchStyleSet',
     },
 };

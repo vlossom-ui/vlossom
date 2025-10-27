@@ -35,17 +35,17 @@
                 />
 
                 <div :class="['vs-switch-button', stateClasses]">
-                    <slot name="true-label" v-if="isChecked">
-                        <span class="vs-status-label" data-value="true">
+                    <span class="vs-status-label" data-value="true" v-show="isChecked">
+                        <slot name="true-label">
                             {{ trueLabel }}
-                        </span>
-                    </slot>
+                        </slot>
+                    </span>
 
-                    <slot name="false-label" v-if="!isChecked">
-                        <span class="vs-status-label" data-value="false">
+                    <span class="vs-status-label" data-value="false" v-show="!isChecked">
+                        <slot name="false-label">
                             {{ falseLabel }}
-                        </span>
-                    </slot>
+                        </slot>
+                    </span>
                 </div>
             </label>
         </div>
