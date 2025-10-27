@@ -17,19 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div
-            :class="[
-                'vs-switch',
-                colorSchemeClass,
-                {
-                    'vs-checked': isChecked,
-                    'vs-disabled': computedDisabled,
-                    'vs-readonly': computedReadonly,
-                    'vs-small': small,
-                },
-            ]"
-            :style="styleSetVariables"
-        >
+        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
             <input
                 ref="switchRef"
                 type="checkbox"
@@ -60,17 +48,7 @@
 </template>
 
 <script lang="ts">
-import {
-    computed,
-    defineComponent,
-    nextTick,
-    ref,
-    toRefs,
-    useTemplateRef,
-    watch,
-    type PropType,
-    type TemplateRef,
-} from 'vue';
+import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
@@ -131,6 +109,13 @@ export default defineComponent({
 
         const inputValue = ref(modelValue.value);
 
+        const classObj = computed(() => ({
+            'vs-checked': isChecked.value,
+            'vs-disabled': computedDisabled.value,
+            'vs-readonly': computedReadonly.value,
+            'vs-small': small.value,
+        }));
+
         const {
             isMatched: isChecked,
             getInitialValue,
@@ -142,14 +127,6 @@ export default defineComponent({
         function requiredCheck() {
             return required.value && !isChecked.value ? 'required' : '';
         }
-
-        const classObj = computed(() => ({
-            'vs-checked': isChecked.value,
-            'vs-disabled': computedDisabled.value,
-            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
-            'vs-readonly': computedReadonly.value,
-            'vs-small': small.value,
-        }));
 
         const {
             computedId,
@@ -233,18 +210,6 @@ export default defineComponent({
         function blur() {
             switchRef.value?.blur();
         }
-
-        watch(
-            isChecked,
-            (value) => {
-                nextTick(() => {
-                    if (switchRef.value) {
-                        switchRef.value.checked = value;
-                    }
-                });
-            },
-            { immediate: true },
-        );
 
         return {
             switchRef,
