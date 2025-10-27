@@ -6,9 +6,11 @@ import {
     type VlossomOptions,
 } from '@/declaration';
 import { useOptionsStore } from '@/stores';
+import { createToastPlugin, type ToastPlugin } from './toast-plugin';
 
 export class Vlossom {
     private optionsStore = useOptionsStore();
+    private _toast: ToastPlugin = createToastPlugin();
 
     constructor(options: VlossomOptions) {
         const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options;
@@ -18,6 +20,10 @@ export class Vlossom {
         this.optionsStore.setRadiusRatio(radiusRatio);
 
         this.setDefaultTheme(theme);
+    }
+
+    get toast(): ToastPlugin {
+        return this._toast;
     }
 
     set colorScheme(colorScheme: GlobalColorSchemes) {

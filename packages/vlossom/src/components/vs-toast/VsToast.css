@@ -1,0 +1,16 @@
+@reference 'tailwindcss';
+
+.vs-toast {
+    @apply flex items-center gap-2 rounded-lg border px-4 py-3 shadow-lg;
+    border-color: var(--vs-color-border);
+    background-color: var(--vs-color-white);
+
+    min-width: 200px;
+    max-width: 400px;
+    color: var(--vs-color-text);
+
+    &[class*='vs-toast-primary'] {
+        background-color: var(--vs-color-primary);
+        color: var(--vs-color-primary-contrast);
+    }
+}

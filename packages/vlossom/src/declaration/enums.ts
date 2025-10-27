@@ -32,6 +32,8 @@ export enum VsComponent {
     VsSkeleton = 'VsSkeleton',
     VsSwitch = 'VsSwitch',
     VsThemeButton = 'VsThemeButton',
+    VsToast = 'VsToast',
+    VsToastView = 'VsToastView',
     VsToggle = 'VsToggle',
     VsTooltip = 'VsTooltip',
 }

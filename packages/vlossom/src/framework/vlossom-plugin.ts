@@ -1,6 +1,7 @@
 import type { App } from 'vue';
 import { Vlossom } from './vlossom-class';
 import type { VlossomOptions } from '@/declaration';
+import { mountToastApp } from './toast-plugin';
 
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -25,6 +26,9 @@ export function createVlossom(options: VlossomOptions): any {
                     console.warn('[Vlossom] Invalid component:', component);
                 }
             });
+
+            // Toast app 자동 마운트
+            mountToastApp(app);
         },
     };
 }
