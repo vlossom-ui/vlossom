@@ -1,7 +1,6 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        v-bind="inputWrapperProps"
         :width="width"
         :grid="grid"
         :disabled="disabled"
@@ -52,7 +51,7 @@
                 tabindex="-1"
                 @click.stop="clearWithFocus"
             >
-                <i v-html="closeIcon" class="size-4" />
+                <i v-html="closeIcon" :class="{ 'size-4': small, 'size-5': !small }" />
             </button>
 
             <div v-if="$slots['append']" class="vs-append">
@@ -67,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, useTemplateRef, type PropType, type TemplateRef } from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -112,27 +111,35 @@ export default defineComponent({
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'enter'],
     setup(props, { emit }) {
+        const {
+            colorScheme,
+            small,
+            styleSet,
+            type,
+            modelValue,
+            modelModifiers,
+            required,
+            max,
+            min,
+            id,
+            noClear,
+            disabled,
+            readonly,
+            messages,
+            rules,
+            noDefaultRules,
+            state,
+        } = toRefs(props);
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
 
-        const { colorSchemeClass } = useColorScheme(
-            name,
-            computed(() => props.colorScheme),
-        );
-        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(
-            name,
-            computed(() => props.styleSet),
-        );
-        const { modifyStringValue } = useStringModifier(computed(() => props.modelModifiers));
+        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(name, styleSet);
+        const { modifyStringValue } = useStringModifier(modelModifiers);
 
-        const isNumberInput = computed(() => props.type === 'number');
-        const { requiredCheck, maxCheck, minCheck } = useVsInputRules(
-            computed(() => props.required),
-            computed(() => props.max),
-            computed(() => props.min),
-            computed(() => props.type),
-        );
+        const isNumberInput = computed(() => type.value === 'number');
+        const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 
-        const inputValue = computed(() => props.modelValue);
+        const inputValue: Ref<InputValueType> = ref(modelValue.value);
 
         function convertValue(v: InputValueType | undefined): InputValueType {
             if (v === undefined || v === null || v === '') {
@@ -162,63 +169,43 @@ export default defineComponent({
         } = useInput(
             { emit },
             {
-                inputValue: computed({
-                    get: () => props.modelValue,
-                    set: (value) => emit('update:modelValue', value),
-                }),
-                modelValue: computed(() => props.modelValue),
-                id: computed(() => props.id),
-                disabled: computed(() => props.disabled),
-                readonly: computed(() => props.readonly),
-                messages: computed(() => props.messages),
-                rules: computed(() => props.rules),
+                inputValue,
+                modelValue,
+                id,
+                disabled,
+                readonly,
+                messages,
+                rules,
                 defaultRules: computed(() => [requiredCheck, maxCheck, minCheck]),
-                noDefaultRules: computed(() => props.noDefaultRules),
-                state: computed(() => props.state),
+                noDefaultRules,
+                state,
                 callbacks: {
                     onMounted: () => {
-                        const convertedValue = convertValue(props.modelValue);
-                        if (convertedValue !== props.modelValue) {
-                            emit('update:modelValue', convertedValue);
-                        }
+                        inputValue.value = convertValue(inputValue.value);
                     },
                     onChange: () => {
-                        const convertedValue = convertValue(props.modelValue);
-                        if (convertedValue !== props.modelValue) {
-                            emit('update:modelValue', convertedValue);
-                        }
+                        inputValue.value = convertValue(inputValue.value);
                     },
                     onClear,
                 },
             },
         );
 
-        // Input wrapper props 계산
-        const inputWrapperProps = computed(() => ({
-            width: props.width,
-            grid: props.grid,
-            id: computedId.value,
-            label: props.label,
-            required: props.required,
-            disabled: computedDisabled.value,
-            small: props.small,
-            noLabel: props.noLabel,
-        }));
-
         const classObj = computed(() => ({
-            'vs-small': props.small,
+            'vs-small': small.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
         }));
 
         const { stateClasses } = useStateClass(computedState);
 
-        const showClearButton = computed(() => !props.noClear && !computedReadonly.value && !computedDisabled.value);
+        const showClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
         function updateValue(event: Event) {
             const target = event.target as HTMLInputElement;
             const value = target.value || '';
             const convertedValue = convertValue(value);
+            inputValue.value = convertedValue;
             emit('update:modelValue', convertedValue);
         }
 
@@ -256,7 +243,6 @@ export default defineComponent({
             inputRef,
 
             // Computed
-            inputWrapperProps,
             classObj,
             colorSchemeClass,
             styleSetVariables,
