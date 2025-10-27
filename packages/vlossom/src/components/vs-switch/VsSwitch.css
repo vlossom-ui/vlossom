@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-switch {
     --vs-switch-width: initial;
     --vs-switch-height: initial;
@@ -12,12 +14,10 @@
     min-height: var(--vs-input-comp-height);
 
     .vs-switch-button {
-        @apply relative flex cursor-pointer items-center select-none;
-        transition: all 0.3s;
+        @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
         border: var(--vs-switch-border, 1px solid var(--vs-line-color));
         border-radius: var(--vs-switch-borderRadius, 1.5rem);
         background-color: var(--vs-switch-backgroundColor, var(--vs-area-bg));
-        padding: 0 0.6rem;
 
         width: var(--vs-switch-width, fit-content);
         height: var(--vs-switch-height, 2rem);
@@ -25,17 +25,12 @@
         font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
-            @apply block w-full text-center break-all whitespace-nowrap;
-            margin-left: 0.3rem;
-            padding-right: 0;
+            @apply ml-1.5 block w-full pr-0 text-center break-all whitespace-nowrap select-none;
             padding-left: calc(var(--vs-switch-handleSize, 1.2rem));
-            user-select: none;
         }
 
         &::before {
-            @apply absolute rounded-full;
-            left: 0.3rem;
-            transition: 0.3s;
+            @apply absolute left-1.5 rounded-full transition-all duration-300;
             background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-bg));
             width: calc(var(--vs-switch-handleSize, 1.4rem));
             height: calc(var(--vs-switch-handleSize, 1.4rem));
@@ -44,9 +39,7 @@
     }
 
     .vs-switch-input {
-        @apply pointer-events-none absolute opacity-0;
-        top: 0;
-        left: 0;
+        @apply pointer-events-none absolute top-0 left-0 opacity-0;
     }
 
     &.vs-checked {
@@ -61,8 +54,8 @@
             }
 
             .vs-status-label {
+                @apply pl-0;
                 padding-right: calc(var(--vs-switch-handleSize, 1.3rem));
-                padding-left: 0;
             }
         }
     }
@@ -71,19 +64,18 @@
         height: var(--vs-input-comp-height-small);
 
         .vs-switch-button {
+            @apply px-2.5;
             border-radius: var(--vs-switch-borderRadius, 1rem);
-            padding: 0 0.6rem;
             height: var(--vs-switch-height, 1.5rem);
             font-size: var(--vs-font-size-xs);
 
             .vs-status-label {
-                @apply relative;
-                margin-left: 0.2rem;
+                @apply relative ml-1;
                 padding-left: calc(var(--vs-switch-handleSize, 0.8rem));
             }
 
             &::before {
-                left: 0.3rem;
+                @apply left-1.5;
                 width: calc(var(--vs-switch-handleSize, 1rem));
                 height: calc(var(--vs-switch-handleSize, 1rem));
             }
@@ -96,8 +88,8 @@
                 }
 
                 .vs-status-label {
+                    @apply pl-0;
                     padding-right: calc(var(--vs-switch-handleSize, 1rem));
-                    padding-left: 0;
                 }
             }
         }
@@ -105,8 +97,8 @@
 
     &:focus-within {
         .vs-switch-button {
+            @apply outline-offset-2;
             outline: 1px solid var(--vs-line-color) !important;
-            outline-offset: 2px !important;
         }
     }
 }
