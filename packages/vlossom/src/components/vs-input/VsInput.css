@@ -1,7 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-input {
-    --vs-input-display: initial;
     --vs-input-backgroundColor: initial;
     --vs-input-border: initial;
     --vs-input-borderRadius: initial;
@@ -9,14 +8,12 @@
     --vs-input-fontSize: initial;
     --vs-input-height: initial;
     --vs-input-padding: initial;
+
     --vs-input-prepend-backgroundColor: initial;
-    --vs-input-prepend-fontColor: initial;
-    --vs-input-prepend-fontSize: initial;
     --vs-input-prepend-padding: initial;
     --vs-input-prepend-opacity: initial;
+
     --vs-input-append-backgroundColor: initial;
-    --vs-input-append-fontColor: initial;
-    --vs-input-append-fontSize: initial;
     --vs-input-append-padding: initial;
     --vs-input-append-opacity: initial;
 
@@ -46,16 +43,12 @@
         opacity: var(--vs-input-prepend-opacity, 1);
         background-color: var(--vs-input-prepend-backgroundColor, var(--vs-primary-comp-bg));
         padding: var(--vs-input-prepend-padding, 0 1rem);
-        color: var(--vs-input-prepend-fontColor, var(--vs-primary-comp-font));
-        font-size: var(--vs-input-prepend-fontSize, var(--vs-font-size));
     }
 
     .vs-append {
         opacity: var(--vs-input-append-opacity, 1);
         background-color: var(--vs-input-append-backgroundColor, var(--vs-primary-comp-bg));
         padding: var(--vs-input-append-padding, 0 1rem);
-        color: var(--vs-input-append-fontColor, var(--vs-primary-comp-font));
-        font-size: var(--vs-input-append-fontSize, var(--vs-font-size));
     }
 
     .vs-clear-button {

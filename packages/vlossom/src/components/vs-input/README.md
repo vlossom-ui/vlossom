@@ -252,6 +252,12 @@ interface VsInputRef extends InputRef {
     validate: () => boolean;
 }
 
+interface VsAttachmentStyleSet {
+    backgroundColor?: string; // 배경색
+    opacity?: number; // 투명도
+    padding?: string; // 내부 여백
+}
+
 interface VsInputStyleSet {
     append?: VsAttachmentStyleSet; // append 슬롯 영역 스타일
     backgroundColor?: string; // 배경색

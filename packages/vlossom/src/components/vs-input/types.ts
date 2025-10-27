@@ -15,11 +15,8 @@ export interface VsInputRef extends InputRef {
     select: () => void;
 }
 
-type VsAttachmentStyleSet = Omit<BoxStyleSet, 'display' | 'border' | 'borderRadius'> &
-    Omit<TextStyleSet, 'fontWeight' | 'lineHeight' | 'whiteSpace'>;
-
-type InputStyleSet = Omit<BoxStyleSet, 'display' | 'opacity'> &
-    Omit<TextStyleSet, 'fontWeight' | 'lineHeight' | 'whiteSpace'>;
+type VsAttachmentStyleSet = Omit<BoxStyleSet, 'border' | 'borderRadius'>;
+type InputStyleSet = Omit<BoxStyleSet, 'opacity'> & Omit<TextStyleSet, 'fontWeight'>;
 
 export interface VsInputStyleSet extends InputStyleSet {
     append?: VsAttachmentStyleSet;
