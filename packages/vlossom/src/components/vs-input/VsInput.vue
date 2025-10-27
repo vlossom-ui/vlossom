@@ -14,7 +14,7 @@
         :messages="computedMessages"
         :shake="shake"
     >
-        <template #label v-if="!noLabel">
+        <template #label v-if="!noLabel && (!!label || !!$slots.label)">
             <slot name="label" />
         </template>
 
