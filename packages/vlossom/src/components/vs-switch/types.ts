@@ -1,16 +1,18 @@
-export interface VsSwitchStateStyleSet {
+import type { SizeStyleSet, VsInputWrapperStyleSet } from '@/main';
+
+interface VsSwitchStateStyleSet {
     backgroundColor?: string;
     border?: string;
     fontColor?: string;
     handleColor?: string;
 }
 
-export interface VsSwitchStyleSet {
+export interface VsSwitchStyleSet extends SizeStyleSet {
     borderRadius?: string;
-    false: VsSwitchStateStyleSet;
     fontSize?: string;
     handleSize?: string;
-    height?: string;
+    false?: VsSwitchStateStyleSet;
     true?: VsSwitchStateStyleSet;
-    width?: string;
+
+    wrapper?: VsInputWrapperStyleSet;
 }

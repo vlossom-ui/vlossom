@@ -1,9 +1,11 @@
 .vs-switch {
     --vs-switch-width: initial;
     --vs-switch-height: initial;
+
     --vs-switch-borderRadius: initial;
     --vs-switch-fontSize: initial;
     --vs-switch-handleSize: initial;
+
     --vs-switch-false-backgroundColor: initial;
     --vs-switch-false-border: initial;
     --vs-switch-false-fontColor: initial;

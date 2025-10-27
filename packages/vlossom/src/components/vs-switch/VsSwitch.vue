@@ -2,6 +2,7 @@
     <vs-input-wrapper
         v-show="!hidden"
         :width="width"
+        :style="componentStyleSet.wrapper"
         :grid="grid"
         :id="computedId"
         :label="label"
@@ -128,7 +129,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsSwitchStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(name, styleSet);
 
         const inputValue = ref(modelValue.value);
 
@@ -258,6 +259,7 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            componentStyleSet,
             inputValue,
             isChecked,
             shake,
