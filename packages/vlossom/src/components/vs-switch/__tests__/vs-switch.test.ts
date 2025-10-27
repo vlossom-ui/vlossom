@@ -318,40 +318,6 @@ describe('vs-switch', () => {
             expect(wrapper.vm.isChecked).toBe(true);
         });
     });
-    describe('true / false label', () => {
-        it('false-label을 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsSwitch, {
-                props: {
-                    falseLabel: 'Rejected',
-                    modelValue: false,
-                },
-            });
-
-            // then
-            const label = wrapper.find('.vs-status-label[data-value=false]');
-            expect(label.isVisible()).toBe(true);
-            expect(label.text()).toBe('Rejected');
-        });
-        it('true-label을 설정할 수 있다', async () => {
-            // given
-            const wrapper = mount(VsSwitch, {
-                props: {
-                    trueLabel: 'Approved',
-                    modelValue: false,
-                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
-                },
-            });
-
-            const target = wrapper.find('div.vs-switch-button');
-            await target.trigger('click');
-
-            // then
-            const label = wrapper.find('.vs-status-label[data-value=true]');
-            expect(label.isVisible()).toBe(true);
-            expect(label.text()).toBe('Approved');
-        });
-    });
 
     describe('disabled', () => {
         it('disabled 일 때는 modelValue가 업데이트되지 않는다', async () => {
