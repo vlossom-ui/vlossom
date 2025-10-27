@@ -30,6 +30,7 @@
                 :aria-required="required"
                 @focus.stop="onFocus"
                 @blur.stop="onBlur"
+                @click.prevent.stop="onClick"
             />
 
             <div :class="['vs-switch-button', stateClasses]" @click.prevent.stop="onClick">
