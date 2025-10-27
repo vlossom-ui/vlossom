@@ -59,7 +59,7 @@
     }
 
     .vs-clear-button {
-        @apply mr-2.5 flex cursor-pointer items-center justify-center border-none opacity-0;
+        @apply mr-2.5 flex items-center justify-center border-none opacity-0;
         transition: opacity 0.4s;
 
         background: none;
@@ -68,7 +68,7 @@
 
     &:hover {
         .vs-clear-button.show {
-            @apply opacity-100;
+            @apply cursor-pointer opacity-100;
         }
     }
 
