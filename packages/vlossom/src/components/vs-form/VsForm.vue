@@ -7,9 +7,10 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, provide, toRefs, watch } from 'vue';
 import { FORM_STORE_KEY, VsComponent } from '@/declaration';
-import VsGrid from '@/components/vs-grid/VsGrid.vue';
 import { getGridProps } from '@/props';
-import { FormStore } from '@/stores/form-store';
+import { FormStore } from '@/stores';
+
+import VsGrid from '@/components/vs-grid/VsGrid.vue';
 
 const name = VsComponent.VsForm;
 export default defineComponent({

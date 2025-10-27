@@ -2,8 +2,8 @@
     <vs-toggle
         :model-value="isDarkTheme"
         class="vs-theme-button"
-        :style="styleSetVariables"
         :color-scheme="colorScheme"
+        :style="styleSetVariables"
         :style-set="componentStyleSet"
         :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
         :disabled="disabled"
@@ -27,7 +27,6 @@ import { themeDarkIcon, themeLightIcon } from './icons';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
 const name = VsComponent.VsThemeButton;
-
 export default defineComponent({
     name,
     components: { VsToggle },

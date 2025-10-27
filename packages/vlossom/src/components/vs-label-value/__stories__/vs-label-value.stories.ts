@@ -18,7 +18,6 @@ const meta: Meta<typeof VsLabelValue> = {
                     backgroundColor: '#dbeafe',
                     fontColor: '#1e40af',
                     padding: '1rem 1.5rem',
-                    fontWeight: '600',
                 },
                 value: {
                     backgroundColor: '#f8fafc',

@@ -41,13 +41,8 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsExpandableStyleSet {
-    backgroundColor?: string; // 배경 색상
-    padding?: string; // 내부 여백
-    fontColor?: string; // 텍스트 색상
-    fontSize?: string; // 폰트 크기
-    fontWeight?: string | number; // 폰트 굵기
-    lineHeight?: string; // 줄 간격
-    whiteSpace?: string; // 공백 처리 방식
+    backgroundColor?: string;
+    padding?: string;
 }
 ```
 

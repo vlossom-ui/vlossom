@@ -30,11 +30,11 @@ describe('VsInnerScroll', () => {
             });
 
             // then
-            const innerScroll = wrapper.find('.vs-inner-scroll');
-            const style = innerScroll.attributes('style');
-            expect(style).toContain('--vs-inner-scroll-padding: 20px');
-            expect(style).toContain('--vs-inner-scroll-header-padding: 10px');
-            expect(style).toContain('--vs-inner-scroll-footer-padding: 15px');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-inner-scroll-padding': '20px',
+                '--vs-inner-scroll-header-padding': '10px',
+                '--vs-inner-scroll-footer-padding': '15px',
+            });
         });
     });
 });

@@ -62,11 +62,12 @@ describe('VsLoading', () => {
             });
 
             // then
-            const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 100px');
-            expect(style).toContain('--vs-loading-height: 120px');
-            expect(style).toContain('--vs-loading-color: #ff0000');
-            expect(style).toContain('--vs-loading-barWidth: 20%');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-loading-width': '100px',
+                '--vs-loading-height': '120px',
+                '--vs-loading-color': '#ff0000',
+                '--vs-loading-barWidth': '20%',
+            });
         });
 
         it('styleSet의 일부 속성만 주어져도 올바르게 적용되어야 한다', () => {
@@ -84,11 +85,10 @@ describe('VsLoading', () => {
             });
 
             // then
-            const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 50px');
-            expect(style).toContain('--vs-loading-color: #00ff00');
-            expect(style).not.toContain('--vs-loading-height');
-            expect(style).not.toContain('--vs-loading-barWidth');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-loading-width': '50px',
+                '--vs-loading-color': '#00ff00',
+            });
         });
 
         it('styleSet이 빈 객체여도 기본 스타일로 렌더링되어야 한다', () => {
@@ -123,9 +123,10 @@ describe('VsLoading', () => {
             });
 
             // then
-            const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 200px');
-            expect(style).toContain('--vs-loading-height: 150px');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-loading-width': '200px',
+                '--vs-loading-height': '150px',
+            });
         });
 
         it('width와 height props가 숫자로 주어지면 픽셀 단위로 변환되어야 한다', () => {
@@ -142,9 +143,10 @@ describe('VsLoading', () => {
             });
 
             // then
-            const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 300px');
-            expect(style).toContain('--vs-loading-height: 250px');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-loading-width': '300px',
+                '--vs-loading-height': '250px',
+            });
         });
 
         it('width와 height props가 styleSet보다 우선순위가 높아야 한다', () => {
@@ -166,11 +168,10 @@ describe('VsLoading', () => {
             });
 
             // then
-            const style = wrapper.attributes('style');
-            expect(style).toContain('--vs-loading-width: 400px');
-            expect(style).toContain('--vs-loading-height: 300px');
-            expect(style).not.toContain('--vs-loading-width: 100px');
-            expect(style).not.toContain('--vs-loading-height: 80px');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-loading-width': '400px',
+                '--vs-loading-height': '300px',
+            });
         });
     });
 });

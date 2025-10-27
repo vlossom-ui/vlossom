@@ -1,24 +1,18 @@
 .vs-chip {
     --vs-chip-width: initial;
     --vs-chip-height: initial;
-    --vs-chip-display: initial;
+
     --vs-chip-backgroundColor: initial;
-    --vs-chip-padding: initial;
     --vs-chip-border: initial;
     --vs-chip-borderRadius: initial;
+    --vs-chip-padding: initial;
     --vs-chip-opacity: initial;
+
     --vs-chip-fontColor: initial;
-    --vs-chip-fontSize: initial;
-    --vs-chip-fontWeight: initial;
-    --vs-chip-lineHeight: initial;
-    --vs-chip-whiteSpace: initial;
-    --vs-chip-cursor: initial;
 
-    @apply relative box-border inline-flex cursor-pointer items-center justify-center select-none hover:brightness-96 active:brightness-92;
+    @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
 
-    display: var(--vs-chip-display, inline-flex);
     opacity: var(--vs-chip-opacity, 1);
-    cursor: var(--vs-chip-cursor, default);
     border: var(--vs-chip-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-sm) / 2));
     background-color: var(--vs-chip-backgroundColor, var(--vs-comp-bg));
@@ -27,14 +21,13 @@
     height: var(--vs-chip-height, var(--vs-default-comp-height-sm));
     min-height: var(--vs-chip-height, var(--vs-default-comp-height-sm));
     color: var(--vs-chip-fontColor, var(--vs-comp-font));
-    font-weight: var(--vs-chip-fontWeight, 400);
-    font-size: var(--vs-chip-fontSize, var(--vs-font-size-sm));
-    line-height: var(--vs-chip-lineHeight, 1);
+    font-size: var(--vs-font-size-sm);
+    line-height: 1;
     user-select: none;
-    white-space: var(--vs-chip-whiteSpace, nowrap);
 
     .vs-icon-container {
         @apply flex items-center justify-center;
+
         border: var(--vs-chip-border, 1px solid var(--vs-line-color));
         border-radius: 50%;
         width: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
@@ -57,7 +50,7 @@
     .vs-chip-content {
         @apply flex items-center justify-center;
         padding: 0 0.4rem;
-        white-space: var(--vs-chip-whiteSpace, nowrap);
+        white-space: nowrap;
     }
 
     &.vs-small {
@@ -65,7 +58,7 @@
         padding: var(--vs-chip-padding, 0 0.2rem);
         height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
         min-height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
-        font-size: var(--vs-chip-fontSize, var(--vs-font-size-xs));
+        font-size: var(--vs-font-size-xs);
 
         .vs-icon-container {
             width: calc(var(--vs-chip-height, var(--vs-default-comp-height-xs)) * 0.75);

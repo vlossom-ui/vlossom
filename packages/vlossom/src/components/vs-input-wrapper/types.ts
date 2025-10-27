@@ -1,4 +1,5 @@
 import type VsInputWrapper from './VsInputWrapper.vue';
+import type { TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,12 +10,10 @@ declare module 'vue' {
 export type { VsInputWrapper };
 
 export interface VsInputWrapperStyleSet {
-    label?: {
+    label?: TextStyleSet & {
         marginBottom?: string;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: string;
     };
+
     messages?: {
         marginTop?: string;
         fontSize?: string;

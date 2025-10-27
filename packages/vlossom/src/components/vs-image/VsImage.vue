@@ -15,11 +15,12 @@
 
 <script lang="ts">
 import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
-import { useStyleSet } from '@/composables';
 import { useIntersectionObserver } from '@vueuse/core';
+import { useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
-import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import { getStyleSetProps } from '@/props';
+
+import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 import type { VsImageStyleSet } from './types';
 
@@ -97,4 +98,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsImage.css" scoped />
+<style src="./VsImage.css" />

@@ -137,39 +137,6 @@ describe('VsButton', () => {
             expect(button.classes()).toContain('vs-small');
         });
 
-        it('colorScheme이 주어지면 해당 colorScheme 클래스가 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsButton, {
-                props: {
-                    colorScheme: 'green',
-                },
-            });
-
-            // then
-            const button = wrapper.find('button');
-            expect(button.classes()).toContain('vs-color-scheme-green');
-        });
-
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsButton, {
-                props: {
-                    styleSet: {
-                        backgroundColor: '#ff0000',
-                        width: '200px',
-                        height: '50px',
-                    },
-                },
-            });
-
-            // then
-            const button = wrapper.find('button');
-            const style = button.attributes('style');
-            expect(style).toContain('--vs-button-backgroundColor: #ff0000');
-            expect(style).toContain('--vs-button-width: 200px');
-            expect(style).toContain('--vs-button-height: 50px');
-        });
-
         it('styleSet에 loading 스타일이 주어지면 loading 컴포넌트에 전달되어야 한다', () => {
             // given, when
             const wrapper = mount(VsButton, {

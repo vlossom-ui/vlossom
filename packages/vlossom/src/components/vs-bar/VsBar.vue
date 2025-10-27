@@ -5,12 +5,12 @@
 </template>
 
 <script lang="ts">
-import { useColorScheme, useStyleSet } from '@/composables';
 import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
-import type { VsBarStyleSet } from './types';
+import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
 import { objectUtil } from '@/utils';
+import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
+import type { VsBarStyleSet } from './types';
 
 const name = VsComponent.VsBar;
 export default defineComponent({

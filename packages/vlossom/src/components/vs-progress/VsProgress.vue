@@ -41,8 +41,11 @@ export default defineComponent({
     },
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
+
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
+
         const { styleSetVariables } = useStyleSet<VsProgressStyleSet>(name, styleSet);
+
         const { value, max } = toRefs(props);
 
         const computedMax = computed(() => {

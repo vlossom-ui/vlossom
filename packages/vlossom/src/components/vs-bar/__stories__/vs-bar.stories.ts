@@ -23,8 +23,6 @@ const meta: Meta<typeof VsBar> = {
                 height: '60px',
                 padding: '0 1.5rem',
                 fontColor: '#ffffff',
-                fontSize: '16px',
-                fontWeight: '500',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
             } as const;
 
@@ -136,7 +134,6 @@ export const StatusBar: Story = {
             padding: '0 1rem',
             backgroundColor: '#f5f5f5',
             fontColor: '#666666',
-            fontSize: '12px',
             border: '1px solid #e0e0e0',
         },
     },
@@ -285,10 +282,7 @@ export const StyleSet: Story = {
         styleSet: {
             backgroundColor: '#e91e63',
             border: '2px solid #ad1457',
-            borderRadius: '8px',
             fontColor: '#ffffff',
-            fontSize: '16px',
-            fontWeight: '600',
             height: '56px',
             padding: '0 2rem',
             boxShadow: '0 4px 8px rgba(233, 30, 99, 0.3)',

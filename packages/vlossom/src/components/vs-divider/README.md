@@ -34,7 +34,7 @@
 
 ### 반응형 구분선
 
-데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야합니다.
+데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야합니다. (ex - vs-contianer)
 
 ```html
 <template>
@@ -54,24 +54,6 @@
 </style>
 ```
 
-### 커스텀 스타일링
-
-```html
-<template>
-    <vs-divider
-        :style-set="customDividerStyle"
-        color-scheme="primary"
-    />
-</template>
-
-<script setup>
-const customDividerStyle = {
-    border: '2px dashed #ff6b6b',
-    margin: '2rem 0'
-};
-</script>
-```
-
 ## Props
 
 | Prop          | Type                          | Default | Required | Description                                      |
@@ -84,14 +66,19 @@ const customDividerStyle = {
 ## Types
 
 ```typescript
-interface VsDividerVerticalStyleSet {
-    height?: string; // 세로 구분선 높이
-    margin?: string; // 세로 구분선 여백
-}
 interface VsDividerStyleSet {
     border?: string; // 구분선 스타일 (색상, 두께, 형태)
-    margin?: string; // 가로 구분선 여백
-    vertical?: VsDividerVerticalStyleSet;
+    opacity?: number; // 구분선 투명도
+
+    horizontal?: {
+        width?: string; // 가로 구분선 너비
+        margin?: string; // 가로 구분선 여백
+    };
+
+    vertical?: {
+        height?: string; // 세로 구분선 높이
+        margin?: string; // 세로 구분선 여백
+    };
 }
 ```
 

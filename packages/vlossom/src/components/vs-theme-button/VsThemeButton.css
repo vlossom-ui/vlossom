@@ -1,16 +1,14 @@
 .vs-theme-button {
-    --vs-theme-button-display: initial;
-    --vs-theme-button-backgroundColor: initial;
-    --vs-theme-button-border: initial;
-    --vs-theme-button-borderRadius: initial;
-    --vs-theme-button-opacity: initial;
-    --vs-theme-button-iconColor: initial;
     --vs-theme-button-width: initial;
     --vs-theme-button-height: initial;
 
+    --vs-theme-button-borderRadius: initial;
+
+    --vs-theme-button-iconColor: initial;
+
     border-radius: var(--vs-theme-button-borderRadius, 50%);
-    width: var(--vs-theme-button-width, 2.4rem);
-    height: var(--vs-theme-button-height, 2.4rem);
+    width: var(--vs-theme-button-width, 2rem);
+    height: var(--vs-theme-button-height, 2rem);
 
     .vs-theme-icon {
         @apply absolute top-1/2 left-1/2 flex items-center justify-center opacity-0;
@@ -19,8 +17,8 @@
         transition:
             opacity 0.4s ease-out,
             transform 0.4s ease-out;
-        width: calc(var(--vs-theme-button-width, 2.4rem) * 2 / 3);
-        height: calc(var(--vs-theme-button-height, 2.4rem) * 2 / 3);
+        width: calc(var(--vs-theme-button-width, 2rem) * 2 / 3);
+        height: calc(var(--vs-theme-button-height, 2rem) * 2 / 3);
         color: var(--vs-theme-button-iconColor, var(--vs-orange-400));
 
         &.vs-on {

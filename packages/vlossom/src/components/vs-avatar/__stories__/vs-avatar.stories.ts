@@ -22,8 +22,6 @@ const meta: Meta<typeof VsAvatar> = {
                 backgroundColor: '#1e88e5',
                 borderRadius: '50%',
                 fontColor: '#fff',
-                fontSize: '1.5rem',
-                fontWeight: '600',
                 width: '5rem',
             } as const;
 
@@ -116,11 +114,10 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             borderRadius: '0.6rem',
-            fontSize: '2rem',
-            height: '5rem',
-            width: '5rem',
             backgroundColor: '#e188e5',
             fontColor: '#fff',
+            height: '5rem',
+            width: '5rem',
         },
     },
 };

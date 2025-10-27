@@ -132,11 +132,13 @@
 interface VsTooltipStyleSet {
     width?: string;
     height?: string;
+
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
     padding?: string;
     opacity?: string | number;
+
     arrowColor?: string;
     arrowSize?: string;
 }

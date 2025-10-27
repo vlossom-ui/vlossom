@@ -98,7 +98,6 @@ import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const name = VsComponent.VsPagination;
-
 export default defineComponent({
     name,
     components: { VsRender, VsButton },
@@ -132,6 +131,7 @@ export default defineComponent({
                 return isValid;
             },
         },
+
         // v-model
         modelValue: { type: Number, default: 0 },
     },

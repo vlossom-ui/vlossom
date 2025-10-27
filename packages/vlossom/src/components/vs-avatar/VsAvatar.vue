@@ -33,4 +33,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsAvatar.css" scoped />
+<style src="./VsAvatar.css" />

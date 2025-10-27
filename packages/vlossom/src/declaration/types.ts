@@ -66,29 +66,17 @@ export interface SizeStyleSet {
 }
 
 export interface BoxStyleSet {
-    display?: string;
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
     padding?: string;
-    opacity?: string | number;
+    opacity?: number;
 }
 
 export interface TextStyleSet {
     fontColor?: string;
     fontSize?: string;
-    fontWeight?: string | number;
-    lineHeight?: string;
-    whiteSpace?: string;
-}
-
-export interface FlexStyleSet {
-    flex?: string;
-    flexDirection?: string;
-    flexWrap?: string;
-    alignItems?: string;
-    justifyContent?: string;
-    gap?: string;
+    fontWeight?: number;
 }
 
 export interface Focusable {

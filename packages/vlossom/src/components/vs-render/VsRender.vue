@@ -1,8 +1,10 @@
 <script lang="ts">
-import { type Component, defineComponent, type PropType, h, toRefs } from 'vue';
+import { defineComponent, h, toRefs, type Component, type PropType } from 'vue';
+import { VsComponent } from '@/declaration';
 
+const name = VsComponent.VsRender;
 export default defineComponent({
-    name: 'VsRender',
+    name,
     props: {
         content: {
             type: [String, Object] as PropType<string | Component>,

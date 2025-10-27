@@ -11,11 +11,11 @@
 import { type PropType, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, type UIState } from '@/declaration';
 import { stringUtil } from '@/utils';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import { messageIcons } from './icons';
 
-const name = VsComponent.VsMessage;
+import VsRender from '@/components/vs-render/VsRender.vue';
 
+const name = VsComponent.VsMessage;
 export default defineComponent({
     name,
     components: { VsRender },

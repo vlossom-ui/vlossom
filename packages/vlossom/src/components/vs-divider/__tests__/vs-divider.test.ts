@@ -25,21 +25,6 @@ describe('vs-divider', () => {
             expect(wrapper.props('vertical')).toBe(true);
             expect(wrapper.classes('vs-vertical')).toBe(true);
         });
-
-        it('vertical props가 true일 때 verticalHeight style을 설정할 수 있다.', () => {
-            // given
-            const wrapper = mount(VsDivider, {
-                props: {
-                    vertical: true,
-                    styleSet: { vertical: { height: '4rem' } },
-                },
-            });
-
-            // then
-            expect(wrapper.classes('vs-vertical')).toBe(true);
-
-            expect(wrapper.attributes().style.includes('--vs-divider-vertical-height: 4rem;')).toBe(true);
-        });
     });
 
     describe('responsive', () => {

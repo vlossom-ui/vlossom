@@ -3,7 +3,7 @@
         :class="['vs-accordion', colorSchemeClass, classObj, { 'vs-accordion-open': isOpen }]"
         :width
         :grid
-        :style="componentStyleSet"
+        :style="styleSetVariables"
         :tabindex="disabled ? -1 : 0"
         @keydown.enter.prevent.stop="toggle"
         @keydown.space.prevent.stop="toggle"
@@ -28,7 +28,6 @@ import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';
 
 const name = VsComponent.VsAccordion;
-
 export default defineComponent({
     name,
     components: { VsResponsive, VsExpandable },
@@ -39,6 +38,7 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
+
         // v-model
         modelValue: { type: Boolean, default: false },
     },
@@ -47,7 +47,8 @@ export default defineComponent({
         const { colorScheme, styleSet, open, modelValue, disabled, primary } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { componentStyleSet } = useStyleSet<VsAccordionStyleSet>(name, styleSet);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsAccordionStyleSet>(name, styleSet);
 
         const isOpen = ref(open.value || modelValue.value);
 
@@ -75,6 +76,7 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
+            styleSetVariables,
             componentStyleSet,
             isOpen,
             classObj,

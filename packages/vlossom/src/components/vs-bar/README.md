@@ -88,21 +88,23 @@
 
 ```typescript
 interface VsBarStyleSet {
-    backgroundColor?: string; // 배경색
-    border?: string; // 테두리 스타일
-    boxShadow?: string; // 그림자 효과
-    fontColor?: string; // 텍스트 색상
-    fontSize?: string; // 폰트 크기
-    fontWeight?: string; // 폰트 두께
-    height?: string; // 높이
-    padding?: string; // 내부 여백
-    position?: 'fixed' | 'absolute' | 'relative' | 'sticky' | 'static'; // 위치 지정
-    top?: string | number; // 상단 위치
-    bottom?: string | number; // 하단 위치
-    left?: string | number; // 좌측 위치
-    right?: string | number; // 우측 위치
-    width?: string; // 너비
-    zIndex?: string; // z-index 값
+    width?: string;
+    height?: string;
+
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    opacity?: string | number;
+
+    position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+    top?: string | number;
+    bottom?: string | number;
+    left?: string | number;
+    right?: string | number;
+    zIndex?: string;
+    fontColor?: string;
+    boxShadow?: string;
 }
 ```
 

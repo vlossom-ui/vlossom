@@ -3,16 +3,14 @@
 .vs-progress {
     --vs-progress-width: initial;
     --vs-progress-height: initial;
+
+    --vs-progress-backgroundColor: initial;
     --vs-progress-border: initial;
     --vs-progress-borderRadius: initial;
-    --vs-progress-backgroundColor: initial;
-    --vs-progress-valueColor: initial;
+
     --vs-progress-fontColor: initial;
-    --vs-progress-fontWeight: initial;
-    --vs-progress-fontSize: initial;
-    --vs-progress-lineHeight: initial;
     --vs-progress-textShadow: initial;
-    --vs-progress-whiteSpace: initial;
+    --vs-progress-valueColor: initial;
 
     @apply relative appearance-none text-center;
 
@@ -37,13 +35,11 @@
 
 .vs-progress:before {
     @apply absolute right-0 left-0 z-10 flex h-full items-center justify-center;
-    vertical-align: 0;
 
+    vertical-align: 0;
     content: attr(data-label);
     color: var(--vs-progress-fontColor, var(--vs-no-color-inverse));
-    font-weight: var(--vs-progress-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-progress-fontSize, var(--vs-font-size-xs));
-    line-height: var(--vs-progress-lineHeight, var(--vs-line-height));
+    font-size: var(--vs-font-size-xs);
     text-shadow: var(
         --vs-progress-textShadow,
         0 0 2px var(--vs-no-color),
@@ -53,5 +49,4 @@
         0 0 10px var(--vs-no-color),
         0 0 12px var(--vs-no-color)
     );
-    white-space: var(--vs-progress-whiteSpace, nowrap);
 }

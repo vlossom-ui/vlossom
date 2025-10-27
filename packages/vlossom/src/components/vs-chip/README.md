@@ -35,12 +35,6 @@
 <template>
     <vs-chip closable @close="handleClose">닫을 수 있는 칩</vs-chip>
 </template>
-
-<script setup>
-function handleClose() {
-    console.log('칩이 닫혔습니다');
-}
-</script>
 ```
 
 ### 다양한 스타일의 칩
@@ -68,15 +62,16 @@ function handleClose() {
 
 ```typescript
 interface VsChipStyleSet {
+    width?: string;
+    height?: string;
+
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    height?: string;
     padding?: string;
-    width?: string;
+    opacity?: number;
+
+    fontColor?: string;
 }
 ```
 

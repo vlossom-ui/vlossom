@@ -1,5 +1,5 @@
 import type VsAvatar from './VsAvatar.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,9 +9,7 @@ declare module 'vue' {
 
 export type { VsAvatar };
 
-export interface VsAvatarStyleSet
-    extends SizeStyleSet,
-        Omit<BoxStyleSet, 'display' | 'padding'>,
-        Omit<TextStyleSet, 'whiteSpace' | 'lineHeight'> {
+export interface VsAvatarStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding'> {
+    fontColor?: string;
     objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
 }

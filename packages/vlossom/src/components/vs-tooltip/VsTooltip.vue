@@ -45,12 +45,10 @@ import {
 import { useColorScheme, useStyleSet, useOverlay, useOverlayDom, usePositioning } from '@/composables';
 import { VsComponent, type Placement, type Alignment, type OverlayCallbacks } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-
-import type { VsTooltipStyleSet } from './types';
 import { stringUtil } from '@/utils';
+import type { VsTooltipStyleSet } from './types';
 
 const name = VsComponent.VsTooltip;
-
 export default defineComponent({
     name,
     props: {

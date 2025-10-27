@@ -149,15 +149,17 @@ interface VsDrawerStyleSet {
     borderRadius?: string;
     padding?: string;
     opacity?: string | number;
+
     position?: 'absolute' | 'fixed';
     size?: string;
+    boxShadow?: string;
+
     dimmed?: {
         backgroundColor?: string;
         opacity?: number;
     };
 }
 
-type DrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 ```
 

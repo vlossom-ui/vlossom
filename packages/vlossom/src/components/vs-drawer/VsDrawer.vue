@@ -58,6 +58,7 @@ import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props'
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsDrawerStyleSet } from './types';
+
 import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
@@ -77,6 +78,7 @@ export default defineComponent({
             default: 'left',
         },
         size: { type: [String, Number] as PropType<SizeProp> },
+
         // v-model
         modelValue: { type: Boolean, default: false },
     },

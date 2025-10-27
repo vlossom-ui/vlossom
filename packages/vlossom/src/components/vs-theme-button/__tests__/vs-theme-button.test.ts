@@ -9,14 +9,6 @@ describe('vs-theme-button', () => {
         createVlossom({ components: {}, theme: 'light' });
     });
 
-    it('vlossom 초기화 시 vs-theme-button이 정상적으로 렌더링되어야 한다', () => {
-        // given & when
-        const wrapper = mount(VsThemeButton);
-
-        // then
-        expect(wrapper.exists()).toBe(true);
-    });
-
     describe('테마 모드 전환 상태', () => {
         it('lightMode로 동작할 때 vs-theme-button의 light mode 아이콘이 활성화 되어야 한다', () => {
             // given

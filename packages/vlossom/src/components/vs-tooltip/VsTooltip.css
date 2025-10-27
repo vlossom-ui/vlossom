@@ -1,13 +1,15 @@
 .vs-tooltip {
-    --vs-tooltip-arrowColor: initial;
-    --vs-tooltip-arrowSize: initial;
+    --vs-tooltip-width: initial;
+    --vs-tooltip-height: initial;
+
     --vs-tooltip-backgroundColor: initial;
     --vs-tooltip-border: initial;
     --vs-tooltip-borderRadius: initial;
     --vs-tooltip-padding: initial;
     --vs-tooltip-opacity: initial;
-    --vs-tooltip-width: initial;
-    --vs-tooltip-height: initial;
+
+    --vs-tooltip-arrowColor: initial;
+    --vs-tooltip-arrowSize: initial;
 
     @apply relative inline-flex;
 }

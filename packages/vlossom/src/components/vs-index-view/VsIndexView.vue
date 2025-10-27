@@ -2,6 +2,7 @@
 import { defineComponent, h, KeepAlive, toRefs, Comment, Fragment, type VNode, ref, watch } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getResponsiveProps } from '@/props';
+
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
 const name = VsComponent.VsIndexView;
@@ -11,6 +12,7 @@ export default defineComponent({
     props: {
         ...getResponsiveProps(),
         keepAlive: { type: Boolean, default: false },
+
         // v-model
         modelValue: { type: Number, default: 0 },
     },

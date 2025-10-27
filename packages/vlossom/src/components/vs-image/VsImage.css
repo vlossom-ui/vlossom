@@ -1,16 +1,16 @@
 .vs-image {
-    --vs-image-display: initial;
     --vs-image-width: initial;
     --vs-image-height: initial;
+
     --vs-image-backgroundColor: initial;
     --vs-image-border: initial;
     --vs-image-borderRadius: initial;
-    --vs-image-objectFit: initial;
     --vs-image-opacity: initial;
 
-    @apply relative;
+    --vs-image-objectFit: initial;
 
-    display: var(--vs-image-display, inline-block);
+    @apply relative inline-block;
+
     opacity: var(--vs-image-opacity, 100%);
     background-color: var(--vs-image-backgroundColor, transparent);
     width: var(--vs-image-width, 100%);

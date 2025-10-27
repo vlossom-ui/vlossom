@@ -110,6 +110,7 @@ interface VsInputWrapperStyleSet {
         fontSize?: string;
         fontWeight?: string;
     };
+
     messages?: {
         marginTop?: string;
         fontSize?: string;

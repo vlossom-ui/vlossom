@@ -14,6 +14,7 @@
 .vs-loading {
     --vs-loading-width: initial;
     --vs-loading-height: initial;
+
     --vs-loading-color: initial;
     --vs-loading-barWidth: initial;
 

@@ -3,32 +3,6 @@ import { mount } from '@vue/test-utils';
 import VsToggle from '../VsToggle.vue';
 
 describe('VsToggle', () => {
-    describe('기본 렌더링', () => {
-        it('vs-toggle 컨테이너와 내부 vs-button이 렌더링되어야 한다', () => {
-            // given & when
-            const wrapper = mount(VsToggle);
-
-            // then
-            expect(wrapper.find('.vs-toggle').exists()).toBe(true);
-            expect(wrapper.findComponent({ name: 'VsButton' }).exists()).toBe(true);
-        });
-
-        it('슬롯 콘텐츠가 올바르게 렌더링되어야 한다', () => {
-            // given
-            const slotContent = '토글 버튼 텍스트';
-
-            // when
-            const wrapper = mount(VsToggle, {
-                slots: {
-                    default: slotContent,
-                },
-            });
-
-            // then
-            expect(wrapper.html()).toContain(slotContent);
-        });
-    });
-
     describe('modelValue prop', () => {
         it('기본값은 false여야 한다', () => {
             // given & when

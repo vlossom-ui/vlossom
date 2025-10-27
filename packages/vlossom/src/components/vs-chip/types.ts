@@ -1,5 +1,5 @@
 import type VsChip from './VsChip.vue';
-import type { SizeStyleSet, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,6 +9,6 @@ declare module 'vue' {
 
 export type { VsChip };
 
-export interface VsChipStyleSet extends SizeStyleSet, BoxStyleSet, TextStyleSet {
-    cursor?: string;
+export interface VsChipStyleSet extends SizeStyleSet, BoxStyleSet {
+    fontColor?: string;
 }

@@ -1,5 +1,5 @@
 import type VsBlock from './VsBlock.vue';
-import type { BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,13 +9,13 @@ declare module 'vue' {
 
 export type { VsBlock };
 
-type BlockStyleSet = Omit<BoxStyleSet, 'display' | 'opacity'> & TextStyleSet;
-
-export interface VsBlockStyleSet extends BlockStyleSet {
-    title?: TextStyleSet & {
-        backgroundColor?: string;
-        padding?: string;
-        bottomBorder?: string;
-    };
+export interface VsBlockStyleSet extends BoxStyleSet {
     boxShadow?: string;
+    fontColor?: string;
+
+    title?: {
+        backgroundColor?: string;
+        fontColor?: string;
+        padding?: string;
+    };
 }

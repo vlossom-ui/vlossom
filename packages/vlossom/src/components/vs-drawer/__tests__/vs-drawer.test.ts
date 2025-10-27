@@ -153,8 +153,9 @@ describe('VsDrawer', () => {
             });
 
             // then
-            const style = wrapper.find('.vs-drawer').attributes('style');
-            expect(style).toContain('--vs-drawer-size: 20%');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-drawer-size': '20%',
+            });
         });
 
         it('size가 lg일 때 60%가 적용되어야 한다', () => {
@@ -169,8 +170,9 @@ describe('VsDrawer', () => {
             });
 
             // then
-            const style = wrapper.find('.vs-drawer').attributes('style');
-            expect(style).toContain('--vs-drawer-size: 60%');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-drawer-size': '60%',
+            });
         });
 
         it('size가 문자열로 주어지면 해당 값이 적용되어야 한다', () => {
@@ -185,8 +187,9 @@ describe('VsDrawer', () => {
             });
 
             // then
-            const style = wrapper.find('.vs-drawer').attributes('style');
-            expect(style).toContain('--vs-drawer-size: 300px');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-drawer-size': '300px',
+            });
         });
     });
 
@@ -203,8 +206,10 @@ describe('VsDrawer', () => {
             });
 
             // then
-            const style = wrapper.find('.vs-drawer').attributes('style');
-            expect(style).toContain('--vs-drawer-position: fixed');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-drawer-position': 'fixed',
+                '--vs-drawer-size': '20%',
+            });
         });
     });
 

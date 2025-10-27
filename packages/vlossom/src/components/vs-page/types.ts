@@ -1,5 +1,4 @@
 import type VsPage from './VsPage.vue';
-import type { TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,9 +8,10 @@ declare module 'vue' {
 
 export type { VsPage };
 
-type PageTextStyleSet = TextStyleSet & { padding?: string };
+export interface VsPageStyleSet {
+    padding?: string;
 
-export interface VsPageStyleSet extends PageTextStyleSet {
-    title?: PageTextStyleSet;
-    description?: PageTextStyleSet;
+    title?: { padding?: string };
+
+    description?: { padding?: string };
 }
