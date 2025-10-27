@@ -2,18 +2,11 @@
     --vs-switch-width: initial;
     --vs-switch-height: initial;
 
+    --vs-switch-backgroundColor: initial;
+    --vs-switch-border: initial;
     --vs-switch-borderRadius: initial;
-    --vs-switch-fontSize: initial;
     --vs-switch-handleSize: initial;
-
-    --vs-switch-false-backgroundColor: initial;
-    --vs-switch-false-border: initial;
-    --vs-switch-false-fontColor: initial;
-    --vs-switch-false-handleColor: initial;
-    --vs-switch-true-backgroundColor: initial;
-    --vs-switch-true-border: initial;
-    --vs-switch-true-fontColor: initial;
-    --vs-switch-true-handleColor: initial;
+    --vs-switch-handleColor: initial;
 
     @apply relative flex items-center;
     min-height: var(--vs-input-comp-height);
@@ -21,15 +14,15 @@
     .vs-switch-button {
         @apply relative flex cursor-pointer items-center select-none;
         transition: all 0.3s;
-        border: var(--vs-switch-false-border, 1px solid var(--vs-line-color));
+        border: var(--vs-switch-border, 1px solid var(--vs-line-color));
         border-radius: var(--vs-switch-borderRadius, 1.5rem);
-        background-color: var(--vs-switch-false-backgroundColor, var(--vs-area-bg));
+        background-color: var(--vs-switch-backgroundColor, var(--vs-area-bg));
         padding: 0 0.6rem;
 
         width: var(--vs-switch-width, fit-content);
         height: var(--vs-switch-height, 2rem);
-        color: var(--vs-switch-false-fontColor, var(--vs-font-color));
-        font-size: var(--vs-switch-fontSize, var(--vs-font-size-sm));
+        color: var(--vs-font-color);
+        font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
             @apply block w-full text-center break-all whitespace-nowrap;
@@ -43,7 +36,7 @@
             @apply absolute rounded-full;
             left: 0.3rem;
             transition: 0.3s;
-            background-color: var(--vs-switch-false-handleColor, var(--vs-primary-comp-bg));
+            background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-bg));
             width: calc(var(--vs-switch-handleSize, 1.4rem));
             height: calc(var(--vs-switch-handleSize, 1.4rem));
             content: '';
@@ -58,13 +51,13 @@
 
     &.vs-checked {
         .vs-switch-button {
-            border: var(--vs-switch-true-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-switch-true-backgroundColor, var(--vs-primary-comp-bg));
-            color: var(--vs-switch-true-fontColor, var(--vs-primary-comp-font));
+            border: var(--vs-switch-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-primary-comp-bg);
+            color: var(--vs-primary-comp-font);
 
             &::before {
                 left: calc(100% - (var(--vs-switch-handleSize, 1.3rem) + 0.3rem));
-                background-color: var(--vs-switch-true-handleColor, var(--vs-primary-comp-font));
+                background-color: var(--vs-primary-comp-font);
             }
 
             .vs-status-label {
@@ -81,7 +74,7 @@
             border-radius: var(--vs-switch-borderRadius, 1rem);
             padding: 0 0.6rem;
             height: var(--vs-switch-height, 1.5rem);
-            font-size: var(--vs-switch-fontSize, var(--vs-font-size-xs));
+            font-size: var(--vs-font-size-xs);
 
             .vs-status-label {
                 @apply relative;
