@@ -7,6 +7,7 @@
     --vs-switch-backgroundColor: initial;
     --vs-switch-border: initial;
     --vs-switch-borderRadius: initial;
+    --vs-switch-fontColor: initial;
     --vs-switch-handleSize: initial;
     --vs-switch-handleColor: initial;
 
@@ -21,7 +22,7 @@
 
         width: var(--vs-switch-width, fit-content);
         height: var(--vs-switch-height, 2rem);
-        color: var(--vs-font-color);
+        color: var(--vs-switch-fontColor, var(--vs-font-color));
         font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
@@ -46,7 +47,7 @@
         .vs-switch-button {
             border: var(--vs-switch-border, 1px solid var(--vs-primary-comp-bg));
             background-color: var(--vs-switch-backgroundColor, var(--vs-primary-comp-bg));
-            color: var(--vs-primary-comp-font);
+            color: var(--vs-switch-fontColor, var(--vs-primary-comp-font));
 
             &::before {
                 left: calc(100% - (var(--vs-switch-handleSize, 1.3rem) + 0.3rem));

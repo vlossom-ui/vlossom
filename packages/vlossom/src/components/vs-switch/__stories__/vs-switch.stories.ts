@@ -20,7 +20,7 @@ const meta: Meta<typeof VsSwitch> = {
         components: { VsSwitch },
         setup() {
             const preDefinedStyleSet: VsSwitchStyleSet = {
-                backgroundColor: '#000',
+                backgroundColor: 'red',
                 border: '3px solid blue',
                 borderRadius: '8px',
                 handleColor: '#fff',
