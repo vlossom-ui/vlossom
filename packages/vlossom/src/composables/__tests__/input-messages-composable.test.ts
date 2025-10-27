@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ref, type Ref, nextTick } from 'vue';
-import type { Message, StateMessage, UIState } from '@/declaration';
+import type { Message, StateMessage } from '@/declaration';
 import { useInputMessages } from './../input-messages-composable';
 
 describe('useInputMessages', () => {
     let inputValue: Ref<string>;
     let messages: Ref<Message<string>[]>;
-    let ruleMessages: Ref<StateMessage<Exclude<UIState, 'selected'>>[]>;
+    let ruleMessages: Ref<StateMessage[]>;
 
     beforeEach(() => {
         inputValue = ref('test');
