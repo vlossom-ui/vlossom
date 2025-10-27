@@ -5,8 +5,13 @@
         :grid
         :style="styleSetVariables"
     >
-        <component :is="groupLabel ? 'fieldset' : 'div'" v-if="!noLabel || $slots.label">
-            <component :is="groupLabel ? 'legend' : 'div'" class="vs-label" :class="{ 'vs-disabled': disabled }">
+        <component :is="groupLabel ? 'fieldset' : 'div'">
+            <component
+                :is="groupLabel ? 'legend' : 'div'"
+                v-if="!noLabel && (!!label || !!$slots.label)"
+                class="vs-label"
+                :class="{ 'vs-disabled': disabled }"
+            >
                 <slot name="label">
                     <span>{{ label }}</span>
                 </slot>
@@ -17,7 +22,7 @@
         </component>
 
         <div
-            v-if="(!noMessages && messages.length > 0) || $slots.messages"
+            v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
         >
             <slot name="messages">
