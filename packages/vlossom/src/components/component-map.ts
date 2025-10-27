@@ -11,6 +11,7 @@ import VsBar from './vs-bar/VsBar.vue';
 import VsBlock from './vs-block/VsBlock.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsCheckbox from './vs-checkbox/VsCheckbox.vue';
+import VsCheckboxSet from './vs-checkbox/VsCheckboxSet.vue';
 import VsChip from './vs-chip/VsChip.vue';
 import VsContainer from './vs-container/VsContainer.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
@@ -48,6 +49,7 @@ export const VlossomComponents = {
     VsButton,
     VsBlock,
     VsCheckbox,
+    VsCheckboxSet,
     VsChip,
     VsContainer,
     VsDivider,
