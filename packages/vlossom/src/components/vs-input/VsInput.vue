@@ -153,7 +153,7 @@ export default defineComponent({
         }
 
         function onClear() {
-            inputValue.value = null;
+            inputValue.value = isNumberInput.value ? null : '';
         }
 
         const {
@@ -202,7 +202,8 @@ export default defineComponent({
 
         function updateValue(event: Event) {
             const target = event.target as HTMLInputElement;
-            inputValue.value = target.value || '';
+            const value = target.value || '';
+            inputValue.value = convertValue(value);
         }
 
         function focus() {

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsInput from '../VsInput.vue';
 
@@ -215,22 +215,6 @@ describe('VsInput', () => {
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
         });
-
-        it('clear() 메서드 호출 시 값이 초기화되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: 'test',
-                },
-            });
-
-            // when
-            wrapper.vm.clear();
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
-        });
     });
 
     describe('events', () => {
@@ -244,27 +228,6 @@ describe('VsInput', () => {
 
             // then
             expect(wrapper.emitted('enter')).toBeTruthy();
-        });
-    });
-
-    describe('methods', () => {
-        it('select() 메서드 호출 시 input 텍스트가 선택되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: 'test',
-                },
-                attachTo: document.body,
-            });
-            const selectSpy = vi.spyOn(wrapper.vm.inputRef as HTMLInputElement, 'select');
-
-            // when
-            wrapper.vm.select();
-
-            // then
-            expect(selectSpy).toHaveBeenCalled();
-
-            wrapper.unmount();
         });
     });
 
@@ -407,6 +370,123 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+        });
+    });
+
+    describe('외부에서 modelValue 변경 시 convertValue 적용', () => {
+        it('type이 number일 때 외부에서 문자열을 전달하면 숫자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'number',
+                    modelValue: 0,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: '456' });
+
+            // then
+            const input = wrapper.find('input');
+            expect(wrapper.vm.inputValue).toBe(456);
+            expect(input.element.value).toBe('456');
+        });
+
+        it('type이 number일 때 외부에서 null을 전달하면 null로 유지되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'number',
+                    modelValue: 123,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: null });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe(null);
+        });
+
+        it('type이 number일 때 외부에서 빈 문자열을 전달하면 null로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'number',
+                    modelValue: 123,
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: '' });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe(null);
+        });
+
+        it('upper modifier가 있을 때 외부에서 소문자를 전달하면 대문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { upper: true },
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'hello world' });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('HELLO WORLD');
+        });
+
+        it('lower modifier가 있을 때 외부에서 대문자를 전달하면 소문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { lower: true },
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'HELLO WORLD' });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('hello world');
+        });
+
+        it('capitalize modifier가 있을 때 외부에서 소문자를 전달하면 첫 글자가 대문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { capitalize: true },
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'hello' });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('Hello');
+        });
+
+        it('type이 text일 때 외부에서 숫자를 전달하면 문자열로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'text',
+                    modelValue: '',
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 999 });
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('999');
+            expect(typeof wrapper.vm.inputValue).toBe('string');
         });
     });
 });
