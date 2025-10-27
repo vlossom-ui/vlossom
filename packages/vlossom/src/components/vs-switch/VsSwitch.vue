@@ -8,7 +8,7 @@
         :required="required"
         :disabled="computedDisabled"
         :small="small"
-        :messages="computedMessages as any"
+        :messages="computedMessages"
         :no-messages="noMessages"
         :shake="shake"
     >
