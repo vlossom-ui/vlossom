@@ -154,7 +154,7 @@ export default defineComponent({
         }
 
         function onClear() {
-            emit('update:modelValue', isNumberInput.value ? null : '');
+            inputValue.value = null;
         }
 
         const {
