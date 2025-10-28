@@ -28,7 +28,6 @@
                 :width="width ?? 'unset'"
                 :color-scheme="colorScheme"
                 :style-set="checkboxStyleSet"
-                :model-value="getOptionValue(option)"
                 :true-value="trueValue"
                 :checked="isChecked(option)"
                 :check-label="getOptionLabel(option)"
@@ -39,7 +38,8 @@
                 :name="name"
                 :state="computedState"
                 :small="small"
-                @update:modelValue="onToggle(option, $event)"
+                :value="getOptionValue(option)"
+                @change="onToggle(option, $event)"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
             >
