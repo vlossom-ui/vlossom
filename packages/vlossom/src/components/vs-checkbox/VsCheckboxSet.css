@@ -3,9 +3,9 @@
     --vs-checkbox-set-flex-wrap: initial;
 
     @apply flex flex-wrap items-center;
-    flex-wrap: var(--vs-checkbox-set-flex-wrap, wrap);
 
-    gap: var(--vs-checkbox-set-gap, 1.2rem);
+    flex-wrap: var(--vs-checkbox-set-flex-wrap, wrap);
+    gap: var(--vs-checkbox-set-gap, 0.8rem);
 
     &.vs-vertical {
         @apply flex-col items-start;
@@ -17,13 +17,5 @@
 
     .vs-checkbox-item {
         @apply flex-shrink-0;
-    }
-
-    &.vs-disabled {
-        @apply pointer-events-none cursor-default opacity-50 grayscale select-none;
-    }
-
-    &.vs-readonly {
-        @apply pointer-events-none cursor-default;
     }
 }

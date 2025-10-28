@@ -1,7 +1,6 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
         :style="componentStyleSet.wrapper"
         :grid="grid"
         :id="computedId"
@@ -26,6 +25,7 @@
                 class="vs-checkbox-item"
                 no-label
                 no-messages
+                :width="width ?? 'unset'"
                 :color-scheme="colorScheme"
                 :style-set="checkboxStyleSet"
                 :model-value="getOptionValue(option)"
