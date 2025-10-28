@@ -6,6 +6,6 @@ export * from './input-rules-composable';
 export * from './overlay-composable';
 export * from './overlay-dom-composable';
 export * from './positioning-composable';
-export * from './style-set-composable';
 export * from './state-class-composable';
+export * from './style-set-composable';
 export * from './value-matcher-composable';
