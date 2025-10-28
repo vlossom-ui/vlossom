@@ -69,14 +69,6 @@
         }
     }
 
-    &.vs-disabled {
-        @apply vs-disabled;
-    }
-
-    &.vs-readonly {
-        @apply vs-readonly;
-    }
-
     &.vs-state-box {
         outline: 3px solid var(--vs-state-color);
         outline-offset: 2px;

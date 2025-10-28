@@ -1,6 +1,7 @@
 @layer utilities {
     .vs-disabled {
-        @apply pointer-events-none cursor-default opacity-50 grayscale-60 select-none;
+        @apply pointer-events-none cursor-default grayscale-60 select-none;
+        opacity: 0.5 !important;
     }
 
     .vs-readonly {
