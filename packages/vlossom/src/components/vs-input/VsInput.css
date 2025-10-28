@@ -70,12 +70,11 @@
     }
 
     &.vs-disabled {
-        @apply pointer-events-none cursor-default opacity-50 select-none;
-        filter: grayscale(0.6);
+        @apply vs-disabled;
     }
 
     &.vs-readonly {
-        @apply pointer-events-none cursor-default;
+        @apply vs-readonly;
     }
 
     &.vs-state-box {
