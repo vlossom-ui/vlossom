@@ -25,6 +25,6 @@ export interface VsCheckboxSetStyleSet {
     gap?: string;
     flexWrap?: string;
 
-    checkbox?: VsCheckboxStyleSet;
+    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }
