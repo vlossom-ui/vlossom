@@ -39,7 +39,7 @@
             />
 
             <button
-                v-if="showClearButton"
+                v-if="renderClearButton"
                 type="button"
                 class="vs-clear-button"
                 :class="{ show: inputValue }"
@@ -195,7 +195,7 @@ export default defineComponent({
 
         const { stateClasses } = useStateClass(computedState);
 
-        const showClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
+        const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
         function updateValue(event: Event) {
             const target = event.target as HTMLInputElement;
@@ -232,7 +232,7 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
-            showClearButton,
+            renderClearButton,
             shake,
             stateClasses,
             computedId,
