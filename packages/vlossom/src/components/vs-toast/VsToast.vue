@@ -1,61 +1,83 @@
 <template>
-    <div :class="['vs-toast', computedColorSchemeClass]" :style="styleSetVariables">
-        <vs-render v-if="typeof toast.content === 'string'" :content="toast.content" />
-        <component v-else :is="toast.content" />
-        <vs-button
-            v-if="toast.primary !== false"
-            variant="ghost"
-            size="xs"
-            icon-only
-            :icon="closeIcon"
-            @click="close"
-        />
+    <div
+        :class="['vs-toast', colorSchemeClass, { 'vs-toast-primary': primary }]"
+        :style="styleSetVariables"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+    >
+        <slot />
+        <vs-button class="vs-toast-close" :color-scheme="computedColorScheme" ghost @click="$emit('close')">
+            <vs-render :content="'X'" />
+        </vs-button>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { defineComponent, onMounted, ref, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
-import { useStyleSet } from '@/composables';
-import { getStyleSetProps } from '@/props';
+import { useColorScheme, useStyleSet } from '@/composables';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import type { VsToastStyleSet } from './types';
+
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
-import { closeIcon } from '@/components/vs-chip/icons';
-import { useToastStore } from './composables/toast-store-composable';
-import type { ToastInfo } from './types';
-import type { VsToastStyleSet } from './types';
 
 const name = VsComponent.VsToast;
 export default defineComponent({
     name,
     components: { VsRender, VsButton },
     props: {
-        toast: { type: Object as () => ToastInfo, required: true },
+        ...getColorSchemeProps(),
         ...getStyleSetProps<VsToastStyleSet>(),
+        autoClose: { type: Boolean, default: true },
+        primary: { type: Boolean, default: true },
+        timeout: { type: Number, default: 5000 },
     },
-    setup(props) {
-        const { toast, styleSet } = toRefs(props);
-        const toastStore = useToastStore();
+    emits: ['close'],
+    setup(props, { emit }) {
+        const { colorScheme, styleSet, autoClose, timeout } = toRefs(props);
 
-        // Use toast's colorScheme if available
-        const computedColorSchemeClass = computed(() => {
-            if (toast.value.colorScheme) {
-                return `vs-toast-${toast.value.colorScheme}`;
-            }
-            return 'vs-toast-default';
-        });
+        const { computedColorScheme, colorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { styleSetVariables } = useStyleSet<VsToastStyleSet>(name, styleSet);
 
-        function close() {
-            toastStore.remove(toast.value.container, toast.value.id);
+        const holdToClose = ref(false);
+        let timer: any = null;
+
+        onMounted(() => {
+            if (autoClose.value && timeout.value) {
+                timer = setTimeout(() => {
+                    if (!holdToClose.value) {
+                        emitClose();
+                    }
+                }, timeout.value);
+            }
+        });
+
+        function onMouseEnter() {
+            holdToClose.value = true;
+        }
+
+        function onMouseLeave() {
+            if (holdToClose.value && timer) {
+                emitClose();
+            }
+            holdToClose.value = false;
+        }
+
+        function emitClose() {
+            emit('close');
+            holdToClose.value = false;
+            clearTimeout(timer);
+            timer = null;
         }
 
         return {
-            computedColorSchemeClass,
+            computedColorScheme,
+            colorSchemeClass,
             styleSetVariables,
-            closeIcon,
-            close,
+            onMouseEnter,
+            onMouseLeave,
         };
     },
 });

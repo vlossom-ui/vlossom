@@ -1,4 +1,4 @@
-import type { Alignment, BoxStyleSet, ColorScheme, Placement, SizeStyleSet } from '@/declaration';
+import type { Alignment, BoxStyleSet, ColorScheme, Placement } from '@/declaration';
 import type VsToast from './VsToast.vue';
 import type { Component } from 'vue';
 
@@ -10,7 +10,8 @@ declare module 'vue' {
 
 export type { VsToast };
 
-export interface VsToastStyleSet extends SizeStyleSet, BoxStyleSet {
+export interface VsToastStyleSet extends BoxStyleSet {
+    height?: string;
     fontColor?: string;
 }
 
