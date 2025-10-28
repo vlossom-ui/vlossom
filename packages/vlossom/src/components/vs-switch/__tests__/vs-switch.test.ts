@@ -115,6 +115,41 @@ describe('VsSwitch', () => {
         });
     });
 
+    describe('true / false label', () => {
+        it('false-label을 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsSwitch, {
+                props: {
+                    falseLabel: 'Rejected',
+                    modelValue: false,
+                },
+            });
+
+            // then
+            const label = wrapper.find('.vs-status-label[data-value=false]');
+            expect(label.isVisible()).toBe(true);
+            expect(label.text()).toBe('Rejected');
+        });
+        it('true-label을 설정할 수 있다', async () => {
+            // given
+            const wrapper = mount(VsSwitch, {
+                props: {
+                    trueLabel: 'Approved',
+                    modelValue: false,
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            const target = wrapper.find('input.vs-switch-input');
+            await target.trigger('change');
+
+            // then
+            const label = wrapper.find('.vs-status-label[data-value=true]');
+            expect(label.isVisible()).toBe(true);
+            expect(label.text()).toBe('Approved');
+        });
+    });
+
     describe('v-model (multiple true)', () => {
         it('modelValue 원소 중 하나라도 trueValue와 일치하면 스위치 값은 true이다', () => {
             // given

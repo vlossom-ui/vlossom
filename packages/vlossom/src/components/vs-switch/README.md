@@ -23,10 +23,12 @@ const isOn = ref(false);
 
 ```html
 <template>
-    <vs-switch v-model="status" label="계정 상태">
-        <template #true-label>Active</template>
-        <template #false-label>Inactive</template>
-    </vs-switch>
+    <vs-switch
+        v-model="status"
+        label="계정 상태"
+        true-label="활성화"
+        false-label="비활성화"
+    />
 </template>
 ```
 

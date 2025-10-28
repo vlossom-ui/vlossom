@@ -97,6 +97,13 @@ export const Label: Story = {
     },
 };
 
+export const TrueLabelAndFalseLabel: Story = {
+    args: {
+        trueLabel: 'Approved',
+        falseLabel: 'Rejected',
+    },
+};
+
 export const Messages: Story = {
     render: (args: any) => ({
         components: { VsSwitch },

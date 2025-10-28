@@ -36,11 +36,11 @@
 
                 <div :class="['vs-switch-button', stateClasses]">
                     <span class="vs-status-label" data-value="true" v-show="isChecked">
-                        <slot name="true-label"> ON </slot>
+                        <slot name="true-label"> {{ trueLabel }} </slot>
                     </span>
 
                     <span class="vs-status-label" data-value="false" v-show="!isChecked">
-                        <slot name="false-label"> OFF </slot>
+                        <slot name="false-label"> {{ falseLabel }} </slot>
                     </span>
                 </div>
             </label>
@@ -76,8 +76,10 @@ export default defineComponent({
         },
         checked: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
-        trueValue: { type: null, default: true },
+        falseLabel: { type: String, default: 'OFF' },
         falseValue: { type: null, default: false },
+        trueLabel: { type: String, default: 'ON' },
+        trueValue: { type: null, default: true },
         // v-model
         modelValue: { type: null, default: false },
     },
