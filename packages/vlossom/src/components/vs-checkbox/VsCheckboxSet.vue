@@ -24,11 +24,13 @@
                 :key="getOptionValue(option)"
                 ref="checkboxRefs"
                 class="vs-checkbox-item"
+                no-label
+                no-messages
                 :color-scheme="colorScheme"
                 :style-set="checkboxStyleSet"
-                :model-value="isChecked(option) ? trueValue : falseValue"
+                :model-value="getOptionValue(option)"
                 :true-value="trueValue"
-                :false-value="falseValue"
+                :checked="isChecked(option)"
                 :check-label="getOptionLabel(option)"
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
@@ -60,10 +62,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
-import { VsComponent, type ColorScheme, type UIState } from '@/declaration';
+import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet } from '@/composables';
-import { objectUtil, stringUtil } from '@/utils';
+import { objectUtil } from '@/utils';
+
 import type { VsCheckboxSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -96,7 +99,6 @@ export default defineComponent({
         },
         vertical: { type: Boolean, default: false },
         trueValue: { type: null, default: true },
-        falseValue: { type: null, default: false },
         // v-model
         modelValue: {
             type: Array as PropType<any[]>,
@@ -113,7 +115,6 @@ export default defineComponent({
             id,
             modelValue,
             messages,
-            options,
             optionLabel,
             optionValue,
             readonly,
@@ -124,7 +125,6 @@ export default defineComponent({
             min,
             noDefaultRules,
             trueValue,
-            falseValue,
             vertical,
         } = toRefs(props);
 

@@ -6,6 +6,7 @@
         :grid="grid"
         :id="checkLabel ? '' : computedId"
         :label="label"
+        :no-label="noLabel"
         :required="required"
         :disabled="computedDisabled"
         :small="small"
