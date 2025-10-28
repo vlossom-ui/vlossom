@@ -4,10 +4,12 @@
     --vs-input-backgroundColor: initial;
     --vs-input-border: initial;
     --vs-input-borderRadius: initial;
+    --vs-input-padding: initial;
+    --vs-input-opacity: initial;
     --vs-input-fontColor: initial;
     --vs-input-fontSize: initial;
+    --vs-input-fontWeight: initial;
     --vs-input-height: initial;
-    --vs-input-padding: initial;
 
     --vs-input-prepend-backgroundColor: initial;
     --vs-input-prepend-padding: initial;
@@ -18,12 +20,13 @@
     --vs-input-append-opacity: initial;
 
     @apply relative box-border flex items-center overflow-hidden;
-
+    opacity: var(--vs-input-opacity, 1);
     border: var(--vs-input-border, solid 1px var(--vs-line-color));
     border-radius: var(--vs-input-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-input-backgroundColor, var(--vs-no-color));
     height: var(--vs-input-height, var(--vs-default-comp-height));
     color: var(--vs-input-fontColor, var(--vs-font-color));
+    font-weight: var(--vs-input-fontWeight, var(--vs-font-weight));
     font-size: var(--vs-input-fontSize, var(--vs-font-size));
 
     input {
@@ -31,6 +34,7 @@
 
         padding: var(--vs-input-padding, 0 0.8rem);
         color: var(--vs-input-fontColor, var(--vs-font-color));
+        font-weight: var(--vs-input-fontWeight, var(--vs-font-weight));
         font-size: var(--vs-input-fontSize, var(--vs-font-size));
     }
 

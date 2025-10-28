@@ -16,9 +16,8 @@ export interface VsInputRef extends InputRef {
 }
 
 type VsAttachmentStyleSet = Omit<BoxStyleSet, 'border' | 'borderRadius'>;
-type InputStyleSet = Omit<BoxStyleSet, 'opacity'> & Omit<TextStyleSet, 'fontWeight'>;
 
-export interface VsInputStyleSet extends InputStyleSet {
+export interface VsInputStyleSet extends BoxStyleSet, TextStyleSet {
     append?: VsAttachmentStyleSet;
     height?: string;
     prepend?: VsAttachmentStyleSet;

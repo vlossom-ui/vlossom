@@ -265,7 +265,9 @@ interface VsInputStyleSet {
     borderRadius?: string;
     fontColor?: string;
     fontSize?: string;
+    fontWeight?: number;
     height?: string;
+    opacity?: number;
     padding?: string;
     prepend?: VsAttachmentStyleSet; // prepend 슬롯 영역 스타일
 }
