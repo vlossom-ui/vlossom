@@ -23,7 +23,6 @@
                     ref="checkboxRef"
                     type="checkbox"
                     :class="['vs-checkbox-input', stateClasses]"
-                    :aria-label="ariaLabel"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
@@ -74,7 +73,6 @@ export default defineComponent({
         ...getStyleSetProps<VsCheckboxStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        ariaLabel: { type: String, default: '' },
         beforeChange: {
             type: Function as PropType<(from: any, to: any) => Promise<boolean> | null>,
             default: null,

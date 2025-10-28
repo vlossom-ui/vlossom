@@ -15,6 +15,5 @@ export function getButtonProps() {
             type: String as PropType<'button' | 'submit' | 'reset'>,
             default: 'button',
         },
-        ariaLabel: { type: String, default: '' },
     };
 }
