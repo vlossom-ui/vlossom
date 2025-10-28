@@ -253,20 +253,20 @@ interface VsInputRef extends InputRef {
 }
 
 interface VsAttachmentStyleSet {
-    backgroundColor?: string; // 배경색
-    opacity?: number; // 투명도
-    padding?: string; // 내부 여백
+    backgroundColor?: string;
+    opacity?: number;
+    padding?: string;
 }
 
 interface VsInputStyleSet {
     append?: VsAttachmentStyleSet; // append 슬롯 영역 스타일
-    backgroundColor?: string; // 배경색
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    fontColor?: string; // 텍스트 색상
-    fontSize?: string; // 폰트 크기
-    height?: string; // 높이
-    padding?: string; // 내부 여백
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    fontColor?: string;
+    fontSize?: string;
+    height?: string;
+    padding?: string;
     prepend?: VsAttachmentStyleSet; // prepend 슬롯 영역 스타일
 }
 ```
