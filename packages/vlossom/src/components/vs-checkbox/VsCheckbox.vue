@@ -27,7 +27,7 @@
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
-                    :value="String(trueValue)"
+                    :value="String(modelValue)"
                     :checked="isChecked"
                     :aria-required="required"
                     @click.prevent.stop="toggle"
@@ -88,7 +88,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: null, default: false },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle'],
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
@@ -206,6 +206,7 @@ export default defineComponent({
             }
 
             inputValue.value = toValue;
+            emit('toggle', isChecked.value);
         }
 
         function onFocus(e: FocusEvent) {

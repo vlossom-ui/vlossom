@@ -25,6 +25,7 @@
                 class="vs-checkbox-item"
                 no-label
                 no-messages
+                :model-value="getOptionValue(option)"
                 :width="width ?? 'unset'"
                 :color-scheme="colorScheme"
                 :style-set="checkboxStyleSet"
@@ -38,8 +39,7 @@
                 :name="name"
                 :state="computedState"
                 :small="small"
-                :value="getOptionValue(option)"
-                @update:modelValue="onToggle(option, $event)"
+                @toggle="onToggle(option, $event)"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
             >
@@ -93,10 +93,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
+            // validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
         },
         min: {
             type: [Number, String],
             default: 0,
+            //validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
         vertical: { type: Boolean, default: false },
         trueValue: { type: null, default: true },
@@ -107,6 +109,7 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -126,7 +129,6 @@ export default defineComponent({
             max,
             min,
             noDefaultRules,
-            trueValue,
             vertical,
         } = toRefs(props);
 
@@ -207,20 +209,20 @@ export default defineComponent({
             return inputValue.value.some((v: any) => objectUtil.isEqual(v, getOptionValue(option)));
         }
 
-        async function onToggle(option: any, checked: any): Promise<void> {
-            const optionVal = getOptionValue(option);
-            const shouldBeChecked = objectUtil.isEqual(checked, trueValue.value);
-            const isCurrentlyInArray = inputValue.value.some((v: any) => objectUtil.isEqual(v, optionVal));
+        async function onToggle(option: any, checked: boolean) {
+            const targetOptionValue = getOptionValue(option);
+            const toValue = checked
+                ? [...inputValue.value, targetOptionValue]
+                : inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue));
 
-            let toValue: any[];
-
-            if (shouldBeChecked && !isCurrentlyInArray) {
-                toValue = [...inputValue.value, optionVal];
-            } else if (!shouldBeChecked && isCurrentlyInArray) {
-                toValue = inputValue.value.filter((v: any) => !objectUtil.isEqual(v, optionVal));
-            } else {
-                return;
-            }
+            console.log('inputValue.value', inputValue.value);
+            console.log('toValue', toValue);
+            console.log('checked', checked);
+            console.log('val1', [...inputValue.value, targetOptionValue]);
+            console.log(
+                'val2',
+                inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue)),
+            );
 
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {

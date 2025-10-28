@@ -203,63 +203,55 @@ describe('VsCheckboxSet', () => {
         it('beforeChange 함수에 from, to, option 인자가 전달된다', async () => {
             // given
             const beforeChange = vi.fn().mockResolvedValue(true);
-            const options = ['A', 'B', 'C'];
             const wrapper = mount(VsCheckboxSet, {
                 props: {
-                    options,
-                    modelValue: [],
-                    beforeChange,
+                    modelValue: ['A'],
                     'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    options: ['A', 'B', 'C'],
+                    beforeChange,
                 },
             });
 
             // when
-            const firstCheckbox = wrapper.findAllComponents({ name: 'VsCheckbox' })[0];
-            await firstCheckbox.vm.$emit('update:modelValue', true);
+            await wrapper.find('input[value="B"]').trigger('click');
 
             // then
-            expect(beforeChange).toHaveBeenCalledWith([], ['A'], 'A');
+            expect(beforeChange).toHaveBeenCalledWith(['A'], ['A', 'B'], 'B');
         });
 
-        it('beforeChange 함수가 Promise<true>를 리턴하면 값이 업데이트된다', async () => {
+        it('beforeChange 함수가 Promise<true>를 리턴하면 값이 업데이트 된다', async () => {
             // given
             const wrapper = mount(VsCheckboxSet, {
                 props: {
-                    options: ['A', 'B', 'C'],
-                    modelValue: [],
-                    beforeChange: () => Promise.resolve(true),
+                    modelValue: ['A'],
                     'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    options: ['A', 'B', 'C'],
+                    beforeChange: () => Promise.resolve(true),
                 },
             });
 
             // when
-            const firstCheckbox = wrapper.findAllComponents({ name: 'VsCheckbox' })[0];
-            await firstCheckbox.vm.$emit('update:modelValue', true);
-            await nextTick();
+            await wrapper.find('input[value="B"]').trigger('click');
 
             // then
             const updateModelValueEvent = wrapper.emitted('update:modelValue');
-            expect(updateModelValueEvent).toBeTruthy();
-            if (updateModelValueEvent) {
-                expect(updateModelValueEvent).toHaveLength(1);
-                expect(updateModelValueEvent[0][0]).toEqual(['A']);
-            }
+            expect(updateModelValueEvent).toHaveLength(1);
+            expect(updateModelValueEvent?.[0]).toEqual([['A', 'B']]);
         });
 
-        it('beforeChange 함수가 Promise<false>를 리턴하면 값이 업데이트되지 않는다', async () => {
+        it('beforeChange 함수가 Promise<false>를 리턴하면 값이 업데이트 되지 않는다', async () => {
             // given
             const wrapper = mount(VsCheckboxSet, {
                 props: {
-                    options: ['A', 'B', 'C'],
-                    modelValue: [],
-                    beforeChange: () => Promise.resolve(false),
+                    modelValue: ['A'],
                     'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    options: ['A', 'B', 'C'],
+                    beforeChange: () => Promise.resolve(false),
                 },
             });
 
             // when
-            const firstCheckbox = wrapper.findAllComponents({ name: 'VsCheckbox' })[0];
-            await firstCheckbox.vm.$emit('update:modelValue', true);
+            await wrapper.find('input[value="B"]').trigger('click');
 
             // then
             const updateModelValueEvent = wrapper.emitted('update:modelValue');
