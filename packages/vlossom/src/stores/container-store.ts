@@ -1,5 +1,5 @@
-import type { Ref } from 'vue';
-import { ref, readonly } from 'vue';
+import { ref, readonly, type Ref } from 'vue';
+import type { ToastInfo } from '@/plugins';
 
 export class ContainerStore<T extends { container: string; id: string }> {
     private _map: Ref<Map<string, T[]>> = ref(new Map());
@@ -25,10 +25,6 @@ export class ContainerStore<T extends { container: string; id: string }> {
     push(container: string, value: T): void {
         const current = this._map.value.get(container) || [];
         this._map.value.set(container, [...current, value]);
-    }
-
-    add(value: T): void {
-        this.push(value.container, value);
     }
 
     remove(container: string, id: string): void {
@@ -66,4 +62,10 @@ export class ContainerStore<T extends { container: string; id: string }> {
             this._map.value.set(container, filtered);
         }
     }
+}
+
+const toastContainerStore = new ContainerStore<ToastInfo>();
+
+export function useToastContainerStore() {
+    return toastContainerStore;
 }

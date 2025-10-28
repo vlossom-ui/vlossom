@@ -151,33 +151,6 @@ describe('container-store', () => {
         });
     });
 
-    describe('add', () => {
-        it('아이템의 container 속성을 사용하여 추가해야 한다', () => {
-            // given
-            const item = { container: 'container1', id: 'id1' };
-
-            // when
-            store.add(item);
-
-            // then
-            expect(store.get('container1')).toHaveLength(1);
-            expect(store.get('container1')).toContainEqual(item);
-        });
-
-        it('여러 아이템을 같은 컨테이너에 추가할 수 있어야 한다', () => {
-            // given
-            const item1 = { container: 'container1', id: 'id1' };
-            const item2 = { container: 'container1', id: 'id2' };
-
-            // when
-            store.add(item1);
-            store.add(item2);
-
-            // then
-            expect(store.get('container1')).toHaveLength(2);
-        });
-    });
-
     describe('remove', () => {
         it('지정된 컨테이너와 id의 아이템을 제거해야 한다', () => {
             // given
@@ -322,45 +295,6 @@ describe('container-store', () => {
 
             // then
             expect(store.size).toBe(0);
-        });
-    });
-
-    describe('통합 테스트', () => {
-        it('복합 시나리오에서 올바르게 동작해야 한다', () => {
-            // given
-            const item1 = { container: 'container1', id: 'id1' };
-            const item2 = { container: 'container1', id: 'id2' };
-            const item3 = { container: 'container2', id: 'id3' };
-
-            // when & then
-            // 컨테이너 추가
-            store.add(item1);
-            store.add(item2);
-            store.add(item3);
-            expect(store.size).toBe(2);
-            expect(store.get('container1')).toHaveLength(2);
-            expect(store.get('container2')).toHaveLength(1);
-
-            // 아이템 제거
-            store.remove('container1', 'id1');
-            expect(store.get('container1')).toHaveLength(1);
-            expect(store.get('container1')[0]).toEqual(item2);
-
-            // pop 테스트
-            store.push('container1', item1);
-            store.pop('container1');
-            expect(store.get('container1')).toHaveLength(1);
-            expect(store.get('container1')[0]).toEqual(item2);
-
-            // 컨테이너 전체 삭제
-            store.delete('container1');
-            expect(store.size).toBe(1);
-            expect(store.has('container1')).toBe(false);
-
-            // 모든 컨테이너 삭제
-            store.clear();
-            expect(store.size).toBe(0);
-            expect(store.has('container2')).toBe(false);
         });
     });
 });

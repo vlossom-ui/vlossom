@@ -6,7 +6,7 @@ import {
     type VlossomOptions,
 } from '@/declaration';
 import { useOptionsStore } from '@/stores';
-import { createToastPlugin, type ToastPlugin } from './toast-plugin';
+import { createToastPlugin, type ToastPlugin } from '@/plugins';
 
 export class Vlossom {
     private optionsStore = useOptionsStore();

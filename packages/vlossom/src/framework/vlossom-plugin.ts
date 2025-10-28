@@ -1,7 +1,7 @@
 import type { App } from 'vue';
 import { Vlossom } from './vlossom-class';
 import type { VlossomOptions } from '@/declaration';
-import { mountToastApp } from './toast-plugin';
+import { mountOverlayApp } from './overlay-helper';
 
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -27,8 +27,8 @@ export function createVlossom(options: VlossomOptions): any {
                 }
             });
 
-            // Toast app 자동 마운트
-            mountToastApp(app);
+            // Overlay 관리를 위해 app에 별도의 app 생성 후 mount
+            mountOverlayApp(app);
         },
     };
 }

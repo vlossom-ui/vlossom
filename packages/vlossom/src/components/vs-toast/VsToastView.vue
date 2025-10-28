@@ -1,12 +1,12 @@
 <template>
-    <div v-if="hasToast" class="vs-toast-view" :class="{ 'vs-toast-fixed': isFixed }" :id="wrapperId">
+    <div class="vs-toast-view" :class="{ 'vs-toast-fixed': isFixed }" :id="wrapperId">
         <div
             v-for="[key, toasts] in Object.entries(toastsByPosition)"
             :key="key"
             :class="['vs-toast-container', `vs-toast-${key.split('-')[0]}`, `vs-toast-${key.split('-')[1]}`]"
         >
             <TransitionGroup name="toasts" appear>
-                <vs-toast v-for="toast in toasts" :key="toast.id" :toast />
+                <vs-toast v-for="toast in toasts" :key="toast.id" />
             </TransitionGroup>
         </div>
     </div>
@@ -15,9 +15,10 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
-import { useToastStore } from './composables/toast-store-composable';
+import { useToastContainerStore } from '@/stores';
+import type { ToastInfo } from '@/plugins';
+
 import VsToast from './VsToast.vue';
-import type { ToastInfo } from './types';
 
 const name = VsComponent.VsToastView;
 export default defineComponent({
@@ -29,7 +30,7 @@ export default defineComponent({
     setup(props) {
         const { container } = toRefs(props);
 
-        const toastStore = useToastStore();
+        const toastStore = useToastContainerStore();
 
         const toastsByPosition = computed(() => {
             const containerValue = container.value || 'body';

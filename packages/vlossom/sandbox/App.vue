@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Hello Vlossom</h1>
+        <div id="vs-toast-wrapper" style="width: 300px; height: 300px; border: 2px solid red"></div>
         <button @click="showToast">Show Toast</button>
         <button @click="showPrimaryToast">Show Primary Toast</button>
         <button @click="showErrorToast">Show Error Toast</button>
@@ -10,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance } from 'vue';
+import { COLORS } from '@/declaration';
 
 export default defineComponent({
     name: 'App',
@@ -37,6 +39,7 @@ export default defineComponent({
             showPrimaryToast,
             showErrorToast,
             clearToast,
+            COLORS,
         };
     },
 });
