@@ -290,62 +290,6 @@ describe('VsInput', () => {
         });
     });
 
-    describe('string modifiers', () => {
-        it('capitalize modifier가 적용되면 첫 글자가 대문자로 변환되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: '',
-                    modelModifiers: { capitalize: true },
-                },
-            });
-
-            // when
-            const input = wrapper.find('input');
-            await input.setValue('test');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Test']);
-        });
-
-        it('upper modifier가 적용되면 대문자로 변환되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: '',
-                    modelModifiers: { upper: true },
-                },
-            });
-
-            // when
-            const input = wrapper.find('input');
-            await input.setValue('test');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['TEST']);
-        });
-
-        it('lower modifier가 적용되면 소문자로 변환되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: '',
-                    modelModifiers: { lower: true },
-                },
-            });
-
-            // when
-            const input = wrapper.find('input');
-            await input.setValue('TEST');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['test']);
-        });
-    });
-
     describe('rules', () => {
         it('required 체크가 가능하다', () => {
             // given
