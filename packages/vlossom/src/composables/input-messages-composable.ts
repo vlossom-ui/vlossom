@@ -22,7 +22,7 @@ export function useInputMessages<T>(
                     innerMessages.value.push(result as StateMessage);
                 }
             } else {
-                innerMessages.value.push(message as StateMessage);
+                innerMessages.value.push(message);
             }
         });
 
