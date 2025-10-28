@@ -110,10 +110,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import type { VsInputRef } from '@/components';
 
-const inputRef = ref<VsInputRef>();
+const inputRef = useTemplateRef('inputRef');
 const value = ref('');
 
 function focusInput() {
