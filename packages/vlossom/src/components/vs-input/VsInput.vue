@@ -35,9 +35,6 @@
                 :aria-required="required"
                 :placeholder="placeholder"
                 @input.stop="updateValue"
-                @focus.stop="onFocus"
-                @blur.stop="onBlur"
-                @keyup.enter.stop="onEnter"
                 @change.stop
             />
 
@@ -109,7 +106,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'enter'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -218,18 +215,6 @@ export default defineComponent({
             inputRef.value?.select();
         }
 
-        function onFocus(e: FocusEvent) {
-            emit('focus', e);
-        }
-
-        function onBlur(e: FocusEvent) {
-            emit('blur', e);
-        }
-
-        function onEnter(e: KeyboardEvent) {
-            emit('enter', e);
-        }
-
         function clearWithFocus() {
             onClear();
             focus();
@@ -259,9 +244,6 @@ export default defineComponent({
             select,
             clear,
             validate,
-            onFocus,
-            onBlur,
-            onEnter,
             clearWithFocus,
 
             // Icons

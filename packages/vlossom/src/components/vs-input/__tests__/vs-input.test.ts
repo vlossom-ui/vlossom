@@ -217,17 +217,76 @@ describe('VsInput', () => {
         });
     });
 
-    describe('events', () => {
-        it('Enter 키 입력 시 enter 이벤트가 emit되어야 한다', async () => {
+    describe('methods', () => {
+        it('focus() 메서드 호출 시 input element에 focus가 적용되어야 한다', () => {
             // given
-            const wrapper = mount(VsInput);
+            const wrapper = mount(VsInput, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
 
             // when
-            const input = wrapper.find('input');
-            await input.trigger('keyup.enter');
+            wrapper.vm.focus();
 
             // then
-            expect(wrapper.emitted('enter')).toBeTruthy();
+            expect(document.activeElement).toBe(input);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('blur() 메서드 호출 시 input element에서 focus가 해제되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+            wrapper.vm.focus();
+
+            // when
+            wrapper.vm.blur();
+
+            // then
+            expect(document.activeElement).not.toBe(input);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('select() 메서드 호출 시 input의 텍스트가 선택되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test value',
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+
+            // when
+            wrapper.vm.select();
+
+            // then
+            expect(input.selectionStart).toBe(0);
+            expect(input.selectionEnd).toBe(input.value.length);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('clear() 메서드 호출 시 input 값이 초기화되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test value',
+                },
+            });
+
+            // when
+            wrapper.vm.clear();
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('');
         });
     });
 
