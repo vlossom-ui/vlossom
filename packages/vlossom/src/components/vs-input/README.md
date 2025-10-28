@@ -132,31 +132,36 @@ function clearInput() {
 
 ## Props
 
-| Prop             | Type                                                                        | Default                   | Required | Description                              |
-| ---------------- | --------------------------------------------------------------------------- | ------------------------- | -------- | ---------------------------------------- |
-| `colorScheme`    | `ColorScheme`                                                               | -                         | -        | 컴포넌트 색상 테마                       |
-| `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | 커스텀 스타일 설정 객체                  |
-| `autocomplete`   | `boolean`                                                                   | `false`                   | -        | 자동완성 활성화 여부                     |
-| `disabled`       | `boolean`                                                                   | `false`                   | -        | 입력 필드 비활성화                       |
-| `hidden`         | `boolean`                                                                   | `false`                   | -        | 컴포넌트 숨김 여부                       |
-| `id`             | `string`                                                                    | -                         | -        | input 요소의 id                          |
-| `label`          | `string`                                                                    | -                         | -        | 입력 필드 라벨                           |
-| `max`            | `number \| string`                                                          | `Number.MAX_SAFE_INTEGER` | -        | 숫자 타입의 최대값                       |
-| `messages`       | `string \| string[]`                                                        | -                         | -        | 메시지 표시                              |
-| `min`            | `number \| string`                                                          | `Number.MIN_SAFE_INTEGER` | -        | 숫자 타입의 최소값                       |
-| `modelValue`     | `string \| number \| null`                                                  | `null`                    | -        | v-model 바인딩 값                        |
-| `modelModifiers` | `StringModifiers`                                                           | `{}`                      | -        | 문자열 수정자 (capitalize, upper, lower) |
-| `name`           | `string`                                                                    | -                         | -        | input 요소의 name 속성                   |
-| `noClear`        | `boolean`                                                                   | `false`                   | -        | clear 버튼 숨김                          |
-| `noLabel`        | `boolean`                                                                   | `false`                   | -        | 라벨 영역 숨김                           |
-| `noMessages`     | `boolean`                                                                   | `false`                   | -        | 메시지 영역 숨김                         |
-| `placeholder`    | `string`                                                                    | -                         | -        | 플레이스홀더 텍스트                      |
-| `readonly`       | `boolean`                                                                   | `false`                   | -        | 읽기 전용 상태                           |
-| `required`       | `boolean`                                                                   | `false`                   | -        | 필수 입력 여부                           |
-| `rules`          | `InputRule[]`                                                               | -                         | -        | 커스텀 검증 규칙                         |
-| `small`          | `boolean`                                                                   | `false`                   | -        | 작은 크기                                |
-| `state`          | `State`                                                                     | -                         | -        | 입력 상태 (success, error, warning)      |
-| `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | input 타입                               |
+| Prop             | Type                                                                        | Default                   | Required | Description                                     |
+| ---------------- | --------------------------------------------------------------------------- | ------------------------- | -------- | ----------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                                               | -                         | -        | 컴포넌트 색상 테마                              |
+| `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | 커스텀 스타일 설정 객체                         |
+| `autocomplete`   | `boolean`                                                                   | `false`                   | -        | 자동완성 활성화 여부                            |
+| `changed`        | `boolean`                                                                   | `false`                   | -        | 값 변경 여부 (v-model:changed)                  |
+| `disabled`       | `boolean`                                                                   | `false`                   | -        | 입력 필드 비활성화                              |
+| `grid`           | `string \| number \| Breakpoints`                                           | -                         | -        | 그리드 레이아웃 크기                            |
+| `hidden`         | `boolean`                                                                   | `false`                   | -        | 컴포넌트 숨김 여부                              |
+| `id`             | `string`                                                                    | -                         | -        | input 요소의 id                                 |
+| `label`          | `string`                                                                    | -                         | -        | 입력 필드 라벨                                  |
+| `max`            | `number \| string`                                                          | `Number.MAX_SAFE_INTEGER` | -        | 숫자 타입의 최대값                              |
+| `messages`       | `Message<InputValueType>[]`                                                 | `[]`                      | -        | 메시지 표시                                     |
+| `min`            | `number \| string`                                                          | `Number.MIN_SAFE_INTEGER` | -        | 숫자 타입의 최소값                              |
+| `modelValue`     | `string \| number \| null`                                                  | `null`                    | -        | v-model 바인딩 값                               |
+| `modelModifiers` | `StringModifiers`                                                           | `{}`                      | -        | 문자열 수정자 (capitalize, upper, lower)        |
+| `name`           | `string`                                                                    | -                         | -        | input 요소의 name 속성                          |
+| `noClear`        | `boolean`                                                                   | `false`                   | -        | clear 버튼 숨김                                 |
+| `noDefaultRules` | `boolean`                                                                   | `false`                   | -        | 기본 검증 규칙 비활성화                         |
+| `noLabel`        | `boolean`                                                                   | `false`                   | -        | 라벨 영역 숨김                                  |
+| `noMessages`     | `boolean`                                                                   | `false`                   | -        | 메시지 영역 숨김                                |
+| `placeholder`    | `string`                                                                    | -                         | -        | 플레이스홀더 텍스트                             |
+| `readonly`       | `boolean`                                                                   | `false`                   | -        | 읽기 전용 상태                                  |
+| `required`       | `boolean`                                                                   | `false`                   | -        | 필수 입력 여부                                  |
+| `rules`          | `Rule<InputValueType>[]`                                                    | `[]`                      | -        | 커스텀 검증 규칙                                |
+| `small`          | `boolean`                                                                   | `false`                   | -        | 작은 크기                                       |
+| `state`          | `UIState`                                                                   | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning) |
+| `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | input 타입                                      |
+| `valid`          | `boolean`                                                                   | `false`                   | -        | 검증 통과 여부 (v-model:valid)                  |
+| `width`          | `string \| number \| Breakpoints`                                           | -                         | -        | 컴포넌트 너비                                   |
 
 ## Events
 
@@ -165,49 +170,28 @@ function clearInput() {
 | `update:modelValue` | `value: InputValueType` | v-model 값 변경 시 발생 |
 | `update:changed`    | `changed: boolean`      | 값 변경 여부 업데이트   |
 | `update:valid`      | `valid: boolean`        | 검증 상태 업데이트      |
-| `change`            | `event: Event`          | input change 이벤트     |
-| `focus`             | `event: FocusEvent`     | input focus 이벤트      |
-| `blur`              | `event: FocusEvent`     | input blur 이벤트       |
-| `enter`             | `event: KeyboardEvent`  | Enter 키 입력 시 발생   |
+| `change`            | `value: InputValueType` | 입력값 변경 시 발생     |
 
 ## Types
 
 ```typescript
-type InputValueType = string | number | null;
-
-type InputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
-
-interface StringModifiers {
-    capitalize?: boolean; // 첫 글자 대문자
-    lower?: boolean; // 전체 소문자
-    upper?: boolean; // 전체 대문자
-}
-
-interface VsInputRef extends InputRef {
-    focus: () => void;
-    blur: () => void;
-    select: () => void;
-    clear: () => void;
-    validate: () => boolean;
-}
-
 interface VsAttachmentStyleSet {
     backgroundColor?: string;
-    opacity?: number;
     padding?: string;
+    opacity?: number;
 }
 
 interface VsInputStyleSet {
-    append?: VsAttachmentStyleSet; // append 슬롯 영역 스타일
     backgroundColor?: string;
     border?: string;
     borderRadius?: string;
+    padding?: string;
+    opacity?: number;
     fontColor?: string;
     fontSize?: string;
     fontWeight?: number;
     height?: string;
-    opacity?: number;
-    padding?: string;
+    append?: VsAttachmentStyleSet; // append 슬롯 영역 스타일
     prepend?: VsAttachmentStyleSet; // prepend 슬롯 영역 스타일
 }
 ```
