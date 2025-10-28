@@ -12,12 +12,6 @@
 <template>
     <vs-input v-model="value" placeholder="텍스트를 입력하세요" />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const value = ref('');
-</script>
 ```
 
 ### 라벨과 함께 사용
@@ -26,12 +20,6 @@ const value = ref('');
 <template>
     <vs-input v-model="name" label="이름" placeholder="이름을 입력하세요" />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const name = ref('');
-</script>
 ```
 
 ### 다양한 타입
@@ -43,15 +31,6 @@ const name = ref('');
     <vs-input v-model="age" type="number" label="나이" placeholder="나이 입력" />
     <vs-input v-model="phone" type="tel" label="전화번호" placeholder="010-0000-0000" />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const email = ref('');
-const password = ref('');
-const age = ref<number | null>(null);
-const phone = ref('');
-</script>
 ```
 
 ### 필수 입력 필드
@@ -60,12 +39,6 @@ const phone = ref('');
 <template>
     <vs-input v-model="email" type="email" label="이메일" placeholder="email@example.com" required />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const email = ref('');
-</script>
 ```
 
 ### 문자열 수정자 (Modifiers)
@@ -81,14 +54,6 @@ const email = ref('');
     <!-- 전체 소문자로 -->
     <vs-input v-model.lower="username" label="사용자명" />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const name = ref('');
-const code = ref('');
-const username = ref('');
-</script>
 ```
 
 ### Prepend/Append 슬롯
@@ -107,13 +72,6 @@ const username = ref('');
         </template>
     </vs-input>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const search = ref('');
-const price = ref<number | null>(null);
-</script>
 ```
 
 ### 숫자 입력 (min/max)
@@ -122,12 +80,6 @@ const price = ref<number | null>(null);
 <template>
     <vs-input v-model="age" type="number" label="나이" placeholder="나이 입력" :min="0" :max="120" />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const age = ref<number | null>(null);
-</script>
 ```
 
 ### 비활성화 및 읽기 전용
@@ -137,13 +89,6 @@ const age = ref<number | null>(null);
     <vs-input v-model="value1" label="비활성화" disabled />
     <vs-input v-model="value2" label="읽기 전용" readonly />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const value1 = ref('');
-const value2 = ref('읽기 전용 값');
-</script>
 ```
 
 ### Clear 버튼 제거
@@ -152,12 +97,6 @@ const value2 = ref('읽기 전용 값');
 <template>
     <vs-input v-model="value" label="Clear 버튼 없음" no-clear />
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const value = ref('');
-</script>
 ```
 
 ### 메서드 사용
