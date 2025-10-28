@@ -68,6 +68,7 @@ import { useColorScheme, useInput, useStateClass, useStyleSet } from '@/composab
 import { objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
+import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
@@ -136,22 +137,9 @@ export default defineComponent({
 
         const { stateClasses } = useStateClass(state);
 
+        const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
+
         const inputValue = ref<any[]>(modelValue.value || []);
-
-        // validation rules
-        function requiredCheck(v: any[]) {
-            return required.value && (!v || v.length === 0) ? 'required' : '';
-        }
-
-        function maxCheck(v: any[]) {
-            const limit = Number(max.value);
-            return v && v.length > limit ? `max number of items: ${max.value}` : '';
-        }
-
-        function minCheck(v: any[]) {
-            const limit = Number(min.value);
-            return v && v.length < limit ? `min number of items: ${min.value}` : '';
-        }
 
         const {
             computedId,
