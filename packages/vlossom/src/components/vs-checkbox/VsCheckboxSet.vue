@@ -64,7 +64,7 @@
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStateClass, useStyleSet } from '@/composables';
+import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
 import { objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
@@ -116,6 +116,7 @@ export default defineComponent({
             id,
             modelValue,
             messages,
+            options,
             optionLabel,
             optionValue,
             readonly,
@@ -140,6 +141,14 @@ export default defineComponent({
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
 
         const inputValue = ref<any[]>(modelValue.value || []);
+
+        const { getOptionLabel, getOptionValue } = useInputOption(
+            inputValue,
+            options,
+            optionLabel,
+            optionValue,
+            ref(true),
+        );
 
         const {
             computedId,
@@ -191,30 +200,11 @@ export default defineComponent({
             return componentStyleSet.value?.checkbox || {};
         });
 
-        function getOptionLabel(option: any): string {
-            if (!optionLabel.value) {
-                return String(option);
-            }
-            return getNestedValue(option, optionLabel.value) || '';
-        }
-
-        function getOptionValue(option: any): any {
-            if (!optionValue.value) {
-                return option;
-            }
-            return getNestedValue(option, optionValue.value);
-        }
-
-        function getNestedValue(obj: any, path: string): any {
-            return path.split('.').reduce((current, key) => current?.[key], obj);
-        }
-
-        function isChecked(option: any): boolean {
-            if (!inputValue.value || !Array.isArray(inputValue.value)) {
+        function isChecked(option: any) {
+            if (!inputValue.value) {
                 return false;
             }
-            const optionVal = getOptionValue(option);
-            return inputValue.value.some((v: any) => objectUtil.isEqual(v, optionVal));
+            return inputValue.value.some((v: any) => objectUtil.isEqual(v, getOptionValue(option)));
         }
 
         async function onToggle(option: any, checked: any): Promise<void> {
@@ -225,13 +215,10 @@ export default defineComponent({
             let toValue: any[];
 
             if (shouldBeChecked && !isCurrentlyInArray) {
-                // Add to array
                 toValue = [...inputValue.value, optionVal];
             } else if (!shouldBeChecked && isCurrentlyInArray) {
-                // Remove from array
                 toValue = inputValue.value.filter((v: any) => !objectUtil.isEqual(v, optionVal));
             } else {
-                // No change needed
                 return;
             }
 
