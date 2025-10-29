@@ -36,6 +36,7 @@ import VsProgress from './vs-progress/VsProgress.vue';
 import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
+import VsSwitch from './vs-switch/VsSwitch.vue';
 import VsThemeButton from './vs-theme-button/VsThemeButton.vue';
 import VsToggle from './vs-toggle/VsToggle.vue';
 import VsTooltip from './vs-tooltip/VsTooltip.vue';
@@ -72,6 +73,7 @@ export const VlossomComponents = {
     VsRender,
     VsResponsive,
     VsSkeleton,
+    VsSwitch,
     VsThemeButton,
     VsToggle,
     VsTooltip,

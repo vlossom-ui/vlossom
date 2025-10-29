@@ -6,7 +6,6 @@
         :style="styleSetVariables"
         :disabled="disabled"
         :tabindex="disabled || loading ? -1 : 0"
-        :aria-label="ariaLabel"
     >
         <div v-if="loading" class="vs-button-loading">
             <vs-loading :color-scheme="colorScheme" :style-set="loadingStyleSet" />

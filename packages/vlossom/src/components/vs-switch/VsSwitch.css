@@ -1,0 +1,106 @@
+@reference 'tailwindcss';
+
+.vs-switch {
+    --vs-switch-width: initial;
+    --vs-switch-height: initial;
+
+    --vs-switch-backgroundColor: initial;
+    --vs-switch-border: initial;
+    --vs-switch-borderRadius: initial;
+    --vs-switch-fontColor: initial;
+    --vs-switch-handleSize: initial;
+    --vs-switch-handleColor: initial;
+
+    @apply relative flex items-center;
+    min-height: var(--vs-input-comp-height);
+
+    .vs-switch-button {
+        @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
+        border: var(--vs-switch-border, 1px solid var(--vs-line-color));
+        border-radius: var(--vs-switch-borderRadius, 1.5rem);
+        background-color: var(--vs-switch-backgroundColor, var(--vs-area-bg));
+
+        width: var(--vs-switch-width, fit-content);
+        height: var(--vs-switch-height, 2rem);
+        color: var(--vs-switch-fontColor, var(--vs-font-color));
+        font-size: var(--vs-font-size-sm);
+
+        .vs-status-label {
+            @apply ml-1.5 block w-full pr-0 text-center break-all whitespace-nowrap select-none;
+            padding-left: calc(var(--vs-switch-handleSize, 1.2rem));
+        }
+
+        &::before {
+            @apply absolute left-1.5 rounded-full transition-all duration-300;
+            background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-bg));
+            width: calc(var(--vs-switch-handleSize, 1.4rem));
+            height: calc(var(--vs-switch-handleSize, 1.4rem));
+            content: '';
+        }
+    }
+
+    .vs-switch-input {
+        @apply pointer-events-none absolute top-0 left-0 opacity-0;
+    }
+
+    &.vs-checked {
+        .vs-switch-button {
+            border: var(--vs-switch-border, 1px solid var(--vs-primary-comp-bg));
+            background-color: var(--vs-switch-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-switch-fontColor, var(--vs-primary-comp-font));
+
+            &::before {
+                left: calc(100% - (var(--vs-switch-handleSize, 1.3rem) + 0.3rem));
+                background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-font));
+            }
+
+            .vs-status-label {
+                @apply pl-0;
+                padding-right: calc(var(--vs-switch-handleSize, 1.3rem));
+            }
+        }
+    }
+
+    &.vs-small {
+        height: var(--vs-input-comp-height-small);
+
+        .vs-switch-button {
+            @apply px-2.5;
+            border-radius: var(--vs-switch-borderRadius, 1rem);
+            height: var(--vs-switch-height, 1.5rem);
+            font-size: var(--vs-font-size-xs);
+
+            .vs-status-label {
+                @apply relative ml-1;
+                padding-left: calc(var(--vs-switch-handleSize, 0.8rem));
+            }
+
+            &::before {
+                @apply left-1.5;
+                width: calc(var(--vs-switch-handleSize, 1rem));
+                height: calc(var(--vs-switch-handleSize, 1rem));
+            }
+        }
+
+        &.vs-checked {
+            .vs-switch-button {
+                &::before {
+                    left: calc(100% - (var(--vs-switch-handleSize, 1rem) + 0.3rem));
+                    background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-font));
+                }
+
+                .vs-status-label {
+                    @apply pl-0;
+                    padding-right: calc(var(--vs-switch-handleSize, 1rem));
+                }
+            }
+        }
+    }
+
+    &:focus-within {
+        .vs-switch-button {
+            @apply outline-offset-2;
+            outline: 1px solid var(--vs-line-color) !important;
+        }
+    }
+}

@@ -4,7 +4,7 @@
         :width="width"
         :style="componentStyleSet.wrapper"
         :grid="grid"
-        :id="checkLabel ? '' : computedId"
+        :id="computedId"
         :label="label"
         :required="required"
         :disabled="computedDisabled"
@@ -17,28 +17,34 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox', colorSchemeClass, classObj]" :style="styleSetVariables">
-            <label class="vs-checkbox-wrap" :for="computedId">
+        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
+            <label class="vs-switch-wrap" :for="computedId">
                 <input
-                    ref="checkboxRef"
+                    ref="switchRef"
                     type="checkbox"
-                    :class="['vs-checkbox-input', stateClasses]"
+                    class="vs-switch-input"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
                     :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
-                    @click.prevent.stop="toggle"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
+                    @change.stop="onChange"
                 />
-                <div v-if="checkLabel || $slots['check-label']" class="vs-checkbox-label">
-                    <slot name="check-label">{{ checkLabel }}</slot>
+
+                <div :class="['vs-switch-button', stateClasses]">
+                    <span class="vs-status-label" data-value="true" v-show="isChecked">
+                        <slot name="true-label"> {{ trueLabel }} </slot>
+                    </span>
+
+                    <span class="vs-status-label" data-value="false" v-show="!isChecked">
+                        <slot name="false-label"> {{ falseLabel }} </slot>
+                    </span>
                 </div>
             </label>
         </div>
-
         <template #messages v-if="!noMessages">
             <slot name="messages" />
         </template>
@@ -46,31 +52,22 @@
 </template>
 
 <script lang="ts">
-import {
-    computed,
-    defineComponent,
-    nextTick,
-    ref,
-    toRefs,
-    useTemplateRef,
-    watch,
-    type PropType,
-    type TemplateRef,
-} from 'vue';
+import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
-import type { VsCheckboxStyleSet } from './types';
+import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
+import type { VsSwitchStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
-const name = VsComponent.VsCheckbox;
+const name = VsComponent.VsSwitch;
+
 export default defineComponent({
     name,
     components: { VsInputWrapper },
     props: {
         ...getColorSchemeProps(),
-        ...getStyleSetProps<VsCheckboxStyleSet>(),
+        ...getStyleSetProps<VsSwitchStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         beforeChange: {
@@ -78,46 +75,50 @@ export default defineComponent({
             default: null,
         },
         checked: { type: Boolean, default: false },
-        checkLabel: { type: String, default: '' },
-        indeterminate: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
-        trueValue: { type: null, default: true },
+        falseLabel: { type: String, default: 'OFF' },
         falseValue: { type: null, default: false },
-
+        trueLabel: { type: String, default: 'ON' },
+        trueValue: { type: null, default: true },
         // v-model
         modelValue: { type: null, default: false },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
             beforeChange,
             checked,
             colorScheme,
-            styleSet,
-            id,
             disabled,
-            readonly,
-            modelValue,
-            messages,
-            required,
-            rules,
-            state,
-            trueValue,
             falseValue,
+            id,
+            messages,
+            modelValue,
             multiple,
             noDefaultRules,
-            indeterminate,
+            readonly,
+            required,
+            rules,
             small,
+            state,
+            styleSet,
+            trueValue,
         } = toRefs(props);
 
-        const checkboxRef: TemplateRef<HTMLInputElement> = useTemplateRef('checkboxRef');
+        const switchRef: TemplateRef<HTMLInputElement> = useTemplateRef('switchRef');
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(name, styleSet);
 
         const inputValue = ref(modelValue.value);
+
+        const classObj = computed(() => ({
+            'vs-checked': isChecked.value,
+            'vs-disabled': computedDisabled.value,
+            'vs-readonly': computedReadonly.value,
+            'vs-small': small.value,
+        }));
 
         const {
             isMatched: isChecked,
@@ -180,16 +181,7 @@ export default defineComponent({
 
         const { stateClasses } = useStateClass(computedState);
 
-        const classObj = computed(() => ({
-            'vs-checked': isChecked.value,
-            'vs-disabled': computedDisabled.value,
-            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
-            'vs-indeterminate': indeterminate.value,
-            'vs-readonly': computedReadonly.value,
-            'vs-small': small.value,
-        }));
-
-        async function toggle() {
+        async function onChange() {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
@@ -216,29 +208,16 @@ export default defineComponent({
         }
 
         function focus() {
-            checkboxRef.value?.focus();
+            switchRef.value?.focus();
         }
 
         function blur() {
-            checkboxRef.value?.blur();
+            switchRef.value?.blur();
         }
 
-        watch(
-            isChecked,
-            (value) => {
-                nextTick(() => {
-                    if (checkboxRef.value) {
-                        checkboxRef.value.checked = value;
-                    }
-                });
-            },
-            { immediate: true },
-        );
-
         return {
-            checkboxRef,
+            switchRef,
             colorSchemeClass,
-            componentStyleSet,
             styleSetVariables,
             classObj,
             stateClasses,
@@ -247,10 +226,11 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            componentStyleSet,
             inputValue,
             isChecked,
             shake,
-            toggle,
+            onChange,
             onFocus,
             onBlur,
             validate,
@@ -262,4 +242,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsCheckbox.css" />
+<style src="./VsSwitch.css" />
