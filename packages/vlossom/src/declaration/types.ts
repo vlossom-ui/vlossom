@@ -117,3 +117,19 @@ export interface InputComponentParams<T = unknown> {
         onUnmounted?: () => void;
     };
 }
+
+export interface FormRef {
+    validate: () => void;
+    clear: () => void;
+}
+
+export interface InputRef extends FormRef {
+    focus: () => void;
+    blur: () => void;
+}
+
+export interface StringModifiers {
+    capitalize?: boolean;
+    lower?: boolean;
+    upper?: boolean;
+}
