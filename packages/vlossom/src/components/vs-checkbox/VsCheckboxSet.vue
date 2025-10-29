@@ -215,15 +215,6 @@ export default defineComponent({
                 ? [...inputValue.value, targetOptionValue]
                 : inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue));
 
-            console.log('inputValue.value', inputValue.value);
-            console.log('toValue', toValue);
-            console.log('checked', checked);
-            console.log('val1', [...inputValue.value, targetOptionValue]);
-            console.log(
-                'val2',
-                inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue)),
-            );
-
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {
                 const result = await beforeChangeFn(inputValue.value, toValue, option);
