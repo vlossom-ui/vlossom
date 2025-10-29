@@ -2,15 +2,15 @@
     <vs-input-wrapper
         v-show="!hidden"
         :style="componentStyleSet.wrapper"
-        :grid="grid"
         :id="computedId"
-        :label="label"
-        :required="required"
         :disabled="computedDisabled"
-        :small="small"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :grid
+        :label
+        :required
+        :small
+        :no-messages
+        :shake
         group-label
     >
         <template #label v-if="label || $slots['label']">
@@ -23,33 +23,28 @@
                 :key="getOptionValue(option)"
                 ref="checkboxRefs"
                 class="vs-checkbox-item"
-                no-label
-                no-messages
                 :model-value="getOptionValue(option)"
                 :width="width ?? 'unset'"
-                :color-scheme="colorScheme"
                 :style-set="checkboxStyleSet"
-                :true-value="trueValue"
                 :checked="isChecked(option)"
                 :check-label="getOptionLabel(option)"
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
-                :required="required"
                 :id="`${computedId}-${index}`"
-                :name="name"
                 :state="computedState"
-                :small="small"
+                no-label
+                no-messages
+                :color-scheme
+                :true-value
+                :required
+                :name
+                :small
                 @toggle="onToggle(option, $event)"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
             >
                 <template #check-label v-if="$slots['check-label']">
-                    <slot
-                        name="check-label"
-                        :option="option"
-                        :value="getOptionValue(option)"
-                        :label="getOptionLabel(option)"
-                    />
+                    <slot name="check-label" :value="getOptionValue(option)" :label="getOptionLabel(option)" :option />
                 </template>
             </vs-checkbox>
         </div>

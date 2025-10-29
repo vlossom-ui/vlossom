@@ -1,18 +1,18 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
         :style="componentStyleSet.wrapper"
-        :grid="grid"
         :id="checkLabel ? '' : computedId"
-        :label="label"
-        :no-label="noLabel"
-        :required="required"
         :disabled="computedDisabled"
-        :small="small"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :width
+        :grid
+        :label
+        :no-label
+        :required
+        :small
+        :no-messages
+        :shake
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
@@ -26,10 +26,10 @@
                     :class="['vs-checkbox-input', stateClasses]"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :name="name"
                     :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
+                    :name
                     @click.prevent.stop="toggle"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
