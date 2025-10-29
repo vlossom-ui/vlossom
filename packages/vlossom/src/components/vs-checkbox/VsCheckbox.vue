@@ -27,7 +27,7 @@
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
-                    :value="String(modelValue)"
+                    :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
                     @click.prevent.stop="toggle"

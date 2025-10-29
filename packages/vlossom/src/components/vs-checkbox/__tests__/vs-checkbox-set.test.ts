@@ -213,7 +213,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            await wrapper.find('input[value="B"]').trigger('click');
+            await wrapper.findAll('input[type="checkbox"]')[1].trigger('click');
 
             // then
             expect(beforeChange).toHaveBeenCalledWith(['A'], ['A', 'B'], 'B');
@@ -231,7 +231,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            await wrapper.find('input[value="B"]').trigger('click');
+            await wrapper.findAll('input[type="checkbox"]')[1].trigger('click');
 
             // then
             const updateModelValueEvent = wrapper.emitted('update:modelValue');
@@ -251,7 +251,7 @@ describe('VsCheckboxSet', () => {
             });
 
             // when
-            await wrapper.find('input[value="B"]').trigger('click');
+            await wrapper.findAll('input[type="checkbox"]')[1].trigger('click');
 
             // then
             const updateModelValueEvent = wrapper.emitted('update:modelValue');
