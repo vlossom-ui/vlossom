@@ -1,18 +1,18 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
-        :grid="grid"
-        :disabled="disabled"
-        :hidden="hidden"
-        :id="id"
-        :label="label"
-        :noLabel="noLabel"
-        :noMessages="noMessages"
-        :required="required"
-        :small="small"
+        :width
+        :grid
+        :disabled
+        :hidden
+        :id
+        :label
+        :no-label
+        :no-messages
+        :required
+        :small
         :messages="computedMessages"
-        :shake="shake"
+        :shake
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
             <slot name="label" />
