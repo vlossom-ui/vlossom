@@ -70,7 +70,7 @@ import { propsUtil } from '@/utils';
 import type { InputType, InputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import { closeIcon } from './icons';
+import { closeIcon } from '@/icons';
 
 const name = VsComponent.VsInput;
 
