@@ -45,7 +45,6 @@
                 :class="{ show: inputValue }"
                 :disabled="!inputValue"
                 aria-label="Clear"
-                tabindex="-1"
                 @click.stop="clearWithFocus"
             >
                 <i v-html="closeIcon" :class="{ 'size-4': small, 'size-5': !small }" />
