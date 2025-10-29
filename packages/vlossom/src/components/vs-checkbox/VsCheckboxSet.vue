@@ -65,7 +65,7 @@ import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
-import { objectUtil } from '@/utils';
+import { objectUtil, propsUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
@@ -93,12 +93,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            // validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
         },
         min: {
             type: [Number, String],
             default: 0,
-            //validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
         vertical: { type: Boolean, default: false },
         trueValue: { type: null, default: true },
