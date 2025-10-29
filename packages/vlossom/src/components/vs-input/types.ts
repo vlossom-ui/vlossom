@@ -1,4 +1,5 @@
 import type VsInput from './VsInput.vue';
+import type { VsInputWrapperStyleSet } from '@/main';
 import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
@@ -21,4 +22,6 @@ export interface VsInputStyleSet extends BoxStyleSet, TextStyleSet {
     append?: VsAttachmentStyleSet;
     height?: string;
     prepend?: VsAttachmentStyleSet;
+
+    wrapper?: VsInputWrapperStyleSet;
 }
