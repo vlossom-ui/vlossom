@@ -50,7 +50,7 @@ export default defineComponent({
             return h(element.tagName.toLowerCase(), attributes, children);
         }
 
-        const renderStringAsComponent = (htmlString: string) => {
+        function renderStringAsComponent(htmlString: string) {
             // HTML 태그가 없는 경우 텍스트만 렌더링
             if (!htmlString || !/<[^>]*>/.test(htmlString)) {
                 return () => h('span', htmlString);
@@ -71,7 +71,7 @@ export default defineComponent({
                 // 파싱 실패 시 텍스트 렌더링
                 return () => h('span', htmlString);
             }
-        };
+        }
 
         return () => {
             if (typeof content.value === 'string') {

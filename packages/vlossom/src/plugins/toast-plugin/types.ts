@@ -22,6 +22,10 @@ export interface ToastInfo extends ToastOptions {
 
 export interface ToastPlugin {
     show(message: string | Component, options?: ToastOptions): void;
-    remove(id: string, container?: string): void;
+    info(message: string | Component, options?: ToastOptions): void;
+    success(message: string | Component, options?: ToastOptions): void;
+    warning(message: string | Component, options?: ToastOptions): void;
+    error(message: string | Component, options?: ToastOptions): void;
+    remove(container: string, id: string): void;
     clear(container?: string): void;
 }

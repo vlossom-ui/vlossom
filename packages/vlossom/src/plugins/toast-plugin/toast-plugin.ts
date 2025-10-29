@@ -1,45 +1,61 @@
 import { type Component } from 'vue';
-import { useToastContainerStore } from '@/stores';
-import { stringUtil } from '@/utils';
-import { useOverlayDom } from '@/composables';
-import type { ToastInfo, ToastOptions, ToastPlugin } from './types';
+import { useOverlayContainerStore, useToastContainerStore } from '@/stores';
+import { logUtil } from '@/utils';
+import type { ToastOptions, ToastPlugin } from './types';
+import { createToastInfo } from './toast-model';
 
 export function createToastPlugin(): ToastPlugin {
     return {
         show(content: string | Component, options: ToastOptions = {}) {
-            const toastStore = useToastContainerStore();
             const container = options.container || 'body';
-            const containerElement: Element | null = document.querySelector(container);
-            const { appendOverlayDom } = useOverlayDom();
+
+            const overlayContainerStore = useOverlayContainerStore();
+            const toastStore = useToastContainerStore();
+
+            // mount ToastView to OverlayWrapper
+            const overlayId = `vs-toast-overlay-${container.replace('#', '')}`;
+            overlayContainerStore.push(overlayId, container, 'VsToastView');
+
+            const containerElement: HTMLElement | null = document.querySelector(container);
 
             if (!containerElement) {
+                logUtil.error('toast-plugin.show', `Toast container not found: ${container}`);
                 return;
             }
 
-            const toastViewId = `#vs-toast-view-${container.replace('#', '')}`;
+            if (!containerElement.style.position) {
+                containerElement.style.position = 'relative';
+            }
 
-            appendOverlayDom(containerElement, toastViewId);
-
-            const id = `vs-toast-${stringUtil.createID()}`;
-
-            const toastInfo: ToastInfo = {
-                ...options,
-                container,
-                id,
-                content,
-            };
-
+            const toastInfo = createToastInfo(content, options);
             toastStore.push(container, toastInfo);
 
-            // Auto close
-            if (toastInfo.autoClose && toastInfo.timeout) {
-                setTimeout(() => {
-                    toastStore.remove(container, id);
-                }, toastInfo.timeout);
+            if (options.logger) {
+                options.logger(content);
             }
         },
 
-        remove(id, container = 'body') {
+        info(content: string | Component, options: ToastOptions = {}) {
+            this.show(content, { colorScheme: 'cyan', ...options });
+        },
+
+        success(content: string | Component, options: ToastOptions = {}) {
+            this.show(content, { colorScheme: 'green', ...options });
+        },
+
+        warning(content: string | Component, options: ToastOptions = {}) {
+            this.show(content, { colorScheme: 'yellow', ...options });
+
+            console.warn(content);
+        },
+
+        error(content: string | Component, options: ToastOptions = {}) {
+            this.show(content, { colorScheme: 'red', ...options });
+
+            console.error(content);
+        },
+
+        remove(container, id: string) {
             const toastStore = useToastContainerStore();
             toastStore.remove(container, id);
         },

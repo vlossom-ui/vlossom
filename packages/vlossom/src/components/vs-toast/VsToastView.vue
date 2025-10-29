@@ -1,29 +1,56 @@
 <template>
-    <div class="vs-toast-view" :class="{ 'vs-toast-fixed': isFixed }" :id="wrapperId">
+    <div class="vs-toast-view" :class="{ 'vs-toast-fixed': isFixed }">
         <div
             v-for="[key, toasts] in Object.entries(toastsByPosition)"
             :key="key"
             :class="['vs-toast-container', `vs-toast-${key.split('-')[0]}`, `vs-toast-${key.split('-')[1]}`]"
         >
             <TransitionGroup name="toasts" appear>
-                <vs-toast v-for="toast in toasts" :key="toast.id" />
+                <vs-toast
+                    v-for="{
+                        id,
+                        colorScheme,
+                        styleSet,
+                        align,
+                        placement,
+                        autoClose,
+                        primary,
+                        timeout,
+                        logger,
+                        content,
+                    } in toasts"
+                    class="vs-toast-item"
+                    :key="id"
+                    :color-scheme
+                    :style-set
+                    :align
+                    :placement
+                    :auto-close
+                    :primary
+                    :timeout
+                    :logger
+                    @close="removeToast(id)"
+                >
+                    <vs-render :content="renderContent(content)" />
+                </vs-toast>
             </TransitionGroup>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, shallowRef, toRefs, type Component } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useToastContainerStore } from '@/stores';
 import type { ToastInfo } from '@/plugins';
 
 import VsToast from './VsToast.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
 
 const name = VsComponent.VsToastView;
 export default defineComponent({
     name,
-    components: { VsToast },
+    components: { VsToast, VsRender },
     props: {
         container: { type: String, default: 'body' },
     },
@@ -48,19 +75,23 @@ export default defineComponent({
             );
         });
 
-        const wrapperId = computed(() => {
-            const containerValue = container.value || 'body';
-            return `vs-toast-${containerValue.replace('#', '').replace('.', '')}`;
-        });
-
         const isFixed = computed(() => {
             const containerValue = container.value || 'body';
             return containerValue === 'body';
         });
 
-        const hasToast = computed(() => Object.keys(toastsByPosition.value).length > 0);
+        function removeToast(id: string) {
+            toastStore.remove(container.value, id);
+        }
 
-        return { toastsByPosition, wrapperId, isFixed, hasToast };
+        function renderContent(content: string | Component) {
+            if (typeof content === 'string') {
+                return content;
+            }
+            return shallowRef(content);
+        }
+
+        return { toastsByPosition, isFixed, removeToast, renderContent };
     },
 });
 </script>
