@@ -3,35 +3,24 @@
         <div
             v-for="[key, toasts] in Object.entries(toastsByPosition)"
             :key="key"
-            :class="['vs-toast-container', `vs-toast-${key.split('-')[0]}`, `vs-toast-${key.split('-')[1]}`]"
+            :class="['vs-toast-container', ...getPositionClass(key)]"
         >
             <TransitionGroup name="toasts" appear>
                 <vs-toast
-                    v-for="{
-                        id,
-                        colorScheme,
-                        styleSet,
-                        align,
-                        placement,
-                        autoClose,
-                        primary,
-                        timeout,
-                        logger,
-                        content,
-                    } in toasts"
+                    v-for="toast in toasts"
                     class="vs-toast-item"
-                    :key="id"
-                    :color-scheme
-                    :style-set
-                    :align
-                    :placement
-                    :auto-close
-                    :primary
-                    :timeout
-                    :logger
-                    @close="removeToast(id)"
+                    :key="toast.id"
+                    :color-scheme="toast.colorScheme"
+                    :style-set="toast.styleSet"
+                    :align="toast.align"
+                    :placement="toast.placement"
+                    :auto-close="toast.autoClose"
+                    :primary="toast.primary"
+                    :timeout="toast.timeout"
+                    :logger="toast.logger"
+                    @close="removeToast(toast.id)"
                 >
-                    <vs-render :content="renderContent(content)" />
+                    <vs-render :content="toast.content" />
                 </vs-toast>
             </TransitionGroup>
         </div>
@@ -39,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, shallowRef, toRefs, type Component } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useToastContainerStore } from '@/stores';
 import type { ToastInfo } from '@/plugins';
@@ -84,14 +73,12 @@ export default defineComponent({
             toastStore.remove(container.value, id);
         }
 
-        function renderContent(content: string | Component) {
-            if (typeof content === 'string') {
-                return content;
-            }
-            return shallowRef(content);
+        function getPositionClass(key: string) {
+            const splitted = key.split('-');
+            return [`vs-toast-${splitted[0]}`, `vs-toast-${splitted[1]}`];
         }
 
-        return { toastsByPosition, isFixed, removeToast, renderContent };
+        return { toastsByPosition, isFixed, removeToast, getPositionClass };
     },
 });
 </script>

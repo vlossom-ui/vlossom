@@ -50,16 +50,20 @@ export default defineComponent({
                     if (!holdToClose.value) {
                         emitClose();
                     }
+                    clearTimeout(timer);
+                    timer = null;
                 }, timeout.value);
             }
         });
 
         function onMouseEnter() {
-            holdToClose.value = true;
+            if (autoClose.value) {
+                holdToClose.value = true;
+            }
         }
 
         function onMouseLeave() {
-            if (holdToClose.value && timer) {
+            if (holdToClose.value && timer === null) {
                 emitClose();
             }
             holdToClose.value = false;
@@ -68,8 +72,6 @@ export default defineComponent({
         function emitClose() {
             emit('close');
             holdToClose.value = false;
-            clearTimeout(timer);
-            timer = null;
         }
 
         return {
@@ -78,6 +80,7 @@ export default defineComponent({
             styleSetVariables,
             onMouseEnter,
             onMouseLeave,
+            holdToClose,
         };
     },
 });

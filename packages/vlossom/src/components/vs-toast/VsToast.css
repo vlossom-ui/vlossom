@@ -21,6 +21,7 @@
 
     .vs-toast-close {
         @apply absolute top-1/2 right-3 flex items-center justify-center opacity-0 transition-opacity;
+
         transform: translateY(-50%);
         width: 20px;
         height: 20px;

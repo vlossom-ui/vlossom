@@ -12,7 +12,9 @@
     }
 
     .vs-toast-container {
-        @apply absolute;
+        @apply absolute flex flex-col items-center;
+
+        gap: 0.4rem;
 
         &.vs-toast-top {
             top: 3%;
@@ -27,6 +29,8 @@
         }
 
         &.vs-toast-start {
+            @apply justify-start;
+
             left: 1%;
         }
 
@@ -35,16 +39,14 @@
         }
 
         &.vs-toast-end {
+            @apply justify-end;
+
             right: 1%;
         }
 
         &.vs-toast-middle.vs-toast-center {
             @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
         }
-    }
-
-    .vs-toast-item {
-        margin-bottom: 0.4rem;
     }
 }
 

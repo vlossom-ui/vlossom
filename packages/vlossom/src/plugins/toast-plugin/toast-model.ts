@@ -1,4 +1,4 @@
-import type { Component } from 'vue';
+import { markRaw, type Component } from 'vue';
 import { stringUtil } from '@/utils';
 import type { ToastInfo, ToastOptions } from './types';
 
@@ -9,6 +9,6 @@ export function createToastInfo(content: string | Component, options: Partial<To
         placement: 'top',
         align: 'center',
         ...options,
-        content,
+        content: typeof content === 'string' ? content : markRaw(content),
     };
 }
