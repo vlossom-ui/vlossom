@@ -92,7 +92,7 @@ import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
-import { paginationIcons } from '@/icons';
+import { paginationIcons } from './icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';

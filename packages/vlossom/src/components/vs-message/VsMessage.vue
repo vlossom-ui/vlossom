@@ -11,7 +11,7 @@
 import { type PropType, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, type UIState } from '@/declaration';
 import { stringUtil } from '@/utils';
-import { messageIcons } from '@/icons';
+import { messageIcons } from './icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 

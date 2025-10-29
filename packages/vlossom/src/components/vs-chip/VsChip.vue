@@ -27,7 +27,7 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
-import { closeIcon } from '@/icons';
+import { closeIcon } from './icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
