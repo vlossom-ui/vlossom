@@ -37,7 +37,6 @@
                 no-label
                 no-messages
                 :color-scheme
-                :required
                 :name
                 :small
                 @update:modelValue="onCheckboxUpdate"
@@ -61,7 +60,7 @@ import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
-import { propsUtil } from '@/utils';
+import { objectUtil, propsUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
@@ -207,6 +206,9 @@ export default defineComponent({
         }
 
         function onCheckboxUpdate(value: any[]) {
+            if (objectUtil.isEqual(inputValue.value, value)) {
+                return;
+            }
             inputValue.value = value;
         }
 
