@@ -1,5 +1,6 @@
 import type VsDrawer from './VsDrawer.vue';
 import type { BoxStyleSet } from '@/declaration';
+import type { VsDimmedStyleSet } from '@/components/vs-dimmed/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -14,8 +15,5 @@ export interface VsDrawerStyleSet extends BoxStyleSet {
     size?: string;
     boxShadow?: string;
 
-    dimmed?: {
-        backgroundColor?: string;
-        opacity?: number;
-    };
+    dimmed?: VsDimmedStyleSet;
 }
