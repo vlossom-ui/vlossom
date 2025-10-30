@@ -23,23 +23,24 @@
                 :key="getOptionValue(option)"
                 ref="checkboxRefs"
                 class="vs-checkbox-item"
-                :model-value="getOptionValue(option)"
+                :model-value="inputValue"
+                :true-value="getOptionValue(option)"
+                :before-change="getOptionBeforeChange(option)"
                 :width="width ?? 'unset'"
                 :style-set="checkboxStyleSet"
-                :checked="isChecked(option)"
                 :check-label="getOptionLabel(option)"
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :id="`${computedId}-${index}`"
                 :state="computedState"
+                multiple
                 no-label
                 no-messages
                 :color-scheme
-                :true-value
                 :required
                 :name
                 :small
-                @toggle="onToggle(option, $event)"
+                @update:modelValue="onCheckboxUpdate"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
             >
@@ -58,9 +59,9 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
-import { objectUtil, propsUtil } from '@/utils';
+import { propsUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
@@ -78,9 +79,7 @@ export default defineComponent({
         ...getStyleSetProps<VsCheckboxSetStyleSet>(),
         ...getInputProps<any[], 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        options: { type: Array as PropType<any[]>, required: true, default: () => [] },
-        optionLabel: { type: String, default: '' },
-        optionValue: { type: String, default: '' },
+        ...getInputOptionProps(),
         beforeChange: {
             type: Function as PropType<(from: any, to: any, option: any) => Promise<boolean> | null>,
             default: null,
@@ -96,7 +95,6 @@ export default defineComponent({
             validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
         vertical: { type: Boolean, default: false },
-        trueValue: { type: null, default: true },
         // v-model
         modelValue: {
             type: Array as PropType<any[]>,
@@ -197,28 +195,19 @@ export default defineComponent({
             return componentStyleSet.value?.checkbox || {};
         });
 
-        function isChecked(option: any) {
-            if (!inputValue.value) {
-                return false;
+        function getOptionBeforeChange(option: any) {
+            if (!beforeChange.value) {
+                return undefined;
             }
-            return inputValue.value.some((v: any) => objectUtil.isEqual(v, getOptionValue(option)));
+
+            return async (from: any[], to: any[]) => {
+                const result = await beforeChange.value?.(from, to, option);
+                return result ?? true;
+            };
         }
 
-        async function onToggle(option: any, checked: boolean) {
-            const targetOptionValue = getOptionValue(option);
-            const toValue = checked
-                ? [...inputValue.value, targetOptionValue]
-                : inputValue.value.filter((v: any) => !objectUtil.isEqual(v, targetOptionValue));
-
-            const beforeChangeFn = beforeChange.value;
-            if (beforeChangeFn) {
-                const result = await beforeChangeFn(inputValue.value, toValue, option);
-                if (!result) {
-                    return;
-                }
-            }
-
-            inputValue.value = toValue;
+        function onCheckboxUpdate(value: any[]) {
+            inputValue.value = value;
         }
 
         function onFocus(option: any, e: FocusEvent): void {
@@ -251,10 +240,11 @@ export default defineComponent({
             computedReadonly,
             checkboxStyleSet,
             shake,
-            isChecked,
+            inputValue,
             getOptionLabel,
             getOptionValue,
-            onToggle,
+            getOptionBeforeChange,
+            onCheckboxUpdate,
             onFocus,
             onBlur,
             validate,

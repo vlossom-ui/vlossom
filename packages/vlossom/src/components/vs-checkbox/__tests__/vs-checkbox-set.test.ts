@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+
 import VsCheckboxSet from './../VsCheckboxSet.vue';
 
 describe('VsCheckboxSet', () => {
@@ -20,9 +21,9 @@ describe('VsCheckboxSet', () => {
 
             // then
             expect(wrapper.props('modelValue')).toEqual(['A', 'B']);
-            expect(wrapper.vm.isChecked('A')).toBe(true);
-            expect(wrapper.vm.isChecked('B')).toBe(true);
-            expect(wrapper.vm.isChecked('C')).toBe(false);
+            const checkboxes = wrapper.findAllComponents({ name: 'VsCheckbox' });
+            const checkboxStates = checkboxes.map((checkbox) => checkbox.vm.isChecked);
+            expect(checkboxStates).toEqual([true, true, false]);
         });
 
         it('modelValue가 빈 배열이면 아무것도 선택되지 않는다', async () => {
@@ -40,9 +41,9 @@ describe('VsCheckboxSet', () => {
 
             // then
             expect(wrapper.props('modelValue')).toEqual([]);
-            expect(wrapper.vm.isChecked('A')).toBe(false);
-            expect(wrapper.vm.isChecked('B')).toBe(false);
-            expect(wrapper.vm.isChecked('C')).toBe(false);
+            const checkboxes = wrapper.findAllComponents({ name: 'VsCheckbox' });
+            const checkboxStates = checkboxes.map((checkbox) => checkbox.vm.isChecked);
+            expect(checkboxStates).toEqual([false, false, false]);
         });
     });
 
