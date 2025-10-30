@@ -20,14 +20,19 @@
 <template>
     <vs-render
         :content="MyComponent"
-        :props="{ title: 'Dynamic Component' }"
+        title="Dynamic Component"
     />
 </template>
 ```
+
+컴포넌트에 전달할 속성은 `attrs`로 전달됩니다. HTML 문자열인 경우 attrs는 최상위 엘리먼트에 바인딩됩니다.
 
 ## Props
 
 | Prop      | Type                  | Default | Required | Description                                    |
 | --------- | --------------------- | ------- | -------- | ---------------------------------------------- |
 | `content` | `string \| Component` | -       | O        | 렌더링할 콘텐츠. HTML 문자열 또는 Vue 컴포넌트 |
-| `props`   | `Record<string, any>` | `{}`    | -        | 렌더링 할 컴포넌트에 전달할 props 객체         |
+
+## Attrs
+
+`VsRender`에 전달된 모든 attrs는 렌더링되는 최상위 엘리먼트(또는 컴포넌트)에 바인딩됩니다.

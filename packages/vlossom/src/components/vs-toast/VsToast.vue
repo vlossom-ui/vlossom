@@ -6,8 +6,15 @@
         @mouseleave="onMouseLeave"
     >
         <slot />
-        <vs-button class="vs-toast-close" :color-scheme="computedColorScheme" ghost @click="$emit('close')">
-            <vs-render :content="'X'" />
+        <vs-button
+            class="vs-toast-close"
+            :color-scheme="computedColorScheme"
+            :primary
+            :style-set="{ padding: '0' }"
+            ghost
+            @click="$emit('close')"
+        >
+            <vs-render :content="closeIcon" class="size-5" />
         </vs-button>
     </div>
 </template>
@@ -17,6 +24,7 @@ import { defineComponent, onMounted, ref, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { closeIcon } from '@/icons';
 import type { VsToastStyleSet } from './types';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -81,6 +89,7 @@ export default defineComponent({
             onMouseEnter,
             onMouseLeave,
             holdToClose,
+            closeIcon,
         };
     },
 });
