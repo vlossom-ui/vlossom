@@ -99,7 +99,9 @@ describe('vs-dimmed', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables['--vs-dimmed-backgroundColor']).toBe('rgba(255, 0, 0, 0.5)');
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-dimmed-backgroundColor': 'rgba(255, 0, 0, 0.5)',
+            });
         });
 
         it('styleSet으로 opacity를 설정할 수 있어야 한다', () => {
@@ -113,7 +115,9 @@ describe('vs-dimmed', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables['--vs-dimmed-opacity']).toBe(0.7);
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-dimmed-opacity': 0.7,
+            });
         });
 
         it('styleSet으로 backgroundColor와 opacity를 동시에 설정할 수 있어야 한다', () => {
@@ -128,9 +132,10 @@ describe('vs-dimmed', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables['--vs-dimmed-backgroundColor']).toBe('rgba(0, 255, 0, 1)');
-            expect(wrapper.vm.styleSetVariables['--vs-dimmed-opacity']).toBe(0.6);
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-dimmed-backgroundColor': 'rgba(0, 255, 0, 1)',
+                '--vs-dimmed-opacity': 0.6,
+            });
         });
     });
 });
-
