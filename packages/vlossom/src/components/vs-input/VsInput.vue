@@ -3,9 +3,9 @@
         v-show="!hidden"
         :width
         :grid
-        :disabled
+        :disabled="computedDisabled"
         :hidden
-        :id
+        :id="computedId"
         :label
         :no-label
         :no-messages
@@ -34,7 +34,7 @@
                 :readonly="computedReadonly"
                 :aria-required="required"
                 :placeholder="placeholder"
-                @input.stop="updateValue"
+                @input.stop="onInput"
                 @change.stop
             />
 
@@ -188,6 +188,7 @@ export default defineComponent({
 
         const classObj = computed(() => ({
             'vs-small': small.value,
+            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
         }));
@@ -196,7 +197,7 @@ export default defineComponent({
 
         const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
-        function updateValue(event: Event) {
+        function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
             const value = target.value || '';
             inputValue.value = convertValue(value);
@@ -237,7 +238,7 @@ export default defineComponent({
             computedId,
 
             // Methods
-            updateValue,
+            onInput,
             focus,
             blur,
             select,
