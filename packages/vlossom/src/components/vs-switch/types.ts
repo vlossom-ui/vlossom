@@ -1,4 +1,11 @@
+import type VsSwitch from './VsSwitch.vue';
 import type { SizeStyleSet, VsInputWrapperStyleSet } from '@/main';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsSwitch: typeof VsSwitch;
+    }
+}
 
 export interface VsSwitchStyleSet extends SizeStyleSet {
     backgroundColor?: string;
