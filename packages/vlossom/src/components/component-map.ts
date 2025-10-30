@@ -38,6 +38,7 @@ import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 import VsSwitch from './vs-switch/VsSwitch.vue';
+import VsTextarea from './vs-textarea/VsTextarea.vue';
 import VsThemeButton from './vs-theme-button/VsThemeButton.vue';
 import VsToast from './vs-toast/VsToast.vue';
 import VsToastView from './vs-toast/VsToastView.vue';
@@ -78,6 +79,7 @@ export const VlossomComponents = {
     VsResponsive,
     VsSkeleton,
     VsSwitch,
+    VsTextarea,
     VsThemeButton,
     VsToast,
     VsToastView,
