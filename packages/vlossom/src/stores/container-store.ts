@@ -1,5 +1,4 @@
 import { ref, readonly, type Ref } from 'vue';
-import type { ToastInfo } from '@/plugins';
 
 export class ContainerStore<T extends { container: string; id: string }> {
     private _map: Ref<Map<string, T[]>> = ref(new Map());
@@ -62,10 +61,4 @@ export class ContainerStore<T extends { container: string; id: string }> {
             this._map.value.set(container, filtered);
         }
     }
-}
-
-const toastContainerStore = new ContainerStore<ToastInfo>();
-
-export function useToastContainerStore() {
-    return toastContainerStore;
 }
