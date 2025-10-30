@@ -12,11 +12,6 @@
 <template>
     <vs-checkbox v-model="checked" check-label="동의합니다" />
 </template>
-
-<script setup>
-import { ref } from 'vue';
-const checked = ref(false);
-</script>
 ```
 
 ### 커스텀 값 사용
