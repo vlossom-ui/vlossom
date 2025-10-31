@@ -4,9 +4,15 @@
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+---
 
-### 단일 체크박스
+## VsCheckbox
+
+단일 체크박스 컴포넌트입니다.
+
+### 기본 사용법
+
+#### 단일 체크박스
 
 ```html
 <template>
@@ -14,7 +20,7 @@
 </template>
 ```
 
-### 커스텀 값 사용
+#### 커스텀 값 사용
 
 ```html
 <template>
@@ -32,7 +38,7 @@ const agreement = ref('no');
 </script>
 ```
 
-### 중간 상태 (Indeterminate)
+#### 중간 상태 (Indeterminate)
 
 ```html
 <template>
@@ -40,20 +46,20 @@ const agreement = ref('no');
 </template>
 ```
 
-### 배열 모드로 사용
+#### 배열 모드로 사용
 
 ```html
 <template>
     <vs-checkbox
         v-model="selectedTags"
         check-label="태그 1"
-        :value="'tag1'"
+        :true-value="'tag1'"
         multiple
     />
     <vs-checkbox
         v-model="selectedTags"
         check-label="태그 2"
-        :value="'tag2'"
+        :true-value="'tag2'"
         multiple
     />
 </template>
@@ -64,7 +70,7 @@ const selectedTags = ref([]);
 </script>
 ```
 
-### 변경 전 확인 (BeforeChange)
+#### 변경 전 확인 (BeforeChange)
 
 ```html
 <template>
@@ -86,7 +92,64 @@ const confirmBeforeChange = async () => {
 </script>
 ```
 
-### 체크박스 그룹
+### Props
+
+| Prop            | Type                           | Default | Required | Description                                          |
+| --------------- | ------------------------------ | ------- | -------- | ---------------------------------------------------- |
+| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                   |
+| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                              |
+| `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                       |
+| `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                              |
+| `indeterminate` | `boolean`                      | `false` | -        | 중간 상태 (부분 선택) 표시                           |
+| `multiple`      | `boolean`                      | `false` | -        | 배열 모드 활성화 (v-model이 배열로 동작)             |
+| `trueValue`     | `any`                          | `true`  | -        | 체크 시 v-model에 저장될 값                          |
+| `falseValue`    | `any`                          | `false` | -        | 언체크 시 v-model에 저장될 값                        |
+| `beforeChange`  | `Function`                     | -       | -        | 상태 변경 전 실행할 비동기 함수 (false 반환 시 취소) |
+
+또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
+
+### Types
+
+```typescript
+interface VsCheckboxStyleSet {
+    borderRadius?: string;
+    borderWidth?: string;
+    checkboxColor?: string;
+    checkboxSize?: string;
+    height?: string;
+
+    wrapper?: VsInputWrapperStyleSet;
+}
+```
+
+### Slots
+
+| Slot          | Description                        |
+| ------------- | ---------------------------------- |
+| `default`     | 체크박스 외부 래퍼에 표시할 콘텐츠 |
+| `label`       | 입력 래퍼의 라벨 영역              |
+| `check-label` | 체크박스 옆에 표시할 라벨          |
+| `messages`    | 하단 메시지 영역                   |
+
+### Events
+
+| Event               | Type           | Description        |
+| ------------------- | -------------- | ------------------ |
+| `update:modelValue` | `any \| any[]` | v-model 값 변경 시 |
+| `change`            | `any`          | 체크 상태 변경 시  |
+| `toggle`            | `boolean`      | 체크 상태 토글 시  |
+| `focus`             | `FocusEvent`   | 체크박스 포커스 시 |
+| `blur`              | `FocusEvent`   | 체크박스 블러 시   |
+
+---
+
+## VsCheckboxSet
+
+여러 옵션을 선택할 수 있는 체크박스 그룹 컴포넌트입니다.
+
+### 기본 사용법
+
+#### 체크박스 그룹
 
 ```html
 <template>
@@ -108,7 +171,7 @@ const selectedOptions = ref([]);
 </script>
 ```
 
-### 수직 레이아웃
+#### 수직 레이아웃
 
 ```html
 <template>
@@ -116,7 +179,7 @@ const selectedOptions = ref([]);
 </template>
 ```
 
-### 최소/최대 선택 개수 제한
+#### 최소/최대 선택 개수 제한
 
 ```html
 <template>
@@ -124,50 +187,49 @@ const selectedOptions = ref([]);
 </template>
 ```
 
-## VsCheckbox Props
+#### 변경 전 확인 (BeforeChange)
 
-| Prop            | Type                           | Default | Required | Description                                          |
-| --------------- | ------------------------------ | ------- | -------- | ---------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                   |
-| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                              |
-| `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                       |
-| `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                              |
-| `indeterminate` | `boolean`                      | `false` | -        | 중간 상태 (부분 선택) 표시                           |
-| `multiple`      | `boolean`                      | `false` | -        | 배열 모드 활성화 (v-model이 배열로 동작)             |
-| `value`         | `any`                          | -       | -        | multiple 모드에서 사용할 값 (대체로 trueValue 사용)  |
-| `trueValue`     | `any`                          | `true`  | -        | 체크 시 v-model에 저장될 값                          |
-| `falseValue`    | `any`                          | `false` | -        | 언체크 시 v-model에 저장될 값                        |
-| `beforeChange`  | `Function`                     | -       | -        | 상태 변경 전 실행할 비동기 함수 (false 반환 시 취소) |
+```html
+<template>
+    <vs-checkbox-set
+        v-model="selected"
+        :options="options"
+        :before-change="confirmBeforeChange"
+    />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const options = [
+    { label: '옵션 1', value: 'opt1' },
+    { label: '옵션 2', value: 'opt2' },
+];
+const selected = ref([]);
+
+const confirmBeforeChange = async (from, to, option) => {
+    return confirm(`${option.label}을(를) 선택하시겠습니까?`);
+};
+</script>
+```
+
+### Props
+
+| Prop           | Type               | Default | Required | Description                                          |
+| -------------- | ------------------ | ------- | -------- | ---------------------------------------------------- |
+| `options`      | `any[]`            | -       | ✅       | 선택 가능한 옵션 배열                                |
+| `optionLabel`  | `string`           | -       | -        | 옵션 객체에서 라벨로 사용할 속성                     |
+| `optionValue`  | `string`           | -       | -        | 옵션 객체에서 값으로 사용할 속성                     |
+| `vertical`     | `boolean`          | `false` | -        | 수직 레이아웃 적용                                   |
+| `min`          | `number \| string` | `0`     | -        | 최소 선택 개수                                       |
+| `max`          | `number \| string` | -       | -        | 최대 선택 개수                                       |
+| `beforeChange` | `Function`         | -       | -        | 상태 변경 전 실행할 비동기 함수 (false 반환 시 취소) |
 
 또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
 
-## VsCheckboxSet Props
-
-| Prop          | Type               | Default | Required | Description                      |
-| ------------- | ------------------ | ------- | -------- | -------------------------------- |
-| `options`     | `any[]`            | -       | ✅       | 선택 가능한 옵션 배열            |
-| `optionLabel` | `string`           | -       | -        | 옵션 객체에서 라벨로 사용할 속성 |
-| `optionValue` | `string`           | -       | -        | 옵션 객체에서 값으로 사용할 속성 |
-| `vertical`    | `boolean`          | `false` | -        | 수직 레이아웃 적용               |
-| `min`         | `number \| string` | `0`     | -        | 최소 선택 개수                   |
-| `max`         | `number \| string` | -       | -        | 최대 선택 개수                   |
-| `trueValue`   | `any`              | `true`  | -        | 체크 시 배열에 추가될 값         |
-
-또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
-
-## Types
+### Types
 
 ```typescript
-interface VsCheckboxStyleSet {
-    borderRadius?: string;
-    borderWidth?: string;
-    checkboxColor?: string;
-    checkboxSize?: string;
-    height?: string;
-
-    wrapper?: VsInputWrapperStyleSet;
-}
-
 interface VsCheckboxSetStyleSet {
     gap?: string;
     flexWrap?: string;
@@ -177,18 +239,7 @@ interface VsCheckboxSetStyleSet {
 }
 ```
 
-## Slots
-
-### VsCheckbox
-
-| Slot          | Description                        |
-| ------------- | ---------------------------------- |
-| `default`     | 체크박스 외부 래퍼에 표시할 콘텐츠 |
-| `label`       | 입력 래퍼의 라벨 영역              |
-| `check-label` | 체크박스 옆에 표시할 라벨          |
-| `messages`    | 하단 메시지 영역                   |
-
-### VsCheckboxSet
+### Slots
 
 | Slot          | Description                                  |
 | ------------- | -------------------------------------------- |
@@ -197,14 +248,16 @@ interface VsCheckboxSetStyleSet {
 | `check-label` | 각 체크박스 옆에 표시할 라벨 (스코프된 슬롯) |
 | `messages`    | 하단 메시지 영역                             |
 
-## Events
+### Events
 
-| Event               | Type           | Description        |
-| ------------------- | -------------- | ------------------ |
-| `update:modelValue` | `any \| any[]` | v-model 값 변경 시 |
-| `change`            | `any`          | 체크 상태 변경 시  |
-| `focus`             | `FocusEvent`   | 체크박스 포커스 시 |
-| `blur`              | `FocusEvent`   | 체크박스 블러 시   |
+| Event               | Type                   | Description                        |
+| ------------------- | ---------------------- | ---------------------------------- |
+| `update:modelValue` | `any[]`                | v-model 값 변경 시                 |
+| `change`            | `any`                  | 체크 상태 변경 시                  |
+| `focus`             | `(option, FocusEvent)` | 체크박스 포커스 시 (옵션과 이벤트) |
+| `blur`              | `(option, FocusEvent)` | 체크박스 블러 시 (옵션과 이벤트)   |
+
+---
 
 ## 특징
 
