@@ -138,8 +138,6 @@ interface VsCheckboxStyleSet {
 | `update:modelValue` | `any \| any[]` | v-model 값 변경 시 |
 | `change`            | `any`          | 체크 상태 변경 시  |
 | `toggle`            | `boolean`      | 체크 상태 토글 시  |
-| `focus`             | `FocusEvent`   | 체크박스 포커스 시 |
-| `blur`              | `FocusEvent`   | 체크박스 블러 시   |
 
 ---
 
@@ -250,12 +248,10 @@ interface VsCheckboxSetStyleSet {
 
 ### Events
 
-| Event               | Type                   | Description                        |
-| ------------------- | ---------------------- | ---------------------------------- |
-| `update:modelValue` | `any[]`                | v-model 값 변경 시                 |
-| `change`            | `any`                  | 체크 상태 변경 시                  |
-| `focus`             | `(option, FocusEvent)` | 체크박스 포커스 시 (옵션과 이벤트) |
-| `blur`              | `(option, FocusEvent)` | 체크박스 블러 시 (옵션과 이벤트)   |
+| Event               | Type    | Description        |
+| ------------------- | ------- | ------------------ |
+| `update:modelValue` | `any[]` | v-model 값 변경 시 |
+| `change`            | `any`   | 체크 상태 변경 시  |
 
 ---
 

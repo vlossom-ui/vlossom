@@ -515,24 +515,51 @@ describe('vs-checkbox', () => {
     describe('focus / blur', () => {
         it('focus 이벤트를 발생시킬 수 있다', async () => {
             // given
-            const wrapper = mount(VsCheckbox);
+            const wrapper = mount(VsCheckbox, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+            let focusEventFired = false;
+
+            input.addEventListener('focus', () => {
+                focusEventFired = true;
+            });
 
             // when
-            await wrapper.find('input').trigger('focus');
+            input.focus();
+            await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.emitted('focus')).toHaveLength(1);
+            expect(focusEventFired).toBe(true);
+            expect(document.activeElement).toBe(input);
+
+            // cleanup
+            wrapper.unmount();
         });
 
         it('blur 이벤트를 발생시킬 수 있다', async () => {
             // given
-            const wrapper = mount(VsCheckbox);
+            const wrapper = mount(VsCheckbox, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+            let blurEventFired = false;
+
+            input.addEventListener('blur', () => {
+                blurEventFired = true;
+            });
 
             // when
-            await wrapper.find('input').trigger('blur');
+            input.focus();
+            input.blur();
+            await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.emitted('blur')).toHaveLength(1);
+            expect(blurEventFired).toBe(true);
+            expect(document.activeElement).not.toBe(input);
+
+            // cleanup
+            wrapper.unmount();
         });
     });
 });

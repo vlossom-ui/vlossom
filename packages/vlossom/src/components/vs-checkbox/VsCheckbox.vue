@@ -31,8 +31,6 @@
                     :aria-required="required"
                     :name
                     @click.prevent.stop="toggle"
-                    @focus.stop="onFocus"
-                    @blur.stop="onBlur"
                 />
                 <div v-if="checkLabel || $slots['check-label']" class="vs-checkbox-label">
                     <slot name="check-label">{{ checkLabel }}</slot>
@@ -88,7 +86,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: null, default: false },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle'],
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
@@ -209,14 +207,6 @@ export default defineComponent({
             emit('toggle', isChecked.value);
         }
 
-        function onFocus(e: FocusEvent) {
-            emit('focus', e);
-        }
-
-        function onBlur(e: FocusEvent) {
-            emit('blur', e);
-        }
-
         function focus() {
             checkboxRef.value?.focus();
         }
@@ -253,8 +243,6 @@ export default defineComponent({
             isChecked,
             shake,
             toggle,
-            onFocus,
-            onBlur,
             validate,
             clear,
             focus,
