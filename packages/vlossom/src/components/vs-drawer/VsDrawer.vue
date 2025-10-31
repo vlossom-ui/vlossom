@@ -6,7 +6,12 @@
             :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
             :style="styleSetVariables"
         >
-            <div v-if="dimmed" class="vs-drawer-dimmed" aria-hidden="true" @click.prevent.stop="onClickDimmed" />
+            <vs-dimmed
+                v-if="dimmed"
+                :model-value="isDimmed"
+                :style-set="dimmedStyleSet"
+                @click.prevent.stop="onClickDimmed"
+            />
             <vs-focus-trap
                 ref="focusTrapRef"
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
@@ -59,13 +64,14 @@ import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsDrawerStyleSet } from './types';
 
+import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
 import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
 const name = VsComponent.VsDrawer;
 export default defineComponent({
     name,
-    components: { VsFocusTrap, VsInnerScroll },
+    components: { VsDimmed, VsFocusTrap, VsInnerScroll },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDrawerStyleSet>(),
@@ -90,6 +96,7 @@ export default defineComponent({
             id,
             callbacks,
             dimClose,
+            dimmed,
             escClose,
             fixed,
             open: initialOpen,
@@ -127,7 +134,17 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsDrawerStyleSet>(name, styleSet, additionalStyleSet);
+        const { styleSetVariables, componentStyleSet } = useStyleSet<VsDrawerStyleSet>(
+            name,
+            styleSet,
+            additionalStyleSet,
+        );
+
+        const dimmedStyleSet = computed(() => {
+            return componentStyleSet.value.dimmed;
+        });
+
+        const isDimmed = computed(() => dimmed.value && isOpen.value);
 
         const computedCallbacks = computed(() => {
             return {
@@ -195,6 +212,8 @@ export default defineComponent({
             isOpen,
             ANIMATION_DURATION,
             onClickDimmed,
+            dimmedStyleSet,
+            isDimmed,
         };
     },
 });

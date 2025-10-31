@@ -13,6 +13,7 @@ import VsButton from './vs-button/VsButton.vue';
 import VsCheckbox from './vs-checkbox/VsCheckbox.vue';
 import VsChip from './vs-chip/VsChip.vue';
 import VsContainer from './vs-container/VsContainer.vue';
+import VsDimmed from './vs-dimmed/VsDimmed.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
 import VsDrawer from './vs-drawer/VsDrawer.vue';
 import VsExpandable from './vs-expandable/VsExpandable.vue';
@@ -50,6 +51,7 @@ export const VlossomComponents = {
     VsCheckbox,
     VsChip,
     VsContainer,
+    VsDimmed,
     VsDivider,
     VsDrawer,
     VsExpandable,

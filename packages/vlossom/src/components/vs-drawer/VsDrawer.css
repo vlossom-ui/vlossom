@@ -11,22 +11,12 @@
     --vs-drawer-size: initial;
     --vs-drawer-boxShadow: initial;
 
-    --vs-drawer-dimmed-backgroundColor: initial;
-    --vs-drawer-dimmed-opacity: initial;
-
     @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
 
     position: var(--vs-drawer-position, absolute);
 
     &.vs-drawer-dimmed {
         @apply pointer-events-auto;
-    }
-
-    .vs-drawer-dimmed {
-        @apply absolute top-0 left-0 h-full w-full;
-
-        opacity: var(--vs-drawer-dimmed-opacity, 0.4);
-        background-color: var(--vs-drawer-dimmed-backgroundColor, var(--vs-black));
     }
 
     .vs-drawer-content {
@@ -84,18 +74,9 @@
     }
 }
 
-.drawer-enter-active .vs-drawer-dimmed,
-.drawer-leave-active .vs-drawer-dimmed {
-    transition: opacity 0.25s;
-}
 .drawer-enter-active .vs-drawer-content,
 .drawer-leave-active .vs-drawer-content {
     transition: transform 0.25s ease-in-out;
-}
-
-.drawer-enter-from .vs-drawer-dimmed,
-.drawer-leave-to .vs-drawer-dimmed {
-    opacity: 0;
 }
 
 .drawer-enter-from .vs-drawer-content.vs-drawer-left,
