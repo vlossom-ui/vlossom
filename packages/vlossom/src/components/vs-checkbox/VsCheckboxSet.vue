@@ -40,6 +40,8 @@
                 :name
                 :small
                 @update:modelValue="onCheckboxUpdate"
+                @focus="onFocus(option, $event)"
+                @blur="onBlur(option, $event)"
             >
                 <template #check-label v-if="$slots['check-label']">
                     <slot name="check-label" :value="getOptionValue(option)" :label="getOptionLabel(option)" :option />
@@ -98,7 +100,7 @@ export default defineComponent({
             default: () => [],
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
     // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
@@ -210,6 +212,14 @@ export default defineComponent({
             inputValue.value = value;
         }
 
+        function onFocus(option: any, e: FocusEvent): void {
+            emit('focus', option, e);
+        }
+
+        function onBlur(option: any, e: FocusEvent): void {
+            emit('blur', option, e);
+        }
+
         function focus(): void {
             checkboxRefs.value?.[0]?.focus();
         }
@@ -237,6 +247,8 @@ export default defineComponent({
             getOptionValue,
             getOptionBeforeChange,
             onCheckboxUpdate,
+            onFocus,
+            onBlur,
             validate,
             clear,
             focus,
