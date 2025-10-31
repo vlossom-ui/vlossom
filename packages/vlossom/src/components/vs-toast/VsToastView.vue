@@ -12,12 +12,9 @@
                     :key="toast.id"
                     :color-scheme="toast.colorScheme"
                     :style-set="toast.styleSet"
-                    :align="toast.align"
-                    :placement="toast.placement"
-                    :auto-close="toast.autoClose"
                     :primary="toast.primary"
+                    :auto-close="toast.autoClose"
                     :timeout="toast.timeout"
-                    :logger="toast.logger"
                     @close="removeToast(toast.id)"
                 >
                     <vs-render :content="toast.content" />
@@ -74,8 +71,8 @@ export default defineComponent({
         }
 
         function getPositionClass(key: string) {
-            const splitted = key.split('-');
-            return [`vs-toast-${splitted[0]}`, `vs-toast-${splitted[1]}`];
+            const [placement, align] = key.split('-');
+            return [`vs-toast-${placement}`, `vs-toast-${align}`];
         }
 
         return { toastsByPosition, isFixed, removeToast, getPositionClass };

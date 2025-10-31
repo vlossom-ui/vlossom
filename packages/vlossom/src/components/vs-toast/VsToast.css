@@ -15,16 +15,16 @@
     border: var(--vs-toast-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-toast-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
     background-color: var(--vs-toast-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-toast-padding, 0.5rem 3rem);
+    padding: var(--vs-toast-padding, 0.5rem 3.6rem);
     height: var(--vs-toast-height, auto);
     color: var(--vs-toast-fontColor, var(--vs-comp-font));
 
     .vs-toast-close {
-        @apply absolute top-1/2 right-3 flex items-center justify-center opacity-0 transition-opacity;
+        @apply absolute top-1/2 right-4 flex items-center justify-center opacity-0 transition-opacity;
 
         transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
+        width: 1.2rem;
+        height: 1.2rem;
         color: var(--vs-toast-fontColor, var(--vs-comp-font));
     }
 
