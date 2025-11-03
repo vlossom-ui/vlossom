@@ -8,6 +8,10 @@
 
     opacity: var(--vs-dimmed-opacity, 0.4);
     background-color: var(--vs-dimmed-backgroundColor, var(--vs-black));
+
+    &.vs-dimmed-on {
+        @apply pointer-events-auto;
+    }
 }
 
 .dimmed-enter-active,
@@ -19,5 +23,3 @@
 .dimmed-leave-to {
     opacity: 0;
 }
-
-

@@ -3,7 +3,11 @@ import { useOverlayCallbackStore } from '@/stores';
 import { stringUtil } from '@/utils';
 import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
 
-export function useOverlay(id: Ref<string>, callbacks: Ref<OverlayCallbacks> = ref({}), escClose: Ref<boolean>) {
+export function useOverlay(
+    id: Ref<string>,
+    callbacks: Ref<OverlayCallbacks> = ref({}),
+    escClose: Ref<boolean> = ref(false),
+) {
     const innerId = stringUtil.createID();
     const overlayId = computed(() => id.value || innerId);
     const overlayCallbackStore = useOverlayCallbackStore();
