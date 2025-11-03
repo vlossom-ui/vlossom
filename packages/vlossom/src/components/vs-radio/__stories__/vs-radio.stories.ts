@@ -1,15 +1,8 @@
-import {
-    chromaticParameters,
-    colorScheme,
-    getMetaArguments,
-    getColorSchemeTemplate,
-    state,
-    getStateTemplate,
-} from '@/storybook';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsRadio from './../VsRadio.vue';
-
-import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof VsRadio> = {
     title: 'Components/Input Components/VsRadio',
@@ -24,7 +17,6 @@ const meta: Meta<typeof VsRadio> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
-        state,
     },
     args: {
         radioLabel: 'Radio Input',
@@ -34,7 +26,6 @@ const meta: Meta<typeof VsRadio> = {
     },
 };
 
-meta.args = getMetaArguments(VsRadio.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsRadio>;
 
@@ -68,13 +59,12 @@ export const State: Story = {
     render: (args: any) => ({
         components: { VsRadio },
         setup() {
-            return { args };
+            const states = ['success', 'info', 'error', 'warning'];
+            return { args, states };
         },
         template: `
             <div>
-                ${getStateTemplate(`
-                    <vs-radio v-bind="args" label="State ({{state}})" state="{{state}}" radio-value="{{state}}" radio-label="{{state}}" style="marginBottom: 16px" />
-                `)}
+                <vs-radio v-for="state in states" :key="state" v-bind="args" :label="\`State (\${state})\`" :state="state" :radio-value="state" :radio-label="state" style="marginBottom: 16px" />
             </div>
         `,
     }),

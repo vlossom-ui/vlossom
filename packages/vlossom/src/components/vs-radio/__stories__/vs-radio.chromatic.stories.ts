@@ -1,7 +1,7 @@
-import { colorScheme, getMetaArguments, state } from '@/storybook';
-import VsRadio from './../VsRadio.vue';
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { colorScheme } from '@/storybook';
 
-import type { Meta, StoryObj } from '@storybook/vue3';
+import VsRadio from './../VsRadio.vue';
 
 const meta: Meta<typeof VsRadio> = {
     title: 'Chromatic/Input Components/VsRadio',
@@ -15,7 +15,7 @@ const meta: Meta<typeof VsRadio> = {
         template: `
             <div>
                 <vs-radio v-bind="args" label="Radio" :style="{ marginBottom: '12px' }"/>
-                
+
                 <vs-radio v-bind="args" label="Radio" checked :style="{ marginBottom: '12px' }"/>
 
                 <vs-radio v-bind="args" label="Required Radio" required :style="{ marginBottom: '12px' }"/>
@@ -30,7 +30,6 @@ const meta: Meta<typeof VsRadio> = {
     }),
     argTypes: {
         colorScheme,
-        state,
     },
     args: {
         radioLabel: 'Radio Input',
@@ -39,7 +38,6 @@ const meta: Meta<typeof VsRadio> = {
     },
 };
 
-meta.args = getMetaArguments(VsRadio.props, meta.args);
 export default meta;
 type Story = StoryObj<typeof VsRadio>;
 
