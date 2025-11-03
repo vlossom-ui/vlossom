@@ -12,8 +12,11 @@
     --vs-textarea-height: initial;
     --vs-textarea-resize: initial;
 
+    border-radius: var(--vs-textarea-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+
     textarea {
         @apply relative flex w-full overflow-hidden;
+
         opacity: var(--vs-textarea-opacity, 1);
         border: var(--vs-textarea-border, solid 1px var(--vs-line-color));
         border-radius: var(--vs-textarea-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
