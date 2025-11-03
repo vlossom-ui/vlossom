@@ -1,0 +1,14 @@
+.vs-radio-set {
+    display: flex;
+    align-items: center;
+    flex-wrap: var(--vs-radio-set-flexWrap, wrap);
+
+    &.vs-vertical {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .vs-radio-item:not(:last-child) {
+        margin-right: var(--vs-radio-set-gap, 2.8rem);
+    }
+}
