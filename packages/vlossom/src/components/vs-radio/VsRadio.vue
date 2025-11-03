@@ -1,70 +1,72 @@
 <template>
     <vs-input-wrapper
-        v-show="visible"
+        v-show="!hidden"
         :width="width"
         :grid="grid"
         :id="radioLabel ? '' : computedId"
         :label="label"
         :required="required"
         :disabled="computedDisabled"
-        :dense="dense"
         :messages="computedMessages"
-        :no-message="noMessage"
+        :no-messages="noMessages"
         :shake="shake"
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
         </template>
 
-        <vs-radio-node
-            ref="radioRef"
-            :color-scheme="computedColorScheme"
-            :style-set="radioNodeStyleSet"
-            :aria-label="ariaLabel"
-            :checked="isChecked"
-            :dense="dense"
-            :disabled="computedDisabled"
-            :id="computedId"
-            :label="radioLabel"
-            :name="name"
-            :readonly="computedReadonly"
-            :required="required"
-            :state="computedState"
-            :value="radioValue"
-            @toggle="onToggle"
-            @focus="onFocus"
-            @blur="onBlur"
+        <div
+            :class="['vs-radio-node', computedColorSchemeClass, radioNodeClassObj, stateClasses]"
+            :style="radioNodeStyleSet"
         >
-            <template #label v-if="$slots['radio-label']">
-                <slot name="radio-label" />
-            </template>
-        </vs-radio-node>
+            <label class="vs-radio-wrap" :for="computedId">
+                <input
+                    ref="radioRef"
+                    type="radio"
+                    class="vs-radio-input"
+                    :aria-label="ariaLabel"
+                    :id="computedId"
+                    :disabled="computedDisabled || computedReadonly"
+                    :name="name"
+                    :value="convertToString(radioValue)"
+                    :checked="isChecked"
+                    :aria-required="required"
+                    @change.stop="onToggle"
+                    @focus.stop="onFocus"
+                    @blur.stop="onBlur"
+                />
 
-        <template #messages v-if="!noMessage">
+                <span class="vs-radio-label">
+                    <slot name="radio-label">{{ radioLabel }}</slot>
+                </span>
+            </label>
+        </div>
+
+        <template #messages v-if="!noMessages">
             <slot name="messages" />
         </template>
     </vs-input-wrapper>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, Ref, ref, toRefs } from 'vue';
-import { useColorScheme, useStyleSet, useInput } from '@/composables';
-import { getInputProps, getResponsiveProps } from '@/models';
+import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 'vue';
+import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
+import { getInputProps, getResponsiveProps } from '@/props';
 import { VsComponent, type ColorScheme } from '@/declaration';
-import { utils } from '@/utils';
+import { stringUtil, objectUtil } from '@/utils';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsRadioNode from '@/components/vs-radio/VsRadioNode.vue';
 
 import type { VsRadioNodeStyleSet, VsRadioStyleSet } from './types';
 
 export default defineComponent({
     name: VsComponent.VsRadio,
-    components: { VsInputWrapper, VsRadioNode },
+    components: { VsInputWrapper },
     props: {
-        ...getInputProps<any, 'placeholder' | 'noClear'>('placeholder', 'noClear'),
+        ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         colorScheme: { type: String as PropType<ColorScheme> },
         styleSet: { type: [String, Object] as PropType<string | VsRadioStyleSet> },
+        ariaLabel: { type: String, default: '' },
         checked: { type: Boolean, default: false },
         name: { type: String, required: true },
         radioLabel: { type: String, default: '' },
@@ -72,7 +74,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: null, default: null },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur'],
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, context) {
         const {
@@ -96,19 +98,20 @@ export default defineComponent({
 
         const { emit } = context;
 
-        const { computedColorScheme } = useColorScheme(VsComponent.VsRadio, colorScheme);
+        const { colorSchemeClass: computedColorSchemeClass } = useColorScheme(VsComponent.VsRadio, colorScheme);
 
-        const { plainStyleSet: radioStyleSet } = useStyleSet<VsRadioStyleSet>(VsComponent.VsRadio, styleSet);
-        const { plainStyleSet: radioNodeStyleSet } = useStyleSet<VsRadioNodeStyleSet>(
-            VsComponent.VsRadioNode,
-            styleSet,
-            radioStyleSet,
+        const { componentStyleSet: radioStyleSet } = useStyleSet<VsRadioStyleSet>(VsComponent.VsRadio, styleSet);
+        const { componentStyleSet: radioNodeStyleSet } = useStyleSet<VsRadioNodeStyleSet>(
+            VsComponent.VsRadio,
+            computed(() => radioStyleSet.value || {}),
         );
+
+        const { stateClasses } = useStateClass(state);
 
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 
         const isChecked = computed(() => {
-            return utils.object.isEqual(inputValue.value, radioValue.value);
+            return objectUtil.isEqual(inputValue.value, radioValue.value);
         });
 
         function requiredCheck() {
@@ -138,7 +141,7 @@ export default defineComponent({
             readonly,
             messages,
             rules,
-            defaultRules: [requiredCheck],
+            defaultRules: ref([requiredCheck]),
             noDefaultRules,
             state,
             callbacks: {
@@ -153,9 +156,16 @@ export default defineComponent({
             },
         });
 
-        async function onToggle() {
+        const radioNodeClassObj = computed(() => ({
+            'vs-disabled': computedDisabled.value,
+            'vs-readonly': computedReadonly.value,
+        }));
+
+        async function onToggle(event: Event) {
             // radio change event value is always true
             inputValue.value = radioValue.value;
+            emit('change', event);
+            emit('toggle', (event.target as HTMLInputElement).checked);
         }
 
         function onFocus(e: FocusEvent) {
@@ -178,9 +188,11 @@ export default defineComponent({
             computedId,
             radioRef,
             isChecked,
-            computedColorScheme,
+            computedColorSchemeClass,
             computedState,
             radioNodeStyleSet,
+            radioNodeClassObj,
+            stateClasses,
             computedDisabled,
             computedReadonly,
             inputValue,
@@ -193,7 +205,10 @@ export default defineComponent({
             onBlur,
             focus,
             blur,
+            convertToString: stringUtil.convertToString,
         };
     },
 });
 </script>
+
+<style src="./VsRadio.css" />

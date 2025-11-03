@@ -35,6 +35,7 @@ import VsMessage from './vs-message/VsMessage.vue';
 import VsPage from './vs-page/VsPage.vue';
 import VsPagination from './vs-pagination/VsPagination.vue';
 import VsProgress from './vs-progress/VsProgress.vue';
+import VsRadio from './vs-radio/VsRadio.vue';
 import VsRender from './vs-render/VsRender.vue';
 import VsResponsive from './vs-responsive/VsResponsive.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
@@ -77,6 +78,7 @@ export const VlossomComponents = {
     VsPage,
     VsPagination,
     VsProgress,
+    VsRadio,
     VsRender,
     VsResponsive,
     VsSkeleton,
