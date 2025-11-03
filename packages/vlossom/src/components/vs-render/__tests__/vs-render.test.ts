@@ -79,7 +79,7 @@ describe('VsRender', () => {
             expect(wrapper.find('.test-component').text()).toBe('테스트 컴포넌트');
         });
 
-        it('Vue 컴포넌트와 props가 주어지고, props가 전달되어 렌더링되어야 한다', () => {
+        it('Vue 컴포넌트와 attrs가 주어지고, attrs가 전달되어 렌더링되어야 한다', () => {
             //given
             const TestComponent = markRaw({
                 props: ['message'],
@@ -89,42 +89,48 @@ describe('VsRender', () => {
             const wrapper = mount(VsRender, {
                 props: {
                     content: TestComponent,
-                    props: {
-                        message: 'props로 전달된 메시지',
-                    },
+                },
+                attrs: {
+                    message: 'attrs로 전달된 메시지',
                 },
             });
 
             expect(wrapper.find('.test-component').exists()).toBe(true);
-            expect(wrapper.find('.test-component').text()).toBe('props로 전달된 메시지');
+            expect(wrapper.find('.test-component').text()).toBe('attrs로 전달된 메시지');
         });
     });
 
-    describe('props 검증', () => {
-        it('문자열 content와 props가 주어지고, props는 무시되고 문자열만 렌더링되어야 한다', () => {
+    describe('attrs 바인딩', () => {
+        it('문자열 content와 attrs가 주어지고, attrs가 최상위 엘리먼트에 바인딩되어야 한다', () => {
             //given
             const wrapper = mount(VsRender, {
                 props: {
                     content: '텍스트',
-                    props: { someProp: 'value' },
+                },
+                attrs: {
+                    class: 'custom-class',
+                    'data-test': 'value',
                 },
             });
 
             expect(wrapper.find('span').exists()).toBe(true);
             expect(wrapper.find('span').text()).toBe('텍스트');
+            expect(wrapper.find('span').classes()).toContain('custom-class');
+            expect(wrapper.find('span').attributes('data-test')).toBe('value');
         });
 
-        it('컴포넌트와 null props가 주어지고, 기본 빈 객체 props가 사용되어야 한다', () => {
+        it('컴포넌트와 attrs가 주어지고, attrs가 컴포넌트에 전달되어야 한다', () => {
             //given
             const TestComponent = markRaw({
-                template: '<div class="test">기본 렌더링</div>',
+                props: ['message'],
+                template: '<div class="test">{{ message || "기본 렌더링" }}</div>',
             });
 
             const wrapper = mount(VsRender, {
                 props: {
                     content: TestComponent,
-                    props: undefined,
                 },
+                attrs: {},
             });
 
             expect(wrapper.find('.test').exists()).toBe(true);

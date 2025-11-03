@@ -6,55 +6,61 @@ import {
     type VlossomOptions,
 } from '@/declaration';
 import { useOptionsStore } from '@/stores';
+import { createToastPlugin, type ToastPlugin } from '@/plugins';
 
 export class Vlossom {
-    private optionsStore = useOptionsStore();
+    private _optionsStore = useOptionsStore();
+    private _toast: ToastPlugin = createToastPlugin();
 
     constructor(options: VlossomOptions) {
         const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options;
 
-        this.optionsStore.setColorScheme(colorScheme);
-        this.optionsStore.setStyleSet(styleSet);
-        this.optionsStore.setRadiusRatio(radiusRatio);
+        this._optionsStore.setColorScheme(colorScheme);
+        this._optionsStore.setStyleSet(styleSet);
+        this._optionsStore.setRadiusRatio(radiusRatio);
 
         this.setDefaultTheme(theme);
     }
 
+    get toast(): ToastPlugin {
+        return this._toast;
+    }
+
     set colorScheme(colorScheme: GlobalColorSchemes) {
-        this.optionsStore.setColorScheme(colorScheme);
+        this._optionsStore.setColorScheme(colorScheme);
     }
 
     get colorScheme(): GlobalColorSchemes {
-        return this.optionsStore.colorScheme.value;
+        return this._optionsStore.colorScheme.value;
     }
 
     set styleSet(styleSet: GlobalStyleSets) {
-        this.optionsStore.setStyleSet(styleSet);
+        this._optionsStore.setStyleSet(styleSet);
     }
 
     get styleSet(): GlobalStyleSets {
-        return this.optionsStore.styleSet.value;
+        return this._optionsStore.styleSet.value;
     }
 
     set theme(theme: Theme) {
-        this.optionsStore.setTheme(theme);
+        this._optionsStore.setTheme(theme);
         document.documentElement.classList.toggle('vs-dark', theme === 'dark');
     }
 
     get theme(): Theme {
-        return this.optionsStore.theme.value;
+        return this._optionsStore.theme.value;
     }
 
     set radiusRatio(radiusRatio: number) {
-        this.optionsStore.setRadiusRatio(radiusRatio);
+        this._optionsStore.setRadiusRatio(radiusRatio);
     }
 
     get radiusRatio(): number {
-        return this.optionsStore.radiusRatio.value;
+        return this._optionsStore.radiusRatio.value;
     }
 
     public toggleTheme() {
-        this.theme = this.optionsStore.theme.value === 'light' ? 'dark' : 'light';
+        this.theme = this._optionsStore.theme.value === 'light' ? 'dark' : 'light';
         localStorage.setItem(THEME_KEY, this.theme);
     }
 

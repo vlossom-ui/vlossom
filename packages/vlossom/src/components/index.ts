@@ -31,6 +31,7 @@ export type * from './vs-render/types';
 export type * from './vs-responsive/types';
 export type * from './vs-skeleton/types';
 export type * from './vs-switch/types';
+export type * from './vs-toast/types';
 export type * from './vs-toggle/types';
 export type * from './vs-tooltip/types';
 
@@ -68,5 +69,7 @@ export { default as VsResponsive } from './vs-responsive/VsResponsive.vue';
 export { default as VsSkeleton } from './vs-skeleton/VsSkeleton.vue';
 export { default as VsSwitch } from './vs-switch/VsSwitch.vue';
 export { default as VsThemeButton } from './vs-theme-button/VsThemeButton.vue';
+export { default as VsToast } from './vs-toast/VsToast.vue';
+export { default as VsToastView } from './vs-toast/VsToastView.vue';
 export { default as VsToggle } from './vs-toggle/VsToggle.vue';
 export { default as VsTooltip } from './vs-tooltip/VsTooltip.vue';

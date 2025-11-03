@@ -1,6 +1,7 @@
 import type { App } from 'vue';
 import { Vlossom } from './vlossom-class';
 import type { VlossomOptions } from '@/declaration';
+import { mountOverlayApp } from './overlay-helper';
 
 declare module 'vue' {
     interface ComponentCustomProperties {
@@ -25,6 +26,9 @@ export function createVlossom(options: VlossomOptions): any {
                     console.warn('[Vlossom] Invalid component:', component);
                 }
             });
+
+            // Overlay 관리를 위해 app에 별도의 app 생성 후 mount
+            mountOverlayApp(app);
         },
     };
 }

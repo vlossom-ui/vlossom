@@ -17,7 +17,7 @@ import type { VsProgressStyleSet } from './types';
 
 const name = VsComponent.VsProgress;
 export default defineComponent({
-    name: name,
+    name,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsProgressStyleSet>(),

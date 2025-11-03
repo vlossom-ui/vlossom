@@ -1,0 +1,68 @@
+@reference 'tailwindcss';
+
+.vs-toast-view {
+    @apply pointer-events-none absolute top-0 left-0 h-full w-full transition-all;
+
+    z-index: var(--vs-toast-z-index);
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+
+    &.vs-toast-fixed {
+        @apply fixed;
+    }
+
+    .vs-toast-container {
+        @apply absolute flex flex-col items-center;
+
+        gap: 0.4rem;
+
+        &.vs-toast-top {
+            top: 3%;
+        }
+
+        &.vs-toast-middle {
+            @apply top-1/2 -translate-y-1/2;
+        }
+
+        &.vs-toast-bottom {
+            bottom: 3%;
+        }
+
+        &.vs-toast-start {
+            @apply justify-start;
+
+            left: 1%;
+        }
+
+        &.vs-toast-center {
+            @apply left-1/2 -translate-x-1/2;
+        }
+
+        &.vs-toast-end {
+            @apply justify-end;
+
+            right: 1%;
+        }
+
+        &.vs-toast-middle.vs-toast-center {
+            @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+        }
+    }
+}
+
+.toasts-move, /* apply transition to moving elements */
+.toasts-enter-active,
+.toasts-leave-active {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.toasts-enter-from,
+.toasts-leave-to {
+    @apply opacity-0;
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.toasts-leave-active {
+    @apply absolute;
+}
