@@ -75,7 +75,7 @@ export default defineComponent({
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         beforeChange: {
-            type: Function as PropType<(from: any, to: any) => Promise<boolean> | null>,
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
         checked: { type: Boolean, default: false },
@@ -199,7 +199,7 @@ export default defineComponent({
 
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {
-                const result = await beforeChangeFn(inputValue.value, toValue);
+                const result = await beforeChangeFn(inputValue.value, toValue, trueValue.value);
                 if (!result) {
                     return;
                 }

@@ -86,7 +86,8 @@ import { ref } from 'vue';
 
 const checked = ref(false);
 
-const confirmBeforeChange = async () => {
+const confirmBeforeChange = async (from, to, optionValue) => {
+    // from: 변경 전 값, to: 변경 후 값, optionValue: trueValue
     return confirm('정말 동의하시나요?');
 };
 </script>
@@ -94,17 +95,17 @@ const confirmBeforeChange = async () => {
 
 ### Props
 
-| Prop            | Type                           | Default | Required | Description                                          |
-| --------------- | ------------------------------ | ------- | -------- | ---------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                   |
-| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                              |
-| `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                       |
-| `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                              |
-| `indeterminate` | `boolean`                      | `false` | -        | 중간 상태 (부분 선택) 표시                           |
-| `multiple`      | `boolean`                      | `false` | -        | 배열 모드 활성화 (v-model이 배열로 동작)             |
-| `trueValue`     | `any`                          | `true`  | -        | 체크 시 v-model에 저장될 값                          |
-| `falseValue`    | `any`                          | `false` | -        | 언체크 시 v-model에 저장될 값                        |
-| `beforeChange`  | `Function`                     | -       | -        | 상태 변경 전 실행할 비동기 함수 (false 반환 시 취소) |
+| Prop            | Type                           | Default | Required | Description                                                                           |
+| --------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                                                    |
+| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                                                               |
+| `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                                                        |
+| `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                                                               |
+| `indeterminate` | `boolean`                      | `false` | -        | 중간 상태 (부분 선택) 표시                                                            |
+| `multiple`      | `boolean`                      | `false` | -        | 배열 모드 활성화 (v-model이 배열로 동작)                                              |
+| `trueValue`     | `any`                          | `true`  | -        | 체크 시 v-model에 저장될 값                                                           |
+| `falseValue`    | `any`                          | `false` | -        | 언체크 시 v-model에 저장될 값                                                         |
+| `beforeChange`  | `Function`                     | -       | -        | 상태 변경 전 실행할 비동기 함수 (from, to, optionValue 인자 전달, false 반환 시 취소) |
 
 또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
 
@@ -133,13 +134,13 @@ interface VsCheckboxStyleSet {
 
 ### Events
 
-| Event               | Type           | Description        |
-| ------------------- | -------------- | ------------------ |
-| `update:modelValue` | `any \| any[]` | v-model 값 변경 시 |
-| `change`            | `any`          | 체크 상태 변경 시  |
-| `toggle`            | `boolean`      | 체크 상태 토글 시  |
-| `focus`             | `FocusEvent`   | 체크박스 포커스 시 |
-| `blur`              | `FocusEvent`   | 체크박스 블러 시   |
+| Event               | Type           | Description                                   |
+| ------------------- | -------------- | --------------------------------------------- |
+| `update:modelValue` | `any \| any[]` | v-model 값 변경 시                            |
+| `change`            | `any`          | 체크 상태 변경 시                             |
+| `toggle`            | `boolean`      | 체크 상태 토글 시 (토글 후 checked 상태 전달) |
+| `focus`             | `FocusEvent`   | 체크박스 포커스 시                            |
+| `blur`              | `FocusEvent`   | 체크박스 블러 시                              |
 
 ---
 
@@ -207,23 +208,24 @@ const options = [
 ];
 const selected = ref([]);
 
-const confirmBeforeChange = async (from, to, option) => {
-    return confirm(`${option.label}을(를) 선택하시겠습니까?`);
+const confirmBeforeChange = async (from, to, optionValue) => {
+    // from: 변경 전 배열, to: 변경 후 배열, optionValue: 선택/해제된 옵션 값
+    return confirm(`선택을 변경하시겠습니까?`);
 };
 </script>
 ```
 
 ### Props
 
-| Prop           | Type               | Default | Required | Description                                          |
-| -------------- | ------------------ | ------- | -------- | ---------------------------------------------------- |
-| `options`      | `any[]`            | -       | ✅       | 선택 가능한 옵션 배열                                |
-| `optionLabel`  | `string`           | -       | -        | 옵션 객체에서 라벨로 사용할 속성                     |
-| `optionValue`  | `string`           | -       | -        | 옵션 객체에서 값으로 사용할 속성                     |
-| `vertical`     | `boolean`          | `false` | -        | 수직 레이아웃 적용                                   |
-| `min`          | `number \| string` | `0`     | -        | 최소 선택 개수                                       |
-| `max`          | `number \| string` | -       | -        | 최대 선택 개수                                       |
-| `beforeChange` | `Function`         | -       | -        | 상태 변경 전 실행할 비동기 함수 (false 반환 시 취소) |
+| Prop           | Type               | Default | Required | Description                                                                           |
+| -------------- | ------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
+| `options`      | `any[]`            | -       | ✅       | 선택 가능한 옵션 배열                                                                 |
+| `optionLabel`  | `string`           | -       | -        | 옵션 객체에서 라벨로 사용할 속성                                                      |
+| `optionValue`  | `string`           | -       | -        | 옵션 객체에서 값으로 사용할 속성                                                      |
+| `vertical`     | `boolean`          | `false` | -        | 수직 레이아웃 적용                                                                    |
+| `min`          | `number \| string` | `0`     | -        | 최소 선택 개수                                                                        |
+| `max`          | `number \| string` | -       | -        | 최대 선택 개수                                                                        |
+| `beforeChange` | `Function`         | -       | -        | 상태 변경 전 실행할 비동기 함수 (from, to, optionValue 인자 전달, false 반환 시 취소) |
 
 또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
 

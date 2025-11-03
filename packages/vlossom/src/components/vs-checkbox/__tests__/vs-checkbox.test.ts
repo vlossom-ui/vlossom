@@ -456,7 +456,7 @@ describe('vs-checkbox', () => {
             vi.restoreAllMocks();
         });
 
-        it('beforeChange 함수에 from, to 인자가 전달된다', async () => {
+        it('beforeChange 함수에 from, to, optionValue 인자가 전달된다', async () => {
             // given
             const beforeChange = vi.fn().mockResolvedValue(true);
             const wrapper = mount(VsCheckbox, {
@@ -471,7 +471,7 @@ describe('vs-checkbox', () => {
             await wrapper.find('input').trigger('click');
 
             // then
-            expect(beforeChange).toHaveBeenCalledWith('B', 'A');
+            expect(beforeChange).toHaveBeenCalledWith('B', 'A', 'A');
         });
 
         it('beforeChange 함수가 Promise<true>를 리턴하면 값이 업데이트 된다', async () => {

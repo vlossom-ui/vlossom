@@ -25,7 +25,7 @@
                 class="vs-checkbox-item"
                 :model-value="inputValue"
                 :true-value="getOptionValue(option)"
-                :before-change="getOptionBeforeChange(option)"
+                :before-change="beforeChange"
                 :width="width ?? 'unset'"
                 :style-set="checkboxStyleSet"
                 :check-label="getOptionLabel(option)"
@@ -80,7 +80,7 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getInputOptionProps(),
         beforeChange: {
-            type: Function as PropType<(from: any, to: any, option: any) => Promise<boolean> | null>,
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
         max: {
@@ -106,7 +106,6 @@ export default defineComponent({
         const {
             colorScheme,
             styleSet,
-            beforeChange,
             disabled,
             id,
             modelValue,
@@ -194,17 +193,6 @@ export default defineComponent({
             return componentStyleSet.value?.checkbox || {};
         });
 
-        function getOptionBeforeChange(option: any) {
-            if (!beforeChange.value) {
-                return undefined;
-            }
-
-            return async (from: any[], to: any[]) => {
-                const result = await beforeChange.value?.(from, to, option);
-                return result ?? true;
-            };
-        }
-
         function onCheckboxUpdate(value: any[]) {
             if (objectUtil.isEqual(inputValue.value, value)) {
                 return;
@@ -245,7 +233,6 @@ export default defineComponent({
             inputValue,
             getOptionLabel,
             getOptionValue,
-            getOptionBeforeChange,
             onCheckboxUpdate,
             onFocus,
             onBlur,
