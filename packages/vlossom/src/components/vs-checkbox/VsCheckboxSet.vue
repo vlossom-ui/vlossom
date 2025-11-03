@@ -5,6 +5,7 @@
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
+        :width
         :grid
         :label
         :required
@@ -23,10 +24,10 @@
                 :key="getOptionValue(option)"
                 ref="checkboxRefs"
                 class="vs-checkbox-item"
+                width="unset"
                 :model-value="inputValue"
                 :true-value="getOptionValue(option)"
                 :before-change="beforeChange"
-                :width="width ?? 'unset'"
                 :style-set="checkboxStyleSet"
                 :check-label="getOptionLabel(option)"
                 :disabled="computedDisabled"
