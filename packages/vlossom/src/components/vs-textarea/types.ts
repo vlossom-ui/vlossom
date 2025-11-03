@@ -8,7 +8,7 @@ declare module 'vue' {
     }
 }
 
-export type InputValueType = string;
+export type VsTextareaValueType = string;
 
 export interface VsTextareaRef extends InputRef {
     select: () => void;

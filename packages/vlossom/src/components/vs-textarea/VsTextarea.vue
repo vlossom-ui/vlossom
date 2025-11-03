@@ -45,7 +45,7 @@ import { computed, defineComponent, ref, toRefs, useTemplateRef, type TemplateRe
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useStringModifier } from '@/composables';
-import type { VsTextareaStyleSet, InputValueType } from './types';
+import type { VsTextareaStyleSet, VsTextareaValueType } from './types';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import { useVsTextareaRules } from './vs-textarea-rules';
 import { propsUtil } from '@/utils';
@@ -57,7 +57,7 @@ export default defineComponent({
     name,
     components: { VsInputWrapper },
     props: {
-        ...getInputProps<InputValueType>(),
+        ...getInputProps<VsTextareaValueType>(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTextareaStyleSet>(),
         ...getResponsiveProps(),
@@ -100,7 +100,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const textareaRef: TemplateRef<HTMLTextAreaElement> = useTemplateRef('textareaRef');
-        const inputValue: Ref<InputValueType> = ref(modelValue.value);
+        const inputValue: Ref<VsTextareaValueType> = ref(modelValue.value);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const { styleSetVariables } = useStyleSet<VsTextareaStyleSet>(name, styleSet);
