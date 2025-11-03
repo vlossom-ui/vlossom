@@ -130,14 +130,16 @@ export const Grid: Story = {
             return { args };
         },
         template: `
-            <vs-container grid>
-                <vs-radio v-bind="args" name="grid" radio-value="test1" />
-                <vs-radio v-bind="args" name="grid" radio-value="test2" />
-            </vs-container>
+            <vs-grid>
+                <vs-radio v-bind="args" name="grid" />
+                <vs-radio v-bind="args" name="grid" />
+                <vs-radio v-bind="args" name="grid" />
+                <vs-radio v-bind="args" name="grid" />
+            </vs-grid>
         `,
     }),
     args: {
-        grid: { md: 6, lg: 3 },
+        grid: { md: 4, lg: 3 },
     },
 };
 

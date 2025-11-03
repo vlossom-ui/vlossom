@@ -11,33 +11,33 @@
     --vs-radio-node-checkedLabel-fontSize: initial;
     --vs-radio-node-checkedLabel-fontWeight: initial;
     --vs-radio-node-checkedLabel-whiteSpace: initial;
+    display: flex;
 
     position: relative;
-    display: flex;
     align-items: center;
     min-height: var(--vs-radio-node-height, var(--vs-input-comp-height));
 }
 
 .vs-radio-node .vs-radio-wrap {
-    position: relative;
     display: flex;
+    position: relative;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    flex-wrap: nowrap;
-    user-select: none;
     cursor: pointer;
+    user-select: none;
 }
 
 .vs-radio-node .vs-radio-wrap .vs-radio-input {
     position: absolute;
-    z-index: -1;
     opacity: 0;
+    z-index: -1;
 }
 
 .vs-radio-node .vs-radio-wrap .vs-radio-input:checked + .vs-radio-label {
     color: var(--vs-radio-node-checkedLabel-fontColor, var(--vs-primary-comp-bg));
-    font-size: var(--vs-radio-node-checkedLabel-fontSize, var(--vs-font-size));
     font-weight: var(--vs-radio-node-checkedLabel-fontWeight, 400);
+    font-size: var(--vs-radio-node-checkedLabel-fontSize, var(--vs-font-size));
     white-space: var(--vs-radio-node-checkedLabel-whiteSpace, nowrap);
 }
 
@@ -54,27 +54,27 @@
 .vs-radio-node .vs-radio-wrap .vs-radio-label {
     display: flex;
     align-items: center;
-    color: var(--vs-radio-node-label-fontColor, var(--vs-font-color));
-    font-size: var(--vs-radio-node-label-fontSize, var(--vs-font-size));
-    font-weight: var(--vs-radio-node-label-fontWeight, 400);
-    white-space: var(--vs-radio-node-label-whiteSpace, nowrap);
-    padding: 0.2rem 0;
     outline: none;
+    padding: 0.2rem 0;
+    color: var(--vs-radio-node-label-fontColor, var(--vs-font-color));
+    font-weight: var(--vs-radio-node-label-fontWeight, 400);
+    font-size: var(--vs-radio-node-label-fontSize, var(--vs-font-size));
+    white-space: var(--vs-radio-node-label-whiteSpace, nowrap);
 }
 
 .vs-radio-node .vs-radio-wrap .vs-radio-label:before {
-    content: '';
+    transition: box-shadow 0.25s ease;
+    margin-right: 0.5rem;
+    box-shadow: inset 0 0 0 0.12rem var(--vs-radio-node-radioColor, var(--vs-primary-comp-bg));
+    border-radius: var(--vs-radio-node-borderRadius, 50%);
     background-color: transparent;
     width: var(--vs-radio-node-radioSize, 1.8rem);
-    height: var(--vs-radio-node-radioSize, 1.8rem);
     min-width: var(--vs-radio-node-radioSize, 1.8rem);
-    min-height: var(--vs-radio-node-radioSize, 1.8rem);
     max-width: var(--vs-radio-node-radioSize, 1.8rem);
+    height: var(--vs-radio-node-radioSize, 1.8rem);
+    min-height: var(--vs-radio-node-radioSize, 1.8rem);
     max-height: var(--vs-radio-node-radioSize, 1.8rem);
-    border-radius: var(--vs-radio-node-borderRadius, 50%);
-    margin-right: 0.5rem;
-    transition: box-shadow 0.25s ease;
-    box-shadow: inset 0 0 0 0.12rem var(--vs-radio-node-radioColor, var(--vs-primary-comp-bg));
+    content: '';
 }
 
 .vs-radio-node.vs-dense {
@@ -88,17 +88,3 @@
 .vs-radio-node.vs-state-box .vs-radio-label:before {
     box-shadow: 0 0 0 2px var(--vs-state-color);
 }
-
-.vs-radio-node.vs-disabled {
-    pointer-events: none;
-    cursor: default;
-    user-select: none;
-    opacity: 0.5;
-    filter: grayscale(0.6);
-}
-
-.vs-radio-node.vs-readonly {
-    pointer-events: none;
-    cursor: default;
-}
-

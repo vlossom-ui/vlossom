@@ -15,16 +15,12 @@
             <slot name="label" />
         </template>
 
-        <div
-            :class="['vs-radio-node', computedColorSchemeClass, radioNodeClassObj, stateClasses]"
-            :style="radioNodeStyleSet"
-        >
+        <div :class="['vs-radio-node', computedColorSchemeClass, radioNodeClassObj]" :style="radioNodeStyleSet">
             <label class="vs-radio-wrap" :for="computedId">
                 <input
                     ref="radioRef"
                     type="radio"
-                    class="vs-radio-input"
-                    :aria-label="ariaLabel"
+                    :class="['vs-radio-input', stateClasses]"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :name="name"
@@ -54,21 +50,20 @@ import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composab
 import { getInputProps, getResponsiveProps } from '@/props';
 import { VsComponent, type ColorScheme } from '@/declaration';
 import { stringUtil, objectUtil } from '@/utils';
-import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-
 import type { VsRadioNodeStyleSet, VsRadioStyleSet } from './types';
 
+import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
+
+const name = VsComponent.VsRadio;
 export default defineComponent({
-    name: VsComponent.VsRadio,
+    name,
     components: { VsInputWrapper },
     props: {
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         colorScheme: { type: String as PropType<ColorScheme> },
         styleSet: { type: [String, Object] as PropType<string | VsRadioStyleSet> },
-        ariaLabel: { type: String, default: '' },
         checked: { type: Boolean, default: false },
-        name: { type: String, required: true },
         radioLabel: { type: String, default: '' },
         radioValue: { type: null, required: true },
         // v-model
@@ -85,7 +80,6 @@ export default defineComponent({
             readonly,
             messages,
             modelValue,
-            name,
             radioValue,
             required,
             rules,
@@ -98,7 +92,7 @@ export default defineComponent({
 
         const { emit } = context;
 
-        const { colorSchemeClass: computedColorSchemeClass } = useColorScheme(VsComponent.VsRadio, colorScheme);
+        const { colorSchemeClass: computedColorSchemeClass } = useColorScheme(name, colorScheme);
 
         const { componentStyleSet: radioStyleSet } = useStyleSet<VsRadioStyleSet>(VsComponent.VsRadio, styleSet);
         const { componentStyleSet: radioNodeStyleSet } = useStyleSet<VsRadioNodeStyleSet>(
