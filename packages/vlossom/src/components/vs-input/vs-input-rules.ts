@@ -1,13 +1,13 @@
 import type { Ref } from 'vue';
-import type { InputType, InputValueType } from './types';
+import type { VsInputType, VsInputValueType } from './types';
 
 export function useVsInputRules(
     required: Ref<boolean>,
     max: Ref<number | string>,
     min: Ref<number | string>,
-    type: Ref<InputType>,
+    type: Ref<VsInputType>,
 ) {
-    function requiredCheck(v: InputValueType) {
+    function requiredCheck(v: VsInputValueType) {
         if (required.value && v === '') {
             return 'required';
         }
@@ -15,7 +15,7 @@ export function useVsInputRules(
         return '';
     }
 
-    function maxCheck(v: InputValueType) {
+    function maxCheck(v: VsInputValueType) {
         const limit = Number(max.value);
         if (type.value === 'number' && typeof v === 'number' && v > limit) {
             return 'max value: ' + max.value;
@@ -28,7 +28,7 @@ export function useVsInputRules(
         return '';
     }
 
-    function minCheck(v: InputValueType) {
+    function minCheck(v: VsInputValueType) {
         const limit = Number(min.value);
         if (type.value === 'number' && typeof v === 'number' && v < limit) {
             return 'min value: ' + min.value;

@@ -1,8 +1,8 @@
 import type { Ref } from 'vue';
-import type { InputValueType } from './types';
+import type { VsTextareaValueType } from './types';
 
 export function useVsTextareaRules(required: Ref<boolean>, max: Ref<number | string>, min: Ref<number | string>) {
-    function requiredCheck(v: InputValueType) {
+    function requiredCheck(v: VsTextareaValueType) {
         if (required.value && v === '') {
             return 'required';
         }
@@ -10,7 +10,7 @@ export function useVsTextareaRules(required: Ref<boolean>, max: Ref<number | str
         return '';
     }
 
-    function maxCheck(v: InputValueType) {
+    function maxCheck(v: VsTextareaValueType) {
         const limit = Number(max.value);
         if (typeof v === 'string' && v.length > limit) {
             return 'max length: ' + max.value;
@@ -19,7 +19,7 @@ export function useVsTextareaRules(required: Ref<boolean>, max: Ref<number | str
         return '';
     }
 
-    function minCheck(v: InputValueType) {
+    function minCheck(v: VsTextareaValueType) {
         const limit = Number(min.value);
         if (typeof v === 'string' && v.length < limit) {
             return 'min length: ' + min.value;
