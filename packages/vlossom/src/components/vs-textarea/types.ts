@@ -1,5 +1,12 @@
+import type VsTextarea from './VsTextarea.vue';
 import type { VsInputWrapperStyleSet } from '@/main';
 import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsTextarea: typeof VsTextarea;
+    }
+}
 
 export type InputValueType = string;
 
