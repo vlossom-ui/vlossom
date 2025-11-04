@@ -6,14 +6,16 @@
                 :key="modal.id"
                 :color-scheme="modal.colorScheme"
                 :style-set="modal.styleSet"
+                :callbacks="modal.callbacks"
                 :dim-close="modal.dimClose"
                 :dimmed="modal.dimmed"
                 :esc-close="modal.escClose"
                 :focus-lock="modal.focusLock"
+                :hide-scroll="modal.hideScroll"
                 :id="modal.id"
                 :initial-focus-ref="modal.initialFocusRef"
+                :scroll-lock="modal.scrollLock"
                 :size="modal.size"
-                :callbacks="modal.callbacks"
                 @close="onClose(modal.id)"
             >
                 <vs-render :content="modal.content" />

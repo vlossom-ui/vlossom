@@ -4,9 +4,9 @@ import type { ModalInfo, ModalOptions } from './types';
 
 export function createModalInfo(content: string | Component, options: Partial<ModalOptions>): ModalInfo {
     return {
-        container: 'body',
-        id: `vs-modal-${stringUtil.createID()}`,
         ...options,
+        container: options.container || 'body',
+        id: options.id || `vs-modal-${stringUtil.createID()}`,
         content: typeof content === 'string' ? content : markRaw(content),
     };
 }

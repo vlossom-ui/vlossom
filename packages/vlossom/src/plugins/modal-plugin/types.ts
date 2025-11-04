@@ -6,15 +6,16 @@ export interface ModalOptions {
     container?: string;
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
+    callbacks?: OverlayCallbacks;
     dimClose?: boolean;
     dimmed?: boolean;
     escClose?: boolean;
     focusLock?: boolean;
+    hideScroll?: boolean;
     id?: string;
     initialFocusRef?: Record<string, any>;
-    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
-    callbacks?: OverlayCallbacks;
     scrollLock?: boolean;
+    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
 
 export interface ModalInfo extends ModalOptions {

@@ -7,7 +7,7 @@ export default defineComponent({
     name,
     props: {
         content: {
-            type: [String, Object] as PropType<string | Component>,
+            type: [String, Object, Function] as PropType<string | Component>,
             required: true,
         },
     },

@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, nextTick, onMounted, toRefs, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -106,6 +106,7 @@ export default defineComponent({
             return {
                 ...callbacks.value,
                 [OVERLAY_CLOSE]: () => {
+                    callbacks.value?.[OVERLAY_CLOSE]?.();
                     emit('close');
                 },
             };
@@ -114,8 +115,10 @@ export default defineComponent({
 
         function onClickDimmed() {
             if (dimClose.value) {
-                emit('close');
                 close();
+                nextTick(() => {
+                    emit('close');
+                });
             }
         }
 

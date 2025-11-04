@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsRender from './../VsRender.vue';
-import { markRaw } from 'vue';
+import { markRaw, h } from 'vue';
 
 describe('VsRender', () => {
     describe('문자열 content 렌더링', () => {
@@ -97,6 +97,43 @@ describe('VsRender', () => {
 
             expect(wrapper.find('.test-component').exists()).toBe(true);
             expect(wrapper.find('.test-component').text()).toBe('attrs로 전달된 메시지');
+        });
+
+        it('함수형 컴포넌트가 주어지고, 해당 컴포넌트가 렌더링되어야 한다', () => {
+            //given
+            function TestFunctionalComponent(props: any) {
+                return h('div', { class: 'functional-component' }, '함수형 컴포넌트');
+            }
+
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: TestFunctionalComponent,
+                },
+            });
+
+            expect(wrapper.find('.functional-component').exists()).toBe(true);
+            expect(wrapper.find('.functional-component').text()).toBe('함수형 컴포넌트');
+        });
+
+        it('함수형 컴포넌트와 attrs가 주어지고, attrs가 전달되어 렌더링되어야 한다', () => {
+            //given
+            function TestFunctionalComponent(props: any) {
+                return h('div', { class: 'functional-component', id: props.id }, props.message || '기본 메시지');
+            }
+
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: TestFunctionalComponent,
+                },
+                attrs: {
+                    id: 'test-id',
+                    message: 'attrs로 전달된 메시지',
+                },
+            });
+
+            expect(wrapper.find('.functional-component').exists()).toBe(true);
+            expect(wrapper.find('.functional-component').attributes('id')).toBe('test-id');
+            expect(wrapper.find('.functional-component').text()).toBe('attrs로 전달된 메시지');
         });
     });
 

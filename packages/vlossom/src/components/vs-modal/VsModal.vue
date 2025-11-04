@@ -1,67 +1,72 @@
 <template>
-    <Teleport :to="container" :disabled="!container || container === 'body'">
-        <vs-modal-node
-            :color-scheme="colorScheme"
-            :style-set="styleSet"
-            :container="container"
-            :dim-close="dimClose"
-            :dimmed="dimmed"
-            :esc-close="escClose"
-            :focus-lock="focusLock"
-            :id="id"
-            :initial-focus-ref="initialFocusRef"
-            :size="size"
-            :callbacks="callbacks"
-            :scroll-lock="scrollLock"
-            @close="onClose"
-        >
-            <slot />
-        </vs-modal-node>
-    </Teleport>
+    <div :style="{ display: 'none' }">
+        <slot />
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
-import { VsComponent } from '@/declaration';
+import { defineComponent, ref, toRefs, watch, computed, type Component, type PropType } from 'vue';
+import { VsComponent, OVERLAY_CLOSE, type SizeProp } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
-import VsModalNode from '@/components/vs-modal/VsModalNode.vue';
 import type { VsModalNodeStyleSet } from './types';
+import { useVlossom } from '@/framework';
 
 const name = VsComponent.VsModal;
 export default defineComponent({
     name,
-    components: { VsModalNode },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
         container: { type: String, default: 'body' },
+        escClose: { type: Boolean, default: true },
         size: {
-            type: [String, Number, Object],
+            type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
         },
-        initialFocusRef: { type: Object, default: null },
+
+        // v-model
+        modelValue: { type: Boolean, default: false },
     },
-    emits: ['update:modelValue', 'close'],
-    setup(props, { emit }) {
-        const { colorScheme, styleSet, dimClose, escClose, focusLock, id, callbacks, scrollLock } = toRefs(props);
+    emits: ['update:modelValue', 'open', 'close'],
+    inheritAttrs: false,
+    setup(props, { emit, slots }) {
+        const $vs = useVlossom();
+        const { modelValue, container, callbacks } = toRefs(props);
 
-        function onClose() {
-            emit('close');
-            emit('update:modelValue', false);
-        }
+        const isOpen = ref(modelValue.value);
+        const modalId = ref('');
 
-        return {
-            colorScheme,
-            styleSet,
-            dimClose,
-            escClose,
-            focusLock,
-            id,
-            callbacks,
-            scrollLock,
-            onClose,
-        };
+        watch(modelValue, (o) => {
+            isOpen.value = o;
+        });
+
+        const modalOptions = computed(() => {
+            return {
+                ...props,
+                callbacks: {
+                    ...callbacks.value,
+                    [OVERLAY_CLOSE]: () => {
+                        isOpen.value = false;
+                    },
+                },
+            };
+        });
+
+        watch(isOpen, (o) => {
+            emit('update:modelValue', o);
+            emit(o ? 'open' : 'close');
+
+            if (o) {
+                const vnode = slots.default?.();
+                const modalComponent: Component = vnode ? () => vnode : ((() => null) as Component);
+                modalId.value = $vs.modal.open(modalComponent, modalOptions.value);
+            } else {
+                $vs.modal.closeWithId(container.value, modalId.value);
+            }
+        });
+
+        return {};
     },
 });
 </script>
