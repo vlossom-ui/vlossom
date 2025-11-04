@@ -1,10 +1,16 @@
-import type { TextStyleSet } from '@/declaration';
+import type VsRadio from './VsRadio.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsRadio: typeof VsRadio;
+    }
+}
+
+export type { VsRadio };
 
 export interface VsRadioStyleSet {
     borderRadius?: string;
     height?: string;
-    label?: TextStyleSet;
-    checkedLabel?: TextStyleSet;
     radioColor?: string;
     radioSize?: string;
 }
