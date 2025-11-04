@@ -1,0 +1,126 @@
+@reference 'tailwindcss';
+
+.vs-file-drop {
+    --vs-file-drop-backgroundColor: initial;
+    --vs-file-drop-border: initial;
+    --vs-file-drop-borderRadius: initial;
+    --vs-file-drop-padding: initial;
+    --vs-file-drop-opacity: initial;
+    --vs-file-drop-fontColor: initial;
+    --vs-file-drop-fontSize: initial;
+    --vs-file-drop-fontWeight: initial;
+    --vs-file-drop-height: initial;
+    --vs-file-drop-dragBackgroundColor: initial;
+    --vs-file-drop-iconColor: initial;
+
+    @apply relative box-border w-full hover:brightness-110 active:brightness-120;
+    opacity: var(--vs-file-drop-opacity, 1);
+    border: var(--vs-file-drop-border, solid 1px var(--vs-line-color));
+    border-radius: var(--vs-file-drop-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-file-drop-backgroundColor, var(--vs-no-color));
+    height: var(--vs-file-drop-height, auto);
+    color: var(--vs-file-drop-fontColor, var(--vs-font-color));
+    font-weight: var(--vs-file-drop-fontWeight, var(--vs-font-weight));
+    font-size: var(--vs-file-drop-fontSize, var(--vs-font-size));
+
+    &:hover,
+    &:focus-within {
+        outline: 1px solid var(--vs-line-color) !important;
+        outline-offset: 2px !important;
+    }
+
+    &.vs-dragging {
+        outline: 2px dashed var(--vs-line-color);
+    }
+
+    &.vs-dragging-shadow {
+        box-shadow: 0 0 2px 2px var(--vs-line-color) inset;
+        background-color: var(--vs-file-drop-dragBackgroundColor, var(--vs-no-color));
+    }
+
+    &.vs-small {
+        height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+        font-size: var(--vs-file-drop-fontSize, var(--vs-font-size-sm));
+
+        .vs-file-drop-placeholder {
+            height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+
+            .placeholder-text {
+                @apply w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
+            }
+        }
+    }
+
+    .vs-file-drop-ref {
+        @apply absolute top-0 left-0 h-full w-full cursor-pointer opacity-0;
+
+        &::file-selector-button {
+            @apply hidden;
+        }
+    }
+
+    .vs-file-drop-input {
+        @apply absolute top-0 left-0 h-full w-full cursor-pointer opacity-0;
+
+        .vs-file-drop-placeholder {
+            height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+
+            .placeholder-text {
+                @apply w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
+            }
+        }
+    }
+
+    .vs-file-drop-content {
+        @apply flex min-h-0 w-full min-w-0 flex-col items-center justify-center;
+        height: var(--vs-file-drop-height, auto);
+
+        .vs-file-drop-files {
+            @apply m-1 flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-2 overflow-x-hidden overflow-y-auto;
+            padding: var(--vs-file-drop-padding, 1rem);
+            height: var(--vs-file-drop-height, auto);
+
+            > div {
+                @apply flex w-full max-w-full min-w-0;
+            }
+
+            .vs-chip {
+                @apply pointer-events-none flex w-full max-w-full min-w-0;
+
+                .vs-chip-close-button {
+                    pointer-events: auto;
+                }
+
+                .vs-chip-content {
+                    @apply block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+
+                    .vs-file-drop-file-name {
+                        color: var(--vs-file-drop-fontColor, var(--vs-font-color));
+                        font-size: var(--vs-file-drop-fontSize, var(--vs-font-size));
+                    }
+
+                    .vs-file-drop-file-size {
+                        @apply ml-2;
+                        color: var(--vs-file-drop-fontColor, var(--vs-font-color));
+                        font-size: var(--vs-font-size-xs);
+                    }
+                }
+            }
+        }
+
+        .vs-file-drop-placeholder {
+            @apply flex flex-col items-center justify-center;
+            padding: var(--vs-file-drop-padding, 1rem);
+            height: var(--vs-file-drop-height, auto);
+
+            .placeholder-icon {
+                color: var(--vs-file-drop-iconColor, var(--vs-font-color));
+            }
+
+            .placeholder-text {
+                @apply mt-2 w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
+                font-size: var(--vs-font-size-xs);
+            }
+        }
+    }
+}
