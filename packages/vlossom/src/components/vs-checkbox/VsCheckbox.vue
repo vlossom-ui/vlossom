@@ -1,17 +1,18 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
         :style="componentStyleSet.wrapper"
-        :grid="grid"
         :id="checkLabel ? '' : computedId"
-        :label="label"
-        :required="required"
         :disabled="computedDisabled"
-        :small="small"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :width
+        :grid
+        :label
+        :no-label
+        :required
+        :small
+        :no-messages
+        :shake
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
@@ -25,10 +26,10 @@
                     :class="['vs-checkbox-input', stateClasses]"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :name="name"
                     :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
+                    :name
                     @click.prevent.stop="toggle"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
@@ -74,7 +75,7 @@ export default defineComponent({
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         beforeChange: {
-            type: Function as PropType<(from: any, to: any) => Promise<boolean> | null>,
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
         checked: { type: Boolean, default: false },
@@ -87,7 +88,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: null, default: false },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle'],
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
@@ -198,13 +199,14 @@ export default defineComponent({
 
             const beforeChangeFn = beforeChange.value;
             if (beforeChangeFn) {
-                const result = await beforeChangeFn(inputValue.value, toValue);
+                const result = await beforeChangeFn(inputValue.value, toValue, trueValue.value);
                 if (!result) {
                     return;
                 }
             }
 
             inputValue.value = toValue;
+            emit('toggle', isChecked.value);
         }
 
         function onFocus(e: FocusEvent) {

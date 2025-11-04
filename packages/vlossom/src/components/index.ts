@@ -41,6 +41,7 @@ export { default as VsBar } from './vs-bar/VsBar.vue';
 export { default as VsBlock } from './vs-block/VsBlock.vue';
 export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsCheckbox } from './vs-checkbox/VsCheckbox.vue';
+export { default as VsCheckboxSet } from './vs-checkbox/VsCheckboxSet.vue';
 export { default as VsChip } from './vs-chip/VsChip.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDimmed } from './vs-dimmed/VsDimmed.vue';
