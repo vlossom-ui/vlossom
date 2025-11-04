@@ -1,15 +1,16 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
-        :grid="grid"
         :id="radioLabel ? '' : computedId"
-        :label="label"
-        :required="required"
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :grid
+        :label
+        :no-messages
+        :required
+        :shake
+        :small
+        :width
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
@@ -23,10 +24,10 @@
                     class="vs-radio-input"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :name="name"
                     :value="convertToString(radioValue)"
                     :checked="isChecked"
                     :aria-required="required"
+                    :name
                     @change.stop="onToggle"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
@@ -85,6 +86,7 @@ export default defineComponent({
             rules,
             state,
             styleSet,
+            small,
             noDefaultRules,
         } = toRefs(props);
 
@@ -92,7 +94,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsRadioStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(name, styleSet);
 
         const { stateClasses } = useStateClass(state);
 
@@ -151,6 +153,7 @@ export default defineComponent({
             'vs-disabled': computedDisabled.value,
             'vs-focusable': !computedDisabled.value && !computedReadonly.value,
             'vs-readonly': computedReadonly.value,
+            'vs-small': small.value,
         }));
 
         async function onToggle(event: Event) {
@@ -182,7 +185,6 @@ export default defineComponent({
             isChecked,
             colorSchemeClass,
             computedState,
-            componentStyleSet,
             styleSetVariables,
             classObj,
             stateClasses,

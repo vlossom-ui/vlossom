@@ -1,18 +1,18 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style="componentStyleSet.wrapper"
         :id="checkLabel ? '' : computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :width
+        :style-set="componentStyleSet.wrapper"
         :grid
         :label
         :no-label
-        :required
-        :small
         :no-messages
+        :required
         :shake
+        :small
+        :width
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />

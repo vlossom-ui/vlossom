@@ -20,7 +20,7 @@
                 color: var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
 
                 &:before {
-                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.125rem) / 3)
+                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.3rem) / 3)
                         var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
                 }
             }
@@ -37,8 +37,8 @@
                 margin-right: 0.5rem;
                 box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
                 border-radius: var(--vs-radio-borderRadius, 50%);
-                width: var(--vs-radio-radioSize, 1.125rem);
-                height: var(--vs-radio-radioSize, 1.125rem);
+                width: var(--vs-radio-radioSize, 1.3rem);
+                height: var(--vs-radio-radioSize, 1.3rem);
                 content: '';
             }
         }
@@ -67,7 +67,13 @@
         min-height: var(--vs-radio-height, var(--vs-default-comp-height-small));
 
         .vs-radio-label {
+            padding: 0.1rem 0;
             font-size: var(--vs-font-size-sm);
+
+            &:before {
+                width: var(--vs-radio-radioSize, 1rem);
+                height: var(--vs-radio-radioSize, 1rem);
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ const meta: Meta<typeof VsRadio> = {
     },
     args: {
         radioLabel: 'Radio Input',
-        noMessage: true,
+        noMessages: true,
         name: 'test',
         radioValue: 'test',
     },
@@ -85,10 +85,17 @@ export const Label: Story = {
     },
 };
 
+export const Small: Story = {
+    args: {
+        label: 'Label',
+        small: true,
+    },
+};
+
 export const Messages: Story = {
     args: {
         messages: [{ state: 'info', text: 'This is info message' }],
-        noMessage: false,
+        noMessages: false,
     },
 };
 
@@ -146,12 +153,8 @@ export const Grid: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            label: {
-                fontColor: '#ac77c8',
-                fontSize: '1.5rem',
-            },
-            radioColor: '#41c798',
-            radioSize: '2rem',
+            radioColor: '#ac77c8',
+            radioSize: '1.5rem',
         },
     },
 };
