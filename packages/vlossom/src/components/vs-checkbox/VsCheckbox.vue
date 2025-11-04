@@ -26,7 +26,7 @@
                     :class="['vs-checkbox-input', stateClasses]"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :value="String(trueValue)"
+                    :value="convertToString(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
                     :name
@@ -61,6 +61,7 @@ import {
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
+import { stringUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -249,6 +250,7 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            convertToString: stringUtil.convertToString,
             inputValue,
             isChecked,
             shake,

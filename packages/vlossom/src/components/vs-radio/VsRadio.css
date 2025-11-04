@@ -1,90 +1,73 @@
-.vs-radio-node {
-    --vs-radio-node-radioColor: initial;
-    --vs-radio-node-radioSize: initial;
-    --vs-radio-node-height: initial;
-    --vs-radio-node-borderRadius: initial;
-    --vs-radio-node-label-fontColor: initial;
-    --vs-radio-node-label-fontSize: initial;
-    --vs-radio-node-label-fontWeight: initial;
-    --vs-radio-node-label-whiteSpace: initial;
-    --vs-radio-node-checkedLabel-fontColor: initial;
-    --vs-radio-node-checkedLabel-fontSize: initial;
-    --vs-radio-node-checkedLabel-fontWeight: initial;
-    --vs-radio-node-checkedLabel-whiteSpace: initial;
-    display: flex;
+@reference 'tailwindcss';
 
-    position: relative;
-    align-items: center;
-    min-height: var(--vs-radio-node-height, var(--vs-input-comp-height));
-}
+.vs-radio {
+    --vs-radio-borderRadius: initial;
+    --vs-radio-height: initial;
+    --vs-radio-radioColor: initial;
+    --vs-radio-radioSize: initial;
 
-.vs-radio-node .vs-radio-wrap {
-    display: flex;
-    position: relative;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-}
+    @apply relative flex items-center;
+    min-height: var(--vs-radio-height, var(--vs-default-comp-height));
 
-.vs-radio-node .vs-radio-wrap .vs-radio-input {
-    position: absolute;
-    opacity: 0;
-    z-index: -1;
-}
+    .vs-radio-wrap {
+        @apply relative flex cursor-pointer flex-nowrap items-center justify-start select-none;
 
-.vs-radio-node .vs-radio-wrap .vs-radio-input:checked + .vs-radio-label {
-    color: var(--vs-radio-node-checkedLabel-fontColor, var(--vs-primary-comp-bg));
-    font-weight: var(--vs-radio-node-checkedLabel-fontWeight, 400);
-    font-size: var(--vs-radio-node-checkedLabel-fontSize, var(--vs-font-size));
-    white-space: var(--vs-radio-node-checkedLabel-whiteSpace, nowrap);
-}
+        .vs-radio-input {
+            @apply absolute opacity-0;
+            pointer-events: none;
 
-.vs-radio-node .vs-radio-wrap .vs-radio-input:checked + .vs-radio-label:before {
-    box-shadow: inset 0 0 0 calc(var(--vs-radio-node-radioSize, 1.8rem) / 3)
-        var(--vs-radio-node-radioColor, var(--vs-primary-comp-bg));
-}
+            &:checked + .vs-radio-label {
+                color: var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
 
-.vs-radio-node .vs-radio-wrap .vs-radio-input:focus-visible + .vs-radio-label:before {
-    outline: 1px solid var(--vs-line-color);
-    outline-offset: 3px;
-}
+                &:before {
+                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.8rem) / 3)
+                        var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
+                }
+            }
+        }
 
-.vs-radio-node .vs-radio-wrap .vs-radio-label {
-    display: flex;
-    align-items: center;
-    outline: none;
-    padding: 0.2rem 0;
-    color: var(--vs-radio-node-label-fontColor, var(--vs-font-color));
-    font-weight: var(--vs-radio-node-label-fontWeight, 400);
-    font-size: var(--vs-radio-node-label-fontSize, var(--vs-font-size));
-    white-space: var(--vs-radio-node-label-whiteSpace, nowrap);
-}
+        .vs-radio-label {
+            @apply flex cursor-pointer items-center whitespace-nowrap select-none;
+            padding: 0.2rem 0;
+            color: var(--vs-font-color);
 
-.vs-radio-node .vs-radio-wrap .vs-radio-label:before {
-    transition: box-shadow 0.25s ease;
-    margin-right: 0.5rem;
-    box-shadow: inset 0 0 0 0.12rem var(--vs-radio-node-radioColor, var(--vs-primary-comp-bg));
-    border-radius: var(--vs-radio-node-borderRadius, 50%);
-    background-color: transparent;
-    width: var(--vs-radio-node-radioSize, 1.8rem);
-    min-width: var(--vs-radio-node-radioSize, 1.8rem);
-    max-width: var(--vs-radio-node-radioSize, 1.8rem);
-    height: var(--vs-radio-node-radioSize, 1.8rem);
-    min-height: var(--vs-radio-node-radioSize, 1.8rem);
-    max-height: var(--vs-radio-node-radioSize, 1.8rem);
-    content: '';
-}
+            &:before {
+                @apply bg-transparent;
+                transition: box-shadow 0.25s ease;
+                margin-right: 0.5rem;
+                box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
+                border-radius: var(--vs-radio-borderRadius, 50%);
+                width: var(--vs-radio-radioSize, 1.8rem);
+                height: var(--vs-radio-radioSize, 1.8rem);
+                content: '';
+            }
+        }
+    }
 
-.vs-radio-node.vs-dense {
-    min-height: var(--vs-rado-height, var(--vs-input-comp-height-dense));
-}
+    &.vs-focusable {
+        .vs-radio-input:focus-visible + .vs-radio-label {
+            &:before {
+                outline: 1px solid var(--vs-line-color) !important;
+                outline-offset: 2px !important;
+            }
+        }
+    }
 
-.vs-radio-node.vs-dense .vs-radio-label {
-    font-size: var(--vs-radio-node-label-fontSize, var(--vs-font-size-sm));
-}
+    &.vs-state-box {
+        outline: initial !important;
 
-.vs-radio-node.vs-state-box .vs-radio-label:before {
-    box-shadow: 0 0 0 2px var(--vs-state-color);
+        .vs-radio-label {
+            &:before {
+                @apply outline-3 outline-offset-2 outline-(--vs-state-color);
+            }
+        }
+    }
+
+    &.vs-small {
+        min-height: var(--vs-radio-height, var(--vs-default-comp-height-small));
+
+        .vs-radio-label {
+            font-size: var(--vs-font-size-sm);
+        }
+    }
 }

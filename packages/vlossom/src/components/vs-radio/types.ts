@@ -1,17 +1,10 @@
-import { VsTextStyleSet } from '@/declaration';
+import type { TextStyleSet } from '@/declaration';
 
-export interface VsRadioNodeStyleSet {
+export interface VsRadioStyleSet {
     borderRadius?: string;
     height?: string;
-    label?: VsTextStyleSet;
-    checkedLabel?: VsTextStyleSet;
+    label?: TextStyleSet;
+    checkedLabel?: TextStyleSet;
     radioColor?: string;
     radioSize?: string;
-}
-
-export interface VsRadioStyleSet extends VsRadioNodeStyleSet {}
-
-export interface VsRadioSetStyleSet extends VsRadioNodeStyleSet {
-    gap?: string;
-    flexWrap?: string;
 }
