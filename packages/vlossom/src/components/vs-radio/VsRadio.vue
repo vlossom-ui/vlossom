@@ -96,8 +96,6 @@ export default defineComponent({
 
         const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(name, styleSet);
 
-        const { stateClasses } = useStateClass(state);
-
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 
         const isChecked = computed(() => {
@@ -148,6 +146,8 @@ export default defineComponent({
                 },
             },
         );
+
+        const { stateClasses } = useStateClass(computedState);
 
         const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,

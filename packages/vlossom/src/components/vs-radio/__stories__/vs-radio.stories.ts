@@ -3,6 +3,7 @@ import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/stor
 
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsRadio from './../VsRadio.vue';
+import { useTemplateRef } from 'vue';
 
 const meta: Meta<typeof VsRadio> = {
     title: 'Components/Input Components/VsRadio',
@@ -106,10 +107,22 @@ export const Readonly: Story = {
 };
 
 export const Required: Story = {
-    args: {
-        label: 'Radio (required)',
-        required: true,
-    },
+    render: (args: any) => ({
+        components: { VsRadio },
+        setup() {
+            const radioRef = useTemplateRef('radioRef');
+
+            function validate() {
+                (radioRef.value as any).validate();
+            }
+
+            return { args, validate, radioRef };
+        },
+        template: `<div>
+            <vs-radio ref="radioRef" v-bind="args" name="required" label="Radio (required)" required style="margin-bottom: 16px" />
+            <vs-button @click="validate">Validate</vs-button>
+        </div>`,
+    }),
 };
 
 export const Width: Story = {
