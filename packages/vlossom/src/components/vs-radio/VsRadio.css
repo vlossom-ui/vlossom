@@ -20,7 +20,7 @@
                 color: var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
 
                 &:before {
-                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.8rem) / 3)
+                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.125rem) / 3)
                         var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
                 }
             }
@@ -37,8 +37,8 @@
                 margin-right: 0.5rem;
                 box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
                 border-radius: var(--vs-radio-borderRadius, 50%);
-                width: var(--vs-radio-radioSize, 1.8rem);
-                height: var(--vs-radio-radioSize, 1.8rem);
+                width: var(--vs-radio-radioSize, 1.125rem);
+                height: var(--vs-radio-radioSize, 1.125rem);
                 content: '';
             }
         }
