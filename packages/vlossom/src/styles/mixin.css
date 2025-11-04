@@ -1,14 +1,13 @@
 @layer utilities {
     .vs-disabled {
-        @apply pointer-events-none cursor-not-allowed grayscale-60 select-none;
+        @apply pointer-events-none cursor-default grayscale-60 select-none;
         opacity: 0.5 !important;
     }
 
     .vs-readonly {
-        @apply pointer-events-none cursor-not-allowed;
+        @apply pointer-events-none cursor-default;
     }
 
-    .vs-focusable:focus-within,
     .vs-focusable:focus-visible {
         outline: 1px solid var(--vs-line-color) !important;
         outline-offset: 2px !important;
