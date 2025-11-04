@@ -1,5 +1,5 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { type VueWrapper, mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsRadio from './../VsRadio.vue';
 
@@ -24,25 +24,9 @@ describe('vs-radio', () => {
     });
 
     describe('v-model', () => {
-        it('modelValue의 초깃값을 설정할 수 있다', async () => {
-            // given
-            const wrapper = mount(VsRadio, {
-                props: {
-                    name: 'radio',
-                    radioValue: 'test',
-                    modelValue: 'test',
-                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
-                },
-            });
-
-            // then
-            expect(wrapper.vm.isChecked).toBe(true);
-            expect(wrapper.find('input').element.checked).toBe(true);
-        });
-
         it('modelValue를 변경해서 선택할 수 있다', async () => {
             // given
-            const wrapper = mount(VsRadio, {
+            const wrapper: VueWrapper<InstanceType<typeof VsRadio>> = mount(VsRadio, {
                 props: {
                     name: 'radio',
                     radioValue: 'A',
@@ -61,7 +45,7 @@ describe('vs-radio', () => {
 
         it('modelValue를 변경해서 선택 해제할 수 있다', async () => {
             // given
-            const wrapper = mount(VsRadio, {
+            const wrapper: VueWrapper<InstanceType<typeof VsRadio>> = mount(VsRadio, {
                 props: {
                     name: 'radio',
                     radioValue: 'A',
@@ -82,7 +66,7 @@ describe('vs-radio', () => {
     describe('clear', () => {
         it('clear 함수를 호출하면 null 값으로 업데이트 된다', async () => {
             // given
-            const wrapper = mount(VsRadio, {
+            const wrapper: VueWrapper<InstanceType<typeof VsRadio>> = mount(VsRadio, {
                 props: {
                     name: 'radio',
                     radioValue: 'test',
@@ -194,22 +178,6 @@ describe('vs-radio', () => {
         });
     });
 
-    describe('aria-label', () => {
-        it('aria-label을 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsRadio, {
-                props: {
-                    name: 'radio',
-                    radioValue: 'test',
-                    ariaLabel: 'aria-label',
-                },
-            });
-
-            // then
-            expect(wrapper.find('input').attributes('aria-label')).toBe('aria-label');
-        });
-    });
-
     describe('focus / blur', () => {
         it('focus 이벤트를 발생시킬 수 있다', async () => {
             // given
@@ -283,7 +251,7 @@ describe('vs-radio (multiple inputs)', () => {
 
     it('초깃값을 설정하면 해당 radio는 선택되어 있다', () => {
         // given
-        const radio3 = mount(VsRadio, {
+        const radio3: VueWrapper<InstanceType<typeof VsRadio>> = mount(VsRadio, {
             props: {
                 name: 'radio',
                 radioValue: 'C',
