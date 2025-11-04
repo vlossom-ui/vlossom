@@ -36,10 +36,6 @@ const meta: Meta<typeof VsInput> = {
             control: 'text',
             description: '플레이스홀더 텍스트',
         },
-        label: {
-            control: 'text',
-            description: '라벨 텍스트',
-        },
         disabled: {
             control: 'boolean',
             description: '비활성화 상태',
@@ -48,13 +44,58 @@ const meta: Meta<typeof VsInput> = {
             control: 'boolean',
             description: '읽기 전용 상태',
         },
+        hidden: {
+            control: 'boolean',
+            description: '숨김 상태',
+        },
         required: {
             control: 'boolean',
             description: '필수 입력 여부',
         },
+        state: {
+            control: 'select',
+            options: ['error', 'idle', 'success', 'info', 'warning'],
+            description: 'Input 상태',
+        },
+        label: {
+            control: 'text',
+            description: '라벨 텍스트',
+        },
+        noLabel: {
+            control: 'boolean',
+            description: '라벨 숨김',
+        },
+        messages: {
+            control: 'object',
+            description: '메시지 배열',
+        },
+        noMessages: {
+            control: 'boolean',
+            description: '메시지 영역 숨김',
+        },
+        rules: {
+            control: 'object',
+            description: '검증 규칙 배열',
+        },
+        noDefaultRules: {
+            control: 'boolean',
+            description: '기본 검증 규칙 비활성화',
+        },
+        max: {
+            control: 'number',
+            description: '최대값 (number 타입에서 사용)',
+        },
+        min: {
+            control: 'number',
+            description: '최소값 (number 타입에서 사용)',
+        },
         small: {
             control: 'boolean',
             description: '작은 크기',
+        },
+        styleSet: {
+            control: 'object',
+            description: '커스텀 스타일 객체',
         },
         noClear: {
             control: 'boolean',
@@ -63,6 +104,30 @@ const meta: Meta<typeof VsInput> = {
         autocomplete: {
             control: 'boolean',
             description: '자동완성 활성화',
+        },
+        id: {
+            control: 'text',
+            description: 'Input ID',
+        },
+        name: {
+            control: 'text',
+            description: 'Input name 속성',
+        },
+        width: {
+            control: 'text',
+            description: 'Input 너비 (string | number | Breakpoints)',
+        },
+        grid: {
+            control: 'text',
+            description: 'Grid 설정 (string | number | Breakpoints)',
+        },
+        modelValue: {
+            control: 'text',
+            description: 'v-model 값',
+        },
+        modelModifiers: {
+            control: 'object',
+            description: 'v-model modifiers (capitalize, upper, lower)',
         },
     },
 };
@@ -191,6 +256,38 @@ export const Small: Story = {
         placeholder: '작은 입력 필드',
         small: true,
     },
+};
+
+export const State: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'state prop을 사용하여 입력 필드의 상태를 표시할 수 있습니다. ' +
+                    'idle, success, error, info, warning 상태를 지원합니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsInput },
+        setup() {
+            const idleValue = ref('');
+            const successValue = ref('입력 성공');
+            const errorValue = ref('잘못된 입력');
+            const infoValue = ref('정보');
+            const warningValue = ref('주의');
+            return { args, idleValue, successValue, errorValue, infoValue, warningValue };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-bind="args" v-model="idleValue" state="idle" label="Idle" placeholder="기본 상태" />
+                <vs-input v-bind="args" v-model="successValue" state="success" label="Success" placeholder="성공 상태" />
+                <vs-input v-bind="args" v-model="errorValue" state="error" label="Error" placeholder="에러 상태" />
+                <vs-input v-bind="args" v-model="infoValue" state="info" label="Info" placeholder="정보 상태" />
+                <vs-input v-bind="args" v-model="warningValue" state="warning" label="Warning" placeholder="경고 상태" />
+            </div>
+        `,
+    }),
 };
 
 export const NoClear: Story = {

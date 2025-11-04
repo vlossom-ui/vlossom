@@ -73,11 +73,6 @@
         }
     }
 
-    &.vs-state-box {
-        outline: 3px solid var(--vs-state-color);
-        outline-offset: 2px;
-    }
-
     &:focus-within {
         outline: 1px solid var(--vs-line-color) !important;
         outline-offset: 2px !important;

@@ -8,9 +8,9 @@ declare module 'vue' {
     }
 }
 
-export type InputValueType = string | number | null;
+export type VsInputValueType = string | number | null;
 
-export type InputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
+export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
 export interface VsInputRef extends InputRef {
     select: () => void;

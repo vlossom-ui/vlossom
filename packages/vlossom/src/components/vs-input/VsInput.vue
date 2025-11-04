@@ -3,9 +3,9 @@
         v-show="!hidden"
         :width
         :grid
-        :disabled
+        :disabled="computedDisabled"
         :hidden
-        :id
+        :id="computedId"
         :label
         :no-label
         :no-messages
@@ -34,7 +34,7 @@
                 :readonly="computedReadonly"
                 :aria-required="required"
                 :placeholder="placeholder"
-                @input.stop="updateValue"
+                @input.stop="onInput"
                 @change.stop
             />
 
@@ -67,7 +67,7 @@ import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { propsUtil } from '@/utils';
-import type { InputType, InputValueType, VsInputStyleSet } from './types';
+import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import { closeIcon } from '@/icons';
@@ -78,7 +78,7 @@ export default defineComponent({
     name,
     components: { VsInputWrapper },
     props: {
-        ...getInputProps<InputValueType>(),
+        ...getInputProps<VsInputValueType>(),
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsInputStyleSet>(),
@@ -94,10 +94,10 @@ export default defineComponent({
             validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
         noClear: { type: Boolean, default: false },
-        type: { type: String as PropType<InputType>, default: 'text' },
+        type: { type: String as PropType<VsInputType>, default: 'text' },
         // v-model
         modelValue: {
-            type: [String, Number] as PropType<InputValueType>,
+            type: [String, Number] as PropType<VsInputValueType>,
             default: null,
         },
         modelModifiers: {
@@ -127,7 +127,7 @@ export default defineComponent({
             state,
         } = toRefs(props);
 
-        const inputValue: Ref<InputValueType> = ref(modelValue.value);
+        const inputValue: Ref<VsInputValueType> = ref(modelValue.value);
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
         const isNumberInput = computed(() => type.value === 'number');
 
@@ -136,7 +136,7 @@ export default defineComponent({
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 
-        function convertValue(v: InputValueType | undefined): InputValueType {
+        function convertValue(v: VsInputValueType | undefined): VsInputValueType {
             if (v === undefined || v === null || v === '') {
                 return isNumberInput.value ? null : '';
             }
@@ -188,6 +188,7 @@ export default defineComponent({
 
         const classObj = computed(() => ({
             'vs-small': small.value,
+            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
         }));
@@ -196,7 +197,7 @@ export default defineComponent({
 
         const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
-        function updateValue(event: Event) {
+        function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
             const value = target.value || '';
             inputValue.value = convertValue(value);
@@ -237,7 +238,7 @@ export default defineComponent({
             computedId,
 
             // Methods
-            updateValue,
+            onInput,
             focus,
             blur,
             select,

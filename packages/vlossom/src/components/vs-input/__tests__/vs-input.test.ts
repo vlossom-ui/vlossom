@@ -305,6 +305,10 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('required');
+            expect(wrapper.vm.shake).toBe(true);
         });
 
         it('input type이 number가 아닐 때 max 길이 체크가 가능하다', () => {
@@ -322,6 +326,10 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('max length: 5');
+            expect(wrapper.vm.shake).toBe(true);
         });
 
         it('input type이 number가 아닐 때 min 길이 체크가 가능하다', () => {
@@ -339,6 +347,10 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('min length: 3');
+            expect(wrapper.vm.shake).toBe(true);
         });
 
         it('input type이 number 일 때 max 값 체크가 가능하다', () => {
@@ -356,6 +368,10 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('max value: 100');
+            expect(wrapper.vm.shake).toBe(true);
         });
 
         it('input type이 number 일 때 min 값 체크가 가능하다', () => {
@@ -373,6 +389,56 @@ describe('VsInput', () => {
 
             // then
             expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('min value: 10');
+            expect(wrapper.vm.shake).toBe(true);
+        });
+
+        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                    min: 2,
+                    max: 10,
+                    modelValue: 'valid',
+                },
+            });
+
+            // when
+            const isValid = wrapper.vm.validate();
+
+            // then
+            expect(isValid).toBe(true);
+            expect(wrapper.vm.shake).toBe(false);
+        });
+
+        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', () => {
+            // given
+            const customRule = (value: string | number | null) => {
+                if (value === 'test') {
+                    return 'custom error message';
+                }
+                return '';
+            };
+
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test',
+                    rules: [customRule],
+                },
+            });
+
+            // when
+            const isValid = wrapper.vm.validate();
+
+            // then
+            expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('custom error message');
+            expect(wrapper.vm.shake).toBe(true);
         });
     });
 
