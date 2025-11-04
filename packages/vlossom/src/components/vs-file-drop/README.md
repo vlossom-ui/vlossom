@@ -145,6 +145,7 @@ function handleDrop(droppedFiles: File[]) {
 | `small`       | `boolean`                         | `false`                   | -        | 작은 크기                                          |
 | `state`       | `UIState`                         | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning)    |
 | `width`       | `string \| number \| Breakpoints` | -                         | -        | 컴포넌트 너비                                      |
+| `height`      | `string \| number \| Breakpoints` | -                         | -        | 컴포넌트 높이                                      |
 
 ## Events
 

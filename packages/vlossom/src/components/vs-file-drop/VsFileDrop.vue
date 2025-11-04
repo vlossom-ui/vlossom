@@ -84,7 +84,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Breakpoints } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
@@ -105,6 +105,7 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsFileDropStyleSet>(),
         accept: { type: String, default: '' },
+        height: { type: [String, Number, Object] as PropType<string | number | Breakpoints>, default: 'auto' },
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
@@ -138,6 +139,7 @@ export default defineComponent({
             state,
             max,
             min,
+            height,
         } = toRefs(props);
 
         const inputValue: Ref<FileDropValueType> = ref(modelValue.value);
@@ -145,7 +147,11 @@ export default defineComponent({
         const dragging = ref(false);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+            name,
+            styleSet,
+            computed(() => ({ height: height.value })),
+        );
         const { requiredCheck, maxCheck, minCheck, acceptCheck } = useVsFileDropRules(required, max, min, accept);
 
         const { computedId, computedMessages, computedState, computedDisabled, computedReadonly, shake, validate } =
