@@ -1,0 +1,34 @@
+@reference 'tailwindcss';
+
+.vs-modal-view {
+    @apply pointer-events-none absolute top-0 left-0 h-full w-full transition-all;
+
+    z-index: var(--vs-modal-z-index);
+    transition-duration: 300;
+    transition-timing-function: ease;
+
+    &.vs-modal-fixed {
+        @apply fixed;
+    }
+}
+
+.modal-move, /* apply transition to moving elements */
+.modal-enter-active .vs-modal-wrap,
+.modal-leave-active .vs-modal-wrap {
+    @apply transition-all;
+
+    transition-duration: 300;
+}
+
+.modal-enter-from .vs-modal-wrap,
+.modal-leave-to .vs-modal-wrap {
+    @apply opacity-0;
+
+    transform: translate(-50%, -50%) scale(0.75);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.modal-leave-active {
+    @apply absolute;
+}

@@ -32,6 +32,9 @@ import VsLabelValue from './vs-label-value/VsLabelValue.vue';
 import VsLayout from './vs-layout/VsLayout.vue';
 import VsLoading from './vs-loading/VsLoading.vue';
 import VsMessage from './vs-message/VsMessage.vue';
+import VsModal from './vs-modal/VsModal.vue';
+import VsModalNode from './vs-modal/VsModalNode.vue';
+import VsModalView from './vs-modal/VsModalView.vue';
 import VsPage from './vs-page/VsPage.vue';
 import VsPagination from './vs-pagination/VsPagination.vue';
 import VsProgress from './vs-progress/VsProgress.vue';
@@ -76,6 +79,9 @@ export const VlossomComponents = {
     VsLayout,
     VsLoading,
     VsMessage,
+    VsModal,
+    VsModalNode,
+    VsModalView,
     VsPage,
     VsPagination,
     VsProgress,

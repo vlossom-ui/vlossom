@@ -47,15 +47,28 @@ export function createModalPlugin(): ModalPlugin {
         close(container = 'body') {
             const modalStore = useModalContainerStore();
             modalStore.pop(container);
+
+            const overlayCallbackStore = useOverlayCallbackStore();
+            const lastOverlayId = overlayCallbackStore.getLastOverlayId();
+            overlayCallbackStore.remove(lastOverlayId);
         },
 
         closeWithId(container: string, id: string) {
             const modalStore = useModalContainerStore();
             modalStore.remove(container, id);
+
+            const overlayCallbackStore = useOverlayCallbackStore();
+            overlayCallbackStore.remove(id);
         },
 
         clear(container = 'body') {
             const modalStore = useModalContainerStore();
+            const overlayCallbackStore = useOverlayCallbackStore();
+
+            const modalIds = modalStore.get(container).map((modal) => modal.id);
+            modalIds.forEach((modalId) => {
+                overlayCallbackStore.remove(modalId);
+            });
             modalStore.delete(container);
         },
     };

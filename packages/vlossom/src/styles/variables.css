@@ -33,17 +33,6 @@
         --vs-radius-lg: 0.5rem;
         --vs-radius-xl: 0.6rem;
 
-        --vs-modal-height-xs: 20%;
-        --vs-modal-height-sm: 30%;
-        --vs-modal-height-md: 50%;
-        --vs-modal-height-lg: 66%;
-        --vs-modal-height-xl: 80%;
-        --vs-modal-width-xs: 20%;
-        --vs-modal-width-sm: 30%;
-        --vs-modal-width-md: 45%;
-        --vs-modal-width-lg: 70%;
-        --vs-modal-width-xl: 90%;
-
         --vs-bar-z-index: 1000;
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 99999;

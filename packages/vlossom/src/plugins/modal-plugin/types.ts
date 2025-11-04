@@ -1,7 +1,20 @@
 import type { Component } from 'vue';
+import type { ColorScheme, SizeProp, OverlayCallbacks } from '@/declaration';
+import type { VsModalNodeStyleSet } from '@/components/vs-modal/types';
 
 export interface ModalOptions {
     container?: string;
+    colorScheme?: ColorScheme;
+    styleSet?: string | VsModalNodeStyleSet;
+    dimClose?: boolean;
+    dimmed?: boolean;
+    escClose?: boolean;
+    focusLock?: boolean;
+    id?: string;
+    initialFocusRef?: Record<string, any>;
+    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
+    callbacks?: OverlayCallbacks;
+    scrollLock?: boolean;
 }
 
 export interface ModalInfo extends ModalOptions {
