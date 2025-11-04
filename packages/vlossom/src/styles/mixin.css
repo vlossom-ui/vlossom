@@ -8,7 +8,7 @@
         @apply pointer-events-none cursor-default;
     }
 
-    .vs-focusable:has(:focus-visible),
+    .vs-focusable:focus-within,
     .vs-focusable:focus-visible {
         outline: 1px solid var(--vs-line-color) !important;
         outline-offset: 2px !important;
