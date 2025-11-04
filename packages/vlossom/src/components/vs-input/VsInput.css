@@ -73,6 +73,11 @@
         }
     }
 
+    &:focus-within {
+        outline: 1px solid var(--vs-line-color) !important;
+        outline-offset: 2px !important;
+    }
+
     &.vs-small {
         height: var(--vs-input-height, var(--vs-default-comp-height-small));
         font-size: var(--vs-input-fontSize, var(--vs-font-size-sm));

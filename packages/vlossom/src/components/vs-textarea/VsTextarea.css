@@ -27,6 +27,11 @@
         color: var(--vs-textarea-fontColor, var(--vs-font-color));
         font-weight: var(--vs-textarea-fontWeight, var(--vs-font-weight));
         font-size: var(--vs-textarea-fontSize, var(--vs-font-size));
+
+        &:focus-within {
+            outline: 1px solid var(--vs-line-color) !important;
+            outline-offset: 2px !important;
+        }
     }
 
     &.vs-small {
