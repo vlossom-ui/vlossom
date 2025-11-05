@@ -13,7 +13,7 @@ export function useScrollLock(element: HTMLElement | null) {
         paddingRight: '0',
         paddingBottom: '0',
     });
-    const scrollbarWidth = '0.6rem';
+    const scrollbarWidth = '10px';
     const isNotTouchDevice = !(domUtil.isBrowser() && deviceUtil.isTouchDevice());
 
     function saveOriginalState() {
