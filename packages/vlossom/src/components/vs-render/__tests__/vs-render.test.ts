@@ -101,7 +101,7 @@ describe('VsRender', () => {
 
         it('함수형 컴포넌트가 주어지고, 해당 컴포넌트가 렌더링되어야 한다', () => {
             //given
-            function TestFunctionalComponent(props: any) {
+            function TestFunctionalComponent() {
                 return h('div', { class: 'functional-component' }, '함수형 컴포넌트');
             }
 
