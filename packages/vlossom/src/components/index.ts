@@ -68,6 +68,7 @@ export { default as VsPage } from './vs-page/VsPage.vue';
 export { default as VsPagination } from './vs-pagination/VsPagination.vue';
 export { default as VsProgress } from './vs-progress/VsProgress.vue';
 export { default as VsRadio } from './vs-radio/VsRadio.vue';
+export { default as VsRadioSet } from './vs-radio/VsRadioSet.vue';
 export { default as VsRender } from './vs-render/VsRender.vue';
 export { default as VsResponsive } from './vs-responsive/VsResponsive.vue';
 export { default as VsSkeleton } from './vs-skeleton/VsSkeleton.vue';

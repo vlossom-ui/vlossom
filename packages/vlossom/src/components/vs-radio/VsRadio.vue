@@ -55,9 +55,9 @@ import type { VsRadioStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
-const name = VsComponent.VsRadio;
+const componentName = VsComponent.VsRadio;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper },
     props: {
         ...getColorSchemeProps(),
@@ -88,13 +88,14 @@ export default defineComponent({
             styleSet,
             small,
             noDefaultRules,
+            name,
         } = toRefs(props);
 
         const radioRef: TemplateRef<HTMLInputElement> = useTemplateRef('radioRef');
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(componentName, styleSet);
 
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 
@@ -107,7 +108,7 @@ export default defineComponent({
                 return '';
             }
 
-            const radioElements = document.querySelectorAll(`input[name="${props.name}"]`);
+            const radioElements = document.querySelectorAll(`input[name="${name.value}"]`);
             const checkedRadioElement = Array.from(radioElements).find((el) => (el as HTMLInputElement).checked);
             return !checkedRadioElement ? 'required' : '';
         }

@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.wrapper"
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
