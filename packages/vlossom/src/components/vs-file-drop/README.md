@@ -166,11 +166,9 @@ interface VsFileDropStyleSet {
     borderRadius?: string;
     padding?: string;
     opacity?: number;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-    dragBackgroundColor?: string;
+    width?: string | number | Breakpoints;
     height?: string | number | Breakpoints;
+    dragBackgroundColor?: string;
     iconColor?: string;
 
     wrapper?: VsInputWrapperStyleSet;

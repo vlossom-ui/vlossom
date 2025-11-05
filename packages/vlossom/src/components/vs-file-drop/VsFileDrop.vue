@@ -139,6 +139,7 @@ export default defineComponent({
             state,
             max,
             min,
+            width,
             height,
         } = toRefs(props);
 
@@ -150,7 +151,7 @@ export default defineComponent({
         const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
             name,
             styleSet,
-            computed(() => ({ height: height.value })),
+            computed(() => ({ width: width.value, height: height.value })),
         );
         const { requiredCheck, maxCheck, minCheck, acceptCheck } = useVsFileDropRules(required, max, min, accept);
 
