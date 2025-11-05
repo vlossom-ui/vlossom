@@ -57,9 +57,9 @@
                                 @close="handleFileRemove(file)"
                             >
                                 <span class="vs-file-drop-file-name">{{ file.name }}</span>
-                                <span class="vs-file-drop-file-size">{{
-                                    `(${stringUtil.toFileSizeFormat(file.size)})`
-                                }}</span>
+                                <span class="vs-file-drop-file-size">
+                                    {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
+                                </span>
                             </vs-chip>
                         </div>
                     </div>
