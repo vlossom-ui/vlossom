@@ -59,18 +59,6 @@
         }
     }
 
-    .vs-file-drop-input {
-        @apply absolute top-0 left-0 h-full w-full cursor-pointer opacity-0;
-
-        .vs-file-drop-placeholder {
-            height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
-
-            .placeholder-text {
-                @apply w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
-            }
-        }
-    }
-
     .vs-file-drop-content {
         @apply flex min-h-0 w-full min-w-0 flex-col items-center justify-center;
         height: var(--vs-file-drop-height, auto);
