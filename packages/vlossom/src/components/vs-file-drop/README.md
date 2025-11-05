@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const files = ref<File[] | null>(null);
+const files = ref<File[]>([]);
 </script>
 ```
 
@@ -110,7 +110,7 @@ const files = ref<File[] | null>(null);
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const files = ref<File[] | null>(null);
+const files = ref<File[]>([]);
 
 function handleDrop(droppedFiles: File[]) {
     console.log('드롭된 파일:', droppedFiles);
@@ -122,7 +122,7 @@ function handleDrop(droppedFiles: File[]) {
 
 | Prop          | Type                              | Default                   | Required | Description                                        |
 | ------------- | --------------------------------- | ------------------------- | -------- | -------------------------------------------------- |
-| `modelValue`  | `File[] \| null`                  | `null`                    | -        | v-model 바인딩 값                                  |
+| `modelValue`  | `File[]`                          | `[]`                      | -        | v-model 바인딩 값                                  |
 | `accept`      | `string`                          | `''`                      | -        | 허용할 파일 타입 (예: `.png,.jpg,.pdf`, `image/*`) |
 | `max`         | `number \| string`                | `Number.MAX_SAFE_INTEGER` | -        | 업로드 가능한 최대 파일 개수                       |
 | `min`         | `number \| string`                | `Number.MIN_SAFE_INTEGER` | -        | 업로드해야 하는 최소 파일 개수                     |
@@ -148,17 +148,17 @@ function handleDrop(droppedFiles: File[]) {
 
 ## Events
 
-| Event               | Parameters       | Description                                  |
-| ------------------- | ---------------- | -------------------------------------------- |
-| `update:modelValue` | `File[] \| null` | v-model 값 변경 시 발생                      |
-| `update:changed`    | `File[]`         | 파일 선택 대화상자로 파일을 선택했을 때 발생 |
+| Event               | Parameters | Description                                  |
+| ------------------- | ---------- | -------------------------------------------- |
+| `update:modelValue` | `File[]`   | v-model 값 변경 시 발생                      |
+| `update:changed`    | `File[]`   | 파일 선택 대화상자로 파일을 선택했을 때 발생 |
 | `update:valid`      | `boolean`        | 검증 상태 업데이트                           |
 | `drop`              | `File[]`         | 파일을 드래그 앤 드롭했을 때 발생            |
 
 ## Types
 
 ```typescript
-export type FileDropValueType = File[] | null;
+export type FileDropValueType = File[];
 
 interface VsFileDropStyleSet {
     backgroundColor?: string;

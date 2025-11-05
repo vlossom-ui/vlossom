@@ -47,7 +47,7 @@ const meta: Meta<typeof VsFileDrop> = {
         // Model
         modelValue: {
             control: false,
-            description: 'v-model 값 (File[] | null)',
+            description: 'v-model 값 (File[])',
             table: { category: 'Model' },
         },
         changed: {
@@ -226,8 +226,8 @@ export const AcceptFileTypes: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const imageFiles = ref<File[] | null>(null);
-            const documentFiles = ref<File[] | null>(null);
+            const imageFiles = ref<File[]>([]);
+            const documentFiles = ref<File[]>([]);
             return { args, imageFiles, documentFiles };
         },
         template: `
@@ -261,10 +261,10 @@ export const States: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const normalFiles = ref<File[] | null>(null);
-            const disabledFiles = ref<File[] | null>(null);
-            const readonlyFiles = ref<File[] | null>(null);
-            const requiredFiles = ref<File[] | null>(null);
+            const normalFiles = ref<File[]>([]);
+            const disabledFiles = ref<File[]>([]);
+            const readonlyFiles = ref<File[]>([]);
+            const requiredFiles = ref<File[]>([]);
             return { args, normalFiles, disabledFiles, readonlyFiles, requiredFiles };
         },
         template: `
@@ -289,8 +289,8 @@ export const Size: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const defaultFiles = ref<File[] | null>(null);
-            const smallFiles = ref<File[] | null>(null);
+            const defaultFiles = ref<File[]>([]);
+            const smallFiles = ref<File[]>([]);
             return { args, defaultFiles, smallFiles };
         },
         template: `
@@ -313,11 +313,11 @@ export const ValidationStates: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const idleFiles = ref<File[] | null>(null);
-            const successFiles = ref<File[] | null>(null);
-            const errorFiles = ref<File[] | null>(null);
-            const infoFiles = ref<File[] | null>(null);
-            const warningFiles = ref<File[] | null>(null);
+            const idleFiles = ref<File[]>([]);
+            const successFiles = ref<File[]>([]);
+            const errorFiles = ref<File[]>([]);
+            const infoFiles = ref<File[]>([]);
+            const warningFiles = ref<File[]>([]);
             return { args, idleFiles, successFiles, errorFiles, infoFiles, warningFiles };
         },
         template: `
@@ -343,9 +343,9 @@ export const ValidationRules: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const oneFile = ref<File[] | null>(null);
-            const multipleFiles = ref<File[] | null>(null);
-            const requiredFiles = ref<File[] | null>(null);
+            const oneFile = ref<File[]>([]);
+            const multipleFiles = ref<File[]>([]);
+            const requiredFiles = ref<File[]>([]);
             return { args, oneFile, multipleFiles, requiredFiles };
         },
         template: `
@@ -387,10 +387,10 @@ export const Messages: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const successFiles = ref<File[] | null>(null);
-            const errorFiles = ref<File[] | null>(null);
-            const warningFiles = ref<File[] | null>(null);
-            const infoFiles = ref<File[] | null>(null);
+            const successFiles = ref<File[]>([]);
+            const errorFiles = ref<File[]>([]);
+            const warningFiles = ref<File[]>([]);
+            const infoFiles = ref<File[]>([]);
             return { args, successFiles, errorFiles, warningFiles, infoFiles };
         },
         template: `
@@ -448,7 +448,7 @@ export const CustomSlot: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const files = ref<File[] | null>(null);
+            const files = ref<File[]>([]);
             return { args, files };
         },
         template: `
@@ -488,8 +488,8 @@ export const Grid: Story = {
     render: (args: any) => ({
         components: { VsFileDrop, VsContainer },
         setup() {
-            const files1 = ref<File[] | null>(null);
-            const files2 = ref<File[] | null>(null);
+            const files1 = ref<File[]>([]);
+            const files2 = ref<File[]>([]);
             return { args, files1, files2 };
         },
         template: `
@@ -536,7 +536,7 @@ export const StyleSet: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const files = ref<File[] | null>(null);
+            const files = ref<File[]>([]);
             return { args, files };
         },
         template: '<vs-file-drop v-bind="args" v-model="files" />',
@@ -565,7 +565,7 @@ export const PreDefinedStyleSet: Story = {
     render: (args: any) => ({
         components: { VsFileDrop },
         setup() {
-            const files = ref<File[] | null>(null);
+            const files = ref<File[]>([]);
             return { args, files };
         },
         template: '<vs-file-drop v-bind="args" v-model="files" />',

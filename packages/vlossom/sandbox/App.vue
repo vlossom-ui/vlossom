@@ -2,6 +2,7 @@
     <div>
         <h1>Hello Vlossom</h1>
     </div>
+    <vs-file-drop />
 </template>
 
 <script lang="ts">

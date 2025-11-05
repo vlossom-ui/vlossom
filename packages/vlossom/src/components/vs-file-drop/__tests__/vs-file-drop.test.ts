@@ -33,13 +33,13 @@ describe('vs-file-drop', () => {
     });
 
     describe('v-model', () => {
-        it('입력된 파일이 없을 때 modelValue는 null이다', () => {
+        it('입력된 파일이 없을 때 modelValue는 빈 배열이다', () => {
             // given, when
-            const wrapper = mount(VsFileDrop, { props: { modelValue: null } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [] } });
 
             // then
             const modelValue = wrapper.props('modelValue');
-            expect(modelValue).toBeNull();
+            expect(modelValue).toEqual([]);
         });
 
         it('입력된 파일이 있을 때 파일 제거 버튼을 클릭하면 파일이 제거된다', async () => {
@@ -63,7 +63,7 @@ describe('vs-file-drop', () => {
     describe('props', () => {
         it('disabled 상태일 때 vs-disabled 클래스가 적용된다', async () => {
             // given
-            const wrapper = mount(VsFileDrop, { props: { modelValue: null, disabled: true } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], disabled: true } });
 
             // when
             const fileDrop = wrapper.find('.vs-file-drop');
@@ -74,7 +74,7 @@ describe('vs-file-drop', () => {
 
         it('readonly 상태일 때 vs-readonly 클래스가 적용된다', async () => {
             // given
-            const wrapper = mount(VsFileDrop, { props: { modelValue: null, readonly: true } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], readonly: true } });
 
             // when
             const fileDrop = wrapper.find('.vs-file-drop');
@@ -233,7 +233,7 @@ describe('vs-file-drop', () => {
             const wrapper = mount(VsFileDrop, {
                 props: {
                     required: true,
-                    modelValue: null,
+                    modelValue: [],
                 },
             });
 
@@ -245,7 +245,7 @@ describe('vs-file-drop', () => {
     describe('placeholder', () => {
         it('content 영역에 placeholder가 노출된다', () => {
             // given, when
-            const wrapper = mount(VsFileDrop, { props: { modelValue: null } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [] } });
 
             // when
             const content = wrapper.find('.vs-file-drop-content');
@@ -258,7 +258,7 @@ describe('vs-file-drop', () => {
         it('사용자가 Slot을 정의하면 placeholder가 노출되지 않는다', () => {
             // given
             const slotWrapper = mount(VsFileDrop, {
-                props: { modelValue: null },
+                props: { modelValue: [] },
                 slots: { default: '<div>Custom Slot</div>' },
             });
 
@@ -275,7 +275,7 @@ describe('vs-file-drop', () => {
         it('파일을 drag하여 영역에 hover하면 placeholder 메시지가 노출된다', async () => {
             // given
             const placeholder = 'Drop files here';
-            const wrapper = mount(VsFileDrop, { props: { modelValue: null, placeholder } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], placeholder } });
             const input = wrapper.find('input[type="file"]');
 
             // when
@@ -364,7 +364,7 @@ describe('vs-file-drop', () => {
             await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.vm.computedInputValue).toEqual(files);
+            expect(wrapper.vm.inputValue).toEqual(files);
         });
 
         it('입력된 파일이 존재해도, 다시 클릭하면 dialog로 파일을 추가할 수 있다', async () => {

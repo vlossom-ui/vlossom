@@ -8,7 +8,7 @@ export function useVsFileDropRules(
     accept: Ref<string>,
 ) {
     function requiredCheck(v: FileDropValueType): string {
-        if (required.value && (v === null || v.length === 0)) {
+        if (required.value && v.length === 0) {
             return 'required';
         }
 
@@ -17,7 +17,7 @@ export function useVsFileDropRules(
 
     function maxCheck(v: FileDropValueType): string {
         const limit = Number(max.value);
-        if (v && v.length > limit) {
+        if (v.length > limit) {
             return `You can only upload up to ${max.value} files`;
         }
 
@@ -26,7 +26,7 @@ export function useVsFileDropRules(
 
     function minCheck(v: FileDropValueType): string {
         const limit = Number(min.value);
-        if (v && v.length < limit) {
+        if (v.length < limit) {
             return `You must upload at least ${min.value} files`;
         }
 
@@ -34,7 +34,7 @@ export function useVsFileDropRules(
     }
 
     function acceptCheck(v: FileDropValueType): string {
-        if (accept.value && v && v.length > 0) {
+        if (accept.value && v.length > 0) {
             const acceptedTypes = accept.value.split(',').map((type) => type.trim());
             const files = v.map((file) => file.type);
             const invalidFiles = files.filter((file) => !acceptedTypes.includes(file));

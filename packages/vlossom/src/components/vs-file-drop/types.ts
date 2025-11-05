@@ -8,7 +8,7 @@ declare module 'vue' {
     }
 }
 
-export type FileDropValueType = File[] | null;
+export type FileDropValueType = File[];
 
 export interface VsFileDropStyleSet extends BoxStyleSet {
     width?: string | number | Breakpoints;

@@ -45,7 +45,7 @@
                 <slot :dragging="dragging">
                     <div v-if="hasValue" class="vs-file-drop-files">
                         <div
-                            v-for="(file, index) in computedInputValue"
+                            v-for="(file, index) in inputValue as File[]"
                             :key="`${file.name}-${index}`"
                             class="vs-file-drop-file"
                         >
@@ -117,7 +117,7 @@ export default defineComponent({
         // v-model
         modelValue: {
             type: [Array] as PropType<FileDropValueType>,
-            default: null,
+            default: () => [],
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop'],
@@ -141,7 +141,7 @@ export default defineComponent({
             height,
         } = toRefs(props);
 
-        const inputValue: Ref<FileDropValueType> = ref(modelValue.value);
+        const inputValue: Ref<FileDropValueType> = ref(modelValue.value ?? []);
         const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('inputRef');
         const dragging = ref(false);
 
@@ -168,7 +168,7 @@ export default defineComponent({
                     state,
                     callbacks: {
                         onMounted: () => {
-                            inputValue.value = modelValue.value;
+                            inputValue.value = modelValue.value ?? [];
                         },
                     },
                 },
@@ -183,10 +183,7 @@ export default defineComponent({
         }));
 
         const { stateClasses } = useStateClass(computedState);
-        const computedInputValue = computed<File[]>(() => {
-            return inputValue.value ?? [];
-        });
-        const hasValue = computed(() => computedInputValue.value.length > 0);
+        const hasValue = computed(() => inputValue.value.length > 0);
 
         function setDragging(value: boolean) {
             if (computedDisabled.value || computedReadonly.value) {
@@ -242,11 +239,11 @@ export default defineComponent({
         }
 
         function handleFileRemove(target: File): void {
-            if (!target || !inputValue.value) {
+            if (!target) {
                 return;
             }
 
-            const files = computedInputValue.value;
+            const files = inputValue.value;
             const filteredFiles = files.filter((file) => file !== target);
 
             inputValue.value = filteredFiles;
@@ -264,7 +261,7 @@ export default defineComponent({
             classObj,
             stateClasses,
             dragging,
-            computedInputValue,
+            inputValue,
             hasValue,
             stringUtil,
             attachFileIcon,
