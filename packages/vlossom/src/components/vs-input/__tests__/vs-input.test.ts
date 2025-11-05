@@ -24,7 +24,320 @@ describe('VsInput', () => {
                 '--vs-input-fontSize': '16px',
             });
         });
+    });
 
+    describe('v-model', () => {
+        it('input 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: '',
+                },
+            });
+
+            // when
+            const input = wrapper.find('input');
+            await input.setValue('new value');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['new value']);
+        });
+
+        it('modelValue의 타입이 string이 아니면 string 타입으로 가공해준다', () => {
+            // given, when
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 123,
+                },
+            });
+
+            // then
+            const input = wrapper.find('input');
+            expect(input.element.value).toBe('123');
+        });
+
+        it('modelValue에 null을 할당하면 빈 문자열로 가공해준다', () => {
+            // given, when
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: null,
+                },
+            });
+
+            // then
+            const input = wrapper.find('input');
+            expect(input.element.value).toBe('');
+        });
+    });
+
+    describe('props', () => {
+        it('disabled prop이 true일 때 vs-disabled 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    disabled: true,
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-disabled');
+        });
+
+        it('readonly prop이 true일 때 vs-readonly 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    readonly: true,
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-readonly');
+        });
+
+        it('disabled나 readonly가 아닐 때 vs-focusable 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    disabled: false,
+                    readonly: false,
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-focusable');
+        });
+
+        it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    small: true,
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-small');
+        });
+
+        it('placeholder를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    placeholder: 'Enter text here',
+                },
+            });
+
+            // then
+            const input = wrapper.find('input');
+            expect(input.attributes('placeholder')).toBe('Enter text here');
+        });
+
+        it('name을 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    name: 'username',
+                },
+            });
+
+            // then
+            const input = wrapper.find('input');
+            expect(input.attributes('name')).toBe('username');
+        });
+
+        it('required 상태를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                },
+            });
+
+            // then
+            const input = wrapper.find('input');
+            expect(input.attributes('aria-required')).toBe('true');
+        });
+
+        it('autocomplete을 설정할 수 있다', () => {
+            // given
+            const wrapperOff = mount(VsInput, {
+                props: {
+                    autocomplete: false,
+                },
+            });
+            const wrapperOn = mount(VsInput, {
+                props: {
+                    autocomplete: true,
+                },
+            });
+
+            // then
+            expect(wrapperOff.find('input').attributes('autocomplete')).toBe('off');
+            expect(wrapperOn.find('input').attributes('autocomplete')).toBe('on');
+        });
+    });
+
+    describe('state', () => {
+        it('state를 error로 설정하면 vs-state-error 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    state: 'error',
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-state-error');
+        });
+
+        it('state를 warning으로 설정하면 vs-state-warning 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    state: 'warning',
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-state-warning');
+        });
+
+        it('state를 success로 설정하면 vs-state-success 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    state: 'success',
+                },
+            });
+
+            // then
+            const vsInput = wrapper.find('.vs-input');
+            expect(vsInput.classes()).toContain('vs-state-success');
+        });
+    });
+
+    describe('validation (rules)', () => {
+        it('required 체크가 가능하다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                    modelValue: '',
+                },
+            });
+
+            // when
+            const isValid = wrapper.vm.validate();
+
+            // then
+            expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('required');
+            expect(wrapper.vm.shake).toBe(true);
+        });
+
+        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                    min: 2,
+                    max: 10,
+                    modelValue: 'valid',
+                },
+            });
+
+            // when
+            const isValid = wrapper.vm.validate();
+
+            // then
+            expect(isValid).toBe(true);
+            expect(wrapper.vm.shake).toBe(false);
+        });
+
+        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', () => {
+            // given
+            const customRule = (value: string | number | null) => {
+                if (value === 'test') {
+                    return 'custom error message';
+                }
+                return '';
+            };
+
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test',
+                    rules: [customRule],
+                },
+            });
+
+            // when
+            const isValid = wrapper.vm.validate();
+
+            // then
+            expect(isValid).toBe(false);
+            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
+            expect(wrapper.vm.computedMessages[0].state).toBe('error');
+            expect(wrapper.vm.computedMessages[0].text).toBe('custom error message');
+            expect(wrapper.vm.shake).toBe(true);
+        });
+    });
+
+    describe('validate() 메서드', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                    modelValue: 'test',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+        });
+
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    required: true,
+                    modelValue: '',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
+        });
+    });
+
+    describe('clear() 메서드', () => {
+        it('clear 메서드 호출 시 input 값이 초기화되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test value',
+                },
+            });
+
+            // when
+            wrapper.vm.clear();
+
+            // then
+            expect(wrapper.vm.inputValue).toBe('');
+        });
+    });
+
+    describe('prepend/append styleSet', () => {
         it('prepend와 append styleSet이 주어지면 해당 CSS 변수가 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsInput, {
@@ -57,24 +370,7 @@ describe('VsInput', () => {
         });
     });
 
-    describe('v-model', () => {
-        it('input 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: '',
-                },
-            });
-
-            // when
-            const input = wrapper.find('input');
-            await input.setValue('new value');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['new value']);
-        });
-
+    describe('type별 동작', () => {
         it('type이 number일 때 숫자 문자열을 숫자로 변환해야 한다', async () => {
             // given
             const wrapper = mount(VsInput, {
@@ -109,206 +405,6 @@ describe('VsInput', () => {
             // then
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
-        });
-
-        it('modelValue의 타입이 string이 아니면 string 타입으로 가공해준다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: 123,
-                },
-            });
-
-            // then
-            const input = wrapper.find('input');
-            expect(input.element.value).toBe('123');
-        });
-
-        it('modelValue에 null을 할당하면 빈 문자열로 가공해준다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: null,
-                },
-            });
-
-            // then
-            const input = wrapper.find('input');
-            expect(input.element.value).toBe('');
-        });
-    });
-
-    describe('clear', () => {
-        it('noClear prop이 true이면 clear 버튼이 렌더링되지 않아야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    noClear: true,
-                },
-            });
-
-            // then
-            const clearButton = wrapper.find('.vs-clear-button');
-            expect(clearButton.exists()).toBe(false);
-        });
-
-        it('readonly 상태일 때 clear 버튼이 렌더링되지 않아야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    readonly: true,
-                    modelValue: 'test',
-                },
-            });
-
-            // then
-            const clearButton = wrapper.find('.vs-clear-button');
-            expect(clearButton.exists()).toBe(false);
-        });
-
-        it('disabled 상태일 때 clear 버튼이 렌더링되지 않아야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    disabled: true,
-                    modelValue: 'test',
-                },
-            });
-
-            // then
-            const clearButton = wrapper.find('.vs-clear-button');
-            expect(clearButton.exists()).toBe(false);
-        });
-
-        it('clear 버튼 클릭 시 text type은 빈 문자열로 초기화되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    type: 'text',
-                    modelValue: 'test value',
-                },
-            });
-
-            // when
-            const clearButton = wrapper.find('.vs-clear-button');
-            await clearButton.trigger('click');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
-        });
-
-        it('clear 버튼 클릭 시 number type은 null로 초기화되어야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    type: 'number',
-                    modelValue: 123,
-                },
-            });
-
-            // when
-            const clearButton = wrapper.find('.vs-clear-button');
-            await clearButton.trigger('click');
-
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
-        });
-    });
-
-    describe('methods', () => {
-        it('focus() 메서드 호출 시 input element에 focus가 적용되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                attachTo: document.body,
-            });
-            const input = wrapper.find('input').element;
-
-            // when
-            wrapper.vm.focus();
-
-            // then
-            expect(document.activeElement).toBe(input);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
-        it('blur() 메서드 호출 시 input element에서 focus가 해제되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                attachTo: document.body,
-            });
-            const input = wrapper.find('input').element;
-            wrapper.vm.focus();
-
-            // when
-            wrapper.vm.blur();
-
-            // then
-            expect(document.activeElement).not.toBe(input);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
-        it('select() 메서드 호출 시 input의 텍스트가 선택되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: 'test value',
-                },
-                attachTo: document.body,
-            });
-            const input = wrapper.find('input').element;
-
-            // when
-            wrapper.vm.select();
-
-            // then
-            expect(input.selectionStart).toBe(0);
-            expect(input.selectionEnd).toBe(input.value.length);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
-        it('clear() 메서드 호출 시 input 값이 초기화되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    modelValue: 'test value',
-                },
-            });
-
-            // when
-            wrapper.vm.clear();
-
-            // then
-            expect(wrapper.vm.inputValue).toBe('');
-        });
-    });
-
-    describe('rules', () => {
-        it('required 체크가 가능하다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    required: true,
-                    modelValue: '',
-                },
-            });
-
-            // when
-            const isValid = wrapper.vm.validate();
-
-            // then
-            expect(isValid).toBe(false);
-            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
-            expect(wrapper.vm.computedMessages[0].state).toBe('error');
-            expect(wrapper.vm.computedMessages[0].text).toBe('required');
-            expect(wrapper.vm.shake).toBe(true);
         });
 
         it('input type이 number가 아닐 때 max 길이 체크가 가능하다', () => {
@@ -394,51 +490,142 @@ describe('VsInput', () => {
             expect(wrapper.vm.computedMessages[0].text).toBe('min value: 10');
             expect(wrapper.vm.shake).toBe(true);
         });
+    });
 
-        it('validation 성공 시 메시지가 없고 에러 상태가 아니어야 한다', () => {
-            // given
+    describe('clear 버튼', () => {
+        it('noClear prop이 true이면 clear 버튼이 렌더링되지 않아야 한다', () => {
+            // given, when
             const wrapper = mount(VsInput, {
                 props: {
-                    required: true,
-                    min: 2,
-                    max: 10,
-                    modelValue: 'valid',
+                    noClear: true,
                 },
             });
 
-            // when
-            const isValid = wrapper.vm.validate();
-
             // then
-            expect(isValid).toBe(true);
-            expect(wrapper.vm.shake).toBe(false);
+            const clearButton = wrapper.find('.vs-clear-button');
+            expect(clearButton.exists()).toBe(false);
         });
 
-        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', () => {
-            // given
-            const customRule = (value: string | number | null) => {
-                if (value === 'test') {
-                    return 'custom error message';
-                }
-                return '';
-            };
-
+        it('readonly 상태일 때 clear 버튼이 렌더링되지 않아야 한다', () => {
+            // given, when
             const wrapper = mount(VsInput, {
                 props: {
+                    readonly: true,
                     modelValue: 'test',
-                    rules: [customRule],
+                },
+            });
+
+            // then
+            const clearButton = wrapper.find('.vs-clear-button');
+            expect(clearButton.exists()).toBe(false);
+        });
+
+        it('disabled 상태일 때 clear 버튼이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsInput, {
+                props: {
+                    disabled: true,
+                    modelValue: 'test',
+                },
+            });
+
+            // then
+            const clearButton = wrapper.find('.vs-clear-button');
+            expect(clearButton.exists()).toBe(false);
+        });
+
+        it('clear 버튼 클릭 시 text type은 빈 문자열로 초기화되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'text',
+                    modelValue: 'test value',
                 },
             });
 
             // when
-            const isValid = wrapper.vm.validate();
+            const clearButton = wrapper.find('.vs-clear-button');
+            await clearButton.trigger('click');
 
             // then
-            expect(isValid).toBe(false);
-            expect(wrapper.vm.computedMessages.length).toBeGreaterThan(0);
-            expect(wrapper.vm.computedMessages[0].state).toBe('error');
-            expect(wrapper.vm.computedMessages[0].text).toBe('custom error message');
-            expect(wrapper.vm.shake).toBe(true);
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
+        });
+
+        it('clear 버튼 클릭 시 number type은 null로 초기화되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'number',
+                    modelValue: 123,
+                },
+            });
+
+            // when
+            const clearButton = wrapper.find('.vs-clear-button');
+            await clearButton.trigger('click');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
+        });
+    });
+
+    describe('focus/blur/select 메서드', () => {
+        it('focus() 메서드 호출 시 input element에 focus가 적용되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+
+            // when
+            wrapper.vm.focus();
+
+            // then
+            expect(document.activeElement).toBe(input);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('blur() 메서드 호출 시 input element에서 focus가 해제되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+            wrapper.vm.focus();
+
+            // when
+            wrapper.vm.blur();
+
+            // then
+            expect(document.activeElement).not.toBe(input);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('select() 메서드 호출 시 input의 텍스트가 선택되어야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    modelValue: 'test value',
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element;
+
+            // when
+            wrapper.vm.select();
+
+            // then
+            expect(input.selectionStart).toBe(0);
+            expect(input.selectionEnd).toBe(input.value.length);
+
+            // cleanup
+            wrapper.unmount();
         });
     });
 
