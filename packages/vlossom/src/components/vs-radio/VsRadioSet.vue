@@ -36,6 +36,7 @@
                 :name="resolvedName"
                 no-label
                 no-messages
+                :before-change
                 :color-scheme
                 :required
                 :small
@@ -56,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useInput, useInputOption, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -77,6 +78,10 @@ export default defineComponent({
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         ...getInputOptionProps(),
+        beforeChange: {
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
+            default: null,
+        },
         vertical: { type: Boolean, default: false },
         // v-model
         modelValue: { type: null, default: null },

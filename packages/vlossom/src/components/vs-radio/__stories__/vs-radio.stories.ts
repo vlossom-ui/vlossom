@@ -106,6 +106,15 @@ export const Readonly: Story = {
     },
 };
 
+export const BeforeChange: Story = {
+    args: {
+        beforeChange: async (from: any, to: any, optionValue: any) => {
+            alert(`beforeChange called: from=${from}, to=${to}, value=${optionValue}`);
+            return true;
+        },
+    },
+};
+
 export const Required: Story = {
     render: (args: any) => ({
         components: { VsRadio },

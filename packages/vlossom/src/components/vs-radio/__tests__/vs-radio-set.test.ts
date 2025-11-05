@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
 import { nextTick } from 'vue';
 
@@ -127,6 +127,86 @@ describe('VsRadioSet', () => {
 
             // then
             expect(wrapper.vm.validate()).toBe(true);
+        });
+    });
+
+    describe('before change', () => {
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        it('beforeChange 함수에 from, to, optionValue 인자가 전달된다', async () => {
+            // given
+            const beforeChange = vi.fn().mockResolvedValue(true);
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                    beforeChange,
+                    'onUpdate:modelValue': (value: any) => wrapper.setProps({ modelValue: value }),
+                } as any,
+            });
+
+            const targetRadio = wrapper.findAllComponents({ name: 'VsRadio' })[1];
+            const input = targetRadio.find('input');
+            (input.element as HTMLInputElement).checked = true;
+
+            // when
+            await input.trigger('change');
+
+            // then
+            expect(beforeChange).toHaveBeenCalledWith('A', 'B', 'B');
+        });
+
+        it('beforeChange가 Promise<true>를 반환하면 값이 업데이트 된다', async () => {
+            // given
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                    beforeChange: () => Promise.resolve(true),
+                    'onUpdate:modelValue': (value: any) => wrapper.setProps({ modelValue: value }),
+                } as any,
+            });
+
+            const targetRadio = wrapper.findAllComponents({ name: 'VsRadio' })[1];
+            const input = targetRadio.find('input');
+            (input.element as HTMLInputElement).checked = true;
+
+            // when
+            await input.trigger('change');
+            await nextTick();
+
+            // then
+            const updateModelValueEvent = wrapper.emitted('update:modelValue');
+            expect(updateModelValueEvent).toHaveLength(1);
+            expect(updateModelValueEvent?.[0][0]).toBe('B');
+            expect(wrapper.props('modelValue')).toBe('B');
+        });
+
+        it('beforeChange가 Promise<false>를 반환하면 값이 업데이트 되지 않는다', async () => {
+            // given
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                    beforeChange: () => Promise.resolve(false),
+                    'onUpdate:modelValue': (value: any) => wrapper.setProps({ modelValue: value }),
+                } as any,
+            });
+
+            const targetRadio = wrapper.findAllComponents({ name: 'VsRadio' })[1];
+            const input = targetRadio.find('input');
+            (input.element as HTMLInputElement).checked = true;
+
+            // when
+            await input.trigger('change');
+            await nextTick();
+
+            // then
+            const updateModelValueEvent = wrapper.emitted('update:modelValue');
+            expect(updateModelValueEvent).toBeUndefined();
+            expect(wrapper.props('modelValue')).toBe('A');
         });
     });
 

@@ -70,14 +70,21 @@ export const WithValidation: Story = {
                 modelValue: null,
             };
 
+            function clear() {
+                const radioRefs = (radioSetRef.value as any).radioRefs;
+                radioRefs.forEach((radio: any) => {
+                    radio.clear();
+                });
+            }
             function validate() {
                 (radioSetRef.value as any).validate();
             }
-            return { args, validate };
+            return { args, clear, validate };
         },
         template: `
             <vs-radio-set v-bind="args" ref="radioSetRef" />
-            <vs-button @click="validate">Validate</vs-button>
+            <vs-button primary @click="validate">Validate</vs-button>
+            <vs-button outline @click="clear">Clear</vs-button>
         `,
     }),
 };

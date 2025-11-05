@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -64,6 +64,10 @@ export default defineComponent({
         ...getStyleSetProps<VsRadioStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
+        beforeChange: {
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
+            default: null,
+        },
         checked: { type: Boolean, default: false },
         radioLabel: { type: String, default: '' },
         radioValue: { type: null, required: true },
@@ -74,6 +78,7 @@ export default defineComponent({
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
+            beforeChange,
             checked,
             colorScheme,
             id,
@@ -158,7 +163,18 @@ export default defineComponent({
         }));
 
         async function onToggle(event: Event) {
-            // radio change event value is always true
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            const beforeChangeFn = beforeChange.value;
+
+            if (beforeChangeFn) {
+                const result = await beforeChangeFn(inputValue.value, radioValue.value, radioValue.value);
+                if (!result) {
+                    return;
+                }
+            }
             inputValue.value = radioValue.value;
             emit('change', event);
             emit('toggle', (event.target as HTMLInputElement).checked);
