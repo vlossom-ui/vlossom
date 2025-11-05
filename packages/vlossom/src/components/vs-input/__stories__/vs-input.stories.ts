@@ -26,108 +26,158 @@ const meta: Meta<typeof VsInput> = {
     }),
     tags: ['autodocs'],
     argTypes: {
-        colorScheme,
-        type: {
-            control: 'select',
-            options: ['text', 'email', 'password', 'number', 'tel', 'url', 'search'],
-            description: 'Input 타입',
-        },
-        placeholder: {
-            control: 'text',
-            description: '플레이스홀더 텍스트',
-        },
-        disabled: {
-            control: 'boolean',
-            description: '비활성화 상태',
-        },
-        readonly: {
-            control: 'boolean',
-            description: '읽기 전용 상태',
-        },
-        hidden: {
-            control: 'boolean',
-            description: '숨김 상태',
-        },
-        required: {
-            control: 'boolean',
-            description: '필수 입력 여부',
-        },
-        state: {
-            control: 'select',
-            options: ['error', 'idle', 'success', 'info', 'warning'],
-            description: 'Input 상태',
-        },
-        label: {
-            control: 'text',
-            description: '라벨 텍스트',
-        },
-        noLabel: {
-            control: 'boolean',
-            description: '라벨 숨김',
-        },
-        messages: {
-            control: 'object',
-            description: '메시지 배열',
-        },
-        noMessages: {
-            control: 'boolean',
-            description: '메시지 영역 숨김',
-        },
-        rules: {
-            control: 'object',
-            description: '검증 규칙 배열',
-        },
-        noDefaultRules: {
-            control: 'boolean',
-            description: '기본 검증 규칙 비활성화',
-        },
-        max: {
-            control: 'number',
-            description: '최대값 (number 타입에서 사용)',
-        },
-        min: {
-            control: 'number',
-            description: '최소값 (number 타입에서 사용)',
-        },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-        },
-        styleSet: {
-            control: 'object',
-            description: '커스텀 스타일 객체',
-        },
-        noClear: {
-            control: 'boolean',
-            description: 'clear 버튼 숨김',
-        },
-        autocomplete: {
-            control: 'boolean',
-            description: '자동완성 활성화',
-        },
-        id: {
-            control: 'text',
-            description: 'Input ID',
-        },
-        name: {
-            control: 'text',
-            description: 'Input name 속성',
-        },
-        width: {
-            control: 'text',
-            description: 'Input 너비 (string | number | Breakpoints)',
-        },
-        grid: {
-            control: 'text',
-            description: 'Grid 설정 (string | number | Breakpoints)',
-        },
+        // Model
         modelValue: {
             control: 'text',
-            description: 'v-model 값',
+            description: 'v-model 값 (string | number | null)',
+            table: { category: 'Model' },
         },
         modelModifiers: {
             control: 'object',
             description: 'v-model modifiers (capitalize, upper, lower)',
+            table: { category: 'Model' },
+        },
+        changed: {
+            control: 'boolean',
+            description: '값이 변경되었는지 여부 (v-model:changed)',
+            table: { category: 'Model' },
+        },
+        valid: {
+            control: 'boolean',
+            description: '검증 통과 여부 (v-model:valid)',
+            table: { category: 'Model' },
+        },
+
+        // Input 속성
+        type: {
+            control: 'select',
+            options: ['text', 'email', 'password', 'number', 'tel', 'url', 'search'],
+            description: 'Input 타입',
+            table: { category: 'Input Props', defaultValue: { summary: 'text' } },
+        },
+        placeholder: {
+            control: 'text',
+            description: '플레이스홀더 텍스트',
+            table: { category: 'Input Props' },
+        },
+        autocomplete: {
+            control: 'boolean',
+            description: '자동완성 활성화',
+            table: { category: 'Input Props' },
+        },
+        noClear: {
+            control: 'boolean',
+            description: 'clear 버튼 숨김',
+            table: { category: 'Input Props' },
+        },
+
+        // 공통 Props
+        colorScheme,
+        label: {
+            control: 'text',
+            description: '라벨 텍스트',
+            table: { category: 'Common Props' },
+        },
+        noLabel: {
+            control: 'boolean',
+            description: '라벨 숨김',
+            table: { category: 'Common Props' },
+        },
+        disabled: {
+            control: 'boolean',
+            description: '비활성화 상태',
+            table: { category: 'Common Props' },
+        },
+        readonly: {
+            control: 'boolean',
+            description: '읽기 전용 상태',
+            table: { category: 'Common Props' },
+        },
+        hidden: {
+            control: 'boolean',
+            description: '숨김 상태',
+            table: { category: 'Common Props' },
+        },
+        required: {
+            control: 'boolean',
+            description: '필수 입력 여부',
+            table: { category: 'Common Props' },
+        },
+        small: {
+            control: 'boolean',
+            description: '작은 크기',
+            table: { category: 'Common Props' },
+        },
+        state: {
+            control: 'select',
+            options: ['idle', 'success', 'error', 'info', 'warning'],
+            description: 'Input 상태',
+            table: { category: 'Common Props', defaultValue: { summary: 'idle' } },
+        },
+
+        // Validation
+        min: {
+            control: 'number',
+            description: '최소값/길이 (number 타입: 값, 그 외: 길이)',
+            table: { category: 'Validation' },
+        },
+        max: {
+            control: 'number',
+            description: '최대값/길이 (number 타입: 값, 그 외: 길이)',
+            table: { category: 'Validation' },
+        },
+        rules: {
+            control: 'object',
+            description: '검증 규칙 배열',
+            table: { category: 'Validation' },
+        },
+        noDefaultRules: {
+            control: 'boolean',
+            description: '기본 검증 규칙 비활성화',
+            table: { category: 'Validation' },
+        },
+
+        // Message
+        messages: {
+            control: 'object',
+            description: '메시지 배열',
+            table: { category: 'Message' },
+        },
+        noMessages: {
+            control: 'boolean',
+            description: '메시지 영역 숨김',
+            table: { category: 'Message' },
+        },
+
+        // Layout
+        width: {
+            control: 'text',
+            description: 'Input 너비 (string | number | Breakpoints)',
+            table: { category: 'Layout' },
+        },
+        grid: {
+            control: 'text',
+            description: 'Grid 설정 (string | number | Breakpoints)',
+            table: { category: 'Layout' },
+        },
+
+        // Style
+        styleSet: {
+            control: 'object',
+            description: '커스텀 스타일 객체',
+            table: { category: 'Style' },
+        },
+
+        // Native HTML
+        id: {
+            control: 'text',
+            description: 'Input ID',
+            table: { category: 'Native Props' },
+        },
+        name: {
+            control: 'text',
+            description: 'Input name 속성',
+            table: { category: 'Native Props' },
         },
     },
 };
@@ -162,27 +212,11 @@ export const WithLabel: Story = {
     },
 };
 
-export const Required: Story = {
+export const InputTypes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '필수 입력 필드입니다. 라벨에 별표(*)가 표시됩니다.',
-            },
-        },
-    },
-    args: {
-        label: '이메일',
-        placeholder: 'email@example.com',
-        type: 'email',
-        required: true,
-    },
-};
-
-export const Types: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '다양한 input 타입을 지원합니다. text, email, password, number, tel, url, search 등을 사용할 수 있습니다.',
+                story: '다양한 input 타입을 지원합니다.',
             },
         },
     },
@@ -193,78 +227,80 @@ export const Types: Story = {
             const emailValue = ref('');
             const passwordValue = ref('');
             const numberValue = ref<number | null>(null);
-            return { args, textValue, emailValue, passwordValue, numberValue };
+            const telValue = ref('');
+            const urlValue = ref('');
+            return { args, textValue, emailValue, passwordValue, numberValue, telValue, urlValue };
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-input v-bind="args" v-model="textValue" type="text" label="Text" placeholder="텍스트 입력" />
-                <vs-input v-bind="args" v-model="emailValue" type="email" label="Email" placeholder="email@example.com" />
-                <vs-input v-bind="args" v-model="passwordValue" type="password" label="Password" placeholder="비밀번호" />
-                <vs-input v-bind="args" v-model="numberValue" type="number" label="Number" placeholder="숫자 입력" />
+                <vs-input v-model="textValue" type="text" label="Text" placeholder="텍스트 입력" />
+                <vs-input v-model="emailValue" type="email" label="Email" placeholder="email@example.com" />
+                <vs-input v-model="passwordValue" type="password" label="Password" placeholder="비밀번호" />
+                <vs-input v-model="numberValue" type="number" label="Number" placeholder="숫자 입력" />
+                <vs-input v-model="telValue" type="tel" label="Tel" placeholder="010-0000-0000" />
+                <vs-input v-model="urlValue" type="url" label="URL" placeholder="https://example.com" />
             </div>
         `,
     }),
 };
 
-export const Disabled: Story = {
+export const States: Story = {
     parameters: {
         docs: {
             description: {
-                story: '비활성화된 입력 필드입니다. 사용자가 입력할 수 없습니다.',
-            },
-        },
-    },
-    args: {
-        label: '비활성화',
-        placeholder: '입력할 수 없습니다',
-        disabled: true,
-    },
-};
-
-export const Readonly: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '읽기 전용 입력 필드입니다. 값을 볼 수는 있지만 수정할 수 없습니다.',
+                story: 'disabled, readonly 등의 상태를 표현할 수 있습니다.',
             },
         },
     },
     render: (args: any) => ({
         components: { VsInput },
         setup() {
-            const value = ref('읽기 전용 값');
-            return { args, value };
+            const normalValue = ref('normal');
+            const disabledValue = ref('disabled');
+            const readonlyValue = ref('readonly');
+            const requiredValue = ref('');
+            return { args, normalValue, disabledValue, readonlyValue, requiredValue };
         },
-        template: '<vs-input v-bind="args" v-model="value" />',
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-model="normalValue" label="Normal" />
+                <vs-input v-model="disabledValue" label="Disabled" disabled />
+                <vs-input v-model="readonlyValue" label="Readonly" readonly />
+                <vs-input v-model="requiredValue" label="Required" placeholder="필수 입력" required />
+            </div>
+        `,
     }),
-    args: {
-        label: '읽기 전용',
-        readonly: true,
-    },
 };
 
-export const Small: Story = {
+export const Size: Story = {
     parameters: {
         docs: {
             description: {
-                story: '작은 크기의 입력 필드입니다.',
+                story: 'small prop으로 작은 크기의 입력 필드를 만들 수 있습니다.',
             },
         },
     },
-    args: {
-        label: '작은 크기',
-        placeholder: '작은 입력 필드',
-        small: true,
-    },
+    render: (args: any) => ({
+        components: { VsInput },
+        setup() {
+            const defaultValue = ref('');
+            const smallValue = ref('');
+            return { args, defaultValue, smallValue };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-model="defaultValue" label="Default Size" placeholder="기본 크기" />
+                <vs-input v-model="smallValue" label="Small Size" placeholder="작은 크기" small />
+            </div>
+        `,
+    }),
 };
 
-export const State: Story = {
+export const ValidationStates: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'state prop을 사용하여 입력 필드의 상태를 표시할 수 있습니다. ' +
-                    'idle, success, error, info, warning 상태를 지원합니다.',
+                story: 'state prop을 사용하여 검증 상태를 시각적으로 표현할 수 있습니다.',
             },
         },
     },
@@ -280,43 +316,71 @@ export const State: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-input v-bind="args" v-model="idleValue" state="idle" label="Idle" placeholder="기본 상태" />
-                <vs-input v-bind="args" v-model="successValue" state="success" label="Success" placeholder="성공 상태" />
-                <vs-input v-bind="args" v-model="errorValue" state="error" label="Error" placeholder="에러 상태" />
-                <vs-input v-bind="args" v-model="infoValue" state="info" label="Info" placeholder="정보 상태" />
-                <vs-input v-bind="args" v-model="warningValue" state="warning" label="Warning" placeholder="경고 상태" />
+                <vs-input v-model="idleValue" state="idle" label="Idle" placeholder="기본 상태" />
+                <vs-input v-model="successValue" state="success" label="Success" />
+                <vs-input v-model="errorValue" state="error" label="Error" />
+                <vs-input v-model="infoValue" state="info" label="Info" />
+                <vs-input v-model="warningValue" state="warning" label="Warning" />
             </div>
         `,
     }),
 };
 
-export const NoClear: Story = {
+export const ValidationRules: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'clear 버튼이 없는 입력 필드입니다.',
+                story: 'min/max를 사용한 검증입니다. number 타입에서는 값의 범위를, 그 외 타입에서는 글자 수를 검증합니다.',
             },
         },
     },
     render: (args: any) => ({
         components: { VsInput },
         setup() {
-            const value = ref('clear 버튼 없음');
-            return { args, value };
+            const textValue = ref('');
+            const numberValue = ref<number | null>(null);
+            const requiredValue = ref('');
+            return { args, textValue, numberValue, requiredValue };
         },
-        template: '<vs-input v-bind="args" v-model="value" />',
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-model="textValue" type="text" label="Text (3-10자)" placeholder="3-10자 입력" :min="3" :max="10" />
+                <vs-input v-model="numberValue" type="number" label="Number (0-100)" placeholder="0-100 입력" :min="0" :max="100" />
+                <vs-input v-model="requiredValue" label="Required" placeholder="필수 입력" required />
+            </div>
+        `,
     }),
-    args: {
-        label: 'Clear 버튼 없음',
-        noClear: true,
-    },
 };
 
-export const WithSlots: Story = {
+export const NoClearButton: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'prepend와 append 슬롯을 사용하여 입력 필드 앞뒤에 아이콘이나 텍스트를 추가할 수 있습니다.',
+                story: 'noClear prop을 사용하여 clear 버튼을 숨길 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsInput },
+        setup() {
+            const withClear = ref('Clear 버튼 있음');
+            const noClear = ref('Clear 버튼 없음');
+            return { args, withClear, noClear };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-model="withClear" label="With Clear Button" />
+                <vs-input v-model="noClear" label="No Clear Button" no-clear />
+            </div>
+        `,
+    }),
+};
+
+export const Slots: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'prepend와 append 슬롯을 사용하여 입력 필드 앞뒤에 요소를 추가할 수 있습니다.',
             },
         },
     },
@@ -325,18 +389,25 @@ export const WithSlots: Story = {
         setup() {
             const searchValue = ref('');
             const priceValue = ref<number | null>(null);
-            return { args, searchValue, priceValue };
+            const urlValue = ref('');
+            return { args, searchValue, priceValue, urlValue };
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-input v-bind="args" v-model="searchValue" label="검색" placeholder="검색어 입력">
-                    <template #prepend>
-                        🔍
-                    </template>
+                <vs-input v-model="searchValue" label="Prepend Slot" placeholder="검색어 입력">
+                    <template #prepend>🔍</template>
                 </vs-input>
-                <vs-input v-bind="args" v-model="priceValue" type="number" label="가격" placeholder="0">
+                
+                <vs-input v-model="priceValue" type="number" label="Append Slot" placeholder="0">
                     <template #append>
                         <span style="padding: 0 0.5rem;">원</span>
+                    </template>
+                </vs-input>
+                
+                <vs-input v-model="urlValue" label="Both Slots" placeholder="URL 입력">
+                    <template #prepend>https://</template>
+                    <template #append>
+                        <span style="padding: 0 0.5rem;">.com</span>
                     </template>
                 </vs-input>
             </div>
@@ -348,9 +419,7 @@ export const StringModifiers: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'v-model에 modifiers를 사용하여 입력값을 자동으로 변환할 수 있습니다. ' +
-                    'capitalize(첫글자 대문자), upper(전체 대문자), lower(전체 소문자)를 지원합니다.',
+                story: 'v-model에 modifiers를 사용하여 입력값을 자동으로 변환할 수 있습니다.',
             },
         },
     },
@@ -364,13 +433,13 @@ export const StringModifiers: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-input v-bind="args" v-model.capitalize="capitalizeValue" label="Capitalize" placeholder="첫 글자만 대문자로" />
-                <vs-input v-bind="args" v-model.upper="upperValue" label="Upper" placeholder="전체 대문자로" />
-                <vs-input v-bind="args" v-model.lower="lowerValue" label="Lower" placeholder="전체 소문자로" />
+                <vs-input v-model.capitalize="capitalizeValue" label="Capitalize" placeholder="첫 글자만 대문자로" />
+                <vs-input v-model.upper="upperValue" label="Upper" placeholder="전체 대문자로" />
+                <vs-input v-model.lower="lowerValue" label="Lower" placeholder="전체 소문자로" />
                 <div style="padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
-                    <div>Capitalize: {{ capitalizeValue }}</div>
-                    <div>Upper: {{ upperValue }}</div>
-                    <div>Lower: {{ lowerValue }}</div>
+                    <div><strong>Capitalize:</strong> {{ capitalizeValue }}</div>
+                    <div><strong>Upper:</strong> {{ upperValue }}</div>
+                    <div><strong>Lower:</strong> {{ lowerValue }}</div>
                 </div>
             </div>
         `,
@@ -381,9 +450,7 @@ export const ColorScheme: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '다양한 색상 테마가 적용된 입력 필드들입니다. ' +
-                    'colorScheme prop을 사용하여 미리 정의된 색상 조합을 적용할 수 있습니다.',
+                story: 'colorScheme prop을 사용하여 다양한 색상 테마를 적용할 수 있습니다.',
             },
         },
         chromatic: chromaticParameters.theme,
@@ -396,7 +463,7 @@ export const ColorScheme: Story = {
         template: `
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 ${getColorSchemeTemplate(`
-                    <vs-input v-bind="args" color-scheme="{{ color }}" label="{{ color }}" placeholder="{{ color }} 입력" />
+                    <vs-input color-scheme="{{ color }}" label="{{ color }}" placeholder="{{ color }} 입력" />
                 `)}
             </div>
         `,
@@ -407,7 +474,7 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: '인라인 스타일 객체를 사용한 커스텀 입력 필드입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
+                story: 'styleSet prop을 사용하여 커스텀 스타일을 적용할 수 있습니다.',
             },
         },
     },
@@ -432,29 +499,4 @@ export const StyleSet: Story = {
             padding: '0 1.5rem',
         },
     },
-};
-
-export const NumberInput: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'number 타입 입력 필드입니다. min/max 속성으로 범위를 제한할 수 있으며, 빈 값은 null로 처리됩니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsInput },
-        setup() {
-            const age = ref<number | null>(null);
-            return { args, age };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-input v-bind="args" v-model="age" type="number" label="나이" placeholder="나이 입력" :min="0" :max="120" />
-                <div style="padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
-                    입력된 값: {{ age }} (타입: {{ typeof age }})
-                </div>
-            </div>
-        `,
-    }),
 };

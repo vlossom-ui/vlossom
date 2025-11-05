@@ -11,128 +11,77 @@ const meta: Meta<typeof VsTextarea> = {
             return { args };
         },
         template: `
-            <div>
-                <vs-textarea v-bind="args" label="Textarea" placeholder="내용을 입력하세요..." :style="{ marginBottom: '12px' }"/>
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- 기본 스타일 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">기본 스타일</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-textarea v-bind="args" placeholder="Basic Textarea" />
+                        <vs-textarea v-bind="args" label="With Label" placeholder="내용을 입력하세요..." />
+                        <vs-textarea v-bind="args" label="With Value" model-value="여러 줄의 텍스트가 입력되어 있습니다.\n두 번째 줄입니다." />
+                    </div>
+                </div>
 
-                <vs-textarea v-bind="args" label="Textarea with Value" model-value="여러 줄의 텍스트가 입력되어 있습니다.\n두 번째 줄입니다.\n세 번째 줄입니다." :style="{ marginBottom: '12px' }"/>
+                <!-- 상태 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">상태</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-textarea v-bind="args" label="Disabled" model-value="disabled value" disabled />
+                        <vs-textarea v-bind="args" label="Readonly" model-value="readonly value\nmulti line" readonly />
+                        <vs-textarea v-bind="args" label="Required" placeholder="필수 입력" required />
+                    </div>
+                </div>
 
-                <vs-textarea v-bind="args" label="Required Textarea" placeholder="필수 입력 항목" required :style="{ marginBottom: '12px' }"/>
+                <!-- 크기 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-textarea v-bind="args" label="Small" placeholder="작은 크기" small />
+                    </div>
+                </div>
 
-                <vs-textarea v-bind="args" label="Readonly Textarea" model-value="읽기 전용 내용입니다.\n수정할 수 없습니다." readonly :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Disabled Textarea" model-value="비활성화된 내용입니다." disabled :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Small Textarea" placeholder="작은 크기" small :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Success State" model-value="성공적으로 입력되었습니다" state="success" :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Error State" model-value="잘못된 입력입니다" state="error" :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Info State" model-value="정보 메시지" state="info" :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" label="Warning State" model-value="주의가 필요합니다" state="warning" :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" placeholder="No Label" no-label :style="{ marginBottom: '12px' }"/>
-
-                <vs-textarea v-bind="args" placeholder="Small + No Label" no-label small />
+                <!-- 검증 상태 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">검증 상태</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-textarea v-bind="args" label="Success" model-value="성공" state="success" />
+                        <vs-textarea v-bind="args" label="Error" model-value="에러" state="error" />
+                    </div>
+                </div>
             </div>
-		`,
+        `,
     }),
     argTypes: {
+        modelValue: { control: 'text', table: { category: 'Model' } },
+        modelModifiers: { control: 'object', table: { category: 'Model' } },
+        changed: { control: 'boolean', table: { category: 'Model' } },
+        valid: { control: 'boolean', table: { category: 'Model' } },
+        placeholder: { control: 'text', table: { category: 'Textarea Props' } },
+        autocomplete: { control: 'boolean', table: { category: 'Textarea Props' } },
         colorScheme,
-        placeholder: {
-            control: 'text',
-            description: '플레이스홀더 텍스트',
-        },
-        disabled: {
-            control: 'boolean',
-            description: '비활성화 상태',
-        },
-        readonly: {
-            control: 'boolean',
-            description: '읽기 전용 상태',
-        },
-        hidden: {
-            control: 'boolean',
-            description: '숨김 상태',
-        },
-        required: {
-            control: 'boolean',
-            description: '필수 입력 여부',
-        },
+        label: { control: 'text', table: { category: 'Common Props' } },
+        noLabel: { control: 'boolean', table: { category: 'Common Props' } },
+        disabled: { control: 'boolean', table: { category: 'Common Props' } },
+        readonly: { control: 'boolean', table: { category: 'Common Props' } },
+        hidden: { control: 'boolean', table: { category: 'Common Props' } },
+        required: { control: 'boolean', table: { category: 'Common Props' } },
+        small: { control: 'boolean', table: { category: 'Common Props' } },
         state: {
             control: 'select',
-            options: ['error', 'idle', 'success', 'info', 'warning'],
-            description: 'Textarea 상태',
+            options: ['idle', 'success', 'error', 'info', 'warning'],
+            table: { category: 'Common Props' },
         },
-        label: {
-            control: 'text',
-            description: '라벨 텍스트',
-        },
-        noLabel: {
-            control: 'boolean',
-            description: '라벨 숨김',
-        },
-        messages: {
-            control: 'object',
-            description: '메시지 배열',
-        },
-        noMessages: {
-            control: 'boolean',
-            description: '메시지 영역 숨김',
-        },
-        rules: {
-            control: 'object',
-            description: '검증 규칙 배열',
-        },
-        noDefaultRules: {
-            control: 'boolean',
-            description: '기본 검증 규칙 비활성화',
-        },
-        max: {
-            control: 'number',
-            description: '최대 글자 수',
-        },
-        min: {
-            control: 'number',
-            description: '최소 글자 수',
-        },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-        },
-        styleSet: {
-            control: 'object',
-            description: '커스텀 스타일 객체',
-        },
-        autocomplete: {
-            control: 'boolean',
-            description: '자동완성 활성화',
-        },
-        id: {
-            control: 'text',
-            description: 'Textarea ID',
-        },
-        name: {
-            control: 'text',
-            description: 'Textarea name 속성',
-        },
-        width: {
-            control: 'text',
-            description: 'Textarea 너비 (string | number | Breakpoints)',
-        },
-        grid: {
-            control: 'text',
-            description: 'Grid 설정 (string | number | Breakpoints)',
-        },
-        modelValue: {
-            control: 'text',
-            description: 'v-model 값',
-        },
-        modelModifiers: {
-            control: 'object',
-            description: 'v-model modifiers (capitalize, upper, lower)',
-        },
+        min: { control: 'number', table: { category: 'Validation' } },
+        max: { control: 'number', table: { category: 'Validation' } },
+        rules: { control: 'object', table: { category: 'Validation' } },
+        noDefaultRules: { control: 'boolean', table: { category: 'Validation' } },
+        messages: { control: 'object', table: { category: 'Message' } },
+        noMessages: { control: 'boolean', table: { category: 'Message' } },
+        width: { control: 'text', table: { category: 'Layout' } },
+        grid: { control: 'text', table: { category: 'Layout' } },
+        styleSet: { control: 'object', table: { category: 'Style' } },
+        id: { control: 'text', table: { category: 'Native Props' } },
+        name: { control: 'text', table: { category: 'Native Props' } },
     },
 };
 

@@ -26,99 +26,147 @@ const meta: Meta<typeof VsTextarea> = {
     }),
     tags: ['autodocs'],
     argTypes: {
-        colorScheme,
-        placeholder: {
-            control: 'text',
-            description: '플레이스홀더 텍스트',
-        },
-        disabled: {
-            control: 'boolean',
-            description: '비활성화 상태',
-        },
-        readonly: {
-            control: 'boolean',
-            description: '읽기 전용 상태',
-        },
-        hidden: {
-            control: 'boolean',
-            description: '숨김 상태',
-        },
-        required: {
-            control: 'boolean',
-            description: '필수 입력 여부',
-        },
-        state: {
-            control: 'select',
-            options: ['error', 'idle', 'success', 'info', 'warning'],
-            description: 'Textarea 상태',
-        },
-        label: {
-            control: 'text',
-            description: '라벨 텍스트',
-        },
-        noLabel: {
-            control: 'boolean',
-            description: '라벨 숨김',
-        },
-        messages: {
-            control: 'object',
-            description: '메시지 배열',
-        },
-        noMessages: {
-            control: 'boolean',
-            description: '메시지 영역 숨김',
-        },
-        rules: {
-            control: 'object',
-            description: '검증 규칙 배열',
-        },
-        noDefaultRules: {
-            control: 'boolean',
-            description: '기본 검증 규칙 비활성화',
-        },
-        max: {
-            control: 'number',
-            description: '최대 글자 수',
-        },
-        min: {
-            control: 'number',
-            description: '최소 글자 수',
-        },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-        },
-        styleSet: {
-            control: 'object',
-            description: '커스텀 스타일 객체',
-        },
-        autocomplete: {
-            control: 'boolean',
-            description: '자동완성 활성화',
-        },
-        id: {
-            control: 'text',
-            description: 'Textarea ID',
-        },
-        name: {
-            control: 'text',
-            description: 'Textarea name 속성',
-        },
-        width: {
-            control: 'text',
-            description: 'Textarea 너비 (string | number | Breakpoints)',
-        },
-        grid: {
-            control: 'text',
-            description: 'Grid 설정 (string | number | Breakpoints)',
-        },
+        // Model
         modelValue: {
             control: 'text',
-            description: 'v-model 값',
+            description: 'v-model 값 (string)',
+            table: { category: 'Model' },
         },
         modelModifiers: {
             control: 'object',
             description: 'v-model modifiers (capitalize, upper, lower)',
+            table: { category: 'Model' },
+        },
+        changed: {
+            control: 'boolean',
+            description: '값이 변경되었는지 여부 (v-model:changed)',
+            table: { category: 'Model' },
+        },
+        valid: {
+            control: 'boolean',
+            description: '검증 통과 여부 (v-model:valid)',
+            table: { category: 'Model' },
+        },
+
+        // Textarea 속성
+        placeholder: {
+            control: 'text',
+            description: '플레이스홀더 텍스트',
+            table: { category: 'Textarea Props' },
+        },
+        autocomplete: {
+            control: 'boolean',
+            description: '자동완성 활성화',
+            table: { category: 'Textarea Props' },
+        },
+
+        // 공통 Props
+        colorScheme,
+        label: {
+            control: 'text',
+            description: '라벨 텍스트',
+            table: { category: 'Common Props' },
+        },
+        noLabel: {
+            control: 'boolean',
+            description: '라벨 숨김',
+            table: { category: 'Common Props' },
+        },
+        disabled: {
+            control: 'boolean',
+            description: '비활성화 상태',
+            table: { category: 'Common Props' },
+        },
+        readonly: {
+            control: 'boolean',
+            description: '읽기 전용 상태',
+            table: { category: 'Common Props' },
+        },
+        hidden: {
+            control: 'boolean',
+            description: '숨김 상태',
+            table: { category: 'Common Props' },
+        },
+        required: {
+            control: 'boolean',
+            description: '필수 입력 여부',
+            table: { category: 'Common Props' },
+        },
+        small: {
+            control: 'boolean',
+            description: '작은 크기',
+            table: { category: 'Common Props' },
+        },
+        state: {
+            control: 'select',
+            options: ['idle', 'success', 'error', 'info', 'warning'],
+            description: 'Textarea 상태',
+            table: { category: 'Common Props', defaultValue: { summary: 'idle' } },
+        },
+
+        // Validation
+        min: {
+            control: 'number',
+            description: '최소 글자 수',
+            table: { category: 'Validation' },
+        },
+        max: {
+            control: 'number',
+            description: '최대 글자 수',
+            table: { category: 'Validation' },
+        },
+        rules: {
+            control: 'object',
+            description: '검증 규칙 배열',
+            table: { category: 'Validation' },
+        },
+        noDefaultRules: {
+            control: 'boolean',
+            description: '기본 검증 규칙 비활성화',
+            table: { category: 'Validation' },
+        },
+
+        // Message
+        messages: {
+            control: 'object',
+            description: '메시지 배열',
+            table: { category: 'Message' },
+        },
+        noMessages: {
+            control: 'boolean',
+            description: '메시지 영역 숨김',
+            table: { category: 'Message' },
+        },
+
+        // Layout
+        width: {
+            control: 'text',
+            description: 'Textarea 너비 (string | number | Breakpoints)',
+            table: { category: 'Layout' },
+        },
+        grid: {
+            control: 'text',
+            description: 'Grid 설정 (string | number | Breakpoints)',
+            table: { category: 'Layout' },
+        },
+
+        // Style
+        styleSet: {
+            control: 'object',
+            description: '커스텀 스타일 객체',
+            table: { category: 'Style' },
+        },
+
+        // Native HTML
+        id: {
+            control: 'text',
+            description: 'Textarea ID',
+            table: { category: 'Native Props' },
+        },
+        name: {
+            control: 'text',
+            description: 'Textarea name 속성',
+            table: { category: 'Native Props' },
         },
     },
 };
@@ -153,80 +201,63 @@ export const WithLabel: Story = {
     },
 };
 
-export const Required: Story = {
+export const States: Story = {
     parameters: {
         docs: {
             description: {
-                story: '필수 입력 필드입니다. 라벨에 별표(*)가 표시됩니다.',
-            },
-        },
-    },
-    args: {
-        label: '필수 입력 항목',
-        placeholder: '이 항목은 필수입니다',
-        required: true,
-    },
-};
-
-export const Disabled: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '비활성화된 텍스트 영역입니다. 사용자가 입력할 수 없습니다.',
-            },
-        },
-    },
-    args: {
-        label: '비활성화',
-        placeholder: '입력할 수 없습니다',
-        disabled: true,
-    },
-};
-
-export const Readonly: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '읽기 전용 텍스트 영역입니다. 값을 볼 수는 있지만 수정할 수 없습니다.',
+                story: 'disabled, readonly 등의 상태를 표현할 수 있습니다.',
             },
         },
     },
     render: (args: any) => ({
         components: { VsTextarea },
         setup() {
-            const value = ref('읽기 전용 내용입니다.\n여러 줄의 텍스트를 볼 수 있지만\n수정할 수는 없습니다.');
-            return { args, value };
+            const normalValue = ref('normal');
+            const disabledValue = ref('disabled');
+            const readonlyValue = ref('readonly value\nmulti line text');
+            const requiredValue = ref('');
+            return { args, normalValue, disabledValue, readonlyValue, requiredValue };
         },
-        template: '<vs-textarea v-bind="args" v-model="value" />',
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-textarea v-model="normalValue" label="Normal" />
+                <vs-textarea v-model="disabledValue" label="Disabled" disabled />
+                <vs-textarea v-model="readonlyValue" label="Readonly" readonly />
+                <vs-textarea v-model="requiredValue" label="Required" placeholder="필수 입력" required />
+            </div>
+        `,
     }),
-    args: {
-        label: '읽기 전용',
-        readonly: true,
-    },
 };
 
-export const Small: Story = {
+export const Size: Story = {
     parameters: {
         docs: {
             description: {
-                story: '작은 크기의 텍스트 영역입니다.',
+                story: 'small prop으로 작은 크기의 텍스트 영역을 만들 수 있습니다.',
             },
         },
     },
-    args: {
-        label: '작은 크기',
-        placeholder: '작은 텍스트 영역',
-        small: true,
-    },
+    render: (args: any) => ({
+        components: { VsTextarea },
+        setup() {
+            const defaultValue = ref('');
+            const smallValue = ref('');
+            return { args, defaultValue, smallValue };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-textarea v-model="defaultValue" label="Default Size" placeholder="기본 크기" />
+                <vs-textarea v-model="smallValue" label="Small Size" placeholder="작은 크기" small />
+            </div>
+        `,
+    }),
 };
 
-export const State: Story = {
+export const ValidationStates: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'state prop을 사용하여 텍스트 영역의 상태를 표시할 수 있습니다. ' +
-                    'idle, success, error, info, warning 상태를 지원합니다.',
+                story: 'state prop을 사용하여 검증 상태를 시각적으로 표현할 수 있습니다.',
             },
         },
     },
@@ -242,11 +273,39 @@ export const State: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-textarea v-bind="args" v-model="idleValue" state="idle" label="Idle" placeholder="기본 상태" />
-                <vs-textarea v-bind="args" v-model="successValue" state="success" label="Success" placeholder="성공 상태" />
-                <vs-textarea v-bind="args" v-model="errorValue" state="error" label="Error" placeholder="에러 상태" />
-                <vs-textarea v-bind="args" v-model="infoValue" state="info" label="Info" placeholder="정보 상태" />
-                <vs-textarea v-bind="args" v-model="warningValue" state="warning" label="Warning" placeholder="경고 상태" />
+                <vs-textarea v-model="idleValue" state="idle" label="Idle" placeholder="기본 상태" />
+                <vs-textarea v-model="successValue" state="success" label="Success" />
+                <vs-textarea v-model="errorValue" state="error" label="Error" />
+                <vs-textarea v-model="infoValue" state="info" label="Info" />
+                <vs-textarea v-model="warningValue" state="warning" label="Warning" />
+            </div>
+        `,
+    }),
+};
+
+export const ValidationRules: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'min/max를 사용하여 글자 수를 제한할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsTextarea },
+        setup() {
+            const textValue = ref('');
+            const requiredValue = ref('');
+            return { args, textValue, requiredValue };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-textarea v-model="textValue" label="글자 수 제한 (10-100자)" placeholder="내용 입력" :min="10" :max="100" />
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 0.5rem;">
+                    글자 수: {{ textValue.length }} / 100
+                </div>
+                
+                <vs-textarea v-model="requiredValue" label="Required" placeholder="필수 입력" required />
             </div>
         `,
     }),
@@ -256,9 +315,7 @@ export const StringModifiers: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    'v-model에 modifiers를 사용하여 입력값을 자동으로 변환할 수 있습니다. ' +
-                    'capitalize(첫글자 대문자), upper(전체 대문자), lower(전체 소문자)를 지원합니다.',
+                story: 'v-model에 modifiers를 사용하여 입력값을 자동으로 변환할 수 있습니다.',
             },
         },
     },
@@ -272,13 +329,13 @@ export const StringModifiers: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-textarea v-bind="args" v-model.capitalize="capitalizeValue" label="Capitalize" placeholder="첫 글자만 대문자로" />
-                <vs-textarea v-bind="args" v-model.upper="upperValue" label="Upper" placeholder="전체 대문자로" />
-                <vs-textarea v-bind="args" v-model.lower="lowerValue" label="Lower" placeholder="전체 소문자로" />
+                <vs-textarea v-model.capitalize="capitalizeValue" label="Capitalize" placeholder="첫 글자만 대문자로" />
+                <vs-textarea v-model.upper="upperValue" label="Upper" placeholder="전체 대문자로" />
+                <vs-textarea v-model.lower="lowerValue" label="Lower" placeholder="전체 소문자로" />
                 <div style="padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
-                    <div>Capitalize: {{ capitalizeValue }}</div>
-                    <div>Upper: {{ upperValue }}</div>
-                    <div>Lower: {{ lowerValue }}</div>
+                    <div><strong>Capitalize:</strong> {{ capitalizeValue }}</div>
+                    <div><strong>Upper:</strong> {{ upperValue }}</div>
+                    <div><strong>Lower:</strong> {{ lowerValue }}</div>
                 </div>
             </div>
         `,
@@ -289,9 +346,7 @@ export const ColorScheme: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '다양한 색상 테마가 적용된 텍스트 영역들입니다. ' +
-                    'colorScheme prop을 사용하여 미리 정의된 색상 조합을 적용할 수 있습니다.',
+                story: 'colorScheme prop을 사용하여 다양한 색상 테마를 적용할 수 있습니다.',
             },
         },
         chromatic: chromaticParameters.theme,
@@ -304,7 +359,7 @@ export const ColorScheme: Story = {
         template: `
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 ${getColorSchemeTemplate(`
-                    <vs-textarea v-bind="args" color-scheme="{{ color }}" label="{{ color }}" placeholder="{{ color }} 입력" />
+                    <vs-textarea color-scheme="{{ color }}" label="{{ color }}" placeholder="{{ color }} 입력" />
                 `)}
             </div>
         `,
@@ -315,7 +370,7 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: '인라인 스타일 객체를 사용한 커스텀 텍스트 영역입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
+                story: 'styleSet prop을 사용하여 커스텀 스타일을 적용할 수 있습니다.',
             },
         },
     },
@@ -340,29 +395,4 @@ export const StyleSet: Story = {
             padding: '0.75rem 1rem',
         },
     },
-};
-
-export const MaxMinLength: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'min/max 속성으로 글자 수 범위를 제한할 수 있습니다. 유효성 검사 시 체크됩니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsTextarea },
-        setup() {
-            const text = ref('');
-            return { args, text };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-textarea v-bind="args" v-model="text" label="글자 수 제한 (10-100자)" placeholder="내용 입력" :min="10" :max="100" />
-                <div style="padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
-                    글자 수: {{ text.length }} / 100
-                </div>
-            </div>
-        `,
-    }),
 };
