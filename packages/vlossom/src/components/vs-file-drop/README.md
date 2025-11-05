@@ -77,7 +77,6 @@ const files = ref<File[] | null>(null);
             border: '2px dashed #1e88e5',
             borderRadius: '16px',
             dragBackgroundColor: '#e3f2fd',
-            height: '200px',
             iconColor: '#1e88e5'
         }"
     />
