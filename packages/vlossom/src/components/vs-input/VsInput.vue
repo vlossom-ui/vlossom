@@ -26,14 +26,14 @@
             <input
                 ref="inputRef"
                 :id="computedId"
-                :type="type"
+                :type
                 :value="inputValue"
                 :autocomplete="autocomplete ? 'on' : 'off'"
-                :name="name"
+                :name
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
-                :placeholder="placeholder"
+                :placeholder
                 @input.stop="onInput"
                 @change.stop
             />

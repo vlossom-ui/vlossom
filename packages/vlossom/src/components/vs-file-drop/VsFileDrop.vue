@@ -3,7 +3,7 @@
         v-show="!hidden"
         :width
         :grid
-        :disabled
+        :disabled="computedDisabled"
         :hidden
         :id="computedId"
         :label
@@ -31,11 +31,11 @@
                 type="file"
                 class="vs-file-drop-ref"
                 :id="computedId"
-                :name="name"
+                :name
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
-                :accept="accept"
+                :accept
                 @change.stop="handleFileDialog"
                 @keydown.enter.stop="openFileDialog"
                 @keydown.space.prevent.stop="openFileDialog"
@@ -52,7 +52,7 @@
                             <vs-chip
                                 :id="file.name"
                                 :small
-                                :color-scheme="colorScheme"
+                                :color-scheme
                                 :closable="!computedDisabled"
                                 @close="handleFileRemove(file)"
                             >
