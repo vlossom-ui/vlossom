@@ -47,7 +47,9 @@
                 aria-label="Clear"
                 @click.stop="clearWithFocus"
             >
-                <i v-html="closeIcon" :class="{ 'size-4': small, 'size-5': !small }" />
+                <i :class="{ 'size-4': small, 'size-5': !small }">
+                    <vs-render :content="closeIcon" />
+                </i>
             </button>
 
             <div v-if="$slots['append']" class="vs-append">

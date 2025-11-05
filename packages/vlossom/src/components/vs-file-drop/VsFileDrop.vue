@@ -65,11 +65,9 @@
                     </div>
 
                     <div v-else class="vs-file-drop-placeholder">
-                        <i
-                            class="placeholder-icon"
-                            :class="{ 'size-4': small, 'size-6': !small }"
-                            v-html="attachFileIcon"
-                        />
+                        <i class="placeholder-icon" :class="{ 'size-4': small, 'size-6': !small }">
+                            <vs-render :content="attachFileIcon" />
+                        </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
                 </slot>
