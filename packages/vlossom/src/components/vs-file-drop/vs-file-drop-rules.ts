@@ -46,8 +46,6 @@ export function useVsFileDropRules(
         return '';
     }
 
-    // 파일 타입도 체크
-
     return {
         requiredCheck,
         maxCheck,
