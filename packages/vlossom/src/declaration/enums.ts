@@ -29,6 +29,7 @@ export enum VsComponent {
     VsPage = 'VsPage',
     VsPagination = 'VsPagination',
     VsProgress = 'VsProgress',
+    VsRadio = 'VsRadio',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
     VsSkeleton = 'VsSkeleton',

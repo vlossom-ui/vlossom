@@ -1,18 +1,18 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style="componentStyleSet.wrapper"
         :id="checkLabel ? '' : computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :width
+        :style-set="componentStyleSet.wrapper"
         :grid
         :label
         :no-label
-        :required
-        :small
         :no-messages
+        :required
         :shake
+        :small
+        :width
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
@@ -26,7 +26,7 @@
                     :class="['vs-checkbox-input', stateClasses]"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :value="String(trueValue)"
+                    :value="convertToString(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"
                     :name
@@ -61,6 +61,7 @@ import {
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
+import { stringUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -249,6 +250,7 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            convertToString: stringUtil.convertToString,
             inputValue,
             isChecked,
             shake,

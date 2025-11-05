@@ -1,0 +1,44 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { colorScheme } from '@/storybook';
+
+import VsRadio from './../VsRadio.vue';
+
+const meta: Meta<typeof VsRadio> = {
+    title: 'Chromatic/Input Components/VsRadio',
+    component: VsRadio,
+    render: (args: any) => ({
+        components: { VsRadio },
+        setup() {
+            const messages = [{ state: 'success', text: 'This is success message' }];
+            return { args, messages };
+        },
+        template: `
+            <div>
+                <vs-radio v-bind="args" label="Radio" :style="{ marginBottom: '12px' }"/>
+
+                <vs-radio v-bind="args" label="Radio" checked :style="{ marginBottom: '12px' }"/>
+
+                <vs-radio v-bind="args" label="Required Radio" required name="required" :style="{ marginBottom: '12px' }"/>
+
+                <vs-radio v-bind="args" label="Readonly Radio" readonly :style="{ marginBottom: '12px' }"/>
+
+                <vs-radio v-bind="args" label="Disabled Radio" disabled :style="{ marginBottom: '12px' }"/>
+
+                <vs-radio v-bind="args" label="Radio with Messages" :messages="messages"/>
+            </div>
+		`,
+    }),
+    argTypes: {
+        colorScheme,
+    },
+    args: {
+        radioLabel: 'Radio Input',
+        name: 'test',
+        radioValue: 'test',
+    },
+};
+
+export default meta;
+type Story = StoryObj<typeof VsRadio>;
+
+export const Default: Story = {};
