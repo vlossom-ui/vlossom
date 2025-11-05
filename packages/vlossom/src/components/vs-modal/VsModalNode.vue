@@ -131,7 +131,6 @@ export default defineComponent({
             styleSetVariables,
             componentStyleSet,
             onClickDimmed,
-            additionalStyleSet,
         };
     },
 });

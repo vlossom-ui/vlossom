@@ -85,7 +85,7 @@ export default defineComponent({
             modalStore.remove(container.value, id);
         }
 
-        return { modals, isFixed, ANIMATION_DURATION, onClose };
+        return { modals, isFixed, ANIMATION_DURATION, onClose, needScrollLock };
     },
 });
 </script>
