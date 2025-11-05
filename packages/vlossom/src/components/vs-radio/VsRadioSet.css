@@ -1,0 +1,21 @@
+.vs-radio-set {
+    --vs-radio-set-gap: initial;
+    --vs-radio-set-flex-wrap: initial;
+
+    @apply flex flex-wrap items-center;
+    flex-wrap: var(--vs-radio-set-flex-wrap, wrap);
+
+    gap: var(--vs-radio-set-gap, 1.4rem);
+
+    &.vs-vertical {
+        @apply flex-col items-start;
+
+        .vs-radio-item {
+            @apply w-full;
+        }
+    }
+
+    .vs-radio-item {
+        @apply flex-shrink-0;
+    }
+}

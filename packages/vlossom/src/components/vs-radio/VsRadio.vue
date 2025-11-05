@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -55,15 +55,19 @@ import type { VsRadioStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
-const name = VsComponent.VsRadio;
+const componentName = VsComponent.VsRadio;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsRadioStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
+        beforeChange: {
+            type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
+            default: null,
+        },
         checked: { type: Boolean, default: false },
         radioLabel: { type: String, default: '' },
         radioValue: { type: null, required: true },
@@ -74,6 +78,7 @@ export default defineComponent({
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
+            beforeChange,
             checked,
             colorScheme,
             id,
@@ -88,13 +93,14 @@ export default defineComponent({
             styleSet,
             small,
             noDefaultRules,
+            name,
         } = toRefs(props);
 
         const radioRef: TemplateRef<HTMLInputElement> = useTemplateRef('radioRef');
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(componentName, styleSet);
 
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 
@@ -107,7 +113,7 @@ export default defineComponent({
                 return '';
             }
 
-            const radioElements = document.querySelectorAll(`input[name="${props.name}"]`);
+            const radioElements = document.querySelectorAll(`input[name="${name.value}"]`);
             const checkedRadioElement = Array.from(radioElements).find((el) => (el as HTMLInputElement).checked);
             return !checkedRadioElement ? 'required' : '';
         }
@@ -157,7 +163,18 @@ export default defineComponent({
         }));
 
         async function onToggle(event: Event) {
-            // radio change event value is always true
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            const beforeChangeFn = beforeChange.value;
+
+            if (beforeChangeFn) {
+                const result = await beforeChangeFn(inputValue.value, radioValue.value, radioValue.value);
+                if (!result) {
+                    return;
+                }
+            }
             inputValue.value = radioValue.value;
             emit('change', event);
             emit('toggle', (event.target as HTMLInputElement).checked);
