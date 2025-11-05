@@ -1,5 +1,5 @@
 <template>
-    <div :style="{ display: 'none' }">
+    <div v-if="false" :style="{ display: 'none' }">
         <slot />
     </div>
 </template>
