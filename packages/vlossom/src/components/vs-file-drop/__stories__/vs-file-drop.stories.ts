@@ -376,6 +376,67 @@ export const ValidationRules: Story = {
     }),
 };
 
+export const Messages: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'messages prop을 사용하여 사용자에게 피드백 메시지를 표시할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsFileDrop },
+        setup() {
+            const successFiles = ref<File[] | null>(null);
+            const errorFiles = ref<File[] | null>(null);
+            const warningFiles = ref<File[] | null>(null);
+            const infoFiles = ref<File[] | null>(null);
+            return { args, successFiles, errorFiles, warningFiles, infoFiles };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-file-drop 
+                    v-model="successFiles" 
+                    label="Success Message" 
+                    placeholder="파일 업로드"
+                    :messages="[{ state: 'success', text: '파일이 성공적으로 업로드되었습니다.' }]" 
+                />
+                
+                <vs-file-drop 
+                    v-model="errorFiles" 
+                    label="Error Message" 
+                    placeholder="파일 업로드"
+                    :messages="[{ state: 'error', text: '파일 업로드에 실패했습니다.' }]" 
+                />
+                
+                <vs-file-drop 
+                    v-model="warningFiles" 
+                    label="Warning Message" 
+                    placeholder="파일 업로드"
+                    :messages="[{ state: 'warning', text: '파일 크기가 너무 큽니다.' }]" 
+                />
+                
+                <vs-file-drop 
+                    v-model="infoFiles" 
+                    label="Info Message" 
+                    placeholder="파일 업로드"
+                    :messages="[{ state: 'info', text: '참고: 최대 10MB까지 업로드 가능합니다.' }]" 
+                />
+                
+                <vs-file-drop 
+                    v-model="successFiles" 
+                    label="Multiple Messages" 
+                    placeholder="파일 업로드"
+                    :messages="[
+                        { state: 'success', text: '업로드 완료' },
+                        { state: 'info', text: '파일이 자동으로 저장됩니다.' }
+                    ]" 
+                />
+            </div>
+        `,
+    }),
+};
+
 export const CustomSlot: Story = {
     parameters: {
         docs: {

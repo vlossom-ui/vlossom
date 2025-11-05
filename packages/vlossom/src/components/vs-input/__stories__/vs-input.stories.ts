@@ -352,6 +352,62 @@ export const ValidationRules: Story = {
     }),
 };
 
+export const Messages: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'messages prop을 사용하여 사용자에게 피드백 메시지를 표시할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsInput },
+        setup() {
+            const successValue = ref('성공');
+            const errorValue = ref('에러');
+            const warningValue = ref('경고');
+            const infoValue = ref('정보');
+            return { args, successValue, errorValue, warningValue, infoValue };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input 
+                    v-model="successValue" 
+                    label="Success Message" 
+                    :messages="[{ state: 'success', text: '입력이 성공적으로 완료되었습니다.' }]" 
+                />
+                
+                <vs-input 
+                    v-model="errorValue" 
+                    label="Error Message" 
+                    :messages="[{ state: 'error', text: '올바른 형식이 아닙니다.' }]" 
+                />
+                
+                <vs-input 
+                    v-model="warningValue" 
+                    label="Warning Message" 
+                    :messages="[{ state: 'warning', text: '이 값은 권장되지 않습니다.' }]" 
+                />
+                
+                <vs-input 
+                    v-model="infoValue" 
+                    label="Info Message" 
+                    :messages="[{ state: 'info', text: '참고: 이 필드는 선택사항입니다.' }]" 
+                />
+                
+                <vs-input 
+                    v-model="successValue" 
+                    label="Multiple Messages" 
+                    :messages="[
+                        { state: 'success', text: '첫 번째 메시지' },
+                        { state: 'info', text: '두 번째 메시지' }
+                    ]" 
+                />
+            </div>
+        `,
+    }),
+};
+
 export const NoClearButton: Story = {
     parameters: {
         docs: {
