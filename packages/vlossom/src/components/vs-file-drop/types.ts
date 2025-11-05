@@ -1,5 +1,5 @@
 import type VsFileDrop from './VsFileDrop.vue';
-import type { VsInputWrapperStyleSet } from '@/main';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type { BoxStyleSet, Breakpoints } from '@/declaration';
 
 declare module 'vue' {

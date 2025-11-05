@@ -1,5 +1,5 @@
 import type VsInput from './VsInput.vue';
-import type { VsInputWrapperStyleSet } from '@/main';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
