@@ -24,7 +24,7 @@ body {
         sans-serif;
 }
 
-/* 스크롤바 너비를 15px로 고정 */
+/* 스크롤바 너비를 10px로 고정 -> 변경 시 scroll-lock-composable.ts 수정 필요 */
 *::-webkit-scrollbar {
     width: 10px;
     height: 10px;
