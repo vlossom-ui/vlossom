@@ -8,6 +8,30 @@ function createFile(name = 'test.png', type = 'image/png') {
 }
 
 describe('vs-file-drop', () => {
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    styleSet: {
+                        backgroundColor: '#f0f0f0',
+                        border: '2px dashed #1e88e5',
+                        padding: '2rem',
+                    },
+                },
+            });
+
+            // then
+            const style = wrapper.vm.styleSetVariables;
+            expect(style).toEqual({
+                '--vs-file-drop-backgroundColor': '#f0f0f0',
+                '--vs-file-drop-border': '2px dashed #1e88e5',
+                '--vs-file-drop-height': 'auto',
+                '--vs-file-drop-padding': '2rem',
+            });
+        });
+    });
+
     describe('v-model', () => {
         it('입력된 파일이 없을 때 modelValue는 null이다', () => {
             // given, when
