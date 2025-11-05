@@ -38,19 +38,12 @@ export const Default: Story = {
             }
 
             function handleOpenWithOptions() {
-                currentModalId = $vs.modal.open('옵션이 적용된 모달입니다.', {
-                    size: 'lg',
-                    dimClose: true,
-                    dimmed: true,
-                    escClose: true,
-                });
+                currentModalId = $vs.modal.open('옵션이 적용된 모달입니다.', { size: 'sm' });
             }
 
             function handleOpenCustomSize() {
                 currentModalId = $vs.modal.open('커스텀 크기 모달입니다.', {
                     size: { width: '600px', height: '400px' },
-                    dimClose: true,
-                    dimmed: true,
                 });
             }
 
@@ -82,7 +75,7 @@ export const Default: Story = {
         template: `
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 <vs-button @click="handleOpen">Open</vs-button>
-                <vs-button @click="handleOpenWithOptions">Open (Large)</vs-button>
+                <vs-button @click="handleOpenWithOptions">Open (Small)</vs-button>
                 <vs-button @click="handleOpenCustomSize">Open (Custom Size)</vs-button>
                 <vs-button outline @click="handleClose">Close</vs-button>
                 <vs-button outline @click="handleCloseWithId">Close (With ID)</vs-button>

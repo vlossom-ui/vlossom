@@ -19,7 +19,7 @@
     z-index: var(--vs-modal-node-zIndex, var(--vs-modal-z-index));
 
     .vs-modal-wrap {
-        @apply pointer-events-auto absolute top-1/2 left-1/2;
+        @apply pointer-events-auto absolute top-1/2 left-1/2 overflow-auto;
 
         transform: translate(-50%, -50%);
         opacity: var(--vs-modal-node-opacity, 1);

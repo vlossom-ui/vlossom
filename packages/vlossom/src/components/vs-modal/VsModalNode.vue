@@ -8,15 +8,7 @@
         />
         <vs-focus-trap ref="focusTrapRef" :focus-lock :initial-focus-ref>
             <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
-                <vs-inner-scroll :hide-scroll :style-set="componentStyleSet.layout">
-                    <template #header v-if="$slots.header">
-                        <slot name="header" />
-                    </template>
-                    <slot />
-                    <template #footer v-if="$slots.footer">
-                        <slot name="footer" />
-                    </template>
-                </vs-inner-scroll>
+                <slot />
             </div>
         </vs-focus-trap>
     </div>

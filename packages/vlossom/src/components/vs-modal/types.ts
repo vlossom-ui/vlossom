@@ -3,7 +3,6 @@ import type VsModal from './VsModal.vue';
 import type VsModalNode from './VsModalNode.vue';
 import type VsModalView from './VsModalView.vue';
 import type { VsDimmedStyleSet } from '@/components/vs-dimmed/types';
-import type { VsInnerScrollStyleSet } from '@/components/vs-inner-scroll/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -21,5 +20,4 @@ export interface VsModalNodeStyleSet extends SizeStyleSet, BoxStyleSet {
     zIndex?: string;
 
     dimmed?: VsDimmedStyleSet;
-    layout?: VsInnerScrollStyleSet;
 }
