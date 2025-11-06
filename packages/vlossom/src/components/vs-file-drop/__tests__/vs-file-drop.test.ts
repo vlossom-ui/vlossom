@@ -367,10 +367,10 @@ describe('vs-file-drop', () => {
             expect(wrapper.vm.inputValue).toEqual(files);
         });
 
-        it('입력된 파일이 존재해도, 다시 클릭하면 dialog로 파일을 추가할 수 있다', async () => {
+        it('multiple이 false일 때, 입력된 파일이 존재하면 다시 클릭 시 새 파일로 교체된다', async () => {
             // given
             const file = createFile();
-            const wrapper = mount(VsFileDrop, { props: { modelValue: [file] } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [file], multiple: false } });
             const newFiles = [createFile('test3.png')];
 
             // when
@@ -384,6 +384,25 @@ describe('vs-file-drop', () => {
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
             expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(newFiles);
+        });
+
+        it('multiple이 true일 때, 입력된 파일이 존재하면 다시 클릭 시 기존 파일에 새 파일이 추가된다', async () => {
+            // given
+            const existingFiles = [createFile('test1.png'), createFile('test2.png')];
+            const wrapper = mount(VsFileDrop, { props: { modelValue: existingFiles, multiple: true } });
+            const newFiles = [createFile('test3.png'), createFile('test4.png')];
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files: newFiles,
+                },
+            } as unknown as Event);
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([...existingFiles, ...newFiles]);
         });
     });
 
@@ -570,10 +589,10 @@ describe('vs-file-drop', () => {
             });
         });
 
-        it('입력된 파일이 존재해도, drag & drop으로 파일을 추가할 수 있다', async () => {
+        it('multiple이 false일 때, 입력된 파일이 존재하면 drag & drop 시 새 파일로 교체된다', async () => {
             // given
             const file = createFile();
-            const wrapper = mount(VsFileDrop, { props: { modelValue: [file] } });
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [file], multiple: false } });
             const newFiles = [createFile('test3.png')];
 
             // when
@@ -587,6 +606,25 @@ describe('vs-file-drop', () => {
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
             expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(newFiles);
+        });
+
+        it('multiple이 true일 때, 입력된 파일이 존재하면 drag & drop 시 기존 파일에 새 파일이 추가된다', async () => {
+            // given
+            const existingFiles = [createFile('test1.png'), createFile('test2.png')];
+            const wrapper = mount(VsFileDrop, { props: { modelValue: existingFiles, multiple: true } });
+            const newFiles = [createFile('test3.png')];
+
+            // when
+            await wrapper.vm.handleFileDrop({
+                dataTransfer: {
+                    files: newFiles,
+                },
+            } as unknown as DragEvent);
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([...existingFiles, ...newFiles]);
         });
     });
 

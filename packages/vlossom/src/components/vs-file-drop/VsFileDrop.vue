@@ -225,7 +225,11 @@ export default defineComponent({
                 return;
             }
 
-            inputValue.value = files;
+            if (multiple.value) {
+                inputValue.value = [...inputValue.value, ...files];
+            } else {
+                inputValue.value = files;
+            }
         }
 
         function handleFileDialog(event: Event): void {
