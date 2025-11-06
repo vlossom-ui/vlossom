@@ -118,7 +118,7 @@ export default defineComponent({
         multiple: { type: Boolean, default: false },
         // v-model
         modelValue: {
-            type: [Array] as PropType<FileDropValueType>,
+            type: Array as PropType<FileDropValueType>,
             default: () => [],
         },
     },
