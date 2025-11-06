@@ -6,6 +6,7 @@ export function useVsFileDropRules(
     max: Ref<number | string>,
     min: Ref<number | string>,
     accept: Ref<string>,
+    multiple: Ref<boolean>,
 ) {
     function requiredCheck(v: FileDropValueType): string {
         if (required.value && v.length === 0) {
@@ -46,10 +47,23 @@ export function useVsFileDropRules(
         return '';
     }
 
+    function verifyMultipleFileUpload(value: FileDropValueType): string {
+        if (multiple.value) {
+            return '';
+        }
+
+        if (Array.isArray(value) && value.length > 1) {
+            return 'You can only upload one file';
+        }
+
+        return '';
+    }
+
     return {
         requiredCheck,
         maxCheck,
         minCheck,
         acceptCheck,
+        verifyMultipleFileUpload,
     };
 }

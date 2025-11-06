@@ -72,6 +72,11 @@ const meta: Meta<typeof VsFileDrop> = {
             description: '허용할 파일 타입 (예: ".png,.jpg,.pdf")',
             table: { category: 'FileDrop Props' },
         },
+        multiple: {
+            control: 'boolean',
+            description: '여러 파일 업로드 허용 여부',
+            table: { category: 'FileDrop Props', defaultValue: { summary: 'false' } },
+        },
         height: {
             control: 'text',
             description: '컴포넌트 높이 (string | number | Breakpoints)',
@@ -244,6 +249,40 @@ export const AcceptFileTypes: Story = {
                     label="문서 파일만" 
                     placeholder="PDF, DOCX 파일만 업로드 가능" 
                     accept=".pdf,.docx,.doc"
+                />
+            </div>
+        `,
+    }),
+};
+
+export const SingleFileUpload: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'multiple prop을 false로 설정하면 단일 파일만 업로드할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsFileDrop },
+        setup() {
+            const singleFile = ref<File[]>([]);
+            const multipleFiles = ref<File[]>([]);
+            return { args, singleFile, multipleFiles };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-file-drop 
+                    v-model="singleFile" 
+                    label="단일 파일 업로드" 
+                    placeholder="1개의 파일만 업로드 가능" 
+                />
+                
+                <vs-file-drop 
+                    v-model="multipleFiles" 
+                    label="다중 파일 업로드" 
+                    placeholder="여러 파일 업로드 가능" 
+                    multiple
                 />
             </div>
         `,

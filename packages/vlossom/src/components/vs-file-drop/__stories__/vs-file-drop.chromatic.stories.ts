@@ -21,6 +21,15 @@ const meta: Meta<typeof VsFileDrop> = {
                     </div>
                 </div>
 
+                <!-- Multiple -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">단일/다중 파일</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-file-drop v-bind="args" label="Single File" placeholder="1개만 업로드 가능" />
+                        <vs-file-drop v-bind="args" label="Multiple Files" placeholder="여러 파일 업로드 가능" multiple />
+                    </div>
+                </div>
+
                 <!-- Accept -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">파일 타입 제한</h3>
@@ -64,6 +73,7 @@ const meta: Meta<typeof VsFileDrop> = {
         valid: { control: 'boolean', table: { category: 'Model' } },
         placeholder: { control: 'text', table: { category: 'FileDrop Props' } },
         accept: { control: 'text', table: { category: 'FileDrop Props' } },
+        multiple: { control: 'boolean', table: { category: 'FileDrop Props' } },
         height: { control: 'text', table: { category: 'FileDrop Props' } },
         colorScheme,
         label: { control: 'text', table: { category: 'Common Props' } },

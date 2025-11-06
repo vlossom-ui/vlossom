@@ -171,7 +171,7 @@ describe('vs-file-drop', () => {
 
         it('max를 초과하는 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
             // given
-            const wrapper = mount(VsFileDrop, { props: { max: 2 } });
+            const wrapper = mount(VsFileDrop, { props: { max: 2, multiple: true } });
             const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
 
             // when
@@ -749,6 +749,81 @@ describe('vs-file-drop', () => {
             // then
             const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
             expect(errorMessages).toHaveLength(0);
+        });
+    });
+
+    describe('multiple prop', () => {
+        it('multiple이 false일 때 여러 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { props: { multiple: false } });
+            const files = [createFile('test1.png'), createFile('test2.png')];
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+            wrapper.vm.validate();
+
+            // then
+            expect(wrapper.vm.computedMessages).toHaveLength(1);
+            expect(wrapper.vm.computedMessages[0]).toEqual({
+                text: 'You can only upload one file',
+                state: 'error',
+            });
+        });
+
+        it('multiple이 false일 때 1개 파일을 추가하면 에러가 없다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { props: { multiple: false } });
+            const files = [createFile('test.png')];
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+            wrapper.vm.validate();
+
+            // then
+            const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+            expect(errorMessages).toHaveLength(0);
+        });
+
+        it('multiple이 true일 때 여러 파일을 추가하면 에러가 없다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { props: { multiple: true } });
+            const files = [createFile('test1.png'), createFile('test2.png'), createFile('test3.png')];
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+            wrapper.vm.validate();
+
+            // then
+            const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+            expect(errorMessages).toHaveLength(0);
+        });
+
+        it('multiple 속성이 input 요소에 올바르게 설정된다', () => {
+            // given, when
+            const wrapperSingle = mount(VsFileDrop, { props: { multiple: false } });
+            const wrapperMultiple = mount(VsFileDrop, { props: { multiple: true } });
+
+            // then
+            const inputSingle = wrapperSingle.find('input[type="file"]');
+            const inputMultiple = wrapperMultiple.find('input[type="file"]');
+
+            expect(inputSingle.attributes('multiple')).toBeUndefined();
+            expect(inputMultiple.attributes('multiple')).toBeDefined();
         });
     });
 });

@@ -1,17 +1,17 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :id="computedId"
+        :disabled="computedDisabled"
+        :messages="computedMessages"
         :width
         :grid
-        :disabled="computedDisabled"
         :hidden
-        :id="computedId"
         :label
         :no-label
         :no-messages
         :required
         :small
-        :messages="computedMessages"
         :shake
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
@@ -31,11 +31,12 @@
                 type="file"
                 class="vs-file-drop-ref"
                 :id="computedId"
-                :name
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
+                :name
                 :accept
+                :multiple
                 @change.stop="handleFileDialog"
                 @keydown.enter.stop="openFileDialog"
                 @keydown.space.prevent.stop="openFileDialog"
@@ -51,9 +52,9 @@
                         >
                             <vs-chip
                                 :id="file.name"
-                                :small
-                                :color-scheme
                                 :closable="!computedDisabled"
+                                :color-scheme
+                                :small
                                 @close="handleFileRemove(file)"
                             >
                                 <span class="vs-file-drop-file-name">{{ file.name }}</span>
@@ -114,6 +115,7 @@ export default defineComponent({
             default: Number.MIN_SAFE_INTEGER,
             validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
+        multiple: { type: Boolean, default: false },
         // v-model
         modelValue: {
             type: [Array] as PropType<FileDropValueType>,
@@ -133,6 +135,7 @@ export default defineComponent({
             disabled,
             readonly,
             messages,
+            multiple,
             rules,
             state,
             max,
@@ -151,7 +154,13 @@ export default defineComponent({
             styleSet,
             computed(() => ({ width: width.value, height: height.value })),
         );
-        const { requiredCheck, maxCheck, minCheck, acceptCheck } = useVsFileDropRules(required, max, min, accept);
+        const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useVsFileDropRules(
+            required,
+            max,
+            min,
+            accept,
+            multiple,
+        );
 
         const { computedId, computedMessages, computedState, computedDisabled, computedReadonly, shake, validate } =
             useInput(
@@ -164,7 +173,13 @@ export default defineComponent({
                     readonly,
                     messages,
                     rules,
-                    defaultRules: computed(() => [requiredCheck, maxCheck, minCheck, acceptCheck]),
+                    defaultRules: computed(() => [
+                        requiredCheck,
+                        maxCheck,
+                        minCheck,
+                        acceptCheck,
+                        verifyMultipleFileUpload,
+                    ]),
                     state,
                     callbacks: {
                         onMounted: () => {

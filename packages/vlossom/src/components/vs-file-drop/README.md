@@ -28,6 +28,14 @@ const files = ref<File[]>([]);
 </template>
 ```
 
+### 다중 파일 업로드
+
+```html
+<template>
+    <vs-file-drop v-model="files" multiple label="프로필 이미지" placeholder="여러 파일을 업로드 가능합니다" />
+</template>
+```
+
 ### 특정 파일 타입만 허용
 
 ```html
@@ -124,6 +132,7 @@ function handleDrop(droppedFiles: File[]) {
 | ------------- | --------------------------------- | ------------------------- | -------- | -------------------------------------------------- |
 | `modelValue`  | `File[]`                          | `[]`                      | -        | v-model 바인딩 값                                  |
 | `accept`      | `string`                          | `''`                      | -        | 허용할 파일 타입 (예: `.png,.jpg,.pdf`, `image/*`) |
+| `multiple`    | `boolean`                         | `false`                   | -        | 여러 파일 업로드 허용 여부                         |
 | `max`         | `number \| string`                | `Number.MAX_SAFE_INTEGER` | -        | 업로드 가능한 최대 파일 개수                       |
 | `min`         | `number \| string`                | `Number.MIN_SAFE_INTEGER` | -        | 업로드해야 하는 최소 파일 개수                     |
 | `colorScheme` | `ColorScheme`                     | -                         | -        | 컴포넌트 색상 테마                                 |
@@ -152,8 +161,8 @@ function handleDrop(droppedFiles: File[]) {
 | ------------------- | ---------- | -------------------------------------------- |
 | `update:modelValue` | `File[]`   | v-model 값 변경 시 발생                      |
 | `update:changed`    | `File[]`   | 파일 선택 대화상자로 파일을 선택했을 때 발생 |
-| `update:valid`      | `boolean`        | 검증 상태 업데이트                           |
-| `drop`              | `File[]`         | 파일을 드래그 앤 드롭했을 때 발생            |
+| `update:valid`      | `boolean`  | 검증 상태 업데이트                           |
+| `drop`              | `File[]`   | 파일을 드래그 앤 드롭했을 때 발생            |
 
 ## Types
 
@@ -186,10 +195,10 @@ interface VsFileDropStyleSet {
 ## 특징
 
 - **드래그 앤 드롭 지원**: 파일을 드래그하여 업로드하거나 클릭하여 파일 선택 대화상자 열기
-- **다중 파일 업로드**: 여러 파일을 동시에 선택 가능
+- **단일/다중 파일 업로드**: `multiple` prop으로 단일 또는 여러 파일 업로드 선택 가능
 - **파일 타입 제한**: `accept` 속성으로 특정 파일 타입만 허용
 - **파일 개수 제한**: `min`, `max` 속성으로 업로드 가능한 파일 개수 제한
 - **개별 파일 제거**: 선택된 파일을 칩 형태로 표시하고 개별 제거 가능
-- **검증 규칙**: 커스텀 검증 규칙과 기본 검증(required, min, max, accept) 지원
+- **검증 규칙**: 커스텀 검증 규칙과 기본 검증(required, min, max, accept, multiple) 지원
 - **드래그 상태 감지**: 파일을 드래그하는 동안 시각적 피드백 제공
 - **파일 크기 표시**: 선택된 파일의 크기를 사람이 읽기 쉬운 형식으로 표시
