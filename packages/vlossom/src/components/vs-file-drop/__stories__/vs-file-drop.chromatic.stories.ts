@@ -1,5 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { colorScheme } from '@/storybook';
+import {
+    colorScheme,
+    modelArgTypes,
+    commonPropsArgTypes,
+    validationArgTypes,
+    messageArgTypes,
+    layoutArgTypes,
+    styleArgTypes,
+    nativePropsArgTypes,
+} from '@/storybook';
 import VsFileDrop from './../VsFileDrop.vue';
 
 const meta: Meta<typeof VsFileDrop> = {
@@ -68,37 +77,18 @@ const meta: Meta<typeof VsFileDrop> = {
         `,
     }),
     argTypes: {
-        modelValue: { control: false, table: { category: 'Model' } },
-        changed: { control: 'boolean', table: { category: 'Model' } },
-        valid: { control: 'boolean', table: { category: 'Model' } },
+        ...modelArgTypes,
         placeholder: { control: 'text', table: { category: 'FileDrop Props' } },
         accept: { control: 'text', table: { category: 'FileDrop Props' } },
         multiple: { control: 'boolean', table: { category: 'FileDrop Props' } },
         height: { control: 'text', table: { category: 'FileDrop Props' } },
         colorScheme,
-        label: { control: 'text', table: { category: 'Common Props' } },
-        noLabel: { control: 'boolean', table: { category: 'Common Props' } },
-        disabled: { control: 'boolean', table: { category: 'Common Props' } },
-        readonly: { control: 'boolean', table: { category: 'Common Props' } },
-        hidden: { control: 'boolean', table: { category: 'Common Props' } },
-        required: { control: 'boolean', table: { category: 'Common Props' } },
-        small: { control: 'boolean', table: { category: 'Common Props' } },
-        state: {
-            control: 'select',
-            options: ['idle', 'success', 'error', 'info', 'warning'],
-            table: { category: 'Common Props' },
-        },
-        min: { control: 'number', table: { category: 'Validation' } },
-        max: { control: 'number', table: { category: 'Validation' } },
-        rules: { control: 'object', table: { category: 'Validation' } },
-        noDefaultRules: { control: 'boolean', table: { category: 'Validation' } },
-        messages: { control: 'object', table: { category: 'Message' } },
-        noMessages: { control: 'boolean', table: { category: 'Message' } },
-        width: { control: 'text', table: { category: 'Layout' } },
-        grid: { control: 'text', table: { category: 'Layout' } },
-        styleSet: { control: 'object', table: { category: 'Style' } },
-        id: { control: 'text', table: { category: 'Native Props' } },
-        name: { control: 'text', table: { category: 'Native Props' } },
+        ...commonPropsArgTypes,
+        ...validationArgTypes,
+        ...messageArgTypes,
+        ...layoutArgTypes,
+        ...styleArgTypes,
+        ...nativePropsArgTypes,
     },
 };
 
