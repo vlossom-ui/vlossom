@@ -184,8 +184,9 @@ describe('vs-file-drop', () => {
             wrapper.vm.validate();
 
             // then
-            expect(wrapper.vm.computedMessages).toHaveLength(1);
-            expect(wrapper.vm.computedMessages[0]).toEqual({
+            const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+            expect(errorMessages).toHaveLength(1);
+            expect(errorMessages[0]).toEqual({
                 text: 'You can only upload up to 2 files',
                 state: 'error',
             });
@@ -348,6 +349,43 @@ describe('vs-file-drop', () => {
             droppedFileContents.forEach((content, index) => {
                 expect(content.html()).toContain(files[index].name);
             });
+        });
+
+        it('파일 1개를 추가하면 파일 개수 메시지가 표시되지 않는다', async () => {
+            // given
+            const files = [createFile('test.png')];
+            const wrapper = mount(VsFileDrop);
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            // then
+            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessages).toHaveLength(0);
+        });
+
+        it('파일 2개 이상을 추가하면 파일 개수 info 메시지가 표시된다', async () => {
+            // given
+            const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
+            const wrapper = mount(VsFileDrop);
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            // then
+            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessages).toHaveLength(1);
+            expect(infoMessages[0].text).toBe(`${files.length} files`);
         });
 
         it('dialog에서 파일 입력을 취소하면, 기존의 파일이 유지된다', async () => {
@@ -589,6 +627,43 @@ describe('vs-file-drop', () => {
             });
         });
 
+        it('drag & drop으로 파일 1개를 추가하면 파일 개수 메시지가 표시되지 않는다', async () => {
+            // given
+            const files = [createFile('test.png')];
+            const wrapper = mount(VsFileDrop);
+
+            // when
+            await wrapper.vm.handleFileDrop({
+                dataTransfer: {
+                    files,
+                },
+            } as unknown as DragEvent);
+            await wrapper.vm.$nextTick();
+
+            // then
+            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessages).toHaveLength(0);
+        });
+
+        it('drag & drop으로 파일 2개 이상을 추가하면 파일 개수 info 메시지가 표시된다', async () => {
+            // given
+            const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
+            const wrapper = mount(VsFileDrop);
+
+            // when
+            await wrapper.vm.handleFileDrop({
+                dataTransfer: {
+                    files,
+                },
+            } as unknown as DragEvent);
+            await wrapper.vm.$nextTick();
+
+            // then
+            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessages).toHaveLength(1);
+            expect(infoMessages[0].text).toBe(`${files.length} files`);
+        });
+
         it('multiple이 false일 때, 입력된 파일이 존재하면 drag & drop 시 새 파일로 교체된다', async () => {
             // given
             const file = createFile();
@@ -806,8 +881,9 @@ describe('vs-file-drop', () => {
             wrapper.vm.validate();
 
             // then
-            expect(wrapper.vm.computedMessages).toHaveLength(1);
-            expect(wrapper.vm.computedMessages[0]).toEqual({
+            const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+            expect(errorMessages).toHaveLength(1);
+            expect(errorMessages[0]).toEqual({
                 text: 'You can only upload one file',
                 state: 'error',
             });

@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
-import { VsComponent, type Breakpoints } from '@/declaration';
+import { VsComponent, type Breakpoints, type Message, type UIState } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
@@ -147,6 +147,7 @@ export default defineComponent({
         const inputValue: Ref<FileDropValueType> = ref(modelValue.value ?? []);
         const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('inputRef');
         const dragging = ref(false);
+        const componentMessages: Ref<Message<FileDropValueType>[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
@@ -171,7 +172,7 @@ export default defineComponent({
                     id,
                     disabled,
                     readonly,
-                    messages,
+                    messages: computed(() => [...messages.value, ...componentMessages.value]),
                     rules,
                     defaultRules: computed(() => [
                         requiredCheck,
@@ -221,6 +222,8 @@ export default defineComponent({
         }
 
         function setInputValue(files: File[]): void {
+            componentMessages.value = [];
+
             if (!files || files.length === 0) {
                 return;
             }
@@ -229,6 +232,10 @@ export default defineComponent({
                 inputValue.value = [...inputValue.value, ...files];
             } else {
                 inputValue.value = files;
+            }
+
+            if (files.length > 1) {
+                componentMessages.value.push({ state: 'info' as UIState, text: `${files.length} files` });
             }
         }
 
