@@ -823,45 +823,203 @@ describe('vs-file-drop', () => {
     });
 
     describe('accept 검증', () => {
-        it('accept 타입에 맞지 않는 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
-            // given
-            const wrapper = mount(VsFileDrop, { props: { accept: 'image/png' } });
-            const files = [createFile('test.jpg', 'image/jpeg')];
+        describe('MIME 타입 형식', () => {
+            it('accept 타입에 맞지 않는 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/png' } });
+                const files = [createFile('test.jpg', 'image/jpeg')];
 
-            // when
-            await wrapper.vm.handleFileDialog({
-                target: {
-                    files,
-                },
-            } as unknown as Event);
-            await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
 
-            // then
-            expect(wrapper.vm.computedMessages).toHaveLength(1);
-            expect(wrapper.vm.computedMessages[0]).toEqual({
-                text: 'You can only upload files with the following extensions: image/png',
-                state: 'error',
+                // then
+                expect(wrapper.vm.computedMessages).toHaveLength(1);
+                expect(wrapper.vm.computedMessages[0]).toEqual({
+                    text: 'You can only upload files with the following extensions: image/png',
+                    state: 'error',
+                });
+            });
+
+            it('accept 타입에 맞는 파일을 추가하면 에러가 없다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/png' } });
+                const files = [createFile('test.png', 'image/png')];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+                expect(errorMessages).toHaveLength(0);
             });
         });
 
-        it('accept 타입에 맞는 파일을 추가하면 에러가 없다', async () => {
-            // given
-            const wrapper = mount(VsFileDrop, { props: { accept: 'image/png' } });
-            const files = [createFile('test.png', 'image/png')];
+        describe('확장자 형식', () => {
+            it('accept가 확장자 형식일 때 맞지 않는 파일을 추가하면 에러가 발생한다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: '.png' } });
+                const files = [createFile('test.jpg', 'image/jpeg')];
 
-            // when
-            await wrapper.vm.handleFileDialog({
-                target: {
-                    files,
-                },
-            } as unknown as Event);
-            await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
 
-            // then
-            const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
-            expect(errorMessages).toHaveLength(0);
+                // then
+                expect(wrapper.vm.computedMessages).toHaveLength(1);
+                expect(wrapper.vm.computedMessages[0]).toEqual({
+                    text: 'You can only upload files with the following extensions: .png',
+                    state: 'error',
+                });
+            });
+
+            it('accept가 확장자 형식일 때 맞는 파일을 추가하면 에러가 없다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: '.png' } });
+                const files = [createFile('test.png', 'image/png')];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+                expect(errorMessages).toHaveLength(0);
+            });
+
+            it('accept가 여러 확장자 형식일 때 허용된 파일을 추가하면 에러가 없다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: '.png, .jpg, .jpeg', multiple: true } });
+                const files = [createFile('test1.png', 'image/png'), createFile('test2.jpg', 'image/jpeg')];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+                expect(errorMessages).toHaveLength(0);
+            });
+        });
+
+        describe('와일드카드 형식', () => {
+            it('accept가 와일드카드 형식일 때 매칭되는 파일을 추가하면 에러가 없다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/*', multiple: true } });
+                const files = [
+                    createFile('test1.png', 'image/png'),
+                    createFile('test2.jpg', 'image/jpeg'),
+                    createFile('test3.gif', 'image/gif'),
+                ];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+                expect(errorMessages).toHaveLength(0);
+            });
+
+            it('accept가 와일드카드 형식일 때 매칭되지 않는 파일을 추가하면 에러가 발생한다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/*' } });
+                const files = [createFile('test.pdf', 'application/pdf')];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                expect(wrapper.vm.computedMessages).toHaveLength(1);
+                expect(wrapper.vm.computedMessages[0]).toEqual({
+                    text: 'You can only upload files with the following extensions: image/*',
+                    state: 'error',
+                });
+            });
+        });
+
+        describe('혼합 형식', () => {
+            it('MIME 타입과 확장자 형식이 혼합되어 있을 때 허용된 파일을 추가하면 에러가 없다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/png, .jpg, .pdf', multiple: true } });
+                const files = [
+                    createFile('test1.png', 'image/png'),
+                    createFile('test2.jpg', 'image/jpeg'),
+                    createFile('test3.pdf', 'application/pdf'),
+                ];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
+                expect(errorMessages).toHaveLength(0);
+            });
+
+            it('MIME 타입, 확장자, 와일드카드가 혼합되어 있을 때 허용되지 않은 파일을 추가하면 에러가 발생한다', async () => {
+                // given
+                const wrapper = mount(VsFileDrop, { props: { accept: 'image/png, .jpg, video/*' } });
+                const files = [createFile('test.pdf', 'application/pdf')];
+
+                // when
+                await wrapper.vm.handleFileDialog({
+                    target: {
+                        files,
+                    },
+                } as unknown as Event);
+                await wrapper.vm.$nextTick();
+                wrapper.vm.validate();
+
+                // then
+                expect(wrapper.vm.computedMessages).toHaveLength(1);
+                expect(wrapper.vm.computedMessages[0]).toEqual({
+                    text: 'You can only upload files with the following extensions: image/png, .jpg, video/*',
+                    state: 'error',
+                });
+            });
         });
     });
 

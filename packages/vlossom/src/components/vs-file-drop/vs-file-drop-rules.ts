@@ -37,8 +37,30 @@ export function useVsFileDropRules(
     function acceptCheck(v: FileDropValueType): string {
         if (accept.value && v.length > 0) {
             const acceptedTypes = accept.value.split(',').map((type) => type.trim());
-            const files = v.map((file) => file.type);
-            const invalidFiles = files.filter((file) => !acceptedTypes.includes(file));
+
+            const invalidFiles = v.filter((file) => {
+                const fileType = file.type;
+                const fileName = file.name;
+                const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+
+                return !acceptedTypes.some((acceptedType) => {
+                    if (acceptedType === fileType) {
+                        return true;
+                    }
+
+                    if (acceptedType.startsWith('.') && acceptedType.toLowerCase() === fileExtension) {
+                        return true;
+                    }
+
+                    if (acceptedType.includes('*')) {
+                        const regex = new RegExp('^' + acceptedType.replace('*', '.*') + '$');
+                        return regex.test(fileType);
+                    }
+
+                    return false;
+                });
+            });
+
             if (invalidFiles.length > 0) {
                 return `You can only upload files with the following extensions: ${acceptedTypes.join(', ')}`;
             }
