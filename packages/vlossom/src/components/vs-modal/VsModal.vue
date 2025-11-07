@@ -1,9 +1,3 @@
-<template>
-    <div v-if="false">
-        <slot />
-    </div>
-</template>
-
 <script lang="ts">
 import { defineComponent, ref, toRefs, watch, computed, type Component, type PropType } from 'vue';
 import { VsComponent, OVERLAY_CLOSE, type SizeProp } from '@/declaration';
@@ -66,7 +60,7 @@ export default defineComponent({
             }
         });
 
-        return {};
+        return () => null;
     },
 });
 </script>
