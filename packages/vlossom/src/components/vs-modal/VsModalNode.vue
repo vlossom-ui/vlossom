@@ -35,11 +35,12 @@ export default defineComponent({
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
         escClose: { type: Boolean, default: true },
+        dimClose: { type: Boolean, default: true },
         size: {
             type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
         },
     },
-    emits: ['close'],
+    emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks } = toRefs(props);
 
@@ -106,6 +107,8 @@ export default defineComponent({
         const { open, close } = useOverlay(id, computedCallbacks, escClose);
 
         function onClickDimmed() {
+            emit('click-dimmed');
+
             if (dimClose.value) {
                 close();
                 nextTick(() => {

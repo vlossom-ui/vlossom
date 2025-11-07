@@ -1,11 +1,6 @@
 <template>
     <Transition name="dimmed">
-        <div
-            v-if="show"
-            :class="['vs-dimmed', { 'vs-dimmed-on': show }]"
-            :style="styleSetVariables"
-            aria-hidden="true"
-        />
+        <div v-if="show" class="vs-dimmed" :style="styleSetVariables" aria-hidden="true" />
     </Transition>
 </template>
 
