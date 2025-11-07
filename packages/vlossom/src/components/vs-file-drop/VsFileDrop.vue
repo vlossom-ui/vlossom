@@ -247,11 +247,7 @@ export default defineComponent({
                 return;
             }
 
-            if (multiple.value) {
-                inputValue.value = [...inputValue.value, ...files];
-            } else {
-                inputValue.value = files;
-            }
+            inputValue.value = files;
 
             setComponentMessages();
             emit('update:changed', files);
