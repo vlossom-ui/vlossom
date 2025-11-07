@@ -174,13 +174,7 @@ export default defineComponent({
                     readonly,
                     messages: computed(() => [...messages.value, ...componentMessages.value]),
                     rules,
-                    defaultRules: computed(() => [
-                        requiredCheck,
-                        maxCheck,
-                        minCheck,
-                        acceptCheck,
-                        verifyMultipleFileUpload,
-                    ]),
+                    defaultRules: computed(() => [requiredCheck, acceptCheck]),
                     state,
                     callbacks: {
                         onMounted: () => {
@@ -221,9 +215,34 @@ export default defineComponent({
             fileDropRef.value?.click();
         }
 
-        function setInputValue(files: File[]): void {
+        function setComponentMessages(): void {
             componentMessages.value = [];
 
+            if (inputValue.value.length > 1) {
+                componentMessages.value.push({ state: 'info' as UIState, text: `${inputValue.value.length} files` });
+            }
+
+            const multipleFileUploadErrors = [verifyMultipleFileUpload(inputValue.value)].filter(Boolean);
+
+            if (multipleFileUploadErrors.length) {
+                componentMessages.value.push(
+                    ...multipleFileUploadErrors.map((error) => ({ state: 'error' as UIState, text: error })),
+                );
+            }
+
+            const minError = minCheck(inputValue.value);
+            const maxError = maxCheck(inputValue.value);
+
+            if (minError) {
+                componentMessages.value.push({ state: 'error' as UIState, text: minError });
+            }
+
+            if (maxError) {
+                componentMessages.value.push({ state: 'error' as UIState, text: maxError });
+            }
+        }
+
+        function setInputValue(files: File[]): void {
             if (!files || files.length === 0) {
                 return;
             }
@@ -234,10 +253,7 @@ export default defineComponent({
                 inputValue.value = files;
             }
 
-            if (files.length > 1) {
-                componentMessages.value.push({ state: 'info' as UIState, text: `${files.length} files` });
-            }
-
+            setComponentMessages();
             emit('update:changed', files);
         }
 
@@ -249,6 +265,7 @@ export default defineComponent({
                 return;
             }
 
+            setComponentMessages();
             setInputValue(files);
         }
 
@@ -262,6 +279,7 @@ export default defineComponent({
                 return;
             }
 
+            setComponentMessages();
             setInputValue(files);
         }
 
@@ -274,6 +292,7 @@ export default defineComponent({
             const filteredFiles = files.filter((file) => file !== target);
 
             inputValue.value = filteredFiles;
+            setComponentMessages();
         }
 
         return {
