@@ -31,11 +31,6 @@
         outline: 2px dashed var(--vs-line-color);
     }
 
-    &.vs-dragging-shadow {
-        box-shadow: 0 0 2px 2px var(--vs-line-color) inset;
-        background-color: var(--vs-file-drop-dragBackgroundColor, var(--vs-no-color));
-    }
-
     &.vs-small {
         height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
 
