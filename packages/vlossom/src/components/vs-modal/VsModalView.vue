@@ -1,6 +1,6 @@
 <template>
     <div class="vs-modal-view" :class="{ 'vs-modal-fixed': isFixed }">
-        <TransitionGroup name="modal" :duration="ANIMATION_DURATION">
+        <TransitionGroup name="modal" :duration="ANIMATION_DURATION" appear>
             <vs-modal-node
                 v-for="modal in modals"
                 :key="modal.id"
