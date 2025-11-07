@@ -237,6 +237,8 @@ export default defineComponent({
             if (files.length > 1) {
                 componentMessages.value.push({ state: 'info' as UIState, text: `${files.length} files` });
             }
+
+            emit('update:changed', files);
         }
 
         function handleFileDialog(event: Event): void {
@@ -248,7 +250,6 @@ export default defineComponent({
             }
 
             setInputValue(files);
-            emit('update:changed', files);
         }
 
         function handleFileDrop(event: DragEvent): void {
