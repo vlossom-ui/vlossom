@@ -20,9 +20,6 @@
     background-color: var(--vs-file-drop-backgroundColor, var(--vs-no-color));
     width: var(--vs-file-drop-width, 100%);
     height: var(--vs-file-drop-height, auto);
-    color: var(--vs-file-drop-fontColor, var(--vs-font-color));
-    font-weight: var(--vs-file-drop-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-file-drop-fontSize, var(--vs-font-size));
 
     &:hover,
     &:focus-within {
@@ -41,7 +38,6 @@
 
     &.vs-small {
         height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
-        font-size: var(--vs-file-drop-fontSize, var(--vs-font-size-sm));
 
         .vs-file-drop-placeholder {
             width: var(--vs-file-drop-width, var(--vs-default-comp-width));
@@ -87,13 +83,13 @@
                     @apply block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
 
                     .vs-file-drop-file-name {
-                        color: var(--vs-file-drop-fontColor, var(--vs-font-color));
-                        font-size: var(--vs-file-drop-fontSize, var(--vs-font-size));
+                        color: var(--vs-font-color);
+                        font-size: var(--vs-font-size);
                     }
 
                     .vs-file-drop-file-size {
                         @apply ml-2;
-                        color: var(--vs-file-drop-fontColor, var(--vs-font-color));
+                        color: var(--vs-font-color);
                         font-size: var(--vs-font-size-xs);
                     }
                 }
