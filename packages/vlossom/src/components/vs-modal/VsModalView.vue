@@ -75,7 +75,9 @@ export default defineComponent({
                 if (lock) {
                     useScrollLock(containerElement.value).lock();
                 } else {
-                    useScrollLock(containerElement.value).unlock();
+                    setTimeout(() => {
+                        useScrollLock(containerElement.value).unlock();
+                    }, ANIMATION_DURATION);
                 }
             },
             { immediate: true },
