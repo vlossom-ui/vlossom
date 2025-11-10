@@ -343,6 +343,38 @@ describe('vs-file-drop', () => {
         });
     });
 
+    describe('focus() / blur() 메서드', () => {
+        it('focus 메서드를 호출하면 file input에 포커스가 설정된다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { attachTo: document.body });
+            await wrapper.vm.$nextTick();
+            const input = wrapper.find('input[type="file"]').element as HTMLInputElement;
+            const focusSpy = vi.spyOn(input, 'focus');
+
+            // when
+            wrapper.vm.focus();
+
+            // then
+            expect(focusSpy).toHaveBeenCalled();
+            wrapper.unmount();
+        });
+
+        it('blur 메서드를 호출하면 file input의 포커스가 해제된다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { attachTo: document.body });
+            await wrapper.vm.$nextTick();
+            const input = wrapper.find('input[type="file"]').element as HTMLInputElement;
+            const blurSpy = vi.spyOn(input, 'blur');
+
+            // when
+            wrapper.vm.blur();
+
+            // then
+            expect(blurSpy).toHaveBeenCalled();
+            wrapper.unmount();
+        });
+    });
+
     describe('placeholder', () => {
         it('content 영역에 placeholder가 노출된다', () => {
             // given, when
@@ -522,6 +554,38 @@ describe('vs-file-drop', () => {
             expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
             expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(newFiles);
+        });
+
+        it('파일을 삭제한 후 같은 파일을 다시 업로드할 수 있다', async () => {
+            // given
+            const file = createFile('test.png');
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [] } });
+
+            // 첫 번째 파일 업로드
+            const mockInput = { files: [file], value: 'test.png' };
+            await wrapper.vm.handleFileDialog({
+                target: mockInput,
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([file]);
+
+            // 파일 삭제
+            const clearButton = wrapper.find('.vs-file-drop-close-button');
+            await clearButton.trigger('click');
+            await wrapper.vm.$nextTick();
+
+            expect(wrapper.emitted('update:modelValue')?.[1][0]).toEqual([]);
+
+            // when: 같은 파일 다시 업로드
+            const mockInput2 = { files: [file], value: '' };
+            await wrapper.vm.handleFileDialog({
+                target: mockInput2,
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[2][0]).toEqual([file]);
         });
     });
 

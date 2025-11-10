@@ -151,7 +151,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const inputValue: Ref<FileDropValueType> = ref(modelValue.value ?? []);
-        const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('inputRef');
+        const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('fileDropRef');
         const dragging = ref(false);
         const componentMessages: Ref<Message<FileDropValueType>[]> = ref([]);
 
@@ -287,6 +287,8 @@ export default defineComponent({
             }
 
             setInputValue(files);
+
+            target.value = '';
         }
 
         function handleFileDrop(event: DragEvent) {
@@ -309,6 +311,14 @@ export default defineComponent({
 
             inputValue.value = [];
             componentMessages.value = [];
+        }
+
+        function focus() {
+            fileDropRef.value?.focus();
+        }
+
+        function blur() {
+            fileDropRef.value?.blur();
         }
 
         return {
@@ -335,6 +345,8 @@ export default defineComponent({
             handleFileDrop,
             onClear,
             closeIcon,
+            focus,
+            blur,
         };
     },
 });
