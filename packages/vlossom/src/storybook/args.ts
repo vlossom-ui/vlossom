@@ -7,12 +7,10 @@ export const colorScheme = {
 
 export const modelArgTypes = {
     modelValue: { control: false as any, table: { category: 'Model' } },
-    changed: { control: 'boolean' as any, table: { category: 'Model' } },
-    valid: { control: 'boolean' as any, table: { category: 'Model' } },
     modelModifiers: { control: 'object' as any, table: { category: 'Model' } },
 };
 
-export const inputWrapperPropsArgTypes = {
+export const inputPropsArgTypes = {
     disabled: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     hidden: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     id: { control: 'text' as any, table: { category: 'Input Wrapper Props' } },
@@ -21,9 +19,6 @@ export const inputWrapperPropsArgTypes = {
     noMessages: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     required: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     small: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
-};
-
-export const inputPropsArgTypes = {
     messages: { control: 'object' as any, table: { category: 'Input Props' } },
     name: { control: 'text' as any, table: { category: 'Input Props' } },
     noDefaultRules: { control: 'boolean' as any, table: { category: 'Input Props' } },
@@ -35,6 +30,8 @@ export const inputPropsArgTypes = {
         options: ['idle', 'success', 'error', 'info', 'warning'],
         table: { category: 'Input Props' },
     },
+    changed: { control: 'boolean' as any, table: { category: 'Model' } },
+    valid: { control: 'boolean' as any, table: { category: 'Model' } },
 };
 
 export const inputOptionPropsArgTypes = {

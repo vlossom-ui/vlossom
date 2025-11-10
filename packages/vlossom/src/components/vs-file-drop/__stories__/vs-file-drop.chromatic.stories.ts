@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import {
     colorScheme,
     modelArgTypes,
-    inputWrapperPropsArgTypes,
     inputPropsArgTypes,
     validationArgTypes,
     layoutArgTypes,
@@ -78,7 +77,6 @@ const meta: Meta<typeof VsFileDrop> = {
     argTypes: {
         colorScheme,
         ...modelArgTypes,
-        ...inputWrapperPropsArgTypes,
         ...inputPropsArgTypes,
         ...validationArgTypes,
         ...layoutArgTypes,
