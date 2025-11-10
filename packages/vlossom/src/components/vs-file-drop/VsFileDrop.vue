@@ -150,7 +150,7 @@ export default defineComponent({
             height,
         } = toRefs(props);
 
-        const inputValue: Ref<FileDropValueType> = ref(modelValue.value ?? []);
+        const inputValue: Ref<FileDropValueType> = ref([]);
         const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('fileDropRef');
         const dragging = ref(false);
         const componentMessages: Ref<Message<FileDropValueType>[]> = ref([]);
