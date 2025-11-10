@@ -67,27 +67,15 @@
                 @apply flex w-full max-w-full min-w-0;
             }
 
-            .vs-chip {
-                @apply pointer-events-none flex w-full max-w-full min-w-0;
+            .vs-file-drop-file-name {
+                color: var(--vs-font-color);
+                font-size: var(--vs-font-size);
+            }
 
-                .vs-chip-close-button {
-                    pointer-events: auto;
-                }
-
-                .vs-chip-content {
-                    @apply block w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
-
-                    .vs-file-drop-file-name {
-                        color: var(--vs-font-color);
-                        font-size: var(--vs-font-size);
-                    }
-
-                    .vs-file-drop-file-size {
-                        @apply ml-2;
-                        color: var(--vs-font-color);
-                        font-size: var(--vs-font-size-xs);
-                    }
-                }
+            .vs-file-drop-file-size {
+                @apply ml-2;
+                color: var(--vs-font-color);
+                font-size: var(--vs-font-size-xs);
             }
         }
 
