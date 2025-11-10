@@ -5,6 +5,7 @@ export type * from './vs-block/types';
 export type * from './vs-button/types';
 export type * from './vs-checkbox/types';
 export type * from './vs-chip/types';
+export type * from './vs-confirm/types';
 export type * from './vs-container/types';
 export type * from './vs-dimmed/types';
 export type * from './vs-divider/types';
