@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import VsFileDrop from '../VsFileDrop.vue';
 import { h } from 'vue';
 
@@ -46,15 +46,17 @@ describe('vs-file-drop', () => {
             // given
             const files = [createFile('a.png'), createFile('b.png')];
             const wrapper = mount(VsFileDrop, { props: { modelValue: files } });
+            await flushPromises();
 
             // when
             const clearButton = wrapper.find('.vs-file-drop-close-button');
             await clearButton.trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.length).toBe(1);
-            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([]);
+            const emittedEvents = wrapper.emitted('update:modelValue');
+            expect(emittedEvents).toBeTruthy();
+            expect(emittedEvents?.length).toBe(2);
+            expect(emittedEvents?.[1][0]).toEqual([]);
         });
     });
 
@@ -128,9 +130,10 @@ describe('vs-file-drop', () => {
             expect(clearButton.exists()).toBeFalsy();
         });
 
-        it('파일이 있고 noClear가 false일 때 파일 제거 버튼이 노출된다', () => {
+        it('파일이 있고 noClear가 false일 때 파일 제거 버튼이 노출된다', async () => {
             // given
             const wrapper = mount(VsFileDrop, { props: { modelValue: [createFile()], noClear: false } });
+            await flushPromises();
 
             // when
             const clearButton = wrapper.find('.vs-file-drop-close-button');
@@ -292,14 +295,16 @@ describe('vs-file-drop', () => {
             // given
             const files = [createFile('a.png'), createFile('b.png')];
             const wrapper = mount(VsFileDrop, { props: { modelValue: files } });
+            await flushPromises();
 
             // when
             wrapper.vm.clear();
             await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([]);
+            const emittedEvents = wrapper.emitted('update:modelValue');
+            expect(emittedEvents).toBeTruthy();
+            expect(emittedEvents?.[1][0]).toEqual([]);
         });
 
         it('clear 메서드 호출 시 file input의 value도 초기화된다', async () => {
@@ -948,9 +953,10 @@ describe('vs-file-drop', () => {
             expect(input.attributes('disabled')).toBeDefined();
         });
 
-        it('전체 파일 제거 버튼으로 탭 이동이 불가능하다', () => {
+        it('전체 파일 제거 버튼으로 탭 이동이 불가능하다', async () => {
             // given
             const wrapper = mount(VsFileDrop, { props: { modelValue: [createFile()] } });
+            await flushPromises();
 
             // when
             const clearBtn = wrapper.find('.vs-file-drop-close-button');
