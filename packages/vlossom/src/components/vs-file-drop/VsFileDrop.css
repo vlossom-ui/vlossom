@@ -95,4 +95,14 @@
             }
         }
     }
+
+    .vs-file-drop-close-button {
+        @apply absolute top-2 right-2 flex shrink-0 cursor-pointer items-center justify-center;
+
+        border: var(--vs-file-drop-border, 1px solid var(--vs-line-color));
+        border-radius: 50%;
+        width: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
+        height: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
+        color: var(--vs-file-drop-fontColor, var(--vs-comp-font));
+    }
 }

@@ -44,35 +44,37 @@
 
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
+                    <div class="vs-file-drop-placeholder">
+                        <i class="placeholder-icon" :class="{ 'size-4': small, 'size-6': !small }">
+                            <vs-render :content="attachFileIcon" />
+                        </i>
+                        <span class="placeholder-text">{{ placeholder }}</span>
+                    </div>
+
                     <div v-if="hasValue" class="vs-file-drop-files">
                         <div
                             v-for="(file, index) in inputValue as File[]"
                             :key="`${file.name}-${index}`"
                             class="vs-file-drop-file"
                         >
-                            <vs-chip
-                                :id="file.name"
-                                :closable="!computedDisabled"
-                                :color-scheme
-                                :small
-                                @close="handleFileRemove(file)"
-                            >
-                                <span class="vs-file-drop-file-name">{{ file.name }}</span>
-                                <span class="vs-file-drop-file-size">
-                                    {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
-                                </span>
+                            <vs-chip :id="file.name" :color-scheme :small :style-set="{ width: '100%' }">
+                                <span class="vs-file-drop-file-name">{{ file.name }} </span>
+                                <span class="vs-file-drop-file-size"> </span>
                             </vs-chip>
                         </div>
                     </div>
-
-                    <div v-else class="vs-file-drop-placeholder">
-                        <i class="placeholder-icon" :class="{ 'size-4': small, 'size-6': !small }">
-                            <vs-render :content="attachFileIcon" />
-                        </i>
-                        <span class="placeholder-text">{{ placeholder }}</span>
-                    </div>
                 </slot>
             </div>
+            <button
+                v-if="!noClear && hasValue && !computedReadonly && !computedDisabled"
+                type="button"
+                class="vs-file-drop-close-button"
+                aria-label="Clear"
+                tabindex="-1"
+                @click.prevent.stop="onClear()"
+            >
+                <vs-render :content="closeIcon" />
+            </button>
         </div>
 
         <template #messages v-if="!noMessages">
@@ -92,12 +94,14 @@ import { stringUtil, propsUtil } from '@/utils';
 import { attachFileIcon } from './icons';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
+import { closeIcon } from '@/icons';
 
 const name = VsComponent.VsFileDrop;
 
 export default defineComponent({
     name,
-    components: { VsInputWrapper, VsChip },
+    components: { VsInputWrapper, VsChip, VsRender },
     props: {
         ...getInputProps<FileDropValueType>(),
         ...getResponsiveProps(),
@@ -115,7 +119,9 @@ export default defineComponent({
             default: Number.MIN_SAFE_INTEGER,
             validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
         },
+        noClear: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
+
         // v-model
         modelValue: {
             type: Array as PropType<FileDropValueType>,
@@ -163,26 +169,35 @@ export default defineComponent({
             multiple,
         );
 
-        const { computedId, computedMessages, computedState, computedDisabled, computedReadonly, shake, validate } =
-            useInput(
-                { emit },
-                {
-                    inputValue,
-                    modelValue,
-                    id,
-                    disabled,
-                    readonly,
-                    messages: computed(() => [...messages.value, ...componentMessages.value]),
-                    rules,
-                    defaultRules: computed(() => [requiredCheck, acceptCheck]),
-                    state,
-                    callbacks: {
-                        onMounted: () => {
-                            inputValue.value = modelValue.value ?? [];
-                        },
+        const {
+            computedId,
+            computedMessages,
+            computedState,
+            computedDisabled,
+            computedReadonly,
+            shake,
+            validate,
+            clear,
+        } = useInput(
+            { emit },
+            {
+                inputValue,
+                modelValue,
+                id,
+                disabled,
+                readonly,
+                messages: computed(() => [...messages.value, ...componentMessages.value]),
+                rules,
+                defaultRules: computed(() => [requiredCheck, acceptCheck]),
+                state,
+                callbacks: {
+                    onMounted: () => {
+                        inputValue.value = modelValue.value ?? [];
                     },
+                    onClear,
                 },
-            );
+            },
+        );
 
         const classObj = computed(() => ({
             'vs-small': small.value,
@@ -215,45 +230,55 @@ export default defineComponent({
             fileDropRef.value?.click();
         }
 
-        function setComponentMessages(): void {
-            componentMessages.value = [];
-
+        function setFileNumberMessage() {
             if (inputValue.value.length > 1) {
                 componentMessages.value.push({ state: 'info' as UIState, text: `${inputValue.value.length} files` });
             }
+        }
 
-            const multipleFileUploadErrors = [verifyMultipleFileUpload(inputValue.value)].filter(Boolean);
+        function checkFileInputCondition(files: File[]) {
+            componentMessages.value = [];
 
-            if (multipleFileUploadErrors.length) {
-                componentMessages.value.push(
-                    ...multipleFileUploadErrors.map((error) => ({ state: 'error' as UIState, text: error })),
-                );
+            const multipleFileUploadError = verifyMultipleFileUpload(files);
+            const minError = minCheck(files);
+            const maxError = maxCheck(files);
+
+            if (multipleFileUploadError) {
+                componentMessages.value.push({ state: 'error' as UIState, text: multipleFileUploadError });
+
+                return false;
             }
-
-            const minError = minCheck(inputValue.value);
-            const maxError = maxCheck(inputValue.value);
 
             if (minError) {
                 componentMessages.value.push({ state: 'error' as UIState, text: minError });
+
+                return false;
             }
 
             if (maxError) {
                 componentMessages.value.push({ state: 'error' as UIState, text: maxError });
+
+                return false;
             }
+
+            return true;
         }
 
-        function setInputValue(files: File[]): void {
+        function setInputValue(files: File[]) {
             if (!files || files.length === 0) {
                 return;
             }
 
-            inputValue.value = files;
+            if (!checkFileInputCondition(files)) {
+                return;
+            }
 
-            setComponentMessages();
+            inputValue.value = files;
+            setFileNumberMessage();
             emit('update:changed', files);
         }
 
-        function handleFileDialog(event: Event): void {
+        function handleFileDialog(event: Event) {
             const target = event.target as HTMLInputElement;
             const files = Array.from(target.files || []);
 
@@ -261,11 +286,10 @@ export default defineComponent({
                 return;
             }
 
-            setComponentMessages();
             setInputValue(files);
         }
 
-        function handleFileDrop(event: DragEvent): void {
+        function handleFileDrop(event: DragEvent) {
             const files = Array.from(event.dataTransfer?.files || []);
 
             emit('drop', files);
@@ -275,20 +299,15 @@ export default defineComponent({
                 return;
             }
 
-            setComponentMessages();
             setInputValue(files);
         }
 
-        function handleFileRemove(target: File): void {
-            if (!target) {
-                return;
+        function onClear() {
+            if (fileDropRef.value) {
+                fileDropRef.value.value = '';
             }
 
-            const files = inputValue.value;
-            const filteredFiles = files.filter((file) => file !== target);
-
-            inputValue.value = filteredFiles;
-            setComponentMessages();
+            inputValue.value = [];
         }
 
         return {
@@ -308,11 +327,13 @@ export default defineComponent({
             stringUtil,
             attachFileIcon,
             validate,
+            clear,
             setDragging,
             openFileDialog,
             handleFileDialog,
             handleFileDrop,
-            handleFileRemove,
+            onClear,
+            closeIcon,
         };
     },
 });
