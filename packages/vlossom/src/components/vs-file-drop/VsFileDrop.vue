@@ -308,6 +308,7 @@ export default defineComponent({
             }
 
             inputValue.value = [];
+            componentMessages.value = [];
         }
 
         return {

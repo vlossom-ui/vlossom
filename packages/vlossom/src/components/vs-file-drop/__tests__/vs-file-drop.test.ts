@@ -315,6 +315,32 @@ describe('vs-file-drop', () => {
             const input = wrapper.find('input[type="file"]').element as HTMLInputElement;
             expect(input.value).toBe('');
         });
+
+        it('clear 메서드 호출 시 componentMessages가 초기화된다', async () => {
+            // given
+            const files = [createFile('a.png'), createFile('b.png')];
+            const wrapper = mount(VsFileDrop, { props: { modelValue: files, multiple: true } });
+
+            // 파일을 추가하여 componentMessages 생성
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            // componentMessages에 info 메시지가 있는지 확인
+            const infoMessagesBefore = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessagesBefore.length).toBeGreaterThan(0);
+
+            // when
+            wrapper.vm.clear();
+            await wrapper.vm.$nextTick();
+
+            // then
+            const infoMessagesAfter = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
+            expect(infoMessagesAfter).toHaveLength(0);
+        });
     });
 
     describe('placeholder', () => {
