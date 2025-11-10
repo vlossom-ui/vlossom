@@ -22,7 +22,7 @@
     min-height: var(--vs-chip-height, var(--vs-default-comp-height-sm));
     color: var(--vs-chip-fontColor, var(--vs-comp-font));
     font-size: var(--vs-font-size-sm);
-    line-height: 1;
+    line-height: 2;
     user-select: none;
 
     .vs-icon-container {
@@ -36,7 +36,7 @@
     }
 
     .vs-chip-close-button {
-        @apply cursor-pointer;
+        @apply shrink-0 cursor-pointer;
     }
 
     &:has(.vs-chip-icon) {
@@ -48,9 +48,8 @@
     }
 
     .vs-chip-content {
-        @apply flex items-center justify-center;
+        @apply w-full truncate text-center;
         padding: 0 0.4rem;
-        white-space: nowrap;
     }
 
     &.vs-small {
