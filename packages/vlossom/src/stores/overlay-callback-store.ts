@@ -95,9 +95,3 @@ export class OverlayCallbackStore {
         }
     }
 }
-
-const overlayCallbackStore = new OverlayCallbackStore();
-
-export function useOverlayCallbackStore() {
-    return overlayCallbackStore;
-}

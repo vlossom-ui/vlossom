@@ -26,9 +26,3 @@ export class OverlayContainerStore {
         this._overlayViewMap.value.delete(id);
     }
 }
-
-const overlayContainerStore = new OverlayContainerStore();
-
-export function useOverlayContainerStore() {
-    return overlayContainerStore;
-}

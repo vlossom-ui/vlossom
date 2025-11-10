@@ -38,9 +38,3 @@ export class OptionsStore {
         return this._styleSet.value[styleSetName]?.[component] || {};
     }
 }
-
-const optionsStore = new OptionsStore();
-
-export function useOptionsStore() {
-    return optionsStore;
-}

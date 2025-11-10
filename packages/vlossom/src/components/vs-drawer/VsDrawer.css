@@ -15,10 +15,6 @@
 
     position: var(--vs-drawer-position, absolute);
 
-    &.vs-drawer-dimmed {
-        @apply pointer-events-auto;
-    }
-
     .vs-drawer-content {
         @apply pointer-events-auto absolute;
 

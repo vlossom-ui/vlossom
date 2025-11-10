@@ -11,7 +11,6 @@ import {
     nextTick,
     type Ref,
     type ComponentPublicInstance,
-    type PropType,
 } from 'vue';
 import { VsComponent } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
@@ -21,7 +20,7 @@ export default defineComponent({
     name,
     props: {
         focusLock: { type: Boolean, default: true },
-        initialFocusRef: { type: Object as PropType<HTMLElement | null>, default: null },
+        initialFocusRef: { type: Object, default: null },
     },
     setup(props, { slots, expose }) {
         const { focusLock, initialFocusRef } = toRefs(props);

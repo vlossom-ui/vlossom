@@ -31,7 +31,7 @@
 </template>
 ```
 
-## Props
+### Props
 
 | Prop          | Type                        | Default | Required | Description                                               |
 | ------------- | --------------------------- | ------- | -------- | --------------------------------------------------------- |
@@ -41,7 +41,7 @@
 | `primary`     | `boolean`                   | `true`  | -        | 주요 스타일 적용 여부                                     |
 | `timeout`     | `number`                    | `5000`  | -        | 자동 닫기 시간 (밀리초), `autoClose`가 `true`일 때만 적용 |
 
-## Types
+### Types
 
 ```typescript
 interface VsToastStyleSet {
@@ -56,19 +56,19 @@ interface VsToastStyleSet {
 }
 ```
 
-## Slots
+### Slots
 
 | Slot      | Description                 |
 | --------- | --------------------------- |
 | `default` | 토스트 내부에 표시할 콘텐츠 |
 
-## Events
+### Events
 
 | Event   | Description                                              | Payload |
 | ------- | -------------------------------------------------------- | ------- |
 | `close` | 토스트가 닫힐 때 발생 (닫기 버튼 클릭 또는 자동 닫기 시) | -       |
 
-## 특징
+### 특징
 
 - **자동 닫기**: `autoClose` prop과 `timeout`을 통해 지정된 시간 후 자동으로 닫힘
 - **호버 일시정지**: 마우스를 올리면 타이머가 설정되어 있더라도 닫히지 않게 처리함
@@ -98,7 +98,7 @@ interface VsToastStyleSet {
 
 ---
 
-## 컴포넌트 관계
+### 컴포넌트 관계
 
 `VsToastView`는 내부적으로 `VsToast` 컴포넌트를 사용하여 각 토스트 메시지를 렌더링합니다.
 `toast-plugin`을 통해 토스트를 추가하면, `VsToastView`가 자동으로 마운트되고 해당 토스트가 적절한 위치에 표시됩니다.

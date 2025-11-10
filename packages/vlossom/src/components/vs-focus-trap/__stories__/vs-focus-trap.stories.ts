@@ -27,7 +27,6 @@ const meta: Meta<typeof VsFocusTrap> = {
     },
     args: {
         focusLock: true,
-        initialFocusRef: null,
     },
 };
 

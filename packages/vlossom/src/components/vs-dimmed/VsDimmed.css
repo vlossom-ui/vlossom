@@ -4,7 +4,7 @@
     --vs-dimmed-backgroundColor: initial;
     --vs-dimmed-opacity: initial;
 
-    @apply absolute top-0 left-0 h-full w-full;
+    @apply pointer-events-auto absolute top-0 left-0 h-full w-full;
 
     opacity: var(--vs-dimmed-opacity, 0.4);
     background-color: var(--vs-dimmed-backgroundColor, var(--vs-black));
@@ -19,5 +19,3 @@
 .dimmed-leave-to {
     opacity: 0;
 }
-
-
