@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import {
+    colorScheme,
+    getColorSchemeTemplate,
+    chromaticParameters,
+    modelArgTypes,
+    inputWrapperPropsArgTypes,
+    inputPropsArgTypes,
+    validationArgTypes,
+    layoutArgTypes,
+    styleArgTypes,
+} from '@/storybook';
 import VsFileDrop from './../VsFileDrop.vue';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import { useVlossom } from '@/framework';
@@ -44,29 +54,7 @@ const meta: Meta<typeof VsFileDrop> = {
         label: 'File Drop',
     },
     argTypes: {
-        // Model
-        modelValue: {
-            control: false,
-            description: 'v-model 값 (File[])',
-            table: { category: 'Model' },
-        },
-        changed: {
-            control: 'boolean',
-            description: '값이 변경되었는지 여부 (v-model:changed)',
-            table: { category: 'Model' },
-        },
-        valid: {
-            control: 'boolean',
-            description: '검증 통과 여부 (v-model:valid)',
-            table: { category: 'Model' },
-        },
-
-        // FileDrop 속성
-        placeholder: {
-            control: 'text',
-            description: '플레이스홀더 텍스트',
-            table: { category: 'FileDrop Props' },
-        },
+        colorScheme,
         accept: {
             control: 'text',
             description: '허용할 파일 타입 (예: ".png,.jpg,.pdf")',
@@ -82,115 +70,12 @@ const meta: Meta<typeof VsFileDrop> = {
             description: '컴포넌트 높이 (string | number | Breakpoints)',
             table: { category: 'FileDrop Props', defaultValue: { summary: 'auto' } },
         },
-
-        // 공통 Props
-        colorScheme,
-        label: {
-            control: 'text',
-            description: '라벨 텍스트',
-            table: { category: 'Common Props' },
-        },
-        noLabel: {
-            control: 'boolean',
-            description: '라벨 숨김',
-            table: { category: 'Common Props' },
-        },
-        disabled: {
-            control: 'boolean',
-            description: '비활성화 상태',
-            table: { category: 'Common Props' },
-        },
-        readonly: {
-            control: 'boolean',
-            description: '읽기 전용 상태',
-            table: { category: 'Common Props' },
-        },
-        hidden: {
-            control: 'boolean',
-            description: '숨김 상태',
-            table: { category: 'Common Props' },
-        },
-        required: {
-            control: 'boolean',
-            description: '필수 입력 여부',
-            table: { category: 'Common Props' },
-        },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-            table: { category: 'Common Props' },
-        },
-        state: {
-            control: 'select',
-            options: ['idle', 'success', 'error', 'info', 'warning'],
-            description: 'FileDrop 상태',
-            table: { category: 'Common Props', defaultValue: { summary: 'idle' } },
-        },
-
-        // Validation
-        min: {
-            control: 'number',
-            description: '최소 파일 개수',
-            table: { category: 'Validation' },
-        },
-        max: {
-            control: 'number',
-            description: '최대 파일 개수',
-            table: { category: 'Validation' },
-        },
-        rules: {
-            control: 'object',
-            description: '검증 규칙 배열',
-            table: { category: 'Validation' },
-        },
-        noDefaultRules: {
-            control: 'boolean',
-            description: '기본 검증 규칙 비활성화',
-            table: { category: 'Validation' },
-        },
-
-        // Message
-        messages: {
-            control: 'object',
-            description: '메시지 배열',
-            table: { category: 'Message' },
-        },
-        noMessages: {
-            control: 'boolean',
-            description: '메시지 영역 숨김',
-            table: { category: 'Message' },
-        },
-
-        // Layout
-        width: {
-            control: 'text',
-            description: 'FileDrop 너비 (string | number | Breakpoints)',
-            table: { category: 'Layout' },
-        },
-        grid: {
-            control: 'text',
-            description: 'Grid 설정 (string | number | Breakpoints)',
-            table: { category: 'Layout' },
-        },
-
-        // Style
-        styleSet: {
-            control: 'object',
-            description: '커스텀 스타일 객체',
-            table: { category: 'Style' },
-        },
-
-        // Native HTML
-        id: {
-            control: 'text',
-            description: 'Input ID',
-            table: { category: 'Native Props' },
-        },
-        name: {
-            control: 'text',
-            description: 'Input name 속성',
-            table: { category: 'Native Props' },
-        },
+        ...modelArgTypes,
+        ...inputWrapperPropsArgTypes,
+        ...inputPropsArgTypes,
+        ...validationArgTypes,
+        ...layoutArgTypes,
+        ...styleArgTypes,
     },
 };
 

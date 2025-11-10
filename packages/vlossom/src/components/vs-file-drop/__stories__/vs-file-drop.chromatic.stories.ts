@@ -2,12 +2,11 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import {
     colorScheme,
     modelArgTypes,
-    commonPropsArgTypes,
+    inputWrapperPropsArgTypes,
+    inputPropsArgTypes,
     validationArgTypes,
-    messageArgTypes,
     layoutArgTypes,
     styleArgTypes,
-    nativePropsArgTypes,
 } from '@/storybook';
 import VsFileDrop from './../VsFileDrop.vue';
 
@@ -77,18 +76,13 @@ const meta: Meta<typeof VsFileDrop> = {
         `,
     }),
     argTypes: {
-        ...modelArgTypes,
-        placeholder: { control: 'text', table: { category: 'FileDrop Props' } },
-        accept: { control: 'text', table: { category: 'FileDrop Props' } },
-        multiple: { control: 'boolean', table: { category: 'FileDrop Props' } },
-        height: { control: 'text', table: { category: 'FileDrop Props' } },
         colorScheme,
-        ...commonPropsArgTypes,
+        ...modelArgTypes,
+        ...inputWrapperPropsArgTypes,
+        ...inputPropsArgTypes,
         ...validationArgTypes,
-        ...messageArgTypes,
         ...layoutArgTypes,
         ...styleArgTypes,
-        ...nativePropsArgTypes,
     },
 };
 
