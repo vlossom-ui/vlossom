@@ -1,7 +1,6 @@
 import { markRaw, type Component } from 'vue';
 import { stringUtil } from '@/utils';
-import type { ModalOptions } from '@/declaration';
-import type { ModalInfo } from './types';
+import type { ModalInfo, ModalOptions } from './types';
 
 export function createModalInfo(content: string | Component, options: ModalOptions): ModalInfo {
     return {

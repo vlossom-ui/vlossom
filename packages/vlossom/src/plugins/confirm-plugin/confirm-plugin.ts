@@ -8,16 +8,16 @@ import type { ConfirmModalOptions, ConfirmPlugin } from './types';
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
-            const container = options.container || 'body';
-            const confirmPropNames = Object.keys(VsConfirm.type.props) as (keyof ConfirmModalOptions)[];
-            const props = objectUtil.pick(options, confirmPropNames);
+            const modalOptions = options?.modalOptions || {};
+            const container = modalOptions.container || 'body';
+            const props = objectUtil.omit(options, ['modalOptions']);
 
             return new Promise((resolve) => {
                 const innerComponent = h(VsConfirm, props, { default: () => content });
                 const modalId = modalPlugin.open(innerComponent, {
-                    ...options,
+                    ...modalOptions,
                     callbacks: {
-                        ...options.callbacks,
+                        ...modalOptions?.callbacks,
                         [CONFIRM_OK]: () => {
                             modalPlugin.closeWithId(container, modalId);
                             resolve(true);

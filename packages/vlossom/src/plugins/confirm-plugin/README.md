@@ -49,23 +49,27 @@ if (confirmed) {
 
 ```ts
 interface ConfirmModalOptions {
-    container?: string;
     colorScheme?: ColorScheme;
     styleSet?: string | VsConfirmStyleSet;
-    callbacks?: OverlayCallbacks;
-    dimClose?: boolean;
-    dimmed?: boolean;
-    escClose?: boolean;
-    focusLock?: boolean;
-    hideScroll?: boolean;
-    id?: string;
-    initialFocusRef?: Record<string, any>;
-    scrollLock?: boolean;
-    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
-
     okText?: string;
     cancelText?: string;
     swapButtons?: boolean;
+
+    modalOption?: {
+        container?: string;
+        colorScheme?: ColorScheme;
+        styleSet?: string | VsModalNodeStyleSet;
+        callbacks?: OverlayCallbacks;
+        dimClose?: boolean;
+        dimmed?: boolean;
+        escClose?: boolean;
+        focusLock?: boolean;
+        hideScroll?: boolean;
+        id?: string;
+        initialFocusRef?: Record<string, any>;
+        scrollLock?: boolean;
+        size?: SizeProp | { width?: SizeProp; height?: SizeProp };
+    };
 }
 ```
 

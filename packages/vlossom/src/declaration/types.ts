@@ -118,22 +118,6 @@ export interface InputComponentParams<T = unknown> {
     };
 }
 
-export interface ModalOptions<StyleSet = unknown> {
-    container?: string;
-    colorScheme?: ColorScheme;
-    styleSet?: string | StyleSet;
-    callbacks?: OverlayCallbacks;
-    dimClose?: boolean;
-    dimmed?: boolean;
-    escClose?: boolean;
-    focusLock?: boolean;
-    hideScroll?: boolean;
-    id?: string;
-    initialFocusRef?: Record<string, any>;
-    scrollLock?: boolean;
-    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
-}
-
 export interface FormRef {
     validate: () => void;
     clear: () => void;
