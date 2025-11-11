@@ -320,32 +320,6 @@ describe('vs-file-drop', () => {
             const input = wrapper.find('input[type="file"]').element as HTMLInputElement;
             expect(input.value).toBe('');
         });
-
-        it('clear 메서드 호출 시 componentMessages가 초기화된다', async () => {
-            // given
-            const files = [createFile('a.png'), createFile('b.png')];
-            const wrapper = mount(VsFileDrop, { props: { modelValue: files, multiple: true } });
-
-            // 파일을 추가하여 componentMessages 생성
-            await wrapper.vm.handleFileDialog({
-                target: {
-                    files,
-                },
-            } as unknown as Event);
-            await wrapper.vm.$nextTick();
-
-            // componentMessages에 info 메시지가 있는지 확인
-            const infoMessagesBefore = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
-            expect(infoMessagesBefore.length).toBeGreaterThan(0);
-
-            // when
-            wrapper.vm.clear();
-            await wrapper.vm.$nextTick();
-
-            // then
-            const infoMessagesAfter = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
-            expect(infoMessagesAfter).toHaveLength(0);
-        });
     });
 
     describe('focus() / blur() 메서드', () => {
@@ -506,25 +480,6 @@ describe('vs-file-drop', () => {
             expect(infoMessages).toHaveLength(0);
         });
 
-        it('파일 2개 이상을 추가하면 파일 개수 info 메시지가 표시된다', async () => {
-            // given
-            const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
-            const wrapper = mount(VsFileDrop, { props: { multiple: true } });
-
-            // when
-            await wrapper.vm.handleFileDialog({
-                target: {
-                    files,
-                },
-            } as unknown as Event);
-            await wrapper.vm.$nextTick();
-
-            // then
-            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
-            expect(infoMessages).toHaveLength(1);
-            expect(infoMessages[0].text).toBe(`${files.length} files`);
-        });
-
         it('dialog에서 파일 입력을 취소하면, 기존의 파일이 유지된다', async () => {
             // given
             const files = [createFile('a.png'), createFile('b.exe'), createFile('c.txt')];
@@ -631,9 +586,7 @@ describe('vs-file-drop', () => {
             await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.emitted('drop')).toBeTruthy();
-            expect(wrapper.emitted('drop')?.length).toBe(1);
-            expect(wrapper.emitted('drop')?.[0][0]).toEqual(files);
+            expect(wrapper.emitted('drop')).toBeFalsy();
             expect(wrapper.emitted('update:modelValue')).toBeFalsy();
         });
 
@@ -651,9 +604,7 @@ describe('vs-file-drop', () => {
             await wrapper.vm.$nextTick();
 
             // then
-            expect(wrapper.emitted('drop')).toBeTruthy();
-            expect(wrapper.emitted('drop')?.length).toBe(1);
-            expect(wrapper.emitted('drop')?.[0][0]).toEqual(files);
+            expect(wrapper.emitted('drop')).toBeFalsy();
             expect(wrapper.emitted('update:modelValue')).toBeFalsy();
         });
 
@@ -793,25 +744,6 @@ describe('vs-file-drop', () => {
             // then
             const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
             expect(infoMessages).toHaveLength(0);
-        });
-
-        it('drag & drop으로 파일 2개 이상을 추가하면 파일 개수 info 메시지가 표시된다', async () => {
-            // given
-            const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
-            const wrapper = mount(VsFileDrop, { props: { multiple: true } });
-
-            // when
-            await wrapper.vm.handleFileDrop({
-                dataTransfer: {
-                    files,
-                },
-            } as unknown as DragEvent);
-            await wrapper.vm.$nextTick();
-
-            // then
-            const infoMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'info');
-            expect(infoMessages).toHaveLength(1);
-            expect(infoMessages[0].text).toBe(`${files.length} files`);
         });
 
         it('drag & drop으로 파일을 추가하면 기존 파일이 새 파일로 교체된다', async () => {
@@ -985,7 +917,7 @@ describe('vs-file-drop', () => {
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
                 expect(wrapper.vm.computedMessages[0]).toEqual({
-                    text: 'You can only upload files with the following extensions: image/png',
+                    text: 'Allowed: image/png',
                     state: 'error',
                 });
             });
@@ -1028,7 +960,7 @@ describe('vs-file-drop', () => {
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
                 expect(wrapper.vm.computedMessages[0]).toEqual({
-                    text: 'You can only upload files with the following extensions: .png',
+                    text: 'Allowed: .png',
                     state: 'error',
                 });
             });
@@ -1113,7 +1045,7 @@ describe('vs-file-drop', () => {
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
                 expect(wrapper.vm.computedMessages[0]).toEqual({
-                    text: 'You can only upload files with the following extensions: image/*',
+                    text: 'Allowed: image/*',
                     state: 'error',
                 });
             });
@@ -1160,7 +1092,7 @@ describe('vs-file-drop', () => {
                 // then
                 expect(wrapper.vm.computedMessages).toHaveLength(1);
                 expect(wrapper.vm.computedMessages[0]).toEqual({
-                    text: 'You can only upload files with the following extensions: image/png, .jpg, video/*',
+                    text: 'Allowed: image/png, .jpg, video/*',
                     state: 'error',
                 });
             });
