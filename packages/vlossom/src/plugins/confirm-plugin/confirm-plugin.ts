@@ -22,20 +22,24 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                     callbacks: {
                         ...options.callbacks,
                         [CONFIRM_OK]: () => {
-                            resolve(true);
+                            options.callbacks?.[CONFIRM_OK]?.();
                             modalPlugin.closeWithId(container, modalId);
+                            resolve(true);
                         },
                         [CONFIRM_CANCEL]: () => {
-                            resolve(false);
+                            options.callbacks?.[CONFIRM_CANCEL]?.();
                             modalPlugin.closeWithId(container, modalId);
+                            resolve(false);
                         },
                         'key-Enter': () => {
-                            resolve(true);
+                            options.callbacks?.['key-Enter']?.();
                             modalPlugin.closeWithId(container, modalId);
+                            resolve(true);
                         },
                         'key-Escape': () => {
-                            resolve(false);
+                            options.callbacks?.['key-Escape']?.();
                             modalPlugin.closeWithId(container, modalId);
+                            resolve(false);
                         },
                     },
                 });
