@@ -63,6 +63,9 @@
                             </vs-chip>
                         </div>
                     </div>
+                    <span v-if="inputValue.length > 1" class="vs-file-drop-file-count">
+                        {{ inputValue.length }} files selected
+                    </span>
                 </slot>
             </div>
             <button
@@ -230,12 +233,6 @@ export default defineComponent({
             fileDropRef.value?.click();
         }
 
-        function setFileNumberMessage() {
-            if (inputValue.value.length > 1) {
-                componentMessages.value.push({ state: 'info', text: `${inputValue.value.length} files` });
-            }
-        }
-
         function checkFileInputCondition(files: File[]) {
             componentMessages.value = [];
 
@@ -273,7 +270,6 @@ export default defineComponent({
             }
 
             inputValue.value = files;
-            setFileNumberMessage();
             emit('update:changed', files);
         }
 

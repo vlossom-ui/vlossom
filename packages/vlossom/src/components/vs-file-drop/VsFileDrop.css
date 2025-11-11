@@ -94,6 +94,13 @@
                 font-size: var(--vs-font-size-xs);
             }
         }
+
+        .vs-file-drop-file-count {
+            @apply w-full shrink-0 px-4 pb-2 text-right;
+
+            color: var(--vs-font-color);
+            font-size: var(--vs-font-size-xs);
+        }
     }
 
     .vs-file-drop-close-button {
