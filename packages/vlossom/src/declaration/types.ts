@@ -118,10 +118,10 @@ export interface InputComponentParams<T = unknown> {
     };
 }
 
-export interface ModalComponentOptions<T = unknown> {
+export interface ModalComponentOptions<S = unknown> {
     container?: string;
     colorScheme?: ColorScheme;
-    styleSet?: string | T;
+    styleSet?: string | S;
     callbacks?: OverlayCallbacks;
     dimClose?: boolean;
     dimmed?: boolean;

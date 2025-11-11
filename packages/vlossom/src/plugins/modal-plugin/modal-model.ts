@@ -3,7 +3,7 @@ import { stringUtil } from '@/utils';
 import type { ModalComponentOptions } from '@/declaration';
 import type { ModalInfo } from './types';
 
-export function createModalInfo(content: string | Component, options: ModalComponentOptions<unknown>): ModalInfo {
+export function createModalInfo(content: string | Component, options: ModalComponentOptions): ModalInfo {
     return {
         ...options,
         container: options.container || 'body',

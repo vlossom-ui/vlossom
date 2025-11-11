@@ -1,8 +1,8 @@
 import { type Component } from 'vue';
 import { useOverlayContainerStore, useModalContainerStore, useOverlayCallbackStore } from '@/stores';
 import { logUtil } from '@/utils';
-import type { ModalPlugin } from './types';
 import type { ModalComponentOptions } from '@/declaration';
+import type { ModalPlugin } from './types';
 import { createModalInfo } from './modal-model';
 
 export function createModalPlugin(): ModalPlugin {
