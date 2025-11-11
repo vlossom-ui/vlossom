@@ -85,7 +85,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
-import { VsComponent, type Breakpoints, type Message, type UIState } from '@/declaration';
+import { VsComponent, type Breakpoints, type StateMessage, type UIState } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
@@ -153,7 +153,7 @@ export default defineComponent({
         const inputValue: Ref<FileDropValueType> = ref([]);
         const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('fileDropRef');
         const dragging = ref(false);
-        const componentMessages: Ref<Message<FileDropValueType>[]> = ref([]);
+        const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
@@ -232,7 +232,7 @@ export default defineComponent({
 
         function setFileNumberMessage() {
             if (inputValue.value.length > 1) {
-                componentMessages.value.push({ state: 'info' as UIState, text: `${inputValue.value.length} files` });
+                componentMessages.value.push({ state: 'info', text: `${inputValue.value.length} files` });
             }
         }
 
@@ -240,21 +240,20 @@ export default defineComponent({
             componentMessages.value = [];
 
             const multipleFileUploadError = verifyMultipleFileUpload(files);
-            const minError = minCheck(files);
-            const maxError = maxCheck(files);
-
             if (multipleFileUploadError) {
                 componentMessages.value.push({ state: 'error' as UIState, text: multipleFileUploadError });
 
                 return false;
             }
 
+            const minError = minCheck(files);
             if (minError) {
                 componentMessages.value.push({ state: 'error' as UIState, text: minError });
 
                 return false;
             }
 
+            const maxError = maxCheck(files);
             if (maxError) {
                 componentMessages.value.push({ state: 'error' as UIState, text: maxError });
 
@@ -294,13 +293,12 @@ export default defineComponent({
         function handleFileDrop(event: DragEvent) {
             const files = Array.from(event.dataTransfer?.files || []);
 
-            emit('drop', files);
-            setDragging(false);
-
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
+            emit('drop', files);
+            setDragging(false);
             setInputValue(files);
         }
 

@@ -62,7 +62,7 @@ export function useVsFileDropRules(
             });
 
             if (invalidFiles.length > 0) {
-                return `You can only upload files with the following extensions: ${acceptedTypes.join(', ')}`;
+                return `Allowed: ${acceptedTypes.join(', ')}`;
             }
         }
 
