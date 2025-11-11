@@ -1,12 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import {
-    colorScheme,
-    modelArgTypes,
-    inputPropsArgTypes,
-    validationArgTypes,
-    layoutArgTypes,
-    styleArgTypes,
-} from '@/storybook';
+import { colorScheme, inputPropsArgTypes, minMaxArgTypes, responsiveArgTypes, styleArgTypes } from '@/storybook';
 import VsFileDrop from './../VsFileDrop.vue';
 
 const meta: Meta<typeof VsFileDrop> = {
@@ -76,10 +69,9 @@ const meta: Meta<typeof VsFileDrop> = {
     }),
     argTypes: {
         colorScheme,
-        ...modelArgTypes,
         ...inputPropsArgTypes,
-        ...validationArgTypes,
-        ...layoutArgTypes,
+        ...minMaxArgTypes,
+        ...responsiveArgTypes,
         ...styleArgTypes,
     },
 };

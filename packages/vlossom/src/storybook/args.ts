@@ -5,11 +5,6 @@ export const colorScheme = {
     options: COLORS,
 };
 
-export const modelArgTypes = {
-    modelValue: { control: false as any, table: { category: 'Model' } },
-    modelModifiers: { control: 'object' as any, table: { category: 'Model' } },
-};
-
 export const inputPropsArgTypes = {
     disabled: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     hidden: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
@@ -40,12 +35,12 @@ export const inputOptionPropsArgTypes = {
     optionValue: { control: 'text' as any, table: { category: 'Input Option Props' } },
 };
 
-export const validationArgTypes = {
+export const minMaxArgTypes = {
     min: { control: 'number' as any, table: { category: 'Validation' } },
     max: { control: 'number' as any, table: { category: 'Validation' } },
 };
 
-export const layoutArgTypes = {
+export const responsiveArgTypes = {
     width: { control: 'text' as any, table: { category: 'Layout' } },
     grid: { control: 'text' as any, table: { category: 'Layout' } },
 };

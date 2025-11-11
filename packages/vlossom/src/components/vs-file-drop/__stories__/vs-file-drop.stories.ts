@@ -4,10 +4,9 @@ import {
     colorScheme,
     getColorSchemeTemplate,
     chromaticParameters,
-    modelArgTypes,
     inputPropsArgTypes,
-    validationArgTypes,
-    layoutArgTypes,
+    minMaxArgTypes,
+    responsiveArgTypes,
     styleArgTypes,
 } from '@/storybook';
 import VsFileDrop from './../VsFileDrop.vue';
@@ -54,25 +53,9 @@ const meta: Meta<typeof VsFileDrop> = {
     },
     argTypes: {
         colorScheme,
-        accept: {
-            control: 'text',
-            description: '허용할 파일 타입 (예: ".png,.jpg,.pdf")',
-            table: { category: 'FileDrop Props' },
-        },
-        multiple: {
-            control: 'boolean',
-            description: '여러 파일 업로드 허용 여부',
-            table: { category: 'FileDrop Props', defaultValue: { summary: 'false' } },
-        },
-        height: {
-            control: 'text',
-            description: '컴포넌트 높이 (string | number | Breakpoints)',
-            table: { category: 'FileDrop Props', defaultValue: { summary: 'auto' } },
-        },
-        ...modelArgTypes,
         ...inputPropsArgTypes,
-        ...validationArgTypes,
-        ...layoutArgTypes,
+        ...minMaxArgTypes,
+        ...responsiveArgTypes,
         ...styleArgTypes,
     },
 };
