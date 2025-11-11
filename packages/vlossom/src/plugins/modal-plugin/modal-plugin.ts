@@ -1,12 +1,13 @@
 import { type Component } from 'vue';
 import { useOverlayContainerStore, useModalContainerStore, useOverlayCallbackStore } from '@/stores';
 import { logUtil } from '@/utils';
-import type { ModalOptions, ModalPlugin } from './types';
+import type { ModalPlugin } from './types';
+import type { ModalComponentOptions } from '@/declaration';
 import { createModalInfo } from './modal-model';
 
 export function createModalPlugin(): ModalPlugin {
     return {
-        open(content: string | Component, options: ModalOptions = {}) {
+        open(content: string | Component, options: ModalComponentOptions = {}): string {
             const container = options.container || 'body';
 
             const overlayContainerStore = useOverlayContainerStore();

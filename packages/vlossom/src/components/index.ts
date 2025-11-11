@@ -47,6 +47,7 @@ export { default as VsButton } from './vs-button/VsButton.vue';
 export { default as VsCheckbox } from './vs-checkbox/VsCheckbox.vue';
 export { default as VsCheckboxSet } from './vs-checkbox/VsCheckboxSet.vue';
 export { default as VsChip } from './vs-chip/VsChip.vue';
+export { default as VsConfirm } from './vs-confirm/VsConfirm.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDimmed } from './vs-dimmed/VsDimmed.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';
