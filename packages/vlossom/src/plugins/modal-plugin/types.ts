@@ -1,6 +1,6 @@
 import type { Component } from 'vue';
-import type { VsModalNodeStyleSet } from '@/components/vs-modal/types';
 import type { ColorScheme, OverlayCallbacks, SizeProp } from '@/declaration';
+import type { VsModalNodeStyleSet } from '@/components/vs-modal/types';
 
 export interface ModalOptions {
     container?: string;

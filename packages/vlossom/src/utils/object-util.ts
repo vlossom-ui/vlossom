@@ -1,4 +1,4 @@
-import { assign, isObject, shake, isEqual, omit, get, pick } from 'radash';
+import { assign, isObject, shake, isEqual, omit, get } from 'radash';
 
 export const objectUtil = {
     assign,
@@ -6,6 +6,5 @@ export const objectUtil = {
     isEqual,
     isObject,
     omit,
-    pick,
     shake,
 };
