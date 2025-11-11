@@ -1,14 +1,14 @@
 import type { Component } from 'vue';
-import type { ModalComponentOptions } from '@/declaration';
+import type { ModalOptions } from '@/declaration';
 
-export interface ModalInfo extends ModalComponentOptions {
+export interface ModalInfo extends ModalOptions {
     container: string;
     id: string;
     content: string | Component;
 }
 
 export interface ModalPlugin {
-    open(content: string | Component, options?: ModalComponentOptions): string;
+    open(content: string | Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): void;

@@ -1,24 +1,19 @@
 import { type Component } from 'vue';
 import { useOverlayContainerStore, useModalContainerStore, useOverlayCallbackStore } from '@/stores';
 import { logUtil } from '@/utils';
-import type { ModalComponentOptions } from '@/declaration';
+import type { ModalOptions } from '@/declaration';
 import type { ModalPlugin } from './types';
 import { createModalInfo } from './modal-model';
 
 export function createModalPlugin(): ModalPlugin {
+    const overlayContainerStore = useOverlayContainerStore();
+    const modalStore = useModalContainerStore();
+    const overlayCallbackStore = useOverlayCallbackStore();
+
     return {
-        open(content: string | Component, options: ModalComponentOptions = {}): string {
+        open(content: string | Component, options: ModalOptions = {}): string {
             const container = options.container || 'body';
-
-            const overlayContainerStore = useOverlayContainerStore();
-            const modalStore = useModalContainerStore();
-
-            // mount ModalView to OverlayWrapper
-            const overlayId = `vs-modal-overlay-${container.replace('#', '')}`;
-            overlayContainerStore.push(overlayId, container, 'VsModalView');
-
             const containerElement: HTMLElement | null = document.querySelector(container);
-
             if (!containerElement) {
                 logUtil.error('modal-plugin.open', `Modal container not found: ${container}`);
                 return '';
@@ -27,6 +22,9 @@ export function createModalPlugin(): ModalPlugin {
             if (!containerElement.style.position) {
                 containerElement.style.position = 'relative';
             }
+            // mount ModalView to OverlayWrapper
+            const overlayId = `vs-modal-overlay-${container.replace('#', '')}`;
+            overlayContainerStore.push(overlayId, container, 'VsModalView');
 
             const modalInfo = createModalInfo(content, options);
             modalStore.push(container, modalInfo);
@@ -35,37 +33,28 @@ export function createModalPlugin(): ModalPlugin {
         },
 
         emit(eventName: string, ...args: any[]): Promise<any> {
-            const overlayCallbackStore = useOverlayCallbackStore();
             const lastOverlayId = overlayCallbackStore.getLastOverlayId();
             return overlayCallbackStore.run(lastOverlayId, eventName, ...args);
         },
 
         emitWithId(id: string, eventName: string, ...args: any[]): Promise<any> {
-            const overlayCallbackStore = useOverlayCallbackStore();
             return overlayCallbackStore.run(id, eventName, ...args);
         },
 
         close(container = 'body') {
-            const modalStore = useModalContainerStore();
             modalStore.pop(container);
 
-            const overlayCallbackStore = useOverlayCallbackStore();
             const lastOverlayId = overlayCallbackStore.getLastOverlayId();
             overlayCallbackStore.remove(lastOverlayId);
         },
 
         closeWithId(container: string, id: string) {
-            const modalStore = useModalContainerStore();
             modalStore.remove(container, id);
 
-            const overlayCallbackStore = useOverlayCallbackStore();
             overlayCallbackStore.remove(id);
         },
 
         clear(container = 'body') {
-            const modalStore = useModalContainerStore();
-            const overlayCallbackStore = useOverlayCallbackStore();
-
             const modalIds = modalStore.get(container).map((modal) => modal.id);
             modalIds.forEach((modalId) => {
                 overlayCallbackStore.remove(modalId);
