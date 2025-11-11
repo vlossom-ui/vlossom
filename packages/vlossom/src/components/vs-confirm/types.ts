@@ -11,6 +11,6 @@ declare module 'vue' {
 export type { VsConfirm };
 
 export interface VsConfirmStyleSet {
-    okButton?: VsButtonStyleSet;
-    cancelButton?: VsButtonStyleSet;
+    okButton?: Omit<VsButtonStyleSet, 'loading'>;
+    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
