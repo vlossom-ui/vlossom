@@ -5,5 +5,9 @@
 
     .vs-confirm-buttons {
         @apply flex w-full items-center justify-center gap-2;
+
+        &.vs-buttons-swapped {
+            @apply flex-row-reverse;
+        }
     }
 }

@@ -2,7 +2,7 @@
     <div class="vs-confirm">
         <slot />
 
-        <div class="vs-confirm-buttons">
+        <div :class="['vs-confirm-buttons', classObj]">
             <vs-button
                 ref="okRef"
                 primary
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, CONFIRM_OK, CONFIRM_CANCEL } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
 import { useStyleSet } from '@/composables';
@@ -45,13 +45,18 @@ export default defineComponent({
 
         okText: { type: String, default: 'OK' },
         cancelText: { type: String, default: 'Cancel' },
+        swapButtons: { type: Boolean, default: false },
     },
     setup(props) {
-        const { styleSet } = toRefs(props);
+        const { styleSet, swapButtons } = toRefs(props);
 
         const overlayCallback = useOverlayCallbackStore();
 
         const { componentStyleSet } = useStyleSet<VsConfirmStyleSet>(name, styleSet);
+
+        const classObj = computed(() => ({
+            'vs-buttons-swapped': swapButtons.value,
+        }));
 
         async function ok() {
             const id = overlayCallback.getLastOverlayId();
@@ -63,7 +68,7 @@ export default defineComponent({
             await overlayCallback.run<boolean>(id, CONFIRM_CANCEL);
         }
 
-        return { componentStyleSet, ok, cancel };
+        return { componentStyleSet, classObj, ok, cancel };
     },
 });
 </script>
