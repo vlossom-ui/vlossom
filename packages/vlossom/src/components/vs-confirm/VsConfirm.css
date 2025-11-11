@@ -1,11 +1,9 @@
 @reference 'tailwindcss';
 
 .vs-confirm {
-    @apply flex flex-col items-center justify-center;
-    padding-top: 1.8rem;
+    @apply flex h-full flex-col items-center justify-center gap-12 pt-14;
 
     .vs-confirm-buttons {
         @apply flex w-full items-center justify-center gap-2;
-        margin-top: 2.4rem;
     }
 }
