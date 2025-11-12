@@ -1,6 +1,6 @@
 <template>
     <div :class="['vs-message', colorClass]">
-        <i :style="{ width: sizeValue, height: sizeValue }">
+        <i :style="{ width: sizeValue, height: sizeValue, 'flex-shrink': 0 }">
             <vs-render :content="icon" />
         </i>
         <span class="vs-message-text" :style="{ fontSize: sizeValue }">{{ text }}</span>
