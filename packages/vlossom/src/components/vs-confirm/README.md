@@ -42,43 +42,48 @@ async function handleDelete() {
 
 ```typescript
 interface VsConfirmStyleSet {
+    width?: string;
+    height?: string;
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    opacity?: number;
+    boxShadow?: string;
+    fontColor?: string;
+    zIndex?: string;
+    dimmed?: {
+        backgroundColor?: string;
+        opacity?: number;
+    };
+    layout?: {
+        header?: {
+            padding?: string;
+        };
+        padding?: string;
+        footer?: {
+            padding?: string;
+        };
+    };
     okButton?: {
         width?: string;
         height?: string;
-
         backgroundColor?: string;
         border?: string;
         borderRadius?: string;
         padding?: string;
         opacity?: string;
-
         fontColor?: string;
-
-        loading?: {
-            width?: string;
-            height?: string;
-            color?: string;
-            barWidth?: string;
-        };
     };
     cancelButton?: {
         width?: string;
         height?: string;
-
         backgroundColor?: string;
         border?: string;
         borderRadius?: string;
         padding?: string;
         opacity?: string;
-
         fontColor?: string;
-
-        loading?: {
-            width?: string;
-            height?: string;
-            color?: string;
-            barWidth?: string;
-        };
     };
 }
 ```

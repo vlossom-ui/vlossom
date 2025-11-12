@@ -49,31 +49,25 @@ if (confirmed) {
 
 ```ts
 interface ConfirmModalOptions {
+    container?: string;
+    callbacks?: OverlayCallbacks;
+    dimClose?: boolean;
+    dimmed?: boolean;
+    escClose?: boolean;
+    focusLock?: boolean;
+    hideScroll?: boolean;
+    id?: string;
+    initialFocusRef?: Record<string, any>;
+    scrollLock?: boolean;
+    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
+
     colorScheme?: ColorScheme;
     styleSet?: string | VsConfirmStyleSet;
     okText?: string;
     cancelText?: string;
     swapButtons?: boolean;
-
-    modalOption?: {
-        container?: string;
-        colorScheme?: ColorScheme;
-        styleSet?: string | VsModalNodeStyleSet;
-        callbacks?: OverlayCallbacks;
-        dimClose?: boolean;
-        dimmed?: boolean;
-        escClose?: boolean;
-        focusLock?: boolean;
-        hideScroll?: boolean;
-        id?: string;
-        initialFocusRef?: Record<string, any>;
-        scrollLock?: boolean;
-        size?: SizeProp | { width?: SizeProp; height?: SizeProp };
-    };
 }
 ```
-
-`VsConfirmStyleSet`은 확인/취소 버튼에 대한 스타일 세트를 의미합니다.
 
 ## 사용 예시
 
