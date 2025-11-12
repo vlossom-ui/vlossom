@@ -11,7 +11,7 @@
 `confirm-plugin`을 사용하는 예시는 다음과 같습니다.
 
 ```ts
-import { useVlossom } from '@/plugins';
+import { useVlossom } from '@/framework';
 
 const { confirm } = useVlossom();
 
