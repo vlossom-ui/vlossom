@@ -67,15 +67,22 @@
                 @apply flex w-full max-w-full min-w-0;
             }
 
-            .vs-file-drop-file-name {
-                color: var(--vs-font-color);
-                font-size: var(--vs-font-size);
-            }
+            .vs-file-drop-file-wrapper {
+                @apply flex w-full max-w-full min-w-0 items-center;
 
-            .vs-file-drop-file-size {
-                @apply ml-2;
-                color: var(--vs-font-color);
-                font-size: var(--vs-font-size-xs);
+                .vs-file-drop-file-name {
+                    @apply truncate;
+
+                    color: var(--vs-font-color);
+                    font-size: var(--vs-font-size);
+                }
+
+                .vs-file-drop-file-size {
+                    @apply ml-2 shrink-0;
+
+                    color: var(--vs-font-color);
+                    font-size: var(--vs-font-size-xs);
+                }
             }
         }
 

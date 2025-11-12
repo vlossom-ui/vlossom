@@ -65,10 +65,12 @@
                                 @close="handleFileRemove(file)"
                                 :style-set="{ width: '100%' }"
                             >
-                                <span class="vs-file-drop-file-name">{{ file.name }} </span>
-                                <span class="vs-file-drop-file-size">
-                                    {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
-                                </span>
+                                <div class="vs-file-drop-file-wrapper">
+                                    <span class="vs-file-drop-file-name">{{ file.name }} </span>
+                                    <span class="vs-file-drop-file-size">
+                                        {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
+                                    </span>
+                                </div>
                             </vs-chip>
                         </div>
                     </div>
