@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
-import { VsComponent, type Breakpoints, type StateMessage, type UIState } from '@/declaration';
+import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
@@ -249,21 +249,21 @@ export default defineComponent({
 
             const multipleFileUploadError = verifyMultipleFileUpload(files);
             if (multipleFileUploadError) {
-                componentMessages.value.push({ state: 'error' as UIState, text: multipleFileUploadError });
+                componentMessages.value.push({ state: 'error', text: multipleFileUploadError });
 
                 return false;
             }
 
             const minError = minCheck(files);
             if (minError) {
-                componentMessages.value.push({ state: 'error' as UIState, text: minError });
+                componentMessages.value.push({ state: 'error', text: minError });
 
                 return false;
             }
 
             const maxError = maxCheck(files);
             if (maxError) {
-                componentMessages.value.push({ state: 'error' as UIState, text: maxError });
+                componentMessages.value.push({ state: 'error', text: maxError });
 
                 return false;
             }
