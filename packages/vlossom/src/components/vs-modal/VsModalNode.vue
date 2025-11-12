@@ -111,9 +111,6 @@ export default defineComponent({
 
             if (dimClose.value) {
                 close();
-                nextTick(() => {
-                    emit('close');
-                });
             }
         }
 
