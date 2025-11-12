@@ -1,5 +1,5 @@
 import { h, type Component } from 'vue';
-import { VsConfirm } from '@/components';
+import { VsConfirm, VsRender } from '@/components';
 import { CONFIRM_CANCEL, CONFIRM_OK } from '@/declaration';
 import type { ModalPlugin } from '../modal-plugin/types';
 import type { ConfirmModalOptions, ConfirmPlugin } from './types';
@@ -10,7 +10,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const container = options.container || 'body';
 
             return new Promise((resolve) => {
-                const innerComponent = h(VsConfirm, options, { default: () => content });
+                const innerComponent = h(VsConfirm, options, { default: () => h(VsRender, { content }) });
                 const modalId = modalPlugin.open(innerComponent, {
                     ...options,
                     callbacks: {
