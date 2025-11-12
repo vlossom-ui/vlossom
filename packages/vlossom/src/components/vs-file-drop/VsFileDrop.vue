@@ -317,6 +317,12 @@ export default defineComponent({
             const files = inputValue.value;
             const filteredFiles = files.filter((file) => file !== target);
 
+            const minError = minCheck(filteredFiles);
+            if (minError) {
+                componentMessages.value = [];
+                componentMessages.value.push({ state: 'error', text: minError });
+            }
+
             inputValue.value = filteredFiles;
         }
 
