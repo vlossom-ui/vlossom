@@ -57,7 +57,14 @@
                             :key="`${file.name}-${index}`"
                             class="vs-file-drop-file"
                         >
-                            <vs-chip :id="file.name" :color-scheme :small :style-set="{ width: '100%' }">
+                            <vs-chip
+                                :id="`${file.name}-${index}`"
+                                :color-scheme
+                                :small
+                                :closable="!computedReadonly && !computedDisabled"
+                                @close="handleFileRemove(file)"
+                                :style-set="{ width: '100%' }"
+                            >
                                 <span class="vs-file-drop-file-name">{{ file.name }} </span>
                                 <span class="vs-file-drop-file-size">
                                     {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
@@ -300,6 +307,17 @@ export default defineComponent({
             setInputValue(files);
         }
 
+        function handleFileRemove(target: File): void {
+            if (!target) {
+                return;
+            }
+
+            const files = inputValue.value;
+            const filteredFiles = files.filter((file) => file !== target);
+
+            inputValue.value = filteredFiles;
+        }
+
         function onClear() {
             if (fileDropRef.value) {
                 fileDropRef.value.value = '';
@@ -318,7 +336,10 @@ export default defineComponent({
         }
 
         return {
+            // Refs
             fileDropRef,
+
+            // Computed
             computedId,
             computedMessages,
             computedDisabled,
@@ -333,16 +354,21 @@ export default defineComponent({
             hasValue,
             stringUtil,
             attachFileIcon,
-            validate,
-            clear,
+
+            // Methods
             setDragging,
             openFileDialog,
             handleFileDialog,
             handleFileDrop,
+            handleFileRemove,
             onClear,
-            closeIcon,
             focus,
             blur,
+            validate,
+            clear,
+
+            // Icons
+            closeIcon,
         };
     },
 });
