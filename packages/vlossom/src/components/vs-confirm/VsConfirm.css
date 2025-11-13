@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+.vs-confirm {
+    @apply flex h-full flex-col items-center justify-center gap-12 pt-14;
+
+    .vs-confirm-buttons {
+        @apply flex w-full items-center justify-center gap-2;
+
+        &.vs-buttons-swapped {
+            @apply flex-row-reverse;
+        }
+    }
+}

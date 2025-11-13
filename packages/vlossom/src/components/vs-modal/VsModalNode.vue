@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -111,9 +111,6 @@ export default defineComponent({
 
             if (dimClose.value) {
                 close();
-                nextTick(() => {
-                    emit('close');
-                });
             }
         }
 
