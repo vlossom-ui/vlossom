@@ -1,0 +1,122 @@
+@reference 'tailwindcss';
+
+.vs-file-drop {
+    --vs-file-drop-backgroundColor: initial;
+    --vs-file-drop-border: initial;
+    --vs-file-drop-borderRadius: initial;
+    --vs-file-drop-padding: initial;
+    --vs-file-drop-opacity: initial;
+
+    --vs-file-drop-width: initial;
+    --vs-file-drop-height: initial;
+
+    --vs-file-drop-dragBackgroundColor: initial;
+    --vs-file-drop-iconColor: initial;
+
+    @apply relative box-border hover:brightness-110 active:brightness-120;
+    opacity: var(--vs-file-drop-opacity, 1);
+    border: var(--vs-file-drop-border, solid 1px var(--vs-line-color));
+    border-radius: var(--vs-file-drop-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-file-drop-backgroundColor, var(--vs-no-color));
+    width: var(--vs-file-drop-width, 100%);
+    height: var(--vs-file-drop-height, auto);
+
+    &:hover,
+    &:focus-within {
+        outline: 1px solid var(--vs-line-color) !important;
+        outline-offset: 2px !important;
+    }
+
+    &.vs-dragging {
+        outline: 2px dashed var(--vs-line-color);
+    }
+
+    &.vs-small {
+        height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+
+        .vs-file-drop-placeholder {
+            width: var(--vs-file-drop-width, var(--vs-default-comp-width));
+            height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+
+            .placeholder-text {
+                @apply w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
+            }
+        }
+    }
+
+    .vs-file-drop-ref {
+        @apply absolute top-0 left-0 h-full w-full cursor-pointer opacity-0;
+
+        &::file-selector-button {
+            @apply hidden;
+        }
+    }
+
+    .vs-file-drop-content {
+        @apply flex min-h-0 w-full min-w-0 flex-col items-center justify-center;
+        width: var(--vs-file-drop-width, 100%);
+        height: var(--vs-file-drop-height, auto);
+
+        .vs-file-drop-files {
+            @apply m-1 flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-2 overflow-x-hidden overflow-y-auto;
+            padding: var(--vs-file-drop-padding, 1rem);
+            width: var(--vs-file-drop-width, 100%);
+            height: var(--vs-file-drop-height, auto);
+
+            > div {
+                @apply flex w-full max-w-full min-w-0;
+            }
+
+            .vs-file-drop-file-wrapper {
+                @apply flex w-full max-w-full min-w-0 items-center;
+
+                .vs-file-drop-file-name {
+                    @apply truncate;
+
+                    color: var(--vs-font-color);
+                    font-size: var(--vs-font-size);
+                }
+
+                .vs-file-drop-file-size {
+                    @apply ml-2 shrink-0;
+
+                    color: var(--vs-font-color);
+                    font-size: var(--vs-font-size-xs);
+                }
+            }
+        }
+
+        .vs-file-drop-placeholder {
+            @apply flex flex-col items-center justify-center;
+            padding: var(--vs-file-drop-padding, 1rem);
+            width: var(--vs-file-drop-width, 100%);
+            height: var(--vs-file-drop-height, auto);
+
+            .placeholder-icon {
+                color: var(--vs-file-drop-iconColor, var(--vs-font-color));
+            }
+
+            .placeholder-text {
+                @apply mt-2 w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;
+                font-size: var(--vs-font-size-xs);
+            }
+        }
+
+        .vs-file-drop-file-count {
+            @apply w-full shrink-0 px-4 pb-2 text-right;
+
+            color: var(--vs-font-color);
+            font-size: var(--vs-font-size-xs);
+        }
+    }
+
+    .vs-file-drop-close-button {
+        @apply absolute top-2 right-2 flex shrink-0 cursor-pointer items-center justify-center;
+
+        border: var(--vs-file-drop-border, 1px solid var(--vs-line-color));
+        border-radius: 50%;
+        width: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
+        height: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
+        color: var(--vs-file-drop-fontColor, var(--vs-comp-font));
+    }
+}

@@ -1,0 +1,20 @@
+import type VsFileDrop from './VsFileDrop.vue';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
+import type { BoxStyleSet, Breakpoints } from '@/declaration';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsFileDrop: typeof VsFileDrop;
+    }
+}
+
+export type FileDropValueType = File[];
+
+export interface VsFileDropStyleSet extends BoxStyleSet {
+    width?: string | number | Breakpoints;
+    height?: string | number | Breakpoints;
+    dragBackgroundColor?: string;
+    iconColor?: string;
+
+    wrapper?: VsInputWrapperStyleSet;
+}

@@ -24,7 +24,7 @@
                 :id="computedId"
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
-                :name="name"
+                :name
                 :placeholder="placeholder"
                 :value="inputValue"
                 :aria-required="required"

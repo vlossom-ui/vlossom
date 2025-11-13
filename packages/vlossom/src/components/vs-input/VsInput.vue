@@ -26,14 +26,14 @@
             <input
                 ref="inputRef"
                 :id="computedId"
-                :type="type"
+                :type
                 :value="inputValue"
                 :autocomplete="autocomplete ? 'on' : 'off'"
-                :name="name"
+                :name
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
-                :placeholder="placeholder"
+                :placeholder
                 @input.stop="onInput"
                 @change.stop
             />
@@ -47,7 +47,9 @@
                 aria-label="Clear"
                 @click.stop="clearWithFocus"
             >
-                <i v-html="closeIcon" :class="{ 'size-4': small, 'size-5': !small }" />
+                <i :class="{ 'size-4': small, 'size-5': !small }">
+                    <vs-render :content="closeIcon" />
+                </i>
             </button>
 
             <div v-if="$slots['append']" class="vs-append">

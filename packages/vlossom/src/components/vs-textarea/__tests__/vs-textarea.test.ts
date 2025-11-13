@@ -88,118 +88,186 @@ describe('VsTextarea', () => {
         });
     });
 
-    describe('v-model modifiers', () => {
-        it('upper modifier가 있을 때 사용자 입력이 대문자로 변환되어야 한다', async () => {
+    describe('props', () => {
+        it('disabled prop이 true일 때 vs-disabled 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
-                    modelValue: '',
-                    modelModifiers: { upper: true },
+                    disabled: true,
                 },
             });
 
-            // when
-            const textarea = wrapper.find('textarea');
-            await textarea.setValue('hello world');
-
             // then
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['HELLO WORLD']);
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-disabled');
         });
 
-        it('lower modifier가 있을 때 사용자 입력이 소문자로 변환되어야 한다', async () => {
+        it('readonly prop이 true일 때 vs-readonly 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
-                    modelValue: '',
-                    modelModifiers: { lower: true },
+                    readonly: true,
                 },
             });
 
-            // when
-            const textarea = wrapper.find('textarea');
-            await textarea.setValue('HELLO WORLD');
-
             // then
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['hello world']);
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-readonly');
         });
 
-        it('capitalize modifier가 있을 때 사용자 입력의 첫 글자가 대문자로 변환되어야 한다', async () => {
+        it('disabled나 readonly가 아닐 때 vs-focusable 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
-                    modelValue: '',
-                    modelModifiers: { capitalize: true },
+                    disabled: false,
+                    readonly: false,
                 },
             });
 
-            // when
-            const textarea = wrapper.find('textarea');
-            await textarea.setValue('hello');
+            // then
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-focusable');
+        });
+
+        it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    small: true,
+                },
+            });
 
             // then
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Hello']);
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-small');
+        });
+
+        it('placeholder를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    placeholder: 'Enter text here',
+                },
+            });
+
+            // then
+            const textarea = wrapper.find('textarea');
+            expect(textarea.attributes('placeholder')).toBe('Enter text here');
+        });
+
+        it('disabled 상태를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    disabled: true,
+                },
+            });
+
+            // then
+            const textarea = wrapper.find('textarea');
+            expect(textarea.attributes('disabled')).toBeDefined();
+        });
+
+        it('readonly 상태를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    readonly: true,
+                },
+            });
+
+            // then
+            const textarea = wrapper.find('textarea');
+            expect(textarea.attributes('readonly')).toBeDefined();
+        });
+
+        it('required 상태를 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    required: true,
+                },
+            });
+
+            // then
+            const textarea = wrapper.find('textarea');
+            expect(textarea.attributes('aria-required')).toBe('true');
+        });
+
+        it('autocomplete을 설정할 수 있다', () => {
+            // given
+            const wrapperOff = mount(VsTextarea, {
+                props: {
+                    autocomplete: false,
+                },
+            });
+            const wrapperOn = mount(VsTextarea, {
+                props: {
+                    autocomplete: true,
+                },
+            });
+
+            // then
+            expect(wrapperOff.find('textarea').attributes('autocomplete')).toBe('off');
+            expect(wrapperOn.find('textarea').attributes('autocomplete')).toBe('on');
+        });
+
+        it('name을 설정할 수 있다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    name: 'description',
+                },
+            });
+
+            // then
+            const textarea = wrapper.find('textarea');
+            expect(textarea.attributes('name')).toBe('description');
         });
     });
 
-    describe('methods', () => {
-        it('focus() 메서드 호출 시 textarea element에 focus가 적용되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                attachTo: document.body,
-            });
-            const textarea = wrapper.find('textarea').element;
-
-            // when
-            wrapper.vm.focus();
-
-            // then
-            expect(document.activeElement).toBe(textarea);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
-        it('blur() 메서드 호출 시 textarea element에서 focus가 해제되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                attachTo: document.body,
-            });
-            const textarea = wrapper.find('textarea').element;
-            wrapper.vm.focus();
-
-            // when
-            wrapper.vm.blur();
-
-            // then
-            expect(document.activeElement).not.toBe(textarea);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
-        it('select() 메서드 호출 시 textarea의 텍스트가 선택되어야 한다', () => {
+    describe('state', () => {
+        it('state를 error로 설정하면 vs-state-error 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
-                    modelValue: 'test value',
+                    state: 'error',
                 },
-                attachTo: document.body,
             });
-            const textarea = wrapper.find('textarea').element;
-
-            // when
-            wrapper.vm.select();
 
             // then
-            expect(textarea.selectionStart).toBe(0);
-            expect(textarea.selectionEnd).toBe(textarea.value.length);
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-state-error');
+        });
 
-            // cleanup
-            wrapper.unmount();
+        it('state를 warning으로 설정하면 vs-state-warning 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    state: 'warning',
+                },
+            });
+
+            // then
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-state-warning');
+        });
+
+        it('state를 success로 설정하면 vs-state-success 클래스가 추가되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    state: 'success',
+                },
+            });
+
+            // then
+            const vsTextarea = wrapper.find('.vs-textarea');
+            expect(vsTextarea.classes()).toContain('vs-state-success');
         });
     });
 
-    describe('rules', () => {
+    describe('validation (rules)', () => {
         it('required 체크가 가능하다', () => {
             // given
             const wrapper = mount(VsTextarea, {
@@ -304,6 +372,145 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.computedMessages[0].state).toBe('error');
             expect(wrapper.vm.computedMessages[0].text).toBe('custom error message');
             expect(wrapper.vm.shake).toBe(true);
+        });
+    });
+
+    describe('validate() 메서드', () => {
+        it('valid할 때 validate 함수를 호출하면 true를 반환한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    required: true,
+                    modelValue: 'test',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+        });
+
+        it('invalid할 때 validate 함수를 호출하면 false를 반환한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    required: true,
+                    modelValue: '',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
+        });
+    });
+
+    describe('v-model modifiers', () => {
+        it('upper modifier가 있을 때 사용자 입력이 대문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { upper: true },
+                },
+            });
+
+            // when
+            const textarea = wrapper.find('textarea');
+            await textarea.setValue('hello world');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['HELLO WORLD']);
+        });
+
+        it('lower modifier가 있을 때 사용자 입력이 소문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { lower: true },
+                },
+            });
+
+            // when
+            const textarea = wrapper.find('textarea');
+            await textarea.setValue('HELLO WORLD');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['hello world']);
+        });
+
+        it('capitalize modifier가 있을 때 사용자 입력의 첫 글자가 대문자로 변환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    modelValue: '',
+                    modelModifiers: { capitalize: true },
+                },
+            });
+
+            // when
+            const textarea = wrapper.find('textarea');
+            await textarea.setValue('hello');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Hello']);
+        });
+    });
+
+    describe('focus/blur/select 메서드', () => {
+        it('focus() 메서드 호출 시 textarea element에 focus가 적용되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea').element;
+
+            // when
+            wrapper.vm.focus();
+
+            // then
+            expect(document.activeElement).toBe(textarea);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('blur() 메서드 호출 시 textarea element에서 focus가 해제되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea').element;
+            wrapper.vm.focus();
+
+            // when
+            wrapper.vm.blur();
+
+            // then
+            expect(document.activeElement).not.toBe(textarea);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('select() 메서드 호출 시 textarea의 텍스트가 선택되어야 한다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    modelValue: 'test value',
+                },
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea').element;
+
+            // when
+            wrapper.vm.select();
+
+            // then
+            expect(textarea.selectionStart).toBe(0);
+            expect(textarea.selectionEnd).toBe(textarea.value.length);
+
+            // cleanup
+            wrapper.unmount();
         });
     });
 
@@ -417,185 +624,6 @@ describe('VsTextarea', () => {
             // then
             expect(wrapper.vm.inputValue).toBe('999');
             expect(typeof wrapper.vm.inputValue).toBe('string');
-        });
-    });
-
-    describe('props', () => {
-        it('placeholder를 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    placeholder: 'Enter text here',
-                },
-            });
-
-            // then
-            const textarea = wrapper.find('textarea');
-            expect(textarea.attributes('placeholder')).toBe('Enter text here');
-        });
-
-        it('disabled 상태를 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    disabled: true,
-                },
-            });
-
-            // then
-            const textarea = wrapper.find('textarea');
-            expect(textarea.attributes('disabled')).toBeDefined();
-        });
-
-        it('readonly 상태를 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    readonly: true,
-                },
-            });
-
-            // then
-            const textarea = wrapper.find('textarea');
-            expect(textarea.attributes('readonly')).toBeDefined();
-        });
-
-        it('required 상태를 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    required: true,
-                },
-            });
-
-            // then
-            const textarea = wrapper.find('textarea');
-            expect(textarea.attributes('aria-required')).toBe('true');
-        });
-
-        it('autocomplete을 설정할 수 있다', () => {
-            // given
-            const wrapperOff = mount(VsTextarea, {
-                props: {
-                    autocomplete: false,
-                },
-            });
-            const wrapperOn = mount(VsTextarea, {
-                props: {
-                    autocomplete: true,
-                },
-            });
-
-            // then
-            expect(wrapperOff.find('textarea').attributes('autocomplete')).toBe('off');
-            expect(wrapperOn.find('textarea').attributes('autocomplete')).toBe('on');
-        });
-
-        it('name을 설정할 수 있다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    name: 'description',
-                },
-            });
-
-            // then
-            const textarea = wrapper.find('textarea');
-            expect(textarea.attributes('name')).toBe('description');
-        });
-
-        it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    small: true,
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-small');
-        });
-
-        it('disabled prop이 true일 때 vs-disabled 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    disabled: true,
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-disabled');
-        });
-
-        it('readonly prop이 true일 때 vs-readonly 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    readonly: true,
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-readonly');
-        });
-
-        it('disabled나 readonly가 아닐 때 vs-focusable 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    disabled: false,
-                    readonly: false,
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-focusable');
-        });
-    });
-
-    describe('state', () => {
-        it('state를 error로 설정하면 vs-error 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    state: 'error',
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-state-error');
-        });
-
-        it('state를 warning으로 설정하면 vs-warning 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    state: 'warning',
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-state-warning');
-        });
-
-        it('state를 success로 설정하면 vs-success 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    state: 'success',
-                },
-            });
-
-            // then
-            const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-state-success');
         });
     });
 });
