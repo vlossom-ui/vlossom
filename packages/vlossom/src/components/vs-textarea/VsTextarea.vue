@@ -30,6 +30,9 @@
                 :aria-required="required"
                 :autocomplete="autocomplete ? 'on' : 'off'"
                 @input.stop="updateValue"
+                @focus.stop="onFocus"
+                @blur.stop="onBlur"
+                @keyup.enter.stop="onEnter"
                 @change.stop
             />
         </div>
@@ -79,7 +82,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'enter'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -163,6 +166,18 @@ export default defineComponent({
             inputValue.value = convertValue(value);
         }
 
+        function onFocus(e: FocusEvent) {
+            emit('focus', e);
+        }
+
+        function onBlur(e: FocusEvent) {
+            emit('blur', e);
+        }
+
+        function onEnter(e: KeyboardEvent) {
+            emit('enter', e);
+        }
+
         function focus() {
             textareaRef.value?.focus();
         }
@@ -194,6 +209,9 @@ export default defineComponent({
 
             // Methods
             updateValue,
+            onFocus,
+            onBlur,
+            onEnter,
             clear,
             validate,
             focus,

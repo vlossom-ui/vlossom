@@ -385,6 +385,133 @@ describe('vs-file-drop', () => {
         });
     });
 
+    describe('이벤트 emit', () => {
+        it('file input에 focus 이벤트가 발생하면 focus 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input[type="file"]');
+
+            // when
+            await input.trigger('focus');
+
+            // then
+            const focusEvents = wrapper.emitted('focus');
+            expect(focusEvents).toBeTruthy();
+            expect(focusEvents?.length).toBe(1);
+            expect(focusEvents?.[0][0]).toBeInstanceOf(FocusEvent);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('file input에 blur 이벤트가 발생하면 blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input[type="file"]');
+
+            // when
+            await input.trigger('focus');
+            await input.trigger('blur');
+
+            // then
+            const blurEvents = wrapper.emitted('blur');
+            expect(blurEvents).toBeTruthy();
+            expect(blurEvents?.length).toBe(1);
+            expect(blurEvents?.[0][0]).toBeInstanceOf(FocusEvent);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('disabled 상태에서는 focus/blur 이벤트가 발생하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    disabled: true,
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input[type="file"]');
+
+            // when
+            await input.trigger('focus');
+            await input.trigger('blur');
+
+            // then
+            expect(wrapper.emitted('focus')).toBeUndefined();
+            expect(wrapper.emitted('blur')).toBeUndefined();
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('readonly 상태에서는 focus/blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    readonly: true,
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input[type="file"]');
+
+            // when
+            await input.trigger('focus');
+            await input.trigger('blur');
+
+            // then
+            expect(wrapper.emitted('focus')).toBeTruthy();
+            expect(wrapper.emitted('blur')).toBeTruthy();
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('focus() 메서드 호출 시에도 네이티브 focus 이벤트가 발생하여 focus 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                attachTo: document.body,
+            });
+
+            // when
+            wrapper.vm.focus();
+            await wrapper.vm.$nextTick();
+
+            // then
+            const focusEvents = wrapper.emitted('focus');
+            expect(focusEvents).toBeTruthy();
+            expect(focusEvents?.length).toBe(1);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('blur() 메서드 호출 시에도 네이티브 blur 이벤트가 발생하여 blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, {
+                attachTo: document.body,
+            });
+            wrapper.vm.focus();
+            await wrapper.vm.$nextTick();
+
+            // when
+            wrapper.vm.blur();
+            await wrapper.vm.$nextTick();
+
+            // then
+            const blurEvents = wrapper.emitted('blur');
+            expect(blurEvents).toBeTruthy();
+            expect(blurEvents?.length).toBe(1);
+
+            // cleanup
+            wrapper.unmount();
+        });
+    });
+
     describe('focus() / blur() 메서드', () => {
         it('focus 메서드를 호출하면 file input에 포커스가 설정된다', async () => {
             // given
@@ -851,7 +978,6 @@ describe('vs-file-drop', () => {
                 expect(content.html()).toContain(files[index].name);
             });
         });
-
 
         it('drag & drop으로 파일을 추가하면 기존 파일이 새 파일로 교체된다', async () => {
             // given

@@ -38,6 +38,8 @@
                 :accept
                 :multiple
                 @change.stop="handleFileDialog"
+                @focus.stop="onFocus"
+                @blur.stop="onBlur"
                 @keydown.enter.stop="openFileDialog"
                 @keydown.space.prevent.stop="openFileDialog"
             />
@@ -142,7 +144,7 @@ export default defineComponent({
             default: () => [],
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -335,6 +337,14 @@ export default defineComponent({
             componentMessages.value = [];
         }
 
+        function onFocus(e: FocusEvent) {
+            emit('focus', e);
+        }
+
+        function onBlur(e: FocusEvent) {
+            emit('blur', e);
+        }
+
         function focus() {
             fileDropRef.value?.focus();
         }
@@ -370,6 +380,8 @@ export default defineComponent({
             handleFileDrop,
             handleFileRemove,
             onClear,
+            onFocus,
+            onBlur,
             focus,
             blur,
             validate,
