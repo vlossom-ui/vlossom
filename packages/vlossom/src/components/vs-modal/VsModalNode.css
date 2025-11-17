@@ -31,13 +31,9 @@
         width: var(--vs-modal-node-width, fit-content);
         height: var(--vs-modal-node-height, fit-content);
         color: var(--vs-modal-node-fontColor, var(--vs-font-color));
+    }
 
-        .vs-modal-content {
-            @apply flex-1;
-        }
-
-        .vs-modal-actions {
-            @apply flex justify-end gap-2;
-        }
+    .vs-modal-content {
+        @apply flex-1;
     }
 }
