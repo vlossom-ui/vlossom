@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+.vs-search-input {
+    @apply relative;
+
+    .vs-search-input-toggles {
+        @apply flex items-center gap-1;
+    }
+
+    .vs-search-input-toggle-text {
+        @apply select-none;
+    }
+}

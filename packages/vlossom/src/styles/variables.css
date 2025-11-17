@@ -20,11 +20,11 @@
 
         --vs-white-space: normal;
 
-        --vs-font-size-xs: 0.8rem;
-        --vs-font-size-sm: 0.9rem;
+        --vs-font-size-xs: 0.6rem;
+        --vs-font-size-sm: 0.8rem;
         --vs-font-size: 1rem;
-        --vs-font-size-lg: 1.1rem;
-        --vs-font-size-xl: 1.2rem;
+        --vs-font-size-lg: 1.2rem;
+        --vs-font-size-xl: 1.4rem;
 
         --vs-radius-ratio: 1;
         --vs-radius-xs: 0.2rem;
