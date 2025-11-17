@@ -120,8 +120,7 @@ interface OverlayCallbacks<T = void> {
 | Slot      | Description                    |
 | --------- | ------------------------------ |
 | `default` | 모달 내부에 표시할 콘텐츠      |
-| `header`  | 모달 헤더 영역에 표시할 콘텐츠 |
-| `footer`  | 모달 푸터 영역에 표시할 콘텐츠 |
+| `actions` | 모달 하단 영역에 표시할 콘텐츠 |
 
 ### Events
 
@@ -223,14 +222,14 @@ interface OverlayCallbacks<T = void> {
 | Slot      | Description                    |
 | --------- | ------------------------------ |
 | `default` | 모달 내부에 표시할 콘텐츠      |
-| `header`  | 모달 헤더 영역에 표시할 콘텐츠 |
-| `footer`  | 모달 푸터 영역에 표시할 콘텐츠 |
+| `actions` | 모달 하단 영역에 표시할 콘텐츠 |
 
 ### Events
 
-| Event   | Description         | Payload |
-| ------- | ------------------- | ------- |
-| `close` | 모달이 닫힐 때 발생 | -       |
+| Event          | Description               | Payload |
+| -------------- | ------------------------- | ------- |
+| `close`        | 모달이 닫힐 때 발생       | -       |
+| `click-dimmed` | dim 영역을 클릭할 때 발생 | -       |
 
 ### 특징
 

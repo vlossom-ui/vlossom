@@ -19,7 +19,7 @@
     z-index: var(--vs-modal-node-zIndex, var(--vs-modal-z-index));
 
     .vs-modal-wrap {
-        @apply pointer-events-auto absolute top-1/2 left-1/2 overflow-auto;
+        @apply pointer-events-auto absolute top-1/2 left-1/2 flex flex-col gap-4 overflow-auto;
 
         transform: translate(-50%, -50%);
         opacity: var(--vs-modal-node-opacity, 1);
@@ -31,5 +31,13 @@
         width: var(--vs-modal-node-width, fit-content);
         height: var(--vs-modal-node-height, fit-content);
         color: var(--vs-modal-node-fontColor, var(--vs-font-color));
+
+        .vs-modal-content {
+            @apply flex-1;
+        }
+
+        .vs-modal-actions {
+            @apply flex justify-end gap-2;
+        }
     }
 }
