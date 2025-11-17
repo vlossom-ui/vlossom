@@ -167,7 +167,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const inputValue: Ref<FileDropValueType> = ref([]);
-        const fileDropRef: TemplateRef<HTMLInputElement | null> = useTemplateRef('fileDropRef');
+        const fileDropRef: TemplateRef<HTMLInputElement> = useTemplateRef('fileDropRef');
         const dragging = ref(false);
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
