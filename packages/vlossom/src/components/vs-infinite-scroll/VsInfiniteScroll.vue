@@ -39,6 +39,8 @@ export default defineComponent({
         const rootRef: TemplateRef<HTMLDivElement> = useTemplateRef('rootRef');
         let io: IntersectionObserver | null = null;
         let mo: MutationObserver | null = null;
+        // 이전에 observe했던 children Set (메모리 릭 방지용, O(1) 검색을 위해 Set 사용)
+        const previousChildrenSet = new Set<HTMLElement>();
 
         const containerStyle = computed(() => {
             if (!height.value) {
@@ -95,16 +97,30 @@ export default defineComponent({
 
         function observeChildren() {
             const el = rootRef.value;
-            if (!el || !io) {
+            if (!el || disabled.value) {
                 return;
             }
             const children = Array.from(el.children) as HTMLElement[];
+
+            // Observer를 재생성하여 모든 children의 현재 상태를 즉시 확인
+            // (일부 아이템 변경 후에도 이미 viewport에 있는 요소들이 즉시 보이도록)
+            disposeObserver();
+            ensureObserver();
+
+            if (!io) {
+                return;
+            }
+
+            // 모든 children을 observe (새 observer이므로 모든 요소의 현재 상태를 즉시 확인)
             for (const child of children) {
                 child.dataset.ioVisible = 'false';
-            }
-            // observe 호출 시 즉시 콜백이 실행되어 상태 업데이트
-            for (const child of children) {
                 io.observe(child);
+            }
+
+            // observe한 요소들을 추적 Set에 추가
+            previousChildrenSet.clear();
+            for (const child of children) {
+                previousChildrenSet.add(child);
             }
         }
 
@@ -113,6 +129,8 @@ export default defineComponent({
                 io.disconnect();
                 io = null;
             }
+            // observe했던 요소들 추적 정보도 정리
+            previousChildrenSet.clear();
         }
 
         function ensureMutationObserver() {
