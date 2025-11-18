@@ -671,26 +671,6 @@ describe('VsInput', () => {
             wrapper.unmount();
         });
 
-        it('input에서 Enter 키를 누르면 enter 이벤트를 emit해야 한다', async () => {
-            // given
-            const wrapper = mount(VsInput, {
-                attachTo: document.body,
-            });
-            const input = wrapper.find('input');
-
-            // when
-            await input.trigger('keyup.enter');
-
-            // then
-            const enterEvents = wrapper.emitted('enter');
-            expect(enterEvents).toBeTruthy();
-            expect(enterEvents?.length).toBe(1);
-            expect(enterEvents?.[0][0]).toBeInstanceOf(KeyboardEvent);
-
-            // cleanup
-            wrapper.unmount();
-        });
-
         it('disabled 상태에서는 focus/blur 이벤트가 발생하지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsInput, {

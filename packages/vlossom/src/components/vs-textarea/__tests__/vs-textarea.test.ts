@@ -581,26 +581,6 @@ describe('VsTextarea', () => {
             // cleanup
             wrapper.unmount();
         });
-
-        it('textarea에서 Enter 키를 누르면 enter 이벤트를 emit해야 한다', async () => {
-            // given
-            const wrapper = mount(VsTextarea, {
-                attachTo: document.body,
-            });
-            const textarea = wrapper.find('textarea');
-
-            // when
-            await textarea.trigger('keyup.enter');
-
-            // then
-            const enterEvents = wrapper.emitted('enter');
-            expect(enterEvents).toBeTruthy();
-            expect(enterEvents?.length).toBe(1);
-            expect(enterEvents?.[0][0]).toBeInstanceOf(KeyboardEvent);
-
-            // cleanup
-            wrapper.unmount();
-        });
     });
 
     describe('focus/blur/select 메서드', () => {

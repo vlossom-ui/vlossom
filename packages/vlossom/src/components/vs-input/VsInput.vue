@@ -37,7 +37,6 @@
                 @input.stop="onInput"
                 @focus.stop="onFocus"
                 @blur.stop="onBlur"
-                @keyup.enter.stop="onEnter"
                 @change.stop
             />
 
@@ -110,7 +109,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'enter'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -224,10 +223,6 @@ export default defineComponent({
             emit('blur', e);
         }
 
-        function onEnter(e: KeyboardEvent) {
-            emit('enter', e);
-        }
-
         function select() {
             inputRef.value?.select();
         }
@@ -262,7 +257,6 @@ export default defineComponent({
             clear,
             onFocus,
             onBlur,
-            onEnter,
             validate,
             clearWithFocus,
 
