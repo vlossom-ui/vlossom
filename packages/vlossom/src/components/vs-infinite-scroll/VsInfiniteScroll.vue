@@ -195,6 +195,13 @@ export default defineComponent({
 
         // ============= 스크롤 제어 =============
 
+        function waitForLayout(callback: () => void) {
+            // DOM 렌더링 완료를 위해 nextTick과 requestAnimationFrame 조합 사용
+            nextTick(() => {
+                requestAnimationFrame(callback);
+            });
+        }
+
         function scrollToIndex(index: number) {
             if (!rootRef.value) {
                 return;
@@ -214,17 +221,34 @@ export default defineComponent({
             // 스크롤 전에 해당 요소를 표시
             updateChildVisibility(targetElement, true);
 
-            // 레이아웃 완료 후 스크롤
-            requestAnimationFrame(() => {
+            // 스크롤 루트 확인
+            const scrollRoot = getScrollRoot();
+            const isViewportScroll = scrollRoot === null;
+
+            // DOM 렌더링 완료 후 스크롤 실행
+            waitForLayout(() => {
                 if (!rootRef.value || !targetElement) {
                     return;
                 }
 
-                targetElement.scrollIntoView({
-                    behavior: 'auto',
-                    block: 'start',
-                    inline: 'nearest',
-                });
+                if (isViewportScroll) {
+                    // 전체 페이지 스크롤: 직접 스크롤 위치 계산
+                    const rect = targetElement.getBoundingClientRect();
+                    const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+                    const targetScrollY = currentScrollY + rect.top;
+
+                    window.scrollTo({
+                        top: targetScrollY,
+                        behavior: 'auto',
+                    });
+                } else {
+                    // 컨테이너 스크롤: scrollIntoView 사용
+                    targetElement.scrollIntoView({
+                        behavior: 'auto',
+                        block: 'start',
+                        inline: 'nearest',
+                    });
+                }
             });
         }
 
@@ -234,7 +258,7 @@ export default defineComponent({
             await initialize();
 
             // DOM 렌더링 완료 후 초기 인덱스로 스크롤
-            requestAnimationFrame(() => {
+            waitForLayout(() => {
                 if (initialIndex.value !== undefined) {
                     scrollToIndex(Number(initialIndex.value));
                 }
