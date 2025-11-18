@@ -456,6 +456,133 @@ describe('VsTextarea', () => {
         });
     });
 
+    describe('이벤트 emit', () => {
+        it('textarea에 focus 이벤트가 발생하면 focus 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea');
+
+            // when
+            await textarea.trigger('focus');
+
+            // then
+            const focusEvents = wrapper.emitted('focus');
+            expect(focusEvents).toBeTruthy();
+            expect(focusEvents?.length).toBe(1);
+            expect(focusEvents?.[0][0]).toBeInstanceOf(FocusEvent);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('textarea에 blur 이벤트가 발생하면 blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea');
+
+            // when
+            await textarea.trigger('focus');
+            await textarea.trigger('blur');
+
+            // then
+            const blurEvents = wrapper.emitted('blur');
+            expect(blurEvents).toBeTruthy();
+            expect(blurEvents?.length).toBe(1);
+            expect(blurEvents?.[0][0]).toBeInstanceOf(FocusEvent);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('disabled 상태에서는 focus/blur 이벤트가 발생하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    disabled: true,
+                },
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea');
+
+            // when
+            await textarea.trigger('focus');
+            await textarea.trigger('blur');
+
+            // then
+            expect(wrapper.emitted('focus')).toBeUndefined();
+            expect(wrapper.emitted('blur')).toBeUndefined();
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('readonly 상태에서는 focus/blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    readonly: true,
+                },
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea');
+
+            // when
+            await textarea.trigger('focus');
+            await textarea.trigger('blur');
+
+            // then
+            expect(wrapper.emitted('focus')).toBeTruthy();
+            expect(wrapper.emitted('blur')).toBeTruthy();
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('focus() 메서드 호출 시에도 네이티브 focus 이벤트가 발생하여 focus 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+
+            // when
+            wrapper.vm.focus();
+            await wrapper.vm.$nextTick();
+
+            // then
+            const focusEvents = wrapper.emitted('focus');
+            expect(focusEvents).toBeTruthy();
+            expect(focusEvents?.length).toBe(1);
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('blur() 메서드 호출 시에도 네이티브 blur 이벤트가 발생하여 blur 이벤트를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                attachTo: document.body,
+            });
+            wrapper.vm.focus();
+            await wrapper.vm.$nextTick();
+
+            // when
+            wrapper.vm.blur();
+            await wrapper.vm.$nextTick();
+
+            // then
+            const blurEvents = wrapper.emitted('blur');
+            expect(blurEvents).toBeTruthy();
+            expect(blurEvents?.length).toBe(1);
+
+            // cleanup
+            wrapper.unmount();
+        });
+    });
+
     describe('focus/blur/select 메서드', () => {
         it('focus() 메서드 호출 시 textarea element에 focus가 적용되어야 한다', () => {
             // given
