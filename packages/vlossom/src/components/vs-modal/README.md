@@ -228,9 +228,10 @@ interface OverlayCallbacks<T = void> {
 
 ### Events
 
-| Event   | Description         | Payload |
-| ------- | ------------------- | ------- |
-| `close` | 모달이 닫힐 때 발생 | -       |
+| Event          | Description               | Payload |
+| -------------- | ------------------------- | ------- |
+| `close`        | 모달이 닫힐 때 발생       | -       |
+| `click-dimmed` | dim 영역을 클릭할 때 발생 | -       |
 
 ### 특징
 
