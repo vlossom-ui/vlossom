@@ -12,7 +12,7 @@ const meta: Meta<typeof VsSearchInput> = {
                 component:
                     'VsSearchInput은 검색 기능을 제공하는 입력 컴포넌트입니다. ' +
                     'vs-input을 기반으로 만들어졌으며, 대소문자 구분 및 정규식 검색 옵션을 제공합니다. ' +
-                    '입력 시 debounce를 적용하여 500ms마다 search 이벤트를 emit합니다.',
+                    '입력 시 debounce를 적용하여 400ms마다 search 이벤트를 emit합니다.',
             },
         },
     },
@@ -240,7 +240,7 @@ export const ColorScheme: Story = {
         template: `
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 ${getColorSchemeTemplate(`
-                    <vs-search-input color-scheme="{{ color }}" placeholder="{{ color }} 검색" />
+                    <vs-search-input color-scheme="{{ color }}" placeholder="{{ color }} 검색" case-sensitive regex />
                 `)}
             </div>
         `,
@@ -264,6 +264,8 @@ export const StyleSet: Story = {
     }),
     args: {
         placeholder: '커스텀 검색 필드',
+        regex: true,
+        caseSensitive: true,
         styleSet: {
             backgroundColor: '#f0f8ff',
             border: '2px solid #1e88e5',

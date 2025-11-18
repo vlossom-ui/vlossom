@@ -62,7 +62,7 @@
 
     &.vs-small {
         border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
-        height: var(--vs-button-height, var(--vs-default-comp-height-small));
+        height: var(--vs-button-height, var(--vs-default-comp-height-sm));
         font-size: var(--vs-font-size-sm);
 
         .vs-button-content {

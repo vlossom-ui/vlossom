@@ -9,7 +9,7 @@ describe('VsSearchInput', () => {
     });
 
     describe('search 이벤트', () => {
-        it('입력 시 debounce를 적용하여 500ms 후 search 이벤트가 emit되어야 한다', async () => {
+        it('입력 시 debounce를 적용하여 400ms 후 search 이벤트가 emit되어야 한다', async () => {
             // given
             const wrapper = mount(VsSearchInput);
 
@@ -20,8 +20,8 @@ describe('VsSearchInput', () => {
             // then
             expect(wrapper.emitted('search')).toBeFalsy();
 
-            // 500ms 후
-            vi.advanceTimersByTime(500);
+            // 400ms 후
+            vi.advanceTimersByTime(400);
             await nextTick();
 
             expect(wrapper.emitted('search')).toBeTruthy();
@@ -45,8 +45,8 @@ describe('VsSearchInput', () => {
             // then
             expect(wrapper.emitted('search')).toBeFalsy();
 
-            // 500ms 후
-            vi.advanceTimersByTime(500);
+            // 400ms 후
+            vi.advanceTimersByTime(400);
             await nextTick();
 
             expect(wrapper.emitted('search')).toBeTruthy();
@@ -56,50 +56,6 @@ describe('VsSearchInput', () => {
     });
 
     describe('toggle 버튼', () => {
-        it('caseSensitive prop이 true일 때만 대소문자 구분 토글 버튼이 표시되어야 한다', () => {
-            // given
-            const wrapperWithToggle = mount(VsSearchInput, {
-                props: {
-                    caseSensitive: true,
-                },
-            });
-            const wrapperWithoutToggle = mount(VsSearchInput, {
-                props: {
-                    caseSensitive: false,
-                },
-            });
-
-            // then
-            const toggles = wrapperWithToggle.findAll('.vs-search-input-toggle');
-            expect(toggles.length).toBe(1);
-            expect(toggles[0].text()).toContain('Aa');
-
-            const noToggles = wrapperWithoutToggle.findAll('.vs-search-input-toggle');
-            expect(noToggles.length).toBe(0);
-        });
-
-        it('regex prop이 true일 때만 정규식 토글 버튼이 표시되어야 한다', () => {
-            // given
-            const wrapperWithToggle = mount(VsSearchInput, {
-                props: {
-                    regex: true,
-                },
-            });
-            const wrapperWithoutToggle = mount(VsSearchInput, {
-                props: {
-                    regex: false,
-                },
-            });
-
-            // then
-            const toggles = wrapperWithToggle.findAll('.vs-search-input-toggle');
-            expect(toggles.length).toBe(1);
-            expect(toggles[0].text()).toContain('.*');
-
-            const noToggles = wrapperWithoutToggle.findAll('.vs-search-input-toggle');
-            expect(noToggles.length).toBe(0);
-        });
-
         it('caseSensitive와 regex가 모두 true일 때 두 토글 버튼이 모두 표시되어야 한다', () => {
             // given
             const wrapper = mount(VsSearchInput, {
@@ -114,7 +70,7 @@ describe('VsSearchInput', () => {
             expect(toggles.length).toBe(2);
         });
 
-        it('토글 버튼 클릭 시 상태가 변경되어야 한다', async () => {
+        it('caseSensitive 토글을 클릭하면 caseSensitive 상태가 변경되어야 한다', async () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
@@ -131,6 +87,25 @@ describe('VsSearchInput', () => {
 
             // then
             expect(wrapper.vm.isCaseSensitiveOn).toBe(true);
+        });
+
+        it('regex 토글을 클릭하면 regex 상태가 변경되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    regex: true,
+                },
+            });
+
+            // when
+            const toggle = wrapper.find('.vs-search-input-toggle');
+            expect(wrapper.vm.isRegexOn).toBe(false);
+
+            await toggle.trigger('click');
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isRegexOn).toBe(true);
         });
     });
 

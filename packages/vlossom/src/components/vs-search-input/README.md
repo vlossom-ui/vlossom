@@ -106,7 +106,7 @@ function onSearch(value: string) {
 
 | Event    | Parameters      | Description                                |
 | -------- | --------------- | ------------------------------------------ |
-| `search` | `value: string` | 검색어 입력 시 발생 (debounce 적용, 500ms) |
+| `search` | `value: string` | 검색어 입력 시 발생 (debounce 적용, 400ms) |
 
 ## Methods
 
