@@ -150,9 +150,8 @@ export default defineComponent({
 
             if (isRegexOn.value) {
                 return matchByRegex(text);
-            } else {
-                return matchByText(text);
             }
+            return matchByText(text);
         }
 
         function focus() {

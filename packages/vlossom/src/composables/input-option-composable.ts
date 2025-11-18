@@ -27,9 +27,8 @@ export function useInputOption(
                 }
 
                 return JSON.stringify(label);
-            } else {
-                return JSON.stringify(option);
             }
+            return JSON.stringify(option);
         }
 
         return option + '';

@@ -33,6 +33,7 @@ export default defineConfigWithVueTs(
             'comma-spacing': ['error', { before: false, after: true }],
             semi: ['error', 'always'],
             'no-extra-semi': 'error',
+            'no-else-return': 'error',
             indent: ['error', 4, { SwitchCase: 1 }],
             quotes: [
                 'error',
