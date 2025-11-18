@@ -123,42 +123,6 @@ export const WithDimmed: Story = {
     }),
 };
 
-export const WithHeaderAndFooter: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'header와 footer 슬롯이 있는 모달입니다. header와 footer 슬롯에 콘텐츠를 추가할 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsModalNode },
-        setup() {
-            function handleClose() {
-                alert('Close button clicked');
-            }
-            return { args, handleClose };
-        },
-        template: `
-            <div style="position: relative; width: 100%; height: 600px; background: #f5f5f5; border: 1px dashed #ccc;">
-                <vs-modal-node v-bind="args">
-                    <template #header>
-                        <h2>Header</h2>
-                    </template>
-                    <div>
-                        <p>header와 footer 슬롯이 있는 모달입니다. header에는 제목, footer에는 버튼을 추가할 수 있습니다.</p>
-                    </div>
-                    <template #footer>
-                        <div>
-                            <vs-button @click="handleClose">Close</vs-button>
-                        </div>
-                    </template>
-                </vs-modal-node>
-            </div>
-        `,
-    }),
-};
-
 export const DifferentSizes: Story = {
     parameters: {
         docs: {

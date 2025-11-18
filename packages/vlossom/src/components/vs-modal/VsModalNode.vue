@@ -8,15 +8,7 @@
         />
         <vs-focus-trap ref="focusTrapRef" :focus-lock :initial-focus-ref>
             <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
-                <div class="vs-modal-header">
-                    <slot name="header" />
-                </div>
-                <div class="vs-modal-content">
-                    <slot />
-                </div>
-                <div class="vs-modal-footer">
-                    <slot name="footer" />
-                </div>
+                <slot />
             </div>
         </vs-focus-trap>
     </div>
