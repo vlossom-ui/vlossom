@@ -25,7 +25,7 @@ export default defineComponent({
     props: {
         disabled: { type: Boolean, default: false },
         height: { type: [String, Number] },
-        initialIndex: { type: Number },
+        initialIndex: { type: [String, Number] },
         rootMargin: { type: String, default: '0px' },
         tag: { type: String, default: 'div' },
         threshold: { type: Number, default: 0 },
@@ -236,7 +236,7 @@ export default defineComponent({
             // DOM 렌더링 완료 후 초기 인덱스로 스크롤
             requestAnimationFrame(() => {
                 if (initialIndex.value !== undefined) {
-                    scrollToIndex(initialIndex.value);
+                    scrollToIndex(Number(initialIndex.value));
                 }
             });
         });
