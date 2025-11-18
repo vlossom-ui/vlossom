@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" ref="rootRef" class="vs-infinite-scroll">
+    <component :is="tag" ref="rootRef" class="vs-infinite-scroll" :style="containerStyle">
         <slot />
     </component>
 </template>
@@ -8,6 +8,7 @@
 import {
     defineComponent,
     toRefs,
+    computed,
     onMounted,
     onBeforeUnmount,
     watch,
@@ -17,14 +18,15 @@ import {
     type PropType,
 } from 'vue';
 import { VsComponent } from '@/declaration';
+import { stringUtil } from '@/utils';
 
 const name = VsComponent.VsInfiniteScroll;
-
 export default defineComponent({
     name,
     props: {
         disabled: { type: Boolean, default: false },
-        initialIndex: { type: Number, default: 0 },
+        height: { type: [String, Number] },
+        initialIndex: { type: Number },
         rootMargin: { type: String, default: '0px' },
         tag: { type: String, default: 'div' },
         threshold: {
@@ -33,10 +35,20 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const { disabled, rootMargin, threshold, initialIndex } = toRefs(props);
+        const { disabled, height, rootMargin, threshold, initialIndex } = toRefs(props);
         const rootRef: TemplateRef<HTMLDivElement> = useTemplateRef('rootRef');
         let io: IntersectionObserver | null = null;
         let mo: MutationObserver | null = null;
+
+        const containerStyle = computed(() => {
+            if (!height.value) {
+                return {};
+            }
+            return {
+                height: stringUtil.toStringSize(height.value),
+                overflowY: 'auto',
+            };
+        });
 
         function isScrollable(el: HTMLElement): boolean {
             const style = getComputedStyle(el);
@@ -200,13 +212,12 @@ export default defineComponent({
         onMounted(async () => {
             await bind();
 
-            // initialIndex로 스크롤
-            if (initialIndex.value !== undefined) {
-                // DOM이 완전히 렌더링된 후 스크롤
-                requestAnimationFrame(() => {
+            // DOM이 완전히 렌더링된 후 스크롤
+            requestAnimationFrame(() => {
+                if (initialIndex.value !== undefined) {
                     scrollToIndex(initialIndex.value);
-                });
-            }
+                }
+            });
         });
 
         onBeforeUnmount(() => {
@@ -227,9 +238,10 @@ export default defineComponent({
         return {
             rootRef,
             scrollToIndex,
+            containerStyle,
         };
     },
 });
 </script>
 
-<style lang="css" src="./VsInfiniteScroll.css" />
+<style src="./VsInfiniteScroll.css" />
