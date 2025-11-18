@@ -21,6 +21,7 @@ export enum VsComponent {
     VsHeader = 'VsHeader',
     VsImage = 'VsImage',
     VsIndexView = 'VsIndexView',
+    VsInfiniteScroll = 'VsInfiniteScroll',
     VsInnerScroll = 'VsInnerScroll',
     VsInput = 'VsInput',
     VsInputWrapper = 'VsInputWrapper',
