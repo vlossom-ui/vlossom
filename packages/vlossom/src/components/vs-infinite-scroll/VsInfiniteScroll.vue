@@ -17,7 +17,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent } from '@/declaration';
-import { stringUtil } from '@/utils';
+import { domUtil, logUtil, stringUtil } from '@/utils';
 
 const name = VsComponent.VsInfiniteScroll;
 export default defineComponent({
@@ -28,7 +28,18 @@ export default defineComponent({
         initialIndex: { type: [String, Number] },
         rootMargin: { type: String, default: '0px' },
         tag: { type: String, default: 'div' },
-        threshold: { type: Number, default: 0 },
+        threshold: {
+            type: Number,
+            default: 0,
+            validator: (value: number) => {
+                const isValid = value >= 0 && value <= 1;
+                if (!isValid) {
+                    logUtil.propError(name, 'threshold', 'invalid threshold value');
+                    return false;
+                }
+                return true;
+            },
+        },
     },
     setup(props) {
         const { disabled, height, rootMargin, threshold, initialIndex } = toRefs(props);
@@ -47,22 +58,13 @@ export default defineComponent({
             };
         });
 
-        function isScrollable(el: HTMLElement): boolean {
-            const style = getComputedStyle(el);
-            const overflowY = style.overflowY;
-            if (overflowY === 'auto' || overflowY === 'scroll') {
-                return true;
-            }
-            return el.scrollHeight > el.clientHeight;
-        }
-
         function getScrollRoot(): Element | null {
             const el = rootRef.value;
             if (!el) {
                 return null;
             }
             // 컨테이너 자체가 스크롤 가능하면 root로 사용, 아니면 viewport 사용
-            return isScrollable(el) ? el : null;
+            return domUtil.isScrollableY(el) ? el : null;
         }
 
         function updateChildVisibility(child: HTMLElement, visible: boolean) {
