@@ -107,9 +107,7 @@ export default defineComponent({
 
             const children = Array.from(el.children) as HTMLElement[];
 
-            // 모든 children을 observe
             for (const child of children) {
-                updateChildVisibility(child, false);
                 io.observe(child);
             }
         }
@@ -178,8 +176,6 @@ export default defineComponent({
                 return;
             }
 
-            // IntersectionObserver 활성화 시 초기 상태는 모두 숨김
-            setAllChildrenVisibility(false);
             setupIntersectionObserver();
             setupMutationObserver();
 
