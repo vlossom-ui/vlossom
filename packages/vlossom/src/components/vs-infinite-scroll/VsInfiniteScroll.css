@@ -1,0 +1,9 @@
+.vs-infinite-scroll {
+    @apply relative w-full;
+}
+
+/* Hide children that are outside the viewport */
+.vs-infinite-scroll > *[data-io-visible='false'] {
+    visibility: hidden !important;
+    pointer-events: none;
+}
