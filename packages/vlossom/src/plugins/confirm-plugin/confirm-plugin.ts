@@ -4,7 +4,7 @@ import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
 import type { ModalPlugin } from '../modal-plugin/types';
 import type { ConfirmModalOptions, ConfirmPlugin } from './types';
-import createButtons from './components/buttons-vnode';
+import { confirmButtons } from './components/buttons-vnode';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -14,12 +14,11 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const container = options.container || 'body';
 
             return new Promise((resolve) => {
-                const confirmDiv = h('div', { class: 'vs-confirm' }, [
-                    h(VsRender, { content }),
-                    createButtons(overlayCallback, options),
-                ]);
-                const innerComponent = h(confirmDiv, options);
-                const modalId = modalPlugin.open(innerComponent, {
+                const buttons = confirmButtons(overlayCallback, options);
+                const contents = h(VsRender, { content });
+                const confirm = h('div', { class: 'vs-confirm' }, [contents, buttons]);
+
+                const modalId = modalPlugin.open(confirm, {
                     ...options,
                     callbacks: {
                         ...options?.callbacks,
