@@ -10,10 +10,19 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
-            const { container = 'body', colorScheme, styleSet, okText, cancelText, swapButtons } = options;
+            const {
+                container = 'body',
+                colorScheme,
+                styleSet,
+                okText = 'OK',
+                cancelText = 'Cancel',
+                swapButtons,
+            } = options;
+
             const classObj = {
                 'flex-row-reverse': swapButtons,
             };
+
             const overlayId = overlayCallback.getLastOverlayId();
 
             const [okButton, okButtonHandler] = createVsButton({
@@ -22,7 +31,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                     colorScheme,
                     styleSet: (styleSet as VsConfirmStyleSet)?.okButton,
                 },
-                content: okText ?? 'OK',
+                content: okText,
                 templateRef: 'okRef',
             });
             okButtonHandler.push(() => {
@@ -34,7 +43,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                     colorScheme,
                     styleSet: (styleSet as VsConfirmStyleSet)?.cancelButton,
                 },
-                content: cancelText ?? 'Cancel',
+                content: cancelText,
                 templateRef: 'cancelRef',
             });
             cancelButtonHandler.push(() => {
