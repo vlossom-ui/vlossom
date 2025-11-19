@@ -1,9 +1,9 @@
 import { h, type Component } from 'vue';
-import { VsRender, createVsButton, type VsConfirmStyleSet } from '@/components';
+import { VsRender, createVsButton } from '@/components';
 import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
 import type { ModalPlugin } from '../modal-plugin/types';
-import type { ConfirmModalOptions, ConfirmPlugin } from './types';
+import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -23,8 +23,6 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 'flex-row-reverse': swapButtons,
             };
 
-            const overlayId = overlayCallback.getLastOverlayId();
-
             const [okButton, okButtonHandler] = createVsButton({
                 props: {
                     primary: true,
@@ -35,7 +33,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 templateRef: 'okRef',
             });
             okButtonHandler.push(() => {
-                overlayCallback.run<boolean>(overlayId, CONFIRM_OK);
+                overlayCallback.run<boolean>(overlayCallback.getLastOverlayId(), CONFIRM_OK);
             });
 
             const [cancelButton, cancelButtonHandler] = createVsButton({
@@ -47,12 +45,14 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 templateRef: 'cancelRef',
             });
             cancelButtonHandler.push(() => {
-                overlayCallback.run<boolean>(overlayId, CONFIRM_CANCEL);
+                overlayCallback.run<boolean>(overlayCallback.getLastOverlayId(), CONFIRM_CANCEL);
             });
 
             const contents = h(VsRender, { content });
-            const buttons = h('div', { class: 'vs-confirm-buttons', classObj }, [okButton, cancelButton]);
-            const confirm = h('div', { class: 'vs-confirm' }, [contents, buttons]);
+            const buttonsClass = 'flex w-full items-center justify-center gap-2';
+            const buttons = h('div', { class: [...buttonsClass, classObj] }, [okButton, cancelButton]);
+            const confirmClass = 'flex h-full flex-col items-center justify-center gap-12 pt-14';
+            const confirm = h('div', { class: [confirmClass] }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {

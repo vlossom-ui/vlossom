@@ -1,6 +1,6 @@
 # Confirm Plugin
 
-확인(Confirm) 다이얼로그를 간단하게 띄우고 결과를 `Promise<boolean>`으로 받을 수 있는 플러그인입니다. 내부적으로 `modal-plugin`을 사용해 `VsConfirm` 컴포넌트를 렌더링합니다.
+확인(Confirm) 다이얼로그를 간단하게 띄우고 결과를 `Promise<boolean>`으로 받을 수 있는 플러그인입니다. 내부적으로 `modal-plugin`을 사용하여 컴포넌트를 렌더링합니다.
 
 ## 사용 방법
 
