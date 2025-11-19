@@ -107,10 +107,9 @@ export default defineComponent({
                             ),
                         ),
                     ]);
-                } else {
-                    const currentNode = filteredNodes[currentIndex];
-                    return currentNode || null;
                 }
+                const currentNode = filteredNodes[currentIndex];
+                return currentNode || null;
             }
 
             const content = renderContent();

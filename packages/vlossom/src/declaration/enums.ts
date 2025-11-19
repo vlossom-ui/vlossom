@@ -38,6 +38,7 @@ export enum VsComponent {
     VsRadioSet = 'VsRadioSet',
     VsRender = 'VsRender',
     VsResponsive = 'VsResponsive',
+    VsSearchInput = 'VsSearchInput',
     VsSkeleton = 'VsSkeleton',
     VsSwitch = 'VsSwitch',
     VsTextarea = 'VsTextarea',

@@ -64,7 +64,7 @@
     }
 
     &.vs-small {
-        min-height: var(--vs-radio-height, var(--vs-default-comp-height-small));
+        min-height: var(--vs-radio-height, var(--vs-default-comp-height-sm));
 
         .vs-radio-label {
             padding: 0.1rem 0;

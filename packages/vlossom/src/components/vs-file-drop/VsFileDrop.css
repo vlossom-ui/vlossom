@@ -32,11 +32,11 @@
     }
 
     &.vs-small {
-        height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+        height: var(--vs-file-drop-height, var(--vs-default-comp-height-sm));
 
         .vs-file-drop-placeholder {
             width: var(--vs-file-drop-width, var(--vs-default-comp-width));
-            height: var(--vs-file-drop-height, var(--vs-default-comp-height-small));
+            height: var(--vs-file-drop-height, var(--vs-default-comp-height-sm));
 
             .placeholder-text {
                 @apply w-full overflow-hidden text-center text-ellipsis whitespace-nowrap;

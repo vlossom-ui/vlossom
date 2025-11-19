@@ -71,7 +71,7 @@
     }
 
     &.vs-small {
-        min-height: var(--vs-checkbox-height, var(--vs-default-comp-height-small));
+        min-height: var(--vs-checkbox-height, var(--vs-default-comp-height-sm));
 
         .vs-checkbox-input {
             width: var(--vs-checkbox-checkboxSize, 1rem);

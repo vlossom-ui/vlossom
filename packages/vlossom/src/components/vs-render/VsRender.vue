@@ -70,9 +70,8 @@ export default defineComponent({
             if (typeof content.value === 'string') {
                 const componentFn = renderStringAsComponent(content.value);
                 return componentFn();
-            } else {
-                return h(content.value, attrs);
             }
+            return h(content.value, attrs);
         };
     },
 });

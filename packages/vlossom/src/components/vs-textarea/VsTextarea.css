@@ -35,7 +35,7 @@
     }
 
     &.vs-small {
-        height: var(--vs-textarea-height, var(--vs-default-comp-height-small));
+        height: var(--vs-textarea-height, 3rem);
         font-size: var(--vs-textarea-fontSize, var(--vs-font-size-sm));
 
         textarea {

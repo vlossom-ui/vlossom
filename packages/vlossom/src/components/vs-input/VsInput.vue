@@ -71,16 +71,19 @@ import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { propsUtil } from '@/utils';
+import { closeIcon } from '@/icons';
+
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
+
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import { closeIcon } from '@/icons';
+import VsRender from '@/components/vs-render/VsRender.vue';
 
 const name = VsComponent.VsInput;
 
 export default defineComponent({
     name,
-    components: { VsInputWrapper },
+    components: { VsInputWrapper, VsRender },
     props: {
         ...getInputProps<VsInputValueType>(),
         ...getResponsiveProps(),
