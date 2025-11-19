@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, isRef, type Component, type Ref } from 'vue';
+import { defineComponent, h, type Component, type Ref } from 'vue';
 
 import VsButton from '../VsButton.vue';
 import { createVsButton } from '../vs-button-vnode';
@@ -9,16 +9,15 @@ type Handler = (() => void) | null;
 
 function mountCreateVsButton(args: Parameters<typeof createVsButton>[0]): {
     wrapper: ReturnType<typeof mount>;
-    handlerRef: Ref<Handler>;
+    handlers: (Ref<Handler> | Handler)[];
 } {
-    let handlerRef: ReturnType<typeof createVsButton>[1] | null = null;
-
+    let handlers: (Ref<Handler> | Handler)[] = [];
     const Host = defineComponent({
         name: 'VsButtonVNodeHost',
         setup() {
             return () => {
                 const [vnode, ref] = createVsButton(args);
-                handlerRef = ref;
+                handlers = ref;
                 return vnode;
             };
         },
@@ -26,15 +25,7 @@ function mountCreateVsButton(args: Parameters<typeof createVsButton>[0]): {
 
     const wrapper = mount(Host);
 
-    if (!handlerRef) {
-        throw new Error('handlerRef가 초기화되지 않았습니다');
-    }
-
-    if (!isRef(handlerRef)) {
-        throw new Error('handlerRef는 Ref 형태여야 합니다');
-    }
-
-    return { wrapper, handlerRef };
+    return { wrapper, handlers };
 }
 
 describe('createVsButton', () => {
@@ -168,14 +159,14 @@ describe('createVsButton', () => {
     });
 
     it('반환된 핸들러 ref에 함수를 할당하면 클릭 시 호출되어야 한다', async () => {
-        const { wrapper, handlerRef } = mountCreateVsButton({
+        const { wrapper, handlers } = mountCreateVsButton({
             props: {},
             content: '클릭',
             templateRef: 'clickButton',
         });
 
         const clickSpy = vi.fn();
-        handlerRef.value = clickSpy;
+        handlers.push(clickSpy);
 
         await wrapper.find('button').trigger('click');
 

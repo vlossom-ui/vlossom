@@ -1,24 +1,26 @@
-import { h, type Component, type ExtractPropTypes, type VNode, type Ref, ref, isRef } from 'vue';
+import { h, type Component, type ExtractPropTypes, type VNode, type Ref, isRef } from 'vue';
 import { VsButton, VsRender } from '@/components';
 
-type Handler = (() => void) | null;
+type Handler = (() => void) | (() => Promise<void>) | null;
 
 export function createVsButton(args: {
     props: Partial<ExtractPropTypes<typeof VsButton>>;
     content: string | Component;
     templateRef: string;
-}): [VNode, Ref<Handler> | Handler] {
+}): [VNode, (Ref<Handler> | Handler)[]] {
     const { props, content, templateRef } = args;
-    const onClickHandler: Ref<Handler> | Handler = ref(null);
+    const handlers: (Ref<Handler> | Handler)[] = [];
 
     function onClick(event: Event) {
         event.preventDefault();
 
-        if (isRef(onClickHandler)) {
-            onClickHandler.value?.();
-            return;
-        }
-        onClickHandler?.();
+        handlers.forEach((handler) => {
+            if (isRef(handler)) {
+                handler.value?.();
+            } else {
+                handler?.();
+            }
+        });
     }
 
     return [
@@ -31,6 +33,6 @@ export function createVsButton(args: {
             },
             { default: () => h(VsRender, { content }) },
         ),
-        onClickHandler,
+        handlers,
     ];
 }
