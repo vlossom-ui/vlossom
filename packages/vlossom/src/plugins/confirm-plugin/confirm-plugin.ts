@@ -1,9 +1,11 @@
 import { h, type Component } from 'vue';
-import { VsRender, createVsButton } from '@/components';
+import { VsRender } from '@/components';
 import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
-import type { ModalPlugin } from '../modal-plugin/types';
+import type { ModalPlugin } from '@/plugins';
+
 import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
+import { createVsButton } from '../utils/vnode/create-vs-button-vnode/create-vs-button-vnode';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();

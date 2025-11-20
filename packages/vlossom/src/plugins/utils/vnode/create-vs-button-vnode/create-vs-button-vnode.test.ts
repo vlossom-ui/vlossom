@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { defineComponent, h, type Component, type Ref } from 'vue';
 
-import VsButton from '../VsButton.vue';
-import { createVsButton } from '../vs-button-vnode';
+import VsButton from '@/components/vs-button/VsButton.vue';
+import { createVsButton } from './create-vs-button-vnode';
 
 type Handler = (() => void) | null;
 

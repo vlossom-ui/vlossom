@@ -85,5 +85,3 @@ export { default as VsToast } from './vs-toast/VsToast.vue';
 export { default as VsToastView } from './vs-toast/VsToastView.vue';
 export { default as VsToggle } from './vs-toggle/VsToggle.vue';
 export { default as VsTooltip } from './vs-tooltip/VsTooltip.vue';
-
-export { createVsButton } from './vs-button/vs-button-vnode';
