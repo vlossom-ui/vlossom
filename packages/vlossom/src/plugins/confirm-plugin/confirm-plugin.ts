@@ -50,9 +50,9 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
             const contents = h(VsRender, { content });
             const buttonsClass = 'flex w-full items-center justify-center gap-2';
-            const buttons = h('div', { class: [...buttonsClass, classObj] }, [okButton, cancelButton]);
+            const buttons = h('div', { class: [buttonsClass, classObj] }, [okButton, cancelButton]);
             const confirmClass = 'flex h-full flex-col items-center justify-center gap-12 pt-14';
-            const confirm = h('div', { class: [confirmClass] }, [contents, buttons]);
+            const confirm = h('div', { class: confirmClass }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {
