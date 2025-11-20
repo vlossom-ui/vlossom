@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { defineComponent, h, type Component, type Ref } from 'vue';
+import { defineComponent, h } from 'vue';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
 import { createVsButton } from './create-vs-button-vnode';
@@ -9,15 +9,15 @@ type Handler = (() => void) | null;
 
 function mountCreateVsButton(args: Parameters<typeof createVsButton>[0]): {
     wrapper: ReturnType<typeof mount>;
-    handlers: (Ref<Handler> | Handler)[];
+    handlers: Handler[];
 } {
-    let handlers: (Ref<Handler> | Handler)[] = [];
+    let handlers: Handler[] = [];
     const Host = defineComponent({
         name: 'VsButtonVNodeHost',
         setup() {
             return () => {
                 const [vnode, ref] = createVsButton(args);
-                handlers = ref;
+                handlers = ref as Handler[];
                 return vnode;
             };
         },
@@ -145,7 +145,7 @@ describe('createVsButton', () => {
             setup() {
                 return () => h('span', { class: 'custom-content' }, '커스텀');
             },
-        }) as Component;
+        });
 
         const { wrapper } = mountCreateVsButton({
             props: {},
