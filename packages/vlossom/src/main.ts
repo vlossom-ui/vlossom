@@ -1,8 +1,6 @@
 import './styles/index.css';
 import './styles/index.scss';
 
-console.log('Hello Vlossom');
-
 export * from './composables';
 export * from './declaration';
 export * from './framework';
