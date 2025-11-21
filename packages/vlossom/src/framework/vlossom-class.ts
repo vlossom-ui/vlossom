@@ -10,9 +10,11 @@ import {
     createToastPlugin,
     createModalPlugin,
     createConfirmPlugin,
+    createPromptPlugin,
     type ToastPlugin,
     type ModalPlugin,
     type ConfirmPlugin,
+    type PromptPlugin,
 } from '@/plugins';
 
 export class Vlossom {
@@ -20,6 +22,7 @@ export class Vlossom {
     private _toast: ToastPlugin = createToastPlugin();
     private _modal: ModalPlugin = createModalPlugin();
     private _confirm: ConfirmPlugin = createConfirmPlugin(this._modal);
+    private _prompt: PromptPlugin = createPromptPlugin(this._modal);
 
     constructor(options: VlossomOptions) {
         const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options;
@@ -41,6 +44,10 @@ export class Vlossom {
 
     get confirm(): ConfirmPlugin {
         return this._confirm;
+    }
+
+    get prompt(): PromptPlugin {
+        return this._prompt;
     }
 
     set colorScheme(colorScheme: GlobalColorSchemes) {
