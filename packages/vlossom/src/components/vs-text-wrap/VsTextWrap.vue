@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-text-wrap']" :style="styleSetVariables">
+    <div class="vs-text-wrap" :style="styleSetVariables">
         <div ref="contentsRef" class="vs-text-wrap-contents">
             <slot />
         </div>
@@ -62,15 +62,19 @@ export default defineComponent({
         const copied = ref(false);
 
         const contentText = computed(() => {
-            return contentsRef.value?.innerText || contentsRef.value?.innerHTML?.replace(/<[^>]*>/g, '') || '';
+            return contentsRef.value?.innerText || '';
         });
 
-        function copyInnerText() {
+        async function copyInnerText() {
             if (!contentText.value) {
                 return;
             }
 
-            clipboardUtil.copy(contentText.value);
+            const success = await clipboardUtil.copy(contentText.value);
+            if (!success) {
+                return;
+            }
+
             emit('copied', contentText.value);
 
             copied.value = true;

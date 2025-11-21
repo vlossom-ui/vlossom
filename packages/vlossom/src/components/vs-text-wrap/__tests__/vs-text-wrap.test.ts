@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import VsTextWrap from './../VsTextWrap.vue';
 
 describe('VsTextWrap', () => {
@@ -83,13 +83,19 @@ describe('VsTextWrap', () => {
     describe('copy', () => {
         let clipboardContents = '';
 
-        Object.assign(navigator, {
-            clipboard: {
-                writeText: vi.fn((text) => {
-                    clipboardContents = text;
-                }),
-                readText: vi.fn(() => clipboardContents),
-            },
+        beforeEach(() => {
+            clipboardContents = '';
+            Object.defineProperty(navigator, 'clipboard', {
+                value: {
+                    writeText: vi.fn((text) => {
+                        clipboardContents = text;
+                        return Promise.resolve();
+                    }),
+                    readText: vi.fn(() => clipboardContents),
+                },
+                writable: true,
+                configurable: true,
+            });
         });
 
         it('copy 버튼을 클릭하면 innerText가 클립보드에 복사되어야 한다', async () => {
@@ -108,8 +114,17 @@ describe('VsTextWrap', () => {
                 attachTo: document.body,
             });
 
+            // contentsRef의 innerText를 강제로 설정 (JSDOM에서 innerText가 작동하지 않음)
+            const contentsElement = wrapper.find('.vs-text-wrap-contents').element as HTMLElement;
+            Object.defineProperty(contentsElement, 'innerText', {
+                value: 'lorem ipsum dolor sit amet consectetuer adipiscing elit. ',
+                writable: true,
+                configurable: true,
+            });
+
             // when
             await wrapper.find('.vs-copy-button').trigger('click');
+            await flushPromises();
 
             // then
             const clipboardText = navigator.clipboard.readText();
@@ -128,8 +143,17 @@ describe('VsTextWrap', () => {
                 attachTo: document.body,
             });
 
+            // contentsRef의 innerText를 강제로 설정
+            const contentsElement = wrapper.find('.vs-text-wrap-contents').element as HTMLElement;
+            Object.defineProperty(contentsElement, 'innerText', {
+                value: 'Test text',
+                writable: true,
+                configurable: true,
+            });
+
             // when
             await wrapper.find('.vs-copy-button').trigger('click');
+            await flushPromises();
 
             // then
             expect(wrapper.emitted('copied')).toBeTruthy();
@@ -148,8 +172,17 @@ describe('VsTextWrap', () => {
                 attachTo: document.body,
             });
 
+            // contentsRef의 innerText를 강제로 설정
+            const contentsElement = wrapper.find('.vs-text-wrap-contents').element as HTMLElement;
+            Object.defineProperty(contentsElement, 'innerText', {
+                value: 'Test text',
+                writable: true,
+                configurable: true,
+            });
+
             // when
             await wrapper.find('.vs-copy-button').trigger('click');
+            await flushPromises();
 
             // then
             expect(wrapper.vm.copied).toBe(true);
@@ -160,8 +193,52 @@ describe('VsTextWrap', () => {
             expect(wrapper.vm.copied).toBe(false);
         });
 
-        beforeEach(() => {
-            clipboardContents = '';
+        it('클립보드 복사가 실패하면 copied 이벤트가 발생하지 않아야 한다', async () => {
+            // given
+            const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            const originalClipboard = navigator.clipboard;
+            Object.defineProperty(navigator, 'clipboard', {
+                value: {
+                    writeText: vi.fn(() => Promise.reject(new Error('Permission denied'))),
+                },
+                writable: true,
+                configurable: true,
+            });
+
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'Test text',
+                },
+                props: {
+                    copy: true,
+                },
+                attachTo: document.body,
+            });
+
+            // contentsRef의 innerText를 강제로 설정
+            const contentsElement = wrapper.find('.vs-text-wrap-contents').element as HTMLElement;
+            Object.defineProperty(contentsElement, 'innerText', {
+                value: 'Test text',
+                writable: true,
+                configurable: true,
+            });
+
+            // when
+            await wrapper.find('.vs-copy-button').trigger('click');
+            await flushPromises();
+
+            // then
+            expect(wrapper.emitted('copied')).toBeFalsy();
+            expect(wrapper.vm.copied).toBe(false);
+            expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to copy to clipboard:', expect.any(Error));
+
+            // cleanup
+            consoleErrorSpy.mockRestore();
+            Object.defineProperty(navigator, 'clipboard', {
+                value: originalClipboard,
+                writable: true,
+                configurable: true,
+            });
         });
     });
 

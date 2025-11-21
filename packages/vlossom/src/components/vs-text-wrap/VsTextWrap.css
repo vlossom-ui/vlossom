@@ -17,8 +17,6 @@
         @apply relative truncate;
 
         width: var(--vs-text-wrap-width, 100%);
-        color: var(--vs-comp-font);
-        font-size: var(--vs-comp-font-size);
     }
 
     .vs-text-wrap-buttons {

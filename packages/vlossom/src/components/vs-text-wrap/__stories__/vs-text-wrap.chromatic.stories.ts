@@ -99,9 +99,6 @@ const meta: Meta<typeof VsTextWrap> = {
                             }"
                         >
                             https://example.com/very/long/url/path/to/resource
-                            <template #tooltip="{ content }">
-                                <vs-tooltip>{{ content }}</vs-tooltip>
-                            </template>
                         </vs-text-wrap>
                     </div>
                 </div>
