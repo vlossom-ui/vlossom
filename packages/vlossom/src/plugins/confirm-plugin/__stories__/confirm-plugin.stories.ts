@@ -45,6 +45,7 @@ export const Default: Story = {
                     okText: '삭제',
                     cancelText: '취소',
                     swapButtons: true,
+                    dimmed: true,
                 });
                 resultText.value = confirmed ? '삭제를 진행합니다.' : '삭제를 취소했습니다.';
             }

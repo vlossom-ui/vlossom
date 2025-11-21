@@ -1,10 +1,17 @@
 import type { Component } from 'vue';
-import type { ColorScheme } from '@/declaration';
+import type { Alignment, ColorScheme } from '@/declaration';
 import type { ModalOptions } from '@/plugins/modal-plugin';
-import type { VsConfirmStyleSet } from '@/components/vs-confirm/types';
+import type { VsButtonStyleSet, VsModalNodeStyleSet } from '@/components';
+
+export interface VsConfirmStyleSet extends VsModalNodeStyleSet {
+    buttonsGap?: string | number;
+    buttonsAlign?: Alignment;
+    okButton?: Omit<VsButtonStyleSet, 'loading'>;
+    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+}
 
 export interface ConfirmModalOptions extends ModalOptions {
-    styleSet?: string | VsConfirmStyleSet;
+    styleSet?: VsConfirmStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;
     cancelText?: string;
