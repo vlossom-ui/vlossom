@@ -8,30 +8,22 @@ export const vnodeUtils = {
     createVsButton(args: {
         props: VsButtonVNodeProps;
         content: string | Component;
-    }): [VNode, VsButtonVNodeEventHandler[]] {
-        const { props, content } = args;
-        const handlers: VsButtonVNodeEventHandler[] = [];
+        onClickEvent: VsButtonVNodeEventHandler;
+    }): VNode {
+        const { props, content, onClickEvent } = args;
 
         function onClick(event: Event) {
             event.preventDefault();
-
-            handlers.forEach((handler) => {
-                if (handler) {
-                    handler();
-                }
-            });
+            onClickEvent?.();
         }
 
-        return [
-            h(
-                VsButton,
-                {
-                    ...props,
-                    onClick,
-                },
-                { default: () => h(VsRender, { content }) },
-            ),
-            handlers,
-        ];
+        return h(
+            VsButton,
+            {
+                ...props,
+                onClick,
+            },
+            { default: () => h(VsRender, { content }) },
+        );
     },
 };

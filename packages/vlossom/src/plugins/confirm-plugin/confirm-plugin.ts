@@ -30,17 +30,17 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 overlayCallback.run<boolean>(overlayId, eventName);
             }
 
-            const [okButton, okButtonHandler] = vnodeUtils.createVsButton({
+            const okButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
                 content: okText,
+                onClickEvent: () => handleButton(CONFIRM_OK),
             });
-            okButtonHandler.push(() => handleButton(CONFIRM_OK));
 
-            const [cancelButton, cancelButtonHandler] = vnodeUtils.createVsButton({
+            const cancelButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.cancelButton },
                 content: cancelText,
+                onClickEvent: () => handleButton(CONFIRM_CANCEL),
             });
-            cancelButtonHandler.push(() => handleButton(CONFIRM_CANCEL));
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
