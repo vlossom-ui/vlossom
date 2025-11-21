@@ -243,9 +243,13 @@ describe('VsTextWrap', () => {
     });
 
     describe('link', () => {
-        const mockedOpen = vi.fn();
+        let mockedOpen: ReturnType<typeof vi.fn>;
         const originalOpen = window.open;
-        window.open = mockedOpen;
+
+        beforeEach(() => {
+            mockedOpen = vi.fn();
+            window.open = mockedOpen;
+        });
 
         it('link 버튼을 클릭하면 새 창이 열려야 한다', async () => {
             // given
@@ -264,10 +268,6 @@ describe('VsTextWrap', () => {
 
             // then
             expect(mockedOpen).toHaveBeenCalledWith('https://google.com', '_blank');
-        });
-
-        beforeEach(() => {
-            mockedOpen.mockClear();
         });
 
         afterAll(() => {
