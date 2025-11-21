@@ -2,9 +2,10 @@ import { h, type Component } from 'vue';
 import { VsRender } from '@/components';
 import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
+import { stringUtil } from '@/utils';
 import type { ModalPlugin } from '@/plugins';
 
-import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
+import type { ConfirmModalOptions, ConfirmPlugin } from './types';
 import { createVsButton } from '../utils/vnode/create-vs-button-vnode/create-vs-button-vnode';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
@@ -26,11 +27,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             };
 
             const [okButton, okButtonHandler] = createVsButton({
-                props: {
-                    primary: true,
-                    colorScheme,
-                    styleSet: (styleSet as VsConfirmStyleSet)?.okButton,
-                },
+                props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
                 content: okText,
                 templateRef: 'okRef',
             });
@@ -39,10 +36,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             });
 
             const [cancelButton, cancelButtonHandler] = createVsButton({
-                props: {
-                    colorScheme,
-                    styleSet: (styleSet as VsConfirmStyleSet)?.cancelButton,
-                },
+                props: { colorScheme, styleSet: styleSet?.cancelButton },
                 content: cancelText,
                 templateRef: 'cancelRef',
             });
@@ -50,11 +44,17 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 overlayCallback.run<boolean>(overlayCallback.getLastOverlayId(), CONFIRM_CANCEL);
             });
 
+            const buttonsClass = [
+                'w-full',
+                'items-center',
+                styleSet?.buttonsGap ? `gap-[${stringUtil.toStringSize(styleSet?.buttonsGap)}]` : 'gap-2',
+                styleSet?.buttonsAlign ? `justify-${styleSet?.buttonsAlign}` : 'justify-center',
+            ];
+            const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
+
             const contents = h(VsRender, { content });
-            const buttonsClass = 'flex w-full items-center justify-center gap-2';
-            const buttons = h('div', { class: [buttonsClass, classObj] }, [okButton, cancelButton]);
-            const confirmClass = 'flex h-full flex-col items-center justify-center gap-12 pt-14';
-            const confirm = h('div', { class: confirmClass }, [contents, buttons]);
+            const buttons = h('div', { class: [...buttonsClass, classObj] }, [okButton, cancelButton]);
+            const confirm = h('div', { class: [...contentClass] }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {
