@@ -57,18 +57,21 @@ export default defineComponent({
             styleSet,
             computed(() => ({ width: width.value })),
         );
+
         const contentsRef: Ref<HTMLElement | null> = ref(null);
         const copied = ref(false);
 
-        function copyInnerText() {
-            const text = contentsRef.value?.innerText || contentsRef.value?.innerHTML?.replace(/<[^>]*>/g, '') || '';
+        const contentText = computed(() => {
+            return contentsRef.value?.innerText || contentsRef.value?.innerHTML?.replace(/<[^>]*>/g, '') || '';
+        });
 
-            if (!text) {
+        function copyInnerText() {
+            if (!contentText.value) {
                 return;
             }
 
-            clipboardUtil.copy(text);
-            emit('copied', text);
+            clipboardUtil.copy(contentText.value);
+            emit('copied', contentText.value);
 
             copied.value = true;
             setTimeout(() => {
@@ -89,6 +92,7 @@ export default defineComponent({
 
         return {
             styleSetVariables,
+            contentText,
             contentsRef,
             copyInnerText,
             openLink,

@@ -93,6 +93,14 @@ interface VsTextWrapStyleSet {
 | -------- | ---------------------------- | -------------- |
 | `copied` | 복사 버튼을 클릭했을 때 발생 | `text: string` |
 
+## Exposed Values
+
+컴포넌트 ref를 통해 다음 값에 접근할 수 있습니다:
+
+| Name          | Type                  | Description                           |
+| ------------- | --------------------- | ------------------------------------- |
+| `contentText` | `ComputedRef<string>` | 감싸진 텍스트 내용 (HTML 태그 제거됨) |
+
 ## 특징
 
 - **복사 기능**: `copy` prop으로 복사 버튼 활성화. HTML 태그는 제거하고 순수 텍스트만 복사됩니다.
@@ -173,4 +181,25 @@ vlossom.styleSet = {
         미리 정의된 스타일 적용
     </vs-text-wrap>
 </template>
+```
+
+### 텍스트 내용에 접근하기
+
+ref를 통해 컴포넌트의 `contentText` 값에 접근할 수 있습니다. 이를 활용하여 툴팁이나 다른 UI 요소와 연계할 수 있습니다.
+
+```html
+<template>
+    <vs-tooltip :content="textContent">
+        <vs-text-wrap ref="textWrapRef" copy width="200px">
+            This is a very long text that will be truncated with ellipsis
+        </vs-text-wrap>
+    </vs-tooltip>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+
+const textWrapRef = ref();
+const textContent = computed(() => textWrapRef.value?.contentText || '');
+</script>
 ```
