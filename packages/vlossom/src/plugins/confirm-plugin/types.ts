@@ -4,7 +4,7 @@ import type { ModalOptions } from '@/plugins/modal-plugin';
 import type { VsButtonStyleSet, VsModalNodeStyleSet } from '@/components';
 
 export interface VsConfirmStyleSet extends VsModalNodeStyleSet {
-    buttonsGap?: string;
+    buttonsGap?: string | number;
     buttonsAlign?: Alignment;
     okButton?: Omit<VsButtonStyleSet, 'loading'>;
     cancelButton?: Omit<VsButtonStyleSet, 'loading'>;

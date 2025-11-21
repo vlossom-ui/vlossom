@@ -44,19 +44,16 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             });
             cancelButtonHandler.push(() => handleButton(CONFIRM_CANCEL));
 
-            const buttonsClassObj = {
-                'flex-row-reverse': swapButtons,
-            };
-            const buttonsClass = [
-                'w-full',
-                'items-center',
-                styleSet?.buttonsGap ? `gap-[${stringUtil.toStringSize(styleSet?.buttonsGap)}]` : 'gap-2',
-                styleSet?.buttonsAlign ? `justify-${styleSet?.buttonsAlign}` : 'justify-center',
-            ];
+            const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
+            const additionalButtonsClass = [
+                swapButtons && 'flex-row-reverse',
+                styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
+                styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
+            ].filter(Boolean);
 
             const contents = h(VsRender, { content });
-            const buttons = h('div', { class: [...buttonsClass, buttonsClassObj] }, [okButton, cancelButton]);
+            const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton, cancelButton]);
             const confirm = h('div', { class: [...contentClass] }, [contents, buttons]);
 
             return new Promise((resolve) => {
