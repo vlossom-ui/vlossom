@@ -36,7 +36,6 @@ describe('vnodeUtils', () => {
                     type: 'submit',
                 },
                 content: '확인',
-                templateRef: 'primaryButton',
             });
 
             const buttonComponent = wrapper.findComponent(VsButton);
@@ -56,7 +55,6 @@ describe('vnodeUtils', () => {
                     circle: true,
                 },
                 content: '원형',
-                templateRef: 'circleButton',
             });
 
             const button = wrapper.find('button');
@@ -71,7 +69,6 @@ describe('vnodeUtils', () => {
                     ghost: true,
                 },
                 content: '고스트',
-                templateRef: 'ghostButton',
             });
 
             const button = wrapper.find('button');
@@ -86,7 +83,6 @@ describe('vnodeUtils', () => {
                     large: true,
                 },
                 content: '대형',
-                templateRef: 'largeButton',
             });
 
             const button = wrapper.find('button');
@@ -101,7 +97,6 @@ describe('vnodeUtils', () => {
                     outline: true,
                 },
                 content: '윤곽',
-                templateRef: 'outlineButton',
             });
 
             const button = wrapper.find('button');
@@ -116,7 +111,6 @@ describe('vnodeUtils', () => {
                     responsive: true,
                 },
                 content: '반응형',
-                templateRef: 'responsiveButton',
             });
 
             const button = wrapper.find('button');
@@ -130,7 +124,6 @@ describe('vnodeUtils', () => {
             const { wrapper } = mountCreateVsButton({
                 props: {},
                 content: buttonText,
-                templateRef: 'textButton',
             });
 
             const content = wrapper.find('.vs-button-content');
@@ -150,7 +143,6 @@ describe('vnodeUtils', () => {
             const { wrapper } = mountCreateVsButton({
                 props: {},
                 content: CustomContent,
-                templateRef: 'componentButton',
             });
 
             expect(wrapper.find('.custom-content').exists()).toBe(true);
@@ -162,7 +154,6 @@ describe('vnodeUtils', () => {
             const { wrapper, handlers } = mountCreateVsButton({
                 props: {},
                 content: '클릭',
-                templateRef: 'clickButton',
             });
 
             const clickSpy = vi.fn();
@@ -181,7 +172,6 @@ describe('vnodeUtils', () => {
                     disabled: true,
                 },
                 content: '비활성',
-                templateRef: 'disabledButton',
             });
 
             const button = wrapper.find('button');
