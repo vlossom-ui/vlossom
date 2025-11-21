@@ -33,14 +33,12 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const [okButton, okButtonHandler] = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
                 content: okText,
-                templateRef: 'okRef',
             });
             okButtonHandler.push(() => handleButton(CONFIRM_OK));
 
             const [cancelButton, cancelButtonHandler] = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.cancelButton },
                 content: cancelText,
-                templateRef: 'cancelRef',
             });
             cancelButtonHandler.push(() => handleButton(CONFIRM_CANCEL));
 

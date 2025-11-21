@@ -8,9 +8,8 @@ export const vnodeUtils = {
     createVsButton(args: {
         props: VsButtonVNodeProps;
         content: string | Component;
-        templateRef: string;
     }): [VNode, VsButtonVNodeEventHandler[]] {
-        const { props, content, templateRef } = args;
+        const { props, content } = args;
         const handlers: VsButtonVNodeEventHandler[] = [];
 
         function onClick(event: Event) {
@@ -28,7 +27,6 @@ export const vnodeUtils = {
                 VsButton,
                 {
                     ...props,
-                    ref: templateRef,
                     onClick,
                 },
                 { default: () => h(VsRender, { content }) },
