@@ -5,8 +5,8 @@ import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
 import { stringUtil } from '@/utils';
 import type { ModalPlugin } from '@/plugins';
 
+import { vnodeUtils } from '../utils/vnode-utils';
 import type { ConfirmModalOptions, ConfirmPlugin } from './types';
-import { createVsButton } from '../utils/vnode/create-vs-button-vnode/create-vs-button-vnode';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -22,28 +22,31 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 swapButtons,
             } = options;
 
-            const classObj = {
-                'flex-row-reverse': swapButtons,
-            };
+            function handleButton(eventName: typeof CONFIRM_OK | typeof CONFIRM_CANCEL) {
+                const overlayId = overlayCallback.getLastOverlayId();
+                if (!overlayId) {
+                    return;
+                }
+                overlayCallback.run<boolean>(overlayId, eventName);
+            }
 
-            const [okButton, okButtonHandler] = createVsButton({
+            const [okButton, okButtonHandler] = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
                 content: okText,
                 templateRef: 'okRef',
             });
-            okButtonHandler.push(() => {
-                overlayCallback.run<boolean>(overlayCallback.getLastOverlayId(), CONFIRM_OK);
-            });
+            okButtonHandler.push(() => handleButton(CONFIRM_OK));
 
-            const [cancelButton, cancelButtonHandler] = createVsButton({
+            const [cancelButton, cancelButtonHandler] = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.cancelButton },
                 content: cancelText,
                 templateRef: 'cancelRef',
             });
-            cancelButtonHandler.push(() => {
-                overlayCallback.run<boolean>(overlayCallback.getLastOverlayId(), CONFIRM_CANCEL);
-            });
+            cancelButtonHandler.push(() => handleButton(CONFIRM_CANCEL));
 
+            const buttonsClassObj = {
+                'flex-row-reverse': swapButtons,
+            };
             const buttonsClass = [
                 'w-full',
                 'items-center',
@@ -53,7 +56,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
 
             const contents = h(VsRender, { content });
-            const buttons = h('div', { class: [...buttonsClass, classObj] }, [okButton, cancelButton]);
+            const buttons = h('div', { class: [...buttonsClass, buttonsClassObj] }, [okButton, cancelButton]);
             const confirm = h('div', { class: [...contentClass] }, [contents, buttons]);
 
             return new Promise((resolve) => {
