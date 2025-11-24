@@ -15,29 +15,31 @@
         no-clear
         no-messages
         no-label
-        @update:modelValue="onInputChange"
+        @change="onInputChange"
     >
         <template #append>
-            <div v-if="caseSensitive || regex" class="vs-search-input-toggles">
+            <div v-if="useCaseSensitive || useRegex" class="vs-search-input-toggles">
                 <vs-toggle
-                    v-if="caseSensitive"
+                    v-if="useCaseSensitive"
                     v-model="isCaseSensitiveOn"
                     :class="['vs-search-input-toggle', { 'vs-small': small }]"
                     :color-scheme="computedColorScheme"
                     :style-set="getToggleButtonStyleSet(isCaseSensitiveOn)"
                     :disabled="disabled || readonly"
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
+                    @toggle="$emit('update:caseSensitive', $event)"
                 >
                     <span class="vs-search-input-toggle-text">Aa</span>
                 </vs-toggle>
                 <vs-toggle
-                    v-if="regex"
+                    v-if="useRegex"
                     v-model="isRegexOn"
                     :class="['vs-search-input-toggle', { 'vs-small': small }]"
                     :color-scheme="computedColorScheme"
                     :style-set="getToggleButtonStyleSet(isRegexOn)"
                     :disabled="disabled || readonly"
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
+                    @toggle="$emit('update:regex', $event)"
                 >
                     <span class="vs-search-input-toggle-text">.*</span>
                 </vs-toggle>
@@ -53,10 +55,10 @@ import {
     toRefs,
     ref,
     useTemplateRef,
+    watch,
     type Ref,
     type TemplateRef,
     type ComputedRef,
-    watch,
 } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -69,7 +71,6 @@ import VsInput from '@/components/vs-input/VsInput.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
 const name = VsComponent.VsSearchInput;
-
 export default defineComponent({
     name,
     components: { VsInput, VsToggle },
@@ -77,21 +78,26 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsSearchInputStyleSet>(),
         ...getResponsiveProps(),
-        caseSensitive: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
         readonly: { type: Boolean, default: false },
-        regex: { type: Boolean, default: false },
         small: { type: Boolean, default: false },
-    },
-    emits: ['search'],
-    setup(props, { emit }) {
-        const { colorScheme, styleSet } = toRefs(props);
+        useCaseSensitive: { type: Boolean, default: false },
+        useRegex: { type: Boolean, default: false },
 
-        const searchText: Ref<string> = ref('');
+        // v-model
+        modelValue: { type: String, default: '' },
+        caseSensitive: { type: Boolean, default: false },
+        regex: { type: Boolean, default: false },
+    },
+    emits: ['search', 'update:modelValue', 'update:caseSensitive', 'update:regex'],
+    setup(props, { emit }) {
+        const { colorScheme, styleSet, modelValue, caseSensitive, regex } = toRefs(props);
+
+        const searchText: Ref<string> = ref(modelValue.value);
         const inputRef: TemplateRef<VsInputRef> = useTemplateRef('inputRef');
-        const isCaseSensitiveOn = ref(false);
-        const isRegexOn = ref(false);
+        const isCaseSensitiveOn = ref(caseSensitive.value);
+        const isRegexOn = ref(regex.value);
 
         const { computedColorScheme } = useColorScheme(name, colorScheme);
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(name, styleSet);
@@ -116,6 +122,7 @@ export default defineComponent({
 
         const debouncedEmitSearch = functionUtil.debounce({ delay: 400 }, (value: string) => {
             emit('search', value);
+            emit('update:modelValue', value);
         });
 
         function onInputChange(value: string | number | null) {
@@ -174,6 +181,18 @@ export default defineComponent({
         watch([isCaseSensitiveOn, isRegexOn], () => {
             select();
             debouncedEmitSearch(searchText.value);
+        });
+
+        watch(modelValue, (value) => {
+            searchText.value = value;
+        });
+
+        watch(caseSensitive, (value) => {
+            isCaseSensitiveOn.value = value;
+        });
+
+        watch(regex, (value) => {
+            isRegexOn.value = value;
         });
 
         return {

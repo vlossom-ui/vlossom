@@ -1,7 +1,7 @@
 # VsSearchInput
 
 검색 기능을 제공하는 입력 컴포넌트입니다. vs-input을 기반으로 만들어졌으며, 대소문자 구분 및 정규식 검색 옵션을 제공합니다.<br />
-입력 시 debounce를 적용하여 500ms마다 search 이벤트를 emit합니다.
+입력 시 debounce를 적용하여 400ms마다 search 이벤트를 emit합니다.
 
 **Available Version**: 2.0.0+
 
@@ -28,25 +28,74 @@ function onSearch(value) {
     <!-- 대소문자 구분 토글 버튼 -->
     <vs-search-input
         placeholder="검색어를 입력하세요"
-        case-sensitive
+        use-case-sensitive
         @search="onSearch"
     />
 
     <!-- 정규식 토글 버튼 -->
     <vs-search-input
         placeholder="검색어를 입력하세요"
-        regex
+        use-regex
         @search="onSearch"
     />
 
     <!-- 두 토글 버튼 모두 -->
     <vs-search-input
         placeholder="검색어를 입력하세요"
-        case-sensitive
-        regex
+        use-case-sensitive
+        use-regex
         @search="onSearch"
     />
 </template>
+```
+
+### v-model 사용
+
+```html
+<template>
+    <!-- 기본 v-model -->
+    <vs-search-input v-model="searchText" @search="onSearch" />
+
+    <!-- caseSensitive v-model -->
+    <vs-search-input
+        v-model="searchText"
+        v-model:case-sensitive="isCaseSensitive"
+        use-case-sensitive
+        @search="onSearch"
+    />
+
+    <!-- regex v-model -->
+    <vs-search-input
+        v-model="searchText"
+        v-model:regex="isRegex"
+        use-regex
+        @search="onSearch"
+    />
+
+    <!-- 모든 v-model 함께 사용 -->
+    <vs-search-input
+        v-model="searchText"
+        v-model:case-sensitive="isCaseSensitive"
+        v-model:regex="isRegex"
+        use-case-sensitive
+        use-regex
+        @search="onSearch"
+    />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const searchText = ref('');
+const isCaseSensitive = ref(false);
+const isRegex = ref(false);
+
+function onSearch(value: string) {
+    console.log('Search:', value);
+    console.log('Case Sensitive:', isCaseSensitive.value);
+    console.log('Regex:', isRegex.value);
+}
+</script>
 ```
 
 ### match 메서드 사용
@@ -56,8 +105,8 @@ function onSearch(value) {
     <vs-search-input
         ref="searchInputRef"
         placeholder="검색어를 입력하세요"
-        case-sensitive
-        regex
+        use-case-sensitive
+        use-regex
         @search="onSearch"
     />
     <div>
@@ -89,24 +138,30 @@ function onSearch(value: string) {
 
 ## Props
 
-| Prop            | Type                              | Default | Required | Description                       |
-| --------------- | --------------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme`   | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                |
-| `styleSet`      | `string \| VsSearchInputStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
-| `caseSensitive` | `boolean`                         | `false` | -        | 대소문자 구분 토글 버튼 표시 여부 |
-| `regex`         | `boolean`                         | `false` | -        | 정규식 토글 버튼 표시 여부        |
-| `disabled`      | `boolean`                         | `false` | -        | 비활성화 상태                     |
-| `readonly`      | `boolean`                         | `false` | -        | 읽기 전용 상태                    |
-| `placeholder`   | `string`                          | `''`    | -        | 플레이스홀더 텍스트               |
-| `small`         | `boolean`                         | `false` | -        | 작은 크기                         |
-| `width`         | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비                     |
-| `grid`          | `string \| number \| Breakpoints` | -       | -        | Grid 설정                         |
+| Prop                 | Type                              | Default | Required | Description                       |
+| -------------------- | --------------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme`        | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                |
+| `styleSet`           | `string \| VsSearchInputStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
+| `use-case-sensitive` | `boolean`                         | `false` | -        | 대소문자 구분 토글 버튼 표시 여부 |
+| `use-regex`          | `boolean`                         | `false` | -        | 정규식 토글 버튼 표시 여부        |
+| `disabled`           | `boolean`                         | `false` | -        | 비활성화 상태                     |
+| `readonly`           | `boolean`                         | `false` | -        | 읽기 전용 상태                    |
+| `placeholder`        | `string`                          | `''`    | -        | 플레이스홀더 텍스트               |
+| `small`              | `boolean`                         | `false` | -        | 작은 크기                         |
+| `width`              | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비                     |
+| `grid`               | `string \| number \| Breakpoints` | -       | -        | Grid 설정                         |
+| `modelValue`         | `string`                          | `''`    | -        | v-model 바인딩 (검색어)           |
+| `caseSensitive`      | `boolean`                         | `false` | -        | v-model:case-sensitive 바인딩     |
+| `regex`              | `boolean`                         | `false` | -        | v-model:regex 바인딩              |
 
 ## Events
 
-| Event    | Parameters      | Description                                |
-| -------- | --------------- | ------------------------------------------ |
-| `search` | `value: string` | 검색어 입력 시 발생 (debounce 적용, 400ms) |
+| Event                  | Parameters       | Description                                   |
+| ---------------------- | ---------------- | --------------------------------------------- |
+| `search`               | `value: string`  | 검색어 입력 시 발생 (debounce 적용, 400ms)    |
+| `update:modelValue`    | `value: string`  | v-model 바인딩 업데이트 이벤트                |
+| `update:caseSensitive` | `value: boolean` | v-model:case-sensitive 바인딩 업데이트 이벤트 |
+| `update:regex`         | `value: boolean` | v-model:regex 바인딩 업데이트 이벤트          |
 
 ## Methods
 
@@ -124,8 +179,8 @@ function onSearch(value: string) {
 
 - 검색어가 없으면 항상 `true`를 반환합니다.
 - 기본적으로 대소문자를 구분하지 않고 검색합니다.
-- `caseSensitive` 토글이 활성화되면 대소문자를 구분합니다.
-- `regex` 토글이 활성화되면 정규식으로 검색합니다.
+- `use-case-sensitive` 토글이 활성화되면 대소문자를 구분합니다.
+- `use-regex` 토글이 활성화되면 정규식으로 검색합니다.
 - 잘못된 정규식이 입력되면 일반 텍스트 검색으로 fallback합니다.
 
 ## Types
@@ -152,8 +207,9 @@ interface VsSearchInputRef extends InputRef {
 ## 특징
 
 - **vs-input 기반**: vs-input의 모든 기능과 스타일을 상속받습니다.
-- **Debounce 적용**: 입력 시 500ms마다 search 이벤트를 emit하여 성능을 최적화합니다.
-- **대소문자 구분**: caseSensitive prop을 통해 대소문자 구분 토글 버튼을 제공합니다.
+- **Debounce 적용**: 입력 시 400ms마다 search 이벤트를 emit하여 성능을 최적화합니다.
+- **v-model 지원**: `modelValue`, `caseSensitive`, `regex`에 대한 v-model 바인딩을 지원합니다.
+- **대소문자 구분**: use-case-sensitive prop을 통해 대소문자 구분 토글 버튼을 제공합니다.
 - **정규식 검색**: regex prop을 통해 정규식 검색 토글 버튼을 제공합니다.
 - **match 메서드**: ref를 통해 접근하여 텍스트 매칭 기능을 제공합니다.
 - **타입 안전성**: TypeScript를 통해 타입 안전성을 보장합니다.

@@ -28,18 +28,6 @@ const meta: Meta<typeof VsSearchInput> = {
     }),
     tags: ['autodocs'],
     argTypes: {
-        // Search Props
-        caseSensitive: {
-            control: 'boolean',
-            description: '대소문자 구분 토글 버튼 표시 여부',
-            table: { category: 'Search Props', defaultValue: { summary: 'false' } },
-        },
-        regex: {
-            control: 'boolean',
-            description: '정규식 토글 버튼 표시 여부',
-            table: { category: 'Search Props', defaultValue: { summary: 'false' } },
-        },
-
         // 공통 Props
         colorScheme,
         disabled: {
@@ -81,6 +69,18 @@ const meta: Meta<typeof VsSearchInput> = {
             description: '커스텀 스타일 객체',
             table: { category: 'Style' },
         },
+
+        // Search Props
+        useCaseSensitive: {
+            control: 'boolean',
+            description: '대소문자 구분 토글 버튼 표시 여부',
+            table: { category: 'Search Props', defaultValue: { summary: 'false' } },
+        },
+        useRegex: {
+            control: 'boolean',
+            description: '정규식 토글 버튼 표시 여부',
+            table: { category: 'Search Props', defaultValue: { summary: 'false' } },
+        },
     },
 };
 
@@ -110,8 +110,8 @@ export const WithToggleOptions: Story = {
     },
     args: {
         placeholder: '검색어를 입력하세요',
-        caseSensitive: true,
-        regex: true,
+        useCaseSensitive: true,
+        useRegex: true,
     },
 };
 
@@ -173,8 +173,8 @@ export const MatchExample: Story = {
     }),
     args: {
         placeholder: '검색어를 입력하세요',
-        caseSensitive: true,
-        regex: true,
+        useCaseSensitive: true,
+        useRegex: true,
     },
 };
 
@@ -240,7 +240,7 @@ export const ColorScheme: Story = {
         template: `
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                 ${getColorSchemeTemplate(`
-                    <vs-search-input color-scheme="{{ color }}" placeholder="{{ color }} 검색" case-sensitive regex />
+                    <vs-search-input color-scheme="{{ color }}" placeholder="{{ color }} 검색" use-case-sensitive use-regex />
                 `)}
             </div>
         `,
@@ -264,8 +264,8 @@ export const StyleSet: Story = {
     }),
     args: {
         placeholder: '커스텀 검색 필드',
-        regex: true,
-        caseSensitive: true,
+        useRegex: true,
+        useCaseSensitive: true,
         styleSet: {
             backgroundColor: '#f0f8ff',
             border: '2px solid #1e88e5',
