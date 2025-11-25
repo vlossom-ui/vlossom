@@ -11,6 +11,14 @@ import type { ConfirmModalOptions, ConfirmPlugin } from './types';
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
 
+    function handleButton(eventName: typeof CONFIRM_OK | typeof CONFIRM_CANCEL) {
+        const overlayId = overlayCallback.getLastOverlayId();
+        if (!overlayId) {
+            return;
+        }
+        overlayCallback.run<boolean>(overlayId, eventName);
+    }
+
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
             const {
@@ -21,14 +29,6 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 cancelText = 'Cancel',
                 swapButtons,
             } = options;
-
-            function handleButton(eventName: typeof CONFIRM_OK | typeof CONFIRM_CANCEL) {
-                const overlayId = overlayCallback.getLastOverlayId();
-                if (!overlayId) {
-                    return;
-                }
-                overlayCallback.run<boolean>(overlayId, eventName);
-            }
 
             const okButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.okButton, primary: true },

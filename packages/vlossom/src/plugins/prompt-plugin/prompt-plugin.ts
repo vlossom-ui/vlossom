@@ -1,14 +1,22 @@
-import { defineComponent, h, type Component, ref } from 'vue';
+import { h, type Component, ref } from 'vue';
 import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
+import { stringUtil } from '@/utils';
 import { useOverlayCallbackStore } from '@/stores';
-import { VsInput, VsRender, type VsInputRef } from '@/components';
+import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from '../modal-plugin';
 import type { PromptModalOptions, PromptPlugin } from './types';
 import { vnodeUtils } from '../utils/vnode-utils';
-import { stringUtil } from '@/utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
     const overlayCallback = useOverlayCallbackStore();
+
+    function handleButton(eventName: typeof PROMPT_OK | typeof PROMPT_CANCEL) {
+        const overlayId = overlayCallback.getLastOverlayId();
+        if (!overlayId) {
+            return;
+        }
+        overlayCallback.run<VsInputValueType>(overlayId, eventName);
+    }
 
     return {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
@@ -16,132 +24,94 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 container = 'body',
                 colorScheme,
                 styleSet,
-                inputType = 'text',
-                inputPlaceholder = '',
-                inputRules = [],
-                inputInitialValue = null,
-                inputLabel = '',
-                inputMessages = [],
+                inputType: type = 'text',
+                inputPlaceholder: placeholder = '',
+                inputRules: rules = [],
+                inputInitialValue: initialValue = null,
+                inputLabel: label = '',
+                inputMessages: messages = [],
                 buttonOkText = 'OK',
                 buttonCancelText = 'Cancel',
                 swapButtons,
             } = options;
 
-            function handleButton(eventName: typeof PROMPT_OK | typeof PROMPT_CANCEL) {
-                const overlayId = overlayCallback.getLastOverlayId();
-                if (!overlayId) {
-                    return;
-                }
-                overlayCallback.run<string | number | null>(overlayId, eventName);
-            }
-
-            const inputValue = ref<string | number | null>(inputInitialValue);
             const inputRef = ref<VsInputRef | null>(null);
-            const buttonsClassSwap = swapButtons && 'flex-row-reverse';
+            const inputValue = ref<VsInputValueType>(initialValue);
 
-            const PromptContent = defineComponent({
-                name: 'VsPromptContent',
-                setup() {
-                    return () => {
-                        const input = h(VsInput, {
-                            ref: (instance: unknown) => {
-                                inputRef.value = instance as VsInputRef | null;
-                            },
-                            modelValue: inputValue.value,
-                            'onUpdate:modelValue': (value: string | number | null) => {
-                                inputValue.value = value;
-                            },
-                            type: inputType,
-                            placeholder: inputPlaceholder,
-                            rules: inputRules,
-                            label: inputLabel,
-                            messages: inputMessages,
-                            colorScheme,
-                            styleSet: styleSet?.input,
-                        });
+            const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
+            const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'pt-8', 'gap-8'];
+            const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center'];
 
-                        const okButton = vnodeUtils.createVsButton({
-                            props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
-                            content: buttonOkText,
-                            onClickEvent: () => handleButton(PROMPT_OK),
-                        });
+            const additionalButtonsClass = [
+                swapButtons && 'flex-row-reverse',
+                styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
+                styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
+            ].filter(Boolean);
 
-                        const cancelButton = vnodeUtils.createVsButton({
-                            props: { colorScheme, styleSet: styleSet?.cancelButton },
-                            content: buttonCancelText,
-                            onClickEvent: () => handleButton(PROMPT_CANCEL),
-                        });
-
-                        const buttonsClass = [
-                            'flex',
-                            'w-full',
-                            'items-center',
-                            'justify-center',
-                            'gap-2',
-                            buttonsClassSwap,
-                        ];
-                        const additionalButtonsClass = [
-                            swapButtons && 'flex-row-reverse',
-                            styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
-                            styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
-                        ].filter(Boolean);
-                        const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [
-                            okButton,
-                            cancelButton,
-                        ]);
-
-                        const contents = h(VsRender, { content });
-
-                        const interactions = [
-                            'flex',
-                            'h-full',
-                            'flex-col',
-                            'items-center',
-                            'justify-center',
-                            'pt-8',
-                            'gap-8',
-                        ];
-                        const inputWithButtons = h('div', { class: interactions }, [input, buttons]);
-
-                        const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center'];
-                        return h('div', { class: wrapperClass }, [contents, inputWithButtons]);
-                    };
-                },
+            const okButton = vnodeUtils.createVsButton({
+                props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
+                content: buttonOkText,
+                onClickEvent: () => handleButton(PROMPT_OK),
             });
+            const cancelButton = vnodeUtils.createVsButton({
+                props: { colorScheme, styleSet: styleSet?.cancelButton },
+                content: buttonCancelText,
+                onClickEvent: () => handleButton(PROMPT_CANCEL),
+            });
+            const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton, cancelButton]);
+            const contents = h(VsRender, { content });
 
-            return new Promise((resolve, reject) => {
-                const modalId = modalPlugin.open(PromptContent, {
+            // NOTE. 함수형 VNode를 사용하여 컴포넌트 인스턴스(`inputRef`)를 가져올 수 있도록 하기 위함
+            const prompt = () => {
+                const input = h(VsInput, {
+                    ref: inputRef,
+                    modelValue: inputValue.value,
+                    'onUpdate:modelValue': (value: VsInputValueType) => {
+                        inputValue.value = value;
+                    },
+                    colorScheme,
+                    type,
+                    placeholder,
+                    rules,
+                    label,
+                    messages,
+                    styleSet: styleSet?.input,
+                });
+
+                const interactions = h('div', { class: interactsClass }, [input, buttons]);
+                return h('div', { class: wrapperClass }, [contents, interactions]);
+            };
+
+            return new Promise((resolve) => {
+                const modalId = modalPlugin.open(prompt, {
                     ...options,
                     callbacks: {
                         ...options?.callbacks,
                         [PROMPT_OK]: () => {
-                            if (inputRef.value?.validate()) {
-                                resolve(inputValue.value);
-                                modalPlugin.closeWithId(container, modalId);
+                            if (!inputRef.value?.validate()) {
                                 return;
                             }
-                            reject(new Error(`[Vlossom] Input is not valid: ${inputValue.value}`));
+                            resolve(inputValue.value);
+                            modalPlugin.closeWithId(container, modalId);
                         },
                         [PROMPT_CANCEL]: () => {
-                            resolve(null);
                             inputRef.value?.clear();
+                            resolve(null);
                             modalPlugin.closeWithId(container, modalId);
                         },
                         'key-Enter': () => {
-                            if (inputRef.value?.validate()) {
-                                resolve(inputValue.value);
-                                modalPlugin.closeWithId(container, modalId);
+                            if (!inputRef.value?.validate()) {
                                 return;
                             }
-                            reject(new Error(`[Vlossom] Input is not valid: ${inputValue.value}`));
+                            resolve(inputValue.value);
+                            modalPlugin.closeWithId(container, modalId);
                         },
                         'key-Escape': () => {
-                            resolve(null);
                             inputRef.value?.clear();
+                            resolve(null);
                             modalPlugin.closeWithId(container, modalId);
                         },
                         [OVERLAY_CLOSE]: () => {
-                            inputRef.value?.clear();
                             resolve(null);
                         },
                     },

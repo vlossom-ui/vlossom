@@ -35,57 +35,49 @@ export const Default: Story = {
             const resultText = ref('아직 입력 없음');
 
             async function handleOpenBasic() {
-                try {
-                    const value = await $vs.prompt.open('프로필 이름을 입력해주세요.');
-                    resultText.value =
-                        value === null || value === '' ? '사용자가 입력을 취소했습니다.' : `입력 값: ${value}`;
-                } catch {
-                    resultText.value = '입력이 검증을 통과하지 못했습니다.';
-                }
+                const value = await $vs.prompt.open('프로필 이름을 입력해주세요.');
+                resultText.value =
+                    value === null || value === '' ? '사용자가 입력을 취소했습니다.' : `입력 값: ${value}`;
             }
 
             async function handleOpenCustom() {
-                try {
-                    const value = await $vs.prompt.open('1에서 10 사이의 숫자를 입력해주세요.', {
-                        inputType: 'number',
-                        inputInitialValue: 3,
-                        inputPlaceholder: '예: 5',
-                        inputLabel: '최대 시도 횟수',
-                        inputRules: [
-                            (v) => {
-                                if (v === null || v === '') {
-                                    return '값을 입력해주세요.';
-                                }
-                                const num = Number(v);
-                                if (!Number.isInteger(num)) {
-                                    return '정수를 입력해주세요.';
-                                }
-                                if (num < 1 || num > 10) {
-                                    return '1에서 10 사이의 값을 입력해주세요.';
-                                }
-                                return '';
-                            },
-                        ],
-                        inputMessages: [
-                            {
-                                state: 'info',
-                                text: '1에서 10 사이의 정수만 허용됩니다.',
-                            },
-                        ],
-                        buttonOkText: '적용',
-                        buttonCancelText: '취소',
-                        swapButtons: true,
-                    });
+                const value = await $vs.prompt.open('1에서 10 사이의 숫자를 입력해주세요.', {
+                    inputType: 'number',
+                    inputInitialValue: 3,
+                    inputPlaceholder: '예: 5',
+                    inputLabel: '최대 시도 횟수',
+                    inputRules: [
+                        (v) => {
+                            if (v === null || v === '') {
+                                return '값을 입력해주세요.';
+                            }
+                            const num = Number(v);
+                            if (!Number.isInteger(num)) {
+                                return '정수를 입력해주세요.';
+                            }
+                            if (num < 1 || num > 10) {
+                                return '1에서 10 사이의 값을 입력해주세요.';
+                            }
+                            return '';
+                        },
+                    ],
+                    inputMessages: [
+                        {
+                            state: 'info',
+                            text: '1에서 10 사이의 정수만 허용됩니다.',
+                        },
+                    ],
+                    buttonOkText: '적용',
+                    buttonCancelText: '취소',
+                    swapButtons: true,
+                });
 
-                    if (value === null || value === '') {
-                        resultText.value = '사용자가 취소했습니다.';
-                        return;
-                    }
-
-                    resultText.value = `사용자가 입력한 숫자: ${value}`;
-                } catch {
-                    resultText.value = '입력이 검증을 통과하지 못했습니다.';
+                if (value === null || value === '') {
+                    resultText.value = '사용자가 취소했습니다.';
+                    return;
                 }
+
+                resultText.value = `사용자가 입력한 숫자: ${value}`;
             }
 
             return {

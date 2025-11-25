@@ -26,26 +26,22 @@ const value = await $vs.prompt.open('이름을 입력해주세요.');
 
 **반환값**
 
-- `Promise<VsInputValueType | null>` – 확인 버튼을 누르면 입력 값, 취소 또는 닫힘 시 `null`. 입력 검증에 실패하면 reject 됩니다.
+- `Promise<VsInputValueType | null>` – 확인 버튼을 누르면 입력 값, 취소 또는 닫힘 시 `null`
 
 **예시**
 
 ```ts
-try {
-    const result = await $vs.prompt.open('팀 이름을 입력해주세요.', {
-        inputPlaceholder: '예: Vlossom',
-        inputLabel: '팀 이름',
-        inputRules: [(value) => (value ? '' : '팀 이름은 필수입니다.')],
-        buttonOkText: '저장',
-        buttonCancelText: '나중에',
-        colorScheme: 'indigo',
-    });
+const result = await $vs.prompt.open('팀 이름을 입력해주세요.', {
+    inputPlaceholder: '예: Vlossom',
+    inputLabel: '팀 이름',
+    inputRules: [(value) => (value ? '' : '팀 이름은 필수입니다.')],
+    buttonOkText: '저장',
+    buttonCancelText: '나중에',
+    colorScheme: 'indigo',
+});
 
-    if (result !== null) {
-        // 입력 값을 활용하는 로직
-    }
-} catch (error) {
-    console.error('검증 오류:', error);
+if (result !== null) {
+    // 입력 값을 활용하는 로직
 }
 ```
 
@@ -84,28 +80,24 @@ import { useVlossom } from '@/framework';
 const $vs = useVlossom();
 
 async function handlePrompt() {
-    try {
-        const projectName = await $vs.prompt.open('새 프로젝트 이름을 입력해주세요.', {
-            inputPlaceholder: '프로젝트 이름',
-            inputLabel: '프로젝트 이름',
-            inputRules: [
-                (value) => (value ? '' : '프로젝트 이름은 필수입니다.'),
-                (value) => {
-                    if (typeof value === 'string' && value.trim().length >= 2) {
-                        return '';
-                    }
-                    return '두 글자 이상 입력해주세요.';
-                },
-            ],
-            buttonOkText: '생성',
-            buttonCancelText: '취소',
-        });
+    const projectName = await $vs.prompt.open('새 프로젝트 이름을 입력해주세요.', {
+        inputPlaceholder: '프로젝트 이름',
+        inputLabel: '프로젝트 이름',
+        inputRules: [
+            (value) => (value ? '' : '프로젝트 이름은 필수입니다.'),
+            (value) => {
+                if (typeof value === 'string' && value.trim().length >= 2) {
+                    return '';
+                }
+                return '두 글자 이상 입력해주세요.';
+            },
+        ],
+        buttonOkText: '생성',
+        buttonCancelText: '취소',
+    });
 
-        if (projectName) {
-            console.log('생성할 프로젝트:', projectName);
-        }
-    } catch {
-        // 검증 실패 시 필요한 처리를 수행합니다.
+    if (projectName) {
+        console.log('생성할 프로젝트:', projectName);
     }
 }
 </script>
