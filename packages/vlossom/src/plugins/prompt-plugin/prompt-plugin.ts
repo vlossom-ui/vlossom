@@ -120,7 +120,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                                 modalPlugin.closeWithId(container, modalId);
                                 return;
                             }
-                            reject(new Error('Input is not valid'));
+                            reject(new Error(`[Vlossom] Input is not valid: ${inputValue.value}`));
                         },
                         [PROMPT_CANCEL]: () => {
                             resolve(null);
@@ -133,7 +133,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                                 modalPlugin.closeWithId(container, modalId);
                                 return;
                             }
-                            reject(new Error('Input is not valid'));
+                            reject(new Error(`[Vlossom] Input is not valid: ${inputValue.value}`));
                         },
                         'key-Escape': () => {
                             resolve(null);
