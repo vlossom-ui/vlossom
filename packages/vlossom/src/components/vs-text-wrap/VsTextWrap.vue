@@ -87,10 +87,25 @@ export default defineComponent({
             return copied.value ? checkIcon : copyIcon;
         });
 
+        function isValidUrl(url: string): boolean {
+            try {
+                const parsedUrl = new URL(url);
+                return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+            } catch {
+                return false;
+            }
+        }
+
         function openLink() {
             if (!link.value) {
                 return;
             }
+
+            if (!isValidUrl(link.value)) {
+                console.warn(`[${name}] Invalid or unsafe URL: ${link.value}`);
+                return;
+            }
+
             window.open(link.value, '_blank');
         }
 

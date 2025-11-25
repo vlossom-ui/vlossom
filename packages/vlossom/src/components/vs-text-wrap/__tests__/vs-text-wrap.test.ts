@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, afterAll } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import VsTextWrap from './../VsTextWrap.vue';
 
@@ -244,11 +244,17 @@ describe('VsTextWrap', () => {
 
     describe('link', () => {
         let mockedOpen: ReturnType<typeof vi.fn>;
+        let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
         const originalOpen = window.open;
 
         beforeEach(() => {
             mockedOpen = vi.fn();
             window.open = mockedOpen;
+            consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        });
+
+        afterEach(() => {
+            consoleWarnSpy.mockRestore();
         });
 
         it('link 버튼을 클릭하면 새 창이 열려야 한다', async () => {
@@ -268,6 +274,145 @@ describe('VsTextWrap', () => {
 
             // then
             expect(mockedOpen).toHaveBeenCalledWith('https://google.com', '_blank');
+        });
+
+        it('http 프로토콜 URL이 허용되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: 'http://example.com',
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).toHaveBeenCalledWith('http://example.com', '_blank');
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it('https 프로토콜 URL이 허용되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: 'https://example.com',
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).toHaveBeenCalledWith('https://example.com', '_blank');
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
+
+        it('javascript: 프로토콜 URL이 차단되어야 한다', async () => {
+            // given
+            const dangerousUrl = 'javascript:alert("XSS")';
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: dangerousUrl,
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid or unsafe URL'));
+        });
+
+        it('data: 프로토콜 URL이 차단되어야 한다', async () => {
+            // given
+            const dangerousUrl = 'data:text/html,<script>alert("XSS")</script>';
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: dangerousUrl,
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid or unsafe URL'));
+        });
+
+        it('file: 프로토콜 URL이 차단되어야 한다', async () => {
+            // given
+            const dangerousUrl = 'file:///etc/passwd';
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: dangerousUrl,
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid or unsafe URL'));
+        });
+
+        it('잘못된 URL 형식이 차단되어야 한다', async () => {
+            // given
+            const invalidUrl = 'not-a-valid-url';
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: invalidUrl,
+                },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('.vs-link-button').trigger('click');
+
+            // then
+            expect(mockedOpen).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid or unsafe URL'));
+        });
+
+        it('빈 문자열 URL은 link 버튼이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTextWrap, {
+                slots: {
+                    default: 'link',
+                },
+                props: {
+                    link: '',
+                },
+            });
+
+            // then
+            expect(wrapper.find('.vs-link-button').exists()).toBe(false);
         });
 
         afterAll(() => {
