@@ -21,8 +21,8 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
         open(content: string | Component, options: AlertModalOptions = {}): Promise<void> {
             const { container = 'body', colorScheme, styleSet, okText = 'OK' } = options;
 
-            const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
+            const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
             const additionalButtonsClass = [styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`].filter(
                 Boolean,
             );
@@ -58,6 +58,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
                             resolve();
                         },
                     },
+                    size: 'xs',
                 });
             });
         },
