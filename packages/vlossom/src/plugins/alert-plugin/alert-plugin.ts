@@ -1,6 +1,5 @@
 import { h, type Component } from 'vue';
 import { ALERT_OK, OVERLAY_CLOSE } from '@/declaration';
-import { stringUtil } from '@/utils';
 import { useOverlayCallbackStore } from '@/stores';
 import { VsRender } from '@/components';
 import { vnodeUtils } from '../utils/vnode-utils';
@@ -24,13 +23,12 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
 
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'];
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
-            const additionalButtonsClass = [
-                styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
-                styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
-            ].filter(Boolean);
+            const additionalButtonsClass = [styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`].filter(
+                Boolean,
+            );
 
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.button, primary: true },
+                props: { colorScheme, styleSet: styleSet?.button },
                 content: okText,
                 onClickEvent: handleOk,
             });
