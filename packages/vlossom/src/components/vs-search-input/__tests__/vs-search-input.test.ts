@@ -8,14 +8,138 @@ describe('VsSearchInput', () => {
         vi.useFakeTimers();
     });
 
+    describe('v-model:modelValue', () => {
+        it('입력 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            await nextTick(); // 컴포넌트 초기화 대기
+
+            // when
+            const vsInput = wrapper.findComponent({ name: 'VsInput' });
+            await vsInput.vm.$emit('change', 'test');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+
+            // 400ms 후
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['test']);
+        });
+
+        it('modelValue prop이 변경되면 내부 searchText가 업데이트되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    modelValue: 'initial',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.searchText).toBe('initial');
+
+            // when
+            await wrapper.setProps({ modelValue: 'updated' });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.searchText).toBe('updated');
+        });
+    });
+
+    describe('v-model:caseSensitive', () => {
+        it('caseSensitive 토글 클릭 시 update:caseSensitive 이벤트가 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    useCaseSensitive: true,
+                    caseSensitive: false,
+                },
+            });
+
+            // when
+            const toggle = wrapper.find('.vs-search-input-toggle');
+            await toggle.trigger('click');
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:caseSensitive')).toBeTruthy();
+            expect(wrapper.emitted('update:caseSensitive')?.[0]).toEqual([true]);
+        });
+
+        it('caseSensitive prop이 변경되면 내부 isCaseSensitiveOn이 업데이트되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    useCaseSensitive: true,
+                    caseSensitive: false,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.isCaseSensitiveOn).toBe(false);
+
+            // when
+            await wrapper.setProps({ caseSensitive: true });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isCaseSensitiveOn).toBe(true);
+        });
+    });
+
+    describe('v-model:regex', () => {
+        it('regex 토글 클릭 시 update:regex 이벤트가 emit되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    useRegex: true,
+                    regex: false,
+                },
+            });
+
+            // when
+            const toggle = wrapper.find('.vs-search-input-toggle');
+            await toggle.trigger('click');
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:regex')).toBeTruthy();
+            expect(wrapper.emitted('update:regex')?.[0]).toEqual([true]);
+        });
+
+        it('regex prop이 변경되면 내부 isRegexOn이 업데이트되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    useRegex: true,
+                    regex: false,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.isRegexOn).toBe(false);
+
+            // when
+            await wrapper.setProps({ regex: true });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isRegexOn).toBe(true);
+        });
+    });
+
     describe('search 이벤트', () => {
         it('입력 시 debounce를 적용하여 400ms 후 search 이벤트가 emit되어야 한다', async () => {
             // given
             const wrapper = mount(VsSearchInput);
+            await nextTick(); // 컴포넌트 초기화 대기
 
             // when
-            const input = wrapper.find('input');
-            await input.setValue('test');
+            const vsInput = wrapper.findComponent({ name: 'VsInput' });
+            await vsInput.vm.$emit('change', 'test');
 
             // then
             expect(wrapper.emitted('search')).toBeFalsy();
@@ -31,16 +155,17 @@ describe('VsSearchInput', () => {
         it('입력이 빠르게 변경되면 마지막 값만 emit되어야 한다', async () => {
             // given
             const wrapper = mount(VsSearchInput);
+            await nextTick(); // 컴포넌트 초기화 대기
 
             // when
-            const input = wrapper.find('input');
-            await input.setValue('t');
+            const vsInput = wrapper.findComponent({ name: 'VsInput' });
+            await vsInput.vm.$emit('change', 't');
             vi.advanceTimersByTime(100);
-            await input.setValue('te');
+            await vsInput.vm.$emit('change', 'te');
             vi.advanceTimersByTime(100);
-            await input.setValue('tes');
+            await vsInput.vm.$emit('change', 'tes');
             vi.advanceTimersByTime(100);
-            await input.setValue('test');
+            await vsInput.vm.$emit('change', 'test');
 
             // then
             expect(wrapper.emitted('search')).toBeFalsy();
@@ -60,8 +185,8 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    caseSensitive: true,
-                    regex: true,
+                    useCaseSensitive: true,
+                    useRegex: true,
                 },
             });
 
@@ -74,7 +199,7 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    caseSensitive: true,
+                    useCaseSensitive: true,
                 },
             });
 
@@ -93,7 +218,7 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    regex: true,
+                    useRegex: true,
                 },
             });
 
@@ -142,7 +267,7 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    caseSensitive: true,
+                    useCaseSensitive: true,
                 },
             });
             const input = wrapper.find('input');
@@ -167,7 +292,7 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    regex: true,
+                    useRegex: true,
                 },
             });
             const input = wrapper.find('input');
@@ -192,7 +317,7 @@ describe('VsSearchInput', () => {
             // given
             const wrapper = mount(VsSearchInput, {
                 props: {
-                    regex: true,
+                    useRegex: true,
                 },
             });
             const input = wrapper.find('input');
