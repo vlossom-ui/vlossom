@@ -5,6 +5,7 @@ import { VsInput, VsRender, type VsInputRef } from '@/components';
 import type { ModalPlugin } from '../modal-plugin';
 import type { PromptModalOptions, PromptPlugin } from './types';
 import { vnodeUtils } from '../utils/vnode-utils';
+import { stringUtil } from '@/utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -54,8 +55,9 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             placeholder: inputPlaceholder,
                             rules: inputRules,
                             label: inputLabel,
-                            noMessages: false,
                             messages: inputMessages,
+                            colorScheme,
+                            styleSet: styleSet?.input,
                         });
 
                         const okButton = vnodeUtils.createVsButton({
@@ -78,22 +80,30 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             'gap-2',
                             buttonsClassSwap,
                         ];
-                        const buttons = h('div', { class: buttonsClass }, [okButton, cancelButton]);
+                        const additionalButtonsClass = [
+                            swapButtons && 'flex-row-reverse',
+                            styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
+                            styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
+                        ].filter(Boolean);
+                        const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [
+                            okButton,
+                            cancelButton,
+                        ]);
 
                         const contents = h(VsRender, { content });
 
-                        const inputWrapperClass = [
+                        const interactions = [
                             'flex',
                             'h-full',
                             'flex-col',
                             'items-center',
                             'justify-center',
-                            'gap-12',
-                            'pt-14',
+                            'pt-8',
+                            'gap-8',
                         ];
-                        const inputWithButtons = h('div', { class: inputWrapperClass }, [input, buttons]);
+                        const inputWithButtons = h('div', { class: interactions }, [input, buttons]);
 
-                        const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'pt-14'];
+                        const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center'];
                         return h('div', { class: wrapperClass }, [contents, inputWithButtons]);
                     };
                 },
