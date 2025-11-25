@@ -1,7 +1,13 @@
 import type { Component } from 'vue';
 import type { ModalOptions } from '../modal-plugin';
 import type { Alignment, ColorScheme, Message, Rule } from '@/declaration';
-import type { VsButtonStyleSet, VsInputStyleSet, VsInputType, VsModalNodeStyleSet } from '@/components';
+import type {
+    VsButtonStyleSet,
+    VsInputStyleSet,
+    VsInputType,
+    VsInputValueType,
+    VsModalNodeStyleSet,
+} from '@/components';
 
 export interface VsPromptStyleSet extends VsModalNodeStyleSet {
     input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
@@ -17,10 +23,10 @@ export interface PromptModalOptions extends ModalOptions {
 
     inputType?: VsInputType;
     inputPlaceholder?: string;
-    inputRules?: Rule<string | number | null>[];
-    inputInitialValue?: string | number | null;
+    inputRules?: Rule<VsInputValueType>[];
+    inputInitialValue?: VsInputValueType;
     inputLabel?: string;
-    inputMessages?: Message<string | number | null>[];
+    inputMessages?: Message<VsInputValueType>[];
 
     buttonOkText?: string;
     buttonCancelText?: string;
@@ -28,5 +34,5 @@ export interface PromptModalOptions extends ModalOptions {
 }
 
 export interface PromptPlugin {
-    open(content: string | Component, options?: PromptModalOptions): Promise<string | number | null>;
+    open(content: string | Component, options?: PromptModalOptions): Promise<VsInputValueType>;
 }

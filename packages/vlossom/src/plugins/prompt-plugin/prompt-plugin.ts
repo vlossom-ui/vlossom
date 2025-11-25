@@ -1,7 +1,7 @@
-import { h, type Component, ref } from 'vue';
+import { defineComponent, h, type Component, ref } from 'vue';
 import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
-import { VsInput, VsRender } from '@/components';
+import { VsInput, VsRender, type VsInputRef } from '@/components';
 import type { ModalPlugin } from '../modal-plugin';
 import type { PromptModalOptions, PromptPlugin } from './types';
 import { vnodeUtils } from '../utils/vnode-utils';
@@ -35,66 +35,83 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             }
 
             const inputValue = ref<string | number | null>(inputInitialValue);
-            // had i to use modelValue this way?
-            // TODO: could i need to make VsInput Vnode util?
-            const input = h(VsInput, {
-                modelValue: inputValue.value,
-                'onUpdate:modelValue': (value: string | number | null) => {
-                    inputValue.value = value;
-                },
-                props: {
-                    type: inputType,
-                    placeholder: inputPlaceholder,
-                    rules: inputRules,
-                    initialValue: inputInitialValue,
-                    label: inputLabel,
-                    messages: inputMessages,
-                },
-            });
-
+            const inputRef = ref<VsInputRef | null>(null);
             const buttonsClassSwap = swapButtons && 'flex-row-reverse';
 
-            const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
-                content: buttonOkText,
-                onClickEvent: () => handleButton(PROMPT_OK),
+            const PromptContent = defineComponent({
+                name: 'VsPromptContent',
+                setup() {
+                    return () => {
+                        const input = h(VsInput, {
+                            ref: (instance: unknown) => {
+                                inputRef.value = instance as VsInputRef | null;
+                            },
+                            modelValue: inputValue.value,
+                            'onUpdate:modelValue': (value: string | number | null) => {
+                                inputValue.value = value;
+                            },
+                            type: inputType,
+                            placeholder: inputPlaceholder,
+                            rules: inputRules,
+                            label: inputLabel,
+                            noMessages: false,
+                            messages: inputMessages,
+                        });
+
+                        const okButton = vnodeUtils.createVsButton({
+                            props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
+                            content: buttonOkText,
+                            onClickEvent: () => handleButton(PROMPT_OK),
+                        });
+
+                        const cancelButton = vnodeUtils.createVsButton({
+                            props: { colorScheme, styleSet: styleSet?.cancelButton },
+                            content: buttonCancelText,
+                            onClickEvent: () => handleButton(PROMPT_CANCEL),
+                        });
+
+                        const buttonsClass = [
+                            'flex',
+                            'w-full',
+                            'items-center',
+                            'justify-center',
+                            'gap-2',
+                            buttonsClassSwap,
+                        ];
+                        const buttons = h('div', { class: buttonsClass }, [okButton, cancelButton]);
+
+                        const contents = h(VsRender, { content });
+
+                        const inputWrapperClass = [
+                            'flex',
+                            'h-full',
+                            'flex-col',
+                            'items-center',
+                            'justify-center',
+                            'gap-12',
+                            'pt-14',
+                        ];
+                        const inputWithButtons = h('div', { class: inputWrapperClass }, [input, buttons]);
+
+                        const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'pt-14'];
+                        return h('div', { class: wrapperClass }, [contents, inputWithButtons]);
+                    };
+                },
             });
 
-            const cancelButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.cancelButton },
-                content: buttonCancelText,
-                onClickEvent: () => handleButton(PROMPT_CANCEL),
-            });
-
-            const buttons = h(
-                'div',
-                { class: ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2', buttonsClassSwap] },
-                [okButton, cancelButton],
-            );
-            const contents = h(VsRender, { content });
-
-            // TODO: check style classes
-            const inputWithButtons = h(
-                'div',
-                { class: ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'] },
-                [input, buttons],
-            );
-
-            const prompt = h(
-                'div',
-                { class: ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-14'] },
-                [contents, inputWithButtons],
-            );
-
-            return new Promise((resolve) => {
-                const modalId = modalPlugin.open(prompt, {
+            return new Promise((resolve, reject) => {
+                const modalId = modalPlugin.open(PromptContent, {
                     ...options,
                     callbacks: {
                         ...options?.callbacks,
                         [PROMPT_OK]: () => {
-                            // TODO: check input value is valid, use rule?
-                            resolve(inputValue.value);
-                            modalPlugin.closeWithId(container, modalId);
+                            if (inputRef.value?.validate()) {
+                                resolve(inputValue.value);
+                                modalPlugin.closeWithId(container, modalId);
+                                return;
+                            }
+                            inputRef.value?.clear();
+                            reject(new Error('Input is not valid'));
                         },
                         [PROMPT_CANCEL]: () => {
                             resolve(null);
