@@ -8,6 +8,9 @@ export const OVERLAY_CLOSE = 'vlossom:overlay-close';
 export const CONFIRM_OK = 'vlossom:confirm-ok';
 export const CONFIRM_CANCEL = 'vlossom:confirm-cancel';
 
+export const PROMPT_OK = 'vlossom:prompt-ok';
+export const PROMPT_CANCEL = 'vlossom:prompt-cancel';
+
 export const ANIMATION_DURATION = 300;
 
 export const COLORS = [
