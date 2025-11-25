@@ -1,12 +1,12 @@
-import { h, type Component, type ExtractPropTypes, type VNode } from 'vue';
+import { h, type Component, type VNode } from 'vue';
+import type { PropsOf, VsComponent } from '@/declaration';
 import { VsButton, VsRender } from '@/components';
 
-type VsButtonVNodeProps = Partial<ExtractPropTypes<typeof VsButton>>;
 type VsButtonVNodeEventHandler = (() => void) | (() => Promise<void>) | null;
 
 export const vnodeUtils = {
     createVsButton(args: {
-        props: VsButtonVNodeProps;
+        props: PropsOf<VsComponent.VsButton>;
         content: string | Component;
         onClickEvent: VsButtonVNodeEventHandler;
     }): VNode {
