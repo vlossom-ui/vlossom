@@ -24,10 +24,6 @@ const meta: Meta<typeof VsInfiniteScroll> = {
             control: 'text',
             description: '컨테이너 높이',
         },
-        initialIndex: {
-            control: 'number',
-            description: '초기 스크롤 위치로 이동할 자식 요소의 인덱스',
-        },
         rootMargin: {
             control: 'text',
             description: 'IntersectionObserver의 rootMargin 옵션',
@@ -103,69 +99,6 @@ export const Default: Story = {
                                 </div>
                                 <div style="font-size: 0.875rem; color: #6b7280;">
                                     이 요소는 IntersectionObserver로 가시성이 추적됩니다.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </vs-infinite-scroll>
-            </div>
-        `,
-    }),
-};
-
-// 초기 스크롤 위치 설정
-export const WithInitialIndex: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'initialIndex prop을 사용하여 마운트 시 500번째 항목으로 자동 스크롤됩니다.',
-            },
-        },
-    },
-    args: {
-        initialIndex: 500,
-    },
-    render: (args: any) => ({
-        components: { VsInfiniteScroll },
-        setup() {
-            const items = Array.from({ length: 1000 }, (_, i) => i);
-            return { args, items };
-        },
-        template: `
-            <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-                <vs-infinite-scroll v-bind="args">
-                    <div
-                        v-for="item in items"
-                        :key="item"
-                        :data-item-index="item"
-                        style="
-                            padding: 16px;
-                            margin-bottom: 8px;
-                            background: #ffffff;
-                            border: 1px solid #e5e7eb;
-                            border-radius: 6px;
-                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        "
-                    >
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="
-                                display: inline-flex;
-                                align-items: center;
-                                justify-content: center;
-                                width: 32px;
-                                height: 32px;
-                                background: #10b981;
-                                color: white;
-                                border-radius: 50%;
-                                font-weight: 600;
-                                font-size: 14px;
-                            ">{{ item + 1 }}</span>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 500; color: #1f2937; margin-bottom: 4px;">
-                                    항목 {{ item + 1 }}
-                                </div>
-                                <div style="font-size: 0.875rem; color: #6b7280;">
-                                    초기 스크롤 위치: 500번째 항목
                                 </div>
                             </div>
                         </div>
