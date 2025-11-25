@@ -9,14 +9,14 @@ import { useOptionsStore } from '@/stores';
 import {
     createToastPlugin,
     createModalPlugin,
+    createAlertPlugin,
     createConfirmPlugin,
     createPromptPlugin,
-    createAlertPlugin,
     type ToastPlugin,
     type ModalPlugin,
+    type AlertPlugin,
     type ConfirmPlugin,
     type PromptPlugin,
-    type AlertPlugin,
 } from '@/plugins';
 
 export class Vlossom {
