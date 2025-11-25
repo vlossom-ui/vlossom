@@ -5,6 +5,8 @@ export const FORM_STORE_KEY = 'vlossom:form-store';
 export const OVERLAY_OPEN = 'vlossom:overlay-open';
 export const OVERLAY_CLOSE = 'vlossom:overlay-close';
 
+export const ALERT_OK = 'vlossom:alert-ok';
+
 export const CONFIRM_OK = 'vlossom:confirm-ok';
 export const CONFIRM_CANCEL = 'vlossom:confirm-cancel';
 

@@ -9,10 +9,12 @@ import { useOptionsStore } from '@/stores';
 import {
     createToastPlugin,
     createModalPlugin,
+    createAlertPlugin,
     createConfirmPlugin,
     createPromptPlugin,
     type ToastPlugin,
     type ModalPlugin,
+    type AlertPlugin,
     type ConfirmPlugin,
     type PromptPlugin,
 } from '@/plugins';
@@ -21,6 +23,7 @@ export class Vlossom {
     private _optionsStore = useOptionsStore();
     private _toast: ToastPlugin = createToastPlugin();
     private _modal: ModalPlugin = createModalPlugin();
+    private _alert: AlertPlugin = createAlertPlugin(this._modal);
     private _confirm: ConfirmPlugin = createConfirmPlugin(this._modal);
     private _prompt: PromptPlugin = createPromptPlugin(this._modal);
 
@@ -40,6 +43,10 @@ export class Vlossom {
 
     get modal(): ModalPlugin {
         return this._modal;
+    }
+
+    get alert(): AlertPlugin {
+        return this._alert;
     }
 
     get confirm(): ConfirmPlugin {

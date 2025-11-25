@@ -34,8 +34,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
-            const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'pt-8', 'gap-8'];
-            const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center'];
+            const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-8'];
+            const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-4', 'pt-8'];
 
             const additionalButtonsClass = [
                 swapButtons && 'flex-row-reverse',
@@ -107,6 +107,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             resolve(null);
                         },
                     },
+                    size: 'xs',
                 });
             });
         },
