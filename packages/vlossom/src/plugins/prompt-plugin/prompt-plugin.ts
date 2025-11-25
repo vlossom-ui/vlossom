@@ -24,19 +24,14 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 container = 'body',
                 colorScheme,
                 styleSet,
-                inputType: type = 'text',
-                inputPlaceholder: placeholder = '',
-                inputRules: rules = [],
-                inputInitialValue: initialValue = null,
-                inputLabel: label = '',
-                inputMessages: messages = [],
-                buttonOkText = 'OK',
-                buttonCancelText = 'Cancel',
+                okText = 'OK',
+                cancelText = 'Cancel',
                 swapButtons,
+                input: inputOptions,
             } = options;
 
             const inputRef = ref<VsInputRef | null>(null);
-            const inputValue = ref<VsInputValueType>(initialValue);
+            const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'pt-8', 'gap-8'];
@@ -50,12 +45,12 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
 
             const okButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
-                content: buttonOkText,
+                content: okText,
                 onClickEvent: () => handleButton(PROMPT_OK),
             });
             const cancelButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.cancelButton },
-                content: buttonCancelText,
+                content: cancelText,
                 onClickEvent: () => handleButton(PROMPT_CANCEL),
             });
             const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton, cancelButton]);
@@ -64,18 +59,15 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             // NOTE. 함수형 VNode를 사용하여 컴포넌트 인스턴스(`inputRef`)를 가져올 수 있도록 하기 위함
             const prompt = () => {
                 const input = h(VsInput, {
+                    ...inputOptions,
+                    colorScheme,
+                    styleSet: styleSet?.input,
+
                     ref: inputRef,
                     modelValue: inputValue.value,
                     'onUpdate:modelValue': (value: VsInputValueType) => {
                         inputValue.value = value;
                     },
-                    colorScheme,
-                    type,
-                    placeholder,
-                    rules,
-                    label,
-                    messages,
-                    styleSet: styleSet?.input,
                 });
 
                 const interactions = h('div', { class: interactsClass }, [input, buttons]);

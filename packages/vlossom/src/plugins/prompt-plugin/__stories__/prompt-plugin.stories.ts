@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useVlossom } from '@/framework';
-import VsButton from '@/components/vs-button/VsButton.vue';
+import { type VsInputValueType, VsButton } from '@/components';
 
 const meta: Meta = {
     title: 'Plugins/Prompt Plugin',
@@ -42,33 +42,35 @@ export const Default: Story = {
 
             async function handleOpenCustom() {
                 const value = await $vs.prompt.open('1에서 10 사이의 숫자를 입력해주세요.', {
-                    inputType: 'number',
-                    inputInitialValue: 3,
-                    inputPlaceholder: '예: 5',
-                    inputLabel: '최대 시도 횟수',
-                    inputRules: [
-                        (v) => {
-                            if (v === null || v === '') {
-                                return '값을 입력해주세요.';
-                            }
-                            const num = Number(v);
-                            if (!Number.isInteger(num)) {
-                                return '정수를 입력해주세요.';
-                            }
-                            if (num < 1 || num > 10) {
-                                return '1에서 10 사이의 값을 입력해주세요.';
-                            }
-                            return '';
-                        },
-                    ],
-                    inputMessages: [
-                        {
-                            state: 'info',
-                            text: '1에서 10 사이의 정수만 허용됩니다.',
-                        },
-                    ],
-                    buttonOkText: '적용',
-                    buttonCancelText: '취소',
+                    input: {
+                        type: 'number',
+                        initialValue: 3,
+                        placeholder: '예: 5',
+                        label: '최대 시도 횟수',
+                        rules: [
+                            (v: VsInputValueType): string => {
+                                if (v === null || v === '') {
+                                    return '값을 입력해주세요.';
+                                }
+                                const num = Number(v);
+                                if (!Number.isInteger(num)) {
+                                    return '정수를 입력해주세요.';
+                                }
+                                if (num < 1 || num > 10) {
+                                    return '1에서 10 사이의 값을 입력해주세요.';
+                                }
+                                return '';
+                            },
+                        ],
+                        messages: [
+                            {
+                                state: 'info',
+                                text: '1에서 10 사이의 정수만 허용됩니다.',
+                            },
+                        ],
+                    },
+                    okText: '적용',
+                    cancelText: '취소',
                     swapButtons: true,
                 });
 
