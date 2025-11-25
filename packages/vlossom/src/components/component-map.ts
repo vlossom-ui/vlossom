@@ -104,3 +104,5 @@ export const VlossomComponents = {
     VsToggle,
     VsTooltip,
 } as const;
+
+export type VsComponentRegistry = typeof VlossomComponents;

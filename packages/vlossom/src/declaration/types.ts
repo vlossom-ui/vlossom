@@ -1,7 +1,7 @@
 import type { Component, Ref } from 'vue';
+import type { VsComponentRegistry } from '@/components/component-map';
 import type { ALIGNMENTS, COLORS, PLACEMENTS, SIZES } from './constants';
 import type { VsComponent } from './enums';
-import type { VlossomComponents } from '@/main';
 
 export type ColorScheme = (typeof COLORS)[number];
 
@@ -98,14 +98,14 @@ export type Rule<T = any> = ((v: T) => string) | ((v: T) => PromiseLike<string>)
 
 export type Message<T = any> = ValueOrFunction<T, StateMessage>;
 
-export type PropsOf<C extends keyof typeof VlossomComponents> = InstanceType<(typeof VlossomComponents)[C]>['$props'];
+export type PropsOf<K extends keyof VsComponentRegistry> = InstanceType<VsComponentRegistry[K]>['$props'];
 
 // rest of the component 'props' bypassed to the component
-export type AttrsOf<C extends keyof typeof VlossomComponents> = InstanceType<(typeof VlossomComponents)[C]>['$attrs'];
+export type AttrsOf<K extends keyof VsComponentRegistry> = InstanceType<VsComponentRegistry[K]>['$attrs'];
 
-export type EmitsOf<C extends keyof typeof VlossomComponents> = InstanceType<(typeof VlossomComponents)[C]>['$emit'];
+export type EmitsOf<K extends keyof VsComponentRegistry> = InstanceType<VsComponentRegistry[K]>['$emit'];
 
-export type SlotsOf<C extends keyof typeof VlossomComponents> = InstanceType<(typeof VlossomComponents)[C]>['$slots'];
+export type SlotsOf<K extends keyof VsComponentRegistry> = InstanceType<VsComponentRegistry[K]>['$slots'];
 
 export interface InputComponentParams<T = unknown> {
     inputValue: Ref<T>;
