@@ -110,22 +110,28 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                                 modalPlugin.closeWithId(container, modalId);
                                 return;
                             }
-                            inputRef.value?.clear();
                             reject(new Error('Input is not valid'));
                         },
                         [PROMPT_CANCEL]: () => {
                             resolve(null);
+                            inputRef.value?.clear();
                             modalPlugin.closeWithId(container, modalId);
                         },
                         'key-Enter': () => {
-                            resolve(inputValue.value);
-                            modalPlugin.closeWithId(container, modalId);
+                            if (inputRef.value?.validate()) {
+                                resolve(inputValue.value);
+                                modalPlugin.closeWithId(container, modalId);
+                                return;
+                            }
+                            reject(new Error('Input is not valid'));
                         },
                         'key-Escape': () => {
                             resolve(null);
+                            inputRef.value?.clear();
                             modalPlugin.closeWithId(container, modalId);
                         },
                         [OVERLAY_CLOSE]: () => {
+                            inputRef.value?.clear();
                             resolve(null);
                         },
                     },
