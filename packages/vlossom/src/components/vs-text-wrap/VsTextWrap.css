@@ -20,7 +20,7 @@
     }
 
     .vs-text-wrap-buttons {
-        @apply ml-1 flex items-center;
+        @apply ml-1 flex items-center gap-0.5;
 
         .vs-text-wrap-button {
             @apply cursor-pointer;
@@ -52,10 +52,6 @@
             &:active {
                 @apply brightness-90;
             }
-        }
-
-        .vs-text-wrap-button + .vs-text-wrap-button {
-            @apply ml-0.5;
         }
     }
 }
