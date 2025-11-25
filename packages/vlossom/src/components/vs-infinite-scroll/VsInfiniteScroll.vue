@@ -25,7 +25,6 @@ export default defineComponent({
     props: {
         disabled: { type: Boolean, default: false },
         height: { type: [String, Number] },
-        initialIndex: { type: [String, Number] },
         rootMargin: { type: String, default: '0px' },
         tag: { type: String, default: 'div' },
         threshold: {
@@ -42,7 +41,7 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const { disabled, height, rootMargin, threshold, initialIndex } = toRefs(props);
+        const { disabled, height, rootMargin, threshold } = toRefs(props);
         const rootRef: TemplateRef<HTMLDivElement> = useTemplateRef('rootRef');
 
         let io: IntersectionObserver | null = null;
@@ -85,7 +84,6 @@ export default defineComponent({
 
         function createIntersectionObserver() {
             const root = getScrollRoot();
-
             return new IntersectionObserver(
                 (entries) => {
                     for (const entry of entries) {
@@ -200,38 +198,22 @@ export default defineComponent({
             });
         }
 
-        function scrollToIndex(index: number) {
-            if (!rootRef.value) {
+        function scrollTo(element: HTMLElement) {
+            if (!rootRef.value || !element) {
                 return;
             }
 
-            const children = Array.from(rootRef.value.children) as HTMLElement[];
-
-            if (index < 0 || index >= children.length) {
-                return;
-            }
-
-            const targetElement = children[index];
-            if (!targetElement) {
-                return;
-            }
-
-            // 스크롤 전에 해당 요소를 표시
-            updateChildVisibility(targetElement, true);
-
-            // 스크롤 루트 확인
             const scrollRoot = getScrollRoot();
             const isViewportScroll = scrollRoot === null;
 
-            // DOM 렌더링 완료 후 스크롤 실행
+            updateChildVisibility(element, true);
             waitForLayout(() => {
-                if (!rootRef.value || !targetElement) {
+                if (!rootRef.value || !element) {
                     return;
                 }
 
                 if (isViewportScroll) {
-                    // 전체 페이지 스크롤: 직접 스크롤 위치 계산
-                    const rect = targetElement.getBoundingClientRect();
+                    const rect = element.getBoundingClientRect();
                     const currentScrollY = window.scrollY || document.documentElement.scrollTop;
                     const targetScrollY = currentScrollY + rect.top;
 
@@ -240,11 +222,13 @@ export default defineComponent({
                         behavior: 'auto',
                     });
                 } else {
-                    // 컨테이너 스크롤: scrollIntoView 사용
-                    targetElement.scrollIntoView({
+                    const containerRect = rootRef.value.getBoundingClientRect();
+                    const targetRect = element.getBoundingClientRect();
+                    const targetScrollTop = rootRef.value.scrollTop + targetRect.top - containerRect.top;
+
+                    rootRef.value.scrollTo({
+                        top: targetScrollTop,
                         behavior: 'auto',
-                        block: 'start',
-                        inline: 'nearest',
                     });
                 }
             });
@@ -254,13 +238,6 @@ export default defineComponent({
 
         onMounted(async () => {
             await initialize();
-
-            // DOM 렌더링 완료 후 초기 인덱스로 스크롤
-            waitForLayout(() => {
-                if (initialIndex.value !== undefined) {
-                    scrollToIndex(Number(initialIndex.value));
-                }
-            });
         });
 
         onBeforeUnmount(() => {
@@ -276,8 +253,9 @@ export default defineComponent({
 
         return {
             rootRef,
-            scrollToIndex,
             containerStyle,
+            // expose
+            scrollTo,
         };
     },
 });
