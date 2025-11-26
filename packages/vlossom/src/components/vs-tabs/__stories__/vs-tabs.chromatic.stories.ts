@@ -73,15 +73,15 @@ const meta: Meta<typeof VsTabs> = {
                     <div style="display:flex; flex-direction: column; gap: 1rem;">
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">첫 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="0" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" model-value="0" />
                         </div>
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">두 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="1" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" model-value="1" />
                         </div>
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">세 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="2" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" model-value="2" />
                         </div>
                     </div>
                 </div>
