@@ -19,7 +19,7 @@
     --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     --tab-border: var(--vs-tabs-border, 1px solid transparent);
     --tab-border-color: var(--vs-tabs-borderColor, var(--vs-line-color));
-    --tab-bg: var(--vs-tabs-backgroundColor, transparent);
+    --tab-bg: var(--vs-tabs-backgroundColor, var(--vs-comp-bg));
     --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @apply relative flex items-center gap-2 select-none;
@@ -37,7 +37,6 @@
             .vs-tab-item {
                 @apply relative flex cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
 
-                gap: var(--vs-tabs-gap, 0.5rem);
                 transition: all 0.2s;
                 margin-bottom: -1px;
 
