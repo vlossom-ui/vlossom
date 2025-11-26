@@ -59,15 +59,27 @@ const tabs = ['Home', 'Profile', 'Settings'];
 
 ```html
 <template>
-    <vs-tabs v-model="selectedTab" :tabs="tabs" :disabled="[1, 3]" />
+    <vs-tabs v-model="selectedTab" :tabs="tabs" :disabled="isTabDisabled" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const selectedTab = ref(0);
-const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
+const selectedTab = ref(1);
+const tabs = ['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3'];
+
+function isTabDisabled(index: number, tab: string): boolean {
+    return index % 2 === 0; // 짝수 인덱스 비활성화
+}
 </script>
+```
+
+특정 인덱스를 비활성화하려면:
+
+```typescript
+function isTabDisabled(index: number): boolean {
+    return [1, 3].includes(index);
+}
 ```
 
 ### Primary 색상 테마
@@ -102,17 +114,17 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Ta
 
 ## Props
 
-| Prop            | Type                         | Default  | Required | Description                |
-| --------------- | ---------------------------- | -------- | -------- | -------------------------- |
-| `colorScheme`   | `string`                     | -        | -        | 탭의 색상 테마             |
-| `styleSet`      | `string \| VsTabsStyleSet`   | -        | -        | 커스텀 스타일 설정 객체    |
-| `dense`         | `boolean`                    | `false`  | -        | 조밀한 스타일 적용         |
-| `disabled`      | `number[]`                   | `[]`     | -        | 비활성화할 탭 인덱스 배열  |
-| `primary`       | `boolean`                    | `false`  | -        | primary 색상 테마 적용     |
-| `scrollButtons` | `'hide' \| 'show' \| 'auto'` | `'hide'` | -        | 스크롤 버튼 표시 방식      |
-| `tabs`          | `string[]`                   | -        | ✅       | 탭 레이블 배열             |
-| `vertical`      | `boolean`                    | `false`  | -        | 수직 레이아웃 적용         |
-| `modelValue`    | `number`                     | `0`      | -        | 선택된 탭 인덱스 (v-model) |
+| Prop            | Type                                      | Default       | Required | Description                      |
+| --------------- | ----------------------------------------- | ------------- | -------- | -------------------------------- |
+| `colorScheme`   | `string`                                  | -             | -        | 탭의 색상 테마                   |
+| `styleSet`      | `string \| VsTabsStyleSet`                | -             | -        | 커스텀 스타일 설정 객체          |
+| `dense`         | `boolean`                                 | `false`       | -        | 조밀한 스타일 적용               |
+| `disabled`      | `(index: number, tab: string) => boolean` | `() => false` | -        | 탭 비활성화 여부를 판별하는 함수 |
+| `primary`       | `boolean`                                 | `false`       | -        | primary 색상 테마 적용           |
+| `scrollButtons` | `'hide' \| 'show' \| 'auto'`              | `'hide'`      | -        | 스크롤 버튼 표시 방식            |
+| `tabs`          | `string[]`                                | -             | ✅       | 탭 레이블 배열                   |
+| `vertical`      | `boolean`                                 | `false`       | -        | 수직 레이아웃 적용               |
+| `modelValue`    | `number`                                  | `0`           | -        | 선택된 탭 인덱스 (v-model)       |
 
 ## Events
 

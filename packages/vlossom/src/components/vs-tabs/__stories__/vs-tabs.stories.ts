@@ -64,8 +64,8 @@ const meta: Meta<typeof VsTabs> = {
             description: '작은 크기',
         },
         disabled: {
-            control: 'object',
-            description: '비활성화할 탭 인덱스 배열',
+            control: false,
+            description: '탭 비활성화 여부를 판별하는 함수. (index: number, tab: string) => boolean 형태',
         },
         primary: {
             control: 'boolean',
@@ -139,8 +139,22 @@ export const DisabledTabs: Story = {
     },
     args: {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'],
-        disabled: [1, 3],
+        disabled: (index: number) => [1, 3].includes(index),
         modelValue: 0,
+    },
+};
+
+export const DisabledByCondition: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'disabled 함수를 사용하여 조건에 따라 동적으로 탭을 비활성화할 수 있습니다. 이 예시에서는 짝수 인덱스의 탭을 비활성화합니다.',
+            },
+        },
+    },
+    args: {
+        tabs: ['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
+        disabled: (index: number) => index % 2 === 0,
     },
 };
 

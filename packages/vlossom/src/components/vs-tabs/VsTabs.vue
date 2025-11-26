@@ -65,7 +65,6 @@ import {
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
-import { logUtil } from '@/utils';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import type { VsTabsStyleSet } from './types';
 import { vsTabsIcons } from './icons';
@@ -79,16 +78,8 @@ export default defineComponent({
         ...getStyleSetProps<VsTabsStyleSet>(),
         dense: { type: Boolean, default: false },
         disabled: {
-            type: Array as PropType<number[]>,
-            default: () => [],
-            validator: (value: number[], props: any) => {
-                const tabsLength = props.tabs.length;
-                const isValid = value.every((i) => i >= 0 && i < tabsLength);
-                if (!isValid) {
-                    logUtil.propError(name, 'disabled', 'Disabled index is out of range.');
-                }
-                return isValid;
-            },
+            type: Function as PropType<(index: number, tab: string) => boolean>,
+            default: undefined,
         },
         primary: { type: Boolean, default: false },
         scrollButtons: {

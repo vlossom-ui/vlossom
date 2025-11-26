@@ -31,8 +31,22 @@ const meta: Meta<typeof VsTabs> = {
 
                 <!-- 비활성화 -->
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 탭</h3>
-                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5']" :disabled="[1, 3]" />
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 탭 (특정 인덱스)</h3>
+                    <vs-tabs 
+                        v-bind="args" 
+                        :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5']" 
+                        :disabled="(index) => [1, 3].includes(index)" 
+                    />
+                </div>
+                
+                <!-- 비활성화 조건 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 탭 (조건부)</h3>
+                    <vs-tabs 
+                        v-bind="args" 
+                        :tabs="['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
+                        :disabled="(index) => index % 2 === 0" 
+                    />
                 </div>
 
                 <!-- 수직 레이아웃 -->
@@ -59,15 +73,15 @@ const meta: Meta<typeof VsTabs> = {
                     <div style="display:flex; flex-direction: column; gap: 1rem;">
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">첫 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" :model-value="0" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="0" />
                         </div>
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">두 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" :model-value="1" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="1" />
                         </div>
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">세 번째 선택</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" :model-value="2" />
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" v-model="2" />
                         </div>
                     </div>
                 </div>
@@ -101,7 +115,7 @@ const meta: Meta<typeof VsTabs> = {
                                  v-bind="args" 
                                  :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
                                  dense 
-                                 :disabled="[2]" 
+                                 :disabled="(index) => index === 2" 
                              />
                          </div>
                          <div>
@@ -127,14 +141,17 @@ const meta: Meta<typeof VsTabs> = {
                          <div>
                              <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Scroll Buttons + Dense</p>
                              <div style="width: 200px; height: 200px;">
-                                 <vs-tabs 
-                                     v-bind="args" 
-                                     :tabs="['Dashboard', 'Profile', 'Settings', 'Messages', 'Notifications', 'Calendar']" 
-                                     vertical 
-                                     scroll-buttons="show"
-                                     dense
-                                 />
-                             </div>
+                                <vs-tabs 
+                                    v-bind="args" 
+                                    :tabs="[
+                                        'Dashboard', 'Profile', 'Settings', 
+                                        'Messages', 'Notifications', 'Calendar'
+                                    ]" 
+                                    vertical 
+                                    scroll-buttons="show"
+                                    dense
+                                />
+                            </div>
                          </div>
                      </div>
                  </div>

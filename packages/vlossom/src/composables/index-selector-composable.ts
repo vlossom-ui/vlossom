@@ -1,6 +1,9 @@
 import { computed, ref, type Ref } from 'vue';
 
-export function useIndexSelector(list: Ref<any[]>, disabled: Ref<number[]> = ref([])) {
+export function useIndexSelector(
+    list: Ref<any[]>,
+    disabled?: Ref<((index: number, item: any) => boolean) | undefined>,
+) {
     const selectedIndex = ref(0);
 
     function isSelected(index: number): boolean {
@@ -8,7 +11,10 @@ export function useIndexSelector(list: Ref<any[]>, disabled: Ref<number[]> = ref
     }
 
     function isDisabled(index: number): boolean {
-        return disabled.value.includes(index);
+        if (!disabled || !disabled.value) {
+            return false;
+        }
+        return disabled.value(index, list.value[index]);
     }
 
     function findNextActivedIndex(startIndex: number): number {
