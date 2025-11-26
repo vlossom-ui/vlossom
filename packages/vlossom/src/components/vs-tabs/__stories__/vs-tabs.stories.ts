@@ -67,6 +67,10 @@ const meta: Meta<typeof VsTabs> = {
             control: 'object',
             description: '비활성화할 탭 인덱스 배열',
         },
+        primary: {
+            control: 'boolean',
+            description: 'primary 색상 테마',
+        },
         scrollButtons: {
             control: 'select',
             options: ['hide', 'show', 'auto'],
@@ -107,6 +111,21 @@ export const Dense: Story = {
     args: {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
         dense: true,
+    },
+};
+
+export const Primary: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'primary 색상 테마가 적용된 탭입니다. 선택된 탭에 primary 색상이 강조됩니다.',
+            },
+        },
+    },
+    args: {
+        tabs: ['Home', 'Profile', 'Settings', 'Messages'],
+        primary: true,
+        modelValue: 0,
     },
 };
 
@@ -157,7 +176,7 @@ export const AutoScrollButtons: Story = {
     parameters: {
         docs: {
             description: {
-                story: '스크롤이 필요한 경우에만 버튼이 표시되는 탭입니다. 화면 크기를 조절하면 버튼이 자동으로 표시/숨김됩니다.',
+                story: '버튼을 통해 스크롤할 수 있는 탭입니다.',
             },
         },
     },

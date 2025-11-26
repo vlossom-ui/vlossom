@@ -70,6 +70,21 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
 </script>
 ```
 
+### Primary 색상 테마
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" primary />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
+</script>
+```
+
 ### 스크롤 버튼 표시
 
 ```html
@@ -93,6 +108,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Ta
 | `styleSet`      | `string \| VsTabsStyleSet`   | -        | -        | 커스텀 스타일 설정 객체    |
 | `dense`         | `boolean`                    | `false`  | -        | 조밀한 스타일 적용         |
 | `disabled`      | `number[]`                   | `[]`     | -        | 비활성화할 탭 인덱스 배열  |
+| `primary`       | `boolean`                    | `false`  | -        | primary 색상 테마 적용     |
 | `scrollButtons` | `'hide' \| 'show' \| 'auto'` | `'hide'` | -        | 스크롤 버튼 표시 방식      |
 | `tabs`          | `string[]`                   | -        | ✅       | 탭 레이블 배열             |
 | `vertical`      | `boolean`                    | `false`  | -        | 수직 레이아웃 적용         |

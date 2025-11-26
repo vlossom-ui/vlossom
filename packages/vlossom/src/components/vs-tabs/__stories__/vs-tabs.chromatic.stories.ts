@@ -15,22 +15,18 @@ const meta: Meta<typeof VsTabs> = {
                 <!-- 기본 스타일 -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">기본 스타일</h3>
-                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" />
+                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" />
+                </div>
+
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Primary</h3>
+                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" primary />
                 </div>
 
                 <!-- 크기 변형 -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
-                    <div style="display:flex; flex-direction: column; gap: 1rem;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">기본</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Dense</p>
-                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense />
-                        </div>
-                    </div>
+                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense />
                 </div>
 
                 <!-- 비활성화 -->
@@ -50,24 +46,11 @@ const meta: Meta<typeof VsTabs> = {
                 <!-- 스크롤 버튼 -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">스크롤 버튼</h3>
-                    <div style="display:flex; flex-direction: column; gap: 1rem;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Hide (기본)</p>
-                            <vs-tabs 
-                                v-bind="args" 
-                                :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8']" 
-                                scroll-buttons="hide" 
-                            />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Show</p>
-                            <vs-tabs 
-                                v-bind="args" 
-                                :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8']" 
-                                scroll-buttons="show" 
-                            />
-                        </div>
-                    </div>
+                    <vs-tabs 
+                        v-bind="args" 
+                        :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8']" 
+                        scroll-buttons="show" 
+                    />
                 </div>
 
                 <!-- 선택된 탭 -->
@@ -120,6 +103,26 @@ const meta: Meta<typeof VsTabs> = {
                                  dense 
                                  :disabled="[2]" 
                              />
+                         </div>
+                         <div>
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Primary + Dense</p>
+                             <vs-tabs 
+                                 v-bind="args" 
+                                 :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
+                                 primary
+                                 dense 
+                             />
+                         </div>
+                         <div>
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Primary</p>
+                             <div style="width: 200px;">
+                                 <vs-tabs 
+                                     v-bind="args" 
+                                     :tabs="['Dashboard', 'Profile', 'Settings', 'Messages']" 
+                                     vertical 
+                                     primary
+                                 />
+                             </div>
                          </div>
                          <div>
                              <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Scroll Buttons + Dense</p>

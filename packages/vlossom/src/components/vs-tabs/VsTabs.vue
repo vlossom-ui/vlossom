@@ -90,6 +90,7 @@ export default defineComponent({
                 return isValid;
             },
         },
+        primary: { type: Boolean, default: false },
         scrollButtons: {
             type: String as PropType<'hide' | 'show' | 'auto'>,
             default: 'hide',
@@ -104,7 +105,8 @@ export default defineComponent({
     },
     emits: ['update:modelValue', 'change'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, disabled, scrollButtons, tabs, modelValue, vertical } = toRefs(props);
+        const { colorScheme, styleSet, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
+            toRefs(props);
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
         const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(name, styleSet);
 
@@ -127,7 +129,8 @@ export default defineComponent({
         } = useIndexSelector(tabs, disabled);
 
         const classObj = computed(() => ({
-            'vs-dense': props.dense,
+            'vs-dense': dense.value,
+            'vs-primary': primary.value,
             'vs-vertical': vertical.value,
         }));
 

@@ -157,4 +157,25 @@
             }
         }
     }
+
+    &.vs-primary {
+        .vs-tabs-wrap .vs-tab-list {
+            border-bottom-color: var(--tab-border-color);
+
+            .vs-tab-indicator {
+                border-color: var(--vs-primary-comp-bg);
+                background-color: var(--vs-primary-comp-bg);
+            }
+
+            .vs-tab-item.vs-selected {
+                color: var(--vs-primary-comp-font);
+            }
+        }
+
+        &.vs-vertical {
+            .vs-tabs-wrap .vs-tab-list {
+                border-right-color: var(--tab-border-color);
+            }
+        }
+    }
 }

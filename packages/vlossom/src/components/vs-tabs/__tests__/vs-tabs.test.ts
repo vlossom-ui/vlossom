@@ -70,6 +70,19 @@ describe('VsTabs', () => {
             expect(wrapper.find('.vs-tabs').classes()).toContain('vs-dense');
         });
 
+        it('primary prop이 true이면 vs-primary 클래스가 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    primary: true,
+                },
+            });
+
+            // then
+            expect(wrapper.find('.vs-tabs').classes()).toContain('vs-primary');
+        });
+
         it('disabled prop이 주어지면 해당 인덱스의 탭에 vs-disabled 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
