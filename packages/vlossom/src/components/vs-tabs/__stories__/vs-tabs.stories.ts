@@ -20,11 +20,7 @@ const meta: Meta<typeof VsTabs> = {
         components: { VsTabs },
         setup() {
             const preDefinedStyleSet: VsTabsStyleSet = {
-                backgroundColor: '#f5f5f5',
-                borderColor: '#1e88e5',
-                fontColor: '#1e88e5',
-                fontSize: '1rem',
-                fontWeight: 600,
+                backgroundColor: '#1e88e5',
                 gap: '0.5rem',
                 height: '3rem',
                 padding: '0 1.5rem',
@@ -270,11 +266,7 @@ export const StyleSet: Story = {
     args: {
         tabs: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
-            backgroundColor: '#f0f0f0',
-            borderColor: '#e188e5',
-            fontColor: '#e188e5',
-            fontSize: '1.1rem',
-            fontWeight: 700,
+            backgroundColor: '#e188e5',
             gap: '1rem',
             height: '3.5rem',
             padding: '0 2rem',

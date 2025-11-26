@@ -1,4 +1,4 @@
-import type { BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { BoxStyleSet } from '@/declaration';
 import type VsTabs from './VsTabs.vue';
 
 declare module 'vue' {
@@ -9,9 +9,8 @@ declare module 'vue' {
 
 export type { VsTabs };
 
-export interface VsTabsStyleSet extends BoxStyleSet, TextStyleSet {
+export interface VsTabsStyleSet extends BoxStyleSet {
     height?: string;
-    borderColor?: string;
     gap?: string;
     tabWidth?: string;
 }

@@ -143,12 +143,7 @@ interface VsTabsStyleSet {
     padding?: string;
     opacity?: number;
 
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-
     height?: string;
-    borderColor?: string;
     gap?: string;
     tabWidth?: string;
 }

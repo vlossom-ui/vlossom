@@ -7,18 +7,13 @@
     --vs-tabs-padding: initial;
     --vs-tabs-opacity: initial;
 
-    --vs-tabs-fontColor: initial;
-    --vs-tabs-fontSize: initial;
-    --vs-tabs-fontWeight: initial;
-
     --vs-tabs-height: initial;
-    --vs-tabs-borderColor: initial;
     --vs-tabs-gap: initial;
     --vs-tabs-tabWidth: initial;
 
     --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     --tab-border: var(--vs-tabs-border, 1px solid transparent);
-    --tab-border-color: var(--vs-tabs-borderColor, var(--vs-line-color));
+    --tab-border-color: var(--vs-line-color);
     --tab-bg: var(--vs-tabs-backgroundColor, var(--vs-comp-bg));
     --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -47,9 +42,9 @@
                 width: var(--vs-tabs-tabWidth, auto);
                 height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
-                color: var(--vs-tabs-fontColor, var(--vs-font-color));
-                font-weight: var(--vs-tabs-fontWeight, (--vs-font-weight));
-                font-size: var(--vs-tabs-fontSize, var(--vs-font-size));
+                color: var(--vs-font-color);
+                font-weight: var(--vs-font-weight);
+                font-size: var(--vs-font-size);
 
                 &:not(:last-child) {
                     margin-right: var(--vs-tabs-gap, 0.1rem);
@@ -83,7 +78,7 @@
     &.vs-dense {
         .vs-tabs-wrap .vs-tab-list .vs-tab-item {
             padding: var(--vs-tabs-padding, 0 0.6rem);
-            font-size: var(--vs-tabs-fontSize, var(--vs-font-size-sm));
+            font-size: var(--vs-font-size-sm);
         }
     }
 
