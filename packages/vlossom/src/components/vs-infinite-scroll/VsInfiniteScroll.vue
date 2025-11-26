@@ -216,27 +216,36 @@ export default defineComponent({
             }
 
             const scrollRoot = getScrollRoot();
-            if (!scrollRoot) {
-                return;
-            }
 
             updateChildVisibility(element, true);
 
             waitForLayout(() => {
-                if (!infiniteScrollRef.value || !element || !scrollRoot) {
+                if (!infiniteScrollRef.value || !element) {
                     return;
                 }
 
-                // scrollRoot가 실제 스크롤 컨테이너이므로 scrollRoot를 사용
-                const scrollContainer = scrollRoot as HTMLElement;
-                const containerRect = scrollContainer.getBoundingClientRect();
-                const targetRect = element.getBoundingClientRect();
-                const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top;
+                if (scrollRoot === null) {
+                    // viewport가 스크롤 컨테이너인 경우 window.scrollTo 사용
+                    const rect = element.getBoundingClientRect();
+                    const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+                    const targetScrollY = currentScrollY + rect.top;
 
-                scrollContainer.scrollTo({
-                    top: targetScrollTop,
-                    behavior: 'auto',
-                });
+                    window.scrollTo({
+                        top: targetScrollY,
+                        behavior: 'auto',
+                    });
+                } else {
+                    // scrollRoot가 실제 스크롤 컨테이너이므로 scrollRoot를 사용
+                    const scrollContainer = scrollRoot as HTMLElement;
+                    const containerRect = scrollContainer.getBoundingClientRect();
+                    const targetRect = element.getBoundingClientRect();
+                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top;
+
+                    scrollContainer.scrollTo({
+                        top: targetScrollTop,
+                        behavior: 'auto',
+                    });
+                }
             });
         }
 
