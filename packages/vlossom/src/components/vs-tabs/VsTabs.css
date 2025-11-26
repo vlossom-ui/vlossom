@@ -48,7 +48,7 @@
                 height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
                 color: var(--vs-tabs-fontColor, var(--vs-font-color));
-                font-weight: var(--vs-tabs-fontWeight, 500);
+                font-weight: var(--vs-tabs-fontWeight, (--vs-font-weight));
                 font-size: var(--vs-tabs-fontSize, var(--vs-font-size));
 
                 &:not(:last-child) {
@@ -115,7 +115,6 @@
 
                     border-top-right-radius: 0;
                     border-bottom-left-radius: var(--tab-radius);
-
                     height: var(--vs-tabs-tabWidth, auto);
 
                     &:not(:last-child) {
