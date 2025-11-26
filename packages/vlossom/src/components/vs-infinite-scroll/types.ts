@@ -9,5 +9,5 @@ declare module 'vue' {
 export type { VsInfiniteScroll };
 
 export interface VsInfiniteScrollRef {
-    scrollTo: (element: HTMLElement) => void;
+    scrollToElement: (element: HTMLElement) => void;
 }

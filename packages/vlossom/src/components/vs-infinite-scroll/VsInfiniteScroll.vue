@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" ref="rootRef" class="vs-infinite-scroll" :style="containerStyle">
+    <component :is="tag" ref="infiniteScrollRef" class="vs-infinite-scroll" :style="containerStyle">
         <slot />
     </component>
 </template>
@@ -42,7 +42,8 @@ export default defineComponent({
     },
     setup(props) {
         const { disabled, height, rootMargin, threshold } = toRefs(props);
-        const rootRef: TemplateRef<HTMLDivElement> = useTemplateRef('rootRef');
+
+        const infiniteScrollRef: TemplateRef<HTMLElement> = useTemplateRef('infiniteScrollRef');
 
         let io: IntersectionObserver | null = null;
         let mo: MutationObserver | null = null;
@@ -57,13 +58,24 @@ export default defineComponent({
             };
         });
 
+        // infiniteScrollRef부터 부모로 올라가면서 스크롤 가능한 요소 찾기
         function getScrollRoot(): Element | null {
-            const el = rootRef.value;
+            let el = infiniteScrollRef.value;
             if (!el) {
                 return null;
             }
-            // 컨테이너 자체가 스크롤 가능하면 root로 사용, 아니면 viewport 사용
-            return domUtil.isScrollableY(el) ? el : null;
+            while (el) {
+                if (domUtil.isScrollableY(el)) {
+                    return el;
+                }
+
+                if (el === document.body || el === document.documentElement) {
+                    break;
+                }
+                el = el.parentElement;
+            }
+
+            return null;
         }
 
         function updateChildVisibility(child: HTMLElement, visible: boolean) {
@@ -71,7 +83,7 @@ export default defineComponent({
         }
 
         function setAllChildrenVisibility(visible: boolean) {
-            const el = rootRef.value;
+            const el = infiniteScrollRef.value;
             if (!el) {
                 return;
             }
@@ -100,7 +112,7 @@ export default defineComponent({
         }
 
         function observeChildren() {
-            const el = rootRef.value;
+            const el = infiniteScrollRef.value;
             if (!el || disabled.value || !io) {
                 return;
             }
@@ -122,7 +134,7 @@ export default defineComponent({
         function setupIntersectionObserver() {
             disconnectIntersectionObserver();
 
-            if (!rootRef.value || disabled.value) {
+            if (!infiniteScrollRef.value || disabled.value) {
                 return;
             }
 
@@ -153,19 +165,19 @@ export default defineComponent({
         function setupMutationObserver() {
             disconnectMutationObserver();
 
-            const root = rootRef.value;
-            if (!root) {
+            const mutationRoot = infiniteScrollRef.value;
+            if (!mutationRoot) {
                 return;
             }
 
             mo = createMutationObserver();
-            mo.observe(root, { childList: true });
+            mo.observe(mutationRoot, { childList: true });
         }
 
         // ============= 초기화 및 바인딩 =============
 
         async function initialize() {
-            if (!rootRef.value) {
+            if (!infiniteScrollRef.value) {
                 return;
             }
 
@@ -198,39 +210,33 @@ export default defineComponent({
             });
         }
 
-        function scrollTo(element: HTMLElement) {
-            if (!rootRef.value || !element) {
+        function scrollToElement(element: HTMLElement) {
+            if (!infiniteScrollRef.value || !element) {
                 return;
             }
 
             const scrollRoot = getScrollRoot();
-            const isViewportScroll = scrollRoot === null;
+            if (!scrollRoot) {
+                return;
+            }
 
             updateChildVisibility(element, true);
+
             waitForLayout(() => {
-                if (!rootRef.value || !element) {
+                if (!infiniteScrollRef.value || !element || !scrollRoot) {
                     return;
                 }
 
-                if (isViewportScroll) {
-                    const rect = element.getBoundingClientRect();
-                    const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-                    const targetScrollY = currentScrollY + rect.top;
+                // scrollRoot가 실제 스크롤 컨테이너이므로 scrollRoot를 사용
+                const scrollContainer = scrollRoot as HTMLElement;
+                const containerRect = scrollContainer.getBoundingClientRect();
+                const targetRect = element.getBoundingClientRect();
+                const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top;
 
-                    window.scrollTo({
-                        top: targetScrollY,
-                        behavior: 'auto',
-                    });
-                } else {
-                    const containerRect = rootRef.value.getBoundingClientRect();
-                    const targetRect = element.getBoundingClientRect();
-                    const targetScrollTop = rootRef.value.scrollTop + targetRect.top - containerRect.top;
-
-                    rootRef.value.scrollTo({
-                        top: targetScrollTop,
-                        behavior: 'auto',
-                    });
-                }
+                scrollContainer.scrollTo({
+                    top: targetScrollTop,
+                    behavior: 'auto',
+                });
             });
         }
 
@@ -252,10 +258,11 @@ export default defineComponent({
         );
 
         return {
-            rootRef,
+            infiniteScrollRef,
             containerStyle,
+
             // expose
-            scrollTo,
+            scrollToElement,
         };
     },
 });
