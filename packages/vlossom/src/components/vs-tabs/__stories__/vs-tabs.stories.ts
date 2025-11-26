@@ -190,23 +190,12 @@ export const AutoScrollButtons: Story = {
     parameters: {
         docs: {
             description: {
-                story: '버튼을 통해 스크롤할 수 있는 탭입니다.',
+                story: '스크롤이 필요한 경우에만 버튼이 표시되는 탭입니다. 화면 크기를 조절하면 버튼이 자동으로 표시/숨김됩니다.',
             },
         },
     },
     args: {
-        tabs: [
-            'Dashboard',
-            'Analytics',
-            'Reports',
-            'Settings',
-            'Profile',
-            'Messages',
-            'Notifications',
-            'Calendar',
-            'Tasks',
-            'Documents',
-        ],
+        tabs: ['Dashboard', 'Analytics', 'Reports', 'Settings', 'Profile', 'Messages', 'Notifications', 'Calendar'],
         scrollButtons: 'auto',
     },
 };

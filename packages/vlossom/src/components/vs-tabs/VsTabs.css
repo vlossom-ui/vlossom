@@ -37,8 +37,7 @@
             .vs-tab-item {
                 @apply relative flex cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
 
-                transition: all 0.2s;
-                margin-bottom: -1px;
+                transition: var(--tab-transition);
 
                 border: var(--tab-border);
                 border-top-right-radius: var(--tab-radius);
@@ -114,21 +113,16 @@
                 .vs-tab-item {
                     @apply w-full justify-start text-start whitespace-normal;
 
-                    margin-right: -1px;
-                    margin-bottom: 0;
-
                     border-top-right-radius: 0;
                     border-bottom-left-radius: var(--tab-radius);
 
                     height: var(--vs-tabs-tabWidth, auto);
 
                     &:not(:last-child) {
-                        margin-right: 0;
                         margin-bottom: var(--vs-tabs-gap, 0.1rem);
                     }
 
                     &:hover:not(.vs-disabled):not(.vs-selected) {
-                        border-color: var(--tab-border-color);
                         border-right-color: var(--vs-area-bg);
                     }
                 }

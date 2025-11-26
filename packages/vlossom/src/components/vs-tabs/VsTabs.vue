@@ -103,15 +103,15 @@ export default defineComponent({
 
         const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
-        const scrollCount = ref(0);
+        const visibleTabCount = ref(0);
         const indicatorStyle = ref<CSSProperties | null>(null);
 
         const {
             selectedIndex,
             isSelected,
             isDisabled,
-            findNextActivedIndex,
-            findPreviousActivedIndex,
+            findNextActiveIndex,
+            findPreviousActiveIndex,
             getInitialIndex,
             selectIndex: selectTab,
             handleKeydown,
@@ -127,7 +127,7 @@ export default defineComponent({
 
         const showScrollButtons = computed(() => {
             if (scrollButtons.value === 'auto') {
-                return scrollCount.value < tabs.value.length;
+                return visibleTabCount.value < tabs.value.length;
             }
             return scrollButtons.value === 'show';
         });
@@ -136,24 +136,26 @@ export default defineComponent({
             if (!tabRefs.value[index]) {
                 return;
             }
+
             tabRefs.value[index].focus();
             tabRefs.value[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
 
         function goPrev() {
-            const targetIndex = findPreviousActivedIndex(selectedIndex.value - 1);
+            const targetIndex = findPreviousActiveIndex(selectedIndex.value - 1);
             selectTab(targetIndex);
         }
 
         function goNext() {
-            const targetIndex = findNextActivedIndex(selectedIndex.value + 1);
+            const targetIndex = findNextActiveIndex(selectedIndex.value + 1);
             selectTab(targetIndex);
         }
 
-        function calculateScrollCount(): void {
+        function calculateVisibleTabCount() {
             const tabsWrapSize = vertical.value ? tabsWrapRef.value?.clientHeight : tabsWrapRef.value?.clientWidth;
+
             if (!tabsWrapSize) {
-                scrollCount.value = 0;
+                visibleTabCount.value = 0;
                 return;
             }
 
@@ -162,7 +164,9 @@ export default defineComponent({
 
             tabRefs.value.some((tabRef) => {
                 const tabSize = vertical.value ? tabRef.offsetHeight : tabRef.offsetWidth;
-                if (accumulatedSize < tabsWrapSize - tabSize) {
+                const canFit = accumulatedSize + tabSize <= tabsWrapSize;
+
+                if (canFit) {
                     accumulatedSize += tabSize;
                     visibleTabsCount++;
                     return false;
@@ -170,10 +174,10 @@ export default defineComponent({
                 return true;
             });
 
-            scrollCount.value = visibleTabsCount;
+            visibleTabCount.value = visibleTabsCount;
         }
 
-        function updateIndicatorPosition(): void {
+        function updateIndicatorPosition() {
             const selectedTab = tabRefs.value[selectedIndex.value];
             if (!selectedTab) {
                 indicatorStyle.value = null;
@@ -193,14 +197,14 @@ export default defineComponent({
             }
         }
 
-        function handleResize(): void {
-            calculateScrollCount();
+        function handleResize() {
+            calculateVisibleTabCount();
             updateIndicatorPosition();
         }
 
         onMounted(() => {
             selectedIndex.value = getInitialIndex(modelValue.value);
-            calculateScrollCount();
+            calculateVisibleTabCount();
             nextTick(() => {
                 updateIndicatorPosition();
             });
@@ -214,7 +218,8 @@ export default defineComponent({
         watch(
             () => tabs.value.length,
             () => {
-                selectedIndex.value = findNextActivedIndex(selectedIndex.value);
+                const currentIndex = selectedIndex.value;
+                selectedIndex.value = findNextActiveIndex(currentIndex);
             },
         );
 
@@ -230,23 +235,35 @@ export default defineComponent({
         watch(modelValue, selectTab);
 
         return {
+            // Style
             colorSchemeClass,
             styleSetVariables,
             classObj,
+
+            // Selection
             isSelected,
             isDisabled,
             selectedIndex,
             selectTab,
+            isFirstEdge,
+            isLastEdge,
+
+            // DOM Refs
             tabsWrapRef,
             tabRefs,
+
+            // Event Handlers
             handleKeydown,
+
+            // Scroll
             showScrollButtons,
             goPrev,
             goNext,
-            scrollCount,
-            isFirstEdge,
-            isLastEdge,
+
+            // Indicator
             indicatorStyle,
+
+            // Icons
             vsTabsIcons,
         };
     },

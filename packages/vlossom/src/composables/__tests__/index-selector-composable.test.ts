@@ -36,73 +36,73 @@ describe('index-selector-composable', () => {
         });
     });
 
-    describe('findNextActivedIndex', () => {
+    describe('findNextActiveIndex', () => {
         it('다음 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
             const disabled = ref((index: number) => index === 1);
-            const { findNextActivedIndex } = useIndexSelector(list, disabled);
+            const { findNextActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findNextActivedIndex(0)).toBe(0);
-            expect(findNextActivedIndex(1)).toBe(2);
-            expect(findNextActivedIndex(2)).toBe(2);
+            expect(findNextActiveIndex(0)).toBe(0);
+            expect(findNextActiveIndex(1)).toBe(2);
+            expect(findNextActiveIndex(2)).toBe(2);
         });
 
         it('마지막 인덱스를 넘어가면 처음부터 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const { findNextActivedIndex } = useIndexSelector(list);
+            const { findNextActiveIndex } = useIndexSelector(list);
 
             // when, then
-            expect(findNextActivedIndex(3)).toBe(0);
-            expect(findNextActivedIndex(4)).toBe(1);
+            expect(findNextActiveIndex(3)).toBe(0);
+            expect(findNextActiveIndex(4)).toBe(1);
         });
 
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref(() => true);
-            const { findNextActivedIndex } = useIndexSelector(list, disabled);
+            const { findNextActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findNextActivedIndex(0)).toBe(0);
-            expect(findNextActivedIndex(1)).toBe(1);
+            expect(findNextActiveIndex(0)).toBe(0);
+            expect(findNextActiveIndex(1)).toBe(1);
         });
     });
 
-    describe('findPreviousActivedIndex', () => {
+    describe('findPreviousActiveIndex', () => {
         it('이전 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
             const disabled = ref((index: number) => index === 1);
-            const { findPreviousActivedIndex } = useIndexSelector(list, disabled);
+            const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findPreviousActivedIndex(3)).toBe(3);
-            expect(findPreviousActivedIndex(2)).toBe(2);
-            expect(findPreviousActivedIndex(1)).toBe(0);
+            expect(findPreviousActiveIndex(3)).toBe(3);
+            expect(findPreviousActiveIndex(2)).toBe(2);
+            expect(findPreviousActiveIndex(1)).toBe(0);
         });
 
         it('첫 인덱스 이전은 마지막부터 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const { findPreviousActivedIndex } = useIndexSelector(list);
+            const { findPreviousActiveIndex } = useIndexSelector(list);
 
             // when, then
-            expect(findPreviousActivedIndex(-1)).toBe(2);
-            expect(findPreviousActivedIndex(-2)).toBe(1);
+            expect(findPreviousActiveIndex(-1)).toBe(2);
+            expect(findPreviousActiveIndex(-2)).toBe(1);
         });
 
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref(() => true);
-            const { findPreviousActivedIndex } = useIndexSelector(list, disabled);
+            const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findPreviousActivedIndex(2)).toBe(2);
-            expect(findPreviousActivedIndex(1)).toBe(1);
+            expect(findPreviousActiveIndex(2)).toBe(2);
+            expect(findPreviousActiveIndex(1)).toBe(1);
         });
     });
 

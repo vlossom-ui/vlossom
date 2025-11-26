@@ -17,7 +17,7 @@ export function useIndexSelector(
         return disabled.value(index, list.value[index]);
     }
 
-    function findNextActivedIndex(startIndex: number): number {
+    function findNextActiveIndex(startIndex: number): number {
         const length = list.value.length;
         for (let i = 0; i < length; i++) {
             const currentIndex = (startIndex + i) % length;
@@ -28,7 +28,7 @@ export function useIndexSelector(
         return startIndex;
     }
 
-    function findPreviousActivedIndex(startIndex: number): number {
+    function findPreviousActiveIndex(startIndex: number): number {
         const length = list.value.length;
         for (let i = 0; i < length; i++) {
             const currentIndex = (startIndex - i + length) % length;
@@ -43,7 +43,7 @@ export function useIndexSelector(
         if (value >= 0 && value < list.value.length && !isDisabled(value)) {
             return value;
         }
-        return findNextActivedIndex(0);
+        return findNextActiveIndex(0);
     }
 
     function selectIndex(index: number) {
@@ -54,40 +54,39 @@ export function useIndexSelector(
     }
 
     const isFirstEdge = computed(() => {
-        const firstActiveIndex = findNextActivedIndex(0);
+        const firstActiveIndex = findNextActiveIndex(0);
         return selectedIndex.value === firstActiveIndex;
     });
 
     const isLastEdge = computed(() => {
-        const lastActiveIndex = findPreviousActivedIndex(list.value.length - 1);
+        const lastActiveIndex = findPreviousActiveIndex(list.value.length - 1);
         return selectedIndex.value === lastActiveIndex;
     });
 
     function handleKeydown(e: KeyboardEvent, isVertical: boolean) {
-        const isHorizontal = !isVertical;
+        const keyMap = {
+            prev: isVertical ? 'ArrowUp' : 'ArrowLeft',
+            next: isVertical ? 'ArrowDown' : 'ArrowRight',
+        };
 
-        if ((isHorizontal && e.key === 'ArrowLeft') || (!isHorizontal && e.key === 'ArrowUp')) {
+        if (e.key === keyMap.prev) {
             if (isFirstEdge.value) {
                 return;
             }
-
             e.preventDefault();
-            const targetIndex = findPreviousActivedIndex(selectedIndex.value - 1);
-            selectIndex(targetIndex);
-        } else if ((isHorizontal && e.key === 'ArrowRight') || (!isHorizontal && e.key === 'ArrowDown')) {
+            selectIndex(findPreviousActiveIndex(selectedIndex.value - 1));
+        } else if (e.key === keyMap.next) {
             if (isLastEdge.value) {
                 return;
             }
-
             e.preventDefault();
-            const targetIndex = findNextActivedIndex(selectedIndex.value + 1);
-            selectIndex(targetIndex);
+            selectIndex(findNextActiveIndex(selectedIndex.value + 1));
         } else if (e.key === 'Home') {
             e.preventDefault();
-            selectIndex(findNextActivedIndex(0));
+            selectIndex(findNextActiveIndex(0));
         } else if (e.key === 'End') {
             e.preventDefault();
-            selectIndex(findPreviousActivedIndex(list.value.length - 1));
+            selectIndex(findPreviousActiveIndex(list.value.length - 1));
         }
     }
 
@@ -95,8 +94,8 @@ export function useIndexSelector(
         selectedIndex,
         isSelected,
         isDisabled,
-        findNextActivedIndex,
-        findPreviousActivedIndex,
+        findNextActiveIndex,
+        findPreviousActiveIndex,
         getInitialIndex,
         selectIndex,
         handleKeydown,
