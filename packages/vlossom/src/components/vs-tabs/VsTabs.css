@@ -23,12 +23,12 @@
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
-        height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
         .vs-tab-list {
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
 
             border-bottom: 1px solid var(--tab-border-color);
+            height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
             .vs-tab-item {
                 @apply relative flex h-full cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
@@ -36,7 +36,7 @@
                 transition: var(--tab-transition);
 
                 border: var(--tab-border);
-                border-bottom: none;
+                border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
 
@@ -67,7 +67,7 @@
 
                 border: var(--tab-border);
                 border-color: var(--tab-border-color);
-                border-bottom: none;
+                border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
                 background-color: var(--tab-bg);
@@ -108,6 +108,8 @@
                 .vs-tab-item {
                     @apply w-full justify-start text-start whitespace-normal;
 
+                    border-right: transparent;
+                    border-bottom: var(--tab-border);
                     border-top-right-radius: 0;
                     border-bottom-left-radius: var(--tab-radius);
 
@@ -121,7 +123,7 @@
                 }
 
                 .vs-tab-indicator {
-                    border-right: none;
+                    border-right: transparent;
                     border-bottom: var(--tab-border);
 
                     border-bottom-color: var(--tab-border-color);
