@@ -78,8 +78,8 @@ export default defineComponent({
         ...getStyleSetProps<VsTabsStyleSet>(),
         dense: { type: Boolean, default: false },
         disabled: {
-            type: Function as PropType<(tab: string, index: number) => boolean>,
-            default: undefined,
+            type: [Boolean, Function] as PropType<boolean | ((tab: string, index: number) => boolean)>,
+            default: false,
         },
         primary: { type: Boolean, default: false },
         scrollButtons: {

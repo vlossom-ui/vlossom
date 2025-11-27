@@ -2,7 +2,7 @@ import { computed, ref, type Ref } from 'vue';
 
 export function useIndexSelector(
     list: Ref<any[]>,
-    disabled?: Ref<((item: any, index: number) => boolean) | undefined>,
+    disabled?: Ref<boolean | ((item: any, index: number) => boolean) | undefined>,
 ) {
     const selectedIndex = ref(0);
 
@@ -11,8 +11,11 @@ export function useIndexSelector(
     }
 
     function isDisabled(index: number): boolean {
-        if (!disabled || !disabled.value) {
+        if (!disabled || disabled.value === undefined) {
             return false;
+        }
+        if (typeof disabled.value === 'boolean') {
+            return disabled.value;
         }
         return disabled.value(list.value[index], index);
     }

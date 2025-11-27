@@ -20,7 +20,35 @@ describe('index-selector-composable', () => {
     });
 
     describe('isDisabled', () => {
-        it('비활성화된 인덱스는 true를 반환해야 한다', () => {
+        it('disabled가 true이면 모든 인덱스에서 true를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref(true);
+
+            // when
+            const { isDisabled } = useIndexSelector(list, disabled);
+
+            // then
+            expect(isDisabled(0)).toBe(true);
+            expect(isDisabled(1)).toBe(true);
+            expect(isDisabled(2)).toBe(true);
+        });
+
+        it('disabled가 false이면 모든 인덱스에서 false를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref(false);
+
+            // when
+            const { isDisabled } = useIndexSelector(list, disabled);
+
+            // then
+            expect(isDisabled(0)).toBe(false);
+            expect(isDisabled(1)).toBe(false);
+            expect(isDisabled(2)).toBe(false);
+        });
+
+        it('disabled가 함수이면 비활성화된 인덱스는 true를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
             const disabled = ref((item: string, index: number) => [1, 3].includes(index));

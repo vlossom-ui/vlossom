@@ -31,6 +31,15 @@ const meta: Meta<typeof VsTabs> = {
 
                 <!-- 비활성화 -->
                 <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 탭 (전체)</h3>
+                    <vs-tabs 
+                        v-bind="args" 
+                        :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
+                        :disabled="true" 
+                    />
+                </div>
+
+                <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 탭 (특정 인덱스)</h3>
                     <vs-tabs 
                         v-bind="args" 

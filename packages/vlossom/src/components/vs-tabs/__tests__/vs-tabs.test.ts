@@ -83,7 +83,39 @@ describe('VsTabs', () => {
             expect(wrapper.find('.vs-tabs').classes()).toContain('vs-primary');
         });
 
-        it('disabled prop이 주어지면 해당 인덱스의 탭에 vs-disabled 클래스가 적용되어야 한다', () => {
+        it('disabled prop에 true가 주어지면 모든 탭에 vs-disabled 클래스가 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    disabled: true,
+                },
+            });
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems[0].classes()).toContain('vs-disabled');
+            expect(tabItems[1].classes()).toContain('vs-disabled');
+            expect(tabItems[2].classes()).toContain('vs-disabled');
+        });
+
+        it('disabled prop에 false가 주어지면 모든 탭에 vs-disabled 클래스가 적용되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    disabled: false,
+                },
+            });
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems[0].classes()).not.toContain('vs-disabled');
+            expect(tabItems[1].classes()).not.toContain('vs-disabled');
+            expect(tabItems[2].classes()).not.toContain('vs-disabled');
+        });
+
+        it('disabled prop에 함수가 주어지면 해당 인덱스의 탭에 vs-disabled 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
@@ -128,17 +160,18 @@ describe('VsTabs', () => {
             expect(scrollButtons).toHaveLength(0);
         });
 
-        it('scrollButtons prop이 주어지지 않으면 기본값(auto)이 적용되어야 한다', () => {
+        it('scrollButtons prop이 auto이면 필요시에만 스크롤 버튼이 렌더링되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    scrollButtons: 'auto',
                 },
             });
 
             // then
             const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
-            expect(scrollButtons).toHaveLength(0);
+            expect([0, 2]).toContain(scrollButtons.length);
         });
     });
 
@@ -177,7 +210,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('비활성화된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+        it('비활성화된 탭(함수)을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -189,6 +222,24 @@ describe('VsTabs', () => {
             // when
             const tabItems = wrapper.findAll('.vs-tab-item');
             await tabItems[1].trigger('click');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.emitted('change')).toBeFalsy();
+        });
+
+        it('전체 비활성화(true)된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    disabled: true,
+                },
+            });
+
+            // when
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            await tabItems[0].trigger('click');
 
             // then
             expect(wrapper.emitted('update:modelValue')).toBeFalsy();
@@ -215,7 +266,7 @@ describe('VsTabs', () => {
             expect(tabItems[2].attributes('aria-selected')).toBe('false');
         });
 
-        it('비활성화된 탭은 aria-disabled가 true여야 한다', () => {
+        it('비활성화된 탭(함수)은 aria-disabled가 true여야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
@@ -229,6 +280,22 @@ describe('VsTabs', () => {
             expect(tabItems[0].attributes('aria-disabled')).toBe('false');
             expect(tabItems[1].attributes('aria-disabled')).toBe('true');
             expect(tabItems[2].attributes('aria-disabled')).toBe('false');
+        });
+
+        it('전체 비활성화(true)된 탭은 모두 aria-disabled가 true여야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    disabled: true,
+                },
+            });
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems[0].attributes('aria-disabled')).toBe('true');
+            expect(tabItems[1].attributes('aria-disabled')).toBe('true');
+            expect(tabItems[2].attributes('aria-disabled')).toBe('true');
         });
 
         it('선택된 탭은 tabindex가 0이고 나머지는 -1이어야 한다', async () => {

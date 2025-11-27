@@ -61,7 +61,8 @@ const meta: Meta<typeof VsTabs> = {
         },
         disabled: {
             control: false,
-            description: '탭 비활성화 여부를 판별하는 함수. (tab: string, index: number) => boolean 형태',
+            description:
+                '탭 비활성화 여부. boolean이면 전체 탭에 적용되고, (tab: string, index: number) => boolean 함수면 각 탭마다 조건부 적용',
         },
         primary: {
             control: 'boolean',
@@ -125,11 +126,26 @@ export const Primary: Story = {
     },
 };
 
+export const DisabledAll: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '모든 탭이 비활성화된 상태입니다. disabled prop에 true를 전달하면 전체 탭을 비활성화할 수 있습니다.',
+            },
+        },
+    },
+    args: {
+        tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
+        disabled: true,
+        modelValue: 0,
+    },
+};
+
 export const DisabledTabs: Story = {
     parameters: {
         docs: {
             description: {
-                story: '일부 탭이 비활성화된 상태입니다. 비활성화된 탭은 클릭할 수 없으며 키보드 네비게이션에서도 건너뜁니다.',
+                story: '일부 탭이 비활성화된 상태입니다. disabled prop에 함수를 전달하여 조건부로 비활성화할 수 있습니다. 비활성화된 탭은 클릭할 수 없으며 키보드 네비게이션에서도 건너뜁니다.',
             },
         },
     },
