@@ -48,6 +48,7 @@ import VsSearchInput from './vs-search-input/VsSearchInput.vue';
 import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 import VsSwitch from './vs-switch/VsSwitch.vue';
 import VsTextarea from './vs-textarea/VsTextarea.vue';
+import VsTextWrap from './vs-text-wrap/VsTextWrap.vue';
 import VsThemeButton from './vs-theme-button/VsThemeButton.vue';
 import VsToast from './vs-toast/VsToast.vue';
 import VsToastView from './vs-toast/VsToastView.vue';
@@ -98,6 +99,7 @@ export const VlossomComponents = {
     VsSkeleton,
     VsSwitch,
     VsTextarea,
+    VsTextWrap,
     VsThemeButton,
     VsToast,
     VsToastView,
