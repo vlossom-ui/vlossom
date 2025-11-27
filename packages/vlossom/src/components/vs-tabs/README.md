@@ -121,7 +121,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Ta
 | `dense`         | `boolean`                                 | `false`     | -        | 조밀한 스타일 적용               |
 | `disabled`      | `(tab: string, index: number) => boolean` | `undefined` | -        | 탭 비활성화 여부를 판별하는 함수 |
 | `primary`       | `boolean`                                 | `false`     | -        | primary 색상 테마 적용           |
-| `scrollButtons` | `'hide' \| 'show' \| 'auto'`              | `'hide'`    | -        | 스크롤 버튼 표시 방식            |
+| `scrollButtons` | `'hide' \| 'show' \| 'auto'`              | `'auto'`    | -        | 스크롤 버튼 표시 방식            |
 | `tabs`          | `string[]`                                | -           | ✅       | 탭 레이블 배열                   |
 | `vertical`      | `boolean`                                 | `false`     | -        | 수직 레이아웃 적용               |
 | `modelValue`    | `number`                                  | `0`         | -        | 선택된 탭 인덱스 (v-model)       |

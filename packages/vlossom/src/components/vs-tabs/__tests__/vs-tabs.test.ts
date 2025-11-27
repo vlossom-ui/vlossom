@@ -127,6 +127,19 @@ describe('VsTabs', () => {
             const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
             expect(scrollButtons).toHaveLength(0);
         });
+
+        it('scrollButtons prop이 주어지지 않으면 기본값(auto)이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                },
+            });
+
+            // then
+            const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
+            expect(scrollButtons).toHaveLength(0);
+        });
     });
 
     describe('events', () => {

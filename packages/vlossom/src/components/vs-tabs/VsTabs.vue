@@ -84,7 +84,7 @@ export default defineComponent({
         primary: { type: Boolean, default: false },
         scrollButtons: {
             type: String as PropType<'hide' | 'show' | 'auto'>,
-            default: 'hide',
+            default: 'auto',
         },
         tabs: {
             type: Array as PropType<string[]>,
