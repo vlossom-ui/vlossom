@@ -1,51 +1,53 @@
 <template>
-    <div :class="['vs-tabs', colorSchemeClass, classObj]" :style="styleSetVariables">
-        <vs-button
-            v-if="showScrollButtons"
-            class="vs-tab-scroll-button"
-            :aria-label="vertical ? 'scroll up' : 'scroll left'"
-            :disabled="isFirstEdge"
-            tabindex="-1"
-            small
-            @click.prevent.stop="goPrev"
-        >
-            <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-scroll-icon" />
-        </vs-button>
+    <vs-responsive :width :grid>
+        <div :class="['vs-tabs', colorSchemeClass, classObj]" :style="styleSetVariables">
+            <vs-button
+                v-if="showScrollButtons"
+                class="vs-tab-scroll-button"
+                :aria-label="vertical ? 'scroll up' : 'scroll left'"
+                :disabled="isFirstEdge"
+                tabindex="-1"
+                small
+                @click.prevent.stop="goPrev"
+            >
+                <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-scroll-icon" />
+            </vs-button>
 
-        <div ref="tabsWrapRef" class="vs-tabs-wrap">
-            <ul role="tablist" class="vs-tab-list">
-                <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
-                <li
-                    v-for="(tab, index) in tabs"
-                    :key="tab"
-                    ref="tabRefs"
-                    :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
-                    role="tab"
-                    :aria-selected="isSelected(index)"
-                    :aria-disabled="isDisabled(index)"
-                    :tabindex="isSelected(index) ? 0 : -1"
-                    @click.prevent.stop="selectTab(index)"
-                    @keydown.stop="(e) => handleKeydown(e, vertical)"
-                >
-                    <slot name="tab" :tab :index>
-                        {{ tab }}
-                    </slot>
-                </li>
-            </ul>
+            <div ref="tabsWrapRef" class="vs-tabs-wrap">
+                <ul role="tablist" class="vs-tab-list">
+                    <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
+                    <li
+                        v-for="(tab, index) in tabs"
+                        :key="tab"
+                        ref="tabRefs"
+                        :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
+                        role="tab"
+                        :aria-selected="isSelected(index)"
+                        :aria-disabled="isDisabled(index)"
+                        :tabindex="isSelected(index) ? 0 : -1"
+                        @click.prevent.stop="selectTab(index)"
+                        @keydown.stop="(e) => handleKeydown(e, vertical)"
+                    >
+                        <slot name="tab" :tab :index>
+                            {{ tab }}
+                        </slot>
+                    </li>
+                </ul>
+            </div>
+
+            <vs-button
+                v-if="showScrollButtons"
+                class="vs-tab-scroll-button"
+                :aria-label="vertical ? 'scroll down' : 'scroll right'"
+                :disabled="isLastEdge"
+                tabindex="-1"
+                small
+                @click.prevent.stop="goNext"
+            >
+                <vs-render :content="vsTabsIcons.goNext" class="vs-tab-scroll-icon" />
+            </vs-button>
         </div>
-
-        <vs-button
-            v-if="showScrollButtons"
-            class="vs-tab-scroll-button"
-            :aria-label="vertical ? 'scroll down' : 'scroll right'"
-            :disabled="isLastEdge"
-            tabindex="-1"
-            small
-            @click.prevent.stop="goNext"
-        >
-            <vs-render :content="vsTabsIcons.goNext" class="vs-tab-scroll-icon" />
-        </vs-button>
-    </div>
+    </vs-responsive>
 </template>
 
 <script lang="ts">
@@ -63,17 +65,19 @@ import {
     type PropType,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
-import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { VsComponent, INVALID_INDEX } from '@/declaration';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import type { VsTabsStyleSet } from './types';
 import { vsTabsIcons } from './icons';
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
 const name = VsComponent.VsTabs;
 export default defineComponent({
     name,
-    components: { VsButton },
+    components: { VsButton, VsResponsive },
     props: {
+        ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTabsStyleSet>(),
         dense: { type: Boolean, default: false },

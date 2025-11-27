@@ -129,12 +129,105 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Ta
 </script>
 ```
 
+### 고정 Width
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" width="600px" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### 반응형 Width
+
+화면 크기에 따라 탭 너비를 조절할 수 있습니다.
+
+```html
+<template>
+    <vs-grid>
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :width="{ xs: '100%', sm: '90%', md: '70%', lg: '50%', xl: '30%' }"
+        />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Home', 'Profile', 'Settings', 'Messages'];
+</script>
+```
+
+### 그리드 시스템 (Grid)
+
+12컬럼 그리드 시스템에서 탭이 차지할 컬럼 수를 지정할 수 있습니다.
+
+```html
+<template>
+    <vs-grid column-gap="16px" row-gap="16px">
+        <vs-tabs v-model="selectedTab" :tabs="tabs" :grid="8" />
+        <vs-tabs v-model="selectedTab" :tabs="tabs" :grid="4" />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### 반응형 Grid
+
+화면 크기에 따라 그리드 컬럼 수를 조절할 수 있습니다.
+
+```html
+<template>
+    <vs-grid column-gap="16px" row-gap="16px">
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
 ## Props
 
 | Prop            | Type                                                   | Default  | Required | Description                                                                    |
 | --------------- | ------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------ |
 | `colorScheme`   | `string`                                               | -        | -        | 탭의 색상 테마                                                                 |
 | `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | 커스텀 스타일 설정 객체                                                        |
+| `width`         | `string \| number \| Breakpoints`                      | -        | -        | 탭 너비. 단일 값 또는 브레이크포인트 객체                                      |
+| `grid`          | `string \| number \| Breakpoints`                      | -        | -        | 12컬럼 그리드 시스템에서 차지할 컬럼 수. 단일 값 또는 브레이크포인트 객체      |
 | `dense`         | `boolean`                                              | `false`  | -        | 조밀한 스타일 적용                                                             |
 | `disabled`      | `boolean \| ((tab: string, index: number) => boolean)` | `false`  | -        | 탭 비활성화 여부. boolean이면 전체 탭에 적용되고, 함수면 각 탭마다 조건부 적용 |
 | `primary`       | `boolean`                                              | `false`  | -        | primary 색상 테마 적용                                                         |
@@ -178,4 +271,5 @@ interface VsTabsStyleSet {
 - **키보드 네비게이션**: 화살표 키, Home, End 키로 탭 이동
 - **스크롤 지원**: 긴 탭 목록에 대한 스크롤 및 스크롤 버튼 제공
 - **비활성화**: 특정 탭을 비활성화하여 선택 제한
+- **반응형 지원**: `width`와 `grid` prop으로 다양한 화면 크기 대응
 - **접근성**: ARIA 속성을 통한 스크린 리더 지원

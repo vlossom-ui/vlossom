@@ -10,6 +10,65 @@ describe('VsTabs', () => {
         HTMLElement.prototype.focus = () => {};
     });
 
+    describe('responsive wrapper', () => {
+        it('vs-responsive 컴포넌트로 감싸져 있어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                },
+            });
+
+            // then
+            expect(wrapper.findComponent({ name: 'VsResponsive' }).exists()).toBe(true);
+        });
+
+        it('width prop이 전달되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    width: '500px',
+                },
+            });
+
+            // then
+            const responsive = wrapper.findComponent({ name: 'VsResponsive' });
+            expect(responsive.props('width')).toBe('500px');
+        });
+
+        it('grid prop이 전달되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    grid: 6,
+                },
+            });
+
+            // then
+            const responsive = wrapper.findComponent({ name: 'VsResponsive' });
+            expect(responsive.props('grid')).toBe(6);
+        });
+
+        it('반응형 width 객체가 전달되어야 한다', () => {
+            // given
+            const responsiveWidth = { xs: '100%', md: '600px' };
+
+            // when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    width: responsiveWidth,
+                },
+            });
+
+            // then
+            const responsive = wrapper.findComponent({ name: 'VsResponsive' });
+            expect(responsive.props('width')).toEqual(responsiveWidth);
+        });
+    });
+
     describe('props', () => {
         it('tabs prop이 주어지지 않으면 빈 배열이 기본값으로 적용되어야 한다', () => {
             // given, when

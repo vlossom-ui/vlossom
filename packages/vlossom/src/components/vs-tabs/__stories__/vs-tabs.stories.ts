@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsTabs from './../VsTabs.vue';
+import VsGrid from '@/components/vs-grid/VsGrid.vue';
 import type { VsTabsStyleSet } from './../types';
 
 const meta: Meta<typeof VsTabs> = {
@@ -54,6 +55,14 @@ const meta: Meta<typeof VsTabs> = {
         modelValue: {
             control: 'number',
             description: '선택된 탭 인덱스 (v-model)',
+        },
+        width: {
+            control: 'text',
+            description: '탭 너비 (반응형 지원)',
+        },
+        grid: {
+            control: 'text',
+            description: '그리드 컬럼 수 (반응형 지원)',
         },
         dense: {
             control: 'boolean',
@@ -246,6 +255,118 @@ export const CustomSlot: Story = {
     }),
     args: {
         tabs: ['Home', 'Profile', 'Settings', 'Messages'],
+    },
+};
+
+export const Width: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'width prop을 사용하여 탭 너비를 제한할 수 있습니다.',
+            },
+        },
+    },
+    args: {
+        tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
+        width: '300px',
+    },
+};
+
+export const Grid: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'grid prop을 사용하여 12컬럼 그리드 시스템 내에서 탭이 차지할 컬럼 수를 지정할 수 있습니다. vs-grid 컴포넌트와 함께 사용됩니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsTabs, VsGrid },
+        setup() {
+            const selectedTab = ref(0);
+            return { args, selectedTab };
+        },
+        template: `
+            <vs-grid column-gap="16px" row-gap="16px">
+                <vs-tabs v-bind="args" v-model="selectedTab" :grid="8" />
+                <vs-tabs v-bind="args" v-model="selectedTab" :grid="4" />
+                <vs-tabs v-bind="args" v-model="selectedTab" :grid="6" />
+                <vs-tabs v-bind="args" v-model="selectedTab" :grid="6" />
+            </vs-grid>
+        `,
+    }),
+    args: {
+        tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+    },
+};
+
+export const ResponsiveWidth: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '반응형 width를 사용하여 화면 크기에 따라 탭 너비를 조절할 수 있습니다. 브레이크포인트 객체를 전달합니다.',
+            },
+        },
+    },
+    args: {
+        tabs: ['Home', 'Profile', 'Settings', 'Messages'],
+        width: {
+            xs: '100%',
+            sm: '90%',
+            md: '70%',
+            lg: '50%',
+            xl: '30%',
+        },
+    },
+};
+
+export const ResponsiveGrid: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '반응형 grid를 사용하여 화면 크기에 따라 탭이 차지할 그리드 컬럼 수를 조절할 수 있습니다. ' +
+                    '모바일(xs/sm)에서는 전체 너비(12컬럼), 태블릿(md)에서는 8컬럼, 데스크톱(lg/xl)에서는 6컬럼을 차지합니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsTabs, VsGrid },
+        setup() {
+            return { args };
+        },
+        template: `
+            <vs-grid column-gap="16px" row-gap="16px">
+                <vs-tabs 
+                    v-bind="args" 
+                />
+                <vs-tabs 
+                    v-bind="args" 
+                />
+                <vs-tabs 
+                    v-bind="args" 
+                />
+                <vs-tabs 
+                    v-bind="args" 
+                />
+                <vs-tabs 
+                    v-bind="args" 
+                />
+                <vs-tabs 
+                    v-bind="args" 
+                />
+            </vs-grid>
+        `,
+    }),
+    args: {
+        tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+        grid: {
+            xs: 12,
+            sm: 6,
+            md: 4,
+            lg: 3,
+            xl: 2,
+        },
     },
 };
 
