@@ -61,9 +61,6 @@ export default defineComponent({
         // infiniteScrollRef부터 부모로 올라가면서 스크롤 가능한 요소 찾기
         function getScrollRoot(): Element | null {
             let el = infiniteScrollRef.value;
-            if (!el) {
-                return null;
-            }
             while (el) {
                 if (domUtil.isScrollableY(el)) {
                     return el;
