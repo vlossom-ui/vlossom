@@ -88,7 +88,7 @@ export default defineComponent({
         },
         tabs: {
             type: Array as PropType<string[]>,
-            required: true,
+            default: () => [],
         },
         vertical: { type: Boolean, default: false },
         // v-model

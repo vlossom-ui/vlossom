@@ -11,6 +11,17 @@ describe('VsTabs', () => {
     });
 
     describe('props', () => {
+        it('tabs prop이 주어지지 않으면 빈 배열이 기본값으로 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {},
+            });
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems).toHaveLength(0);
+        });
+
         it('tabs prop이 주어지면 해당 개수만큼 탭 아이템이 렌더링되어야 한다', () => {
             // given
             const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];

@@ -49,7 +49,7 @@ const meta: Meta<typeof VsTabs> = {
         colorScheme,
         tabs: {
             control: 'object',
-            description: '탭 항목 배열',
+            description: '탭 항목 배열 (기본값: [])',
         },
         modelValue: {
             control: 'number',
@@ -145,7 +145,9 @@ export const DisabledTabs: Story = {
     parameters: {
         docs: {
             description: {
-                story: '일부 탭이 비활성화된 상태입니다. disabled prop에 함수를 전달하여 조건부로 비활성화할 수 있습니다. 비활성화된 탭은 클릭할 수 없으며 키보드 네비게이션에서도 건너뜁니다.',
+                story:
+                    '일부 탭이 비활성화된 상태입니다. disabled prop에 함수를 전달하여 조건부로 비활성화할 수 있습니다. ' +
+                    '비활성화된 탭은 클릭할 수 없으며 키보드 네비게이션에서도 건너뜁니다.',
             },
         },
     },
