@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ref } from 'vue';
-import { useIndexSelector } from '../index-selector-composable';
+import { useIndexSelector } from '../list-index-selector-composable';
 
-describe('index-selector-composable', () => {
+describe('list-index-selector-composable', () => {
     describe('isSelected', () => {
         it('선택된 인덱스는 true를 반환해야 한다', () => {
             // given
@@ -64,107 +64,73 @@ describe('index-selector-composable', () => {
         });
     });
 
-    describe('findNextActiveIndex', () => {
-        it('다음 활성화된 인덱스를 찾아야 한다', () => {
+    describe('findActiveIndexForwardFrom', () => {
+        it('지정된 인덱스부터 앞으로 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
             const disabled = ref((item: string, index: number) => index === 1);
-            const { findNextActiveIndex } = useIndexSelector(list, disabled);
+            const { findActiveIndexForwardFrom } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findNextActiveIndex(0)).toBe(0);
-            expect(findNextActiveIndex(1)).toBe(2);
-            expect(findNextActiveIndex(2)).toBe(2);
+            expect(findActiveIndexForwardFrom(0)).toBe(0);
+            expect(findActiveIndexForwardFrom(1)).toBe(2);
+            expect(findActiveIndexForwardFrom(2)).toBe(2);
         });
 
-        it('마지막 인덱스를 넘어가면 처음부터 찾아야 한다', () => {
+        it('범위를 벗어난 인덱스는 INVALID_INDEX를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const { findNextActiveIndex } = useIndexSelector(list);
+            const { findActiveIndexForwardFrom } = useIndexSelector(list);
 
             // when, then
-            expect(findNextActiveIndex(3)).toBe(0);
-            expect(findNextActiveIndex(4)).toBe(1);
+            expect(findActiveIndexForwardFrom(-1)).toBe(-1);
+            expect(findActiveIndexForwardFrom(3)).toBe(-1);
         });
 
-        it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
+        it('비활성화된 항목만 남은 경우 INVALID_INDEX를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref(() => true);
-            const { findNextActiveIndex } = useIndexSelector(list, disabled);
+            const disabled = ref((item: string, index: number) => index >= 1);
+            const { findActiveIndexForwardFrom } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findNextActiveIndex(0)).toBe(0);
-            expect(findNextActiveIndex(1)).toBe(1);
+            expect(findActiveIndexForwardFrom(1)).toBe(-1);
+            expect(findActiveIndexForwardFrom(2)).toBe(-1);
         });
     });
 
-    describe('findPreviousActiveIndex', () => {
-        it('이전 활성화된 인덱스를 찾아야 한다', () => {
+    describe('findActiveIndexBackwardFrom', () => {
+        it('지정된 인덱스부터 뒤로 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
             const disabled = ref((item: string, index: number) => index === 1);
-            const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
+            const { findActiveIndexBackwardFrom } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findPreviousActiveIndex(3)).toBe(3);
-            expect(findPreviousActiveIndex(2)).toBe(2);
-            expect(findPreviousActiveIndex(1)).toBe(0);
+            expect(findActiveIndexBackwardFrom(3)).toBe(3);
+            expect(findActiveIndexBackwardFrom(2)).toBe(2);
+            expect(findActiveIndexBackwardFrom(1)).toBe(0);
         });
 
-        it('첫 인덱스 이전은 마지막부터 찾아야 한다', () => {
+        it('범위를 벗어난 인덱스는 INVALID_INDEX를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const { findPreviousActiveIndex } = useIndexSelector(list);
+            const { findActiveIndexBackwardFrom } = useIndexSelector(list);
 
             // when, then
-            expect(findPreviousActiveIndex(-1)).toBe(2);
-            expect(findPreviousActiveIndex(-2)).toBe(1);
+            expect(findActiveIndexBackwardFrom(-1)).toBe(-1);
+            expect(findActiveIndexBackwardFrom(3)).toBe(-1);
         });
 
-        it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
+        it('비활성화된 항목만 남은 경우 INVALID_INDEX를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref(() => true);
-            const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
+            const disabled = ref((item: string, index: number) => index <= 1);
+            const { findActiveIndexBackwardFrom } = useIndexSelector(list, disabled);
 
             // when, then
-            expect(findPreviousActiveIndex(2)).toBe(2);
-            expect(findPreviousActiveIndex(1)).toBe(1);
-        });
-    });
-
-    describe('getInitialIndex', () => {
-        it('유효한 값이 주어지면 해당 값을 반환해야 한다', () => {
-            // given
-            const list = ref(['item1', 'item2', 'item3']);
-            const { getInitialIndex } = useIndexSelector(list);
-
-            // when, then
-            expect(getInitialIndex(0)).toBe(0);
-            expect(getInitialIndex(1)).toBe(1);
-            expect(getInitialIndex(2)).toBe(2);
-        });
-
-        it('비활성화된 인덱스가 주어지면 다음 활성화된 인덱스를 반환해야 한다', () => {
-            // given
-            const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((item: string, index: number) => [0, 1].includes(index));
-            const { getInitialIndex } = useIndexSelector(list, disabled);
-
-            // when, then
-            expect(getInitialIndex(0)).toBe(2);
-            expect(getInitialIndex(1)).toBe(2);
-        });
-
-        it('범위를 벗어난 값이 주어지면 첫 활성화된 인덱스를 반환해야 한다', () => {
-            // given
-            const list = ref(['item1', 'item2', 'item3']);
-            const { getInitialIndex } = useIndexSelector(list);
-
-            // when, then
-            expect(getInitialIndex(-1)).toBe(0);
-            expect(getInitialIndex(5)).toBe(0);
+            expect(findActiveIndexBackwardFrom(1)).toBe(-1);
+            expect(findActiveIndexBackwardFrom(0)).toBe(-1);
         });
     });
 
@@ -181,7 +147,7 @@ describe('index-selector-composable', () => {
             expect(selectedIndex.value).toBe(1);
         });
 
-        it('비활성화된 인덱스를 선택하면 selectedIndex가 변경되지 않아야 한다', () => {
+        it('비활성화된 인덱스를 선택하면 INVALID_INDEX가 설정되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref((item: string, index: number) => index === 1);
@@ -192,7 +158,41 @@ describe('index-selector-composable', () => {
             selectIndex(1);
 
             // then
-            expect(selectedIndex.value).toBe(0);
+            expect(selectedIndex.value).toBe(-1);
+        });
+
+        it('범위를 벗어난 인덱스를 선택하면 INVALID_INDEX가 설정되어야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { selectIndex, selectedIndex } = useIndexSelector(list);
+            selectedIndex.value = 0;
+
+            // when
+            selectIndex(-1);
+
+            // then
+            expect(selectedIndex.value).toBe(-1);
+
+            // when
+            selectedIndex.value = 0;
+            selectIndex(5);
+
+            // then
+            expect(selectedIndex.value).toBe(-1);
+        });
+
+        it('모든 항목이 비활성화된 경우 INVALID_INDEX가 설정되어야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const disabled = ref(true);
+            const { selectIndex, selectedIndex } = useIndexSelector(list, disabled);
+            selectedIndex.value = 0;
+
+            // when
+            selectIndex(1);
+
+            // then
+            expect(selectedIndex.value).toBe(-1);
         });
     });
 

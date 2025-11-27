@@ -221,7 +221,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('비활성화된 탭(함수)을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+        it('함수를 통해 비활성화된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -239,7 +239,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화(true)된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+        it('전체 비활성화된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {

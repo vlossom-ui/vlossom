@@ -64,7 +64,7 @@ import {
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { VsComponent, INVALID_INDEX } from '@/declaration';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import type { VsTabsStyleSet } from './types';
 import { vsTabsIcons } from './icons';
@@ -110,9 +110,8 @@ export default defineComponent({
             selectedIndex,
             isSelected,
             isDisabled,
-            findNextActiveIndex,
-            findPreviousActiveIndex,
-            getInitialIndex,
+            findActiveIndexForwardFrom,
+            findActiveIndexBackwardFrom,
             selectIndex: selectTab,
             handleKeydown,
             isFirstEdge,
@@ -142,12 +141,12 @@ export default defineComponent({
         }
 
         function goPrev() {
-            const targetIndex = findPreviousActiveIndex(selectedIndex.value - 1);
+            const targetIndex = findActiveIndexBackwardFrom(selectedIndex.value - 1);
             selectTab(targetIndex);
         }
 
         function goNext() {
-            const targetIndex = findNextActiveIndex(selectedIndex.value + 1);
+            const targetIndex = findActiveIndexForwardFrom(selectedIndex.value + 1);
             selectTab(targetIndex);
         }
 
@@ -203,7 +202,7 @@ export default defineComponent({
         }
 
         onMounted(() => {
-            selectedIndex.value = getInitialIndex(modelValue.value);
+            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
             calculateVisibleTabCount();
             nextTick(() => {
                 updateIndicatorPosition();
@@ -219,11 +218,15 @@ export default defineComponent({
             () => tabs.value.length,
             () => {
                 const currentIndex = selectedIndex.value;
-                selectedIndex.value = findNextActiveIndex(currentIndex);
+                selectTab(findActiveIndexForwardFrom(currentIndex));
             },
         );
 
         watch(selectedIndex, (index: number) => {
+            if (index === INVALID_INDEX) {
+                return;
+            }
+
             scrollTo(index);
             emit('update:modelValue', index);
             emit('change', index);
