@@ -62,7 +62,7 @@ describe('index-selector-composable', () => {
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((item: string, index: number) => true);
+            const disabled = ref(() => true);
             const { findNextActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -97,7 +97,7 @@ describe('index-selector-composable', () => {
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((item: string, index: number) => true);
+            const disabled = ref(() => true);
             const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
