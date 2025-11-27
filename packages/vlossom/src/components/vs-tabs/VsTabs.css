@@ -23,6 +23,7 @@
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
+        height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
         .vs-tab-list {
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
@@ -30,17 +31,17 @@
             border-bottom: 1px solid var(--tab-border-color);
 
             .vs-tab-item {
-                @apply relative flex cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
+                @apply relative flex h-full cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
 
                 transition: var(--tab-transition);
 
                 border: var(--tab-border);
+                border-bottom: none;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
 
                 padding: var(--vs-tabs-padding, 0 0.8rem);
                 width: var(--vs-tabs-tabWidth, auto);
-                height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
                 color: var(--vs-font-color);
                 font-weight: var(--vs-font-weight);
@@ -60,7 +61,7 @@
             }
 
             .vs-tab-indicator {
-                @apply pointer-events-none absolute z-0;
+                @apply pointer-events-none absolute z-0 h-full;
 
                 transition: var(--tab-transition);
 
@@ -70,7 +71,6 @@
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
                 background-color: var(--tab-bg);
-                height: 100%;
             }
         }
     }
@@ -97,7 +97,7 @@
         @apply flex-col items-stretch;
 
         .vs-tabs-wrap {
-            @apply h-full flex-col pr-1 pb-0;
+            @apply flex-col pr-1 pb-0;
 
             .vs-tab-list {
                 @apply flex-col items-stretch;
@@ -110,7 +110,6 @@
 
                     border-top-right-radius: 0;
                     border-bottom-left-radius: var(--tab-radius);
-                    height: var(--vs-tabs-tabWidth, auto);
 
                     &:not(:last-child) {
                         margin-bottom: var(--vs-tabs-gap, 0.1rem);
