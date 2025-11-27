@@ -23,7 +23,7 @@ describe('index-selector-composable', () => {
         it('비활성화된 인덱스는 true를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
-            const disabled = ref((index: number) => [1, 3].includes(index));
+            const disabled = ref((item: string, index: number) => [1, 3].includes(index));
 
             // when
             const { isDisabled } = useIndexSelector(list, disabled);
@@ -40,7 +40,7 @@ describe('index-selector-composable', () => {
         it('다음 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
-            const disabled = ref((index: number) => index === 1);
+            const disabled = ref((item: string, index: number) => index === 1);
             const { findNextActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -62,7 +62,7 @@ describe('index-selector-composable', () => {
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref(() => true);
+            const disabled = ref((item: string, index: number) => true);
             const { findNextActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -75,7 +75,7 @@ describe('index-selector-composable', () => {
         it('이전 활성화된 인덱스를 찾아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3', 'item4']);
-            const disabled = ref((index: number) => index === 1);
+            const disabled = ref((item: string, index: number) => index === 1);
             const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -97,7 +97,7 @@ describe('index-selector-composable', () => {
         it('모든 항목이 비활성화된 경우 시작 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref(() => true);
+            const disabled = ref((item: string, index: number) => true);
             const { findPreviousActiveIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -121,7 +121,7 @@ describe('index-selector-composable', () => {
         it('비활성화된 인덱스가 주어지면 다음 활성화된 인덱스를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((index: number) => [0, 1].includes(index));
+            const disabled = ref((item: string, index: number) => [0, 1].includes(index));
             const { getInitialIndex } = useIndexSelector(list, disabled);
 
             // when, then
@@ -156,7 +156,7 @@ describe('index-selector-composable', () => {
         it('비활성화된 인덱스를 선택하면 selectedIndex가 변경되지 않아야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((index: number) => index === 1);
+            const disabled = ref((item: string, index: number) => index === 1);
             const { selectIndex, selectedIndex } = useIndexSelector(list, disabled);
             selectedIndex.value = 0;
 
@@ -267,7 +267,7 @@ describe('index-selector-composable', () => {
             it('비활성화된 인덱스를 건너뛰고 이동해야 한다', () => {
                 // given
                 const list = ref(['item1', 'item2', 'item3', 'item4']);
-                const disabled = ref((index: number) => [1, 2].includes(index));
+                const disabled = ref((item: string, index: number) => [1, 2].includes(index));
                 const { handleKeydown, selectedIndex } = useIndexSelector(list, disabled);
                 selectedIndex.value = 0;
                 const event = createMockEvent('ArrowRight');
@@ -365,7 +365,7 @@ describe('index-selector-composable', () => {
             it('비활성화된 인덱스를 건너뛰고 이동해야 한다', () => {
                 // given
                 const list = ref(['item1', 'item2', 'item3', 'item4']);
-                const disabled = ref((index: number) => [1, 2].includes(index));
+                const disabled = ref((item: string, index: number) => [1, 2].includes(index));
                 const { handleKeydown, selectedIndex } = useIndexSelector(list, disabled);
                 selectedIndex.value = 0;
                 const event = createMockEvent('ArrowDown');
@@ -416,7 +416,7 @@ describe('index-selector-composable', () => {
             it('비활성화된 항목이 있을 때 Home/End 키는 활성화된 인덱스만 고려해야 한다', () => {
                 // given
                 const list = ref(['item1', 'item2', 'item3', 'item4', 'item5']);
-                const disabled = ref((index: number) => [0, 4].includes(index));
+                const disabled = ref((item: string, index: number) => [0, 4].includes(index));
                 const { handleKeydown, selectedIndex } = useIndexSelector(list, disabled);
                 selectedIndex.value = 2;
 
@@ -483,7 +483,7 @@ describe('index-selector-composable', () => {
         it('첫 번째 항목이 비활성화된 경우 다음 활성화된 인덱스에서 true를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((index: number) => index === 0);
+            const disabled = ref((item: string, index: number) => index === 0);
             const { isFirstEdge, selectedIndex } = useIndexSelector(list, disabled);
 
             // when
@@ -522,7 +522,7 @@ describe('index-selector-composable', () => {
         it('마지막 항목이 비활성화된 경우 이전 활성화된 인덱스에서 true를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
-            const disabled = ref((index: number) => index === 2);
+            const disabled = ref((item: string, index: number) => index === 2);
             const { isLastEdge, selectedIndex } = useIndexSelector(list, disabled);
 
             // when

@@ -61,7 +61,7 @@ const meta: Meta<typeof VsTabs> = {
         },
         disabled: {
             control: false,
-            description: '탭 비활성화 여부를 판별하는 함수. (index: number, tab: string) => boolean 형태',
+            description: '탭 비활성화 여부를 판별하는 함수. (tab: string, index: number) => boolean 형태',
         },
         primary: {
             control: 'boolean',
@@ -135,7 +135,7 @@ export const DisabledTabs: Story = {
     },
     args: {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'],
-        disabled: (index: number) => [1, 3].includes(index),
+        disabled: (tab: string, index: number) => [1, 3].includes(index),
         modelValue: 0,
     },
 };
@@ -150,7 +150,7 @@ export const DisabledByCondition: Story = {
     },
     args: {
         tabs: ['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
-        disabled: (index: number) => index % 2 === 0,
+        disabled: (tab: string, index: number) => index % 2 === 0,
     },
 };
 

@@ -35,7 +35,7 @@ const meta: Meta<typeof VsTabs> = {
                     <vs-tabs 
                         v-bind="args" 
                         :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5']" 
-                        :disabled="(index) => [1, 3].includes(index)" 
+                        :disabled="(tab, index) => [1, 3].includes(index)" 
                     />
                 </div>
                 
@@ -45,7 +45,7 @@ const meta: Meta<typeof VsTabs> = {
                     <vs-tabs 
                         v-bind="args" 
                         :tabs="['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
-                        :disabled="(index) => index % 2 === 0" 
+                        :disabled="(tab, index) => index % 2 === 0" 
                     />
                 </div>
 
@@ -112,11 +112,11 @@ const meta: Meta<typeof VsTabs> = {
                          <div>
                              <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Dense + Disabled</p>
                              <vs-tabs 
-                                 v-bind="args" 
-                                 :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
-                                 dense 
-                                 :disabled="(index) => index === 2" 
-                             />
+                                v-bind="args" 
+                                :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
+                                dense 
+                                :disabled="(tab, index) => index === 2" 
+                            />
                          </div>
                          <div>
                              <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Primary + Dense</p>

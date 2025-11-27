@@ -68,7 +68,7 @@ import { ref } from 'vue';
 const selectedTab = ref(1);
 const tabs = ['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3'];
 
-function isTabDisabled(index: number, tab: string): boolean {
+function isTabDisabled(tab: string, index: number): boolean {
     return index % 2 === 0; // 짝수 인덱스 비활성화
 }
 </script>
@@ -77,7 +77,7 @@ function isTabDisabled(index: number, tab: string): boolean {
 특정 인덱스를 비활성화하려면:
 
 ```typescript
-function isTabDisabled(index: number): boolean {
+function isTabDisabled(tab: string, index: number): boolean {
     return [1, 3].includes(index);
 }
 ```
@@ -119,7 +119,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Ta
 | `colorScheme`   | `string`                                  | -           | -        | 탭의 색상 테마                   |
 | `styleSet`      | `string \| VsTabsStyleSet`                | -           | -        | 커스텀 스타일 설정 객체          |
 | `dense`         | `boolean`                                 | `false`     | -        | 조밀한 스타일 적용               |
-| `disabled`      | `(index: number, tab: string) => boolean` | `undefined` | -        | 탭 비활성화 여부를 판별하는 함수 |
+| `disabled`      | `(tab: string, index: number) => boolean` | `undefined` | -        | 탭 비활성화 여부를 판별하는 함수 |
 | `primary`       | `boolean`                                 | `false`     | -        | primary 색상 테마 적용           |
 | `scrollButtons` | `'hide' \| 'show' \| 'auto'`              | `'hide'`    | -        | 스크롤 버튼 표시 방식            |
 | `tabs`          | `string[]`                                | -           | ✅       | 탭 레이블 배열                   |

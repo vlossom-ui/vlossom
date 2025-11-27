@@ -88,7 +88,7 @@ describe('VsTabs', () => {
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
-                    disabled: (index: number) => [1, 3].includes(index),
+                    disabled: (tab: string, index: number) => [1, 3].includes(index),
                 },
             });
 
@@ -169,7 +169,7 @@ describe('VsTabs', () => {
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    disabled: (index: number) => index === 1,
+                    disabled: (tab: string, index: number) => index === 1,
                 },
             });
 
@@ -207,7 +207,7 @@ describe('VsTabs', () => {
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    disabled: (index: number) => index === 1,
+                    disabled: (tab: string, index: number) => index === 1,
                 },
             });
 

@@ -78,7 +78,7 @@ export default defineComponent({
         ...getStyleSetProps<VsTabsStyleSet>(),
         dense: { type: Boolean, default: false },
         disabled: {
-            type: Function as PropType<(index: number, tab: string) => boolean>,
+            type: Function as PropType<(tab: string, index: number) => boolean>,
             default: undefined,
         },
         primary: { type: Boolean, default: false },
