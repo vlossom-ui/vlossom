@@ -173,7 +173,10 @@ export default defineComponent({
                 return {} as OverlayCallbacks;
             }
             return {
-                'key-Escape': () => {
+                'key-Escape': (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
                     if (clickable.value) {
                         isClickOpened.value = false;
                     } else {

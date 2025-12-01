@@ -102,8 +102,11 @@ export default defineComponent({
                     callbacks.value?.[OVERLAY_CLOSE]?.();
                     emit('close');
                 },
-                ['key-Escape']: () => {
-                    callbacks.value?.['key-Escape']?.();
+                ['key-Escape']: (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
                         unmountOverlay();

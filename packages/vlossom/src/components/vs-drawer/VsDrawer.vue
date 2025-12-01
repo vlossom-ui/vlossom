@@ -156,8 +156,11 @@ export default defineComponent({
                 [OVERLAY_CLOSE]: () => {
                     focusTrapRef.value?.blur();
                 },
-                ['key-Escape']: () => {
-                    callbacks.value?.['key-Escape']?.();
+                ['key-Escape']: (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
                         unmountOverlay();
