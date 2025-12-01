@@ -102,20 +102,27 @@ export default defineComponent({
                     callbacks.value?.[OVERLAY_CLOSE]?.();
                     emit('close');
                 },
+                ['key-Escape']: () => {
+                    callbacks.value?.['key-Escape']?.();
+
+                    if (escClose.value) {
+                        unmountOverlay();
+                    }
+                },
             };
         });
-        const { open, close } = useOverlay(id, computedCallbacks, escClose);
+        const { mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
 
             if (dimClose.value) {
-                close();
+                unmountOverlay();
             }
         }
 
         onMounted(() => {
-            open();
+            mountOverlay();
         });
 
         return {

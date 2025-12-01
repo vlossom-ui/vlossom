@@ -18,18 +18,17 @@ describe('useOverlay', () => {
     });
 
     describe('초기 상태', () => {
-        it('isOpen, closing이 false로 초기화되어야 한다', () => {
+        it('isMounted, isUnmounting이 false로 초기화되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
 
             // when
-            const { isOpen, closing } = useOverlay(id, callbacks, escClose);
+            const { isMounted, isUnmounting } = useOverlay(id, callbacks);
 
             // then
-            expect(isOpen.value).toBe(false);
-            expect(closing.value).toBe(false);
+            expect(isMounted.value).toBe(false);
+            expect(isUnmounting.value).toBe(false);
         });
 
         it('id가 주어지면 overlayId가 해당 값이어야 한다', () => {
@@ -37,143 +36,148 @@ describe('useOverlay', () => {
             const testId = 'custom-overlay-id';
             const id = ref(testId);
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
 
             // when
-            const { overlayId } = useOverlay(id, callbacks, escClose);
+            const { overlayId } = useOverlay(id, callbacks);
 
             // then
             expect(overlayId.value).toBe(testId);
         });
-    });
 
-    describe('open 함수', () => {
-        it('open을 호출하면 isOpen이 true가 되어야 한다', () => {
+        it('id가 빈 문자열이면 자동 생성된 innerId를 사용해야 한다', () => {
             // given
-            const id = ref('test-id');
+            const id = ref('');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { isOpen, open } = useOverlay(id, callbacks, escClose);
 
             // when
-            open();
+            const { overlayId } = useOverlay(id, callbacks);
 
             // then
-            expect(isOpen.value).toBe(true);
+            expect(overlayId.value).toBeTruthy();
+            expect(overlayId.value).not.toBe('');
         });
+    });
 
-        it('open을 호출하면 store에 콜백이 push되어야 한다', async () => {
+    describe('mountOverlay 함수', () => {
+        it('mountOverlay를 호출하면 isMounted가 true가 되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { open } = useOverlay(id, callbacks, escClose);
+            const { isMounted, mountOverlay } = useOverlay(id, callbacks);
+
+            // when
+            mountOverlay();
+
+            // then
+            expect(isMounted.value).toBe(true);
+        });
+
+        it('mountOverlay를 호출하면 store에 콜백이 push되어야 한다', async () => {
+            // given
+            const id = ref('test-id');
+            const callbacks = ref<OverlayCallbacks>({});
+            const { mountOverlay, overlayId } = useOverlay(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
-            open();
+            mountOverlay();
             await nextTick();
 
             // then
-            expect(pushSpy).toHaveBeenCalledWith(id.value, expect.any(Object));
+            expect(pushSpy).toHaveBeenCalledWith(overlayId.value, callbacks);
         });
     });
 
-    describe('close 함수', () => {
-        it('close를 호출하면 isOpen이 false가 되어야 한다', () => {
+    describe('unmountOverlay 함수', () => {
+        it('unmountOverlay를 호출하면 isMounted가 false가 되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { isOpen, open, close } = useOverlay(id, callbacks, escClose);
-            open();
+            const { isMounted, mountOverlay, unmountOverlay } = useOverlay(id, callbacks);
+            mountOverlay();
 
             // when
-            close();
+            unmountOverlay();
 
             // then
-            expect(isOpen.value).toBe(false);
+            expect(isMounted.value).toBe(false);
         });
 
-        it('close를 호출하면 closing이 true가 되었다가 애니메이션 duration 후 false가 되어야 한다', async () => {
+        it('unmountOverlay를 호출하면 isUnmounting이 true가 되었다가 애니메이션 duration 후 false가 되어야 한다', async () => {
             // given
             vi.useFakeTimers();
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { closing, open, close } = useOverlay(id, callbacks, escClose);
-            open();
+            const { isUnmounting, mountOverlay, unmountOverlay } = useOverlay(id, callbacks);
+            mountOverlay();
             await nextTick();
 
             // when
-            close();
+            unmountOverlay();
             await nextTick();
 
             // then
-            expect(closing.value).toBe(true);
+            expect(isUnmounting.value).toBe(true);
 
             // 애니메이션 시간이 지나면
             vi.advanceTimersByTime(ANIMATION_DURATION);
-            expect(closing.value).toBe(false);
+            expect(isUnmounting.value).toBe(false);
 
             vi.useRealTimers();
         });
 
-        it('close를 호출하면 store에서 콜백이 remove되어야 한다', async () => {
+        it('unmountOverlay를 호출하면 store에서 콜백이 remove되어야 한다', async () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { open, close } = useOverlay(id, callbacks, escClose);
+            const { mountOverlay, unmountOverlay, overlayId } = useOverlay(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
-            open();
+            mountOverlay();
             await nextTick();
 
             // when
-            close();
+            unmountOverlay();
             await nextTick();
 
             // then
-            expect(removeSpy).toHaveBeenCalledWith(id.value);
+            expect(removeSpy).toHaveBeenCalledWith(overlayId.value);
         });
     });
 
-    describe('watch isOpen', () => {
-        it('isOpen이 true로 변경되면 store에 push되어야 한다', async () => {
+    describe('watch isMounted', () => {
+        it('isMounted가 true로 변경되면 store에 push되어야 한다', async () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { isOpen } = useOverlay(id, callbacks, escClose);
+            const { isMounted, overlayId } = useOverlay(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
-            isOpen.value = true;
+            isMounted.value = true;
             await nextTick();
 
             // then
-            expect(pushSpy).toHaveBeenCalledWith(id.value, expect.any(Object));
+            expect(pushSpy).toHaveBeenCalledWith(overlayId.value, callbacks);
         });
 
-        it('isOpen이 false로 변경되면 store에서 remove되어야 한다', async () => {
+        it('isMounted가 false로 변경되면 store에서 remove되어야 한다', async () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const escClose = ref(true);
-            const { isOpen } = useOverlay(id, callbacks, escClose);
+            const { isMounted, overlayId } = useOverlay(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
-            // 먼저 열어두고
-            isOpen.value = true;
+            // 먼저 마운트하고
+            isMounted.value = true;
             await nextTick();
 
             // when
-            isOpen.value = false;
+            isMounted.value = false;
             await nextTick();
 
             // then
-            expect(removeSpy).toHaveBeenCalledWith(id.value);
+            expect(removeSpy).toHaveBeenCalledWith(overlayId.value);
         });
     });
 
@@ -182,46 +186,40 @@ describe('useOverlay', () => {
             // given
             vi.useFakeTimers();
             const id = ref('lifecycle-test');
-            const escapeCallback = vi.fn();
-            const callbacks = ref<OverlayCallbacks>({
-                'key-Escape': escapeCallback,
-            });
-            const escClose = ref(true);
+            const callbacks = ref<OverlayCallbacks>({});
 
-            const { isOpen, closing, open, overlayId } = useOverlay(id, callbacks, escClose);
+            const { isMounted, isUnmounting, mountOverlay, unmountOverlay, overlayId } = useOverlay(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 초기 상태 확인
-            expect(isOpen.value).toBe(false);
-            expect(closing.value).toBe(false);
+            expect(isMounted.value).toBe(false);
+            expect(isUnmounting.value).toBe(false);
             expect(overlayId.value).toBe('lifecycle-test');
 
-            // when - open
-            open();
+            // when - mount
+            mountOverlay();
             await nextTick();
 
-            // then - 열린 상태
-            expect(isOpen.value).toBe(true);
-            expect(closing.value).toBe(false);
-            expect(pushSpy).toHaveBeenCalledWith('lifecycle-test', expect.any(Object));
+            // then - 마운트된 상태
+            expect(isMounted.value).toBe(true);
+            expect(isUnmounting.value).toBe(false);
+            expect(pushSpy).toHaveBeenCalledWith('lifecycle-test', callbacks);
 
-            // when - escape key 처리
-            const pushedCallbacks = pushSpy.mock.calls[0][1];
-            pushedCallbacks.value['key-Escape']();
+            // when - unmount
+            unmountOverlay();
             await nextTick();
 
-            // then - 닫힌 상태
-            expect(isOpen.value).toBe(false);
-            expect(closing.value).toBe(true);
-            expect(escapeCallback).toHaveBeenCalledTimes(1);
+            // then - 언마운트 중 상태
+            expect(isMounted.value).toBe(false);
+            expect(isUnmounting.value).toBe(true);
             expect(removeSpy).toHaveBeenCalledWith('lifecycle-test');
 
             // when - 애니메이션 완료
             vi.advanceTimersByTime(ANIMATION_DURATION);
 
-            // then - closing false
-            expect(closing.value).toBe(false);
+            // then - 언마운트 완료
+            expect(isUnmounting.value).toBe(false);
 
             vi.useRealTimers();
         });
