@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { VsTable } from '@/components';
 
 const meta: Meta<typeof VsTable> = {
-    title: 'Components/Base Components/VsTable',
+    title: 'Chromatic/Base Components/VsTable',
     component: VsTable,
     parameters: {
         docs: {
