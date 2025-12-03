@@ -1,0 +1,169 @@
+@reference 'tailwindcss';
+
+.vs-tabs {
+    --vs-tabs-backgroundColor: initial;
+    --vs-tabs-border: initial;
+    --vs-tabs-borderRadius: initial;
+    --vs-tabs-padding: initial;
+    --vs-tabs-opacity: initial;
+
+    --vs-tabs-height: initial;
+    --vs-tabs-gap: initial;
+    --vs-tabs-tabWidth: initial;
+
+    --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    --tab-border: var(--vs-tabs-border, 1px solid transparent);
+    --tab-border-color: var(--vs-line-color);
+    --tab-bg: var(--vs-tabs-backgroundColor, var(--vs-comp-bg));
+    --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @apply relative flex items-center gap-2 select-none;
+
+    opacity: var(--vs-tabs-opacity, 1);
+
+    .vs-tabs-wrap {
+        @apply relative flex w-full overflow-auto pb-1;
+
+        .vs-tab-list {
+            @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
+
+            border-bottom: 1px solid var(--tab-border-color);
+            height: var(--vs-tabs-height, var(--vs-default-comp-height));
+
+            .vs-tab-item {
+                @apply relative flex h-full cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
+
+                transition: var(--tab-transition);
+
+                border: var(--tab-border);
+                border-bottom: transparent;
+                border-top-right-radius: var(--tab-radius);
+                border-top-left-radius: var(--tab-radius);
+
+                padding: var(--vs-tabs-padding, 0 0.8rem);
+                width: var(--vs-tabs-tabWidth, auto);
+
+                color: var(--vs-font-color);
+                font-weight: var(--vs-font-weight);
+                font-size: var(--vs-font-size);
+
+                &:not(:last-child) {
+                    margin-right: var(--vs-tabs-gap, 0.1rem);
+                }
+
+                &:hover:not(.vs-disabled):not(.vs-selected) {
+                    border-color: var(--tab-border-color);
+                }
+
+                &:focus {
+                    @apply outline-none;
+                }
+            }
+
+            .vs-tab-indicator {
+                @apply pointer-events-none absolute z-0 h-full;
+
+                transition: var(--tab-transition);
+
+                border: var(--tab-border);
+                border-color: var(--tab-border-color);
+                border-bottom: transparent;
+                border-top-right-radius: var(--tab-radius);
+                border-top-left-radius: var(--tab-radius);
+                background-color: var(--tab-bg);
+            }
+        }
+    }
+
+    &.vs-dense {
+        .vs-tabs-wrap .vs-tab-list .vs-tab-item {
+            padding: var(--vs-tabs-padding, 0 0.6rem);
+            font-size: var(--vs-font-size-sm);
+        }
+    }
+
+    .vs-tab-scroll-button {
+        @apply shrink-0;
+
+        width: 1.5rem;
+        color: var(--vs-comp-font);
+
+        .vs-tab-scroll-icon {
+            @apply size-5 shrink-0;
+        }
+    }
+
+    &.vs-vertical {
+        @apply flex-col items-stretch;
+
+        .vs-tabs-wrap {
+            @apply flex-col pr-1 pb-0;
+
+            .vs-tab-list {
+                @apply flex-col items-stretch;
+
+                border-right: 1px solid var(--tab-border-color);
+                border-bottom: 0;
+
+                .vs-tab-item {
+                    @apply w-full justify-start text-start whitespace-normal;
+
+                    border-right: transparent;
+                    border-bottom: var(--tab-border);
+                    border-top-right-radius: 0;
+                    border-bottom-left-radius: var(--tab-radius);
+
+                    &:not(:last-child) {
+                        margin-bottom: var(--vs-tabs-gap, 0.1rem);
+                    }
+
+                    &:hover:not(.vs-disabled):not(.vs-selected) {
+                        border-right-color: var(--vs-area-bg);
+                    }
+                }
+
+                .vs-tab-indicator {
+                    border-right: transparent;
+                    border-bottom: var(--tab-border);
+
+                    border-bottom-color: var(--tab-border-color);
+                    border-top-right-radius: 0;
+                    border-top-left-radius: var(--tab-radius);
+                    border-bottom-left-radius: var(--tab-radius);
+
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        }
+
+        .vs-tab-scroll-button {
+            @apply w-full;
+
+            .vs-tab-scroll-icon {
+                @apply rotate-90;
+            }
+        }
+    }
+
+    &.vs-primary {
+        .vs-tabs-wrap .vs-tab-list {
+            border-bottom-color: var(--tab-border-color);
+
+            .vs-tab-indicator {
+                border-color: var(--vs-primary-comp-bg);
+                background-color: var(--vs-primary-comp-bg);
+            }
+
+            .vs-tab-item.vs-selected {
+                color: var(--vs-primary-comp-font);
+            }
+        }
+
+        &.vs-vertical {
+            .vs-tabs-wrap .vs-tab-list {
+                border-right-color: var(--tab-border-color);
+            }
+        }
+    }
+}
