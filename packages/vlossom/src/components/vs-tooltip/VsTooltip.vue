@@ -173,18 +173,23 @@ export default defineComponent({
                 return {} as OverlayCallbacks;
             }
             return {
-                'key-Escape': () => {
+                'key-Escape': (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
                     if (clickable.value) {
                         isClickOpened.value = false;
                     } else {
                         tooltipOver.value = false;
                         triggerOver.value = false;
                     }
+
+                    unmountOverlay();
                 },
             };
         });
 
-        const { open: openOverlay, close: closeOverlay } = useOverlay(id, computedCallbacks, escClose);
+        const { mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
 
         function showTooltip() {
             if (timer) {
@@ -192,7 +197,7 @@ export default defineComponent({
             }
 
             timer = setTimeout(() => {
-                openOverlay();
+                mountOverlay();
                 appear({
                     placement: placement.value,
                     align: align.value,
@@ -206,7 +211,7 @@ export default defineComponent({
                 clearTimeout(timer);
             }
 
-            closeOverlay();
+            unmountOverlay();
             // + 250ms wait for the fade out animation.
             const delay = noAnimation.value ? 0 : leaveDelay.value + 250;
             timer = setTimeout(() => {

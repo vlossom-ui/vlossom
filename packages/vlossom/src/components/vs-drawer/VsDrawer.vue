@@ -156,15 +156,25 @@ export default defineComponent({
                 [OVERLAY_CLOSE]: () => {
                     focusTrapRef.value?.blur();
                 },
+                ['key-Escape']: (event: KeyboardEvent) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    callbacks.value?.['key-Escape']?.(event);
+
+                    if (escClose.value) {
+                        unmountOverlay();
+                    }
+                },
             };
         });
 
-        const { isOpen, open, close } = useOverlay(id, computedCallbacks, escClose);
+        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
             if (dimClose.value) {
-                close();
+                unmountOverlay();
             }
         }
 
@@ -186,15 +196,15 @@ export default defineComponent({
 
         onBeforeMount(() => {
             if (initialOpen.value || modelValue.value) {
-                open();
+                mountOverlay();
             }
         });
 
         watch(isOpen, (o) => {
             if (o) {
-                open();
+                mountOverlay();
             } else {
-                close();
+                unmountOverlay();
             }
 
             emit('update:modelValue', o);

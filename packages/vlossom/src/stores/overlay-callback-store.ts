@@ -28,10 +28,6 @@ export class OverlayCallbackStore {
                 return;
             }
 
-            // Prevent default action for registered key event (ex. enter, esc)
-            event.preventDefault();
-            event.stopPropagation();
-
             this.run(lastOverlayId, keyEventName, event);
         });
     }
