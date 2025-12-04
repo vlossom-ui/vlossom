@@ -125,13 +125,13 @@ export default defineComponent({
             return vertical.value ? { height: size } : { width: size };
         });
 
-        const progressWidth = computed(() => {
-            if (selectedIndex.value === -1) {
-                return vertical.value ? { height: '0%' } : { width: '0%' };
-            }
+        function getDimensionStyle(value: string) {
+            return vertical.value ? { height: value } : { width: value };
+        }
 
-            const percentage = (selectedIndex.value / gapCount.value) * 100 + '%';
-            return vertical.value ? { height: percentage } : { width: percentage };
+        const progressWidth = computed(() => {
+            const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
+            return getDimensionStyle(`${percentage}%`);
         });
 
         watch(steps, () => {
