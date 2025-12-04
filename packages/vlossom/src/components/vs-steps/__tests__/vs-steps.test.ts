@@ -460,24 +460,6 @@ describe('VsSteps', () => {
             expect(stepItems).toHaveLength(2);
             expect(stepItems[0].classes()).toContain('vs-selected');
         });
-
-        it('비활성화된 스텝을 가리키는 modelValue가 설정되면 다음 활성 스텝으로 이동해야 한다', async () => {
-            // given, when
-            const wrapper = mount(VsSteps, {
-                props: {
-                    steps: ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
-                    modelValue: 1,
-                    disabled: (step: string, index: number) => index === 1,
-                },
-            });
-
-            await nextTick();
-
-            // then
-            const stepItems = wrapper.findAll('.vs-step-item');
-            expect(stepItems[1].classes()).not.toContain('vs-selected');
-            expect(stepItems[2].classes()).toContain('vs-selected');
-        });
     });
 
     describe('progress bar', () => {

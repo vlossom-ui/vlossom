@@ -120,7 +120,7 @@ export default defineComponent({
             handleKeydown,
             isFirstEdge,
             isLastEdge,
-        } = useIndexSelector(tabs, disabled);
+        } = useIndexSelector(tabs, disabled, modelValue);
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,
@@ -206,7 +206,6 @@ export default defineComponent({
         }
 
         onMounted(() => {
-            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
             calculateVisibleTabCount();
             nextTick(() => {
                 updateIndicatorPosition();

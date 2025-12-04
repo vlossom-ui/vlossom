@@ -1,9 +1,10 @@
-import { computed, ref, type Ref } from 'vue';
+import { computed, getCurrentInstance, onMounted, ref, type Ref } from 'vue';
 import { INVALID_INDEX } from '@/declaration';
 
 export function useIndexSelector(
     list: Ref<any[]>,
     disabled?: Ref<boolean | ((item: any, index: number) => boolean) | undefined>,
+    initialIndex?: Ref<number>,
 ) {
     const selectedIndex = ref(0);
 
@@ -122,6 +123,13 @@ export function useIndexSelector(
             e.preventDefault();
             selectIndex(findActiveIndexBackwardFrom(list.value.length - 1));
         }
+    }
+
+    // Only call onMounted if we're inside a component context
+    if (getCurrentInstance() && initialIndex) {
+        onMounted(() => {
+            selectedIndex.value = findActiveIndexForwardFrom(initialIndex.value);
+        });
     }
 
     return {

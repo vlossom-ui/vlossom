@@ -112,9 +112,7 @@ export default defineComponent({
             findActiveIndexForwardFrom,
             selectIndex: selectStep,
             handleKeydown,
-        } = useIndexSelector(steps, disabled);
-
-        selectStep(findActiveIndexForwardFrom(modelValue.value));
+        } = useIndexSelector(steps, disabled, modelValue);
 
         const progressWidth = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
