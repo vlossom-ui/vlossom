@@ -59,7 +59,7 @@ import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/pro
 import { INVALID_INDEX, VsComponent } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
-import { objectUtil, stringUtil } from '@/utils';
+import { objectUtil } from '@/utils';
 
 const name = VsComponent.VsSteps;
 export default defineComponent({
@@ -92,19 +92,12 @@ export default defineComponent({
         const gapCount = computed(() => steps.value.length - 1);
 
         const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
-            const baseStyles = {
-                height: height.value ? height.value : undefined,
-                width: width.value ? width.value : undefined,
-            };
-
-            if (gap.value) {
-                const { value, unit } = stringUtil.parseSizeValue(gap.value);
-                const size = `${gapCount.value * value}${unit}`;
-                const dimensionKey = vertical.value ? 'height' : 'width';
-                baseStyles[dimensionKey] = size;
-            }
-
-            return objectUtil.shake(baseStyles);
+            return objectUtil.shake({
+                height: height.value,
+                width: width.value,
+                gap: gap.value || '0',
+                gapCount: gapCount.value,
+            });
         });
 
         const { styleSetVariables } = useStyleSet<VsStepsStyleSet>(name, styleSet, additionalStyleSet);
@@ -124,8 +117,12 @@ export default defineComponent({
         selectStep(findActiveIndexForwardFrom(modelValue.value));
 
         const progressWidth = computed(() => {
-            const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
             const dimensionKey = vertical.value ? 'height' : 'width';
+            if (gapCount.value === 0) {
+                return { [dimensionKey]: '0%' };
+            }
+
+            const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return { [dimensionKey]: `${percentage}%` };
         });
 

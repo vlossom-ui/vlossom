@@ -22,7 +22,7 @@
 
     @apply relative select-none;
 
-    width: var(--vs-steps-width, initial);
+    width: var(--vs-steps-width, calc(var(--vs-steps-gap) * var(--vs-steps-gapCount)));
     height: var(--vs-steps-height, initial);
     -webkit-tap-highlight-color: transparent;
 
@@ -117,6 +117,9 @@
 
     &.vs-vertical {
         @apply flex-col items-center;
+
+        width: var(--vs-steps-width, initial);
+        height: var(--vs-steps-height, calc(var(--vs-steps-gap) * var(--vs-steps-gapCount)));
 
         .vs-step-line {
             @apply h-auto w-1 -translate-x-1/2 translate-y-0;
