@@ -128,6 +128,15 @@ describe('string-util', () => {
             expect(stringUtil.parseCssUnit('50vw')).toEqual({ value: 50, unit: 'vw' });
         });
 
+        it('음수 값을 파싱한다', () => {
+            expect(stringUtil.parseCssUnit(-100)).toEqual({ value: -100, unit: 'px' });
+            expect(stringUtil.parseCssUnit('-100')).toEqual({ value: -100, unit: 'px' });
+            expect(stringUtil.parseCssUnit('-2rem')).toEqual({ value: -2, unit: 'rem' });
+            expect(stringUtil.parseCssUnit('-1.5em')).toEqual({ value: -1.5, unit: 'em' });
+            expect(stringUtil.parseCssUnit('-10vh')).toEqual({ value: -10, unit: 'vh' });
+            expect(stringUtil.parseCssUnit('-50vw')).toEqual({ value: -50, unit: 'vw' });
+        });
+
         it('소수점이 있는 값을 파싱한다', () => {
             expect(stringUtil.parseCssUnit('3.14px')).toEqual({ value: 3.14, unit: 'px' });
             expect(stringUtil.parseCssUnit('1.5rem')).toEqual({ value: 1.5, unit: 'rem' });
