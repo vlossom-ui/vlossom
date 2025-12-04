@@ -54,7 +54,7 @@
 import { computed, defineComponent, toRefs, ref, watch, type Ref, type PropType, type ComputedRef } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { INVALID_INDEX, VsComponent } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
 import { objectUtil, stringUtil } from '@/utils';
@@ -76,7 +76,7 @@ export default defineComponent({
         noLabel: { type: Boolean, default: false },
         steps: {
             type: Array as PropType<string[]>,
-            required: true,
+            default: () => [],
         },
         vertical: { type: Boolean, default: false },
         // v-model
@@ -139,9 +139,10 @@ export default defineComponent({
         });
 
         watch(selectedIndex, (index: number) => {
-            if (index === -1) {
+            if (index === INVALID_INDEX) {
                 return;
             }
+
             stepRefs.value[index]?.focus();
             emit('update:modelValue', index);
             emit('change', index);
