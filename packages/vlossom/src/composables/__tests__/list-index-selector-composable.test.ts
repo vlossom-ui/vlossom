@@ -64,6 +64,46 @@ describe('list-index-selector-composable', () => {
         });
     });
 
+    describe('isPrevious', () => {
+        it('주어진 인덱스가 선택된 인덱스보다 작으면 true를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 2;
+
+            // then
+            expect(isPrevious(0)).toBe(true);
+            expect(isPrevious(1)).toBe(true);
+        });
+
+        it('주어진 인덱스가 선택된 인덱스와 같으면 false를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 1;
+
+            // then
+            expect(isPrevious(1)).toBe(false);
+        });
+
+        it('주어진 인덱스가 선택된 인덱스보다 크면 false를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 0;
+
+            // then
+            expect(isPrevious(1)).toBe(false);
+            expect(isPrevious(2)).toBe(false);
+        });
+    });
+
     describe('findActiveIndexForwardFrom', () => {
         it('지정된 인덱스부터 앞으로 활성화된 인덱스를 찾아야 한다', () => {
             // given
