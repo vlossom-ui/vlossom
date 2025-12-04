@@ -201,7 +201,7 @@ const meta: Meta<typeof VsSteps> = {
                                     :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" 
                                     :model-value="1"
                                     vertical 
-                                    gap="8rem"
+                                    gap="4rem"
                                 />
                             </div>
                             <div>
