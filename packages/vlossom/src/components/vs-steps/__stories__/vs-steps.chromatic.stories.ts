@@ -26,7 +26,7 @@ const meta: Meta<typeof VsSteps> = {
 
                 <!-- 비활성화 -->
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 스텝 (전체)</h3>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화(전체)</h3>
                     <vs-steps 
                         v-bind="args" 
                         :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" 
@@ -36,7 +36,7 @@ const meta: Meta<typeof VsSteps> = {
                 </div>
 
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 스텝 (특정 인덱스)</h3>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화(특정 인덱스)</h3>
                     <vs-steps 
                         v-bind="args" 
                         :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5']" 
@@ -44,16 +44,83 @@ const meta: Meta<typeof VsSteps> = {
                         :disabled="(step, index) => [1, 3].includes(index)" 
                     />
                 </div>
-                
-                <!-- 비활성화 조건 -->
+
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화 스텝 (조건부)</h3>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">비활성화(조건부)</h3>
                     <vs-steps 
                         v-bind="args" 
                         :steps="['Step 0', 'Step 1', 'Step 2', 'Step 3', 'Step 4']" 
                         :model-value="1"
                         :disabled="(step, index) => index % 2 === 0" 
                     />
+                </div>
+                
+                <!-- 수직 레이아웃 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">수직 레이아웃</h3>
+                    <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">기본 (첫 번째 선택)</p>
+                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="0" vertical height="300px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">기본 (두 번째 선택)</p>
+                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="1" vertical height="300px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">No Label</p>
+                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="1" vertical no-label height="300px" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gap 변형 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Gap 변형</h3>
+                    <div style="display:flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 4rem</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="4rem" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 8rem</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="8rem" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 12rem</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="12rem" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Width 제한 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Width 제한</h3>
+                    <div style="display:flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">width: 300px</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" width="300px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">width: 500px</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" width="500px" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Height 제한 (Vertical 모드) -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Height 제한 (Vertical 모드)</h3>
+                    <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">height: 200px</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" vertical height="200px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">height: 400px</p>
+                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" vertical height="400px" />
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 진행 상태별 -->
@@ -98,44 +165,6 @@ const meta: Meta<typeof VsSteps> = {
                         <div>
                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">6개</p>
                             <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4', 'Step 5', 'Step 6']" :model-value="2" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gap 변형 -->
-                <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Gap 변형</h3>
-                    <div style="display:flex; flex-direction: column; gap: 1rem;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 4rem</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="4rem" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 8rem</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="8rem" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">gap: 12rem</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" gap="12rem" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 수직 레이아웃 -->
-                <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">수직 레이아웃</h3>
-                    <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">기본 (첫 번째 선택)</p>
-                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="0" vertical height="300px" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">기본 (두 번째 선택)</p>
-                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="1" vertical height="300px" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">No Label</p>
-                            <vs-steps v-bind="args" :steps="['Account', 'Profile', 'Settings', 'Complete']" :model-value="1" vertical no-label height="300px" />
                         </div>
                     </div>
                 </div>
@@ -187,36 +216,6 @@ const meta: Meta<typeof VsSteps> = {
                                     height="300px"
                                 />
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Width 제한 -->
-                <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Width 제한</h3>
-                    <div style="display:flex; flex-direction: column; gap: 1rem;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">width: 300px</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" width="300px" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">width: 500px</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" width="500px" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Height 제한 (Vertical 모드) -->
-                <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Height 제한 (Vertical 모드)</h3>
-                    <div style="display:flex; gap: 2rem; flex-wrap: wrap;">
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">height: 200px</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" vertical height="200px" />
-                        </div>
-                        <div>
-                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">height: 400px</p>
-                            <vs-steps v-bind="args" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" :model-value="1" vertical height="400px" />
                         </div>
                     </div>
                 </div>
