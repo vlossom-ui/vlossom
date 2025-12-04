@@ -27,6 +27,10 @@ export function useIndexSelector(
         return disabled.value(list.value[index], index);
     }
 
+    function isPrevious(index: number) {
+        return index < selectedIndex.value;
+    }
+
     function isAllDisabled(): boolean {
         if (!disabled || disabled.value === undefined) {
             return false;
@@ -124,6 +128,7 @@ export function useIndexSelector(
         selectedIndex,
         isSelected,
         isDisabled,
+        isPrevious,
         findActiveIndexForwardFrom,
         findActiveIndexBackwardFrom,
         selectIndex,
