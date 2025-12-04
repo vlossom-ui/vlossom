@@ -237,7 +237,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 | `gap`         | `string \| number`                                      | `''`    | -        | 스텝 간 간격                                                                         |
 | `noLabel`     | `boolean`                                               | `false` | -        | 레이블 숨김                                                                          |
 | `disabled`    | `boolean \| ((step: string, index: number) => boolean)` | `false` | -        | 스텝 비활성화 여부. boolean이면 전체 스텝에 적용되고, 함수면 각 스텝마다 조건부 적용 |
-| `steps`       | `string[]`                                              | -       | ✅       | 스텝 레이블 배열                                                                     |
+| `steps`       | `string[]`                                              | `[]`    | -        | 스텝 레이블 배열                                                                     |
 | `vertical`    | `boolean`                                               | `false` | -        | 수직 레이아웃 적용                                                                   |
 | `modelValue`  | `number`                                                | `0`     | -        | 현재 선택된 스텝 인덱스 (v-model)                                                    |
 
