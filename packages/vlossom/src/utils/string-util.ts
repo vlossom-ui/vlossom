@@ -26,6 +26,29 @@ export const stringUtil = {
         }
         return stringValue;
     },
+    parseCssUnit(str: string | number): { value: number; unit: string } {
+        const numValue = Number(str);
+
+        if (typeof str === 'number' || !isNaN(numValue)) {
+            return {
+                value: numValue,
+                unit: 'px',
+            };
+        }
+
+        const match = str.match(/(\d+(?:\.\d+)?)(\w+|%)/);
+
+        if (match) {
+            return {
+                value: Number(match[1]),
+                unit: match[2],
+            };
+        }
+        return {
+            value: 0,
+            unit: '',
+        };
+    },
     toFileSizeFormat(bytes: number): string {
         if (bytes === 0) {
             return '0 Bytes';
