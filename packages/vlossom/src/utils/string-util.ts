@@ -26,7 +26,7 @@ export const stringUtil = {
         }
         return stringValue;
     },
-    parseCssUnit(str: string | number): { value: number; unit: string } {
+    parseSizeValue(str: string | number): { value: number; unit: string } {
         const numValue = Number(str);
 
         if (typeof str === 'number' || !isNaN(numValue)) {

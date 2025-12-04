@@ -21,9 +21,18 @@ const meta: Meta<typeof VsSteps> = {
         components: { VsSteps },
         setup() {
             const preDefinedStyleSet: VsStepsStyleSet = {
-                activeBackgroundColor: '#1e88e5',
-                activeBorderColor: '#1e88e5',
-                stepSize: '2.5rem',
+                step: {
+                    backgroundColor: '#f5f5f5',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '50%',
+                    padding: '0.5rem',
+                    opacity: 0.8,
+                    size: '2.5rem',
+                },
+                activeStep: {
+                    backgroundColor: '#1e88e5',
+                    size: '2.5rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -413,9 +422,14 @@ export const StyleSet: Story = {
     args: {
         steps: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
-            activeBackgroundColor: '#e188e5',
-            activeBorderColor: '#002abf',
-            stepSize: '3rem',
+            step: {
+                size: '3rem',
+            },
+            activeStep: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #002abf',
+                size: '3rem',
+            },
         },
         modelValue: 1,
     },

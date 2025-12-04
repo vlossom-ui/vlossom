@@ -100,52 +100,52 @@ describe('string-util', () => {
         });
     });
 
-    describe('parseCssUnit', () => {
+    describe('parseSizeValue', () => {
         it('숫자를 px 단위로 파싱한다', () => {
-            expect(stringUtil.parseCssUnit(100)).toEqual({ value: 100, unit: 'px' });
-            expect(stringUtil.parseCssUnit(0)).toEqual({ value: 0, unit: 'px' });
+            expect(stringUtil.parseSizeValue(100)).toEqual({ value: 100, unit: 'px' });
+            expect(stringUtil.parseSizeValue(0)).toEqual({ value: 0, unit: 'px' });
         });
 
         it('숫자 문자열을 px 단위로 파싱한다', () => {
-            expect(stringUtil.parseCssUnit('100')).toEqual({ value: 100, unit: 'px' });
-            expect(stringUtil.parseCssUnit('50.5')).toEqual({ value: 50.5, unit: 'px' });
+            expect(stringUtil.parseSizeValue('100')).toEqual({ value: 100, unit: 'px' });
+            expect(stringUtil.parseSizeValue('50.5')).toEqual({ value: 50.5, unit: 'px' });
         });
 
         it('px 단위 문자열을 파싱한다', () => {
-            expect(stringUtil.parseCssUnit('100px')).toEqual({ value: 100, unit: 'px' });
-            expect(stringUtil.parseCssUnit('50.5px')).toEqual({ value: 50.5, unit: 'px' });
+            expect(stringUtil.parseSizeValue('100px')).toEqual({ value: 100, unit: 'px' });
+            expect(stringUtil.parseSizeValue('50.5px')).toEqual({ value: 50.5, unit: 'px' });
         });
 
         it('%  단위 문자열을 파싱한다', () => {
-            expect(stringUtil.parseCssUnit('50%')).toEqual({ value: 50, unit: '%' });
-            expect(stringUtil.parseCssUnit('100%')).toEqual({ value: 100, unit: '%' });
+            expect(stringUtil.parseSizeValue('50%')).toEqual({ value: 50, unit: '%' });
+            expect(stringUtil.parseSizeValue('100%')).toEqual({ value: 100, unit: '%' });
         });
 
         it('다양한 CSS 단위를 파싱한다', () => {
-            expect(stringUtil.parseCssUnit('2rem')).toEqual({ value: 2, unit: 'rem' });
-            expect(stringUtil.parseCssUnit('1.5em')).toEqual({ value: 1.5, unit: 'em' });
-            expect(stringUtil.parseCssUnit('10vh')).toEqual({ value: 10, unit: 'vh' });
-            expect(stringUtil.parseCssUnit('50vw')).toEqual({ value: 50, unit: 'vw' });
+            expect(stringUtil.parseSizeValue('2rem')).toEqual({ value: 2, unit: 'rem' });
+            expect(stringUtil.parseSizeValue('1.5em')).toEqual({ value: 1.5, unit: 'em' });
+            expect(stringUtil.parseSizeValue('10vh')).toEqual({ value: 10, unit: 'vh' });
+            expect(stringUtil.parseSizeValue('50vw')).toEqual({ value: 50, unit: 'vw' });
         });
 
         it('음수 값을 파싱한다', () => {
-            expect(stringUtil.parseCssUnit(-100)).toEqual({ value: -100, unit: 'px' });
-            expect(stringUtil.parseCssUnit('-100')).toEqual({ value: -100, unit: 'px' });
-            expect(stringUtil.parseCssUnit('-2rem')).toEqual({ value: -2, unit: 'rem' });
-            expect(stringUtil.parseCssUnit('-1.5em')).toEqual({ value: -1.5, unit: 'em' });
-            expect(stringUtil.parseCssUnit('-10vh')).toEqual({ value: -10, unit: 'vh' });
-            expect(stringUtil.parseCssUnit('-50vw')).toEqual({ value: -50, unit: 'vw' });
+            expect(stringUtil.parseSizeValue(-100)).toEqual({ value: -100, unit: 'px' });
+            expect(stringUtil.parseSizeValue('-100')).toEqual({ value: -100, unit: 'px' });
+            expect(stringUtil.parseSizeValue('-2rem')).toEqual({ value: -2, unit: 'rem' });
+            expect(stringUtil.parseSizeValue('-1.5em')).toEqual({ value: -1.5, unit: 'em' });
+            expect(stringUtil.parseSizeValue('-10vh')).toEqual({ value: -10, unit: 'vh' });
+            expect(stringUtil.parseSizeValue('-50vw')).toEqual({ value: -50, unit: 'vw' });
         });
 
         it('소수점이 있는 값을 파싱한다', () => {
-            expect(stringUtil.parseCssUnit('3.14px')).toEqual({ value: 3.14, unit: 'px' });
-            expect(stringUtil.parseCssUnit('1.5rem')).toEqual({ value: 1.5, unit: 'rem' });
+            expect(stringUtil.parseSizeValue('3.14px')).toEqual({ value: 3.14, unit: 'px' });
+            expect(stringUtil.parseSizeValue('1.5rem')).toEqual({ value: 1.5, unit: 'rem' });
         });
 
         it('파싱할 수 없는 문자열은 기본값을 반환한다', () => {
-            expect(stringUtil.parseCssUnit('auto')).toEqual({ value: 0, unit: '' });
-            expect(stringUtil.parseCssUnit('inherit')).toEqual({ value: 0, unit: '' });
-            expect(stringUtil.parseCssUnit('invalid')).toEqual({ value: 0, unit: '' });
+            expect(stringUtil.parseSizeValue('auto')).toEqual({ value: 0, unit: '' });
+            expect(stringUtil.parseSizeValue('inherit')).toEqual({ value: 0, unit: '' });
+            expect(stringUtil.parseSizeValue('invalid')).toEqual({ value: 0, unit: '' });
         });
     });
 

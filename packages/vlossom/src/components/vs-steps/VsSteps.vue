@@ -1,6 +1,6 @@
 <template>
     <vs-responsive :width :grid>
-        <div :class="['vs-steps', colorSchemeClass, classObj]" :style="{ ...styleSetVariables, ...fixedWidth }">
+        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="styleSetVariables">
             <div class="vs-step-line">
                 <div class="vs-step-progress" :style="progressWidth" />
             </div>
@@ -30,8 +30,9 @@
                             :is-selected="isSelected(index)"
                             :is-previous="isPrevious(index)"
                             :is-disabled="isDisabled(index)"
-                            >{{ index + 1 }}</slot
                         >
+                            {{ index + 1 }}
+                        </slot>
                     </div>
                     <div v-if="!noLabel" class="vs-step-label">
                         <slot
@@ -41,8 +42,9 @@
                             :is-selected="isSelected(index)"
                             :is-previous="isPrevious(index)"
                             :is-disabled="isDisabled(index)"
-                            >{{ step }}</slot
                         >
+                            {{ step }}
+                        </slot>
                     </div>
                 </li>
             </ul>
@@ -86,18 +88,26 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, width, height, disabled, gap, steps, modelValue, vertical } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
+
+        const gapCount = computed(() => steps.value.length - 1);
+
         const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
-            return objectUtil.shake({
+            const baseStyles = {
                 height: height.value ? height.value : undefined,
                 width: width.value ? width.value : undefined,
-            });
+            };
+
+            if (gap.value) {
+                const { value, unit } = stringUtil.parseSizeValue(gap.value);
+                const size = `${gapCount.value * value}${unit}`;
+                const dimensionKey = vertical.value ? 'height' : 'width';
+                baseStyles[dimensionKey] = size;
+            }
+
+            return objectUtil.shake(baseStyles);
         });
 
         const { styleSetVariables } = useStyleSet<VsStepsStyleSet>(name, styleSet, additionalStyleSet);
-
-        const classObj = computed(() => ({
-            'vs-vertical': vertical.value,
-        }));
 
         const stepRefs: Ref<HTMLElement[]> = ref([]);
 
@@ -113,25 +123,10 @@ export default defineComponent({
 
         selectStep(findActiveIndexForwardFrom(modelValue.value));
 
-        const gapCount = computed(() => steps.value.length - 1);
-
-        const fixedWidth = computed(() => {
-            if (!gap.value) {
-                return {};
-            }
-
-            const { value, unit } = stringUtil.parseCssUnit(gap.value);
-            const size = `${gapCount.value * value}${unit}`;
-            return vertical.value ? { height: size } : { width: size };
-        });
-
-        function getDimensionStyle(value: string) {
-            return vertical.value ? { height: value } : { width: value };
-        }
-
         const progressWidth = computed(() => {
             const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
-            return getDimensionStyle(`${percentage}%`);
+            const dimensionKey = vertical.value ? 'height' : 'width';
+            return { [dimensionKey]: `${percentage}%` };
         });
 
         watch(steps, () => {
@@ -154,8 +149,6 @@ export default defineComponent({
             // Style
             colorSchemeClass,
             styleSetVariables,
-            classObj,
-            fixedWidth,
             progressWidth,
 
             // Selection State

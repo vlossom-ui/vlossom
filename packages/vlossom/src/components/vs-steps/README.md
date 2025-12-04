@@ -251,10 +251,24 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 ## Types
 
 ```typescript
-interface VsStepsStyleSet extends BoxStyleSet {
-    activeBackgroundColor?: string;
-    activeBorderColor?: string;
-    stepSize?: string;
+interface VsStepsStyleSet {
+    step?: {
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+        size?: string;
+    };
+
+    activeStep?: {
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+        size?: string;
+    };
 
     height?: string;
     width?: string;
