@@ -8,7 +8,7 @@
     --vs-steps-height: initial;
     --vs-steps-width: initial;
 
-    --step-size: var(--vs-steps-stepSize, 2.4rem);
+    --step-size: var(--vs-steps-stepSize, 1.6rem);
 
     @apply relative select-none;
 
@@ -54,7 +54,7 @@
             }
 
             .vs-step-label {
-                @apply absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap;
+                @apply absolute top-3/2 left-1/2 -translate-x-1/2 whitespace-nowrap;
 
                 color: var(--vs-font-color);
                 font-size: var(--vs-font-size);
@@ -120,9 +120,7 @@
 
             .vs-step-item {
                 .vs-step-label {
-                    @apply top-1/2 left-full translate-x-0 -translate-y-1/2;
-
-                    margin-left: 1rem;
+                    @apply top-1/2 left-3/2 translate-x-0 -translate-y-1/2;
                 }
             }
         }
