@@ -282,7 +282,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('함수를 통해 비활성화된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+        it('함수를 통해 비활성화된 탭을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -296,11 +296,13 @@ describe('VsTabs', () => {
             await tabItems[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
-            expect(wrapper.emitted('change')).toBeFalsy();
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
+            expect(wrapper.emitted('change')).toBeTruthy();
+            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
         });
 
-        it('전체 비활성화된 탭을 클릭하면 이벤트가 발생하지 않아야 한다', async () => {
+        it('전체 비활성화된 탭을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -314,8 +316,10 @@ describe('VsTabs', () => {
             await tabItems[0].trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
-            expect(wrapper.emitted('change')).toBeFalsy();
+            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
+            expect(wrapper.emitted('change')).toBeTruthy();
+            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
         });
     });
 

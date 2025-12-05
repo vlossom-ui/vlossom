@@ -46,4 +46,4 @@ export const PLACEMENTS = ['top', 'right', 'bottom', 'left', 'middle'] as const;
 
 export const ALIGNMENTS = ['start', 'center', 'end'] as const;
 
-export const INVALID_INDEX = -1;
+export const NOT_SELECTED = -1;

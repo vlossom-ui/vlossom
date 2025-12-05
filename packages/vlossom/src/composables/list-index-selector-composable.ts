@@ -1,5 +1,5 @@
 import { computed, ref, type Ref } from 'vue';
-import { INVALID_INDEX } from '@/declaration';
+import { NOT_SELECTED } from '@/declaration';
 
 export function useIndexSelector(
     list: Ref<any[]>,
@@ -45,7 +45,7 @@ export function useIndexSelector(
 
     function findActiveIndexForwardFrom(targetIndex: number): number {
         if (isOutOfRange(targetIndex)) {
-            return INVALID_INDEX;
+            return NOT_SELECTED;
         }
 
         if (!isDisabled(targetIndex)) {
@@ -58,12 +58,12 @@ export function useIndexSelector(
             }
         }
 
-        return INVALID_INDEX;
+        return NOT_SELECTED;
     }
 
     function findActiveIndexBackwardFrom(targetIndex: number): number {
         if (isOutOfRange(targetIndex)) {
-            return INVALID_INDEX;
+            return NOT_SELECTED;
         }
 
         if (!isDisabled(targetIndex)) {
@@ -75,12 +75,12 @@ export function useIndexSelector(
                 return i;
             }
         }
-        return INVALID_INDEX;
+        return NOT_SELECTED;
     }
 
     function selectIndex(index: number) {
         if (isOutOfRange(index) || isAllDisabled() || isDisabled(index)) {
-            selectedIndex.value = INVALID_INDEX;
+            selectedIndex.value = NOT_SELECTED;
             return;
         }
 
