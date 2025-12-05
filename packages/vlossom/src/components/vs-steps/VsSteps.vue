@@ -66,7 +66,7 @@ import {
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { INVALID_INDEX, VsComponent } from '@/declaration';
+import { NOT_SELECTED, VsComponent } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
 import { objectUtil } from '@/utils';
@@ -130,7 +130,7 @@ export default defineComponent({
                 return { [dimensionKey]: '0%' };
             }
 
-            const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
+            const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return { [dimensionKey]: `${percentage}%` };
         });
 
@@ -143,10 +143,6 @@ export default defineComponent({
         });
 
         watch(selectedIndex, (index: number) => {
-            if (index === INVALID_INDEX) {
-                return;
-            }
-
             stepRefs.value[index]?.focus();
             emit('update:modelValue', index);
             emit('change', index);
