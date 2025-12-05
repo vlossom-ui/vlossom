@@ -66,7 +66,7 @@ import {
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
-import { VsComponent, INVALID_INDEX } from '@/declaration';
+import { NOT_SELECTED, VsComponent } from '@/declaration';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import type { VsTabsStyleSet } from './types';
 import { vsTabsIcons } from './icons';
@@ -181,11 +181,12 @@ export default defineComponent({
         }
 
         function updateIndicatorPosition() {
-            const selectedTab = tabRefs.value[selectedIndex.value];
-            if (!selectedTab) {
+            if (selectedIndex.value === NOT_SELECTED) {
                 indicatorStyle.value = null;
                 return;
             }
+
+            const selectedTab = tabRefs.value[selectedIndex.value];
 
             if (vertical.value) {
                 indicatorStyle.value = {
@@ -227,10 +228,6 @@ export default defineComponent({
         );
 
         watch(selectedIndex, (index: number) => {
-            if (index === INVALID_INDEX) {
-                return;
-            }
-
             scrollTo(index);
             emit('update:modelValue', index);
             emit('change', index);

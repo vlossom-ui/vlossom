@@ -41,6 +41,7 @@ export enum VsComponent {
     VsResponsive = 'VsResponsive',
     VsSearchInput = 'VsSearchInput',
     VsSkeleton = 'VsSkeleton',
+    VsSteps = 'VsSteps',
     VsSwitch = 'VsSwitch',
     VsTabs = 'VsTabs',
     VsTextarea = 'VsTextarea',

@@ -64,6 +64,46 @@ describe('list-index-selector-composable', () => {
         });
     });
 
+    describe('isPrevious', () => {
+        it('주어진 인덱스가 선택된 인덱스보다 작으면 true를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 2;
+
+            // then
+            expect(isPrevious(0)).toBe(true);
+            expect(isPrevious(1)).toBe(true);
+        });
+
+        it('주어진 인덱스가 선택된 인덱스와 같으면 false를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 1;
+
+            // then
+            expect(isPrevious(1)).toBe(false);
+        });
+
+        it('주어진 인덱스가 선택된 인덱스보다 크면 false를 반환해야 한다', () => {
+            // given
+            const list = ref(['item1', 'item2', 'item3']);
+            const { isPrevious, selectedIndex } = useIndexSelector(list);
+
+            // when
+            selectedIndex.value = 0;
+
+            // then
+            expect(isPrevious(1)).toBe(false);
+            expect(isPrevious(2)).toBe(false);
+        });
+    });
+
     describe('findActiveIndexForwardFrom', () => {
         it('지정된 인덱스부터 앞으로 활성화된 인덱스를 찾아야 한다', () => {
             // given
@@ -77,7 +117,7 @@ describe('list-index-selector-composable', () => {
             expect(findActiveIndexForwardFrom(2)).toBe(2);
         });
 
-        it('범위를 벗어난 인덱스는 INVALID_INDEX를 반환해야 한다', () => {
+        it('범위를 벗어난 인덱스는 NOT_SELECTED를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const { findActiveIndexForwardFrom } = useIndexSelector(list);
@@ -87,7 +127,7 @@ describe('list-index-selector-composable', () => {
             expect(findActiveIndexForwardFrom(3)).toBe(-1);
         });
 
-        it('비활성화된 항목만 남은 경우 INVALID_INDEX를 반환해야 한다', () => {
+        it('비활성화된 항목만 남은 경우 NOT_SELECTED를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref((item: string, index: number) => index >= 1);
@@ -112,7 +152,7 @@ describe('list-index-selector-composable', () => {
             expect(findActiveIndexBackwardFrom(1)).toBe(0);
         });
 
-        it('범위를 벗어난 인덱스는 INVALID_INDEX를 반환해야 한다', () => {
+        it('범위를 벗어난 인덱스는 NOT_SELECTED를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const { findActiveIndexBackwardFrom } = useIndexSelector(list);
@@ -122,7 +162,7 @@ describe('list-index-selector-composable', () => {
             expect(findActiveIndexBackwardFrom(3)).toBe(-1);
         });
 
-        it('비활성화된 항목만 남은 경우 INVALID_INDEX를 반환해야 한다', () => {
+        it('비활성화된 항목만 남은 경우 NOT_SELECTED를 반환해야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref((item: string, index: number) => index <= 1);
@@ -147,7 +187,7 @@ describe('list-index-selector-composable', () => {
             expect(selectedIndex.value).toBe(1);
         });
 
-        it('비활성화된 인덱스를 선택하면 INVALID_INDEX가 설정되어야 한다', () => {
+        it('비활성화된 인덱스를 선택하면 NOT_SELECTED가 설정되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref((item: string, index: number) => index === 1);
@@ -161,7 +201,7 @@ describe('list-index-selector-composable', () => {
             expect(selectedIndex.value).toBe(-1);
         });
 
-        it('범위를 벗어난 인덱스를 선택하면 INVALID_INDEX가 설정되어야 한다', () => {
+        it('범위를 벗어난 인덱스를 선택하면 NOT_SELECTED가 설정되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const { selectIndex, selectedIndex } = useIndexSelector(list);
@@ -181,7 +221,7 @@ describe('list-index-selector-composable', () => {
             expect(selectedIndex.value).toBe(-1);
         });
 
-        it('모든 항목이 비활성화된 경우 INVALID_INDEX가 설정되어야 한다', () => {
+        it('모든 항목이 비활성화된 경우 NOT_SELECTED가 설정되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref(true);

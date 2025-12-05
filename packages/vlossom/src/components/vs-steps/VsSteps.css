@@ -1,0 +1,150 @@
+@reference 'tailwindcss';
+
+.vs-steps {
+    --vs-steps-step-backgroundColor: initial;
+    --vs-steps-step-border: initial;
+    --vs-steps-step-borderRadius: initial;
+    --vs-steps-step-padding: initial;
+    --vs-steps-step-opacity: initial;
+    --vs-steps-step-size: initial;
+
+    --vs-steps-activeStep-backgroundColor: initial;
+    --vs-steps-activeStep-border: initial;
+    --vs-steps-activeStep-borderRadius: initial;
+    --vs-steps-activeStep-padding: initial;
+    --vs-steps-activeStep-opacity: initial;
+    --vs-steps-activeStep-size: initial;
+
+    --vs-steps-height: initial;
+    --vs-steps-width: initial;
+
+    --step-size: var(--vs-steps-step-size, var(--vs-steps-activeStep-size, 1.6rem));
+
+    @apply relative select-none;
+
+    width: var(--vs-steps-width, calc(var(--vs-steps-gap) * var(--vs-steps-gapCount)));
+    height: var(--vs-steps-height, initial);
+    -webkit-tap-highlight-color: transparent;
+
+    .vs-step-line {
+        @apply absolute h-1 -translate-y-1/2;
+
+        top: calc(var(--step-size) * 0.5);
+        right: var(--step-size);
+        left: var(--step-size);
+        background-color: var(--vs-area-bg-active);
+
+        .vs-step-progress {
+            @apply h-full opacity-80;
+
+            transition: width 0.2s;
+            background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+        }
+    }
+
+    .vs-steps-list {
+        @apply mb-16 flex list-none items-center justify-between;
+
+        &.vs-steps-no-label {
+            margin-bottom: 0;
+        }
+
+        .vs-step-item {
+            @apply relative flex cursor-pointer items-center justify-center;
+
+            .vs-step-num {
+                @apply flex items-center justify-center border font-semibold;
+                opacity: var(--vs-steps-step-opacity, initial);
+
+                border: var(--vs-steps-step-border, 1px solid var(--vs-line-color));
+                border-radius: var(--vs-steps-step-borderRadius, 100%);
+                background-color: var(--vs-steps-step-backgroundColor, var(--vs-comp-bg));
+                padding: var(--vs-steps-step-padding, initial);
+                width: var(--step-size);
+                height: var(--step-size);
+                color: var(--vs-comp-font);
+                font-size: var(--vs-font-size-sm);
+            }
+
+            .vs-step-label {
+                @apply absolute top-3/2 left-1/2 -translate-x-1/2 whitespace-nowrap;
+
+                color: var(--vs-font-color);
+                font-size: var(--vs-font-size);
+            }
+
+            &:focus {
+                @apply outline-none;
+            }
+
+            &.vs-previous {
+                .vs-step-num {
+                    opacity: var(--vs-steps-activeStep-opacity, initial);
+                    border: var(--vs-steps-activeStep-border, 1px solid var(--vs-primary-comp-bg));
+                    border-radius: var(--vs-steps-activeStep-borderRadius, 100%);
+                    background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+                    padding: var(--vs-steps-activeStep-padding, initial);
+                    color: var(--vs-primary-comp-font);
+                }
+
+                .vs-step-label {
+                    color: var(--vs-comp-font);
+                }
+            }
+
+            &.vs-selected {
+                .vs-step-num {
+                    opacity: var(--vs-steps-activeStep-opacity, initial);
+                    transition-delay: 0.15s;
+                    outline: 3px solid var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+                    outline-offset: 3px;
+                    border: var(--vs-steps-activeStep-border, 1px solid var(--vs-primary-comp-bg));
+                    border-radius: var(--vs-steps-activeStep-borderRadius, 100%);
+
+                    background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+                    padding: var(--vs-steps-activeStep-padding, initial);
+                    color: var(--vs-primary-comp-font);
+                }
+
+                .vs-step-label {
+                    @apply font-semibold;
+
+                    color: var(--vs-primary-comp-bg);
+                }
+            }
+        }
+    }
+
+    &.vs-vertical {
+        @apply flex-col items-center;
+
+        width: var(--vs-steps-width, initial);
+        height: var(--vs-steps-height, calc(var(--vs-steps-gap) * var(--vs-steps-gapCount)));
+
+        .vs-step-line {
+            @apply h-auto w-1 -translate-x-1/2 translate-y-0;
+
+            top: var(--step-size);
+            bottom: var(--step-size);
+            left: calc(var(--step-size) * 0.5);
+
+            .vs-step-progress {
+                transition: height 0.2s;
+            }
+        }
+
+        .vs-steps-list {
+            @apply mr-16 mb-0 h-full flex-col items-start;
+
+            &.vs-steps-no-label {
+                margin-right: 0;
+            }
+
+            .vs-step-item {
+                .vs-step-label {
+                    @apply top-1/2 left-3/2 translate-x-0 -translate-y-1/2;
+                }
+            }
+        }
+    }
+}
