@@ -1,0 +1,65 @@
+@reference 'tailwindcss';
+
+.vs-options {
+    --vs-options-backgroundColor: initial;
+    --vs-options-border: initial;
+    --vs-options-borderRadius: initial;
+    --vs-options-padding: initial;
+    --vs-options-opacity: initial;
+    --vs-options-gap: initial;
+    --vs-options-height: initial;
+
+    --vs-options-option-border: initial;
+    --vs-options-option-borderRadius: initial;
+    --vs-options-option-padding: initial;
+    --vs-options-option-opacity: initial;
+
+    @apply pointer-events-auto absolute;
+
+    opacity: var(--vs-options-opacity, 1);
+    border: var(--vs-options-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-options-backgroundColor, var(--vs-no-color));
+    padding: var(--vs-options-padding, 1rem 0.8rem);
+    height: var(--vs-options-height, 20rem);
+
+    .vs-options-inner {
+        @apply flex h-full flex-col;
+
+        .vs-options-option-focused {
+            background-color: var(--vs-area-bg-hover);
+        }
+        .vs-options-header {
+            @apply pb-2;
+        }
+        .vs-options-footer {
+            @apply pt-2;
+        }
+        .vs-options-list {
+            @apply flex flex-1 cursor-pointer flex-col overflow-auto;
+
+            gap: var(--vs-options-gap, 0.2rem);
+
+            .vs-options-group-name {
+                margin: 0.5rem 0 0 0.2rem;
+                letter-spacing: 0.1rem;
+                text-transform: uppercase;
+            }
+
+            .vs-options-option {
+                opacity: var(--vs-options-option-opacity, 1);
+                border: var(--vs-options-option-border, none);
+                border-radius: var(--vs-options-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+                padding: var(--vs-options-option-padding, 0 0.8rem);
+
+                &.vs-selected {
+                    @apply font-bold;
+
+                    background-color: var(--vs-primary-comp-bg);
+                    color: var(--vs-primary-comp-font);
+                }
+            }
+        }
+    }
+}
+
