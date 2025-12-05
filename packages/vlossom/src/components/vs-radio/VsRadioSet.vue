@@ -59,7 +59,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useInput, useInputOption, useStyleSet } from '@/composables';
-import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
@@ -76,7 +76,7 @@ export default defineComponent({
         ...getStyleSetProps<VsRadioSetStyleSet>(),
         ...getInputProps<any, 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        ...getInputOptionProps(),
+        ...getOptionsProps(),
         beforeChange: {
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,

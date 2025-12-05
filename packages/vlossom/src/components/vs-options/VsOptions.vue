@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" :class="['vs-options', colorSchemeClass]" :style="styleSetVariables" ref="optionsRef">
+    <div :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables" ref="optionsRef">
         <div class="vs-options-inner">
             <div v-if="$slots.header" class="vs-options-header">
                 <slot name="header" />
@@ -50,18 +50,19 @@ import {
     watch,
     ref,
     type ComputedRef,
-    type PropType,
     type Ref,
     type TemplateRef,
+    onUnmounted,
+    onMounted,
 } from 'vue';
-import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet, useOverlay } from '@/composables';
 import { VsComponent, type OverlayCallbacks } from '@/declaration';
-import type { VsSelectOption } from '@/components/vs-select/types';
+import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
+
 import type { VsInfiniteScrollRef } from '@/components/vs-infinite-scroll/types';
 import VsInfiniteScroll from '@/components/vs-infinite-scroll/VsInfiniteScroll.vue';
 import VsDivider from '@/components/vs-divider/VsDivider.vue';
-import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
 
 const name = VsComponent.VsOptions;
 export default defineComponent({
@@ -70,19 +71,9 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsOptionsStyleSet>(),
-        id: { type: String, required: true },
-        options: {
-            type: Array as PropType<VsSelectOption[]>,
-            required: true,
-        },
-        groupBy: {
-            type: Function as PropType<(option: any, index: number) => string | null> | null,
-            default: null,
-        },
-        groupOrder: {
-            type: Array as PropType<string[]>,
-            default: () => [],
-        },
+        ...getOptionsProps(),
+        ...getGroupByProps(),
+        id: { type: String, default: '' },
         modelValue: {
             type: Number,
             default: -1,
@@ -100,11 +91,11 @@ export default defineComponent({
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
 
         // focusIndex를 v-model로 관리
-        const localFocusIndex = ref(modelValue.value);
+        const focusIndex = ref(modelValue.value);
         watch(modelValue, (newValue) => {
-            localFocusIndex.value = newValue;
+            focusIndex.value = newValue;
         });
-        watch(localFocusIndex, (newValue) => {
+        watch(focusIndex, (newValue) => {
             emit('update:modelValue', newValue);
         });
 
@@ -117,7 +108,7 @@ export default defineComponent({
                     event.stopPropagation();
 
                     const focusableElements = getFocusableElements();
-                    const currentElement = focusableElements[localFocusIndex.value];
+                    const currentElement = focusableElements[focusIndex.value];
                     if (!currentElement) {
                         return;
                     }
@@ -129,14 +120,14 @@ export default defineComponent({
                     }
 
                     if (focusableValue === 'select-all') {
-                        emit('key', { key: 'Enter', type: 'select-all', event });
+                        emit('key', event);
                         return;
                     }
 
                     if (focusableValue === 'option') {
                         const optionId = currentElement.id;
                         if (optionId) {
-                            emit('key', { key: 'Enter', type: 'option-select', optionId, event });
+                            emit('key', event);
                         }
                         return;
                     }
@@ -146,26 +137,17 @@ export default defineComponent({
                     event.stopPropagation();
 
                     const focusableElements = getFocusableElements();
-                    const currentElement = focusableElements[localFocusIndex.value];
+                    const currentElement = focusableElements[focusIndex.value];
                     if (!currentElement) {
                         return;
                     }
 
                     const focusableValue = currentElement.getAttribute('data-focusable');
-                    if (focusableValue === 'search-input') {
-                        // 무시 (기본 동작 허용)
-                        return;
-                    }
-
-                    if (focusableValue === 'select-all') {
-                        emit('key', { key: 'Space', type: 'select-all', event });
-                        return;
-                    }
 
                     if (focusableValue === 'option') {
                         const optionId = currentElement.id;
                         if (optionId) {
-                            emit('key', { key: 'Space', type: 'option-select', optionId, event });
+                            emit('key', event);
                         }
                         return;
                     }
@@ -174,8 +156,8 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    if (localFocusIndex.value > 0) {
-                        localFocusIndex.value = localFocusIndex.value - 1;
+                    if (focusIndex.value > 0) {
+                        focusIndex.value = focusIndex.value - 1;
                     }
                 },
                 ['key-ArrowDown']: (event: KeyboardEvent) => {
@@ -184,14 +166,14 @@ export default defineComponent({
 
                     const focusableElements = getFocusableElements();
                     const lastIndex = focusableElements.length - 1;
-                    if (localFocusIndex.value < lastIndex) {
-                        localFocusIndex.value = localFocusIndex.value + 1;
+                    if (focusIndex.value < lastIndex) {
+                        focusIndex.value = focusIndex.value + 1;
                     }
                 },
                 ['key-Home']: (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    localFocusIndex.value = 0;
+                    focusIndex.value = 0;
                 },
                 ['key-End']: (event: KeyboardEvent) => {
                     event.preventDefault();
@@ -199,7 +181,7 @@ export default defineComponent({
 
                     const focusableElements = getFocusableElements();
                     const lastIndex = focusableElements.length - 1;
-                    localFocusIndex.value = lastIndex;
+                    focusIndex.value = lastIndex;
                 },
                 ['key-Escape']: (event: KeyboardEvent) => {
                     event.preventDefault();
@@ -225,7 +207,7 @@ export default defineComponent({
             }
 
             // 그룹별로 옵션 분류 및 등장 순서 기록
-            const groupMap = new Map<string, VsSelectOption[]>();
+            const groupMap = new Map<string, any[]>();
             // option에서 등장하는 그룹 순서
             const groupOrderInOptions: string[] = [];
             const seenGroups = new Set<string>();
@@ -299,7 +281,7 @@ export default defineComponent({
             }
             const index = getFocusIndex(el);
             if (index >= 0) {
-                localFocusIndex.value = index;
+                focusIndex.value = index;
             }
         }
 
@@ -307,7 +289,7 @@ export default defineComponent({
             emit('option-click', optionId);
         }
 
-        watch(localFocusIndex, (newIndex, oldIndex) => {
+        watch(focusIndex, (newIndex, oldIndex) => {
             const focusableElements = getFocusableElements();
 
             if (oldIndex >= 0) {
@@ -339,17 +321,13 @@ export default defineComponent({
             return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
         }
 
-        // options가 열려있을 때 overlay 마운트
-        watch(
-            () => props.modelValue >= 0,
-            (isOpen) => {
-                if (isOpen) {
-                    mountOverlay();
-                } else {
-                    unmountOverlay();
-                }
-            },
-        );
+        const focusableElements = computed(() => {
+            return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
+        });
+
+        onMounted(mountOverlay);
+
+        onUnmounted(unmountOverlay);
 
         return {
             optionsRef,
