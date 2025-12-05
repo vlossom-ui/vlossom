@@ -153,7 +153,7 @@ describe('VsTabs', () => {
             expect(wrapper.find('.vs-tabs').classes()).toContain('vs-primary');
         });
 
-        it('disabled prop에 true가 주어지면 모든 탭에 vs-disabled 클래스가 적용되어야 한다', () => {
+        it('disabled prop에 true가 주어지면 모든 탭에 vs-disabled 클래스가 적용되어야 한다', async () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
@@ -161,6 +161,8 @@ describe('VsTabs', () => {
                     disabled: true,
                 },
             });
+
+            await nextTick();
 
             // then
             const tabItems = wrapper.findAll('.vs-tab-item');

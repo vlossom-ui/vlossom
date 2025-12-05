@@ -53,7 +53,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, ref, watch, type Ref, type PropType, type ComputedRef } from 'vue';
+import {
+    computed,
+    defineComponent,
+    toRefs,
+    ref,
+    watch,
+    onMounted,
+    type Ref,
+    type PropType,
+    type ComputedRef,
+} from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { INVALID_INDEX, VsComponent } from '@/declaration';
@@ -112,7 +122,7 @@ export default defineComponent({
             findActiveIndexForwardFrom,
             selectIndex: selectStep,
             handleKeydown,
-        } = useIndexSelector(steps, disabled, modelValue);
+        } = useIndexSelector(steps, disabled);
 
         const progressWidth = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
@@ -122,6 +132,10 @@ export default defineComponent({
 
             const percentage = selectedIndex.value === INVALID_INDEX ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return { [dimensionKey]: `${percentage}%` };
+        });
+
+        onMounted(() => {
+            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
         });
 
         watch(steps, () => {

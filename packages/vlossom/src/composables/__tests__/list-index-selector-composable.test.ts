@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ref, defineComponent } from 'vue';
-import { mount } from '@vue/test-utils';
+import { ref } from 'vue';
 import { useIndexSelector } from '../list-index-selector-composable';
 
 describe('list-index-selector-composable', () => {
@@ -611,84 +610,6 @@ describe('list-index-selector-composable', () => {
 
             // then
             expect(isLastEdge.value).toBe(false);
-        });
-    });
-
-    describe('initialIndex', () => {
-        it('initialIndex가 주어지면 onMounted에서 해당 인덱스로 초기화되어야 한다', async () => {
-            // given
-            const TestComponent = defineComponent({
-                template: '<div></div>',
-                setup() {
-                    const list = ref(['item1', 'item2', 'item3']);
-                    const initialIndex = ref(2);
-                    const { selectedIndex } = useIndexSelector(list, undefined, initialIndex);
-                    return { selectedIndex };
-                },
-            });
-
-            // when
-            const wrapper = mount(TestComponent);
-
-            // then
-            expect(wrapper.vm.selectedIndex).toBe(2);
-        });
-
-        it('initialIndex가 비활성화된 인덱스를 가리키면 다음 활성 인덱스로 초기화되어야 한다', async () => {
-            // given
-            const TestComponent = defineComponent({
-                template: '<div></div>',
-                setup() {
-                    const list = ref(['item1', 'item2', 'item3', 'item4']);
-                    const disabled = ref((item: string, index: number) => index === 1);
-                    const initialIndex = ref(1);
-                    const { selectedIndex } = useIndexSelector(list, disabled, initialIndex);
-                    return { selectedIndex };
-                },
-            });
-
-            // when
-            const wrapper = mount(TestComponent);
-
-            // then
-            expect(wrapper.vm.selectedIndex).toBe(2);
-        });
-
-        it('initialIndex가 주어지지 않으면 0으로 초기화되어야 한다', async () => {
-            // given
-            const TestComponent = defineComponent({
-                template: '<div></div>',
-                setup() {
-                    const list = ref(['item1', 'item2', 'item3']);
-                    const { selectedIndex } = useIndexSelector(list);
-                    return { selectedIndex };
-                },
-            });
-
-            // when
-            const wrapper = mount(TestComponent);
-
-            // then
-            expect(wrapper.vm.selectedIndex).toBe(0);
-        });
-
-        it('initialIndex가 범위를 벗어나면 INVALID_INDEX가 설정되어야 한다', async () => {
-            // given
-            const TestComponent = defineComponent({
-                template: '<div></div>',
-                setup() {
-                    const list = ref(['item1', 'item2', 'item3']);
-                    const initialIndex = ref(5);
-                    const { selectedIndex } = useIndexSelector(list, undefined, initialIndex);
-                    return { selectedIndex };
-                },
-            });
-
-            // when
-            const wrapper = mount(TestComponent);
-
-            // then
-            expect(wrapper.vm.selectedIndex).toBe(-1);
         });
     });
 });
