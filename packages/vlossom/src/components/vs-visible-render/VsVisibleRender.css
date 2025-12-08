@@ -1,9 +1,9 @@
-.vs-infinite-scroll {
+.vs-visible-render {
     @apply relative w-full;
 }
 
 /* Hide children that are outside the viewport */
-.vs-infinite-scroll > *[data-io-visible='false'] {
+.vs-visible-render > *[data-io-visible='false'] {
     visibility: hidden !important;
     pointer-events: none;
 }

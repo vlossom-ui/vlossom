@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" ref="infiniteScrollRef" class="vs-infinite-scroll" :style="containerStyle">
+    <component :is="tag" ref="visibleRenderRef" class="vs-visible-render" :style="containerStyle">
         <slot />
     </component>
 </template>
@@ -19,7 +19,7 @@ import {
 import { VsComponent } from '@/declaration';
 import { domUtil, logUtil, stringUtil } from '@/utils';
 
-const name = VsComponent.VsInfiniteScroll;
+const name = VsComponent.VsVisibleRender;
 export default defineComponent({
     name,
     props: {
@@ -43,7 +43,7 @@ export default defineComponent({
     setup(props) {
         const { disabled, height, rootMargin, threshold } = toRefs(props);
 
-        const infiniteScrollRef: TemplateRef<HTMLElement> = useTemplateRef('infiniteScrollRef');
+        const visibleRenderRef: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
 
         let io: IntersectionObserver | null = null;
         let mo: MutationObserver | null = null;
@@ -58,9 +58,9 @@ export default defineComponent({
             };
         });
 
-        // infiniteScrollRef부터 부모로 올라가면서 스크롤 가능한 요소 찾기
+        // visibleRenderRef부터 부모로 올라가면서 스크롤 가능한 요소 찾기
         function getScrollRoot(): Element | null {
-            let el = infiniteScrollRef.value;
+            let el = visibleRenderRef.value;
             while (el) {
                 if (domUtil.isScrollableY(el)) {
                     return el;
@@ -80,7 +80,7 @@ export default defineComponent({
         }
 
         function setAllChildrenVisibility(visible: boolean) {
-            const el = infiniteScrollRef.value;
+            const el = visibleRenderRef.value;
             if (!el) {
                 return;
             }
@@ -109,7 +109,7 @@ export default defineComponent({
         }
 
         function observeChildren() {
-            const el = infiniteScrollRef.value;
+            const el = visibleRenderRef.value;
             if (!el || disabled.value || !io) {
                 return;
             }
@@ -131,7 +131,7 @@ export default defineComponent({
         function setupIntersectionObserver() {
             disconnectIntersectionObserver();
 
-            if (!infiniteScrollRef.value || disabled.value) {
+            if (!visibleRenderRef.value || disabled.value) {
                 return;
             }
 
@@ -162,7 +162,7 @@ export default defineComponent({
         function setupMutationObserver() {
             disconnectMutationObserver();
 
-            const mutationRoot = infiniteScrollRef.value;
+            const mutationRoot = visibleRenderRef.value;
             if (!mutationRoot) {
                 return;
             }
@@ -174,7 +174,7 @@ export default defineComponent({
         // ============= 초기화 및 바인딩 =============
 
         async function initialize() {
-            if (!infiniteScrollRef.value) {
+            if (!visibleRenderRef.value) {
                 return;
             }
 
@@ -208,7 +208,7 @@ export default defineComponent({
         }
 
         function scrollToElement(element: HTMLElement) {
-            if (!infiniteScrollRef.value || !element) {
+            if (!visibleRenderRef.value || !element) {
                 return;
             }
 
@@ -217,7 +217,7 @@ export default defineComponent({
             updateChildVisibility(element, true);
 
             waitForLayout(() => {
-                if (!infiniteScrollRef.value || !element) {
+                if (!visibleRenderRef.value || !element) {
                     return;
                 }
 
@@ -264,7 +264,7 @@ export default defineComponent({
         );
 
         return {
-            infiniteScrollRef,
+            visibleRenderRef,
             containerStyle,
 
             // expose
@@ -274,4 +274,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="./VsInfiniteScroll.css" />
+<style src="./VsVisibleRender.css" />

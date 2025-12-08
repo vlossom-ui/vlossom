@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import VsInfiniteScroll from './../VsInfiniteScroll.vue';
+import VsVisibleRender from './../VsVisibleRender.vue';
 
-const meta: Meta<typeof VsInfiniteScroll> = {
-    title: 'Components/Layout Components/VsInfiniteScroll',
-    component: VsInfiniteScroll,
+const meta: Meta<typeof VsVisibleRender> = {
+    title: 'Components/Layout Components/VsVisibleRender',
+    component: VsVisibleRender,
     parameters: {
         layout: 'padded',
         docs: {
             description: {
                 component:
-                    'VsInfiniteScroll는 IntersectionObserver를 사용하여 자식 요소들의 가시성을 추적하는 무한 스크롤 컨테이너 컴포넌트입니다. ' +
+                    'VsVisibleRender는 IntersectionObserver를 사용하여 자식 요소들의 가시성을 추적하는 컨테이너 컴포넌트입니다. ' +
                     '자식 요소가 뷰포트에 보일 때 `data-io-visible="true"` 속성을 자동으로 설정하여 가시성 기반 렌더링 최적화를 지원합니다.',
             },
         },
@@ -49,24 +49,24 @@ const meta: Meta<typeof VsInfiniteScroll> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 기본 무한 스크롤 컨테이너
+// 기본 가시성 추적 컨테이너
 export const Default: Story = {
     parameters: {
         docs: {
             description: {
-                story: '1000개의 div 요소를 포함한 기본 무한 스크롤 컨테이너입니다. 각 요소의 가시성은 IntersectionObserver로 추적됩니다.',
+                story: '1000개의 div 요소를 포함한 기본 가시성 추적 컨테이너입니다. 각 요소의 가시성은 IntersectionObserver로 추적됩니다.',
             },
         },
     },
     render: (args: any) => ({
-        components: { VsInfiniteScroll },
+        components: { VsVisibleRender },
         setup() {
             const items = Array.from({ length: 1000 }, (_, i) => i);
             return { args, items };
         },
         template: `
             <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-                <vs-infinite-scroll v-bind="args">
+                <vs-visible-render v-bind="args">
                     <div
                         v-for="item in items"
                         :key="item"
@@ -103,7 +103,7 @@ export const Default: Story = {
                             </div>
                         </div>
                     </div>
-                </vs-infinite-scroll>
+                </vs-visible-render>
             </div>
         `,
     }),
@@ -125,14 +125,14 @@ export const WithCustomOptions: Story = {
         threshold: 0.5,
     },
     render: (args: any) => ({
-        components: { VsInfiniteScroll },
+        components: { VsVisibleRender },
         setup() {
             const items = Array.from({ length: 1000 }, (_, i) => i);
             return { args, items };
         },
         template: `
             <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-                <vs-infinite-scroll v-bind="args">
+                <vs-visible-render v-bind="args">
                     <div
                         v-for="item in items"
                         :key="item"
@@ -169,7 +169,7 @@ export const WithCustomOptions: Story = {
                             </div>
                         </div>
                     </div>
-                </vs-infinite-scroll>
+                </vs-visible-render>
             </div>
         `,
     }),
@@ -188,14 +188,14 @@ export const Disabled: Story = {
         disabled: true,
     },
     render: (args: any) => ({
-        components: { VsInfiniteScroll },
+        components: { VsVisibleRender },
         setup() {
             const items = Array.from({ length: 20 }, (_, i) => i);
             return { args, items };
         },
         template: `
             <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-                <vs-infinite-scroll v-bind="args">
+                <vs-visible-render v-bind="args">
                     <div
                         v-for="item in items"
                         :key="item"
@@ -232,7 +232,7 @@ export const Disabled: Story = {
                             </div>
                         </div>
                     </div>
-                </vs-infinite-scroll>
+                </vs-visible-render>
             </div>
         `,
     }),
@@ -251,14 +251,14 @@ export const CustomTag: Story = {
         tag: 'ul',
     },
     render: (args: any) => ({
-        components: { VsInfiniteScroll },
+        components: { VsVisibleRender },
         setup() {
             const items = Array.from({ length: 1000 }, (_, i) => i);
             return { args, items };
         },
         template: `
             <div style="border: 2px solid #e5e7eb; border-radius: 8px; padding: 16px;">
-                <vs-infinite-scroll v-bind="args" style="list-style: none; padding: 0; margin: 0;">
+                <vs-visible-render v-bind="args" style="list-style: none; padding: 0; margin: 0;">
                     <li
                         v-for="item in items"
                         :key="item"
@@ -295,7 +295,7 @@ export const CustomTag: Story = {
                             </div>
                         </div>
                     </li>
-                </vs-infinite-scroll>
+                </vs-visible-render>
             </div>
         `,
     }),
