@@ -26,7 +26,6 @@ import VsGrid from './vs-grid/VsGrid.vue';
 import VsHeader from './vs-header/VsHeader.vue';
 import VsImage from './vs-image/VsImage.vue';
 import VsIndexView from './vs-index-view/VsIndexView.vue';
-import VsInfiniteScroll from './vs-infinite-scroll/VsInfiniteScroll.vue';
 import VsInnerScroll from './vs-inner-scroll/VsInnerScroll.vue';
 import VsInput from './vs-input/VsInput.vue';
 import VsInputWrapper from './vs-input-wrapper/VsInputWrapper.vue';
@@ -56,6 +55,7 @@ import VsToast from './vs-toast/VsToast.vue';
 import VsToastView from './vs-toast/VsToastView.vue';
 import VsToggle from './vs-toggle/VsToggle.vue';
 import VsTooltip from './vs-tooltip/VsTooltip.vue';
+import VsVisibleRender from './vs-visible-render/VsVisibleRender.vue';
 
 export const VlossomComponents = {
     VsAccordion,
@@ -79,7 +79,6 @@ export const VlossomComponents = {
     VsHeader,
     VsImage,
     VsIndexView,
-    VsInfiniteScroll,
     VsInnerScroll,
     VsInput,
     VsInputWrapper,
@@ -109,6 +108,7 @@ export const VlossomComponents = {
     VsToastView,
     VsToggle,
     VsTooltip,
+    VsVisibleRender,
 } as const;
 
 export type VsComponentRegistry = typeof VlossomComponents;
