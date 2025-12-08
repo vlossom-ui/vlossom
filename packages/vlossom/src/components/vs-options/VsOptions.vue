@@ -1,44 +1,48 @@
 <template>
-    <div :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables" ref="optionsRef">
-        <div class="vs-options-inner">
-            <div v-if="$slots.header" class="vs-options-header">
-                <slot name="header" />
-            </div>
-            <vs-infinite-scroll class="vs-options-list" ref="infiniteScrollRef" root-margin="10px" tabindex="-1">
-                <template v-for="(group, groupIndex) in groupedOptions" :key="`group-${groupIndex}`">
-                    <div v-if="!!groupBy">
-                        <slot name="group" :group :groupIndex>
-                            <div v-if="group.name !== ''" class="vs-options-group-name">
-                                {{ group.name }}
-                            </div>
-                            <vs-divider
-                                :color-scheme="computedColorScheme"
-                                :style-set="{ horizontal: { margin: '0.2rem 0' } }"
-                            />
-                        </slot>
-                    </div>
-                    <div
-                        v-for="(option, index) in group.options"
-                        :key="`${id}-${option.id}-${index}`"
-                        :id="option.id"
-                        :class="{ 'vs-disabled': option.disabled }"
-                        :data-focusable="option.disabled ? undefined : 'option'"
-                        @mouseenter="onMouseEnter"
-                        @click.prevent.stop="handleOptionClick(option.id)"
-                    >
-                        <slot name="option" :option :index>
-                            <div class="vs-options-option">
-                                <span>{{ option.label }}</span>
-                            </div>
-                        </slot>
-                    </div>
+    <Teleport :to="targetId" v-if="isMounted">
+        <div :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables" ref="optionsRef">
+            <vs-inner-scroll>
+                <template #header v-if="$slots.header">
+                    <slot name="header" />
                 </template>
-            </vs-infinite-scroll>
-            <div v-if="$slots.footer" class="vs-options-footer">
-                <slot name="footer" />
-            </div>
+
+                <vs-visible-render class="vs-options-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
+                    <template v-for="(group, groupIndex) in groupedOptions" :key="`group-${groupIndex}`">
+                        <div v-if="!!groupBy">
+                            <slot name="group" :group :groupIndex>
+                                <div v-if="group.name !== ''" class="vs-options-group-name">
+                                    {{ group.name }}
+                                </div>
+                                <vs-divider
+                                    :color-scheme="computedColorScheme"
+                                    :style-set="{ horizontal: { margin: '0.2rem 0' } }"
+                                />
+                            </slot>
+                        </div>
+                        <div
+                            v-for="(option, index) in group.options"
+                            :key="`${id}-${option.id}-${index}`"
+                            :id="option.id"
+                            :class="{ 'vs-disabled': option.disabled }"
+                            :data-focusable="option.disabled ? undefined : 'option'"
+                            @mouseenter="onMouseEnter"
+                            @click.prevent.stop="handleOptionClick(option.id)"
+                        >
+                            <slot name="option" :option :index>
+                                <div class="vs-options-option">
+                                    <span>{{ option }}</span>
+                                </div>
+                            </slot>
+                        </div>
+                    </template>
+                </vs-visible-render>
+
+                <template #footer v-if="$slots.footer">
+                    <slot name="footer" />
+                </template>
+            </vs-inner-scroll>
         </div>
-    </div>
+    </Teleport>
 </template>
 
 <script lang="ts">
@@ -51,6 +55,7 @@ import {
     ref,
     onUnmounted,
     onMounted,
+    nextTick,
     type ComputedRef,
     type Ref,
     type TemplateRef,
@@ -60,62 +65,76 @@ import { useColorScheme, useStyleSet, useOverlay } from '@/composables';
 import { VsComponent, type OverlayCallbacks } from '@/declaration';
 import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
 
-import type { VsInfiniteScrollRef } from '@/components/vs-infinite-scroll/types';
-import VsInfiniteScroll from '@/components/vs-infinite-scroll/VsInfiniteScroll.vue';
+import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
+import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
+import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 import VsDivider from '@/components/vs-divider/VsDivider.vue';
+import { stringUtil } from '@/utils';
 
 const name = VsComponent.VsOptions;
 export default defineComponent({
     name,
-    components: { VsInfiniteScroll, VsDivider },
+    components: { VsInnerScroll, VsDivider, VsVisibleRender },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsOptionsStyleSet>(),
         ...getOptionsProps(),
         ...getGroupByProps(),
         id: { type: String, default: '' },
+        targetId: { type: String, default: 'body' },
+
+        // v-model
         modelValue: {
+            type: Boolean,
+            default: false,
+        },
+        focusIndex: {
             type: Number,
             default: -1,
         },
     },
-    emits: ['option-click', 'update:modelValue', 'key'],
+    emits: ['option-click', 'key', 'update:modelValue', 'update:focusIndex'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, id, options, groupBy, groupOrder, modelValue } = toRefs(props);
+        const { colorScheme, styleSet, id, options, groupBy, groupOrder, modelValue, focusIndex } = toRefs(props);
 
         const optionsRef: TemplateRef<HTMLElement> = useTemplateRef('optionsRef');
-        const infiniteScrollRef: TemplateRef<VsInfiniteScrollRef> = useTemplateRef('infiniteScrollRef');
+        const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
         const currentFocusableElement: Ref<HTMLElement | null> = ref(null);
 
         const { colorSchemeClass, computedColorScheme } = useColorScheme(name, colorScheme);
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
 
-        const focusableElements = computed(() => {
-            return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
-        });
+        const focusableElements: Ref<HTMLElement[]> = ref([]);
+
+        function updateFocusableElements() {
+            focusableElements.value = Array.from(
+                optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || [],
+            );
+        }
 
         function getFocusIndex(el: HTMLElement) {
             return focusableElements.value.indexOf(el);
         }
 
         // focusIndex를 v-model로 관리
-        const focusIndex = ref(modelValue.value);
-        watch(modelValue, (newValue) => {
-            focusIndex.value = newValue;
-        });
+        const innerFocusIndex = ref(focusIndex.value);
         watch(focusIndex, (newValue) => {
+            innerFocusIndex.value = newValue;
+        });
+        watch(innerFocusIndex, (newValue) => {
             emit('update:modelValue', newValue);
         });
 
         // VsOptions 전용 overlay id (VsSelect와 구분)
-        const optionsOverlayId = computed(() => `${id.value}-options-overlay`);
+        const optionsId = id.value || stringUtil.createID();
+        const optionsOverlayId = computed(() => `${optionsId}-overlay`);
         const computedCallbacks: ComputedRef<OverlayCallbacks> = computed(() => {
             return {
                 ['key-Enter']: (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const currentElement = focusableElements.value[focusIndex.value];
+                    const currentElement = focusableElements.value[innerFocusIndex.value];
                     if (!currentElement) {
                         return;
                     }
@@ -143,7 +162,7 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const currentElement = focusableElements.value[focusIndex.value];
+                    const currentElement = focusableElements.value[innerFocusIndex.value];
                     if (!currentElement) {
                         return;
                     }
@@ -162,8 +181,8 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    if (focusIndex.value > 0) {
-                        focusIndex.value = focusIndex.value - 1;
+                    if (innerFocusIndex.value > 0) {
+                        innerFocusIndex.value = innerFocusIndex.value - 1;
                     }
                 },
                 ['key-ArrowDown']: (event: KeyboardEvent) => {
@@ -171,21 +190,21 @@ export default defineComponent({
                     event.stopPropagation();
 
                     const lastIndex = focusableElements.value.length - 1;
-                    if (focusIndex.value < lastIndex) {
-                        focusIndex.value = focusIndex.value + 1;
+                    if (innerFocusIndex.value < lastIndex) {
+                        innerFocusIndex.value = innerFocusIndex.value + 1;
                     }
                 },
                 ['key-Home']: (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    focusIndex.value = 0;
+                    innerFocusIndex.value = 0;
                 },
                 ['key-End']: (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
 
                     const lastIndex = focusableElements.value.length - 1;
-                    focusIndex.value = lastIndex;
+                    innerFocusIndex.value = lastIndex;
                 },
                 ['key-Escape']: (event: KeyboardEvent) => {
                     event.preventDefault();
@@ -197,7 +216,15 @@ export default defineComponent({
                 },
             };
         });
-        const { mountOverlay, unmountOverlay } = useOverlay(optionsOverlayId, computedCallbacks);
+        const { isMounted, mountOverlay, unmountOverlay } = useOverlay(optionsOverlayId, computedCallbacks);
+
+        watch(modelValue, () => {
+            if (modelValue.value) {
+                mountOverlay();
+            } else {
+                unmountOverlay();
+            }
+        });
 
         const groupedOptions: ComputedRef<VsOptionsGroup[]> = computed(() => {
             // groupBy가 없으면 모든 옵션을 하나의 그룹으로 반환
@@ -271,6 +298,8 @@ export default defineComponent({
             return result;
         });
 
+        watch(groupedOptions, updateFocusableElements, { flush: 'post' });
+
         function onMouseEnter(event: MouseEvent) {
             const el: HTMLElement | null = event.target as HTMLElement;
             if (!el) {
@@ -278,7 +307,7 @@ export default defineComponent({
             }
             const index = getFocusIndex(el);
             if (index >= 0) {
-                focusIndex.value = index;
+                innerFocusIndex.value = index;
             }
         }
 
@@ -286,7 +315,7 @@ export default defineComponent({
             emit('option-click', optionId);
         }
 
-        watch(focusIndex, (newIndex, oldIndex) => {
+        watch(innerFocusIndex, (newIndex, oldIndex) => {
             if (oldIndex >= 0) {
                 const oldfocusableElement = focusableElements.value[oldIndex];
                 if (oldfocusableElement) {
@@ -312,18 +341,23 @@ export default defineComponent({
             }
         });
 
-        onMounted(mountOverlay);
+        onMounted(async () => {
+            mountOverlay();
+            await nextTick();
+            updateFocusableElements();
+        });
 
         onUnmounted(unmountOverlay);
 
         return {
             optionsRef,
-            infiniteScrollRef,
+            visibleRenderRef,
             colorSchemeClass,
             computedColorScheme,
             styleSetVariables,
             componentStyleSet,
             groupedOptions,
+            isMounted,
             onMouseEnter,
             handleOptionClick,
         };
