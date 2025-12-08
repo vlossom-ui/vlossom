@@ -49,11 +49,11 @@ import {
     useTemplateRef,
     watch,
     ref,
+    onUnmounted,
+    onMounted,
     type ComputedRef,
     type Ref,
     type TemplateRef,
-    onUnmounted,
-    onMounted,
 } from 'vue';
 import { getColorSchemeProps, getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet, useOverlay } from '@/composables';
@@ -90,6 +90,14 @@ export default defineComponent({
         const { colorSchemeClass, computedColorScheme } = useColorScheme(name, colorScheme);
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
 
+        const focusableElements = computed(() => {
+            return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
+        });
+
+        function getFocusIndex(el: HTMLElement) {
+            return focusableElements.value.indexOf(el);
+        }
+
         // focusIndex를 v-model로 관리
         const focusIndex = ref(modelValue.value);
         watch(modelValue, (newValue) => {
@@ -107,8 +115,7 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const focusableElements = getFocusableElements();
-                    const currentElement = focusableElements[focusIndex.value];
+                    const currentElement = focusableElements.value[focusIndex.value];
                     if (!currentElement) {
                         return;
                     }
@@ -136,8 +143,7 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const focusableElements = getFocusableElements();
-                    const currentElement = focusableElements[focusIndex.value];
+                    const currentElement = focusableElements.value[focusIndex.value];
                     if (!currentElement) {
                         return;
                     }
@@ -164,8 +170,7 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const focusableElements = getFocusableElements();
-                    const lastIndex = focusableElements.length - 1;
+                    const lastIndex = focusableElements.value.length - 1;
                     if (focusIndex.value < lastIndex) {
                         focusIndex.value = focusIndex.value + 1;
                     }
@@ -179,8 +184,7 @@ export default defineComponent({
                     event.preventDefault();
                     event.stopPropagation();
 
-                    const focusableElements = getFocusableElements();
-                    const lastIndex = focusableElements.length - 1;
+                    const lastIndex = focusableElements.value.length - 1;
                     focusIndex.value = lastIndex;
                 },
                 ['key-Escape']: (event: KeyboardEvent) => {
@@ -267,13 +271,6 @@ export default defineComponent({
             return result;
         });
 
-        function getFocusIndex(el: HTMLElement) {
-            const focusableElements: HTMLElement[] = Array.from(
-                optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || [],
-            );
-            return focusableElements.indexOf(el);
-        }
-
         function onMouseEnter(event: MouseEvent) {
             const el: HTMLElement | null = event.target as HTMLElement;
             if (!el) {
@@ -290,10 +287,8 @@ export default defineComponent({
         }
 
         watch(focusIndex, (newIndex, oldIndex) => {
-            const focusableElements = getFocusableElements();
-
             if (oldIndex >= 0) {
-                const oldfocusableElement = focusableElements[oldIndex];
+                const oldfocusableElement = focusableElements.value[oldIndex];
                 if (oldfocusableElement) {
                     oldfocusableElement.classList.remove('vs-options-option-focused');
                     const oldfocusableValue = oldfocusableElement.getAttribute('data-focusable');
@@ -304,7 +299,7 @@ export default defineComponent({
             }
 
             if (newIndex >= 0) {
-                const newfocusableElement = focusableElements[newIndex];
+                const newfocusableElement = focusableElements.value[newIndex];
                 if (newfocusableElement) {
                     newfocusableElement.classList.add('vs-options-option-focused');
                     currentFocusableElement.value = newfocusableElement;
@@ -315,14 +310,6 @@ export default defineComponent({
                     }
                 }
             }
-        });
-
-        function getFocusableElements() {
-            return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
-        }
-
-        const focusableElements = computed(() => {
-            return Array.from(optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || []);
         });
 
         onMounted(mountOverlay);
@@ -339,7 +326,6 @@ export default defineComponent({
             groupedOptions,
             onMouseEnter,
             handleOptionClick,
-            getFocusableElements,
         };
     },
 });
