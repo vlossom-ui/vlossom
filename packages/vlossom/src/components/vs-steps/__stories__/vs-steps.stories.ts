@@ -323,6 +323,24 @@ export const ResponsiveWidth: Story = {
             },
         },
     },
+    render: (args: any) => ({
+        components: { VsSteps, VsGrid },
+        setup() {
+            const currentStep = ref(1);
+            return { args, currentStep };
+        },
+        template: `
+            <vs-grid>
+                <vs-steps v-bind="args" v-model="currentStep" />
+            </vs-grid>
+            <div style="margin-top: 2rem; padding: 1rem; background-color: #f5f5f5; border-radius: 4px;">
+                <p style="margin: 0;">현재 스텝: <strong>{{ args.steps[currentStep] }}</strong></p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #666;">
+                    화면 크기를 조절하면 스텝 너비가 자동으로 변경됩니다.
+                </p>
+            </div>
+        `,
+    }),
     args: {
         steps: ['Account', 'Profile', 'Settings', 'Complete'],
         width: {
