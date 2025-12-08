@@ -95,11 +95,13 @@
     &.vs-vertical {
         @apply flex-col;
 
+        height: var(--vs-tabs-height, auto);
+
         .vs-tabs-wrap {
             @apply h-full flex-col pr-1 pb-0;
 
             .vs-tab-list {
-                @apply flex-col;
+                @apply flex-col items-stretch;
 
                 border-right: 1px solid var(--tab-border-color);
                 border-bottom: 0;
