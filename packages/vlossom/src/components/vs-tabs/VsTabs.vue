@@ -63,6 +63,7 @@ import {
     type Ref,
     type CSSProperties,
     type PropType,
+    type ComputedRef,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -71,6 +72,7 @@ import VsButton from '@/components/vs-button/VsButton.vue';
 import type { VsTabsStyleSet } from './types';
 import { vsTabsIcons } from './icons';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
+import { objectUtil, stringUtil } from '@/utils';
 
 const name = VsComponent.VsTabs;
 export default defineComponent({
@@ -80,6 +82,7 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTabsStyleSet>(),
+        height: { type: [String, Number] as PropType<string | number>, default: 'auto' },
         dense: { type: Boolean, default: false },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((tab: string, index: number) => boolean)>,
@@ -100,15 +103,20 @@ export default defineComponent({
     },
     emits: ['update:modelValue', 'change'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
+        const { colorScheme, styleSet, height, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(name, styleSet);
 
         const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<CSSProperties | null>(null);
+        const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
+            });
+        });
+        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(name, styleSet, additionalStyleSet);
 
         const {
             selectedIndex,

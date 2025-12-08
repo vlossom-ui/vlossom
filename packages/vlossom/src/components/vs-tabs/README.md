@@ -167,6 +167,21 @@ const tabs = ['Home', 'Profile', 'Settings', 'Messages'];
 </script>
 ```
 
+### 고정 Height
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" height="60px" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
 ### 그리드 시스템 (Grid)
 
 12컬럼 그리드 시스템에서 탭이 차지할 컬럼 수를 지정할 수 있습니다.
@@ -228,6 +243,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 | `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | 커스텀 스타일 설정 객체                                                        |
 | `width`         | `string \| number \| Breakpoints`                      | -        | -        | 탭 너비. 단일 값 또는 브레이크포인트 객체                                      |
 | `grid`          | `string \| number \| Breakpoints`                      | -        | -        | 12컬럼 그리드 시스템에서 차지할 컬럼 수. 단일 값 또는 브레이크포인트 객체      |
+| `height`        | `string \| number`                                     | `'auto'` | -        | 탭 높이                                                                        |
 | `dense`         | `boolean`                                              | `false`  | -        | 조밀한 스타일 적용                                                             |
 | `disabled`      | `boolean \| ((tab: string, index: number) => boolean)` | `false`  | -        | 탭 비활성화 여부. boolean이면 전체 탭에 적용되고, 함수면 각 탭마다 조건부 적용 |
 | `primary`       | `boolean`                                              | `false`  | -        | primary 색상 테마 적용                                                         |

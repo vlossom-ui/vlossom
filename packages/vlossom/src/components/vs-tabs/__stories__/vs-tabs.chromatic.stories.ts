@@ -114,6 +114,35 @@ const meta: Meta<typeof VsTabs> = {
                     </div>
                 </div>
 
+                <!-- Height 변형 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Height 변형</h3>
+                    <div style="display:flex; flex-direction: column; gap: 1rem;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">수평 - Default (auto)</p>
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">수평 - 60px</p>
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" height="60px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">수평 - 80 (숫자)</p>
+                            <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" :height="80" />
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div>
+                                <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">수직 - 200px</p>
+                                <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" vertical height="200px" />
+                            </div>
+                            <div>
+                                <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">수직 - 300px</p>
+                                <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" vertical height="300px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                  <!-- 조합 -->
                  <div>
                      <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">조합</h3>
