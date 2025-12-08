@@ -19,6 +19,7 @@
     @apply relative flex items-center gap-2 select-none;
 
     opacity: var(--vs-tabs-opacity, 1);
+    height: var(--vs-tabs-height, var(--vs-default-comp-height));
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
@@ -92,19 +93,19 @@
     }
 
     &.vs-vertical {
-        @apply flex-col items-stretch;
+        @apply flex-col;
 
         .vs-tabs-wrap {
-            @apply flex-col pr-1 pb-0;
+            @apply h-full flex-col pr-1 pb-0;
 
             .vs-tab-list {
-                @apply flex-col items-stretch;
+                @apply flex-col;
 
                 border-right: 1px solid var(--tab-border-color);
                 border-bottom: 0;
 
                 .vs-tab-item {
-                    @apply w-full justify-start text-start whitespace-normal;
+                    @apply h-auto w-full justify-start text-start whitespace-normal;
 
                     border-right: transparent;
                     border-bottom: var(--tab-border);

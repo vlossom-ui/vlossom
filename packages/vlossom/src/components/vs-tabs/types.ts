@@ -10,6 +10,6 @@ declare module 'vue' {
 export type { VsTabs };
 
 export interface VsTabsStyleSet extends BoxStyleSet {
-    height?: string;
+    height?: string | number;
     gap?: string;
 }

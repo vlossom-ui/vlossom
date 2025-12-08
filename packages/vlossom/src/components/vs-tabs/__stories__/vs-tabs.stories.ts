@@ -64,6 +64,10 @@ const meta: Meta<typeof VsTabs> = {
             control: 'text',
             description: '그리드 컬럼 수 (반응형 지원)',
         },
+        height: {
+            control: 'text',
+            description: '탭 높이',
+        },
         dense: {
             control: 'boolean',
             description: '작은 크기',
@@ -270,6 +274,65 @@ export const Width: Story = {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
         width: '300px',
     },
+};
+
+export const Height: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'height prop을 사용하여 탭의 높이를 지정할 수 있습니다. 수평 탭에서는 탭 자체의 높이를, 수직 탭에서는 전체 탭 컨테이너의 높이를 지정합니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsTabs },
+        setup() {
+            const selectedTab = ref(0);
+            return { args, selectedTab };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div>
+                    <h4 style="margin: 0 0 1rem 0; font-size: 1rem; font-weight: 600;">수평 탭</h4>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Default (auto)</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 60px</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" height="60px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 80 (숫자)</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" :height="80" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 4rem</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" height="4rem" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 1rem 0; font-size: 1rem; font-weight: 600;">수직 탭</h4>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 200px</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" vertical height="200px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 300px</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" vertical height="300px" />
+                        </div>
+                        <div>
+                            <p style="margin: 0 0 0.5rem 0; color: #666;">Height: 400 (숫자)</p>
+                            <vs-tabs v-bind="args" v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" vertical :height="400" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const Grid: Story = {

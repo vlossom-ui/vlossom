@@ -67,6 +67,47 @@ describe('VsTabs', () => {
             const responsive = wrapper.findComponent({ name: 'VsResponsive' });
             expect(responsive.props('width')).toEqual(responsiveWidth);
         });
+
+        it('height prop이 주어지면 스타일 변수로 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    height: '60px',
+                },
+            });
+
+            // then
+            const style = wrapper.vm.styleSetVariables;
+            expect(style['--vs-tabs-height']).toBe('60px');
+        });
+
+        it('height prop이 숫자로 주어지면 px 단위로 변환되어 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    height: 80,
+                },
+            });
+
+            // then
+            const style = wrapper.vm.styleSetVariables;
+            expect(style['--vs-tabs-height']).toBe('80px');
+        });
+
+        it('height prop이 주어지지 않으면 auto가 기본값이므로 스타일 변수에 포함되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                },
+            });
+
+            // then
+            const style = wrapper.vm.styleSetVariables;
+            expect(style['--vs-tabs-height']).toBeUndefined();
+        });
     });
 
     describe('props', () => {
