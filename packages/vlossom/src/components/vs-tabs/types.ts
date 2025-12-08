@@ -12,5 +12,4 @@ export type { VsTabs };
 export interface VsTabsStyleSet extends BoxStyleSet {
     height?: string;
     gap?: string;
-    tabWidth?: string;
 }

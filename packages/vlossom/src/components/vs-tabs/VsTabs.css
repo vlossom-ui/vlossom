@@ -9,7 +9,6 @@
 
     --vs-tabs-height: initial;
     --vs-tabs-gap: initial;
-    --vs-tabs-tabWidth: initial;
 
     --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     --tab-border: var(--vs-tabs-border, 1px solid transparent);
@@ -41,7 +40,6 @@
                 border-top-left-radius: var(--tab-radius);
 
                 padding: var(--vs-tabs-padding, 0 0.8rem);
-                width: var(--vs-tabs-tabWidth, auto);
 
                 color: var(--vs-font-color);
                 font-weight: var(--vs-font-weight);
