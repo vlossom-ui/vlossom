@@ -371,6 +371,24 @@ export const ResponsiveWidth: Story = {
             },
         },
     },
+    render: (args: any) => ({
+        components: { VsTabs, VsGrid },
+        setup() {
+            const selectedTab = ref(0);
+            return { args, selectedTab };
+        },
+        template: `
+            <vs-grid>
+                <vs-tabs v-bind="args" v-model="selectedTab" />
+            </vs-grid>
+            <div style="margin-top: 2rem; padding: 1rem; background-color: #f5f5f5; border-radius: 4px;">
+                <p style="margin: 0;">선택된 탭: <strong>{{ args.tabs[selectedTab] }}</strong></p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #666;">
+                    화면 크기를 조절하면 탭 너비가 자동으로 변경됩니다.
+                </p>
+            </div>
+        `,
+    }),
     args: {
         tabs: ['Home', 'Profile', 'Settings', 'Messages'],
         width: {
