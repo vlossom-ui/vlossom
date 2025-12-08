@@ -32,7 +32,7 @@
         top: calc(var(--step-size) * 0.5);
         right: var(--step-size);
         left: var(--step-size);
-        background-color: var(--vs-area-bg-active);
+        background-color: color-mix(in oklch, var(--vs-primary-comp-bg) 20%, transparent 80%);
 
         .vs-step-progress {
             @apply h-full opacity-80;
