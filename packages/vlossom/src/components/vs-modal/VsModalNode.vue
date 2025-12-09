@@ -6,7 +6,7 @@
             :style-set="componentStyleSet.dimmed"
             @click.prevent.stop="onClickDimmed"
         />
-        <vs-focus-trap ref="focusTrapRef" :focus-lock :initial-focus-ref>
+        <vs-focus-trap ref="focusTrapRef" :initial-focus-ref>
             <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
                 <slot />
             </div>

@@ -46,7 +46,7 @@ const buttonRef = ref(null);
 
 ```html
 <template>
-    <vs-focus-trap :focus-lock="false">
+    <vs-focus-trap disabled>
         <div>
             <input type="text" placeholder="내부 첫번째 포커스 요소" />
             <!-- 내부 마지막 포커스 요소에서 tab 이벤트가 트리거 되면 내부 첫번째 포커스 요소 아니라 외부 포커스 가능한 요소에 포커스 된다 -->
@@ -60,7 +60,7 @@ const buttonRef = ref(null);
 
 | Prop              | Type                  | Default | Required | Description                      |
 | ----------------- | --------------------- | ------- | -------- | -------------------------------- |
-| `focusLock`       | `boolean`             | `true`  | -        | Tab 키로 포커스 순환 활성화 여부 |
+| `disabled`        | `boolean`             | `false` | -        | Tab 키로 포커스 순환 활성화 여부 |
 | `initialFocusRef` | `HTMLElement \| null` | `null`  | -        | 컴포넌트 마운트 시 포커스할 요소 |
 
 ## Slots
@@ -80,11 +80,11 @@ const buttonRef = ref(null);
 
 - **단일 자식 요소**: 포커스 트랩은 정확히 하나의 자식 요소만을 포함해야 합니다.
 - **포커스 가능한 요소**: 내부에 포커스 가능한 요소(`button`, `input`, `a`, `[tabindex]` 등)가 있어야 정상적으로 작동합니다.
-- **키보드 순환**: `focusLock`이 `true`일 때 Tab과 Shift+Tab으로 포커스가 내부에서만 순환됩니다.
+- **키보드 순환**: Tab과 Shift+Tab으로 포커스가 내부에서만 순환됩니다. `disabled`이 `true`인 경우 키보드 순환이 비활성화 됩니다.
 
 ## 특징
 
 - **자동 포커스 관리**: 컴포넌트 마운트 시 자동으로 포커스를 설정하고, 언마운트 시 이전 포커스를 복원합니다.
 - **키보드 순환**: Tab/Shift+Tab으로 포커스가 컴포넌트 내부에서만 순환됩니다.
 - **초기 포커스 커스터마이징**: `initialFocusRef`로 첫 번째 포커스 요소를 지정할 수 있습니다.
-- **유연한 포커스 제어**: `focusLock` 속성으로 포커스 잠금을 선택적으로 비활성화할 수 있습니다.
+- **유연한 포커스 제어**: `disabled` 속성으로 포커스 잠금을 선택적으로 비활성화할 수 있습니다.

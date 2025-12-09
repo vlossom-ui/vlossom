@@ -125,13 +125,13 @@ describe('VsFocusTrap', () => {
             expect(lastFocusable.element).toBe(document.activeElement);
         });
 
-        describe('`focusLock` prop', () => {
-            it('`focusLock` prop이 false인 경우, tab 이벤트로 focus가 컴퍼넌트 내부에서 cycle되지 않는다', async () => {
+        describe('`disabled` prop', () => {
+            it('`disabled` prop이 true인 경우, tab 이벤트로 focus가 컴퍼넌트 내부에서 cycle되지 않는다', async () => {
                 // given
                 const wrapper = mountWith({ default: FocusableComponent });
                 const firstFocusable = wrapper.find('input');
                 const lastFocusable = wrapper.find('button');
-                await wrapper.setProps({ focusLock: false });
+                await wrapper.setProps({ disabled: true });
                 await nextTick();
 
                 // when
