@@ -18,16 +18,16 @@ import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import type { VsPageStyleSet } from './types';
 
-const name = VsComponent.VsPage;
+const componentName = VsComponent.VsPage;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getStyleSetProps<VsPageStyleSet>(),
     },
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { styleSetVariables } = useStyleSet<VsPageStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
 
         return {
             styleSetVariables,

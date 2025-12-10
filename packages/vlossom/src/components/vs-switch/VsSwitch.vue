@@ -60,10 +60,10 @@ import type { VsSwitchStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
-const name = VsComponent.VsSwitch;
+const componentName = VsComponent.VsSwitch;
 
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper },
     props: {
         ...getColorSchemeProps(),
@@ -107,9 +107,9 @@ export default defineComponent({
 
         const switchRef: TemplateRef<HTMLInputElement> = useTemplateRef('switchRef');
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(componentName, styleSet);
 
         const inputValue = ref(modelValue.value);
 

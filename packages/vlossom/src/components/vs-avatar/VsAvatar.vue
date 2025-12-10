@@ -11,9 +11,9 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { type VsAvatarStyleSet } from './types';
 
-const name = VsComponent.VsAvatar;
+const componentName = VsComponent.VsAvatar;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsAvatarStyleSet>(),
@@ -21,9 +21,9 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsAvatarStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsAvatarStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,

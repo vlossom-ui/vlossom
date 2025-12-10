@@ -15,9 +15,9 @@ import type { VsFooterStyleSet } from './types';
 
 import VsBar from '@/components/vs-bar/VsBar.vue';
 
-const name = VsComponent.VsFooter;
+const componentName = VsComponent.VsFooter;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsBar },
     props: {
         ...getColorSchemeProps(),
@@ -30,14 +30,14 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => {
             return objectUtil.shake({
                 position: position.value ? position.value : undefined,
                 height: height.value ? height.value : undefined,
             });
         });
-        const { componentStyleSet } = useStyleSet<VsFooterStyleSet>(name, styleSet, additionalStyleSet);
+        const { componentStyleSet } = useStyleSet<VsFooterStyleSet>(componentName, styleSet, additionalStyleSet);
         const computedStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => {
             const isPositioned = position.value && ['absolute', 'fixed', 'sticky'].includes(position.value);
             return objectUtil.shake({

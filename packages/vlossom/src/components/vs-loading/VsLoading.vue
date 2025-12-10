@@ -16,9 +16,9 @@ import { useColorScheme, useStyleSet } from '@/composables';
 import { stringUtil, objectUtil } from '@/utils';
 import type { VsLoadingStyleSet } from './types';
 
-const name = VsComponent.VsLoading;
+const componentName = VsComponent.VsLoading;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsLoadingStyleSet>(),
@@ -28,7 +28,7 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, width, height } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed(() => {
             return objectUtil.shake({
@@ -37,7 +37,7 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables } = useStyleSet(name, styleSet, additionalStyleSet);
+        const { styleSetVariables } = useStyleSet(componentName, styleSet, additionalStyleSet);
 
         return { colorSchemeClass, styleSetVariables };
     },

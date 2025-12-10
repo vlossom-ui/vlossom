@@ -10,9 +10,9 @@ import { getResponsiveProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { useResponsive } from './composables/responsive-composable';
 
-const name = VsComponent.VsResponsive;
+const componentName = VsComponent.VsResponsive;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getResponsiveProps(),
         tag: { type: String, default: 'div' },

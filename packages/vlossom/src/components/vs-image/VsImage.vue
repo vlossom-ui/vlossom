@@ -24,9 +24,9 @@ import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 import type { VsImageStyleSet } from './types';
 
-const name = VsComponent.VsImage;
+const componentName = VsComponent.VsImage;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsSkeleton },
     props: {
         ...getStyleSetProps<VsImageStyleSet>(),
@@ -40,7 +40,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, src, fallback, lazy } = toRefs(props);
 
-        const { styleSetVariables } = useStyleSet<VsImageStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsImageStyleSet>(componentName, styleSet);
 
         const vsImageRef = ref(null);
 

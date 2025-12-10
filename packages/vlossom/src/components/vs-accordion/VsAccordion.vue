@@ -27,9 +27,9 @@ import type { VsAccordionStyleSet } from './types';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';
 
-const name = VsComponent.VsAccordion;
+const componentName = VsComponent.VsAccordion;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsResponsive, VsExpandable },
     props: {
         ...getColorSchemeProps(),
@@ -46,9 +46,9 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, open, modelValue, disabled, primary } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsAccordionStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsAccordionStyleSet>(componentName, styleSet);
 
         const isOpen = ref(open.value || modelValue.value);
 

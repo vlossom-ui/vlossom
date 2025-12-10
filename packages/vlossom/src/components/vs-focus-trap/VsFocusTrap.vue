@@ -15,9 +15,9 @@ import {
 import { VsComponent } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 
-const name = VsComponent.VsFocusTrap;
+const componentName = VsComponent.VsFocusTrap;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         disabled: { type: Boolean, default: false },
         initialFocusRef: { type: Object, default: null },
@@ -142,9 +142,9 @@ export default defineComponent({
                 }
             });
 
-            const componentName = stringUtil.kebabCase(VsComponent.VsFocusTrap);
-            return h('div', { class: componentName }, [
-                h('div', { id: `${componentName}-anchor`, tabindex: -1, ref: focusTrapRef }),
+            const className = stringUtil.kebabCase(VsComponent.VsFocusTrap);
+            return h('div', { class: className }, [
+                h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapRef }),
                 cloneVNode(vNodes[0], { ref: wrapperRef }),
             ]);
         }

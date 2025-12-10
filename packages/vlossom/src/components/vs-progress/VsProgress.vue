@@ -15,9 +15,9 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { VsProgressStyleSet } from './types';
 
-const name = VsComponent.VsProgress;
+const componentName = VsComponent.VsProgress;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsProgressStyleSet>(),
@@ -42,9 +42,9 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsProgressStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsProgressStyleSet>(componentName, styleSet);
 
         const { value, max } = toRefs(props);
 

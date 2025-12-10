@@ -26,9 +26,9 @@ import type { VsModalNodeStyleSet } from './types';
 import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
 import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 
-const name = VsComponent.VsModalNode;
+const componentName = VsComponent.VsModalNode;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsDimmed, VsFocusTrap },
     props: {
         ...getColorSchemeProps(),
@@ -44,7 +44,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const modalWidthSize: Record<Size, string> = {
             xs: '20%',
@@ -90,7 +90,7 @@ export default defineComponent({
         });
 
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
-            name,
+            componentName,
             styleSet,
             additionalStyleSet,
         );

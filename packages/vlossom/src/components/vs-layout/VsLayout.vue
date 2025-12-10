@@ -9,9 +9,9 @@ import { defineComponent, provide } from 'vue';
 import { LayoutStore } from '@/stores';
 import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 
-const name = VsComponent.VsLayout;
+const componentName = VsComponent.VsLayout;
 export default defineComponent({
-    name,
+    name: componentName,
     setup() {
         const layoutStore = LayoutStore.getDefaultLayoutStore();
 

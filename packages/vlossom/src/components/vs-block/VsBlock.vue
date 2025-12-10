@@ -18,9 +18,9 @@ import type { VsBlockStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
-const name = VsComponent.VsBlock;
+const componentName = VsComponent.VsBlock;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsResponsive },
     props: {
         ...getResponsiveProps(),
@@ -29,8 +29,8 @@ export default defineComponent({
     },
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsBlockStyleSet>(name, styleSet);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { styleSetVariables } = useStyleSet<VsBlockStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,

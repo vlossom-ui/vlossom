@@ -10,9 +10,9 @@ import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import { LayoutStore } from '@/stores';
 import { objectUtil } from '@/utils';
 
-const name = VsComponent.VsContainer;
+const componentName = VsComponent.VsContainer;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         tag: { type: String, default: 'div' },
     },

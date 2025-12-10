@@ -22,9 +22,9 @@ import type { VsLabelValueStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
-const name = VsComponent.VsLabelValue;
+const componentName = VsComponent.VsLabelValue;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsResponsive },
     props: {
         ...getResponsiveProps(),
@@ -36,9 +36,9 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, dense, primary } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,

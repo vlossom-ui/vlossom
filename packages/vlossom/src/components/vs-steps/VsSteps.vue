@@ -71,9 +71,9 @@ import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
 import { objectUtil } from '@/utils';
 
-const name = VsComponent.VsSteps;
+const componentName = VsComponent.VsSteps;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsResponsive },
     props: {
         ...getResponsiveProps(),
@@ -97,7 +97,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, width, height, disabled, gap, steps, modelValue, vertical } = toRefs(props);
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const gapCount = computed(() => steps.value.length - 1);
 
@@ -110,7 +110,7 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsStepsStyleSet>(name, styleSet, additionalStyleSet);
+        const { styleSetVariables } = useStyleSet<VsStepsStyleSet>(componentName, styleSet, additionalStyleSet);
 
         const stepRefs: Ref<HTMLElement[]> = ref([]);
 

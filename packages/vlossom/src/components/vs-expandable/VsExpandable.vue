@@ -15,9 +15,9 @@ import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import type { VsExpandableStyleSet } from './types';
 
-const name = VsComponent.VsExpandable;
+const componentName = VsComponent.VsExpandable;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getStyleSetProps<VsExpandableStyleSet>(),
         open: { type: Boolean, required: true, default: false },
@@ -25,7 +25,7 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet<VsExpandableStyleSet>(name, styleSet);
+        const { componentStyleSet } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;

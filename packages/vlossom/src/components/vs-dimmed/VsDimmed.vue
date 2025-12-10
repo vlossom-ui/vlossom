@@ -12,9 +12,9 @@ import { VsComponent } from '@/declaration';
 
 import type { VsDimmedStyleSet } from './types';
 
-const name = VsComponent.VsDimmed;
+const componentName = VsComponent.VsDimmed;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getStyleSetProps<VsDimmedStyleSet>(),
 
@@ -27,7 +27,7 @@ export default defineComponent({
 
         const show = ref(modelValue.value);
 
-        const { styleSetVariables } = useStyleSet<VsDimmedStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsDimmedStyleSet>(componentName, styleSet);
 
         watch(modelValue, (value) => {
             show.value = value;

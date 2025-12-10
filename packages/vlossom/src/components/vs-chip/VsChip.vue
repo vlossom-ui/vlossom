@@ -31,9 +31,9 @@ import { closeIcon } from '@/icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsChip;
+const componentName = VsComponent.VsChip;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsRender },
     props: {
         ...getColorSchemeProps(),
@@ -47,9 +47,9 @@ export default defineComponent({
     setup(props, { slots }) {
         const { colorScheme, small, primary, outline, styleSet } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsChipStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsChipStyleSet>(componentName, styleSet);
 
         const hasIcon = computed((): boolean => !!slots['icon']);
 

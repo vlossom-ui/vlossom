@@ -53,10 +53,10 @@ import { useVsTextareaRules } from './vs-textarea-rules';
 import { propsUtil } from '@/utils';
 import type { StringModifiers } from '@/declaration';
 
-const name = VsComponent.VsTextarea;
+const componentName = VsComponent.VsTextarea;
 
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper },
     props: {
         ...getInputProps<VsTextareaValueType>(),
@@ -67,12 +67,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
         },
         min: {
             type: [Number, String],
             default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         // v-model
         modelValue: { type: String, default: '' },
@@ -104,8 +104,8 @@ export default defineComponent({
         const textareaRef: TemplateRef<HTMLTextAreaElement> = useTemplateRef('textareaRef');
         const inputValue: Ref<VsTextareaValueType> = ref(modelValue.value);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsTextareaStyleSet>(name, styleSet);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { styleSetVariables } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min);
 

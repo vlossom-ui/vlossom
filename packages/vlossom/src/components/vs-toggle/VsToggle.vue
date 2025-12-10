@@ -28,9 +28,9 @@ import type { VsToggleStyleSet } from './types';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
 
-const name = VsComponent.VsToggle;
+const componentName = VsComponent.VsToggle;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsButton },
     props: {
         ...getColorSchemeProps(),
@@ -44,9 +44,9 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, modelValue, disabled } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToggleStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToggleStyleSet>(componentName, styleSet);
 
         const isToggled = ref(modelValue.value);
 
