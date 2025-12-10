@@ -129,7 +129,7 @@ describe('VsPagination', () => {
             });
 
             // then
-            expect(wrapper.vm.selected).toBe(0);
+            expect(wrapper.vm.selectedIndex).toBe(0);
         });
 
         it('modelValue prop을 통해 초기 페이지를 설정할 수 있어야 한다', () => {
@@ -142,7 +142,38 @@ describe('VsPagination', () => {
             });
 
             // then
-            expect(wrapper.vm.selected).toBe(2);
+            expect(wrapper.vm.selectedIndex).toBe(2);
+        });
+    });
+
+    describe('disabled prop', () => {
+        it('disabled가 true이면 vs-disabled 클래스가 적용되어야 한다', () => {
+            // given & when
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    disabled: true,
+                },
+            });
+
+            // then
+            expect(wrapper.find('.vs-pagination').classes()).toContain('vs-disabled');
+        });
+
+        it('disabled가 true이면 모든 페이지 버튼이 비활성화되어야 한다', () => {
+            // given & when
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    disabled: true,
+                },
+            });
+
+            // then
+            const pageButtons = wrapper.findAll('.vs-page-button');
+            pageButtons.forEach((btn) => {
+                expect(btn.attributes('disabled')).toBeDefined();
+            });
         });
     });
 

@@ -5,7 +5,7 @@
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
             :style-set="componentStyleSet.controlButton"
-            :disabled="disabled || selected <= 0"
+            :disabled="disabled || isFirstEdge"
             :ghost
             :outline
             aria-label="go to first page"
@@ -20,7 +20,7 @@
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
             :style-set="componentStyleSet.controlButton"
-            :disabled="disabled || selected <= 0"
+            :disabled="disabled || isFirstEdge"
             :ghost
             :outline
             aria-label="go to previous page"
@@ -38,13 +38,13 @@
                 class="vs-page-button"
                 :color-scheme="computedColorScheme"
                 :style-set="componentStyleSet.pageButton"
-                :primary="page === selected + 1"
+                :primary="page === selectedIndex + 1"
                 :disabled
                 :ghost
                 :outline
                 :aria-label="`go to page ${page}`"
                 small
-                @click.prevent.stop="setPage(page - 1)"
+                @click.prevent.stop="selectIndex(page - 1)"
             >
                 <slot name="page" :page="page">
                     {{ page }}
@@ -55,7 +55,7 @@
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
             :style-set="componentStyleSet.controlButton"
-            :disabled="disabled || selected >= length - 1"
+            :disabled="disabled || isLastEdge"
             :ghost
             :outline
             aria-label="go to next page"
@@ -71,7 +71,7 @@
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
             :style-set="componentStyleSet.controlButton"
-            :disabled="disabled || selected >= length - 1"
+            :disabled="disabled || isLastEdge"
             :ghost
             :outline
             aria-label="go to last page"
@@ -88,7 +88,7 @@
 <script lang="ts">
 import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
 import { VsComponent } from '@/declaration';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
@@ -138,10 +138,8 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goFirst', 'goLast', 'goPrev', 'goNext', 'setPage'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, modelValue, length, showingLength } = toRefs(props);
-
+        const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
-
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
             componentName,
             styleSet,
@@ -150,15 +148,18 @@ export default defineComponent({
             }),
         );
 
-        const selected = ref(modelValue.value);
+        // 전체 페이지 인덱스 배열 (0-based)
+        const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
+
+        const { selectedIndex, selectIndex, isFirstEdge, isLastEdge } = useIndexSelector(pageIndexList, disabled);
 
         const pages: ComputedRef<number[]> = computed(() => {
             const pageArr: number[] = [];
             let start = 0;
             let end = 0;
             const isOdd = showingLength.value % 2;
-            const halfLess = selected.value - Math.floor(showingLength.value / 2);
-            const halfMore = selected.value + Math.floor(showingLength.value / 2);
+            const halfLess = selectedIndex.value - Math.floor(showingLength.value / 2);
+            const halfMore = selectedIndex.value + Math.floor(showingLength.value / 2);
 
             if (length.value <= showingLength.value) {
                 start = 0;
@@ -185,41 +186,38 @@ export default defineComponent({
             return pageArr;
         });
 
-        function setPage(page: number) {
-            if (page < 0) {
-                selected.value = 0;
-            } else if (page >= length.value) {
-                selected.value = length.value - 1;
-            } else {
-                selected.value = page;
-            }
-        }
-
         function goFirst() {
-            setPage(0);
+            selectIndex(0);
         }
 
         function goLast() {
-            setPage(length.value - 1);
+            selectIndex(length.value - 1);
         }
 
         function goPrev() {
-            setPage(selected.value - 1);
+            selectIndex(selectedIndex.value - 1);
         }
 
         function goNext() {
-            setPage(selected.value + 1);
+            selectIndex(selectedIndex.value + 1);
         }
 
-        watch(modelValue, setPage);
+        watch(
+            modelValue,
+            (value) => {
+                selectIndex(value);
+            },
+            { immediate: true },
+        );
 
-        watch(selected, () => {
-            emit('update:modelValue', selected.value);
-            emit('change', selected.value);
+        watch(selectedIndex, (index: number) => {
+            emit('update:modelValue', index);
+            emit('change', index);
         });
 
         watch(length, () => {
-            setPage(selected.value);
+            const currentIndex = selectedIndex.value;
+            selectIndex(currentIndex);
         });
 
         return {
@@ -228,13 +226,15 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             paginationIcons,
-            selected,
+            selectedIndex,
             pages,
             goFirst,
             goLast,
             goPrev,
             goNext,
-            setPage,
+            selectIndex,
+            isFirstEdge,
+            isLastEdge,
         };
     },
 });
