@@ -15,9 +15,9 @@ import type { VsHeaderStyleSet } from './types';
 
 import VsBar from '@/components/vs-bar/VsBar.vue';
 
-const name = VsComponent.VsHeader;
+const componentName = VsComponent.VsHeader;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsBar },
     props: {
         ...getColorSchemeProps(),
@@ -30,14 +30,14 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsHeaderStyleSet>> = computed(() => {
             return objectUtil.shake({
                 position: position.value ? position.value : undefined,
                 height: height.value ? height.value : undefined,
             });
         });
-        const { componentStyleSet } = useStyleSet<VsHeaderStyleSet>(name, styleSet, additionalStyleSet);
+        const { componentStyleSet } = useStyleSet<VsHeaderStyleSet>(componentName, styleSet, additionalStyleSet);
         const computedStyleSet: ComputedRef<VsHeaderStyleSet> = computed(() => {
             const isPositioned = position.value && ['absolute', 'fixed', 'sticky'].includes(position.value);
             return objectUtil.shake({

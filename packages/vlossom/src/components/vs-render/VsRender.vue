@@ -2,9 +2,9 @@
 import { defineComponent, h, toRefs, type Component, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
 
-const name = VsComponent.VsRender;
+const componentName = VsComponent.VsRender;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         content: {
             type: [String, Object, Function] as PropType<string | Component>,

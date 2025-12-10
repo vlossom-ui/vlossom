@@ -19,9 +19,9 @@ import {
 import { VsComponent } from '@/declaration';
 import { domUtil, logUtil, stringUtil } from '@/utils';
 
-const name = VsComponent.VsVisibleRender;
+const componentName = VsComponent.VsVisibleRender;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         disabled: { type: Boolean, default: false },
         height: { type: [String, Number] },
@@ -33,7 +33,7 @@ export default defineComponent({
             validator: (value: number) => {
                 const isValid = value >= 0 && value <= 1;
                 if (!isValid) {
-                    logUtil.propError(name, 'threshold', 'invalid threshold value');
+                    logUtil.propError(componentName, 'threshold', 'invalid threshold value');
                     return false;
                 }
                 return true;

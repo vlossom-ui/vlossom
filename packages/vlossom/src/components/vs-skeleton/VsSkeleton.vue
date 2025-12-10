@@ -14,9 +14,9 @@ import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsSkeletonStyleSet } from './types';
 
-const name = VsComponent.VsSkeleton;
+const componentName = VsComponent.VsSkeleton;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsSkeletonStyleSet>(),
@@ -24,9 +24,9 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,

@@ -69,10 +69,10 @@ import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
-const name = VsComponent.VsCheckboxSet;
+const componentName = VsComponent.VsCheckboxSet;
 
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper, VsCheckbox },
     props: {
         ...getColorSchemeProps(),
@@ -87,12 +87,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
         },
         min: {
             type: [Number, String],
             default: 0,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         vertical: { type: Boolean, default: false },
         // v-model
@@ -126,9 +126,9 @@ export default defineComponent({
 
         const checkboxRefs: TemplateRef<InstanceType<typeof VsCheckbox>[]> = ref([]);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
         const { stateClasses } = useStateClass(state);
 

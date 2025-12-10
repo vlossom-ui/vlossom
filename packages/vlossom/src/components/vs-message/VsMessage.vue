@@ -15,9 +15,9 @@ import { messageIcons } from './icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsMessage;
+const componentName = VsComponent.VsMessage;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsRender },
     props: {
         size: { type: [String, Number], default: '1rem' },

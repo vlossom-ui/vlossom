@@ -10,9 +10,9 @@ import { VsComponent } from '@/declaration';
 
 import type { VsDividerStyleSet } from './types';
 
-const name = VsComponent.VsDivider;
+const componentName = VsComponent.VsDivider;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDividerStyleSet>(),
@@ -22,9 +22,9 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, responsive, vertical } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsDividerStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsDividerStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-vertical': vertical.value,

@@ -113,10 +113,10 @@ import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import { closeIcon } from '@/icons';
 
-const name = VsComponent.VsFileDrop;
+const componentName = VsComponent.VsFileDrop;
 
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper, VsChip, VsRender },
     props: {
         ...getInputProps<FileDropValueType>(),
@@ -128,12 +128,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
         },
         min: {
             type: [Number, String],
             default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         noClear: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
@@ -171,9 +171,9 @@ export default defineComponent({
         const dragging = ref(false);
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
-            name,
+            componentName,
             styleSet,
             computed(() => ({ width: width.value, height: height.value })),
         );

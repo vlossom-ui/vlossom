@@ -70,9 +70,9 @@ import type { VsInputRef, VsInputStyleSet } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
-const name = VsComponent.VsSearchInput;
+const componentName = VsComponent.VsSearchInput;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInput, VsToggle },
     props: {
         ...getColorSchemeProps(),
@@ -99,8 +99,8 @@ export default defineComponent({
         const isCaseSensitiveOn = ref(caseSensitive.value);
         const isRegexOn = ref(regex.value);
 
-        const { computedColorScheme } = useColorScheme(name, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(name, styleSet);
+        const { computedColorScheme } = useColorScheme(componentName, colorScheme);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(componentName, styleSet);
 
         const computedStyleSet: ComputedRef<VsInputStyleSet> = computed(() => {
             return {

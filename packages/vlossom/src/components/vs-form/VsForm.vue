@@ -12,9 +12,9 @@ import { FormStore } from '@/stores';
 
 import VsGrid from '@/components/vs-grid/VsGrid.vue';
 
-const name = VsComponent.VsForm;
+const componentName = VsComponent.VsForm;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsGrid },
     props: {
         ...getGridProps(),

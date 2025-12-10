@@ -39,9 +39,9 @@ import type { VsTextWrapStyleSet } from './types';
 import { checkIcon, copyIcon, linkIcon } from './icons';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsTextWrap;
+const componentName = VsComponent.VsTextWrap;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsRender },
     props: {
         ...getStyleSetProps<VsTextWrapStyleSet>(),
@@ -53,7 +53,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, link, width } = toRefs(props);
         const { styleSetVariables } = useStyleSet<VsTextWrapStyleSet>(
-            name,
+            componentName,
             styleSet,
             computed(() => ({ width: width.value })),
         );

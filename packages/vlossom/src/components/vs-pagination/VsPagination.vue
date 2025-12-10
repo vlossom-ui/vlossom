@@ -97,9 +97,9 @@ import { paginationIcons } from './icons';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
-const name = VsComponent.VsPagination;
+const componentName = VsComponent.VsPagination;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsRender, VsButton },
     props: {
         ...getColorSchemeProps(),
@@ -114,7 +114,7 @@ export default defineComponent({
             validator: (value: number) => {
                 const isValid = value > 0;
                 if (!isValid) {
-                    logUtil.propError(name, 'length', 'length must be greater than 0');
+                    logUtil.propError(componentName, 'length', 'length must be greater than 0');
                 }
                 return isValid;
             },
@@ -126,7 +126,7 @@ export default defineComponent({
             validator: (value: number) => {
                 const isValid = value > 0;
                 if (!isValid) {
-                    logUtil.propError(name, 'showingLength', 'showingLength must be greater than 0');
+                    logUtil.propError(componentName, 'showingLength', 'showingLength must be greater than 0');
                 }
                 return isValid;
             },
@@ -140,10 +140,10 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, modelValue, length, showingLength } = toRefs(props);
 
-        const { computedColorScheme, colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
-            name,
+            componentName,
             styleSet,
             ref({
                 controlButton: { padding: '0.4rem' },

@@ -69,9 +69,9 @@ import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
 import VsFocusTrap from '@/components/vs-focus-trap/VsFocusTrap.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
-const name = VsComponent.VsDrawer;
+const componentName = VsComponent.VsDrawer;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsDimmed, VsFocusTrap, VsInnerScroll },
     props: {
         ...getColorSchemeProps(),
@@ -117,7 +117,7 @@ export default defineComponent({
             xl: '80%',
         };
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const drawerSize = computed(() => {
             if (!size.value) {
                 return DRAWER_SIZE.sm;
@@ -136,7 +136,7 @@ export default defineComponent({
         });
 
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsDrawerStyleSet>(
-            name,
+            componentName,
             styleSet,
             additionalStyleSet,
         );
