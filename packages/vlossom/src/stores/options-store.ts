@@ -28,7 +28,7 @@ export class OptionsStore {
     public radiusRatio = computed(() => this._radiusRatio.value);
 
     public setRadiusRatio(radiusRatio: number) {
-        this._radiusRatio.value = radiusRatio;
+        this._radiusRatio.value = Math.max(0, Math.min(1, radiusRatio));
     }
 
     public getComponentStyleSet<T extends { [key: string]: any }>(
