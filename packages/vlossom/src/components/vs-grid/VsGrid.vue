@@ -12,9 +12,9 @@ import { getGridProps, getStyleSetProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
 import type { VsGridStyleSet } from './types';
 
-const name = VsComponent.VsGrid;
+const componentName = VsComponent.VsGrid;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getGridProps(),
         ...getStyleSetProps<VsGridStyleSet>(),
@@ -35,7 +35,7 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables } = useStyleSet(name, styleSet, additionalStyleSet);
+        const { styleSetVariables } = useStyleSet(componentName, styleSet, additionalStyleSet);
 
         return {
             styleSetVariables,

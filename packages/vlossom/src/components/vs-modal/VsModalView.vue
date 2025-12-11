@@ -34,9 +34,9 @@ import type { ModalInfo } from '@/plugins';
 import VsModalNode from '@/components/vs-modal/VsModalNode.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsModalView;
+const componentName = VsComponent.VsModalView;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsModalNode, VsRender },
     props: {
         container: { type: String, default: 'body' },

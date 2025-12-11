@@ -26,9 +26,9 @@ import { themeDarkIcon, themeLightIcon } from './icons';
 
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
-const name = VsComponent.VsThemeButton;
+const componentName = VsComponent.VsThemeButton;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsToggle },
     props: {
         ...getColorSchemeProps(),
@@ -40,11 +40,8 @@ export default defineComponent({
         const $vs = useVlossom();
 
         const { colorScheme, styleSet } = toRefs(props);
-
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(name, styleSet);
-
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(componentName, styleSet);
         const isDarkTheme: Ref<boolean> = computed(() => $vs.theme === 'dark');
 
         function changeTheme(isDark: boolean) {

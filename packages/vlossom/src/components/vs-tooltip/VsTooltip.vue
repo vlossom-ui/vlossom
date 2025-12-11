@@ -48,9 +48,9 @@ import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { stringUtil } from '@/utils';
 import type { VsTooltipStyleSet } from './types';
 
-const name = VsComponent.VsTooltip;
+const componentName = VsComponent.VsTooltip;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTooltipStyleSet>(),
@@ -99,9 +99,9 @@ export default defineComponent({
         const triggerRef: Ref<HTMLElement | null> = ref(null);
         const tooltipRef: Ref<HTMLElement | null> = ref(null);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet);
 
         const { appendOverlayDom } = useOverlayDom();
 

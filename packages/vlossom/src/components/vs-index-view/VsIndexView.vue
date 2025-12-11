@@ -5,10 +5,10 @@ import { getResponsiveProps } from '@/props';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
-const name = VsComponent.VsIndexView;
+const componentName = VsComponent.VsIndexView;
 
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getResponsiveProps(),
         keepAlive: { type: Boolean, default: false },

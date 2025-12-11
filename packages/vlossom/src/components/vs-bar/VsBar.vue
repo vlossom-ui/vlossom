@@ -12,9 +12,9 @@ import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
 import type { VsBarStyleSet } from './types';
 
-const name = VsComponent.VsBar;
+const componentName = VsComponent.VsBar;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsBarStyleSet>(),
@@ -25,13 +25,17 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, primary, position } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsBarStyleSet>> = computed(() => {
             return objectUtil.shake({
                 position: position.value ? position.value : undefined,
             });
         });
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsBarStyleSet>(name, styleSet, additionalStyleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsBarStyleSet>(
+            componentName,
+            styleSet,
+            additionalStyleSet,
+        );
 
         const classObj = computed(() => ({
             'vs-primary': primary.value,

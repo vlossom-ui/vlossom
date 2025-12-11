@@ -6,9 +6,9 @@ import { getOverlayProps } from '@/props';
 import type { VsModalNodeStyleSet } from './types';
 import { useVlossom } from '@/framework';
 
-const name = VsComponent.VsModal;
+const componentName = VsComponent.VsModal;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),

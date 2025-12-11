@@ -21,9 +21,9 @@ import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsInnerScrollStyleSet } from './types';
 
-const name = VsComponent.VsInnerScroll;
+const componentName = VsComponent.VsInnerScroll;
 export default defineComponent({
-    name,
+    name: componentName,
     props: {
         ...getStyleSetProps<VsInnerScrollStyleSet>(),
         hideScroll: { type: Boolean, default: false },
@@ -31,7 +31,7 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { styleSetVariables } = useStyleSet(name, styleSet);
+        const { styleSetVariables } = useStyleSet(componentName, styleSet);
 
         return { styleSetVariables };
     },

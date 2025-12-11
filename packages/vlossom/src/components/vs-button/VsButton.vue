@@ -25,9 +25,9 @@ import type { VsButtonStyleSet } from './types';
 
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 
-const name = VsComponent.VsButton;
+const componentName = VsComponent.VsButton;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsLoading },
     props: {
         ...getColorSchemeProps(),
@@ -40,9 +40,9 @@ export default defineComponent({
 
         const buttonRef: TemplateRef<HTMLButtonElement> = useTemplateRef('buttonRef');
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-focusable': !disabled.value && !loading.value,

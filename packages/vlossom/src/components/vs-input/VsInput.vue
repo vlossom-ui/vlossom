@@ -79,10 +79,10 @@ import { useVsInputRules } from './vs-input-rules';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsInput;
+const componentName = VsComponent.VsInput;
 
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInputWrapper, VsRender },
     props: {
         ...getInputProps<VsInputValueType>(),
@@ -93,12 +93,12 @@ export default defineComponent({
         max: {
             type: [Number, String],
             default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'max', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
         },
         min: {
             type: [Number, String],
             default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(name, 'min', value),
+            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         noClear: { type: Boolean, default: false },
         type: { type: String as PropType<VsInputType>, default: 'text' },
@@ -138,8 +138,8 @@ export default defineComponent({
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
         const isNumberInput = computed(() => type.value === 'number');
 
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(name, styleSet);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 

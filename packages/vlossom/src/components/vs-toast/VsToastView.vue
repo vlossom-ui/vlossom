@@ -33,9 +33,9 @@ import type { ToastInfo } from '@/plugins';
 import VsToast from './VsToast.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
-const name = VsComponent.VsToastView;
+const componentName = VsComponent.VsToastView;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsToast, VsRender },
     props: {
         container: { type: String, default: 'body' },

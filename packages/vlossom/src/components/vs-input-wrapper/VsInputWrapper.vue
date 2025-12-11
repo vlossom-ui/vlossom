@@ -49,9 +49,9 @@ import type { VsInputWrapperStyleSet } from './types';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsMessage from '@/components/vs-message/VsMessage.vue';
 
-const name = VsComponent.VsInputWrapper;
+const componentName = VsComponent.VsInputWrapper;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsResponsive, VsMessage },
     props: {
         ...getResponsiveProps(),
@@ -67,7 +67,7 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet, small } = toRefs(props);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet(name, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
 
         const messageSize = computed(() => {
             if (componentStyleSet.value?.messages?.fontSize) {

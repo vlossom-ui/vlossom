@@ -74,9 +74,9 @@ import { vsTabsIcons } from './icons';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import { objectUtil, stringUtil } from '@/utils';
 
-const name = VsComponent.VsTabs;
+const componentName = VsComponent.VsTabs;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsButton, VsResponsive },
     props: {
         ...getResponsiveProps(),
@@ -105,7 +105,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, height, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
             toRefs(props);
-        const { colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
@@ -116,7 +116,7 @@ export default defineComponent({
                 height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
             });
         });
-        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(name, styleSet, additionalStyleSet);
+        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
 
         const {
             selectedIndex,

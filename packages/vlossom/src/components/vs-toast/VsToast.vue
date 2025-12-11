@@ -30,9 +30,9 @@ import type { VsToastStyleSet } from './types';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
-const name = VsComponent.VsToast;
+const componentName = VsComponent.VsToast;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsRender, VsButton },
     props: {
         ...getColorSchemeProps(),
@@ -45,9 +45,9 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, autoClose, timeout } = toRefs(props);
 
-        const { computedColorScheme, colorSchemeClass } = useColorScheme(name, colorScheme);
+        const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsToastStyleSet>(name, styleSet);
+        const { styleSetVariables } = useStyleSet<VsToastStyleSet>(componentName, styleSet);
 
         const holdToClose = ref(false);
         let timer: any = null;
