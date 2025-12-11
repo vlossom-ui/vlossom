@@ -1,6 +1,6 @@
 <template>
     <Teleport :to="targetId" v-if="isMounted">
-        <div :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables" ref="optionsRef">
+        <div ref="optionsRef" :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables">
             <vs-inner-scroll>
                 <template #header v-if="$slots.header">
                     <slot name="header" />
@@ -62,7 +62,7 @@ import {
     type PropType,
 } from 'vue';
 import { getColorSchemeProps, getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useStyleSet, useOverlay } from '@/composables';
+import { useColorScheme, useStyleSet, useOverlay, useOverlayDom, usePositioning } from '@/composables';
 import { VsComponent, type OverlayCallbacks } from '@/declaration';
 import { stringUtil } from '@/utils';
 import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
@@ -81,6 +81,7 @@ export default defineComponent({
         ...getStyleSetProps<VsOptionsStyleSet>(),
         ...getOptionsProps(),
         ...getGroupByProps(),
+        callbacks: { type: Object as PropType<OverlayCallbacks>, default: () => ({}) },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number) => boolean)>,
             default: false,
@@ -100,7 +101,8 @@ export default defineComponent({
     },
     emits: ['option-click', 'key', 'update:modelValue', 'update:focusIndex'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, id, options, groupBy, groupOrder, modelValue, focusIndex } = toRefs(props);
+        const { colorScheme, styleSet, id, targetId, options, callbacks, groupBy, groupOrder, modelValue, focusIndex } =
+            toRefs(props);
 
         const optionsRef: TemplateRef<HTMLElement> = useTemplateRef('optionsRef');
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
@@ -109,6 +111,11 @@ export default defineComponent({
         const { colorSchemeClass, computedColorScheme } = useColorScheme(name, colorScheme);
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
 
+        const { appendOverlayDom } = useOverlayDom();
+        const targetElement = document.getElementById(targetId.value);
+        const { computedPlacement, appear, disappear } = usePositioning(ref(targetElement), optionsRef);
+        const selectOverlayId = '#vs-select-overlay';
+        appendOverlayDom(document.body, selectOverlayId);
         const focusableElements: Ref<HTMLElement[]> = ref([]);
 
         function updateFocusableElements() {
@@ -145,15 +152,6 @@ export default defineComponent({
                     }
 
                     const focusableValue = currentElement.getAttribute('data-focusable');
-                    if (focusableValue === 'search-input') {
-                        // 무시 (기본 동작 허용)
-                        return;
-                    }
-
-                    if (focusableValue === 'select-all') {
-                        emit('key', event);
-                        return;
-                    }
 
                     if (focusableValue === 'option') {
                         const optionId = currentElement.id;
@@ -219,6 +217,8 @@ export default defineComponent({
                 ['key-Tab']: () => {
                     emit('key', { key: 'Tab', type: 'close' });
                 },
+
+                ...callbacks.value,
             };
         });
         const { isMounted, mountOverlay, unmountOverlay } = useOverlay(optionsOverlayId, computedCallbacks);
