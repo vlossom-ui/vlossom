@@ -6,7 +6,7 @@
             :style-set="componentStyleSet.dimmed"
             @click.prevent.stop="onClickDimmed"
         />
-        <vs-focus-trap ref="focusTrapRef" :initial-focus-ref>
+        <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef" :initial-focus-ref>
             <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
                 <slot />
             </div>
@@ -42,7 +42,7 @@ export default defineComponent({
     },
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks } = toRefs(props);
+        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -132,6 +132,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
+            focusLock,
             onClickDimmed,
         };
     },

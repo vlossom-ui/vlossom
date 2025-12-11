@@ -14,6 +14,7 @@
             />
             <vs-focus-trap
                 ref="focusTrapRef"
+                :disabled="!focusLock"
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
                 :initial-focus-ref
             >
@@ -98,6 +99,7 @@ export default defineComponent({
             dimClose,
             dimmed,
             escClose,
+            focusLock,
             fixed,
             open: initialOpen,
             modelValue,
@@ -224,6 +226,7 @@ export default defineComponent({
             onClickDimmed,
             dimmedStyleSet,
             isDimmed,
+            focusLock,
         };
     },
 });
