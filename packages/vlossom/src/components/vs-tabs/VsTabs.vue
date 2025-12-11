@@ -116,8 +116,18 @@ export default defineComponent({
                 height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
             });
         });
-        const resizeObserver = new ResizeObserver(handleResize);
         const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
+
+        function handleResize() {
+            calculateVisibleTabCount();
+            updateIndicatorPosition();
+        }
+
+        function handleDisplayChange(event: AnimationEvent) {
+            if (event.animationName === 'vs-tabs-display-check') {
+                handleResize();
+            }
+        }
 
         const {
             selectedIndex,
@@ -210,11 +220,6 @@ export default defineComponent({
             }
         }
 
-        function handleResize() {
-            calculateVisibleTabCount();
-            updateIndicatorPosition();
-        }
-
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
             calculateVisibleTabCount();
@@ -222,13 +227,13 @@ export default defineComponent({
                 updateIndicatorPosition();
             });
 
-            if (tabsWrapRef.value) {
-                resizeObserver.observe(tabsWrapRef.value);
-            }
+            tabsWrapRef.value?.addEventListener('animationstart', handleDisplayChange);
+            window.addEventListener('resize', handleResize);
         });
 
         onUnmounted(() => {
-            resizeObserver.disconnect();
+            tabsWrapRef.value?.removeEventListener('animationstart', handleDisplayChange);
+            window.removeEventListener('resize', handleResize);
         });
 
         watch(
