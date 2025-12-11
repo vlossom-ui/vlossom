@@ -3,9 +3,9 @@ import { ref, nextTick } from 'vue';
 import * as stores from '@/stores';
 import { OverlayCallbackStore } from '@/stores';
 import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
-import { useOverlay } from './../overlay-composable';
+import { useOverlayCallback } from '../overlay-callback-composable';
 
-describe('useOverlay', () => {
+describe('useOverlayCallback', () => {
     let overlayCallbackStore: OverlayCallbackStore;
 
     beforeEach(() => {
@@ -24,7 +24,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
 
             // when
-            const { isMounted, isUnmounting } = useOverlay(id, callbacks);
+            const { isMounted, isUnmounting } = useOverlayCallback(id, callbacks);
 
             // then
             expect(isMounted.value).toBe(false);
@@ -38,7 +38,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
 
             // when
-            const { overlayId } = useOverlay(id, callbacks);
+            const { overlayId } = useOverlayCallback(id, callbacks);
 
             // then
             expect(overlayId.value).toBe(testId);
@@ -50,7 +50,7 @@ describe('useOverlay', () => {
             const callbacks = ref<OverlayCallbacks>({});
 
             // when
-            const { overlayId } = useOverlay(id, callbacks);
+            const { overlayId } = useOverlayCallback(id, callbacks);
 
             // then
             expect(overlayId.value).toBeTruthy();
@@ -63,7 +63,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, mountOverlay } = useOverlay(id, callbacks);
+            const { isMounted, mountOverlay } = useOverlayCallback(id, callbacks);
 
             // when
             mountOverlay();
@@ -76,7 +76,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { mountOverlay, overlayId } = useOverlay(id, callbacks);
+            const { mountOverlay, overlayId } = useOverlayCallback(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
@@ -93,7 +93,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, mountOverlay, unmountOverlay } = useOverlay(id, callbacks);
+            const { isMounted, mountOverlay, unmountOverlay } = useOverlayCallback(id, callbacks);
             mountOverlay();
 
             // when
@@ -108,7 +108,7 @@ describe('useOverlay', () => {
             vi.useFakeTimers();
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isUnmounting, mountOverlay, unmountOverlay } = useOverlay(id, callbacks);
+            const { isUnmounting, mountOverlay, unmountOverlay } = useOverlayCallback(id, callbacks);
             mountOverlay();
             await nextTick();
 
@@ -130,7 +130,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { mountOverlay, unmountOverlay, overlayId } = useOverlay(id, callbacks);
+            const { mountOverlay, unmountOverlay, overlayId } = useOverlayCallback(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             mountOverlay();
@@ -150,7 +150,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, overlayId } = useOverlay(id, callbacks);
+            const { isMounted, overlayId } = useOverlayCallback(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
@@ -165,7 +165,7 @@ describe('useOverlay', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, overlayId } = useOverlay(id, callbacks);
+            const { isMounted, overlayId } = useOverlayCallback(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 먼저 마운트하고
@@ -188,7 +188,10 @@ describe('useOverlay', () => {
             const id = ref('lifecycle-test');
             const callbacks = ref<OverlayCallbacks>({});
 
-            const { isMounted, isUnmounting, mountOverlay, unmountOverlay, overlayId } = useOverlay(id, callbacks);
+            const { isMounted, isUnmounting, mountOverlay, unmountOverlay, overlayId } = useOverlayCallback(
+                id,
+                callbacks,
+            );
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 

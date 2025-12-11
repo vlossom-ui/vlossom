@@ -1,32 +1,21 @@
 <template>
-    <div :class="['vs-tooltip', colorSchemeClass]">
+    {{ triggerOver }}
+    {{ tooltipOver }}
+    {{ isMovingOut }}
+    {{ isClickOpened }}
+    <Teleport :to="tooltipOverlayId" v-if="isVisible">
         <div
-            ref="triggerRef"
-            class="vs-tooltip-trigger"
-            tabindex="0"
-            @mouseenter.stop="onTriggerEnter"
-            @mouseleave.stop="onTriggerLeave"
-            @click.prevent.stop="onTriggerClick"
-            @focusin.stop="onTriggerEnter"
-            @focusout.stop="onTriggerLeave"
+            ref="tooltipRef"
+            :class="['vs-tooltip', colorSchemeClass, `vs-placement-${computedPlacement}`, `vs-align-${align}`]"
+            :style="tooltipPadding"
+            @mouseenter.stop="onTooltipEnter"
+            @mouseleave.stop="onTooltipLeave"
         >
-            <slot />
-        </div>
-
-        <Teleport :to="tooltipOverlayId" v-if="isVisible">
-            <div
-                ref="tooltipRef"
-                :class="['vs-tooltip-wrap', colorSchemeClass, `vs-placement-${computedPlacement}`, `vs-align-${align}`]"
-                :style="tooltipPadding"
-                @mouseenter.stop="onTooltipEnter"
-                @mouseleave.stop="onTooltipLeave"
-            >
-                <div class="vs-tooltip-contents" :style="tooltipStyle" :class="animationClass">
-                    <slot name="tooltip" />
-                </div>
+            <div class="vs-tooltip-contents" :style="tooltipStyle" :class="animationClass">
+                <slot />
             </div>
-        </Teleport>
-    </div>
+        </div>
+    </Teleport>
 </template>
 
 <script lang="ts">
@@ -41,8 +30,9 @@ import {
     type PropType,
     type Ref,
     type ComputedRef,
+    onMounted,
 } from 'vue';
-import { useColorScheme, useStyleSet, useOverlay, useOverlayDom, usePositioning } from '@/composables';
+import { useColorScheme, useStyleSet, useOverlayCallback, useOverlayDom, usePositioning } from '@/composables';
 import { VsComponent, type Placement, type Alignment, type OverlayCallbacks } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { stringUtil } from '@/utils';
@@ -54,6 +44,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTooltipStyleSet>(),
+        targetId: { type: String, required: true, default: '' },
         align: {
             type: String as PropType<Alignment>,
             default: 'center',
@@ -75,6 +66,7 @@ export default defineComponent({
         const {
             colorScheme,
             styleSet,
+            targetId,
             align,
             placement,
             clickable,
@@ -96,7 +88,6 @@ export default defineComponent({
         // setTimeout ID를 저장해서 취소할 수 있도록 함
         let timer: any = null;
 
-        const triggerRef: Ref<HTMLElement | null> = ref(null);
         const tooltipRef: Ref<HTMLElement | null> = ref(null);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -105,10 +96,7 @@ export default defineComponent({
 
         const { appendOverlayDom } = useOverlayDom();
 
-        const { isVisible, computedPlacement, appear, disappear } = usePositioning(
-            triggerRef as Ref<HTMLElement>,
-            tooltipRef as Ref<HTMLElement>,
-        );
+        const { isVisible, computedPlacement, appear, disappear } = usePositioning(targetId.value, tooltipRef);
 
         const computedShow = computed(() => {
             if (disabled.value) {
@@ -189,7 +177,7 @@ export default defineComponent({
             };
         });
 
-        const { mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
+        const { mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
 
         function showTooltip() {
             if (timer) {
@@ -238,7 +226,7 @@ export default defineComponent({
             }
         });
 
-        watch([triggerOver, tooltipOver], () => {
+        watch([triggerOver, tooltipOver, isMovingOut], () => {
             if (!triggerOver.value && !tooltipOver.value && !isMovingOut.value) {
                 isClickOpened.value = false;
             }
@@ -275,8 +263,39 @@ export default defineComponent({
         }
 
         const tooltipOverlayId = '#vs-tooltip-overlay';
+
+        function addTargetEventListeners() {
+            const target = document.getElementById(targetId.value);
+            if (!target) {
+                return;
+            }
+
+            target.addEventListener('mouseenter', onTriggerEnter);
+            target.addEventListener('mouseleave', onTriggerLeave);
+            target.addEventListener('click', onTriggerClick);
+            target.addEventListener('focusin', onTriggerEnter);
+            target.addEventListener('focusout', onTriggerLeave);
+        }
+
+        function removeTargetEventListeners() {
+            const target = document.getElementById(targetId.value);
+            if (!target) {
+                return;
+            }
+
+            target.removeEventListener('mouseenter', onTriggerEnter);
+            target.removeEventListener('mouseleave', onTriggerLeave);
+            target.removeEventListener('click', onTriggerClick);
+            target.removeEventListener('focusin', onTriggerEnter);
+            target.removeEventListener('focusout', onTriggerLeave);
+        }
+
         onBeforeMount(() => {
             appendOverlayDom(document.body, tooltipOverlayId, { zIndex: 10000 });
+        });
+
+        onMounted(() => {
+            addTargetEventListeners();
         });
 
         onBeforeUnmount(() => {
@@ -285,13 +304,13 @@ export default defineComponent({
                 timer = null;
             }
             hideTooltip();
+            removeTargetEventListeners();
         });
 
         return {
             colorSchemeClass,
             styleSetVariables,
             animationClass,
-            triggerRef,
             tooltipRef,
             computedPlacement,
             onTriggerEnter,
@@ -303,6 +322,10 @@ export default defineComponent({
             tooltipStyle,
             tooltipPadding,
             isVisible,
+            triggerOver,
+            tooltipOver,
+            isMovingOut,
+            isClickOpened,
         };
     },
 });
