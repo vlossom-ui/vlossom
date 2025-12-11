@@ -225,13 +225,10 @@ export default defineComponent({
             if (tabsWrapRef.value) {
                 resizeObserver.observe(tabsWrapRef.value);
             }
-
-            window.addEventListener('resize', handleResize);
         });
 
         onUnmounted(() => {
             resizeObserver.disconnect();
-            window.removeEventListener('resize', handleResize);
         });
 
         watch(
