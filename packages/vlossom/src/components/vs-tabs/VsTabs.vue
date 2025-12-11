@@ -116,6 +116,7 @@ export default defineComponent({
                 height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
             });
         });
+        const resizeObserver = new ResizeObserver(handleResize);
         const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
 
         const {
@@ -220,10 +221,16 @@ export default defineComponent({
             nextTick(() => {
                 updateIndicatorPosition();
             });
+
+            if (tabsWrapRef.value) {
+                resizeObserver.observe(tabsWrapRef.value);
+            }
+
             window.addEventListener('resize', handleResize);
         });
 
         onUnmounted(() => {
+            resizeObserver.disconnect();
             window.removeEventListener('resize', handleResize);
         });
 
