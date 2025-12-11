@@ -21,13 +21,13 @@ export function useOverlayDom() {
         return overlay;
     }
 
-    function appendOverlayDom(targetElement: Element, id: string, overlayStyle: OverlayStyle = {}) {
-        const overlay = targetElement.querySelector(id);
+    function appendOverlayDom(targetElement: Element, overlayId: string, overlayStyle: OverlayStyle = {}) {
+        const overlay = targetElement.querySelector(overlayId);
         if (overlay) {
             return overlay;
         }
 
-        const newOverlay = createOverlayDom(id.replace('#', ''), overlayStyle);
+        const newOverlay = createOverlayDom(overlayId.replace('#', ''), overlayStyle);
         targetElement.appendChild(newOverlay);
         return newOverlay;
     }

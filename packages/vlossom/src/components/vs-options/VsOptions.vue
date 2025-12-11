@@ -53,23 +53,24 @@ import {
     useTemplateRef,
     watch,
     ref,
-    onUnmounted,
     onMounted,
+    onUnmounted,
     nextTick,
-    type ComputedRef,
     type Ref,
+    type ComputedRef,
     type TemplateRef,
+    type PropType,
 } from 'vue';
 import { getColorSchemeProps, getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet, useOverlay } from '@/composables';
 import { VsComponent, type OverlayCallbacks } from '@/declaration';
+import { stringUtil } from '@/utils';
 import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
 
 import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
 import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 import VsDivider from '@/components/vs-divider/VsDivider.vue';
-import { stringUtil } from '@/utils';
 
 const name = VsComponent.VsOptions;
 export default defineComponent({
@@ -80,8 +81,12 @@ export default defineComponent({
         ...getStyleSetProps<VsOptionsStyleSet>(),
         ...getOptionsProps(),
         ...getGroupByProps(),
+        disabled: {
+            type: [Boolean, Function] as PropType<boolean | ((option: any, index: number) => boolean)>,
+            default: false,
+        },
         id: { type: String, default: '' },
-        targetId: { type: String, default: 'body' },
+        targetId: { type: String, required: true, default: '' },
 
         // v-model
         modelValue: {
