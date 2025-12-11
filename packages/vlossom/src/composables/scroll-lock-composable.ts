@@ -1,5 +1,6 @@
-import { ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import { domUtil, deviceUtil } from '@/utils';
+import { useScrollLockStore } from '@/stores';
 
 interface ScrollLockState {
     overflow: string;
@@ -7,7 +8,18 @@ interface ScrollLockState {
     paddingBottom: string;
 }
 
-export function useScrollLock(element: HTMLElement | null) {
+export function useScrollLock(container: Ref<string>, overlayId: Ref<string>) {
+    const containerElement: ComputedRef<HTMLElement | null> = computed(() => {
+        const containerValue = container.value || 'body';
+        if (containerValue === 'body') {
+            return document.body;
+        }
+
+        return document.querySelector(containerValue);
+    });
+
+    const scrollLockStore = useScrollLockStore();
+
     const originalState = ref<ScrollLockState>({
         overflow: '',
         paddingRight: '0',
@@ -17,58 +29,63 @@ export function useScrollLock(element: HTMLElement | null) {
     const isNotTouchDevice = !(domUtil.isBrowser() && deviceUtil.isTouchDevice());
 
     function saveOriginalState() {
-        if (!element) {
+        if (!containerElement.value) {
             return;
         }
 
         originalState.value = {
-            overflow: element.style.overflow,
-            paddingRight: element.style.paddingRight,
-            paddingBottom: element.style.paddingBottom,
+            overflow: containerElement.value.style.overflow,
+            paddingRight: containerElement.value.style.paddingRight,
+            paddingBottom: containerElement.value.style.paddingBottom,
         };
     }
 
     function applyScrollLockStyles() {
-        if (!element) {
+        if (!containerElement.value) {
             return;
         }
 
-        element.style.overflow = 'hidden';
+        containerElement.value.style.overflow = 'hidden';
 
         if (isNotTouchDevice) {
-            if (element.scrollHeight >= element.clientHeight) {
-                element.style.paddingRight = scrollbarWidth;
+            if (containerElement.value.scrollHeight >= containerElement.value.clientHeight) {
+                containerElement.value.style.paddingRight = scrollbarWidth;
             }
-            if (element.scrollWidth >= element.clientWidth) {
-                element.style.paddingBottom = scrollbarWidth;
+            if (containerElement.value.scrollWidth >= containerElement.value.clientWidth) {
+                containerElement.value.style.paddingBottom = scrollbarWidth;
             }
         }
     }
 
     function restoreOriginalState() {
-        if (!element) {
+        if (!containerElement.value) {
             return;
         }
 
-        element.style.overflow = originalState.value.overflow;
-        element.style.paddingRight = originalState.value.paddingRight;
-        element.style.paddingBottom = originalState.value.paddingBottom;
+        containerElement.value.style.overflow = originalState.value.overflow;
+        containerElement.value.style.paddingRight = originalState.value.paddingRight;
+        containerElement.value.style.paddingBottom = originalState.value.paddingBottom;
     }
 
     function lock() {
-        if (!element) {
+        if (!containerElement.value) {
             return;
         }
 
+        scrollLockStore.add(container.value, overlayId.value);
         saveOriginalState();
         requestAnimationFrame(applyScrollLockStyles);
     }
 
     function unlock() {
-        if (!element) {
+        if (!containerElement.value) {
             return;
         }
 
+        scrollLockStore.remove(container.value, overlayId.value);
+        if (scrollLockStore.isLocked(container.value)) {
+            return;
+        }
         requestAnimationFrame(restoreOriginalState);
     }
 

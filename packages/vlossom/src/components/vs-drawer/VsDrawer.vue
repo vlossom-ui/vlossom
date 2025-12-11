@@ -14,8 +14,8 @@
             />
             <vs-focus-trap
                 ref="focusTrapRef"
-                :disabled="!focusLock"
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                :disabled="!focusLock"
             >
                 <vs-inner-scroll :hide-scroll>
                     <template #header>
@@ -38,6 +38,7 @@ import {
     getCurrentInstance,
     inject,
     onBeforeMount,
+    ref,
     toRefs,
     useTemplateRef,
     watch,
@@ -58,7 +59,7 @@ import {
     SIZES,
     type Size,
 } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -98,15 +99,17 @@ export default defineComponent({
             dimClose,
             dimmed,
             escClose,
-            focusLock,
             fixed,
             open: initialOpen,
             modelValue,
             layoutResponsive,
             placement,
+            scrollLock,
             size,
         } = toRefs(props);
 
+        const innerId = stringUtil.createID();
+        const computedId = computed(() => id.value || innerId);
         const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
         const focusTrapRef: TemplateRef<Focusable> = useTemplateRef('focusTrapRef');
         const DRAWER_SIZE: Record<Size, string> = {
@@ -163,18 +166,34 @@ export default defineComponent({
                     callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
-                        unmountOverlay();
+                        closeDrawer();
                     }
                 },
             };
         });
 
-        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
+        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
+
+        const { lock, unlock } = useScrollLock(ref('body'), computedId);
 
         function onClickDimmed() {
             emit('click-dimmed');
             if (dimClose.value) {
-                unmountOverlay();
+                closeDrawer();
+            }
+        }
+
+        function openDrawer() {
+            mountOverlay();
+            if (scrollLock.value) {
+                lock();
+            }
+        }
+
+        function closeDrawer() {
+            unmountOverlay();
+            if (scrollLock.value) {
+                unlock();
             }
         }
 
@@ -196,15 +215,15 @@ export default defineComponent({
 
         onBeforeMount(() => {
             if (initialOpen.value || modelValue.value) {
-                mountOverlay();
+                openDrawer();
             }
         });
 
         watch(isOpen, (o) => {
             if (o) {
-                mountOverlay();
+                openDrawer();
             } else {
-                unmountOverlay();
+                closeDrawer();
             }
 
             emit('update:modelValue', o);
@@ -225,7 +244,6 @@ export default defineComponent({
             onClickDimmed,
             dimmedStyleSet,
             isDimmed,
-            focusLock,
         };
     },
 });

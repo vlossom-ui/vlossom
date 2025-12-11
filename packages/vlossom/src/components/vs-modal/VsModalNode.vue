@@ -17,7 +17,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
+import { useColorScheme, useScrollLock, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { stringUtil } from '@/utils';
@@ -34,6 +34,7 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
+        container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: true },
         dimClose: { type: Boolean, default: true },
         size: {
@@ -42,7 +43,11 @@ export default defineComponent({
     },
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } = toRefs(props);
+        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, container, scrollLock, focusLock } =
+            toRefs(props);
+
+        const innerId = stringUtil.createID();
+        const computedId = computed(() => id.value || innerId);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -95,12 +100,30 @@ export default defineComponent({
             additionalStyleSet,
         );
 
+        const { lock, unlock } = useScrollLock(container, computedId);
+
+        function openModalNode() {
+            mountOverlay();
+            if (scrollLock.value) {
+                lock();
+            }
+        }
+
+        function closeModalNode() {
+            unmountOverlay();
+            if (scrollLock.value) {
+                unlock();
+            }
+        }
+
         const computedCallbacks = computed(() => {
             return {
                 ...callbacks.value,
                 [OVERLAY_CLOSE]: () => {
                     callbacks.value?.[OVERLAY_CLOSE]?.();
                     emit('close');
+
+                    closeModalNode();
                 },
                 ['key-Escape']: (event: KeyboardEvent) => {
                     event.preventDefault();
@@ -109,24 +132,23 @@ export default defineComponent({
                     callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
-                        unmountOverlay();
+                        closeModalNode();
                     }
                 },
             };
         });
-        const { mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
+
+        const { mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
 
             if (dimClose.value) {
-                unmountOverlay();
+                closeModalNode();
             }
         }
 
-        onMounted(() => {
-            mountOverlay();
-        });
+        onMounted(openModalNode);
 
         return {
             colorSchemeClass,

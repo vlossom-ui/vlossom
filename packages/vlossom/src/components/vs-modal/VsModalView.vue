@@ -7,6 +7,7 @@
                 :color-scheme="modal.colorScheme"
                 :style-set="modal.styleSet"
                 :callbacks="modal.callbacks"
+                :container
                 :dim-close="modal.dimClose"
                 :dimmed="modal.dimmed"
                 :esc-close="modal.escClose"
@@ -24,10 +25,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, watch, type ComputedRef } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, ANIMATION_DURATION } from '@/declaration';
 import { useModalContainerStore } from '@/stores';
-import { useScrollLock } from '@/composables';
 import type { ModalInfo } from '@/plugins';
 
 import VsModalNode from '@/components/vs-modal/VsModalNode.vue';
@@ -55,38 +55,11 @@ export default defineComponent({
             return containerValue === 'body';
         });
 
-        const containerElement: ComputedRef<HTMLElement | null> = computed(() => {
-            const containerValue = container.value || 'body';
-            if (containerValue === 'body') {
-                return document.body;
-            }
-
-            return document.querySelector(containerValue);
-        });
-
-        const needScrollLock = computed(() => {
-            return modals.value.some((modal) => modal.scrollLock);
-        });
-
-        watch(
-            needScrollLock,
-            (lock) => {
-                if (lock) {
-                    useScrollLock(containerElement.value).lock();
-                } else {
-                    setTimeout(() => {
-                        useScrollLock(containerElement.value).unlock();
-                    }, ANIMATION_DURATION);
-                }
-            },
-            { immediate: true },
-        );
-
         function onClose(id: string) {
             modalStore.remove(container.value, id);
         }
 
-        return { modals, isFixed, ANIMATION_DURATION, onClose, needScrollLock };
+        return { modals, isFixed, ANIMATION_DURATION, onClose };
     },
 });
 </script>
