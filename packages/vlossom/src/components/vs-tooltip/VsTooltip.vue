@@ -1,8 +1,4 @@
 <template>
-    {{ triggerOver }}
-    {{ tooltipOver }}
-    {{ isMovingOut }}
-    {{ isClickOpened }}
     <Teleport :to="tooltipOverlayId" v-if="isVisible">
         <div
             ref="tooltipRef"
@@ -322,10 +318,6 @@ export default defineComponent({
             tooltipStyle,
             tooltipPadding,
             isVisible,
-            triggerOver,
-            tooltipOver,
-            isMovingOut,
-            isClickOpened,
         };
     },
 });
