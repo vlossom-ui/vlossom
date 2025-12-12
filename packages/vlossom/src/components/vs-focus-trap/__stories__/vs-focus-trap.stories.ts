@@ -16,7 +16,7 @@ const meta: Meta<typeof VsFocusTrap> = {
         },
     },
     argTypes: {
-        focusLock: {
+        disabled: {
             control: 'boolean',
             description: 'Tab 키로 포커스 순환을 활성화할지 여부',
         },
@@ -26,7 +26,7 @@ const meta: Meta<typeof VsFocusTrap> = {
         },
     },
     args: {
-        focusLock: true,
+        disabled: false,
     },
 };
 
@@ -146,7 +146,7 @@ export const InitialFocus: Story = {
 // 포커스 잠금 비활성화
 export const NoFocusLock: Story = {
     args: {
-        focusLock: false,
+        disabled: true,
     },
     render: (args: any) => ({
         components: { VsFocusTrap },

@@ -19,11 +19,11 @@ const componentName = VsComponent.VsFocusTrap;
 export default defineComponent({
     name: componentName,
     props: {
-        focusLock: { type: Boolean, default: true },
+        disabled: { type: Boolean, default: false },
         initialFocusRef: { type: Object, default: null },
     },
     setup(props, { slots, expose }) {
-        const { focusLock, initialFocusRef } = toRefs(props);
+        const { disabled, initialFocusRef } = toRefs(props);
 
         const focusTrapRef: Ref<HTMLElement | null> = ref(null);
         const wrapperRef: Ref<HTMLElement | ComponentPublicInstance | null> = ref(null);
@@ -137,7 +137,7 @@ export default defineComponent({
             nextTick(() => {
                 deactivateCycle();
                 catchFocusables();
-                if (focusLock.value) {
+                if (!disabled.value) {
                     activateCycle();
                 }
             });
