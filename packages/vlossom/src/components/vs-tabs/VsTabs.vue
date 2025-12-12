@@ -61,7 +61,6 @@ import {
     onUnmounted,
     nextTick,
     type Ref,
-    type CSSProperties,
     type PropType,
     type ComputedRef,
 } from 'vue';
@@ -110,7 +109,7 @@ export default defineComponent({
         const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
-        const indicatorStyle = ref<CSSProperties | null>(null);
+        const indicatorStyle = ref<Record<string, string> | null>(null);
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
                 height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
