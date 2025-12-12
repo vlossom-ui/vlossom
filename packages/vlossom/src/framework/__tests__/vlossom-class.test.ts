@@ -28,7 +28,7 @@ describe('Vlossom class', () => {
                 colorScheme: { VsButton: 'red' },
                 styleSet: { myStyle: { VsButton: { border: '1px solid red' } } },
                 theme: 'dark',
-                radiusRatio: 2,
+                radiusRatio: 1,
             };
 
             // when
@@ -38,7 +38,7 @@ describe('Vlossom class', () => {
             expect(vlossom.colorScheme).toEqual({ VsButton: 'red' });
             expect(vlossom.styleSet).toEqual({ myStyle: { VsButton: { border: '1px solid red' } } });
             expect(vlossom.theme).toBe('dark');
-            expect(vlossom.radiusRatio).toBe(2);
+            expect(vlossom.radiusRatio).toBe(1);
         });
     });
 
@@ -113,13 +113,40 @@ describe('Vlossom class', () => {
 
         it('radiusRatio를 설정하고 조회할 수 있다', () => {
             // given
-            const newRatio = 1.5;
+            const newRatio = 1;
 
             // when
             vlossom.radiusRatio = newRatio;
 
             // then
             expect(vlossom.radiusRatio).toBe(newRatio);
+        });
+
+        it('radiusRatio가 1보다 크면 1로 보정된다', () => {
+            // given
+            // when
+            vlossom.radiusRatio = 2;
+
+            // then
+            expect(vlossom.radiusRatio).toBe(1);
+        });
+
+        it('radiusRatio가 0보다 작으면 0으로 보정된다', () => {
+            // given
+            // when
+            vlossom.radiusRatio = -0.5;
+
+            // then
+            expect(vlossom.radiusRatio).toBe(0);
+        });
+
+        it('radiusRatio가 0과 1 사이면 그대로 유지된다', () => {
+            // given
+            // when
+            vlossom.radiusRatio = 0.5;
+
+            // then
+            expect(vlossom.radiusRatio).toBe(0.5);
         });
     });
 
