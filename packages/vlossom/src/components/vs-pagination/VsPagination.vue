@@ -148,7 +148,6 @@ export default defineComponent({
             }),
         );
 
-        // 전체 페이지 인덱스 배열 (0-based)
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
 
         const { selectedIndex, selectIndex, isFirstEdge, isLastEdge } = useIndexSelector(pageIndexList, disabled);
