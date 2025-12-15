@@ -44,47 +44,6 @@ describe('VsFocusTrap', () => {
         expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
     });
 
-    describe('grab focus', () => {
-        describe('`initialFocusRef` prop', () => {
-            it('컴퍼넌트 내부에 존재하는 포커스 가능한 요소를 `initialFocusRef`로 지정하면, 컴퍼넌트 마운트와 동시에 해당 요소에 focus해야 한다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                const initialFocusRef = wrapper.find('input').element;
-                await wrapper.setProps({ initialFocusRef });
-                await nextTick();
-
-                // then
-                expect(initialFocusRef).toBe(document.activeElement);
-            });
-
-            it('`initialFocusRef`가 없는 경우, 마운트 직후, 시작점(anchor)이 포커스 된다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                await nextTick();
-
-                // then
-                expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
-            });
-
-            it('`initialFocusRef`가 없는 경우, 마운트 후 tab 이벤트는 브라우저 기본 동작을 따른다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                const nextFocusable = wrapper.find('input');
-                await nextTick();
-
-                const browserTabEventStub = {
-                    trigger: () => nextFocusable.element.focus(),
-                };
-
-                // when
-                browserTabEventStub.trigger();
-
-                // then
-                expect(nextFocusable.element).toBe(document.activeElement);
-            });
-        });
-    });
-
     describe('cycle tab focus', () => {
         it('포커스 가능한 마지막 요소에서 tab 이벤트가 동작하면, 첫번째 포커스 가능한 요소에 focus를 준다', async () => {
             // given

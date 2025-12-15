@@ -23,25 +23,6 @@
 </template>
 ```
 
-### 초기 포커스 요소 지정
-
-```html
-<template>
-    <vs-focus-trap :initial-focus-ref="buttonRef">
-        <div>
-            <input type="text" placeholder="입력" />
-            <!-- focus (active) -->
-            <button ref="buttonRef">포커스될 버튼</button>
-        </div>
-    </vs-focus-trap>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const buttonRef = ref(null);
-</script>
-```
-
 ### 포커스 잠금 비활성화
 
 ```html
@@ -58,10 +39,9 @@ const buttonRef = ref(null);
 
 ## Props
 
-| Prop              | Type                  | Default | Required | Description                      |
-| ----------------- | --------------------- | ------- | -------- | -------------------------------- |
-| `disabled`        | `boolean`             | `false` | -        | Tab 키로 포커스 순환 활성화 여부 |
-| `initialFocusRef` | `HTMLElement \| null` | `null`  | -        | 컴포넌트 마운트 시 포커스할 요소 |
+| Prop       | Type      | Default | Required | Description                      |
+| ---------- | --------- | ------- | -------- | -------------------------------- |
+| `disabled` | `boolean` | `false` | -        | Tab 키로 포커스 순환 활성화 여부 |
 
 ## Slots
 
@@ -86,5 +66,4 @@ const buttonRef = ref(null);
 
 - **자동 포커스 관리**: 컴포넌트 마운트 시 자동으로 포커스를 설정하고, 언마운트 시 이전 포커스를 복원합니다.
 - **키보드 순환**: Tab/Shift+Tab으로 포커스가 컴포넌트 내부에서만 순환됩니다.
-- **초기 포커스 커스터마이징**: `initialFocusRef`로 첫 번째 포커스 요소를 지정할 수 있습니다.
 - **유연한 포커스 제어**: `disabled` 속성으로 포커스 잠금을 선택적으로 비활성화할 수 있습니다.

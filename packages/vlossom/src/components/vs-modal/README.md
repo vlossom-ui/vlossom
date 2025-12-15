@@ -59,22 +59,21 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 
 ### Props
 
-| Prop              | Type                                                  | Default  | Required | Description                                         |
-| ----------------- | ----------------------------------------------------- | -------- | -------- | --------------------------------------------------- |
-| `colorScheme`     | `string`                                              | -        | -        | 모달의 색상 테마                                    |
-| `styleSet`        | `string \| VsModalNodeStyleSet`                       | -        | -        | 커스텀 스타일 설정 객체                             |
-| `container`       | `string`                                              | `'body'` | -        | 모달이 렌더링될 컨테이너 선택자 (#으로 시작하는 ID) |
-| `escClose`        | `boolean`                                             | `true`   | -        | ESC 키로 모달 닫기 기능 활성화 여부                 |
-| `size`            | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 모달 크기 설정                                      |
-| `callbacks`       | `OverlayCallbacks`                                    | `{}`     | -        | 오버레이 콜백 함수들                                |
-| `dimClose`        | `boolean`                                             | `true`   | -        | dimmed 영역 클릭 시 모달 닫기 여부                  |
-| `dimmed`          | `boolean`                                             | `false`  | -        | dimmed 배경 표시 여부                               |
-| `focusLock`       | `boolean`                                             | `false`  | -        | 포커스 잠금 기능 활성화 여부                        |
-| `hideScroll`      | `boolean`                                             | `false`  | -        | 스크롤바 숨기기 여부                                |
-| `id`              | `string`                                              | `''`     | -        | 모달 ID                                             |
-| `initialFocusRef` | `Record<string, any>`                                 | `null`   | -        | 초기 포커스 대상                                    |
-| `scrollLock`      | `boolean`                                             | `false`  | -        | 스크롤 잠금 기능 활성화 여부                        |
-| `modelValue`      | `boolean`                                             | `false`  | -        | 모달 열림/닫힘 상태 (v-model)                       |
+| Prop          | Type                                                  | Default  | Required | Description                                         |
+| ------------- | ----------------------------------------------------- | -------- | -------- | --------------------------------------------------- |
+| `colorScheme` | `string`                                              | -        | -        | 모달의 색상 테마                                    |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                       | -        | -        | 커스텀 스타일 설정 객체                             |
+| `container`   | `string`                                              | `'body'` | -        | 모달이 렌더링될 컨테이너 선택자 (#으로 시작하는 ID) |
+| `escClose`    | `boolean`                                             | `true`   | -        | ESC 키로 모달 닫기 기능 활성화 여부                 |
+| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 모달 크기 설정                                      |
+| `callbacks`   | `OverlayCallbacks`                                    | `{}`     | -        | 오버레이 콜백 함수들                                |
+| `dimClose`    | `boolean`                                             | `true`   | -        | dimmed 영역 클릭 시 모달 닫기 여부                  |
+| `dimmed`      | `boolean`                                             | `false`  | -        | dimmed 배경 표시 여부                               |
+| `focusLock`   | `boolean`                                             | `false`  | -        | 포커스 잠금 기능 활성화 여부                        |
+| `hideScroll`  | `boolean`                                             | `false`  | -        | 스크롤바 숨기기 여부                                |
+| `id`          | `string`                                              | `''`     | -        | 모달 ID                                             |
+| `scrollLock`  | `boolean`                                             | `false`  | -        | 스크롤 잠금 기능 활성화 여부                        |
+| `modelValue`  | `boolean`                                             | `false`  | -        | 모달 열림/닫힘 상태 (v-model)                       |
 
 ### Types
 
@@ -164,20 +163,19 @@ interface OverlayCallbacks<T = void> {
 
 ### Props
 
-| Prop              | Type                                                  | Default | Required | Description                         |
-| ----------------- | ----------------------------------------------------- | ------- | -------- | ----------------------------------- |
-| `colorScheme`     | `string`                                              | -       | -        | 모달의 색상 테마                    |
-| `styleSet`        | `string \| VsModalNodeStyleSet`                       | -       | -        | 커스텀 스타일 설정 객체             |
-| `escClose`        | `boolean`                                             | `true`  | -        | ESC 키로 모달 닫기 기능 활성화 여부 |
-| `size`            | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | 모달 크기 설정                      |
-| `callbacks`       | `OverlayCallbacks`                                    | `{}`    | -        | 오버레이 콜백 함수들                |
-| `dimClose`        | `boolean`                                             | `false` | -        | dimmed 영역 클릭 시 모달 닫기 여부  |
-| `dimmed`          | `boolean`                                             | `false` | -        | dimmed 배경 표시 여부               |
-| `focusLock`       | `boolean`                                             | `false` | -        | 포커스 잠금 기능 활성화 여부        |
-| `hideScroll`      | `boolean`                                             | `false` | -        | 스크롤바 숨기기 여부                |
-| `id`              | `string`                                              | `''`    | -        | 모달 ID                             |
-| `initialFocusRef` | `Record<string, any>`                                 | `null`  | -        | 초기 포커스 대상                    |
-| `scrollLock`      | `boolean`                                             | `false` | -        | 스크롤 잠금 기능 활성화 여부        |
+| Prop          | Type                                                  | Default | Required | Description                         |
+| ------------- | ----------------------------------------------------- | ------- | -------- | ----------------------------------- |
+| `colorScheme` | `string`                                              | -       | -        | 모달의 색상 테마                    |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                       | -       | -        | 커스텀 스타일 설정 객체             |
+| `escClose`    | `boolean`                                             | `true`  | -        | ESC 키로 모달 닫기 기능 활성화 여부 |
+| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | 모달 크기 설정                      |
+| `callbacks`   | `OverlayCallbacks`                                    | `{}`    | -        | 오버레이 콜백 함수들                |
+| `dimClose`    | `boolean`                                             | `false` | -        | dimmed 영역 클릭 시 모달 닫기 여부  |
+| `dimmed`      | `boolean`                                             | `false` | -        | dimmed 배경 표시 여부               |
+| `focusLock`   | `boolean`                                             | `false` | -        | 포커스 잠금 기능 활성화 여부        |
+| `hideScroll`  | `boolean`                                             | `false` | -        | 스크롤바 숨기기 여부                |
+| `id`          | `string`                                              | `''`    | -        | 모달 ID                             |
+| `scrollLock`  | `boolean`                                             | `false` | -        | 스크롤 잠금 기능 활성화 여부        |
 
 ### Types
 

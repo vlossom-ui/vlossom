@@ -16,7 +16,6 @@
                 ref="focusTrapRef"
                 :disabled="!focusLock"
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
-                :initial-focus-ref
             >
                 <vs-inner-scroll :hide-scroll>
                     <template #header>

@@ -20,10 +20,6 @@ const meta: Meta<typeof VsFocusTrap> = {
             control: 'boolean',
             description: 'Tab 키로 포커스 순환을 활성화할지 여부',
         },
-        initialFocusRef: {
-            control: false,
-            description: '컴포넌트 마운트 시 포커스할 요소의 참조',
-        },
     },
     args: {
         disabled: false,
@@ -96,7 +92,6 @@ export const InitialFocus: Story = {
             return {
                 args: {
                     ...args,
-                    initialFocusRef: confirmButtonRef,
                 },
                 confirmButtonRef,
             };
@@ -221,7 +216,6 @@ export const ModalSimulation: Story = {
             return {
                 args: {
                     ...args,
-                    initialFocusRef: closeButtonRef,
                 },
                 isModalOpen,
                 openModal,
