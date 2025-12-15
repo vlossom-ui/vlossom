@@ -20,10 +20,9 @@ export default defineComponent({
     name: componentName,
     props: {
         disabled: { type: Boolean, default: false },
-        initialFocusRef: { type: Object, default: null },
     },
     setup(props, { slots, expose }) {
-        const { disabled, initialFocusRef } = toRefs(props);
+        const { disabled } = toRefs(props);
 
         const focusTrapRef: Ref<HTMLElement | null> = ref(null);
         const wrapperRef: Ref<HTMLElement | ComponentPublicInstance | null> = ref(null);
@@ -100,9 +99,9 @@ export default defineComponent({
             }
 
             nextTick(() => {
-                if (initialFocusRef.value) {
-                    initialFocusRef.value.focus();
-                } else {
+                const isChildOfFocusTrap = previousFocused?.closest('vs-focus-trap') === focusTrapRef.value;
+                console.log('isChildOfFocusTrap', isChildOfFocusTrap);
+                if (!isChildOfFocusTrap) {
                     focusTrapRef.value?.focus();
                 }
             });
