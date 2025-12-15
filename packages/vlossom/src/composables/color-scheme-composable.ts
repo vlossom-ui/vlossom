@@ -9,7 +9,7 @@ export function useColorScheme(component: VsComponent | string, colorScheme: Ref
         () =>
             colorScheme.value ||
             optionsStore.colorScheme.value[component] ||
-            optionsStore.colorScheme.value.default ||
+            optionsStore.colorScheme.value.fallback ||
             undefined,
     );
 
