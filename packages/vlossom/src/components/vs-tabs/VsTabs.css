@@ -1,14 +1,5 @@
 @reference 'tailwindcss';
 
-@keyframes vs-tabs-display-check {
-    from {
-        opacity: 0.99;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 .vs-tabs {
     --vs-tabs-backgroundColor: initial;
     --vs-tabs-border: initial;
@@ -32,8 +23,6 @@
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
-
-        animation: vs-tabs-display-check 0.001s;
 
         .vs-tab-list {
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;

@@ -61,9 +61,9 @@ import {
     onUnmounted,
     nextTick,
     type Ref,
-    type CSSProperties,
     type PropType,
     type ComputedRef,
+    onUpdated,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -110,24 +110,13 @@ export default defineComponent({
         const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
-        const indicatorStyle = ref<CSSProperties | null>(null);
+        const indicatorStyle = ref<Record<string, string> | null>(null);
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
                 height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
             });
         });
         const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
-
-        function handleResize() {
-            calculateVisibleTabCount();
-            updateIndicatorPosition();
-        }
-
-        function handleDisplayChange(event: AnimationEvent) {
-            if (event.animationName === 'vs-tabs-display-check') {
-                handleResize();
-            }
-        }
 
         const {
             selectedIndex,
@@ -220,19 +209,28 @@ export default defineComponent({
             }
         }
 
+        function handleResize() {
+            calculateVisibleTabCount();
+            updateIndicatorPosition();
+        }
+
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
             calculateVisibleTabCount();
             nextTick(() => {
                 updateIndicatorPosition();
             });
-
-            tabsWrapRef.value?.addEventListener('animationstart', handleDisplayChange);
             window.addEventListener('resize', handleResize);
         });
 
+        onUpdated(() => {
+            calculateVisibleTabCount();
+            nextTick(() => {
+                updateIndicatorPosition();
+            });
+        });
+
         onUnmounted(() => {
-            tabsWrapRef.value?.removeEventListener('animationstart', handleDisplayChange);
             window.removeEventListener('resize', handleResize);
         });
 
