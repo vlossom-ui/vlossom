@@ -7,7 +7,7 @@ export type ColorScheme = (typeof COLORS)[number];
 
 export type Theme = 'light' | 'dark';
 
-export type GlobalColorSchemes = { default?: ColorScheme } & { [key in VsComponent]?: ColorScheme } & {
+export type GlobalColorSchemes = { [key in VsComponent]?: ColorScheme } & { fallback?: ColorScheme } & {
     [key: string]: ColorScheme;
 };
 

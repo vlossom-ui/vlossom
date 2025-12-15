@@ -6,7 +6,11 @@ export function useColorScheme(component: VsComponent | string, colorScheme: Ref
     const optionsStore = useOptionsStore();
 
     const computedColorScheme: ComputedRef<ColorScheme | undefined> = computed(
-        () => colorScheme.value || optionsStore.colorScheme.value[component] || undefined,
+        () =>
+            colorScheme.value ||
+            optionsStore.colorScheme.value[component] ||
+            optionsStore.colorScheme.value.fallback ||
+            undefined,
     );
 
     const colorSchemeClass = computed(() => `vs-color-scheme-${computedColorScheme.value || 'default'}`);
