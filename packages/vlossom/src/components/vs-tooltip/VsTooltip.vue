@@ -19,14 +19,15 @@ import {
     defineComponent,
     toRefs,
     ref,
+    useTemplateRef,
     computed,
     watch,
-    onBeforeUnmount,
     onBeforeMount,
-    type PropType,
-    type Ref,
-    type ComputedRef,
     onMounted,
+    onBeforeUnmount,
+    type PropType,
+    type ComputedRef,
+    type TemplateRef,
 } from 'vue';
 import { useColorScheme, useStyleSet, useOverlayCallback, useOverlayDom, usePositioning } from '@/composables';
 import { VsComponent, type Placement, type Alignment, type OverlayCallbacks } from '@/declaration';
@@ -84,7 +85,7 @@ export default defineComponent({
         // setTimeout ID를 저장해서 취소할 수 있도록 함
         let timer: any = null;
 
-        const tooltipRef: Ref<HTMLElement | null> = ref(null);
+        const tooltipRef: TemplateRef<HTMLElement> = useTemplateRef('tooltipRef');
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
