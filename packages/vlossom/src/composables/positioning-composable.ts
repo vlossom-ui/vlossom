@@ -1,5 +1,4 @@
-import type { Ref } from 'vue';
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, type TemplateRef, type Ref } from 'vue';
 import { domUtil, functionUtil, logUtil } from '@/utils';
 import type { Placement, Alignment } from '@/declaration';
 
@@ -10,7 +9,8 @@ export interface AttachInfo {
     followWidth?: boolean;
 }
 
-export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLElement>) {
+export function usePositioning(targetId: string, attachment: TemplateRef<HTMLElement>) {
+    const refinedTargetId = targetId.replace('#', '');
     const isVisible = ref(false);
     const computedPlacement: Ref<Exclude<Placement, 'middle'> | null> = ref(null);
     let throttledComputePosition: ((...args: any) => any) | null = null;
@@ -43,11 +43,12 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
     }
 
     function computePosition({ placement = 'top', align = 'center', margin = 0, followWidth = false }: AttachInfo) {
-        if (!target.value || !attachment.value) {
+        const target = document.getElementById(refinedTargetId);
+        if (!target || !attachment.value) {
             return;
         }
 
-        const { top, right, bottom, left, width, height } = domUtil.getClientRect(target.value);
+        const { top, right, bottom, left, width, height } = domUtil.getClientRect(target);
         const { width: attachmentWidth, height: attachmentHeight } = domUtil.getClientRect(attachment.value);
 
         // Change placements when there are no spaces in the viewport.
@@ -109,6 +110,11 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
         // for waiting the attachment to be mounted
         nextTick(() => {
             try {
+                const target = document.getElementById(refinedTargetId);
+                if (!target || !attachment.value) {
+                    return;
+                }
+
                 attachment.value.style.display = 'block';
                 attachment.value.style.position = 'absolute';
                 computePosition(attachInfo);
@@ -121,7 +127,7 @@ export function usePositioning(target: Ref<HTMLElement>, attachment: Ref<HTMLEle
                 const hasResizeObserver = window && window.ResizeObserver !== undefined;
                 if (hasResizeObserver) {
                     resizeObserver = new ResizeObserver(throttledComputePosition);
-                    resizeObserver.observe(target.value);
+                    resizeObserver.observe(target);
                     resizeObserver.observe(attachment.value);
                 }
 

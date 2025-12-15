@@ -17,7 +17,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { stringUtil } from '@/utils';
@@ -114,7 +114,7 @@ export default defineComponent({
                 },
             };
         });
-        const { mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
+        const { mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');

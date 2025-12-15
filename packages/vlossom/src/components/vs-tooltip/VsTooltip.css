@@ -11,10 +11,6 @@
     --vs-tooltip-arrowColor: initial;
     --vs-tooltip-arrowSize: initial;
 
-    @apply relative inline-flex;
-}
-
-.vs-tooltip-wrap {
     @apply pointer-events-auto absolute;
 
     .vs-tooltip-contents {

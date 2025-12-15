@@ -10,11 +10,9 @@
 
 ```html
 <template>
-    <vs-tooltip>
-        <vs-button>호버해보세요</vs-button>
-        <template #tooltip>
-            <span>이것은 툴팁입니다</span>
-        </template>
+    <vs-button id="my-button">Hover Me</vs-button>
+    <vs-tooltip target-id="my-button">
+        <span>이것은 툴팁입니다</span>
     </vs-tooltip>
 </template>
 ```
@@ -23,11 +21,9 @@
 
 ```html
 <template>
-    <vs-tooltip clickable>
-        <vs-button>클릭해보세요</vs-button>
-        <template #tooltip>
-            <span>클릭으로 열리는 툴팁입니다</span>
-        </template>
+    <vs-button id="clickable-button">Click me</vs-button>
+    <vs-tooltip target-id="clickable-button" clickable>
+        <span>클릭으로 열리는 툴팁입니다</span>
     </vs-tooltip>
 </template>
 ```
@@ -36,11 +32,9 @@
 
 ```html
 <template>
-    <vs-tooltip contents-hover>
-        <vs-button>호버해보세요</vs-button>
-        <template #tooltip>
-            <span>툴팁 내용에도 호버할 수 있습니다</span>
-        </template>
+    <vs-button id="hover-button">Hover Me</vs-button>
+    <vs-tooltip target-id="hover-button" contents-hover>
+        <span>툴팁 내용에도 호버할 수 있습니다</span>
     </vs-tooltip>
 </template>
 ```
@@ -49,11 +43,9 @@
 
 ```html
 <template>
-    <vs-tooltip clickable contents-hover>
-        <vs-button>클릭하고 호버해보세요</vs-button>
-        <template #tooltip>
-            <span>클릭으로 열리고 툴팁 내용에도 호버할 수 있습니다</span>
-        </template>
+    <vs-button id="click-hover-button">Click and Hover Me</vs-button>
+    <vs-tooltip target-id="click-hover-button" clickable contents-hover>
+        <span>클릭으로 열리고 툴팁 내용에도 호버할 수 있습니다</span>
     </vs-tooltip>
 </template>
 ```
@@ -63,25 +55,17 @@
 ```html
 <template>
     <div style="display: flex; gap: 1rem;">
-        <vs-tooltip placement="top">
-            <vs-button>Top</vs-button>
-            <template #tooltip>위쪽 툴팁</template>
-        </vs-tooltip>
+        <vs-button id="top-button">Top</vs-button>
+        <vs-tooltip target-id="top-button" placement="top">top</vs-tooltip>
 
-        <vs-tooltip placement="right">
-            <vs-button>Right</vs-button>
-            <template #tooltip>오른쪽 툴팁</template>
-        </vs-tooltip>
+        <vs-button id="right-button">Right</vs-button>
+        <vs-tooltip target-id="right-button" placement="right">right</vs-tooltip>
 
-        <vs-tooltip placement="bottom">
-            <vs-button>Bottom</vs-button>
-            <template #tooltip>아래쪽 툴팁</template>
-        </vs-tooltip>
+        <vs-button id="bottom-button">Bottom</vs-button>
+        <vs-tooltip target-id="bottom-button" placement="bottom">bottom</vs-tooltip>
 
-        <vs-tooltip placement="left">
-            <vs-button>Left</vs-button>
-            <template #tooltip>왼쪽 툴팁</template>
-        </vs-tooltip>
+        <vs-button id="left-button">Left</vs-button>
+        <vs-tooltip target-id="left-button" placement="left">left</vs-tooltip>
     </div>
 </template>
 ```
@@ -91,20 +75,14 @@
 ```html
 <template>
     <div style="display: flex; gap: 1rem;">
-        <vs-tooltip placement="top" align="start">
-            <vs-button>Start</vs-button>
-            <template #tooltip>시작 정렬</template>
-        </vs-tooltip>
+        <vs-button id="start-button">Start</vs-button>
+        <vs-tooltip target-id="start-button" placement="top" align="start">start</vs-tooltip>
 
-        <vs-tooltip placement="top" align="center">
-            <vs-button>Center</vs-button>
-            <template #tooltip>중앙 정렬</template>
-        </vs-tooltip>
+        <vs-button id="center-button">Center</vs-button>
+        <vs-tooltip target-id="center-button" placement="top" align="center">center</vs-tooltip>
 
-        <vs-tooltip placement="top" align="end">
-            <vs-button>End</vs-button>
-            <template #tooltip>끝 정렬</template>
-        </vs-tooltip>
+        <vs-button id="end-button">End</vs-button>
+        <vs-tooltip target-id="end-button" placement="top" align="end">end</vs-tooltip>
     </div>
 </template>
 ```
@@ -113,6 +91,7 @@
 
 | Prop            | Type                                     | Default    | Required | Description                  |
 | --------------- | ---------------------------------------- | ---------- | -------- | ---------------------------- |
+| `targetId`      | `string`                                 | -          | `true`   | 툴팁을 표시할 대상 요소의 id |
 | `colorScheme`   | `string`                                 | -          | -        | 툴팁의 색상 테마             |
 | `styleSet`      | `string \| VsTooltipStyleSet`            | -          | -        | 커스텀 스타일 설정 객체      |
 | `align`         | `'start' \| 'center' \| 'end'`           | `'center'` | -        | 툴팁의 정렬 방식             |
@@ -146,10 +125,9 @@ interface VsTooltipStyleSet {
 
 ## Slots
 
-| Slot      | Description      |
-| --------- | ---------------- |
-| `default` | 툴팁 트리거 요소 |
-| `tooltip` | 툴팁 내용        |
+| Slot      | Description |
+| --------- | ----------- |
+| `default` | 툴팁 내용   |
 
 ## 특징
 

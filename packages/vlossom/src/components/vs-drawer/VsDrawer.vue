@@ -59,7 +59,7 @@ import {
     SIZES,
     type Size,
 } from '@/declaration';
-import { useColorScheme, useOverlay, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -170,7 +170,7 @@ export default defineComponent({
             };
         });
 
-        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlay(id, computedCallbacks);
+        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
