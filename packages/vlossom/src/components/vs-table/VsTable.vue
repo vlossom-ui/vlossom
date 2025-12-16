@@ -5,11 +5,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent, provide, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import type { ColumnDef, VsTableStyleSet } from './types';
+import { useTable } from './composables/table-composable';
+import type { ColumnDef, Item, VsTableStyleSet } from './types';
 
 const componentName = VsComponent.VsTable;
 
@@ -23,9 +24,9 @@ export default defineComponent({
             default: () => [],
         },
         items: {
-            type: Array as PropType<Record<string, unknown>[]>,
+            type: Array as PropType<Item[]>,
             required: true,
-            validator: (value: Record<string, unknown>[]) => {
+            validator: (value: Item[]) => {
                 if (!Array.isArray(value)) {
                     logUtil.propError(componentName, 'items', 'items must be an array');
                     return false;
@@ -34,7 +35,16 @@ export default defineComponent({
             },
         },
     },
-    emits: [],
+    setup(props) {
+        const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
+        const table = useTable(props);
+
+        provide(TABLE_COMPOSABLE_TOKEN, table);
+
+        return {
+            TABLE_COMPOSABLE_TOKEN,
+        };
+    },
 });
 </script>
 
