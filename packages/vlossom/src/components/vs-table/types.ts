@@ -1,3 +1,4 @@
+import type { SizeProp, TextAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 
 declare module 'vue' {
@@ -6,15 +7,49 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableColumn {
-    key: string; //  NOTE: prop name chain처럼 dot notation 사용 가능하도록 함
-    label?: string;
-    align?: 'left' | 'center' | 'right'; // NOTE: `default: left`
-    width?: string | number;
+export interface VsTableStyleSet {}
+
+type Item = Record<string, unknown>;
+
+export interface ColumnDef<I = Item> {
+    key: string; // example: `user.firstName` for `Item` type: `{ user: { firstName: 'John' } }`
+    label: string;
     sortable?: boolean;
-    sortKey?: string; // NOTE: 값이 없으면 value[key] 기준, 값이 있을 때 value[key][sortKey] 기준
-    searchable?: boolean;
-    select?: (value: any, key: string) => any;
+    sortKey?: string;
+    align?: TextAlignment;
+    minWidth?: SizeProp;
+    maxWidth?: SizeProp;
+    width?: SizeProp;
+    transform?: (value: unknown, item: I) => unknown;
 }
 
-export interface VsTableStyleSet {}
+export interface RowDef<I = Item> {
+    id?: string | ((item: I, idx?: number, items?: I[]) => string);
+    height?: SizeProp;
+}
+
+export interface Cell {
+    tag: 'td' | 'th';
+    value: unknown; // display
+    id: string;
+    rowIdx: number;
+    colIdx: number;
+}
+
+export interface HeaderCell extends Cell {
+    tag: 'th';
+    sortable: boolean;
+}
+
+export interface BodyCell<I = Item> extends Cell {
+    tag: 'td';
+    item: I;
+}
+
+export function isColumnDef(value: unknown): value is ColumnDef {
+    return typeof value === 'object' && value !== null && 'key' in value && 'label' in value;
+}
+
+export function isColumnDefArray(value: unknown): value is ColumnDef[] {
+    return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
+}
