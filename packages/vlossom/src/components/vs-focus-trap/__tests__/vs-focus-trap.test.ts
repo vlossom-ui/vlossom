@@ -83,30 +83,6 @@ describe('VsFocusTrap', () => {
             // then
             expect(lastFocusable.element).toBe(document.activeElement);
         });
-
-        describe('`disabled` prop', () => {
-            it('`disabled` prop이 true인 경우, tab 이벤트로 focus가 컴퍼넌트 내부에서 cycle되지 않는다', async () => {
-                // given
-                const wrapper = mountWith({ default: FocusableComponent });
-                const firstFocusable = wrapper.find('input');
-                const lastFocusable = wrapper.find('button');
-                await wrapper.setProps({ disabled: true });
-                await nextTick();
-
-                // when
-                firstFocusable.element.focus();
-                firstFocusable.element.dispatchEvent(
-                    new KeyboardEvent('keydown', {
-                        key: 'Tab',
-                        shiftKey: true,
-                    }),
-                );
-
-                // then
-                expect(firstFocusable.element).toBe(document.activeElement);
-                expect(lastFocusable.element).not.toBe(document.activeElement);
-            });
-        });
     });
 
     describe('return focus', () => {

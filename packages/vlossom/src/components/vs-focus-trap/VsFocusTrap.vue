@@ -25,6 +25,7 @@ export default defineComponent({
         const { disabled } = toRefs(props);
 
         const focusTrapRef: Ref<HTMLElement | null> = ref(null);
+        const focusTrapAnchorRef: Ref<HTMLElement | null> = ref(null);
         const wrapperRef: Ref<HTMLElement | ComponentPublicInstance | null> = ref(null);
 
         const wrapperElement = computed(() => {
@@ -35,7 +36,7 @@ export default defineComponent({
             return wrapperRef.value instanceof HTMLElement ? wrapperRef.value : (wrapperRef.value.$el as HTMLElement);
         });
 
-        let previousFocused: HTMLElement | null = null;
+        const previousFocused: HTMLElement | null = document.activeElement as HTMLElement;
 
         let firstFocusable: HTMLElement | null = null;
         let lastFocusable: HTMLElement | null = null;
@@ -85,6 +86,7 @@ export default defineComponent({
                 `button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]),
                 select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])`,
             );
+
             if (!focusables.length) {
                 return;
             }
@@ -94,30 +96,32 @@ export default defineComponent({
         }
 
         function focus() {
-            if (document.activeElement) {
-                previousFocused = document.activeElement as HTMLElement;
-            }
-
             nextTick(() => {
-                const isChildOfFocusTrap = previousFocused?.closest('vs-focus-trap') === focusTrapRef.value;
-                console.log('isChildOfFocusTrap', isChildOfFocusTrap);
+                const isChildOfFocusTrap = document.activeElement?.closest('.vs-focus-trap') === focusTrapRef.value;
                 if (!isChildOfFocusTrap) {
-                    focusTrapRef.value?.focus();
+                    focusTrapAnchorRef.value?.focus();
                 }
             });
         }
 
         function blur() {
-            deactivateCycle();
-
             if (previousFocused?.focus) {
                 previousFocused.focus();
             }
         }
 
-        onMounted(focus);
+        onMounted(() => {
+            catchFocusables();
+            if (!disabled.value) {
+                activateCycle();
+            }
+            focus();
+        });
 
-        onBeforeUnmount(blur);
+        onBeforeUnmount(() => {
+            deactivateCycle();
+            blur();
+        });
 
         expose({ focus, blur });
 
@@ -133,17 +137,9 @@ export default defineComponent({
                 return vNodes;
             }
 
-            nextTick(() => {
-                deactivateCycle();
-                catchFocusables();
-                if (!disabled.value) {
-                    activateCycle();
-                }
-            });
-
             const className = stringUtil.kebabCase(VsComponent.VsFocusTrap);
-            return h('div', { class: className }, [
-                h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapRef }),
+            return h('div', { class: className, ref: focusTrapRef }, [
+                h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapAnchorRef }),
                 cloneVNode(vNodes[0], { ref: wrapperRef }),
             ]);
         }
