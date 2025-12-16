@@ -44,10 +44,10 @@
                 v-if="renderClearButton"
                 type="button"
                 class="vs-clear-button"
-                tabindex="-1"
                 aria-label="Clear"
                 :class="{ show: inputValue }"
                 :disabled="!inputValue"
+                :tabindex="!!inputValue ? 0 : -1"
                 @click.stop="clearWithFocus"
             >
                 <i :class="{ 'size-4': small, 'size-5': !small }">

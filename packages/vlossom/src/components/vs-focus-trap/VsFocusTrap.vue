@@ -46,6 +46,8 @@ export default defineComponent({
                 return;
             }
 
+            catchFocusables();
+
             if (!firstFocusable || !lastFocusable) {
                 return;
             }
@@ -64,8 +66,7 @@ export default defineComponent({
                 return;
             }
 
-            firstFocusable.addEventListener('keydown', cycleTabKey);
-            lastFocusable.addEventListener('keydown', cycleTabKey);
+            focusTrapRef.value?.addEventListener('keydown', cycleTabKey);
         }
 
         function deactivateCycle() {
@@ -73,8 +74,7 @@ export default defineComponent({
                 return;
             }
 
-            firstFocusable.removeEventListener('keydown', cycleTabKey);
-            lastFocusable.removeEventListener('keydown', cycleTabKey);
+            focusTrapRef.value?.removeEventListener('keydown', cycleTabKey);
         }
 
         function catchFocusables() {
@@ -87,12 +87,18 @@ export default defineComponent({
                 select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])`,
             );
 
-            if (!focusables.length) {
+            const shownFocusables = Array.from(focusables).filter(
+                (focusable) => focusable.style.display !== 'none' || !focusable.hasAttribute('disabled'),
+            );
+
+            if (!shownFocusables.length) {
+                firstFocusable = null;
+                lastFocusable = null;
                 return;
             }
 
-            firstFocusable = focusables[0];
-            lastFocusable = focusables[focusables.length - 1];
+            firstFocusable = shownFocusables[0];
+            lastFocusable = shownFocusables[shownFocusables.length - 1];
         }
 
         function focus() {
