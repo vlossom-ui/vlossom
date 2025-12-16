@@ -63,6 +63,7 @@ import {
     type Ref,
     type PropType,
     type ComputedRef,
+    onUpdated,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -220,6 +221,13 @@ export default defineComponent({
                 updateIndicatorPosition();
             });
             window.addEventListener('resize', handleResize);
+        });
+
+        onUpdated(() => {
+            calculateVisibleTabCount();
+            nextTick(() => {
+                updateIndicatorPosition();
+            });
         });
 
         onUnmounted(() => {
