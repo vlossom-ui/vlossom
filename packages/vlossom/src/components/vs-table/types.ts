@@ -9,10 +9,28 @@ declare module 'vue' {
 
 export interface VsTableStyleSet {}
 
-type Item = Record<string, unknown>;
+type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
+type JoinPath<T, Sep extends string, Prev extends string = ''> = string extends keyof T
+    ? string
+    : {
+          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
+              ? Join<Prev, K, Sep> | JoinPath<T[K], Sep, Join<Prev, K, Sep>>
+              : Join<Prev, K, Sep>;
+      }[Extract<keyof T, string>];
+
+/**
+ * NOTE: If T is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<T>` is `'user' | 'user.name' | 'user.name.first'`
+ */
+type DashPath<T> = JoinPath<T, '-'>;
+type DotPath<T> = JoinPath<T, '.'>;
+
+export type Item = Record<string, unknown>;
+export type ColumnKey<I = Item> = DotPath<I>;
+export type RowId = `${number}`;
+export type Tag = 'td' | 'th';
 
 export interface ColumnDef<I = Item> {
-    key: string; // example: `user.firstName` for `Item` type: `{ user: { firstName: 'John' } }`
+    key: ColumnKey<I>;
     label: string;
     sortable?: boolean;
     sortKey?: string;
@@ -24,14 +42,14 @@ export interface ColumnDef<I = Item> {
 }
 
 export interface RowDef<I = Item> {
-    id?: string | ((item: I, idx?: number, items?: I[]) => string);
+    id?: RowId | ((item: I, idx?: number, items?: I[]) => RowId);
     height?: SizeProp;
 }
 
-export interface Cell {
-    tag: 'td' | 'th';
+export interface Cell<I = Item> {
+    tag: Tag;
+    name: `${Tag}-${DashPath<ColumnKey<I>>}-${RowId}`;
     value: unknown; // display
-    id: string;
     rowIdx: number;
     colIdx: number;
 }
@@ -41,7 +59,7 @@ export interface HeaderCell extends Cell {
     sortable: boolean;
 }
 
-export interface BodyCell<I = Item> extends Cell {
+export interface BodyCell<I = Item> extends Cell<I> {
     tag: 'td';
     item: I;
 }
