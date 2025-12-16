@@ -1,6 +1,5 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef } from 'vue';
 import { domUtil, deviceUtil } from '@/utils';
-import { useScrollLockStore } from '@/stores';
 
 interface ScrollLockState {
     overflow: string;
@@ -8,24 +7,23 @@ interface ScrollLockState {
     paddingBottom: string;
 }
 
-export function useScrollLock(container: Ref<string>, overlayId: Ref<string>) {
+export function useScrollLock(container: string = 'body') {
     const containerElement: ComputedRef<HTMLElement | null> = computed(() => {
-        const containerValue = container.value || 'body';
-        if (containerValue === 'body') {
+        if (container === 'body') {
             return document.body;
         }
 
-        return document.querySelector(containerValue);
+        return document.querySelector(container);
     });
 
-    const scrollLockStore = useScrollLockStore();
+    const isLocked = ref(false);
 
     const originalState = ref<ScrollLockState>({
         overflow: '',
         paddingRight: '0',
         paddingBottom: '0',
     });
-    const scrollbarWidth = '10px';
+    const scrollbarWidth = '8px';
     const isNotTouchDevice = !(domUtil.isBrowser() && deviceUtil.isTouchDevice());
 
     function saveOriginalState() {
@@ -68,28 +66,26 @@ export function useScrollLock(container: Ref<string>, overlayId: Ref<string>) {
     }
 
     function lock() {
-        if (!containerElement.value) {
+        if (!containerElement.value || isLocked.value) {
             return;
         }
 
-        scrollLockStore.add(container.value, overlayId.value);
         saveOriginalState();
+        isLocked.value = true;
         requestAnimationFrame(applyScrollLockStyles);
     }
 
     function unlock() {
-        if (!containerElement.value) {
+        if (!containerElement.value || !isLocked.value) {
             return;
         }
 
-        scrollLockStore.remove(container.value, overlayId.value);
-        if (scrollLockStore.isLocked(container.value)) {
-            return;
-        }
+        isLocked.value = false;
         requestAnimationFrame(restoreOriginalState);
     }
 
     return {
+        isLocked,
         lock,
         unlock,
     };

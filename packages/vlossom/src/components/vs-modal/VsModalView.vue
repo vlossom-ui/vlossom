@@ -7,14 +7,12 @@
                 :color-scheme="modal.colorScheme"
                 :style-set="modal.styleSet"
                 :callbacks="modal.callbacks"
-                :container
                 :dim-close="modal.dimClose"
                 :dimmed="modal.dimmed"
                 :esc-close="modal.escClose"
                 :focus-lock="modal.focusLock"
                 :hide-scroll="modal.hideScroll"
                 :id="modal.id"
-                :scroll-lock="modal.scrollLock"
                 :size="modal.size"
                 @close="onClose(modal.id)"
             >

@@ -38,7 +38,6 @@ import {
     getCurrentInstance,
     inject,
     onBeforeMount,
-    ref,
     toRefs,
     useTemplateRef,
     watch,
@@ -59,7 +58,7 @@ import {
     SIZES,
     type Size,
 } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -104,7 +103,6 @@ export default defineComponent({
             modelValue,
             layoutResponsive,
             placement,
-            scrollLock,
             size,
         } = toRefs(props);
 
@@ -174,8 +172,6 @@ export default defineComponent({
 
         const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
 
-        const { lock, unlock } = useScrollLock(ref('body'), computedId);
-
         function onClickDimmed() {
             emit('click-dimmed');
             if (dimClose.value) {
@@ -185,16 +181,10 @@ export default defineComponent({
 
         function openDrawer() {
             mountOverlay();
-            if (scrollLock.value) {
-                lock();
-            }
         }
 
         function closeDrawer() {
             unmountOverlay();
-            if (scrollLock.value) {
-                unlock();
-            }
         }
 
         // only for vs-layout children

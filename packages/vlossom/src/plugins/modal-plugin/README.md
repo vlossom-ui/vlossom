@@ -142,7 +142,6 @@ interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
-    scrollLock?: boolean;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
 ```

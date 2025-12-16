@@ -17,7 +17,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useScrollLock, useOverlayCallback, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { stringUtil } from '@/utils';
@@ -43,8 +43,7 @@ export default defineComponent({
     },
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, container, scrollLock, focusLock } =
-            toRefs(props);
+        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } = toRefs(props);
 
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
@@ -100,20 +99,12 @@ export default defineComponent({
             additionalStyleSet,
         );
 
-        const { lock, unlock } = useScrollLock(container, computedId);
-
         function openModalNode() {
             mountOverlay();
-            if (scrollLock.value) {
-                lock();
-            }
         }
 
         function closeModalNode() {
             unmountOverlay();
-            if (scrollLock.value) {
-                unlock();
-            }
         }
 
         const computedCallbacks = computed(() => {

@@ -3,13 +3,11 @@ import { ContainerStore } from './container-store';
 import { OptionsStore } from './options-store';
 import { OverlayCallbackStore } from './overlay-callback-store';
 import { OverlayContainerStore } from './overlay-container-store';
-import { ScrollLockStore } from './scroll-lock-store';
 
 const optionsStore = new OptionsStore();
 
 const overlayCallbackStore = new OverlayCallbackStore();
 const overlayContainerStore = new OverlayContainerStore();
-const scrollLockStore = new ScrollLockStore();
 
 const modalContainerStore = new ContainerStore<ModalInfo>();
 const toastContainerStore = new ContainerStore<ToastInfo>();
@@ -28,10 +26,6 @@ export function useOverlayCallbackStore() {
 
 export function useOverlayContainerStore() {
     return overlayContainerStore;
-}
-
-export function useScrollLockStore() {
-    return scrollLockStore;
 }
 
 export function useToastContainerStore() {

@@ -72,7 +72,6 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 | `focusLock`   | `boolean`                                             | `false`  | -        | 포커스 잠금 기능 활성화 여부                        |
 | `hideScroll`  | `boolean`                                             | `false`  | -        | 스크롤바 숨기기 여부                                |
 | `id`          | `string`                                              | `''`     | -        | 모달 ID                                             |
-| `scrollLock`  | `boolean`                                             | `false`  | -        | 스크롤 잠금 기능 활성화 여부                        |
 | `modelValue`  | `boolean`                                             | `false`  | -        | 모달 열림/닫힘 상태 (v-model)                       |
 
 ### Types
@@ -175,7 +174,6 @@ interface OverlayCallbacks<T = void> {
 | `focusLock`   | `boolean`                                             | `false` | -        | 포커스 잠금 기능 활성화 여부        |
 | `hideScroll`  | `boolean`                                             | `false` | -        | 스크롤바 숨기기 여부                |
 | `id`          | `string`                                              | `''`    | -        | 모달 ID                             |
-| `scrollLock`  | `boolean`                                             | `false` | -        | 스크롤 잠금 기능 활성화 여부        |
 
 ### Types
 
@@ -256,7 +254,6 @@ interface OverlayCallbacks<T = void> {
 - **자동 렌더링**: `modal-plugin`을 통해 모달이 추가되면 자동으로 렌더링
 - **전환 효과**: `TransitionGroup`을 사용하여 모달 추가/제거 시 부드러운 애니메이션 적용
 - **고정 위치**: `container`가 `'body'`일 때 `position: fixed` 스타일 적용
-- **스크롤 잠금**: 모달의 `scrollLock` 속성이 활성화된 경우 자동으로 스크롤 잠금 처리
 
 ---
 

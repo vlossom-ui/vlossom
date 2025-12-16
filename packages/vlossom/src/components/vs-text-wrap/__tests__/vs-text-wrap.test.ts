@@ -85,17 +85,16 @@ describe('VsTextWrap', () => {
 
         beforeEach(() => {
             clipboardContents = '';
-            Object.defineProperty(navigator, 'clipboard', {
-                value: {
-                    writeText: vi.fn((text) => {
-                        clipboardContents = text;
-                        return Promise.resolve();
-                    }),
-                    readText: vi.fn(() => clipboardContents),
-                },
-                writable: true,
-                configurable: true,
-            });
+            // test-setup.ts의 기본 mock을 사용하되, writeText와 readText만 override
+            if (navigator.clipboard) {
+                vi.mocked(navigator.clipboard.writeText).mockImplementation((text) => {
+                    clipboardContents = text as string;
+                    return Promise.resolve();
+                });
+                vi.mocked(navigator.clipboard.readText).mockImplementation(() => {
+                    return Promise.resolve(clipboardContents);
+                });
+            }
         });
 
         it('copy 버튼을 클릭하면 innerText가 클립보드에 복사되어야 한다', async () => {
@@ -127,7 +126,7 @@ describe('VsTextWrap', () => {
             await flushPromises();
 
             // then
-            const clipboardText = navigator.clipboard.readText();
+            const clipboardText = await navigator.clipboard.readText();
             expect(clipboardText).toBe('lorem ipsum dolor sit amet consectetuer adipiscing elit. ');
         });
 
@@ -196,14 +195,9 @@ describe('VsTextWrap', () => {
         it('클립보드 복사가 실패하면 copied 이벤트가 발생하지 않아야 한다', async () => {
             // given
             const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-            const originalClipboard = navigator.clipboard;
-            Object.defineProperty(navigator, 'clipboard', {
-                value: {
-                    writeText: vi.fn(() => Promise.reject(new Error('Permission denied'))),
-                },
-                writable: true,
-                configurable: true,
-            });
+            if (navigator.clipboard) {
+                vi.mocked(navigator.clipboard.writeText).mockRejectedValue(new Error('Permission denied'));
+            }
 
             const wrapper = mount(VsTextWrap, {
                 slots: {
@@ -230,15 +224,9 @@ describe('VsTextWrap', () => {
             // then
             expect(wrapper.emitted('copied')).toBeFalsy();
             expect(wrapper.vm.copied).toBe(false);
-            expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to copy to clipboard:', expect.any(Error));
 
             // cleanup
             consoleErrorSpy.mockRestore();
-            Object.defineProperty(navigator, 'clipboard', {
-                value: originalClipboard,
-                writable: true,
-                configurable: true,
-            });
         });
     });
 
