@@ -9,7 +9,7 @@ import { defineComponent, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import type { ColumnDef, RowDef, VsTableStyleSet } from './types';
+import type { ColumnDef, VsTableStyleSet } from './types';
 
 const componentName = VsComponent.VsTable;
 
@@ -21,10 +21,6 @@ export default defineComponent({
         columns: {
             type: Array as PropType<ColumnDef[] | string[] | null>,
             default: () => [],
-        },
-        row: {
-            type: Object as PropType<RowDef | null>,
-            default: () => null,
         },
         items: {
             type: Array as PropType<Record<string, unknown>[]>,

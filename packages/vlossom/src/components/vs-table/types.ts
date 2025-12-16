@@ -10,7 +10,7 @@ declare module 'vue' {
 export interface VsTableStyleSet {}
 
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
-type JoinPath<T, Sep extends string, Prev extends string = ''> = string extends keyof T
+type JoinPath<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
           [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
@@ -21,8 +21,8 @@ type JoinPath<T, Sep extends string, Prev extends string = ''> = string extends 
 /**
  * NOTE: If T is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<T>` is `'user' | 'user.name' | 'user.name.first'`
  */
-type DashPath<T> = JoinPath<T, '-'>;
 type DotPath<T> = JoinPath<T, '.'>;
+type DashPath<T> = JoinPath<T, '-'>;
 
 export type Item = Record<string, unknown>;
 export type ColumnKey<I = Item> = DotPath<I>;
@@ -41,11 +41,6 @@ export interface ColumnDef<I = Item> {
     transform?: (value: unknown, item: I) => unknown;
 }
 
-export interface RowDef<I = Item> {
-    id?: RowId | ((item: I, idx?: number, items?: I[]) => RowId);
-    height?: SizeProp;
-}
-
 export interface Cell<I = Item> {
     tag: Tag;
     name: `${Tag}-${DashPath<ColumnKey<I>>}-${RowId}`;
@@ -56,7 +51,7 @@ export interface Cell<I = Item> {
 
 export interface HeaderCell extends Cell {
     tag: 'th';
-    sortable: boolean;
+    sortable?: boolean;
 }
 
 export interface BodyCell<I = Item> extends Cell<I> {
