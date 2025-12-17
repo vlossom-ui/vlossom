@@ -1,21 +1,38 @@
 <template>
-    <div class="vs-table">
-        {{ 'VsTable' }}
-    </div>
+    <table :class="['vs-table', colorSchemeClass]">
+        <caption v-if="$slots['caption']">
+            <slot name="caption" />
+        </caption>
+        <vs-table-header>
+            <template v-for="name in headerSlots" #[name]="slotData">
+                <slot :name="name" v-bind="slotData || {}" />
+            </template>
+        </vs-table-header>
+        <vs-table-body>
+            <template v-for="name in bodySlots" #[name]="slotData">
+                <slot :name="name" v-bind="slotData || {}" />
+            </template>
+        </vs-table-body>
+    </table>
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, type PropType } from 'vue';
+import { defineComponent, provide, type PropType, toRefs, computed } from 'vue';
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { useTable } from './composables/table-composable';
+import { useColorScheme } from '@/composables';
+
+import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import type { ColumnDef, Item, VsTableStyleSet } from './types';
 
+import VsTableHeader from './VsTableHeader.vue';
+import VsTableBody from './VsTableBody.vue';
 const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
+    components: { VsTableHeader, VsTableBody },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
@@ -35,14 +52,20 @@ export default defineComponent({
             },
         },
     },
-    setup(props) {
-        const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-        const table = useTable(props);
+    setup(props, { slots }) {
+        const { colorScheme } = toRefs(props);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        provide(TABLE_COMPOSABLE_TOKEN, table);
+        const table = useTable(props);
+        provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
+
+        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('th-')));
+        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('td-')));
 
         return {
-            TABLE_COMPOSABLE_TOKEN,
+            colorSchemeClass,
+            headerSlots,
+            bodySlots,
         };
     },
 });

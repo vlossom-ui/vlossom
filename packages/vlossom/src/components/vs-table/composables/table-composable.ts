@@ -1,9 +1,10 @@
-import { computed, onBeforeMount, ref, toRefs, watch } from 'vue';
+import { computed, onBeforeMount, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
 import { objectUtil } from '@/utils';
 import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import type { PropsOf, VsComponent } from '@/declaration';
 
+export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(props: PropsOf<VsComponent.VsTable>) {
     const { columns: rawColumns, items } = toRefs(props);
 
@@ -53,3 +54,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         bodyCells,
     };
 }
+
+// return type of useTable
+export type TableComposable = {
+    columns: ComputedRef<ColumnDef[] | null>;
+    headerCells: Ref<HeaderCell[]>;
+    bodyCells: Ref<BodyCell[][]>;
+};
