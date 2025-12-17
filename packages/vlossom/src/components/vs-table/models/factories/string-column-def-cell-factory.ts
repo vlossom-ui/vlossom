@@ -1,4 +1,4 @@
-import { objectUtil } from '@/utils';
+import { objectUtil, stringUtil } from '@/utils';
 import type { BodyCell, HeaderCell, Item } from '../../types';
 import { HEADER_ROW_INDEX, type TableCellFactory } from './index';
 
@@ -12,8 +12,10 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
         const tag = 'th';
         return this.columnDefs.map((headerKey: string, idx: number) => ({
             tag,
-            name: `${tag}-${headerKey.replace('.', '-')}-${HEADER_ROW_INDEX}`,
+            id: `${stringUtil.kebabCase(headerKey)}-item-${HEADER_ROW_INDEX}`,
             value: headerKey,
+            colKey: headerKey,
+            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
             sortable: true,
@@ -23,11 +25,15 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
+            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
+
             return this.columnDefs.map((headerKey: string, colIdx: number) => ({
                 tag,
-                name: `${tag}-${headerKey.replace('.', '-')}-${rowIdx}`,
+                id: `${stringUtil.kebabCase(headerKey)}-${rowKey}`,
                 value: objectUtil.get(item, headerKey),
                 item,
+                colKey: headerKey,
+                rowKey,
                 colIdx,
                 rowIdx,
             }));

@@ -1,6 +1,6 @@
-import { objectUtil } from '@/utils';
-import { HEADER_ROW_INDEX, type TableCellFactory } from '.';
+import { objectUtil, stringUtil } from '@/utils';
 import type { BodyCell, ColumnDef, HeaderCell, Item } from '../../types';
+import { HEADER_ROW_INDEX, type TableCellFactory } from './index';
 
 export default class ObjectColumnDefCellFactory implements TableCellFactory {
     public constructor(
@@ -13,8 +13,10 @@ export default class ObjectColumnDefCellFactory implements TableCellFactory {
         return this.columnDefs.map((header: ColumnDef, idx: number) => ({
             ...header,
             tag,
-            name: `${tag}-${header.key.replace('.', '-')}-${HEADER_ROW_INDEX}`,
+            id: `${stringUtil.kebabCase(header.key)}-item-${HEADER_ROW_INDEX}`,
             value: header.label,
+            colKey: header.key,
+            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
         }));
@@ -23,11 +25,15 @@ export default class ObjectColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
+            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
+
             return this.columnDefs.map((header: ColumnDef, colIdx: number) => ({
                 tag,
-                name: `${tag}-${header.key.replace('.', '-')}-${rowIdx}`,
+                id: `${stringUtil.kebabCase(header.key)}-${rowKey}`,
                 value: objectUtil.get(item, header.key),
                 item,
+                colKey: header.key,
+                rowKey,
                 colIdx,
                 rowIdx,
             }));

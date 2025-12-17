@@ -10,23 +10,21 @@ declare module 'vue' {
 export interface VsTableStyleSet {}
 
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
-type JoinPath<T, Sep extends string, Prev extends string = ''> = keyof T extends never
+type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
           [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
-              ? Join<Prev, K, Sep> | JoinPath<T[K], Sep, Join<Prev, K, Sep>>
+              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
               : Join<Prev, K, Sep>;
       }[Extract<keyof T, string>];
+
+type JoinDotField<T> = JoinField<T, '.'>;
 
 /**
  * NOTE: If T is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<T>` is `'user' | 'user.name' | 'user.name.first'`
  */
-type DotPath<T> = JoinPath<T, '.'>;
-type DashPath<T> = JoinPath<T, '-'>;
-
+export type ColumnKey<I = Item> = JoinDotField<I>;
 export type Item = Record<string, unknown>;
-export type ColumnKey<I = Item> = DotPath<I>;
-export type RowId = `${number}`;
 export type Tag = 'td' | 'th';
 
 export interface ColumnDef<I = Item> {
@@ -43,8 +41,10 @@ export interface ColumnDef<I = Item> {
 
 export interface Cell<I = Item> {
     tag: Tag;
-    name: `${Tag}-${DashPath<ColumnKey<I>>}-${RowId}`;
+    id: string;
     value: unknown; // display
+    colKey: ColumnKey<I>;
+    rowKey: string;
     rowIdx: number;
     colIdx: number;
 }

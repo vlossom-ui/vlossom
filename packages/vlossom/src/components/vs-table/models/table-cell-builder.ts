@@ -1,5 +1,5 @@
 import { objectUtil } from '@/utils';
-import type { BodyCell, ColumnDef, HeaderCell } from '../types';
+import type { BodyCell, Cell, ColumnDef, HeaderCell } from '../types';
 import { isColumnDefArray } from '../types';
 import {
     NoColumnDefCellFactory,
@@ -15,10 +15,6 @@ export class TableCellBuilder {
         private items: Record<string, unknown>[],
         private columnDefs: ColumnDef[] | string[] | null,
     ) {
-        this.initialize();
-    }
-
-    private initialize(): void {
         this.cellFactory = this.getCellFactory();
     }
 
@@ -50,9 +46,9 @@ export class TableCellBuilder {
         return this;
     }
 
-    public build(): { headerCells: HeaderCell[]; bodyCells: BodyCell[][] } {
-        const headerCells = this.cellFactory.createHeaderCell();
-        const bodyCells = this.cellFactory.createBodyCell();
-        return { headerCells, bodyCells };
+    public build(): Cell[][] {
+        const headerCells: HeaderCell[] = this.cellFactory.createHeaderCell();
+        const bodyCells: BodyCell[][] = this.cellFactory.createBodyCell();
+        return [headerCells, ...bodyCells];
     }
 }

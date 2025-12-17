@@ -1,9 +1,9 @@
 <template>
     <tbody>
         <template v-if="bodyCells.length">
-            <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
-                <td v-for="(cell, colIdx) in cells" :key="colIdx" @click.prevent.stop="clickCell(cell)">
-                    <slot :name="cell.name" :item="cell.item">
+            <tr v-for="cells in bodyCells" :key="cells[0].rowKey" @click.prevent.stop="clickRow(cells, $event)">
+                <td v-for="cell in cells" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
+                    <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         {{ cell.value }}
                     </slot>
                 </td>
@@ -30,18 +30,41 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    emits: ['click-cell'],
-    setup(_props, { emit }) {
+    emits: ['click-cell', 'click-row'],
+    setup(_props, { emit, slots }) {
         const { bodyCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
-        function clickCell(cell: BodyCell): void {
-            emit('click-cell', cell.item, cell.colIdx, cell.rowIdx);
+        function findMatchingSlotName(cell: BodyCell): string {
+            const { id, colIdx, rowIdx, colKey } = cell;
+
+            const cadidatePriority = [
+                `body-${id}`,
+                `body-${colKey}`,
+                `body-col${colIdx}-row${rowIdx}`,
+                `body-row${rowIdx}`,
+                `body-col${colIdx}`,
+            ]
+                .map((name) => name.toLowerCase())
+                .filter((name) => name in slots);
+
+            return cadidatePriority[0] || '';
+        }
+
+        function clickCell(cell: BodyCell, event: MouseEvent): void {
+            emit('click-cell', event, { ...cell });
+        }
+
+        function clickRow(row: BodyCell[], event: MouseEvent): void {
+            const clickedRow = row.map((cell) => ({ ...cell }));
+            emit('click-row', event, clickedRow);
         }
 
         return {
             tableIcons,
             bodyCells,
+            findMatchingSlotName,
             clickCell,
+            clickRow,
         };
     },
 });

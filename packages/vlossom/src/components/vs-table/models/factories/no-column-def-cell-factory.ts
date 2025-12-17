@@ -1,3 +1,4 @@
+import { stringUtil } from '@/utils';
 import type { BodyCell, HeaderCell, Item } from '../../types';
 import { HEADER_ROW_INDEX, type TableCellFactory } from './index';
 
@@ -9,8 +10,10 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
         const itemKeys = this.items.length > 0 ? Object.keys(this.items[0]) : []; // TODO: check need validation for items record structure
         return itemKeys.map((key: string, idx: number) => ({
             tag,
-            name: `${tag}-${key.replace('.', '-')}-${HEADER_ROW_INDEX}`,
+            id: `${stringUtil.kebabCase(key)}-item-${HEADER_ROW_INDEX}`,
             value: key,
+            colKey: key,
+            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
             sortable: true,
@@ -20,11 +23,15 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
+            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
+
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                name: `${tag}-${key.replace('.', '-')}-${rowIdx}`,
+                id: `${stringUtil.kebabCase(key)}-${rowKey}`,
                 value: item[key],
                 item,
+                colKey: key,
+                rowKey,
                 colIdx,
                 rowIdx,
             }));

@@ -5,12 +5,12 @@
         </caption>
         <vs-table-header>
             <template v-for="name in headerSlots" #[name]="slotData">
-                <slot :name="name" v-bind="slotData || {}" />
+                <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
         <vs-table-body>
             <template v-for="name in bodySlots" #[name]="slotData">
-                <slot :name="name" v-bind="slotData || {}" />
+                <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-body>
     </table>
@@ -59,8 +59,8 @@ export default defineComponent({
         const table = useTable(props);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
-        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('th-')));
-        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('td-')));
+        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header-')));
+        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body-')));
 
         return {
             colorSchemeClass,

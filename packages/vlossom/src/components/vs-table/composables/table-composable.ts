@@ -1,6 +1,5 @@
 import { computed, onBeforeMount, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
-import { objectUtil } from '@/utils';
-import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell } from '../types';
+import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell, type Cell } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import type { PropsOf, VsComponent } from '@/declaration';
 
@@ -22,28 +21,30 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
 
     const headerCells = ref<HeaderCell[]>([]);
     const bodyCells = ref<BodyCell[][]>([]);
-    const cellBuilder = new TableCellBuilder(items.value, columns.value);
+    const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
 
-    function initCells(): void {
-        const { headerCells: newHeaderCells, bodyCells: newBodyCells } = cellBuilder.build();
-        headerCells.value = [...newHeaderCells];
-        bodyCells.value = [...newBodyCells];
+    function initCells(cellMatrix: Cell[][]): void {
+        const [header, ...body] = cellMatrix;
+        const nextHeaderCells = [...header] as HeaderCell[];
+        const nextBodyCells = [...body] as BodyCell[][];
+
+        headerCells.value = nextHeaderCells;
+        bodyCells.value = nextBodyCells;
     }
 
     onBeforeMount(() => {
-        initCells();
+        initCells(tableCellBuilder.build());
     });
 
     watch(
         [columns, items],
-        ([newColumns, newItems], [oldColumns, oldItems]) => {
-            if (newColumns && !objectUtil.isEqual(newColumns, oldColumns)) {
-                cellBuilder.updateColumnDefs(newColumns);
-            }
-            if (newItems && !objectUtil.isEqual(newItems, oldItems)) {
-                cellBuilder.updateItems(newItems);
-            }
-            initCells();
+        ([nextColumnDefs, nextItems]) => {
+            const nextCells: Cell[][] = tableCellBuilder
+                .updateColumnDefs(nextColumnDefs)
+                .updateItems(nextItems)
+                .build();
+
+            initCells(nextCells);
         },
         { deep: true },
     );

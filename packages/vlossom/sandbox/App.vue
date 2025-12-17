@@ -26,15 +26,18 @@
             <template #caption>
                 <span class="font-bold text-blue-500">Custom Caption</span>
             </template>
-            <template #header-col1="{ header }">
+            <template #header-name="{ header }">
                 <span class="flex items-center gap-2 text-amber-700">
                     {{ header.value }} <span class="text-xs font-semibold">custom</span>
                 </span>
             </template>
-            <template #body-col1-row1="{ item }">
+            <template #body-name-item-1="{ item }">
                 <span class="font-semibold text-red-500">Custom Body {{ item.name }}</span>
             </template>
-            <template #body-col2-row1="{ item }">
+            <template #body-age="{ item }">
+                <span class="font-semibold text-yellow-500">{{ item.age }}</span>
+            </template>
+            <template #body-metadata-email-item-1="{ item }">
                 <vs-input
                     v-if="janesEmailEditingMode"
                     v-model="item.metadata.email"
@@ -42,7 +45,7 @@
                 />
                 <span v-else @click="toggleJaneEmailEditingMode">{{ item.metadata.email }}</span>
             </template>
-            <template #body-col2="{ item }">
+            <template #body-metadata-email-2="{ item }">
                 <span class="text-green-500">Custom Body {{ item.metadata }}</span>
             </template>
         </VsTable>
