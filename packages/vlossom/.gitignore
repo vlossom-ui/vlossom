@@ -11,7 +11,7 @@ node_modules
 package-lock.json
 .DS_Store
 dist
-dist-sandbox
+dist-playground
 dist-ssr
 coverage
 *.local
