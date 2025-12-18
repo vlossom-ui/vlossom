@@ -1,5 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { computed, ref } from 'vue';
+import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
+import VsInput from '../../vs-input/VsInput.vue';
+
+const baseColumns = [
+    { key: 'name', label: 'Name' },
+    { key: 'age', label: 'Age', sortable: true },
+    { key: 'metadata.email', label: 'Email', sortable: true },
+];
+
+const baseItems = [
+    { name: 'John', age: 30, metadata: { email: 'john@example.com' }, id: '1' },
+    { name: 'Jane', age: 25, metadata: { email: 'jane@example.com' }, id: '2' },
+    { name: 'Jim', age: 35, metadata: { email: 'jim@example.com' }, id: '3' },
+];
 
 const meta: Meta<typeof VsTable> = {
     title: 'Components/Base Components/VsTable',
@@ -7,7 +22,8 @@ const meta: Meta<typeof VsTable> = {
     parameters: {
         docs: {
             description: {
-                component: 'VsTable is a component that displays a table of data.',
+                component:
+                    'VsTable은 컬럼 정의와 아이템을 기반으로 데이터를 렌더링하며, 슬롯을 통해 헤더/바디를 자유롭게 커스텀할 수 있습니다.',
             },
         },
     },
@@ -18,119 +34,166 @@ const meta: Meta<typeof VsTable> = {
         },
         template: '<vs-table v-bind="args" />',
     }),
+    args: {
+        columns: baseColumns,
+        items: baseItems,
+    },
     tags: ['autodocs'],
     argTypes: {
-        headers: {
+        columns: {
             control: { type: 'object' },
-            description: 'The headers of the table.',
+            description: '테이블 컬럼 정의입니다.',
         },
         items: {
             control: { type: 'object' },
-            description: 'The items of the table.',
+            description: '테이블 렌더링 대상 아이템입니다.',
         },
-        stickyHeader: {
-            control: 'boolean',
-            description: 'The sticky header of the table.',
-        },
-        dense: {
-            control: 'boolean',
-            description: 'The dense header of the table.',
-        },
-        responsive: {
-            control: 'boolean',
-            description: 'The responsive header of the table.',
-        },
-        primary: {
-            control: 'boolean',
-            description: 'The primary header of the table.',
-        },
-        loading: {
-            control: 'boolean',
-            description: 'The loading header of the table.',
-        },
-        selectable: {
-            control: 'boolean',
-            description: 'The selectable header of the table.',
-        },
-        expandable: {
-            control: 'boolean',
-            description: 'The expandable header of the table.',
-        },
-        state: {
-            control: 'select',
-            description: 'The state of the table.',
-        },
-        search: {
-            control: 'boolean',
-            description: 'The search header of the table.',
-        },
-        searchPlaceholder: {
-            control: 'text',
-            description: 'The search placeholder of the table.',
-        },
-        searchableKeys: {
-            control: 'object',
-            description: 'The searchable keys of the table.',
-        },
-        searchCaseSensitive: {
-            control: 'boolean',
-            description: 'The search case sensitive of the table.',
-        },
-        searchRegex: {
-            control: 'boolean',
-            description: 'The search regex of the table.',
-        },
-        pagination: {
-            control: 'boolean',
-            description: 'The pagination of the table.',
-        },
-        paginationOptions: {
-            control: 'object',
-            description: 'The pagination options of the table.',
-        },
-        paginationTotalLength: {
-            control: 'number',
-            description: 'The pagination total length of the table.',
-        },
-        paginationEdgeButtons: {
-            control: 'boolean',
-            description: 'The pagination edge buttons of the table.',
-        },
-        draggable: {
-            control: 'boolean',
-            description: 'The draggable of the table.',
-        },
-        selectedItems: {
-            control: 'object',
-            description: 'The selected items of the table.',
-        },
-        pagedItems: {
-            control: 'object',
-            description: 'The paged items of the table.',
-        },
-        itemsPerPage: {
-            control: 'number',
-            description: 'The items per page of the table.',
-        },
-        currentItems: {
-            control: 'object',
-            description: 'The current items of the table.',
-        },
-        page: {
-            control: 'number',
-            description: 'The page of the table.',
-        },
+        colorScheme,
     },
 };
 
 export default meta;
-type Story = StoryObj<typeof VsTable>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     parameters: {
         docs: {
             description: {
-                story: '기본 테이블입니다. 데이터를 표시합니다.',
+                story: '기본 컬럼/아이템으로 테이블을 렌더링합니다.',
+            },
+        },
+    },
+};
+export const NoItemsWithHeader: Story = {
+    args: {
+        columns: baseColumns,
+        items: [],
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '컬럼은 있고 아이템이 없을 때 헤더만 표시되고 바디는 비어 있습니다.',
+            },
+        },
+    },
+};
+
+export const NoColumnsAndItems: Story = {
+    args: {
+        columns: [],
+        items: [],
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '컬럼과 아이템이 모두 없을 때 비어 있는 테이블 상태를 보여줍니다.',
+            },
+        },
+    },
+};
+
+export const NullColumns: Story = {
+    args: {
+        columns: null,
+        items: baseItems,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'columns가 null일 때 아이템의 키를 기반으로 컬럼이 구성되는 기본 동작을 확인합니다.',
+            },
+        },
+    },
+};
+
+export const StringColumns: Story = {
+    args: {
+        columns: baseColumns.map((column) => column.key),
+        items: baseItems,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '컬럼을 문자열 배열로 전달해 자동 라벨링되는 케이스를 확인합니다.',
+            },
+        },
+    },
+};
+
+export const CustomSlots: Story = {
+    render: () => ({
+        components: { VsTable, VsInput },
+        setup() {
+            const oddRowIndexes = computed(() => baseItems.map((_item, idx) => idx).filter((idx) => idx % 2 === 0));
+            const janesEmailEditingMode = ref(false);
+
+            const toggleJaneEmailEditingMode = () => {
+                janesEmailEditingMode.value = !janesEmailEditingMode.value;
+            };
+
+            return {
+                columns: baseColumns,
+                items: baseItems,
+                oddRowIndexes,
+                janesEmailEditingMode,
+                toggleJaneEmailEditingMode,
+            };
+        },
+        template: `
+            <vs-table :columns="columns" :items="items">
+                <template #caption>
+                    <span class="font-bold text-blue-500">Custom Caption</span>
+                </template>
+
+                <template #header="{ header }">
+                    <span class="bg-yellow-300 font-semibold">
+                        {{ header.value }}
+                    </span>
+                </template>
+
+                <template #header-name="{ header }">
+                    <span class="flex items-center gap-2 text-amber-700">
+                        {{ header.value }} <span class="text-xs font-semibold">custom</span>
+                    </span>
+                </template>
+
+                <template #body="{ item }">
+                    <span class="bg-green-100 font-semibold">
+                        {{ item.name }}
+                    </span>
+                </template>
+
+                <template #body-name-item-1="{ item }">
+                    <span class="font-semibold text-red-500">Custom Body {{ item.name }}</span>
+                </template>
+
+                <template v-for="idx in oddRowIndexes" :key="idx" #[\`body-row\${idx}\`]="{ item }">
+                    <span class="bg-purple-300 font-semibold text-purple-700">Custom Body Row - {{ item.name }}</span>
+                </template>
+
+                <template #body-age="{ item }">
+                    <span class="font-semibold text-yellow-500">{{ item.age }}</span>
+                </template>
+
+                <template #body-metadata-email-item-1="{ item }">
+                    <vs-input
+                        v-if="janesEmailEditingMode"
+                        v-model="item.metadata.email"
+                        @blur="toggleJaneEmailEditingMode"
+                    />
+                    <span v-else @click="toggleJaneEmailEditingMode">{{ item.metadata.email }}</span>
+                </template>
+
+                <template #body-metadata-email-2="{ item }">
+                    <span class="text-green-500">Custom Body {{ item.metadata }}</span>
+                </template>
+            </vs-table>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'App.vue에 작성된 다양한 슬롯 예제를 그대로 재현한 스토리입니다.',
             },
         },
     },
