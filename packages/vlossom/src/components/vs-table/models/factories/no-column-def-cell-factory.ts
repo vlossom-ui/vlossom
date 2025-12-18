@@ -7,7 +7,7 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
 
     public createHeaderCell(): HeaderCell[] {
         const tag = 'th';
-        const itemKeys = this.items.length > 0 ? Object.keys(this.items[0]) : []; // TODO: check need validation for items record structure
+        const itemKeys = this.items.length > 0 ? Object.keys(this.items[0]) : [];
         return itemKeys.map((key: string, idx: number) => ({
             tag,
             id: `${key}-${stringUtil.createID()}`,

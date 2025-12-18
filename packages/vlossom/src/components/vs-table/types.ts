@@ -21,7 +21,7 @@ type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extend
 type JoinDotField<T> = JoinField<T, '.'>;
 
 /**
- * NOTE: If T is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<T>` is `'user' | 'user.name' | 'user.name.first'`
+ * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type ColumnKey<I = Item> = JoinDotField<I>;
 export type Item = Record<string, unknown> & { id?: string };
