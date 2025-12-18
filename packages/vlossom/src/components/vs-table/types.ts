@@ -24,7 +24,7 @@ type JoinDotField<T> = JoinField<T, '.'>;
  * NOTE: If T is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<T>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type ColumnKey<I = Item> = JoinDotField<I>;
-export type Item = Record<string, unknown>;
+export type Item = Record<string, unknown> & { id?: string };
 export type Tag = 'td' | 'th';
 
 export interface ColumnDef<I = Item> {
@@ -44,7 +44,6 @@ export interface Cell<I = Item> {
     id: string;
     value: unknown; // display
     colKey: ColumnKey<I>;
-    rowKey: string;
     rowIdx: number;
     colIdx: number;
 }

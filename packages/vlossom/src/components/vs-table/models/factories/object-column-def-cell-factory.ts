@@ -13,10 +13,9 @@ export default class ObjectColumnDefCellFactory implements TableCellFactory {
         return this.columnDefs.map((header: ColumnDef, idx: number) => ({
             ...header,
             tag,
-            id: `${stringUtil.kebabCase(header.key)}-item-${HEADER_ROW_INDEX}`,
+            id: `${stringUtil.kebabCase(header.key)}-${stringUtil.createID()}`,
             value: header.label,
             colKey: header.key,
-            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
         }));
@@ -25,15 +24,12 @@ export default class ObjectColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
-            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
-
             return this.columnDefs.map((header: ColumnDef, colIdx: number) => ({
                 tag,
-                id: `${stringUtil.kebabCase(header.key)}-${rowKey}`,
+                id: `${stringUtil.kebabCase(header.key)}-${item.id ?? stringUtil.createID()}`,
                 value: objectUtil.get(item, header.key),
                 item,
                 colKey: header.key,
-                rowKey,
                 colIdx,
                 rowIdx,
             }));

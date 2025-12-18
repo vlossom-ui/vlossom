@@ -10,10 +10,9 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
         const itemKeys = this.items.length > 0 ? Object.keys(this.items[0]) : []; // TODO: check need validation for items record structure
         return itemKeys.map((key: string, idx: number) => ({
             tag,
-            id: `${stringUtil.kebabCase(key)}-item-${HEADER_ROW_INDEX}`,
+            id: `${key}-${stringUtil.createID()}`,
             value: key,
             colKey: key,
-            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
             sortable: true,
@@ -23,15 +22,12 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
-            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
-
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                id: `${stringUtil.kebabCase(key)}-${rowKey}`,
+                id: `${key}-${item.id ?? stringUtil.createID()}`,
                 value: item[key],
                 item,
                 colKey: key,
-                rowKey,
                 colIdx,
                 rowIdx,
             }));

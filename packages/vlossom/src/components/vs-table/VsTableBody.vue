@@ -1,8 +1,8 @@
 <template>
     <tbody>
         <template v-if="bodyCells.length">
-            <tr v-for="cells in bodyCells" :key="cells[0].rowKey" @click.prevent.stop="clickRow(cells, $event)">
-                <td v-for="cell in cells" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
+            <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx" @click.prevent.stop="clickRow(cells, $event)">
+                <td v-for="cell in cells" :id="cell.id" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         {{ cell.value }}
                     </slot>
@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
+import { stringUtil } from '@/utils';
 import type { BodyCell } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -39,10 +40,11 @@ export default defineComponent({
 
             const cadidatePriority = [
                 `body-${id}`,
-                `body-${colKey}`,
+                `body-${stringUtil.kebabCase(colKey)}`,
                 `body-col${colIdx}-row${rowIdx}`,
                 `body-row${rowIdx}`,
                 `body-col${colIdx}`,
+                'body',
             ]
                 .map((name) => name.toLowerCase())
                 .filter((name) => name in slots);

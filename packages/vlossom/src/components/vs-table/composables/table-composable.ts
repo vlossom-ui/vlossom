@@ -1,7 +1,7 @@
 import { computed, onBeforeMount, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
+import type { PropsOf, VsComponent } from '@/declaration';
 import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell, type Cell } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
-import type { PropsOf, VsComponent } from '@/declaration';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(props: PropsOf<VsComponent.VsTable>) {

@@ -12,10 +12,9 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
         const tag = 'th';
         return this.columnDefs.map((headerKey: string, idx: number) => ({
             tag,
-            id: `${stringUtil.kebabCase(headerKey)}-item-${HEADER_ROW_INDEX}`,
+            id: `${stringUtil.kebabCase(headerKey)}-${stringUtil.createID()}`,
             value: headerKey,
             colKey: headerKey,
-            rowKey: `item-${HEADER_ROW_INDEX}`,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
             sortable: true,
@@ -25,15 +24,12 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
     public createBodyCell(): BodyCell[][] {
         const tag = 'td';
         return this.items.map((item: Item, rowIdx: number) => {
-            const rowKey = `item-${rowIdx}`; // TODO: unique id for row
-
             return this.columnDefs.map((headerKey: string, colIdx: number) => ({
                 tag,
-                id: `${stringUtil.kebabCase(headerKey)}-${rowKey}`,
+                id: `${stringUtil.kebabCase(headerKey)}-${item.id ?? stringUtil.createID()}`,
                 value: objectUtil.get(item, headerKey),
                 item,
                 colKey: headerKey,
-                rowKey,
                 colIdx,
                 rowIdx,
             }));

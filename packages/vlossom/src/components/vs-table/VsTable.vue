@@ -59,8 +59,8 @@ export default defineComponent({
         const table = useTable(props);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
-        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header-')));
-        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body-')));
+        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
+        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
 
         return {
             colorSchemeClass,

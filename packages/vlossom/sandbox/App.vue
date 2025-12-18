@@ -26,13 +26,26 @@
             <template #caption>
                 <span class="font-bold text-blue-500">Custom Caption</span>
             </template>
+            <template #header="{ header }">
+                <span class="bg-yellow-300 font-semibold">
+                    {{ header.value }}
+                </span>
+            </template>
             <template #header-name="{ header }">
                 <span class="flex items-center gap-2 text-amber-700">
                     {{ header.value }} <span class="text-xs font-semibold">custom</span>
                 </span>
             </template>
+            <template #body="{ item }">
+                <span class="bg-green-100 font-semibold">
+                    {{ item.name }}
+                </span>
+            </template>
             <template #body-name-item-1="{ item }">
                 <span class="font-semibold text-red-500">Custom Body {{ item.name }}</span>
+            </template>
+            <template v-for="idx in oddRowIndexes" :key="idx" #[`body-row${idx}`]="{ item }">
+                <span class="bg-purple-300 font-semibold text-purple-700">Custom Body Row - {{ item.name }}</span>
             </template>
             <template #body-age="{ item }">
                 <span class="font-semibold text-yellow-500">{{ item.age }}</span>
@@ -53,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 
 export default defineComponent({
     name: 'App',
@@ -80,12 +93,15 @@ export default defineComponent({
             janesEmailEditingMode.value = !janesEmailEditingMode.value;
         }
 
+        const oddRowIndexes = computed(() => items.map((_item, idx) => idx).filter((idx) => idx % 2 === 0));
+
         return {
             columns,
             items,
             row,
             janesEmailEditingMode,
             toggleJaneEmailEditingMode,
+            oddRowIndexes,
         };
     },
 });
