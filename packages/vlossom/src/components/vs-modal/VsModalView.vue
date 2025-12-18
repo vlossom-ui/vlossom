@@ -13,7 +13,6 @@
                 :focus-lock="modal.focusLock"
                 :hide-scroll="modal.hideScroll"
                 :id="modal.id"
-                :initial-focus-ref="modal.initialFocusRef"
                 :scroll-lock="modal.scrollLock"
                 :size="modal.size"
                 @close="onClose(modal.id)"

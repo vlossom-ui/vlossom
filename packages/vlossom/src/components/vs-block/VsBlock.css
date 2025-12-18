@@ -13,8 +13,8 @@
     --vs-block-title-padding: initial;
 
     @apply relative w-full overflow-auto;
-    opacity: var(--vs-block-opacity, 1);
 
+    opacity: var(--vs-block-opacity, 1);
     container-type: inline-size;
     box-shadow: var(--vs-block-boxShadow, var(--vs-area-shadow-outer));
     border: var(--vs-block-border, 1px solid var(--vs-line-color));

@@ -124,7 +124,6 @@ const drawerOpen = ref(false);
 | `escClose`         | `boolean`                                | `false`  | -        | ESC 키 누를 시 드로어를 닫을지 여부                         |
 | `focusLock`        | `boolean`                                | `false`  | -        | 포커스가 드로어 내부에만 머무르도록 제한할지 여부           |
 | `id`               | `string`                                 | -        | -        | 고유 식별자                                                 |
-| `initialFocusRef`  | `object`                                 | `null`   | -        | 드로어가 열릴 때 초기 포커스를 받을 요소의 ref 또는 Element |
 | `fixed`            | `boolean`                                | `false`  | -        | 고정 포지션(position: fixed) 사용 여부                      |
 | `layoutResponsive` | `boolean`                                | `false`  | -        | vs-layout과 연동하여 반응형 레이아웃 적용 여부              |
 | `open`             | `boolean`                                | `false`  | -        | 초기 열림 상태 (제어되지 않는 모드)                         |

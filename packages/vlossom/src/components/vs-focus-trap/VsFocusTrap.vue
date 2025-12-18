@@ -20,12 +20,12 @@ export default defineComponent({
     name: componentName,
     props: {
         disabled: { type: Boolean, default: false },
-        initialFocusRef: { type: Object, default: null },
     },
     setup(props, { slots, expose }) {
-        const { disabled, initialFocusRef } = toRefs(props);
+        const { disabled } = toRefs(props);
 
         const focusTrapRef: Ref<HTMLElement | null> = ref(null);
+        const focusTrapAnchorRef: Ref<HTMLElement | null> = ref(null);
         const wrapperRef: Ref<HTMLElement | ComponentPublicInstance | null> = ref(null);
 
         const wrapperElement = computed(() => {
@@ -36,7 +36,7 @@ export default defineComponent({
             return wrapperRef.value instanceof HTMLElement ? wrapperRef.value : (wrapperRef.value.$el as HTMLElement);
         });
 
-        let previousFocused: HTMLElement | null = null;
+        const previousFocused: HTMLElement | null = document.activeElement as HTMLElement;
 
         let firstFocusable: HTMLElement | null = null;
         let lastFocusable: HTMLElement | null = null;
@@ -45,6 +45,8 @@ export default defineComponent({
             if (event.key !== 'Tab') {
                 return;
             }
+
+            catchFocusables();
 
             if (!firstFocusable || !lastFocusable) {
                 return;
@@ -64,8 +66,7 @@ export default defineComponent({
                 return;
             }
 
-            firstFocusable.addEventListener('keydown', cycleTabKey);
-            lastFocusable.addEventListener('keydown', cycleTabKey);
+            focusTrapRef.value?.addEventListener('keydown', cycleTabKey);
         }
 
         function deactivateCycle() {
@@ -73,8 +74,7 @@ export default defineComponent({
                 return;
             }
 
-            firstFocusable.removeEventListener('keydown', cycleTabKey);
-            lastFocusable.removeEventListener('keydown', cycleTabKey);
+            focusTrapRef.value?.removeEventListener('keydown', cycleTabKey);
         }
 
         function catchFocusables() {
@@ -86,39 +86,48 @@ export default defineComponent({
                 `button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]),
                 select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])`,
             );
-            if (!focusables.length) {
+
+            const shownFocusables = Array.from(focusables).filter(
+                (focusable) => focusable.style.display !== 'none' || !focusable.hasAttribute('disabled'),
+            );
+
+            if (!shownFocusables.length) {
+                firstFocusable = null;
+                lastFocusable = null;
                 return;
             }
 
-            firstFocusable = focusables[0];
-            lastFocusable = focusables[focusables.length - 1];
+            firstFocusable = shownFocusables[0];
+            lastFocusable = shownFocusables[shownFocusables.length - 1];
         }
 
         function focus() {
-            if (document.activeElement) {
-                previousFocused = document.activeElement as HTMLElement;
-            }
-
             nextTick(() => {
-                if (initialFocusRef.value) {
-                    initialFocusRef.value.focus();
-                } else {
-                    focusTrapRef.value?.focus();
+                const isChildOfFocusTrap = document.activeElement?.closest('.vs-focus-trap') === focusTrapRef.value;
+                if (!isChildOfFocusTrap) {
+                    focusTrapAnchorRef.value?.focus();
                 }
             });
         }
 
         function blur() {
-            deactivateCycle();
-
             if (previousFocused?.focus) {
                 previousFocused.focus();
             }
         }
 
-        onMounted(focus);
+        onMounted(() => {
+            catchFocusables();
+            if (!disabled.value) {
+                activateCycle();
+            }
+            focus();
+        });
 
-        onBeforeUnmount(blur);
+        onBeforeUnmount(() => {
+            deactivateCycle();
+            blur();
+        });
 
         expose({ focus, blur });
 
@@ -134,17 +143,9 @@ export default defineComponent({
                 return vNodes;
             }
 
-            nextTick(() => {
-                deactivateCycle();
-                catchFocusables();
-                if (!disabled.value) {
-                    activateCycle();
-                }
-            });
-
             const className = stringUtil.kebabCase(VsComponent.VsFocusTrap);
-            return h('div', { class: className }, [
-                h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapRef }),
+            return h('div', { class: className, ref: focusTrapRef }, [
+                h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapAnchorRef }),
                 cloneVNode(vNodes[0], { ref: wrapperRef }),
             ]);
         }

@@ -12,9 +12,10 @@ const FocusableComponent = defineComponent({
     `,
 });
 
-function mountWith(slots: any = undefined) {
+function mountWith(slots: any = undefined, props: any = {}) {
     return mount(VsFocusTrap, {
         slots,
+        props,
         attachTo: document.body,
     });
 }
@@ -44,58 +45,18 @@ describe('VsFocusTrap', () => {
         expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
     });
 
-    describe('grab focus', () => {
-        describe('`initialFocusRef` prop', () => {
-            it('컴퍼넌트 내부에 존재하는 포커스 가능한 요소를 `initialFocusRef`로 지정하면, 컴퍼넌트 마운트와 동시에 해당 요소에 focus해야 한다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                const initialFocusRef = wrapper.find('input').element;
-                await wrapper.setProps({ initialFocusRef });
-                await nextTick();
-
-                // then
-                expect(initialFocusRef).toBe(document.activeElement);
-            });
-
-            it('`initialFocusRef`가 없는 경우, 마운트 직후, 시작점(anchor)이 포커스 된다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                await nextTick();
-
-                // then
-                expect(wrapper.find('#vs-focus-trap-anchor').element).toBe(document.activeElement);
-            });
-
-            it('`initialFocusRef`가 없는 경우, 마운트 후 tab 이벤트는 브라우저 기본 동작을 따른다', async () => {
-                // given, when
-                const wrapper = mountWith({ default: FocusableComponent });
-                const nextFocusable = wrapper.find('input');
-                await nextTick();
-
-                const browserTabEventStub = {
-                    trigger: () => nextFocusable.element.focus(),
-                };
-
-                // when
-                browserTabEventStub.trigger();
-
-                // then
-                expect(nextFocusable.element).toBe(document.activeElement);
-            });
-        });
-    });
-
     describe('cycle tab focus', () => {
         it('포커스 가능한 마지막 요소에서 tab 이벤트가 동작하면, 첫번째 포커스 가능한 요소에 focus를 준다', async () => {
             // given
             const wrapper = mountWith({ default: FocusableComponent });
+            const focusTrap = wrapper.find('.vs-focus-trap');
             const firstFocusable = wrapper.find('input');
             const lastFocusable = wrapper.find('button');
             await nextTick();
 
             // when
             lastFocusable.element.focus();
-            lastFocusable.element.dispatchEvent(
+            focusTrap.element.dispatchEvent(
                 new KeyboardEvent('keydown', {
                     key: 'Tab',
                 }),
@@ -108,13 +69,14 @@ describe('VsFocusTrap', () => {
         it('포커스 가능한 첫번째 요소에서 shift + tab 이벤트가 동작하면, 마지막 포커스 가능한 요소에 focus를 준다', async () => {
             // given
             const wrapper = mountWith({ default: FocusableComponent });
+            const focusTrap = wrapper.find('.vs-focus-trap');
             const firstFocusable = wrapper.find('input');
             const lastFocusable = wrapper.find('button');
             await nextTick();
 
             // when
             firstFocusable.element.focus();
-            firstFocusable.element.dispatchEvent(
+            focusTrap.element.dispatchEvent(
                 new KeyboardEvent('keydown', {
                     key: 'Tab',
                     shiftKey: true,
@@ -124,29 +86,107 @@ describe('VsFocusTrap', () => {
             // then
             expect(lastFocusable.element).toBe(document.activeElement);
         });
+    });
 
-        describe('`disabled` prop', () => {
-            it('`disabled` prop이 true인 경우, tab 이벤트로 focus가 컴퍼넌트 내부에서 cycle되지 않는다', async () => {
-                // given
-                const wrapper = mountWith({ default: FocusableComponent });
-                const firstFocusable = wrapper.find('input');
-                const lastFocusable = wrapper.find('button');
-                await wrapper.setProps({ disabled: true });
-                await nextTick();
+    describe('disabled prop', () => {
+        it('disabled가 true일 때, tab 키 이벤트가 포커스 순환을 하지 않아야 한다', async () => {
+            // given
+            const wrapper = mountWith({ default: FocusableComponent }, { disabled: true });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const lastFocusable = wrapper.find('button');
+            await nextTick();
 
-                // when
-                firstFocusable.element.focus();
-                firstFocusable.element.dispatchEvent(
-                    new KeyboardEvent('keydown', {
-                        key: 'Tab',
-                        shiftKey: true,
-                    }),
-                );
+            // when
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
 
-                // then
-                expect(firstFocusable.element).toBe(document.activeElement);
-                expect(lastFocusable.element).not.toBe(document.activeElement);
+            // then
+            // disabled가 true이면 포커스 순환이 일어나지 않아야 함
+            expect(lastFocusable.element).toBe(document.activeElement);
+        });
+
+        it('disabled가 false일 때, tab 키 이벤트가 포커스 순환을 해야 한다', async () => {
+            // given
+            const wrapper = mountWith({ default: FocusableComponent }, { disabled: false });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const firstFocusable = wrapper.find('input');
+            const lastFocusable = wrapper.find('button');
+            await nextTick();
+
+            // when
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
+
+            // then
+            expect(firstFocusable.element).toBe(document.activeElement);
+        });
+    });
+
+    describe('catchFocusables filter', () => {
+        it('display: none인 요소는 포커스 가능한 요소에서 제외되어야 한다', async () => {
+            // given
+            const ComponentWithHidden = defineComponent({
+                template: `
+                    <div>
+                        <input ref="inputRef" placeholder="첫번째 요소" />
+                        <button ref="buttonRef" style="display: none;">숨겨진 버튼</button>
+                        <button ref="lastButtonRef">마지막 요소</button>
+                    </div>
+                `,
             });
+            const wrapper = mountWith({ default: ComponentWithHidden });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const firstFocusable = wrapper.find('input');
+            const lastFocusable = wrapper.findAll('button').filter((btn) => btn.element.style.display !== 'none')[0];
+            await nextTick();
+
+            // when
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
+
+            // then
+            expect(firstFocusable.element).toBe(document.activeElement);
+        });
+
+        it('disabled 속성을 가진 요소는 포커스 가능한 요소에서 제외되어야 한다', async () => {
+            // given
+            const ComponentWithDisabled = defineComponent({
+                template: `
+                    <div>
+                        <input ref="inputRef" placeholder="첫번째 요소" />
+                        <button ref="buttonRef" disabled>비활성화된 버튼</button>
+                        <button ref="lastButtonRef">마지막 요소</button>
+                    </div>
+                `,
+            });
+            const wrapper = mountWith({ default: ComponentWithDisabled });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const firstFocusable = wrapper.find('input');
+            const lastFocusable = wrapper.findAll('button').filter((btn) => !btn.element.hasAttribute('disabled'))[0];
+            await nextTick();
+
+            // when
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
+
+            // then
+            expect(firstFocusable.element).toBe(document.activeElement);
         });
     });
 

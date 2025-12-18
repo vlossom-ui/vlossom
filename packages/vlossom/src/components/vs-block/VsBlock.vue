@@ -1,5 +1,5 @@
 <template>
-    <vs-responsive :class="['vs-block', colorSchemeClass]" :style="styleSetVariables" :grid="grid" :width="width">
+    <vs-responsive :class="['vs-block', colorSchemeClass]" :style="styleSetVariables" :grid :width>
         <div v-if="$slots['title']" class="vs-block-title">
             <slot name="title" />
         </div>
