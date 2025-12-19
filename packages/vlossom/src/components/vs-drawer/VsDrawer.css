@@ -11,7 +11,7 @@
     --vs-drawer-size: initial;
     --vs-drawer-boxShadow: initial;
 
-    @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
+    @apply pointer-events-none top-0 left-0 z-100 h-full w-full overflow-hidden;
 
     position: var(--vs-drawer-position, absolute);
 
