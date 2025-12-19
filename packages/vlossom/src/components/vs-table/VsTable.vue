@@ -8,7 +8,7 @@
                 <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
-        <vs-table-body>
+        <vs-table-body @click-cell="clickCell" @click-row="clickRow">
             <template v-for="name in bodySlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
@@ -24,7 +24,7 @@ import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme } from '@/composables';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
-import type { ColumnDef, Item, VsTableStyleSet } from './types';
+import type { BodyCell, ColumnDef, Item, VsTableStyleSet } from './types';
 
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
@@ -52,7 +52,8 @@ export default defineComponent({
             },
         },
     },
-    setup(props, { slots }) {
+    emits: ['click-cell', 'click-row'],
+    setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -62,12 +63,21 @@ export default defineComponent({
         const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
         const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
 
+        function clickCell(event: MouseEvent, cell: BodyCell): void {
+            emit('click-cell', event, cell);
+        }
+        function clickRow(event: MouseEvent, row: BodyCell[]): void {
+            emit('click-row', event, row);
+        }
+
         onBeforeMount(table.initialize);
 
         return {
             colorSchemeClass,
             headerSlots,
             bodySlots,
+            clickCell,
+            clickRow,
         };
     },
 });
