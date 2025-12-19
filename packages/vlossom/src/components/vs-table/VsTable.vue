@@ -1,131 +1,85 @@
 <template>
-    <div class="vs-table">
-        {{ 'VsTable' }}
-    </div>
+    <table :class="['vs-table', colorSchemeClass]">
+        <caption v-if="$slots['caption']">
+            <slot name="caption" />
+        </caption>
+        <vs-table-header>
+            <template v-for="name in headerSlots" #[name]="slotData">
+                <slot :name v-bind="slotData || {}" />
+            </template>
+        </vs-table-header>
+        <vs-table-body @click-cell="clickCell" @click-row="clickRow">
+            <template v-for="name in bodySlots" #[name]="slotData">
+                <slot :name v-bind="slotData || {}" />
+            </template>
+        </vs-table-body>
+    </table>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import { VsComponent, type UIState } from '@/declaration';
+import { defineComponent, provide, type PropType, toRefs, computed, onBeforeMount } from 'vue';
+import { VsComponent } from '@/declaration';
+import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import type { VsTableColumn, VsTableStyleSet } from './types';
+import { useColorScheme } from '@/composables';
 
-const name = VsComponent.VsTable;
+import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
+import type { BodyCell, ColumnDef, Item, VsTableStyleSet } from './types';
+
+import VsTableHeader from './VsTableHeader.vue';
+import VsTableBody from './VsTableBody.vue';
+const componentName = VsComponent.VsTable;
+
 export default defineComponent({
-    name,
+    name: componentName,
+    components: { VsTableHeader, VsTableBody },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
-        headers: {
-            type: Array as PropType<VsTableColumn[] | string[]>,
+        columns: {
+            type: Array as PropType<ColumnDef[] | string[] | null>,
             default: () => [],
         },
         items: {
-            type: Array as PropType<any[]>,
+            type: Array as PropType<Item[]>,
             required: true,
-        },
-        stickyHeader: {
-            type: Boolean,
-            default: false,
-        },
-        dense: {
-            type: Boolean,
-            default: false,
-        },
-        responsive: {
-            type: Boolean,
-            default: false,
-        },
-        primary: {
-            type: Boolean,
-            default: false,
-        },
-        loading: {
-            type: Boolean,
-            default: false,
-        },
-        selectable: {
-            type: [Boolean, Function] as PropType<boolean | ((row: any, index: number) => boolean)>,
-            default: false,
-        },
-        expandable: {
-            type: [Boolean, Function] as PropType<boolean | ((row: any, index: number) => boolean)>,
-            default: false,
-        },
-        state: {
-            type: [String, Function] as PropType<UIState | ((row: any, index: number) => UIState)>,
-            default: 'idle',
-        },
-        search: {
-            type: Boolean,
-            default: false,
-        },
-        searchPlaceholder: {
-            type: String,
-            default: 'search',
-        },
-        searchableKeys: {
-            type: Array as PropType<string[]>,
-            default: () => [],
-        },
-        searchCaseSensitive: {
-            type: Boolean,
-            default: true,
-        },
-        searchRegex: {
-            type: Boolean,
-            default: true,
-        },
-        pagination: {
-            type: Boolean,
-            default: false,
-        },
-        paginationOptions: {
-            type: Array as PropType<number[]>,
-            default: () => [50, 100, -1],
-        },
-        paginationTotalLength: {
-            type: Number,
-        },
-        paginationEdgeButtons: {
-            type: Boolean,
-            default: false,
-        },
-        draggable: {
-            type: Boolean,
-            default: false,
-        },
-        // v-model
-        selectedItems: {
-            type: Array as PropType<any[]>,
-            default: () => [],
-        },
-        pagedItems: {
-            type: Array as PropType<any[]>,
-            default: () => [],
-        },
-        itemsPerPage: {
-            type: Number,
-            default: 50,
-        },
-        currentItems: {
-            type: Array as PropType<any[]>,
-            default: () => [],
-        },
-        page: {
-            type: Number,
-            default: 1,
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'items', 'items must be an array');
+                    return false;
+                }
+                return true;
+            },
         },
     },
-    emits: [
-        'clickRow',
-        'drag',
-        'update:itemsPerPage',
-        'update:pagedItems',
-        'update:page',
-        'update:selectedItems',
-        'update:totalItems',
-    ],
+    emits: ['click-cell', 'click-row'],
+    setup(props, { slots, emit }) {
+        const { colorScheme } = toRefs(props);
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+
+        const table = useTable(props);
+        provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
+
+        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
+        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
+
+        function clickCell(event: MouseEvent, cell: BodyCell): void {
+            emit('click-cell', event, cell);
+        }
+        function clickRow(event: MouseEvent, row: BodyCell[]): void {
+            emit('click-row', event, row);
+        }
+
+        onBeforeMount(table.initialize);
+
+        return {
+            colorSchemeClass,
+            headerSlots,
+            bodySlots,
+            clickCell,
+            clickRow,
+        };
+    },
 });
 </script>
 
