@@ -4,7 +4,7 @@
             <tr>
                 <th v-if="hasSelectableRows" class="w-10">
                     <template v-if="$slots['selectable']">
-                        <slot name="selectable" :cells="headerCells" :rowIdx="0" />
+                        <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                     </template>
                     <template v-else>
                         <vs-checkbox
@@ -25,7 +25,7 @@
 
         <template v-else>
             <tr>
-                <td colspan="100%" />
+                <th colspan="100%" class="h-10" />
             </tr>
         </template>
     </thead>
@@ -36,6 +36,7 @@ import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
 import type { HeaderCell } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import { HEADER_ROW_INDEX } from './models/factories';
 
 export default defineComponent({
     setup(_props, { slots }) {
@@ -59,6 +60,7 @@ export default defineComponent({
         }
 
         return {
+            HEADER_ROW_INDEX,
             hasSelectableRows,
             headerCells,
             selectedAll,
