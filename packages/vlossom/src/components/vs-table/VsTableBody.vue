@@ -38,7 +38,7 @@ export default defineComponent({
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
 
-            const cadidatePriority = [
+            const candidatePriority = [
                 `body-${id}`,
                 `body-${stringUtil.kebabCase(colKey)}`,
                 `body-col${colIdx}-row${rowIdx}`,
@@ -49,7 +49,7 @@ export default defineComponent({
                 .map((name) => name.toLowerCase())
                 .filter((name) => name in slots);
 
-            return cadidatePriority[0] || '';
+            return candidatePriority[0] || '';
         }
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
