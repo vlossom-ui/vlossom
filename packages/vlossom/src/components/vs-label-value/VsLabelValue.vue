@@ -2,8 +2,8 @@
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
         :style="{ ...componentStyleSet, ...styleSetVariables }"
-        :width="width"
-        :grid="grid"
+        :width
+        :grid
     >
         <div v-if="$slots['label']" class="vs-cell vs-label">
             <slot name="label" />

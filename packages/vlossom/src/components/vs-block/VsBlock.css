@@ -1,4 +1,7 @@
 .vs-block {
+    --vs-block-width: initial;
+    --vs-block-height: initial;
+
     --vs-block-border: initial;
     --vs-block-borderRadius: initial;
     --vs-block-backgroundColor: initial;
@@ -20,6 +23,8 @@
     border: var(--vs-block-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-block-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-block-backgroundColor, var(--vs-area-bg));
+    width: var(--vs-block-width, auto);
+    height: var(--vs-block-height, auto);
     color: var(--vs-block-fontColor, var(--vs-font-color));
 
     .vs-block-title {

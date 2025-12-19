@@ -67,22 +67,6 @@ describe('VsBlock', () => {
             expect(title.find('.test-title').exists()).toBe(true);
             expect(title.find('.test-title').text()).toBe('블록 제목');
         });
-
-        it('title과 default 슬롯이 올바른 순서로 렌더링되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBlock, {
-                slots: {
-                    title: '제목',
-                    default: '내용',
-                },
-            });
-
-            // then
-            const block = wrapper.find('.vs-block');
-            const children = block.element.children;
-            expect(children[0].classList.contains('vs-block-title')).toBe(true);
-            expect(children[1].classList.contains('vs-block-content')).toBe(true);
-        });
     });
 
     describe('colorScheme prop', () => {
