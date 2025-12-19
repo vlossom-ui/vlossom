@@ -1,5 +1,5 @@
 import type VsBlock from './VsBlock.vue';
-import type { BoxStyleSet } from '@/declaration';
+import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,7 +9,7 @@ declare module 'vue' {
 
 export type { VsBlock };
 
-export interface VsBlockStyleSet extends BoxStyleSet {
+export interface VsBlockStyleSet extends SizeStyleSet, BoxStyleSet {
     boxShadow?: string;
     fontColor?: string;
 
