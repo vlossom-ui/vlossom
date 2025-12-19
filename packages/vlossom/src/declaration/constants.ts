@@ -45,3 +45,5 @@ export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 export const PLACEMENTS = ['top', 'right', 'bottom', 'left', 'middle'] as const;
 
 export const ALIGNMENTS = ['start', 'center', 'end'] as const;
+
+export const TEXT_ALIGNMENTS = ['left', 'center', 'right'] as const;

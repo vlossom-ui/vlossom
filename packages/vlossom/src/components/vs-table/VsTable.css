@@ -1,0 +1,16 @@
+@reference 'tailwindcss';
+
+table {
+    @apply mx-auto w-full border-collapse;
+}
+
+th,
+td {
+    @apply px-3.5 py-2.5;
+    border: 0.0625rem solid var(--vs-line-color);
+    text-align: left; /* left, center, right */
+}
+
+caption {
+    @apply caption-bottom;
+}

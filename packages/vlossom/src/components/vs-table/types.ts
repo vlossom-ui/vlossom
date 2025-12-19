@@ -1,3 +1,4 @@
+import type { SizeProp, TextAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 
 declare module 'vue' {
@@ -6,15 +7,58 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableColumn {
-    key: string; //  NOTE: prop name chain처럼 dot notation 사용 가능하도록 함
-    label?: string;
-    align?: 'left' | 'center' | 'right'; // NOTE: `default: left`
-    width?: string | number;
-    sortable?: boolean;
-    sortKey?: string; // NOTE: 값이 없으면 value[key] 기준, 값이 있을 때 value[key][sortKey] 기준
-    searchable?: boolean;
-    select?: (value: any, key: string) => any;
+export interface VsTableStyleSet {}
+
+type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
+type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
+    ? string
+    : {
+          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
+              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
+              : Join<Prev, K, Sep>;
+      }[Extract<keyof T, string>];
+
+type JoinDotField<T> = JoinField<T, '.'>;
+
+/**
+ * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
+ */
+export type ColumnKey<I = Item> = JoinDotField<I>;
+export type Item = Record<string, unknown> & { id?: string };
+export type Tag = 'td' | 'th';
+
+export interface ColumnDef<I = Item> {
+    key: ColumnKey<I>;
+    label: string;
+    align?: TextAlignment;
+    minWidth?: SizeProp;
+    maxWidth?: SizeProp;
+    width?: SizeProp;
+    transform?: (value: unknown, item: I) => unknown;
 }
 
-export interface VsTableStyleSet {}
+export interface Cell<I = Item> {
+    tag: Tag;
+    id: string;
+    value: unknown; // display
+    colKey: ColumnKey<I>;
+    rowIdx: number;
+    colIdx: number;
+}
+
+export interface HeaderCell extends Cell {
+    tag: 'th';
+}
+
+export interface BodyCell<I = Item> extends Cell<I> {
+    tag: 'td';
+    item: I;
+}
+
+export function isColumnDef(value: unknown): value is ColumnDef {
+    return typeof value === 'object' && value !== null && 'key' in value && 'label' in value;
+}
+
+export function isColumnDefArray(value: unknown): value is ColumnDef[] {
+    return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
+}
