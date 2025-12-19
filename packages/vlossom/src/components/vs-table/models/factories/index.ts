@@ -8,6 +8,6 @@ export interface TableCellFactory {
     createBodyCell(): BodyCell[][];
 }
 
-export const HEADER_ROW_INDEX = 0 as const;
+export const HEADER_ROW_INDEX = 0;
 
 export { NoColumnDefCellFactory, ObjectColumnDefCellFactory, StringKeyColumnDefCellFactory };
