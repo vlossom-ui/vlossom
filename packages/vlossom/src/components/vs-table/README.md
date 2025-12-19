@@ -13,7 +13,7 @@
     <vs-table
         :columns="[
             { key: 'name', label: 'Name' },
-            { key: 'age', label: 'Age', sortable: true },
+            { key: 'age', label: 'Age' },
         ]"
         :items="[
             { id: '1', name: 'Alice', age: 24 },
@@ -88,8 +88,6 @@ type ColumnKey<I = Item> = JoinDotField<I>;
 interface ColumnDef<I = Item> {
     key: ColumnKey<I>;
     label: string;
-    sortable?: boolean;
-    sortKey?: string;
     align?: TextAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
@@ -99,7 +97,6 @@ interface ColumnDef<I = Item> {
 
 interface HeaderCell extends Cell {
     tag: 'th';
-    sortable?: boolean;
 }
 
 interface BodyCell<I = Item> extends Cell<I> {
@@ -140,5 +137,4 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 - **다양한 컬럼 입력**: 객체/문자열/null 컬럼 정의를 지원해 유연한 초기 설정 가능
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
-- **정렬 메타데이터 보존**: `ColumnDef.sortable`/`sortKey`로 헤더 셀에 정렬 가능 플래그 포함
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지

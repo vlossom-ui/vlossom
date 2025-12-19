@@ -30,8 +30,6 @@ export type Tag = 'td' | 'th';
 export interface ColumnDef<I = Item> {
     key: ColumnKey<I>;
     label: string;
-    sortable?: boolean;
-    sortKey?: string;
     align?: TextAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
@@ -50,7 +48,6 @@ export interface Cell<I = Item> {
 
 export interface HeaderCell extends Cell {
     tag: 'th';
-    sortable?: boolean;
 }
 
 export interface BodyCell<I = Item> extends Cell<I> {

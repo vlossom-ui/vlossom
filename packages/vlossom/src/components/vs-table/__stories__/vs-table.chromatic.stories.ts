@@ -7,8 +7,8 @@ type RowOption = { selectable?: boolean | ((item: any) => boolean) };
 
 const baseColumns = [
     { key: 'name', label: 'Name' },
-    { key: 'age', label: 'Age', sortable: true },
-    { key: 'metadata.email', label: 'Email', sortable: true },
+    { key: 'age', label: 'Age' },
+    { key: 'metadata.email', label: 'Email' },
 ];
 
 const baseItems = [

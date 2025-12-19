@@ -15,7 +15,6 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
             colKey: key,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
-            sortable: true,
         }));
     }
 

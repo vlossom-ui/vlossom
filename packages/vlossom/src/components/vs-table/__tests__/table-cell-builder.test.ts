@@ -26,7 +26,6 @@ describe('TableCellBuilder', () => {
             colKey: 'name',
             colIdx: 1,
             rowIdx: 0,
-            sortable: true,
         });
         expect(body[0][1]).toMatchObject({
             tag: 'td',
