@@ -1,4 +1,4 @@
-import { computed, onBeforeMount, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
 import type { PropsOf, VsComponent } from '@/declaration';
 import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell, type Cell } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
@@ -32,9 +32,9 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         bodyCells.value = nextBodyCells;
     }
 
-    onBeforeMount(() => {
+    function initialize(): void {
         initCells(tableCellBuilder.build());
-    });
+    }
 
     watch(
         [columns, items],
@@ -50,6 +50,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
     );
 
     return {
+        initialize,
         columns,
         headerCells,
         bodyCells,

@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, type PropType, toRefs, computed } from 'vue';
+import { defineComponent, provide, type PropType, toRefs, computed, onBeforeMount } from 'vue';
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -61,6 +61,8 @@ export default defineComponent({
 
         const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
         const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
+
+        onBeforeMount(table.initialize);
 
         return {
             colorSchemeClass,

@@ -1,24 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
-import { defineComponent, nextTick, unref, type PropType } from 'vue';
+import { nextTick, reactive } from 'vue';
 import { stringUtil } from '@/utils';
 import { useTable } from '../composables/table-composable';
 import type { BodyCell, ColumnDef, HeaderCell, Item } from '../types';
 
-function mountUseTable(props: { columns: ColumnDef[] | string[] | null; items: Item[] }) {
-    return mount(
-        defineComponent({
-            props: {
-                columns: { type: Array as PropType<ColumnDef[] | string[] | null>, default: null },
-                items: { type: Array as PropType<Item[]>, required: true },
-            },
-            setup(localProps) {
-                return useTable(localProps as any);
-            },
-            template: '<div />',
-        }),
-        { props },
-    );
+function setupUseTable(props: { columns: ColumnDef[] | string[] | null; items: Item[] }) {
+    const reactiveProps = reactive(props);
+    const table = useTable(reactiveProps as any);
+    table.initialize();
+    return { table, reactiveProps };
 }
 
 describe('useTable', () => {
@@ -32,14 +22,14 @@ describe('useTable', () => {
     });
 
     it('문자열 컬럼을 ColumnDef 배열로 변환한다', async () => {
-        const wrapper = mountUseTable({
+        const { table } = setupUseTable({
             columns: ['name', 'age'],
             items: [{ id: '1', name: 'Alice', age: 24 }],
         });
 
         await nextTick();
 
-        const columns = unref(wrapper.vm.columns) as ColumnDef[] | null;
+        const columns = table.columns.value as ColumnDef[] | null;
         expect(columns).toEqual([
             { key: 'name', label: 'name' },
             { key: 'age', label: 'age' },
@@ -55,12 +45,12 @@ describe('useTable', () => {
             { id: '1', name: 'Alice', age: 24 },
             { id: '2', name: 'Bob', age: 30 },
         ];
-        const wrapper = mountUseTable({ columns, items });
+        const { table } = setupUseTable({ columns, items });
 
         await nextTick();
 
-        const headerCells = unref(wrapper.vm.headerCells) as HeaderCell[];
-        const bodyCells = unref(wrapper.vm.bodyCells) as BodyCell[][];
+        const headerCells = table.headerCells.value as HeaderCell[];
+        const bodyCells = table.bodyCells.value as BodyCell[][];
 
         expect(headerCells.map((h) => h.value)).toEqual(['이름', '나이']);
         expect(bodyCells).toHaveLength(2);
@@ -68,21 +58,19 @@ describe('useTable', () => {
     });
 
     it('컬럼과 아이템 변경을 감지해 셀을 재생성한다', async () => {
-        const wrapper = mountUseTable({
+        const { table, reactiveProps } = setupUseTable({
             columns: ['name'],
             items: [{ id: '1', name: 'Alice' }],
         });
 
         await nextTick();
 
-        await wrapper.setProps({
-            columns: ['title'],
-            items: [{ id: '99', title: '새 항목' }],
-        });
+        reactiveProps.columns = ['title'];
+        reactiveProps.items = [{ id: '99', title: '새 항목' }];
         await nextTick();
 
-        const columns = unref(wrapper.vm.columns) as ColumnDef[] | null;
-        const bodyCells = unref(wrapper.vm.bodyCells) as BodyCell[][];
+        const columns = table.columns.value as ColumnDef[] | null;
+        const bodyCells = table.bodyCells.value as BodyCell[][];
 
         expect(columns?.map((c) => c.key)).toEqual(['title']);
         expect(bodyCells[0][0]).toMatchObject({ value: '새 항목', colKey: 'title' });
