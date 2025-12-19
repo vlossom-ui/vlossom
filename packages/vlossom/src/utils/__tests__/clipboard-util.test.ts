@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest';
-import { clipboardUtil } from '../clipboard-util';
+import { describe, expect, it, afterEach, vi } from 'vitest';
+import { clipboardUtil } from './../clipboard-util';
 
 describe('clipboard-util', () => {
-    beforeEach(() => {
+    afterEach(() => {
         // 각 테스트 전에 writeText mock을 초기화
         if (navigator.clipboard) {
             vi.mocked(navigator.clipboard.writeText).mockClear();
