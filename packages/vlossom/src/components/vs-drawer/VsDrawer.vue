@@ -14,8 +14,8 @@
             />
             <vs-focus-trap
                 ref="focusTrapRef"
-                :disabled="!focusLock"
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                :disabled="!focusLock"
             >
                 <vs-inner-scroll :hide-scroll>
                     <template #header>
@@ -98,7 +98,6 @@ export default defineComponent({
             dimClose,
             dimmed,
             escClose,
-            focusLock,
             fixed,
             open: initialOpen,
             modelValue,
@@ -107,6 +106,8 @@ export default defineComponent({
             size,
         } = toRefs(props);
 
+        const innerId = stringUtil.createID();
+        const computedId = computed(() => id.value || innerId);
         const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
         const focusTrapRef: TemplateRef<Focusable> = useTemplateRef('focusTrapRef');
         const DRAWER_SIZE: Record<Size, string> = {
@@ -163,19 +164,27 @@ export default defineComponent({
                     callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
-                        unmountOverlay();
+                        closeDrawer();
                     }
                 },
             };
         });
 
-        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
+        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
             if (dimClose.value) {
-                unmountOverlay();
+                closeDrawer();
             }
+        }
+
+        function openDrawer() {
+            mountOverlay();
+        }
+
+        function closeDrawer() {
+            unmountOverlay();
         }
 
         // only for vs-layout children
@@ -196,15 +205,15 @@ export default defineComponent({
 
         onBeforeMount(() => {
             if (initialOpen.value || modelValue.value) {
-                mountOverlay();
+                openDrawer();
             }
         });
 
         watch(isOpen, (o) => {
             if (o) {
-                mountOverlay();
+                openDrawer();
             } else {
-                unmountOverlay();
+                closeDrawer();
             }
 
             emit('update:modelValue', o);
@@ -225,7 +234,6 @@ export default defineComponent({
             onClickDimmed,
             dimmedStyleSet,
             isDimmed,
-            focusLock,
         };
     },
 });

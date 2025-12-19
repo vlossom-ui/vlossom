@@ -68,16 +68,18 @@ import {
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent } from '@/declaration';
-import VsButton from '@/components/vs-button/VsButton.vue';
-import type { VsTabsStyleSet } from './types';
-import { vsTabsIcons } from './icons';
-import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import { objectUtil, stringUtil } from '@/utils';
+import { vsTabsIcons } from './icons';
+import type { VsTabsStyleSet } from './types';
+
+import VsButton from '@/components/vs-button/VsButton.vue';
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsTabs;
 export default defineComponent({
     name: componentName,
-    components: { VsButton, VsResponsive },
+    components: { VsButton, VsResponsive, VsRender },
     props: {
         ...getResponsiveProps(),
         ...getColorSchemeProps(),

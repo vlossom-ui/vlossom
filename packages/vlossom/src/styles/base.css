@@ -24,10 +24,10 @@ body {
         sans-serif;
 }
 
-/* 스크롤바 너비를 10px로 고정 -> 변경 시 scroll-lock-composable.ts 수정 필요 */
+/* 스크롤바 너비를 8px로 고정 -> 변경 시 scroll-lock-composable.ts 수정 필요 */
 *::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-track {
@@ -35,7 +35,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.4);
 }
 

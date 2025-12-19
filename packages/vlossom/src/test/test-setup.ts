@@ -50,3 +50,15 @@ const intersectionObserverMock = vi.fn(() => ({
 }));
 
 vi.stubGlobal('IntersectionObserver', intersectionObserverMock);
+
+const clipboardMock = {
+    writeText: vi.fn().mockResolvedValue(undefined),
+    readText: vi.fn().mockResolvedValue(''),
+    read: vi.fn(),
+    write: vi.fn(),
+};
+
+vi.stubGlobal('navigator', {
+    ...navigator,
+    clipboard: clipboardMock,
+});

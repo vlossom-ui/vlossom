@@ -34,6 +34,7 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
+        container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: true },
         dimClose: { type: Boolean, default: true },
         size: {
@@ -43,6 +44,9 @@ export default defineComponent({
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } = toRefs(props);
+
+        const innerId = stringUtil.createID();
+        const computedId = computed(() => id.value || innerId);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -95,12 +99,22 @@ export default defineComponent({
             additionalStyleSet,
         );
 
+        function openModalNode() {
+            mountOverlay();
+        }
+
+        function closeModalNode() {
+            unmountOverlay();
+        }
+
         const computedCallbacks = computed(() => {
             return {
                 ...callbacks.value,
                 [OVERLAY_CLOSE]: () => {
                     callbacks.value?.[OVERLAY_CLOSE]?.();
                     emit('close');
+
+                    closeModalNode();
                 },
                 ['key-Escape']: (event: KeyboardEvent) => {
                     event.preventDefault();
@@ -109,24 +123,23 @@ export default defineComponent({
                     callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
-                        unmountOverlay();
+                        closeModalNode();
                     }
                 },
             };
         });
-        const { mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
+
+        const { mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
 
             if (dimClose.value) {
-                unmountOverlay();
+                closeModalNode();
             }
         }
 
-        onMounted(() => {
-            mountOverlay();
-        });
+        onMounted(openModalNode);
 
         return {
             colorSchemeClass,

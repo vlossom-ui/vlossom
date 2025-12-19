@@ -13,6 +13,5 @@ export function getOverlayProps() {
         focusLock: { type: Boolean, default: false },
         hideScroll: { type: Boolean, default: false },
         id: { type: String, default: '' },
-        scrollLock: { type: Boolean, default: false },
     };
 }

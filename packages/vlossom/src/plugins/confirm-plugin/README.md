@@ -57,7 +57,6 @@ interface ConfirmModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
-    scrollLock?: boolean;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 
     colorScheme?: ColorScheme;
