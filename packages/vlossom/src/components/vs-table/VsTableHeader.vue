@@ -2,6 +2,19 @@
     <thead>
         <template v-if="headerCells.length">
             <tr>
+                <th v-if="hasSelectableRows" class="w-10">
+                    <template v-if="$slots['selectable']">
+                        <slot name="selectable" :cells="headerCells" :rowIdx="0" />
+                    </template>
+                    <template v-else>
+                        <vs-checkbox
+                            :model-value="selectedAll"
+                            :indeterminate="partiallySelected"
+                            @toggle="toggleSelectedAll"
+                        />
+                    </template>
+                </th>
+
                 <th v-for="header in headerCells" :key="header.id" :id="header.id">
                     <slot :name="findMatchingSlotName(header)" :header="header">
                         {{ header.value }}
@@ -26,7 +39,8 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 
 export default defineComponent({
     setup(_props, { slots }) {
-        const { headerCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { headerCells, hasSelectableRows, selectedAll, partiallySelected, toggleSelectedAll, updateSelectedRow } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -45,7 +59,12 @@ export default defineComponent({
         }
 
         return {
+            hasSelectableRows,
             headerCells,
+            selectedAll,
+            partiallySelected,
+            toggleSelectedAll,
+            updateSelectedRow,
             findMatchingSlotName,
         };
     },

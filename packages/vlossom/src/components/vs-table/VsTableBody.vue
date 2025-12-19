@@ -2,6 +2,20 @@
     <tbody>
         <template v-if="bodyCells.length">
             <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx" @click.prevent.stop="clickRow(cells, $event)">
+                <td v-if="hasSelectableRows" class="w-10" @click.prevent.stop="selectRow(cells)">
+                    <template v-if="$slots['selectable']">
+                        <slot name="selectable" :item="getRowItem(cells)" :rowIdx="rowIdx" />
+                    </template>
+                    <template v-else>
+                        <vs-checkbox
+                            v-if="isSelectableRow(getRowItem(cells))"
+                            v-model="selectedRows"
+                            :true-value="rowIdx"
+                            multiple
+                        />
+                    </template>
+                </td>
+
                 <td v-for="cell in cells" :id="cell.id" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         {{ cell.value }}
@@ -31,9 +45,10 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    emits: ['click-cell', 'click-row'],
+    emits: ['click-cell', 'click-row', 'select-row'],
     setup(_props, { emit, slots }) {
-        const { bodyCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyCells, hasSelectableRows, isSelectableRow, selectedRows, updateSelectedRow } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -52,6 +67,14 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
+        function getRowItem(cells: BodyCell[]): Record<string, unknown> {
+            const anyCell = cells[0];
+            if (!anyCell) {
+                return {};
+            }
+            return anyCell.item;
+        }
+
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', event, { ...cell });
         }
@@ -61,10 +84,25 @@ export default defineComponent({
             emit('click-row', event, clickedRow);
         }
 
+        function selectRow(cells: BodyCell[]): void {
+            const anyCell = cells[0];
+            if (!anyCell || !isSelectableRow(anyCell.item)) {
+                return;
+            }
+
+            updateSelectedRow(anyCell.item);
+            emit('select-row', anyCell.item, anyCell.rowIdx);
+        }
+
         return {
             tableIcons,
             bodyCells,
+            hasSelectableRows,
+            isSelectableRow,
+            selectedRows,
             findMatchingSlotName,
+            getRowItem,
+            selectRow,
             clickCell,
             clickRow,
         };

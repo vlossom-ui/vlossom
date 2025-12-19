@@ -51,6 +51,10 @@ export default defineComponent({
                 return true;
             },
         },
+        selectable: {
+            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
     },
     emits: ['click-cell', 'click-row'],
     setup(props, { slots, emit }) {
