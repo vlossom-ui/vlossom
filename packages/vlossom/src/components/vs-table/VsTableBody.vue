@@ -2,7 +2,7 @@
     <tbody>
         <template v-if="bodyCells.length">
             <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx" @click.prevent.stop="clickRow(cells, $event)">
-                <td v-if="hasSelectableRows" class="w-10" @click.prevent.stop="selectRow(cells)">
+                <td v-if="hasSelectableRows" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
                     <template v-if="$slots['selectable']">
                         <slot name="selectable" :item="getRowItem(cells)" :rowIdx="rowIdx" />
                     </template>
@@ -84,14 +84,14 @@ export default defineComponent({
             emit('click-row', event, clickedRow);
         }
 
-        function selectRow(cells: BodyCell[]): void {
-            const anyCell = cells[0];
+        function selectRow(row: BodyCell[], event: MouseEvent): void {
+            const anyCell = row[0];
             if (!anyCell || !isSelectableRow(anyCell.item)) {
                 return;
             }
 
             updateSelectedRow(anyCell.item);
-            emit('select-row', anyCell.item, anyCell.rowIdx);
+            emit('select-row', event, row);
         }
 
         return {

@@ -8,7 +8,7 @@
                 <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
-        <vs-table-body @click-cell="clickCell" @click-row="clickRow">
+        <vs-table-body @click-cell="clickCell" @click-row="clickRow" @select-row="selectRow">
             <template v-for="name in bodySlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
@@ -56,7 +56,7 @@ export default defineComponent({
             default: false,
         },
     },
-    emits: ['click-cell', 'click-row'],
+    emits: ['click-cell', 'click-row', 'select-row'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -70,11 +70,18 @@ export default defineComponent({
         function clickCell(event: MouseEvent, cell: BodyCell): void {
             emit('click-cell', event, cell);
         }
+
         function clickRow(event: MouseEvent, row: BodyCell[]): void {
             emit('click-row', event, row);
         }
 
-        onBeforeMount(table.initialize);
+        function selectRow(event: MouseEvent, row: BodyCell[]): void {
+            emit('select-row', event, row);
+        }
+
+        onBeforeMount(() => {
+            table.initialize();
+        });
 
         return {
             colorSchemeClass,
@@ -82,6 +89,7 @@ export default defineComponent({
             bodySlots,
             clickCell,
             clickRow,
+            selectRow,
         };
     },
 });
