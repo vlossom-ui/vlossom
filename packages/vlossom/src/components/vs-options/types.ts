@@ -1,5 +1,5 @@
 import type VsOptions from './VsOptions.vue';
-import type { BoxStyleSet } from '@/declaration';
+import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -9,10 +9,8 @@ declare module 'vue' {
 
 export type { VsOptions };
 
-export interface VsOptionsStyleSet extends BoxStyleSet {
-    gap?: string;
-    height?: string;
-    option?: Omit<BoxStyleSet, 'backgroundColor'>;
+export interface VsOptionsStyleSet extends SizeStyleSet, BoxStyleSet {
+    option?: { gap?: string } & Omit<BoxStyleSet, 'backgroundColor'>;
 }
 
 export interface VsOptionsGroup {

@@ -1,14 +1,16 @@
 @reference 'tailwindcss';
 
 .vs-options {
+    --vs-options-width: initial;
+    --vs-options-height: initial;
+
     --vs-options-backgroundColor: initial;
     --vs-options-border: initial;
     --vs-options-borderRadius: initial;
     --vs-options-padding: initial;
     --vs-options-opacity: initial;
-    --vs-options-gap: initial;
-    --vs-options-height: initial;
 
+    --vs-options-option-gap: initial;
     --vs-options-option-border: initial;
     --vs-options-option-borderRadius: initial;
     --vs-options-option-padding: initial;
@@ -20,12 +22,11 @@
     border: var(--vs-options-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-options-backgroundColor, var(--vs-no-color));
-    padding: var(--vs-options-padding, 1rem 0.8rem);
-    height: var(--vs-options-height, 20rem);
+    min-width: var(--vs-options-width, auto);
 
-    .vs-options-inner {
+    .vs-options-list {
         @apply flex h-full flex-col;
-
+        max-height: var(--vs-options-height, 16rem);
         .vs-options-option-focused {
             background-color: var(--vs-area-bg-hover);
         }
@@ -49,7 +50,10 @@
             .vs-options-option {
                 opacity: var(--vs-options-option-opacity, 1);
                 border: var(--vs-options-option-border, none);
-                border-radius: var(--vs-options-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+                border-radius: var(
+                    --vs-options-option-borderRadius,
+                    calc(var(--vs-radius-ratio) * var(--vs-radius-sm))
+                );
                 padding: var(--vs-options-option-padding, 0 0.8rem);
 
                 &.vs-selected {
@@ -62,4 +66,3 @@
         }
     }
 }
-
