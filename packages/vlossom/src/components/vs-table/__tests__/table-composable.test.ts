@@ -4,7 +4,11 @@ import { stringUtil } from '@/utils';
 import { useTable } from '../composables/table-composable';
 import type { BodyCell, ColumnDef, HeaderCell, Item } from '../types';
 
-function setupUseTable(props: { columns: ColumnDef[] | string[] | null; items: Item[] }) {
+function setupUseTable(props: {
+    columns: ColumnDef[] | string[] | null;
+    items: Item[];
+    selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+}) {
     const reactiveProps = reactive(props);
     const table = useTable(reactiveProps as any);
     table.initialize();
@@ -74,5 +78,59 @@ describe('useTable', () => {
 
         expect(columns?.map((c) => c.key)).toEqual(['title']);
         expect(bodyCells[0][0]).toMatchObject({ value: '새 항목', colKey: 'title' });
+    });
+
+    it('선택 가능한 행이 있을 때 전체 선택/해제를 토글한다', async () => {
+        const { table } = setupUseTable({
+            columns: ['name'],
+            items: [
+                { id: '1', name: 'Alice' },
+                { id: '2', name: 'Bob' },
+            ],
+            selectable: () => true,
+        });
+
+        await nextTick();
+
+        expect(table.anySelectable.value).toBe(true);
+        expect(table.selectedAll.value).toBe(false);
+
+        table.toggleSelectedAll();
+        await nextTick();
+
+        expect(table.selectedIds.value).toEqual(['1', '2']);
+        expect(table.selectedAll.value).toBe(true);
+
+        table.toggleSelectedAll();
+        await nextTick();
+
+        expect(table.selectedIds.value).toEqual([]);
+        expect(table.selectedAll.value).toBe(false);
+    });
+
+    it('selectable이 false인 행은 전체 선택에서 제외하고 부분 선택 상태를 계산한다', async () => {
+        const { table } = setupUseTable({
+            columns: null,
+            items: [
+                { id: '1', name: 'Alice' },
+                { id: '2', name: 'Bob' },
+                { id: '3', name: 'Carol' },
+            ],
+            selectable: (item) => item.id !== '2',
+        });
+
+        await nextTick();
+
+        table.toggleSelectedAll();
+        await nextTick();
+
+        expect(table.selectedIds.value).toEqual(['1', '3']);
+        expect(table.selectedAll.value).toBe(true);
+
+        table.selectedIds.value = ['1'];
+        await nextTick();
+
+        expect(table.partiallySelected.value).toBe(true);
+        expect(table.selectedAll.value).toBe(false);
     });
 });
