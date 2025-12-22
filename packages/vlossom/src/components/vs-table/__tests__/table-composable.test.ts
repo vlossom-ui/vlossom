@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { nextTick, reactive } from 'vue';
 import { stringUtil } from '@/utils';
 import { useTable } from '../composables/table-composable';
-import type { BodyCell, ColumnDef, HeaderCell, Item } from '../types';
+import { SortType, type BodyCell, type ColumnDef, type HeaderCell, type Item } from '../types';
 
 function setupUseTable(props: {
     columns: ColumnDef[] | string[] | null;
@@ -151,7 +151,7 @@ describe('useTable', () => {
             });
             await nextTick();
 
-            expect(table.sortType.value).toBe('none');
+            expect(table.sortType.value).toBe(SortType.NONE);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 
@@ -168,7 +168,7 @@ describe('useTable', () => {
             table.updateSortType('id');
             await nextTick();
 
-            expect(table.sortType.value).toBe('ascend');
+            expect(table.sortType.value).toBe(SortType.ASCEND);
             expect(getNames(table)).toEqual(['Alice', 'Bob']);
         });
 
@@ -186,7 +186,7 @@ describe('useTable', () => {
             table.updateSortType('id'); // DESCEND
             await nextTick();
 
-            expect(table.sortType.value).toBe('descend');
+            expect(table.sortType.value).toBe(SortType.DESCEND);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 
@@ -205,7 +205,7 @@ describe('useTable', () => {
             table.updateSortType('id'); // NONE
             await nextTick();
 
-            expect(table.sortType.value).toBe('none');
+            expect(table.sortType.value).toBe(SortType.NONE);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 
