@@ -56,7 +56,7 @@ export default defineComponent({
             default: false,
         },
     },
-    emits: ['click-cell', 'click-row', 'select-row'],
+    emits: ['click-cell', 'select-row'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
