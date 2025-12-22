@@ -23,7 +23,7 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
         return this.items.map((item: Item, rowIdx: number) => {
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                id: `${key}-${item.id ?? stringUtil.createID()}`,
+                id: `${key}-${item.id}`,
                 value: item[key],
                 item,
                 colKey: key,

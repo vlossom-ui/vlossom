@@ -25,7 +25,7 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
         return this.items.map((item: Item, rowIdx: number) => {
             return this.columnDefs.map((headerKey: string, colIdx: number) => ({
                 tag,
-                id: `${stringUtil.kebabCase(headerKey)}-${item.id ?? stringUtil.createID()}`,
+                id: `${stringUtil.kebabCase(headerKey)}-${item.id}`,
                 value: objectUtil.get(item, headerKey),
                 item,
                 colKey: headerKey,

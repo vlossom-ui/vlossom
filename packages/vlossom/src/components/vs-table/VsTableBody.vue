@@ -2,19 +2,16 @@
     <tbody>
         <template v-if="bodyCells.length">
             <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
-                <td v-if="hasSelectableRows" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
-                    <template v-if="$slots['selectable']">
-                        <slot name="selectable" :item="getRowItem(cells)" :rowIdx="rowIdx" />
-                    </template>
-                    <template v-else>
+                <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
+                    <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
                         <vs-checkbox
-                            v-if="isSelectableRow(getRowItem(cells))"
-                            v-model="selectedRows"
-                            :true-value="rowIdx"
+                            v-if="selectable(getRowItem(cells), rowIdx, items)"
+                            v-model="selectedIds"
+                            :true-value="getRowItem(cells).id"
                             multiple
                             @toggle="selectRow(cells, $event)"
                         />
-                    </template>
+                    </slot>
                 </td>
 
                 <td v-for="cell in cells" :id="cell.id" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
@@ -48,7 +45,7 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 export default defineComponent({
     emits: ['click-cell', 'click-row', 'select-row'],
     setup(_props, { emit, slots }) {
-        const { bodyCells, hasSelectableRows, isSelectableRow, selectedRows, updateSelectedRow } =
+        const { items, bodyCells, anySelectable, selectable, selectedIds, toggleSelectedRow } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
@@ -82,25 +79,26 @@ export default defineComponent({
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
             const anyCell = row[0];
-            if (!anyCell || !isSelectableRow(anyCell.item)) {
+            if (!anyCell || !selectable.value(anyCell.item, anyCell.rowIdx, items.value)) {
                 return;
             }
 
-            updateSelectedRow(anyCell.item);
+            toggleSelectedRow(anyCell.item);
             emit('select-row', event, row);
             emit('click-cell', event, { ...anyCell });
         }
 
         return {
-            tableIcons,
             bodyCells,
-            hasSelectableRows,
-            isSelectableRow,
-            selectedRows,
+            anySelectable,
+            items,
+            selectedIds,
+            selectable,
+            tableIcons,
+            clickCell,
             findMatchingSlotName,
             getRowItem,
             selectRow,
-            clickCell,
         };
     },
 });

@@ -1,91 +1,49 @@
 import { computed, ref, type Ref } from 'vue';
+import type { Item } from '../types';
 
 export function useTableSelect(
-    selectable: Ref<
-        boolean | ((item: Record<string, unknown>, index?: number, items?: Record<string, unknown>[]) => boolean)
-    >,
-    items: Ref<Record<string, unknown>[]>,
+    selectable: Ref<(item: Item, index?: number, items?: Item[]) => boolean>,
+    items: Ref<Item[]>,
 ) {
-    const selectedRows = ref<number[]>([]);
-    const hasSelectableRows = computed(() => {
-        return items.value.some(isSelectableRow);
+    const selectedIds = ref<string[]>([]);
+
+    const anySelectable = computed<boolean>(() => {
+        return items.value.some(selectable.value);
     });
-    const selectableItems = computed(() => {
-        return items.value.filter(isSelectableRow);
+    const selectableItems = computed<Item[]>(() => {
+        return items.value.filter(selectable.value);
     });
     const partiallySelected = computed(() => {
-        if (selectedRows.value.length === 0) {
-            return false;
-        }
-        if (selectedRows.value.length === selectableItems.value.length) {
-            return false;
-        }
-        return true;
+        return selectedIds.value.length > 0 && selectedIds.value.length < selectableItems.value.length;
     });
     const selectedAll = computed(() => {
-        return selectedRows.value.length === selectableItems.value.length;
+        return selectedIds.value.length === selectableItems.value.length;
     });
 
-    function initSelectedRows(): void {
-        items.value.forEach((item, rowIdx) => {
-            if (isSelectableRow(item) && !selectedRows.value.includes(rowIdx)) {
-                selectedRows.value.push(rowIdx);
-            }
-        });
+    function toggleSelectedRow(item: Item): void {
+        if (!selectableItems.value.includes(item)) {
+            return;
+        }
+        if (selectedIds.value.includes(item.id!)) {
+            selectedIds.value = selectedIds.value.filter((id) => id !== item.id);
+            return;
+        }
+        selectedIds.value = [...selectedIds.value, item.id!];
     }
-
-    function clearSelectedRows(): void {
-        selectedRows.value = [];
-    }
-
     function toggleSelectedAll(): void {
         if (selectedAll.value) {
-            clearSelectedRows();
+            selectedIds.value = [];
             return;
         }
-        initSelectedRows();
-    }
-
-    function findRowIndex(item: Record<string, unknown>): number {
-        return items.value.findIndex((i) => i === item);
-    }
-
-    function isSelectableRow(item: Record<string, unknown>): boolean {
-        if (selectable.value === undefined) {
-            return false;
-        }
-        if (typeof selectable.value === 'function') {
-            const rowIdx = findRowIndex(item);
-            if (rowIdx === -1) {
-                return false;
-            }
-            return selectable.value(item, rowIdx, items.value);
-        }
-        return selectable.value;
-    }
-
-    function updateSelectedRow(item: Record<string, unknown>): void {
-        if (!isSelectableRow(item)) {
-            return;
-        }
-        const rowIdx = findRowIndex(item);
-
-        if (selectedRows.value.includes(rowIdx)) {
-            selectedRows.value = selectedRows.value.filter((idx) => idx !== rowIdx);
-        } else {
-            selectedRows.value = [...selectedRows.value, rowIdx];
-        }
+        selectedIds.value = selectableItems.value.map((item) => item.id!);
     }
 
     return {
-        selectedRows,
+        selectedIds,
         selectedAll,
-        initSelectedRows,
-        clearSelectedRows,
-        toggleSelectedAll,
-        updateSelectedRow,
+        anySelectable,
         partiallySelected,
-        isSelectableRow,
-        hasSelectableRows,
+        toggleSelectedAll,
+        toggleSelectedRow,
     };
 }

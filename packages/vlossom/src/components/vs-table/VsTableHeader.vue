@@ -2,17 +2,14 @@
     <thead>
         <template v-if="headerCells.length">
             <tr>
-                <th v-if="hasSelectableRows" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
-                    <template v-if="$slots['selectable']">
-                        <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
-                    </template>
-                    <template v-else>
+                <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
+                    <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
                         <vs-checkbox
                             :model-value="selectedAll"
                             :indeterminate="partiallySelected"
                             @toggle="toggleSelectedAll"
                         />
-                    </template>
+                    </slot>
                 </th>
 
                 <th
@@ -21,7 +18,7 @@
                     :id="header.id"
                     @click.prevent.stop="clickCell(header, $event)"
                 >
-                    <slot :name="findMatchingSlotName(header)" :header="header">
+                    <slot :name="findMatchingSlotName(header)" :header>
                         {{ header.value }}
                     </slot>
                 </th>
@@ -46,7 +43,7 @@ import { HEADER_ROW_INDEX } from './models/factories';
 export default defineComponent({
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, hasSelectableRows, selectedAll, partiallySelected, toggleSelectedAll, updateSelectedRow } =
+        const { headerCells, anySelectable, selectedAll, partiallySelected, toggleSelectedAll, toggleSelectedRow } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
@@ -77,12 +74,12 @@ export default defineComponent({
 
         return {
             HEADER_ROW_INDEX,
-            hasSelectableRows,
+            anySelectable,
             headerCells,
             selectedAll,
             partiallySelected,
             toggleSelectedAll,
-            updateSelectedRow,
+            toggleSelectedRow,
             findMatchingSlotName,
             clickCell,
             selectRow,

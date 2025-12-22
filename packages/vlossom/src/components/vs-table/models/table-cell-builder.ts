@@ -1,5 +1,5 @@
 import { objectUtil } from '@/utils';
-import type { BodyCell, Cell, ColumnDef, HeaderCell } from '../types';
+import type { BodyCell, Cell, ColumnDef, HeaderCell, Item } from '../types';
 import { isColumnDefArray } from '../types';
 import {
     NoColumnDefCellFactory,
@@ -12,7 +12,7 @@ export class TableCellBuilder {
     private cellFactory: TableCellFactory = new NoColumnDefCellFactory([]);
 
     public constructor(
-        private items: Record<string, unknown>[],
+        private items: Item[],
         private columnDefs: ColumnDef[] | string[] | null,
     ) {
         this.cellFactory = this.getCellFactory();
@@ -28,7 +28,7 @@ export class TableCellBuilder {
         return new StringKeyColumnDefCellFactory(this.items, this.columnDefs);
     }
 
-    public updateItems(items: Record<string, unknown>[]): TableCellBuilder {
+    public updateItems(items: Item[]): TableCellBuilder {
         if (objectUtil.isEqual(this.items, items)) {
             return this;
         }
