@@ -69,12 +69,10 @@ export default defineComponent({
 
         function clickCell(event: MouseEvent, cell: BodyCell): void {
             emit('click-cell', event, cell);
-            console.log('clickCell', event, cell);
         }
 
         function selectRow(event: MouseEvent, row: BodyCell[]): void {
             emit('select-row', event, row);
-            console.log('selectRow', event, row);
         }
 
         onBeforeMount(() => {
