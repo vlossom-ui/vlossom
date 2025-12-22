@@ -29,6 +29,7 @@ import type { ColorScheme } from '@/declaration';
 import type { VsBlockStyleSet } from '@/components/vs-block/types';
 
 const panelStyleSet: VsBlockStyleSet = {
+    width: '280px',
     backgroundColor: 'var(--vs-no-color)',
     border: '1px solid var(--vs-gray-300)',
     title: {
@@ -72,7 +73,6 @@ export default defineComponent({
     position: fixed;
     top: 80px;
     right: 100px;
-    width: 280px;
     z-index: 100;
 }
 
