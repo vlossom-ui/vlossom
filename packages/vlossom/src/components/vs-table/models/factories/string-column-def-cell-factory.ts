@@ -17,6 +17,7 @@ export default class StringKeyColumnDefCellFactory implements TableCellFactory {
             colKey: headerKey,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
+            sortable: false,
         }));
     }
 

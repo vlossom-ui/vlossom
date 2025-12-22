@@ -18,6 +18,7 @@ export default class ObjectColumnDefCellFactory implements TableCellFactory {
             colKey: header.key,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
+            sortable: header.sortable ?? false,
         }));
     }
 
