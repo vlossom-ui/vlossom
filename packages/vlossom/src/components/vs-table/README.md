@@ -71,14 +71,48 @@
 </template>
 ```
 
+### 행 선택 (Select)
+
+```html
+<template>
+    <!-- 모든 행 선택 가능 -->
+    <vs-table :columns="columns" :items="items" selectable />
+
+    <!-- 조건부 선택 -->
+    <vs-table
+        :columns="columns"
+        :items="items"
+        :selectable="(item) => item.status === 'active'"
+    />
+</template>
+```
+
+### 정렬 (Sort)
+
+```html
+<template>
+    <vs-table
+        :columns="[
+            { key: 'name', label: '이름', sortable: true },
+            { key: 'age', label: '나이', sortable: true },
+            { key: 'address', label: '주소', sortable: true, sortBy: 'address.city' },
+        ]"
+        :items="items"
+    />
+</template>
+```
+
+> 헤더 클릭 시 오름차순(ASCEND) → 내림차순(DESCEND) → 정렬 해제(NONE) 순으로 토글됩니다.
+
 ## Props
 
-| Prop          | Type                              | Default | Required | Description                 |
-| ------------- | --------------------------------- | ------- | -------- | --------------------------- |
-| `colorScheme` | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마          |
-| `styleSet`    | `string \| VsTableStyleSet`       | -       | -        | 커스텀 스타일 설정 객체     |
-| `columns`     | `ColumnDef[] \| string[] \| null` | `[]`    | -        | 테이블 컬럼 정의            |
-| `items`       | `Item[]`                          | -       | **Yes**  | 테이블에 표시할 아이템 배열 |
+| Prop          | Type                                           | Default | Required | Description                          |
+| ------------- | ---------------------------------------------- | ------- | -------- | ------------------------------------ |
+| `colorScheme` | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                   |
+| `styleSet`    | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체              |
+| `columns`     | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
+| `items`       | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
+| `selectable`  | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
 
 ## Types
 
@@ -92,11 +126,14 @@ interface ColumnDef<I = Item> {
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
+    sortable?: boolean;
+    sortBy?: ColumnKey<I>;
     transform?: (value: unknown, item: I) => unknown;
 }
 
 interface HeaderCell extends Cell {
     tag: 'th';
+    sortable: boolean;
 }
 
 interface BodyCell<I = Item> extends Cell<I> {
@@ -138,3 +175,5 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **다양한 컬럼 입력**: 객체/문자열/null 컬럼 정의를 지원해 유연한 초기 설정 가능
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
+- **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
+- **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원

@@ -199,7 +199,7 @@ export const CustomSlots: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'App.vue에 작성된 다양한 슬롯 예제를 그대로 재현한 스토리입니다.',
+                story: '다양한 커스텀 슬롯 예제를 확인할 수 있습니다.',
             },
         },
     },
