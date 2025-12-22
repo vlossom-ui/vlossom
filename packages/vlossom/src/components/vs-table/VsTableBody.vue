@@ -5,10 +5,10 @@
                 <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
                     <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
                         <vs-checkbox
-                            v-if="selectable(getRowItem(cells), rowIdx, items)"
-                            v-model="selectedIds"
-                            :true-value="getRowItem(cells).id"
+                            v-if="isRowSelectable(cells, rowIdx)"
                             multiple
+                            :model-value="selectedIds"
+                            :true-value="getRowId(cells)"
                             @toggle="selectRow(cells, $event)"
                         />
                     </slot>
@@ -38,7 +38,7 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
-import type { BodyCell } from './types';
+import type { BodyCell, Item } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
@@ -65,16 +65,25 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
-        function getRowItem(cells: BodyCell[]): Record<string, unknown> {
-            const anyCell = cells[0];
+        function clickCell(cell: BodyCell, event: MouseEvent): void {
+            emit('click-cell', event, { ...cell });
+        }
+
+        function getRowItem(row: BodyCell[]): Item {
+            const anyCell = row[0];
             if (!anyCell) {
                 return {};
             }
             return anyCell.item;
         }
 
-        function clickCell(cell: BodyCell, event: MouseEvent): void {
-            emit('click-cell', event, { ...cell });
+        function isRowSelectable(row: BodyCell[], rowIdx: number): boolean {
+            const item = getRowItem(row);
+            return selectable.value(item, rowIdx, items.value);
+        }
+
+        function getRowId(row: BodyCell[]): string | number | undefined {
+            return getRowItem(row)?.id;
         }
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
@@ -98,6 +107,8 @@ export default defineComponent({
             clickCell,
             findMatchingSlotName,
             getRowItem,
+            isRowSelectable,
+            getRowId,
             selectRow,
         };
     },
