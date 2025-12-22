@@ -95,13 +95,13 @@ describe('useTable', () => {
         expect(table.anySelectable.value).toBe(true);
         expect(table.selectedAll.value).toBe(false);
 
-        table.toggleSelectedAll();
+        table.toggleSelectAll();
         await nextTick();
 
         expect(table.selectedIds.value).toEqual(['1', '2']);
         expect(table.selectedAll.value).toBe(true);
 
-        table.toggleSelectedAll();
+        table.toggleSelectAll();
         await nextTick();
 
         expect(table.selectedIds.value).toEqual([]);
@@ -121,7 +121,7 @@ describe('useTable', () => {
 
         await nextTick();
 
-        table.toggleSelectedAll();
+        table.toggleSelectAll();
         await nextTick();
 
         expect(table.selectedIds.value).toEqual(['1', '3']);
@@ -130,7 +130,100 @@ describe('useTable', () => {
         table.selectedIds.value = ['1'];
         await nextTick();
 
-        expect(table.partiallySelected.value).toBe(true);
+        expect(table.selectedPartial.value).toBe(true);
         expect(table.selectedAll.value).toBe(false);
+    });
+    describe('정렬', () => {
+        const sortableColumns: ColumnDef[] = [
+            { key: 'id', label: 'ID', sortable: true },
+            { key: 'name', label: '이름', sortable: true },
+        ];
+
+        const getNames = (table: ReturnType<typeof useTable>) => table.bodyCells.value.map((row) => row[1].value);
+
+        it('초기 상태는 NONE이며 원본 순서를 유지한다', async () => {
+            const { table } = setupUseTable({
+                columns: sortableColumns,
+                items: [
+                    { id: '2', name: 'Bob' },
+                    { id: '1', name: 'Alice' },
+                ],
+            });
+            await nextTick();
+
+            expect(table.sortType.value).toBe('none');
+            expect(getNames(table)).toEqual(['Bob', 'Alice']);
+        });
+
+        it('오름차순 정렬 시 작은 값이 먼저 온다', async () => {
+            const { table } = setupUseTable({
+                columns: sortableColumns,
+                items: [
+                    { id: '2', name: 'Bob' },
+                    { id: '1', name: 'Alice' },
+                ],
+            });
+            await nextTick();
+
+            table.updateSortType('id');
+            await nextTick();
+
+            expect(table.sortType.value).toBe('ascend');
+            expect(getNames(table)).toEqual(['Alice', 'Bob']);
+        });
+
+        it('내림차순 정렬 시 큰 값이 먼저 온다', async () => {
+            const { table } = setupUseTable({
+                columns: sortableColumns,
+                items: [
+                    { id: '1', name: 'Alice' },
+                    { id: '2', name: 'Bob' },
+                ],
+            });
+            await nextTick();
+
+            table.updateSortType('id'); // ASCEND
+            table.updateSortType('id'); // DESCEND
+            await nextTick();
+
+            expect(table.sortType.value).toBe('descend');
+            expect(getNames(table)).toEqual(['Bob', 'Alice']);
+        });
+
+        it('NONE으로 돌아오면 원본 순서로 복원된다', async () => {
+            const { table } = setupUseTable({
+                columns: sortableColumns,
+                items: [
+                    { id: '2', name: 'Bob' },
+                    { id: '1', name: 'Alice' },
+                ],
+            });
+            await nextTick();
+
+            table.updateSortType('id'); // ASCEND
+            table.updateSortType('id'); // DESCEND
+            table.updateSortType('id'); // NONE
+            await nextTick();
+
+            expect(table.sortType.value).toBe('none');
+            expect(getNames(table)).toEqual(['Bob', 'Alice']);
+        });
+
+        it('다른 컬럼 클릭 시 해당 컬럼 기준으로 정렬된다', async () => {
+            const { table } = setupUseTable({
+                columns: sortableColumns,
+                items: [
+                    { id: '1', name: 'Bob' },
+                    { id: '2', name: 'Alice' },
+                ],
+            });
+            await nextTick();
+
+            table.updateSortType('name');
+            await nextTick();
+
+            expect(table.sortColumn.value?.key).toBe('name');
+            expect(getNames(table)).toEqual(['Alice', 'Bob']);
+        });
     });
 });

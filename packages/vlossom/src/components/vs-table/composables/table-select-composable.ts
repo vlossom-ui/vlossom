@@ -20,7 +20,7 @@ export function useTableSelect(
         return selectedIds.value.length === selectableItems.value.length;
     });
 
-    function toggleAll(): void {
+    function toggleSelectAll(): void {
         if (selectedAll.value) {
             selectedIds.value = [];
             return;
@@ -33,6 +33,6 @@ export function useTableSelect(
         selectedAll,
         selectedPartial,
         anySelectable,
-        toggleAll,
+        toggleSelectAll,
     };
 }

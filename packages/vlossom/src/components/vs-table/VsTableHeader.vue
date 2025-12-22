@@ -4,7 +4,11 @@
             <tr>
                 <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
                     <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
-                        <vs-checkbox :model-value="selectedAll" :indeterminate="selectedPartial" @toggle="toggleAll" />
+                        <vs-checkbox
+                            :model-value="selectedAll"
+                            :indeterminate="selectedPartial"
+                            @toggle="toggleSelectAll"
+                        />
                     </slot>
                 </th>
 
@@ -51,7 +55,7 @@ export default defineComponent({
             anySelectable,
             selectedAll,
             selectedPartial,
-            toggleAll,
+            toggleSelectAll,
             sortType,
             sortColumn,
             updateSortType,
@@ -94,7 +98,7 @@ export default defineComponent({
         }
 
         function selectRow(row: HeaderCell[], event: MouseEvent): void {
-            toggleAll();
+            toggleSelectAll();
             emit('select-row', event, row);
             emit('click-cell', event, { ...row[0] });
         }
@@ -105,7 +109,7 @@ export default defineComponent({
             headerCells,
             selectedAll,
             selectedPartial,
-            toggleAll,
+            toggleSelectAll,
             findMatchingSlotName,
             clickCell,
             selectRow,

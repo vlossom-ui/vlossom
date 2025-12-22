@@ -41,7 +41,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
-    const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleAll } = useTableSelect(selectable, items);
+    const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
+        selectable,
+        items,
+    );
 
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
@@ -89,7 +92,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         selectedIds,
         selectedAll,
         selectedPartial,
-        toggleAll,
+        toggleSelectAll,
         sortType,
         sortColumn,
         compareRows,
@@ -113,5 +116,5 @@ export type TableComposable = {
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;
-    toggleAll: () => void;
+    toggleSelectAll: () => void;
 };
