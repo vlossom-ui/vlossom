@@ -7,8 +7,8 @@
             </div>
         </vs-header>
 
-        <vs-container class="mb-8 flex-1 pr-96">
-            <vs-page class="mx-auto w-full max-w-4xl">
+        <vs-container class="flex-1 pr-96 pb-8">
+            <vs-page class="mx-auto w-full max-w-4xl" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
