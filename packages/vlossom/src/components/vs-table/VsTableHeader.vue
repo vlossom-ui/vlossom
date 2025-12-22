@@ -74,7 +74,10 @@ export default defineComponent({
         }
 
         function getSortIcon(header: HeaderCell) {
-            if (!header.sortable || header.colKey !== sortColumn.value?.key) {
+            if (!header.sortable) {
+                return null;
+            }
+            if (header.colKey !== sortColumn.value?.key) {
                 return tableIcons.sortNone;
             }
             if (sortType.value === SortType.ASCEND) {
