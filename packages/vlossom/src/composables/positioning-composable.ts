@@ -3,16 +3,15 @@ import { domUtil, functionUtil, logUtil } from '@/utils';
 import type { Placement, Alignment } from '@/declaration';
 
 export interface AttachInfo {
-    placement?: Exclude<Placement, 'middle'>;
+    placement?: Placement;
     align?: Alignment;
     margin?: number;
     followWidth?: boolean;
 }
 
-export function usePositioning(targetId: string, attachment: TemplateRef<HTMLElement>) {
-    const refinedTargetId = targetId.replace('#', '');
+export function usePositioning(target: string, attachment: TemplateRef<HTMLElement>) {
     const isVisible = ref(false);
-    const computedPlacement: Ref<Exclude<Placement, 'middle'> | null> = ref(null);
+    const computedPlacement: Ref<Placement | null> = ref(null);
     let throttledComputePosition: ((...args: any) => any) | null = null;
     let resizeObserver: ResizeObserver | null = null;
 
@@ -43,12 +42,12 @@ export function usePositioning(targetId: string, attachment: TemplateRef<HTMLEle
     }
 
     function computePosition({ placement = 'top', align = 'center', margin = 0, followWidth = false }: AttachInfo) {
-        const target = document.getElementById(refinedTargetId);
-        if (!target || !attachment.value) {
+        const targetElement: HTMLElement | null = document.querySelector(target);
+        if (!targetElement || !attachment.value) {
             return;
         }
 
-        const { top, right, bottom, left, width, height } = domUtil.getClientRect(target);
+        const { top, right, bottom, left, width, height } = domUtil.getClientRect(targetElement);
         const { width: attachmentWidth, height: attachmentHeight } = domUtil.getClientRect(attachment.value);
 
         // Change placements when there are no spaces in the viewport.
@@ -60,6 +59,8 @@ export function usePositioning(targetId: string, attachment: TemplateRef<HTMLEle
             computedPlacement.value = window.innerWidth - right > left ? 'right' : 'left';
         } else if (placement === 'right' && right + attachmentWidth > window.innerWidth) {
             computedPlacement.value = window.innerWidth - right < left ? 'left' : 'right';
+        } else if (placement === 'middle') {
+            computedPlacement.value = 'middle';
         } else {
             computedPlacement.value = placement;
         }
@@ -83,6 +84,10 @@ export function usePositioning(targetId: string, attachment: TemplateRef<HTMLEle
             case 'left':
                 x = left - attachmentWidth - margin;
                 y = getY(align, top, bottom, height, attachmentHeight);
+                break;
+            case 'middle':
+                x = getX(align, left, right, width, attachmentWidth);
+                y = top + height / 2 - attachmentHeight / 2;
                 break;
             default:
                 throw Error('Placement is Invalid Value');
@@ -110,8 +115,8 @@ export function usePositioning(targetId: string, attachment: TemplateRef<HTMLEle
         // for waiting the attachment to be mounted
         nextTick(() => {
             try {
-                const target = document.getElementById(refinedTargetId);
-                if (!target || !attachment.value) {
+                const targetElement = document.querySelector(target);
+                if (!targetElement || !attachment.value) {
                     return;
                 }
 
@@ -127,14 +132,14 @@ export function usePositioning(targetId: string, attachment: TemplateRef<HTMLEle
                 const hasResizeObserver = window && window.ResizeObserver !== undefined;
                 if (hasResizeObserver) {
                     resizeObserver = new ResizeObserver(throttledComputePosition);
-                    resizeObserver.observe(target);
+                    resizeObserver.observe(targetElement);
                     resizeObserver.observe(attachment.value);
                 }
 
                 document.addEventListener('scroll', throttledComputePosition, true);
                 window.addEventListener('resize', throttledComputePosition, true);
             } catch (error: any) {
-                logUtil.error('target positioning', error);
+                logUtil.error('targetElement positioning', error);
             }
         });
     }

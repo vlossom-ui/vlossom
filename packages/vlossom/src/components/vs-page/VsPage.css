@@ -5,7 +5,7 @@
 
     --vs-page-description-padding: initial;
 
-    @apply relative flex w-full flex-col;
+    @apply relative w-full;
 
     padding: var(--vs-page-padding, 2rem 3rem);
 

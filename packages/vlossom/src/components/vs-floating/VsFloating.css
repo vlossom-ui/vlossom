@@ -1,0 +1,3 @@
+.vs-floating {
+    @apply pointer-events-auto absolute;
+}
