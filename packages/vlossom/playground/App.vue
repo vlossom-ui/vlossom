@@ -7,15 +7,19 @@
             </div>
         </vs-header>
 
-        <vs-page class="flex-1">
-            <vs-tabs v-model="activeTab" :tabs="tabs" primary style="margin-bottom: 2rem" />
+        <vs-container class="flex-1 pr-96">
+            <vs-page class="main-content">
+                <vs-tabs v-model="activeTab" :tabs="tabs" primary style="margin-bottom: 2rem" />
 
-            <Basic v-show="activeTab === 0" />
-            <InputsAndForm v-show="activeTab === 1" />
-            <DataDisplay v-show="activeTab === 2" />
-            <Overlay v-show="activeTab === 3" />
-            <Sandbox v-show="activeTab === 4" />
-        </vs-page>
+                <Basic v-show="activeTab === 0" />
+                <InputsAndForm v-show="activeTab === 1" />
+                <DataDisplay v-show="activeTab === 2" />
+                <Overlay v-show="activeTab === 3" />
+                <Sandbox v-show="activeTab === 4" />
+            </vs-page>
+
+            <ColorSchemePanel />
+        </vs-container>
 
         <vs-footer>
             <div class="footer-content">
@@ -32,6 +36,7 @@ import InputsAndForm from './views/InputsAndForm.vue';
 import DataDisplay from './views/DataDisplay.vue';
 import Overlay from './views/Overlay.vue';
 import Sandbox from './Sandbox.vue';
+import ColorSchemePanel from './components/ColorSchemePanel.vue';
 
 export default defineComponent({
     name: 'App',
@@ -41,14 +46,17 @@ export default defineComponent({
         DataDisplay,
         Overlay,
         Sandbox,
+        ColorSchemePanel,
     },
     setup() {
         const tabs = ['Basic', 'Form', 'Data Display', 'Overlay', 'Sandbox'];
         const activeTab = ref(0);
+        const isPanelCollapsed = ref(false);
 
         return {
             tabs,
             activeTab,
+            isPanelCollapsed,
         };
     },
 });
@@ -60,7 +68,7 @@ export default defineComponent({
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
     height: 100%;
 }
 
@@ -68,6 +76,20 @@ export default defineComponent({
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
+}
+
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    padding-right: 380px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem 3rem;
+    max-width: 987px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .footer-content {
