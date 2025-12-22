@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { ref, computed } from 'vue';
 import { useVlossom } from '@/framework';
-import VsTextWrap from './../VsTextWrap.vue';
-import VsTooltip from '../../vs-tooltip/VsTooltip.vue';
 import type { VsTextWrapStyleSet } from './../types';
+import VsTextWrap from './../VsTextWrap.vue';
 
 const meta: Meta<typeof VsTextWrap> = {
     title: 'Components/Base Components/VsTextWrap',
@@ -170,7 +168,7 @@ export const WithActionsSlot: Story = {
             <vs-text-wrap v-bind="args">
                 https://example.com
                 <template #actions>
-                    <button 
+                    <button
                         @click="handleStar"
                         style="
                             padding: 0.2rem 0.5rem;
@@ -185,7 +183,7 @@ export const WithActionsSlot: Story = {
                     >
                         ⭐
                     </button>
-                    <button 
+                    <button
                         @click="handleShare"
                         style="
                             padding: 0.2rem 0.5rem;
@@ -231,7 +229,7 @@ export const AllFeatures: Story = {
             <vs-text-wrap v-bind="args">
                 https://example.com
                 <template #actions>
-                    <button 
+                    <button
                         @click="handleCustomAction"
                         style="
                             padding: 0.2rem 0.5rem;
@@ -297,73 +295,5 @@ export const PreDefinedStyleSet: Story = {
         styleSet: 'myStyleSet',
         copy: true,
         link: 'https://google.com',
-    },
-};
-
-export const WithContentTextAccess: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story:
-                    'ref를 통해 contentText에 접근하여 다른 컴포넌트와 연계하는 예시입니다. ' +
-                    '예를 들어, 말줄임된 텍스트를 툴팁으로 표시하거나 다른 UI 요소에 활용할 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsTextWrap, VsTooltip },
-        setup() {
-            const textWrapRef = ref();
-            const displayText = ref('');
-            const textContent = computed(() => textWrapRef.value?.contentText || '');
-
-            function showContentText() {
-                displayText.value = textContent.value;
-            }
-
-            return { args, textWrapRef, displayText, textContent, showContentText };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
-                <div>
-                    <p style="margin-bottom: 0.5rem; font-weight: 600;">툴팁과 함께 사용:</p>
-                    <vs-tooltip :content="textContent">
-                        <vs-text-wrap ref="textWrapRef" v-bind="args">
-                            This is a <b>very long text</b> that will be <i>truncated</i> with ellipsis when width is limited
-                        </vs-text-wrap>
-                        <template #tooltip>
-                            {{ textContent }}
-                        </template>
-                    </vs-tooltip>
-                </div>
-                
-                <button 
-                    @click="showContentText"
-                    style="
-                        padding: 0.5rem 1rem;
-                        border: 1px solid #ccc;
-                        border-radius: 0.25rem;
-                        background: white;
-                        cursor: pointer;
-                    "
-                >
-                    contentText 값 확인
-                </button>
-                
-                <div v-if="displayText" style="
-                    padding: 0.5rem;
-                    border: 1px solid #ddd;
-                    border-radius: 0.25rem;
-                    background: #f5f5f5;
-                    max-width: 400px;
-                ">
-                    <strong>contentText:</strong> {{ displayText }}
-                </div>
-            </div>
-        `,
-    }),
-    args: {
-        copy: true,
-        width: '250px',
     },
 };

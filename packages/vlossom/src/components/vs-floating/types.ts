@@ -7,4 +7,3 @@ declare module 'vue' {
 }
 
 export type { VsFloating };
-

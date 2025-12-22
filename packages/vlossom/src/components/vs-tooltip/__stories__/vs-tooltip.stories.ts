@@ -17,9 +17,9 @@ const meta: Meta<typeof VsTooltip> = {
     },
     tags: ['autodocs'],
     argTypes: {
-        targetId: {
+        target: {
             control: 'text',
-            description: '툴팁을 표시할 대상 요소의 id',
+            description: '툴팁을 표시할 대상 요소의 selector',
         },
         colorScheme,
         align: {
@@ -85,7 +85,7 @@ export const Default: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-default">Hover me</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-default">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-default">
                 <span>This is a tooltip</span>
             </vs-tooltip>
         `,
@@ -110,7 +110,7 @@ export const Clickable: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-clickable">Click me</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-clickable">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-clickable">
                 <span>Click to toggle tooltip</span>
             </vs-tooltip>
         `,
@@ -135,7 +135,7 @@ export const ContentsHover: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-contents-hover">Hover me</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-contents-hover">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-contents-hover">
                 <span>You can hover over this tooltip content</span>
             </vs-tooltip>
         `,
@@ -163,7 +163,7 @@ export const ClickableAndContentsHover: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-click-hover">Click and hover</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-click-hover">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-click-hover">
                 <span>Click to open and hover over this content</span>
             </vs-tooltip>
         `,
@@ -187,17 +187,17 @@ export const Placements: Story = {
             <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center; padding: 4rem;">
                 <div style="display: flex; gap: 1rem;">
                     <vs-button id="tooltip-top">Top</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-top" placement="top">Top tooltip</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-top" placement="top">Top tooltip</vs-tooltip>
                 </div>
                 <div style="display: flex; gap: 1rem;">
                     <vs-button id="tooltip-left">Left</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-left" placement="left">Left tooltip</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-left" placement="left">Left tooltip</vs-tooltip>
                     <vs-button id="tooltip-right">Right</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-right" placement="right">Right tooltip</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-right" placement="right">Right tooltip</vs-tooltip>
                 </div>
                 <div style="display: flex; gap: 1rem;">
                     <vs-button id="tooltip-bottom">Bottom</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-bottom" placement="bottom">Bottom tooltip</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-bottom" placement="bottom">Bottom tooltip</vs-tooltip>
                 </div>
             </div>
         `,
@@ -221,11 +221,11 @@ export const Alignments: Story = {
             <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center; padding: 4rem;">
                 <div style="display: flex; gap: 1rem;">
                     <vs-button id="tooltip-align-start">Start</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-align-start" placement="top" align="start">Start aligned</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-align-start" placement="top" align="start">Start aligned</vs-tooltip>
                     <vs-button id="tooltip-align-center">Center</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-align-center" placement="top" align="center">Center aligned</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-align-center" placement="top" align="center">Center aligned</vs-tooltip>
                     <vs-button id="tooltip-align-end">End</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-align-end" placement="top" align="end">End aligned</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-align-end" placement="top" align="end">End aligned</vs-tooltip>
                 </div>
             </div>
         `,
@@ -250,7 +250,7 @@ export const Disabled: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-disabled">Hover me (disabled)</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-disabled">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-disabled">
                 <span>This tooltip is disabled</span>
             </vs-tooltip>
         `,
@@ -275,7 +275,7 @@ export const NoAnimation: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-no-animation">Hover me (no animation)</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-no-animation">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-no-animation">
                 <span>This tooltip has no animation</span>
             </vs-tooltip>
         `,
@@ -302,7 +302,7 @@ export const Delays: Story = {
         template: `
             <div style="display: flex; gap: 1rem;">
                 <vs-button id="tooltip-delayed">Delayed tooltip</vs-button>
-                <vs-tooltip v-bind="args" target-id="tooltip-delayed">
+                <vs-tooltip v-bind="args" target="#tooltip-delayed">
                     <span>This tooltip has delays</span>
                 </vs-tooltip>
             </div>
@@ -328,7 +328,7 @@ export const ColorScheme: Story = {
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                 ${getColorSchemeTemplate(`
                     <vs-button id="tooltip-color-{{ color }}">{{ color }}</vs-button>
-                    <vs-tooltip v-bind="args" target-id="tooltip-color-{{ color }}" color-scheme="{{ color }}">{{ color }} tooltip</vs-tooltip>
+                    <vs-tooltip v-bind="args" target="#tooltip-color-{{ color }}" color-scheme="{{ color }}">{{ color }} tooltip</vs-tooltip>
                 `)}
             </div>
         `,
@@ -350,7 +350,7 @@ export const StyleSet: Story = {
         },
         template: `
             <vs-button id="tooltip-custom">Custom tooltip</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-custom">
+            <vs-tooltip v-bind="args" target="#tooltip-custom">
                 <span>Custom styled tooltip</span>
             </vs-tooltip>
         `,
@@ -402,7 +402,7 @@ export const PreDefinedStyleSet: Story = {
         },
         template: `
             <vs-button id="tooltip-trigger-predefined">Hover me</vs-button>
-            <vs-tooltip v-bind="args" target-id="tooltip-trigger-predefined">
+            <vs-tooltip v-bind="args" target="#tooltip-trigger-predefined">
                 <span>This tooltip uses predefined style set</span>
             </vs-tooltip>
         `,

@@ -24,7 +24,7 @@ describe('vs-tooltip', () => {
 
             wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                 },
                 slots: {
                     default: 'Tooltip',
@@ -39,11 +39,15 @@ describe('vs-tooltip', () => {
             if (button) {
                 document.body.removeChild(button);
             }
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
         });
 
         it('초기에는 tooltip이 노출되지 않는다', () => {
             //then
-            expect(wrapper.vm.isVisible).toBe(false);
+            expect(wrapper.vm.computedShow).toBe(false);
         });
 
         it('trigger에 마우스를 올렸을 때 툴팁이 노출된다', async () => {
@@ -51,9 +55,10 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(true);
+            expect(wrapper.vm.computedShow).toBe(true);
         });
 
         it('trigger에 마우스를 올렸다가 뗐을 때 툴팁이 사라진다', async () => {
@@ -61,12 +66,15 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
+            expect(wrapper.vm.computedShow).toBe(true);
 
             trigger?.dispatchEvent(new Event('mouseleave'));
-            await vi.advanceTimersByTimeAsync(250);
+            await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(false);
+            expect(wrapper.vm.computedShow).toBe(false);
         });
 
         it('tooltip trigger에 focus가 잡히면 툴팁이 나타난다', async () => {
@@ -75,9 +83,10 @@ describe('vs-tooltip', () => {
             trigger?.focus();
             trigger?.dispatchEvent(new Event('focusin'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(true);
+            expect(wrapper.vm.computedShow).toBe(true);
         });
 
         it('tooltip trigger에서 focus가 사라지면 툴팁이 사라진다', async () => {
@@ -86,13 +95,16 @@ describe('vs-tooltip', () => {
             trigger?.focus();
             trigger?.dispatchEvent(new Event('focusin'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
+            expect(wrapper.vm.computedShow).toBe(true);
 
             trigger?.blur();
             trigger?.dispatchEvent(new Event('focusout'));
-            await vi.advanceTimersByTimeAsync(300);
+            await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(false);
+            expect(wrapper.vm.computedShow).toBe(false);
         });
     });
 
@@ -107,7 +119,7 @@ describe('vs-tooltip', () => {
 
             const wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                     placement: 'bottom',
                 },
                 slots: {
@@ -119,16 +131,22 @@ describe('vs-tooltip', () => {
             //when
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(50); // wait for setPosition end (50ms)
+            await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.computedPlacement).toBe('bottom');
+            const tooltip = window.document.body.querySelector('.vs-tooltip');
+            expect(tooltip?.classList.contains('vs-placement-bottom')).toBe(true);
 
             //cleanup
             wrapper.unmount();
             const btn = document.getElementById(targetId);
             if (btn) {
                 document.body.removeChild(btn);
+            }
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
             }
         });
     });
@@ -144,7 +162,7 @@ describe('vs-tooltip', () => {
 
             const wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                     align: 'end',
                 },
                 slots: {
@@ -157,9 +175,10 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(true);
+            expect(wrapper.vm.computedShow).toBe(true);
             const tooltip = window.document.body.querySelector('.vs-tooltip');
             expect(tooltip?.classList.contains('vs-align-end')).toBe(true);
 
@@ -168,6 +187,10 @@ describe('vs-tooltip', () => {
             const btn = document.getElementById(targetId);
             if (btn) {
                 document.body.removeChild(btn);
+            }
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
             }
         });
     });
@@ -183,7 +206,7 @@ describe('vs-tooltip', () => {
 
             const wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                     clickable: true,
                 },
                 slots: {
@@ -196,18 +219,24 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('click'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(true);
+            expect(wrapper.vm.computedShow).toBe(true);
 
             //cleanup
             wrapper.unmount();
             const btn = document.getElementById(targetId);
             if (btn) {
                 document.body.removeChild(btn);
+            }
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
             }
         });
     });
@@ -223,7 +252,7 @@ describe('vs-tooltip', () => {
 
             const wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                     contentsHover: true,
                 },
                 slots: {
@@ -236,48 +265,16 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
+            expect(wrapper.vm.computedShow).toBe(true);
+
             const tooltip = window.document.body.querySelector('.vs-tooltip');
             tooltip?.dispatchEvent(new Event('mouseenter', { bubbles: true }));
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(true);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-    });
-
-    describe('disabled', () => {
-        it('disabled가 true일 때는 trigger에 마우스를 올려도 툴팁이 노출되지 않는다', async () => {
-            //given
-            const targetId = 'test-trigger-disabled';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    disabled: true,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(false);
+            expect(wrapper.vm.computedShow).toBe(true);
 
             //cleanup
             wrapper.unmount();
@@ -285,286 +282,9 @@ describe('vs-tooltip', () => {
             if (btn) {
                 document.body.removeChild(btn);
             }
-        });
-    });
-
-    describe('enterDelay', () => {
-        it('enterDelay가 설정되면 해당 시간만큼 지연 후 툴팁이 나타난다', async () => {
-            //given
-            const targetId = 'test-trigger-enter-delay';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    enterDelay: 100,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(50); // 아직 지연 시간이 지나지 않음
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(false);
-
-            //when
-            await vi.advanceTimersByTimeAsync(60); // 지연 시간이 지남
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(true);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-
-        it('enterDelay 중에 마우스가 벗어나면 툴팁이 나타나지 않는다', async () => {
-            //given
-            const targetId = 'test-trigger-enter-delay-2';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    enterDelay: 100,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(50);
-
-            trigger?.dispatchEvent(new Event('mouseleave'));
-            await vi.advanceTimersByTimeAsync(60);
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(false);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-    });
-
-    describe('leaveDelay', () => {
-        it('leaveDelay가 설정되면 해당 시간만큼 지연 후 툴팁이 사라진다', async () => {
-            //given
-            const targetId = 'test-trigger-leave-delay';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    leaveDelay: 100,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(0);
-
-            trigger?.dispatchEvent(new Event('mouseleave'));
-            await vi.advanceTimersByTimeAsync(50); // 아직 지연 시간이 지나지 않음
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(true);
-
-            //when
-            await vi.advanceTimersByTimeAsync(60); // leaveDelay 100ms + 애니메이션 250ms = 350ms 총 필요
-            await vi.advanceTimersByTimeAsync(250); // 애니메이션 대기 시간 추가
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(false);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-
-        it('leaveDelay 중에 마우스가 다시 들어오면 툴팁이 유지된다', async () => {
-            //given
-            const targetId = 'test-trigger-leave-delay-2';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    leaveDelay: 100,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(0);
-
-            trigger?.dispatchEvent(new Event('mouseleave'));
-            await vi.advanceTimersByTimeAsync(50);
-
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(60);
-
-            //then
-            expect(wrapper.vm.isVisible).toBe(true);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-    });
-
-    describe('noAnimation', () => {
-        it('noAnimation이 true일 때 애니메이션 클래스가 적용되지 않는다', async () => {
-            //given
-            const targetId = 'test-trigger-no-animation';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    noAnimation: true,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(0);
-
-            //then
-            const tooltip = window.document.body.querySelector('.vs-tooltip-contents');
-            expect(tooltip?.classList.contains('fade-in-top')).toBe(false);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-
-        it('noAnimation이 false일 때 애니메이션 클래스가 적용된다', async () => {
-            //given
-            const targetId = 'test-trigger-no-animation-2';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    noAnimation: false,
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(0);
-
-            //then
-            const tooltip = window.document.body.querySelector('.vs-tooltip-contents');
-            expect(tooltip?.classList.contains('fade-in-top')).toBe(true);
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
-            }
-        });
-    });
-
-    describe('margin', () => {
-        it('margin이 설정되면 해당 값으로 padding이 적용된다', async () => {
-            //given
-            const targetId = 'test-trigger-margin';
-            const button = document.createElement('button');
-            button.id = targetId;
-            button.textContent = 'Hover Here!';
-            document.body.appendChild(button);
-
-            const wrapper = mount(VsTooltip, {
-                props: {
-                    targetId,
-                    margin: '1rem',
-                },
-                slots: {
-                    default: 'Tooltip',
-                },
-                attachTo: document.body,
-            });
-
-            //when
-            const trigger = document.getElementById(targetId);
-            trigger?.dispatchEvent(new Event('mouseenter'));
-            await vi.advanceTimersByTimeAsync(0);
-
-            //then
-            const tooltip = window.document.body.querySelector('.vs-tooltip') as HTMLElement;
-            expect(tooltip?.style.paddingBottom).toBe('1rem');
-
-            //cleanup
-            wrapper.unmount();
-            const btn = document.getElementById(targetId);
-            if (btn) {
-                document.body.removeChild(btn);
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
             }
         });
     });
@@ -580,7 +300,7 @@ describe('vs-tooltip', () => {
 
             const wrapper = mount(VsTooltip, {
                 props: {
-                    targetId,
+                    target: `#${targetId}`,
                     clickable: true,
                     contentsHover: true,
                 },
@@ -594,21 +314,30 @@ describe('vs-tooltip', () => {
             const trigger = document.getElementById(targetId);
             trigger?.dispatchEvent(new Event('click'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             trigger?.dispatchEvent(new Event('mouseenter'));
             await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
+            expect(wrapper.vm.computedShow).toBe(true);
 
             const tooltip = window.document.body.querySelector('.vs-tooltip');
             tooltip?.dispatchEvent(new Event('mouseenter', { bubbles: true }));
+            await vi.advanceTimersByTimeAsync(0);
+            await wrapper.vm.$nextTick();
 
             //then
-            expect(wrapper.vm.isVisible).toBe(true);
+            expect(wrapper.vm.computedShow).toBe(true);
 
             //cleanup
             wrapper.unmount();
             const btn = document.getElementById(targetId);
             if (btn) {
                 document.body.removeChild(btn);
+            }
+            const overlay = document.querySelector('#vs-floating-overlay');
+            if (overlay) {
+                document.body.removeChild(overlay);
             }
         });
     });

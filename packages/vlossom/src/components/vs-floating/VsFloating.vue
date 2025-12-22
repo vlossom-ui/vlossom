@@ -138,6 +138,7 @@ export default defineComponent({
             floatingRef,
             computedPlacement,
             isVisible,
+            isFloated,
             animationClass,
             floatingStyle,
         };
