@@ -54,11 +54,11 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
 
     function initCells(cellMatrix: Cell[][]): void {
         const [header, ...body] = cellMatrix;
-        const nextHeaderCells = header as HeaderCell[];
-        const nextBodyCells = body as BodyCell[][];
+        const nextHeaderCells = [...header] as HeaderCell[];
+        const nextBodyCells = [...body] as BodyCell[][];
 
-        headerCells.value = [...nextHeaderCells];
-        rawBodyCells.value = [...nextBodyCells].sort(compareRows);
+        headerCells.value = nextHeaderCells;
+        rawBodyCells.value = nextBodyCells;
     }
 
     function initialize(): void {

@@ -75,7 +75,7 @@ export default defineComponent({
 
         function getSortIcon(header: HeaderCell) {
             if (!header.sortable) {
-                return null;
+                return '';
             }
             if (header.colKey !== sortColumn.value?.key) {
                 return tableIcons.sortNone;
