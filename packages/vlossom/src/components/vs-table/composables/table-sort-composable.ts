@@ -1,65 +1,46 @@
-import { reactive, ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { SortType, type ColumnDef, type BodyCell } from '../types';
-import { objectUtil } from '@/utils';
+import { objectUtil, compareUtil } from '@/utils';
 
 export function useTableSort(columns: Ref<ColumnDef[] | null>) {
-    const sortState = reactive<Record<string, SortType>>({});
-    const currentSortTarget = ref<ColumnDef | null>(null);
-
-    function initSortTypes(): void {
-        if (!columns.value) {
-            return;
-        }
-        columns.value.forEach((column) => {
-            sortState[column.key] = SortType.NONE;
-        });
-    }
+    const sortType = ref<SortType>(SortType.NONE);
+    const sortColumn = ref<ColumnDef | null>(null);
 
     function compareRows(aRow: BodyCell[], bRow: BodyCell[]): number {
-        if (!columns.value || !currentSortTarget.value) {
+        if (!columns.value || !sortColumn.value) {
             return 0;
         }
-
         const aItem = aRow[0]?.item;
         const bItem = bRow[0]?.item;
-
         if (!aItem || !bItem) {
             return 0;
         }
+        const sortKey = sortColumn.value.sortBy ?? sortColumn.value.key;
+        const aValue: unknown = objectUtil.get(aItem, sortKey);
+        const bValue: unknown = objectUtil.get(bItem, sortKey);
+        const direction = sortType.value === SortType.ASCEND ? 1 : -1;
 
-        const sortKey = currentSortTarget.value.sortBy ?? currentSortTarget.value.key;
-        const aValue = objectUtil.get(aItem, sortKey);
-        const bValue = objectUtil.get(bItem, sortKey);
-
-        const aStr = String(aValue);
-        const bStr = String(bValue);
-        const sortType = sortState[currentSortTarget.value.key];
-
-        if (sortType === SortType.ASCEND) {
-            return aStr < bStr ? -1 : aStr > bStr ? 1 : 0;
-        }
-        if (sortType === SortType.DESCEND) {
-            return aStr > bStr ? -1 : aStr < bStr ? 1 : 0;
-        }
-        return 0;
+        return direction * compareUtil.compareValues(aValue, bValue);
     }
 
-    function updateSortType(headerKey: string): void {
-        const targetColumn = columns.value?.find((column) => column.key === headerKey);
+    function updateSortType(columnKey: string): void {
+        if (!columns.value) {
+            return;
+        }
+        const targetColumn = columns.value.find((column) => column.key === columnKey);
         if (!targetColumn) {
             return;
         }
-        const current: SortType = sortState[targetColumn.key] ?? SortType.NONE;
+        const current: SortType = sortType.value ?? SortType.NONE;
         const next: SortType = (current + 1) % SortType.LENGTH;
 
-        initSortTypes();
-        sortState[targetColumn.key] = next;
-        currentSortTarget.value = targetColumn;
+        sortType.value = next;
+        sortColumn.value = targetColumn;
     }
 
     return {
-        sortState,
-        initSortTypes,
+        sortType,
+        sortColumn,
         compareRows,
         updateSortType,
     };

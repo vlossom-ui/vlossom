@@ -12,7 +12,7 @@ function toCallable<TArgs extends any[] = [], TResult = boolean>(
     if (typeof maybeFn === 'function') {
         return maybeFn as (...args: TArgs) => TResult;
     }
-    return () => maybeFn as TResult;
+    return () => maybeFn;
 }
 
 export const functionUtil = {

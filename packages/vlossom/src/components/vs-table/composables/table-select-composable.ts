@@ -13,14 +13,14 @@ export function useTableSelect(
     const selectableItems = computed<Item[]>(() => {
         return items.value.filter(selectable.value);
     });
-    const partiallySelected = computed(() => {
+    const selectedPartial = computed(() => {
         return selectedIds.value.length > 0 && selectedIds.value.length < selectableItems.value.length;
     });
     const selectedAll = computed(() => {
         return selectedIds.value.length === selectableItems.value.length;
     });
 
-    function toggleSelectedAll(): void {
+    function toggleAll(): void {
         if (selectedAll.value) {
             selectedIds.value = [];
             return;
@@ -31,8 +31,8 @@ export function useTableSelect(
     return {
         selectedIds,
         selectedAll,
+        selectedPartial,
         anySelectable,
-        partiallySelected,
-        toggleSelectedAll,
+        toggleAll,
     };
 }

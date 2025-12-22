@@ -4,11 +4,7 @@
             <tr>
                 <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
                     <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
-                        <vs-checkbox
-                            :model-value="selectedAll"
-                            :indeterminate="partiallySelected"
-                            @toggle="toggleSelectedAll"
-                        />
+                        <vs-checkbox :model-value="selectedAll" :indeterminate="selectedPartial" @toggle="toggleAll" />
                     </slot>
                 </th>
 
@@ -54,9 +50,10 @@ export default defineComponent({
             headerCells,
             anySelectable,
             selectedAll,
-            partiallySelected,
-            toggleSelectedAll,
-            sortState,
+            selectedPartial,
+            toggleAll,
+            sortType,
+            sortColumn,
             updateSortType,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
@@ -77,11 +74,13 @@ export default defineComponent({
         }
 
         function getSortIcon(header: HeaderCell) {
-            const sortType = sortState[header.colKey];
-            if (sortType === SortType.ASCEND) {
+            if (!header.sortable || header.colKey !== sortColumn.value?.key) {
+                return tableIcons.sortNone;
+            }
+            if (sortType.value === SortType.ASCEND) {
                 return tableIcons.sortAsc;
             }
-            if (sortType === SortType.DESCEND) {
+            if (sortType.value === SortType.DESCEND) {
                 return tableIcons.sortDesc;
             }
             return tableIcons.sortNone;
@@ -92,7 +91,7 @@ export default defineComponent({
         }
 
         function selectRow(row: HeaderCell[], event: MouseEvent): void {
-            toggleSelectedAll();
+            toggleAll();
             emit('select-row', event, row);
             emit('click-cell', event, { ...row[0] });
         }
@@ -102,8 +101,8 @@ export default defineComponent({
             anySelectable,
             headerCells,
             selectedAll,
-            partiallySelected,
-            toggleSelectedAll,
+            selectedPartial,
+            toggleAll,
             findMatchingSlotName,
             clickCell,
             selectRow,

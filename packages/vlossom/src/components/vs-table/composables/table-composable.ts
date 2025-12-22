@@ -3,12 +3,12 @@ import { functionUtil, stringUtil } from '@/utils';
 import type { PropsOf, VsComponent } from '@/declaration';
 import {
     isColumnDefArray,
+    SortType,
     type BodyCell,
     type ColumnDef,
     type HeaderCell,
     type Cell,
     type Item,
-    type SortType,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
@@ -38,27 +38,30 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
     const selectable = computed(() => {
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
     });
-    const headerCells = ref<HeaderCell[]>([]);
-    const bodyCells = ref<BodyCell[][]>([]);
-    const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
 
-    const { sortState, initSortTypes, compareRows, updateSortType } = useTableSort(columns);
-    const { selectedIds, selectedAll, anySelectable, partiallySelected, toggleSelectedAll } = useTableSelect(
-        selectable,
-        items,
-    );
+    const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
+    const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
+    const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleAll } = useTableSelect(selectable, items);
+
+    const headerCells = ref<HeaderCell[]>([]);
+    const rawBodyCells = ref<BodyCell[][]>([]);
+    const bodyCells = computed<BodyCell[][]>(() => {
+        if (sortType.value === SortType.NONE) {
+            return rawBodyCells.value;
+        }
+        return [...rawBodyCells.value].sort(compareRows);
+    });
 
     function initCells(cellMatrix: Cell[][]): void {
         const [header, ...body] = cellMatrix;
-        const nextHeaderCells = [...header] as HeaderCell[];
-        const nextBodyCells = [...body] as BodyCell[][];
+        const nextHeaderCells = header as HeaderCell[];
+        const nextBodyCells = body as BodyCell[][];
 
-        headerCells.value = nextHeaderCells;
-        bodyCells.value = nextBodyCells.sort(compareRows);
+        headerCells.value = [...nextHeaderCells];
+        rawBodyCells.value = [...nextBodyCells].sort(compareRows);
     }
 
     function initialize(): void {
-        initSortTypes();
         initCells(tableCellBuilder.build());
     }
 
@@ -75,10 +78,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         { deep: true },
     );
 
-    watch(sortState, () => {
-        bodyCells.value = [...bodyCells.value].sort(compareRows);
-    });
-
     return {
         initialize,
         columns,
@@ -89,10 +88,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         anySelectable,
         selectedIds,
         selectedAll,
-        partiallySelected,
-        toggleSelectedAll,
-        sortState,
-        initSortTypes,
+        selectedPartial,
+        toggleAll,
+        sortType,
+        sortColumn,
         compareRows,
         updateSortType,
     };
@@ -103,16 +102,16 @@ export type TableComposable = {
     columns: ComputedRef<ColumnDef[] | null>;
     items: Ref<Item[]>;
     headerCells: Ref<HeaderCell[]>;
-    bodyCells: Ref<BodyCell[][]>;
+    bodyCells: ComputedRef<BodyCell[][]>;
     anySelectable: ComputedRef<boolean>;
     selectedIds: Ref<string[]>;
     selectedAll: ComputedRef<boolean>;
-    partiallySelected: ComputedRef<boolean>;
+    selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
-    sortState: Record<string, SortType>;
-    initSortTypes: () => void;
+    sortType: Ref<SortType | null>;
+    sortColumn: Ref<ColumnDef | null>;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;
-    toggleSelectedAll: () => void;
+    toggleAll: () => void;
 };
