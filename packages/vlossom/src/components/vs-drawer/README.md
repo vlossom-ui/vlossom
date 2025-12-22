@@ -153,6 +153,7 @@ interface VsDrawerStyleSet {
     position?: 'absolute' | 'fixed';
     size?: string;
     boxShadow?: string;
+    zIndex?: number;
 
     dimmed?: {
         backgroundColor?: string;

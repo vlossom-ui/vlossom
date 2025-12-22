@@ -14,6 +14,7 @@ export interface VsDrawerStyleSet extends BoxStyleSet {
     position?: 'absolute' | 'fixed';
     size?: string;
     boxShadow?: string;
+    zIndex?: number;
 
     dimmed?: VsDimmedStyleSet;
 }
