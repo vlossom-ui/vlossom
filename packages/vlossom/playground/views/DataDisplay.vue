@@ -1,10 +1,9 @@
 <template>
-    <section class="section">
-        <h2 class="section-title">Data Display</h2>
+    <section>
+        <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Data Display</h2>
 
-        <!-- Image -->
-        <h3 class="component-title">VsImage</h3>
-        <div class="component-row">
+        <h3 class="mb-4 font-semibold">VsImage</h3>
+        <div class="flex flex-wrap items-center gap-4">
             <vs-image
                 src="https://picsum.photos/200/200"
                 alt="Sample Image"
@@ -17,10 +16,9 @@
                 :style-set="{ width: '150px', height: '150px' }"
             />
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Label Value -->
-        <h3 class="component-title">VsLabelValue</h3>
+        <h3 class="mb-4 font-semibold">VsLabelValue</h3>
         <vs-grid :grid-size="12" row-gap="0.5rem">
             <vs-label-value :grid="12">
                 <template #label>Name</template>
@@ -35,55 +33,54 @@
                 Active
             </vs-label-value>
         </vs-grid>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Message -->
-        <h3 class="component-title">VsMessage</h3>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem">
+        <h3 class="mb-4 font-semibold">VsMessage</h3>
+        <div class="flex flex-col gap-2">
             <vs-message state="info" text="This is an info message" />
             <vs-message state="success" text="This is a success message" />
             <vs-message state="warning" text="This is a warning message" />
             <vs-message state="error" text="This is an error message" />
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Pagination -->
-        <h3 class="component-title">VsPagination</h3>
+        <h3 class="mb-4 font-semibold">VsPagination</h3>
         <vs-pagination v-model="pageValue" :length="20" :showing-length="5" edge-buttons />
-        <p style="margin-top: 0.5rem">Current Page: {{ pageValue + 1 }}</p>
-        <vs-divider style="margin: 1.5rem 0" />
+        <p class="mt-2">Current Page: {{ pageValue + 1 }}</p>
+        <Divider />
 
-        <!-- Progress -->
-        <h3 class="component-title">VsProgress</h3>
-        <div style="display: flex; flex-direction: column; gap: 1rem">
+        <h3 class="mb-4 font-semibold">VsProgress</h3>
+        <div class="flex flex-col gap-4">
             <vs-progress :value="progressValue" :max="100" :label="`${progressValue}%`" />
             <vs-progress :value="0.7" color-scheme="green" />
             <vs-progress :value="0.4" color-scheme="blue" />
             <vs-button small @click="progressValue = Math.min(100, progressValue + 10)">Increase</vs-button>
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Steps -->
-        <h3 class="component-title">VsSteps</h3>
+        <h3 class="mb-4 font-semibold">VsSteps</h3>
         <vs-steps v-model="stepValue" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" />
-        <div class="component-row" style="margin-top: 1rem">
+        <div class="mt-4 flex flex-wrap items-center gap-4">
             <vs-button small @click="stepValue = Math.max(0, stepValue - 1)">Prev</vs-button>
             <vs-button small @click="stepValue = Math.min(3, stepValue + 1)">Next</vs-button>
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Text Wrap -->
-        <h3 class="component-title">VsTextWrap</h3>
+        <h3 class="mb-4 font-semibold">VsTextWrap</h3>
         <vs-text-wrap copy>Copy this text to clipboard</vs-text-wrap>
-        <vs-text-wrap link="https://github.com" style="margin-top: 0.5rem">Open GitHub</vs-text-wrap>
+        <vs-text-wrap link="https://github.com" class="mt-2">Open GitHub</vs-text-wrap>
     </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import Divider from '../components/Divider.vue';
 
 export default defineComponent({
     name: 'DataDisplay',
+    components: {
+        Divider,
+    },
     setup() {
         const progressValue = ref(30);
         const stepValue = ref(0);
@@ -97,31 +94,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style scoped>
-.section {
-    margin-bottom: 2rem;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--vs-line-color);
-}
-
-.component-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--vs-font-color);
-}
-
-.component-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-}
-</style>

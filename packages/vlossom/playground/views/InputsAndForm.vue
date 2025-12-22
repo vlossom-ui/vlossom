@@ -1,10 +1,9 @@
 <template>
-    <section class="section">
-        <h2 class="section-title">Form Components</h2>
+    <section>
+        <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Form Components</h2>
 
-        <!-- Checkbox -->
-        <h3 class="component-title">VsCheckbox & VsCheckboxSet</h3>
-        <div style="display: flex; flex-direction: column; gap: 1rem">
+        <h3 class="mb-4 font-semibold">VsCheckbox & VsCheckboxSet</h3>
+        <div class="flex flex-col gap-4">
             <vs-checkbox v-model="checkboxValue" check-label="Single Checkbox" />
             <vs-checkbox-set
                 v-model="checkboxSetValue"
@@ -12,15 +11,13 @@
                 :options="['Option A', 'Option B', 'Option C']"
             />
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- File Drop -->
-        <h3 class="component-title">VsFileDrop</h3>
+        <h3 class="mb-4 font-semibold">VsFileDrop</h3>
         <vs-file-drop v-model="files" label="Upload Files" placeholder="Drop files here" multiple />
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Input -->
-        <h3 class="component-title">VsInput</h3>
+        <h3 class="mb-4 font-semibold">VsInput</h3>
         <vs-grid :grid-size="12" column-gap="1rem" row-gap="1rem">
             <vs-input v-model="inputText" label="Text Input" placeholder="Enter text..." :grid="6" />
             <vs-input
@@ -41,37 +38,37 @@
             <vs-input label="Readonly" placeholder="Readonly input" readonly model-value="Readonly" :grid="6" />
             <vs-input label="Required" placeholder="Required field" required :grid="6" />
         </vs-grid>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Radio -->
-        <h3 class="component-title">VsRadioSet</h3>
+        <h3 class="mb-4 font-semibold">VsRadioSet</h3>
         <vs-radio-set v-model="radioValue" label="Select Option" :options="['Option 1', 'Option 2', 'Option 3']" />
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Search Input -->
-        <h3 class="component-title">VsSearchInput</h3>
+        <h3 class="mb-4 font-semibold">VsSearchInput</h3>
         <vs-search-input v-model="searchText" placeholder="Search..." />
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Switch -->
-        <h3 class="component-title">VsSwitch</h3>
-        <div class="component-row">
+        <h3 class="mb-4 font-semibold">VsSwitch</h3>
+        <div class="flex flex-wrap items-center gap-4">
             <vs-switch v-model="switchValue" label="Switch" />
             <vs-switch v-model="switchValue2" label="Custom Labels" true-label="Yes" false-label="No" />
         </div>
-        <vs-divider style="margin: 1.5rem 0" />
+        <Divider />
 
-        <!-- Textarea -->
-        <h3 class="component-title">VsTextarea</h3>
+        <h3 class="mb-4 font-semibold">VsTextarea</h3>
         <vs-textarea v-model="textareaValue" label="Description" placeholder="Enter description..." />
     </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, type Ref } from 'vue';
+import Divider from '../components/Divider.vue';
 
 export default defineComponent({
     name: 'InputsAndForm',
+    components: {
+        Divider,
+    },
     setup() {
         const inputText = ref('');
         const inputNumber: Ref<number | null> = ref(null);
@@ -101,31 +98,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style scoped>
-.section {
-    margin-bottom: 2rem;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--vs-line-color);
-}
-
-.component-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--vs-font-color);
-}
-
-.component-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-}
-</style>
