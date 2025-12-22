@@ -20,6 +20,12 @@
                 >
                     <slot :name="findMatchingSlotName(header)" :header>
                         {{ header.value }}
+                        <vs-render
+                            v-if="header.sortable"
+                            class="inline"
+                            :content="getSortIcon(header)"
+                            @click="updateSortType(header.colKey)"
+                        />
                     </slot>
                 </th>
             </tr>
@@ -36,15 +42,23 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
-import type { HeaderCell } from './types';
-import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import { SortType, type HeaderCell } from './types';
 import { HEADER_ROW_INDEX } from './models/factories';
+import { tableIcons } from './icons';
+import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, anySelectable, selectedAll, partiallySelected, toggleSelectedAll } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const {
+            headerCells,
+            anySelectable,
+            selectedAll,
+            partiallySelected,
+            toggleSelectedAll,
+            sortState,
+            updateSortType,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -60,6 +74,17 @@ export default defineComponent({
                 .filter((name) => name in slots);
 
             return candidatePriority[0] || '';
+        }
+
+        function getSortIcon(header: HeaderCell) {
+            const sortType = sortState[header.colKey];
+            if (sortType === SortType.ASCEND) {
+                return tableIcons.sortAsc;
+            }
+            if (sortType === SortType.DESCEND) {
+                return tableIcons.sortDesc;
+            }
+            return tableIcons.sortNone;
         }
 
         function clickCell(cell: HeaderCell, event: MouseEvent): void {
@@ -82,6 +107,8 @@ export default defineComponent({
             findMatchingSlotName,
             clickCell,
             selectRow,
+            getSortIcon,
+            updateSortType,
         };
     },
 });

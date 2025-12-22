@@ -1,9 +1,18 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
+import { functionUtil, stringUtil } from '@/utils';
 import type { PropsOf, VsComponent } from '@/declaration';
-import { isColumnDefArray, type BodyCell, type ColumnDef, type HeaderCell, type Cell, type Item } from '../types';
+import {
+    isColumnDefArray,
+    type BodyCell,
+    type ColumnDef,
+    type HeaderCell,
+    type Cell,
+    type Item,
+    type SortType,
+} from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
-import { functionUtil, stringUtil } from '@/utils';
+import { useTableSort } from './table-sort-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(props: PropsOf<VsComponent.VsTable>) {
@@ -33,6 +42,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
     const bodyCells = ref<BodyCell[][]>([]);
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
 
+    const { sortState, initSortTypes, compareRows, updateSortType } = useTableSort(columns);
     const { selectedIds, selectedAll, anySelectable, partiallySelected, toggleSelectedAll } = useTableSelect(
         selectable,
         items,
@@ -44,10 +54,11 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         const nextBodyCells = [...body] as BodyCell[][];
 
         headerCells.value = nextHeaderCells;
-        bodyCells.value = nextBodyCells;
+        bodyCells.value = nextBodyCells.sort(compareRows);
     }
 
     function initialize(): void {
+        initSortTypes();
         initCells(tableCellBuilder.build());
     }
 
@@ -64,6 +75,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         { deep: true },
     );
 
+    watch(sortState, () => {
+        bodyCells.value = [...bodyCells.value].sort(compareRows);
+    });
+
     return {
         initialize,
         columns,
@@ -76,6 +91,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         selectedAll,
         partiallySelected,
         toggleSelectedAll,
+        sortState,
+        initSortTypes,
+        compareRows,
+        updateSortType,
     };
 }
 
@@ -90,6 +109,10 @@ export type TableComposable = {
     selectedAll: ComputedRef<boolean>;
     partiallySelected: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
+    sortState: Record<string, SortType>;
+    initSortTypes: () => void;
+    compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
+    updateSortType: (headerKey: string) => void;
     initialize: () => void;
     toggleSelectedAll: () => void;
 };

@@ -27,6 +27,13 @@ export type ColumnKey<I = Item> = JoinDotField<I>;
 export type Item = Record<string, unknown> & { id?: string };
 export type Tag = 'td' | 'th';
 
+export enum SortType {
+    NONE,
+    ASCEND,
+    DESCEND,
+    LENGTH,
+}
+
 export interface ColumnDef<I = Item> {
     key: ColumnKey<I>;
     label: string;
@@ -34,6 +41,8 @@ export interface ColumnDef<I = Item> {
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
+    sortable?: boolean;
+    sortBy?: ColumnKey<I>;
     transform?: (value: unknown, item: I) => unknown;
 }
 
@@ -48,6 +57,7 @@ export interface Cell<I = Item> {
 
 export interface HeaderCell extends Cell {
     tag: 'th';
+    sortable: boolean;
 }
 
 export interface BodyCell<I = Item> extends Cell<I> {
