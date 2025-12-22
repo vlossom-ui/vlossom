@@ -1,8 +1,8 @@
 import { objectUtil, stringUtil } from '@/utils';
 import type { BodyCell, ColumnDef, HeaderCell, Item } from '../../types';
-import { HEADER_ROW_INDEX, type TableCellFactory } from './index';
+import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
-export default class ObjectColumnDefCellFactory implements TableCellFactory {
+export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
     public constructor(
         private items: Item[],
         private columnDefs: ColumnDef[],

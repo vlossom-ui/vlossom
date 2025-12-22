@@ -2,30 +2,30 @@ import { objectUtil } from '@/utils';
 import type { BodyCell, Cell, ColumnDef, HeaderCell, Item } from '../types';
 import { isColumnDefArray } from '../types';
 import {
-    NoColumnDefCellFactory,
-    ObjectColumnDefCellFactory,
-    StringKeyColumnDefCellFactory,
-    type TableCellFactory,
-} from './factories';
+    NoColumnDefCellStrategy,
+    ObjectColumnDefCellStrategy,
+    StringKeyColumnDefCellStrategy,
+    type TableCellStrategy,
+} from './strategy';
 
 export class TableCellBuilder {
-    private cellFactory: TableCellFactory = new NoColumnDefCellFactory([]);
+    private cellStrategy: TableCellStrategy = new NoColumnDefCellStrategy([]);
 
     public constructor(
         private items: Item[],
         private columnDefs: ColumnDef[] | string[] | null,
     ) {
-        this.cellFactory = this.getCellFactory();
+        this.cellStrategy = this.getCellStrategy();
     }
 
-    private getCellFactory(): TableCellFactory {
+    private getCellStrategy(): TableCellStrategy {
         if (this.columnDefs === null) {
-            return new NoColumnDefCellFactory(this.items);
+            return new NoColumnDefCellStrategy(this.items);
         }
         if (isColumnDefArray(this.columnDefs)) {
-            return new ObjectColumnDefCellFactory(this.items, this.columnDefs);
+            return new ObjectColumnDefCellStrategy(this.items, this.columnDefs);
         }
-        return new StringKeyColumnDefCellFactory(this.items, this.columnDefs);
+        return new StringKeyColumnDefCellStrategy(this.items, this.columnDefs);
     }
 
     public updateItems(items: Item[]): TableCellBuilder {
@@ -33,7 +33,7 @@ export class TableCellBuilder {
             return this;
         }
         this.items = items;
-        this.cellFactory = this.getCellFactory();
+        this.cellStrategy = this.getCellStrategy();
         return this;
     }
 
@@ -42,13 +42,13 @@ export class TableCellBuilder {
             return this;
         }
         this.columnDefs = columnDefs;
-        this.cellFactory = this.getCellFactory();
+        this.cellStrategy = this.getCellStrategy();
         return this;
     }
 
     public build(): Cell[][] {
-        const headerCells: HeaderCell[] = this.cellFactory.createHeaderCell();
-        const bodyCells: BodyCell[][] = this.cellFactory.createBodyCell();
+        const headerCells: HeaderCell[] = this.cellStrategy.createHeaderCell();
+        const bodyCells: BodyCell[][] = this.cellStrategy.createBodyCell();
         return [headerCells, ...bodyCells];
     }
 }

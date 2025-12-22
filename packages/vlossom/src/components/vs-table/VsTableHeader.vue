@@ -43,7 +43,7 @@
 import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
 import { SortType, type HeaderCell } from './types';
-import { HEADER_ROW_INDEX } from './models/factories';
+import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
