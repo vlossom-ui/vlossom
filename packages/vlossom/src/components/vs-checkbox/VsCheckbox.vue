@@ -191,7 +191,7 @@ export default defineComponent({
             'vs-small': small.value,
         }));
 
-        async function toggle() {
+        async function toggle(e: MouseEvent) {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
@@ -207,7 +207,7 @@ export default defineComponent({
             }
 
             inputValue.value = toValue;
-            emit('toggle', isChecked.value);
+            emit('toggle', e, isChecked.value);
         }
 
         function onFocus(e: FocusEvent) {

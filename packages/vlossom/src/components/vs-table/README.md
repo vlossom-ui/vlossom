@@ -128,10 +128,10 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Events
 
-| Event        | Payload                                | Description               |
-| ------------ | -------------------------------------- | ------------------------- |
-| `click-cell` | `(event: MouseEvent, cell: BodyCell)`  | 셀 클릭 시 발생           |
-| `click-row`  | `(event: MouseEvent, row: BodyCell[])` | 행 클릭 시 발생 (셀 배열) |
+| Event        | Payload                                | Description              |
+| ------------ | -------------------------------------- | ------------------------ |
+| `click-cell` | `(event: MouseEvent, cell: BodyCell)`  | 셀 클릭 시 발생          |
+| `select-row` | `(event: MouseEvent, row: BodyCell[])` | 행(셀 배열) 선택 시 발생 |
 
 ## 특징
 

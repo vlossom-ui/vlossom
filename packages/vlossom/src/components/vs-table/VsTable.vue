@@ -3,12 +3,12 @@
         <caption v-if="$slots['caption']">
             <slot name="caption" />
         </caption>
-        <vs-table-header>
+        <vs-table-header @click-cell="clickCell" @select-row="selectRow">
             <template v-for="name in headerSlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
-        <vs-table-body @click-cell="clickCell" @click-row="clickRow" @select-row="selectRow">
+        <vs-table-body @click-cell="clickCell" @select-row="selectRow">
             <template v-for="name in bodySlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
@@ -69,14 +69,12 @@ export default defineComponent({
 
         function clickCell(event: MouseEvent, cell: BodyCell): void {
             emit('click-cell', event, cell);
-        }
-
-        function clickRow(event: MouseEvent, row: BodyCell[]): void {
-            emit('click-row', event, row);
+            console.log('clickCell', event, cell);
         }
 
         function selectRow(event: MouseEvent, row: BodyCell[]): void {
             emit('select-row', event, row);
+            console.log('selectRow', event, row);
         }
 
         onBeforeMount(() => {
@@ -88,7 +86,6 @@ export default defineComponent({
             headerSlots,
             bodySlots,
             clickCell,
-            clickRow,
             selectRow,
         };
     },
