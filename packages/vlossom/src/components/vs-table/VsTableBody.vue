@@ -7,7 +7,7 @@
                         <vs-checkbox
                             v-if="isRowSelectable(cells, rowIdx)"
                             multiple
-                            :model-value="selectedIds"
+                            v-model="selectedIds"
                             :true-value="getRowId(cells)"
                             @toggle="selectRow(cells, $event)"
                         />
@@ -45,7 +45,7 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 export default defineComponent({
     emits: ['click-cell', 'click-row', 'select-row'],
     setup(_props, { emit, slots }) {
-        const { items, bodyCells, anySelectable, selectable, selectedIds, toggleSelectedRow } =
+        const { items, bodyCells, anySelectable, selectable, selectedIds } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
@@ -92,7 +92,6 @@ export default defineComponent({
                 return;
             }
 
-            toggleSelectedRow(anyCell.item);
             emit('select-row', event, row);
             emit('click-cell', event, { ...anyCell });
         }

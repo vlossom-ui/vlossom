@@ -20,16 +20,6 @@ export function useTableSelect(
         return selectedIds.value.length === selectableItems.value.length;
     });
 
-    function toggleSelectedRow(item: Item): void {
-        if (!selectableItems.value.includes(item)) {
-            return;
-        }
-        if (selectedIds.value.includes(item.id!)) {
-            selectedIds.value = selectedIds.value.filter((id) => id !== item.id);
-            return;
-        }
-        selectedIds.value = [...selectedIds.value, item.id!];
-    }
     function toggleSelectedAll(): void {
         if (selectedAll.value) {
             selectedIds.value = [];
@@ -44,6 +34,5 @@ export function useTableSelect(
         anySelectable,
         partiallySelected,
         toggleSelectedAll,
-        toggleSelectedRow,
     };
 }

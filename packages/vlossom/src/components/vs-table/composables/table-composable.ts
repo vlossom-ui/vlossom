@@ -33,8 +33,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
     const bodyCells = ref<BodyCell[][]>([]);
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
 
-    const { selectedIds, selectedAll, anySelectable, partiallySelected, toggleSelectedAll, toggleSelectedRow } =
-        useTableSelect(selectable, items);
+    const { selectedIds, selectedAll, anySelectable, partiallySelected, toggleSelectedAll } = useTableSelect(
+        selectable,
+        items,
+    );
 
     function initCells(cellMatrix: Cell[][]): void {
         const [header, ...body] = cellMatrix;
@@ -74,7 +76,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         selectedAll,
         partiallySelected,
         toggleSelectedAll,
-        toggleSelectedRow,
     };
 }
 
@@ -91,5 +92,4 @@ export type TableComposable = {
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     initialize: () => void;
     toggleSelectedAll: () => void;
-    toggleSelectedRow: (item: Item) => void;
 };

@@ -43,7 +43,7 @@ import { HEADER_ROW_INDEX } from './models/factories';
 export default defineComponent({
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, anySelectable, selectedAll, partiallySelected, toggleSelectedAll, toggleSelectedRow } =
+        const { headerCells, anySelectable, selectedAll, partiallySelected, toggleSelectedAll } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
@@ -79,7 +79,6 @@ export default defineComponent({
             selectedAll,
             partiallySelected,
             toggleSelectedAll,
-            toggleSelectedRow,
             findMatchingSlotName,
             clickCell,
             selectRow,
