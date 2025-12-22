@@ -43,7 +43,7 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    emits: ['click-cell', 'click-row', 'select-row'],
+    emits: ['click-cell', 'select-row'],
     setup(_props, { emit, slots }) {
         const { items, bodyCells, anySelectable, selectable, selectedIds } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
