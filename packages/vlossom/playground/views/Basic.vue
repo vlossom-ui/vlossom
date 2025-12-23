@@ -47,7 +47,7 @@
             <vs-button outline>Outline</vs-button>
             <vs-button ghost>Ghost</vs-button>
             <vs-button disabled>Disabled</vs-button>
-            <vs-button :loading="buttonLoading" @click="triggerLoading">Loading</vs-button>
+            <vs-button loading>Loading</vs-button>
             <vs-button small>Small</vs-button>
             <vs-button large>Large</vs-button>
             <vs-button circle>C</vs-button>
@@ -67,19 +67,19 @@
         </div>
         <Divider />
 
-        <h3 class="mb-4 font-semibold">VsIndexView</h3>
-        <vs-tabs v-model="indexViewTab" :tabs="['View 1', 'View 2', 'View 3']" class="mb-4" />
-        <vs-index-view :index="indexViewTab">
-            <template #0>
-                <div class="rounded-lg bg-[var(--vs-area-bg)] p-4">Content for View 1</div>
-            </template>
-            <template #1>
-                <div class="rounded-lg bg-[var(--vs-area-bg)] p-4">Content for View 2</div>
-            </template>
-            <template #2>
-                <div class="rounded-lg bg-[var(--vs-area-bg)] p-4">Content for View 3</div>
-            </template>
-        </vs-index-view>
+        <h3 class="mb-4 font-semibold">VsDivider</h3>
+        <div class="mb-4 w-28">
+            <p>Content Above</p>
+            <vs-divider />
+            <p>Content Below</p>
+        </div>
+        <div class="flex h-10 items-center gap-2">
+            <span>Menu 1</span>
+            <vs-divider vertical />
+            <span>Menu 2</span>
+            <vs-divider vertical />
+            <span>Menu 3</span>
+        </div>
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsLoading</h3>
@@ -98,13 +98,21 @@
         </div>
         <Divider />
 
-        <h3 class="mb-4 font-semibold">VsToggle</h3>
-        <div class="flex flex-wrap items-center gap-4">
-            <vs-toggle v-model="toggleValue">
-                {{ toggleValue ? 'ON' : 'OFF' }}
-            </vs-toggle>
-            <vs-toggle v-model="toggleValue" primary>Primary</vs-toggle>
+        <h3 class="mb-4 font-semibold">VsTabs</h3>
+        <div class="flex w-80 flex-col gap-2">
+            <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" />
+            <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" primary class="mt-4" />
         </div>
+        <Divider />
+
+        <h3 class="mb-4 font-semibold">VsThemeButton</h3>
+        <vs-theme-button />
+        <Divider />
+
+        <h3 class="mb-4 font-semibold">VsToggle</h3>
+        <vs-toggle v-model="toggleValue">
+            {{ toggleValue ? 'ON' : 'OFF' }}
+        </vs-toggle>
     </section>
 </template>
 
@@ -127,6 +135,7 @@ export default defineComponent({
         const accordion1 = ref(false);
         const accordion2 = ref(false);
         const accordion3 = ref(false);
+        const selectedTab = ref(0);
 
         function triggerLoading() {
             buttonLoading.value = true;
@@ -146,6 +155,7 @@ export default defineComponent({
             accordion1,
             accordion2,
             accordion3,
+            selectedTab,
             triggerLoading,
             onChipClose,
         };
