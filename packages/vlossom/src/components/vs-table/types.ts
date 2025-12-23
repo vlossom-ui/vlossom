@@ -42,7 +42,7 @@ export interface ColumnDef<I = Item> {
     width?: SizeProp;
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
-    transform?: (value: unknown, item: I) => unknown;
+    transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
 }
 
 export interface Cell<I = Item> {

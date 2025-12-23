@@ -20,6 +20,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         columns: rawColumns,
         items: rawItems,
         selectable: rawSelectable,
+        expandable: rawExpandable,
         selectedItems: rawSelectedItems,
     } = toRefs(props);
 
@@ -40,6 +41,9 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
             ...item,
             id: item.id ?? stringUtil.createID(),
         }));
+    });
+    const expandable = computed(() => {
+        return functionUtil.toCallable<[Item, number?, Item[]?]>(rawExpandable?.value);
     });
     const selectable = computed(() => {
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
@@ -113,6 +117,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         columns,
         items,
         selectable,
+        expandable,
         headerCells,
         bodyCells,
         anySelectable,
@@ -138,6 +143,7 @@ export type TableComposable = {
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
+    expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;

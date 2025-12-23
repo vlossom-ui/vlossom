@@ -28,6 +28,8 @@
                         />
                     </slot>
                 </th>
+
+                <th v-if="anyExpandable" class="w-10" />
             </tr>
         </template>
 
@@ -40,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
 import { SortType, type HeaderCell } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
@@ -51,6 +53,8 @@ export default defineComponent({
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
         const {
+            items,
+            expandable,
             headerCells,
             anySelectable,
             selectedAll,
@@ -60,6 +64,8 @@ export default defineComponent({
             sortColumn,
             updateSortType,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        const anyExpandable = computed(() => items.value.some(expandable.value));
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -106,6 +112,7 @@ export default defineComponent({
         return {
             HEADER_ROW_INDEX,
             anySelectable,
+            anyExpandable,
             headerCells,
             selectedAll,
             selectedPartial,

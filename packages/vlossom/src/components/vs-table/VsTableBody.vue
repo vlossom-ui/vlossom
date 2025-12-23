@@ -19,6 +19,20 @@
                         {{ cell.value }}
                     </slot>
                 </td>
+
+                <td v-if="anyExpandable" class="w-10" @click.prevent.stop="expandRow(cells, $event)">
+                    <vs-button>
+                        {{ 'EXPAND' }}
+                    </vs-button>
+                </td>
+                <!-- expended -->
+                <slot name="expend" :item="getRowItem(cells)" :rowIdx>
+                    <vs-expandable :open="expanded.has(getRowId(cells))">
+                        <div>
+                            <p>EXPANDED</p>
+                        </div>
+                    </vs-expandable>
+                </slot>
             </tr>
         </template>
 
@@ -36,17 +50,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
+import { computed, defineComponent, inject, ref } from 'vue';
 import { stringUtil } from '@/utils';
 import type { BodyCell, Item } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    emits: ['click-cell', 'select-row'],
+    emits: ['click-cell', 'select-row', 'expand-row'],
     setup(_props, { emit, slots }) {
-        const { items, bodyCells, anySelectable, selectable, selectedIds } =
+        const { items, bodyCells, anySelectable, selectable, selectedIds, expandable } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        const expanded = ref(new Set());
+        const anyExpandable = computed(() => items.value.some(expandable.value));
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -96,9 +113,25 @@ export default defineComponent({
             emit('click-cell', { ...anyCell }, event);
         }
 
+        function expandRow(row: BodyCell[], event: MouseEvent): void {
+            const rowId = getRowId(row);
+            if (!rowId) {
+                return;
+            }
+
+            emit('expand-row', row, event);
+            if (expanded.value.has(rowId)) {
+                expanded.value.delete(rowId);
+            } else {
+                expanded.value.add(rowId);
+            }
+        }
+
         return {
             bodyCells,
             anySelectable,
+            anyExpandable,
+            expanded,
             items,
             selectedIds,
             selectable,
@@ -109,6 +142,7 @@ export default defineComponent({
             isRowSelectable,
             getRowId,
             selectRow,
+            expandRow,
         };
     },
 });
