@@ -52,9 +52,10 @@
         <h3 class="mb-4 font-semibold">VsProgress</h3>
         <div class="flex flex-col gap-4">
             <vs-progress :value="progressValue" :max="100" :label="`${progressValue}%`" />
-            <vs-progress :value="0.7" color-scheme="green" />
-            <vs-progress :value="0.4" color-scheme="blue" />
-            <vs-button small @click="progressValue = Math.min(100, progressValue + 10)">Increase</vs-button>
+            <div class="flex gap-2">
+                <vs-button :style-set="{ width: '3rem' }" @click="decreaseProgress">-</vs-button>
+                <vs-button :style-set="{ width: '3rem' }" @click="increaseProgress">+</vs-button>
+            </div>
         </div>
         <Divider />
 
@@ -84,10 +85,24 @@ export default defineComponent({
         const stepValue = ref(0);
         const pageValue = ref(0);
 
+        const MIN_PROGRESS = 0;
+        const MAX_PROGRESS = 100;
+        const PROGRESS_STEP = 10;
+
+        function increaseProgress() {
+            progressValue.value = Math.min(MAX_PROGRESS, progressValue.value + PROGRESS_STEP);
+        }
+
+        function decreaseProgress() {
+            progressValue.value = Math.max(MIN_PROGRESS, progressValue.value - PROGRESS_STEP);
+        }
+
         return {
             progressValue,
             stepValue,
             pageValue,
+            increaseProgress,
+            decreaseProgress,
         };
     },
 });
