@@ -2,9 +2,30 @@
     <thead>
         <template v-if="headerCells.length">
             <tr>
-                <th v-for="header in headerCells" :key="header.id" :id="header.id">
-                    <slot :name="findMatchingSlotName(header)" :header="header">
+                <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
+                    <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
+                        <vs-checkbox
+                            :model-value="selectedAll"
+                            :indeterminate="selectedPartial"
+                            @toggle="toggleSelectAll"
+                        />
+                    </slot>
+                </th>
+
+                <th
+                    v-for="header in headerCells"
+                    :key="header.id"
+                    :id="header.id"
+                    @click.prevent.stop="clickCell(header, $event)"
+                >
+                    <slot :name="findMatchingSlotName(header)" :header>
                         {{ header.value }}
+                        <vs-render
+                            v-if="header.sortable"
+                            class="inline"
+                            :content="getSortIcon(header)"
+                            @click="updateSortType(header.colKey)"
+                        />
                     </slot>
                 </th>
             </tr>
@@ -12,7 +33,7 @@
 
         <template v-else>
             <tr>
-                <td colspan="100%" />
+                <th colspan="100%" class="h-10" />
             </tr>
         </template>
     </thead>
@@ -21,12 +42,24 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
-import type { HeaderCell } from './types';
+import { SortType, type HeaderCell } from './types';
+import { HEADER_ROW_INDEX } from './models/strategy';
+import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    setup(_props, { slots }) {
-        const { headerCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+    emits: ['click-cell', 'select-row'],
+    setup(_props, { slots, emit }) {
+        const {
+            headerCells,
+            anySelectable,
+            selectedAll,
+            selectedPartial,
+            toggleSelectAll,
+            sortType,
+            sortColumn,
+            updateSortType,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -44,9 +77,44 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
+        function getSortIcon(header: HeaderCell) {
+            if (!header.sortable) {
+                return '';
+            }
+            if (header.colKey !== sortColumn.value?.key) {
+                return tableIcons.sortNone;
+            }
+            if (sortType.value === SortType.ASCEND) {
+                return tableIcons.sortAsc;
+            }
+            if (sortType.value === SortType.DESCEND) {
+                return tableIcons.sortDesc;
+            }
+            return tableIcons.sortNone;
+        }
+
+        function clickCell(cell: HeaderCell, event: MouseEvent): void {
+            emit('click-cell', { ...cell }, event);
+        }
+
+        function selectRow(row: HeaderCell[], event: MouseEvent): void {
+            toggleSelectAll();
+            emit('select-row', row, event);
+            emit('click-cell', { ...row[0] }, event);
+        }
+
         return {
+            HEADER_ROW_INDEX,
+            anySelectable,
             headerCells,
+            selectedAll,
+            selectedPartial,
+            toggleSelectAll,
             findMatchingSlotName,
+            clickCell,
+            selectRow,
+            getSortIcon,
+            updateSortType,
         };
     },
 });

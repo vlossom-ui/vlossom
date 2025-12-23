@@ -1,7 +1,19 @@
 <template>
     <tbody>
         <template v-if="bodyCells.length">
-            <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx" @click.prevent.stop="clickRow(cells, $event)">
+            <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
+                <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
+                    <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
+                        <vs-checkbox
+                            v-if="isRowSelectable(cells, rowIdx)"
+                            multiple
+                            v-model="selectedIds"
+                            :true-value="getRowId(cells)"
+                            @toggle="selectRow(cells, $event)"
+                        />
+                    </slot>
+                </td>
+
                 <td v-for="cell in cells" :id="cell.id" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         {{ cell.value }}
@@ -26,14 +38,15 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
-import type { BodyCell } from './types';
+import type { BodyCell, Item } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
-    emits: ['click-cell', 'click-row'],
+    emits: ['click-cell', 'select-row'],
     setup(_props, { emit, slots }) {
-        const { bodyCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { items, bodyCells, anySelectable, selectable, selectedIds } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -53,20 +66,49 @@ export default defineComponent({
         }
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
-            emit('click-cell', event, { ...cell });
+            emit('click-cell', { ...cell }, event);
         }
 
-        function clickRow(row: BodyCell[], event: MouseEvent): void {
-            const clickedRow = row.map((cell) => ({ ...cell }));
-            emit('click-row', event, clickedRow);
+        function getRowItem(row: BodyCell[]): Item {
+            const anyCell = row[0];
+            if (!anyCell) {
+                return {};
+            }
+            return anyCell.item;
+        }
+
+        function isRowSelectable(row: BodyCell[], rowIdx: number): boolean {
+            const item = getRowItem(row);
+            return selectable.value(item, rowIdx, items.value);
+        }
+
+        function getRowId(row: BodyCell[]): string | number | undefined {
+            return getRowItem(row)?.id;
+        }
+
+        function selectRow(row: BodyCell[], event: MouseEvent): void {
+            const anyCell = row[0];
+            if (!anyCell || !selectable.value(anyCell.item, anyCell.rowIdx, items.value)) {
+                return;
+            }
+
+            emit('select-row', row, event);
+            emit('click-cell', { ...anyCell }, event);
         }
 
         return {
-            tableIcons,
             bodyCells,
-            findMatchingSlotName,
+            anySelectable,
+            items,
+            selectedIds,
+            selectable,
+            tableIcons,
             clickCell,
-            clickRow,
+            findMatchingSlotName,
+            getRowItem,
+            isRowSelectable,
+            getRowId,
+            selectRow,
         };
     },
 });
