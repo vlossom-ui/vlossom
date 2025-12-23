@@ -11,7 +11,7 @@
     --vs-tooltip-arrowColor: initial;
     --vs-tooltip-arrowSize: initial;
 
-    @apply pointer-events-auto absolute;
+    @apply pointer-events-auto;
 
     .vs-tooltip-contents {
         @apply relative;

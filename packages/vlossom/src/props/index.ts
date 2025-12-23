@@ -1,4 +1,5 @@
 export * from './button-props';
+export * from './floating-props';
 export * from './input-props';
 export * from './overlay-props';
 export * from './position-props';
