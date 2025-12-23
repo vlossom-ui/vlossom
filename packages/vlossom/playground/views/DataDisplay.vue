@@ -60,15 +60,13 @@
 
         <h3 class="mb-4 font-semibold">VsSteps</h3>
         <vs-steps v-model="stepValue" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" />
-        <div class="mt-4 flex flex-wrap items-center gap-4">
-            <vs-button small @click="stepValue = Math.max(0, stepValue - 1)">Prev</vs-button>
-            <vs-button small @click="stepValue = Math.min(3, stepValue + 1)">Next</vs-button>
-        </div>
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsTextWrap</h3>
-        <vs-text-wrap copy>Copy this text to clipboard</vs-text-wrap>
-        <vs-text-wrap link="https://github.com" class="mt-2">Open GitHub</vs-text-wrap>
+        <div class="flex flex-col gap-2">
+            <vs-text-wrap copy>Copy this text to clipboard</vs-text-wrap>
+            <vs-text-wrap link="https://github.com" class="mt-2">Open GitHub</vs-text-wrap>
+        </div>
     </section>
 </template>
 
