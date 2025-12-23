@@ -3,12 +3,12 @@
         <caption v-if="$slots['caption']">
             <slot name="caption" />
         </caption>
-        <vs-table-header>
+        <vs-table-header @click-cell="clickCell" @select-row="selectRow">
             <template v-for="name in headerSlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
-        <vs-table-body @click-cell="clickCell" @click-row="clickRow">
+        <vs-table-body @click-cell="clickCell" @select-row="selectRow">
             <template v-for="name in bodySlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
@@ -51,33 +51,61 @@ export default defineComponent({
                 return true;
             },
         },
+        selectable: {
+            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
+        // v-model
+        selectedItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [] as Item[],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
+                    return false;
+                }
+                if (value.some((item) => !item.id)) {
+                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must have id');
+                    return false;
+                }
+                return true;
+            },
+        },
     },
-    emits: ['click-cell', 'click-row'],
+    emits: ['click-cell', 'select-row', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const table = useTable(props);
+        const table: TableComposable = useTable(props, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
         const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
 
-        function clickCell(event: MouseEvent, cell: BodyCell): void {
-            emit('click-cell', event, cell);
-        }
-        function clickRow(event: MouseEvent, row: BodyCell[]): void {
-            emit('click-row', event, row);
+        function clickCell(cell: BodyCell, event: MouseEvent): void {
+            emit('click-cell', cell, event);
         }
 
-        onBeforeMount(table.initialize);
+        function selectRow(row: BodyCell[], event: MouseEvent): void {
+            emit('select-row', row, event);
+        }
+
+        function updateSelectedItems(items: Item[]): void {
+            emit('update:selectedItems', items);
+        }
+
+        onBeforeMount(() => {
+            table.initialize();
+        });
 
         return {
             colorSchemeClass,
             headerSlots,
             bodySlots,
             clickCell,
-            clickRow,
+            selectRow,
+            updateSelectedItems,
         };
     },
 });

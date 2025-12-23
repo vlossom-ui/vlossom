@@ -193,7 +193,7 @@ export default defineComponent({
             'vs-readonly': computedReadonly.value,
         }));
 
-        async function toggle() {
+        async function toggle(e: MouseEvent) {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
@@ -209,7 +209,7 @@ export default defineComponent({
             }
 
             inputValue.value = toValue;
-            emit('toggle', isChecked.value);
+            emit('toggle', isChecked.value, e);
         }
 
         function onFocus(e: FocusEvent) {

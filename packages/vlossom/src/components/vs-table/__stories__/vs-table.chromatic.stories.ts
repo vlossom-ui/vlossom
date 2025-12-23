@@ -11,13 +11,17 @@ const baseColumns = [
     { key: 'metadata.email', label: 'Email' },
 ];
 
+const sortableColumns = baseColumns.map((column) => ({
+    ...column,
+    sortable: true,
+}));
+
 const baseItems = [
     { name: 'John', age: 30, metadata: { email: 'john@example.com' } },
     { name: 'Jane', age: 25, metadata: { email: 'jane@example.com' } },
     { name: 'Jim', age: 35, metadata: { email: 'jim@example.com' } },
 ];
 
-const selectableRow: RowOption = { selectable: true };
 const customSelectableRow: RowOption = { selectable: (item: any) => item.name !== 'Jane' };
 
 const meta: Meta<typeof VsTable> = {
@@ -57,8 +61,8 @@ export const VisualRegressionMatrix: Story = {
             return {
                 baseColumns,
                 baseItems,
-                selectableRow,
                 customSelectableRow,
+                sortableColumns,
                 oddRowIndexes,
                 janesEmailEditingMode,
                 toggleJaneEmailEditingMode,
@@ -89,6 +93,21 @@ export const VisualRegressionMatrix: Story = {
                 <section class="chromatic-section">
                     <h3>문자열 컬럼</h3>
                     <vs-table :columns="baseColumns.map((c) => c.key)" :items="baseItems" />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>선택 가능 행 (전체 선택 토글)</h3>
+                    <vs-table :columns="baseColumns" :items="baseItems" selectable />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>커스텀 선택 조건 (Jane 제외)</h3>
+                    <vs-table :columns="baseColumns" :items="baseItems" :selectable="customSelectableRow.selectable" />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>정렬 가능한 컬럼</h3>
+                    <vs-table :columns="sortableColumns" :items="[...baseItems].reverse()" />
                 </section>
 
                 <section class="chromatic-section">
