@@ -21,6 +21,7 @@ export interface VsOptionsItem {
     item: any;
     label: string;
     value: any;
+    index: number;
     disabled: boolean;
 }
 

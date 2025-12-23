@@ -7,20 +7,20 @@
         <vs-visible-render class="vs-options-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
             <template v-for="(group, groupIndex) in groupedOptions" :key="`group-${groupIndex}`">
                 <div v-if="!!groupBy" class="vs-options-group">
-                    <slot name="group" :group :groupIndex>
+                    <slot name="group" :group="group.name" :groupIndex :options="group.options">
                         <div class="vs-options-group-content">
                             <span>{{ group.name || 'Ungrouped' }}</span>
                         </div>
                     </slot>
                 </div>
                 <div
-                    v-for="(option, index) in group.options"
-                    :key="`${option.id}-${index}`"
+                    v-for="(option, groupedIndex) in group.options"
+                    :key="`${option.id}-${groupedIndex}`"
                     :id="option.id"
                     :class="['vs-options-option', { 'vs-disabled': option.disabled }]"
-                    @click.prevent.stop="emitClickOption(option, index, group, groupIndex)"
+                    @click.prevent.stop="emitClickOption(option, groupedIndex, group, groupIndex)"
                 >
-                    <slot name="option" v-bind="option" :index :group :groupIndex>
+                    <slot name="option" v-bind="option" :groupedIndex :group :groupIndex>
                         <div class="vs-options-option-content">
                             <span>{{ option.label }}</span>
                         </div>
@@ -87,6 +87,7 @@ export default defineComponent({
                     item: option,
                     label,
                     value,
+                    index,
                     disabled: typeof disabled.value === 'function' ? disabled.value(option, index) : disabled.value,
                 };
             });
@@ -163,8 +164,13 @@ export default defineComponent({
             return result;
         });
 
-        function emitClickOption(option: VsOptionsItem, index: number, group: VsOptionsGroup, groupIndex: number) {
-            emit('click-option', { ...option, index, group, groupIndex });
+        function emitClickOption(
+            option: VsOptionsItem,
+            graoupedIndex: number,
+            group: VsOptionsGroup,
+            groupIndex: number,
+        ) {
+            emit('click-option', { ...option, graoupedIndex, group, groupIndex });
         }
 
         function scrollToOption(option: any) {

@@ -198,9 +198,9 @@ function scrollToFirst() {
 
 ## Events
 
-| Event          | Parameters                                                                                                                          | Description       |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `click-option` | `{ id: string, item: any, label: string, value: any, disabled: boolean, index: number, group: VsOptionsGroup, groupIndex: number }` | 옵션 클릭 시 발생 |
+| Event          | Parameters                                                                                                                                        | Description       |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `click-option` | `{ id: string, item: any, label: string, value: any, disabled: boolean, index: number, groupedIndex: number, group: string, groupIndex: number }` | 옵션 클릭 시 발생 |
 
 ## Methods
 
@@ -219,10 +219,29 @@ function scrollToFirst() {
 ## Types
 
 ```typescript
-interface VsOptionsStyleSet extends SizeStyleSet, BoxStyleSet {
+interface VsOptionsStyleSet {
+    width?: string;
+    height?: string;
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    opacity?: number;
     gap?: string;
-    group?: BoxStyleSet;
-    option?: BoxStyleSet;
+    group?: {
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+    };
+    option?: {
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+    };
 }
 
 interface VsOptionsItem {
@@ -245,12 +264,12 @@ interface VsOptionsRef extends ComponentPublicInstance<typeof VsOptions> {
 
 ## Slots
 
-| Slot     | Props                                                                                                | Description               |
-| -------- | ---------------------------------------------------------------------------------------------------- | ------------------------- |
-| `header` | -                                                                                                    | 옵션 리스트 상단에 표시   |
-| `footer` | -                                                                                                    | 옵션 리스트 하단에 표시   |
-| `group`  | `{ group: VsOptionsGroup, groupIndex: number }`                                                      | 그룹 헤더 커스텀 렌더링   |
-| `option` | `{ item: any, label: string, value: any, index: number, group: VsOptionsGroup, groupIndex: number }` | 옵션 아이템 커스텀 렌더링 |
+| Slot     | Props                                                                                                                                             | Description               |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `header` | -                                                                                                                                                 | 옵션 리스트 상단에 표시   |
+| `footer` | -                                                                                                                                                 | 옵션 리스트 하단에 표시   |
+| `group`  | `{ group: string, groupIndex: number, options: any[] }`                                                                                           | 그룹 헤더 커스텀 렌더링   |
+| `option` | `{ id: string, item: any, label: string, value: any, disabled: boolean, index: number, groupedIndex: number, group: string, groupIndex: number }` | 옵션 아이템 커스텀 렌더링 |
 
 ## 특징
 
