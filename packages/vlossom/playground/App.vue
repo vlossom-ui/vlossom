@@ -7,16 +7,16 @@
             </div>
         </vs-header>
 
-        <vs-container class="flex-1 pr-96 pb-8">
+        <vs-container class="flex-1 pr-96 pb-32">
             <vs-page class="mx-auto w-full max-w-4xl" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
+                    <Sandbox />
                     <Basic />
                     <InputsAndForm />
                     <DataDisplay />
                     <Overlay />
-                    <Sandbox />
                 </vs-index-view>
             </vs-page>
 
@@ -52,7 +52,7 @@ export default defineComponent({
         ColorSchemePanel,
     },
     setup() {
-        const tabs = ['Basic', 'Form', 'Data Display', 'Overlay', 'Sandbox'];
+        const tabs = ['Sandbox', 'Basic', 'Form', 'Data Display', 'Overlay'];
         const activeTab = ref(0);
         const isPanelCollapsed = ref(false);
         const basicBarStyleSet: VsBarStyleSet = {
