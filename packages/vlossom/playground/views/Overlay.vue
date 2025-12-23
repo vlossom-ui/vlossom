@@ -3,35 +3,68 @@
         <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Overlay Components</h2>
 
         <h3 class="mb-4 font-semibold">VsDrawer</h3>
-        <div class="flex flex-wrap items-center gap-4">
-            <vs-button @click="drawerLeft = true">Left Drawer</vs-button>
-            <vs-button @click="drawerRight = true">Right Drawer</vs-button>
-            <vs-button @click="drawerTop = true">Top Drawer</vs-button>
-            <vs-button @click="drawerBottom = true">Bottom Drawer</vs-button>
-        </div>
-        <vs-drawer v-model="drawerLeft" placement="left" dimmed dim-close>
-            <template #header>
-                <div class="p-4 font-bold">Left Drawer</div>
-            </template>
-            <div class="p-4">Drawer content here</div>
-        </vs-drawer>
-        <vs-drawer v-model="drawerRight" placement="right" dimmed dim-close>
-            <template #header>
-                <div class="p-4 font-bold">Right Drawer</div>
-            </template>
-            <div class="p-4">Drawer content here</div>
-        </vs-drawer>
-        <vs-drawer v-model="drawerTop" placement="top" dimmed dim-close size="200px">
-            <div class="p-4">Top Drawer content</div>
-        </vs-drawer>
-        <vs-drawer v-model="drawerBottom" placement="bottom" dimmed dim-close size="200px">
-            <div class="p-4">Bottom Drawer content</div>
-        </vs-drawer>
+        <vs-block class="mb-4">
+            <vs-grid :grid-size="12" column-gap="1rem" row-gap="1rem">
+                <vs-radio-set
+                    v-model="drawerOptions.placement"
+                    label="placement"
+                    :options="['left', 'right', 'top', 'bottom']"
+                    :grid="12"
+                    small
+                    no-messages
+                />
+                <vs-switch v-model="drawerOptions.dimmed" label="dimmed" :grid="2" small no-messages />
+                <vs-switch v-model="drawerOptions.dimClose" label="dimClose" :grid="2" small no-messages />
+                <vs-switch v-model="drawerOptions.escClose" label="escClose" :grid="2" small no-messages />
+                <vs-switch v-model="drawerOptions.focusLock" label="focusLock" :grid="2" small no-messages />
+                <vs-switch v-model="drawerOptions.fixed" label="fixed" :grid="2" small no-messages />
+            </vs-grid>
+        </vs-block>
+        <vs-container class="mb-4 h-64 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
+            <div class="flex h-full items-center justify-center">
+                <vs-button @click="drawerOpen = true">Open Drawer</vs-button>
+            </div>
+            <vs-drawer
+                v-model="drawerOpen"
+                :placement="drawerOptions.placement"
+                :size="drawerSize"
+                :dimmed="drawerOptions.dimmed"
+                :dim-close="drawerOptions.dimClose"
+                :esc-close="drawerOptions.escClose"
+                :focus-lock="drawerOptions.focusLock"
+                :fixed="drawerOptions.fixed"
+            >
+                <template #header>
+                    <div class="p-2 text-sm font-bold capitalize">{{ drawerOptions.placement }} Drawer</div>
+                </template>
+                <div class="p-2 text-sm">Drawer content here</div>
+                <template #footer>
+                    <div class="p-2">
+                        <vs-button dense @click="drawerOpen = false">Close</vs-button>
+                    </div>
+                </template>
+            </vs-drawer>
+        </vs-container>
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsModal</h3>
+        <vs-block class="mb-4">
+            <vs-grid :grid-size="12" column-gap="1rem" row-gap="1rem">
+                <vs-switch v-model="modalOptions.dimmed" label="dimmed" :grid="2" small no-messages />
+                <vs-switch v-model="modalOptions.dimClose" label="dimClose" :grid="2" small no-messages />
+                <vs-switch v-model="modalOptions.escClose" label="escClose" :grid="2" small no-messages />
+                <vs-switch v-model="modalOptions.focusLock" label="focusLock" :grid="2" small no-messages />
+            </vs-grid>
+        </vs-block>
         <vs-button @click="modalOpen = true">Open Modal</vs-button>
-        <vs-modal v-model="modalOpen" :size="{ width: '500px', height: 'auto' }">
+        <vs-modal
+            v-model="modalOpen"
+            :size="{ width: '500px', height: 'auto' }"
+            :dimmed="modalOptions.dimmed"
+            :dim-close="modalOptions.dimClose"
+            :esc-close="modalOptions.escClose"
+            :focus-lock="modalOptions.focusLock"
+        >
             <div class="p-8">
                 <h3 class="mb-4">Modal Title</h3>
                 <p class="mb-4">This is modal content. You can put anything here.</p>
@@ -41,7 +74,39 @@
         <Divider />
 
         <h3 class="mb-4 font-semibold">Toast Plugin</h3>
-        <div class="flex flex-wrap items-center gap-4">
+        <vs-block class="mb-4">
+            <vs-grid :grid-size="12" column-gap="1rem" row-gap="1rem">
+                <vs-radio-set
+                    v-model="toastOptions.placement"
+                    label="placement"
+                    :options="['top', 'bottom']"
+                    :grid="3"
+                    small
+                    no-messages
+                />
+                <vs-radio-set
+                    v-model="toastOptions.align"
+                    label="align"
+                    :options="['start', 'center', 'end']"
+                    :grid="4"
+                    small
+                    no-messages
+                />
+                <vs-responsive :grid="4" />
+                <vs-input
+                    v-model="toastOptions.timeout"
+                    label="timeout (ms)"
+                    type="number"
+                    :grid="2"
+                    small
+                    no-messages
+                />
+                <vs-responsive :grid="10" />
+                <vs-switch v-model="toastOptions.autoClose" label="autoClose" :grid="2" small no-messages />
+                <vs-switch v-model="toastOptions.primary" label="primary" :grid="2" small no-messages />
+            </vs-grid>
+        </vs-block>
+        <div class="flex flex-wrap items-start gap-4">
             <vs-button @click="showToast('info')">Info Toast</vs-button>
             <vs-button @click="showToast('success')">Success Toast</vs-button>
             <vs-button @click="showToast('warning')">Warning Toast</vs-button>
@@ -50,28 +115,70 @@
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsTooltip</h3>
-        <div class="flex flex-wrap items-center gap-4">
-            <vs-button id="tooltip-top">Top</vs-button>
-            <vs-tooltip target-id="tooltip-top" placement="top">Tooltip on top</vs-tooltip>
-
-            <vs-button id="tooltip-right">Right</vs-button>
-            <vs-tooltip target-id="tooltip-right" placement="right">Tooltip on right</vs-tooltip>
-
-            <vs-button id="tooltip-bottom">Bottom</vs-button>
-            <vs-tooltip target-id="tooltip-bottom" placement="bottom">Tooltip on bottom</vs-tooltip>
-
-            <vs-button id="tooltip-left">Left</vs-button>
-            <vs-tooltip target-id="tooltip-left" placement="left">Tooltip on left</vs-tooltip>
-
-            <vs-button id="tooltip-clickable">Clickable</vs-button>
-            <vs-tooltip target-id="tooltip-clickable" clickable>Click to toggle</vs-tooltip>
+        <vs-block class="mb-4">
+            <vs-grid :grid-size="12" column-gap="1rem" row-gap="1rem">
+                <vs-radio-set
+                    v-model="tooltipOptions.placement"
+                    label="placement"
+                    :options="['top', 'right', 'bottom', 'left']"
+                    :grid="5"
+                    small
+                    no-messages
+                />
+                <vs-radio-set
+                    v-model="tooltipOptions.align"
+                    label="align"
+                    :options="['start', 'center', 'end']"
+                    :grid="7"
+                    small
+                    no-messages
+                />
+                <vs-input
+                    v-model="tooltipOptions.enterDelay"
+                    label="enterDelay (ms)"
+                    type="number"
+                    :grid="2"
+                    small
+                    no-messages
+                />
+                <vs-input
+                    v-model="tooltipOptions.leaveDelay"
+                    label="leaveDelay (ms)"
+                    type="number"
+                    :grid="2"
+                    small
+                    no-messages
+                />
+                <vs-responsive :grid="8" />
+                <vs-switch v-model="tooltipOptions.clickable" label="clickable" :grid="2" small no-messages />
+                <vs-switch v-model="tooltipOptions.contentsHover" label="contentsHover" :grid="2" small no-messages />
+                <vs-switch v-model="tooltipOptions.noAnimation" label="noAnimation" :grid="2" small no-messages />
+                <vs-switch v-model="tooltipOptions.disabled" label="disabled" :grid="2" small no-messages />
+            </vs-grid>
+        </vs-block>
+        <div class="flex flex-wrap items-start gap-4">
+            <vs-button id="tooltip-demo">Hover me</vs-button>
+            <vs-tooltip
+                target-id="tooltip-demo"
+                :placement="tooltipOptions.placement"
+                :align="tooltipOptions.align"
+                :clickable="tooltipOptions.clickable"
+                :contents-hover="tooltipOptions.contentsHover"
+                :enter-delay="tooltipOptions.enterDelay"
+                :leave-delay="tooltipOptions.leaveDelay"
+                :no-animation="tooltipOptions.noAnimation"
+                :disabled="tooltipOptions.disabled"
+            >
+                Tooltip content here
+            </vs-tooltip>
         </div>
     </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 import { useVlossom } from '@/framework';
+import type { DrawerPlacement, Placement, Alignment } from '@/declaration';
 import Divider from '../components/Divider.vue';
 
 type ToastState = 'info' | 'success' | 'warning' | 'error';
@@ -84,11 +191,35 @@ export default defineComponent({
     setup() {
         const $vs = useVlossom();
 
+        // Drawer
+        const drawerOpen = ref(false);
+        const drawerOptions = reactive({
+            placement: 'left' as DrawerPlacement,
+            dimmed: true,
+            dimClose: true,
+            escClose: true,
+            focusLock: false,
+            fixed: false,
+        });
+        const drawerSize = computed(() => (drawerOptions.fixed ? '300px' : '120px'));
+
+        // Modal
         const modalOpen = ref(false);
-        const drawerLeft = ref(false);
-        const drawerRight = ref(false);
-        const drawerTop = ref(false);
-        const drawerBottom = ref(false);
+        const modalOptions = reactive({
+            dimmed: true,
+            dimClose: true,
+            escClose: true,
+            focusLock: false,
+        });
+
+        // Toast
+        const toastOptions = reactive({
+            placement: 'top' as Exclude<Placement, 'left' | 'right' | 'middle'>,
+            align: 'center' as Alignment,
+            autoClose: true,
+            timeout: 3000,
+            primary: false,
+        });
 
         function showToast(state: ToastState) {
             const messages: Record<ToastState, string> = {
@@ -97,16 +228,36 @@ export default defineComponent({
                 warning: 'Warning: Please check your input',
                 error: 'Error: Something went wrong',
             };
-            $vs.toast[state](messages[state]);
+            $vs.toast[state](messages[state], {
+                placement: toastOptions.placement,
+                align: toastOptions.align,
+                autoClose: toastOptions.autoClose,
+                timeout: toastOptions.timeout,
+                primary: toastOptions.primary,
+            });
         }
 
+        // Tooltip
+        const tooltipOptions = reactive({
+            placement: 'top' as Exclude<Placement, 'middle'>,
+            align: 'center' as Alignment,
+            clickable: false,
+            contentsHover: false,
+            enterDelay: 0,
+            leaveDelay: 0,
+            noAnimation: false,
+            disabled: false,
+        });
+
         return {
+            drawerOpen,
+            drawerOptions,
+            drawerSize,
             modalOpen,
-            drawerLeft,
-            drawerRight,
-            drawerTop,
-            drawerBottom,
+            modalOptions,
+            toastOptions,
             showToast,
+            tooltipOptions,
         };
     },
 });
