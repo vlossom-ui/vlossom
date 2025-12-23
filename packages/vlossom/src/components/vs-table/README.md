@@ -106,13 +106,14 @@
 
 ## Props
 
-| Prop          | Type                                           | Default | Required | Description                          |
-| ------------- | ---------------------------------------------- | ------- | -------- | ------------------------------------ |
-| `colorScheme` | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                   |
-| `styleSet`    | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체              |
-| `columns`     | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
-| `items`       | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
-| `selectable`  | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
+| Prop                     | Type                                           | Default | Required | Description                          |
+| ------------------------ | ---------------------------------------------- | ------- | -------- | ------------------------------------ |
+| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                   |
+| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체              |
+| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
+| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
+| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
+| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)     |
 
 ## Types
 
