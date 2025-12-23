@@ -1,7 +1,7 @@
 <template>
     <vs-layout class="flex min-h-screen flex-col">
         <vs-header position="sticky" :style-set="basicBarStyleSet">
-            <div class="flex h-full items-center justify-between px-8">
+            <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-8">
                 <h1 class="text-xl font-semibold">Vlossom Playground</h1>
                 <vs-theme-button />
             </div>
