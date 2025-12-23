@@ -84,9 +84,16 @@ export default defineComponent({
         const table: TableComposable = useTable(props, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
-        // TODO: add slot whitelist for selectable and expandable
-        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
-        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
+        const headerSlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['header', 'select'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
+        const bodySlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);

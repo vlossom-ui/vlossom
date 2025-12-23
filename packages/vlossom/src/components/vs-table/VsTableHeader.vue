@@ -3,7 +3,7 @@
         <template v-if="headerCells.length">
             <tr>
                 <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
-                    <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
+                    <slot name="select" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
                         <vs-checkbox
                             :model-value="selectedAll"
                             :indeterminate="selectedPartial"

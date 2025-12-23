@@ -145,21 +145,23 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Slots
 
-| Slot 이름 패턴                     | 설명                            |
-| ---------------------------------- | ------------------------------- |
-| `caption`                          | `<caption>` 영역 커스텀         |
-| `header`                           | 모든 헤더 셀 공통 렌더링        |
-| `header-${colKey}`                 | 특정 컬럼 키의 헤더 셀          |
-| `header-${id}`                     | 특정 헤더 셀 id (우선순위 높음) |
-| `header-col${colIdx}-row${rowIdx}` | 컬럼/행 인덱스 기반 헤더 셀     |
-| `header-row${rowIdx}`              | 특정 헤더 행 전체               |
-| `header-col${colIdx}`              | 특정 헤더 컬럼 전체             |
-| `body`                             | 모든 바디 셀 공통 렌더링        |
-| `body-${colKey}`                   | 특정 컬럼 키의 바디 셀          |
-| `body-${id}`                       | 특정 바디 셀 id (우선순위 높음) |
-| `body-col${colIdx}-row${rowIdx}`   | 컬럼/행 인덱스 기반 바디 셀     |
-| `body-row${rowIdx}`                | 특정 행의 모든 셀               |
-| `body-col${colIdx}`                | 특정 컬럼의 모든 셀             |
+| Slot 이름 패턴                     | 설명                                        |
+| ---------------------------------- | ------------------------------------------- |
+| `caption`                          | `<caption>` 영역 커스텀                     |
+| `select`                           | 선택 컬럼 영역 커스텀 (`{ cells, rowIdx }`) |
+| `expand`                           | 확장 행 영역 커스텀 (`{ cells, rowIdx }`)   |
+| `header`                           | 모든 헤더 셀 공통 렌더링                    |
+| `header-${colKey}`                 | 특정 컬럼 키의 헤더 셀                      |
+| `header-${id}`                     | 특정 헤더 셀 id (우선순위 높음)             |
+| `header-col${colIdx}-row${rowIdx}` | 컬럼/행 인덱스 기반 헤더 셀                 |
+| `header-row${rowIdx}`              | 특정 헤더 행 전체                           |
+| `header-col${colIdx}`              | 특정 헤더 컬럼 전체                         |
+| `body`                             | 모든 바디 셀 공통 렌더링                    |
+| `body-${colKey}`                   | 특정 컬럼 키의 바디 셀                      |
+| `body-${id}`                       | 특정 바디 셀 id (우선순위 높음)             |
+| `body-col${colIdx}-row${rowIdx}`   | 컬럼/행 인덱스 기반 바디 셀                 |
+| `body-row${rowIdx}`                | 특정 행의 모든 셀                           |
+| `body-col${colIdx}`                | 특정 컬럼의 모든 셀                         |
 
 > 셀의 슬롯에는 우선순위가 존재합니다.
 > 슬롯 우선순위는 보다 구체적인 패턴(`*-id`) → `*-colKey` → 인덱스 기반 → 범용 슬롯 순으로 선택됩니다.

@@ -4,7 +4,7 @@
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
                 <tr>
                     <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
-                        <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
+                        <slot name="select" :cells :rowIdx>
                             <vs-checkbox
                                 v-if="isRowSelectable(cells, rowIdx)"
                                 multiple
@@ -33,12 +33,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="expand" colspan="100%">
-                        <slot name="expend" :item="getRowItem(cells)" :rowIdx>
+                    <td colspan="100%" class="expand">
+                        <slot name="expand" :cells :rowIdx>
                             <vs-expandable :open="expanded.has(getRowId(cells))">
-                                <div>
-                                    <p>EXPANDED</p>
-                                </div>
+                                <pre class="font-mono text-[5px] whitespace-pre-wrap">
+                                    {{ JSON.stringify(getRowItem(cells), null, 4) }}
+                                </pre>
                             </vs-expandable>
                         </slot>
                     </td>
