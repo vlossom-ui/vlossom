@@ -207,7 +207,7 @@ export default defineComponent({
             }
 
             inputValue.value = toValue;
-            emit('toggle', e, isChecked.value);
+            emit('toggle', isChecked.value, e);
         }
 
         function onFocus(e: FocusEvent) {

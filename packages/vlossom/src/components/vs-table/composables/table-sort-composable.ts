@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue';
 import { SortType, type ColumnDef, type BodyCell } from '../types';
 import { objectUtil, compareUtil } from '@/utils';
 
-const SORT_TYPE_COUNT = Object.keys(SortType).length;
+const SORT_TYPE_COUNT = Object.keys(SortType).filter((value) => !isNaN(Number(value))).length;
 
 export function useTableSort(columns: Ref<ColumnDef[] | null>) {
     const sortType = ref<SortType>(SortType.NONE);

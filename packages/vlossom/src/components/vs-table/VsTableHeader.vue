@@ -94,13 +94,13 @@ export default defineComponent({
         }
 
         function clickCell(cell: HeaderCell, event: MouseEvent): void {
-            emit('click-cell', event, { ...cell });
+            emit('click-cell', { ...cell }, event);
         }
 
         function selectRow(row: HeaderCell[], event: MouseEvent): void {
             toggleSelectAll();
-            emit('select-row', event, row);
-            emit('click-cell', event, { ...row[0] });
+            emit('select-row', row, event);
+            emit('click-cell', { ...row[0] }, event);
         }
 
         return {

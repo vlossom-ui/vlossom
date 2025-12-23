@@ -168,8 +168,8 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 | Event        | Payload                                | Description              |
 | ------------ | -------------------------------------- | ------------------------ |
-| `click-cell` | `(event: MouseEvent, cell: BodyCell)`  | 셀 클릭 시 발생          |
-| `select-row` | `(event: MouseEvent, row: BodyCell[])` | 행(셀 배열) 선택 시 발생 |
+| `click-cell` | `(cell: BodyCell, event: MouseEvent)`  | 셀 클릭 시 발생          |
+| `select-row` | `(row: BodyCell[], event: MouseEvent)` | 행(셀 배열) 선택 시 발생 |
 
 ## 특징
 

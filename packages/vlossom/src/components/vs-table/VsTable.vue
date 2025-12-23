@@ -83,12 +83,12 @@ export default defineComponent({
         const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
         const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
 
-        function clickCell(event: MouseEvent, cell: BodyCell): void {
-            emit('click-cell', event, cell);
+        function clickCell(cell: BodyCell, event: MouseEvent): void {
+            emit('click-cell', cell, event);
         }
 
-        function selectRow(event: MouseEvent, row: BodyCell[]): void {
-            emit('select-row', event, row);
+        function selectRow(row: BodyCell[], event: MouseEvent): void {
+            emit('select-row', row, event);
         }
 
         function updateSelectedItems(items: Item[]): void {

@@ -66,7 +66,7 @@ export default defineComponent({
         }
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
-            emit('click-cell', event, { ...cell });
+            emit('click-cell', { ...cell }, event);
         }
 
         function getRowItem(row: BodyCell[]): Item {
@@ -92,8 +92,8 @@ export default defineComponent({
                 return;
             }
 
-            emit('select-row', event, row);
-            emit('click-cell', event, { ...anyCell });
+            emit('select-row', row, event);
+            emit('click-cell', { ...anyCell }, event);
         }
 
         return {

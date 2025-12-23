@@ -146,7 +146,7 @@ describe('VsTable', () => {
             const emitted = wrapper.emitted('click-cell');
             expect(emitted).toHaveLength(1);
 
-            const [event, cell] = emitted![0] as [Event, BodyCell];
+            const [cell, event] = emitted![0] as [BodyCell, Event];
             expect(event).toBeInstanceOf(Event);
             expect((event as Event).type).toBe('click');
             expect(cell).toMatchObject({
@@ -171,7 +171,7 @@ describe('VsTable', () => {
             const emitted = wrapper.emitted('select-row');
             expect(emitted).toHaveLength(1);
 
-            const [event, cells] = emitted![0] as [Event, BodyCell[]];
+            const [cells, event] = emitted![0] as [BodyCell[], Event];
             expect(event).toBeInstanceOf(Event);
             expect((event as Event).type).toBe('click');
             expect(cells).toHaveLength(2);
@@ -195,8 +195,8 @@ describe('VsTable', () => {
             expect(emittedSelect).toHaveLength(1);
             expect(emittedClickCell).toHaveLength(1);
 
-            const [, selectCells] = emittedSelect![0] as [Event, BodyCell[]];
-            const [, clickCell] = emittedClickCell![0] as [Event, BodyCell];
+            const [selectCells] = emittedSelect![0] as [BodyCell[], Event];
+            const [clickCell] = emittedClickCell![0] as [BodyCell, Event];
 
             expect(selectCells[0]).toMatchObject(clickCell);
         });
