@@ -70,3 +70,14 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+#app {
+    font-family:
+        'Pretendard',
+        -apple-system,
+        BlinkMacSystemFont,
+        system-ui,
+        sans-serif;
+}
+</style>
