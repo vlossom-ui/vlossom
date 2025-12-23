@@ -12,7 +12,10 @@
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
-                    <Sandbox />
+                    <section class="mb-8">
+                        <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Sandbox</h2>
+                        <Sandbox />
+                    </section>
                     <Basic />
                     <InputsAndForm />
                     <DataDisplay />
