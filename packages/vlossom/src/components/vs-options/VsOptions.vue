@@ -55,16 +55,16 @@ import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
 import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
-const name = VsComponent.VsOptions;
+const componentName = VsComponent.VsOptions;
 export default defineComponent({
-    name,
+    name: componentName,
     components: { VsInnerScroll, VsVisibleRender },
     props: {
         ...getStyleSetProps<VsOptionsStyleSet>(),
         ...getOptionsProps(),
         ...getGroupByProps(),
         disabled: {
-            type: [Boolean, Function] as PropType<boolean | ((option: any, index: number) => boolean)>,
+            type: [Boolean, Function] as PropType<boolean | ((option: any, index: number, options: any[]) => boolean)>,
             default: false,
         },
     },
@@ -74,7 +74,7 @@ export default defineComponent({
 
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
+        const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(componentName, styleSet);
 
         const { getOptionLabel, getOptionValue } = useOptionLabelValue(optionLabel, optionValue);
 
@@ -88,7 +88,10 @@ export default defineComponent({
                     label,
                     value,
                     index,
-                    disabled: typeof disabled.value === 'function' ? disabled.value(option, index) : disabled.value,
+                    disabled:
+                        typeof disabled.value === 'function'
+                            ? disabled.value(option, index, options.value)
+                            : disabled.value,
                 };
             });
         });
@@ -108,7 +111,6 @@ export default defineComponent({
             const groupMap = new Map<string, any[]>();
             // option에서 등장하는 그룹 순서
             const groupOrderInOptions: string[] = [];
-            const seenGroups = new Set<string>();
 
             computedOptions.value.forEach((option, index) => {
                 const groupName: string = groupBy.value(option.item, index) || '';
@@ -118,8 +120,7 @@ export default defineComponent({
                 groupMap.get(groupName)?.push(option);
 
                 // 처음 등장하는 그룹이면 순서에 추가 (빈 스트링 제외)
-                if (groupName !== '' && !seenGroups.has(groupName)) {
-                    seenGroups.add(groupName);
+                if (groupName !== '' && !groupOrderInOptions.includes(groupName)) {
                     groupOrderInOptions.push(groupName);
                 }
             });

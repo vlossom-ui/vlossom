@@ -185,16 +185,16 @@ function scrollToFirst() {
 
 ## Props
 
-| Prop          | Type                                                       | Default | Required | Description                             |
-| ------------- | ---------------------------------------------------------- | ------- | -------- | --------------------------------------- |
-| `colorScheme` | `ColorScheme`                                              | -       | -        | 컴포넌트 색상 테마                      |
-| `styleSet`    | `string \| VsOptionsStyleSet`                              | -       | -        | 커스텀 스타일 설정 객체                 |
-| `options`     | `any[]`                                                    | `[]`    | -        | 옵션 배열                               |
-| `optionLabel` | `string`                                                   | `''`    | -        | 옵션에서 라벨을 추출할 속성명 또는 함수 |
-| `optionValue` | `string`                                                   | `''`    | -        | 옵션에서 값을 추출할 속성명 또는 함수   |
-| `groupBy`     | `(option: any, index: number) => string \| null` \| `null` | `null`  | -        | 옵션을 그룹으로 분류하는 함수           |
-| `groupOrder`  | `string[]`                                                 | `[]`    | -        | 그룹 표시 순서                          |
-| `disabled`    | `boolean \| ((option: any, index: number) => boolean)`     | `false` | -        | 옵션 비활성화 여부 (boolean 또는 함수)  |
+| Prop          | Type                                                                   | Default | Required | Description                             |
+| ------------- | ---------------------------------------------------------------------- | ------- | -------- | --------------------------------------- |
+| `colorScheme` | `ColorScheme`                                                          | -       | -        | 컴포넌트 색상 테마                      |
+| `styleSet`    | `string \| VsOptionsStyleSet`                                          | -       | -        | 커스텀 스타일 설정 객체                 |
+| `options`     | `any[]`                                                                | `[]`    | -        | 옵션 배열                               |
+| `optionLabel` | `string`                                                               | `''`    | -        | 옵션에서 라벨을 추출할 속성명 또는 함수 |
+| `optionValue` | `string`                                                               | `''`    | -        | 옵션에서 값을 추출할 속성명 또는 함수   |
+| `groupBy`     | `(option: any, index: number) => string \| null` \| `null`             | `null`  | -        | 옵션을 그룹으로 분류하는 함수           |
+| `groupOrder`  | `string[]`                                                             | `[]`    | -        | 그룹 표시 순서                          |
+| `disabled`    | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false` | -        | 옵션 비활성화 여부 (boolean 또는 함수)  |
 
 ## Events
 
