@@ -10,59 +10,60 @@
     --vs-options-padding: initial;
     --vs-options-opacity: initial;
 
-    --vs-options-option-gap: initial;
+    --vs-options-gap: initial;
+
+    --vs-options-group-backgroundColor: initial;
+    --vs-options-group-border: initial;
+    --vs-options-group-borderRadius: initial;
+    --vs-options-group-padding: initial;
+    --vs-options-group-opacity: initial;
+
+    --vs-options-option-backgroundColor: initial;
     --vs-options-option-border: initial;
     --vs-options-option-borderRadius: initial;
     --vs-options-option-padding: initial;
     --vs-options-option-opacity: initial;
 
-    @apply pointer-events-auto absolute;
+    @apply pointer-events-auto;
 
     opacity: var(--vs-options-opacity, 1);
-    border: var(--vs-options-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border: var(--vs-options-border, none);
+    border-radius: var(--vs-options-borderRadius, 0);
     background-color: var(--vs-options-backgroundColor, var(--vs-no-color));
-    min-width: var(--vs-options-width, auto);
+    width: var(--vs-options-width, auto);
+    max-height: var(--vs-options-height, auto);
 
     .vs-options-list {
-        @apply flex h-full flex-col;
-        max-height: var(--vs-options-height, 16rem);
-        .vs-options-option-focused {
+        @apply flex flex-col;
+
+        gap: var(--vs-options-gap, 0);
+
+        .vs-options-group-content {
+            @apply cursor-default;
+
+            opacity: var(--vs-options-group-opacity, 0.5);
+            margin: 0.6rem 0 0.3rem 0;
+            border: var(--vs-options-group-border, none);
+            border-radius: var(--vs-options-group-borderRadius, 0);
+            background-color: var(--vs-options-group-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-options-group-padding, 0 0.6rem);
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .vs-options-option-content {
+            @apply cursor-pointer;
+
+            opacity: var(--vs-options-option-opacity, 1);
+            border: var(--vs-options-option-border, none);
+            border-radius: var(--vs-options-option-borderRadius, 0);
+            background-color: var(--vs-options-option-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-options-option-padding, 0.2rem 1.2rem);
+        }
+
+        .vs-focused-index {
             background-color: var(--vs-area-bg-hover);
-        }
-        .vs-options-header {
-            @apply pb-2;
-        }
-        .vs-options-footer {
-            @apply pt-2;
-        }
-        .vs-options-list {
-            @apply flex flex-1 cursor-pointer flex-col overflow-auto;
-
-            gap: var(--vs-options-gap, 0.2rem);
-
-            .vs-options-group-name {
-                margin: 0.5rem 0 0 0.2rem;
-                letter-spacing: 0.1rem;
-                text-transform: uppercase;
-            }
-
-            .vs-options-option {
-                opacity: var(--vs-options-option-opacity, 1);
-                border: var(--vs-options-option-border, none);
-                border-radius: var(
-                    --vs-options-option-borderRadius,
-                    calc(var(--vs-radius-ratio) * var(--vs-radius-sm))
-                );
-                padding: var(--vs-options-option-padding, 0 0.8rem);
-
-                &.vs-selected {
-                    @apply font-bold;
-
-                    background-color: var(--vs-primary-comp-bg);
-                    color: var(--vs-primary-comp-font);
-                }
-            }
         }
     }
 }

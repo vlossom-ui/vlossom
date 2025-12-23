@@ -1,5 +1,6 @@
-import type VsOptions from './VsOptions.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
+import type VsOptions from './VsOptions.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -10,10 +11,24 @@ declare module 'vue' {
 export type { VsOptions };
 
 export interface VsOptionsStyleSet extends SizeStyleSet, BoxStyleSet {
-    option?: { gap?: string } & Omit<BoxStyleSet, 'backgroundColor'>;
+    gap?: string;
+    group?: BoxStyleSet;
+    option?: BoxStyleSet;
+}
+
+export interface VsOptionsItem {
+    id: string;
+    item: any;
+    label: string;
+    value: any;
+    disabled: boolean;
 }
 
 export interface VsOptionsGroup {
     name: string;
-    options: any[];
+    options: VsOptionsItem[];
+}
+
+export interface VsOptionsRef extends ComponentPublicInstance<typeof VsOptions> {
+    scrollToOption: (option: any) => void;
 }

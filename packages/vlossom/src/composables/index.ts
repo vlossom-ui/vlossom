@@ -5,6 +5,7 @@ export * from './input-form-composable';
 export * from './input-messages-composable';
 export * from './input-option-composable';
 export * from './input-rules-composable';
+export * from './option-label-value-composable';
 export * from './overlay-callback-composable';
 export * from './overlay-dom-composable';
 export * from './positioning-composable';

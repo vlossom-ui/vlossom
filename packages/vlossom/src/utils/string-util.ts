@@ -37,5 +37,14 @@ export const stringUtil = {
 
         return `${Math.round((bytes / Math.pow(k, i)) * 100) / 100} ${sizes[i]}`;
     },
+    hash(str: string): string {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash; // 32bit 정수로 변환
+        }
+        return `vs-${Math.abs(hash).toString(36)}`;
+    },
     kebabCase,
 };

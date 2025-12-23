@@ -1,48 +1,38 @@
 <template>
-    <Teleport :to="optionsOverlayId" v-if="isVisible">
-        <div ref="optionsRef" :id :class="['vs-options', colorSchemeClass]" :style="styleSetVariables">
-            <vs-inner-scroll>
-                <template #header v-if="$slots.header">
-                    <slot name="header" />
-                </template>
+    <vs-inner-scroll class="vs-options" :style="styleSetVariables">
+        <template #header v-if="$slots.header">
+            <slot name="header" />
+        </template>
 
-                <vs-visible-render class="vs-options-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
-                    <template v-for="(group, groupIndex) in groupedOptions" :key="`group-${groupIndex}`">
-                        <div v-if="!!groupBy">
-                            <slot name="group" :group :groupIndex>
-                                <div v-if="group.name !== ''" class="vs-options-group-name">
-                                    {{ group.name }}
-                                </div>
-                                <vs-divider
-                                    :color-scheme="computedColorScheme"
-                                    :style-set="{ horizontal: { margin: '0.2rem 0' } }"
-                                />
-                            </slot>
+        <vs-visible-render class="vs-options-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
+            <template v-for="(group, groupIndex) in groupedOptions" :key="`group-${groupIndex}`">
+                <div v-if="!!groupBy" class="vs-options-group">
+                    <slot name="group" :group :groupIndex>
+                        <div class="vs-options-group-content">
+                            <span>{{ group.name || 'Ungrouped' }}</span>
                         </div>
-                        <div
-                            v-for="(option, index) in group.options"
-                            :key="`${id}-${option.id}-${index}`"
-                            :id="option.id"
-                            :class="{ 'vs-disabled': option.disabled }"
-                            :data-focusable="option.disabled ? undefined : 'option'"
-                            @mouseenter="onMouseEnter"
-                            @click.prevent.stop="handleOptionClick(option.id)"
-                        >
-                            <slot name="option" :option :index>
-                                <div class="vs-options-option">
-                                    <span>{{ option }}</span>
-                                </div>
-                            </slot>
+                    </slot>
+                </div>
+                <div
+                    v-for="(option, index) in group.options"
+                    :key="`${option.id}-${index}`"
+                    :id="option.id"
+                    :class="['vs-options-option', { 'vs-disabled': option.disabled }]"
+                    @click.prevent.stop="emitClickOption(option, index, group, groupIndex)"
+                >
+                    <slot name="option" v-bind="option" :index :group :groupIndex>
+                        <div class="vs-options-option-content">
+                            <span>{{ option.label }}</span>
                         </div>
-                    </template>
-                </vs-visible-render>
+                    </slot>
+                </div>
+            </template>
+        </vs-visible-render>
 
-                <template #footer v-if="$slots.footer">
-                    <slot name="footer" />
-                </template>
-            </vs-inner-scroll>
-        </div>
-    </Teleport>
+        <template #footer v-if="$slots.footer">
+            <slot name="footer" />
+        </template>
+    </vs-inner-scroll>
 </template>
 
 <script lang="ts">
@@ -51,205 +41,55 @@ import {
     defineComponent,
     toRefs,
     useTemplateRef,
-    watch,
-    ref,
-    onMounted,
-    onUnmounted,
-    nextTick,
-    type Ref,
     type ComputedRef,
-    type TemplateRef,
     type PropType,
+    type TemplateRef,
 } from 'vue';
-import { getColorSchemeProps, getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useStyleSet, useOverlayCallback, useOverlayDom, usePositioning } from '@/composables';
-import { VsComponent, type Alignment, type OverlayCallbacks, type Placement } from '@/declaration';
-import { stringUtil } from '@/utils';
-import type { VsOptionsGroup, VsOptionsStyleSet } from './types';
+import { VsComponent } from '@/declaration';
+import { getGroupByProps, getOptionsProps, getStyleSetProps } from '@/props';
+import { useStyleSet, useOptionLabelValue } from '@/composables';
+import { objectUtil, stringUtil } from '@/utils';
+import type { VsOptionsGroup, VsOptionsItem, VsOptionsStyleSet } from './types';
 
 import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
 import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
-import VsDivider from '@/components/vs-divider/VsDivider.vue';
 
 const name = VsComponent.VsOptions;
 export default defineComponent({
     name,
-    components: { VsInnerScroll, VsDivider, VsVisibleRender },
+    components: { VsInnerScroll, VsVisibleRender },
     props: {
-        ...getColorSchemeProps(),
         ...getStyleSetProps<VsOptionsStyleSet>(),
         ...getOptionsProps(),
         ...getGroupByProps(),
-        align: {
-            type: String as PropType<Alignment>,
-            default: 'start',
-        },
-        callbacks: { type: Object as PropType<OverlayCallbacks>, default: () => ({}) },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number) => boolean)>,
             default: false,
         },
-        id: { type: String, default: '' },
-        target: { type: String, required: true, default: '' },
-        placement: {
-            type: String as PropType<Exclude<Placement, 'middle'>>,
-            default: 'bottom',
-        },
-
-        // v-model
-        modelValue: {
-            type: Boolean,
-            default: false,
-        },
-        focusIndex: {
-            type: Number,
-            default: -1,
-        },
     },
-    emits: ['option-click', 'key', 'update:modelValue', 'update:focusIndex'],
+    emits: ['click-option'],
     setup(props, { emit }) {
-        const {
-            colorScheme,
-            styleSet,
-            id,
-            target,
-            options,
-            callbacks,
-            groupBy,
-            groupOrder,
-            align,
-            placement,
-            modelValue,
-            focusIndex,
-        } = toRefs(props);
+        const { styleSet, options, optionLabel, optionValue, groupBy, groupOrder, disabled } = toRefs(props);
 
-        const optionsRef: TemplateRef<HTMLElement> = useTemplateRef('optionsRef');
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
-        const currentFocusableElement: Ref<HTMLElement | null> = ref(null);
 
-        const { colorSchemeClass, computedColorScheme } = useColorScheme(name, colorScheme);
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsOptionsStyleSet>(name, styleSet);
 
-        // VsOptions 전용 overlay id (VsSelect와 구분)
-        const optionsId = id.value || stringUtil.createID();
-        const optionsOverlayId = computed(() => `#vs-${optionsId}-overlay`);
+        const { getOptionLabel, getOptionValue } = useOptionLabelValue(optionLabel, optionValue);
 
-        const { appendOverlayDom } = useOverlayDom();
-        const { isVisible, appear, disappear } = usePositioning(target.value, optionsRef);
-        appendOverlayDom(document.body, optionsOverlayId.value);
-        const focusableElements: Ref<HTMLElement[]> = ref([]);
-
-        function updateFocusableElements() {
-            focusableElements.value = Array.from(
-                optionsRef.value?.querySelectorAll<HTMLElement>('[data-focusable]') || [],
-            );
-        }
-
-        function getFocusIndex(el: HTMLElement) {
-            return focusableElements.value.indexOf(el);
-        }
-
-        // focusIndex를 v-model로 관리
-        const innerFocusIndex = ref(focusIndex.value);
-        watch(focusIndex, (newValue) => {
-            innerFocusIndex.value = newValue;
-        });
-        watch(innerFocusIndex, (newValue) => {
-            emit('update:focusIndex', newValue);
-        });
-
-        const computedCallbacks: ComputedRef<OverlayCallbacks> = computed(() => {
-            return {
-                ['key-Enter']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    const currentElement = focusableElements.value[innerFocusIndex.value];
-                    if (!currentElement) {
-                        return;
-                    }
-
-                    const focusableValue = currentElement.getAttribute('data-focusable');
-
-                    if (focusableValue === 'option') {
-                        const optionId = currentElement.id;
-                        if (optionId) {
-                            emit('key', event);
-                        }
-                        return;
-                    }
-                },
-                ['key-Space']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    const currentElement = focusableElements.value[innerFocusIndex.value];
-                    if (!currentElement) {
-                        return;
-                    }
-
-                    const focusableValue = currentElement.getAttribute('data-focusable');
-
-                    if (focusableValue === 'option') {
-                        const optionId = currentElement.id;
-                        if (optionId) {
-                            emit('key', event);
-                        }
-                        return;
-                    }
-                },
-                ['key-ArrowUp']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    if (innerFocusIndex.value > 0) {
-                        innerFocusIndex.value = innerFocusIndex.value - 1;
-                    }
-                },
-                ['key-ArrowDown']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    const lastIndex = focusableElements.value.length - 1;
-                    if (innerFocusIndex.value < lastIndex) {
-                        innerFocusIndex.value = innerFocusIndex.value + 1;
-                    }
-                },
-                ['key-Home']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    innerFocusIndex.value = 0;
-                },
-                ['key-End']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    const lastIndex = focusableElements.value.length - 1;
-                    innerFocusIndex.value = lastIndex;
-                },
-                ['key-Escape']: (event: KeyboardEvent) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    emit('key', { key: 'Escape', type: 'close', event });
-                },
-                ['key-Tab']: () => {
-                    emit('key', { key: 'Tab', type: 'close' });
-                },
-
-                ...callbacks.value,
-            };
-        });
-        const { mountOverlay, unmountOverlay } = useOverlayCallback(optionsOverlayId, computedCallbacks);
-
-        watch(modelValue, () => {
-            if (modelValue.value) {
-                appear({ align: align.value, placement: placement.value, followWidth: true });
-                mountOverlay();
-            } else {
-                disappear();
-                unmountOverlay();
-            }
+        const computedOptions: ComputedRef<VsOptionsItem[]> = computed(() => {
+            return options.value.map((option, index) => {
+                const label = getOptionLabel(option);
+                const value = getOptionValue(option);
+                return {
+                    id: stringUtil.hash(label),
+                    item: option,
+                    label,
+                    value,
+                    disabled: typeof disabled.value === 'function' ? disabled.value(option, index) : disabled.value,
+                };
+            });
         });
 
         const groupedOptions: ComputedRef<VsOptionsGroup[]> = computed(() => {
@@ -258,7 +98,7 @@ export default defineComponent({
                 return [
                     {
                         name: '',
-                        options: options.value,
+                        options: computedOptions.value,
                     },
                 ];
             }
@@ -269,9 +109,8 @@ export default defineComponent({
             const groupOrderInOptions: string[] = [];
             const seenGroups = new Set<string>();
 
-            for (const option of options.value) {
-                const originalIndex = options.value.findIndex((o) => o === option);
-                const groupName: string = groupBy.value(option.option, originalIndex) || '';
+            computedOptions.value.forEach((option, index) => {
+                const groupName: string = groupBy.value(option.item, index) || '';
                 if (!groupMap.has(groupName)) {
                     groupMap.set(groupName, []);
                 }
@@ -282,7 +121,7 @@ export default defineComponent({
                     seenGroups.add(groupName);
                     groupOrderInOptions.push(groupName);
                 }
-            }
+            });
 
             // 그룹 순서 결정
             const allGroups: string[] = Array.from(groupMap.keys()).filter((g) => g !== '');
@@ -324,69 +163,36 @@ export default defineComponent({
             return result;
         });
 
-        watch(groupedOptions, updateFocusableElements, { flush: 'post' });
+        function emitClickOption(option: VsOptionsItem, index: number, group: VsOptionsGroup, groupIndex: number) {
+            emit('click-option', { ...option, index, group, groupIndex });
+        }
 
-        function onMouseEnter(event: MouseEvent) {
-            const el: HTMLElement | null = event.target as HTMLElement;
-            if (!el) {
+        function scrollToOption(option: any) {
+            if (!visibleRenderRef.value) {
                 return;
             }
-            const index = getFocusIndex(el);
-            if (index >= 0) {
-                innerFocusIndex.value = index;
+
+            const targetOption = computedOptions.value.find((o) => objectUtil.isEqual(o.item, option));
+            if (!targetOption) {
+                return;
             }
+
+            const targetElement: HTMLElement | null =
+                visibleRenderRef.value?.$el.querySelector(`#${targetOption.id}`) || null;
+            if (!targetElement) {
+                return;
+            }
+
+            visibleRenderRef.value.scrollToElement(targetElement);
         }
-
-        function handleOptionClick(optionId: string) {
-            emit('option-click', optionId);
-        }
-
-        watch(innerFocusIndex, (newIndex, oldIndex) => {
-            if (oldIndex >= 0) {
-                const oldfocusableElement = focusableElements.value[oldIndex];
-                if (oldfocusableElement) {
-                    oldfocusableElement.classList.remove('vs-options-option-focused');
-                    const oldfocusableValue = oldfocusableElement.getAttribute('data-focusable');
-                    if (oldfocusableValue === 'search-input') {
-                        emit('key', { key: 'Focus', type: 'search-input-blur' });
-                    }
-                }
-            }
-
-            if (newIndex >= 0) {
-                const newfocusableElement = focusableElements.value[newIndex];
-                if (newfocusableElement) {
-                    newfocusableElement.classList.add('vs-options-option-focused');
-                    currentFocusableElement.value = newfocusableElement;
-                    newfocusableElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-                    const newfocusableValue = newfocusableElement.getAttribute('data-focusable');
-                    if (newfocusableValue === 'search-input') {
-                        emit('key', { key: 'Focus', type: 'search-input-focus' });
-                    }
-                }
-            }
-        });
-
-        onMounted(async () => {
-            mountOverlay();
-            await nextTick();
-            updateFocusableElements();
-        });
-
-        onUnmounted(unmountOverlay);
 
         return {
-            isVisible,
-            optionsOverlayId,
-            optionsRef,
             visibleRenderRef,
-            colorSchemeClass,
-            computedColorScheme,
             styleSetVariables,
             componentStyleSet,
             groupedOptions,
-            onMouseEnter,
-            handleOptionClick,
+            emitClickOption,
+            scrollToOption,
         };
     },
 });

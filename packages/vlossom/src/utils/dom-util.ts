@@ -8,17 +8,27 @@ export const domUtil = {
     isScrollableX(element: HTMLElement): boolean {
         const style = getComputedStyle(element);
         const overflowX = style.overflowX;
-        if (overflowX === 'auto' || overflowX === 'scroll') {
+        if (overflowX === 'scroll') {
             return true;
         }
-        return element.scrollWidth > element.clientWidth;
+        if (overflowX === 'auto') {
+            // overflow: auto일 때는 실제로 스크롤이 가능한지 확인
+            return element.scrollWidth > element.clientWidth;
+        }
+
+        return false;
     },
     isScrollableY(element: HTMLElement): boolean {
         const style = getComputedStyle(element);
         const overflowY = style.overflowY;
-        if (overflowY === 'auto' || overflowY === 'scroll') {
+        if (overflowY === 'scroll') {
             return true;
         }
-        return element.scrollHeight > element.clientHeight;
+        if (overflowY === 'auto') {
+            // overflow: auto일 때는 실제로 스크롤이 가능한지 확인
+            return element.scrollHeight > element.clientHeight;
+        }
+
+        return false;
     },
 };
