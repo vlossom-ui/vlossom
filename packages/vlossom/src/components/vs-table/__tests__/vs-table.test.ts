@@ -216,4 +216,40 @@ describe('VsTable', () => {
             expect(wrapper.emitted('select-row')).toBeUndefined();
         });
     });
+
+    describe('v-model', () => {
+        it('selectedItems 속성을 사용하여 선택된 아이템을 관리한다', async () => {
+            const wrapper = mountTable({
+                props: { selectable: () => true, selectedItems: tableItems },
+            });
+
+            await nextTick();
+
+            expect(wrapper.props('selectedItems')).toEqual(tableItems);
+        });
+
+        it('update:selectedItems 이벤트를 통해 선택된 아이템을 관리한다', async () => {
+            const wrapper = mountTable({
+                props: { selectable: () => true },
+            });
+
+            wrapper.vm.updateSelectedItems(tableItems);
+            await nextTick();
+
+            expect(wrapper.emitted('update:selectedItems')).toHaveLength(1);
+            expect(wrapper.emitted('update:selectedItems')![0]).toEqual([tableItems]);
+        });
+
+        it('selectedItems 속성이 변경되면 update:selectedItems 이벤트를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { selectable: () => true },
+            });
+
+            wrapper.setProps({ selectedItems: tableItems });
+            await nextTick();
+
+            expect(wrapper.emitted('update:selectedItems')).toHaveLength(1);
+            expect(wrapper.emitted('update:selectedItems')![0]).toEqual([tableItems]);
+        });
+    });
 });

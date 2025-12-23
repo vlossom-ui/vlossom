@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
-import { functionUtil, stringUtil } from '@/utils';
-import type { PropsOf, VsComponent } from '@/declaration';
+import { functionUtil, logUtil, stringUtil } from '@/utils';
+import { type PropsOf, VsComponent } from '@/declaration';
 import {
     isColumnDefArray,
     SortType,
@@ -15,9 +15,15 @@ import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-export function useTable(props: PropsOf<VsComponent.VsTable>) {
-    const { columns: rawColumns, items: rawItems, selectable: rawSelectable } = toRefs(props);
+export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
+    const {
+        columns: rawColumns,
+        items: rawItems,
+        selectable: rawSelectable,
+        selectedItems: rawSelectedItems,
+    } = toRefs(props);
 
+    // normalize
     const columns = computed<ColumnDef[] | null>(() => {
         if (!rawColumns?.value) {
             return null;
@@ -38,12 +44,25 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
     const selectable = computed(() => {
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
     });
+    const selectedItems = computed<Item[]>(() => {
+        if (!rawSelectedItems?.value) {
+            return [];
+        }
+        const itemIds = new Set(items.value.map((i) => i.id));
+        const invalidIdItems = rawSelectedItems.value.filter((item) => !itemIds.has(item.id));
+        if (invalidIdItems.length) {
+            logUtil.propError(VsComponent.VsTable, 'selectedItems', 'selectedItems id must be in items');
+            return [];
+        }
+        return rawSelectedItems.value;
+    });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
         items,
+        selectedItems,
     );
 
     const headerCells = ref<HeaderCell[]>([]);
@@ -80,6 +99,14 @@ export function useTable(props: PropsOf<VsComponent.VsTable>) {
         },
         { deep: true },
     );
+
+    watch(selectedIds, (nextSelectedIds) => {
+        const nextSelectedItems = nextSelectedIds
+            .map((selectedId) => items.value.find((item) => item.id === selectedId))
+            .filter(Boolean) as Item[];
+
+        cb?.updateSelectedItems(nextSelectedItems);
+    });
 
     return {
         initialize,

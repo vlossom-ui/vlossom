@@ -55,13 +55,29 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
+        // v-model
+        selectedItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [] as Item[],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
+                    return false;
+                }
+                if (value.some((item) => !item.id)) {
+                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must have id');
+                    return false;
+                }
+                return true;
+            },
+        },
     },
-    emits: ['click-cell', 'select-row'],
+    emits: ['click-cell', 'select-row', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const table = useTable(props);
+        const table: TableComposable = useTable(props, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
@@ -75,6 +91,10 @@ export default defineComponent({
             emit('select-row', event, row);
         }
 
+        function updateSelectedItems(items: Item[]): void {
+            emit('update:selectedItems', items);
+        }
+
         onBeforeMount(() => {
             table.initialize();
         });
@@ -85,6 +105,7 @@ export default defineComponent({
             bodySlots,
             clickCell,
             selectRow,
+            updateSelectedItems,
         };
     },
 });
