@@ -2,6 +2,8 @@ import { ref, type Ref } from 'vue';
 import { SortType, type ColumnDef, type BodyCell } from '../types';
 import { objectUtil, compareUtil } from '@/utils';
 
+const SORT_TYPE_COUNT = Object.keys(SortType).length;
+
 export function useTableSort(columns: Ref<ColumnDef[] | null>) {
     const sortType = ref<SortType>(SortType.NONE);
     const sortColumn = ref<ColumnDef | null>(null);
@@ -32,7 +34,7 @@ export function useTableSort(columns: Ref<ColumnDef[] | null>) {
             return;
         }
         const current: SortType = sortType.value ?? SortType.NONE;
-        const next: SortType = (current + 1) % SortType.LENGTH;
+        const next: SortType = (current + 1) % SORT_TYPE_COUNT;
 
         sortType.value = next;
         sortColumn.value = targetColumn;

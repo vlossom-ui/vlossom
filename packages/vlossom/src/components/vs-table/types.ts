@@ -31,7 +31,6 @@ export enum SortType {
     NONE,
     ASCEND,
     DESCEND,
-    LENGTH,
 }
 
 export interface ColumnDef<I = Item> {
