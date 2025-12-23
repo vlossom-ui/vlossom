@@ -1,39 +1,49 @@
 <template>
     <tbody>
         <template v-if="bodyCells.length">
-            <tr v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
-                <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
-                    <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
-                        <vs-checkbox
-                            v-if="isRowSelectable(cells, rowIdx)"
-                            multiple
-                            v-model="selectedIds"
-                            :true-value="getRowId(cells)"
-                            @toggle="selectRow(cells, $event)"
-                        />
-                    </slot>
-                </td>
+            <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
+                <tr>
+                    <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
+                        <slot name="selectable" :item="getRowItem(cells)" :rowIdx>
+                            <vs-checkbox
+                                v-if="isRowSelectable(cells, rowIdx)"
+                                multiple
+                                v-model="selectedIds"
+                                :true-value="getRowId(cells)"
+                                @toggle="selectRow(cells, $event)"
+                            />
+                        </slot>
+                    </td>
 
-                <td v-for="cell in cells" :id="cell.id" :key="cell.id" @click.prevent.stop="clickCell(cell, $event)">
-                    <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                        {{ cell.value }}
-                    </slot>
-                </td>
+                    <td
+                        v-for="cell in cells"
+                        :id="cell.id"
+                        :key="cell.id"
+                        @click.prevent.stop="clickCell(cell, $event)"
+                    >
+                        <slot :name="findMatchingSlotName(cell)" :item="cell.item">
+                            {{ cell.value }}
+                        </slot>
+                    </td>
 
-                <td v-if="anyExpandable" class="w-10" @click.prevent.stop="expandRow(cells, $event)">
-                    <vs-button>
-                        {{ 'EXPAND' }}
-                    </vs-button>
-                </td>
-                <!-- expended -->
-                <slot name="expend" :item="getRowItem(cells)" :rowIdx>
-                    <vs-expandable :open="expanded.has(getRowId(cells))">
-                        <div>
-                            <p>EXPANDED</p>
-                        </div>
-                    </vs-expandable>
-                </slot>
-            </tr>
+                    <td v-if="anyExpandable" class="w-10" @click.prevent.stop="expandRow(cells, $event)">
+                        <vs-button>
+                            {{ 'EXPAND' }}
+                        </vs-button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="expand" colspan="100%">
+                        <slot name="expend" :item="getRowItem(cells)" :rowIdx>
+                            <vs-expandable :open="expanded.has(getRowId(cells))">
+                                <div>
+                                    <p>EXPANDED</p>
+                                </div>
+                            </vs-expandable>
+                        </slot>
+                    </td>
+                </tr>
+            </template>
         </template>
 
         <template v-else>
