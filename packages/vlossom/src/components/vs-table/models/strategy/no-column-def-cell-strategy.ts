@@ -1,8 +1,8 @@
 import { stringUtil } from '@/utils';
 import type { BodyCell, HeaderCell, Item } from '../../types';
-import { HEADER_ROW_INDEX, type TableCellFactory } from './index';
+import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
-export default class NoColumnDefCellFactory implements TableCellFactory {
+export default class NoColumnDefCellStrategy implements TableCellStrategy {
     public constructor(private items: Item[]) {}
 
     public createHeaderCell(): HeaderCell[] {
@@ -15,6 +15,7 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
             colKey: key,
             colIdx: idx,
             rowIdx: HEADER_ROW_INDEX,
+            sortable: false,
         }));
     }
 
@@ -23,7 +24,7 @@ export default class NoColumnDefCellFactory implements TableCellFactory {
         return this.items.map((item: Item, rowIdx: number) => {
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                id: `${key}-${item.id ?? stringUtil.createID()}`,
+                id: `${key}-${item.id}`,
                 value: item[key],
                 item,
                 colKey: key,
