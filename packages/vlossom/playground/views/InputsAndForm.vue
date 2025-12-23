@@ -57,17 +57,22 @@
 
         <h3 class="mb-4 font-semibold">VsTextarea</h3>
         <vs-textarea v-model="textareaValue" label="Description" placeholder="Enter description..." />
+        <Divider />
+
+        <SignUpFormExample />
     </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, type Ref } from 'vue';
 import Divider from '../components/Divider.vue';
+import SignUpFormExample from '../components/SignUpFormExample.vue';
 
 export default defineComponent({
     name: 'InputsAndForm',
     components: {
         Divider,
+        SignUpFormExample,
     },
     setup() {
         const inputText = ref('');
