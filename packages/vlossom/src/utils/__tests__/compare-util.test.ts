@@ -57,12 +57,12 @@ describe('compare-util', () => {
             expect(compareUtil.compareValues(a, b)).toBeGreaterThan(0);
         });
 
-        it('두 객체를 비교하면 0을 반환한다', () => {
-            expect(compareUtil.compareValues({ a: 1 }, { b: 2 })).toBe(0);
+        it('객체의 각 속성을 문자열로 비교하므로, { a: 1 }이 { b: 2 }보다 사전적으로 앞서 음수를 반환한다', () => {
+            expect(compareUtil.compareValues({ a: 1 }, { b: 2 })).toBeLessThan(0);
         });
 
-        it('두 배열을 비교하면 0을 반환한다', () => {
-            expect(compareUtil.compareValues([1, 2], [3, 4])).toBe(0);
+        it('배열의 값을 문자열로 비교하므로, [1, 2]가 [3, 4]보다 사전적으로 앞서 음수를 반환한다', () => {
+            expect(compareUtil.compareValues([1, 2], [3, 4])).toBeLessThan(0);
         });
 
         it('서로 다른 타입이면 0을 반환한다', () => {
