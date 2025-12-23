@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed top-20 right-24 z-100">
+    <div class="fixed top-20 right-24 z-99">
         <vs-block :style-set="panelStyleSet">
             <template #title><p class="font-bold">Color Scheme Panel</p></template>
             <vs-focus-trap>
