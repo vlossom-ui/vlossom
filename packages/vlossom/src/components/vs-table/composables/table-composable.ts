@@ -138,7 +138,7 @@ export type TableComposable = {
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
-    sortType: Ref<SortType | null>;
+    sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
