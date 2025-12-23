@@ -25,7 +25,7 @@ function compareValues(aValue: unknown, bValue: unknown): number {
         return Number(aValue) - Number(bValue);
     }
     if (typeof aValue === 'object' && typeof bValue === 'object') {
-        return 0;
+        return JSON.stringify(aValue).localeCompare(JSON.stringify(bValue));
     }
 
     return 0;
