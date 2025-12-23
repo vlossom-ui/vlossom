@@ -3,12 +3,18 @@ import { computed, ref } from 'vue';
 import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
 import VsInput from '../../vs-input/VsInput.vue';
+import type { Item } from '../types';
 
 const baseColumns = [
     { key: 'name', label: 'Name' },
     { key: 'age', label: 'Age' },
     { key: 'metadata.email', label: 'Email' },
 ];
+
+const sortableColumns = baseColumns.map((column) => ({
+    ...column,
+    sortable: true,
+}));
 
 const baseItems = [
     { name: 'John', age: 30, metadata: { email: 'john@example.com' }, id: '1' },
@@ -193,7 +199,36 @@ export const CustomSlots: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'App.vue에 작성된 다양한 슬롯 예제를 그대로 재현한 스토리입니다.',
+                story: '다양한 커스텀 슬롯 예제를 확인할 수 있습니다.',
+            },
+        },
+    },
+};
+
+export const Selectable: Story = {
+    args: {
+        columns: baseColumns,
+        items: baseItems,
+        selectable: (item: Item) => item.name !== 'Jim',
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'selectable을 true/함수로 전달해 선택 가능한 행만 체크박스를 노출하고, 전체 선택 상태를 확인합니다.',
+            },
+        },
+    },
+};
+
+export const SortableColumns: Story = {
+    args: {
+        columns: sortableColumns,
+        items: [...baseItems].reverse(),
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'sortable 컬럼을 지정하면 헤더 아이콘을 클릭해 ASC/DESC/해제 순으로 정렬을 토글할 수 있습니다.',
             },
         },
     },
