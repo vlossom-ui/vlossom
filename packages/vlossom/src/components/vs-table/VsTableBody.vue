@@ -50,12 +50,14 @@ import { type BodyCell, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
+import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
 import VsTableSelectCell from './VsTableSelectCell.vue';
 
 export default defineComponent({
     components: {
+        VsRender,
         VsTableExpandCell,
         VsTableExpandedPanel,
         VsTableSelectCell,

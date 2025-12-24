@@ -27,7 +27,12 @@ import { defineComponent, inject, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import { getRowItem, type Cell, isBodyRow, getRowId } from './types';
 
+import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
+
 export default defineComponent({
+    components: {
+        VsCheckbox,
+    },
     props: {
         cells: {
             type: Array as PropType<Cell[]>,

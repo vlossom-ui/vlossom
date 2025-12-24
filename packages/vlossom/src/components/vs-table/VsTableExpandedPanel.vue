@@ -11,7 +11,12 @@ import { defineComponent, inject, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import { type Cell } from './types';
 
+import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';
+
 export default defineComponent({
+    components: {
+        VsExpandable,
+    },
     props: {
         cells: {
             type: Array as PropType<Cell[]>,

@@ -26,7 +26,14 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 import { type Cell, getRowItem, isBodyRow, type BodyCell } from './types';
 import { tableIcons } from './icons';
 
+import VsButton from '@/components/vs-button/VsButton.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
+
 export default defineComponent({
+    components: {
+        VsButton,
+        VsRender,
+    },
     props: {
         cells: {
             type: Array as PropType<Cell[]>,
