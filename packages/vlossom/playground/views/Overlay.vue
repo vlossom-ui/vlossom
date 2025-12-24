@@ -20,7 +20,7 @@
                 <vs-switch v-model="drawerOptions.fixed" label="fixed" :grid="2" small no-messages />
             </vs-grid>
         </vs-block>
-        <vs-container class="mb-4 h-64 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
+        <vs-container class="mb-4 h-64 overflow-hidden rounded-lg border border-gray-400 dark:border-gray-500">
             <div class="flex h-full items-center justify-center">
                 <vs-button @click="drawerOpen = true">Open Drawer</vs-button>
             </div>
@@ -33,6 +33,7 @@
                 :esc-close="drawerOptions.escClose"
                 :focus-lock="drawerOptions.focusLock"
                 :fixed="drawerOptions.fixed"
+                :style-set="drawerStyleSet"
             >
                 <template #header>
                     <div class="p-2 text-sm font-bold capitalize">{{ drawerOptions.placement }} Drawer</div>
@@ -179,6 +180,7 @@
 import { computed, defineComponent, reactive, ref } from 'vue';
 import { useVlossom } from '@/framework';
 import type { DrawerPlacement, Placement, Alignment } from '@/declaration';
+import type { VsDrawerStyleSet } from '@/components/vs-drawer/types';
 import Divider from '../components/Divider.vue';
 
 type ToastState = 'info' | 'success' | 'warning' | 'error';
@@ -202,6 +204,12 @@ export default defineComponent({
             fixed: false,
         });
         const drawerSize = computed(() => (drawerOptions.fixed ? '300px' : '120px'));
+        const drawerStyleSet = computed((): VsDrawerStyleSet => {
+            if (drawerOptions.fixed && drawerOptions.placement !== 'bottom') {
+                return { padding: '3rem 0 0 0' };
+            }
+            return {};
+        });
 
         // Modal
         const modalOpen = ref(false);
@@ -253,6 +261,7 @@ export default defineComponent({
             drawerOpen,
             drawerOptions,
             drawerSize,
+            drawerStyleSet,
             modalOpen,
             modalOptions,
             toastOptions,
