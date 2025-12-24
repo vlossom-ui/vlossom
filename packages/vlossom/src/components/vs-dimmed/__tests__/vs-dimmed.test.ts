@@ -62,7 +62,7 @@ describe('vs-dimmed', () => {
             await wrapper.setProps({ modelValue: true });
 
             // then
-            expect(wrapper.vm.show).toBe(true);
+            expect(wrapper.vm.isShow).toBe(true);
             expect(wrapper.find('.vs-dimmed').exists()).toBe(true);
         });
 
@@ -82,7 +82,7 @@ describe('vs-dimmed', () => {
 
             // then
             await wrapper.vm.$nextTick();
-            expect(wrapper.vm.show).toBe(false);
+            expect(wrapper.vm.isShow).toBe(false);
             // Transition 때문에 요소가 즉시 사라지지 않을 수 있음
         });
     });
