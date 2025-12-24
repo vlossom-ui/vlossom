@@ -1,6 +1,6 @@
 import type VsInput from './VsInput.vue';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
-import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { BoxStyleSet, TextStyleSet, FocusableRef, FormChildRef } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -12,7 +12,7 @@ export type VsInputValueType = string | number | null;
 
 export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
-export interface VsInputRef extends InputRef {
+export interface VsInputRef extends FocusableRef, FormChildRef {
     select: () => void;
 }
 

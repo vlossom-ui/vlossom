@@ -53,7 +53,7 @@ import {
     OVERLAY_OPEN,
     VsComponent,
     type DrawerPlacement,
-    type Focusable,
+    type FocusableRef,
     type SizeProp,
     SIZES,
     type Size,
@@ -109,7 +109,7 @@ export default defineComponent({
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
         const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
-        const focusTrapRef: TemplateRef<Focusable> = useTemplateRef('focusTrapRef');
+        const focusTrapRef: TemplateRef<FocusableRef> = useTemplateRef('focusTrapRef');
         const DRAWER_SIZE: Record<Size, string> = {
             xs: '12%',
             sm: '20%',

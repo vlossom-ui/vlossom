@@ -1,6 +1,6 @@
 import type VsTextarea from './VsTextarea.vue';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
-import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { BoxStyleSet, TextStyleSet, FocusableRef, FormChildRef } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -10,7 +10,7 @@ declare module 'vue' {
 
 export type VsTextareaValueType = string;
 
-export interface VsTextareaRef extends InputRef {
+export interface VsTextareaRef extends FocusableRef, FormChildRef {
     select: () => void;
 }
 

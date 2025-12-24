@@ -80,11 +80,6 @@ export interface TextStyleSet {
     fontWeight?: number;
 }
 
-export interface Focusable {
-    focus(): void;
-    blur(): void;
-}
-
 export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning';
 
 export interface StateMessage<T extends string = UIState> {
@@ -128,12 +123,12 @@ export interface InputComponentParams<T = unknown> {
     };
 }
 
-export interface FormRef {
+export interface FormChildRef {
     validate: () => void;
     clear: () => void;
 }
 
-export interface InputRef extends FormRef {
+export interface FocusableRef {
     focus: () => void;
     blur: () => void;
 }

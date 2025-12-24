@@ -198,9 +198,12 @@ interface VsSearchInputStyleSet {
     height?: string;
 }
 
-interface VsSearchInputRef extends InputRef {
-    match: (text: string) => boolean;
+interface VsSearchInputRef {
+    focus: () => void;
+    blur: () => void;
     select: () => void;
+    match: (text: string) => boolean;
+    clear: () => void;
 }
 ```
 
