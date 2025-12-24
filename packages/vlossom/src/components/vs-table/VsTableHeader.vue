@@ -23,11 +23,7 @@
                         />
                     </slot>
                 </th>
-                <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
-                    <template #expand="{ cells, rowIdx }">
-                        <slot name="expand" :cells :rowIdx />
-                    </template>
-                </vs-table-expand-cell>
+                <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
             </tr>
         </template>
 
