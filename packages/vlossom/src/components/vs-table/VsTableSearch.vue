@@ -2,6 +2,8 @@
     <div v-if="showSearch" class="vs-table-search">
         <vs-search-input
             v-model="searchText"
+            v-model:case-sensitive="isCaseSensitive"
+            v-model:regex="isRegex"
             :placeholder="searchOptions.placeholder"
             :use-case-sensitive="searchOptions.caseSensitive"
             :use-regex="searchOptions.regex"
@@ -36,6 +38,8 @@ export default defineComponent({
     setup(props, { emit }) {
         const table = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN);
         const searchText = ref('');
+        const isCaseSensitive = ref(false);
+        const isRegex = ref(false);
 
         const showSearch = computed(() => {
             return !!props.search;
@@ -49,12 +53,17 @@ export default defineComponent({
         });
 
         function onSearch(value: string) {
+            table?.updateSearch(value, {
+                caseSensitive: isCaseSensitive.value,
+                regex: isRegex.value,
+            });
             emit('search', value);
         }
 
         return {
-            table,
             searchText,
+            isCaseSensitive,
+            isRegex,
             showSearch,
             searchOptions,
             onSearch,

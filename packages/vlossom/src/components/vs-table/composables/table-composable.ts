@@ -9,6 +9,7 @@ import {
     type HeaderCell,
     type Cell,
     type Item,
+    type VsTableSearchOptions,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
@@ -73,11 +74,75 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
 
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
-    const bodyCells = computed<BodyCell[][]>(() => {
-        if (sortType.value === SortType.NONE) {
+
+    // search
+    const searchText = ref('');
+    const searchOptions = ref<VsTableSearchOptions>({
+        caseSensitive: false,
+        regex: false,
+    });
+
+    const searchableKeys = computed<string[]>(() => {
+        if (!columns.value) {
+            return [];
+        }
+        return columns.value.filter((col) => col.searchable !== false).map((col) => col.key);
+    });
+
+    function matchText(text: string): boolean {
+        if (!searchText.value) {
+            return true;
+        }
+
+        const searchValue = searchOptions.value.caseSensitive ? searchText.value : searchText.value.toLowerCase();
+        const targetText = searchOptions.value.caseSensitive ? text : text.toLowerCase();
+
+        if (searchOptions.value.regex) {
+            try {
+                const flags = searchOptions.value.caseSensitive ? 'g' : 'gi';
+                const regexPattern = new RegExp(searchValue, flags);
+                return regexPattern.test(targetText);
+            } catch {
+                return targetText.includes(searchValue);
+            }
+        }
+
+        return targetText.includes(searchValue);
+    }
+
+    function filterRow(row: BodyCell[]): boolean {
+        if (!searchText.value) {
+            return true;
+        }
+
+        return row.some((cell) => {
+            if (!searchableKeys.value.includes(cell.colKey)) {
+                return false;
+            }
+            const cellValue = cell.value != null ? String(cell.value) : '';
+            return matchText(cellValue);
+        });
+    }
+
+    function updateSearch(text: string, options?: VsTableSearchOptions): void {
+        searchText.value = text;
+        if (options) {
+            searchOptions.value = options;
+        }
+    }
+
+    const filteredBodyCells = computed<BodyCell[][]>(() => {
+        if (!searchText.value) {
             return rawBodyCells.value;
         }
-        return [...rawBodyCells.value].sort(compareRows);
+        return rawBodyCells.value.filter(filterRow);
+    });
+
+    const bodyCells = computed<BodyCell[][]>(() => {
+        if (sortType.value === SortType.NONE) {
+            return filteredBodyCells.value;
+        }
+        return [...filteredBodyCells.value].sort(compareRows);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -134,6 +199,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         sortColumn,
         compareRows,
         updateSortType,
+        updateSearch,
     };
 }
 
@@ -156,6 +222,7 @@ export type TableComposable = {
     toggleExpand: (row: Cell[]) => boolean;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
+    updateSearch: (text: string, options?: VsTableSearchOptions) => void;
     initialize: () => void;
     toggleSelectAll: () => void;
 };
