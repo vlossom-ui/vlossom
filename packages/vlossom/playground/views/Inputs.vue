@@ -40,12 +40,27 @@
         </vs-grid>
         <Divider />
 
-        <h3 class="mb-4 font-semibold">VsRadioSet</h3>
-        <vs-radio-set v-model="radioValue" label="Select Option" :options="['Option 1', 'Option 2', 'Option 3']" />
+        <h3 class="mb-4 font-semibold">VsRadio & VsRadioSet</h3>
+        <div class="flex flex-col gap-4">
+            <vs-radio v-model="singleRadioValue" radio-label="Single Radio" :radio-value="true" />
+            <vs-radio-set v-model="radioValue" label="Radio Set" :options="['Option 1', 'Option 2', 'Option 3']" />
+        </div>
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsSearchInput</h3>
-        <vs-search-input v-model="searchText" placeholder="Search..." />
+        <vs-search-input
+            ref="searchInputRef"
+            v-model="searchText"
+            placeholder="Search fruits... (try: ^A or .*berry)"
+            use-case-sensitive
+            use-regex
+            class="mb-3"
+            @search="onSearch"
+        />
+        <div class="flex flex-wrap gap-2">
+            <vs-chip v-for="item in filteredFruits" :key="item">{{ item }}</vs-chip>
+            <span v-if="filteredFruits.length === 0" class="text-sm text-gray-500">No results found</span>
+        </div>
         <Divider />
 
         <h3 class="mb-4 font-semibold">VsSwitch</h3>
@@ -57,31 +72,46 @@
 
         <h3 class="mb-4 font-semibold">VsTextarea</h3>
         <vs-textarea v-model="textareaValue" label="Description" placeholder="Enter description..." />
-        <Divider />
-
-        <SignUpFormExample />
     </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type Ref } from 'vue';
+import { defineComponent, ref, useTemplateRef, type Ref, type TemplateRef } from 'vue';
 import Divider from '../components/Divider.vue';
-import SignUpFormExample from '../components/SignUpFormExample.vue';
+import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 
 export default defineComponent({
-    name: 'InputsAndForm',
+    name: 'Inputs',
     components: {
         Divider,
-        SignUpFormExample,
     },
     setup() {
         const inputText = ref('');
         const inputNumber: Ref<number | null> = ref(null);
         const inputPassword = ref('');
         const searchText = ref('');
+        const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
+        const fruits = [
+            'Apple',
+            'Banana',
+            'Cherry',
+            'Grape',
+            'Lemon',
+            'Mango',
+            'Orange',
+            'Peach',
+            'Strawberry',
+            'Watermelon',
+        ];
+        const filteredFruits: Ref<string[]> = ref([...fruits]);
+
+        function onSearch() {
+            filteredFruits.value = fruits.filter((fruit) => searchInputRef.value?.match(fruit) ?? true);
+        }
         const textareaValue = ref('');
         const checkboxValue = ref(false);
         const checkboxSetValue: Ref<string[]> = ref([]);
+        const singleRadioValue = ref(false);
         const radioValue = ref(null);
         const switchValue = ref(false);
         const switchValue2 = ref(false);
@@ -92,9 +122,13 @@ export default defineComponent({
             inputNumber,
             inputPassword,
             searchText,
+            searchInputRef,
+            filteredFruits,
+            onSearch,
             textareaValue,
             checkboxValue,
             checkboxSetValue,
+            singleRadioValue,
             radioValue,
             switchValue,
             switchValue2,

@@ -44,9 +44,9 @@
                 label="Age"
                 placeholder="Enter age"
                 :rules="[rules.minValue(1), rules.maxValue(120)]"
-                :grid="4"
+                :grid="6"
             />
-            <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="8" />
+            <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="6" />
 
             <vs-textarea v-model="form.bio" label="Bio" placeholder="Tell us about yourself..." :grid="12" />
 
@@ -111,7 +111,7 @@ interface SignUpForm {
 }
 
 export default defineComponent({
-    name: 'SignUpFormExample',
+    name: 'FormExample',
     setup() {
         const formRef = useTemplateRef<{ validate: () => Promise<boolean>; clear: () => void }>('formRef');
 

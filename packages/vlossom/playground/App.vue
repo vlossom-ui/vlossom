@@ -1,7 +1,7 @@
 <template>
     <vs-layout class="flex min-h-screen flex-col">
         <vs-header position="sticky" :style-set="basicBarStyleSet">
-            <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-8">
+            <div class="flex h-full items-center justify-between px-8">
                 <div class="flex items-center gap-2">
                     <vs-image src="/assets/vlossom-logo.png" :style-set="{ height: '36px', width: '36px' }" />
                     <h1 class="text-2xl font-bold">Vlossom Playground</h1>
@@ -11,7 +11,7 @@
         </vs-header>
 
         <vs-container class="flex-1 pr-96 pb-32">
-            <vs-page class="mx-auto w-full max-w-4xl" :style-set="{ padding: '0 2rem' }">
+            <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
@@ -20,9 +20,10 @@
                         <Sandbox />
                     </section>
                     <Basic />
-                    <InputsAndForm />
+                    <Inputs />
                     <DataDisplay />
                     <Overlay />
+                    <FormExample />
                 </vs-index-view>
             </vs-page>
 
@@ -40,10 +41,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Basic from './views/Basic.vue';
-import InputsAndForm from './views/InputsAndForm.vue';
+import Inputs from './views/Inputs.vue';
 import DataDisplay from './views/DataDisplay.vue';
 import Overlay from './views/Overlay.vue';
 import Sandbox from './Sandbox.vue';
+import FormExample from './components/FormExample.vue';
 import ColorSchemePanel from './components/ColorSchemePanel.vue';
 import type { VsBarStyleSet } from '@/components/vs-bar/types';
 
@@ -51,14 +53,15 @@ export default defineComponent({
     name: 'App',
     components: {
         Basic,
-        InputsAndForm,
+        Inputs,
         DataDisplay,
         Overlay,
         Sandbox,
+        FormExample,
         ColorSchemePanel,
     },
     setup() {
-        const tabs = ['Sandbox', 'Basic', 'Form', 'Data Display', 'Overlay'];
+        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example'];
         const activeTab = ref(0);
         const isPanelCollapsed = ref(false);
         const basicBarStyleSet: VsBarStyleSet = {
