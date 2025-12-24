@@ -96,9 +96,9 @@ export default defineComponent({
             },
             set(value: boolean) {
                 if (value) {
-                    mountOverlay();
+                    activate();
                 } else {
-                    unmountOverlay();
+                    deactivate();
                     tooltipOver.value = false;
                 }
             },
@@ -124,18 +124,18 @@ export default defineComponent({
                         triggerOver.value = false;
                     }
 
-                    unmountOverlay();
+                    deactivate();
                 },
             };
         });
 
-        const { mountOverlay, unmountOverlay } = useOverlayCallback(id, computedCallbacks);
+        const { activate, deactivate } = useOverlayCallback(id, computedCallbacks);
 
         watch(computedShow, (show) => {
             if (show) {
-                mountOverlay();
+                activate();
             } else {
-                unmountOverlay();
+                deactivate();
                 tooltipOver.value = false;
             }
         });

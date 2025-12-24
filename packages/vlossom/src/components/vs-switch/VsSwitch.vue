@@ -84,6 +84,7 @@ export default defineComponent({
         modelValue: { type: null, default: false },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
             beforeChange,

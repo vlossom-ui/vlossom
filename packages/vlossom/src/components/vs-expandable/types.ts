@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsExpandable from './VsExpandable.vue';
 
 declare module 'vue' {
@@ -7,6 +8,8 @@ declare module 'vue' {
 }
 
 export type { VsExpandable };
+
+export interface VsExpandableRef extends ComponentPublicInstance<typeof VsExpandable> {}
 
 export interface VsExpandableStyleSet {
     backgroundColor?: string;

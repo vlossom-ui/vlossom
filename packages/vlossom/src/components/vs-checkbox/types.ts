@@ -1,6 +1,8 @@
+import type { ComponentPublicInstance } from 'vue';
+import type { FocusableRef, FormChildRef } from '@/declaration';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsCheckbox from './VsCheckbox.vue';
 import type VsCheckboxSet from './VsCheckboxSet.vue';
-import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -10,6 +12,12 @@ declare module 'vue' {
 }
 
 export type { VsCheckbox, VsCheckboxSet };
+
+export interface VsCheckboxRef extends ComponentPublicInstance<typeof VsCheckbox>, FocusableRef, FormChildRef {
+    toggle: () => void;
+}
+
+export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheckboxSet>, FocusableRef, FormChildRef {}
 
 export interface VsCheckboxStyleSet {
     borderRadius?: string;

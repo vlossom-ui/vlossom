@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, type Ref, computed } from 'vue';
+import { defineComponent, toRefs, computed } from 'vue';
 import { useVlossom } from '@/framework';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
@@ -44,9 +44,12 @@ export default defineComponent({
     setup(props, { emit }) {
         const $vs = useVlossom();
         const { colorScheme, styleSet } = toRefs(props);
+
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(componentName, styleSet);
-        const isDarkTheme: Ref<boolean> = computed(() => $vs.theme === 'dark');
+
+        const isDarkTheme = computed(() => $vs.theme === 'dark');
 
         function changeTheme(isDark: boolean) {
             if (isDarkTheme.value === isDark) {

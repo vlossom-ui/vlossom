@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsRender from './VsRender.vue';
 
 declare module 'vue' {
@@ -7,3 +8,5 @@ declare module 'vue' {
 }
 
 export type { VsRender };
+
+export interface VsRenderRef extends ComponentPublicInstance<typeof VsRender> {}

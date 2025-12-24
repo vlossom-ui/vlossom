@@ -1,5 +1,6 @@
-import type VsAvatar from './VsAvatar.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type VsAvatar from './VsAvatar.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,6 +9,8 @@ declare module 'vue' {
 }
 
 export type { VsAvatar };
+
+export interface VsAvatarRef extends ComponentPublicInstance<typeof VsAvatar> {}
 
 export interface VsAvatarStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding'> {
     fontColor?: string;

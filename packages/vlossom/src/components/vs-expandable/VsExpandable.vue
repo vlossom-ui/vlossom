@@ -13,6 +13,7 @@ import { defineComponent, toRefs } from 'vue';
 import { getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
+import { logUtil } from '@/utils';
 import type { VsExpandableStyleSet } from './types';
 
 const componentName = VsComponent.VsExpandable;
@@ -38,7 +39,7 @@ export default defineComponent({
             const content = element.querySelector('.vs-expandable-content') as HTMLElement;
 
             if (!content) {
-                console.warn('VsExpandable: content element not found');
+                logUtil.warning(componentName, 'content element not found');
                 done();
                 return;
             }
@@ -60,7 +61,7 @@ export default defineComponent({
             const content = element.querySelector('.vs-expandable-content') as HTMLElement;
 
             if (!content) {
-                console.warn('VsExpandable: content element not found');
+                logUtil.warning(componentName, 'content element not found');
                 return;
             }
 

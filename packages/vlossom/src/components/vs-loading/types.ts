@@ -1,5 +1,6 @@
-import type VsLoading from './VsLoading.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { SizeStyleSet } from '@/declaration';
+import type VsLoading from './VsLoading.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,6 +9,8 @@ declare module 'vue' {
 }
 
 export type { VsLoading };
+
+export interface VsLoadingRef extends ComponentPublicInstance<typeof VsLoading> {}
 
 export interface VsLoadingStyleSet extends SizeStyleSet {
     color?: string;

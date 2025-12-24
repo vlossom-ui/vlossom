@@ -185,6 +185,10 @@ export default defineComponent({
             return pageArr;
         });
 
+        function setPage(page: number) {
+            selectIndex(page);
+        }
+
         function goFirst() {
             selectIndex(0);
         }
@@ -231,6 +235,7 @@ export default defineComponent({
             goLast,
             goPrev,
             goNext,
+            setPage,
             selectIndex,
             isFirstEdge,
             isLastEdge,

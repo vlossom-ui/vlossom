@@ -1,6 +1,7 @@
-import type VsInput from './VsInput.vue';
+import type { ComponentPublicInstance } from 'vue';
+import type { BoxStyleSet, TextStyleSet, FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
-import type { InputRef, BoxStyleSet, TextStyleSet } from '@/declaration';
+import type VsInput from './VsInput.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,15 +9,17 @@ declare module 'vue' {
     }
 }
 
+export type { VsInput };
+
+export interface VsInputRef extends ComponentPublicInstance<typeof VsInput>, FocusableRef, FormChildRef {
+    select: () => void;
+}
+
 export type VsInputValueType = string | number | null;
 
 export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
-export interface VsInputRef extends InputRef {
-    select: () => void;
-}
-
-type VsAttachmentStyleSet = Omit<BoxStyleSet, 'border' | 'borderRadius'>;
+export type VsAttachmentStyleSet = Omit<BoxStyleSet, 'border' | 'borderRadius'>;
 
 export interface VsInputStyleSet extends BoxStyleSet, TextStyleSet {
     append?: VsAttachmentStyleSet;

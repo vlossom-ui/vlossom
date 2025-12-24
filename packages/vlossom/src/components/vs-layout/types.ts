@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsLayout from './VsLayout.vue';
 
 declare module 'vue' {
@@ -7,3 +8,5 @@ declare module 'vue' {
 }
 
 export type { VsLayout };
+
+export interface VsLayoutRef extends ComponentPublicInstance<typeof VsLayout> {}

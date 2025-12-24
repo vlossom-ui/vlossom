@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsDimmed from './VsDimmed.vue';
 
 declare module 'vue' {
@@ -8,9 +9,11 @@ declare module 'vue' {
 
 export type { VsDimmed };
 
+export interface VsDimmedRef extends ComponentPublicInstance<typeof VsDimmed> {
+    show: () => void;
+    hide: () => void;
+}
 export interface VsDimmedStyleSet {
     backgroundColor?: string;
     opacity?: number;
 }
-
-

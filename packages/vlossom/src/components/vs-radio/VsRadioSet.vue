@@ -65,10 +65,9 @@ import { objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsRadio from './VsRadio.vue';
+import VsRadio from '@/components/vs-radio/VsRadio.vue';
 
 const componentName = VsComponent.VsRadioSet;
-
 export default defineComponent({
     name: componentName,
     components: { VsInputWrapper, VsRadio },
@@ -87,6 +86,7 @@ export default defineComponent({
         modelValue: { type: null, default: null },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
             colorScheme,

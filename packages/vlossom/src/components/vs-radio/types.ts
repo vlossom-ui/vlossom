@@ -1,6 +1,8 @@
+import type { ComponentPublicInstance } from 'vue';
+import type { FocusableRef, FormChildRef } from '@/declaration';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsRadio from './VsRadio.vue';
 import type VsRadioSet from './VsRadioSet.vue';
-import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -10,6 +12,10 @@ declare module 'vue' {
 }
 
 export type { VsRadio, VsRadioSet };
+
+export interface VsRadioRef extends ComponentPublicInstance<typeof VsRadio>, FocusableRef, FormChildRef {}
+
+export interface VsRadioSetRef extends ComponentPublicInstance<typeof VsRadioSet>, FocusableRef, FormChildRef {}
 
 export interface VsRadioStyleSet {
     borderRadius?: string;

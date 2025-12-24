@@ -53,7 +53,7 @@ import {
     OVERLAY_OPEN,
     VsComponent,
     type DrawerPlacement,
-    type Focusable,
+    type FocusableRef,
     type SizeProp,
     SIZES,
     type Size,
@@ -109,7 +109,7 @@ export default defineComponent({
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
         const drawerRef: TemplateRef<HTMLElement> = useTemplateRef('drawerRef');
-        const focusTrapRef: TemplateRef<Focusable> = useTemplateRef('focusTrapRef');
+        const focusTrapRef: TemplateRef<FocusableRef> = useTemplateRef('focusTrapRef');
         const DRAWER_SIZE: Record<Size, string> = {
             xs: '12%',
             sm: '20%',
@@ -170,7 +170,7 @@ export default defineComponent({
             };
         });
 
-        const { isMounted: isOpen, mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
+        const { isActivated: isOpen, activate, deactivate } = useOverlayCallback(computedId, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
@@ -180,11 +180,11 @@ export default defineComponent({
         }
 
         function openDrawer() {
-            mountOverlay();
+            activate();
         }
 
         function closeDrawer() {
-            unmountOverlay();
+            deactivate();
         }
 
         // only for vs-layout children
@@ -210,18 +210,16 @@ export default defineComponent({
         });
 
         watch(isOpen, (o) => {
-            if (o) {
-                openDrawer();
-            } else {
-                closeDrawer();
-            }
-
             emit('update:modelValue', o);
             emit(o ? 'open' : 'close');
         });
 
         watch(modelValue, (o) => {
-            isOpen.value = o;
+            if (o) {
+                openDrawer();
+            } else {
+                closeDrawer();
+            }
         });
 
         return {
@@ -234,6 +232,8 @@ export default defineComponent({
             onClickDimmed,
             dimmedStyleSet,
             isDimmed,
+            openDrawer,
+            closeDrawer,
         };
     },
 });

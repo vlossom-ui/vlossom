@@ -79,6 +79,12 @@ const handleToggle = (value: boolean) => {
 | --------- | ------------------------------ |
 | `default` | 토글 버튼 내부에 표시할 콘텐츠 |
 
+## Methods
+
+| Method     | Return Type | Description      |
+| ---------- | ----------- | ---------------- |
+| `toggle()` | `void`      | 토글 상태를 변경 |
+
 ## Types
 
 ```typescript

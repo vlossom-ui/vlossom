@@ -1,11 +1,17 @@
+import type { ComponentPublicInstance } from 'vue';
+import type { FocusableRef, FormChildRef, SizeStyleSet } from '@/declaration';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsSwitch from './VsSwitch.vue';
-import type { SizeStyleSet, VsInputWrapperStyleSet } from '@/main';
 
 declare module 'vue' {
     interface GlobalComponents {
         VsSwitch: typeof VsSwitch;
     }
 }
+
+export type { VsSwitch };
+
+export interface VsSwitchRef extends ComponentPublicInstance<typeof VsSwitch>, FocusableRef, FormChildRef {}
 
 export interface VsSwitchStyleSet extends SizeStyleSet {
     backgroundColor?: string;

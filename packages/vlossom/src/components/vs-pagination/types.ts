@@ -1,5 +1,6 @@
-import type VsPagination from './VsPagination.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { VsButtonStyleSet } from '@/components/vs-button/types';
+import type VsPagination from './VsPagination.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,6 +9,14 @@ declare module 'vue' {
 }
 
 export type { VsPagination };
+
+export interface VsPaginationRef extends ComponentPublicInstance<typeof VsPagination> {
+    goFirst: () => void;
+    goLast: () => void;
+    goPrev: () => void;
+    goNext: () => void;
+    setPage: (page: number) => void;
+}
 
 export interface VsPaginationStyleSet {
     gap?: string;

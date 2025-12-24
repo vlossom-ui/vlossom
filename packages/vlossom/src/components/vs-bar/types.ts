@@ -1,5 +1,6 @@
-import type VsBar from './VsBar.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { SizeStyleSet, BoxStyleSet, CssPosition } from '@/declaration';
+import type VsBar from './VsBar.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,6 +9,8 @@ declare module 'vue' {
 }
 
 export type { VsBar };
+
+export interface VsBarRef extends ComponentPublicInstance<typeof VsBar> {}
 
 export interface VsBarStyleSet extends SizeStyleSet, BoxStyleSet {
     position?: CssPosition;

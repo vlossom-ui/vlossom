@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsMessage from './VsMessage.vue';
 
 declare module 'vue' {
@@ -7,3 +8,5 @@ declare module 'vue' {
 }
 
 export type { VsMessage };
+
+export interface VsMessageRef extends ComponentPublicInstance<typeof VsMessage> {}

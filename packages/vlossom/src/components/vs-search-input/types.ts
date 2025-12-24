@@ -1,6 +1,7 @@
-import type VsSearchInput from './VsSearchInput.vue';
-import type { InputRef } from '@/declaration';
+import type { ComponentPublicInstance } from 'vue';
+import type { FocusableRef } from '@/declaration';
 import type { VsInputStyleSet } from '@/components/vs-input/types';
+import type VsSearchInput from './VsSearchInput.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,9 +9,11 @@ declare module 'vue' {
     }
 }
 
-export interface VsSearchInputStyleSet extends Omit<VsInputStyleSet, 'append' | 'prepend' | 'wrapper'> {}
+export type { VsSearchInput };
 
-export interface VsSearchInputRef extends InputRef {
+export interface VsSearchInputRef extends ComponentPublicInstance<typeof VsSearchInput>, FocusableRef {
     match: (text: string) => boolean;
     select: () => void;
 }
+
+export interface VsSearchInputStyleSet extends Omit<VsInputStyleSet, 'append' | 'prepend' | 'wrapper'> {}

@@ -34,7 +34,7 @@ import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
-import { clipboardUtil } from '@/utils';
+import { clipboardUtil, logUtil } from '@/utils';
 import type { VsTextWrapStyleSet } from './types';
 import { checkIcon, copyIcon, linkIcon } from './icons';
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -102,7 +102,7 @@ export default defineComponent({
             }
 
             if (!isValidUrl(link.value)) {
-                console.warn(`[${name}] Invalid or unsafe URL: ${link.value}`);
+                logUtil.warning(componentName, `Invalid or unsafe URL: ${link.value}`);
                 return;
             }
 

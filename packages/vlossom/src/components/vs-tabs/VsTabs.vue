@@ -104,6 +104,7 @@ export default defineComponent({
         modelValue: { type: Number, default: 0 },
     },
     emits: ['update:modelValue', 'change'],
+    // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, height, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
             toRefs(props);

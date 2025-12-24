@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsResponsive from './VsResponsive.vue';
 
 declare module 'vue' {
@@ -7,3 +8,5 @@ declare module 'vue' {
 }
 
 export type { VsResponsive };
+
+export interface VsResponsiveRef extends ComponentPublicInstance<typeof VsResponsive> {}

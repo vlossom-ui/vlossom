@@ -43,6 +43,7 @@ export default defineComponent({
         modelValue: { type: Boolean, default: false },
     },
     emits: ['update:modelValue', 'toggle'],
+    // expose: ['toggle'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, open, modelValue, disabled, primary } = toRefs(props);
 
