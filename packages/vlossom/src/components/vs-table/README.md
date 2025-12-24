@@ -104,6 +104,30 @@
 
 > 헤더 클릭 시 오름차순(ASCEND) → 내림차순(DESCEND) → 정렬 해제(NONE) 순으로 토글됩니다.
 
+### 행 확장 (Expand)
+
+```html
+<template>
+    <vs-table
+        :columns="[
+            { key: 'name', label: '이름' },
+            { key: 'age', label: '나이' },
+        ]"
+        :items="items"
+        :expandable="(item) => item.age >= 30"
+    >
+        <template #expand="{ cells, rowIdx }">
+            <div class="p-4 bg-slate-50">
+                <p class="font-semibold">상세 정보 (row {{ rowIdx }})</p>
+                <p>{{ cells[0].item.name }} / {{ cells[0].item.age }}세</p>
+            </div>
+        </template>
+    </vs-table>
+</template>
+```
+
+> `expandable`이 `true`이거나 조건을 만족하는 행만 확장 버튼이 표시되며, `expand` 슬롯을 통해 확장 영역을 커스텀합니다.
+
 ## Props
 
 | Prop                     | Type                                           | Default | Required | Description                          |
@@ -113,6 +137,7 @@
 | `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
 | `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
 | `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
+| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수 |
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)     |
 
 ## Types
@@ -172,6 +197,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 | ------------ | -------------------------------------- | ------------------------ |
 | `click-cell` | `(cell: BodyCell, event: MouseEvent)`  | 셀 클릭 시 발생          |
 | `select-row` | `(row: BodyCell[], event: MouseEvent)` | 행(셀 배열) 선택 시 발생 |
+| `expand-row` | `(row: BodyCell[], event: MouseEvent)` | 행 확장 버튼 클릭 시 발생 |
 
 ## 특징
 
@@ -179,4 +205,5 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
+- **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
