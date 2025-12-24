@@ -62,7 +62,6 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
 import { objectUtil, propsUtil } from '@/utils';
-
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 

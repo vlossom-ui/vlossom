@@ -66,7 +66,7 @@ export default defineComponent({
             emit('update:modelValue', newValue);
         });
 
-        expose({ index, updateIndex });
+        expose({ updateIndex });
 
         return () => {
             if (!slots.default) {

@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsIndexView from './VsIndexView.vue';
 
 declare module 'vue' {
@@ -7,3 +8,7 @@ declare module 'vue' {
 }
 
 export type { VsIndexView };
+
+export interface VsIndexViewRef extends ComponentPublicInstance<typeof VsIndexView> {
+    updateIndex: (index: number) => void;
+}

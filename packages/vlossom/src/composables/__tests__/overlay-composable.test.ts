@@ -3,7 +3,7 @@ import { ref, nextTick } from 'vue';
 import * as stores from '@/stores';
 import { OverlayCallbackStore } from '@/stores';
 import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
-import { useOverlayCallback } from '../overlay-callback-composable';
+import { useOverlayCallback } from './../overlay-callback-composable';
 
 describe('useOverlayCallback', () => {
     let overlayCallbackStore: OverlayCallbackStore;
@@ -18,16 +18,16 @@ describe('useOverlayCallback', () => {
     });
 
     describe('초기 상태', () => {
-        it('isMounted, isUnmounting이 false로 초기화되어야 한다', () => {
+        it('isActivated, isUnmounting이 false로 초기화되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
 
             // when
-            const { isMounted, isUnmounting } = useOverlayCallback(id, callbacks);
+            const { isActivated, isUnmounting } = useOverlayCallback(id, callbacks);
 
             // then
-            expect(isMounted.value).toBe(false);
+            expect(isActivated.value).toBe(false);
             expect(isUnmounting.value).toBe(false);
         });
 
@@ -58,29 +58,29 @@ describe('useOverlayCallback', () => {
         });
     });
 
-    describe('mountOverlay 함수', () => {
+    describe('activate 함수', () => {
         it('mountOverlay를 호출하면 isMounted가 true가 되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, mountOverlay } = useOverlayCallback(id, callbacks);
+            const { isActivated, activate } = useOverlayCallback(id, callbacks);
 
             // when
-            mountOverlay();
+            activate();
 
             // then
-            expect(isMounted.value).toBe(true);
+            expect(isActivated.value).toBe(true);
         });
 
         it('mountOverlay를 호출하면 store에 콜백이 push되어야 한다', async () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { mountOverlay, overlayId } = useOverlayCallback(id, callbacks);
+            const { activate, overlayId } = useOverlayCallback(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
-            mountOverlay();
+            activate();
             await nextTick();
 
             // then
@@ -88,19 +88,19 @@ describe('useOverlayCallback', () => {
         });
     });
 
-    describe('unmountOverlay 함수', () => {
+    describe('deactivate 함수', () => {
         it('unmountOverlay를 호출하면 isMounted가 false가 되어야 한다', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, mountOverlay, unmountOverlay } = useOverlayCallback(id, callbacks);
-            mountOverlay();
+            const { isActivated, activate, deactivate } = useOverlayCallback(id, callbacks);
+            activate();
 
             // when
-            unmountOverlay();
+            deactivate();
 
             // then
-            expect(isMounted.value).toBe(false);
+            expect(isActivated.value).toBe(false);
         });
 
         it('unmountOverlay를 호출하면 isUnmounting이 true가 되었다가 애니메이션 duration 후 false가 되어야 한다', async () => {
@@ -108,12 +108,12 @@ describe('useOverlayCallback', () => {
             vi.useFakeTimers();
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isUnmounting, mountOverlay, unmountOverlay } = useOverlayCallback(id, callbacks);
-            mountOverlay();
+            const { isUnmounting, activate, deactivate } = useOverlayCallback(id, callbacks);
+            activate();
             await nextTick();
 
             // when
-            unmountOverlay();
+            deactivate();
             await nextTick();
 
             // then
@@ -130,14 +130,14 @@ describe('useOverlayCallback', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { mountOverlay, unmountOverlay, overlayId } = useOverlayCallback(id, callbacks);
+            const { activate, deactivate, overlayId } = useOverlayCallback(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
-            mountOverlay();
+            activate();
             await nextTick();
 
             // when
-            unmountOverlay();
+            deactivate();
             await nextTick();
 
             // then
@@ -145,16 +145,16 @@ describe('useOverlayCallback', () => {
         });
     });
 
-    describe('watch isMounted', () => {
+    describe('watch isActivated', () => {
         it('isMounted가 true로 변경되면 store에 push되어야 한다', async () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, overlayId } = useOverlayCallback(id, callbacks);
+            const { isActivated, overlayId } = useOverlayCallback(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
 
             // when
-            isMounted.value = true;
+            isActivated.value = true;
             await nextTick();
 
             // then
@@ -165,15 +165,15 @@ describe('useOverlayCallback', () => {
             // given
             const id = ref('test-id');
             const callbacks = ref<OverlayCallbacks>({});
-            const { isMounted, overlayId } = useOverlayCallback(id, callbacks);
+            const { isActivated, overlayId } = useOverlayCallback(id, callbacks);
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 먼저 마운트하고
-            isMounted.value = true;
+            isActivated.value = true;
             await nextTick();
 
             // when
-            isMounted.value = false;
+            isActivated.value = false;
             await nextTick();
 
             // then
@@ -188,33 +188,30 @@ describe('useOverlayCallback', () => {
             const id = ref('lifecycle-test');
             const callbacks = ref<OverlayCallbacks>({});
 
-            const { isMounted, isUnmounting, mountOverlay, unmountOverlay, overlayId } = useOverlayCallback(
-                id,
-                callbacks,
-            );
+            const { isActivated, isUnmounting, activate, deactivate, overlayId } = useOverlayCallback(id, callbacks);
             const pushSpy = vi.spyOn(overlayCallbackStore, 'push');
             const removeSpy = vi.spyOn(overlayCallbackStore, 'remove');
 
             // 초기 상태 확인
-            expect(isMounted.value).toBe(false);
+            expect(isActivated.value).toBe(false);
             expect(isUnmounting.value).toBe(false);
             expect(overlayId.value).toBe('lifecycle-test');
 
             // when - mount
-            mountOverlay();
+            activate();
             await nextTick();
 
             // then - 마운트된 상태
-            expect(isMounted.value).toBe(true);
+            expect(isActivated.value).toBe(true);
             expect(isUnmounting.value).toBe(false);
             expect(pushSpy).toHaveBeenCalledWith('lifecycle-test', callbacks);
 
             // when - unmount
-            unmountOverlay();
+            deactivate();
             await nextTick();
 
             // then - 언마운트 중 상태
-            expect(isMounted.value).toBe(false);
+            expect(isActivated.value).toBe(false);
             expect(isUnmounting.value).toBe(true);
             expect(removeSpy).toHaveBeenCalledWith('lifecycle-test');
 

@@ -104,17 +104,17 @@ import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, 
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
+import { stringUtil, propsUtil } from '@/utils';
+import { closeIcon } from '@/icons';
+import { attachFileIcon } from './icons';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
-import { stringUtil, propsUtil } from '@/utils';
-import { attachFileIcon } from './icons';
+
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
-import { closeIcon } from '@/icons';
 
 const componentName = VsComponent.VsFileDrop;
-
 export default defineComponent({
     name: componentName,
     components: { VsInputWrapper, VsChip, VsRender },
@@ -145,6 +145,7 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur'],
+    // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
             colorScheme,

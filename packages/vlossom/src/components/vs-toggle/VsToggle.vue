@@ -13,7 +13,7 @@
         :primary="primary"
         :responsive="responsive"
         :small="small"
-        @click.prevent.stop="toggleOnOff"
+        @click.prevent.stop="toggle"
     >
         <slot />
     </vs-button>
@@ -41,6 +41,7 @@ export default defineComponent({
         modelValue: { type: Boolean, default: false },
     },
     emits: ['update:modelValue', 'toggle'],
+    // expose: ['toggle'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, modelValue, disabled } = toRefs(props);
 
@@ -50,7 +51,7 @@ export default defineComponent({
 
         const isToggled = ref(modelValue.value);
 
-        function toggleOnOff() {
+        function toggle() {
             if (disabled.value) {
                 return;
             }
@@ -70,7 +71,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
-            toggleOnOff,
+            toggle,
         };
     },
 });

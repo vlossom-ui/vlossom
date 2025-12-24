@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type { BoxStyleSet } from '@/declaration';
 import type VsTabs from './VsTabs.vue';
 
@@ -8,6 +9,11 @@ declare module 'vue' {
 }
 
 export type { VsTabs };
+
+export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
+    goPrev: () => void;
+    goNext: () => void;
+}
 
 export interface VsTabsStyleSet extends BoxStyleSet {
     height?: string | number;

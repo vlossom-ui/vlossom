@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue';
 import type VsDivider from './VsDivider.vue';
 
 declare module 'vue' {
@@ -7,6 +8,9 @@ declare module 'vue' {
 }
 
 export type { VsDivider };
+
+export interface VsDividerRef extends ComponentPublicInstance<typeof VsDivider> {}
+
 export interface VsDividerStyleSet {
     border?: string;
     opacity?: number;

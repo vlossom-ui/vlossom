@@ -1,6 +1,6 @@
 <template>
     <Transition name="dimmed">
-        <div v-if="show" class="vs-dimmed" :style="styleSetVariables" aria-hidden="true" />
+        <div v-if="isShow" class="vs-dimmed" :style="styleSetVariables" aria-hidden="true" />
     </Transition>
 </template>
 
@@ -22,24 +22,35 @@ export default defineComponent({
         modelValue: { type: Boolean, default: false },
     },
     emits: ['update:modelValue'],
+    // expose: ['show', 'hide'],
     setup(props, { emit }) {
         const { styleSet, modelValue } = toRefs(props);
 
-        const show = ref(modelValue.value);
+        const isShow = ref(modelValue.value);
 
         const { styleSetVariables } = useStyleSet<VsDimmedStyleSet>(componentName, styleSet);
 
+        function show() {
+            isShow.value = true;
+        }
+
+        function hide() {
+            isShow.value = false;
+        }
+
         watch(modelValue, (value) => {
-            show.value = value;
+            isShow.value = value;
         });
 
-        watch(show, (value) => {
+        watch(isShow, (value) => {
             emit('update:modelValue', value);
         });
 
         return {
-            show,
+            isShow,
             styleSetVariables,
+            show,
+            hide,
         };
     },
 });

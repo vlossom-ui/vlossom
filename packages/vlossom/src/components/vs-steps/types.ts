@@ -1,5 +1,6 @@
-import type VsSteps from './VsSteps.vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
+import type VsSteps from './VsSteps.vue';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -8,6 +9,8 @@ declare module 'vue' {
 }
 
 export type { VsSteps };
+
+export interface VsStepsRef extends ComponentPublicInstance<typeof VsSteps> {}
 
 interface StepStyleSet extends BoxStyleSet {
     size?: string;

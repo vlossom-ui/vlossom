@@ -8,18 +8,18 @@ export function useOverlayCallback(id: Ref<string>, callbacks: Ref<OverlayCallba
     const overlayId = computed(() => id.value || innerId);
     const overlayCallbackStore = useOverlayCallbackStore();
 
-    const isMounted = ref(false);
+    const isActivated = ref(false);
     const isUnmounting = ref(false);
 
-    function mountOverlay() {
-        isMounted.value = true;
+    function activate() {
+        isActivated.value = true;
     }
 
-    function unmountOverlay() {
-        isMounted.value = false;
+    function deactivate() {
+        isActivated.value = false;
     }
 
-    watch(isMounted, (o) => {
+    watch(isActivated, (o) => {
         if (o) {
             overlayCallbackStore.push(overlayId.value, callbacks);
         } else {
@@ -32,5 +32,5 @@ export function useOverlayCallback(id: Ref<string>, callbacks: Ref<OverlayCallba
         }
     });
 
-    return { overlayId, isMounted, isUnmounting, mountOverlay, unmountOverlay };
+    return { overlayId, isActivated, isUnmounting, activate, deactivate };
 }

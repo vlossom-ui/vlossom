@@ -100,11 +100,11 @@ export default defineComponent({
         );
 
         function openModalNode() {
-            mountOverlay();
+            activate();
         }
 
         function closeModalNode() {
-            unmountOverlay();
+            deactivate();
         }
 
         const computedCallbacks = computed(() => {
@@ -129,7 +129,7 @@ export default defineComponent({
             };
         });
 
-        const { mountOverlay, unmountOverlay } = useOverlayCallback(computedId, computedCallbacks);
+        const { activate, deactivate } = useOverlayCallback(computedId, computedCallbacks);
 
         function onClickDimmed() {
             emit('click-dimmed');
