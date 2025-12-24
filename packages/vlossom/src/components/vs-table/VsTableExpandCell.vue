@@ -1,7 +1,12 @@
 <template>
     <template v-if="isBodyRow(cells)">
         <td v-if="anyExpandable" class="w-10">
-            <vs-button small :style-set="{ padding: '0' }" @click.prevent.stop="expandRow(cells, $event)">
+            <vs-button
+                v-if="isExpandable(cells, rowIdx)"
+                small
+                :style-set="{ padding: '0' }"
+                @click.prevent.stop="expandRow(cells, $event)"
+            >
                 <vs-render
                     class="transition-transform"
                     :class="{ 'rotate-180': isExpanded(cells) }"
@@ -18,7 +23,7 @@
 <script lang="ts">
 import { defineComponent, inject, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { type Cell, isBodyRow } from './types';
+import { type Cell, getRowItem, isBodyRow, type BodyCell } from './types';
 import { tableIcons } from './icons';
 
 export default defineComponent({
@@ -34,7 +39,12 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { anyExpandable, isExpanded, toggleExpand } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { anyExpandable, isExpanded, expandable, toggleExpand, items } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        function isExpandable(cells: BodyCell[], rowIdx: number): boolean {
+            return expandable.value(getRowItem(cells), rowIdx, items.value);
+        }
 
         function expandRow(cells: Cell[], event: MouseEvent): void {
             if (!toggleExpand(cells)) {
@@ -45,6 +55,7 @@ export default defineComponent({
 
         return {
             isBodyRow,
+            isExpandable,
             anyExpandable,
             isExpanded,
             expandRow,

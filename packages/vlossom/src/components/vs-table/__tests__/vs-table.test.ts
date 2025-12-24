@@ -137,45 +137,44 @@ describe('VsTable', () => {
     });
 
     describe('expandable', () => {
-        it('expandable이 true면 확장 버튼과 슬롯을 렌더링하고 expand-row를 발생시킨다', async () => {
+        it('expandable이 true면 확장 버튼과 슬롯을 렌더링한다.', async () => {
             const wrapper = mountTable({
-                props: { expandable: () => true },
+                props: { expandable: true },
                 slots: {
-                    expand: ({ rowIdx }: { rowIdx: number }) =>
-                        h('div', { class: `expanded-${rowIdx}` }, `EXP-${rowIdx}`),
+                    expand: ({ cells, rowIdx }: { cells: BodyCell[]; rowIdx: number }) =>
+                        h('div', {}, `${rowIdx}-${cells[0].item.name}`),
                 },
             });
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+            const expandButtons = wrapper.findAll('tbody tr button');
+            expect(expandButtons).toHaveLength(tableItems.length);
 
-            const expandButton = wrapper.find('[data-testid="vs-button"]');
-            await expandButton.trigger('click');
+            await expandButtons[0].trigger('click');
             await nextTick();
+
+            const expandRow = wrapper.findAll('tbody tr')[1];
+            expect(expandRow.text()).toBe('0-Alice');
+        });
+
+        it('expandable이 true면 확장 버튼을 클릭하면 expand-row를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+            });
+
+            await nextTick();
+            const expandButton = wrapper.get('tbody tr button');
+
+            await expandButton.trigger('click');
 
             const emitted = wrapper.emitted('expand-row');
             expect(emitted).toHaveLength(1);
-            expect(wrapper.find('.expanded-0').exists()).toBe(true);
-        });
 
-        it('expandable 조건을 만족하지 않는 행은 expand-row를 발생시키지 않는다', async () => {
-            const wrapper = mountTable({
-                props: { expandable: (item: BodyCell['item']) => item.id === '1' },
-                slots: {
-                    expand: ({ rowIdx }: { rowIdx: number }) => `<div class="expanded-${rowIdx}">EXP-${rowIdx}</div>`,
-                },
-            });
-
-            await nextTick();
-            const buttons = wrapper.findAll('[data-testid="vs-button"]');
-            expect(buttons).toHaveLength(tableItems.length);
-
-            await buttons[1].trigger('click');
-            await nextTick();
-
-            expect(wrapper.emitted('expand-row')).toBeUndefined();
-            expect(wrapper.find('.expanded-1').exists()).toBe(false);
+            const [cells] = emitted![0] as [BodyCell[], Event];
+            expect(cells).toHaveLength(defaultColumns.length);
+            expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
+            expect(cells[0].item).toStrictEqual(tableItems[0]);
         });
     });
 
