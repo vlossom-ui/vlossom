@@ -20,7 +20,7 @@
                     </td>
                     <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
                 </tr>
-                <tr>
+                <tr v-if="anyExpandable">
                     <vs-table-expanded-panel :cells :rowIdx>
                         <template #expand="{ cells, rowIdx }">
                             <slot name="expand" :cells :rowIdx />
@@ -62,7 +62,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(_props, { emit, slots }) {
-        const { bodyCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyCells, anyExpandable } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -96,6 +96,7 @@ export default defineComponent({
 
         return {
             bodyCells,
+            anyExpandable,
             tableIcons,
             clickCell,
             findMatchingSlotName,

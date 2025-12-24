@@ -8,6 +8,7 @@ function setupUseTable(props: {
     columns: ColumnDef[] | string[] | null;
     items: Item[];
     selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+    expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
 }) {
     const reactiveProps = reactive(props);
     const table = useTable(reactiveProps as any);
@@ -132,6 +133,43 @@ describe('useTable', () => {
 
         expect(table.selectedPartial.value).toBe(true);
         expect(table.selectedAll.value).toBe(false);
+    });
+
+    describe('expandable', () => {
+        it('expandable이 true인 행은 토글 시 isExpanded가 변경된다', async () => {
+            const { table } = setupUseTable({
+                columns: ['name'],
+                items: [{ id: '1', name: 'Alice' }],
+                expandable: () => true,
+            });
+
+            await nextTick();
+            const row = table.bodyCells.value[0];
+
+            expect(table.anyExpandable.value).toBe(true);
+            expect(table.isExpanded(row)).toBe(false);
+
+            expect(table.toggleExpand(row)).toBe(true);
+            expect(table.isExpanded(row)).toBe(true);
+
+            expect(table.toggleExpand(row)).toBe(false);
+            expect(table.isExpanded(row)).toBe(false);
+        });
+
+        it('expandable 조건을 만족하지 않으면 토글되지 않는다', async () => {
+            const { table } = setupUseTable({
+                columns: ['name'],
+                items: [{ id: '1', name: 'Alice' }],
+                expandable: () => false,
+            });
+
+            await nextTick();
+            const row = table.bodyCells.value[0];
+
+            expect(table.anyExpandable.value).toBe(false);
+            expect(table.toggleExpand(row)).toBe(false);
+            expect(table.isExpanded(row)).toBe(false);
+        });
     });
     describe('정렬', () => {
         const sortableColumns: ColumnDef[] = [

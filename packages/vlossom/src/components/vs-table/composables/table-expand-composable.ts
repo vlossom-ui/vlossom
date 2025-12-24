@@ -1,11 +1,11 @@
-import { computed, ref, type Ref } from 'vue';
+import { computed, reactive, type Ref } from 'vue';
 import { isBodyRow, getRowId, getRowItem, type Item, type Cell } from '../types';
 
 export function useTableExpand(
     expandable: Ref<(item: Item, index?: number, items?: Item[]) => boolean>,
     items: Ref<Item[]>,
 ) {
-    const expanded = ref<Set<string>>(new Set());
+    const expanded = reactive(new Set());
 
     const anyExpandable = computed<boolean>(() => {
         return items.value.some(expandable.value);
@@ -19,7 +19,7 @@ export function useTableExpand(
         if (!rowId) {
             return false;
         }
-        return expanded.value.has(rowId);
+        return expanded.has(rowId);
     }
 
     function toggleExpand(row: Cell[]): boolean {
@@ -39,12 +39,12 @@ export function useTableExpand(
             return false;
         }
 
-        if (expanded.value.has(rowId)) {
-            expanded.value.delete(rowId);
+        if (expanded.has(rowId)) {
+            expanded.delete(rowId);
         } else {
-            expanded.value.add(rowId);
+            expanded.add(rowId);
         }
-        return expanded.value.has(rowId);
+        return expanded.has(rowId);
     }
 
     return {

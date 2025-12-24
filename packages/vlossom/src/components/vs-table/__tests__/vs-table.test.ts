@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { BodyCell, HeaderCell } from './../types';
@@ -19,6 +19,8 @@ const defaultGlobal = {
     stubs: {
         'vs-render': true,
         'vs-checkbox': true,
+        'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
+        'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
     },
 };
 
@@ -131,6 +133,49 @@ describe('VsTable', () => {
 
             expect(headerTextsOf(wrapper)).toEqual(['HEADER-0-name', 'HEADER-1-age']);
             expect(bodyTextsOf(wrapper)).toEqual(['BODY-1', 'BODY-1', 'BODY-2', 'BODY-2']);
+        });
+    });
+
+    describe('expandable', () => {
+        it('expandable이 true면 확장 버튼과 슬롯을 렌더링하고 expand-row를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: () => true },
+                slots: {
+                    expand: ({ rowIdx }: { rowIdx: number }) =>
+                        h('div', { class: `expanded-${rowIdx}` }, `EXP-${rowIdx}`),
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+
+            const expandButton = wrapper.find('[data-testid="vs-button"]');
+            await expandButton.trigger('click');
+            await nextTick();
+
+            const emitted = wrapper.emitted('expand-row');
+            expect(emitted).toHaveLength(1);
+            expect(wrapper.find('.expanded-0').exists()).toBe(true);
+        });
+
+        it('expandable 조건을 만족하지 않는 행은 expand-row를 발생시키지 않는다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: (item: BodyCell['item']) => item.id === '1' },
+                slots: {
+                    expand: ({ rowIdx }: { rowIdx: number }) => `<div class="expanded-${rowIdx}">EXP-${rowIdx}</div>`,
+                },
+            });
+
+            await nextTick();
+            const buttons = wrapper.findAll('[data-testid="vs-button"]');
+            expect(buttons).toHaveLength(tableItems.length);
+
+            await buttons[1].trigger('click');
+            await nextTick();
+
+            expect(wrapper.emitted('expand-row')).toBeUndefined();
+            expect(wrapper.find('.expanded-1').exists()).toBe(false);
         });
     });
 

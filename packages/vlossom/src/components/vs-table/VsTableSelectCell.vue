@@ -53,13 +53,12 @@ export default defineComponent({
 
         function selectRow(row: Cell[], event: MouseEvent): void {
             if (!isBodyRow(row)) {
+                toggleSelectAll();
+                emit('select-row', row, event);
                 return;
             }
             const item = getRowItem(row);
             const rowIdx = row[0]?.rowIdx;
-            if (!rowIdx) {
-                return;
-            }
             if (!item || !selectable.value(item, rowIdx, items.value)) {
                 return;
             }
