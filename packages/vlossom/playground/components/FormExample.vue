@@ -2,7 +2,7 @@
     <div>
         <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Form Example: Sign Up</h2>
 
-        <vs-form ref="formRef" :grid-size="12" column-gap="1rem" row-gap="1.5rem">
+        <vs-form ref="formRef" :grid-size="12" column-gap="1.5rem" row-gap="2rem">
             <vs-input
                 v-model="form.email"
                 label="Email"
