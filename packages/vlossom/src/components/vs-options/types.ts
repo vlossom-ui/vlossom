@@ -10,6 +10,10 @@ declare module 'vue' {
 
 export type { VsOptions };
 
+export interface VsOptionsRef extends ComponentPublicInstance<typeof VsOptions> {
+    scrollToOption: (option: any) => void;
+}
+
 export interface VsOptionsStyleSet extends SizeStyleSet, BoxStyleSet {
     gap?: string;
     group?: BoxStyleSet;
@@ -28,8 +32,4 @@ export interface VsOptionsItem {
 export interface VsOptionsGroup {
     name: string;
     options: VsOptionsItem[];
-}
-
-export interface VsOptionsRef extends ComponentPublicInstance<typeof VsOptions> {
-    scrollToOption: (option: any) => void;
 }
