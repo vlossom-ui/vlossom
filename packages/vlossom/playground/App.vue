@@ -2,7 +2,10 @@
     <vs-layout class="flex min-h-screen flex-col">
         <vs-header position="sticky" :style-set="basicBarStyleSet">
             <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-8">
-                <h1 class="text-xl font-semibold">Vlossom Playground</h1>
+                <div class="flex items-center gap-2">
+                    <vs-image src="/assets/vlossom-logo.png" :style-set="{ height: '36px', width: '36px' }" />
+                    <h1 class="text-2xl font-bold">Vlossom Playground</h1>
+                </div>
                 <vs-theme-button />
             </div>
         </vs-header>
