@@ -6,11 +6,14 @@
                     <vs-image src="/assets/vlossom-logo.png" :style-set="{ height: '36px', width: '36px' }" />
                     <h1 class="text-2xl font-bold">Vlossom Playground</h1>
                 </div>
-                <vs-theme-button />
+                <div class="flex items-center gap-2">
+                    <vs-theme-button />
+                    <ColorSchemePanelButton />
+                </div>
             </div>
         </vs-header>
 
-        <vs-container class="flex-1 pr-96 pb-32">
+        <vs-container class="flex-1 pb-32 lg:pr-96">
             <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
@@ -27,7 +30,7 @@
                 </vs-index-view>
             </vs-page>
 
-            <ColorSchemePanel />
+            <ColorSchemePanel class="fixed top-20 right-24 hidden lg:block" />
         </vs-container>
 
         <vs-footer :style-set="basicBarStyleSet">
@@ -47,6 +50,7 @@ import Overlay from './views/Overlay.vue';
 import Sandbox from './Sandbox.vue';
 import FormExample from './components/FormExample.vue';
 import ColorSchemePanel from './components/ColorSchemePanel.vue';
+import ColorSchemePanelButton from './components/ColorSchemePanelButton.vue';
 import type { VsBarStyleSet } from '@/components/vs-bar/types';
 
 export default defineComponent({
@@ -59,11 +63,12 @@ export default defineComponent({
         Sandbox,
         FormExample,
         ColorSchemePanel,
+        ColorSchemePanelButton,
     },
     setup() {
         const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example'];
         const activeTab = ref(0);
-        const isPanelCollapsed = ref(false);
+
         const basicBarStyleSet: VsBarStyleSet = {
             border: 'none',
             backgroundColor: 'black',
@@ -73,7 +78,6 @@ export default defineComponent({
         return {
             tabs,
             activeTab,
-            isPanelCollapsed,
             basicBarStyleSet,
         };
     },
