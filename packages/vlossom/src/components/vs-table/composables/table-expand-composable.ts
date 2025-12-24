@@ -1,5 +1,5 @@
 import { computed, ref, type Ref } from 'vue';
-import { type BodyCell, getRowId, getRowItem, type Item } from '../types';
+import { isBodyRow, getRowId, getRowItem, type Item, type Cell } from '../types';
 
 export function useTableExpand(
     expandable: Ref<(item: Item, index?: number, items?: Item[]) => boolean>,
@@ -11,7 +11,10 @@ export function useTableExpand(
         return items.value.some(expandable.value);
     });
 
-    function isExpanded(row: BodyCell[]): boolean {
+    function isExpanded(row: Cell[]): boolean {
+        if (!isBodyRow(row)) {
+            return false;
+        }
         const rowId = getRowId(row);
         if (!rowId) {
             return false;
@@ -19,7 +22,10 @@ export function useTableExpand(
         return expanded.value.has(rowId);
     }
 
-    function toggleExpand(row: BodyCell[]): boolean {
+    function toggleExpand(row: Cell[]): boolean {
+        if (!isBodyRow(row)) {
+            return false;
+        }
         const rowItem = getRowItem(row);
         if (!rowItem) {
             return false;

@@ -152,8 +152,8 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
-    isExpanded: (row: BodyCell[]) => boolean;
-    toggleExpand: (row: BodyCell[]) => boolean;
+    isExpanded: (row: Cell[]) => boolean;
+    toggleExpand: (row: Cell[]) => boolean;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;

@@ -3,18 +3,11 @@
         <template v-if="bodyCells.length">
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
                 <tr>
-                    <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
-                        <slot name="select" :cells :rowIdx>
-                            <vs-checkbox
-                                v-if="isRowSelectable(cells, rowIdx)"
-                                multiple
-                                v-model="selectedIds"
-                                :true-value="getRowId(cells)"
-                                @toggle="selectRow(cells, $event)"
-                            />
-                        </slot>
-                    </td>
-
+                    <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
+                        <template #select="{ cells, rowIdx }">
+                            <slot name="select" :cells :rowIdx />
+                        </template>
+                    </vs-table-select-cell>
                     <td
                         v-for="cell in cells"
                         :id="cell.id"
@@ -25,25 +18,14 @@
                             {{ cell.value }}
                         </slot>
                     </td>
-
-                    <td v-if="anyExpandable" class="w-10">
-                        <vs-button @click.prevent.stop="expandRow(cells, $event)">
-                            <vs-render
-                                :class="{
-                                    'rotate-180': isExpanded(cells),
-                                    'transition-transform': true,
-                                }"
-                                :content="tableIcons.expandArrow"
-                            />
-                        </vs-button>
-                    </td>
+                    <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
                 </tr>
                 <tr>
-                    <td colspan="100%" class="!p-0">
-                        <vs-expandable :open="isExpanded(cells)">
+                    <vs-table-expanded-panel :cells :rowIdx>
+                        <template #expand="{ cells, rowIdx }">
                             <slot name="expand" :cells :rowIdx />
-                        </vs-expandable>
-                    </td>
+                        </template>
+                    </vs-table-expanded-panel>
                 </tr>
             </template>
         </template>
@@ -68,11 +50,19 @@ import { type BodyCell, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
+import VsTableExpandCell from './VsTableExpandCell.vue';
+import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
+import VsTableSelectCell from './VsTableSelectCell.vue';
+
 export default defineComponent({
+    components: {
+        VsTableExpandCell,
+        VsTableExpandedPanel,
+        VsTableSelectCell,
+    },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(_props, { emit, slots }) {
-        const { items, bodyCells, anySelectable, selectable, selectedIds, anyExpandable, isExpanded, toggleExpand } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -95,41 +85,21 @@ export default defineComponent({
             emit('click-cell', { ...cell }, event);
         }
 
-        function isRowSelectable(row: BodyCell[], rowIdx: number): boolean {
-            const item = getRowItem(row);
-            return selectable.value(item, rowIdx, items.value);
-        }
-
         function selectRow(row: BodyCell[], event: MouseEvent): void {
-            const anyCell = row[0];
-            if (!anyCell || !selectable.value(anyCell.item, anyCell.rowIdx, items.value)) {
-                return;
-            }
-
             emit('select-row', row, event);
-            emit('click-cell', { ...anyCell }, event);
+            emit('click-cell', { ...row[0] }, event);
         }
 
         function expandRow(row: BodyCell[], event: MouseEvent): void {
-            if (!toggleExpand(row)) {
-                return;
-            }
             emit('expand-row', row, event);
         }
 
         return {
             bodyCells,
-            anySelectable,
-            anyExpandable,
-            isExpanded,
-            items,
-            selectedIds,
-            selectable,
             tableIcons,
             clickCell,
             findMatchingSlotName,
             getRowItem,
-            isRowSelectable,
             getRowId,
             selectRow,
             expandRow,

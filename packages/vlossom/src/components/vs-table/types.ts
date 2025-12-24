@@ -72,6 +72,10 @@ export function isColumnDefArray(value: unknown): value is ColumnDef[] {
     return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
 }
 
+export function isBodyRow(row: Cell[]): row is BodyCell[] {
+    return row[0]?.tag === 'td';
+}
+
 export function getRowItem(row: BodyCell[]): Item {
     const anyCell = row[0];
     if (!anyCell) {
