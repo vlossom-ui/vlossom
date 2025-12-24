@@ -15,6 +15,7 @@ import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
+import { useTableSearch } from './table-search-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
@@ -75,67 +76,10 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
-    // search
-    const searchText = ref('');
-    const searchOptions = ref<VsTableSearchOptions>({
-        caseSensitive: false,
-        regex: false,
-    });
-
-    const searchableKeys = computed<string[]>(() => {
-        if (!columns.value) {
-            return [];
-        }
-        return columns.value.filter((col) => col.searchable !== false).map((col) => col.key);
-    });
-
-    function matchText(text: string): boolean {
-        if (!searchText.value) {
-            return true;
-        }
-
-        const searchValue = searchOptions.value.caseSensitive ? searchText.value : searchText.value.toLowerCase();
-        const targetText = searchOptions.value.caseSensitive ? text : text.toLowerCase();
-
-        if (searchOptions.value.regex) {
-            try {
-                const flags = searchOptions.value.caseSensitive ? 'g' : 'gi';
-                const regexPattern = new RegExp(searchValue, flags);
-                return regexPattern.test(targetText);
-            } catch {
-                return targetText.includes(searchValue);
-            }
-        }
-
-        return targetText.includes(searchValue);
-    }
-
-    function filterRow(row: BodyCell[]): boolean {
-        if (!searchText.value) {
-            return true;
-        }
-
-        return row.some((cell) => {
-            if (!searchableKeys.value.includes(cell.colKey)) {
-                return false;
-            }
-            const cellValue = cell.value != null ? String(cell.value) : '';
-            return matchText(cellValue);
-        });
-    }
-
-    function updateSearch(text: string, options?: VsTableSearchOptions): void {
-        searchText.value = text;
-        if (options) {
-            searchOptions.value = options;
-        }
-    }
+    const { filterRows, updateSearch } = useTableSearch(columns);
 
     const filteredBodyCells = computed<BodyCell[][]>(() => {
-        if (!searchText.value) {
-            return rawBodyCells.value;
-        }
-        return rawBodyCells.value.filter(filterRow);
+        return filterRows(rawBodyCells.value);
     });
 
     const bodyCells = computed<BodyCell[][]>(() => {
