@@ -3,6 +3,7 @@
         <caption v-if="$slots['caption']">
             <slot name="caption" />
         </caption>
+        <vs-table-search :search="search" @search="onSearch" />
         <vs-table-header @click-cell="clickCell" @select-row="selectRow">
             <template v-for="name in headerSlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
@@ -28,11 +29,13 @@ import type { BodyCell, ColumnDef, Item, VsTableStyleSet } from './types';
 
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
+import VsTableSearch from './VsTableSearch.vue';
+import type { VsTableSearchProp } from './types';
 const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
-    components: { VsTableHeader, VsTableBody },
+    components: { VsTableHeader, VsTableBody, VsTableSearch },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
@@ -59,6 +62,10 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
+        search: {
+            type: [Boolean, Object] as PropType<VsTableSearchProp>,
+            default: false,
+        },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
@@ -76,7 +83,7 @@ export default defineComponent({
             },
         },
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'update:selectedItems'],
+    emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -107,6 +114,10 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
+        function onSearch(value: string): void {
+            emit('search', value);
+        }
+
         function updateSelectedItems(items: Item[]): void {
             emit('update:selectedItems', items);
         }
@@ -119,9 +130,11 @@ export default defineComponent({
             colorSchemeClass,
             headerSlots,
             bodySlots,
+            search: props.search,
             clickCell,
             selectRow,
             expandRow,
+            onSearch,
             updateSelectedItems,
         };
     },

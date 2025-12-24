@@ -9,6 +9,14 @@ declare module 'vue' {
 
 export interface VsTableStyleSet {}
 
+export interface VsTableSearchOptions {
+    placeholder?: string;
+    caseSensitive?: boolean;
+    regex?: boolean;
+}
+
+export type VsTableSearchProp = boolean | VsTableSearchOptions;
+
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
@@ -42,6 +50,7 @@ export interface ColumnDef<I = Item> {
     width?: SizeProp;
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
+    searchable?: boolean; // TODO: missing implementation
     transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
 }
 
