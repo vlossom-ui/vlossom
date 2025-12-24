@@ -58,11 +58,3 @@ export function getInputProps<T = unknown, K extends keyof InputPropsDefinition<
         excludes,
     );
 }
-
-export function getInputOptionProps() {
-    return {
-        options: { type: Array as PropType<any[]>, required: true, default: () => [] },
-        optionLabel: { type: String, default: '' },
-        optionValue: { type: String, default: '' },
-    };
-}

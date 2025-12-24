@@ -1,4 +1,4 @@
-import { ref, nextTick, type TemplateRef, type Ref } from 'vue';
+import { ref, nextTick, type Ref, type TemplateRef } from 'vue';
 import { domUtil, functionUtil, logUtil } from '@/utils';
 import type { Placement, Alignment } from '@/declaration';
 

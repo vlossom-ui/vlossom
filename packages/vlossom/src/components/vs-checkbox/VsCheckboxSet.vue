@@ -59,7 +59,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getInputOptionProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
 import { objectUtil, propsUtil } from '@/utils';
 import type { VsCheckboxSetStyleSet } from './types';
@@ -78,7 +78,7 @@ export default defineComponent({
         ...getStyleSetProps<VsCheckboxSetStyleSet>(),
         ...getInputProps<any[], 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
-        ...getInputOptionProps(),
+        ...getOptionsProps(),
         beforeChange: {
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
