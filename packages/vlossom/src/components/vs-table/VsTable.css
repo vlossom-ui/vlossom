@@ -9,10 +9,6 @@ td {
     @apply px-3.5 py-2.5;
     border: 0.0625rem solid var(--vs-line-color);
     text-align: left; /* left, center, right */
-
-    &.expand {
-        @apply border-none p-0;
-    }
 }
 
 caption {

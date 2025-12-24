@@ -26,21 +26,23 @@
                         </slot>
                     </td>
 
-                    <td v-if="anyExpandable" class="w-10" @click.prevent.stop="expandRow(cells, $event)">
-                        <vs-button>
-                            {{ 'EXPAND' }}
+                    <td v-if="anyExpandable" class="w-10">
+                        <vs-button @click.prevent.stop="expandRow(cells, $event)">
+                            <vs-render
+                                :class="{
+                                    'rotate-180': expanded.has(getRowId(cells)),
+                                    'transition-transform': true,
+                                }"
+                                :content="tableIcons.expandArrow"
+                            />
                         </vs-button>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="100%" class="expand">
-                        <slot name="expand" :cells :rowIdx>
-                            <vs-expandable :open="expanded.has(getRowId(cells))">
-                                <pre class="font-mono text-[5px] whitespace-pre-wrap">
-                                    {{ JSON.stringify(getRowItem(cells), null, 4) }}
-                                </pre>
-                            </vs-expandable>
-                        </slot>
+                    <td colspan="100%" class="!p-0">
+                        <vs-expandable :open="expanded.has(getRowId(cells))">
+                            <slot name="expand" :cells :rowIdx />
+                        </vs-expandable>
                     </td>
                 </tr>
             </template>
