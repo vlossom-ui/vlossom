@@ -31,7 +31,6 @@ import type { VsBlockStyleSet } from '@/components/vs-block/types';
 const panelStyleSet: VsBlockStyleSet = {
     width: '18rem',
     backgroundColor: 'var(--vs-no-color)',
-    border: '1px solid var(--vs-gray-300)',
     title: {
         backgroundColor: 'var(--vs-no-color)',
         fontColor: 'var(--vs-no-color-inverse)',
