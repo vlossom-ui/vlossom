@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject } from 'vue';
+import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
 import { SortType, type HeaderCell } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
@@ -53,8 +53,7 @@ export default defineComponent({
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
         const {
-            items,
-            expandable,
+            anyExpandable,
             headerCells,
             anySelectable,
             selectedAll,
@@ -64,8 +63,6 @@ export default defineComponent({
             sortColumn,
             updateSortType,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-
-        const anyExpandable = computed(() => items.value.some(expandable.value));
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;

@@ -13,6 +13,7 @@ import {
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
+import { useTableExpand } from './table-expand-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
@@ -62,6 +63,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
+    const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
@@ -120,6 +122,9 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         expandable,
         headerCells,
         bodyCells,
+        anyExpandable,
+        isExpanded,
+        toggleExpand,
         anySelectable,
         selectedIds,
         selectedAll,
@@ -138,6 +143,7 @@ export type TableComposable = {
     items: Ref<Item[]>;
     headerCells: Ref<HeaderCell[]>;
     bodyCells: ComputedRef<BodyCell[][]>;
+    anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;
     selectedIds: Ref<string[]>;
     selectedAll: ComputedRef<boolean>;
@@ -146,6 +152,8 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
+    isExpanded: (row: BodyCell[]) => boolean;
+    toggleExpand: (row: BodyCell[]) => boolean;
     compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;

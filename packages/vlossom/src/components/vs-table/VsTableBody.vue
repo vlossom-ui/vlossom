@@ -30,7 +30,7 @@
                         <vs-button @click.prevent.stop="expandRow(cells, $event)">
                             <vs-render
                                 :class="{
-                                    'rotate-180': expanded.has(getRowId(cells)),
+                                    'rotate-180': isExpanded(cells),
                                     'transition-transform': true,
                                 }"
                                 :content="tableIcons.expandArrow"
@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <td colspan="100%" class="!p-0">
-                        <vs-expandable :open="expanded.has(getRowId(cells))">
+                        <vs-expandable :open="isExpanded(cells)">
                             <slot name="expand" :cells :rowIdx />
                         </vs-expandable>
                     </td>
@@ -62,20 +62,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref } from 'vue';
+import { defineComponent, inject } from 'vue';
 import { stringUtil } from '@/utils';
-import type { BodyCell, Item } from './types';
+import { type BodyCell, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 export default defineComponent({
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(_props, { emit, slots }) {
-        const { items, bodyCells, anySelectable, selectable, selectedIds, expandable } =
+        const { items, bodyCells, anySelectable, selectable, selectedIds, anyExpandable, isExpanded, toggleExpand } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-
-        const expanded = ref(new Set());
-        const anyExpandable = computed(() => items.value.some(expandable.value));
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -98,21 +95,9 @@ export default defineComponent({
             emit('click-cell', { ...cell }, event);
         }
 
-        function getRowItem(row: BodyCell[]): Item {
-            const anyCell = row[0];
-            if (!anyCell) {
-                return {};
-            }
-            return anyCell.item;
-        }
-
         function isRowSelectable(row: BodyCell[], rowIdx: number): boolean {
             const item = getRowItem(row);
             return selectable.value(item, rowIdx, items.value);
-        }
-
-        function getRowId(row: BodyCell[]): string | number | undefined {
-            return getRowItem(row)?.id;
         }
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
@@ -126,24 +111,17 @@ export default defineComponent({
         }
 
         function expandRow(row: BodyCell[], event: MouseEvent): void {
-            const rowId = getRowId(row);
-            if (!rowId) {
+            if (!toggleExpand(row)) {
                 return;
             }
-
             emit('expand-row', row, event);
-            if (expanded.value.has(rowId)) {
-                expanded.value.delete(rowId);
-            } else {
-                expanded.value.add(rowId);
-            }
         }
 
         return {
             bodyCells,
             anySelectable,
             anyExpandable,
-            expanded,
+            isExpanded,
             items,
             selectedIds,
             selectable,

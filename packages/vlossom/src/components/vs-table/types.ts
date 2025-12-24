@@ -71,3 +71,19 @@ export function isColumnDef(value: unknown): value is ColumnDef {
 export function isColumnDefArray(value: unknown): value is ColumnDef[] {
     return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
 }
+
+export function getRowItem(row: BodyCell[]): Item {
+    const anyCell = row[0];
+    if (!anyCell) {
+        return {};
+    }
+    return anyCell.item;
+}
+
+export function getRowId(row: BodyCell[]): string | undefined {
+    const item = getRowItem(row);
+    if (!item) {
+        return undefined;
+    }
+    return item.id;
+}
