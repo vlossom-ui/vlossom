@@ -160,7 +160,7 @@
         <div class="flex flex-wrap items-start gap-4">
             <vs-button id="tooltip-demo">Hover me</vs-button>
             <vs-tooltip
-                target-id="tooltip-demo"
+                target="#tooltip-demo"
                 :placement="tooltipOptions.placement"
                 :align="tooltipOptions.align"
                 :clickable="tooltipOptions.clickable"
