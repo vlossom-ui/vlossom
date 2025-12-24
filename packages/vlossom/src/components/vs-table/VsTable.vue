@@ -1,20 +1,23 @@
 <template>
-    <table :class="['vs-table', colorSchemeClass]">
-        <caption v-if="$slots['caption']">
-            <slot name="caption" />
-        </caption>
+    <div :class="['vs-table-wrapper', colorSchemeClass]">
         <vs-table-search :search="search" @search="onSearch" />
-        <vs-table-header @click-cell="clickCell" @select-row="selectRow">
-            <template v-for="name in headerSlots" #[name]="slotData">
-                <slot :name v-bind="slotData || {}" />
-            </template>
-        </vs-table-header>
-        <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
-            <template v-for="name in bodySlots" #[name]="slotData">
-                <slot :name v-bind="slotData || {}" />
-            </template>
-        </vs-table-body>
-    </table>
+
+        <table class="vs-table">
+            <caption v-if="$slots['caption']">
+                <slot name="caption" />
+            </caption>
+            <vs-table-header @click-cell="clickCell" @select-row="selectRow">
+                <template v-for="name in headerSlots" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-header>
+            <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
+                <template v-for="name in bodySlots" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-body>
+        </table>
+    </div>
 </template>
 
 <script lang="ts">

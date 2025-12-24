@@ -21,8 +21,8 @@ import type { VsTableSearchProp, VsTableSearchOptions } from './types';
 
 const defaultSearchOptions: VsTableSearchOptions = {
     placeholder: '',
-    caseSensitive: false,
-    regex: false,
+    caseSensitive: true,
+    regex: true,
 };
 
 export default defineComponent({
@@ -75,7 +75,8 @@ export default defineComponent({
 <style scoped>
 .vs-table-search {
     display: flex;
-    justify-content: flex-end;
+    margin-left: auto;
+    width: fit-content;
     padding: 0.5rem 0;
 }
 </style>

@@ -67,6 +67,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
+    const { filterRows, updateSearch } = useTableSearch(columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
         items,
@@ -75,8 +76,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
 
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
-
-    const { filterRows, updateSearch } = useTableSearch(columns);
 
     const filteredBodyCells = computed<BodyCell[][]>(() => {
         return filterRows(rawBodyCells.value);

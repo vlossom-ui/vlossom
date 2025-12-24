@@ -1,6 +1,10 @@
 @reference 'tailwindcss';
 
-table {
+.vs-table-wrapper {
+    @apply relative w-full;
+}
+
+.vs-table {
     @apply mx-auto w-full border-collapse;
 }
 
