@@ -9,7 +9,7 @@
                 placeholder="example@email.com"
                 required
                 :rules="[rules.required, rules.email]"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
             <vs-input
                 v-model="form.username"
@@ -17,7 +17,7 @@
                 placeholder="Enter username"
                 required
                 :rules="[rules.required, rules.minLength(3)]"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
             <vs-input
                 v-model="form.password"
@@ -26,7 +26,7 @@
                 placeholder="Enter password"
                 required
                 :rules="[rules.required, rules.minLength(8)]"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
             <vs-input
                 v-model="form.confirmPassword"
@@ -35,7 +35,7 @@
                 placeholder="Confirm password"
                 required
                 :rules="[rules.required, rules.matchPassword]"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
 
             <vs-input
@@ -44,9 +44,9 @@
                 label="Age"
                 placeholder="Enter age"
                 :rules="[rules.minValue(1), rules.maxValue(120)]"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
-            <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="6" />
+            <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="{ xs: 12, md: 6 }" />
 
             <vs-textarea v-model="form.bio" label="Bio" placeholder="Tell us about yourself..." :grid="12" />
 
@@ -57,7 +57,7 @@
                 label="Subscribe to Newsletter"
                 true-label="Yes"
                 false-label="No"
-                :grid="6"
+                :grid="{ xs: 12, md: 6 }"
             />
 
             <vs-file-drop
