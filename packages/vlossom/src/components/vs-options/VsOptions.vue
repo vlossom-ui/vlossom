@@ -69,6 +69,7 @@ export default defineComponent({
         },
     },
     emits: ['click-option'],
+    // expose: ['scrollToOption'],
     setup(props, { emit }) {
         const { styleSet, options, optionLabel, optionValue, groupBy, groupOrder, disabled } = toRefs(props);
 
