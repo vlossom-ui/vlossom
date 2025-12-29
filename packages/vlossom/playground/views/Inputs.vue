@@ -32,7 +32,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsFileDrop</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -46,7 +46,7 @@
             <vs-file-drop label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 4 }" />
             <vs-file-drop label="Readonly" placeholder="Readonly" readonly :grid="{ xs: 12, md: 6, lg: 4 }" />
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsInput</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -70,7 +70,7 @@
             <vs-input label="Required" placeholder="Required field" required :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Small" placeholder="Small input" small :grid="{ xs: 12, md: 6, lg: 3 }" />
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsRadio & VsRadioSet</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -97,7 +97,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsSearchInput</h3>
         <div class="flex flex-col gap-4">
@@ -115,7 +115,7 @@
                 <span v-if="filteredFruits.length === 0" class="text-sm text-gray-500">No results found</span>
             </div>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsSwitch</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -142,7 +142,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsTextarea</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -161,14 +161,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, useTemplateRef, type Ref, type TemplateRef } from 'vue';
-import Divider from '../components/Divider.vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 
 export default defineComponent({
     name: 'Inputs',
-    components: {
-        Divider,
-    },
     setup() {
         const inputText = ref('');
         const inputNumber: Ref<number | null> = ref(null);

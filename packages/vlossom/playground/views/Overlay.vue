@@ -45,7 +45,7 @@
                 </template>
             </vs-drawer>
         </vs-container>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsModal</h3>
         <vs-block class="mb-4">
@@ -71,7 +71,7 @@
                 <vs-button @click="modalOpen = false">Close</vs-button>
             </div>
         </vs-modal>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">Toast Plugin</h3>
         <vs-block class="mb-4">
@@ -113,7 +113,7 @@
             <vs-button @click="showToast('warning')">Warning Toast</vs-button>
             <vs-button @click="showToast('error')">Error Toast</vs-button>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsTooltip</h3>
         <vs-block class="mb-4">
@@ -184,15 +184,11 @@ import { computed, defineComponent, reactive, ref } from 'vue';
 import { useVlossom } from '@/framework';
 import type { DrawerPlacement, Placement, Alignment } from '@/declaration';
 import type { VsDrawerStyleSet } from '@/components/vs-drawer/types';
-import Divider from '../components/Divider.vue';
 
 type ToastState = 'info' | 'success' | 'warning' | 'error';
 
 export default defineComponent({
     name: 'Overlay',
-    components: {
-        Divider,
-    },
     setup() {
         const $vs = useVlossom();
 

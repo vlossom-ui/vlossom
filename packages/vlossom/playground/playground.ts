@@ -14,6 +14,19 @@ console.log('Hello Vlossom');
 
 const app = createApp(App);
 
-app.use(createVlossom({ components: VlossomComponents }));
+app.use(
+    createVlossom({
+        components: VlossomComponents,
+        styleSet: {
+            playground: {
+                VsDivider: {
+                    horizontal: {
+                        margin: '1.5rem 0',
+                    },
+                },
+            },
+        },
+    }),
+);
 
 app.mount('#app');

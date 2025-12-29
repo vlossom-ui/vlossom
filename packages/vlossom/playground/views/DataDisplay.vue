@@ -31,7 +31,7 @@
                 />
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsLabelValue</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -69,7 +69,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsMessage</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -91,7 +91,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsPagination</h3>
         <vs-grid :grid-size="12" column-gap="2.5rem" row-gap="3rem">
@@ -111,7 +111,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsProgress</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -137,7 +137,7 @@
                 <vs-progress :value="progressValue" :max="100" :label="`${progressValue}%`" />
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsSteps</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -154,7 +154,7 @@
                 <vs-steps v-model="stepValue2" :steps="['Step 1', 'Step 2', 'Step 3']" vertical height="150px" />
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsTextWrap</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -176,13 +176,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import Divider from '../components/Divider.vue';
 
 export default defineComponent({
     name: 'DataDisplay',
-    components: {
-        Divider,
-    },
     setup() {
         const progressValue = ref(30);
         const stepValue = ref(0);

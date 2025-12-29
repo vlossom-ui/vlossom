@@ -26,14 +26,14 @@
                 </vs-accordion>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsAvatar</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Default</h4>
             <vs-avatar>Default</vs-avatar>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsBar</h3>
         <div class="flex flex-col gap-4">
@@ -42,7 +42,7 @@
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Primary</h4>
             <vs-bar primary :style-set="{ padding: '1rem' }">Primary Bar</vs-bar>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsBlock</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -58,7 +58,7 @@
                 <vs-block>Content without title</vs-block>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsButton</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -95,7 +95,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsChip</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -122,7 +122,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsDivider</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -145,7 +145,7 @@
                 </div>
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsLoading</h3>
         <div class="flex flex-col gap-4">
@@ -157,7 +157,7 @@
                 <vs-loading width="70px" height="70px" />
             </div>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsSkeleton</h3>
         <div class="flex flex-wrap items-center gap-4">
@@ -167,7 +167,7 @@
                 <vs-skeleton :style-set="{ width: '100px', height: '20px' }" />
             </div>
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsTabs</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -188,14 +188,14 @@
                 <vs-tabs v-model="selectedTab2" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" vertical width="120px" />
             </vs-responsive>
         </vs-grid>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsThemeButton</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Default</h4>
             <vs-theme-button />
         </div>
-        <Divider />
+        <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsToggle</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
@@ -232,13 +232,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useVlossom } from '@/framework';
-import Divider from '../components/Divider.vue';
 
 export default defineComponent({
     name: 'Basic',
-    components: {
-        Divider,
-    },
     setup() {
         const $vs = useVlossom();
 
