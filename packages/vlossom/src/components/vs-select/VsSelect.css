@@ -1,0 +1,32 @@
+@reference 'tailwindcss';
+
+.vs-select {
+    --vs-select-trigger-backgroundColor: initial;
+    --vs-select-trigger-border: initial;
+    --vs-select-trigger-borderRadius: initial;
+    --vs-select-trigger-padding: initial;
+    --vs-select-trigger-opacity: initial;
+    --vs-select-trigger-fontColor: initial;
+    --vs-select-trigger-fontSize: initial;
+    --vs-select-trigger-fontWeight: initial;
+    --vs-select-trigger-height: initial;
+
+    .vs-select-trigger {
+        @apply relative box-border flex items-center overflow-hidden cursor-pointer;
+        opacity: var(--vs-select-trigger-opacity, 1);
+        border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
+        border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+        background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
+        height: var(--vs-select-trigger-height, var(--vs-default-comp-height));
+        color: var(--vs-select-trigger-fontColor, var(--vs-font-color));
+        font-weight: var(--vs-select-trigger-fontWeight, var(--vs-font-weight));
+        font-size: var(--vs-select-trigger-fontSize, var(--vs-font-size));
+        padding: var(--vs-select-trigger-padding, 0 0.8rem);
+
+        &:focus-within {
+            outline: 1px solid var(--vs-line-color) !important;
+            outline-offset: 2px !important;
+        }
+    }
+}
+
