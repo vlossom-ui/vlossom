@@ -54,6 +54,10 @@ const meta: Meta<typeof VsTable> = {
             control: { type: 'object' },
             description: '테이블 렌더링 대상 아이템입니다.',
         },
+        expandable: {
+            control: { type: 'boolean' },
+            description: '행 확장을 활성화하거나 조건부 함수로 제어합니다.',
+        },
         colorScheme,
     },
 };
@@ -229,6 +233,39 @@ export const SortableColumns: Story = {
         docs: {
             description: {
                 story: 'sortable 컬럼을 지정하면 헤더 아이콘을 클릭해 ASC/DESC/해제 순으로 정렬을 토글할 수 있습니다.',
+            },
+        },
+    },
+};
+
+export const Expandable: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = baseItems.map((item) => ({
+                ...item,
+                description: `${item.name} 상세 정보`,
+            }));
+            const expandable = (item: Item) => Number(item.age) >= 30;
+            return { columns: baseColumns, items, expandable };
+        },
+        template: `
+            <vs-table :columns="columns" :items="items" :expandable="expandable">
+                <template #expand="{ cells, rowIdx }">
+                    <div class="p-3 bg-slate-50 rounded">
+                        <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
+                        <p class="text-sm text-slate-600">
+                            {{ cells[0].item.description }} - {{ cells[0].item.metadata.email }}
+                        </p>
+                    </div>
+                </template>
+            </vs-table>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'expandable을 켜면 행마다 확장 버튼이 노출되며, expand 슬롯으로 확장 영역을 커스텀합니다.',
             },
         },
     },
