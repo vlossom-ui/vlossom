@@ -9,12 +9,16 @@
                 <vs-checkbox v-model="checkboxValue" check-label="Single Checkbox" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Checkbox Set</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Checkbox Set (with label)</h4>
                 <vs-checkbox-set
                     v-model="checkboxSetValue"
                     label="Checkbox Set"
                     :options="['Option A', 'Option B', 'Option C']"
                 />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Checkbox Set (no label)</h4>
+                <vs-checkbox-set v-model="noLabelCheckboxSetValue" :options="['Option X', 'Option Y', 'Option Z']" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">States</h4>
@@ -41,16 +45,18 @@
                 label="Upload Files"
                 placeholder="Drop files here"
                 multiple
-                :grid="{ xs: 12, md: 6, lg: 4 }"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
             />
-            <vs-file-drop label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 4 }" />
-            <vs-file-drop label="Readonly" placeholder="Readonly" readonly :grid="{ xs: 12, md: 6, lg: 4 }" />
+            <vs-file-drop placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-file-drop label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-file-drop label="Readonly" placeholder="Readonly" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
         </vs-grid>
         <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsInput</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-input v-model="inputText" label="Text" placeholder="Enter text..." :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-input placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input
                 v-model="inputNumber"
                 type="number"
@@ -79,8 +85,12 @@
                 <vs-radio v-model="singleRadioValue" radio-label="Single Radio" :radio-value="true" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Radio Set</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Radio Set (with label)</h4>
                 <vs-radio-set v-model="radioValue" label="Radio Set" :options="['Option 1', 'Option 2', 'Option 3']" />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Radio Set (no label)</h4>
+                <vs-radio-set v-model="noLabelRadioValue" :options="['Choice A', 'Choice B', 'Choice C']" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">States</h4>
@@ -120,8 +130,12 @@
         <h3 class="mb-4 font-semibold">VsSwitch</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default (with label)</h4>
                 <vs-switch v-model="switchValue" label="Switch" />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">No label</h4>
+                <vs-switch v-model="noLabelSwitchValue" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Custom Labels</h4>
@@ -152,6 +166,7 @@
                 placeholder="Enter description..."
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
+            <vs-textarea placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-textarea label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-textarea label="Readonly" model-value="Readonly content" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-textarea label="Small" placeholder="Small textarea" small :grid="{ xs: 12, md: 6, lg: 3 }" />
@@ -191,10 +206,13 @@ export default defineComponent({
         const textareaValue = ref('');
         const checkboxValue = ref(false);
         const checkboxSetValue: Ref<string[]> = ref([]);
+        const noLabelCheckboxSetValue: Ref<string[]> = ref([]);
         const singleRadioValue = ref(false);
         const radioValue = ref(null);
+        const noLabelRadioValue = ref(null);
         const switchValue = ref(false);
         const switchValue2 = ref(false);
+        const noLabelSwitchValue = ref(false);
         const files: Ref<File[]> = ref([]);
 
         return {
@@ -208,10 +226,13 @@ export default defineComponent({
             textareaValue,
             checkboxValue,
             checkboxSetValue,
+            noLabelCheckboxSetValue,
             singleRadioValue,
             radioValue,
+            noLabelRadioValue,
             switchValue,
             switchValue2,
+            noLabelSwitchValue,
             files,
         };
     },
