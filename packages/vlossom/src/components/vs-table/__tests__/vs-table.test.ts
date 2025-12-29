@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { BodyCell, HeaderCell } from './../types';
@@ -19,6 +19,8 @@ const defaultGlobal = {
     stubs: {
         'vs-render': true,
         'vs-checkbox': true,
+        'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
+        'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
     },
 };
 
@@ -131,6 +133,48 @@ describe('VsTable', () => {
 
             expect(headerTextsOf(wrapper)).toEqual(['HEADER-0-name', 'HEADER-1-age']);
             expect(bodyTextsOf(wrapper)).toEqual(['BODY-1', 'BODY-1', 'BODY-2', 'BODY-2']);
+        });
+    });
+
+    describe('expandable', () => {
+        it('expandable이 true면 확장 버튼과 슬롯을 렌더링한다.', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+                slots: {
+                    expand: ({ cells, rowIdx }: { cells: BodyCell[]; rowIdx: number }) =>
+                        h('div', {}, `${rowIdx}-${cells[0].item.name}`),
+                },
+            });
+
+            await nextTick();
+
+            const expandButtons = wrapper.findAll('tbody tr button');
+            expect(expandButtons).toHaveLength(tableItems.length);
+
+            await expandButtons[0].trigger('click');
+            await nextTick();
+
+            const expandRow = wrapper.findAll('tbody tr')[1];
+            expect(expandRow.text()).toBe('0-Alice');
+        });
+
+        it('expandable이 true면 확장 버튼을 클릭하면 expand-row를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+            });
+
+            await nextTick();
+            const expandButton = wrapper.get('tbody tr button');
+
+            await expandButton.trigger('click');
+
+            const emitted = wrapper.emitted('expand-row');
+            expect(emitted).toHaveLength(1);
+
+            const [cells] = emitted![0] as [BodyCell[], Event];
+            expect(cells).toHaveLength(defaultColumns.length);
+            expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
+            expect(cells[0].item).toStrictEqual(tableItems[0]);
         });
     });
 

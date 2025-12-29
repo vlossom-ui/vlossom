@@ -8,7 +8,7 @@
                 <slot :name v-bind="slotData || {}" />
             </template>
         </vs-table-header>
-        <vs-table-body @click-cell="clickCell" @select-row="selectRow">
+        <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
             <template v-for="name in bodySlots" #[name]="slotData">
                 <slot :name v-bind="slotData || {}" />
             </template>
@@ -55,6 +55,10 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
+        expandable: {
+            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
@@ -72,7 +76,7 @@ export default defineComponent({
             },
         },
     },
-    emits: ['click-cell', 'select-row', 'update:selectedItems'],
+    emits: ['click-cell', 'select-row', 'expand-row', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -80,8 +84,16 @@ export default defineComponent({
         const table: TableComposable = useTable(props, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
-        const headerSlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('header')));
-        const bodySlots = computed(() => Object.keys(slots).filter((k) => k.startsWith('body')));
+        const headerSlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['header', 'select'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
+        const bodySlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
@@ -89,6 +101,10 @@ export default defineComponent({
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
+        }
+
+        function expandRow(row: BodyCell[], event: MouseEvent): void {
+            emit('expand-row', row, event);
         }
 
         function updateSelectedItems(items: Item[]): void {
@@ -105,6 +121,7 @@ export default defineComponent({
             bodySlots,
             clickCell,
             selectRow,
+            expandRow,
             updateSelectedItems,
         };
     },

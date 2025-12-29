@@ -42,7 +42,7 @@ export interface ColumnDef<I = Item> {
     width?: SizeProp;
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
-    transform?: (value: unknown, item: I) => unknown;
+    transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
 }
 
 export interface Cell<I = Item> {
@@ -70,4 +70,24 @@ export function isColumnDef(value: unknown): value is ColumnDef {
 
 export function isColumnDefArray(value: unknown): value is ColumnDef[] {
     return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
+}
+
+export function isBodyRow(row: Cell[]): row is BodyCell[] {
+    return row[0]?.tag === 'td';
+}
+
+export function getRowItem(row: BodyCell[]): Item {
+    const anyCell = row[0];
+    if (!anyCell) {
+        return {};
+    }
+    return anyCell.item;
+}
+
+export function getRowId(row: BodyCell[]): string | undefined {
+    const item = getRowItem(row);
+    if (!item) {
+        return undefined;
+    }
+    return item.id;
 }
