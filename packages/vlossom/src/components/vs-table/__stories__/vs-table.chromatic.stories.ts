@@ -17,9 +17,9 @@ const sortableColumns = baseColumns.map((column) => ({
 }));
 
 const baseItems = [
-    { name: 'John', age: 30, metadata: { email: 'john@example.com' } },
-    { name: 'Jane', age: 25, metadata: { email: 'jane@example.com' } },
-    { name: 'Jim', age: 35, metadata: { email: 'jim@example.com' } },
+    { id: '1', name: 'John', age: 30, metadata: { email: 'john@example.com' } },
+    { id: '2', name: 'Jane', age: 25, metadata: { email: 'jane@example.com' } },
+    { id: '3', name: 'Jim', age: 35, metadata: { email: 'jim@example.com' } },
 ];
 
 const customSelectableRow: RowOption = { selectable: (item: any) => item.name !== 'Jane' };
@@ -57,6 +57,7 @@ export const VisualRegressionMatrix: Story = {
             const toggleJaneEmailEditingMode = () => {
                 janesEmailEditingMode.value = !janesEmailEditingMode.value;
             };
+            const expandable = (item: any) => Number(item.age) >= 30;
 
             return {
                 baseColumns,
@@ -66,6 +67,7 @@ export const VisualRegressionMatrix: Story = {
                 oddRowIndexes,
                 janesEmailEditingMode,
                 toggleJaneEmailEditingMode,
+                expandable,
             };
         },
         template: `
@@ -106,8 +108,29 @@ export const VisualRegressionMatrix: Story = {
                 </section>
 
                 <section class="chromatic-section">
+                    <h3>선택 슬롯 커스텀</h3>
+                    <vs-table :columns="baseColumns" :items="baseItems" selectable>
+                        <template #select="{ rowIdx }">
+                            <span class="text-xs text-slate-500">Row {{ rowIdx + 1 }}</span>
+                        </template>
+                    </vs-table>
+                </section>
+
+                <section class="chromatic-section">
                     <h3>정렬 가능한 컬럼</h3>
                     <vs-table :columns="sortableColumns" :items="[...baseItems].reverse()" />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>행 확장</h3>
+                    <vs-table :columns="baseColumns" :items="baseItems" :expandable="expandable">
+                        <template #expand="{ cells, rowIdx }">
+                            <div class="p-3 bg-slate-50 rounded">
+                                <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
+                                <p class="text-sm text-slate-600">{{ cells[0].item.metadata.email }}</p>
+                            </div>
+                        </template>
+                    </vs-table>
                 </section>
 
                 <section class="chromatic-section">

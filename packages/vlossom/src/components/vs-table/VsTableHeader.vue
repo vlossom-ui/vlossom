@@ -2,16 +2,11 @@
     <thead>
         <template v-if="headerCells.length">
             <tr>
-                <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(headerCells, $event)">
-                    <slot name="selectable" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX">
-                        <vs-checkbox
-                            :model-value="selectedAll"
-                            :indeterminate="selectedPartial"
-                            @toggle="toggleSelectAll"
-                        />
-                    </slot>
-                </th>
-
+                <vs-table-select-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
+                    <template #select="{ cells, rowIdx }">
+                        <slot name="select" :cells :rowIdx />
+                    </template>
+                </vs-table-select-cell>
                 <th
                     v-for="header in headerCells"
                     :key="header.id"
@@ -28,6 +23,7 @@
                         />
                     </slot>
                 </th>
+                <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
             </tr>
         </template>
 
@@ -47,19 +43,19 @@ import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
+import VsRender from '@/components/vs-render/VsRender.vue';
+import VsTableExpandCell from './VsTableExpandCell.vue';
+import VsTableSelectCell from './VsTableSelectCell.vue';
+
 export default defineComponent({
+    components: {
+        VsRender,
+        VsTableExpandCell,
+        VsTableSelectCell,
+    },
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const {
-            headerCells,
-            anySelectable,
-            selectedAll,
-            selectedPartial,
-            toggleSelectAll,
-            sortType,
-            sortColumn,
-            updateSortType,
-        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { headerCells, sortType, sortColumn, updateSortType } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -98,18 +94,13 @@ export default defineComponent({
         }
 
         function selectRow(row: HeaderCell[], event: MouseEvent): void {
-            toggleSelectAll();
             emit('select-row', row, event);
             emit('click-cell', { ...row[0] }, event);
         }
 
         return {
             HEADER_ROW_INDEX,
-            anySelectable,
             headerCells,
-            selectedAll,
-            selectedPartial,
-            toggleSelectAll,
             findMatchingSlotName,
             clickCell,
             selectRow,
