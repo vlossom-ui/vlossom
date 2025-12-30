@@ -45,7 +45,7 @@ export default defineComponent({
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
-            'vs-focusable': !disabled.value && !loading.value,
+            'vs-focus-visible': !disabled.value && !loading.value,
             'vs-circle': circle.value,
             'vs-disabled': disabled.value,
             'vs-ghost': ghost.value,

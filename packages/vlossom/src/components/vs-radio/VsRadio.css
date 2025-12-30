@@ -44,7 +44,7 @@
         }
     }
 
-    &.vs-focusable {
+    &.vs-focus-visible {
         .vs-radio-input:focus-visible + .vs-radio-label {
             &:before {
                 outline: 1px solid var(--vs-line-color) !important;

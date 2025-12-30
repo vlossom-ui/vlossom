@@ -45,12 +45,12 @@ describe('VsAccordion', () => {
             });
         }
 
-        it('disabled가 false일 때 vs-focusable 클래스가 적용되어야 한다', () => {
+        it('disabled가 false일 때 vs-focus-visible 클래스가 적용되어야 한다', () => {
             // given, when
             mountWithDisabled(false);
 
             // then
-            expect(wrapper.classes()).toContain('vs-focusable');
+            expect(wrapper.classes()).toContain('vs-focus-visible');
             expect(wrapper.classes()).not.toContain('vs-disabled');
             expect(wrapper.attributes('tabindex')).toBe('0');
         });
@@ -61,7 +61,7 @@ describe('VsAccordion', () => {
 
             // then
             expect(wrapper.classes()).toContain('vs-disabled');
-            expect(wrapper.classes()).not.toContain('vs-focusable');
+            expect(wrapper.classes()).not.toContain('vs-focus-visible');
             expect(wrapper.attributes('tabindex')).toBe('-1');
         });
 

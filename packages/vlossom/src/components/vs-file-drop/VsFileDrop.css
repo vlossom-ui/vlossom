@@ -21,8 +21,7 @@
     width: var(--vs-file-drop-width, 100%);
     height: var(--vs-file-drop-height, auto);
 
-    &:hover,
-    &:focus-within {
+    &:hover {
         outline: 1px solid var(--vs-line-color) !important;
         outline-offset: 2px !important;
     }
