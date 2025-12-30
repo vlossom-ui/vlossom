@@ -15,8 +15,6 @@ export interface VsTableSearchOptions {
     regex?: boolean;
 }
 
-export type VsTableSearchProp = boolean | VsTableSearchOptions;
-
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string

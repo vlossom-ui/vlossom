@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef } from 'vue';
 import type { BodyCell, ColumnDef, VsTableSearchOptions } from '../types';
 
 export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
@@ -71,4 +71,3 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
         updateSearch,
     };
 }
-

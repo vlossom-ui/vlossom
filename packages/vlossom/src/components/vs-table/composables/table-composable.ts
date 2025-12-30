@@ -18,7 +18,13 @@ import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
+export function useTable(
+    props: PropsOf<VsComponent.VsTable>,
+    emits: {
+        searchRows: (rows: BodyCell[][], value: string) => void;
+        updateSelectedItems: (items: Item[]) => void;
+    },
+) {
     const {
         columns: rawColumns,
         items: rawItems,
@@ -67,7 +73,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
-    const { filterRows, updateSearch } = useTableSearch(columns);
+    const { filterRows, updateSearch, searchText } = useTableSearch(columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
         items,
@@ -77,15 +83,11 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
-    const filteredBodyCells = computed<BodyCell[][]>(() => {
-        return filterRows(rawBodyCells.value);
-    });
-
     const bodyCells = computed<BodyCell[][]>(() => {
         if (sortType.value === SortType.NONE) {
-            return filteredBodyCells.value;
+            return filterRows(rawBodyCells.value);
         }
-        return [...filteredBodyCells.value].sort(compareRows);
+        return [...filterRows(rawBodyCells.value)].sort(compareRows);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -119,7 +121,11 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
             .map((selectedId) => items.value.find((item) => item.id === selectedId))
             .filter(Boolean) as Item[];
 
-        cb?.updateSelectedItems(nextSelectedItems);
+        emits.updateSelectedItems(nextSelectedItems);
+    });
+
+    watch(searchText, (nextSearchText) => {
+        emits.searchRows(bodyCells.value, nextSearchText);
     });
 
     return {
@@ -140,7 +146,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         toggleSelectAll,
         sortType,
         sortColumn,
-        compareRows,
         updateSortType,
         updateSearch,
     };
@@ -163,7 +168,6 @@ export type TableComposable = {
     sortColumn: Ref<ColumnDef | null>;
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
-    compareRows: (aRow: BodyCell[], bRow: BodyCell[]) => number;
     updateSortType: (headerKey: string) => void;
     updateSearch: (text: string, options?: VsTableSearchOptions) => void;
     initialize: () => void;

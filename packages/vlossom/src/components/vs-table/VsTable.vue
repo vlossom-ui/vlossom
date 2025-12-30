@@ -1,6 +1,6 @@
 <template>
     <div :class="['vs-table-wrapper', colorSchemeClass]">
-        <vs-table-search :search="search" @search="onSearch" />
+        <vs-table-search :search />
 
         <table class="vs-table">
             <caption v-if="$slots['caption']">
@@ -28,12 +28,12 @@ import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme } from '@/composables';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
-import type { BodyCell, ColumnDef, Item, VsTableStyleSet } from './types';
+import type { BodyCell, ColumnDef, Item, VsTableSearchOptions, VsTableStyleSet } from './types';
 
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
 import VsTableSearch from './VsTableSearch.vue';
-import type { VsTableSearchProp } from './types';
+
 const componentName = VsComponent.VsTable;
 
 export default defineComponent({
@@ -66,7 +66,7 @@ export default defineComponent({
             default: false,
         },
         search: {
-            type: [Boolean, Object] as PropType<VsTableSearchProp>,
+            type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
             default: false,
         },
         // v-model
@@ -86,12 +86,12 @@ export default defineComponent({
             },
         },
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
+    emits: ['click-cell', 'select-row', 'expand-row', 'search-rows', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const table: TableComposable = useTable(props, { updateSelectedItems });
+        const table: TableComposable = useTable(props, { searchRows, updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
@@ -117,8 +117,8 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
-        function onSearch(value: string): void {
-            emit('search', value);
+        function searchRows(rows: BodyCell[][], value: string): void {
+            emit('search-rows', rows, value);
         }
 
         function updateSelectedItems(items: Item[]): void {
@@ -133,11 +133,10 @@ export default defineComponent({
             colorSchemeClass,
             headerSlots,
             bodySlots,
-            search: props.search,
             clickCell,
             selectRow,
             expandRow,
-            onSearch,
+            searchRows,
             updateSelectedItems,
         };
     },
