@@ -1,6 +1,8 @@
-import { computed, ref, toRefs, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, logUtil, stringUtil } from '@/utils';
 import { type PropsOf, VsComponent } from '@/declaration';
+import type { VsSearchInputRef } from '@/components';
+
 import {
     isColumnDefArray,
     SortType,
@@ -9,7 +11,6 @@ import {
     type HeaderCell,
     type Cell,
     type Item,
-    type VsTableSearchOptions,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
@@ -18,13 +19,7 @@ import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-export function useTable(
-    props: PropsOf<VsComponent.VsTable>,
-    emits: {
-        searchRows: (rows: BodyCell[][], value: string) => void;
-        updateSelectedItems: (items: Item[]) => void;
-    },
-) {
+export function useTable(props: PropsOf<VsComponent.VsTable>, cb: { updateSelectedItems: (items: Item[]) => void }) {
     const {
         columns: rawColumns,
         items: rawItems,
@@ -73,7 +68,7 @@ export function useTable(
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
-    const { filterRows, updateSearch, searchText } = useTableSearch(columns);
+    const { initSearchInputRef, matchBySearch } = useTableSearch(columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
         items,
@@ -85,9 +80,9 @@ export function useTable(
 
     const bodyCells = computed<BodyCell[][]>(() => {
         if (sortType.value === SortType.NONE) {
-            return filterRows(rawBodyCells.value);
+            return rawBodyCells.value.filter(matchBySearch);
         }
-        return [...filterRows(rawBodyCells.value)].sort(compareRows);
+        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -121,11 +116,7 @@ export function useTable(
             .map((selectedId) => items.value.find((item) => item.id === selectedId))
             .filter(Boolean) as Item[];
 
-        emits.updateSelectedItems(nextSelectedItems);
-    });
-
-    watch(searchText, (nextSearchText) => {
-        emits.searchRows(bodyCells.value, nextSearchText);
+        cb.updateSelectedItems(nextSelectedItems);
     });
 
     return {
@@ -147,7 +138,7 @@ export function useTable(
         sortType,
         sortColumn,
         updateSortType,
-        updateSearch,
+        initSearchInputRef,
     };
 }
 
@@ -169,7 +160,7 @@ export type TableComposable = {
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
     updateSortType: (headerKey: string) => void;
-    updateSearch: (text: string, options?: VsTableSearchOptions) => void;
+    initSearchInputRef: (searchInputRef: TemplateRef<VsSearchInputRef>) => void;
     initialize: () => void;
     toggleSelectAll: () => void;
 };

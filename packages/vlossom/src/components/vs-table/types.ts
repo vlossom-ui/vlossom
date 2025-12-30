@@ -11,8 +11,8 @@ export interface VsTableStyleSet {}
 
 export interface VsTableSearchOptions {
     placeholder?: string;
-    caseSensitive?: boolean;
-    regex?: boolean;
+    useCaseSensitive?: boolean;
+    useRegex?: boolean;
 }
 
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;

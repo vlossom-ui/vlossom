@@ -1,70 +1,62 @@
 <template>
     <vs-search-input
-        v-if="showSearch"
+        ref="searchInputRef"
         class="flex w-fit justify-end p-2"
         v-model="searchText"
-        v-model:case-sensitive="caseSensitiveActive"
-        v-model:regex="regexActive"
-        :placeholder="searchOptions.placeholder"
-        :use-case-sensitive="searchOptions.caseSensitive"
-        :use-regex="searchOptions.regex"
+        v-bind="computedSearchOptions"
         @search="onSearch"
     />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, type PropType, inject, toRefs } from 'vue';
+import { computed, defineComponent, type PropType, inject, toRefs, useTemplateRef, ref, onMounted } from 'vue';
+import type { VsSearchInputRef } from '../vs-search-input/types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsTableSearchOptions } from './types';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 
 const defaultSearchOptions: VsTableSearchOptions = {
-    placeholder: '',
-    caseSensitive: true,
-    regex: true,
+    placeholder: 'Search...',
+    useCaseSensitive: true,
+    useRegex: true,
 };
 
 export default defineComponent({
     name: 'VsTableSearch',
     components: { VsSearchInput },
     props: {
-        search: {
+        searchOptions: {
             type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
             default: false,
         },
     },
-    setup(props) {
-        const { search } = toRefs(props);
-        const table = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+    emits: ['search-rows'],
+    setup(props, { emit }) {
+        const { searchOptions } = toRefs(props);
+        const { bodyCells, initSearchInputRef } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
-        const searchText = ref('');
-        const caseSensitiveActive = ref(false);
-        const regexActive = ref(false);
+        const searchText = ref<string>('');
+        const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
 
-        const showSearch = computed(() => {
-            return !!search.value;
-        });
-        const searchOptions = computed<VsTableSearchOptions>(() => {
-            if (typeof search.value === 'boolean') {
+        const computedSearchOptions = computed<VsTableSearchOptions>(() => {
+            if (typeof searchOptions.value === 'boolean') {
                 return { ...defaultSearchOptions };
             }
-            return { ...defaultSearchOptions, ...search.value };
+            return { ...defaultSearchOptions, ...searchOptions.value };
         });
 
         function onSearch(value: string) {
-            table.updateSearch(value, {
-                caseSensitive: caseSensitiveActive.value,
-                regex: regexActive.value,
-            });
+            emit('search-rows', bodyCells.value, value);
         }
 
+        onMounted(() => {
+            initSearchInputRef(searchInputRef);
+        });
+
         return {
+            computedSearchOptions,
             searchText,
-            showSearch,
-            caseSensitiveActive,
-            regexActive,
-            searchOptions,
             onSearch,
         };
     },

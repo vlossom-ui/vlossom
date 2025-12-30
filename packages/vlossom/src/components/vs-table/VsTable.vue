@@ -1,6 +1,6 @@
 <template>
     <div :class="['vs-table-wrapper', colorSchemeClass]">
-        <vs-table-search :search />
+        <vs-table-search v-if="search" :search-options="search" @search-rows="searchRows" />
 
         <table class="vs-table">
             <caption v-if="$slots['caption']">
@@ -91,7 +91,7 @@ export default defineComponent({
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const table: TableComposable = useTable(props, { searchRows, updateSelectedItems });
+        const table: TableComposable = useTable(props, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
