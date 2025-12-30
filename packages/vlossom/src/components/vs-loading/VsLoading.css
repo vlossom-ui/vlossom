@@ -18,7 +18,7 @@
     --vs-loading-color: initial;
     --vs-loading-barWidth: initial;
 
-    @apply relative m-auto inline-flex items-center justify-center;
+    @apply relative inline-flex items-center justify-center;
 
     width: var(--vs-loading-width, 8rem);
     height: var(--vs-loading-height, 10rem);

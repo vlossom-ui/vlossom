@@ -35,7 +35,7 @@
     }
 
     &.vs-loading-button {
-        @apply pointer-events-none m-0 cursor-default;
+        @apply pointer-events-none cursor-default;
 
         .vs-button-content {
             @apply opacity-0;
