@@ -34,7 +34,7 @@
         padding: var(--vs-button-padding, 0 0.8rem);
     }
 
-    &.vs-loading-button {
+    &.vs-loading-state {
         @apply pointer-events-none cursor-default;
 
         .vs-button-content {

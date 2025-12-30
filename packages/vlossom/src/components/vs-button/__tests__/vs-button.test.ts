@@ -41,7 +41,7 @@ describe('VsButton', () => {
 
             // then
             const button = wrapper.find('button');
-            expect(button.classes()).toContain('vs-loading-button');
+            expect(button.classes()).toContain('vs-loading-state');
             expect(wrapper.find('.vs-button-loading').exists()).toBe(true);
             expect(wrapper.find('.vs-button-content').exists()).toBe(true);
         });
