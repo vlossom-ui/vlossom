@@ -9,6 +9,9 @@ export function useTableSort(columns: Ref<ColumnDef[] | null>) {
     const sortColumn = ref<ColumnDef | null>(null);
 
     function compareRows(aRow: BodyCell[], bRow: BodyCell[]): number {
+        if (sortType.value === SortType.NONE) {
+            return 0;
+        }
         if (!columns.value || !sortColumn.value) {
             return 0;
         }

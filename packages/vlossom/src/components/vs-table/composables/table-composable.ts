@@ -5,7 +5,7 @@ import type { VsSearchInputRef } from '@/components';
 
 import {
     isColumnDefArray,
-    SortType,
+    type SortType,
     type BodyCell,
     type ColumnDef,
     type HeaderCell,
@@ -79,9 +79,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb: { updateSelect
     const rawBodyCells = ref<BodyCell[][]>([]);
 
     const bodyCells = computed<BodyCell[][]>(() => {
-        if (sortType.value === SortType.NONE) {
-            return rawBodyCells.value.filter(matchBySearch);
-        }
         return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
     });
 
