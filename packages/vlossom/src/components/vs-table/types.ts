@@ -48,7 +48,7 @@ export interface ColumnDef<I = Item> {
     width?: SizeProp;
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
-    searchable?: boolean;
+    skipSearch?: boolean;
     transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
 }
 

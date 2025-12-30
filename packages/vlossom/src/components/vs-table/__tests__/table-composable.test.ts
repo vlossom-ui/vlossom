@@ -36,8 +36,8 @@ describe('useTable', () => {
 
         const columns = table.columns.value as ColumnDef[] | null;
         expect(columns).toEqual([
-            { key: 'name', label: 'name', searchable: true },
-            { key: 'age', label: 'age', searchable: true },
+            { key: 'name', label: 'name' },
+            { key: 'age', label: 'age' },
         ]);
     });
 

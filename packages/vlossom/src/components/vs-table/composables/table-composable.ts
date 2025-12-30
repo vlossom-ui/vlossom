@@ -34,9 +34,11 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
             return null;
         }
         if (isColumnDefArray(rawColumns.value)) {
-            return rawColumns.value.map((column) => ({ searchable: true, ...column }));
+            return rawColumns.value;
         }
-        return rawColumns.value.map((column) => ({ key: column, label: column, searchable: true }));
+        return rawColumns.value.map((column) => {
+            return { key: column, label: column } as ColumnDef;
+        });
     });
     const items = computed<Item[]>(() => {
         return rawItems.value.map((item) => ({

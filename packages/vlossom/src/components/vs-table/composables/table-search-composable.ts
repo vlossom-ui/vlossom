@@ -9,7 +9,7 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
         if (!columns.value) {
             return [];
         }
-        return columns.value.filter((col) => col.searchable).map((column) => column.key);
+        return columns.value.filter((col) => !col.skipSearch).map((column) => column.key);
     });
 
     function initSearchInputRef(searchInputRef: TemplateRef<VsSearchInputRef>): void {
