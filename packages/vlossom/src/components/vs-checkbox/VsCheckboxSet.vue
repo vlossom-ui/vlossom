@@ -57,9 +57,17 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import {
+    getColorSchemeProps,
+    getOptionsProps,
+    getInputProps,
+    getResponsiveProps,
+    getStyleSetProps,
+    getMinMaxProps,
+} from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
-import { objectUtil, propsUtil } from '@/utils';
+import { objectUtil } from '@/utils';
+
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 
@@ -77,19 +85,10 @@ export default defineComponent({
         ...getInputProps<any[], 'placeholder'>('placeholder'),
         ...getResponsiveProps(),
         ...getOptionsProps(),
+        ...getMinMaxProps(componentName),
         beforeChange: {
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
-        },
-        max: {
-            type: [Number, String],
-            default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
-        },
-        min: {
-            type: [Number, String],
-            default: 0,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         vertical: { type: Boolean, default: false },
         // v-model

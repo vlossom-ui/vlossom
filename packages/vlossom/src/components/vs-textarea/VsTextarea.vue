@@ -43,14 +43,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type TemplateRef, type PropType, type Ref } from 'vue';
-import { VsComponent } from '@/declaration';
-import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
+import { VsComponent, type StringModifiers } from '@/declaration';
+import { getColorSchemeProps, getInputProps, getMinMaxProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useStringModifier } from '@/composables';
+
 import type { VsTextareaStyleSet, VsTextareaValueType } from './types';
-import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import { useVsTextareaRules } from './vs-textarea-rules';
-import { propsUtil } from '@/utils';
-import type { StringModifiers } from '@/declaration';
+
+import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsTextarea;
 
@@ -62,17 +62,8 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTextareaStyleSet>(),
         ...getResponsiveProps(),
+        ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
-        max: {
-            type: [Number, String],
-            default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
-        },
-        min: {
-            type: [Number, String],
-            default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
-        },
         // v-model
         modelValue: { type: String, default: '' },
         modelModifiers: {
