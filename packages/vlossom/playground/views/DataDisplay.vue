@@ -97,17 +97,17 @@
         <vs-grid :grid-size="12" column-gap="2.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-pagination v-model="pageValue" :length="20" :showing-length="5" />
+                <vs-pagination v-model="pageDefault" :length="20" :showing-length="5" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Edge Buttons</h4>
-                <vs-pagination v-model="pageValue" :length="20" :showing-length="5" edge-buttons />
+                <vs-pagination v-model="pageEdgeButtons" :length="20" :showing-length="5" edge-buttons />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Variants</h4>
                 <div class="flex flex-col gap-2">
-                    <vs-pagination v-model="pageValue" :length="10" :showing-length="5" outline />
-                    <vs-pagination v-model="pageValue" :length="10" :showing-length="5" ghost />
+                    <vs-pagination v-model="pageOutline" :length="10" :showing-length="5" outline />
+                    <vs-pagination v-model="pageGhost" :length="10" :showing-length="5" ghost />
                 </div>
             </vs-responsive>
         </vs-grid>
@@ -143,15 +143,15 @@
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-steps v-model="stepValue" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" />
+                <vs-steps v-model="stepDefault" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">No Label</h4>
-                <vs-steps v-model="stepValue" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" no-label />
+                <vs-steps v-model="stepNoLabel" :steps="['Step 1', 'Step 2', 'Step 3', 'Step 4']" no-label />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Vertical</h4>
-                <vs-steps v-model="stepValue2" :steps="['Step 1', 'Step 2', 'Step 3']" vertical height="150px" />
+                <vs-steps v-model="stepVertical" :steps="['Step 1', 'Step 2', 'Step 3']" vertical height="150px" />
             </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
@@ -181,9 +181,13 @@ export default defineComponent({
     name: 'DataDisplay',
     setup() {
         const progressValue = ref(30);
-        const stepValue = ref(0);
-        const stepValue2 = ref(0);
-        const pageValue = ref(0);
+        const stepDefault = ref(0);
+        const stepNoLabel = ref(0);
+        const stepVertical = ref(0);
+        const pageDefault = ref(0);
+        const pageEdgeButtons = ref(0);
+        const pageOutline = ref(0);
+        const pageGhost = ref(0);
 
         const MIN_PROGRESS = 0;
         const MAX_PROGRESS = 100;
@@ -199,9 +203,13 @@ export default defineComponent({
 
         return {
             progressValue,
-            stepValue,
-            stepValue2,
-            pageValue,
+            stepDefault,
+            stepNoLabel,
+            stepVertical,
+            pageDefault,
+            pageEdgeButtons,
+            pageOutline,
+            pageGhost,
             increaseProgress,
             decreaseProgress,
         };
