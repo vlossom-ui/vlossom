@@ -8,7 +8,7 @@
             "path": "./tsconfig.app.json"
         },
         {
-            "path": "./tsconfig.sandbox.json"
+            "path": "./tsconfig.playground.json"
         },
         {
             "path": "./tsconfig.vitest.json"

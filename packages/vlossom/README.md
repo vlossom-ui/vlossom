@@ -35,9 +35,9 @@ This project uses separate Vite configuration files for different build targets:
 
 - `vite.config.common.ts` - Shared configuration for both builds
 - `vite.config.ts` - Library build configuration
-- `vite.config.sandbox.ts` - Sandbox app build configuration
+- `vite.config.playground.ts` - playground app build configuration
 
-### Sandbox for Development
+### Playground for Development
 
 ```sh
 pnpm dev
@@ -49,10 +49,10 @@ pnpm dev
 pnpm build
 ```
 
-### Build Sandbox as Standalone App
+### Build Playground as Standalone App
 
 ```sh
-pnpm build:sandbox
+pnpm build:playground
 ```
 
 ### Storybook

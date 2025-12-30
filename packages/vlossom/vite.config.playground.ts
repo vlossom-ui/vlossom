@@ -9,11 +9,11 @@ export default defineConfig({
     plugins: [
         ...commonConfig.plugins,
         visualizer({
-            filename: 'visualizer-sandbox.html',
+            filename: 'visualizer-playground.html',
         }),
     ],
     build: {
-        outDir: 'dist-sandbox',
+        outDir: 'dist-playground',
         rollupOptions: {
             input: {
                 main: fileURLToPath(new URL('./index.html', import.meta.url)),
