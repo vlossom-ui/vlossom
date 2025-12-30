@@ -19,7 +19,7 @@ import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-export function useTable(props: PropsOf<VsComponent.VsTable>, cb: { updateSelectedItems: (items: Item[]) => void }) {
+export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
     const {
         columns: rawColumns,
         items: rawItems,
@@ -34,11 +34,9 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb: { updateSelect
             return null;
         }
         if (isColumnDefArray(rawColumns.value)) {
-            return rawColumns.value;
+            return rawColumns.value.map((column) => ({ searchable: true, ...column }));
         }
-        return rawColumns.value.map((column) => {
-            return { key: column, label: column } as ColumnDef;
-        });
+        return rawColumns.value.map((column) => ({ key: column, label: column, searchable: true }));
     });
     const items = computed<Item[]>(() => {
         return rawItems.value.map((item) => ({
@@ -113,7 +111,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb: { updateSelect
             .map((selectedId) => items.value.find((item) => item.id === selectedId))
             .filter(Boolean) as Item[];
 
-        cb.updateSelectedItems(nextSelectedItems);
+        cb?.updateSelectedItems(nextSelectedItems);
     });
 
     return {

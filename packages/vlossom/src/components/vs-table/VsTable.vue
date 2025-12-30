@@ -1,8 +1,8 @@
 <template>
-    <div :class="['vs-table-wrapper', colorSchemeClass]">
+    <div :class="['vs-table', colorSchemeClass]">
         <vs-table-search v-if="search" :search-options="search" @search-rows="searchRows" />
 
-        <table class="vs-table">
+        <table>
             <caption v-if="$slots['caption']">
                 <slot name="caption" />
             </caption>

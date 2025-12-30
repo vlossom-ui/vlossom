@@ -5,11 +5,11 @@ import type { BodyCell, ColumnDef } from '../types';
 export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
     const tableSearchInputRef: Ref<VsSearchInputRef | null> = ref(null);
 
-    const searchableKeys = computed<string[]>(() => {
+    const searchColumnKeyList = computed<string[]>(() => {
         if (!columns.value) {
             return [];
         }
-        return columns.value.filter((col) => col.searchable).map((col) => col.key);
+        return columns.value.filter((col) => col.searchable).map((column) => column.key);
     });
 
     function initSearchInputRef(searchInputRef: TemplateRef<VsSearchInputRef>): void {
@@ -18,14 +18,13 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
 
     function matchBySearch(row: BodyCell[]): boolean {
         return row.some((cell) => {
-            if (!searchableKeys.value.includes(cell.colKey)) {
-                return false;
-            }
-            const cellValue = cell.value != null ? String(cell.value) : '';
-
             if (!tableSearchInputRef.value) {
                 return true;
             }
+            if (!searchColumnKeyList.value.includes(cell.colKey)) {
+                return false;
+            }
+            const cellValue = cell.value ? String(cell.value) : '';
             return tableSearchInputRef.value.match(cellValue);
         });
     }
