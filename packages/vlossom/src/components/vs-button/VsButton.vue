@@ -50,7 +50,7 @@ export default defineComponent({
             'vs-disabled': disabled.value,
             'vs-ghost': ghost.value,
             'vs-large': large.value,
-            'vs-loading': loading.value,
+            'vs-loading-state': loading.value,
             'vs-outline': outline.value,
             'vs-primary': primary.value,
             'vs-responsive': responsive.value,

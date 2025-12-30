@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-button {
     --vs-button-width: initial;
     --vs-button-height: initial;
@@ -32,7 +34,7 @@
         padding: var(--vs-button-padding, 0 0.8rem);
     }
 
-    &.vs-loading {
+    &.vs-loading-state {
         @apply pointer-events-none cursor-default;
 
         .vs-button-content {
