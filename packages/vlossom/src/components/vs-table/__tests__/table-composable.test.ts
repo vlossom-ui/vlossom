@@ -135,6 +135,30 @@ describe('useTable', () => {
         expect(table.selectedAll.value).toBe(false);
     });
 
+    it('skipSearch가 지정된 컬럼은 검색 대상에서 제외된다', async () => {
+        const { table } = setupUseTable({
+            columns: [
+                { key: 'id', label: 'ID', skipSearch: true },
+                { key: 'name', label: '이름' },
+            ],
+            items: [
+                { id: 'XYZ-1', name: 'Carol' },
+                { id: 'ABC-2', name: 'XYZ 사용자' },
+            ],
+        });
+        await nextTick();
+
+        table.initSearchInputRef({
+            value: {
+                match: (value: string) => String(value).includes('XYZ'),
+            },
+        } as any);
+        await nextTick();
+
+        const filteredNames = table.bodyCells.value.map((row) => row[1].value);
+        expect(filteredNames).toEqual(['XYZ 사용자']);
+    });
+
     describe('expandable', () => {
         it('expandable이 true인 행은 토글 시 isExpanded가 변경된다', async () => {
             const { table } = setupUseTable({

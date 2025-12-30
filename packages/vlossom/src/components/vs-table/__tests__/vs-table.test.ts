@@ -259,6 +259,61 @@ describe('VsTable', () => {
 
             expect(wrapper.emitted('select-row')).toBeUndefined();
         });
+
+        it('expand 버튼 클릭 시 expand-row 이벤트를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+            });
+
+            await nextTick();
+            const expandButton = wrapper.get('tbody tr button');
+
+            await expandButton.trigger('click');
+
+            const emittedExpandRow = wrapper.emitted('expand-row');
+            expect(emittedExpandRow).toHaveLength(1);
+
+            const [emittedCells, emittedEvent] = emittedExpandRow![0] as [BodyCell[], Event];
+            expect(emittedEvent).toBeInstanceOf(Event);
+            expect(emittedCells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0 });
+        });
+
+        it('검색 입력 시 search-rows 이벤트를 발생시킨다', async () => {
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items: tableItems,
+                    search: true,
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-search-input': {
+                            template: '<input data-testid="search-input" @input="emitSearch" />',
+                            methods: {
+                                match: () => true,
+                                emitSearch(event: Event) {
+                                    this.$emit('search', (event.target as HTMLInputElement).value);
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+
+            await wrapper.get('[data-testid="search-input"]').setValue('Alice');
+
+            const emittedSearchRows = wrapper.emitted('search-rows');
+            expect(emittedSearchRows).toHaveLength(1);
+
+            const [emittedRows, emittedSearchText] = emittedSearchRows![0] as [BodyCell[][], string];
+            expect(emittedSearchText).toBe('Alice');
+            expect(emittedRows).toHaveLength(tableItems.length);
+            expect(emittedRows[0][0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
+            expect(emittedRows[0][1]).toMatchObject({ colKey: 'age', value: 24, rowIdx: 0, colIdx: 1 });
+        });
     });
 
     describe('v-model', () => {
