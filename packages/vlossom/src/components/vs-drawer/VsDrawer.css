@@ -52,7 +52,7 @@
             @apply top-0 left-0;
 
             transform: translateY(0);
-            border-top: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-bottom: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
             border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
             width: 100%;
@@ -63,7 +63,7 @@
             @apply bottom-0 left-0;
 
             transform: translateY(0);
-            border-bottom: var(--vs-drawer-border, 1px solid var(--vs-line-color));
+            border-top: var(--vs-drawer-border, 1px solid var(--vs-line-color));
             border-top-right-radius: var(--vs-drawer-borderRadius, 0);
             border-top-left-radius: var(--vs-drawer-borderRadius, 0);
             width: 100%;
