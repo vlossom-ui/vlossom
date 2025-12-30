@@ -12,11 +12,10 @@
     --vs-text-wrap-linkIcon-color: initial;
 
     @apply relative inline-flex items-center overflow-x-auto;
+    width: var(--vs-text-wrap-width, 100%);
 
     .vs-text-wrap-contents {
         @apply relative truncate;
-
-        width: var(--vs-text-wrap-width, 100%);
     }
 
     .vs-text-wrap-buttons {
