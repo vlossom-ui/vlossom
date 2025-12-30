@@ -115,7 +115,7 @@ describe('VsTextarea', () => {
             expect(vsTextarea.classes()).toContain('vs-readonly');
         });
 
-        it('disabled나 readonly가 아닐 때 vs-focusable 클래스가 추가되어야 한다', () => {
+        it('disabled나 readonly가 아닐 때 vs-focus-visible 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -126,7 +126,7 @@ describe('VsTextarea', () => {
 
             // then
             const vsTextarea = wrapper.find('.vs-textarea');
-            expect(vsTextarea.classes()).toContain('vs-focusable');
+            expect(vsTextarea.classes()).toContain('vs-focus-visible');
         });
 
         it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {

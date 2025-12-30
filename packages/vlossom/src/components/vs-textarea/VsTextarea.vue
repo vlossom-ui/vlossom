@@ -18,23 +18,23 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]" :style="styleSetVariables">
-            <textarea
-                ref="textareaRef"
-                :id="computedId"
-                :disabled="computedDisabled"
-                :readonly="computedReadonly"
-                :name
-                :placeholder="placeholder"
-                :value="inputValue"
-                :aria-required="required"
-                :autocomplete="autocomplete ? 'on' : 'off'"
-                @input.stop="updateValue"
-                @focus.stop="onFocus"
-                @blur.stop="onBlur"
-                @change.stop
-            />
-        </div>
+        <textarea
+            ref="textareaRef"
+            :id="computedId"
+            :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]"
+            :style="styleSetVariables"
+            :disabled="computedDisabled"
+            :readonly="computedReadonly"
+            :name
+            :placeholder="placeholder"
+            :value="inputValue"
+            :aria-required="required"
+            :autocomplete="autocomplete ? 'on' : 'off'"
+            @input.stop="updateValue"
+            @focus.stop="onFocus"
+            @blur.stop="onBlur"
+            @change.stop
+        />
 
         <template #messages v-if="!noMessages">
             <slot name="messages" />
@@ -155,7 +155,7 @@ export default defineComponent({
             'vs-small': small.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
-            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
+            'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
         }));
 
         const { stateClasses } = useStateClass(computedState);

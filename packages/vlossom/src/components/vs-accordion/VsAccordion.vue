@@ -54,7 +54,7 @@ export default defineComponent({
         const isOpen = ref(open.value || modelValue.value);
 
         const classObj = computed(() => ({
-            'vs-focusable': !disabled.value,
+            'vs-focus-visible': !disabled.value,
             'vs-disabled': disabled.value,
             'vs-primary': primary.value,
         }));

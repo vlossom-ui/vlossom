@@ -98,7 +98,7 @@ describe('VsInput', () => {
             expect(vsInput.classes()).toContain('vs-readonly');
         });
 
-        it('disabled나 readonly가 아닐 때 vs-focusable 클래스가 추가되어야 한다', () => {
+        it('disabled나 readonly가 아닐 때 vs-focus-visible 클래스가 추가되어야 한다', () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -109,7 +109,7 @@ describe('VsInput', () => {
 
             // then
             const vsInput = wrapper.find('.vs-input');
-            expect(vsInput.classes()).toContain('vs-focusable');
+            expect(vsInput.classes()).toContain('vs-focus-visible');
         });
 
         it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {

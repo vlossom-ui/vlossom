@@ -197,7 +197,8 @@ export default defineComponent({
 
         const classObj = computed(() => ({
             'vs-small': small.value,
-            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
+            'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
+            'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
         }));
