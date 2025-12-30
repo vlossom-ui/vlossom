@@ -117,8 +117,8 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
-        function searchRows(rows: BodyCell[][], value: string): void {
-            emit('search-rows', rows, value);
+        function searchRows(rows: BodyCell[][], searchText: string): void {
+            emit('search-rows', rows, searchText);
         }
 
         function updateSelectedItems(items: Item[]): void {

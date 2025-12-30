@@ -2,14 +2,13 @@
     <vs-search-input
         ref="searchInputRef"
         class="flex w-fit justify-end p-2"
-        v-model="searchText"
         v-bind="computedSearchOptions"
         @search="onSearch"
     />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, type PropType, inject, toRefs, useTemplateRef, ref, onMounted } from 'vue';
+import { computed, defineComponent, type PropType, inject, toRefs, useTemplateRef, onMounted } from 'vue';
 import type { VsSearchInputRef } from '../vs-search-input/types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsTableSearchOptions } from './types';
@@ -34,10 +33,8 @@ export default defineComponent({
     emits: ['search-rows'],
     setup(props, { emit }) {
         const { searchOptions } = toRefs(props);
-        const { bodyCells, initSearchInputRef } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-
-        const searchText = ref<string>('');
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
+        const { bodyCells, initSearchInputRef } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const computedSearchOptions = computed<VsTableSearchOptions>(() => {
             if (typeof searchOptions.value === 'boolean') {
@@ -46,8 +43,11 @@ export default defineComponent({
             return { ...defaultSearchOptions, ...searchOptions.value };
         });
 
-        function onSearch(value: string) {
-            emit('search-rows', bodyCells.value, value);
+        function onSearch(searchText: string): void {
+            if (!searchText) {
+                return;
+            }
+            emit('search-rows', bodyCells.value, searchText);
         }
 
         onMounted(() => {
@@ -56,7 +56,6 @@ export default defineComponent({
 
         return {
             computedSearchOptions,
-            searchText,
             onSearch,
         };
     },
