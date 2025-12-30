@@ -44,9 +44,6 @@ export default defineComponent({
         });
 
         function onSearch(searchText: string): void {
-            if (!searchText) {
-                return;
-            }
             emit('search-rows', bodyCells.value, searchText);
         }
 
