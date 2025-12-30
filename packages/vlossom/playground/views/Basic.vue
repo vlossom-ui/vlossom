@@ -173,19 +173,32 @@
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" width="100%" />
+                <vs-tabs v-model="selectedTabDefault" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Primary</h4>
-                <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" primary width="100%" />
+                <vs-tabs v-model="selectedTabPrimary" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" primary width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Dense</h4>
-                <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense width="100%" />
+                <vs-tabs v-model="selectedTabDense" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Vertical</h4>
-                <vs-tabs v-model="selectedTab2" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" vertical width="120px" />
+                <vs-tabs v-model="selectedTabVertical" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" vertical width="120px" />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (auto)</h4>
+                <vs-tabs v-model="selectedTabScrollAuto" :tabs="scrollTabs" width="100%" />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (show)</h4>
+                <vs-tabs
+                    v-model="selectedTabScrollShow"
+                    :tabs="['Tab 1', 'Tab 2', 'Tab 3']"
+                    scroll-buttons="show"
+                    width="100%"
+                />
             </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
@@ -242,8 +255,13 @@ export default defineComponent({
         const accordion2 = ref(false);
         const accordion3 = ref(false);
 
-        const selectedTab = ref(0);
-        const selectedTab2 = ref(0);
+        const selectedTabDefault = ref(0);
+        const selectedTabPrimary = ref(0);
+        const selectedTabDense = ref(0);
+        const selectedTabVertical = ref(0);
+        const selectedTabScrollAuto = ref(0);
+        const selectedTabScrollShow = ref(0);
+        const scrollTabs = ['Overview', 'Features', 'Pricing', 'Documentation', 'Support', 'Blog', 'Contact'];
 
         const toggleValue = ref(false);
 
@@ -255,8 +273,13 @@ export default defineComponent({
             accordion1,
             accordion2,
             accordion3,
-            selectedTab,
-            selectedTab2,
+            selectedTabDefault,
+            selectedTabPrimary,
+            selectedTabDense,
+            selectedTabVertical,
+            selectedTabScrollAuto,
+            selectedTabScrollShow,
+            scrollTabs,
             toggleValue,
             onChipClose,
         };
