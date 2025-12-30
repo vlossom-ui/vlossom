@@ -63,7 +63,6 @@ import {
     type Ref,
     type PropType,
     type ComputedRef,
-    onUpdated,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -217,24 +216,22 @@ export default defineComponent({
             updateIndicatorPosition();
         }
 
+        let resizeObserver: ResizeObserver | null = null;
+
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
-            calculateVisibleTabCount();
-            nextTick(() => {
-                updateIndicatorPosition();
-            });
-            window.addEventListener('resize', handleResize);
-        });
 
-        onUpdated(() => {
-            calculateVisibleTabCount();
-            nextTick(() => {
-                updateIndicatorPosition();
-            });
+            if (tabsWrapRef.value) {
+                resizeObserver = new ResizeObserver(handleResize);
+                resizeObserver.observe(tabsWrapRef.value);
+            }
         });
 
         onUnmounted(() => {
-            window.removeEventListener('resize', handleResize);
+            if (resizeObserver) {
+                resizeObserver.disconnect();
+                resizeObserver = null;
+            }
         });
 
         watch(
