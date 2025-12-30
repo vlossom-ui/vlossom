@@ -11,6 +11,8 @@
         @apply flex items-center justify-center overflow-x-auto select-none;
 
         gap: var(--vs-pagination-gap, 0.5rem);
+        margin-block: -4px;
+        padding-block: 4px;
 
         .vs-page-button {
             min-width: 2rem;
