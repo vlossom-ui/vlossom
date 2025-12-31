@@ -1,22 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { ref } from 'vue';
 import { mount } from '@vue/test-utils';
-import VsGroupedList from '../VsGroupedList.vue';
-import type { VsGroupedListGroup } from '../types';
 import type { OptionItem } from '@/declaration';
-import { stringUtil } from '@/utils';
+import { useOptionList } from '@/composables';
+import type { VsGroupedListGroup } from './../types';
+import VsGroupedList from './../VsGroupedList.vue';
 
 function createOptionItems(rawItems: any[]): OptionItem[] {
-    return rawItems.map((item, index) => {
-        const label = item.name || JSON.stringify(item);
-        return {
-            id: stringUtil.hash(label),
-            item,
-            label,
-            value: item.id ?? item,
-            index,
-            disabled: false,
-        };
-    });
+    const { computedOptions } = useOptionList(ref(rawItems), ref('name'), ref('id'), ref(false));
+    return computedOptions.value;
 }
 
 describe('vs-grouped-list', () => {
