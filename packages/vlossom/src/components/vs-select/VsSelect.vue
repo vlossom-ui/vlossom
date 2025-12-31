@@ -24,25 +24,21 @@
                 {{ inputValue }}
             </div>
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
-                <vs-options
+                <vs-grouped-list
                     :class="['vs-select-options', colorSchemeClass]"
                     :style-set="componentStyleSet.options"
-                    :options
-                    :option-label
-                    :option-value
+                    :items="filteredOptions"
                     :group-by
                     :group-order
-                    :disabled="optionsDisabled"
-                    :filter="optionsFilter"
-                    @click-option="onClickOption"
+                    @click-item="onClickOption"
                 >
-                    <template #header v-if="useSearch || $slots['options-header']">
+                    <template #header v-if="isUsingSearch || $slots['options-header']">
                         <div class="vs-select-search">
                             <vs-search-input
-                                v-if="useSearch"
+                                v-if="isUsingSearch"
                                 ref="searchInputRef"
                                 v-model="searchText"
-                                v-bind="searchConfig"
+                                v-bind="searchProps"
                             />
                         </div>
                         <div v-if="multiple && selectAll" class="vs-select-all" @click.prevent.stop="toggleSelectAll">
@@ -61,17 +57,17 @@
                     <template #group="groupSlotProps" v-if="$slots.group">
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
-                    <template #option="optionSlotProps">
-                        <slot name="option" v-bind="optionSlotProps">
+                    <template #item="itemSlotProps">
+                        <slot name="option" v-bind="itemSlotProps">
                             <div class="vs-select-option">
-                                {{ optionSlotProps.label }}
+                                {{ itemSlotProps.label }}
                             </div>
                         </slot>
                     </template>
                     <template #footer v-if="$slots['options-footer']">
                         <slot name="options-footer" />
                     </template>
-                </vs-options>
+                </vs-grouped-list>
             </vs-floating>
         </div>
 
@@ -82,8 +78,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, ref, type PropType, type Ref, type TemplateRef } from 'vue';
-import { VsComponent } from '@/declaration';
+import {
+    computed,
+    defineComponent,
+    toRefs,
+    useTemplateRef,
+    ref,
+    type PropType,
+    type Ref,
+    type TemplateRef,
+    type ComputedRef,
+} from 'vue';
+import { VsComponent, type OptionItem } from '@/declaration';
 import {
     getColorSchemeProps,
     getStyleSetProps,
@@ -93,23 +99,22 @@ import {
     getResponsiveProps,
     getMinMaxProps,
 } from '@/props';
-import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption } from '@/composables';
+import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption, useOptionList } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet } from './types';
 import { useVsSelectRules } from './vs-select-rules';
 
-import type { VsOptionsItem } from '@/components/vs-options/types';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 import VsFloating from '@/components/vs-floating/VsFloating.vue';
+import VsGroupedList from '@/components/vs-grouped-list/VsGroupedList.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsOptions from '@/components/vs-options/VsOptions.vue';
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 
 const componentName = VsComponent.VsSelect;
 export default defineComponent({
     name: componentName,
-    components: { VsFloating, VsOptions, VsInputWrapper, VsSearchInput, VsCheckbox },
+    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsGroupedList },
     props: {
         ...getInputProps<any>(),
         ...getResponsiveProps(),
@@ -145,6 +150,7 @@ export default defineComponent({
             options,
             optionLabel,
             optionValue,
+            optionsDisabled,
             groupBy,
             groupOrder,
             modelValue,
@@ -170,7 +176,22 @@ export default defineComponent({
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
 
-        const useSearch = computed(() => {
+        const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(componentName, styleSet);
+
+        const { computedOptions } = useOptionList(options, optionLabel, optionValue, optionsDisabled);
+
+        const filteredOptions: ComputedRef<OptionItem[]> = computed(() => {
+            if (!searchInputRef.value) {
+                return computedOptions.value;
+            }
+            return computedOptions.value.filter((option) => {
+                return searchInputRef.value?.match(JSON.stringify(option.value));
+            });
+        });
+
+        const isUsingSearch = computed(() => {
             if (typeof search.value === 'boolean') {
                 return search.value;
             }
@@ -182,7 +203,7 @@ export default defineComponent({
             );
         });
 
-        const searchConfig = computed(() => {
+        const searchProps = computed(() => {
             if (typeof search.value === 'boolean') {
                 return {
                     useRegex: true,
@@ -201,12 +222,9 @@ export default defineComponent({
             return inputValue.value.length === options.value.length;
         });
 
-        function optionsFilter({ value }: VsOptionsItem) {
+        function optionsFilter({ value }: OptionItem) {
             return searchInputRef.value?.match(JSON.stringify(value)) ?? false;
         }
-
-        const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(componentName, styleSet);
 
         const { requiredCheck, maxCheck, minCheck } = useVsSelectRules(required, multiple, min, max);
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
@@ -280,19 +298,20 @@ export default defineComponent({
         }
 
         function toggleSelectAll() {
-            if (computedDisabled.value || computedReadonly.value) {
+            if (computedDisabled.value || computedReadonly.value || !multiple.value) {
                 return;
             }
             inputValue.value = options.value.map((option: any) => option.value);
         }
 
-        function onClickOption(optionItem: VsOptionsItem) {
+        function onClickOption(optionItem: OptionItem) {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
             const selectedValue = optionItem.value;
 
+            console.log(selectedValue);
             if (multiple.value) {
                 if (!Array.isArray(inputValue.value)) {
                     inputValue.value = [];
@@ -350,6 +369,7 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
+            filteredOptions,
             shake,
             options,
             optionLabel,
@@ -359,8 +379,8 @@ export default defineComponent({
             groupBy,
             groupOrder,
             searchText,
-            useSearch,
-            searchConfig,
+            isUsingSearch,
+            searchProps,
             toggleOpen,
             onClickOption,
             isSelectedAll,
