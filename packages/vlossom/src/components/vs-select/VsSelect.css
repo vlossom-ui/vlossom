@@ -1,27 +1,23 @@
 @reference 'tailwindcss';
 
 .vs-select {
+    --vs-select-height: initial;
+
     --vs-select-trigger-backgroundColor: initial;
     --vs-select-trigger-border: initial;
     --vs-select-trigger-borderRadius: initial;
     --vs-select-trigger-padding: initial;
     --vs-select-trigger-opacity: initial;
-    --vs-select-trigger-fontColor: initial;
-    --vs-select-trigger-fontSize: initial;
-    --vs-select-trigger-fontWeight: initial;
-    --vs-select-trigger-height: initial;
 
     .vs-select-trigger {
-        @apply relative box-border flex items-center overflow-hidden cursor-pointer;
+        @apply relative box-border flex cursor-pointer items-center overflow-hidden;
+
         opacity: var(--vs-select-trigger-opacity, 1);
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
         border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
         background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
-        height: var(--vs-select-trigger-height, var(--vs-default-comp-height));
-        color: var(--vs-select-trigger-fontColor, var(--vs-font-color));
-        font-weight: var(--vs-select-trigger-fontWeight, var(--vs-font-weight));
-        font-size: var(--vs-select-trigger-fontSize, var(--vs-font-size));
         padding: var(--vs-select-trigger-padding, 0 0.8rem);
+        height: var(--vs-select-height, var(--vs-default-comp-height));
 
         &:focus-within {
             outline: 1px solid var(--vs-line-color) !important;
@@ -30,3 +26,23 @@
     }
 }
 
+.vs-select-options {
+    --vs-select-options-border: initial;
+    --vs-select-options-borderRadius: initial;
+    --vs-select-options-padding: initial;
+
+    @apply overflow-hidden;
+
+    border: var(--vs-select-options-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-select-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    padding: var(--vs-select-options-padding, 0.6rem 0.4rem);
+
+    .vs-select-search {
+    }
+
+    .vs-select-all {
+    }
+
+    .vs-select-option {
+    }
+}
