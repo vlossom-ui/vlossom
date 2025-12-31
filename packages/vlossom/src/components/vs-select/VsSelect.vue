@@ -20,8 +20,37 @@
 
         <div :class="['vs-select', colorSchemeClass, triggerClassObj, stateClasses]" :style="styleSetVariables">
             <div ref="triggerRef" :id="triggerId" class="vs-select-trigger" @click="toggleOpen">
-                <!-- TODO: 선택된 값 표시 영역 -->
-                {{ inputValue }}
+                <template v-if="isEmpty">
+                    <span class="vs-select-placeholder">{{ placeholder }}</span>
+                </template>
+                <template v-else-if="multiple">
+                    <template v-if="collapseChips && displayChips.length > 1">
+                        <vs-chip
+                            v-for="chip in displayChips.slice(0, 1)"
+                            :key="chip.value"
+                            small
+                            :closable="closableChips"
+                            @close="removeValue(chip.value)"
+                        >
+                            {{ chip.label }}
+                        </vs-chip>
+                        <span class="vs-select-collapsed-count">+{{ displayChips.length - 1 }}</span>
+                    </template>
+                    <template v-else>
+                        <vs-chip
+                            v-for="chip in displayChips"
+                            :key="chip.value"
+                            small
+                            :closable="closableChips"
+                            @close="removeValue(chip.value)"
+                        >
+                            {{ chip.label }}
+                        </vs-chip>
+                    </template>
+                </template>
+                <template v-else>
+                    {{ displayLabel }}
+                </template>
             </div>
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
@@ -102,10 +131,12 @@ import {
 import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption, useOptionList } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet } from './types';
+import { selectIcons } from './icons';
 import { useVsSelectRules } from './vs-select-rules';
 
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
+import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsFloating from '@/components/vs-floating/VsFloating.vue';
 import VsGroupedList from '@/components/vs-grouped-list/VsGroupedList.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -114,7 +145,7 @@ import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 const componentName = VsComponent.VsSelect;
 export default defineComponent({
     name: componentName,
-    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsGroupedList },
+    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsChip, VsGroupedList },
     props: {
         ...getInputProps<any>(),
         ...getResponsiveProps(),
@@ -123,6 +154,9 @@ export default defineComponent({
         ...getOptionsProps(),
         ...getGroupByProps(),
         ...getMinMaxProps(componentName),
+        closableChips: { type: Boolean, default: false },
+        collapseChips: { type: Boolean, default: false },
+        multiple: { type: Boolean, default: false },
         optionsDisabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number, options: any[]) => boolean)>,
             default: false,
@@ -134,7 +168,6 @@ export default defineComponent({
             default: false,
         },
         selectAll: { type: Boolean, default: false },
-        multiple: { type: Boolean, default: false },
 
         // v-model
         modelValue: {
@@ -167,6 +200,7 @@ export default defineComponent({
             multiple,
             min,
             max,
+            placeholder,
         } = toRefs(props);
 
         const inputValue: Ref<any> = ref(modelValue.value);
@@ -226,7 +260,42 @@ export default defineComponent({
             return searchInputRef.value?.match(JSON.stringify(value)) ?? false;
         }
 
+        const isEmpty = computed(() => {
+            if (multiple.value) {
+                return !Array.isArray(inputValue.value) || inputValue.value.length === 0;
+            }
+            return inputValue.value === null || inputValue.value === undefined || inputValue.value === '';
+        });
+
+        const displayLabel = computed(() => {
+            if (isEmpty.value || !inputValue.value) {
+                return '';
+            }
+            const option = computedOptions.value.find((opt) => objectUtil.isEqual(opt.value, inputValue.value));
+            return option?.label ?? '';
+        });
+
+        const displayChips = computed(() => {
+            if (!multiple.value || !Array.isArray(inputValue.value) || inputValue.value.length === 0) {
+                return [];
+            }
+            return inputValue.value
+                .map((value) => {
+                    const option = computedOptions.value.find((opt) => objectUtil.isEqual(opt.value, value));
+                    return option ? { value: option.value, label: option.label } : null;
+                })
+                .filter((chip): chip is { value: any; label: string } => chip !== null);
+        });
+
+        function removeValue(valueToRemove: any) {
+            if (!multiple.value || !Array.isArray(inputValue.value)) {
+                return;
+            }
+            inputValue.value = inputValue.value.filter((v: any) => !objectUtil.isEqual(v, valueToRemove));
+        }
+
         const { requiredCheck, maxCheck, minCheck } = useVsSelectRules(required, multiple, min, max);
+
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
 
         function normalizeEmptyValue(value: any): any {
@@ -309,9 +378,8 @@ export default defineComponent({
                 return;
             }
 
-            const selectedValue = optionItem.value;
+            const selectingValue = optionItem.value;
 
-            console.log(selectedValue);
             if (multiple.value) {
                 if (!Array.isArray(inputValue.value)) {
                     inputValue.value = [];
@@ -319,19 +387,16 @@ export default defineComponent({
 
                 const currentValues = inputValue.value;
                 const index = currentValues.findIndex((v: any) => {
-                    return objectUtil.isEqual(v, selectedValue);
+                    return objectUtil.isEqual(v, selectingValue);
                 });
 
                 if (index >= 0) {
-                    // 이미 선택된 경우 제거
                     inputValue.value = currentValues.filter((_: any, i: number) => i !== index);
                 } else {
-                    // 선택되지 않은 경우 추가
-                    inputValue.value = [...currentValues, selectedValue];
+                    inputValue.value = [...currentValues, selectingValue];
                 }
             } else {
-                // single select인 경우
-                inputValue.value = selectedValue;
+                inputValue.value = selectingValue;
                 isOpen.value = false;
             }
 
@@ -391,6 +456,13 @@ export default defineComponent({
             blur,
             validate,
             clear,
+            selectIcons,
+            isEmpty,
+            displayLabel,
+            displayChips,
+            placeholder,
+            removeValue,
+            computedOptions,
         };
     },
 });

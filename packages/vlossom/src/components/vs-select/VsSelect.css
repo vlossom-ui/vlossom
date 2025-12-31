@@ -10,7 +10,7 @@
     --vs-select-trigger-opacity: initial;
 
     .vs-select-trigger {
-        @apply relative box-border flex cursor-pointer items-center overflow-hidden;
+        @apply relative box-border flex cursor-pointer items-center overflow-hidden gap-1;
 
         opacity: var(--vs-select-trigger-opacity, 1);
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
@@ -22,6 +22,14 @@
         &:focus-within {
             outline: 1px solid var(--vs-line-color) !important;
             outline-offset: 2px !important;
+        }
+
+        .vs-select-placeholder {
+            @apply opacity-50;
+        }
+
+        .vs-select-collapsed-count {
+            @apply opacity-70;
         }
     }
 }
