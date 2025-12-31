@@ -11,7 +11,7 @@ declare module 'vue' {
 export type { VsGroupedList };
 
 export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
-    scrollToItem: (item: any) => void;
+    scrollToItem: (id: string) => void;
 }
 
 export interface VsGroupedListStyleSet extends SizeStyleSet, BoxStyleSet {
