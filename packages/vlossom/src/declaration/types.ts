@@ -138,3 +138,12 @@ export interface StringModifiers {
     lower?: boolean;
     upper?: boolean;
 }
+
+export interface OptionItem {
+    id: string;
+    item: any;
+    label: string;
+    value: any;
+    index: number;
+    disabled: boolean;
+}
