@@ -1,0 +1,69 @@
+@reference 'tailwindcss';
+
+.vs-grouped-list {
+    --vs-grouped-list-width: initial;
+    --vs-grouped-list-height: initial;
+
+    --vs-grouped-list-backgroundColor: initial;
+    --vs-grouped-list-border: initial;
+    --vs-grouped-list-borderRadius: initial;
+    --vs-grouped-list-padding: initial;
+    --vs-grouped-list-opacity: initial;
+
+    --vs-grouped-list-gap: initial;
+
+    --vs-grouped-list-group-backgroundColor: initial;
+    --vs-grouped-list-group-border: initial;
+    --vs-grouped-list-group-borderRadius: initial;
+    --vs-grouped-list-group-padding: initial;
+    --vs-grouped-list-group-opacity: initial;
+
+    --vs-grouped-list-item-backgroundColor: initial;
+    --vs-grouped-list-item-border: initial;
+    --vs-grouped-list-item-borderRadius: initial;
+    --vs-grouped-list-item-padding: initial;
+    --vs-grouped-list-item-opacity: initial;
+
+    @apply pointer-events-auto;
+
+    opacity: var(--vs-grouped-list-opacity, 1);
+    border: var(--vs-grouped-list-border, none);
+    border-radius: var(--vs-grouped-list-borderRadius, 0);
+    background-color: var(--vs-grouped-list-backgroundColor, var(--vs-no-color));
+    width: var(--vs-grouped-list-width, auto);
+    max-height: var(--vs-grouped-list-height, auto);
+
+    .vs-grouped-list-list {
+        @apply flex flex-col;
+
+        gap: var(--vs-grouped-list-gap, 0);
+
+        .vs-grouped-list-group-content {
+            @apply cursor-default;
+
+            opacity: var(--vs-grouped-list-group-opacity, 0.5);
+            margin: 0.6rem 0 0.3rem 0;
+            border: var(--vs-grouped-list-group-border, none);
+            border-radius: var(--vs-grouped-list-group-borderRadius, 0);
+            background-color: var(--vs-grouped-list-group-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-grouped-list-group-padding, 0 0.6rem);
+            font-weight: 600;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .vs-grouped-list-item-content {
+            @apply cursor-pointer;
+
+            opacity: var(--vs-grouped-list-item-opacity, 1);
+            border: var(--vs-grouped-list-item-border, none);
+            border-radius: var(--vs-grouped-list-item-borderRadius, 0);
+            background-color: var(--vs-grouped-list-item-backgroundColor, var(--vs-no-color));
+            padding: var(--vs-grouped-list-item-padding, 0.2rem 1.2rem);
+        }
+
+        .vs-focused-index {
+            background-color: var(--vs-area-bg-hover);
+        }
+    }
+}

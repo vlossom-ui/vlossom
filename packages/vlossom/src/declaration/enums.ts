@@ -32,7 +32,7 @@ export enum VsComponent {
     VsModal = 'VsModal',
     VsModalNode = 'VsModalNode',
     VsModalView = 'VsModalView',
-    VsOptions = 'VsOptions',
+    VsGroupedList = 'VsGroupedList',
     VsPage = 'VsPage',
     VsPagination = 'VsPagination',
     VsProgress = 'VsProgress',
