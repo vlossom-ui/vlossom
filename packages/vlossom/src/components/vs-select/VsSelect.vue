@@ -19,38 +19,19 @@
         </template>
 
         <div :class="['vs-select', colorSchemeClass, triggerClassObj, stateClasses]" :style="styleSetVariables">
-            <div ref="triggerRef" :id="triggerId" class="vs-select-trigger" @click="toggleOpen">
-                <div class="vs-select-value" style="flex: 1">
-                    <template v-if="isEmpty">
-                        <span class="vs-select-placeholder">{{ placeholder }}</span>
-                    </template>
-                    <template v-else-if="multiple">
-                        <template v-if="collapseChips && selectedOptions.length > 1">
-                            <vs-chip small :closable="closableChips" @close="deselectOption(selectedOptions[0].id)">
-                                {{ selectedOptions[0].label }}
-                            </vs-chip>
-                            <span class="vs-select-collapsed-count">+{{ selectedOptions.length - 1 }}</span>
-                        </template>
-                        <template v-else>
-                            <vs-chip
-                                v-for="chip in selectedOptions"
-                                :key="chip.id"
-                                small
-                                :closable="closableChips"
-                                @close="deselectOption(chip.id)"
-                            >
-                                {{ chip.label }}
-                            </vs-chip>
-                        </template>
-                    </template>
-                    <template v-else>
-                        {{ displayLabel }}
-                    </template>
-                </div>
-                <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
-                    <vs-render :content="selectIcons.arrowDown" />
-                </div>
-            </div>
+            <vs-select-trigger
+                ref="triggerRef"
+                :id="triggerId"
+                :is-empty
+                :is-open
+                :placeholder
+                :multiple
+                :collapse-chips
+                :closable-chips
+                :selected-options
+                @click="toggleOpen"
+                @deselect="deselectOption"
+            />
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
                     ref="optionsListRef"
@@ -114,12 +95,11 @@ import {
     toRefs,
     useTemplateRef,
     ref,
+    watch,
     type PropType,
     type Ref,
     type TemplateRef,
     type ComputedRef,
-    watch,
-    nextTick,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -133,8 +113,7 @@ import {
 } from '@/props';
 import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption, useOptionList } from '@/composables';
 import { objectUtil } from '@/utils';
-import type { VsSelectStyleSet } from './types';
-import { selectIcons } from './icons';
+import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue } from './composables/select-value-composable';
 import { useSelectSearch } from './composables/select-search-composable';
@@ -142,17 +121,16 @@ import { useSelectSearch } from './composables/select-search-composable';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
-import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsFloating from '@/components/vs-floating/VsFloating.vue';
 import VsGroupedList from '@/components/vs-grouped-list/VsGroupedList.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
+import VsSelectTrigger from './VsSelectTrigger.vue';
 
 const componentName = VsComponent.VsSelect;
 export default defineComponent({
     name: componentName,
-    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsChip, VsGroupedList, VsRender },
+    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsGroupedList, VsSelectTrigger },
     props: {
         ...getInputProps<any>(),
         ...getResponsiveProps(),
@@ -191,8 +169,6 @@ export default defineComponent({
             optionLabel,
             optionValue,
             optionsDisabled,
-            groupBy,
-            groupOrder,
             modelValue,
             id,
             readonly,
@@ -207,14 +183,13 @@ export default defineComponent({
             multiple,
             min,
             max,
-            placeholder,
         } = toRefs(props);
 
         const isOpen = ref(false);
         const searchText = ref('');
         const inputValue: Ref<any> = ref(modelValue.value);
 
-        const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
+        const triggerRef: TemplateRef<VsSelectTriggerRef> = useTemplateRef('triggerRef');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
         const optionsListRef: TemplateRef<VsGroupedListRef> = useTemplateRef('optionsListRef');
 
@@ -287,7 +262,6 @@ export default defineComponent({
 
         const {
             selectedOptionIds,
-            availableOptionIds,
             isSelectedAll,
             isEmpty,
             selectedOptions,
@@ -328,14 +302,6 @@ export default defineComponent({
                 openOptions();
             }
         }
-
-        const displayLabel = computed(() => {
-            if (isEmpty.value || !inputValue.value) {
-                return '';
-            }
-
-            return selectedOptions.value[0]?.label ?? '';
-        });
 
         function onClickOption(optionItem: OptionItem) {
             if (computedDisabled.value || computedReadonly.value) {
@@ -446,9 +412,7 @@ export default defineComponent({
 
         watch(isOpen, () => {
             if (isOpen.value) {
-                nextTick(() => {
-                    document.addEventListener('click', onOutsideClick, true);
-                });
+                document.addEventListener('click', onOutsideClick, true);
             } else {
                 document.removeEventListener('click', onOutsideClick, true);
             }
@@ -473,14 +437,9 @@ export default defineComponent({
             computedReadonly,
             filteredOptions,
             shake,
-            options,
-            optionLabel,
-            optionValue,
             openOptions,
             closeOptions,
             toggleSelectAll,
-            groupBy,
-            groupOrder,
             searchText,
             isUsingSearch,
             searchProps,
@@ -488,21 +447,15 @@ export default defineComponent({
             onClickOption,
             isSelectedAll,
             computedColorScheme,
-            availableOptionIds,
-            selectedOptionIds,
             onFocus,
             onBlur,
             focus,
             blur,
             validate,
             clear,
-            selectIcons,
             isEmpty,
-            displayLabel,
             selectedOptions,
-            placeholder,
             deselectOption,
-            computedOptions,
         };
     },
 });

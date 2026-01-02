@@ -10,14 +10,14 @@
     --vs-select-trigger-opacity: initial;
 
     .vs-select-trigger {
-        @apply relative box-border flex cursor-pointer items-center overflow-hidden gap-1;
+        @apply relative box-border flex cursor-pointer items-center gap-1 overflow-hidden;
 
         opacity: var(--vs-select-trigger-opacity, 1);
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
         border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
         background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
         padding: var(--vs-select-trigger-padding, 0 0.8rem);
-        height: var(--vs-select-height, var(--vs-default-comp-height));
+        min-height: var(--vs-select-height, var(--vs-default-comp-height));
 
         &:focus-within {
             outline: 1px solid var(--vs-line-color) !important;
@@ -37,11 +37,11 @@
         }
 
         .vs-select-icon {
-            @apply flex items-center justify-center flex-shrink-0;
+            @apply flex flex-shrink-0 items-center justify-center;
             transition: transform 0.3s ease;
 
             svg {
-                @apply w-5 h-5;
+                @apply h-5 w-5;
             }
 
             &.vs-select-icon-open {
