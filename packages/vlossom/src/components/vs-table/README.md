@@ -120,7 +120,7 @@
             useCaseSensitive: false,
             useRegex: true
         }"
-        @search-rows="(rows, searchText) => console.log(rows, searchText)"
+        @search="(rows, searchText) => console.log(rows, searchText)"
     />
 </template>
 ```
@@ -224,12 +224,12 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Events
 
-| Event         | Payload                                    | Description                              |
-| ------------- | ------------------------------------------ | ---------------------------------------- |
-| `click-cell`  | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                          |
-| `select-row`  | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                 |
-| `expand-row`  | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                |
-| `search-rows` | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환 |
+| Event        | Payload                                    | Description                              |
+| ------------ | ------------------------------------------ | ---------------------------------------- |
+| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                          |
+| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                 |
+| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                |
+| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환 |
 
 ## 특징
 

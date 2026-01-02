@@ -278,7 +278,7 @@ describe('VsTable', () => {
             expect(emittedCells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0 });
         });
 
-        it('검색 입력 시 search-rows 이벤트를 발생시킨다', async () => {
+        it('검색 입력 시 search 이벤트를 발생시킨다', async () => {
             const wrapper = mount(VsTable, {
                 props: {
                     columns: defaultColumns,
@@ -305,7 +305,7 @@ describe('VsTable', () => {
 
             await wrapper.get('[data-testid="search-input"]').setValue('Alice');
 
-            const emittedSearchRows = wrapper.emitted('search-rows');
+            const emittedSearchRows = wrapper.emitted('search');
             expect(emittedSearchRows).toHaveLength(1);
 
             const [emittedRows, emittedSearchText] = emittedSearchRows![0] as [BodyCell[][], string];

@@ -1,6 +1,6 @@
 <template>
     <div :class="['vs-table', colorSchemeClass]">
-        <vs-table-search v-if="search" :search-options="search" @search-rows="searchRows" />
+        <vs-table-search v-if="search" :search-options="search" @search="searchRow" />
 
         <table>
             <caption v-if="$slots['caption']">
@@ -86,7 +86,7 @@ export default defineComponent({
             },
         },
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'search-rows', 'update:selectedItems'],
+    emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
     setup(props, { slots, emit }) {
         const { colorScheme } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -117,8 +117,8 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
-        function searchRows(rows: BodyCell[][], searchText: string): void {
-            emit('search-rows', rows, searchText);
+        function searchRow(rows: BodyCell[][], searchText: string): void {
+            emit('search', rows, searchText);
         }
 
         function updateSelectedItems(items: Item[]): void {
@@ -136,7 +136,7 @@ export default defineComponent({
             clickCell,
             selectRow,
             expandRow,
-            searchRows,
+            searchRow,
             updateSelectedItems,
         };
     },

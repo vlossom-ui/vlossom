@@ -16,7 +16,7 @@ import type { VsTableSearchOptions } from './types';
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 
 const defaultSearchOptions: VsTableSearchOptions = {
-    placeholder: 'Search...',
+    placeholder: 'Search',
     useCaseSensitive: true,
     useRegex: true,
 };
@@ -30,7 +30,7 @@ export default defineComponent({
             default: false,
         },
     },
-    emits: ['search-rows'],
+    emits: ['search'],
     setup(props, { emit }) {
         const { searchOptions } = toRefs(props);
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
@@ -44,7 +44,7 @@ export default defineComponent({
         });
 
         function onSearch(searchText: string): void {
-            emit('search-rows', bodyCells.value, searchText);
+            emit('search', bodyCells.value, searchText);
         }
 
         onMounted(() => {
