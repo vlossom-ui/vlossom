@@ -17,15 +17,17 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
     }
 
     function matchBySearch(row: BodyCell[]): boolean {
+        if (!tableSearchInputRef.value) {
+            return true;
+        }
+        const matchFn = tableSearchInputRef.value.match;
+
         return row.some((cell) => {
-            if (!tableSearchInputRef.value) {
-                return true;
-            }
             if (!searchColumnKeyList.value.includes(cell.colKey)) {
                 return false;
             }
             const cellValue = cell.value ? String(cell.value) : '';
-            return tableSearchInputRef.value.match(cellValue);
+            return matchFn(cellValue);
         });
     }
 
