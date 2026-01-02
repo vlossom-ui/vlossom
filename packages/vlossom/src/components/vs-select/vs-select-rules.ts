@@ -1,6 +1,6 @@
 import type { Ref } from 'vue';
 
-export function useVsSelectRules(
+export function useSelectRules(
     required: Ref<boolean>,
     multiple: Ref<boolean>,
     min: Ref<number | string>,

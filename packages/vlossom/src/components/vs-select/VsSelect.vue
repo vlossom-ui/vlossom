@@ -20,40 +20,40 @@
 
         <div :class="['vs-select', colorSchemeClass, triggerClassObj, stateClasses]" :style="styleSetVariables">
             <div ref="triggerRef" :id="triggerId" class="vs-select-trigger" @click="toggleOpen">
-                <template v-if="isEmpty">
-                    <span class="vs-select-placeholder">{{ placeholder }}</span>
-                </template>
-                <template v-else-if="multiple">
-                    <template v-if="collapseChips && displayChips.length > 1">
-                        <vs-chip
-                            v-for="chip in displayChips.slice(0, 1)"
-                            :key="chip.value"
-                            small
-                            :closable="closableChips"
-                            @close="removeValue(chip.value)"
-                        >
-                            {{ chip.label }}
-                        </vs-chip>
-                        <span class="vs-select-collapsed-count">+{{ displayChips.length - 1 }}</span>
+                <div class="vs-select-value" style="flex: 1">
+                    <template v-if="isEmpty">
+                        <span class="vs-select-placeholder">{{ placeholder }}</span>
+                    </template>
+                    <template v-else-if="multiple">
+                        <template v-if="collapseChips && selectedOptions.length > 1">
+                            <vs-chip small :closable="closableChips" @close="deselectOption(selectedOptions[0].id)">
+                                {{ selectedOptions[0].label }}
+                            </vs-chip>
+                            <span class="vs-select-collapsed-count">+{{ selectedOptions.length - 1 }}</span>
+                        </template>
+                        <template v-else>
+                            <vs-chip
+                                v-for="chip in selectedOptions"
+                                :key="chip.id"
+                                small
+                                :closable="closableChips"
+                                @close="deselectOption(chip.id)"
+                            >
+                                {{ chip.label }}
+                            </vs-chip>
+                        </template>
                     </template>
                     <template v-else>
-                        <vs-chip
-                            v-for="chip in displayChips"
-                            :key="chip.value"
-                            small
-                            :closable="closableChips"
-                            @close="removeValue(chip.value)"
-                        >
-                            {{ chip.label }}
-                        </vs-chip>
+                        {{ displayLabel }}
                     </template>
-                </template>
-                <template v-else>
-                    {{ displayLabel }}
-                </template>
+                </div>
+                <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
+                    <vs-render :content="selectIcons.arrowDown" />
+                </div>
             </div>
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
+                    ref="optionsListRef"
                     :class="['vs-select-options', colorSchemeClass]"
                     :style-set="componentStyleSet.options"
                     :items="filteredOptions"
@@ -117,6 +117,7 @@ import {
     type Ref,
     type TemplateRef,
     type ComputedRef,
+    watch,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -132,20 +133,24 @@ import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption, u
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet } from './types';
 import { selectIcons } from './icons';
-import { useVsSelectRules } from './vs-select-rules';
+import { useSelectRules } from './vs-select-rules';
+import { useSelectValue } from './composables/select-value-composable';
+import { useSelectSearch } from './composables/select-search-composable';
 
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
+import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsFloating from '@/components/vs-floating/VsFloating.vue';
 import VsGroupedList from '@/components/vs-grouped-list/VsGroupedList.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 
 const componentName = VsComponent.VsSelect;
 export default defineComponent({
     name: componentName,
-    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsChip, VsGroupedList },
+    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsChip, VsGroupedList, VsRender },
     props: {
         ...getInputProps<any>(),
         ...getResponsiveProps(),
@@ -203,12 +208,13 @@ export default defineComponent({
             placeholder,
         } = toRefs(props);
 
-        const inputValue: Ref<any> = ref(modelValue.value);
         const isOpen = ref(false);
         const searchText = ref('');
+        const inputValue: Ref<any> = ref(modelValue.value);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
+        const optionsListRef: TemplateRef<VsGroupedListRef> = useTemplateRef('optionsListRef');
 
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
 
@@ -225,85 +231,17 @@ export default defineComponent({
             });
         });
 
-        const isUsingSearch = computed(() => {
-            if (typeof search.value === 'boolean') {
-                return search.value;
-            }
+        const { isUsingSearch, searchProps } = useSelectSearch(search);
 
-            return (
-                search.value.useRegex !== undefined ||
-                search.value.useCaseSensitive !== undefined ||
-                search.value.placeholder !== undefined
-            );
-        });
-
-        const searchProps = computed(() => {
-            if (typeof search.value === 'boolean') {
-                return {
-                    useRegex: true,
-                    useCaseSensitive: true,
-                    placeholder: '',
-                };
-            }
-            return {
-                useRegex: search.value.useRegex ?? true,
-                useCaseSensitive: search.value.useCaseSensitive ?? true,
-                placeholder: search.value.placeholder ?? '',
-            };
-        });
-
-        const isSelectedAll = computed(() => {
-            return inputValue.value.length === options.value.length;
-        });
-
-        function optionsFilter({ value }: OptionItem) {
-            return searchInputRef.value?.match(JSON.stringify(value)) ?? false;
+        function onClear() {
+            clearSelected();
+            closeOptions();
+            searchText.value = '';
         }
 
-        const isEmpty = computed(() => {
-            if (multiple.value) {
-                return !Array.isArray(inputValue.value) || inputValue.value.length === 0;
-            }
-            return inputValue.value === null || inputValue.value === undefined || inputValue.value === '';
-        });
-
-        const displayLabel = computed(() => {
-            if (isEmpty.value || !inputValue.value) {
-                return '';
-            }
-            const option = computedOptions.value.find((opt) => objectUtil.isEqual(opt.value, inputValue.value));
-            return option?.label ?? '';
-        });
-
-        const displayChips = computed(() => {
-            if (!multiple.value || !Array.isArray(inputValue.value) || inputValue.value.length === 0) {
-                return [];
-            }
-            return inputValue.value
-                .map((value) => {
-                    const option = computedOptions.value.find((opt) => objectUtil.isEqual(opt.value, value));
-                    return option ? { value: option.value, label: option.label } : null;
-                })
-                .filter((chip): chip is { value: any; label: string } => chip !== null);
-        });
-
-        function removeValue(valueToRemove: any) {
-            if (!multiple.value || !Array.isArray(inputValue.value)) {
-                return;
-            }
-            inputValue.value = inputValue.value.filter((v: any) => !objectUtil.isEqual(v, valueToRemove));
-        }
-
-        const { requiredCheck, maxCheck, minCheck } = useVsSelectRules(required, multiple, min, max);
+        const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
 
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
-
-        function normalizeEmptyValue(value: any): any {
-            if (value === null || value === undefined || value === '') {
-                return multiple.value ? [] : null;
-            }
-            return value;
-        }
 
         const {
             computedId,
@@ -335,17 +273,34 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        inputValue.value = normalizeEmptyValue(inputValue.value);
+                        inputValue.value = convertValue(inputValue.value);
                     },
                     onChange: () => {
-                        inputValue.value = normalizeEmptyValue(inputValue.value);
+                        inputValue.value = convertValue(inputValue.value);
                     },
-                    onClear: () => {
-                        inputValue.value = multiple.value ? [] : null;
-                    },
+                    onClear,
                 },
             },
         );
+
+        const {
+            selectedOptionIds,
+            availableOptionIds,
+            isSelectedAll,
+            isEmpty,
+            selectedOptions,
+            convertValue,
+            deselectOption,
+            toggleSelect,
+            clearSelected,
+            toggleSelectAll,
+        } = useSelectValue({
+            computedReadonly,
+            computedDisabled,
+            computedOptions,
+            filteredOptions,
+            multiple,
+        });
 
         const { stateClasses } = useStateClass(computedState);
 
@@ -363,41 +318,31 @@ export default defineComponent({
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
-            isOpen.value = !isOpen.value;
+
+            if (isOpen.value) {
+                closeOptions();
+            } else {
+                openOptions();
+            }
         }
 
-        function toggleSelectAll() {
-            if (computedDisabled.value || computedReadonly.value || !multiple.value) {
-                return;
+        const displayLabel = computed(() => {
+            if (isEmpty.value || !inputValue.value) {
+                return '';
             }
-            inputValue.value = options.value.map((option: any) => option.value);
-        }
+
+            return selectedOptions.value[0]?.label ?? '';
+        });
 
         function onClickOption(optionItem: OptionItem) {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
-            const selectingValue = optionItem.value;
+            toggleSelect(optionItem.id);
 
-            if (multiple.value) {
-                if (!Array.isArray(inputValue.value)) {
-                    inputValue.value = [];
-                }
-
-                const currentValues = inputValue.value;
-                const index = currentValues.findIndex((v: any) => {
-                    return objectUtil.isEqual(v, selectingValue);
-                });
-
-                if (index >= 0) {
-                    inputValue.value = currentValues.filter((_: any, i: number) => i !== index);
-                } else {
-                    inputValue.value = [...currentValues, selectingValue];
-                }
-            } else {
-                inputValue.value = selectingValue;
-                isOpen.value = false;
+            if (!multiple.value) {
+                closeOptions();
             }
 
             emit('click-option', optionItem);
@@ -419,9 +364,74 @@ export default defineComponent({
             triggerRef.value?.blur();
         }
 
+        function openOptions() {
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            isOpen.value = true;
+        }
+
+        function closeOptions() {
+            isOpen.value = false;
+        }
+
+        watch(
+            selectedOptionIds,
+            () => {
+                if (multiple.value) {
+                    inputValue.value = selectedOptionIds.value
+                        .map((optionId) => {
+                            const option = computedOptions.value.find((o) => o.id === optionId);
+                            return option ? option.value : null;
+                        })
+                        .filter((v) => v !== null);
+                } else {
+                    const selectedOptionId = selectedOptionIds.value[0];
+                    const selectedOption = computedOptions.value.find((o) => o.id === selectedOptionId);
+                    inputValue.value = selectedOption ? selectedOption.value : null;
+                }
+            },
+            { deep: true },
+        );
+
+        watch(
+            inputValue,
+            (newInputValue, oldInputValue) => {
+                if (objectUtil.isEqual(newInputValue, oldInputValue)) {
+                    return;
+                }
+
+                if (newInputValue === undefined || newInputValue === null) {
+                    selectedOptionIds.value = [];
+                    return;
+                }
+
+                const isArrayMultiple = multiple.value && Array.isArray(inputValue.value);
+                const inputValueArray = isArrayMultiple ? inputValue.value : [inputValue.value];
+
+                selectedOptionIds.value = inputValueArray
+                    .map((v: any) => {
+                        for (const option of computedOptions.value) {
+                            if (objectUtil.isEqual(option.value, v)) {
+                                return option.id;
+                            }
+                        }
+                        return null;
+                    })
+                    .filter((v: any) => v !== null);
+            },
+            { immediate: true },
+        );
+
+        watch([computedDisabled, computedReadonly], () => {
+            closeOptions();
+        });
+
         return {
             triggerRef,
             searchInputRef,
+            optionsListRef,
             triggerId,
             isOpen,
             inputValue,
@@ -439,7 +449,8 @@ export default defineComponent({
             options,
             optionLabel,
             optionValue,
-            optionsFilter,
+            openOptions,
+            closeOptions,
             toggleSelectAll,
             groupBy,
             groupOrder,
@@ -450,6 +461,8 @@ export default defineComponent({
             onClickOption,
             isSelectedAll,
             computedColorScheme,
+            availableOptionIds,
+            selectedOptionIds,
             onFocus,
             onBlur,
             focus,
@@ -459,9 +472,9 @@ export default defineComponent({
             selectIcons,
             isEmpty,
             displayLabel,
-            displayChips,
+            selectedOptions,
             placeholder,
-            removeValue,
+            deselectOption,
             computedOptions,
         };
     },

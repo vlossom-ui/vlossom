@@ -16,7 +16,7 @@ export function useOptionList(
             const value = getOptionValue(option);
 
             return {
-                id: stringUtil.hash(label),
+                id: stringUtil.hash(label + index), // unique id for each option
                 item: option,
                 label,
                 value,

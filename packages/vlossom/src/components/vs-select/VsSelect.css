@@ -24,12 +24,29 @@
             outline-offset: 2px !important;
         }
 
+        .vs-select-value {
+            @apply flex items-center gap-1 overflow-hidden;
+        }
+
         .vs-select-placeholder {
             @apply opacity-50;
         }
 
         .vs-select-collapsed-count {
             @apply opacity-70;
+        }
+
+        .vs-select-icon {
+            @apply flex items-center justify-center flex-shrink-0;
+            transition: transform 0.3s ease;
+
+            svg {
+                @apply w-5 h-5;
+            }
+
+            &.vs-select-icon-open {
+                transform: rotate(180deg);
+            }
         }
     }
 }
