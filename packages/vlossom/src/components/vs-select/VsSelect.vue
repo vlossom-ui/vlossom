@@ -54,6 +54,7 @@
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
                     ref="optionsListRef"
+                    :id="optionsId"
                     :class="['vs-select-options', colorSchemeClass]"
                     :style-set="componentStyleSet.options"
                     :items="filteredOptions"
@@ -118,6 +119,7 @@ import {
     type TemplateRef,
     type ComputedRef,
     watch,
+    nextTick,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -227,7 +229,7 @@ export default defineComponent({
                 return computedOptions.value;
             }
             return computedOptions.value.filter((option) => {
-                return searchInputRef.value?.match(JSON.stringify(option.value));
+                return searchInputRef.value?.match(option.label);
             });
         });
 
@@ -305,6 +307,7 @@ export default defineComponent({
         const { stateClasses } = useStateClass(computedState);
 
         const triggerId = computed(() => `${computedId.value}-trigger`);
+        const optionsId = computed(() => `${computedId.value}-options`);
 
         const triggerClassObj = computed(() => ({
             'vs-small': small.value,
@@ -428,11 +431,35 @@ export default defineComponent({
             closeOptions();
         });
 
+        function onOutsideClick(e: MouseEvent) {
+            const target = e.target as HTMLElement;
+
+            // check if click outside of select
+            if (
+                isOpen.value &&
+                target.closest(`#${triggerId.value}`) === null &&
+                target.closest(`#${optionsId.value}`) === null
+            ) {
+                closeOptions();
+            }
+        }
+
+        watch(isOpen, () => {
+            if (isOpen.value) {
+                nextTick(() => {
+                    document.addEventListener('click', onOutsideClick, true);
+                });
+            } else {
+                document.removeEventListener('click', onOutsideClick, true);
+            }
+        });
+
         return {
             triggerRef,
             searchInputRef,
             optionsListRef,
             triggerId,
+            optionsId,
             isOpen,
             inputValue,
             colorSchemeClass,
