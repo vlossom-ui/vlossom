@@ -42,8 +42,8 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(1);
-            expect(store.overlays.value[0][0]).toBe(overlayId);
-            expect(store.overlays.value[0][1]).toStrictEqual(callbacks);
+            expect(store.overlays.value[0]![0]).toBe(overlayId);
+            expect(store.overlays.value[0]![1]).toStrictEqual(callbacks);
             expect(vlossomOpenCallback).toHaveBeenCalledTimes(1);
             expect(openCallback).toHaveBeenCalledTimes(1);
         });
@@ -61,8 +61,8 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(2);
-            expect(store.overlays.value[0][0]).toBe(overlay1);
-            expect(store.overlays.value[1][0]).toBe(overlay2);
+            expect(store.overlays.value[0]![0]).toBe(overlay1);
+            expect(store.overlays.value[1]![0]).toBe(overlay2);
         });
 
         it('open 콜백이 없어도 정상 작동해야 한다', async () => {
@@ -70,10 +70,10 @@ describe('OverlayCallbackStore', () => {
             const overlayId = 'test-overlay';
             const callbacks: Ref<OverlayCallbacks> = ref({});
 
-            // when & then
-            expect(async () => {
-                await store.push(overlayId, callbacks);
-            }).not.toThrow();
+            // when
+            await store.push(overlayId, callbacks);
+
+            // then
             expect(store.overlays.value).toHaveLength(1);
         });
     });
@@ -144,10 +144,10 @@ describe('OverlayCallbackStore', () => {
             const callbacks: Ref<OverlayCallbacks> = ref({});
             await store.push(overlayId, callbacks);
 
-            // when & then
-            expect(async () => {
-                await store.pop();
-            }).not.toThrow();
+            // when
+            await store.pop();
+
+            // then
             expect(store.overlays.value).toHaveLength(0);
         });
     });
@@ -170,7 +170,7 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(1);
-            expect(store.overlays.value[0][0]).toBe(overlay2);
+            expect(store.overlays.value[0]![0]).toBe(overlay2);
             expect(closeCallback1).toHaveBeenCalledTimes(1);
             expect(closeCallback2).not.toHaveBeenCalled();
         });
@@ -181,10 +181,10 @@ describe('OverlayCallbackStore', () => {
             const callbacks: Ref<OverlayCallbacks> = ref({});
             await store.push(overlayId, callbacks);
 
-            // when & then
-            expect(async () => {
-                await store.remove('non-existing-overlay');
-            }).not.toThrow();
+            // when
+            await store.remove('non-existing-overlay');
+
+            // then
             expect(store.overlays.value).toHaveLength(1);
         });
 
@@ -256,10 +256,11 @@ describe('OverlayCallbackStore', () => {
         });
 
         it('overlay가 없을 때도 정상 작동해야 한다', async () => {
-            // when & then
-            expect(async () => {
-                await store.clear();
-            }).not.toThrow();
+            // when
+            await store.clear();
+
+            // then
+            expect(store.overlays.value).toHaveLength(0);
         });
 
         it('인자를 모든 콜백에 전달해야 한다', async () => {
