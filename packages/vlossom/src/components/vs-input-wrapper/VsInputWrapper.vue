@@ -40,10 +40,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
-import { VsComponent, type StateMessage, type UIState } from '@/declaration';
+import { VsComponent, type StateMessage, type UIState, type Size } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
-import { stringUtil } from '@/utils';
 import type { VsInputWrapperStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -69,11 +68,11 @@ export default defineComponent({
 
         const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
 
-        const messageSize = computed(() => {
-            if (componentStyleSet.value?.messages?.fontSize) {
-                return stringUtil.toStringSize(componentStyleSet.value.messages.fontSize);
+        const messageSize = computed((): Size => {
+            if (componentStyleSet.value?.messages?.size) {
+                return componentStyleSet.value.messages.size;
             }
-            return small.value ? '0.8rem' : '0.9rem';
+            return small.value ? 'sm' : 'md';
         });
 
         const needToShake = ref(false);

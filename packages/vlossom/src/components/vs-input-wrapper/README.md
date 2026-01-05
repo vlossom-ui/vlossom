@@ -113,7 +113,7 @@ interface VsInputWrapperStyleSet {
 
     messages?: {
         marginTop?: string;
-        fontSize?: string;
+        size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     };
 }
 ```

@@ -274,21 +274,21 @@ describe('VsInputWrapper', () => {
     });
 
     describe('styleSet', () => {
-        it('styleSet의 messages fontSize가 주어지면 messageSize에 반영되어야 한다', () => {
+        it('styleSet의 messages size가 주어지면 messageSize에 반영되어야 한다', () => {
             // given, when
             const wrapper = mount(VsInputWrapper, {
                 props: {
                     messages: [{ state: 'error', text: '에러 메시지' }],
                     styleSet: {
                         messages: {
-                            fontSize: '1.2rem',
+                            size: 'lg',
                         },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.messageSize).toBe('1.2rem');
+            expect(wrapper.vm.messageSize).toBe('lg');
         });
     });
 });
