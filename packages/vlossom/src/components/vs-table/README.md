@@ -104,6 +104,29 @@
 
 > 헤더 클릭 시 오름차순(ASCEND) → 내림차순(DESCEND) → 정렬 해제(NONE) 순으로 토글됩니다.
 
+### 검색 (Search)
+
+```html
+<template>
+    <vs-table
+        :columns="[
+            { key: 'name', label: '이름' },
+            { key: 'age', label: '나이' },
+            { key: 'email', label: '이메일', skipSearch: true },
+        ]"
+        :items="items"
+        :search="{
+            placeholder: '이름 검색',
+            useCaseSensitive: false,
+            useRegex: true
+        }"
+        @search="(rows, searchText) => console.log(rows, searchText)"
+    />
+</template>
+```
+
+> `search`를 `true` 또는 옵션 객체로 전달하면 검색 입력이 표시되며, `skipSearch`가 지정된 컬럼은 검색 대상에서 제외됩니다.
+
 ### 행 확장 (Expand)
 
 ```html
@@ -136,6 +159,7 @@
 | `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체              |
 | `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
 | `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
+| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션               |
 | `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
 | `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수 |
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)     |
@@ -154,7 +178,14 @@ interface ColumnDef<I = Item> {
     width?: SizeProp;
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
+    skipSearch?: boolean;
     transform?: (value: unknown, item: I) => unknown;
+}
+
+interface VsTableSearchOptions {
+    placeholder?: string;
+    useCaseSensitive?: boolean;
+    useRegex?: boolean;
 }
 
 interface HeaderCell extends Cell {
@@ -193,11 +224,12 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Events
 
-| Event        | Payload                                | Description              |
-| ------------ | -------------------------------------- | ------------------------ |
-| `click-cell` | `(cell: BodyCell, event: MouseEvent)`  | 셀 클릭 시 발생          |
-| `select-row` | `(row: BodyCell[], event: MouseEvent)` | 행(셀 배열) 선택 시 발생 |
-| `expand-row` | `(row: BodyCell[], event: MouseEvent)` | 행 확장 버튼 클릭 시 발생 |
+| Event        | Payload                                    | Description                              |
+| ------------ | ------------------------------------------ | ---------------------------------------- |
+| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                          |
+| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                 |
+| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                |
+| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환 |
 
 ## 특징
 
@@ -207,3 +239,4 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
+- **행 검색**: `search` 옵션으로 검색 입력을 제공하고, `skipSearch`로 제외 컬럼을 제어

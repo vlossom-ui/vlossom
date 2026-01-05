@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
-import type { BodyCell, HeaderCell } from './../types';
+import type { BodyCell, HeaderCell, Item } from './../types';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
@@ -258,6 +258,61 @@ describe('VsTable', () => {
             await selectCell.trigger('click');
 
             expect(wrapper.emitted('select-row')).toBeUndefined();
+        });
+
+        it('expand 버튼 클릭 시 expand-row 이벤트를 발생시킨다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+            });
+
+            await nextTick();
+            const expandButton = wrapper.get('tbody tr button');
+
+            await expandButton.trigger('click');
+
+            const emittedExpandRow = wrapper.emitted('expand-row');
+            expect(emittedExpandRow).toHaveLength(1);
+
+            const [emittedCells, emittedEvent] = emittedExpandRow![0] as [BodyCell[], Event];
+            expect(emittedEvent).toBeInstanceOf(Event);
+            expect(emittedCells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0 });
+        });
+
+        it('검색 입력 시 search 이벤트를 발생시킨다', async () => {
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items: tableItems,
+                    search: true,
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-search-input': {
+                            template: '<input data-testid="search-input" @input="emitSearch" />',
+                            methods: {
+                                match: () => true,
+                                emitSearch(event: Event) {
+                                    this.$emit('search', (event.target as HTMLInputElement).value);
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+
+            await wrapper.get('[data-testid="search-input"]').setValue('Alice');
+
+            const emittedSearchRows = wrapper.emitted('search');
+            expect(emittedSearchRows).toHaveLength(1);
+
+            const [emittedItems, emittedSearchText] = emittedSearchRows![0] as [Item[], string];
+            expect(emittedSearchText).toBe('Alice');
+            expect(emittedItems).toHaveLength(tableItems.length);
+            expect(emittedItems[0]).toMatchObject({ id: '1', name: 'Alice', age: 24 });
+            expect(emittedItems[1]).toMatchObject({ id: '2', name: 'Bob', age: 30 });
         });
     });
 
