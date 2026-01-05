@@ -7,7 +7,58 @@
     fill: var(--vs-primary-comp-bg);
     stroke: var(--vs-primary-comp-bg);
 
+    .vs-message-icon {
+        @apply flex-shrink-0;
+        width: var(--vs-font-size);
+        height: var(--vs-font-size);
+    }
+
     .vs-message-text {
         @apply ml-1;
+        font-size: var(--vs-font-size);
+    }
+
+    &.vs-xs {
+        .vs-message-icon {
+            width: var(--vs-font-size-xs);
+            height: var(--vs-font-size-xs);
+        }
+
+        .vs-message-text {
+            font-size: var(--vs-font-size-xs);
+        }
+    }
+
+    &.vs-sm {
+        .vs-message-icon {
+            width: var(--vs-font-size-sm);
+            height: var(--vs-font-size-sm);
+        }
+
+        .vs-message-text {
+            font-size: var(--vs-font-size-sm);
+        }
+    }
+
+    &.vs-lg {
+        .vs-message-icon {
+            width: var(--vs-font-size-lg);
+            height: var(--vs-font-size-lg);
+        }
+
+        .vs-message-text {
+            font-size: var(--vs-font-size-lg);
+        }
+    }
+
+    &.vs-xl {
+        .vs-message-icon {
+            width: var(--vs-font-size-xl);
+            height: var(--vs-font-size-xl);
+        }
+
+        .vs-message-text {
+            font-size: var(--vs-font-size-xl);
+        }
     }
 }

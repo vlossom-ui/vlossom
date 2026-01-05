@@ -4,36 +4,30 @@ import VsMessage from './../VsMessage.vue';
 
 describe('VsMessage', () => {
     describe('size prop', () => {
-        it('기본값이 1rem이어야 한다', () => {
+        it('size prop이 주어지지 않으면 사이즈 클래스가 없다', () => {
             // given, when
             const wrapper = mount(VsMessage);
 
             // then
-            expect(wrapper.vm.sizeValue).toBe('1rem');
+            expect(wrapper.classes()).not.toContain('vs-xs');
+            expect(wrapper.classes()).not.toContain('vs-sm');
+            expect(wrapper.classes()).not.toContain('vs-lg');
+            expect(wrapper.classes()).not.toContain('vs-xl');
         });
 
-        it('문자열 size가 올바르게 변환되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsMessage, {
-                props: {
-                    size: '2rem',
-                },
+        it('size prop에 따라 해당하는 클래스가 적용된다', () => {
+            // given
+            const sizes = ['xs', 'sm', 'lg', 'xl'] as const;
+
+            sizes.forEach((size) => {
+                // when
+                const wrapper = mount(VsMessage, {
+                    props: { size },
+                });
+
+                // then
+                expect(wrapper.classes()).toContain(`vs-${size}`);
             });
-
-            // then
-            expect(wrapper.vm.sizeValue).toBe('2rem');
-        });
-
-        it('숫자 size가 올바르게 변환되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsMessage, {
-                props: {
-                    size: 24,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.sizeValue).toBe('24px');
         });
     });
 

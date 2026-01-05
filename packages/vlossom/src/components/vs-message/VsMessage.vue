@@ -1,16 +1,15 @@
 <template>
-    <div :class="['vs-message', colorClass]">
-        <i :style="{ width: sizeValue, height: sizeValue, 'flex-shrink': 0 }">
+    <div :class="['vs-message', colorClass, sizeClass]">
+        <i class="vs-message-icon">
             <vs-render :content="icon" />
         </i>
-        <span class="vs-message-text" :style="{ fontSize: sizeValue }">{{ text }}</span>
+        <span class="vs-message-text">{{ text }}</span>
     </div>
 </template>
 
 <script lang="ts">
 import { type PropType, computed, defineComponent, toRefs } from 'vue';
-import { VsComponent, type UIState } from '@/declaration';
-import { stringUtil } from '@/utils';
+import { VsComponent, type UIState, type Size } from '@/declaration';
 import { messageIcons } from './icons';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -20,7 +19,7 @@ export default defineComponent({
     name: componentName,
     components: { VsRender },
     props: {
-        size: { type: [String, Number], default: '1rem' },
+        size: { type: String as PropType<Size>, default: 'md' },
         state: {
             type: String as PropType<UIState>,
             default: 'idle',
@@ -45,15 +44,13 @@ export default defineComponent({
             }
         });
 
-        const sizeValue = computed(() => {
-            return stringUtil.toStringSize(size.value);
-        });
+        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
 
         const icon = computed(() => {
             return messageIcons[state.value];
         });
 
-        return { colorClass, icon, sizeValue };
+        return { colorClass, icon, sizeClass };
     },
 });
 </script>
