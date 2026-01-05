@@ -41,7 +41,7 @@ export default defineComponent({
         closable: { type: Boolean, default: false },
         outline: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
-        size: { type: String as PropType<Size> },
+        size: { type: String as PropType<Size>, default: 'md' },
     },
     emits: ['close'],
     setup(props, { slots }) {

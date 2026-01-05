@@ -44,7 +44,7 @@ export default defineComponent({
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(componentName, styleSet);
 
-        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
+        const sizeClass = computed(() => `vs-${size.value}`);
 
         const classObj = computed(() => ({
             'vs-focus-visible': !disabled.value && !loading.value,
