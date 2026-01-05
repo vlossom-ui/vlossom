@@ -23,6 +23,13 @@ const baseItems = [
     { name: 'Allison', age: 28, metadata: { email: 'ally@example.com' }, id: '4' },
 ];
 
+const paginationItems = Array.from({ length: 120 }, (_, i) => ({
+    id: `${i}`,
+    name: `User ${i + 1}`,
+    age: 20 + (i % 50),
+    metadata: { email: `user${i + 1}@example.com` },
+}));
+
 const meta: Meta<typeof VsTable> = {
     title: 'Components/Base Components/VsTable',
     component: VsTable,
@@ -58,6 +65,10 @@ const meta: Meta<typeof VsTable> = {
         search: {
             control: { type: 'object' },
             description: '검색 입력 표시 여부 및 옵션(`useCaseSensitive`, `useRegex`).',
+        },
+        pagination: {
+            control: { type: 'object' },
+            description: '페이지네이션 활성화 여부 및 옵션. 기본 pageSize=50, showTotal=true.',
         },
         expandable: {
             control: { type: 'boolean' },
@@ -347,6 +358,122 @@ export const Responsive: Story = {
         docs: {
             description: {
                 story: 'responsive를 true로 켠 상태에서 좁은 화면에서 카드형(모바일) 테이블 레이아웃을 확인합니다.',
+            },
+        },
+    },
+};
+
+export const WithPagination: Story = {
+    args: {
+        columns: sortableColumns,
+        items: Array.from({ length: 150 }, (_, i) => ({
+            id: `${i}`,
+            name: `User ${i + 1}`,
+            age: 20 + (i % 50),
+            metadata: { email: `user${i + 1}@example.com` },
+        })),
+        pagination: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '150개 아이템에 대해 페이지네이션을 적용합니다. 기본 페이지 크기는 50입니다.',
+            },
+        },
+    },
+};
+
+export const WithCustomPagination: Story = {
+    args: {
+        columns: sortableColumns,
+        items: Array.from({ length: 100 }, (_, i) => ({
+            id: `${i}`,
+            name: `User ${i + 1}`,
+            age: 20 + (i % 50),
+            metadata: { email: `user${i + 1}@example.com` },
+        })),
+        pageSize: 25,
+        pagination: {
+            pageSizeOptions: [10, 25, 50],
+            showingLength: 5,
+            edgeButtons: true,
+        },
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '커스텀 페이지네이션 옵션을 적용합니다. 페이지 크기 25, 표시할 페이지 버튼 수 5, 첫/마지막 버튼 활성화.',
+            },
+        },
+    },
+};
+
+export const PaginationWithEvent: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const currentPage = ref(0);
+            const currentPageSize = ref(20);
+
+            const onPageChange = (page: number, pageSize: number) => {
+                currentPage.value = page;
+                currentPageSize.value = pageSize;
+            };
+
+            return {
+                columns: sortableColumns,
+                items: paginationItems,
+                currentPage,
+                currentPageSize,
+                onPageChange,
+            };
+        },
+        template: `
+            <div class="space-y-2">
+                <vs-table
+                    :columns="columns"
+                    :items="items"
+                    :page-size="currentPageSize"
+                    :pagination="{
+                        pageSizeOptions: [10, 20, 50],
+                        showingLength: 5,
+                        edgeButtons: true,
+                        showTotal: true
+                    }"
+                    @page-change="onPageChange"
+                />
+                <p class="text-sm text-slate-600">
+                    현재 페이지: {{ currentPage + 1 }} / 페이지 크기: {{ currentPageSize }}
+                </p>
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'page-change 이벤트를 통해 현재 페이지 인덱스와 페이지 크기를 동기화하는 예제입니다.',
+            },
+        },
+    },
+};
+
+export const WithSearchSortPagination: Story = {
+    args: {
+        columns: sortableColumns,
+        items: Array.from({ length: 200 }, (_, i) => ({
+            id: `${i}`,
+            name: i % 2 === 0 ? `Alice ${i + 1}` : `Bob ${i + 1}`,
+            age: 20 + (i % 50),
+            metadata: { email: `user${i + 1}@example.com` },
+        })),
+        search: true,
+        pageSize: 20,
+        pagination: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: '검색, 정렬, 페이지네이션이 모두 활성화된 테이블입니다. 검색이나 정렬 변경 시 자동으로 첫 페이지로 리셋됩니다.',
             },
         },
     },

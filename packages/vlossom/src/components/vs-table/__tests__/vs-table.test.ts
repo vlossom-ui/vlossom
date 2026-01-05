@@ -21,6 +21,12 @@ const defaultGlobal = {
         'vs-checkbox': true,
         'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
         'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
+        'vs-pagination': {
+            props: ['modelValue', 'length', 'showingLength', 'edgeButtons'],
+            emits: ['update:modelValue', 'change'],
+            template:
+                '<button data-testid="vs-pagination" @click="$emit(\'update:modelValue\', modelValue + 1); $emit(\'change\', modelValue + 1)">Pagination</button>',
+        },
     },
 };
 
@@ -175,6 +181,35 @@ describe('VsTable', () => {
             expect(cells).toHaveLength(defaultColumns.length);
             expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
             expect(cells[0].item).toStrictEqual(tableItems[0]);
+        });
+    });
+
+    describe('pagination', () => {
+        it('pagination을 활성화하면 페이지네이션과 페이지 크기 셀렉터를 렌더링한다', async () => {
+            const wrapper = mountTable({
+                props: { pagination: true },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
+            const pageSizeOptions = wrapper.findAll('.vs-page-size-select option');
+            expect(pageSizeOptions).toHaveLength(4); // 기본 옵션 [10, 25, 50, 100]
+        });
+
+        it('vs-pagination change 이벤트를 change-page로 전달한다', async () => {
+            const wrapper = mountTable({
+                props: { pagination: true },
+            });
+
+            await nextTick();
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+
+            const emitted = wrapper.emitted('change-page');
+            expect(emitted).toHaveLength(1);
+            const [page, pageSize] = emitted![0] as [number, number];
+            expect(page).toBe(1); // modelValue(0) + 1
+            expect(pageSize).toBe(50); // 기본 pageSize
         });
     });
 
@@ -349,6 +384,94 @@ describe('VsTable', () => {
 
             expect(wrapper.emitted('update:selectedItems')).toHaveLength(1);
             expect(wrapper.emitted('update:selectedItems')![0]).toEqual([tableItems]);
+        });
+
+        it('page prop을 사용하여 초기 페이지를 설정한다', async () => {
+            const largeItems = Array.from({ length: 100 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: largeItems,
+                    pagination: { pageSize: 10 },
+                    page: 2,
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.props('page')).toBe(2);
+        });
+
+        it('외부에서 page prop을 변경하면 update:page 이벤트를 발생시킨다', async () => {
+            const largeItems = Array.from({ length: 100 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: largeItems,
+                    pagination: true,
+                    page: 0,
+                },
+            });
+
+            await nextTick();
+
+            wrapper.setProps({ page: 3 });
+            await nextTick();
+
+            const emitted = wrapper.emitted('update:page');
+            expect(emitted).toBeDefined();
+            expect(emitted!.length).toBeGreaterThan(0);
+        });
+
+        it('vs-pagination 변경 시 update:page 이벤트를 발생시킨다', async () => {
+            const largeItems = Array.from({ length: 100 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: largeItems,
+                    pagination: true,
+                    page: 0,
+                },
+            });
+
+            await nextTick();
+
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await nextTick();
+
+            const emitted = wrapper.emitted('update:page');
+            expect(emitted).toBeDefined();
+            expect(emitted!.length).toBeGreaterThan(0);
+        });
+
+        it('초기 page와 pageSize가 반영되어 해당 페이지 아이템을 렌더링한다', async () => {
+            const items = Array.from({ length: 30 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i + 1}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: { pagination: true, pageSize: 10, page: 2, items },
+            });
+
+            await nextTick();
+
+            const cells = bodyTextsOf(wrapper);
+            expect(cells[0]).toBe('User 21'); // page=2, pageSize=10 → 21번째 아이템부터
+            expect(wrapper.emitted('update:page')).toBeUndefined();
         });
     });
 });

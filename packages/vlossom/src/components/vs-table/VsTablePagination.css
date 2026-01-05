@@ -1,0 +1,32 @@
+.vs-table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--vs-border-color, #e5e7eb);
+    padding: 1rem;
+}
+
+.vs-table-pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vs-page-size-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.vs-page-size-select {
+    cursor: pointer;
+    border: 1px solid var(--vs-border-color, #d1d5db);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.vs-total-items {
+    color: var(--vs-text-secondary-color, #6b7280);
+    font-size: 0.875rem;
+}

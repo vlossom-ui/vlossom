@@ -11,12 +11,14 @@ import {
     type HeaderCell,
     type Cell,
     type Item,
+    type VsTablePaginationOptions,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
+import { useTablePagination } from './table-pagination-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -30,6 +32,9 @@ export function useTable(
         selectable: rawSelectable,
         expandable: rawExpandable,
         selectedItems: rawSelectedItems,
+        pagination: rawPagination,
+        page,
+        pageSize,
     } = toRefs(props);
 
     // normalize
@@ -68,6 +73,26 @@ export function useTable(
         }
         return rawSelectedItems.value;
     });
+    const pagination = computed<VsTablePaginationOptions>(() => {
+        if (!rawPagination?.value) {
+            return {};
+        }
+        const defaultPaginationOptions: VsTablePaginationOptions = {
+            pageSizeOptions: [10, 25, 50, 100],
+            showPageSizeSelector: true,
+            showingLength: 10,
+            edgeButtons: false,
+            showTotal: true,
+        };
+
+        if (typeof rawPagination?.value === 'boolean') {
+            return defaultPaginationOptions;
+        }
+        return {
+            ...defaultPaginationOptions,
+            ...rawPagination.value,
+        };
+    });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
@@ -82,8 +107,20 @@ export function useTable(
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
-    const bodyCells = computed<BodyCell[][]>(() => {
+    const sortedFilteredBodyCells = computed<BodyCell[][]>(() => {
         return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+    });
+    const filteredRowsCount = computed(() => sortedFilteredBodyCells.value.length);
+
+    const { totalPages, paginateRows } = useTablePagination(
+        pagination,
+        filteredRowsCount,
+        page as Ref<number>,
+        pageSize as Ref<number>,
+    );
+
+    const bodyCells = computed<BodyCell[][]>(() => {
+        return paginateRows(sortedFilteredBodyCells.value);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -139,6 +176,11 @@ export function useTable(
         sortType,
         sortColumn,
         updateSortType,
+        pagination,
+        page: page as Ref<number>,
+        pageSize: pageSize as Ref<number>,
+        totalPages,
+        filteredRowsCount,
     };
 }
 
@@ -157,6 +199,11 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
+    pagination: ComputedRef<VsTablePaginationOptions>;
+    page: Ref<number>;
+    pageSize: Ref<number>;
+    totalPages: ComputedRef<number>;
+    filteredRowsCount: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
     updateSortType: (headerKey: string) => void;

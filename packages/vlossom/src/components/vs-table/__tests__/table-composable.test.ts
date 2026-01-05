@@ -1,9 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { nextTick, reactive, ref, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
-import { useTable } from '../composables/table-composable';
-import { SortType, type BodyCell, type ColumnDef, type HeaderCell, type Item } from '../types';
 import type { VsSearchInputRef } from '@/components';
+
+import { useTable } from '../composables/table-composable';
+import {
+    SortType,
+    type BodyCell,
+    type ColumnDef,
+    type HeaderCell,
+    type Item,
+    type VsTablePaginationOptions,
+} from '../types';
 
 function setupUseTable(
     props: {
@@ -11,6 +19,9 @@ function setupUseTable(
         items: Item[];
         selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
         expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+        pagination?: boolean | VsTablePaginationOptions;
+        page?: number;
+        pageSize?: number;
     },
     options?: { searchInputRef?: Ref<VsSearchInputRef | null> },
 ) {
@@ -160,6 +171,53 @@ describe('useTable', () => {
 
         const filteredNames = table.bodyCells.value.map((row) => row[1].value);
         expect(filteredNames).toEqual(['XYZ 사용자']);
+    });
+
+    describe('pagination', () => {
+        it('기본 옵션으로 페이지당 50개를 노출하고 총 페이지를 계산한다', async () => {
+            const items = Array.from({ length: 120 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+            const { table } = setupUseTable({
+                columns: ['name'],
+                items,
+                pagination: true,
+            });
+
+            await nextTick();
+
+            expect(table.pageSize?.value).toBe(50);
+            expect(table.bodyCells.value).toHaveLength(50);
+            expect(table.totalPages.value).toBe(3);
+        });
+
+        it('커스텀 옵션을 적용하고 페이지 크기 변경 시 현재 페이지를 초기화한다', async () => {
+            const items = Array.from({ length: 60 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+            const { table } = setupUseTable({
+                columns: ['name'],
+                items,
+                pagination: {
+                    pageSizeOptions: [10, 20, 50],
+                    showingLength: 5,
+                    edgeButtons: true,
+                    showTotal: false,
+                },
+                pageSize: 20,
+            });
+
+            await nextTick();
+
+            expect(table.pageSize?.value).toBe(20);
+            expect(table.totalPages.value).toBe(3);
+            expect(table.bodyCells.value).toHaveLength(20);
+
+            table.page.value = 2;
+            table.pageSize.value = 10;
+            await nextTick();
+
+            expect(table.page.value).toBe(0);
+            expect(table.pageSize.value).toBe(10);
+            expect(table.totalPages.value).toBe(6);
+            expect(table.bodyCells.value).toHaveLength(10);
+        });
     });
 
     describe('expandable', () => {

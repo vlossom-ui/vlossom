@@ -33,6 +33,8 @@
                 </template>
             </vs-table-body>
         </table>
+
+        <vs-table-pagination v-if="pagination" v-model:page="pageRef" v-model:page-size="pageSizeRef" />
     </div>
 </template>
 
@@ -54,7 +56,7 @@ import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
-import type { VsSearchInputRef } from '../vs-search-input/types';
+import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
@@ -63,20 +65,23 @@ import {
     type Item,
     type VsTableSearchOptions,
     type VsTableStyleSet,
+    type VsTablePaginationOptions,
     getRowItem,
 } from './types';
 import { TABLE_SEARCH_OPTIONS } from './constants';
 
+import type { VsSearchInputRef } from '../vs-search-input/types';
+
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
-import { LayoutStore } from '@/stores';
+import VsTablePagination from './VsTablePagination.vue';
 
 const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
-    components: { VsTableHeader, VsTableBody, VsSearchInput },
+    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
@@ -99,6 +104,10 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        stickyHeader: {
+            type: Boolean,
+            default: false,
+        },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -111,8 +120,8 @@ export default defineComponent({
             type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
             default: false,
         },
-        stickyHeader: {
-            type: Boolean,
+        pagination: {
+            type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
         },
         // v-model
@@ -131,10 +140,28 @@ export default defineComponent({
                 return true;
             },
         },
+        page: {
+            type: Number as PropType<number>, // 0-based page index
+            required: true,
+            default: 0,
+        },
+        pageSize: {
+            type: Number as PropType<number>,
+            required: true,
+            default: 20,
+        },
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
+    emits: [
+        'click-cell',
+        'select-row',
+        'expand-row',
+        'search',
+        'update:selectedItems',
+        'update:page',
+        'update:pageSize',
+    ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, search } = toRefs(props);
+        const { colorScheme, styleSet, responsive, search, page: rawPage, pageSize: rawPageSize } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -186,6 +213,15 @@ export default defineComponent({
             },
             { threshold: 1 },
         );
+        const pageRef = computed({
+            get: () => rawPage.value,
+            set: (value) => emit('update:page', value),
+        });
+
+        const pageSizeRef = computed({
+            get: () => rawPageSize.value,
+            set: (value) => emit('update:pageSize', value),
+        });
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
@@ -226,6 +262,8 @@ export default defineComponent({
             searchOptions,
             headerInvisible,
             stickyHeaderTop,
+            pageRef,
+            pageSizeRef,
             clickCell,
             selectRow,
             expandRow,
