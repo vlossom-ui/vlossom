@@ -197,6 +197,10 @@ export default defineComponent({
             }
 
             const selectedTab = tabRefs.value[selectedIndex.value];
+            if (!selectedTab) {
+                indicatorStyle.value = null;
+                return;
+            }
 
             if (vertical.value) {
                 indicatorStyle.value = {

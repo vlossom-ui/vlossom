@@ -23,7 +23,7 @@ describe('useInputForm', () => {
         clearSpy = vi.fn();
         TestComponent = defineComponent({
             setup() {
-                const result = useInputForm(id, valid, changed, validateSpy, clearSpy);
+                const result = useInputForm(id, valid, changed, validateSpy as () => boolean, clearSpy as () => void);
                 return { result };
             },
             template: '<div></div>',
