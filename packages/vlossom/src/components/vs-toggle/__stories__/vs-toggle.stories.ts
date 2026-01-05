@@ -61,10 +61,6 @@ const meta: Meta<typeof VsToggle> = {
             control: 'boolean',
             description: '고스트 스타일 (투명 배경)',
         },
-        large: {
-            control: 'boolean',
-            description: '큰 크기',
-        },
         loading: {
             control: 'boolean',
             description: '로딩 상태',
@@ -81,9 +77,10 @@ const meta: Meta<typeof VsToggle> = {
             control: 'boolean',
             description: '반응형 디자인',
         },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '버튼 크기',
         },
     },
 };
