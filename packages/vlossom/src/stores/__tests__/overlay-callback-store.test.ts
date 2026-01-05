@@ -43,7 +43,7 @@ describe('OverlayCallbackStore', () => {
             // then
             expect(store.overlays.value).toHaveLength(1);
             expect(store.overlays.value[0][0]).toBe(overlayId);
-            expect(store.overlays.value[0][1]).toBe(callbacks);
+            expect(store.overlays.value[0][1]).toStrictEqual(callbacks);
             expect(vlossomOpenCallback).toHaveBeenCalledTimes(1);
             expect(openCallback).toHaveBeenCalledTimes(1);
         });
