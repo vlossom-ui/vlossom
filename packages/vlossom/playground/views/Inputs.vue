@@ -121,7 +121,7 @@
                 @search="onSearch"
             />
             <div class="flex flex-wrap gap-2">
-                <vs-chip v-for="item in filteredFruits" :key="item" small>{{ item }}</vs-chip>
+                <vs-chip v-for="item in filteredFruits" :key="item" size="xs">{{ item }}</vs-chip>
                 <span v-if="filteredFruits.length === 0" class="text-sm text-gray-500">No results found</span>
             </div>
         </div>
