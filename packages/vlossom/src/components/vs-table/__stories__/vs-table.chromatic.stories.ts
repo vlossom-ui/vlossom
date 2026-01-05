@@ -122,6 +122,19 @@ export const VisualRegressionMatrix: Story = {
                 </section>
 
                 <section class="chromatic-section">
+                    <h3>검색 (이메일 컬럼 제외)</h3>
+                    <vs-table
+                        :columns="[
+                            { key: 'name', label: 'Name' },
+                            { key: 'age', label: 'Age' },
+                            { key: 'metadata.email', label: 'Email', skipSearch: true },
+                        ]"
+                        :items="baseItems"
+                        :search="{ placeholder: 'Search by name', useCaseSensitive: false, useRegex: true }"
+                    />
+                </section>
+
+                <section class="chromatic-section">
                     <h3>행 확장</h3>
                     <vs-table :columns="baseColumns" :items="baseItems" :expandable="expandable">
                         <template #expand="{ cells, rowIdx }">
