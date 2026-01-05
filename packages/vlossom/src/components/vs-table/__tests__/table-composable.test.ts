@@ -1,19 +1,24 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { nextTick, reactive } from 'vue';
+import { nextTick, reactive, ref, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
 import { useTable } from '../composables/table-composable';
 import { SortType, type BodyCell, type ColumnDef, type HeaderCell, type Item } from '../types';
+import type { VsSearchInputRef } from '@/components';
 
-function setupUseTable(props: {
-    columns: ColumnDef[] | string[] | null;
-    items: Item[];
-    selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
-    expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
-}) {
+function setupUseTable(
+    props: {
+        columns: ColumnDef[] | string[] | null;
+        items: Item[];
+        selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+        expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+    },
+    options?: { searchInputRef?: Ref<VsSearchInputRef | null> },
+) {
     const reactiveProps = reactive(props);
-    const table = useTable(reactiveProps as any);
+    const searchInputRef = options?.searchInputRef ?? ref<VsSearchInputRef | null>(null);
+    const table = useTable(reactiveProps as any, { searchInputRef } as any);
     table.initialize();
-    return { table, reactiveProps };
+    return { table, reactiveProps, searchInputRef };
 }
 
 describe('useTable', () => {
@@ -136,7 +141,7 @@ describe('useTable', () => {
     });
 
     it('skipSearch가 지정된 컬럼은 검색 대상에서 제외된다', async () => {
-        const { table } = setupUseTable({
+        const { table, searchInputRef } = setupUseTable({
             columns: [
                 { key: 'id', label: 'ID', skipSearch: true },
                 { key: 'name', label: '이름' },
@@ -148,11 +153,9 @@ describe('useTable', () => {
         });
         await nextTick();
 
-        table.initSearchInputRef({
-            value: {
-                match: (value: string) => String(value).includes('XYZ'),
-            },
-        } as any);
+        searchInputRef.value = {
+            match: (value: string) => String(value).includes('XYZ'),
+        } as any;
         await nextTick();
 
         const filteredNames = table.bodyCells.value.map((row) => row[1].value);

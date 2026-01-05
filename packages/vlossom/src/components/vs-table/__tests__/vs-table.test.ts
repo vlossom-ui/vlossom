@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
-import type { BodyCell, HeaderCell } from './../types';
+import type { BodyCell, HeaderCell, Item } from './../types';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
@@ -308,11 +308,11 @@ describe('VsTable', () => {
             const emittedSearchRows = wrapper.emitted('search');
             expect(emittedSearchRows).toHaveLength(1);
 
-            const [emittedRows, emittedSearchText] = emittedSearchRows![0] as [BodyCell[][], string];
+            const [emittedItems, emittedSearchText] = emittedSearchRows![0] as [Item[], string];
             expect(emittedSearchText).toBe('Alice');
-            expect(emittedRows).toHaveLength(tableItems.length);
-            expect(emittedRows[0][0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
-            expect(emittedRows[0][1]).toMatchObject({ colKey: 'age', value: 24, rowIdx: 0, colIdx: 1 });
+            expect(emittedItems).toHaveLength(tableItems.length);
+            expect(emittedItems[0]).toMatchObject({ id: '1', name: 'Alice', age: 24 });
+            expect(emittedItems[1]).toMatchObject({ id: '2', name: 'Bob', age: 30 });
         });
     });
 
