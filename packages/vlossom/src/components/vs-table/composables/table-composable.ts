@@ -19,7 +19,11 @@ import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
-export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelectedItems: (items: Item[]) => void }) {
+export function useTable(
+    props: PropsOf<VsComponent.VsTable>,
+    refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
+    cb?: { updateSelectedItems: (items: Item[]) => void },
+) {
     const {
         columns: rawColumns,
         items: rawItems,
@@ -68,7 +72,7 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
-    const { initSearchInputRef, matchBySearch } = useTableSearch(columns);
+    const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
     const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
         selectable,
         items,
@@ -135,7 +139,6 @@ export function useTable(props: PropsOf<VsComponent.VsTable>, cb?: { updateSelec
         sortType,
         sortColumn,
         updateSortType,
-        initSearchInputRef,
     };
 }
 
@@ -157,7 +160,6 @@ export type TableComposable = {
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
     updateSortType: (headerKey: string) => void;
-    initSearchInputRef: (searchInputRef: TemplateRef<VsSearchInputRef>) => void;
     initialize: () => void;
     toggleSelectAll: () => void;
 };

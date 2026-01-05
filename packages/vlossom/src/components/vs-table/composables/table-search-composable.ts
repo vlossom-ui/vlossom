@@ -1,10 +1,8 @@
-import { computed, ref, type ComputedRef, type TemplateRef, type Ref } from 'vue';
+import { computed, type ComputedRef, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components';
 import type { BodyCell, ColumnDef } from '../types';
 
-export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
-    const tableSearchInputRef: Ref<VsSearchInputRef | null> = ref(null);
-
+export function useTableSearch(ref: Ref<VsSearchInputRef | null>, columns: ComputedRef<ColumnDef[] | null>) {
     const searchColumnKeyList = computed<string[]>(() => {
         if (!columns.value) {
             return [];
@@ -12,15 +10,11 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
         return columns.value.filter((col) => !col.skipSearch).map((column) => column.key);
     });
 
-    function initSearchInputRef(searchInputRef: TemplateRef<VsSearchInputRef>): void {
-        tableSearchInputRef.value = searchInputRef.value;
-    }
-
     function matchBySearch(row: BodyCell[]): boolean {
-        if (!tableSearchInputRef.value) {
+        if (!ref.value) {
             return true;
         }
-        const matchFn = tableSearchInputRef.value.match;
+        const matchFn = ref.value.match;
 
         return row.some((cell) => {
             if (!searchColumnKeyList.value.includes(cell.colKey)) {
@@ -33,6 +27,5 @@ export function useTableSearch(columns: ComputedRef<ColumnDef[] | null>) {
 
     return {
         matchBySearch,
-        initSearchInputRef,
     };
 }
