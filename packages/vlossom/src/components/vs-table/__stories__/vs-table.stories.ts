@@ -20,6 +20,7 @@ const baseItems = [
     { name: 'John', age: 30, metadata: { email: 'john@example.com' }, id: '1' },
     { name: 'Jane', age: 25, metadata: { email: 'jane@example.com' }, id: '2' },
     { name: 'Jim', age: 35, metadata: { email: 'jim@example.com' }, id: '3' },
+    { name: 'Allison', age: 28, metadata: { email: 'ally@example.com' }, id: '4' },
 ];
 
 const meta: Meta<typeof VsTable> = {
@@ -53,6 +54,10 @@ const meta: Meta<typeof VsTable> = {
         items: {
             control: { type: 'object' },
             description: '테이블 렌더링 대상 아이템입니다.',
+        },
+        search: {
+            control: { type: 'object' },
+            description: '검색 입력 표시 여부 및 옵션(`useCaseSensitive`, `useRegex`).',
         },
         expandable: {
             control: { type: 'boolean' },
@@ -233,6 +238,25 @@ export const SortableColumns: Story = {
         docs: {
             description: {
                 story: 'sortable 컬럼을 지정하면 헤더 아이콘을 클릭해 ASC/DESC/해제 순으로 정렬을 토글할 수 있습니다.',
+            },
+        },
+    },
+};
+
+export const Searchable: Story = {
+    args: {
+        columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'age', label: 'Age' },
+            { key: 'metadata.email', label: 'Email', skipSearch: true },
+        ],
+        items: baseItems,
+        search: { placeholder: 'Search name only', useRegex: true, useCaseSensitive: false },
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'search prop을 켜면 검색 입력이 표시되고, `skipSearch`가 설정된 컬럼은 검색 대상에서 제외됩니다.',
             },
         },
     },
