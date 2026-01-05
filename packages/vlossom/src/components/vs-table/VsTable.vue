@@ -34,7 +34,14 @@ import { useColorScheme } from '@/composables';
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
-import type { BodyCell, ColumnDef, Item, VsTableSearchOptions, VsTableStyleSet } from './types';
+import {
+    type BodyCell,
+    type ColumnDef,
+    type Item,
+    type VsTableSearchOptions,
+    type VsTableStyleSet,
+    getRowItem,
+} from './types';
 import { TABLE_SEARCH_OPTIONS } from './constants';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
@@ -134,7 +141,8 @@ export default defineComponent({
         }
 
         function searchRows(searchText: string): void {
-            emit('search', table.bodyCells.value, searchText);
+            const items = table.bodyCells.value.map((row) => getRowItem(row));
+            emit('search', items, searchText);
         }
 
         function updateSelectedItems(items: Item[]): void {
