@@ -50,10 +50,6 @@ const meta: Meta<typeof VsButton> = {
             control: 'boolean',
             description: '고스트 스타일 (투명 배경)',
         },
-        large: {
-            control: 'boolean',
-            description: '큰 크기',
-        },
         loading: {
             control: 'boolean',
             description: '로딩 상태',
@@ -70,9 +66,10 @@ const meta: Meta<typeof VsButton> = {
             control: 'boolean',
             description: '반응형 디자인',
         },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '버튼 크기',
         },
         type: {
             control: 'select',
@@ -158,7 +155,7 @@ export const Sizes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '다양한 크기의 버튼들입니다. small, 기본, large 크기를 지원합니다.',
+                story: '다양한 크기의 버튼들입니다. xs, sm, md(기본), lg, xl 크기를 지원합니다.',
             },
         },
     },
@@ -169,9 +166,11 @@ export const Sizes: Story = {
         },
         template: `
             <div style="display: flex; gap: 1rem; align-items: center;">
-                <vs-button v-bind="args" small>small</vs-button>
-                <vs-button v-bind="args">default</vs-button>
-                <vs-button v-bind="args" large>large</vs-button>
+                <vs-button v-bind="args" size="xs">Extra Small</vs-button>
+                <vs-button v-bind="args" size="sm">Small</vs-button>
+                <vs-button v-bind="args">Default</vs-button>
+                <vs-button v-bind="args" size="lg">Large</vs-button>
+                <vs-button v-bind="args" size="xl">Extra Large</vs-button>
             </div>
         `,
     }),

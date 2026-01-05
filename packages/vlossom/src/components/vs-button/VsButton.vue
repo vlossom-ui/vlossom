@@ -35,7 +35,7 @@ export default defineComponent({
         ...getButtonProps(),
     },
     setup(props) {
-        const { colorScheme, styleSet, circle, disabled, ghost, large, loading, outline, primary, responsive, small } =
+        const { colorScheme, styleSet, circle, disabled, ghost, loading, outline, primary, responsive, size } =
             toRefs(props);
 
         const buttonRef: TemplateRef<HTMLButtonElement> = useTemplateRef('buttonRef');
@@ -44,17 +44,18 @@ export default defineComponent({
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(componentName, styleSet);
 
+        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
+
         const classObj = computed(() => ({
             'vs-focus-visible': !disabled.value && !loading.value,
             'vs-circle': circle.value,
             'vs-disabled': disabled.value,
             'vs-ghost': ghost.value,
-            'vs-large': large.value,
             'vs-loading-state': loading.value,
             'vs-outline': outline.value,
             'vs-primary': primary.value,
             'vs-responsive': responsive.value,
-            'vs-small': small.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         const loadingStyleSet = computed(() => {

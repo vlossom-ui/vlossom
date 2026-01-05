@@ -72,17 +72,17 @@ describe('VsButton', () => {
             expect(button.classes()).toContain('vs-ghost');
         });
 
-        it('large prop이 true이면 vs-large 클래스가 적용되어야 한다', () => {
+        it('size prop이 주어지면 해당 size 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsButton, {
                 props: {
-                    large: true,
+                    size: 'lg',
                 },
             });
 
             // then
             const button = wrapper.find('button');
-            expect(button.classes()).toContain('vs-large');
+            expect(button.classes()).toContain('vs-lg');
         });
 
         it('outline prop이 true이면 vs-outline 클래스가 적용되어야 한다', () => {
@@ -124,17 +124,17 @@ describe('VsButton', () => {
             expect(button.classes()).toContain('vs-responsive');
         });
 
-        it('small prop이 true이면 vs-small 클래스가 적용되어야 한다', () => {
+        it('size prop이 sm이면 vs-sm 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsButton, {
                 props: {
-                    small: true,
+                    size: 'sm',
                 },
             });
 
             // then
             const button = wrapper.find('button');
-            expect(button.classes()).toContain('vs-small');
+            expect(button.classes()).toContain('vs-sm');
         });
 
         it('styleSet에 loading 스타일이 주어지면 loading 컴포넌트에 전달되어야 한다', () => {

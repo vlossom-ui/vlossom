@@ -52,7 +52,27 @@
         }
     }
 
-    &.vs-large {
+    &.vs-xs {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-xs)));
+        height: var(--vs-button-height, var(--vs-default-comp-height-xs));
+        font-size: var(--vs-font-size-xs);
+
+        .vs-button-content {
+            padding: var(--vs-button-padding, 0 0.4rem);
+        }
+    }
+
+    &.vs-sm {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+        height: var(--vs-button-height, var(--vs-default-comp-height-sm));
+        font-size: var(--vs-font-size-sm);
+
+        .vs-button-content {
+            padding: var(--vs-button-padding, 0 0.6rem);
+        }
+    }
+
+    &.vs-lg {
         border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
         height: var(--vs-button-height, var(--vs-default-comp-height-lg));
         font-size: var(--vs-font-size-lg);
@@ -62,13 +82,13 @@
         }
     }
 
-    &.vs-small {
-        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
-        height: var(--vs-button-height, var(--vs-default-comp-height-sm));
-        font-size: var(--vs-font-size-sm);
+    &.vs-xl {
+        border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-xl)));
+        height: var(--vs-button-height, var(--vs-default-comp-height-xl));
+        font-size: var(--vs-font-size-xl);
 
         .vs-button-content {
-            padding: var(--vs-button-padding, 0 0.6rem);
+            padding: var(--vs-button-padding, 0 1.2rem);
         }
     }
 
@@ -94,17 +114,27 @@
 
     &.vs-circle {
         @apply rounded-full;
-        width: var(--vs-button-width, var(--vs-default-comp-height));
+        width: var(--vs-button-width, var(--vs-button-height, var(--vs-default-comp-height)));
         height: var(--vs-button-height, var(--vs-default-comp-height));
 
-        &.vs-small {
+        &.vs-xs {
+            width: var(--vs-button-width, var(--vs-default-comp-height-xs));
+            height: var(--vs-button-height, var(--vs-default-comp-height-xs));
+        }
+
+        &.vs-sm {
             width: var(--vs-button-width, var(--vs-default-comp-height-sm));
             height: var(--vs-button-height, var(--vs-default-comp-height-sm));
         }
 
-        &.vs-large {
+        &.vs-lg {
             width: var(--vs-button-width, var(--vs-default-comp-height-lg));
             height: var(--vs-button-height, var(--vs-default-comp-height-lg));
+        }
+
+        &.vs-xl {
+            width: var(--vs-button-width, var(--vs-default-comp-height-xl));
+            height: var(--vs-button-height, var(--vs-default-comp-height-xl));
         }
     }
 
