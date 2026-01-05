@@ -26,8 +26,11 @@ const meta: Meta<typeof VsChip> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-chip v-bind="args" small>Small</vs-chip>
-                        <vs-chip v-bind="args">Default</vs-chip>
+                        <vs-chip v-bind="args" size="xs">XS</vs-chip>
+                        <vs-chip v-bind="args">Default (SM)</vs-chip>
+                        <vs-chip v-bind="args" size="md">MD</vs-chip>
+                        <vs-chip v-bind="args" size="lg">LG</vs-chip>
+                        <vs-chip v-bind="args" size="xl">XL</vs-chip>
                     </div>
                 </div>
 
@@ -71,7 +74,7 @@ const meta: Meta<typeof VsChip> = {
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
                         <vs-chip v-bind="args" closable>Closable</vs-chip>
                         <vs-chip v-bind="args" closable primary>Primary Closable</vs-chip>
-                        <vs-chip v-bind="args" closable small>Small Closable</vs-chip>
+                        <vs-chip v-bind="args" closable size="xs">XS Closable</vs-chip>
                     </div>
                 </div>
 
@@ -79,19 +82,19 @@ const meta: Meta<typeof VsChip> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Primary 조합</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-chip v-bind="args" primary small>Primary Small</vs-chip>
+                        <vs-chip v-bind="args" primary size="xs">Primary XS</vs-chip>
                         <vs-chip v-bind="args" primary>Primary Default</vs-chip>
                         <vs-chip v-bind="args" primary closable>Primary Closable</vs-chip>
                     </div>
                 </div>
 
-                <!-- Small 조합 -->
+                <!-- XS 조합 -->
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Small 조합</h3>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">XS 조합</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-chip v-bind="args" small>Small Default</vs-chip>
-                        <vs-chip v-bind="args" small primary>Small Primary</vs-chip>
-                        <vs-chip v-bind="args" small closable>Small Closable</vs-chip>
+                        <vs-chip v-bind="args" size="xs">XS Default</vs-chip>
+                        <vs-chip v-bind="args" size="xs" primary>XS Primary</vs-chip>
+                        <vs-chip v-bind="args" size="xs" closable>XS Closable</vs-chip>
                     </div>
                 </div>
             </div>`,

@@ -52,7 +52,7 @@
         padding: 0 0.4rem;
     }
 
-    &.vs-small {
+    &.vs-xs {
         border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-xs) / 2));
         padding: var(--vs-chip-padding, 0 0.2rem);
         height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
@@ -70,6 +70,69 @@
 
         &:has(.vs-chip-close-button) {
             padding-right: 0.1rem;
+        }
+    }
+
+    &.vs-md {
+        border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height) / 2));
+        padding: var(--vs-chip-padding, 0 0.8rem);
+        height: var(--vs-chip-height, var(--vs-default-comp-height));
+        min-height: var(--vs-chip-height, var(--vs-default-comp-height));
+        font-size: var(--vs-font-size);
+
+        .vs-icon-container {
+            width: calc(var(--vs-chip-height, var(--vs-default-comp-height)) * 0.75);
+            height: calc(var(--vs-chip-height, var(--vs-default-comp-height)) * 0.75);
+        }
+
+        &:has(.vs-chip-icon) {
+            padding-left: 0.2rem;
+        }
+
+        &:has(.vs-chip-close-button) {
+            padding-right: 0.2rem;
+        }
+    }
+
+    &.vs-lg {
+        border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-lg) / 2));
+        padding: var(--vs-chip-padding, 0 1rem);
+        height: var(--vs-chip-height, var(--vs-default-comp-height-lg));
+        min-height: var(--vs-chip-height, var(--vs-default-comp-height-lg));
+        font-size: var(--vs-font-size-lg);
+
+        .vs-icon-container {
+            width: calc(var(--vs-chip-height, var(--vs-default-comp-height-lg)) * 0.75);
+            height: calc(var(--vs-chip-height, var(--vs-default-comp-height-lg)) * 0.75);
+        }
+
+        &:has(.vs-chip-icon) {
+            padding-left: 0.25rem;
+        }
+
+        &:has(.vs-chip-close-button) {
+            padding-right: 0.25rem;
+        }
+    }
+
+    &.vs-xl {
+        border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-xl) / 2));
+        padding: var(--vs-chip-padding, 0 1.2rem);
+        height: var(--vs-chip-height, var(--vs-default-comp-height-xl));
+        min-height: var(--vs-chip-height, var(--vs-default-comp-height-xl));
+        font-size: var(--vs-font-size-xl);
+
+        .vs-icon-container {
+            width: calc(var(--vs-chip-height, var(--vs-default-comp-height-xl)) * 0.75);
+            height: calc(var(--vs-chip-height, var(--vs-default-comp-height-xl)) * 0.75);
+        }
+
+        &:has(.vs-chip-icon) {
+            padding-left: 0.3rem;
+        }
+
+        &:has(.vs-chip-close-button) {
+            padding-right: 0.3rem;
         }
     }
 

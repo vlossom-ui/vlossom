@@ -42,21 +42,22 @@
 ```html
 <template>
     <vs-chip primary>Primary 칩</vs-chip>
-    <vs-chip small>작은 칩</vs-chip>
+    <vs-chip size="sm">작은 칩</vs-chip>
+    <vs-chip size="lg">큰 칩</vs-chip>
     <vs-chip closable>닫기 가능한 칩</vs-chip>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                       | Default | Required | Description                             |
-| ------------- | -------------------------- | ------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                   | -       | -        | 칩의 색상 테마                          |
-| `styleSet`    | `string \| VsChipStyleSet` | -       | -        | 커스텀 스타일 설정 객체                 |
-| `closable`    | `boolean`                  | `false` | -        | 닫기 버튼 표시 여부                     |
-| `outline`     | `boolean`                  | `false` | -        | outline 스타일 설정                     |
-| `primary`     | `boolean`                  | `false` | -        | 주요 정보를 위한 프라이머리 스타일 적용 |
-| `small`       | `boolean`                  | `false` | -        | 작은 크기 칩                            |
+| Prop          | Type                                   | Default | Required | Description                             |
+| ------------- | -------------------------------------- | ------- | -------- | --------------------------------------- |
+| `colorScheme` | `string`                               | -       | -        | 칩의 색상 테마                          |
+| `styleSet`    | `string \| VsChipStyleSet`             | -       | -        | 커스텀 스타일 설정 객체                 |
+| `closable`    | `boolean`                              | `false` | -        | 닫기 버튼 표시 여부                     |
+| `outline`     | `boolean`                              | `false` | -        | outline 스타일 설정                     |
+| `primary`     | `boolean`                              | `false` | -        | 주요 정보를 위한 프라이머리 스타일 적용 |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -       | -        | 칩 크기                                 |
 
 ## Types
 
@@ -94,4 +95,4 @@ interface VsChipStyleSet {
 - **스타일 커스터마이징**: `styleSet` prop으로 세밀한 스타일 조정
 - **아이콘 지원**: `icon` slot을 통해 아이콘 추가 가능
 - **닫기 기능**: `closable` prop으로 닫기 버튼 표시 및 이벤트 처리
-- **크기 변형**: `small` 속성을 통한 크기 조절
+- **크기 변형**: `size` 속성을 통한 크기 조절 (`xs`, `sm`, `md`, `lg`, `xl`)

@@ -22,8 +22,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
-import { VsComponent } from '@/declaration';
+import { computed, defineComponent, toRefs, type PropType } from 'vue';
+import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
@@ -41,11 +41,11 @@ export default defineComponent({
         closable: { type: Boolean, default: false },
         outline: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
-        small: { type: Boolean, default: false },
+        size: { type: String as PropType<Size> },
     },
     emits: ['close'],
     setup(props, { slots }) {
-        const { colorScheme, small, primary, outline, styleSet } = toRefs(props);
+        const { colorScheme, size, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -53,10 +53,12 @@ export default defineComponent({
 
         const hasIcon = computed((): boolean => !!slots['icon']);
 
+        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
+
         const classObj = computed(() => ({
             'vs-outline': outline.value,
             'vs-primary': primary.value,
-            'vs-small': small.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         return {
