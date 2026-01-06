@@ -34,7 +34,12 @@
             </vs-table-body>
         </table>
 
-        <vs-table-pagination v-if="pagination" v-model:page="pageRef" v-model:page-size="pageSizeRef" />
+        <vs-table-pagination
+            v-if="pagination"
+            v-model:page="pageRef"
+            v-model:page-size="pageSizeRef"
+            @paginate="paginate"
+        />
     </div>
 </template>
 
@@ -156,6 +161,7 @@ export default defineComponent({
         'select-row',
         'expand-row',
         'search',
+        'paginate',
         'update:selectedItems',
         'update:page',
         'update:pageSize',
@@ -244,6 +250,10 @@ export default defineComponent({
             emit('update:selectedItems', items);
         }
 
+        function paginate(page: number): void {
+            emit('paginate', page, pageSizeRef.value);
+        }
+
         onBeforeMount(() => {
             table.initialize();
         });
@@ -269,6 +279,7 @@ export default defineComponent({
             expandRow,
             searchRows,
             updateSelectedItems,
+            paginate,
         };
     },
 });

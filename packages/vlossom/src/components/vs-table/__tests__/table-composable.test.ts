@@ -184,18 +184,18 @@ describe('useTable', () => {
 
             await nextTick();
 
-            expect(table.pageSize?.value).toBe(50);
+            expect(table.pageSize.value).toBe(50);
             expect(table.bodyCells.value).toHaveLength(50);
             expect(table.totalPages.value).toBe(3);
         });
 
         it('커스텀 옵션을 적용하고 페이지 크기 변경 시 현재 페이지를 초기화한다', async () => {
             const items = Array.from({ length: 60 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
-            const { table } = setupUseTable({
+            const { table, reactiveProps } = setupUseTable({
                 columns: ['name'],
                 items,
                 pagination: {
-                    pageSizeOptions: [10, 20, 50],
+                    pageSizeOptions: [20, 50, 100],
                     showingLength: 5,
                     edgeButtons: true,
                     showTotal: false,
@@ -209,14 +209,98 @@ describe('useTable', () => {
             expect(table.totalPages.value).toBe(3);
             expect(table.bodyCells.value).toHaveLength(20);
 
-            table.page.value = 2;
-            table.pageSize.value = 10;
+            reactiveProps.page = 2;
+            reactiveProps.pageSize = 10;
             await nextTick();
 
             expect(table.page.value).toBe(0);
             expect(table.pageSize.value).toBe(10);
             expect(table.totalPages.value).toBe(6);
             expect(table.bodyCells.value).toHaveLength(10);
+        });
+
+        describe('server mode', () => {
+            it('서버 모드에서는 totalItemCount를 기반으로 총 페이지를 계산한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 500,
+                    },
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(50);
+                expect(table.bodyCells.value).toHaveLength(10);
+            });
+
+            it('서버 모드에서는 client-side pagination을 수행하지 않는다', async () => {
+                const currentPageItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${20 + i}`,
+                    name: `User ${20 + i}`,
+                }));
+
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items: currentPageItems,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 100,
+                    },
+                    page: 2,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.bodyCells.value).toHaveLength(10);
+                expect(table.bodyCells.value[0][0].value).toBe('User 20');
+                expect(table.bodyCells.value[9][0].value).toBe('User 29');
+            });
+
+            it('서버 모드에서 totalItemCount가 없으면 에러를 발생시킨다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                    },
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(-1);
+            });
+
+            it('서버 모드에서 pageSize 변경 시에도 totalItemCount 기반으로 총 페이지를 재계산한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table, reactiveProps } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 100,
+                    },
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.totalPages.value).toBe(10);
+
+                reactiveProps.pageSize = 25;
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(4);
+            });
         });
     });
 

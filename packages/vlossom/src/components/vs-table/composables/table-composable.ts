@@ -33,8 +33,8 @@ export function useTable(
         expandable: rawExpandable,
         selectedItems: rawSelectedItems,
         pagination: rawPagination,
-        page,
-        pageSize,
+        page: rawPage,
+        pageSize: rawPageSize,
     } = toRefs(props);
 
     // normalize
@@ -78,7 +78,7 @@ export function useTable(
             return {};
         }
         const defaultPaginationOptions: VsTablePaginationOptions = {
-            pageSizeOptions: [10, 25, 50, 100],
+            pageSizeOptions: [20, 50, 100],
             showPageSizeSelector: true,
             showingLength: 10,
             edgeButtons: false,
@@ -93,6 +93,8 @@ export function useTable(
             ...rawPagination.value,
         };
     });
+    const page = computed<number>(() => rawPage?.value ?? 0);
+    const pageSize = computed<number>(() => rawPageSize?.value ?? 50);
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
@@ -112,12 +114,7 @@ export function useTable(
     });
     const filteredRowsCount = computed(() => sortedFilteredBodyCells.value.length);
 
-    const { totalPages, paginateRows } = useTablePagination(
-        pagination,
-        filteredRowsCount,
-        page as Ref<number>,
-        pageSize as Ref<number>,
-    );
+    const { totalPages, paginateRows } = useTablePagination(pagination, filteredRowsCount, page, pageSize);
 
     const bodyCells = computed<BodyCell[][]>(() => {
         return paginateRows(sortedFilteredBodyCells.value);
@@ -177,8 +174,8 @@ export function useTable(
         sortColumn,
         updateSortType,
         pagination,
-        page: page as Ref<number>,
-        pageSize: pageSize as Ref<number>,
+        page,
+        pageSize,
         totalPages,
         filteredRowsCount,
     };
@@ -200,8 +197,8 @@ export type TableComposable = {
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     pagination: ComputedRef<VsTablePaginationOptions>;
-    page: Ref<number>;
-    pageSize: Ref<number>;
+    page: ComputedRef<number>;
+    pageSize: ComputedRef<number>;
     totalPages: ComputedRef<number>;
     filteredRowsCount: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;

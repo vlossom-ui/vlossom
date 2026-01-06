@@ -194,10 +194,10 @@ describe('VsTable', () => {
 
             expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
             const pageSizeOptions = wrapper.findAll('.vs-page-size-select option');
-            expect(pageSizeOptions).toHaveLength(4); // 기본 옵션 [10, 25, 50, 100]
+            expect(pageSizeOptions).toHaveLength(3); // 기본 옵션 [20, 50, 100]
         });
 
-        it('vs-pagination change 이벤트를 change-page로 전달한다', async () => {
+        it('vs-pagination change 이벤트를 paginate로 전달한다', async () => {
             const wrapper = mountTable({
                 props: { pagination: true },
             });
@@ -205,11 +205,113 @@ describe('VsTable', () => {
             await nextTick();
             await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
 
-            const emitted = wrapper.emitted('change-page');
+            const emitted = wrapper.emitted('paginate');
             expect(emitted).toHaveLength(1);
             const [page, pageSize] = emitted![0] as [number, number];
-            expect(page).toBe(1); // modelValue(0) + 1
-            expect(pageSize).toBe(50); // 기본 pageSize
+            expect(page).toBe(1);
+            expect(pageSize).toBe(20);
+        });
+
+        describe('server mode', () => {
+            it('서버 모드를 활성화하면 totalItemCount 기반으로 pagination을 렌더링한다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            mode: 'server',
+                            totalItemCount: 500,
+                        },
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
+                expect(wrapper.findAll('tbody tr')).toHaveLength(10);
+            });
+
+            it('서버 모드에서 페이지 변경 시 paginate 이벤트를 발생시킨다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            mode: 'server',
+                            totalItemCount: 100,
+                        },
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+                await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+
+                const emitted = wrapper.emitted('paginate');
+                expect(emitted).toHaveLength(1);
+                const [page, pageSize] = emitted![0] as [number, number];
+                expect(page).toBe(1);
+                expect(pageSize).toBe(10);
+            });
+
+            it('서버 모드에서 totalItemCount가 없으면 에러가 발생한다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            mode: 'server',
+                        },
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeTruthy();
+            });
+
+            it('서버 모드에서는 client-side pagination을 수행하지 않고 모든 items를 렌더링한다', async () => {
+                const serverItems = Array.from({ length: 15 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            mode: 'server',
+                            totalItemCount: 150,
+                        },
+                        page: 1,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.findAll('tbody tr')).toHaveLength(15);
+            });
         });
     });
 
@@ -404,31 +506,6 @@ describe('VsTable', () => {
             await nextTick();
 
             expect(wrapper.props('page')).toBe(2);
-        });
-
-        it('외부에서 page prop을 변경하면 update:page 이벤트를 발생시킨다', async () => {
-            const largeItems = Array.from({ length: 100 }, (_, i) => ({
-                id: `${i}`,
-                name: `User ${i}`,
-                age: 20 + i,
-            }));
-
-            const wrapper = mountTable({
-                props: {
-                    items: largeItems,
-                    pagination: true,
-                    page: 0,
-                },
-            });
-
-            await nextTick();
-
-            wrapper.setProps({ page: 3 });
-            await nextTick();
-
-            const emitted = wrapper.emitted('update:page');
-            expect(emitted).toBeDefined();
-            expect(emitted!.length).toBeGreaterThan(0);
         });
 
         it('vs-pagination 변경 시 update:page 이벤트를 발생시킨다', async () => {

@@ -21,15 +21,16 @@
             :length="totalPages"
             :showing-length="pagination.showingLength"
             :edge-buttons="pagination.edgeButtons"
-            @change="changePage"
+            @change="paginate"
         />
     </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, inject, type PropType } from 'vue';
-import { VsPagination } from '@/components';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+
+import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 
 export default defineComponent({
     components: { VsPagination },
@@ -43,7 +44,7 @@ export default defineComponent({
             required: true,
         },
     },
-    emits: ['update:page', 'update:pageSize'],
+    emits: ['paginate', 'update:page', 'update:pageSize'],
     setup(props, { emit }) {
         const { pagination, totalPages, filteredRowsCount } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
@@ -56,12 +57,17 @@ export default defineComponent({
             set: (value) => emit('update:pageSize', value),
         });
 
-        const totalItems = computed(() => filteredRowsCount.value);
+        const totalItems = computed<number>(() => {
+            if (pagination.value.mode === 'server') {
+                return pagination.value.totalItemCount ?? 0;
+            }
+            return filteredRowsCount.value;
+        });
         const startIndex = computed(() => pageRef.value * pageSizeRef.value);
         const endIndex = computed(() => Math.min(startIndex.value + pageSizeRef.value, totalItems.value));
 
-        function changePage(nextPage: number): void {
-            emit('update:page', nextPage);
+        function paginate(page: number): void {
+            emit('paginate', page, pageSizeRef.value);
         }
 
         return {
@@ -72,7 +78,7 @@ export default defineComponent({
             totalItems,
             startIndex,
             endIndex,
-            changePage,
+            paginate,
         };
     },
 });
