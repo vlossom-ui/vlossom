@@ -64,7 +64,7 @@ export default defineComponent({
         shake: { type: Boolean, default: false },
     },
     setup(props) {
-        const { shake, styleSet, small } = toRefs(props);
+        const { shake, styleSet } = toRefs(props);
 
         const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
 
@@ -72,7 +72,8 @@ export default defineComponent({
             if (componentStyleSet.value?.messages?.size) {
                 return componentStyleSet.value.messages.size;
             }
-            return small.value ? 'sm' : 'md';
+
+            return 'sm';
         });
 
         const needToShake = ref(false);
