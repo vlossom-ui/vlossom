@@ -19,7 +19,7 @@
     @apply relative flex items-center gap-2 select-none;
 
     opacity: var(--vs-tabs-opacity, 1);
-    height: var(--vs-tabs-height, var(--vs-default-comp-height));
+    height: var(--vs-tabs-height, var(--vs-default-comp-height-md));
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
@@ -28,7 +28,7 @@
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
 
             border-bottom: 1px solid var(--tab-border-color);
-            height: var(--vs-tabs-height, var(--vs-default-comp-height));
+            height: var(--vs-tabs-height, var(--vs-default-comp-height-md));
 
             .vs-tab-item {
                 @apply relative flex h-full cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;

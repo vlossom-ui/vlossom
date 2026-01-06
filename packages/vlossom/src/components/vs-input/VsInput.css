@@ -24,7 +24,7 @@
     border: var(--vs-input-border, solid 1px var(--vs-line-color));
     border-radius: var(--vs-input-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     background-color: var(--vs-input-backgroundColor, var(--vs-no-color));
-    height: var(--vs-input-height, var(--vs-default-comp-height));
+    height: var(--vs-input-height, var(--vs-default-comp-height-md));
     color: var(--vs-input-fontColor, var(--vs-font-color));
     font-weight: var(--vs-input-fontWeight, var(--vs-font-weight));
     font-size: var(--vs-input-fontSize, var(--vs-font-size));

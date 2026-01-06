@@ -65,7 +65,7 @@
     }
 
     &.vs-md {
-        --vs-chip-size-height: var(--vs-default-comp-height);
+        --vs-chip-size-height: var(--vs-default-comp-height-md);
         --vs-chip-size-font: var(--vs-font-size);
         --vs-chip-size-padding: 0.8rem;
         --vs-chip-size-icon-padding: 0.2rem;

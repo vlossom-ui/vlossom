@@ -12,7 +12,7 @@
 
     --vs-button-fontColor: initial;
 
-    --vs-button-size-height: var(--vs-default-comp-height);
+    --vs-button-size-height: var(--vs-default-comp-height-md);
     --vs-button-size-radius: var(--vs-radius);
     --vs-button-size-font: inherit;
     --vs-button-size-padding: 0.8rem;
