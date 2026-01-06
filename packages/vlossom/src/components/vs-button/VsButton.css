@@ -12,9 +12,9 @@
 
     --vs-button-fontColor: initial;
 
-    --vs-button-size-height: var(--vs-default-comp-height-md);
-    --vs-button-size-radius: var(--vs-radius);
-    --vs-button-size-font: inherit;
+    --vs-button-size-height: var(--vs-size-height, var(--vs-default-comp-height-md));
+    --vs-button-size-radius: var(--vs-size-radius, var(--vs-radius));
+    --vs-button-size-font: var(--vs-size-font, inherit);
     --vs-button-size-padding: 0.8rem;
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
@@ -59,30 +59,18 @@
     }
 
     &.vs-xs {
-        --vs-button-size-height: var(--vs-default-comp-height-xs);
-        --vs-button-size-radius: var(--vs-radius-xs);
-        --vs-button-size-font: var(--vs-font-size-xs);
         --vs-button-size-padding: 0.4rem;
     }
 
     &.vs-sm {
-        --vs-button-size-height: var(--vs-default-comp-height-sm);
-        --vs-button-size-radius: var(--vs-radius-sm);
-        --vs-button-size-font: var(--vs-font-size-sm);
         --vs-button-size-padding: 0.6rem;
     }
 
     &.vs-lg {
-        --vs-button-size-height: var(--vs-default-comp-height-lg);
-        --vs-button-size-radius: var(--vs-radius-lg);
-        --vs-button-size-font: var(--vs-font-size-lg);
         --vs-button-size-padding: 1rem;
     }
 
     &.vs-xl {
-        --vs-button-size-height: var(--vs-default-comp-height-xl);
-        --vs-button-size-radius: var(--vs-radius-xl);
-        --vs-button-size-font: var(--vs-font-size-xl);
         --vs-button-size-padding: 1.2rem;
     }
 

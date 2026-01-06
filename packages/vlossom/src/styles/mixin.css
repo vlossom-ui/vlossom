@@ -22,4 +22,35 @@
             display: none;
         }
     }
+
+    /* Size variants */
+    .vs-xs {
+        --vs-size-height: var(--vs-default-comp-height-xs);
+        --vs-size-font: var(--vs-font-size-xs);
+        --vs-size-radius: var(--vs-radius-xs);
+    }
+
+    .vs-sm {
+        --vs-size-height: var(--vs-default-comp-height-sm);
+        --vs-size-font: var(--vs-font-size-sm);
+        --vs-size-radius: var(--vs-radius-sm);
+    }
+
+    .vs-md {
+        --vs-size-height: var(--vs-default-comp-height-md);
+        --vs-size-font: var(--vs-font-size);
+        --vs-size-radius: var(--vs-radius);
+    }
+
+    .vs-lg {
+        --vs-size-height: var(--vs-default-comp-height-lg);
+        --vs-size-font: var(--vs-font-size-lg);
+        --vs-size-radius: var(--vs-radius-lg);
+    }
+
+    .vs-xl {
+        --vs-size-height: var(--vs-default-comp-height-xl);
+        --vs-size-font: var(--vs-font-size-xl);
+        --vs-size-radius: var(--vs-radius-xl);
+    }
 }
