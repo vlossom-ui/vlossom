@@ -16,7 +16,7 @@
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
         border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
         background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
-        padding: var(--vs-select-trigger-padding, 0 0.8rem);
+        padding: var(--vs-select-trigger-padding, 0.2rem 0.8rem);
         min-height: var(--vs-select-height, var(--vs-default-comp-height));
 
         .vs-select-value {
@@ -24,7 +24,7 @@
         }
 
         .vs-select-placeholder {
-            @apply opacity-50;
+            @apply opacity-50 select-none;
         }
 
         .vs-select-collapsed-count {

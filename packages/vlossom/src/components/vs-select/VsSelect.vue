@@ -35,7 +35,7 @@
                 :readonly="computedReadonly"
                 @click="toggleOpen"
                 @deselect="deselectOption"
-                @clear="onClearClick"
+                @clear="clear"
             />
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
@@ -167,7 +167,18 @@ export default defineComponent({
             default: null,
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'click-option'],
+    emits: [
+        'update:modelValue',
+        'update:changed',
+        'update:valid',
+        'change',
+        'focus',
+        'blur',
+        'click-option',
+        'open',
+        'close',
+        'clear',
+    ],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -219,8 +230,8 @@ export default defineComponent({
 
         function onClear() {
             clearSelected();
-            closeOptions();
             searchText.value = '';
+            emit('clear');
         }
 
         const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
@@ -338,16 +349,13 @@ export default defineComponent({
             triggerRef.value?.blur();
         }
 
-        function onClearClick() {
-            clearSelected();
-        }
-
         function openOptions() {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
             isOpen.value = true;
+            emit('open');
 
             // setTimeout + nextTick을 사용해야 DOM이 완전히 렌더링된 후 스크롤 가능
             setTimeout(() => {
@@ -362,6 +370,11 @@ export default defineComponent({
 
         function closeOptions() {
             isOpen.value = false;
+            emit('close');
+
+            setTimeout(() => {
+                searchText.value = '';
+            }, 250); // wait for the animation
         }
 
         function onOutsideClick(e: MouseEvent) {
@@ -464,7 +477,6 @@ export default defineComponent({
             searchProps,
             toggleOpen,
             onClickOption,
-            onClearClick,
             isSelectedAll,
             computedColorScheme,
             onFocus,
