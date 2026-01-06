@@ -10,7 +10,7 @@
     --vs-select-trigger-opacity: initial;
 
     .vs-select-trigger {
-        @apply relative box-border flex cursor-pointer items-center gap-1 overflow-hidden;
+        @apply relative box-border flex cursor-pointer items-center gap-1;
 
         opacity: var(--vs-select-trigger-opacity, 1);
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
@@ -19,13 +19,8 @@
         padding: var(--vs-select-trigger-padding, 0 0.8rem);
         min-height: var(--vs-select-height, var(--vs-default-comp-height));
 
-        &:focus-within {
-            outline: 1px solid var(--vs-line-color) !important;
-            outline-offset: 2px !important;
-        }
-
         .vs-select-value {
-            @apply flex items-center gap-1 overflow-hidden;
+            @apply flex flex-1 flex-wrap items-center gap-1;
         }
 
         .vs-select-placeholder {

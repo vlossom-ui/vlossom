@@ -18,7 +18,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-select', colorSchemeClass, triggerClassObj, stateClasses]" :style="styleSetVariables">
+        <div :class="['vs-select', colorSchemeClass, triggerClassObj]" :style="styleSetVariables">
             <vs-select-trigger
                 ref="triggerRef"
                 :id="triggerId"
@@ -29,6 +29,7 @@
                 :collapse-chips
                 :closable-chips
                 :selected-options
+                :state="computedState"
                 @click="toggleOpen"
                 @deselect="deselectOption"
             />
@@ -111,7 +112,7 @@ import {
     getResponsiveProps,
     getMinMaxProps,
 } from '@/props';
-import { useColorScheme, useStyleSet, useInput, useStateClass, useInputOption, useOptionList } from '@/composables';
+import { useColorScheme, useStyleSet, useInput, useInputOption, useOptionList } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
@@ -278,8 +279,6 @@ export default defineComponent({
             multiple,
         });
 
-        const { stateClasses } = useStateClass(computedState);
-
         const triggerId = computed(() => `${computedId.value}-trigger`);
         const optionsId = computed(() => `${computedId.value}-options`);
 
@@ -430,9 +429,9 @@ export default defineComponent({
             styleSetVariables,
             componentStyleSet,
             triggerClassObj,
-            stateClasses,
             computedId,
             computedMessages,
+            computedState,
             computedDisabled,
             computedReadonly,
             filteredOptions,
