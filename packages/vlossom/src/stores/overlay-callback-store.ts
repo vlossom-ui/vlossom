@@ -33,7 +33,7 @@ export class OverlayCallbackStore {
     }
 
     public getLastOverlay(): [string, Ref<OverlayCallbacks>] | null {
-        return this._overlays.value.length > 0 ? this._overlays.value[this._overlays.value.length - 1]! : null;
+        return this._overlays.value.length > 0 ? this._overlays.value[this._overlays.value.length - 1] : null;
     }
 
     public getLastOverlayId(): string {
@@ -49,7 +49,7 @@ export class OverlayCallbackStore {
         if (index === -1) {
             return;
         }
-        const [, callbacks] = this._overlays.value[index]!;
+        const [, callbacks] = this._overlays.value[index];
         return await callbacks.value[eventName]?.(...args);
     }
 
@@ -77,7 +77,7 @@ export class OverlayCallbackStore {
         if (index === -1) {
             return;
         }
-        const [targetId] = this._overlays.value[index]!;
+        const [targetId] = this._overlays.value[index];
         this.run(targetId, OVERLAY_CLOSE, ...args);
         const result = this.run(targetId, 'close', ...args);
         this._overlays.value.splice(index, 1);

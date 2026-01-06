@@ -146,7 +146,7 @@ export default defineComponent({
             const className = stringUtil.kebabCase(VsComponent.VsFocusTrap);
             return h('div', { class: className, ref: focusTrapRef }, [
                 h('div', { id: `${className}-anchor`, tabindex: -1, ref: focusTrapAnchorRef }),
-                cloneVNode(vNodes[0]!, { ref: wrapperRef }),
+                cloneVNode(vNodes[0], { ref: wrapperRef }),
             ]);
         }
 
