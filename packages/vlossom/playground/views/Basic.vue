@@ -113,8 +113,8 @@
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-wrap items-center gap-2">
                     <vs-chip size="xs">Extra Small</vs-chip>
-                    <vs-chip size="sm">Small</vs-chip>
-                    <vs-chip>Default</vs-chip>
+                    <vs-chip>Small(Default)</vs-chip>
+                    <vs-chip size="md">Medium</vs-chip>
                     <vs-chip size="lg">Large</vs-chip>
                     <vs-chip size="xl">Extra Large</vs-chip>
                 </div>
