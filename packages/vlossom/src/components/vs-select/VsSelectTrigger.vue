@@ -13,14 +13,14 @@
                 </template>
                 <template v-else>
                     <vs-chip
-                        v-for="chip in selectedOptions"
-                        :key="chip.id"
+                        v-for="option in selectedOptions"
+                        :key="option.id"
                         :closable="closableChips"
                         small
                         primary
-                        @close="$emit('deselect', chip.id)"
+                        @close="$emit('deselect', option.id)"
                     >
-                        {{ chip.label }}
+                        {{ option.label }}
                     </vs-chip>
                 </template>
             </template>

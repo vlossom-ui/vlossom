@@ -71,6 +71,7 @@
     border: var(--vs-select-options-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-select-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
     padding: var(--vs-select-options-padding, 0.6rem 0.4rem);
+    max-height: var(--vs-select-options-height, 30rem);
 
     .vs-select-search {
         @apply mb-2;
@@ -84,6 +85,8 @@
     }
 
     .vs-select-option {
+        @apply cursor-pointer;
+
         padding: 0.2rem 1.2rem;
     }
 }

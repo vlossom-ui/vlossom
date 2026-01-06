@@ -37,7 +37,9 @@ export function useSelectValue({
     });
 
     const selectedOptions = computed(() => {
-        return computedOptions.value.filter((option) => selectedOptionIds.value.includes(option.id));
+        return selectedOptionIds.value
+            .map((id) => computedOptions.value.find((option) => option.id === id))
+            .filter((option) => option !== undefined);
     });
 
     function isSelected(optionId: string) {

@@ -105,6 +105,7 @@ import {
     type Ref,
     type TemplateRef,
     type ComputedRef,
+    nextTick,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -339,7 +340,6 @@ export default defineComponent({
 
         function onClearClick() {
             clearSelected();
-            validate();
         }
 
         function openOptions() {
@@ -348,10 +348,33 @@ export default defineComponent({
             }
 
             isOpen.value = true;
+
+            // setTimeout + nextTick을 사용해야 DOM이 완전히 렌더링된 후 스크롤 가능
+            setTimeout(() => {
+                nextTick(() => {
+                    const selectedId = selectedOptionIds.value[0];
+                    if (selectedId) {
+                        optionsListRef.value?.scrollToItem(selectedId);
+                    }
+                });
+            }, 50);
         }
 
         function closeOptions() {
             isOpen.value = false;
+        }
+
+        function onOutsideClick(e: MouseEvent) {
+            const target = e.target as HTMLElement;
+
+            // check if click outside of select
+            if (
+                isOpen.value &&
+                target.closest(`#${triggerId.value}`) === null &&
+                target.closest(`#${optionsId.value}`) === null
+            ) {
+                closeOptions();
+            }
         }
 
         watch(
@@ -405,19 +428,6 @@ export default defineComponent({
         watch([computedDisabled, computedReadonly], () => {
             closeOptions();
         });
-
-        function onOutsideClick(e: MouseEvent) {
-            const target = e.target as HTMLElement;
-
-            // check if click outside of select
-            if (
-                isOpen.value &&
-                target.closest(`#${triggerId.value}`) === null &&
-                target.closest(`#${optionsId.value}`) === null
-            ) {
-                closeOptions();
-            }
-        }
 
         watch(isOpen, () => {
             if (isOpen.value) {
