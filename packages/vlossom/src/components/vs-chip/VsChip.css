@@ -12,7 +12,7 @@
 
     --vs-chip-size-height: var(--vs-size-height, var(--vs-default-comp-height-sm));
     --vs-chip-size-font: var(--vs-size-font, var(--vs-font-size-sm));
-    --vs-chip-size-padding: 0.6rem;
+    --vs-chip-size-padding: var(--vs-size-padding, var(--vs-padding-sm));
     --vs-chip-size-icon-padding: 0.15rem;
 
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
@@ -58,22 +58,18 @@
     }
 
     &.vs-xs {
-        --vs-chip-size-padding: 0.2rem;
         --vs-chip-size-icon-padding: 0.1rem;
     }
 
     &.vs-md {
-        --vs-chip-size-padding: 0.8rem;
         --vs-chip-size-icon-padding: 0.2rem;
     }
 
     &.vs-lg {
-        --vs-chip-size-padding: 1rem;
         --vs-chip-size-icon-padding: 0.25rem;
     }
 
     &.vs-xl {
-        --vs-chip-size-padding: 1.2rem;
         --vs-chip-size-icon-padding: 0.3rem;
     }
 

@@ -28,29 +28,34 @@
         --vs-size-height: var(--vs-default-comp-height-xs);
         --vs-size-font: var(--vs-font-size-xs);
         --vs-size-radius: var(--vs-radius-xs);
+        --vs-size-padding: 0.4rem;
     }
 
     .vs-sm {
         --vs-size-height: var(--vs-default-comp-height-sm);
         --vs-size-font: var(--vs-font-size-sm);
         --vs-size-radius: var(--vs-radius-sm);
+        --vs-size-padding: 0.6rem;
     }
 
     .vs-md {
         --vs-size-height: var(--vs-default-comp-height-md);
         --vs-size-font: var(--vs-font-size);
         --vs-size-radius: var(--vs-radius);
+        --vs-size-padding: 0.8rem;
     }
 
     .vs-lg {
         --vs-size-height: var(--vs-default-comp-height-lg);
         --vs-size-font: var(--vs-font-size-lg);
         --vs-size-radius: var(--vs-radius-lg);
+        --vs-size-padding: 1rem;
     }
 
     .vs-xl {
         --vs-size-height: var(--vs-default-comp-height-xl);
         --vs-size-font: var(--vs-font-size-xl);
         --vs-size-radius: var(--vs-radius-xl);
+        --vs-size-padding: 1.2rem;
     }
 }

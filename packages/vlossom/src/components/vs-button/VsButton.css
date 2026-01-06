@@ -15,7 +15,7 @@
     --vs-button-size-height: var(--vs-size-height, var(--vs-default-comp-height-md));
     --vs-button-size-radius: var(--vs-size-radius, var(--vs-radius));
     --vs-button-size-font: var(--vs-size-font, inherit);
-    --vs-button-size-padding: 0.8rem;
+    --vs-button-size-padding: var(--vs-size-padding, var(--vs-padding-md));
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
 
@@ -56,22 +56,6 @@
         &:hover {
             background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
         }
-    }
-
-    &.vs-xs {
-        --vs-button-size-padding: 0.4rem;
-    }
-
-    &.vs-sm {
-        --vs-button-size-padding: 0.6rem;
-    }
-
-    &.vs-lg {
-        --vs-button-size-padding: 1rem;
-    }
-
-    &.vs-xl {
-        --vs-button-size-padding: 1.2rem;
     }
 
     &.vs-outline {
