@@ -47,6 +47,10 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
             return;
         }
 
+        if (currentFocusableElement.value) {
+            currentFocusableElement.value.classList.remove('vs-focusable-active');
+        }
+
         if (focusIndex.value === -1) {
             currentFocusableElement.value = null;
             return;
@@ -60,10 +64,6 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
         const targetElement = focusableElements[focusIndex.value];
         if (!targetElement) {
             return;
-        }
-
-        if (currentFocusableElement.value) {
-            currentFocusableElement.value.classList.remove('vs-focusable-active');
         }
 
         targetElement.classList.add('vs-focusable-active');
