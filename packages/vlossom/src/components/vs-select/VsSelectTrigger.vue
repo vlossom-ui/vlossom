@@ -28,6 +28,18 @@
                 {{ displayLabel }}
             </template>
         </div>
+        <button
+            v-if="renderClearButton"
+            type="button"
+            class="vs-select-clear-button"
+            aria-label="Clear"
+            :class="{ show: !isEmpty }"
+            :disabled="isEmpty"
+            :tabindex="!isEmpty ? 0 : -1"
+            @click.stop="$emit('clear')"
+        >
+            <vs-render :content="closeIcon" />
+        </button>
         <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
             <vs-render :content="selectIcons.arrowDown" />
         </div>
@@ -38,6 +50,7 @@
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import type { OptionItem, UIState } from '@/declaration';
 import { useStateClass } from '@/composables';
+import { closeIcon } from '@/icons';
 import { selectIcons } from './icons';
 
 import VsChip from '@/components/vs-chip/VsChip.vue';
@@ -49,23 +62,28 @@ export default defineComponent({
     props: {
         collapseChips: { type: Boolean, default: false },
         closableChips: { type: Boolean, default: false },
+        disabled: { type: Boolean, default: false },
         isEmpty: { type: Boolean, default: false },
         isOpen: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
+        noClear: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
+        readonly: { type: Boolean, default: false },
         selectedOptions: {
             type: Array as PropType<OptionItem[]>,
             default: () => [],
         },
         state: { type: String as PropType<UIState>, default: 'idle' },
     },
-    emits: ['click', 'deselect'],
+    emits: ['click', 'deselect', 'clear'],
     setup(props) {
-        const { isEmpty, selectedOptions, state } = toRefs(props);
+        const { isEmpty, selectedOptions, state, noClear, disabled, readonly } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
 
         const { stateClasses } = useStateClass(state);
+
+        const renderClearButton = computed(() => !noClear.value && !readonly.value && !disabled.value);
 
         const displayLabel = computed(() => {
             if (isEmpty.value) {
@@ -86,7 +104,9 @@ export default defineComponent({
         return {
             triggerRef,
             selectIcons,
+            closeIcon,
             stateClasses,
+            renderClearButton,
             displayLabel,
             focus,
             blur,

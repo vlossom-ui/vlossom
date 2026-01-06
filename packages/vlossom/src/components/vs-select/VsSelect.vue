@@ -30,8 +30,12 @@
                 :closable-chips
                 :selected-options
                 :state="computedState"
+                :no-clear
+                :disabled="computedDisabled"
+                :readonly="computedReadonly"
                 @click="toggleOpen"
                 @deselect="deselectOption"
+                @clear="onClearClick"
             />
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
@@ -143,6 +147,7 @@ export default defineComponent({
         closableChips: { type: Boolean, default: false },
         collapseChips: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
+        noClear: { type: Boolean, default: false },
         optionsDisabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number, options: any[]) => boolean)>,
             default: false,
@@ -332,6 +337,11 @@ export default defineComponent({
             triggerRef.value?.blur();
         }
 
+        function onClearClick() {
+            clearSelected();
+            validate();
+        }
+
         function openOptions() {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
@@ -444,6 +454,7 @@ export default defineComponent({
             searchProps,
             toggleOpen,
             onClickOption,
+            onClearClick,
             isSelectedAll,
             computedColorScheme,
             onFocus,

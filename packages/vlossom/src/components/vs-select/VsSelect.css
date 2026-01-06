@@ -31,13 +31,28 @@
             @apply opacity-70;
         }
 
-        .vs-select-icon {
-            @apply flex flex-shrink-0 items-center justify-center;
-            transition: transform 0.3s ease;
+        .vs-select-clear-button {
+            @apply flex size-5 items-center justify-center rounded border-none opacity-0 focus-visible:outline-1;
 
-            svg {
-                @apply h-5 w-5;
+            transition: opacity 0.4s;
+            background: none;
+            color: var(--vs-font-color);
+
+            &:focus {
+                @apply cursor-pointer opacity-100;
             }
+        }
+
+        &:hover {
+            .vs-select-clear-button.show {
+                @apply cursor-pointer opacity-100;
+            }
+        }
+
+        .vs-select-icon {
+            @apply flex size-5 flex-shrink-0 items-center justify-center;
+
+            transition: transform 0.3s ease;
 
             &.vs-select-icon-open {
                 transform: rotate(180deg);
@@ -58,11 +73,17 @@
     padding: var(--vs-select-options-padding, 0.6rem 0.4rem);
 
     .vs-select-search {
+        @apply mb-2;
+        padding: 0 1rem;
     }
 
     .vs-select-all {
+        @apply cursor-pointer;
+        margin-bottom: 0.3rem;
+        padding: 0.2rem 1.2rem;
     }
 
     .vs-select-option {
+        padding: 0.2rem 1.2rem;
     }
 }
