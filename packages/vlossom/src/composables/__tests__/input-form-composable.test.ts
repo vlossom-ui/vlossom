@@ -9,8 +9,8 @@ describe('useInputForm', () => {
     let id: Ref<string>;
     let valid: Ref<boolean>;
     let changed: Ref<boolean>;
-    let validateSpy: ReturnType<typeof vi.fn>;
-    let clearSpy: ReturnType<typeof vi.fn>;
+    let validateSpy: ReturnType<typeof vi.fn<() => boolean>>;
+    let clearSpy: ReturnType<typeof vi.fn<() => void>>;
     let TestComponent: ReturnType<typeof defineComponent>;
 
     beforeEach(() => {
@@ -23,7 +23,7 @@ describe('useInputForm', () => {
         clearSpy = vi.fn();
         TestComponent = defineComponent({
             setup() {
-                const result = useInputForm(id, valid, changed, validateSpy as () => boolean, clearSpy as () => void);
+                const result = useInputForm(id, valid, changed, validateSpy, clearSpy);
                 return { result };
             },
             template: '<div></div>',

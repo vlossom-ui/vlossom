@@ -35,21 +35,25 @@ const matchMediaMock = vi.fn((query) => ({
 
 vi.stubGlobal('matchMedia', matchMediaMock);
 
-class ResizeObserverMock {
-    observe = vi.fn();
-    unobserve = vi.fn();
-    disconnect = vi.fn();
-}
+const resizeObserverMock = vi.fn(function _() {
+    return {
+        observe: vi.fn(),
+        unobserve: vi.fn(),
+        disconnect: vi.fn(),
+    };
+});
 
-vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+vi.stubGlobal('ResizeObserver', resizeObserverMock);
 
-class IntersectionObserverMock {
-    observe = vi.fn();
-    unobserve = vi.fn();
-    disconnect = vi.fn();
-}
+const intersectionObserverMock = vi.fn(function _() {
+    return {
+        observe: vi.fn(),
+        unobserve: vi.fn(),
+        disconnect: vi.fn(),
+    };
+});
 
-vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+vi.stubGlobal('IntersectionObserver', intersectionObserverMock);
 
 const clipboardMock = {
     writeText: vi.fn().mockResolvedValue(undefined),

@@ -5,10 +5,10 @@ import type { ModalPlugin } from '@/plugins/modal-plugin';
 
 describe('alert-plugin', () => {
     let registeredCallbacks: Record<string, (...args: any[]) => void>;
-    let closeWithId: ReturnType<typeof vi.fn>;
+    let closeWithId: ReturnType<typeof vi.fn<() => void>>;
     let modalPlugin: ModalPlugin;
 
-    beforeEach(() => {
+    beforeEach(function _() {
         registeredCallbacks = {};
         closeWithId = vi.fn();
         modalPlugin = {
@@ -16,11 +16,11 @@ describe('alert-plugin', () => {
                 registeredCallbacks = options?.callbacks ?? {};
                 return 'modal-id';
             }),
-            closeWithId: closeWithId as ModalPlugin['closeWithId'],
-            close: vi.fn() as ModalPlugin['close'],
-            emit: vi.fn() as ModalPlugin['emit'],
-            emitWithId: vi.fn() as ModalPlugin['emitWithId'],
-            clear: vi.fn() as ModalPlugin['clear'],
+            closeWithId,
+            close: vi.fn(),
+            emit: vi.fn(),
+            emitWithId: vi.fn(),
+            clear: vi.fn(),
         };
     });
 
