@@ -97,8 +97,8 @@ export default defineComponent({
                 return;
             }
 
-            firstFocusable = shownFocusables[0] ?? null;
-            lastFocusable = shownFocusables[shownFocusables.length - 1] ?? null;
+            firstFocusable = shownFocusables[0];
+            lastFocusable = shownFocusables[shownFocusables.length - 1];
         }
 
         function focus() {
