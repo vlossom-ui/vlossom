@@ -3,7 +3,7 @@
 .vs-message {
     --vs-message-font-size: var(--vs-font-size);
 
-    @apply flex items-center whitespace-nowrap;
+    @apply flex items-start;
 
     color: var(--vs-primary-comp-bg);
     fill: var(--vs-primary-comp-bg);
@@ -16,8 +16,9 @@
     }
 
     .vs-message-text {
-        @apply ml-1;
+        @apply ml-1 break-words;
         font-size: var(--vs-message-font-size);
+        line-height: var(--vs-message-font-size);
     }
 
     &.vs-xs {
