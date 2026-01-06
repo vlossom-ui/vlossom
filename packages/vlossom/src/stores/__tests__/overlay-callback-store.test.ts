@@ -42,8 +42,8 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(1);
-            expect(store.overlays.value[0]![0]).toBe(overlayId);
-            expect(store.overlays.value[0]![1]).toStrictEqual(callbacks);
+            expect(store.overlays.value[0][0]).toBe(overlayId);
+            expect(store.overlays.value[0][1]).toStrictEqual(callbacks);
             expect(vlossomOpenCallback).toHaveBeenCalledTimes(1);
             expect(openCallback).toHaveBeenCalledTimes(1);
         });
@@ -61,8 +61,8 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(2);
-            expect(store.overlays.value[0]![0]).toBe(overlay1);
-            expect(store.overlays.value[1]![0]).toBe(overlay2);
+            expect(store.overlays.value[0][0]).toBe(overlay1);
+            expect(store.overlays.value[1][0]).toBe(overlay2);
         });
 
         it('open 콜백이 없어도 정상 작동해야 한다', async () => {
@@ -170,7 +170,7 @@ describe('OverlayCallbackStore', () => {
 
             // then
             expect(store.overlays.value).toHaveLength(1);
-            expect(store.overlays.value[0]![0]).toBe(overlay2);
+            expect(store.overlays.value[0][0]).toBe(overlay2);
             expect(closeCallback1).toHaveBeenCalledTimes(1);
             expect(closeCallback2).not.toHaveBeenCalled();
         });
