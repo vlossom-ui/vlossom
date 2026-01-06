@@ -20,6 +20,7 @@ export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSel
 
 export interface VsSelectStyleSet extends SizeStyleSet {
     trigger?: BoxStyleSet;
-    options?: Omit<VsGroupedListStyleSet, 'width'>;
+    options?: Omit<VsGroupedListStyleSet, 'width' | 'items'>;
     selectAllCheckbox?: VsCheckboxStyleSet;
+    option?: BoxStyleSet & { selectedBackgroundColor?: string };
 }

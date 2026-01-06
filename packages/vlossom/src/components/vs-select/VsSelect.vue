@@ -75,7 +75,7 @@
                     </template>
                     <template #item="itemSlotProps">
                         <slot name="option" v-bind="itemSlotProps">
-                            <div class="vs-select-option">
+                            <div class="vs-select-option" :class="{ selected: isSelected(itemSlotProps.id) }">
                                 {{ itemSlotProps.label }}
                             </div>
                         </slot>
@@ -288,6 +288,7 @@ export default defineComponent({
             toggleSelect,
             clearSelected,
             toggleSelectAll,
+            isSelected,
         } = useSelectValue({
             computedReadonly,
             computedDisabled,
@@ -471,6 +472,7 @@ export default defineComponent({
             shake,
             openOptions,
             closeOptions,
+            isSelected,
             toggleSelectAll,
             searchText,
             isUsingSearch,

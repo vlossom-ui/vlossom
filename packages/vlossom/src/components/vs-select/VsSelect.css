@@ -28,7 +28,9 @@
         }
 
         .vs-select-collapsed-count {
-            @apply opacity-70;
+            @apply opacity-70 select-none;
+
+            font-size: var(--vs-font-size-sm);
         }
 
         .vs-select-clear-button {
@@ -62,15 +64,21 @@
 }
 
 .vs-select-options {
-    --vs-select-options-border: initial;
-    --vs-select-options-borderRadius: initial;
-    --vs-select-options-padding: initial;
+    --vs-select-option-border: initial;
+    --vs-select-option-borderRadius: initial;
+    --vs-select-option-padding: initial;
+    --vs-select-option-backgroundColor: initial;
+    --vs-select-option-opacity: initial;
+    --vs-select-option-selectedBackgroundColor: initial;
+    --vs-select-options-height: initial;
 
     @apply overflow-hidden;
 
-    border: var(--vs-select-options-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-select-options-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
-    padding: var(--vs-select-options-padding, 0.6rem 0.4rem);
+    opacity: var(--vs-select-option-opacity, 1);
+    border: var(--vs-select-option-border, 1px solid var(--vs-line-color));
+    border-radius: var(--vs-select-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    background-color: var(--vs-select-option-backgroundColor, var(--vs-no-color));
+    padding: var(--vs-select-option-padding, 0.6rem 0.4rem);
     max-height: var(--vs-select-options-height, 30rem);
 
     .vs-select-search {
@@ -88,5 +96,10 @@
         @apply cursor-pointer;
 
         padding: 0.2rem 1.2rem;
+
+        &.selected {
+            background-color: var(--vs-select-option-selecteBackgroundColor, var(--vs-comp-bg));
+            font-weight: var(--vs-font-weight-bold);
+        }
     }
 }
