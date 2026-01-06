@@ -72,6 +72,7 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
 
     return {
         focusIndex: readonly(focusIndex),
+        currentFocusableElement: readonly(currentFocusableElement),
         updateFocusIndex,
     };
 }
