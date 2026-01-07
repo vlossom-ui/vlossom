@@ -52,12 +52,16 @@ caption {
     }
 
     .vs-table-responsive tbody tr {
-        @apply mx-0 mb-3 overflow-hidden border border-solid;
-        border: 0.0625rem solid var(--vs-line-color);
+        @apply mx-0 mb-3 border border-solid;
+        border: 0.0325rem solid var(--vs-line-color);
     }
 
     .vs-table-responsive td {
         @apply grid grid-cols-[minmax(6rem,9rem)_1fr] gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+    }
+
+    .vs-table-responsive td:first-child {
+        @apply border-t-0;
     }
 
     .vs-table-responsive td:last-child {
@@ -65,7 +69,7 @@ caption {
     }
 
     .vs-table-responsive td::before {
-        @apply font-bold tracking-tight;
+        @apply font-bold;
         content: attr(data-label);
     }
 }
