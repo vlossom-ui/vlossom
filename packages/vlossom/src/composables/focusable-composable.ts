@@ -1,7 +1,12 @@
-import { onMounted, onUnmounted, readonly, ref, watch, type TemplateRef } from 'vue';
+import { onMounted, onBeforeUnmount, readonly, ref, watch, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
 import { functionUtil } from '@/utils';
 
-export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
+export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
+    focusIndex: DeepReadonly<Ref<number>>;
+    currentFocusableElement: DeepReadonly<Ref<HTMLElement | null>>;
+    updateFocusIndex: (index: number) => void;
+    getFocusableElements: () => HTMLElement[];
+} {
     const focusIndex = ref(-1);
     const currentFocusableElement = ref<HTMLElement | null>(null);
 
@@ -55,7 +60,7 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
         wrapperElement.value?.addEventListener('mousemove', throttledTrackMouseMove);
     });
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
         wrapperElement.value?.removeEventListener('mousemove', throttledTrackMouseMove);
     });
 
