@@ -50,12 +50,7 @@
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
                         <div class="vs-select-search" data-focusable>
-                            <vs-search-input
-                                v-if="isUsingSearch"
-                                ref="searchInputRef"
-                                v-model="searchText"
-                                v-bind="searchProps"
-                            />
+                            <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" />
                         </div>
                         <div
                             v-if="multiple && selectAll"
@@ -208,7 +203,6 @@ export default defineComponent({
         } = toRefs(props);
 
         const isOpen = ref(false);
-        const searchText = ref('');
         const inputValue: Ref<any> = ref(modelValue.value);
 
         const triggerRef: TemplateRef<VsSelectTriggerRef> = useTemplateRef('triggerRef');
@@ -234,7 +228,7 @@ export default defineComponent({
 
         function onClear() {
             clearSelected();
-            searchText.value = '';
+            searchInputRef.value?.clear();
             emit('clear');
         }
 
@@ -378,7 +372,7 @@ export default defineComponent({
             emit('close');
 
             setTimeout(() => {
-                searchText.value = '';
+                searchInputRef.value?.clear();
             }, 250); // wait for the animation
         }
 
@@ -478,7 +472,6 @@ export default defineComponent({
             closeOptions,
             isSelected,
             toggleSelectAll,
-            searchText,
             isUsingSearch,
             searchProps,
             toggleOpen,
