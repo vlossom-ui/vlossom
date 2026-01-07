@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-table', colorSchemeClass]">
+    <div ref="tableRef" :class="['vs-table', colorSchemeClass]">
         <vs-search-input
             ref="searchInputRef"
             class="mb-2 flex justify-end"
@@ -8,15 +8,26 @@
         />
 
         <table>
-            <caption v-if="$slots['caption']">
-                <slot name="caption" />
-            </caption>
-            <vs-table-header @click-cell="clickCell" @select-row="selectRow">
+            <vs-table-header
+                v-if="stickyHeader && headerInvisible"
+                class="vs-table-sticky-header"
+                @click-cell="clickCell"
+                @select-row="selectRow"
+            >
                 <template v-for="name in headerSlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
             </vs-table-header>
-            <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
+
+            <caption v-if="$slots['caption']">
+                <slot name="caption" />
+            </caption>
+            <vs-table-header ref="headerRef" @click-cell="clickCell" @select-row="selectRow">
+                <template v-for="name in headerSlots" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-header>
+            <vs-table-body ref="bodyRef" @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
                 <template v-for="name in bodySlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
@@ -26,7 +37,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, type PropType, toRefs, computed, onBeforeMount, useTemplateRef } from 'vue';
+import {
+    type PropType,
+    defineComponent,
+    provide,
+    toRefs,
+    computed,
+    ref,
+    onBeforeMount,
+    useTemplateRef,
+    onBeforeUnmount,
+} from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -83,6 +105,10 @@ export default defineComponent({
             type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
             default: false,
         },
+        stickyHeader: {
+            type: Boolean,
+            default: false,
+        },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
@@ -106,6 +132,12 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
+        const tableRef = useTemplateRef<HTMLDivElement>('tableRef');
+        const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const bodyRef = useTemplateRef<HTMLTableSectionElement>('bodyRef');
+        const headerInvisible = ref(true);
+        const bodyInvisible = ref(true);
+        const stickyHeaderTop = ref(0);
 
         const table: TableComposable = useTable(props, { searchInputRef }, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
@@ -126,6 +158,33 @@ export default defineComponent({
                 return TABLE_SEARCH_OPTIONS;
             }
             return { ...TABLE_SEARCH_OPTIONS, ...search.value };
+        });
+
+        const { pause: pauseTableObserver } = useIntersectionObserver(tableRef, (entries) => {
+            const entry = entries?.[0];
+            const isIntersecting = entry?.isIntersecting ?? false;
+            if (isIntersecting && entry) {
+                stickyHeaderTop.value = entry.rootBounds?.bottom ?? 0;
+            }
+        });
+
+        const { pause: pauseHeaderObserver } = useIntersectionObserver(
+            headerRef,
+            (entries) => {
+                const entry = entries?.[0];
+                const isIntersecting = entry?.isIntersecting ?? false;
+                headerInvisible.value = !isIntersecting;
+                if (isIntersecting && entry) {
+                    stickyHeaderTop.value = entry.boundingClientRect.top;
+                }
+            },
+            { root: tableRef.value, threshold: [1] },
+        );
+
+        const { pause: pauseBodyObserver } = useIntersectionObserver(bodyRef, (entries) => {
+            const entry = entries?.[0];
+            const isIntersecting = entry?.isIntersecting ?? false;
+            bodyInvisible.value = !isIntersecting;
         });
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
@@ -153,11 +212,22 @@ export default defineComponent({
             table.initialize();
         });
 
+        onBeforeUnmount(() => {
+            pauseTableObserver();
+            pauseHeaderObserver();
+            pauseBodyObserver();
+        });
+
         return {
             colorSchemeClass,
+            headerRef,
+            bodyRef,
             headerSlots,
             bodySlots,
             searchOptions,
+            headerInvisible,
+            bodyInvisible,
+            stickyHeaderTop,
             clickCell,
             selectRow,
             expandRow,
