@@ -1,5 +1,5 @@
 <template>
-    <div ref="tableRef" :class="['vs-table', colorSchemeClass]" :style="styleSetVariables">
+    <div :class="['vs-table', colorSchemeClass, classObj]" :style="styleSetVariables">
         <vs-search-input
             ref="searchInputRef"
             class="mb-2 flex justify-end"
@@ -95,6 +95,10 @@ export default defineComponent({
                 return true;
             },
         },
+        responsive: {
+            type: Boolean,
+            default: false,
+        },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -130,7 +134,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
     setup(props, { slots, emit }) {
-        const { colorScheme, search, styleSet } = toRefs(props);
+        const { colorScheme, styleSet, responsive, search } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -142,7 +146,6 @@ export default defineComponent({
         const { styleSetVariables } = useStyleSet<VsTableStyleSet>(componentName, styleSet, additionalStyleSet);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
-        const tableRef = useTemplateRef<HTMLDivElement>('tableRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
         const headerInvisible = ref(true);
         const stickyHeaderTop = ref('0px');
@@ -161,6 +164,10 @@ export default defineComponent({
                 ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
+
+        const classObj = computed(() => ({
+            'vs-table-responsive': responsive.value,
+        }));
 
         const searchOptions = computed<VsTableSearchOptions>(() => {
             if (typeof search.value === 'boolean') {
@@ -212,7 +219,7 @@ export default defineComponent({
         return {
             colorSchemeClass,
             styleSetVariables,
-            tableRef,
+            classObj,
             headerRef,
             headerSlots,
             bodySlots,

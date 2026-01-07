@@ -12,6 +12,7 @@
                         v-for="cell in cells"
                         :id="cell.id"
                         :key="cell.id"
+                        :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                         @click.prevent.stop="clickCell(cell, $event)"
                     >
                         <slot :name="findMatchingSlotName(cell)" :item="cell.item">
@@ -64,7 +65,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(_props, { emit, slots }) {
-        const { bodyCells, anyExpandable } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyCells, anyExpandable, headerCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -87,6 +88,14 @@ export default defineComponent({
             emit('click-cell', { ...cell }, event);
         }
 
+        function getHeaderLabel(colIdx: number, fallback: string): string {
+            const header = headerCells.value?.[colIdx];
+            if (!header) {
+                return fallback;
+            }
+            return String(header.value ?? fallback);
+        }
+
         function selectRow(row: BodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
             emit('click-cell', { ...row[0] }, event);
@@ -106,6 +115,7 @@ export default defineComponent({
             getRowId,
             selectRow,
             expandRow,
+            getHeaderLabel,
         };
     },
 });

@@ -28,3 +28,44 @@ td {
 caption {
     @apply caption-bottom;
 }
+
+.vs-table-responsive table {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .vs-table-responsive table,
+    .vs-table-responsive thead,
+    .vs-table-responsive tbody,
+    .vs-table-responsive th,
+    .vs-table-responsive td,
+    .vs-table-responsive tr {
+        @apply block w-full;
+    }
+
+    .vs-table-responsive thead {
+        @apply absolute m-0 h-1 w-1 overflow-hidden border-0;
+    }
+
+    .vs-table-responsive tbody {
+        @apply block;
+    }
+
+    .vs-table-responsive tbody tr {
+        @apply mx-0 mb-3 overflow-hidden border border-solid;
+        border: 0.0625rem solid var(--vs-line-color);
+    }
+
+    .vs-table-responsive td {
+        @apply grid grid-cols-[minmax(6rem,9rem)_1fr] gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+    }
+
+    .vs-table-responsive td:last-child {
+        @apply border-b-0;
+    }
+
+    .vs-table-responsive td::before {
+        @apply font-bold tracking-tight;
+        content: attr(data-label);
+    }
+}
