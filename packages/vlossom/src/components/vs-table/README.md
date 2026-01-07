@@ -139,6 +139,20 @@
 
 > `search`를 `true` 또는 옵션 객체로 전달하면 검색 입력이 표시되며, `skipSearch`가 지정된 컬럼은 검색 대상에서 제외됩니다.
 
+### 반응형 (Responsive)
+
+```html
+<template>
+    <vs-table
+        :columns="['id', 'name', 'order', 'checked', 'created', 'desc']"
+        :items="items"
+        responsive
+    />
+</template>
+```
+
+> `responsive`가 true이면 768px 이하에서 thead를 숨기고 각 행을 카드형으로 쌓아올리며, 각 셀이 헤더 라벨을 함께 표시합니다.
+
 ### 행 확장 (Expand)
 
 ```html
@@ -165,17 +179,18 @@
 
 ## Props
 
-| Prop                     | Type                                           | Default | Required | Description                          |
-| ------------------------ | ---------------------------------------------- | ------- | -------- | ------------------------------------ |
-| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                   |
-| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체              |
-| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                     |
-| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열          |
-| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션               |
-| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
-| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수 |
-| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부             |
-| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)     |
+| Prop                     | Type                                           | Default | Required | Description                           |
+| ------------------------ | ---------------------------------------------- | ------- | -------- | ------------------------------------- |
+| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                    |
+| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체               |
+| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                      |
+| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열           |
+| `responsive`             | `boolean`                                      | false   | -        | 좁은 화면에서 카드형(모바일) 레이아웃 |
+| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션                |
+| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수  |
+| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수  |
+| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부              |
+| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)      |
 
 ## Types
 
@@ -249,6 +264,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **다양한 컬럼 입력**: 객체/문자열/null 컬럼 정의를 지원해 유연한 초기 설정 가능
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
+- **반응형 테이블**: `responsive` prop을 통해 모바일 환경에서 표 레이아웃이 자동으로 바뀌며, 각 셀에서 헤더 정보를 함께 보여줌
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
