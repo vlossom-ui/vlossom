@@ -5,7 +5,27 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
     const focusIndex = ref(-1);
     const currentFocusableElement = ref<HTMLElement | null>(null);
 
+    function getFocusableElements() {
+        const focusableElements = wrapperElement.value?.querySelectorAll<HTMLElement>('[data-focusable]');
+        if (!focusableElements) {
+            return [];
+        }
+
+        return Array.from(focusableElements);
+    }
+
     function updateFocusIndex(index: number) {
+        if (index < 0) {
+            focusIndex.value = -1;
+            return;
+        }
+
+        const focusableElements = getFocusableElements();
+        if (index >= focusableElements.length) {
+            focusIndex.value = focusableElements.length - 1;
+            return;
+        }
+
         focusIndex.value = index;
     }
 
@@ -19,12 +39,9 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
             return;
         }
 
-        const focusableElements = wrapperElement.value?.querySelectorAll<HTMLElement>('[data-focusable]');
-        if (!focusableElements) {
-            return;
-        }
+        const focusableElements = getFocusableElements();
 
-        const targetIndex = Array.from(focusableElements).indexOf(targetElement);
+        const targetIndex = focusableElements.indexOf(targetElement);
         if (targetIndex === -1) {
             return;
         }
@@ -56,7 +73,7 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
             return;
         }
 
-        const focusableElements = wrapperElement.value.querySelectorAll<HTMLElement>('[data-focusable]');
+        const focusableElements = getFocusableElements();
         if (focusableElements.length === 0) {
             return;
         }
@@ -74,5 +91,6 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>) {
         focusIndex: readonly(focusIndex),
         currentFocusableElement: readonly(currentFocusableElement),
         updateFocusIndex,
+        getFocusableElements,
     };
 }
