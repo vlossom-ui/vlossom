@@ -45,9 +45,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.97.1))
-      '@tsconfig/node22':
-        specifier: ^22.0.5
-        version: 22.0.5
+      '@tsconfig/node24':
+        specifier: ^24.0.3
+        version: 24.0.3
       '@types/jsdom':
         specifier: ^27.0.0
         version: 27.0.0
@@ -1070,8 +1070,8 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@tsconfig/node22@22.0.5':
-    resolution: {integrity: sha512-hLf2ld+sYN/BtOJjHUWOk568dvjFQkHnLNa6zce25GIH+vxKfvTgm3qpaH6ToF5tu/NN0IH66s+Bb5wElHrLcw==}
+  '@tsconfig/node24@24.0.3':
+    resolution: {integrity: sha512-vcERKtKQKHgzt/vfS3Gjasd8SUI2a0WZXpgJURdJsMySpS5+ctgbPfuLj2z/W+w4lAfTWxoN4upKfu2WzIRYnw==}
 
   '@types/argparse@1.0.38':
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
@@ -4229,7 +4229,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  '@tsconfig/node22@22.0.5': {}
+  '@tsconfig/node24@24.0.3': {}
 
   '@types/argparse@1.0.38': {}
 
