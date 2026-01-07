@@ -368,15 +368,15 @@ describe('useFocusable', () => {
         });
     });
 
-    describe('mousemove 이벤트 추적', () => {
-        it('data-focusable 엘리먼트에 마우스를 올리면 focusIndex가 업데이트되어야 한다', async () => {
+    describe('addMouseMoveListener', () => {
+        it('이벤트 리스너를 등록할 수 있어야 한다', async () => {
             // given
             const wrapper = mount(
                 defineComponent({
                     setup() {
                         const wrapperRef = ref<HTMLElement | null>(null);
-                        const { focusIndex } = useFocusable(wrapperRef);
-                        return { focusIndex, wrapperRef };
+                        const { focusIndex, addMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, wrapperRef };
                     },
                     template: `
                         <div ref="wrapperRef">
@@ -391,6 +391,7 @@ describe('useFocusable', () => {
             await nextTick();
 
             // when
+            wrapper.vm.addMouseMoveListener();
             const focusableElements = wrapper.element.querySelectorAll('[data-focusable]');
             await focusableElements[1].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
             await nextTick();
@@ -399,14 +400,79 @@ describe('useFocusable', () => {
             expect(wrapper.vm.focusIndex).toBe(1);
         });
 
+        it('data-focusable 엘리먼트에 마우스를 올리면 focusIndex가 업데이트되어야 한다', async () => {
+            // given
+            const wrapper = mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        const { focusIndex, addMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, wrapperRef };
+                    },
+                    template: `
+                        <div ref="wrapperRef">
+                            <div data-focusable>Item 1</div>
+                            <div data-focusable>Item 2</div>
+                            <div data-focusable>Item 3</div>
+                        </div>
+                    `,
+                }),
+            );
+
+            await nextTick();
+            wrapper.vm.addMouseMoveListener();
+
+            // when
+            const focusableElements = wrapper.element.querySelectorAll('[data-focusable]');
+            await focusableElements[1].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.focusIndex).toBe(1);
+        });
+
+        it('data-focusable의 자식 엘리먼트에 마우스를 올려도 focusIndex가 업데이트되어야 한다', async () => {
+            // given
+            const wrapper = mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        const { focusIndex, addMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, wrapperRef };
+                    },
+                    template: `
+                        <div ref="wrapperRef">
+                            <div data-focusable>
+                                <span>Item 1</span>
+                            </div>
+                            <div data-focusable>
+                                <span>Item 2</span>
+                            </div>
+                        </div>
+                    `,
+                }),
+            );
+
+            await nextTick();
+            wrapper.vm.addMouseMoveListener();
+
+            // when - span 자식 요소에 마우스 이벤트를 발생시킴
+            const childElement = wrapper.element.querySelector('span:nth-child(1)');
+            await childElement?.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then - closest로 찾기 때문에 부모의 data-focusable를 찾아서 focusIndex가 업데이트됨
+            expect(wrapper.vm.focusIndex).toBe(0);
+        });
+
         it('data-focusable이 없는 엘리먼트에 마우스를 올리면 focusIndex가 업데이트되지 않아야 한다', async () => {
             // given
             const wrapper = mount(
                 defineComponent({
                     setup() {
                         const wrapperRef = ref<HTMLElement | null>(null);
-                        const { focusIndex } = useFocusable(wrapperRef);
-                        return { focusIndex, wrapperRef };
+                        const { focusIndex, addMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, wrapperRef };
                     },
                     template: `
                         <div ref="wrapperRef">
@@ -419,6 +485,7 @@ describe('useFocusable', () => {
             );
 
             await nextTick();
+            wrapper.vm.addMouseMoveListener();
 
             // when
             const nonFocusableElement = wrapper.element.querySelector(':not([data-focusable])');
@@ -429,14 +496,14 @@ describe('useFocusable', () => {
             expect(wrapper.vm.focusIndex).toBe(-1);
         });
 
-        it('이벤트 리스너가 onMounted에서 등록되어야 한다', async () => {
-            // given & when
+        it('현재 focusable 엘리먼트와 동일한 엘리먼트에 마우스를 올리면 focusIndex가 업데이트되지 않아야 한다', async () => {
+            // given
             const wrapper = mount(
                 defineComponent({
                     setup() {
                         const wrapperRef = ref<HTMLElement | null>(null);
-                        const { focusIndex } = useFocusable(wrapperRef);
-                        return { focusIndex, wrapperRef };
+                        const { focusIndex, addMouseMoveListener, updateFocusIndex } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, updateFocusIndex, wrapperRef };
                     },
                     template: `
                         <div ref="wrapperRef">
@@ -448,23 +515,94 @@ describe('useFocusable', () => {
             );
 
             await nextTick();
+            wrapper.vm.addMouseMoveListener();
+            wrapper.vm.updateFocusIndex(0);
+            await nextTick();
 
-            // then - 마운트 후 mousemove 이벤트가 동작하는지 확인
+            const initialFocusIndex = wrapper.vm.focusIndex;
+
+            // when - 같은 엘리먼트에 여러 번 마우스 이벤트 발생
             const focusableElements = wrapper.element.querySelectorAll('[data-focusable]');
             await focusableElements[0].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
             await nextTick();
 
-            expect(wrapper.vm.focusIndex).toBe(0);
+            // then - focusIndex는 변경되지 않음 (같은 값)
+            expect(wrapper.vm.focusIndex).toBe(initialFocusIndex);
         });
+    });
 
-        it('이벤트 리스너가 onBeforeUnmount에서 제거되어야 한다', async () => {
+    describe('removeMouseMoveListener', () => {
+        it('이벤트 리스너를 제거할 수 있어야 한다', async () => {
             // given
             const wrapper = mount(
                 defineComponent({
                     setup() {
                         const wrapperRef = ref<HTMLElement | null>(null);
-                        const { focusIndex } = useFocusable(wrapperRef);
-                        return { focusIndex, wrapperRef };
+                        const { focusIndex, addMouseMoveListener, removeMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, removeMouseMoveListener, wrapperRef };
+                    },
+                    template: `
+                        <div ref="wrapperRef">
+                            <div data-focusable>Item 1</div>
+                            <div data-focusable>Item 2</div>
+                        </div>
+                    `,
+                }),
+            );
+
+            await nextTick();
+            wrapper.vm.addMouseMoveListener();
+
+            // when
+            wrapper.vm.removeMouseMoveListener();
+            const focusableElements = wrapper.element.querySelectorAll('[data-focusable]');
+            await focusableElements[1].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then - 리스너가 제거되어 focusIndex가 업데이트되지 않음
+            expect(wrapper.vm.focusIndex).toBe(-1);
+        });
+
+        it('이벤트 리스너 제거 후 다시 등록할 수 있어야 한다', async () => {
+            // given
+            const wrapper = mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        const { focusIndex, addMouseMoveListener, removeMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, removeMouseMoveListener, wrapperRef };
+                    },
+                    template: `
+                        <div ref="wrapperRef">
+                            <div data-focusable>Item 1</div>
+                            <div data-focusable>Item 2</div>
+                        </div>
+                    `,
+                }),
+            );
+
+            await nextTick();
+            wrapper.vm.addMouseMoveListener();
+            wrapper.vm.removeMouseMoveListener();
+
+            // when
+            wrapper.vm.addMouseMoveListener();
+            const focusableElements = wrapper.element.querySelectorAll('[data-focusable]');
+            await focusableElements[1].dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then - 다시 등록되어 focusIndex가 업데이트됨
+            expect(wrapper.vm.focusIndex).toBe(1);
+        });
+
+        it('컴포넌트 언마운트 시 에러가 발생하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        const { focusIndex, addMouseMoveListener, removeMouseMoveListener } = useFocusable(wrapperRef);
+                        return { focusIndex, addMouseMoveListener, removeMouseMoveListener, wrapperRef };
                     },
                     template: `
                         <div ref="wrapperRef">
@@ -475,9 +613,10 @@ describe('useFocusable', () => {
             );
 
             await nextTick();
+            wrapper.vm.addMouseMoveListener();
 
-            // when - 컴포넌트 언마운트
-            // then - 언마운트가 에러 없이 정상적으로 완료되면 이벤트 리스너가 제거된 것으로 볼 수 있음 (메모리 누수 방지)
+            // when & then - 메모리 누수 방지를 위해 언마운트 전에 리스너를 제거할 수 있음
+            wrapper.vm.removeMouseMoveListener();
             expect(() => wrapper.unmount()).not.toThrow();
         });
     });

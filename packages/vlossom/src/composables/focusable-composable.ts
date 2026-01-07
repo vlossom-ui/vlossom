@@ -1,4 +1,4 @@
-import { onMounted, onBeforeUnmount, readonly, ref, watch, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
+import { readonly, ref, watch, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
 import { functionUtil } from '@/utils';
 
 export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
@@ -6,6 +6,8 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
     currentFocusableElement: DeepReadonly<Ref<HTMLElement | null>>;
     updateFocusIndex: (index: number) => void;
     getFocusableElements: () => HTMLElement[];
+    addMouseMoveListener: () => void;
+    removeMouseMoveListener: () => void;
 } {
     const focusIndex = ref(-1);
     const currentFocusableElement = ref<HTMLElement | null>(null);
@@ -39,8 +41,9 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
             return;
         }
 
-        const targetElement = event.target as HTMLElement;
-        if (!targetElement.hasAttribute('data-focusable')) {
+        const targetElement: HTMLElement | null = (event.target as HTMLElement).closest('[data-focusable]');
+
+        if (!targetElement || targetElement === currentFocusableElement.value) {
             return;
         }
 
@@ -56,13 +59,13 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
 
     const throttledTrackMouseMove = functionUtil.throttle({ interval: 25 }, trackMouseMove);
 
-    onMounted(() => {
+    function addMouseMoveListener() {
         wrapperElement.value?.addEventListener('mousemove', throttledTrackMouseMove);
-    });
+    }
 
-    onBeforeUnmount(() => {
+    function removeMouseMoveListener() {
         wrapperElement.value?.removeEventListener('mousemove', throttledTrackMouseMove);
-    });
+    }
 
     watch(focusIndex, () => {
         if (!wrapperElement.value) {
@@ -97,5 +100,7 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
         currentFocusableElement: readonly(currentFocusableElement),
         updateFocusIndex,
         getFocusableElements,
+        addMouseMoveListener,
+        removeMouseMoveListener,
     };
 }
