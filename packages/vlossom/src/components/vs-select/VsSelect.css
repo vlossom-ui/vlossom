@@ -14,7 +14,7 @@
 
         opacity: var(--vs-select-trigger-opacity, 1);
         border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
-        border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+        border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
         background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
         padding: var(--vs-select-trigger-padding, 0.2rem 0.8rem);
         min-height: var(--vs-select-height, var(--vs-default-comp-height-md));
@@ -76,10 +76,16 @@
 
     opacity: var(--vs-select-option-opacity, 1);
     border: var(--vs-select-option-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-select-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-select-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-select-option-backgroundColor, var(--vs-no-color));
     padding: var(--vs-select-option-padding, 0.6rem 0.4rem);
     max-height: var(--vs-select-options-height, 30rem);
+
+    .vs-select-focusable {
+        &.vs-focusable-active {
+            background-color: var(--vs-select-option-hoverBackgroundColor, var(--vs-area-bg-active));
+        }
+    }
 
     .vs-select-search {
         @apply mb-2;
@@ -92,14 +98,16 @@
         padding: 0.2rem 1.2rem;
     }
 
-    .vs-select-option {
-        @apply cursor-pointer;
+    .vs-select-option-wrap {
+        .vs-select-option {
+            @apply cursor-pointer;
 
-        padding: 0.2rem 1.2rem;
+            padding: 0.2rem 1.2rem;
 
-        &.selected {
-            background-color: var(--vs-select-option-selecteBackgroundColor, var(--vs-comp-bg));
-            font-weight: var(--vs-font-weight-bold);
+            &.selected {
+                background-color: var(--vs-select-option-selecteBackgroundColor, var(--vs-comp-bg));
+                font-weight: var(--vs-font-weight-bold);
+            }
         }
     }
 }

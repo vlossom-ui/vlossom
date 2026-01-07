@@ -49,12 +49,12 @@
                     @click-item="onClickOption"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search" data-focusable>
+                        <div class="vs-select-search vs-select-focusable" data-focusable>
                             <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" />
                         </div>
                         <div
                             v-if="multiple && selectAll"
-                            class="vs-select-all"
+                            class="vs-select-all vs-select-focusable"
                             @click.prevent.stop="toggleSelectAll"
                             data-focusable
                         >
@@ -74,13 +74,11 @@
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
                     <template #item="itemSlotProps">
-                        <div
-                            class="vs-select-option"
-                            :class="{ selected: isSelected(itemSlotProps.id) }"
-                            data-focusable
-                        >
-                            <slot name="option" v-bind="itemSlotProps">
-                                {{ itemSlotProps.label }}
+                        <div class="vs-select-option-wrap vs-select-focusable" data-focusable>
+                            <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
+                                <div :class="['vs-select-option', { selected: isSelected(itemSlotProps.id) }]">
+                                    {{ itemSlotProps.label }}
+                                </div>
                             </slot>
                         </div>
                     </template>
@@ -121,7 +119,15 @@ import {
     getResponsiveProps,
     getMinMaxProps,
 } from '@/props';
-import { useColorScheme, useStyleSet, useInput, useInputOption, useOptionList } from '@/composables';
+import {
+    useColorScheme,
+    useStyleSet,
+    useInput,
+    useInputOption,
+    useOptionList,
+    useFocusable,
+    useOverlayCallback,
+} from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectSearchPropType, VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
@@ -232,6 +238,10 @@ export default defineComponent({
             emit('clear');
         }
 
+        const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
+
+        const { addMouseMoveListener, removeMouseMoveListener } = useFocusable(optionsListElement);
+
         const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
 
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
@@ -295,6 +305,13 @@ export default defineComponent({
             multiple,
         });
 
+        const computedCallbacks = computed(() => {
+            return {};
+        });
+        const { activate: activateOverlayCallback, deactivate: deactivateOverlayCallback } = useOverlayCallback(
+            computedId,
+            computedCallbacks,
+        );
         const triggerId = computed(() => `${computedId.value}-trigger`);
         const optionsId = computed(() => `${computedId.value}-options`);
 
@@ -359,6 +376,9 @@ export default defineComponent({
             // setTimeout + nextTick을 사용해야 DOM이 완전히 렌더링된 후 스크롤 가능
             setTimeout(() => {
                 nextTick(() => {
+                    activateOverlayCallback();
+                    addMouseMoveListener();
+
                     const selectedId = selectedOptionIds.value[0];
                     if (selectedId) {
                         optionsListRef.value?.scrollToItem(selectedId);
@@ -368,6 +388,8 @@ export default defineComponent({
         }
 
         function closeOptions() {
+            removeMouseMoveListener();
+            deactivateOverlayCallback();
             isOpen.value = false;
             emit('close');
 
