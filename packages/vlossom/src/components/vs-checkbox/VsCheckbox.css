@@ -8,7 +8,7 @@
     --vs-checkbox-height: initial;
 
     @apply relative flex items-center justify-start;
-    min-height: var(--vs-checkbox-height, var(--vs-default-comp-height));
+    min-height: var(--vs-checkbox-height, var(--vs-default-comp-height-md));
 
     .vs-checkbox-wrap {
         @apply relative flex flex-nowrap items-center justify-start select-none;

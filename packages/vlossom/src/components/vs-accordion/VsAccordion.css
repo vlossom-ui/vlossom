@@ -19,7 +19,7 @@
 
     opacity: var(--vs-accordion-opacity, 1);
     border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-accordion-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-accordion-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     width: var(--vs-accordion-width, 100%);
     color: var(--vs-accordion-expand-fontColor, var(--vs-comp-font));
 

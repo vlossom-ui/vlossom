@@ -22,7 +22,7 @@
     @apply overflow-hidden;
 
     border: var(--vs-progress-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-progress-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-progress-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-progress-backgroundColor, var(--vs-comp-bg));
 }
 
