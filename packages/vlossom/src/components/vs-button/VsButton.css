@@ -16,10 +16,10 @@
 
     opacity: var(--vs-button-opacity, 1);
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
     width: var(--vs-button-width, auto);
-    height: var(--vs-button-height, var(--vs-default-comp-height));
+    height: var(--vs-button-height, var(--vs-default-comp-height-md));
     color: var(--vs-button-fontColor, var(--vs-comp-font));
 
     .vs-button-loading {
@@ -94,8 +94,8 @@
 
     &.vs-circle {
         @apply rounded-full;
-        width: var(--vs-button-width, var(--vs-default-comp-height));
-        height: var(--vs-button-height, var(--vs-default-comp-height));
+        width: var(--vs-button-width, var(--vs-default-comp-height-md));
+        height: var(--vs-button-height, var(--vs-default-comp-height-md));
 
         &.vs-small {
             width: var(--vs-button-width, var(--vs-default-comp-height-sm));

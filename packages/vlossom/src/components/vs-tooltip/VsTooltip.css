@@ -18,7 +18,7 @@
 
         opacity: var(--vs-tooltip-opacity, 1);
         border: var(--vs-tooltip-border, 0.1rem solid var(--vs-primary-comp-bg));
-        border-radius: var(--vs-tooltip-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+        border-radius: var(--vs-tooltip-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
         background-color: var(--vs-tooltip-backgroundColor, var(--vs-area-bg));
         padding: var(--vs-tooltip-padding, 0.2rem 0.6rem);
         width: var(--vs-tooltip-width, auto);

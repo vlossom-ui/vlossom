@@ -16,7 +16,7 @@
     @apply relative box-border hover:brightness-110 active:brightness-120;
     opacity: var(--vs-file-drop-opacity, 1);
     border: var(--vs-file-drop-border, solid 1px var(--vs-line-color));
-    border-radius: var(--vs-file-drop-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-file-drop-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-file-drop-backgroundColor, var(--vs-no-color));
     width: var(--vs-file-drop-width, 100%);
     height: var(--vs-file-drop-height, auto);
@@ -73,7 +73,7 @@
                     @apply truncate;
 
                     color: var(--vs-font-color);
-                    font-size: var(--vs-font-size);
+                    font-size: var(--vs-font-size-md);
                 }
 
                 .vs-file-drop-file-size {

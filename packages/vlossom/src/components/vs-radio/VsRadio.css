@@ -7,7 +7,7 @@
     --vs-radio-radioSize: initial;
 
     @apply relative flex items-center;
-    min-height: var(--vs-radio-height, var(--vs-default-comp-height));
+    min-height: var(--vs-radio-height, var(--vs-default-comp-height-md));
 
     .vs-radio-wrap {
         @apply relative flex cursor-pointer flex-nowrap items-center justify-start select-none;

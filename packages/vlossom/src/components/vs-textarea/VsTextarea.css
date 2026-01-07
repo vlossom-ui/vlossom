@@ -20,14 +20,14 @@
     opacity: var(--vs-textarea-opacity, 1);
     outline: none;
     border: var(--vs-textarea-border, solid 1px var(--vs-line-color));
-    border-radius: var(--vs-textarea-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    border-radius: var(--vs-textarea-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-textarea-backgroundColor, var(--vs-no-color));
     padding: var(--vs-textarea-padding, 0.3rem 0.6rem);
     min-height: var(--vs-textarea-height, 6rem);
     resize: var(--vs-textarea-resize, vertical);
     color: var(--vs-textarea-fontColor, var(--vs-font-color));
     font-weight: var(--vs-textarea-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-textarea-fontSize, var(--vs-font-size));
+    font-size: var(--vs-textarea-fontSize, var(--vs-font-size-md));
 
     &.vs-small {
         min-height: var(--vs-textarea-height, 3rem);

@@ -70,7 +70,7 @@
                 @apply absolute top-3/2 left-1/2 -translate-x-1/2 whitespace-nowrap;
 
                 color: var(--vs-font-color);
-                font-size: var(--vs-font-size);
+                font-size: var(--vs-font-size-md);
             }
 
             &:focus {
