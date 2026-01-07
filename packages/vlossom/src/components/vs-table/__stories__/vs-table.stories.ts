@@ -294,3 +294,30 @@ export const Expandable: Story = {
         },
     },
 };
+
+export const StickyHeader: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = Array.from({ length: 40 }).map((_, idx) => ({
+                id: `${idx + 1}`,
+                name: `User ${idx + 1}`,
+                age: 20 + (idx % 30),
+                metadata: { email: `user${idx + 1}@example.com` },
+            }));
+            return { columns: baseColumns, items };
+        },
+        template: `
+            <div style="height: 360px; overflow: auto; border: 1px solid #e5e7eb; padding: 8px;">
+                <vs-table :columns="columns" :items="items" stickyHeader />
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'stickyHeader를 켜고 스크롤 시 헤더가 상단에 고정되는 동작을 확인합니다. 레이아웃 상단 여백이 있다면 styleSet.stickyHeaderTop으로 조정하세요.',
+            },
+        },
+    },
+};
