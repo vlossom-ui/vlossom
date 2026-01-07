@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-table', colorSchemeClass]">
+    <div ref="tableRef" :class="['vs-table', colorSchemeClass]" :style="styleSetVariables">
         <vs-search-input
             ref="searchInputRef"
             class="mb-2 flex justify-end"
@@ -8,10 +8,21 @@
         />
 
         <table>
+            <vs-table-header
+                class="vs-table-sticky-header"
+                v-if="stickyHeader && headerInvisible"
+                @click-cell="clickCell"
+                @select-row="selectRow"
+            >
+                <template v-for="name in headerSlots" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-header>
+
             <caption v-if="$slots['caption']">
                 <slot name="caption" />
             </caption>
-            <vs-table-header @click-cell="clickCell" @select-row="selectRow">
+            <vs-table-header ref="headerRef" @click-cell="clickCell" @select-row="selectRow">
                 <template v-for="name in headerSlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
@@ -26,11 +37,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, type PropType, toRefs, computed, onBeforeMount, useTemplateRef } from 'vue';
-import { VsComponent } from '@/declaration';
-import { logUtil } from '@/utils';
+import {
+    type PropType,
+    defineComponent,
+    provide,
+    toRefs,
+    computed,
+    ref,
+    onBeforeMount,
+    useTemplateRef,
+    onBeforeUnmount,
+    inject,
+} from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
+import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { useColorScheme } from '@/composables';
+import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
@@ -47,6 +70,7 @@ import { TABLE_SEARCH_OPTIONS } from './constants';
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
+import { LayoutStore } from '@/stores';
 
 const componentName = VsComponent.VsTable;
 
@@ -83,6 +107,10 @@ export default defineComponent({
             type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
             default: false,
         },
+        stickyHeader: {
+            type: Boolean,
+            default: false,
+        },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
@@ -102,10 +130,23 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
     setup(props, { slots, emit }) {
-        const { colorScheme, search } = toRefs(props);
+        const { colorScheme, search, styleSet } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
+        const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
+            return objectUtil.shake({
+                stickyHeaderTop:
+                    stickyHeaderTop.value === undefined ? undefined : stringUtil.toStringSize(stickyHeaderTop.value),
+            });
+        });
+        const { styleSetVariables } = useStyleSet<VsTableStyleSet>(componentName, styleSet, additionalStyleSet);
+
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
+        const tableRef = useTemplateRef<HTMLDivElement>('tableRef');
+        const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const headerInvisible = ref(true);
+        const stickyHeaderTop = ref('0px');
+        const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
         const table: TableComposable = useTable(props, { searchInputRef }, { updateSelectedItems });
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
@@ -127,6 +168,17 @@ export default defineComponent({
             }
             return { ...TABLE_SEARCH_OPTIONS, ...search.value };
         });
+
+        const { pause: pauseHeaderObserver } = useIntersectionObserver(
+            headerRef,
+            ([{ isIntersecting }]) => {
+                headerInvisible.value = !isIntersecting;
+                if (isIntersecting) {
+                    stickyHeaderTop.value = stringUtil.toStringSize(vsLayoutHeader.value.height);
+                }
+            },
+            { threshold: 1 },
+        );
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
@@ -153,11 +205,20 @@ export default defineComponent({
             table.initialize();
         });
 
+        onBeforeUnmount(() => {
+            pauseHeaderObserver();
+        });
+
         return {
             colorSchemeClass,
+            styleSetVariables,
+            tableRef,
+            headerRef,
             headerSlots,
             bodySlots,
             searchOptions,
+            headerInvisible,
+            stickyHeaderTop,
             clickCell,
             selectRow,
             expandRow,
