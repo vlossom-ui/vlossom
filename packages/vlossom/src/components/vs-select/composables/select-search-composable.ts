@@ -1,8 +1,7 @@
 import { computed, type Ref } from 'vue';
+import type { VsSelectSearchPropType } from './../types';
 
-export function useSelectSearch(
-    search: Ref<boolean | { useRegex?: boolean; useCaseSensitive?: boolean; placeholder?: string }>,
-) {
+export function useSelectSearch(search: Ref<VsSelectSearchPropType>) {
     const isUsingSearch = computed(() => {
         if (typeof search.value === 'boolean') {
             return search.value;

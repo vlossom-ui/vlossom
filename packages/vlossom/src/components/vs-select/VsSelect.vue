@@ -49,7 +49,7 @@
                     @click-item="onClickOption"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search">
+                        <div class="vs-select-search" data-focusable>
                             <vs-search-input
                                 v-if="isUsingSearch"
                                 ref="searchInputRef"
@@ -57,7 +57,12 @@
                                 v-bind="searchProps"
                             />
                         </div>
-                        <div v-if="multiple && selectAll" class="vs-select-all" @click.prevent.stop="toggleSelectAll">
+                        <div
+                            v-if="multiple && selectAll"
+                            class="vs-select-all"
+                            @click.prevent.stop="toggleSelectAll"
+                            data-focusable
+                        >
                             <vs-checkbox
                                 :model-value="isSelectedAll"
                                 :color-scheme="computedColorScheme"
@@ -74,11 +79,15 @@
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
                     <template #item="itemSlotProps">
-                        <slot name="option" v-bind="itemSlotProps">
-                            <div class="vs-select-option" :class="{ selected: isSelected(itemSlotProps.id) }">
+                        <div
+                            class="vs-select-option"
+                            :class="{ selected: isSelected(itemSlotProps.id) }"
+                            data-focusable
+                        >
+                            <slot name="option" v-bind="itemSlotProps">
                                 {{ itemSlotProps.label }}
-                            </div>
-                        </slot>
+                            </slot>
+                        </div>
                     </template>
                     <template #footer v-if="$slots['options-footer']">
                         <slot name="options-footer" />
@@ -97,15 +106,15 @@
 import {
     computed,
     defineComponent,
+    nextTick,
+    ref,
     toRefs,
     useTemplateRef,
-    ref,
     watch,
+    type ComputedRef,
     type PropType,
     type Ref,
     type TemplateRef,
-    type ComputedRef,
-    nextTick,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -119,7 +128,7 @@ import {
 } from '@/props';
 import { useColorScheme, useStyleSet, useInput, useInputOption, useOptionList } from '@/composables';
 import { objectUtil } from '@/utils';
-import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
+import type { VsSelectSearchPropType, VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue } from './composables/select-value-composable';
 import { useSelectSearch } from './composables/select-search-composable';
@@ -154,18 +163,13 @@ export default defineComponent({
             default: false,
         },
         search: {
-            type: [Boolean, Object] as PropType<
-                boolean | { useRegex?: boolean; useCaseSensitive?: boolean; placeholder?: string }
-            >,
+            type: [Boolean, Object] as PropType<VsSelectSearchPropType>,
             default: false,
         },
         selectAll: { type: Boolean, default: false },
 
         // v-model
-        modelValue: {
-            type: null as any,
-            default: null,
-        },
+        modelValue: { type: null, default: null },
     },
     emits: [
         'update:modelValue',

@@ -14,6 +14,8 @@ declare module 'vue' {
 
 export type { VsSelect, VsSelectTrigger };
 
+export type VsSelectSearchPropType = boolean | { useRegex?: boolean; useCaseSensitive?: boolean; placeholder?: string };
+
 export interface VsSelectRef extends ComponentPublicInstance<typeof VsSelect> {}
 
 export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSelectTrigger>, FocusableRef {}
