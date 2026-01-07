@@ -8,8 +8,8 @@
     }
 
     .vs-table-sticky-header {
-        @apply sticky z-100000 w-full;
-        top: var(--vs-table-sticky-top, 0px);
+        @apply sticky w-full;
+        top: var(--vs-table-stickyHeaderTop, auto);
         box-shadow:
             inset 0 0.0625rem 0 var(--vs-line-color),
             inset 0 -0.0625rem 0 var(--vs-line-color),
