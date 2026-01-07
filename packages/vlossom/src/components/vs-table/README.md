@@ -104,6 +104,18 @@
 
 > 헤더 클릭 시 오름차순(ASCEND) → 내림차순(DESCEND) → 정렬 해제(NONE) 순으로 토글됩니다.
 
+### 고정 헤더 (Sticky Header)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="items"
+        stickyHeader
+    />
+</template>
+```
+
 ### 검색 (Search)
 
 ```html
@@ -162,6 +174,7 @@
 | `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션               |
 | `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수 |
 | `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수 |
+| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부             |
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)     |
 
 ## Types
