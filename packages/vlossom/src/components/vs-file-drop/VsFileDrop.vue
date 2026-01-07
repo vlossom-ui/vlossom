@@ -104,7 +104,7 @@ import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, 
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { stringUtil, propsUtil } from '@/utils';
+import { stringUtil, propsUtil, objectUtil } from '@/utils';
 import { closeIcon } from '@/icons';
 import { attachFileIcon } from './icons';
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
@@ -173,11 +173,19 @@ export default defineComponent({
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
-            componentName,
-            styleSet,
-            computed(() => ({ width: width.value, height: height.value })),
-        );
+        const additionalStyleSet = computed(() => {
+            return objectUtil.shake({
+                width:
+                    width.value === undefined || objectUtil.isObject(width.value)
+                        ? undefined
+                        : stringUtil.toStringSize(width.value as string | number),
+                height:
+                    height.value === undefined || objectUtil.isObject(height.value)
+                        ? undefined
+                        : stringUtil.toStringSize(height.value as string | number),
+            });
+        });
+        const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(componentName, styleSet, additionalStyleSet);
         const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useVsFileDropRules(
             required,
             max,
