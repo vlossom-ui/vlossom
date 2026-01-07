@@ -31,10 +31,4 @@
     .vs-messages {
         margin-top: var(--vs-input-wrapper-messages-marginTop, 0.2rem);
     }
-
-    &.vs-small {
-        .vs-label {
-            font-size: var(--vs-input-wrapper-label-fontSize, var(--vs-font-size-xs));
-        }
-    }
 }
