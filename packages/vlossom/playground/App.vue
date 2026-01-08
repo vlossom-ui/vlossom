@@ -18,15 +18,18 @@
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
-                    <section class="mb-8">
-                        <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Sandbox</h2>
+                    <vs-page class="mb-8" :style-set="{ padding: '0' }">
+                        <template #title>
+                            <h2 class="mb-2 border-b-2 pb-2 text-2xl font-semibold">Sandbox</h2>
+                        </template>
                         <Sandbox />
-                    </section>
+                    </vs-page>
                     <Basic />
                     <Inputs />
                     <DataDisplay />
                     <Overlay />
                     <FormExample />
+                    <ColorPallete />
                 </vs-index-view>
             </vs-page>
 
@@ -49,6 +52,7 @@ import DataDisplay from './views/DataDisplay.vue';
 import Overlay from './views/Overlay.vue';
 import Sandbox from './Sandbox.vue';
 import FormExample from './components/FormExample.vue';
+import ColorPallete from './views/ColorPallete.vue';
 import ColorSchemePanel from './components/ColorSchemePanel.vue';
 import ColorSchemePanelButton from './components/ColorSchemePanelButton.vue';
 import type { VsBarStyleSet } from '@/components/vs-bar/types';
@@ -64,9 +68,10 @@ export default defineComponent({
         FormExample,
         ColorSchemePanel,
         ColorSchemePanelButton,
+        ColorPallete,
     },
     setup() {
-        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example'];
+        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example', 'Color Pallete'];
         const activeTab = ref(0);
 
         const basicBarStyleSet: VsBarStyleSet = {

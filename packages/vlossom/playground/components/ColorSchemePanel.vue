@@ -3,7 +3,7 @@
         <vs-block :style-set="panelStyleSet">
             <template #title><p class="font-bold">Color Scheme Panel</p></template>
             <vs-focus-trap>
-                <vs-grid :grid-size="6" column-gap="1rem" row-gap="1rem">
+                <vs-grid :grid-size="5" column-gap="0.8rem" row-gap="0.8rem">
                     <button
                         :class="['color-btn', 'clear-btn', { selected: !selectedColorScheme }]"
                         @click="clearColorScheme"
