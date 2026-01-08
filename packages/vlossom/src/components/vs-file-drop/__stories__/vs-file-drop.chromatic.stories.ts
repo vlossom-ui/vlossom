@@ -48,14 +48,6 @@ const meta: Meta<typeof VsFileDrop> = {
                     </div>
                 </div>
 
-                <!-- 크기 -->
-                <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기</h3>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <vs-file-drop v-bind="args" label="Small" placeholder="작은 크기" small />
-                    </div>
-                </div>
-
                 <!-- 검증 상태 -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">검증 상태</h3>

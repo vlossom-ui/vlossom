@@ -10,7 +10,6 @@
         :no-label
         :no-messages
         :required
-        :small
         :messages="computedMessages"
         :shake
     >
@@ -94,7 +93,6 @@ export default defineComponent({
             readonly,
             required,
             rules,
-            small,
             max,
             min,
             state,
@@ -152,7 +150,6 @@ export default defineComponent({
         );
 
         const classObj = computed(() => ({
-            'vs-small': small.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,

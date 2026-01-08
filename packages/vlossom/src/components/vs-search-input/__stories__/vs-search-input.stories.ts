@@ -45,12 +45,6 @@ const meta: Meta<typeof VsSearchInput> = {
             description: '플레이스홀더 텍스트',
             table: { category: 'Common Props' },
         },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-            table: { category: 'Common Props' },
-        },
-
         // Layout
         width: {
             control: 'text',
@@ -196,28 +190,6 @@ export const DisabledAndReadonly: Story = {
                 <vs-search-input placeholder="정상 상태" />
                 <vs-search-input placeholder="비활성화 상태" disabled />
                 <vs-search-input placeholder="읽기 전용 상태" readonly />
-            </div>
-        `,
-    }),
-};
-
-export const Small: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'small prop으로 작은 크기의 검색 입력 필드를 만들 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsSearchInput },
-        setup() {
-            return { args };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-search-input placeholder="기본 크기" />
-                <vs-search-input placeholder="작은 크기" small />
             </div>
         `,
     }),

@@ -23,8 +23,6 @@ const meta: Meta<VsRadioSetArgs> = {
 
                 <vs-radio-set v-bind="args" label="Vertical Radio Set" vertical />
 
-                <vs-radio-set v-bind="args" label="Small Radio Set" small />
-
                 <vs-radio-set v-bind="args" label="Required Radio Set" required :model-value="null" />
 
                 <vs-radio-set v-bind="args" label="Readonly Radio Set" readonly />

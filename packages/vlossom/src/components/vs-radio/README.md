@@ -33,7 +33,7 @@
 | `styleSet`    | `string \| VsRadioStyleSet` | -       | -        | 스타일셋 키 또는 인라인 스타일셋 |
 | `colorScheme` | `string`                    | -       | -        | 색상 테마 키                     |
 
-`id`, `label`, `messages`, `rules`, `required`, `disabled`, `readonly`, `small`, `width`, `grid`, `noMessages` 등 공통 Input Props도 그대로 사용할 수 있습니다.
+`id`, `label`, `messages`, `rules`, `required`, `disabled`, `readonly`, `width`, `grid`, `noMessages` 등 공통 Input Props도 그대로 사용할 수 있습니다.
 
 ### Slots
 
@@ -171,7 +171,7 @@ interface VsRadioSetStyleSet {
 | `styleSet`     | `string \| VsRadioSetStyleSet` | -       | -        | 그룹 및 항목 스타일 커스터마이징                                    |
 | `beforeChange` | `Function`                     | -       | -        | 변경 전 호출되는 비동기 함수 (from, to, optionValue, false 시 취소) |
 
-`VsRadio`와 동일하게 공통 Input Props (`label`, `required`, `messages`, `disabled`, `readonly`, `small`, `width`, `grid`, `noMessages` 등)를 사용할 수 있습니다.
+`VsRadio`와 동일하게 공통 Input Props (`label`, `required`, `messages`, `disabled`, `readonly`, `width`, `grid`, `noMessages` 등)를 사용할 수 있습니다.
 
 ### Slots
 

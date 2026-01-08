@@ -168,15 +168,6 @@ describe('vs-file-drop', () => {
             expect(clearButton.exists()).toBeTruthy();
         });
 
-        it('small prop이 true일 때 vs-small 클래스가 적용된다', () => {
-            // given, when
-            const wrapper = mount(VsFileDrop, { props: { small: true } });
-
-            // then
-            const fileDrop = wrapper.find('.vs-file-drop');
-            expect(fileDrop.classes()).toContain('vs-small');
-        });
-
         it('name prop이 input 요소에 올바르게 설정된다', () => {
             // given, when
             const wrapper = mount(VsFileDrop, { props: { name: 'test-file' } });

@@ -9,7 +9,6 @@
         :grid
         :label
         :required
-        :small
         :no-messages
         :shake
         group-label
@@ -39,7 +38,6 @@
                 no-messages
                 :color-scheme
                 :name
-                :small
                 @update:modelValue="onCheckboxUpdate"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"

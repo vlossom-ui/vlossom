@@ -112,19 +112,6 @@ describe('VsInput', () => {
             expect(vsInput.classes()).toContain('vs-focus-visible');
         });
 
-        it('small prop이 true일 때 vs-small 클래스가 추가되어야 한다', () => {
-            // given
-            const wrapper = mount(VsInput, {
-                props: {
-                    small: true,
-                },
-            });
-
-            // then
-            const vsInput = wrapper.find('.vs-input');
-            expect(vsInput.classes()).toContain('vs-small');
-        });
-
         it('placeholder를 설정할 수 있다', () => {
             // given
             const wrapper = mount(VsInput, {

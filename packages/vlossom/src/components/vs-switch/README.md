@@ -32,14 +32,6 @@ const isOn = ref(false);
 </template>
 ```
 
-### 작은 크기
-
-```html
-<template>
-    <vs-switch v-model="isOn" label="알림" small />
-</template>
-```
-
 ### 비활성화 상태
 
 ```html
@@ -91,7 +83,6 @@ const selectedOptions = ref([]);
 | `disabled`       | `boolean`                    | `false` | -        | 스위치 비활성화                |
 | `readonly`       | `boolean`                    | `false` | -        | 읽기 전용 모드                 |
 | `required`       | `boolean`                    | `false` | -        | 필수 입력 여부                 |
-| `small`          | `boolean`                    | `false` | -        | 작은 크기 스위치               |
 | `hidden`         | `boolean`                    | `false` | -        | 스위치 숨김 여부               |
 | `id`             | `string`                     | `''`    | -        | input 요소의 id 속성           |
 | `name`           | `string`                     | `''`    | -        | input 요소의 name 속성         |

@@ -86,13 +86,6 @@ export const Label: Story = {
     },
 };
 
-export const Small: Story = {
-    args: {
-        label: 'Label',
-        small: true,
-    },
-};
-
 export const Messages: Story = {
     args: {
         messages: [{ state: 'info', text: 'This is info message' }],

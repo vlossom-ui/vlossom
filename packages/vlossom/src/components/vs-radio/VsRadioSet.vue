@@ -9,7 +9,6 @@
         :grid
         :label
         :required
-        :small
         :no-messages
         :shake
         group-label
@@ -39,7 +38,6 @@
                 :before-change
                 :color-scheme
                 :required
-                :small
                 @update:modelValue="onRadioUpdate"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
@@ -107,7 +105,6 @@ export default defineComponent({
             readonly,
             required,
             rules,
-            small,
             state,
             vertical,
             width,
@@ -199,7 +196,6 @@ export default defineComponent({
             colorScheme,
             options,
             required,
-            small,
             radioRefs,
             colorSchemeClass,
             componentStyleSet,
