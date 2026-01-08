@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type Ref } from 'vue';
 import { objectUtil } from '@/utils';
 import type { OptionItem } from '@/declaration';
 
@@ -9,10 +9,10 @@ export function useSelectValue({
     filteredOptions,
     multiple,
 }: {
-    computedDisabled: ComputedRef<boolean>;
-    computedReadonly: ComputedRef<boolean>;
-    computedOptions: ComputedRef<OptionItem[]>;
-    filteredOptions: ComputedRef<OptionItem[]>;
+    computedDisabled: Ref<boolean>;
+    computedReadonly: Ref<boolean>;
+    computedOptions: Ref<OptionItem[]>;
+    filteredOptions: Ref<OptionItem[]>;
     multiple: Ref<boolean>;
 }) {
     const selectedOptionIds: Ref<string[]> = ref([]);
@@ -149,6 +149,7 @@ export function useSelectValue({
         deselectOption,
         toggleSelect,
         selectAll,
+        deselectAll,
         clearSelected,
         toggleSelectAll,
     };
