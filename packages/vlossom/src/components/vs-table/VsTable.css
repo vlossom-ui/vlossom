@@ -28,3 +28,44 @@ td {
 caption {
     @apply caption-bottom;
 }
+
+.vs-table-responsive table {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .vs-table-responsive {
+        tbody,
+        th,
+        td,
+        tr {
+            @apply block w-full;
+        }
+
+        thead {
+            @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
+        }
+
+        tbody tr {
+            @apply mx-0 mb-3 border border-solid;
+            border: 0.0325rem solid var(--vs-line-color);
+        }
+
+        td {
+            @apply grid grid-cols-[minmax(6rem,9rem)_1fr] gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+        }
+
+        td:first-child {
+            @apply border-t-0;
+        }
+
+        td:last-child {
+            @apply border-b-0;
+        }
+
+        td::before {
+            @apply font-bold;
+            content: attr(data-label);
+        }
+    }
+}
