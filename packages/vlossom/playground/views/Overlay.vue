@@ -37,7 +37,10 @@
                 <template #header>
                     <div class="p-2 text-sm font-bold capitalize">{{ drawerOptions.placement }} Drawer</div>
                 </template>
-                <div class="p-2 text-sm">Drawer content here</div>
+                <div class="p-2 text-sm">
+                    Drawer content here
+                    <vs-button>button</vs-button>
+                </div>
                 <template #footer>
                     <div class="p-2">
                         <vs-button dense @click="drawerOpen = false">Close</vs-button>
