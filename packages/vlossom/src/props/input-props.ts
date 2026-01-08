@@ -10,7 +10,6 @@ interface InputWrapperPropsDefinition {
     noLabel: { type: typeof Boolean; default: boolean };
     noMessages: { type: typeof Boolean; default: boolean };
     required: { type: typeof Boolean; default: boolean };
-    small: { type: typeof Boolean; default: boolean };
 }
 
 export function getInputWrapperProps(): InputWrapperPropsDefinition {
@@ -22,7 +21,6 @@ export function getInputWrapperProps(): InputWrapperPropsDefinition {
         noLabel: { type: Boolean, default: false },
         noMessages: { type: Boolean, default: false },
         required: { type: Boolean, default: false },
-        small: { type: Boolean, default: false },
     };
 }
 

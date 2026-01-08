@@ -53,16 +53,6 @@
 </template>
 ```
 
-### 작은 크기 입력 필드
-
-```html
-<template>
-    <vs-input-wrapper label="검색" small>
-        <input type="text" placeholder="검색어를 입력하세요" />
-    </vs-input-wrapper>
-</template>
-```
-
 ### 라벨과 메시지 숨기기
 
 ```html
@@ -84,7 +74,6 @@
 | `noLabel`     | `boolean`                          | `false` | -        | 라벨 표시 비활성화                 |
 | `noMessages`  | `boolean`                          | `false` | -        | 메시지 표시 비활성화               |
 | `required`    | `boolean`                          | `false` | -        | 필수 입력 필드 표시 (빨간 별표)    |
-| `small`       | `boolean`                          | `false` | -        | 작은 크기 스타일 적용              |
 | `groupLabel`  | `boolean`                          | `false` | -        | fieldset/legend 구조로 라벨 렌더링 |
 | `messages`    | `StateMessage<UIState>[]`          | `[]`    | -        | 표시할 메시지 배열                 |
 | `shake`       | `boolean`                          | `false` | -        | 흔들림 애니메이션 트리거           |
@@ -135,5 +124,4 @@ interface VsInputWrapperStyleSet {
 - **반응형 레이아웃**: VsResponsive 기반 반응형 너비 및 그리드 지원
 - **흔들림 애니메이션**: 유효성 검사 실패 시 시각적 피드백 제공
 - **접근성**: fieldset/legend 구조 지원으로 스크린 리더 호환성
-- **크기 변형**: `small` prop으로 작은 크기 스타일 적용
 - **커스터마이징**: 라벨과 메시지 슬롯을 통한 완전한 커스터마이징 가능

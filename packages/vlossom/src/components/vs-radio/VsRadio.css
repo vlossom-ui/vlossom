@@ -63,17 +63,4 @@
         }
     }
 
-    &.vs-small {
-        min-height: var(--vs-radio-height, var(--vs-default-comp-height-sm));
-
-        .vs-radio-label {
-            padding: 0.1rem 0;
-            font-size: var(--vs-font-size-sm);
-
-            &:before {
-                width: var(--vs-radio-radioSize, 1rem);
-                height: var(--vs-radio-radioSize, 1rem);
-            }
-        }
-    }
 }

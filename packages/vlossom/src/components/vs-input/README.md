@@ -157,7 +157,6 @@ function clearInput() {
 | `readonly`       | `boolean`                                                                   | `false`                   | -        | 읽기 전용 상태                                  |
 | `required`       | `boolean`                                                                   | `false`                   | -        | 필수 입력 여부                                  |
 | `rules`          | `Rule<InputValueType>[]`                                                    | `[]`                      | -        | 커스텀 검증 규칙                                |
-| `small`          | `boolean`                                                                   | `false`                   | -        | 작은 크기                                       |
 | `state`          | `UIState`                                                                   | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning) |
 | `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | input 타입                                      |
 | `valid`          | `boolean`                                                                   | `false`                   | -        | 검증 통과 여부 (v-model:valid)                  |

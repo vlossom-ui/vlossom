@@ -39,19 +39,6 @@ describe('VsInputWrapper', () => {
             expect(messages.classes()).toContain('vs-disabled');
         });
 
-        it('small prop이 true이면 vs-small 클래스가 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    small: true,
-                },
-            });
-
-            // then
-            const inputWrapper = wrapper.find('.vs-input-wrapper');
-            expect(inputWrapper.classes()).toContain('vs-small');
-        });
-
         it('noMessages prop이 true이고 messages 슬롯이 없으면 메시지 영역이 렌더링되지 않아야 한다', () => {
             // given, when
             const wrapper = mount(VsInputWrapper, {

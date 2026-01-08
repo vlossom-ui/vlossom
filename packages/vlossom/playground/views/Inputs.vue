@@ -74,7 +74,6 @@
             <vs-input label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Readonly" model-value="Readonly value" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Required" placeholder="Required field" required :grid="{ xs: 12, md: 6, lg: 3 }" />
-            <vs-input label="Small" placeholder="Small input" small :grid="{ xs: 12, md: 6, lg: 3 }" />
         </vs-grid>
         <vs-divider style-set="playground" />
 

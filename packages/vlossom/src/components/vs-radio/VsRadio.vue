@@ -9,7 +9,6 @@
         :no-messages
         :required
         :shake
-        :small
         :width
     >
         <template #label v-if="label || $slots['label']">
@@ -91,7 +90,6 @@ export default defineComponent({
             rules,
             state,
             styleSet,
-            small,
             noDefaultRules,
             name,
         } = toRefs(props);
@@ -159,7 +157,6 @@ export default defineComponent({
             'vs-disabled': computedDisabled.value,
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
             'vs-readonly': computedReadonly.value,
-            'vs-small': small.value,
         }));
 
         async function onToggle(event: Event) {

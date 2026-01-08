@@ -183,30 +183,6 @@ export const States: Story = {
     }),
 };
 
-export const Size: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'small prop으로 작은 크기의 파일 드롭 영역을 만들 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsFileDrop },
-        setup() {
-            const defaultFiles = ref<File[]>([]);
-            const smallFiles = ref<File[]>([]);
-            return { args, defaultFiles, smallFiles };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-file-drop v-model="defaultFiles" label="Default Size" placeholder="기본 크기" />
-                <vs-file-drop v-model="smallFiles" label="Small Size" placeholder="작은 크기" small />
-            </div>
-        `,
-    }),
-};
-
 export const ValidationStates: Story = {
     parameters: {
         docs: {

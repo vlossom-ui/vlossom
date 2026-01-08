@@ -147,7 +147,6 @@ function onSearch(value: string) {
 | `disabled`           | `boolean`                         | `false` | -        | 비활성화 상태                     |
 | `readonly`           | `boolean`                         | `false` | -        | 읽기 전용 상태                    |
 | `placeholder`        | `string`                          | `''`    | -        | 플레이스홀더 텍스트               |
-| `small`              | `boolean`                         | `false` | -        | 작은 크기                         |
 | `width`              | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비                     |
 | `grid`               | `string \| number \| Breakpoints` | -       | -        | Grid 설정                         |
 | `modelValue`         | `string`                          | `''`    | -        | v-model 바인딩 (검색어)           |

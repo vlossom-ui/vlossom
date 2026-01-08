@@ -22,8 +22,6 @@ const meta: Meta<VsCheckboxSetArgs> = {
 
                 <vs-checkbox-set v-bind="args" label="Vertical Checkbox Set" vertical />
 
-                <vs-checkbox-set v-bind="args" label="Small Checkbox Set" small />
-
                 <vs-checkbox-set v-bind="args" label="Required Checkbox Set" required />
 
                 <vs-checkbox-set v-bind="args" label="Readonly Checkbox Set" readonly />

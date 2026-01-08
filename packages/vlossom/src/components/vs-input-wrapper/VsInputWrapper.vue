@@ -1,6 +1,6 @@
 <template>
     <vs-responsive
-        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake, 'vs-small': small }]"
+        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
         :style="styleSetVariables"

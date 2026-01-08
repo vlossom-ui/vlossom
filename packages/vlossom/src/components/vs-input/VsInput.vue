@@ -10,7 +10,6 @@
         :no-label
         :no-messages
         :required
-        :small
         :messages="computedMessages"
         :shake
     >
@@ -50,7 +49,7 @@
                 :tabindex="!!inputValue ? 0 : -1"
                 @click.stop="clearWithFocus"
             >
-                <i :class="{ 'size-4': small, 'size-5': !small }">
+                <i class="size-5">
                     <vs-render :content="closeIcon" />
                 </i>
             </button>
@@ -118,7 +117,6 @@ export default defineComponent({
     setup(props, { emit }) {
         const {
             colorScheme,
-            small,
             styleSet,
             type,
             modelValue,
@@ -196,7 +194,6 @@ export default defineComponent({
         );
 
         const classObj = computed(() => ({
-            'vs-small': small.value,
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
             'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,

@@ -61,42 +61,6 @@
         }
     }
 
-    &.vs-small {
-        height: var(--vs-input-comp-height-small);
-
-        .vs-switch-button {
-            @apply px-2.5;
-            border-radius: var(--vs-switch-borderRadius, 1rem);
-            height: var(--vs-switch-height, 1.5rem);
-            font-size: var(--vs-font-size-xs);
-
-            .vs-status-label {
-                @apply relative ml-1;
-                padding-left: calc(var(--vs-switch-handleSize, 0.8rem));
-            }
-
-            &::before {
-                @apply left-1.5;
-                width: calc(var(--vs-switch-handleSize, 1rem));
-                height: calc(var(--vs-switch-handleSize, 1rem));
-            }
-        }
-
-        &.vs-checked {
-            .vs-switch-button {
-                &::before {
-                    left: calc(100% - (var(--vs-switch-handleSize, 1rem) + 0.3rem));
-                    background-color: var(--vs-switch-handleColor, var(--vs-primary-comp-font));
-                }
-
-                .vs-status-label {
-                    @apply pl-0;
-                    padding-right: calc(var(--vs-switch-handleSize, 1rem));
-                }
-            }
-        }
-    }
-
     &:focus-within {
         .vs-switch-button {
             @apply outline-offset-2;
