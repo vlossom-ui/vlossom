@@ -321,3 +321,33 @@ export const StickyHeader: Story = {
         },
     },
 };
+
+export const Responsive: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = Array.from({ length: 6 }).map((_, idx) => ({
+                id: `${idx + 1}`,
+                name: `User ${idx + 1}`,
+                order: (idx % 5) + 1,
+                checked: idx % 2 === 0,
+                created: `2021-0${(idx % 9) + 1}-0${(idx % 3) + 1}`,
+                desc: 'Lorem ipsum has been the industry',
+            }));
+            return { columns: ['id', 'name', 'order', 'checked', 'created', 'desc'], items };
+        },
+        template: `
+            <div style="max-width: 720px; border: 1px solid #e5e7eb; padding: 8px;">
+                <p class="text-sm text-slate-600 mb-2">브라우저 폭을 줄이면 카드형으로 변합니다.</p>
+                <vs-table :columns="columns" :items="items" responsive />
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'responsive를 true로 켠 상태에서 좁은 화면에서 카드형(모바일) 테이블 레이아웃을 확인합니다.',
+            },
+        },
+    },
+};
