@@ -21,10 +21,10 @@
 
     opacity: var(--vs-button-opacity, 1);
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-button-size-radius)));
+    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
     width: var(--vs-button-width, auto);
-    height: var(--vs-button-height, var(--vs-button-size-height));
+    height: var(--vs-button-height, var(--vs-default-comp-height-md));
     color: var(--vs-button-fontColor, var(--vs-comp-font));
     font-size: var(--vs-button-size-font);
 
@@ -80,8 +80,9 @@
 
     &.vs-circle {
         @apply rounded-full;
-        width: var(--vs-button-width, var(--vs-button-height, var(--vs-button-size-height)));
-        height: var(--vs-button-height, var(--vs-button-size-height));
+      
+        width: var(--vs-button-width, var(--vs-button-height, var(--vs-button-size-height-md)));
+        height: var(--vs-button-height, var(--vs-button-size-height-md));
     }
 
     @variant dark {

@@ -34,7 +34,7 @@ import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
-import { clipboardUtil, logUtil } from '@/utils';
+import { clipboardUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import type { VsTextWrapStyleSet } from './types';
 import { checkIcon, copyIcon, linkIcon } from './icons';
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -52,11 +52,17 @@ export default defineComponent({
     emits: ['copied'],
     setup(props, { emit }) {
         const { styleSet, link, width } = toRefs(props);
-        const { styleSetVariables } = useStyleSet<VsTextWrapStyleSet>(
-            componentName,
-            styleSet,
-            computed(() => ({ width: width.value })),
-        );
+
+        const additionalStyleSet = computed(() => {
+            return objectUtil.shake({
+                width:
+                    width.value === undefined || objectUtil.isObject(width.value)
+                        ? undefined
+                        : stringUtil.toStringSize(width.value as string | number),
+            });
+        });
+
+        const { styleSetVariables } = useStyleSet<VsTextWrapStyleSet>(componentName, styleSet, additionalStyleSet);
 
         const contentsRef: Ref<HTMLElement | null> = ref(null);
         const copied = ref(false);

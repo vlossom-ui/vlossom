@@ -1,6 +1,6 @@
 body {
     color: var(--vs-no-color-inverse);
-    font-size: var(--vs-font-size);
+    font-size: var(--vs-font-size-md);
 }
 
 html,

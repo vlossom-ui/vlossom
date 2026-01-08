@@ -105,7 +105,7 @@ export default defineComponent({
             nextTick(() => {
                 const isChildOfFocusTrap = document.activeElement?.closest('.vs-focus-trap') === focusTrapRef.value;
                 if (!isChildOfFocusTrap) {
-                    focusTrapAnchorRef.value?.focus();
+                    focusTrapAnchorRef.value?.focus({ preventScroll: true });
                 }
             });
         }

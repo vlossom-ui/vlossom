@@ -10,7 +10,7 @@
     --vs-tabs-height: initial;
     --vs-tabs-gap: initial;
 
-    --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius)));
+    --tab-radius: var(--vs-tabs-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
     --tab-border: var(--vs-tabs-border, 1px solid transparent);
     --tab-border-color: var(--vs-line-color);
     --tab-bg: var(--vs-tabs-backgroundColor, var(--vs-comp-bg));
@@ -44,7 +44,7 @@
 
                 color: var(--vs-font-color);
                 font-weight: var(--vs-font-weight);
-                font-size: var(--vs-font-size);
+                font-size: var(--vs-font-size-md);
 
                 &:not(:last-child) {
                     margin-right: var(--vs-tabs-gap, 0.1rem);

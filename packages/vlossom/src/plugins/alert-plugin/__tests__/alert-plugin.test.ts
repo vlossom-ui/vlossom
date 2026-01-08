@@ -5,10 +5,10 @@ import type { ModalPlugin } from '@/plugins/modal-plugin';
 
 describe('alert-plugin', () => {
     let registeredCallbacks: Record<string, (...args: any[]) => void>;
-    let closeWithId: ReturnType<typeof vi.fn>;
+    let closeWithId: ReturnType<typeof vi.fn<() => void>>;
     let modalPlugin: ModalPlugin;
 
-    beforeEach(() => {
+    beforeEach(function _() {
         registeredCallbacks = {};
         closeWithId = vi.fn();
         modalPlugin = {

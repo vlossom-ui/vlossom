@@ -22,14 +22,14 @@
 
         --vs-font-size-xs: 0.6rem;
         --vs-font-size-sm: 0.8rem;
-        --vs-font-size: 1rem;
+        --vs-font-size-md: 1rem;
         --vs-font-size-lg: 1.2rem;
         --vs-font-size-xl: 1.4rem;
 
         --vs-radius-ratio: 1;
         --vs-radius-xs: 0.2rem;
         --vs-radius-sm: 0.3rem;
-        --vs-radius: 0.4rem;
+        --vs-radius-md: 0.4rem;
         --vs-radius-lg: 0.5rem;
         --vs-radius-xl: 0.6rem;
 
