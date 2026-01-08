@@ -137,6 +137,7 @@ import {
     useOptionList,
     useFocusable,
     useOverlayCallback,
+    useClickOutside,
 } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectSearchPropType, VsSelectStyleSet, VsSelectTriggerRef } from './types';
@@ -365,12 +366,11 @@ export default defineComponent({
         const computedCallbacks = computed(() => {
             return {
                 'key-ArrowUp': (e: KeyboardEvent) => {
-                    if (!isOpen.value) {
-                        return;
-                    }
                     e.preventDefault();
                     e.stopPropagation();
-                    moveSelectFocus(focusIndex.value - 1);
+                    if (isOpen.value) {
+                        moveSelectFocus(focusIndex.value - 1);
+                    }
                 },
                 'key-ArrowDown': (e: KeyboardEvent) => {
                     e.preventDefault();
@@ -435,8 +435,13 @@ export default defineComponent({
             computedId,
             computedCallbacks,
         );
+
         const triggerId = computed(() => `${computedId.value}-trigger`);
         const optionsId = computed(() => `${computedId.value}-options`);
+        const { addClickOutsideListener, removeClickOutsideListener } = useClickOutside(
+            [`#${triggerId.value}`, `#${optionsId.value}`],
+            closeOptions,
+        );
 
         const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,
@@ -488,7 +493,7 @@ export default defineComponent({
         }
 
         function openOptions() {
-            if (computedDisabled.value || computedReadonly.value) {
+            if (computedDisabled.value || computedReadonly.value || isOpen.value) {
                 return;
             }
 
@@ -514,6 +519,10 @@ export default defineComponent({
         }
 
         function closeOptions() {
+            if (!isOpen.value) {
+                return;
+            }
+
             removeMouseMoveListener();
             isOpen.value = false;
             emit('close');
@@ -521,19 +530,6 @@ export default defineComponent({
             setTimeout(() => {
                 searchInputRef.value?.clear();
             }, 250); // wait for the animation
-        }
-
-        function onOutsideClick(e: MouseEvent) {
-            const target = e.target as HTMLElement;
-
-            // check if click outside of select
-            if (
-                isOpen.value &&
-                target.closest(`#${triggerId.value}`) === null &&
-                target.closest(`#${optionsId.value}`) === null
-            ) {
-                closeOptions();
-            }
         }
 
         watch(isUsingSelect, () => {
@@ -598,9 +594,9 @@ export default defineComponent({
 
         watch(isOpen, () => {
             if (isOpen.value) {
-                document.addEventListener('click', onOutsideClick, true);
+                addClickOutsideListener();
             } else {
-                document.removeEventListener('click', onOutsideClick, true);
+                removeClickOutsideListener();
             }
         });
 
