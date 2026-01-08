@@ -1,13 +1,10 @@
 import { fileURLToPath, URL } from 'node:url';
 import vue from '@vitejs/plugin-vue';
-import vueDevTools from 'vite-plugin-vue-devtools';
 import tailwindcss from '@tailwindcss/vite';
 
-const isStorybook = process.env.npm_lifecycle_event?.includes('storybook');
-
-// 공통 설정
+// 공통 설정 (vueDevTools 제외 - Storybook 호환성)
 export const commonConfig = {
-    plugins: [vue(), !isStorybook && vueDevTools(), tailwindcss()].filter(Boolean),
+    plugins: [vue(), tailwindcss()],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),

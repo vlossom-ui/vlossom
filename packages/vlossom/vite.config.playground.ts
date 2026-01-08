@@ -1,13 +1,13 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
-import { commonConfig } from './vite.config.common';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { devConfig } from './vite.config.dev';
 
 // https://vite.dev/config/
 export default defineConfig({
-    ...commonConfig,
+    ...devConfig,
     plugins: [
-        ...commonConfig.plugins,
+        ...devConfig.plugins,
         visualizer({
             filename: 'visualizer-playground.html',
         }),
