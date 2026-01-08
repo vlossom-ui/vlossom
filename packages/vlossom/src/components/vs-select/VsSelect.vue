@@ -10,7 +10,6 @@
         :no-label
         :no-messages
         :required
-        :small
         :messages="computedMessages"
         :shake
     >
@@ -18,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-select', colorSchemeClass, triggerClassObj]" :style="styleSetVariables">
+        <div :class="['vs-select', colorSchemeClass, classObj]" :style="styleSetVariables">
             <vs-select-trigger
                 ref="triggerRef"
                 :id="triggerId"
@@ -36,6 +35,8 @@
                 @click="toggleOpen"
                 @deselect="deselectOption"
                 @clear="clear"
+                @focus="onFocus"
+                @blur="onBlur"
             />
             <vs-floating :target="`#${triggerId}`" v-model="isOpen" placement="bottom" align="start" follow-width>
                 <vs-grouped-list
@@ -46,17 +47,18 @@
                     :items="filteredOptions"
                     :group-by
                     :group-order
-                    @click-item="onClickOption"
+                    @click-item="selectOptionItem"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search vs-select-focusable" data-focusable>
+                        <div class="vs-select-search vs-select-focusable" data-focusable data-role="search">
                             <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" />
                         </div>
                         <div
                             v-if="multiple && selectAll"
                             class="vs-select-all vs-select-focusable"
-                            @click.prevent.stop="toggleSelectAll"
                             data-focusable
+                            data-role="select-all"
+                            @click.prevent.stop="toggleSelectAll"
                         >
                             <vs-checkbox
                                 :model-value="isSelectedAll"
@@ -74,9 +76,17 @@
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
                     <template #item="itemSlotProps">
-                        <div class="vs-select-option-wrap vs-select-focusable" data-focusable>
+                        <div
+                            :class="[
+                                'vs-select-option-wrap',
+                                'vs-select-focusable',
+                                { selected: isSelected(itemSlotProps.id) },
+                            ]"
+                            :data-id="itemSlotProps.id"
+                            :data-focusable="itemSlotProps.disabled ? undefined : true"
+                        >
                             <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
-                                <div :class="['vs-select-option', { selected: isSelected(itemSlotProps.id) }]">
+                                <div class="vs-select-option">
                                     {{ itemSlotProps.label }}
                                 </div>
                             </slot>
@@ -200,7 +210,6 @@ export default defineComponent({
             noDefaultRules,
             state,
             required,
-            small,
             disabled,
             search,
             multiple,
@@ -209,11 +218,14 @@ export default defineComponent({
         } = toRefs(props);
 
         const isOpen = ref(false);
+        const isFocused = ref(false);
         const inputValue: Ref<any> = ref(modelValue.value);
 
         const triggerRef: TemplateRef<VsSelectTriggerRef> = useTemplateRef('triggerRef');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
         const optionsListRef: TemplateRef<VsGroupedListRef> = useTemplateRef('optionsListRef');
+
+        const isUsingSelect = computed(() => isFocused.value || isOpen.value);
 
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
 
@@ -240,7 +252,14 @@ export default defineComponent({
 
         const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
 
-        const { addMouseMoveListener, removeMouseMoveListener } = useFocusable(optionsListElement);
+        const {
+            focusIndex,
+            updateFocusIndex,
+            currentFocusableElement,
+            getFocusableElements,
+            addMouseMoveListener,
+            removeMouseMoveListener,
+        } = useFocusable(optionsListElement);
 
         const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
 
@@ -305,8 +324,112 @@ export default defineComponent({
             multiple,
         });
 
+        function getCurrentFocusableRole() {
+            return currentFocusableElement.value?.dataset['role'];
+        }
+
+        function moveSelectFocus(index: number) {
+            updateFocusIndex(index);
+
+            nextTick(() => {
+                currentFocusableElement.value?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (getCurrentFocusableRole() === 'search') {
+                    searchInputRef.value?.focus();
+                } else {
+                    searchInputRef.value?.blur();
+                }
+            });
+        }
+
+        function selectOptionWithKeyboard() {
+            if (isOpen.value) {
+                const role = getCurrentFocusableRole();
+                if (role === 'search') {
+                    return;
+                } else if (role === 'select-all') {
+                    toggleSelectAll();
+                } else {
+                    const optionId = currentFocusableElement.value?.dataset['id'];
+                    if (optionId) {
+                        const optionItem = filteredOptions.value.find((o) => o.id === optionId);
+                        if (optionItem) {
+                            selectOptionItem(optionItem);
+                        }
+                    }
+                }
+            } else {
+                openOptions();
+            }
+        }
+
         const computedCallbacks = computed(() => {
-            return {};
+            return {
+                'key-ArrowUp': (e: KeyboardEvent) => {
+                    if (!isOpen.value) {
+                        return;
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    moveSelectFocus(focusIndex.value - 1);
+                },
+                'key-ArrowDown': (e: KeyboardEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (isOpen.value) {
+                        moveSelectFocus(focusIndex.value + 1);
+                    } else {
+                        openOptions();
+                    }
+                },
+                'key-Home': (e: KeyboardEvent) => {
+                    if (!isOpen.value) {
+                        return;
+                    }
+                    if (getCurrentFocusableRole() !== 'search') {
+                        e.preventDefault();
+                    }
+                    e.stopPropagation();
+                    moveSelectFocus(0);
+                },
+                'key-End': (e: KeyboardEvent) => {
+                    if (!isOpen.value) {
+                        return;
+                    }
+                    if (getCurrentFocusableRole() !== 'search') {
+                        e.preventDefault();
+                    }
+                    e.stopPropagation();
+                    moveSelectFocus(getFocusableElements().length - 1);
+                },
+                'key-Enter': (e: KeyboardEvent) => {
+                    if (getCurrentFocusableRole() !== 'search') {
+                        e.preventDefault();
+                    }
+                    e.stopPropagation();
+                    selectOptionWithKeyboard();
+                },
+                'key-Space': (e: KeyboardEvent) => {
+                    if (getCurrentFocusableRole() !== 'search') {
+                        e.preventDefault();
+                    }
+                    e.stopPropagation();
+                    selectOptionWithKeyboard();
+                },
+                'key-Tab': () => {
+                    if (getCurrentFocusableRole() === 'search') {
+                        return;
+                    }
+                    if (isOpen.value) {
+                        closeOptions();
+                    }
+                },
+                'key-Escape': (e: KeyboardEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeOptions();
+                },
+            };
         });
         const { activate: activateOverlayCallback, deactivate: deactivateOverlayCallback } = useOverlayCallback(
             computedId,
@@ -315,10 +438,7 @@ export default defineComponent({
         const triggerId = computed(() => `${computedId.value}-trigger`);
         const optionsId = computed(() => `${computedId.value}-options`);
 
-        const triggerClassObj = computed(() => ({
-            'vs-small': small.value,
-            'vs-focusable': !computedDisabled.value && !computedReadonly.value,
-            'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
+        const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
         }));
@@ -335,7 +455,7 @@ export default defineComponent({
             }
         }
 
-        function onClickOption(optionItem: OptionItem) {
+        function selectOptionItem(optionItem: OptionItem) {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
@@ -350,10 +470,12 @@ export default defineComponent({
         }
 
         function onFocus(e: FocusEvent) {
+            isFocused.value = true;
             emit('focus', e);
         }
 
         function onBlur(e: FocusEvent) {
+            isFocused.value = false;
             emit('blur', e);
         }
 
@@ -376,12 +498,16 @@ export default defineComponent({
             // setTimeout + nextTick을 사용해야 DOM이 완전히 렌더링된 후 스크롤 가능
             setTimeout(() => {
                 nextTick(() => {
-                    activateOverlayCallback();
                     addMouseMoveListener();
 
                     const selectedId = selectedOptionIds.value[0];
                     if (selectedId) {
                         optionsListRef.value?.scrollToItem(selectedId);
+
+                        const targetFocusIndex = getFocusableElements().findIndex(
+                            (element) => element.dataset['id'] === selectedId,
+                        );
+                        updateFocusIndex(targetFocusIndex);
                     }
                 });
             }, 50);
@@ -389,7 +515,6 @@ export default defineComponent({
 
         function closeOptions() {
             removeMouseMoveListener();
-            deactivateOverlayCallback();
             isOpen.value = false;
             emit('close');
 
@@ -410,6 +535,14 @@ export default defineComponent({
                 closeOptions();
             }
         }
+
+        watch(isUsingSelect, () => {
+            if (isUsingSelect.value) {
+                activateOverlayCallback();
+            } else {
+                deactivateOverlayCallback();
+            }
+        });
 
         watch(
             selectedOptionIds,
@@ -482,7 +615,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
-            triggerClassObj,
+            classObj,
             computedId,
             computedMessages,
             computedState,
@@ -497,7 +630,7 @@ export default defineComponent({
             isUsingSearch,
             searchProps,
             toggleOpen,
-            onClickOption,
+            selectOptionItem,
             isSelectedAll,
             computedColorScheme,
             onFocus,

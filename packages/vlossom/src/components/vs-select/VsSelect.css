@@ -82,20 +82,28 @@
     max-height: var(--vs-select-options-height, 30rem);
 
     .vs-select-focusable {
+        border: 1px solid transparent;
+
         &.vs-focusable-active {
-            background-color: var(--vs-select-option-hoverBackgroundColor, var(--vs-area-bg-active));
+            @apply box-content;
+
+            border: 1px solid var(--vs-line-color) !important;
+            border-radius: var(
+                --vs-select-option-borderRadius,
+                calc(var(--vs-radius-ratio) * var(--vs-radius-md))
+            ) !important;
+            background-color: var(--vs-select-option-hoverBackgroundColor, var(--vs-area-bg-active)) !important;
         }
     }
 
     .vs-select-search {
-        @apply mb-2;
-        padding: 0 1rem;
+        padding: 0.4rem 1rem;
     }
 
     .vs-select-all {
         @apply cursor-pointer;
-        margin-bottom: 0.3rem;
-        padding: 0.2rem 1.2rem;
+
+        padding: 0.4rem 1.2rem;
     }
 
     .vs-select-option-wrap {
@@ -103,9 +111,12 @@
             @apply cursor-pointer;
 
             padding: 0.2rem 1.2rem;
+        }
 
-            &.selected {
-                background-color: var(--vs-select-option-selecteBackgroundColor, var(--vs-comp-bg));
+        &.selected {
+            background-color: var(--vs-select-option-selecteBackgroundColor, var(--vs-comp-bg));
+
+            .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);
             }
         }

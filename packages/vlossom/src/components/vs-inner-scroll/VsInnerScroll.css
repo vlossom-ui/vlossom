@@ -13,7 +13,7 @@
     }
 
     .vs-inner-scroll-body {
-        @apply relative flex-1 overflow-auto;
+        @apply relative flex-1 overflow-auto border-none outline-none;
 
         container-type: inline-size;
         padding: var(--vs-inner-scroll-padding, 0);

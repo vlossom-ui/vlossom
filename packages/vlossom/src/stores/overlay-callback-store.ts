@@ -22,7 +22,7 @@ export class OverlayCallbackStore {
                 return;
             }
 
-            const keyEventName = `key-${event.key}`;
+            const keyEventName = `key-${event.code}`;
             const [lastOverlayId, callbacks] = overlay;
             if (!callbacks.value[keyEventName]) {
                 return;

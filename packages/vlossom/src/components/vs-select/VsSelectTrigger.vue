@@ -1,5 +1,12 @@
 <template>
-    <div ref="triggerRef" :class="['vs-select-trigger', stateClasses]" @click="$emit('click')">
+    <div
+        ref="triggerRef"
+        :class="['vs-select-trigger', stateClasses, triggerClassObj]"
+        tabindex="0"
+        @focus="$emit('focus', $event)"
+        @blur="$emit('blur', $event)"
+        @click="$emit('click')"
+    >
         <div class="vs-select-value">
             <template v-if="isEmpty">
                 <span class="vs-select-placeholder">{{ placeholder }}</span>
@@ -75,7 +82,7 @@ export default defineComponent({
         },
         state: { type: String as PropType<UIState>, default: 'idle' },
     },
-    emits: ['click', 'deselect', 'clear'],
+    emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
         const { isEmpty, selectedOptions, state, noClear, disabled, readonly } = toRefs(props);
 
@@ -84,6 +91,11 @@ export default defineComponent({
         const { stateClasses } = useStateClass(state);
 
         const renderClearButton = computed(() => !noClear.value && !readonly.value && !disabled.value);
+
+        const triggerClassObj = computed(() => ({
+            'vs-focusable': !disabled.value && !readonly.value,
+            'vs-focus-within': !disabled.value && !readonly.value,
+        }));
 
         const displayLabel = computed(() => {
             if (isEmpty.value) {
@@ -108,6 +120,7 @@ export default defineComponent({
             stateClasses,
             renderClearButton,
             displayLabel,
+            triggerClassObj,
             focus,
             blur,
         };
