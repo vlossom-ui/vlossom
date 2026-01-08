@@ -9,6 +9,7 @@ import {
     onBeforeUnmount,
     computed,
     nextTick,
+    watch,
     type Ref,
     type ComponentPublicInstance,
 } from 'vue';
@@ -122,6 +123,15 @@ export default defineComponent({
                 activateCycle();
             }
             focus();
+        });
+
+        watch(disabled, (newVal) => {
+            if (newVal) {
+                deactivateCycle();
+            } else {
+                catchFocusables();
+                activateCycle();
+            }
         });
 
         onBeforeUnmount(() => {

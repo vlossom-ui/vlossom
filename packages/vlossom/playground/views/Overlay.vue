@@ -8,15 +8,14 @@
                 v-model="drawerOptions.placement"
                 label="placement"
                 :options="['left', 'right', 'top', 'bottom']"
-                small
                 no-messages
             />
             <vs-grid :grid-size="5" column-gap="1rem" row-gap="3rem">
-                <vs-switch v-model="drawerOptions.dimmed" label="dimmed" :grid="1" small no-messages />
-                <vs-switch v-model="drawerOptions.dimClose" label="dimClose" :grid="1" small no-messages />
-                <vs-switch v-model="drawerOptions.escClose" label="escClose" :grid="1" small no-messages />
-                <vs-switch v-model="drawerOptions.focusLock" label="focusLock" :grid="1" small no-messages />
-                <vs-switch v-model="drawerOptions.fixed" label="fixed" :grid="1" small no-messages />
+                <vs-switch v-model="drawerOptions.dimmed" label="dimmed" :grid="1" no-messages />
+                <vs-switch v-model="drawerOptions.dimClose" label="dimClose" :grid="1" no-messages />
+                <vs-switch v-model="drawerOptions.escClose" label="escClose" :grid="1" no-messages />
+                <vs-switch v-model="drawerOptions.focusLock" label="focusLock" :grid="1" no-messages />
+                <vs-switch v-model="drawerOptions.fixed" label="fixed" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
         <vs-container class="mb-4 h-64 overflow-hidden rounded-lg border border-gray-400 dark:border-gray-500">
@@ -37,7 +36,10 @@
                 <template #header>
                     <div class="p-2 text-sm font-bold capitalize">{{ drawerOptions.placement }} Drawer</div>
                 </template>
-                <div class="p-2 text-sm">Drawer content here</div>
+                <div class="p-2 text-sm">
+                    Drawer content here
+                    <vs-button>button</vs-button>
+                </div>
                 <template #footer>
                     <div class="p-2">
                         <vs-button dense @click="drawerOpen = false">Close</vs-button>
@@ -50,10 +52,10 @@
         <h3 class="mb-4 font-semibold">VsModal</h3>
         <vs-block class="mb-4">
             <vs-grid :grid-size="4" column-gap="1rem">
-                <vs-switch v-model="modalOptions.dimmed" label="dimmed" :grid="1" small no-messages />
-                <vs-switch v-model="modalOptions.dimClose" label="dimClose" :grid="1" small no-messages />
-                <vs-switch v-model="modalOptions.escClose" label="escClose" :grid="1" small no-messages />
-                <vs-switch v-model="modalOptions.focusLock" label="focusLock" :grid="1" small no-messages />
+                <vs-switch v-model="modalOptions.dimmed" label="dimmed" :grid="1" no-messages />
+                <vs-switch v-model="modalOptions.dimClose" label="dimClose" :grid="1" no-messages />
+                <vs-switch v-model="modalOptions.escClose" label="escClose" :grid="1" no-messages />
+                <vs-switch v-model="modalOptions.focusLock" label="focusLock" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
         <vs-button @click="modalOpen = true">Open Modal</vs-button>
@@ -81,7 +83,6 @@
                     label="placement"
                     :options="['top', 'bottom']"
                     :grid="1"
-                    small
                     no-messages
                 />
                 <vs-radio-set
@@ -89,7 +90,6 @@
                     label="align"
                     :options="['start', 'center', 'end']"
                     :grid="1"
-                    small
                     no-messages
                 />
             </vs-grid>
@@ -98,13 +98,12 @@
                 label="timeout (ms)"
                 type="number"
                 width="200px"
-                small
                 no-messages
                 class="my-2"
             />
             <vs-grid :grid-size="2" column-gap="1rem">
-                <vs-switch v-model="toastOptions.autoClose" label="autoClose" :grid="1" small no-messages />
-                <vs-switch v-model="toastOptions.primary" label="primary" :grid="1" small no-messages />
+                <vs-switch v-model="toastOptions.autoClose" label="autoClose" :grid="1" no-messages />
+                <vs-switch v-model="toastOptions.primary" label="primary" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
         <div class="flex flex-wrap items-start gap-4">
@@ -123,7 +122,6 @@
                     label="placement"
                     :options="['top', 'right', 'bottom', 'left']"
                     :grid="1"
-                    small
                     no-messages
                 />
                 <vs-radio-set
@@ -131,7 +129,6 @@
                     label="align"
                     :options="['start', 'center', 'end']"
                     :grid="1"
-                    small
                     no-messages
                 />
             </vs-grid>
@@ -141,7 +138,6 @@
                     label="enterDelay (ms)"
                     type="number"
                     :grid="1"
-                    small
                     no-messages
                 />
                 <vs-input
@@ -149,15 +145,14 @@
                     label="leaveDelay (ms)"
                     type="number"
                     :grid="1"
-                    small
                     no-messages
                 />
             </vs-grid>
             <vs-grid :grid-size="4" column-gap="1rem">
-                <vs-switch v-model="tooltipOptions.clickable" label="clickable" :grid="1" small no-messages />
-                <vs-switch v-model="tooltipOptions.contentsHover" label="contentsHover" :grid="1" small no-messages />
-                <vs-switch v-model="tooltipOptions.noAnimation" label="noAnimation" :grid="1" small no-messages />
-                <vs-switch v-model="tooltipOptions.disabled" label="disabled" :grid="1" small no-messages />
+                <vs-switch v-model="tooltipOptions.clickable" label="clickable" :grid="1" no-messages />
+                <vs-switch v-model="tooltipOptions.contentsHover" label="contentsHover" :grid="1" no-messages />
+                <vs-switch v-model="tooltipOptions.noAnimation" label="noAnimation" :grid="1" no-messages />
+                <vs-switch v-model="tooltipOptions.disabled" label="disabled" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
         <div class="flex flex-wrap items-start gap-4">

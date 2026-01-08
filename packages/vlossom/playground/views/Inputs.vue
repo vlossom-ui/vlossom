@@ -28,13 +28,6 @@
                     <vs-checkbox check-label="Indeterminate" indeterminate />
                 </div>
             </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
-                <div class="flex flex-wrap gap-4">
-                    <vs-checkbox check-label="Small" small />
-                    <vs-checkbox check-label="Default" />
-                </div>
-            </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
 
@@ -98,13 +91,6 @@
                     <vs-radio radio-label="Readonly" :radio-value="true" readonly checked />
                 </div>
             </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
-                <div class="flex flex-wrap gap-4">
-                    <vs-radio radio-label="Small" :radio-value="true" small />
-                    <vs-radio radio-label="Default" :radio-value="true" />
-                </div>
-            </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
 
@@ -147,13 +133,6 @@
                     <vs-switch label="Readonly" readonly checked />
                 </div>
             </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
-                <div class="flex flex-wrap gap-4">
-                    <vs-switch label="Small" small />
-                    <vs-switch label="Default" />
-                </div>
-            </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
 
@@ -168,7 +147,6 @@
             <vs-textarea placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-textarea label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-textarea label="Readonly" model-value="Readonly content" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
-            <vs-textarea label="Small" placeholder="Small textarea" small :grid="{ xs: 12, md: 6, lg: 3 }" />
         </vs-grid>
     </section>
 </template>

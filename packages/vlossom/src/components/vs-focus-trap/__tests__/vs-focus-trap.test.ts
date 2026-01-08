@@ -128,6 +128,51 @@ describe('VsFocusTrap', () => {
             // then
             expect(firstFocusable.element).toBe(document.activeElement);
         });
+
+        it('disabled가 true에서 false로 변경되면 포커스 순환이 활성화되어야 한다', async () => {
+            // given
+            const wrapper = mountWith({ default: FocusableComponent }, { disabled: true });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const firstFocusable = wrapper.find('input');
+            const lastFocusable = wrapper.find('button');
+            await nextTick();
+
+            // when - disabled를 false로 변경
+            await wrapper.setProps({ disabled: false });
+            await nextTick();
+
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
+
+            // then
+            expect(firstFocusable.element).toBe(document.activeElement);
+        });
+
+        it('disabled가 false에서 true로 변경되면 포커스 순환이 비활성화되어야 한다', async () => {
+            // given
+            const wrapper = mountWith({ default: FocusableComponent }, { disabled: false });
+            const focusTrap = wrapper.find('.vs-focus-trap');
+            const lastFocusable = wrapper.find('button');
+            await nextTick();
+
+            // when - disabled를 true로 변경
+            await wrapper.setProps({ disabled: true });
+            await nextTick();
+
+            lastFocusable.element.focus();
+            focusTrap.element.dispatchEvent(
+                new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                }),
+            );
+
+            // then - 포커스 순환이 일어나지 않아야 함
+            expect(lastFocusable.element).toBe(document.activeElement);
+        });
     });
 
     describe('catchFocusables filter', () => {
