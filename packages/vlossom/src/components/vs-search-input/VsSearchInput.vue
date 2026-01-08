@@ -11,7 +11,6 @@
         :disabled
         :readonly
         :placeholder
-        :small
         no-clear
         no-messages
         no-label
@@ -22,7 +21,7 @@
                 <vs-toggle
                     v-if="useCaseSensitive"
                     v-model="isCaseSensitiveOn"
-                    :class="['vs-search-input-toggle', { 'vs-small': small }]"
+                    class="vs-search-input-toggle"
                     :color-scheme="computedColorScheme"
                     :style-set="getToggleButtonStyleSet(isCaseSensitiveOn)"
                     :disabled="disabled || readonly"
@@ -34,7 +33,7 @@
                 <vs-toggle
                     v-if="useRegex"
                     v-model="isRegexOn"
-                    :class="['vs-search-input-toggle', { 'vs-small': small }]"
+                    class="vs-search-input-toggle"
                     :color-scheme="computedColorScheme"
                     :style-set="getToggleButtonStyleSet(isRegexOn)"
                     :disabled="disabled || readonly"
@@ -81,7 +80,6 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
         readonly: { type: Boolean, default: false },
-        small: { type: Boolean, default: false },
         useCaseSensitive: { type: Boolean, default: false },
         useRegex: { type: Boolean, default: false },
 

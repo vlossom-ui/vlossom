@@ -147,7 +147,6 @@ function clearTextarea() {
 | `readonly`       | `boolean`                         | `false`                   | -        | 읽기 전용 상태                                  |
 | `required`       | `boolean`                         | `false`                   | -        | 필수 입력 여부                                  |
 | `rules`          | `Rule<string>[]`                  | `[]`                      | -        | 커스텀 검증 규칙                                |
-| `small`          | `boolean`                         | `false`                   | -        | 작은 크기                                       |
 | `state`          | `UIState`                         | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning) |
 | `valid`          | `boolean`                         | `false`                   | -        | 검증 통과 여부 (v-model:valid)                  |
 | `width`          | `string \| number \| Breakpoints` | -                         | -        | 컴포넌트 너비                                   |

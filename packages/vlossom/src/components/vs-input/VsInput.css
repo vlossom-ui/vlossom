@@ -72,15 +72,6 @@
             @apply cursor-pointer opacity-100;
         }
     }
-
-    &.vs-small {
-        height: var(--vs-input-height, var(--vs-default-comp-height-sm));
-        font-size: var(--vs-input-fontSize, var(--vs-font-size-sm));
-
-        input {
-            font-size: var(--vs-input-fontSize, var(--vs-font-size-sm));
-        }
-    }
 }
 
 /* clears the 'X' */

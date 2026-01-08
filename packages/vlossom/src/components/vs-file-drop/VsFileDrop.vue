@@ -11,7 +11,6 @@
         :no-label
         :no-messages
         :required
-        :small
         :shake
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
@@ -47,7 +46,7 @@
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder">
-                        <i class="placeholder-icon" :class="{ 'size-4': small, 'size-6': !small }">
+                        <i class="placeholder-icon size-6">
                             <vs-render :content="attachFileIcon" />
                         </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
@@ -62,7 +61,6 @@
                             <vs-chip
                                 :id="`${file.name}-${index}`"
                                 :color-scheme
-                                :small
                                 :closable="!computedReadonly && !computedDisabled"
                                 @close="handleFileRemove(file)"
                                 :style-set="{ width: '100%' }"
@@ -149,7 +147,6 @@ export default defineComponent({
     setup(props, { emit }) {
         const {
             colorScheme,
-            small,
             styleSet,
             required,
             accept,
@@ -225,7 +222,6 @@ export default defineComponent({
         );
 
         const classObj = computed(() => ({
-            'vs-small': small.value,
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
             'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,

@@ -11,7 +11,6 @@
         :no-messages
         :required
         :shake
-        :small
         :width
     >
         <template #label v-if="label || $slots['label']">
@@ -110,7 +109,6 @@ export default defineComponent({
             multiple,
             noDefaultRules,
             indeterminate,
-            small,
         } = toRefs(props);
 
         const checkboxRef: TemplateRef<HTMLInputElement> = useTemplateRef('checkboxRef');
@@ -188,7 +186,6 @@ export default defineComponent({
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
             'vs-indeterminate': indeterminate.value,
             'vs-readonly': computedReadonly.value,
-            'vs-small': small.value,
         }));
 
         async function toggle() {

@@ -92,11 +92,6 @@ const meta: Meta<typeof VsTextarea> = {
             description: '필수 입력 여부',
             table: { category: 'Common Props' },
         },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-            table: { category: 'Common Props' },
-        },
         state: {
             control: 'select',
             options: ['idle', 'success', 'error', 'info', 'warning'],
@@ -224,30 +219,6 @@ export const States: Story = {
                 <vs-textarea v-model="disabledValue" label="Disabled" disabled />
                 <vs-textarea v-model="readonlyValue" label="Readonly" readonly />
                 <vs-textarea v-model="requiredValue" label="Required" placeholder="필수 입력" required />
-            </div>
-        `,
-    }),
-};
-
-export const Size: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'small prop으로 작은 크기의 텍스트 영역을 만들 수 있습니다.',
-            },
-        },
-    },
-    render: (args: any) => ({
-        components: { VsTextarea },
-        setup() {
-            const defaultValue = ref('');
-            const smallValue = ref('');
-            return { args, defaultValue, smallValue };
-        },
-        template: `
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-textarea v-model="defaultValue" label="Default Size" placeholder="기본 크기" />
-                <vs-textarea v-model="smallValue" label="Small Size" placeholder="작은 크기" small />
             </div>
         `,
     }),

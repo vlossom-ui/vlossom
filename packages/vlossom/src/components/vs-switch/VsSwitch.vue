@@ -8,7 +8,6 @@
         :label="label"
         :required="required"
         :disabled="computedDisabled"
-        :small="small"
         :messages="computedMessages"
         :no-messages="noMessages"
         :shake="shake"
@@ -100,7 +99,6 @@ export default defineComponent({
             readonly,
             required,
             rules,
-            small,
             state,
             styleSet,
             trueValue,
@@ -118,7 +116,6 @@ export default defineComponent({
             'vs-checked': isChecked.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
-            'vs-small': small.value,
         }));
 
         const {

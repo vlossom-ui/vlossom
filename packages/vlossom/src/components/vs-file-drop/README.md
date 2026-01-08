@@ -150,7 +150,6 @@ function handleDrop(droppedFiles: File[]) {
 | `readonly`    | `boolean`                         | `false`                   | -        | 읽기 전용 상태 (파일 제거 불가, 새 파일 선택 불가) |
 | `required`    | `boolean`                         | `false`                   | -        | 필수 입력 여부                                     |
 | `rules`       | `Rule<FileDropValueType>[]`       | `[]`                      | -        | 커스텀 검증 규칙                                   |
-| `small`       | `boolean`                         | `false`                   | -        | 작은 크기                                          |
 | `state`       | `UIState`                         | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning)    |
 | `width`       | `string \| number \| Breakpoints` | -                         | -        | 컴포넌트 너비                                      |
 | `height`      | `string \| number \| Breakpoints` | -                         | -        | 컴포넌트 높이                                      |

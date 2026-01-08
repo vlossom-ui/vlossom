@@ -1,6 +1,6 @@
 <template>
     <vs-responsive
-        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake, 'vs-small': small }]"
+        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
         :style="styleSetVariables"
@@ -65,7 +65,7 @@ export default defineComponent({
         shake: { type: Boolean, default: false },
     },
     setup(props) {
-        const { shake, styleSet, small } = toRefs(props);
+        const { shake, styleSet } = toRefs(props);
 
         const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
 
@@ -73,7 +73,7 @@ export default defineComponent({
             if (componentStyleSet.value?.messages?.fontSize) {
                 return stringUtil.toStringSize(componentStyleSet.value.messages.fontSize);
             }
-            return small.value ? '0.8rem' : '0.9rem';
+            return '0.9rem';
         });
 
         const needToShake = ref(false);
