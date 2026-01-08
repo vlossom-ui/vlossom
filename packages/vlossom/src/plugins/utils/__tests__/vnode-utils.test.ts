@@ -63,10 +63,10 @@ describe('vnodeUtils', () => {
             vsButton.unmount();
         });
 
-        it('large prop이 true이면 vs-large 클래스가 적용되어야 한다', () => {
+        it('size prop이 lg이면 해당 size에 맞는 CSS 변수가 설정되어야 한다', () => {
             const vsButtonVNode = createVsButton({
                 props: {
-                    large: true,
+                    size: 'lg',
                 },
                 content: '대형',
                 onClickEvent: () => {},
@@ -74,7 +74,7 @@ describe('vnodeUtils', () => {
             const vsButton = mount(vsButtonVNode);
 
             const button = vsButton.find('button');
-            expect(button.classes()).toContain('vs-large');
+            expect(button.classes()).toContain('vs-lg');
 
             vsButton.unmount();
         });

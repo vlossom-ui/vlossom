@@ -29,9 +29,11 @@
 
 ```html
 <template>
-    <vs-button small>Small 버튼</vs-button>
+    <vs-button size="xs">XS 버튼</vs-button>
+    <vs-button size="sm">SM 버튼</vs-button>
     <vs-button>기본 버튼</vs-button>
-    <vs-button large>Large 버튼</vs-button>
+    <vs-button size="lg">LG 버튼</vs-button>
+    <vs-button size="xl">XL 버튼</vs-button>
 </template>
 ```
 
@@ -53,20 +55,19 @@
 
 ## Props
 
-| Prop          | Type                              | Default    | Required | Description                             |
-| ------------- | --------------------------------- | ---------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                          | -          | -        | 버튼의 색상 테마                        |
-| `styleSet`    | `string \| VsButtonStyleSet`      | -          | -        | 커스텀 스타일 설정 객체                 |
-| `circle`      | `boolean`                         | `false`    | -        | 원형 버튼 스타일 적용                   |
-| `disabled`    | `boolean`                         | `false`    | -        | 버튼 비활성화                           |
-| `ghost`       | `boolean`                         | `false`    | -        | 투명 배경의 고스트 스타일 적용          |
-| `large`       | `boolean`                         | `false`    | -        | 큰 크기 버튼                            |
-| `loading`     | `boolean`                         | `false`    | -        | 로딩 상태 표시                          |
-| `outline`     | `boolean`                         | `false`    | -        | 아웃라인 스타일 적용                    |
-| `primary`     | `boolean`                         | `false`    | -        | 주요 액션을 위한 프라이머리 스타일 적용 |
-| `responsive`  | `boolean`                         | `false`    | -        | 반응형 스타일 적용                      |
-| `small`       | `boolean`                         | `false`    | -        | 작은 크기 버튼                          |
-| `type`        | `'button' \| 'submit' \| 'reset'` | `'button'` | -        | HTML button 요소의 type 속성            |
+| Prop          | Type                                   | Default    | Required | Description                             |
+| ------------- | -------------------------------------- | ---------- | -------- | --------------------------------------- |
+| `colorScheme` | `string`                               | -          | -        | 버튼의 색상 테마                        |
+| `styleSet`    | `string \| VsButtonStyleSet`           | -          | -        | 커스텀 스타일 설정 객체                 |
+| `circle`      | `boolean`                              | `false`    | -        | 원형 버튼 스타일 적용                   |
+| `disabled`    | `boolean`                              | `false`    | -        | 버튼 비활성화                           |
+| `ghost`       | `boolean`                              | `false`    | -        | 투명 배경의 고스트 스타일 적용          |
+| `loading`     | `boolean`                              | `false`    | -        | 로딩 상태 표시                          |
+| `outline`     | `boolean`                              | `false`    | -        | 아웃라인 스타일 적용                    |
+| `primary`     | `boolean`                              | `false`    | -        | 주요 액션을 위한 프라이머리 스타일 적용 |
+| `responsive`  | `boolean`                              | `false`    | -        | 반응형 스타일 적용                      |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -          | -        | 버튼 크기                               |
+| `type`        | `'button' \| 'submit' \| 'reset'`      | `'button'` | -        | HTML button 요소의 type 속성            |
 
 ## Types
 
@@ -101,5 +102,5 @@ interface VsButtonStyleSet {
 ## 특징
 
 - **다양한 스타일 지원**: `primary`, `outline`, `ghost`, `circle` 등 다양한 스타일 옵션 제공
-- **크기 변형**: `small`, `large` 속성을 통한 크기 조절
+- **크기 변형**: `size` 속성을 통한 크기 조절 (`xs`, `sm`, `md`, `lg`, `xl`)
 - **로딩 상태**: `loading` 속성으로 로딩 스피너 표시

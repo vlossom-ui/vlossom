@@ -17,16 +17,16 @@ describe('VsChip', () => {
             expect(closeButton.exists()).toBe(true);
         });
 
-        it('small prop이 true이면 vs-small 클래스가 적용되어야 한다', () => {
+        it('size prop이 주어지면 해당 size 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsChip, {
                 props: {
-                    small: true,
+                    size: 'xs',
                 },
             });
 
             // then
-            expect(wrapper.vm.classObj['vs-small']).toBe(true);
+            expect(wrapper.vm.classObj['vs-xs']).toBe(true);
         });
 
         it('primary prop이 true이면 vs-primary 클래스가 적용되어야 한다', () => {

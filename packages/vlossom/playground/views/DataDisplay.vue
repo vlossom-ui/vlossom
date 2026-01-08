@@ -85,9 +85,11 @@
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-col gap-2">
-                    <vs-message state="info" text="Small message" size="0.75rem" />
-                    <vs-message state="info" text="Default message" />
-                    <vs-message state="info" text="Large message" size="1.25rem" />
+                    <vs-message state="info" text="XS message" size="xs" />
+                    <vs-message state="info" text="SM message" size="sm" />
+                    <vs-message state="info" text="MD message" />
+                    <vs-message state="info" text="LG message" size="lg" />
+                    <vs-message state="info" text="XL message" size="xl" />
                 </div>
             </vs-responsive>
         </vs-grid>
@@ -123,8 +125,8 @@
                 >
                     <vs-chip :style-set="{ width: '80px' }">{{ progressValue }}%</vs-chip>
                     <div class="flex gap-2">
-                        <vs-button small :style-set="{ width: '2.5rem' }" @click="decreaseProgress">-</vs-button>
-                        <vs-button small :style-set="{ width: '2.5rem' }" @click="increaseProgress">+</vs-button>
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="decreaseProgress">-</vs-button>
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="increaseProgress">+</vs-button>
                     </div>
                 </div>
             </vs-responsive>

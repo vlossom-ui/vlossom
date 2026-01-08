@@ -42,5 +42,11 @@
         --vs-default-comp-height-md: 2rem;
         --vs-default-comp-height-lg: 2.4rem;
         --vs-default-comp-height-xl: 2.8rem;
+
+        --vs-padding-xs: 0.4rem;
+        --vs-padding-sm: 0.6rem;
+        --vs-padding-md: 0.8rem;
+        --vs-padding-lg: 1rem;
+        --vs-padding-xl: 1.2rem;
     }
 }

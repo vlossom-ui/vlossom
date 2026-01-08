@@ -27,9 +27,11 @@ const meta: Meta<typeof VsButton> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-button v-bind="args" small>Small</vs-button>
-                        <vs-button v-bind="args">Default</vs-button>
-                        <vs-button v-bind="args" large>Large</vs-button>
+                        <vs-button v-bind="args" size="xs">Extra Small</vs-button>
+                        <vs-button v-bind="args" size="sm">Small</vs-button>
+                        <vs-button v-bind="args">Default (MD)</vs-button>
+                        <vs-button v-bind="args" size="lg">Large</vs-button>
+                        <vs-button v-bind="args" size="xl">Extra Large</vs-button>
                     </div>
                 </div>
 
@@ -37,7 +39,7 @@ const meta: Meta<typeof VsButton> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">상태</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-button v-bind="args">Normal</vs-button>
+                        <vs-button v-bind="args">Default</vs-button>
                         <vs-button v-bind="args" disabled>Disabled</vs-button>
                         <vs-button v-bind="args" loading>Loading</vs-button>
                     </div>
@@ -58,9 +60,9 @@ const meta: Meta<typeof VsButton> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Primary 조합</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-button v-bind="args" primary small>Primary Small</vs-button>
+                        <vs-button v-bind="args" primary size="sm">Primary SM</vs-button>
                         <vs-button v-bind="args" primary>Primary Default</vs-button>
-                        <vs-button v-bind="args" primary large>Primary Large</vs-button>
+                        <vs-button v-bind="args" primary size="lg">Primary LG</vs-button>
                         <vs-button v-bind="args" primary disabled>Primary Disabled</vs-button>
                     </div>
                 </div>
@@ -69,9 +71,9 @@ const meta: Meta<typeof VsButton> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">Outline 조합</h3>
                     <div style="display:flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                        <vs-button v-bind="args" outline small>Outline Small</vs-button>
+                        <vs-button v-bind="args" outline size="sm">Outline SM</vs-button>
                         <vs-button v-bind="args" outline>Outline Default</vs-button>
-                        <vs-button v-bind="args" outline large>Outline Large</vs-button>
+                        <vs-button v-bind="args" outline size="lg">Outline LG</vs-button>
                         <vs-button v-bind="args" outline disabled>Outline Disabled</vs-button>
                     </div>
                 </div>

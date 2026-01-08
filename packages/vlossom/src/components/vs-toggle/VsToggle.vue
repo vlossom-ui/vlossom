@@ -2,17 +2,16 @@
     <vs-button
         class="vs-toggle"
         type="button"
-        :color-scheme="colorScheme"
+        :color-scheme
         :style-set="componentStyleSet"
-        :circle="circle"
-        :disabled="disabled"
-        :ghost="ghost"
-        :large="large"
-        :loading="loading"
-        :outline="outline"
-        :primary="primary"
-        :responsive="responsive"
-        :small="small"
+        :circle
+        :disabled
+        :ghost
+        :loading
+        :outline
+        :primary
+        :responsive
+        :size
         @click.prevent.stop="toggle"
     >
         <slot />

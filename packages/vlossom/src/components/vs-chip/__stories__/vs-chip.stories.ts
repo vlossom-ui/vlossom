@@ -42,13 +42,14 @@ const meta: Meta<typeof VsChip> = {
             control: 'boolean',
             description: '닫기 버튼 표시 여부',
         },
-        small: {
-            control: 'boolean',
-            description: '작은 크기',
-        },
         primary: {
             control: 'boolean',
             description: '강조 스타일',
+        },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '칩 크기',
         },
     },
 };
@@ -118,16 +119,16 @@ export const Primary: Story = {
     },
 };
 
-export const Small: Story = {
+export const SmallSize: Story = {
     parameters: {
         docs: {
             description: {
-                story: '작은 크기의 칩입니다. small prop을 사용하여 더 작은 크기로 표시할 수 있습니다.',
+                story: '작은 크기의 칩입니다. size="xs"를 사용하여 더 작은 크기로 표시할 수 있습니다.',
             },
         },
     },
     args: {
-        small: true,
+        size: 'xs',
     },
 };
 
@@ -135,7 +136,7 @@ export const Sizes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '다양한 크기의 칩들입니다. 기본 크기와 small 크기를 지원합니다.',
+                story: '다양한 크기의 칩들입니다. xs, sm(기본), md, lg, xl 크기를 지원합니다.',
             },
         },
     },
@@ -146,8 +147,11 @@ export const Sizes: Story = {
         },
         template: `
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <vs-chip v-bind="args" small>small</vs-chip>
-                <vs-chip v-bind="args">default</vs-chip>
+                <vs-chip v-bind="args" size="xs">xs</vs-chip>
+                <vs-chip v-bind="args">sm (default)</vs-chip>
+                <vs-chip v-bind="args" size="md">md</vs-chip>
+                <vs-chip v-bind="args" size="lg">lg</vs-chip>
+                <vs-chip v-bind="args" size="xl">xl</vs-chip>
             </div>
         `,
     }),

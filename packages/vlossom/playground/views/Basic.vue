@@ -81,9 +81,11 @@
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-wrap items-center gap-2">
-                    <vs-button small>Small</vs-button>
+                    <vs-button size="xs">Extra Small</vs-button>
+                    <vs-button size="sm">Small</vs-button>
                     <vs-button>Default</vs-button>
-                    <vs-button large>Large</vs-button>
+                    <vs-button size="lg">Large</vs-button>
+                    <vs-button size="xl">Extra Large</vs-button>
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -110,8 +112,11 @@
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-wrap items-center gap-2">
-                    <vs-chip small>Small</vs-chip>
-                    <vs-chip>Default</vs-chip>
+                    <vs-chip size="xs">Extra Small</vs-chip>
+                    <vs-chip>Small(Default)</vs-chip>
+                    <vs-chip size="md">Medium</vs-chip>
+                    <vs-chip size="lg">Large</vs-chip>
+                    <vs-chip size="xl">Extra Large</vs-chip>
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -233,9 +238,11 @@
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-wrap items-center gap-2">
-                    <vs-toggle v-model="toggleValue" small>Small</vs-toggle>
+                    <vs-toggle v-model="toggleValue" size="xs">Extra Small</vs-toggle>
+                    <vs-toggle v-model="toggleValue" size="sm">Small</vs-toggle>
                     <vs-toggle v-model="toggleValue">Default</vs-toggle>
-                    <vs-toggle v-model="toggleValue" large>Large</vs-toggle>
+                    <vs-toggle v-model="toggleValue" size="lg">Large</vs-toggle>
+                    <vs-toggle v-model="toggleValue" size="xl">Extra Large</vs-toggle>
                 </div>
             </vs-responsive>
         </vs-grid>

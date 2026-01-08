@@ -27,8 +27,9 @@ const meta: Meta<typeof VsMessage> = {
             description: '메시지의 상태',
         },
         size: {
-            control: 'text',
-            description: '메시지의 크기 (CSS 단위)',
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '메시지의 크기',
         },
         text: {
             control: 'text',
@@ -93,9 +94,11 @@ export const Sizes: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-message v-bind="args" size="xs" text="XS 메시지" />
+                <vs-message v-bind="args" size="sm" text="SM 메시지" />
                 <vs-message v-bind="args" text="기본 메시지" />
-                <vs-message v-bind="args" size="2rem" text="큰 메시지" />
-                <vs-message v-bind="args" size="10" text="숫자만 전달 (px)" />
+                <vs-message v-bind="args" size="lg" text="LG 메시지" />
+                <vs-message v-bind="args" size="xl" text="XL 메시지" />
             </div>
         `,
     }),

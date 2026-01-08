@@ -10,18 +10,23 @@
 
     --vs-chip-fontColor: initial;
 
+    --vs-chip-size-height: var(--vs-size-height, var(--vs-default-comp-height-sm));
+    --vs-chip-size-font: var(--vs-size-font, var(--vs-font-size-sm));
+    --vs-chip-size-padding: var(--vs-size-padding, var(--vs-padding-sm));
+    --vs-chip-size-icon-padding: 0.15rem;
+
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
 
     opacity: var(--vs-chip-opacity, 1);
     border: var(--vs-chip-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-sm) / 2));
+    border-radius: var(--vs-chip-borderRadius, calc(var(--vs-chip-size-height) / 2));
     background-color: var(--vs-chip-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-chip-padding, 0 0.6rem);
+    padding: var(--vs-chip-padding, 0 var(--vs-chip-size-padding));
     width: var(--vs-chip-width, auto);
-    height: var(--vs-chip-height, var(--vs-default-comp-height-sm));
-    min-height: var(--vs-chip-height, var(--vs-default-comp-height-sm));
+    height: var(--vs-chip-height, var(--vs-chip-size-height));
+    min-height: var(--vs-chip-height, var(--vs-chip-size-height));
     color: var(--vs-chip-fontColor, var(--vs-comp-font));
-    font-size: var(--vs-font-size-sm);
+    font-size: var(--vs-chip-size-font);
     line-height: 2;
     user-select: none;
 
@@ -30,8 +35,8 @@
 
         border: var(--vs-chip-border, 1px solid var(--vs-line-color));
         border-radius: 50%;
-        width: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
-        height: calc(var(--vs-chip-height, var(--vs-default-comp-height-sm)) * 0.75);
+        width: calc(var(--vs-chip-height, var(--vs-chip-size-height)) * 0.75);
+        height: calc(var(--vs-chip-height, var(--vs-chip-size-height)) * 0.75);
         color: var(--vs-chip-fontColor, var(--vs-comp-font));
     }
 
@@ -40,11 +45,11 @@
     }
 
     &:has(.vs-chip-icon) {
-        padding-left: 0.15rem;
+        padding-left: var(--vs-chip-size-icon-padding);
     }
 
     &:has(.vs-chip-close-button) {
-        padding-right: 0.15rem;
+        padding-right: var(--vs-chip-size-icon-padding);
     }
 
     .vs-chip-content {
@@ -52,25 +57,20 @@
         padding: 0 0.4rem;
     }
 
-    &.vs-small {
-        border-radius: var(--vs-chip-borderRadius, calc(var(--vs-default-comp-height-xs) / 2));
-        padding: var(--vs-chip-padding, 0 0.2rem);
-        height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
-        min-height: var(--vs-chip-height, var(--vs-default-comp-height-xs));
-        font-size: var(--vs-font-size-xs);
+    &.vs-xs {
+        --vs-chip-size-icon-padding: 0.1rem;
+    }
 
-        .vs-icon-container {
-            width: calc(var(--vs-chip-height, var(--vs-default-comp-height-xs)) * 0.75);
-            height: calc(var(--vs-chip-height, var(--vs-default-comp-height-xs)) * 0.75);
-        }
+    &.vs-md {
+        --vs-chip-size-icon-padding: 0.2rem;
+    }
 
-        &:has(.vs-chip-icon) {
-            padding-left: 0.1rem;
-        }
+    &.vs-lg {
+        --vs-chip-size-icon-padding: 0.25rem;
+    }
 
-        &:has(.vs-chip-close-button) {
-            padding-right: 0.1rem;
-        }
+    &.vs-xl {
+        --vs-chip-size-icon-padding: 0.3rem;
     }
 
     &.vs-outline {
