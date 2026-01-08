@@ -49,7 +49,7 @@
                 :tabindex="!!inputValue ? 0 : -1"
                 @click.stop="clearWithFocus"
             >
-                <i>
+                <i class="size-5">
                     <vs-render :content="closeIcon" />
                 </i>
             </button>
