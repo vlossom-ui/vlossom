@@ -12,6 +12,7 @@ export type { VsGroupedList };
 
 export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
     scrollToItem: (id: string) => void;
+    hasScroll: () => boolean;
 }
 
 export interface VsGroupedListStyleSet extends SizeStyleSet, BoxStyleSet {

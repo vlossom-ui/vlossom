@@ -420,7 +420,9 @@ export default defineComponent({
 
                     const selectedId = selectedOptionIds.value[0];
                     if (selectedId) {
-                        optionsListRef.value?.scrollToItem(selectedId);
+                        if (optionsListRef.value?.hasScroll()) {
+                            optionsListRef.value?.scrollToItem(selectedId);
+                        }
 
                         const targetFocusIndex = getFocusableElements().findIndex(
                             (element) => element.dataset['id'] === selectedId,

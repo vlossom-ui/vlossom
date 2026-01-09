@@ -4,7 +4,7 @@
             <slot name="header" />
         </div>
 
-        <div :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]">
+        <div ref="bodyRef" :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]">
             <slot />
         </div>
 
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs, useTemplateRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
@@ -28,12 +28,22 @@ export default defineComponent({
         ...getStyleSetProps<VsInnerScrollStyleSet>(),
         hideScroll: { type: Boolean, default: false },
     },
+    // expose: ['hasScroll'],
     setup(props) {
         const { styleSet } = toRefs(props);
+        const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
         const { styleSetVariables } = useStyleSet(componentName, styleSet);
 
-        return { styleSetVariables };
+        function hasScroll() {
+            if (!bodyRef.value) {
+                return false;
+            }
+
+            return bodyRef.value.scrollHeight > bodyRef.value.clientHeight;
+        }
+
+        return { styleSetVariables, hasScroll, bodyRef };
     },
 });
 </script>

@@ -46,7 +46,29 @@
                 :rules="[rules.minValue(1), rules.maxValue(120)]"
                 :grid="{ xs: 12, md: 6 }"
             />
+
             <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="{ xs: 12, md: 6 }" />
+
+            <vs-select
+                v-model="form.region"
+                label="Region"
+                placeholder="Select region"
+                :options="regionOptions"
+                :grid="{ xs: 12, md: 6 }"
+                required
+                no-clear
+            />
+
+            <vs-select
+                v-model="form.hobby"
+                label="Hobby"
+                placeholder="Select hobby"
+                :options="hobbyOptions"
+                :grid="{ xs: 12, md: 6 }"
+                multiple
+                closable-chips
+                max="3"
+            />
 
             <vs-textarea v-model="form.bio" label="Bio" placeholder="Tell us about yourself..." :grid="12" />
 
@@ -101,6 +123,8 @@ interface SignUpForm {
     username: string;
     password: string;
     confirmPassword: string;
+    region: string | null;
+    hobby: string | null;
     age: number | null;
     gender: string | null;
     bio: string;
@@ -120,6 +144,8 @@ export default defineComponent({
             username: '',
             password: '',
             confirmPassword: '',
+            region: null,
+            hobby: null,
             age: null,
             gender: null,
             bio: '',
@@ -131,6 +157,34 @@ export default defineComponent({
 
         const genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say'];
         const interestOptions = ['Technology', 'Sports', 'Music', 'Art', 'Travel', 'Food'];
+        const regionOptions = ['North America', 'Europe', 'Asia', 'South America', 'Africa', 'Australia'];
+        const hobbyOptions = [
+            'Reading',
+            'Writing',
+            'Coding',
+            'Gaming',
+            'Cooking',
+            'Gardening',
+            'Painting',
+            'Photography',
+            'Fishing',
+            'Hiking',
+            'Camping',
+            'Yoga',
+            'Meditation',
+            'OTT',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            'Other',
+        ];
 
         const rules = {
             required: (v: unknown) => (!!v ? '' : 'This field is required'),
@@ -158,7 +212,6 @@ export default defineComponent({
             const isValid = await formRef.value.validate();
             if (isValid) {
                 alert('Form submitted successfully!');
-                console.log('Form data:', form);
             }
         }
 
@@ -178,6 +231,8 @@ export default defineComponent({
             rules,
             handleSubmit,
             handleClear,
+            regionOptions,
+            hobbyOptions,
         };
     },
 });
