@@ -83,6 +83,7 @@ export function useTable(
             showingLength: 10,
             edgeButtons: false,
             showTotal: true,
+            mode: 'client',
         };
 
         if (typeof rawPagination?.value === 'boolean') {

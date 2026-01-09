@@ -260,6 +260,8 @@ interface VsTablePaginationOptions {
     showingLength?: number;
     edgeButtons?: boolean;
     showTotal?: boolean;
+    mode?: 'client' | 'server';
+    totalItemCount?: number; // required when mode is 'server'
 }
 
 interface HeaderCell extends Cell {
