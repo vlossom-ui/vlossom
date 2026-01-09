@@ -1,5 +1,8 @@
 @layer base {
     :root {
+        --vs-white: var(--color-white);
+        --vs-black: var(--color-black);
+
         /* red */
         --vs-red-50: oklch(99% 0.038 27);
         --vs-red-100: oklch(95.9% 0.063 27);
