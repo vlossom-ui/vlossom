@@ -276,7 +276,7 @@ const selected = ref(null);
 | `multiple`        | `boolean`                                        | `false`                   | 다중 선택 모드 활성화                               |
 | `noClear`         | `boolean`                                        | `false`                   | 선택 해제(clear) 버튼 숨기기                        |
 | `optionsDisabled` | `boolean \| (option, index, options) => boolean` | `false`                   | 특정 옵션을 비활성화하는 함수 또는 boolean          |
-| `search`          | `VsSelectSearchPropType`                         | `false`                   | 검색 기능 활성화 및 옵션                            |
+| `search`          | `SearchProps`                                    | `false`                   | 검색 기능 활성화 및 옵션                            |
 | `selectAll`       | `boolean`                                        | `false`                   | 전체 선택 체크박스 표시 (다중 선택 모드에서만 동작) |
 | `modelValue`      | `any \| any[]`                                   | `null`                    | v-model 바인딩 값                                   |
 
@@ -363,14 +363,6 @@ interface VsSelectStyleSet {
         selectedBackgroundColor?: string;
     };
 }
-
-type VsSelectSearchPropType =
-    | boolean
-    | {
-          useRegex?: boolean;
-          useCaseSensitive?: boolean;
-          placeholder?: string;
-      };
 ```
 
 ## Slots
