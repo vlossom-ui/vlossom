@@ -87,8 +87,6 @@ export function useTable(
             ...rawPagination.value,
         };
     });
-    const page = computed<number>(() => rawPage?.value ?? 0);
-    const pageSize = computed<number>(() => rawPageSize?.value ?? 50);
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
@@ -108,7 +106,12 @@ export function useTable(
     });
     const filteredRowsCount = computed(() => sortedFilteredBodyCells.value.length);
 
-    const { totalPages, paginateRows } = useTablePagination(pagination, filteredRowsCount, page, pageSize);
+    const { totalPages, paginateRows } = useTablePagination(
+        pagination,
+        filteredRowsCount,
+        rawPage as Ref<number>,
+        rawPageSize as Ref<number>,
+    );
 
     const bodyCells = computed<BodyCell[][]>(() => {
         return paginateRows(sortedFilteredBodyCells.value);
@@ -168,8 +171,6 @@ export function useTable(
         sortColumn,
         updateSortType,
         pagination,
-        page,
-        pageSize,
         totalPages,
         filteredRowsCount,
     };
@@ -191,8 +192,6 @@ export type TableComposable = {
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     pagination: ComputedRef<VsTablePaginationOptions>;
-    page: ComputedRef<number>;
-    pageSize: ComputedRef<number>;
     totalPages: ComputedRef<number>;
     filteredRowsCount: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;

@@ -7,6 +7,10 @@
         @apply mx-auto w-full border-collapse;
     }
 
+    .vs-table-search-input {
+        @apply mb-2 flex justify-end;
+    }
+
     .vs-table-sticky-header {
         @apply sticky w-full;
         top: var(--vs-table-stickyHeaderTop, auto);

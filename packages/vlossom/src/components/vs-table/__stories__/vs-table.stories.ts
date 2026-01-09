@@ -327,7 +327,7 @@ export const StickyHeader: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'stickyHeader를 켜고 스크롤 시 헤더가 상단에 고정되는 동작을 확인합니다. 레이아웃 상단 여백이 있다면 styleSet.stickyHeaderTop으로 조정하세요.',
+                story: 'stickyHeader를 켜고 스크롤 시 헤더가 상단에 고정되는 동작을 확인합니다',
             },
         },
     },

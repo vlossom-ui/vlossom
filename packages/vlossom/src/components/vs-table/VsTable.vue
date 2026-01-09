@@ -2,15 +2,15 @@
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="styleSetVariables">
         <vs-search-input
             ref="searchInputRef"
-            class="mb-2 flex justify-end"
+            class="vs-table-search-input"
             v-bind="searchOptions"
             @search="searchRows"
         />
 
         <table>
             <vs-table-header
-                class="vs-table-sticky-header"
                 v-if="stickyHeader && headerInvisible"
+                class="vs-table-sticky-header"
                 @click-cell="clickCell"
                 @select-row="selectRow"
             >
@@ -167,7 +167,7 @@ export default defineComponent({
         'update:pageSize',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, search, page: rawPage, pageSize: rawPageSize } = toRefs(props);
+        const { colorScheme, styleSet, responsive, search, page, pageSize } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -202,6 +202,14 @@ export default defineComponent({
             'vs-table-responsive': responsive.value,
         }));
 
+        const pageRef = computed({
+            get: () => page.value,
+            set: (value) => emit('update:page', value),
+        });
+        const pageSizeRef = computed({
+            get: () => pageSize.value,
+            set: (value) => emit('update:pageSize', value),
+        });
         const searchOptions = computed<VsTableSearchOptions>(() => {
             if (typeof search.value === 'boolean') {
                 return TABLE_SEARCH_OPTIONS;
@@ -219,15 +227,6 @@ export default defineComponent({
             },
             { threshold: 1 },
         );
-        const pageRef = computed({
-            get: () => rawPage.value,
-            set: (value) => emit('update:page', value),
-        });
-
-        const pageSizeRef = computed({
-            get: () => rawPageSize.value,
-            set: (value) => emit('update:pageSize', value),
-        });
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
@@ -250,8 +249,8 @@ export default defineComponent({
             emit('update:selectedItems', items);
         }
 
-        function paginate(page: number): void {
-            emit('paginate', page, pageSizeRef.value);
+        function paginate(nextPage: number): void {
+            emit('paginate', nextPage, pageSizeRef.value);
         }
 
         onBeforeMount(() => {

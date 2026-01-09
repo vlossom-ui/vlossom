@@ -6,8 +6,8 @@ import type { BodyCell, VsTablePaginationOptions } from '../types';
 export function useTablePagination(
     options: ComputedRef<VsTablePaginationOptions | null>,
     rowsCount: ComputedRef<number>,
-    page: Ref<number>,
-    pageSize: Ref<number>,
+    page: Ref<number | undefined>,
+    pageSize: Ref<number | undefined>,
 ) {
     function paginateRows(rows: BodyCell[][]): BodyCell[][] {
         if (!options.value) {
@@ -16,13 +16,16 @@ export function useTablePagination(
         if (options.value.mode === 'server') {
             return rows;
         }
-        const start = page.value * pageSize.value;
-        const end = start + pageSize.value;
+        const currentPage = page.value ?? 0;
+        const currentPageSize = pageSize.value ?? 50;
+        const start = currentPage * currentPageSize;
+        const end = start + currentPageSize;
         return rows.slice(start, end);
     }
 
     const totalPages = computed<number>(() => {
-        if (!options.value || pageSize.value <= 0) {
+        const currentPageSize = pageSize.value ?? 50;
+        if (!options.value || currentPageSize <= 0) {
             return 1;
         }
         if (options.value.mode === 'server') {
@@ -34,9 +37,9 @@ export function useTablePagination(
                 );
                 return -1;
             }
-            return Math.ceil(options.value.totalItemCount / pageSize.value);
+            return Math.ceil(options.value.totalItemCount / currentPageSize);
         }
-        return Math.ceil(rowsCount.value / pageSize.value);
+        return Math.ceil(rowsCount.value / currentPageSize);
     });
 
     return {
