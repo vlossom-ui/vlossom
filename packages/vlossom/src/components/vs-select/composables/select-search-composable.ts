@@ -1,7 +1,7 @@
 import { computed, type Ref } from 'vue';
-import type { VsSelectSearchPropType } from './../types';
+import type { SearchProps } from '@/declaration';
 
-export function useSelectSearch(search: Ref<VsSelectSearchPropType>) {
+export function useSelectSearch(search: Ref<SearchProps>) {
     const isUsingSearch = computed(() => {
         if (typeof search.value === 'boolean') {
             return search.value;

@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { ref } from 'vue';
+import type { SearchProps } from '@/declaration';
 import { useSelectSearch } from '../select-search-composable';
-import type { VsSelectSearchPropType } from '../../types';
 
 describe('useSelectSearch', () => {
     describe('초기 상태', () => {
         it('search가 false일 때 isUsingSearch는 false를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(false);
+            const search = ref<SearchProps>(false);
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -18,7 +18,7 @@ describe('useSelectSearch', () => {
 
         it('search가 true일 때 isUsingSearch는 true를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(true);
+            const search = ref<SearchProps>(true);
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -31,7 +31,7 @@ describe('useSelectSearch', () => {
     describe('isUsingSearch', () => {
         it('search가 객체이고 useRegex가 정의되어 있으면 true를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ useRegex: true });
+            const search = ref<SearchProps>({ useRegex: true });
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -42,7 +42,7 @@ describe('useSelectSearch', () => {
 
         it('search가 객체이고 useCaseSensitive가 정의되어 있으면 true를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ useCaseSensitive: true });
+            const search = ref<SearchProps>({ useCaseSensitive: true });
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -53,7 +53,7 @@ describe('useSelectSearch', () => {
 
         it('search가 객체이고 placeholder가 정의되어 있으면 true를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ placeholder: 'Search...' });
+            const search = ref<SearchProps>({ placeholder: 'Search...' });
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -64,7 +64,7 @@ describe('useSelectSearch', () => {
 
         it('search가 빈 객체이면 false를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({});
+            const search = ref<SearchProps>({});
 
             // when
             const { isUsingSearch } = useSelectSearch(search);
@@ -75,7 +75,7 @@ describe('useSelectSearch', () => {
 
         it('search 값이 변경되면 반응적으로 업데이트되어야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(false);
+            const search = ref<SearchProps>(false);
             const { isUsingSearch } = useSelectSearch(search);
 
             expect(isUsingSearch.value).toBe(false);
@@ -97,7 +97,7 @@ describe('useSelectSearch', () => {
     describe('searchProps - boolean 타입', () => {
         it('search가 true일 때 기본 searchProps를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(true);
+            const search = ref<SearchProps>(true);
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -112,7 +112,7 @@ describe('useSelectSearch', () => {
 
         it('search가 false일 때도 기본 searchProps를 반환해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(false);
+            const search = ref<SearchProps>(false);
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -129,7 +129,7 @@ describe('useSelectSearch', () => {
     describe('searchProps - 객체 타입', () => {
         it('useRegex가 명시되면 해당 값을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ useRegex: false });
+            const search = ref<SearchProps>({ useRegex: false });
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -140,7 +140,7 @@ describe('useSelectSearch', () => {
 
         it('useRegex가 명시되지 않으면 기본값 true를 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({});
+            const search = ref<SearchProps>({});
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -151,7 +151,7 @@ describe('useSelectSearch', () => {
 
         it('useCaseSensitive가 명시되면 해당 값을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ useCaseSensitive: false });
+            const search = ref<SearchProps>({ useCaseSensitive: false });
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -162,7 +162,7 @@ describe('useSelectSearch', () => {
 
         it('useCaseSensitive가 명시되지 않으면 기본값 true를 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({});
+            const search = ref<SearchProps>({});
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -173,7 +173,7 @@ describe('useSelectSearch', () => {
 
         it('placeholder가 명시되면 해당 값을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({ placeholder: 'Search options...' });
+            const search = ref<SearchProps>({ placeholder: 'Search options...' });
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -184,7 +184,7 @@ describe('useSelectSearch', () => {
 
         it('placeholder가 명시되지 않으면 빈 문자열을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({});
+            const search = ref<SearchProps>({});
 
             // when
             const { searchProps } = useSelectSearch(search);
@@ -195,7 +195,7 @@ describe('useSelectSearch', () => {
 
         it('모든 속성을 명시한 경우 해당 값들을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({
+            const search = ref<SearchProps>({
                 useRegex: false,
                 useCaseSensitive: false,
                 placeholder: 'Custom placeholder',
@@ -214,7 +214,7 @@ describe('useSelectSearch', () => {
 
         it('일부 속성만 명시한 경우 나머지는 기본값을 사용해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({
+            const search = ref<SearchProps>({
                 useRegex: false,
             });
 
@@ -233,7 +233,7 @@ describe('useSelectSearch', () => {
     describe('반응성 테스트', () => {
         it('search 값이 boolean에서 객체로 변경되면 searchProps가 업데이트되어야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(true);
+            const search = ref<SearchProps>(true);
             const { searchProps } = useSelectSearch(search);
 
             expect(searchProps.value).toEqual({
@@ -259,7 +259,7 @@ describe('useSelectSearch', () => {
 
         it('search 객체의 속성이 변경되면 searchProps가 업데이트되어야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>({
+            const search = ref<SearchProps>({
                 useRegex: true,
                 useCaseSensitive: true,
                 placeholder: 'Search',
@@ -282,7 +282,7 @@ describe('useSelectSearch', () => {
     describe('통합 테스트', () => {
         it('전체 라이프사이클이 올바르게 동작해야 한다', () => {
             // given
-            const search = ref<VsSelectSearchPropType>(false);
+            const search = ref<SearchProps>(false);
             const { isUsingSearch, searchProps } = useSelectSearch(search);
 
             // 초기 상태 - search false

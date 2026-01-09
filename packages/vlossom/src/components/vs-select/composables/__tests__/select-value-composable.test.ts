@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ref, computed } from 'vue';
-import { useSelectValue } from '../select-value-composable';
 import type { OptionItem } from '@/declaration';
+import { useSelectValue } from './../select-value-composable';
 
 describe('useSelectValue', () => {
     function createMockOptions(): OptionItem[] {
@@ -44,16 +44,14 @@ describe('useSelectValue', () => {
     describe('초기 상태', () => {
         it('selectedOptionIds가 빈 배열로 초기화되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             // when
             const { selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -65,16 +63,14 @@ describe('useSelectValue', () => {
 
         it('isEmpty가 true로 초기화되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             // when
             const { isEmpty } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -86,16 +82,14 @@ describe('useSelectValue', () => {
 
         it('isSelectedAll이 false로 초기화되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             // when
             const { isSelectedAll } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -109,15 +103,13 @@ describe('useSelectValue', () => {
     describe('selectOption', () => {
         it('단일 선택 모드에서 옵션을 선택할 수 있어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -132,15 +124,13 @@ describe('useSelectValue', () => {
 
         it('단일 선택 모드에서 새 옵션을 선택하면 이전 선택이 대체되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -157,15 +147,13 @@ describe('useSelectValue', () => {
 
         it('다중 선택 모드에서 여러 옵션을 선택할 수 있어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -179,40 +167,15 @@ describe('useSelectValue', () => {
             expect(selectedOptionIds.value).toEqual(['1', '2']);
         });
 
-        it('disabled 상태에서는 옵션을 선택할 수 없어야 한다', () => {
+        it('unavailable 상태에서는 옵션을 선택할 수 없어야 한다', () => {
             // given
-            const computedDisabled = ref(true);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(true);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
-                computedOptions,
-                filteredOptions,
-                multiple,
-            });
-
-            // when
-            selectOption('1');
-
-            // then
-            expect(selectedOptionIds.value).toEqual([]);
-        });
-
-        it('readonly 상태에서는 옵션을 선택할 수 없어야 한다', () => {
-            // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(true);
-            const computedOptions = computed(() => createMockOptions());
-            const filteredOptions = computed(() => createMockOptions());
-            const multiple = ref(false);
-
-            const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -227,15 +190,13 @@ describe('useSelectValue', () => {
 
         it('disabled된 옵션은 선택할 수 없어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -252,15 +213,13 @@ describe('useSelectValue', () => {
     describe('deselectOption', () => {
         it('선택된 옵션을 해제할 수 있어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, deselectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -278,15 +237,13 @@ describe('useSelectValue', () => {
 
         it('선택되지 않은 옵션을 해제하려고 하면 아무 일도 일어나지 않아야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, deselectOption, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -305,15 +262,13 @@ describe('useSelectValue', () => {
     describe('toggleSelect', () => {
         it('선택되지 않은 옵션을 토글하면 선택되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelect, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -328,15 +283,13 @@ describe('useSelectValue', () => {
 
         it('선택된 옵션을 토글하면 해제되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelect, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -353,15 +306,13 @@ describe('useSelectValue', () => {
 
         it('단일 선택 모드에서는 토글해도 해제되지 않고 재선택되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { toggleSelect, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -378,15 +329,13 @@ describe('useSelectValue', () => {
 
         it('disabled 상태에서는 토글할 수 없어야 한다', () => {
             // given
-            const computedDisabled = ref(true);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(true);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelect, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -403,15 +352,13 @@ describe('useSelectValue', () => {
     describe('selectAll', () => {
         it('모든 활성화된 옵션을 선택할 수 있어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -426,15 +373,13 @@ describe('useSelectValue', () => {
 
         it('이미 선택된 옵션이 있어도 중복 없이 모두 선택되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, selectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -451,15 +396,13 @@ describe('useSelectValue', () => {
 
         it('disabled 상태에서는 전체 선택할 수 없어야 한다', () => {
             // given
-            const computedDisabled = ref(true);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(true);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -476,15 +419,13 @@ describe('useSelectValue', () => {
     describe('deselectAll', () => {
         it('필터된 옵션 중 선택된 모든 옵션을 해제해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectAll, deselectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -503,15 +444,13 @@ describe('useSelectValue', () => {
     describe('toggleSelectAll', () => {
         it('전체 선택되지 않은 상태에서 토글하면 전체 선택되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -526,15 +465,13 @@ describe('useSelectValue', () => {
 
         it('전체 선택된 상태에서 토글하면 전체 해제되어야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -551,15 +488,13 @@ describe('useSelectValue', () => {
 
         it('disabled 상태에서는 토글할 수 없어야 한다', () => {
             // given
-            const computedDisabled = ref(true);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(true);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -576,15 +511,13 @@ describe('useSelectValue', () => {
     describe('isSelected', () => {
         it('선택된 옵션은 true를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, isSelected } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -598,15 +531,13 @@ describe('useSelectValue', () => {
 
         it('선택되지 않은 옵션은 false를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { isSelected } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -620,15 +551,13 @@ describe('useSelectValue', () => {
     describe('isEmpty', () => {
         it('선택된 옵션이 없으면 true를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { isEmpty } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -640,15 +569,13 @@ describe('useSelectValue', () => {
 
         it('선택된 옵션이 있으면 false를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, isEmpty } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -664,15 +591,13 @@ describe('useSelectValue', () => {
     describe('isSelectedAll', () => {
         it('단일 선택 모드에서는 항상 false를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { selectOption, isSelectedAll } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -686,15 +611,13 @@ describe('useSelectValue', () => {
 
         it('다중 선택 모드에서 모든 활성화된 옵션이 선택되면 true를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectAll, isSelectedAll } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -709,15 +632,13 @@ describe('useSelectValue', () => {
 
         it('일부만 선택된 경우 false를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, isSelectedAll } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -733,15 +654,13 @@ describe('useSelectValue', () => {
     describe('selectedOptions', () => {
         it('선택된 옵션들의 정보를 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, selectedOptions } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -756,15 +675,13 @@ describe('useSelectValue', () => {
 
         it('선택된 옵션이 없으면 빈 배열을 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectedOptions } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -778,15 +695,13 @@ describe('useSelectValue', () => {
     describe('convertValue', () => {
         it('단일 선택 모드에서 존재하는 값은 그대로 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -798,15 +713,13 @@ describe('useSelectValue', () => {
 
         it('단일 선택 모드에서 존재하지 않는 값은 null을 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -818,15 +731,13 @@ describe('useSelectValue', () => {
 
         it('단일 선택 모드에서 null/undefined는 null을 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(false);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -839,15 +750,13 @@ describe('useSelectValue', () => {
 
         it('다중 선택 모드에서 배열을 필터링하여 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -859,15 +768,13 @@ describe('useSelectValue', () => {
 
         it('다중 선택 모드에서 배열이 아닌 값을 배열로 변환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -879,15 +786,13 @@ describe('useSelectValue', () => {
 
         it('다중 선택 모드에서 null/undefined는 빈 배열을 반환해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { convertValue } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -902,15 +807,13 @@ describe('useSelectValue', () => {
     describe('clearSelected', () => {
         it('모든 선택을 해제해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectAll, clearSelected, selectedOptionIds } = useSelectValue({
-                computedDisabled,
-                computedReadonly,
+                isSelectUnavailable,
                 computedOptions,
                 filteredOptions,
                 multiple,
@@ -929,16 +832,14 @@ describe('useSelectValue', () => {
     describe('통합 테스트', () => {
         it('전체 라이프사이클이 올바르게 동작해야 한다', () => {
             // given
-            const computedDisabled = ref(false);
-            const computedReadonly = ref(false);
+            const isSelectUnavailable = ref(false);
             const computedOptions = computed(() => createMockOptions());
             const filteredOptions = computed(() => createMockOptions());
             const multiple = ref(true);
 
             const { selectOption, deselectOption, isEmpty, selectedOptions, clearSelected, selectedOptionIds } =
                 useSelectValue({
-                    computedDisabled,
-                    computedReadonly,
+                    isSelectUnavailable,
                     computedOptions,
                     filteredOptions,
                     multiple,
