@@ -128,6 +128,7 @@ import {
     getInputProps,
     getResponsiveProps,
     getMinMaxProps,
+    getSearchProps,
 } from '@/props';
 import {
     useColorScheme,
@@ -140,7 +141,7 @@ import {
     useClickOutside,
 } from '@/composables';
 import { objectUtil } from '@/utils';
-import type { VsSelectSearchPropType, VsSelectStyleSet, VsSelectTriggerRef } from './types';
+import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue } from './composables/select-value-composable';
 import { useSelectSearch } from './composables/select-search-composable';
@@ -167,16 +168,13 @@ export default defineComponent({
         ...getOptionsProps(),
         ...getGroupByProps(),
         ...getMinMaxProps(componentName),
+        ...getSearchProps(),
         closableChips: { type: Boolean, default: false },
         collapseChips: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         optionsDisabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number, options: any[]) => boolean)>,
-            default: false,
-        },
-        search: {
-            type: [Boolean, Object] as PropType<VsSelectSearchPropType>,
             default: false,
         },
         selectAll: { type: Boolean, default: false },
