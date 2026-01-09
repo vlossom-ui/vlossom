@@ -19,6 +19,7 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
+import { DEFAULT_PAGINATION_OPTIONS } from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -77,20 +78,12 @@ export function useTable(
         if (!rawPagination?.value) {
             return {};
         }
-        const defaultPaginationOptions: VsTablePaginationOptions = {
-            pageSizeOptions: [20, 50, 100],
-            showPageSizeSelector: true,
-            showingLength: 10,
-            edgeButtons: false,
-            showTotal: true,
-            mode: 'client',
-        };
-
         if (typeof rawPagination?.value === 'boolean') {
-            return defaultPaginationOptions;
+            return DEFAULT_PAGINATION_OPTIONS;
         }
+
         return {
-            ...defaultPaginationOptions,
+            ...DEFAULT_PAGINATION_OPTIONS,
             ...rawPagination.value,
         };
     });
