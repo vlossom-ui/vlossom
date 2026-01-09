@@ -18,3 +18,7 @@ Vlossom is a vibrant and versatile [Vue](https://vuejs.org/) UI library designed
         <img src="https://img.shields.io/npm/l/vlossom.svg" alt="License">
     </a>
 </p>
+
+## Credit
+
+- **[Pretendard](https://github.com/orioncactus/pretendard)** - Default font ([SIL Open Font License 1.1](https://github.com/orioncactus/pretendard/blob/main/LICENSE))

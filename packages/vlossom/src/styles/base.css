@@ -8,8 +8,8 @@ body {
     @apply relative min-h-screen min-w-full leading-[1.5] font-normal;
     background-color: var(--vs-app-bg);
     font-family:
-        'Noto Sans',
-        'Nanum Gothic',
+        'Pretendard Variable',
+        Pretendard,
         -apple-system,
         BlinkMacSystemFont,
         system-ui,
