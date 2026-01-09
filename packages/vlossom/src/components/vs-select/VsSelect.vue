@@ -307,6 +307,10 @@ export default defineComponent({
             },
         );
 
+        const isSelectUnavailable = computed(() => {
+            return computedDisabled.value || computedReadonly.value;
+        });
+
         const {
             selectedOptionIds,
             isSelectedAll,
@@ -319,8 +323,7 @@ export default defineComponent({
             toggleSelectAll,
             isSelected,
         } = useSelectValue({
-            computedReadonly,
-            computedDisabled,
+            isSelectUnavailable,
             computedOptions,
             filteredOptions,
             multiple,
@@ -338,10 +341,6 @@ export default defineComponent({
             closeOptions,
             toggleSelectAll,
             selectOptionItem,
-        });
-
-        const isInteractionDisabled = computed(() => {
-            return computedDisabled.value || computedReadonly.value;
         });
 
         const { activate: activateOverlayCallback, deactivate: deactivateOverlayCallback } = useOverlayCallback(
@@ -362,7 +361,7 @@ export default defineComponent({
         }));
 
         function toggleOpen() {
-            if (isInteractionDisabled.value) {
+            if (isSelectUnavailable.value) {
                 return;
             }
 
@@ -374,7 +373,7 @@ export default defineComponent({
         }
 
         function selectOptionItem(optionItem: OptionItem) {
-            if (isInteractionDisabled.value) {
+            if (isSelectUnavailable.value) {
                 return;
             }
 
@@ -406,7 +405,7 @@ export default defineComponent({
         }
 
         function openOptions() {
-            if (isInteractionDisabled.value || isOpen.value) {
+            if (isSelectUnavailable.value || isOpen.value) {
                 return;
             }
 

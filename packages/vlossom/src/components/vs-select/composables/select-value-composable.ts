@@ -3,14 +3,12 @@ import { objectUtil } from '@/utils';
 import type { OptionItem } from '@/declaration';
 
 export function useSelectValue({
-    computedDisabled,
-    computedReadonly,
+    isSelectUnavailable,
     computedOptions,
     filteredOptions,
     multiple,
 }: {
-    computedDisabled: Ref<boolean>;
-    computedReadonly: Ref<boolean>;
+    isSelectUnavailable: Ref<boolean>;
     computedOptions: Ref<OptionItem[]>;
     filteredOptions: Ref<OptionItem[]>;
     multiple: Ref<boolean>;
@@ -47,7 +45,7 @@ export function useSelectValue({
     }
 
     function selectOption(optionId: string) {
-        if (computedDisabled.value || computedReadonly.value || !availableOptionIds.value.includes(optionId)) {
+        if (isSelectUnavailable.value || !availableOptionIds.value.includes(optionId)) {
             return;
         }
 
@@ -67,7 +65,7 @@ export function useSelectValue({
     }
 
     function toggleSelect(optionId: string) {
-        if (computedDisabled.value || computedReadonly.value) {
+        if (isSelectUnavailable.value) {
             return;
         }
 
@@ -83,7 +81,7 @@ export function useSelectValue({
     }
 
     function selectAll() {
-        if (computedDisabled.value || computedReadonly.value) {
+        if (isSelectUnavailable.value) {
             return;
         }
 
@@ -101,7 +99,7 @@ export function useSelectValue({
     }
 
     function toggleSelectAll() {
-        if (computedDisabled.value || computedReadonly.value) {
+        if (isSelectUnavailable.value) {
             return;
         }
 

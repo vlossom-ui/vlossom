@@ -50,7 +50,7 @@ export function useSelectKeyboard({
         });
     }
 
-    function selectOptionWithKeyboard() {
+    function handleSelectionKey() {
         if (isOpen.value) {
             const role = getCurrentFocusableRole();
             if (role === 'search') {
@@ -77,7 +77,8 @@ export function useSelectKeyboard({
                 e.preventDefault();
                 e.stopPropagation();
                 if (isOpen.value) {
-                    moveSelectFocus(focusIndex.value - 1);
+                    const nextFocusIndex = Math.max(focusIndex.value - 1, 0);
+                    moveSelectFocus(nextFocusIndex);
                 }
             },
             'key-ArrowDown': (e: KeyboardEvent) => {
@@ -115,14 +116,14 @@ export function useSelectKeyboard({
                     e.preventDefault();
                 }
                 e.stopPropagation();
-                selectOptionWithKeyboard();
+                handleSelectionKey();
             },
             'key-Space': (e: KeyboardEvent) => {
                 if (!isSearchFocused()) {
                     e.preventDefault();
                 }
                 e.stopPropagation();
-                selectOptionWithKeyboard();
+                handleSelectionKey();
             },
             'key-Tab': () => {
                 if (isSearchFocused()) {
