@@ -102,7 +102,7 @@ export function useTable(
         };
     });
     const internalPage = ref(0);
-    const internalPageSize = ref(20);
+    const internalPageSize = ref(50);
     const page = computed<number>({
         get: () => rawPage?.value ?? internalPage.value,
         set: (value: number) => {
@@ -115,6 +115,8 @@ export function useTable(
         set: (value: number) => {
             internalPageSize.value = value;
             cb?.updatePageSize(value);
+
+            page.value = 0; // NOTE: reset page to 0 when page size changes
         },
     });
 
@@ -131,15 +133,21 @@ export function useTable(
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
-    const sortedFilteredBodyCells = computed<BodyCell[][]>(() => {
-        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
-    });
-    const filteredRowsCount = computed(() => sortedFilteredBodyCells.value.length);
-
-    const { totalPages, paginateRows } = useTablePagination(pagination, filteredRowsCount, page, pageSize);
-
+    const totalItemsCount = computed(() => rawBodyCells.value.filter(matchBySearch).length);
+    const { totalPages, totalItems, pageStartIndex, pageEndIndex } = useTablePagination(
+        pagination,
+        page,
+        pageSize,
+        totalItemsCount,
+    );
     const bodyCells = computed<BodyCell[][]>(() => {
-        return paginateRows(sortedFilteredBodyCells.value);
+        if (pagination.value.mode === 'server') {
+            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+        }
+        return rawBodyCells.value
+            .filter(matchBySearch)
+            .sort(compareRows)
+            .slice(pageStartIndex.value, pageEndIndex.value);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -200,7 +208,9 @@ export function useTable(
         page,
         pageSize,
         totalPages,
-        filteredRowsCount,
+        totalItems,
+        pageStartIndex,
+        pageEndIndex,
     };
 }
 
@@ -224,7 +234,9 @@ export type TableComposable = {
     page: ComputedRef<number>;
     pageSize: ComputedRef<number>;
     totalPages: ComputedRef<number>;
-    filteredRowsCount: ComputedRef<number>;
+    totalItems: ComputedRef<number>;
+    pageStartIndex: ComputedRef<number>;
+    pageEndIndex: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
     updateSortType: (headerKey: string) => void;

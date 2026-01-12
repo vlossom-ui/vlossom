@@ -1,27 +1,28 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import { logUtil } from '@/utils';
 import { VsComponent } from '@/declaration';
-import type { BodyCell, VsTablePaginationOptions } from '../types';
+import type { VsTablePaginationOptions } from '../types';
 
 export function useTablePagination(
     options: ComputedRef<VsTablePaginationOptions | null>,
-    rowsCount: ComputedRef<number>,
-    page: Ref<number | undefined>,
-    pageSize: Ref<number | undefined>,
+    page: Ref<number>,
+    pageSize: Ref<number>,
+    totalItemsCount: ComputedRef<number>,
 ) {
-    function paginateRows(rows: BodyCell[][]): BodyCell[][] {
-        if (!options.value) {
-            return rows;
+    const pageStartIndex = computed<number>(() => {
+        return page.value * pageSize.value;
+    });
+
+    const pageEndIndex = computed<number>(() => {
+        return Math.min(pageStartIndex.value + pageSize.value, totalItemsCount.value);
+    });
+
+    const totalItems = computed<number>(() => {
+        if (options.value?.mode === 'server') {
+            return options.value?.totalItemCount ?? 0;
         }
-        if (options.value.mode === 'server') {
-            return rows;
-        }
-        const currentPage = page.value ?? 0;
-        const currentPageSize = pageSize.value ?? 50;
-        const start = currentPage * currentPageSize;
-        const end = start + currentPageSize;
-        return rows.slice(start, end);
-    }
+        return totalItemsCount.value;
+    });
 
     const totalPages = computed<number>(() => {
         const currentPageSize = pageSize.value ?? 50;
@@ -39,11 +40,13 @@ export function useTablePagination(
             }
             return Math.ceil(options.value.totalItemCount / currentPageSize);
         }
-        return Math.ceil(rowsCount.value / currentPageSize);
+        return Math.ceil(totalItemsCount.value / currentPageSize);
     });
 
     return {
+        totalItems,
         totalPages,
-        paginateRows,
+        pageStartIndex,
+        pageEndIndex,
     };
 }

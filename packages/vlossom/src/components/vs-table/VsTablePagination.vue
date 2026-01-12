@@ -10,7 +10,7 @@
                 no-messages
             />
             <span v-if="pagination.showTotal" class="vs-total-items">
-                {{ startIndex + 1 }}-{{ endIndex }} / {{ totalItems }} items
+                {{ pageStartIndex + 1 }}-{{ pageEndIndex }} / {{ totalItems }} items
             </span>
         </div>
 
@@ -36,20 +36,12 @@ export default defineComponent({
 
     emits: ['paginate'],
     setup(_, { emit }) {
-        const { pagination, totalPages, filteredRowsCount, page, pageSize } =
+        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const pageSizeOptions = computed<number[]>(() => {
             return pagination.value.pageSizeOptions ?? [];
         });
-        const totalItems = computed<number>(() => {
-            if (pagination.value.mode === 'server') {
-                return pagination.value.totalItemCount ?? 0;
-            }
-            return filteredRowsCount.value;
-        });
-        const startIndex = computed(() => page.value * pageSize.value);
-        const endIndex = computed(() => Math.min(startIndex.value + pageSize.value, totalItems.value));
 
         function paginate(nextPage: number): void {
             emit('paginate', nextPage, pageSize.value);
@@ -62,8 +54,8 @@ export default defineComponent({
             pageSizeOptions,
             totalPages,
             totalItems,
-            startIndex,
-            endIndex,
+            pageStartIndex,
+            pageEndIndex,
             paginate,
         };
     },
