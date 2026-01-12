@@ -1,7 +1,7 @@
 <template>
-    <vs-page class="color-pallete" :style-set="{ padding: '0' }">
+    <vs-page class="color-palette" :style-set="{ padding: '0' }">
         <template #title>
-            <h1 class="text-2xl font-bold">Color Pallete</h1>
+            <h1 class="text-2xl font-bold">Color Palette</h1>
         </template>
         <div class="flex flex-col gap-3">
             <div class="flex gap-3">
