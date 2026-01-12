@@ -4,12 +4,6 @@ import { resolve } from 'node:path';
 export default {
     extends: ['stylelint-config-standard'],
     plugins: ['stylelint-value-no-unknown-custom-properties'],
-    overrides: [
-        {
-            files: ['**/*.scss'],
-            customSyntax: 'postcss-scss',
-        },
-    ],
     ignoreFiles: [
         // Vue files
         '**/*.vue',

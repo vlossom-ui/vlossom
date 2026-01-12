@@ -99,7 +99,6 @@
         "jsdom": "^27.4.0",
         "npm-run-all2": "^8.0.4",
         "playwright": "^1.57.0",
-        "postcss-scss": "^4.0.9",
         "prettier": "3.7.4",
         "prettier-plugin-classnames": "^0.8.6",
         "prettier-plugin-css-order": "^2.2.0",
