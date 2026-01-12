@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, logUtil, stringUtil } from '@/utils';
-import { type PropsOf, VsComponent } from '@/declaration';
+import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -19,13 +19,17 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
-import { DEFAULT_PAGINATION_OPTIONS } from '../constants';
+import { DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
     props: PropsOf<VsComponent.VsTable>,
     refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
-    cb?: { updateSelectedItems: (items: Item[]) => void },
+    cb?: {
+        updateSelectedItems: (items: Item[]) => void;
+        updatePage: (page: number) => void;
+        updatePageSize: (pageSize: number) => void;
+    },
 ) {
     const {
         columns: rawColumns,
@@ -33,6 +37,7 @@ export function useTable(
         selectable: rawSelectable,
         expandable: rawExpandable,
         selectedItems: rawSelectedItems,
+        search: rawSearch,
         pagination: rawPagination,
         page: rawPage,
         pageSize: rawPageSize,
@@ -74,6 +79,15 @@ export function useTable(
         }
         return rawSelectedItems.value;
     });
+    const search = computed<Exclude<SearchProps, boolean>>(() => {
+        if (!rawSearch?.value) {
+            return {};
+        }
+        if (typeof rawSearch?.value === 'boolean') {
+            return TABLE_SEARCH_OPTIONS;
+        }
+        return { ...TABLE_SEARCH_OPTIONS, ...rawSearch.value };
+    });
     const pagination = computed<VsTablePaginationOptions>(() => {
         if (!rawPagination?.value) {
             return {};
@@ -86,6 +100,22 @@ export function useTable(
             ...DEFAULT_PAGINATION_OPTIONS,
             ...rawPagination.value,
         };
+    });
+    const internalPage = ref(0);
+    const internalPageSize = ref(20);
+    const page = computed<number>({
+        get: () => rawPage?.value ?? internalPage.value,
+        set: (value: number) => {
+            internalPage.value = value;
+            cb?.updatePage(value);
+        },
+    });
+    const pageSize = computed<number>({
+        get: () => rawPageSize?.value ?? internalPageSize.value,
+        set: (value: number) => {
+            internalPageSize.value = value;
+            cb?.updatePageSize(value);
+        },
     });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
@@ -106,12 +136,7 @@ export function useTable(
     });
     const filteredRowsCount = computed(() => sortedFilteredBodyCells.value.length);
 
-    const { totalPages, paginateRows } = useTablePagination(
-        pagination,
-        filteredRowsCount,
-        rawPage as Ref<number>,
-        rawPageSize as Ref<number>,
-    );
+    const { totalPages, paginateRows } = useTablePagination(pagination, filteredRowsCount, page, pageSize);
 
     const bodyCells = computed<BodyCell[][]>(() => {
         return paginateRows(sortedFilteredBodyCells.value);
@@ -170,7 +195,10 @@ export function useTable(
         sortType,
         sortColumn,
         updateSortType,
+        search,
         pagination,
+        page,
+        pageSize,
         totalPages,
         filteredRowsCount,
     };
@@ -191,7 +219,10 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
+    search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
+    page: ComputedRef<number>;
+    pageSize: ComputedRef<number>;
     totalPages: ComputedRef<number>;
     filteredRowsCount: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;

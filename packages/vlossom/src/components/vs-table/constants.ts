@@ -1,6 +1,7 @@
-import type { VsTablePaginationOptions, VsTableSearchOptions } from './types';
+import type { SearchProps } from '@/declaration';
+import type { VsTablePaginationOptions } from './types';
 
-export const TABLE_SEARCH_OPTIONS: VsTableSearchOptions = {
+export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
     placeholder: 'Search',
     useCaseSensitive: true,
     useRegex: true,

@@ -1,23 +1,21 @@
 <template>
     <div class="vs-table-pagination">
-        <!-- TODO: Use <vs-select /> instead  -->
         <div class="vs-table-pagination-info">
-            <div v-if="pagination.showPageSizeSelector" class="vs-page-size-selector">
-                <label for="page-size-select">Page size:</label>
-                <select id="page-size-select" v-model="pageSizeRef" class="vs-page-size-select">
-                    <option v-for="size in pagination.pageSizeOptions" :key="size" :value="size">
-                        {{ size }}
-                    </option>
-                </select>
-            </div>
-
-            <div v-if="pagination.showTotal" class="vs-total-items">
+            <vs-select
+                v-if="pagination.showPageSizeSelector"
+                v-model="pageSize"
+                :options="pageSizeOptions"
+                no-clear
+                no-label
+                no-messages
+            />
+            <span v-if="pagination.showTotal" class="vs-total-items">
                 {{ startIndex + 1 }}-{{ endIndex }} / {{ totalItems }} items
-            </div>
+            </span>
         </div>
 
         <vs-pagination
-            v-model="pageRef"
+            v-model="page"
             :length="totalPages"
             :showing-length="pagination.showingLength"
             :edge-buttons="pagination.edgeButtons"
@@ -27,53 +25,41 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type PropType } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
+import VsSelect from '@/components/vs-select/VsSelect.vue';
 
 export default defineComponent({
-    components: { VsPagination },
-    props: {
-        page: {
-            type: Number as PropType<number>,
-            required: true,
-        },
-        pageSize: {
-            type: Number as PropType<number>,
-            required: true,
-        },
-    },
-    emits: ['paginate', 'update:page', 'update:pageSize'],
-    setup(props, { emit }) {
-        const { pagination, totalPages, filteredRowsCount } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+    components: { VsPagination, VsSelect },
 
-        const pageRef = computed({
-            get: () => props.page,
-            set: (value) => emit('update:page', value),
-        });
-        const pageSizeRef = computed({
-            get: () => props.pageSize,
-            set: (value) => emit('update:pageSize', value),
-        });
+    emits: ['paginate'],
+    setup(_, { emit }) {
+        const { pagination, totalPages, filteredRowsCount, page, pageSize } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
+        const pageSizeOptions = computed<number[]>(() => {
+            return pagination.value.pageSizeOptions ?? [];
+        });
         const totalItems = computed<number>(() => {
             if (pagination.value.mode === 'server') {
                 return pagination.value.totalItemCount ?? 0;
             }
             return filteredRowsCount.value;
         });
-        const startIndex = computed(() => pageRef.value * pageSizeRef.value);
-        const endIndex = computed(() => Math.min(startIndex.value + pageSizeRef.value, totalItems.value));
+        const startIndex = computed(() => page.value * pageSize.value);
+        const endIndex = computed(() => Math.min(startIndex.value + pageSize.value, totalItems.value));
 
-        function paginate(page: number): void {
-            emit('paginate', page, pageSizeRef.value);
+        function paginate(nextPage: number): void {
+            emit('paginate', nextPage, pageSize.value);
         }
 
         return {
             pagination,
-            pageRef,
-            pageSizeRef,
+            page,
+            pageSize,
+            pageSizeOptions,
             totalPages,
             totalItems,
             startIndex,

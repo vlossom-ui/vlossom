@@ -1,6 +1,7 @@
 <template>
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="styleSetVariables">
         <vs-search-input
+            v-if="search"
             ref="searchInputRef"
             class="vs-table-search-input"
             v-bind="searchOptions"
@@ -34,12 +35,7 @@
             </vs-table-body>
         </table>
 
-        <vs-table-pagination
-            v-if="pagination"
-            v-model:page="pageRef"
-            v-model:page-size="pageSizeRef"
-            @paginate="paginate"
-        />
+        <vs-table-pagination v-if="pagination" @paginate="paginate" />
     </div>
 </template>
 
@@ -57,9 +53,9 @@ import {
     inject,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_STORE_KEY, type SearchProps, VsComponent } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
-import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { LayoutStore } from '@/stores';
 
@@ -68,12 +64,10 @@ import {
     type BodyCell,
     type ColumnDef,
     type Item,
-    type VsTableSearchOptions,
     type VsTableStyleSet,
     type VsTablePaginationOptions,
     getRowItem,
 } from './types';
-import { TABLE_SEARCH_OPTIONS } from './constants';
 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
@@ -90,6 +84,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
+        ...getSearchProps(),
         columns: {
             type: Array as PropType<ColumnDef[] | string[] | null>,
             default: () => [],
@@ -121,10 +116,6 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
-        search: {
-            type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
-            default: false,
-        },
         pagination: {
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
@@ -147,12 +138,10 @@ export default defineComponent({
         },
         page: {
             type: Number as PropType<number>, // 0-based page index
-            required: true,
             default: 0,
         },
         pageSize: {
             type: Number as PropType<number>,
-            required: true,
             default: 20,
         },
     },
@@ -167,7 +156,7 @@ export default defineComponent({
         'update:pageSize',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, search, page, pageSize } = toRefs(props);
+        const { colorScheme, styleSet, responsive } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -184,7 +173,11 @@ export default defineComponent({
         const stickyHeaderTop = ref('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
-        const table: TableComposable = useTable(props, { searchInputRef }, { updateSelectedItems });
+        const table: TableComposable = useTable(
+            props,
+            { searchInputRef },
+            { updateSelectedItems, updatePage, updatePageSize },
+        );
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
@@ -202,20 +195,7 @@ export default defineComponent({
             'vs-table-responsive': responsive.value,
         }));
 
-        const pageRef = computed({
-            get: () => page.value,
-            set: (value) => emit('update:page', value),
-        });
-        const pageSizeRef = computed({
-            get: () => pageSize.value,
-            set: (value) => emit('update:pageSize', value),
-        });
-        const searchOptions = computed<VsTableSearchOptions>(() => {
-            if (typeof search.value === 'boolean') {
-                return TABLE_SEARCH_OPTIONS;
-            }
-            return { ...TABLE_SEARCH_OPTIONS, ...search.value };
-        });
+        const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
             headerRef,
@@ -245,12 +225,18 @@ export default defineComponent({
             emit('search', items, searchText);
         }
 
+        function paginate(nextPage: number): void {
+            emit('paginate', nextPage, table.pageSize.value);
+        }
+
         function updateSelectedItems(items: Item[]): void {
             emit('update:selectedItems', items);
         }
-
-        function paginate(nextPage: number): void {
-            emit('paginate', nextPage, pageSizeRef.value);
+        function updatePage(page: number): void {
+            emit('update:page', page);
+        }
+        function updatePageSize(pageSize: number): void {
+            emit('update:pageSize', pageSize);
         }
 
         onBeforeMount(() => {
@@ -268,17 +254,18 @@ export default defineComponent({
             headerRef,
             headerSlots,
             bodySlots,
-            searchOptions,
             headerInvisible,
             stickyHeaderTop,
-            pageRef,
-            pageSizeRef,
+            searchOptions,
+            table,
             clickCell,
             selectRow,
             expandRow,
             searchRows,
-            updateSelectedItems,
             paginate,
+            updateSelectedItems,
+            updatePage,
+            updatePageSize,
         };
     },
 });

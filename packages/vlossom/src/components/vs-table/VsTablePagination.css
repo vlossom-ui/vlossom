@@ -9,16 +9,7 @@
     @apply flex items-center gap-4;
 }
 
-.vs-page-size-selector {
-    @apply flex items-center gap-2 text-sm;
-}
-
-.vs-page-size-select {
-    @apply cursor-pointer rounded px-2 py-1;
-    border: 0.0625rem solid var(--vs-line-color);
-}
-
 .vs-total-items {
-    @apply text-sm;
-    color: var(--vs-text-secondary-color, #6b7280);
+    @apply text-sm whitespace-nowrap opacity-70;
+    color: var(--vs-font-color);
 }

@@ -27,6 +27,10 @@ const defaultGlobal = {
             template:
                 '<button data-testid="vs-pagination" @click="$emit(\'update:modelValue\', modelValue + 1); $emit(\'change\', modelValue + 1)">Pagination</button>',
         },
+        'vs-select': {
+            props: ['modelValue', 'options'],
+            template: '<select data-testid="vs-select" ></select>',
+        },
     },
 };
 
@@ -193,8 +197,7 @@ describe('VsTable', () => {
             await nextTick();
 
             expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
-            const pageSizeOptions = wrapper.findAll('.vs-page-size-select option');
-            expect(pageSizeOptions).toHaveLength(3); // 기본 옵션 [20, 50, 100]
+            expect(wrapper.find('[data-testid="vs-select"]').exists()).toBe(true);
         });
 
         it('vs-pagination change 이벤트를 paginate로 전달한다', async () => {

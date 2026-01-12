@@ -205,7 +205,7 @@ describe('useTable', () => {
 
             await nextTick();
 
-            expect(table.pageSize?.value).toBe(20);
+            expect(table.pageSize.value).toBe(20);
             expect(table.totalPages.value).toBe(3);
             expect(table.bodyCells.value).toHaveLength(20);
 

@@ -9,12 +9,6 @@ declare module 'vue' {
 
 export interface VsTableStyleSet {}
 
-export interface VsTableSearchOptions {
-    placeholder?: string;
-    useCaseSensitive?: boolean;
-    useRegex?: boolean;
-}
-
 export interface VsTablePaginationOptions {
     pageSizeOptions?: number[];
     showPageSizeSelector?: boolean;
