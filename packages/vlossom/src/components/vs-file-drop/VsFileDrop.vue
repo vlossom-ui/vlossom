@@ -101,10 +101,11 @@
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
-import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { stringUtil, propsUtil, objectUtil } from '@/utils';
+import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
+import { stringUtil, objectUtil } from '@/utils';
 import { closeIcon } from '@/icons';
 import { attachFileIcon } from './icons';
+
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
 
@@ -121,18 +122,9 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsFileDropStyleSet>(),
+        ...getMinMaxProps(componentName),
         accept: { type: String, default: '' },
         height: { type: [String, Number, Object] as PropType<string | number | Breakpoints>, default: 'auto' },
-        max: {
-            type: [Number, String],
-            default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
-        },
-        min: {
-            type: [Number, String],
-            default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
-        },
         noClear: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
 

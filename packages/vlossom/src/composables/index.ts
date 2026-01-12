@@ -1,3 +1,4 @@
+export * from './click-outside-composable';
 export * from './color-scheme-composable';
 export * from './focusable-composable';
 export * from './input-composable';

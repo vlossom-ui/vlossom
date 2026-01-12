@@ -69,8 +69,7 @@
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
-import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
-import { propsUtil } from '@/utils';
+import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { closeIcon } from '@/icons';
 
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
@@ -89,17 +88,8 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsInputStyleSet>(),
+        ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
-        max: {
-            type: [Number, String],
-            default: Number.MAX_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
-        },
-        min: {
-            type: [Number, String],
-            default: Number.MIN_SAFE_INTEGER,
-            validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
-        },
         noClear: { type: Boolean, default: false },
         type: { type: String as PropType<VsInputType>, default: 'text' },
         // v-model

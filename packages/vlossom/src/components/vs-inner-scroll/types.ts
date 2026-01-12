@@ -9,7 +9,9 @@ declare module 'vue' {
 
 export type { VsInnerScroll };
 
-export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInnerScroll> {}
+export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInnerScroll> {
+    hasScroll: () => boolean;
+}
 
 export interface VsInnerScrollStyleSet {
     header?: { padding?: string };

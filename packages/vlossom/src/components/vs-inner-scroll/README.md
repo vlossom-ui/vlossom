@@ -47,12 +47,44 @@
 </template>
 ```
 
+### hasScroll 메서드 사용
+
+```html
+<template>
+    <vs-inner-scroll ref="innerScrollRef">
+        <div>스크롤 가능한 내용</div>
+        <div>더 많은 내용...</div>
+    </vs-inner-scroll>
+    <button @click="checkScroll">스크롤 가능 여부 확인</button>
+</template>
+
+<script setup lang="ts">
+import { useTemplateRef } from 'vue';
+import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
+
+const innerScrollRef = useTemplateRef<VsInnerScrollRef>('innerScrollRef');
+
+function checkScroll() {
+    const canScroll = innerScrollRef.value?.hasScroll();
+    console.log('스크롤 가능:', canScroll);
+}
+</script>
+```
+
 ## Props
 
 | Prop         | Type                              | Default | Required | Description             |
 | ------------ | --------------------------------- | ------- | -------- | ----------------------- |
 | `hideScroll` | `boolean`                         | `false` | -        | 스크롤바 표시/숨김 여부 |
 | `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
+
+## Methods
+
+컴포넌트에 ref로 접근하여 사용할 수 있는 메서드들입니다.
+
+| Method      | Parameters | Return    | Description                    |
+| ----------- | ---------- | --------- | ------------------------------ |
+| `hasScroll` | -          | `boolean` | 스크롤 가능 여부를 반환합니다. |
 
 ## Types
 

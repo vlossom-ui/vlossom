@@ -1,5 +1,5 @@
 <template>
-    <vs-inner-scroll class="vs-grouped-list" :style="styleSetVariables">
+    <vs-inner-scroll ref="innerScrollRef" class="vs-grouped-list" :style="styleSetVariables">
         <template #header v-if="$slots.header">
             <slot name="header" />
         </template>
@@ -53,6 +53,7 @@ import type { VsGroupedListGroup, VsGroupedListStyleSet } from './types';
 
 import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
 import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
+import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
 const componentName = VsComponent.VsGroupedList;
@@ -72,6 +73,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, items, groupBy, groupOrder } = toRefs(props);
 
+        const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
 
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsGroupedListStyleSet>(componentName, styleSet);
@@ -168,13 +170,22 @@ export default defineComponent({
             visibleRenderRef.value.scrollToElement(targetElement);
         }
 
+        function hasScroll() {
+            if (!innerScrollRef.value) {
+                return false;
+            }
+            return innerScrollRef.value.hasScroll();
+        }
+
         return {
             visibleRenderRef,
+            innerScrollRef,
             styleSetVariables,
             componentStyleSet,
             groupedItems,
             emitClickItem,
             scrollToItem,
+            hasScroll,
         };
     },
 });
