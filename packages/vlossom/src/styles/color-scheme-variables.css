@@ -1,0 +1,26 @@
+/**
+ * This file defines CSS custom properties used by Stylelint validation.
+ * These variables are dynamically generated in color-scheme.scss
+ * and must be kept in sync with that file.
+ */
+:root {
+    /* Component base variables */
+    --vs-comp-font: initial;
+    --vs-comp-bg: initial;
+    --vs-comp-shadow: initial;
+
+    /* Primary component variables */
+    --vs-primary-comp-font: initial;
+    --vs-primary-comp-bg: initial;
+    --vs-primary-comp-shadow: initial;
+
+    /* Font and line colors */
+    --vs-font-color: initial;
+    --vs-line-color: initial;
+
+    /* Area variables */
+    --vs-area-bg: initial;
+    --vs-area-bg-hover: initial;
+    --vs-area-bg-active: initial;
+    --vs-area-shadow-outer: initial;
+}
