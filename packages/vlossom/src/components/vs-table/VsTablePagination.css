@@ -2,7 +2,6 @@
 
 .vs-table-pagination {
     @apply flex items-center justify-between p-4;
-    border-top: 0.0625rem solid var(--vs-line-color);
 }
 
 .vs-table-pagination-info {
