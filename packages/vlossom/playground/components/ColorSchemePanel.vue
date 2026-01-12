@@ -48,7 +48,7 @@ export default defineComponent({
 
         function setColorScheme(color: ColorScheme) {
             selectedColorScheme.value = color;
-            $vs.colorScheme = { fallback: color };
+            $vs.colorScheme = { default: color };
         }
 
         function clearColorScheme() {
