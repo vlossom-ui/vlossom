@@ -18,6 +18,7 @@ export const ANIMATION_DURATION = 300;
 export const COLORS = [
     'red',
     'orange',
+    'brown',
     'amber',
     'yellow',
     'lime',
@@ -33,11 +34,7 @@ export const COLORS = [
     'fuchsia',
     'pink',
     'rose',
-    'slate',
     'gray',
-    'zinc',
-    'neutral',
-    'stone',
 ] as const;
 
 export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
