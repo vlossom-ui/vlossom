@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-message {
-    --vs-message-font-size: var(--vs-font-size);
+    --vs-message-font-size: var(--vs-font-size-md);
 
     @apply flex items-start;
 
