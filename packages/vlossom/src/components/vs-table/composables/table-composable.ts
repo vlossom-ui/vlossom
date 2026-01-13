@@ -1,5 +1,5 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
-import { functionUtil, logUtil, stringUtil } from '@/utils';
+import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
@@ -141,6 +141,9 @@ export function useTable(
         totalItemsCount,
     );
     const bodyCells = computed<BodyCell[][]>(() => {
+        if (objectUtil.isEmpty(pagination.value)) {
+            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+        }
         if (pagination.value.mode === 'server') {
             return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
         }
