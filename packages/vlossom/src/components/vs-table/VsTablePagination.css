@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-table-pagination {
-    @apply flex items-center justify-between p-4;
+    @apply flex items-center justify-between py-4;
 }
 
 .vs-table-pagination-info {
@@ -11,4 +11,10 @@
 .vs-total-items {
     @apply text-sm whitespace-nowrap opacity-70;
     color: var(--vs-font-color);
+}
+
+@media (max-width: 768px) {
+    .vs-table-pagination {
+        @apply flex-col-reverse items-center justify-center gap-2;
+    }
 }
