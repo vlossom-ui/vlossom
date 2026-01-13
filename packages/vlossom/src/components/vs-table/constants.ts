@@ -15,3 +15,5 @@ export const DEFAULT_PAGINATION_OPTIONS: VsTablePaginationOptions = {
     showTotal: true,
     mode: 'client' as const,
 } as const;
+
+export const DEFAULT_PAGE_SIZE = 50;

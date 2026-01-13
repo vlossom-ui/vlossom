@@ -4,6 +4,7 @@ import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { BodyCell, HeaderCell, Item } from './../types';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
@@ -212,7 +213,7 @@ describe('VsTable', () => {
             expect(emitted).toHaveLength(1);
             const [page, pageSize] = emitted![0] as [number, number];
             expect(page).toBe(1);
-            expect(pageSize).toBe(20);
+            expect(pageSize).toBe(DEFAULT_PAGE_SIZE);
         });
 
         describe('server mode', () => {

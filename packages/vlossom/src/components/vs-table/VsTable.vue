@@ -138,11 +138,9 @@ export default defineComponent({
         },
         page: {
             type: Number as PropType<number>, // 0-based page index
-            default: 0,
         },
         pageSize: {
             type: Number as PropType<number>,
-            default: 20,
         },
     },
     emits: [

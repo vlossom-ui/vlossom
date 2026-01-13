@@ -19,7 +19,7 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
-import { DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -102,7 +102,7 @@ export function useTable(
         };
     });
     const internalPage = ref(0);
-    const internalPageSize = ref(50);
+    const internalPageSize = ref(DEFAULT_PAGE_SIZE);
     const page = computed<number>({
         get: () => rawPage?.value ?? internalPage.value,
         set: (value: number) => {

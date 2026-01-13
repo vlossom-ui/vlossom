@@ -12,6 +12,7 @@ import {
     type Item,
     type VsTablePaginationOptions,
 } from '../types';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 function setupUseTable(
     props: {
@@ -184,8 +185,8 @@ describe('useTable', () => {
 
             await nextTick();
 
-            expect(table.pageSize.value).toBe(50);
-            expect(table.bodyCells.value).toHaveLength(50);
+            expect(table.pageSize.value).toBe(DEFAULT_PAGE_SIZE);
+            expect(table.bodyCells.value).toHaveLength(DEFAULT_PAGE_SIZE);
             expect(table.totalPages.value).toBe(3);
         });
 
@@ -235,7 +236,7 @@ describe('useTable', () => {
 
                 await nextTick();
 
-                expect(table.totalPages.value).toBe(50);
+                expect(table.totalPages.value).toBe(Math.ceil(500 / 10));
                 expect(table.bodyCells.value).toHaveLength(10);
             });
 
