@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-loading', colorSchemeClass]" :style="styleSetVariables">
+    <div :class="['vs-loading', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
         <div class="vs-loading-rect vs-loading-rect1" />
         <div class="vs-loading-rect vs-loading-rect2" />
         <div class="vs-loading-rect vs-loading-rect3" />
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -30,16 +30,24 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const additionalStyleSet = computed(() => {
-            return objectUtil.shake({
-                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-            });
+        const baseStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => ({}));
+        const additionalStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => {
+            return {
+                component: objectUtil.shake({
+                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                }),
+            };
         });
 
-        const { styleSetVariables } = useStyleSet(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLoadingStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
-        return { colorSchemeClass, styleSetVariables };
+        return { colorSchemeClass, componentStyleSet, styleSetVariables };
     },
 });
 </script>
