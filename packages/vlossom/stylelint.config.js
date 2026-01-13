@@ -103,5 +103,6 @@ export default {
                 ignorePseudoClasses: ['global', 'deep'],
             },
         ],
+        'hue-degree-notation': 'number',
     },
 };
