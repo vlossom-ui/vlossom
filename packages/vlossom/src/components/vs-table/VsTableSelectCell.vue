@@ -5,6 +5,7 @@
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
                     multiple
+                    :disabled="loading"
                     v-model="selectedIds"
                     :true-value="getRowId(cells)"
                     @toggle="selectRow(cells, $event)"
@@ -16,7 +17,12 @@
     <template v-else>
         <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
-                <vs-checkbox :model-value="selectedAll" :indeterminate="selectedPartial" @toggle="toggleSelectAll" />
+                <vs-checkbox
+                    :model-value="selectedAll"
+                    :disabled="loading"
+                    :indeterminate="selectedPartial"
+                    @toggle="selectRow(cells, $event)"
+                />
             </slot>
         </th>
     </template>
@@ -45,8 +51,16 @@ export default defineComponent({
     },
     emits: ['select-row'],
     setup(_props, { emit }) {
-        const { anySelectable, selectedIds, selectable, items, selectedAll, selectedPartial, toggleSelectAll } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const {
+            anySelectable,
+            selectedIds,
+            selectable,
+            items,
+            selectedAll,
+            selectedPartial,
+            toggleSelectAll,
+            loading,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function isRowSelectable(row: Cell[], rowIdx: number): boolean {
             if (!isBodyRow(row)) {
@@ -79,7 +93,7 @@ export default defineComponent({
             selectedIds,
             selectedAll,
             selectedPartial,
-            toggleSelectAll,
+            loading,
         };
     },
 });

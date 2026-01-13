@@ -5,6 +5,7 @@
             ref="searchInputRef"
             class="vs-table-search-input"
             v-bind="searchOptions"
+            :disabled="loading"
             @search="searchRows"
         />
 
@@ -120,6 +121,10 @@ export default defineComponent({
         },
         expandable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
+        loading: {
+            type: Boolean,
             default: false,
         },
         pagination: {
