@@ -161,12 +161,12 @@
         :columns="['name', 'age', 'email']"
         :items="items"
         pagination
-        @change-page="(page, pageSize) => console.log(page, pageSize)"
+        @paginate="(page, pageSize) => console.log(page, pageSize)"
     />
 </template>
 ```
 
-> `pagination`을 `true`로 설정하면 내부적으로 `VsPagination`을 사용해 페이지네이션이 활성화되며, `change-page` 이벤트로 0-기반 페이지 인덱스와 페이지 크기를 받을 수 있습니다.
+> `pagination`을 `true`로 설정하면 내부적으로 `VsPagination`을 사용해 페이지네이션이 활성화되며, `paginate` 이벤트로 0-기반 페이지 인덱스와 페이지 크기를 받을 수 있습니다.
 
 ```html
 <template>
@@ -300,13 +300,13 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Events
 
-| Event         | Payload                                    | Description                                       |
-| ------------- | ------------------------------------------ | ------------------------------------------------- |
-| `click-cell`  | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
-| `select-row`  | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
-| `expand-row`  | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
-| `search`      | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
-| `change-page` | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
+| Event        | Payload                                    | Description                                       |
+| ------------ | ------------------------------------------ | ------------------------------------------------- |
+| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
+| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
+| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
+| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
+| `paginate`   | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
 
 ## 특징
 
