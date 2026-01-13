@@ -12,5 +12,5 @@ export type { VsExpandable };
 export interface VsExpandableRef extends ComponentPublicInstance<typeof VsExpandable> {}
 
 export interface VsExpandableStyleSet {
-    content?: CSSProperties;
+    component?: CSSProperties;
 }
