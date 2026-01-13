@@ -6,7 +6,6 @@
                 <vs-grid :grid-size="5" column-gap="0.8rem" row-gap="0.8rem">
                     <button
                         :class="['color-btn', 'clear-btn', { selected: !selectedColorScheme }]"
-                        :style="{ backgroundColor: 'var(--vs-no-color-inverse)' }"
                         @click="clearColorScheme"
                     />
                     <button
