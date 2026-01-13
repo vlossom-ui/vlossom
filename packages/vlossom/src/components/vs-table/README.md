@@ -216,6 +216,35 @@
 
 > `expandable`이 `true`이거나 조건을 만족하는 행만 확장 버튼이 표시되며, `expand` 슬롯을 통해 확장 영역을 커스텀합니다.
 
+### 가상 스크롤 (Virtual Scroll)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="largeDataset"
+        virtualScroll
+        virtualScrollRootMargin="200px"
+    />
+</template>
+```
+
+> `virtualScroll`을 활성화하면 화면에 보이는 행만 렌더링하여 대용량 데이터셋의 성능을 최적화합니다. `virtualScrollRootMargin`으로 미리 렌더링할 영역을 조정할 수 있습니다.
+
+### 로딩 상태 (Loading)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="items"
+        :loading="isLoading"
+    />
+</template>
+```
+
+> `loading`이 `true`이면 테이블 셀에 스켈레톤 UI가 표시되고, 검색 입력이 비활성화됩니다.
+
 ## Props
 
 | Prop                      | Type                                           | Default   | Required | Description                                                                                                           |
@@ -329,3 +358,5 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
 - **행 검색**: `search` 옵션으로 검색 입력을 제공하고, `skipSearch`로 제외 컬럼을 제어
+- **가상 스크롤**: `virtualScroll` 옵션으로 대용량 데이터셋의 렌더링 성능을 최적화하고 메모리 사용량 감소
+- **로딩 상태**: `loading` prop으로 스켈레톤 UI를 표시하여 데이터 로딩 중 사용자 경험 향상
