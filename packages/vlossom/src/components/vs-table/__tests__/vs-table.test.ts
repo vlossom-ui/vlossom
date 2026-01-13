@@ -456,6 +456,63 @@ describe('VsTable', () => {
         });
     });
 
+    describe('loading', () => {
+        it('loading이 true면 검색 입력이 비활성화된다', async () => {
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items: tableItems,
+                    search: true,
+                    loading: true,
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-search-input': {
+                            props: ['disabled'],
+                            template: '<input data-testid="search-input" :disabled="disabled" />',
+                            methods: {
+                                match: () => true,
+                            },
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+
+            const searchInput = wrapper.find('[data-testid="search-input"]');
+            expect(searchInput.exists()).toBe(true);
+            expect(searchInput.attributes('disabled')).toBeDefined();
+        });
+
+        it('loading이 true면 페이지네이션 버튼이 비활성화된다', async () => {
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items: Array.from({ length: 40 }, (_, i) => ({ id: '' + i, name: `User ${i}`, age: i })),
+                    pagination: true,
+                    loading: true,
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-pagination': {
+                            props: ['modelValue', 'length', 'showingLength', 'edgeButtons', 'disabled'],
+                            template: '<button data-testid="vs-pagination" :disabled="!!disabled">Pagination</button>',
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+
+            const paginationBtn = wrapper.find('[data-testid="vs-pagination"]');
+            expect(paginationBtn.exists()).toBe(true);
+            expect(paginationBtn.attributes('disabled')).toBeDefined();
+        });
+    });
+
     describe('v-model', () => {
         it('selectedItems 속성을 사용하여 선택된 아이템을 관리한다', async () => {
             const wrapper = mountTable({

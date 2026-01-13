@@ -492,22 +492,20 @@ export const Loading: Story = {
         components: { VsTable },
         setup() {
             const isLoading = ref(true);
-            const items = ref<Item[]>([]);
 
             // 3초 후 데이터 로드 시뮬레이션
             setTimeout(() => {
-                items.value = baseItems;
                 isLoading.value = false;
             }, 3000);
 
-            return { columns: baseColumns, items, isLoading };
+            return { isLoading, baseColumns, baseItems };
         },
         template: `
             <div>
                 <p class="text-sm text-slate-600 mb-2">3초 후 데이터가 로드됩니다.</p>
                 <vs-table
-                    :columns="columns"
-                    :items="items.length ? items : baseItems"
+                    :columns="baseColumns"
+                    :items="baseItems"
                     :loading="isLoading"
                     search
                 />
