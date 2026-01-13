@@ -73,10 +73,9 @@ function checkScroll() {
 
 ## Props
 
-| Prop         | Type                              | Default | Required | Description             |
-| ------------ | --------------------------------- | ------- | -------- | ----------------------- |
-| `hideScroll` | `boolean`                         | `false` | -        | 스크롤바 표시/숨김 여부 |
-| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
+| Prop         | Type      | Default | Required | Description             |
+| ------------ | --------- | ------- | -------- | ----------------------- |
+| `hideScroll` | `boolean` | `false` | -        | 스크롤바 표시/숨김 여부 |
 
 ## Methods
 
@@ -85,20 +84,6 @@ function checkScroll() {
 | Method      | Parameters | Return    | Description                    |
 | ----------- | ---------- | --------- | ------------------------------ |
 | `hasScroll` | -          | `boolean` | 스크롤 가능 여부를 반환합니다. |
-
-## Types
-
-```typescript
-interface VsInnerScrollStyleSet {
-    header?: {
-        padding?: string; // 헤더 영역 패딩
-    };
-    padding?: string; // 본문 영역 패딩
-    footer?: {
-        padding?: string; // 푸터 영역 패딩
-    };
-}
-```
 
 ## Slots
 

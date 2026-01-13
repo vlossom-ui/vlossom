@@ -12,9 +12,3 @@ export type { VsInnerScroll };
 export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInnerScroll> {
     hasScroll: () => boolean;
 }
-
-export interface VsInnerScrollStyleSet {
-    header?: { padding?: string };
-    padding?: string;
-    footer?: { padding?: string };
-}
