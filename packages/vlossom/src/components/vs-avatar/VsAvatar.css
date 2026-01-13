@@ -1,27 +1,15 @@
 .vs-avatar {
-    --vs-avatar-width: initial;
-    --vs-avatar-height: initial;
-
-    --vs-avatar-backgroundColor: initial;
-    --vs-avatar-border: initial;
-    --vs-avatar-borderRadius: initial;
-    --vs-avatar-opacity: initial;
-
-    --vs-avatar-fontColor: initial;
-    --vs-avatar-objectFit: initial;
-
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
-    opacity: var(--vs-avatar-opacity, 1);
-    border: var(--vs-avatar-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-avatar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-avatar-backgroundColor, var(--vs-comp-bg));
-    width: var(--vs-avatar-width, 3.6rem);
-    height: var(--vs-avatar-height, 3.6rem);
-    color: var(--vs-avatar-fontColor, var(--vs-comp-font));
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    background-color: var(--vs-comp-bg);
+    width: 3.6rem;
+    height: 3.6rem;
+    color: var(--vs-comp-font);
 
     :deep(img) {
         @apply block h-full w-full;
-        object-fit: var(--vs-avatar-objectFit, contain);
+        object-fit: contain;
     }
 }
