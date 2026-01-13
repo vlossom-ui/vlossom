@@ -12,5 +12,8 @@ export type { VsAvatar };
 export interface VsAvatarRef extends ComponentPublicInstance<typeof VsAvatar> {}
 
 export interface VsAvatarStyleSet {
+    variables?: {
+        objectFit?: string;
+    };
     component?: CSSProperties;
 }

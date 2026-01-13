@@ -1,4 +1,6 @@
 .vs-avatar {
+    --vs-avatar-objectFit: initial;
+
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
     border: 1px solid var(--vs-line-color);
@@ -10,6 +12,6 @@
 
     :deep(img) {
         @apply block h-full w-full;
-        object-fit: contain;
+        object-fit: var(--vs-avatar-objectFit, contain);
     }
 }
