@@ -6,6 +6,8 @@
         "EditorConfig.EditorConfig",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
-        "csstools.postcss"
+        "csstools.postcss",
+        "stylelint.vscode-stylelint",
+        "vunguyentuan.vscode-css-variables"
     ]
 }

@@ -12,7 +12,7 @@
     --vs-switch-handleColor: initial;
 
     @apply relative flex items-center;
-    min-height: var(--vs-input-comp-height);
+    min-height: var(--vs-default-comp-height-md);
 
     .vs-switch-button {
         @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
