@@ -1,5 +1,5 @@
 <template>
-    <tbody>
+    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="virtualScrollRootMargin">
         <template v-if="bodyCells.length">
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
                 <tr>
@@ -41,7 +41,7 @@
                 </td>
             </tr>
         </template>
-    </tbody>
+    </vs-visible-render>
 </template>
 
 <script lang="ts">
@@ -52,6 +52,7 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
+import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
 import VsTableSelectCell from './VsTableSelectCell.vue';
@@ -59,12 +60,23 @@ import VsTableSelectCell from './VsTableSelectCell.vue';
 export default defineComponent({
     components: {
         VsRender,
+        VsVisibleRender,
         VsTableExpandCell,
         VsTableExpandedPanel,
         VsTableSelectCell,
     },
+    props: {
+        virtualScroll: {
+            type: Boolean,
+            default: false,
+        },
+        virtualScrollRootMargin: {
+            type: String,
+            default: '200px',
+        },
+    },
     emits: ['click-cell', 'select-row', 'expand-row'],
-    setup(_props, { emit, slots }) {
+    setup(props, { emit, slots }) {
         const { bodyCells, anyExpandable, headerCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
