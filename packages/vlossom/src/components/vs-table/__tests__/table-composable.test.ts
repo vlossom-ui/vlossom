@@ -302,6 +302,63 @@ describe('useTable', () => {
 
                 expect(table.totalPages.value).toBe(4);
             });
+
+            it('서버 모드에서 pageEndIndex가 totalItemCount 기반으로 올바르게 계산된다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 500,
+                    },
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(0);
+                expect(table.pageEndIndex.value).toBe(10);
+                expect(table.totalItems.value).toBe(500);
+            });
+
+            it('서버 모드에서 중간 페이지의 pageEndIndex가 올바르게 계산된다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i + 50}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 500,
+                    },
+                    page: 5,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(50);
+                expect(table.pageEndIndex.value).toBe(60);
+                expect(table.totalItems.value).toBe(500);
+            });
+
+            it('서버 모드에서 마지막 페이지의 pageEndIndex가 totalItemCount를 초과하지 않는다', async () => {
+                const items = Array.from({ length: 5 }, (_, i) => ({ id: `${i}`, name: `User ${i + 495}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        mode: 'server',
+                        totalItemCount: 500,
+                    },
+                    page: 49,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(490);
+                expect(table.pageEndIndex.value).toBe(500);
+                expect(table.totalItems.value).toBe(500);
+            });
         });
     });
 

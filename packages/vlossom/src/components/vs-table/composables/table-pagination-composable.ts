@@ -13,15 +13,16 @@ export function useTablePagination(
         return page.value * pageSize.value;
     });
 
-    const pageEndIndex = computed<number>(() => {
-        return Math.min(pageStartIndex.value + pageSize.value, totalItemsCount.value);
-    });
-
     const totalItems = computed<number>(() => {
         if (options.value?.mode === 'server') {
             return options.value?.totalItemCount ?? 0;
         }
         return totalItemsCount.value;
+    });
+
+    const pageEndIndex = computed<number>(() => {
+        const calculatedEnd = pageStartIndex.value + pageSize.value;
+        return Math.min(calculatedEnd, totalItems.value);
     });
 
     const totalPages = computed<number>(() => {
