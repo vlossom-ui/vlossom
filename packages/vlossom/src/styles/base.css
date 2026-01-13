@@ -5,7 +5,7 @@ body {
 
 html,
 body {
-    @apply relative min-h-screen min-w-full leading-[1.5] font-normal;
+    @apply relative min-h-screen min-w-full leading-normal font-normal;
     background-color: var(--vs-app-bg);
     font-family:
         'Pretendard Variable',

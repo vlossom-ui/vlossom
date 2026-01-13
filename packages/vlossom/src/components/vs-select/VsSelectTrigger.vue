@@ -2,6 +2,7 @@
     <div
         ref="triggerRef"
         :class="['vs-select-trigger', stateClasses, triggerClassObj]"
+        :style="styleSet?.component"
         tabindex="0"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -13,7 +14,13 @@
             </template>
             <template v-else-if="multiple">
                 <template v-if="collapseChips && selectedOptions.length > 1">
-                    <vs-chip small :closable="closableChips" primary @close="$emit('deselect', selectedOptions[0].id)">
+                    <vs-chip
+                        :closable="closableChips"
+                        :style-set="styleSet?.chip"
+                        primary
+                        small
+                        @close="$emit('deselect', selectedOptions[0].id)"
+                    >
                         {{ selectedOptions[0].label }}
                     </vs-chip>
                     <span class="vs-select-collapsed-count">+{{ selectedOptions.length - 1 }}</span>
@@ -23,8 +30,9 @@
                         v-for="option in selectedOptions"
                         :key="option.id"
                         :closable="closableChips"
-                        small
+                        :style-set="styleSet?.chip"
                         primary
+                        small
                         @close="$emit('deselect', option.id)"
                     >
                         {{ option.label }}
@@ -58,6 +66,7 @@ import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type 
 import type { OptionItem, UIState } from '@/declaration';
 import { useStateClass } from '@/composables';
 import { closeIcon } from '@/icons';
+import type { VsSelectStyleSet } from './types';
 import { selectIcons } from './icons';
 
 import VsChip from '@/components/vs-chip/VsChip.vue';
@@ -67,6 +76,7 @@ export default defineComponent({
     name: 'VsSelectTrigger',
     components: { VsChip, VsRender },
     props: {
+        styleSet: { type: Object as PropType<VsSelectStyleSet> },
         collapseChips: { type: Boolean, default: false },
         closableChips: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },
