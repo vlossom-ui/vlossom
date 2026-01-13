@@ -94,6 +94,7 @@
         "eslint": "^9.39.2",
         "eslint-plugin-storybook": "10.1.11",
         "eslint-plugin-vue": "~10.6.2",
+        "glob": "^13.0.0",
         "jiti": "^2.6.1",
         "jsdom": "^27.4.0",
         "npm-run-all2": "^8.0.4",

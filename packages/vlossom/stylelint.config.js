@@ -1,4 +1,6 @@
-import { resolve } from 'node:path';
+import { globSync } from 'glob';
+
+const cssFiles = globSync('./src/**/*.css', { cwd: import.meta.dirname, absolute: true });
 
 /** @type {import('stylelint').Config} */
 export default {
@@ -20,12 +22,7 @@ export default {
         'csstools/value-no-unknown-custom-properties': [
             true,
             {
-                importFrom: [
-                    resolve(import.meta.dirname, './src/styles/variables.css'),
-                    resolve(import.meta.dirname, './src/styles/pallete.css'),
-                    resolve(import.meta.dirname, './src/styles/state.css'),
-                    resolve(import.meta.dirname, './src/styles/color-scheme-variables.css'),
-                ],
+                importFrom: cssFiles,
             },
         ],
 
