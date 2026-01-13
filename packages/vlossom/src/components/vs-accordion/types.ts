@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsExpandableStyleSet } from '@/components/vs-expandable/types';
 import type VsAccordion from './VsAccordion.vue';
 
@@ -15,18 +14,14 @@ export interface VsAccordionRef extends ComponentPublicInstance<typeof VsAccordi
     toggle: () => void;
 }
 
-export interface VsAccordionStyleSet extends Omit<BoxStyleSet, 'backgroundColor' | 'padding'> {
-    width?: string;
-    arrowColor?: string;
-
-    title?: {
-        backgroundColor?: string;
-        fontColor?: string;
-        height?: string;
-        padding?: string;
+export interface VsAccordionStyleSet {
+    variables?: {
+        arrowColor?: string;
+        arrowSize?: string;
+        arrowSpacing?: string;
+        border?: string;
+        width?: string;
     };
-
-    expand?: VsExpandableStyleSet & {
-        fontColor?: string;
-    };
+    title?: CSSProperties;
+    expand?: VsExpandableStyleSet;
 }
