@@ -1,8 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-button {
-    --vs-button-width: initial;
-    --vs-button-height: initial;
     --vs-button-padding: initial;
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
@@ -10,7 +8,7 @@
     border: 1px solid var(--vs-line-color);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
     background-color: var(--vs-comp-bg);
-    width: var(--vs-button-width, auto);
+    width: var(auto);
     height: var(--vs-button-height, var(--vs-size-height));
     color: var(--vs-comp-font);
     font-size: var(--vs-size-font, inherit);
@@ -68,8 +66,8 @@
     &.vs-circle {
         @apply rounded-full;
 
-        width: var(--vs-button-width, var(--vs-button-height, var(--vs-size-height)));
-        height: var(--vs-button-height, var(--vs-button-width, var(--vs-size-height)));
+        width: var(--vs-size-height);
+        height: var(--vs-size-height);
     }
 
     @variant dark {

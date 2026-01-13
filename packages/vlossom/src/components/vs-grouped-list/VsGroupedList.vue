@@ -1,12 +1,17 @@
 <template>
-    <vs-inner-scroll ref="innerScrollRef" class="vs-grouped-list" :style="styleSetVariables">
+    <vs-inner-scroll
+        ref="innerScrollRef"
+        class="vs-grouped-list"
+        :style="styleSetVariables"
+        :style-set="componentStyleSet.layout"
+    >
         <template #header v-if="$slots.header">
             <slot name="header" />
         </template>
 
         <vs-visible-render class="vs-grouped-list-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
             <template v-for="(group, groupIndex) in groupedItems" :key="`group-${groupIndex}`">
-                <div v-if="!!groupBy" class="vs-grouped-list-group">
+                <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.group">
                     <slot name="group" :group="group.name" :groupIndex :items="group.items">
                         <div class="vs-grouped-list-group-content">
                             <span>{{ group.name || 'Ungrouped' }}</span>
@@ -18,6 +23,7 @@
                     :key="`${item.id}-${groupedIndex}`"
                     :id="item.id"
                     :class="['vs-grouped-list-item', { 'vs-disabled': item.disabled }]"
+                    :style="componentStyleSet.item"
                     @click.prevent.stop="emitClickItem(item, groupedIndex, group, groupIndex)"
                 >
                     <slot name="item" v-bind="item" :groupedIndex :group :groupIndex>
@@ -76,7 +82,7 @@ export default defineComponent({
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsGroupedListStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGroupedListStyleSet>(componentName, styleSet);
 
         const groupedItems: ComputedRef<VsGroupedListGroup[]> = computed(() => {
             // groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환
@@ -180,8 +186,8 @@ export default defineComponent({
         return {
             visibleRenderRef,
             innerScrollRef,
-            styleSetVariables,
             componentStyleSet,
+            styleSetVariables,
             groupedItems,
             emitClickItem,
             scrollToItem,

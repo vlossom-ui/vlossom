@@ -1,6 +1,9 @@
 <template>
-    <div :class="['vs-chip', 'vs-inline-gap', colorSchemeClass, classObj]" :style="styleSetVariables">
-        <span v-if="hasIcon" class="vs-icon-container vs-chip-icon">
+    <div
+        :class="['vs-chip', 'vs-inline-gap', colorSchemeClass, classObj]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+    >
+        <span v-if="!!$slots.icon" class="vs-chip-icon" :style="componentStyleSet.icon">
             <slot name="icon" />
         </span>
 
@@ -11,9 +14,10 @@
         <button
             v-if="closable"
             type="button"
-            class="vs-icon-container vs-chip-close-button"
+            class="vs-chip-icon vs-chip-close-button"
             aria-label="close"
             tabindex="-1"
+            :style="componentStyleSet.closeButton"
             @click.prevent.stop="$emit('close')"
         >
             <vs-render :content="closeIcon" />
@@ -44,14 +48,12 @@ export default defineComponent({
         size: { type: String as PropType<Size>, default: 'sm' },
     },
     emits: ['close'],
-    setup(props, { slots }) {
+    setup(props) {
         const { colorScheme, size, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsChipStyleSet>(componentName, styleSet);
-
-        const hasIcon = computed((): boolean => !!slots['icon']);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsChipStyleSet>(componentName, styleSet);
 
         const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
 
@@ -63,8 +65,8 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
-            hasIcon,
             classObj,
             closeIcon,
         };

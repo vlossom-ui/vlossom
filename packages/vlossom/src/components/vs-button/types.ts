@@ -14,8 +14,6 @@ export interface VsButtonRef extends ComponentPublicInstance<typeof VsButton> {}
 
 export interface VsButtonStyleSet {
     variables?: {
-        width?: string;
-        height?: string;
         padding?: string;
     };
     component?: CSSProperties;

@@ -28,8 +28,8 @@
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-top: var(--vs-accordion-arrowSize, 10px) solid
                 var(--vs-accordion-arrowColor, var(--vs-primary-comp-bg));
-            border-right: calc(var(--vs-accordion-arrowSize, 10px) / 5 * 4) solid transparent;
-            border-left: calc(var(--vs-accordion-arrowSize, 10px) / 5 * 4) solid transparent;
+            border-right: calc(var(--vs-accordion-arrowSize, 10px) * 0.8) solid transparent;
+            border-left: calc(var(--vs-accordion-arrowSize, 10px) * 0.8) solid transparent;
             width: 0;
             height: 0;
             content: '';

@@ -1,7 +1,7 @@
 <template>
     <Transition name="vs-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
         <div v-if="open" class="vs-expandable-wrapper" :style="styleSetVariables">
-            <div class="vs-expandable-content" :style="componentStyleSet.content">
+            <div class="vs-expandable-content" :style="componentStyleSet.component">
                 <slot />
             </div>
         </div>

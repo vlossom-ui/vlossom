@@ -21,6 +21,7 @@
             <vs-select-trigger
                 ref="triggerRef"
                 :id="triggerId"
+                :style-set="componentStyleSet"
                 :is-empty
                 :is-open
                 :placeholder
@@ -43,6 +44,7 @@
                     ref="optionsListRef"
                     :id="optionsId"
                     :class="['vs-select-options', colorSchemeClass]"
+                    :style="styleSetVariables"
                     :style-set="componentStyleSet.options"
                     :items="filteredOptions"
                     :group-by
@@ -82,6 +84,7 @@
                                 'vs-select-focusable',
                                 { selected: isSelected(itemSlotProps.id) },
                             ]"
+                            :style="componentStyleSet.option"
                             :data-id="itemSlotProps.id"
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
@@ -229,7 +232,25 @@ export default defineComponent({
 
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
+            return {
+                options: {
+                    variables: {
+                        height: '30rem',
+                    },
+                    layout: {
+                        content: {
+                            padding: '0.6rem 0.4rem',
+                        },
+                    },
+                },
+            };
+        });
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const { computedOptions } = useOptionList(options, optionLabel, optionValue, optionsDisabled);
 
