@@ -2,7 +2,7 @@
     <div class="vs-table-pagination">
         <div class="vs-table-pagination-info">
             <vs-select
-                v-if="pagination.showPageSizeSelector"
+                v-if="pagination.showPageSizeSelect"
                 v-model="pageSize"
                 :options="pageSizeOptions"
                 no-clear

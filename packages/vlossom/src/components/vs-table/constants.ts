@@ -9,7 +9,7 @@ export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
 
 export const DEFAULT_PAGINATION_OPTIONS: VsTablePaginationOptions = {
     pageSizeOptions: [20, 50, 100] as number[],
-    showPageSizeSelector: true,
+    showPageSizeSelect: true,
     showingLength: 10,
     edgeButtons: false,
     showTotal: true,

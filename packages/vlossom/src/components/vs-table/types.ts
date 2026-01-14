@@ -11,7 +11,7 @@ export interface VsTableStyleSet {}
 
 export interface VsTablePaginationOptions {
     pageSizeOptions?: number[];
-    showPageSizeSelector?: boolean;
+    showPageSizeSelect?: boolean;
     showingLength?: number;
     edgeButtons?: boolean;
     showTotal?: boolean;
