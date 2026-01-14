@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
-import { functionUtil, logUtil, stringUtil } from '@/utils';
-import { type PropsOf, VsComponent } from '@/declaration';
+import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
+import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -11,18 +11,25 @@ import {
     type HeaderCell,
     type Cell,
     type Item,
+    type VsTablePaginationOptions,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
+import { useTablePagination } from './table-pagination-composable';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
     props: PropsOf<VsComponent.VsTable>,
     refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
-    cb?: { updateSelectedItems: (items: Item[]) => void },
+    cb?: {
+        updateSelectedItems: (items: Item[]) => void;
+        updatePage: (page: number) => void;
+        updatePageSize: (pageSize: number) => void;
+    },
 ) {
     const {
         columns: rawColumns,
@@ -30,6 +37,11 @@ export function useTable(
         selectable: rawSelectable,
         expandable: rawExpandable,
         selectedItems: rawSelectedItems,
+        search: rawSearch,
+        pagination: rawPagination,
+        serverMode: rawServerMode,
+        page: rawPage,
+        pageSize: rawPageSize,
     } = toRefs(props);
 
     // normalize
@@ -68,6 +80,66 @@ export function useTable(
         }
         return rawSelectedItems.value;
     });
+    const search = computed<Exclude<SearchProps, boolean>>(() => {
+        if (!rawSearch?.value) {
+            return {};
+        }
+        if (typeof rawSearch?.value === 'boolean') {
+            return TABLE_SEARCH_OPTIONS;
+        }
+        return { ...TABLE_SEARCH_OPTIONS, ...rawSearch.value };
+    });
+    const pagination = computed<VsTablePaginationOptions>(() => {
+        if (!rawPagination?.value) {
+            return {};
+        }
+        if (typeof rawPagination?.value === 'boolean') {
+            return DEFAULT_PAGINATION_OPTIONS;
+        }
+
+        return {
+            ...DEFAULT_PAGINATION_OPTIONS,
+            ...rawPagination.value,
+        };
+    });
+    const serverMode = computed(() => rawServerMode?.value ?? false);
+    const internalPage = ref(0);
+    const internalPageSize = ref(DEFAULT_PAGE_SIZE);
+    const page = computed<number>({
+        get: () => rawPage?.value ?? internalPage.value,
+        set: (value: number) => {
+            internalPage.value = value;
+            cb?.updatePage(value);
+        },
+    });
+    const pageSize = computed<number>({
+        get: () => {
+            const currentPageSize = rawPageSize?.value;
+            const pageSizeOptions = pagination.value.pageSizeOptions;
+
+            if (!currentPageSize) {
+                return internalPageSize.value;
+            }
+            if (pageSizeOptions) {
+                const isValidPageSize = pageSizeOptions.some((option) => option.value === currentPageSize);
+
+                if (!isValidPageSize) {
+                    logUtil.propWarning(
+                        VsComponent.VsTable,
+                        'pageSize',
+                        `pageSize (${currentPageSize}) is not in [${pageSizeOptions.map((option) => option.value)}]`,
+                    );
+                }
+            }
+            return currentPageSize;
+        },
+        set: (value: number) => {
+            internalPageSize.value = value;
+            cb?.updatePageSize(value);
+
+            page.value = 0; // NOTE: reset page to 0 when page size changes
+        },
+    });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
@@ -82,8 +154,25 @@ export function useTable(
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
+    const totalItemsCount = computed(() => rawBodyCells.value.filter(matchBySearch).length);
+    const { totalPages, totalItems, pageStartIndex, pageEndIndex } = useTablePagination(
+        pagination,
+        page,
+        pageSize,
+        totalItemsCount,
+        serverMode,
+    );
     const bodyCells = computed<BodyCell[][]>(() => {
-        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+        if (objectUtil.isEmpty(pagination.value)) {
+            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+        }
+        if (serverMode.value) {
+            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+        }
+        return rawBodyCells.value
+            .filter(matchBySearch)
+            .sort(compareRows)
+            .slice(pageStartIndex.value, pageEndIndex.value);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -139,6 +228,14 @@ export function useTable(
         sortType,
         sortColumn,
         updateSortType,
+        search,
+        pagination,
+        page,
+        pageSize,
+        totalPages,
+        totalItems,
+        pageStartIndex,
+        pageEndIndex,
     };
 }
 
@@ -157,6 +254,14 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
+    search: ComputedRef<Exclude<SearchProps, boolean>>;
+    pagination: ComputedRef<VsTablePaginationOptions>;
+    page: ComputedRef<number>;
+    pageSize: ComputedRef<number>;
+    totalPages: ComputedRef<number>;
+    totalItems: ComputedRef<number>;
+    pageStartIndex: ComputedRef<number>;
+    pageEndIndex: ComputedRef<number>;
     isExpanded: (row: Cell[]) => boolean;
     toggleExpand: (row: Cell[]) => boolean;
     updateSortType: (headerKey: string) => void;

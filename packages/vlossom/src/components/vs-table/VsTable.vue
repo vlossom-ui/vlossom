@@ -1,16 +1,17 @@
 <template>
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="styleSetVariables">
         <vs-search-input
+            v-if="search"
             ref="searchInputRef"
-            class="mb-2 flex justify-end"
+            class="vs-table-search-input"
             v-bind="searchOptions"
             @search="searchRows"
         />
 
         <table>
             <vs-table-header
-                class="vs-table-sticky-header"
                 v-if="stickyHeader && headerInvisible"
+                class="vs-table-sticky-header"
                 @click-cell="clickCell"
                 @select-row="selectRow"
             >
@@ -33,6 +34,8 @@
                 </template>
             </vs-table-body>
         </table>
+
+        <vs-table-pagination v-if="pagination" @paginate="paginate" />
     </div>
 </template>
 
@@ -50,36 +53,38 @@ import {
     inject,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_STORE_KEY, type SearchProps, VsComponent } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
-import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
-import type { VsSearchInputRef } from '../vs-search-input/types';
+import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
     type BodyCell,
     type ColumnDef,
     type Item,
-    type VsTableSearchOptions,
     type VsTableStyleSet,
+    type VsTablePaginationOptions,
     getRowItem,
 } from './types';
-import { TABLE_SEARCH_OPTIONS } from './constants';
+
+import type { VsSearchInputRef } from '../vs-search-input/types';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
-import { LayoutStore } from '@/stores';
+import VsTablePagination from './VsTablePagination.vue';
 
 const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
-    components: { VsTableHeader, VsTableBody, VsSearchInput },
+    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
+        ...getSearchProps(),
         columns: {
             type: Array as PropType<ColumnDef[] | string[] | null>,
             default: () => [],
@@ -99,6 +104,10 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        stickyHeader: {
+            type: Boolean,
+            default: false,
+        },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -107,11 +116,11 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
-        search: {
-            type: [Boolean, Object] as PropType<boolean | VsTableSearchOptions>,
+        pagination: {
+            type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
         },
-        stickyHeader: {
+        serverMode: {
             type: Boolean,
             default: false,
         },
@@ -131,10 +140,25 @@ export default defineComponent({
                 return true;
             },
         },
+        page: {
+            type: Number as PropType<number>, // 0-based page index
+        },
+        pageSize: {
+            type: Number as PropType<number>,
+        },
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'search', 'update:selectedItems'],
+    emits: [
+        'click-cell',
+        'select-row',
+        'expand-row',
+        'search',
+        'paginate',
+        'update:selectedItems',
+        'update:page',
+        'update:pageSize',
+    ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, search } = toRefs(props);
+        const { colorScheme, styleSet, responsive } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -151,7 +175,11 @@ export default defineComponent({
         const stickyHeaderTop = ref('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
-        const table: TableComposable = useTable(props, { searchInputRef }, { updateSelectedItems });
+        const table: TableComposable = useTable(
+            props,
+            { searchInputRef },
+            { updateSelectedItems, updatePage, updatePageSize },
+        );
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
@@ -169,12 +197,7 @@ export default defineComponent({
             'vs-table-responsive': responsive.value,
         }));
 
-        const searchOptions = computed<VsTableSearchOptions>(() => {
-            if (typeof search.value === 'boolean') {
-                return TABLE_SEARCH_OPTIONS;
-            }
-            return { ...TABLE_SEARCH_OPTIONS, ...search.value };
-        });
+        const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
             headerRef,
@@ -204,8 +227,18 @@ export default defineComponent({
             emit('search', items, searchText);
         }
 
+        function paginate(nextPage: number): void {
+            emit('paginate', nextPage, table.pageSize.value);
+        }
+
         function updateSelectedItems(items: Item[]): void {
             emit('update:selectedItems', items);
+        }
+        function updatePage(page: number): void {
+            emit('update:page', page);
+        }
+        function updatePageSize(pageSize: number): void {
+            emit('update:pageSize', pageSize);
         }
 
         onBeforeMount(() => {
@@ -223,14 +256,18 @@ export default defineComponent({
             headerRef,
             headerSlots,
             bodySlots,
-            searchOptions,
             headerInvisible,
             stickyHeaderTop,
+            searchOptions,
+            table,
             clickCell,
             selectRow,
             expandRow,
             searchRows,
+            paginate,
             updateSelectedItems,
+            updatePage,
+            updatePageSize,
         };
     },
 });

@@ -4,6 +4,7 @@ import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { BodyCell, HeaderCell, Item } from './../types';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
@@ -21,6 +22,16 @@ const defaultGlobal = {
         'vs-checkbox': true,
         'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
         'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
+        'vs-pagination': {
+            props: ['modelValue', 'length', 'showingLength', 'edgeButtons'],
+            emits: ['update:modelValue', 'change'],
+            template:
+                '<button data-testid="vs-pagination" @click="$emit(\'update:modelValue\', modelValue + 1); $emit(\'change\', modelValue + 1)">Pagination</button>',
+        },
+        'vs-select': {
+            props: ['modelValue', 'options'],
+            template: '<select data-testid="vs-select" ></select>',
+        },
     },
 };
 
@@ -175,6 +186,135 @@ describe('VsTable', () => {
             expect(cells).toHaveLength(defaultColumns.length);
             expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
             expect(cells[0].item).toStrictEqual(tableItems[0]);
+        });
+    });
+
+    describe('pagination', () => {
+        it('pagination을 활성화하면 페이지네이션과 페이지 크기 셀렉터를 렌더링한다', async () => {
+            const wrapper = mountTable({
+                props: { pagination: true },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="vs-select"]').exists()).toBe(true);
+        });
+
+        it('vs-pagination change 이벤트를 paginate로 전달한다', async () => {
+            const wrapper = mountTable({
+                props: { pagination: true },
+            });
+
+            await nextTick();
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+
+            const emitted = wrapper.emitted('paginate');
+            expect(emitted).toHaveLength(1);
+            const [page, pageSize] = emitted![0] as [number, number];
+            expect(page).toBe(1);
+            expect(pageSize).toBe(DEFAULT_PAGE_SIZE);
+        });
+
+        describe('server mode', () => {
+            it('서버 모드를 활성화하면 totalItemCount 기반으로 pagination을 렌더링한다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            totalItemCount: 500,
+                        },
+                        serverMode: true,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.find('[data-testid="vs-pagination"]').exists()).toBe(true);
+                expect(wrapper.findAll('tbody tr')).toHaveLength(10);
+            });
+
+            it('서버 모드에서 페이지 변경 시 paginate 이벤트를 발생시킨다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            totalItemCount: 100,
+                        },
+                        serverMode: true,
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+                await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+
+                const emitted = wrapper.emitted('paginate');
+                expect(emitted).toHaveLength(1);
+                const [page, pageSize] = emitted![0] as [number, number];
+                expect(page).toBe(1);
+                expect(pageSize).toBe(10);
+            });
+
+            it('서버 모드에서 totalItemCount가 없으면 에러가 발생한다', async () => {
+                const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: true,
+                        serverMode: true,
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeTruthy();
+            });
+
+            it('서버 모드에서는 client-side pagination을 수행하지 않고 모든 items를 렌더링한다', async () => {
+                const serverItems = Array.from({ length: 15 }, (_, i) => ({
+                    id: `${i}`,
+                    name: `User ${i}`,
+                    age: 20 + i,
+                }));
+
+                const wrapper = mountTable({
+                    props: {
+                        items: serverItems,
+                        pagination: {
+                            totalItemCount: 150,
+                        },
+                        serverMode: true,
+                        page: 1,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(wrapper.findAll('tbody tr')).toHaveLength(15);
+            });
         });
     });
 
@@ -349,6 +489,69 @@ describe('VsTable', () => {
 
             expect(wrapper.emitted('update:selectedItems')).toHaveLength(1);
             expect(wrapper.emitted('update:selectedItems')![0]).toEqual([tableItems]);
+        });
+
+        it('page prop을 사용하여 초기 페이지를 설정한다', async () => {
+            const largeItems = Array.from({ length: 100 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: largeItems,
+                    pagination: { pageSize: 10 },
+                    page: 2,
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.props('page')).toBe(2);
+        });
+
+        it('vs-pagination 변경 시 update:page 이벤트를 발생시킨다', async () => {
+            const largeItems = Array.from({ length: 100 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: largeItems,
+                    pagination: true,
+                    page: 0,
+                },
+            });
+
+            await nextTick();
+
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await nextTick();
+
+            const emitted = wrapper.emitted('update:page');
+            expect(emitted).toBeDefined();
+            expect(emitted!.length).toBeGreaterThan(0);
+        });
+
+        it('초기 page와 pageSize가 반영되어 해당 페이지 아이템을 렌더링한다', async () => {
+            const items = Array.from({ length: 30 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i + 1}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: { pagination: true, pageSize: 10, page: 2, items },
+            });
+
+            await nextTick();
+
+            const cells = bodyTextsOf(wrapper);
+            expect(cells[0]).toBe('User 21'); // page=2, pageSize=10 → 21번째 아이템부터
+            expect(wrapper.emitted('update:page')).toBeUndefined();
         });
     });
 });

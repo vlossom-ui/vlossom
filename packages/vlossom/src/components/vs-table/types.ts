@@ -9,10 +9,14 @@ declare module 'vue' {
 
 export interface VsTableStyleSet {}
 
-export interface VsTableSearchOptions {
-    placeholder?: string;
-    useCaseSensitive?: boolean;
-    useRegex?: boolean;
+export type VsTablePageSizeOptions = { label: string; value: number }[];
+export interface VsTablePaginationOptions {
+    pageSizeOptions?: VsTablePageSizeOptions;
+    showPageSizeSelect?: boolean;
+    showingLength?: number;
+    edgeButtons?: boolean;
+    showTotal?: boolean;
+    totalItemCount?: number; // required when serverMode is true
 }
 
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
