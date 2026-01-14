@@ -24,6 +24,13 @@ const baseItems = [
 
 const customSelectableRow: RowOption = { selectable: (item: any) => item.name !== 'Jane' };
 
+const paginationItems = Array.from({ length: 120 }, (_, i) => ({
+    id: `${i}`,
+    name: `User ${i + 1}`,
+    age: 20 + (i % 40),
+    metadata: { email: `user${i + 1}@example.com` },
+}));
+
 const meta: Meta<typeof VsTable> = {
     title: 'Chromatic/Base Components/VsTable',
     component: VsTable,
@@ -64,6 +71,7 @@ export const VisualRegressionMatrix: Story = {
                 baseItems,
                 customSelectableRow,
                 sortableColumns,
+                paginationItems,
                 oddRowIndexes,
                 janesEmailEditingMode,
                 toggleJaneEmailEditingMode,
@@ -131,6 +139,30 @@ export const VisualRegressionMatrix: Story = {
                         ]"
                         :items="baseItems"
                         :search="{ placeholder: 'Search by name', useCaseSensitive: false, useRegex: true }"
+                    />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>페이지네이션 기본</h3>
+                    <vs-table :columns="sortableColumns" :items="paginationItems" pagination />
+                </section>
+
+                <section class="chromatic-section">
+                    <h3>페이지네이션 커스텀 (edge 버튼 + showingLength 5)</h3>
+                    <vs-table
+                        :columns="sortableColumns"
+                        :items="paginationItems"
+                        :pagination="{
+                            pageSize: 20,
+                            pageSizeOptions: [
+                                { label: '10 items', value: 10 },
+                                { label: '20 items', value: 20 },
+                                { label: '50 items', value: 50 }
+                            ],
+                            showingLength: 5,
+                            edgeButtons: true,
+                            showTotal: true
+                        }"
                     />
                 </section>
 
