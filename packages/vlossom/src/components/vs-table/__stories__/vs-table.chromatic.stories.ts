@@ -229,6 +229,11 @@ export const VisualRegressionMatrix: Story = {
                         </template>
                     </vs-table>
                 </section>
+
+                <section class="chromatic-section">
+                    <h3>로딩 상태</h3>
+                    <vs-table :columns="baseColumns" :items="baseItems" pagination loading search />
+                </section>
             </div>
         `,
     }),

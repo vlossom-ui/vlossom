@@ -1,5 +1,5 @@
 <template>
-    <tbody>
+    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="'12.5rem'">
         <template v-if="bodyCells.length">
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
                 <tr>
@@ -15,9 +15,12 @@
                         :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                         @click.prevent.stop="clickCell(cell, $event)"
                     >
-                        <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                            {{ cell.value }}
-                        </slot>
+                        <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
+                        <template v-else>
+                            <slot :name="findMatchingSlotName(cell)" :item="cell.item">
+                                {{ cell.value }}
+                            </slot>
+                        </template>
                     </td>
                     <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
                 </tr>
@@ -41,7 +44,7 @@
                 </td>
             </tr>
         </template>
-    </tbody>
+    </vs-visible-render>
 </template>
 
 <script lang="ts">
@@ -52,6 +55,8 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
+import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
+import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
 import VsTableSelectCell from './VsTableSelectCell.vue';
@@ -59,13 +64,18 @@ import VsTableSelectCell from './VsTableSelectCell.vue';
 export default defineComponent({
     components: {
         VsRender,
+        VsSkeleton,
+        VsVisibleRender,
         VsTableExpandCell,
         VsTableExpandedPanel,
         VsTableSelectCell,
     },
+    props: {
+        virtualScroll: { type: Boolean, default: false },
+    },
     emits: ['click-cell', 'select-row', 'expand-row'],
-    setup(_props, { emit, slots }) {
-        const { bodyCells, anyExpandable, headerCells } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+    setup(props, { emit, slots }) {
+        const { bodyCells, anyExpandable, headerCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -89,6 +99,9 @@ export default defineComponent({
         }
 
         function getHeaderLabel(colIdx: number, fallback: string): string {
+            if (loading?.value) {
+                return '_';
+            }
             const header = headerCells.value?.[colIdx];
             if (!header) {
                 return fallback;
@@ -108,6 +121,7 @@ export default defineComponent({
         return {
             bodyCells,
             anyExpandable,
+            loading,
             tableIcons,
             clickCell,
             findMatchingSlotName,

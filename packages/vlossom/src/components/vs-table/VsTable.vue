@@ -5,6 +5,7 @@
             ref="searchInputRef"
             class="vs-table-search-input"
             v-bind="searchOptions"
+            :disabled="loading"
             @search="searchRows"
         />
 
@@ -28,7 +29,7 @@
                     <slot :name v-bind="slotData || {}" />
                 </template>
             </vs-table-header>
-            <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
+            <vs-table-body :virtual-scroll @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
                 <template v-for="name in bodySlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
@@ -100,14 +101,11 @@ export default defineComponent({
                 return true;
             },
         },
-        responsive: {
-            type: Boolean,
-            default: false,
-        },
-        stickyHeader: {
-            type: Boolean,
-            default: false,
-        },
+        responsive: { type: Boolean, default: false },
+        stickyHeader: { type: Boolean, default: false },
+        loading: { type: Boolean, default: false },
+        serverMode: { type: Boolean, default: false },
+        virtualScroll: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -118,10 +116,6 @@ export default defineComponent({
         },
         pagination: {
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
-            default: false,
-        },
-        serverMode: {
-            type: Boolean,
             default: false,
         },
         // v-model
@@ -140,12 +134,8 @@ export default defineComponent({
                 return true;
             },
         },
-        page: {
-            type: Number as PropType<number>, // 0-based page index
-        },
-        pageSize: {
-            type: Number as PropType<number>,
-        },
+        page: { type: Number as PropType<number> }, // 0-based page index
+        pageSize: { type: Number as PropType<number> },
     },
     emits: [
         'click-cell',

@@ -4,7 +4,8 @@
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 small
-                :style-set="{ padding: '0' }"
+                :disabled="loading"
+                :style-set="{ padding: '0', height: '100%', width: '100%' }"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <vs-render
@@ -39,14 +40,11 @@ export default defineComponent({
             type: Array as PropType<Cell[]>,
             default: () => [],
         },
-        rowIdx: {
-            type: Number,
-            default: 0,
-        },
+        rowIdx: { type: Number, default: 0 },
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { anyExpandable, isExpanded, expandable, toggleExpand, items } =
+        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function isExpandable(cells: BodyCell[], rowIdx: number): boolean {
@@ -67,6 +65,7 @@ export default defineComponent({
             isExpanded,
             expandRow,
             tableIcons,
+            loading,
         };
     },
 });
