@@ -9,8 +9,8 @@ describe('useInputForm', () => {
     let id: Ref<string>;
     let valid: Ref<boolean>;
     let changed: Ref<boolean>;
-    let validateSpy: ReturnType<typeof vi.fn<() => boolean>>;
-    let clearSpy: ReturnType<typeof vi.fn<() => void>>;
+    let validateSpy: ReturnType<typeof vi.fn>;
+    let clearSpy: ReturnType<typeof vi.fn>;
     let TestComponent: ReturnType<typeof defineComponent>;
 
     beforeEach(() => {

@@ -237,7 +237,7 @@ describe('VsTextWrap', () => {
 
         beforeEach(() => {
             mockedOpen = vi.fn();
-            window.open = mockedOpen as typeof window.open;
+            window.open = mockedOpen;
             consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         });
 
