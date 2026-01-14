@@ -1,36 +1,65 @@
 <template>
-    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="'12.5rem'">
+    <!-- draggable 활성화 시 -->
+    <draggable
+        v-if="draggable"
+        tag="tbody"
+        :data-draggable="!loading"
+        v-model="displayedBodyCells"
+        :item-key="getRowKey"
+        :disabled="loading"
+        :animation="150"
+        ghost-class="vs-table-row-ghost"
+        drag-class="vs-table-row-drag"
+        :scroll="true"
+        :scroll-sensitivity="100"
+        :scroll-speed="10"
+        :force-fallback="false"
+        @update="handleDragUpdate"
+    >
+        <template #item="{ element: cells, index: rowIdx }">
+            <vs-table-body-row
+                :cells
+                :rowIdx
+                @click-cell="clickCell"
+                @select-row="selectRow"
+                @expand-row="expandRow"
+            >
+                <!-- 모든 slot을 VsTableBodyRow로 전달 -->
+                <template v-for="name in Object.keys($slots)" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-body-row>
+        </template>
+
+        <!-- NO DATA 처리 -->
+        <template v-if="displayedBodyCells.length === 0">
+            <tr>
+                <td colspan="100%" class="h-52">
+                    <div class="flex flex-col items-center justify-center text-gray-700">
+                        <vs-render :content="tableIcons.noData" />
+                        <p class="text-xl font-bold">NO DATA</p>
+                    </div>
+                </td>
+            </tr>
+        </template>
+    </draggable>
+
+    <!-- 기존 vs-visible-render (draggable 비활성화 시) -->
+    <vs-visible-render v-else tag="tbody" :disabled="!virtualScroll" :root-margin="'12.5rem'">
         <template v-if="bodyCells.length">
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
-                <tr>
-                    <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
-                        <template #select="{ cells, rowIdx }">
-                            <slot name="select" :cells :rowIdx />
-                        </template>
-                    </vs-table-select-cell>
-                    <td
-                        v-for="cell in cells"
-                        :id="cell.id"
-                        :key="cell.id"
-                        :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
-                        @click.prevent.stop="clickCell(cell, $event)"
-                    >
-                        <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
-                        <template v-else>
-                            <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                                {{ cell.value }}
-                            </slot>
-                        </template>
-                    </td>
-                    <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-                </tr>
-                <tr v-if="anyExpandable">
-                    <vs-table-expanded-panel :cells :rowIdx>
-                        <template #expand="{ cells, rowIdx }">
-                            <slot name="expand" :cells :rowIdx />
-                        </template>
-                    </vs-table-expanded-panel>
-                </tr>
+                <vs-table-body-row
+                    :cells
+                    :rowIdx
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                >
+                    <!-- 모든 slot을 VsTableBodyRow로 전달 -->
+                    <template v-for="name in Object.keys($slots)" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body-row>
             </template>
         </template>
 
@@ -49,64 +78,34 @@
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
-import { stringUtil } from '@/utils';
-import { type BodyCell, getRowId, getRowItem } from './types';
+import { type BodyCell, type DragPayload, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import draggable from 'vuedraggable/src/vuedraggable';
+import type { SortableEvent } from 'sortablejs';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
-import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
-import VsTableExpandCell from './VsTableExpandCell.vue';
-import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
-import VsTableSelectCell from './VsTableSelectCell.vue';
+import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
         VsRender,
-        VsSkeleton,
         VsVisibleRender,
-        VsTableExpandCell,
-        VsTableExpandedPanel,
-        VsTableSelectCell,
+        VsTableBodyRow,
+        draggable,
     },
     props: {
         virtualScroll: { type: Boolean, default: false },
+        draggable: { type: Boolean, default: false },
     },
-    emits: ['click-cell', 'select-row', 'expand-row'],
-    setup(props, { emit, slots }) {
-        const { bodyCells, anyExpandable, headerCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-
-        function findMatchingSlotName(cell: BodyCell): string {
-            const { id, colIdx, rowIdx, colKey } = cell;
-
-            const candidatePriority = [
-                `body-${id}`,
-                `body-${stringUtil.kebabCase(colKey)}`,
-                `body-col${colIdx}-row${rowIdx}`,
-                `body-row${rowIdx}`,
-                `body-col${colIdx}`,
-                'body',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
-
-            return candidatePriority[0] || '';
-        }
+    emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
+    setup(props, { emit }) {
+        const { bodyCells, displayedBodyCells, createDragPayload, loading } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
-        }
-
-        function getHeaderLabel(colIdx: number, fallback: string): string {
-            if (loading?.value) {
-                return '_';
-            }
-            const header = headerCells.value?.[colIdx];
-            if (!header) {
-                return fallback;
-            }
-            return String(header.value ?? fallback);
         }
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
@@ -118,18 +117,29 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
+        function handleDragUpdate(event: SortableEvent): void {
+            const payload = createDragPayload(event);
+            if (payload) {
+                emit('drag', payload);
+            }
+        }
+
+        function getRowKey(cells: BodyCell[]): string {
+            return getRowId(cells) || `row-${cells[0]?.rowIdx}`;
+        }
+
         return {
             bodyCells,
-            anyExpandable,
+            displayedBodyCells,
             loading,
             tableIcons,
             clickCell,
-            findMatchingSlotName,
             getRowItem,
             getRowId,
+            getRowKey,
             selectRow,
             expandRow,
-            getHeaderLabel,
+            handleDragUpdate,
         };
     },
 });

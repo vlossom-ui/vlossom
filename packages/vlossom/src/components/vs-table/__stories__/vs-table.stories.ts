@@ -520,3 +520,92 @@ export const Loading: Story = {
         },
     },
 };
+
+export const Draggable: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = ref([...baseItems]);
+            const dragHistory = ref<string[]>([]);
+
+            const handleDrag = (payload: { from: number; to: number; fromItem: Item; toItem: Item }) => {
+                const message = `Dragged "${payload.fromItem.name}" (index ${payload.from}) to "${payload.toItem.name}" (index ${payload.to})`;
+                dragHistory.value.unshift(message);
+
+                // 실제 데이터 순서 변경 (선택사항)
+                const [item] = items.value.splice(payload.from, 1);
+                items.value.splice(payload.to, 0, item);
+            };
+
+            return { baseColumns, items, dragHistory, handleDrag };
+        },
+        template: `
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-semibold mb-2">드래그 가능한 테이블</h3>
+                    <p class="text-sm text-slate-600 mb-4">행을 드래그하여 순서를 변경할 수 있습니다. view만 변경되며 실제 데이터는 이벤트 핸들러에서 수동으로 업데이트해야 합니다.</p>
+                    <vs-table
+                        :columns="baseColumns"
+                        :items="items"
+                        :draggable="true"
+                        @drag="handleDrag"
+                    />
+                </div>
+                <div v-if="dragHistory.length > 0" class="bg-slate-50 p-4 rounded">
+                    <h4 class="font-semibold mb-2">드래그 히스토리</h4>
+                    <ul class="text-sm text-slate-700 space-y-1">
+                        <li v-for="(entry, idx) in dragHistory.slice(0, 5)" :key="idx">
+                            {{ idx + 1 }}. {{ entry }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'draggable을 true로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다. drag 이벤트를 통해 from/to 인덱스와 아이템 정보를 받을 수 있습니다.',
+            },
+        },
+    },
+};
+
+export const DraggableWithPagination: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = ref(paginationItems);
+
+            const handleDrag = (payload: { from: number; to: number; fromItem: Item; toItem: Item }) => {
+                console.log('Dragged:', payload);
+
+                // 글로벌 인덱스로 전체 데이터 배열에서 순서 변경
+                const [item] = items.value.splice(payload.from, 1);
+                items.value.splice(payload.to, 0, item);
+            };
+
+            return { sortableColumns, items, handleDrag };
+        },
+        template: `
+            <div class="space-y-2">
+                <p class="text-sm text-slate-600">페이지네이션과 함께 사용할 때도 글로벌 인덱스를 반환합니다.</p>
+                <vs-table
+                    :columns="sortableColumns"
+                    :items="items"
+                    :draggable="true"
+                    :pagination="true"
+                    :page-size="20"
+                    @drag="handleDrag"
+                />
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: '페이지네이션이 활성화된 상태에서도 드래그 기능을 사용할 수 있습니다. from/to 인덱스는 전체 items 배열 기준 글로벌 인덱스입니다.',
+            },
+        },
+    },
+};

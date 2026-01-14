@@ -65,7 +65,9 @@
         "change-case": "^5.4.4",
         "nanoid": "^5.1.6",
         "radash": "^12.1.1",
-        "vue": "^3.5.26"
+        "sortablejs": "^1.15.0",
+        "vue": "^3.5.26",
+        "vuedraggable": "^4.1.0"
     },
     "devDependencies": {
         "@chromatic-com/storybook": "4.1.3",

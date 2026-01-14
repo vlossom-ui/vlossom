@@ -29,7 +29,14 @@
                     <slot :name v-bind="slotData || {}" />
                 </template>
             </vs-table-header>
-            <vs-table-body :virtual-scroll @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
+            <vs-table-body
+                :virtual-scroll
+                :draggable
+                @click-cell="clickCell"
+                @select-row="selectRow"
+                @expand-row="expandRow"
+                @drag="dragRow"
+            >
                 <template v-for="name in bodySlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
@@ -67,6 +74,7 @@ import {
     type Item,
     type VsTableStyleSet,
     type VsTablePaginationOptions,
+    type DragPayload,
     getRowItem,
 } from './types';
 
@@ -114,6 +122,10 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
+        draggable: {
+            type: Boolean,
+            default: false,
+        },
         pagination: {
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
@@ -141,6 +153,7 @@ export default defineComponent({
         'click-cell',
         'select-row',
         'expand-row',
+        'drag',
         'search',
         'paginate',
         'update:selectedItems',
@@ -210,6 +223,10 @@ export default defineComponent({
 
         function expandRow(row: BodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
+        }
+
+        function dragRow(payload: DragPayload): void {
+            emit('drag', payload);
         }
 
         function searchRows(searchText: string): void {

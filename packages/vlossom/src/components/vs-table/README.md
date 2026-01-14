@@ -244,6 +244,41 @@
 
 > `loading`이 `true`이면 테이블 셀에 스켈레톤 UI가 표시되고, 검색 입력이 비활성화됩니다.
 
+### 드래그 가능한 행 (Draggable)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="items"
+        :draggable="true"
+        @drag="handleDrag"
+    />
+</template>
+
+<script setup>
+const items = ref([...baseItems]);
+
+const handleDrag = (payload) => {
+    console.log('From:', payload.from, 'To:', payload.to);
+    console.log('Dragged item:', payload.fromItem);
+    console.log('Target item:', payload.toItem);
+
+    // 실제 데이터 순서 변경 (선택사항)
+    const [item] = items.value.splice(payload.from, 1);
+    items.value.splice(payload.to, 0, item);
+};
+</script>
+```
+
+> `draggable`을 `true`로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다. view만 변경되며, 실제 데이터는 `drag` 이벤트 핸들러에서 수동으로 업데이트해야 합니다.
+
+**주의사항:**
+- `draggable`과 `virtualScroll`은 함께 사용할 수 없습니다. (드래그 시 모든 DOM 요소가 필요하기 때문)
+- 페이지네이션과 함께 사용 시, `from`/`to` 인덱스는 전체 `items` 배열 기준 글로벌 인덱스입니다.
+- 필터나 정렬을 변경하면 드래그 순서가 자동으로 초기화됩니다.
+- 드래그 중에는 부드러운 애니메이션(150ms)이 적용되며, ghost 및 drag 상태에 대한 스타일을 제공합니다.
+
 ## Props
 
 | Prop                     | Type                                           | Default | Required | Description                                                                                                           |
@@ -261,6 +296,7 @@
 | `loading`                | `boolean`                                      | false   | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                |
 | `serverMode`             | `boolean`                                      | false   | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시 |
 | `virtualScroll`          | `boolean`                                      | false   | -        | 가상 스크롤 활성화. 대용량 데이터의 렌더링 성능 최적화                                                                |
+| `draggable`              | `boolean`                                      | false   | -        | 행 드래그 활성화. 드래그로 view 순서를 변경하고 `drag` 이벤트로 인덱스 정보를 받음 (**virtualScroll과 함께 사용 불가**)|
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
 | `page`(v-model)          | `number`                                       | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
 | `pageSize` (v-model)     | `number`                                       | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
@@ -310,6 +346,13 @@ interface BodyCell<I = Item> extends Cell<I> {
     tag: 'td';
     item: I;
 }
+
+interface DragPayload {
+    from: number;        // 드래그 시작 위치의 글로벌 인덱스
+    to: number;          // 드래그 종료 위치의 글로벌 인덱스
+    fromItem: Item;      // 드래그된 아이템
+    toItem: Item;        // 드래그 목적지의 아이템
+}
 ```
 
 ## Slots
@@ -342,6 +385,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 | `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
 | `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
 | `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
+| `drag`       | `(payload: DragPayload)`                   | 행 드래그 완료 시 from/to 인덱스 및 아이템 정보 반환 |
 | `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
 | `paginate`   | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
 
@@ -358,3 +402,4 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **행 검색**: `search` 옵션으로 검색 입력을 제공하고, `skipSearch`로 제외 컬럼을 제어
 - **가상 스크롤**: `virtualScroll` 옵션으로 대용량 데이터셋의 렌더링 성능을 최적화하고 메모리 사용량 감소
 - **로딩 상태**: `loading` prop으로 스켈레톤 UI를 표시하여 데이터 로딩 중 사용자 경험 향상
+- **드래그 가능한 행**: `draggable` prop으로 행을 드래그하여 순서를 변경할 수 있으며, `drag` 이벤트로 인덱스 및 아이템 정보를 받아 실제 데이터를 업데이트할 수 있음. 부드러운 애니메이션과 시각적 피드백 제공

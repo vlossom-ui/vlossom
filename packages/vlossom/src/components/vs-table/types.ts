@@ -102,3 +102,18 @@ export function getRowId(row: BodyCell[]): string | undefined {
     }
     return item.id;
 }
+
+/**
+ * 드래그 이벤트 payload
+ *
+ * @property from - 드래그 시작 위치의 글로벌 인덱스 (전체 items 배열 기준)
+ * @property to - 드래그 종료 위치의 글로벌 인덱스 (전체 items 배열 기준)
+ * @property fromItem - 드래그된 아이템
+ * @property toItem - 드래그 목적지의 아이템
+ */
+export interface DragPayload {
+    from: number;
+    to: number;
+    fromItem: Item;
+    toItem: Item;
+}

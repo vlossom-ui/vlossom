@@ -1,4 +1,13 @@
-import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
+import {
+    computed,
+    ref,
+    toRefs,
+    watch,
+    type ComputedRef,
+    type Ref,
+    type TemplateRef,
+    type WritableComputedRef,
+} from 'vue';
 import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
@@ -19,6 +28,7 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
+import { useTableDrag } from './table-drag-composable';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
@@ -176,6 +186,9 @@ export function useTable(
             .slice(pageStartIndex.value, pageEndIndex.value);
     });
 
+    // Drag composable 통합
+    const drag = useTableDrag(bodyCells, pageStartIndex);
+
     function initCells(cellMatrix: Cell[][]): void {
         const [header, ...body] = cellMatrix;
         const nextHeaderCells = [...header] as HeaderCell[];
@@ -238,6 +251,8 @@ export function useTable(
         totalItems,
         pageStartIndex,
         pageEndIndex,
+        // Drag composable
+        ...drag,
     };
 }
 
@@ -270,4 +285,9 @@ export type TableComposable = {
     updateSortType: (headerKey: string) => void;
     initialize: () => void;
     toggleSelectAll: () => void;
+    // Drag composable
+    displayOrder: Ref<number[]>;
+    displayedBodyCells: WritableComputedRef<BodyCell[][]>;
+    createDragPayload: (event: import('sortablejs').SortableEvent) => import('../types').DragPayload | null;
+    resetDisplayOrder: () => void;
 };
