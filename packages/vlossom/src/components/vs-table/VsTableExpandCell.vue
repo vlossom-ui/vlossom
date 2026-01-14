@@ -40,10 +40,7 @@ export default defineComponent({
             type: Array as PropType<Cell[]>,
             default: () => [],
         },
-        rowIdx: {
-            type: Number,
-            default: 0,
-        },
+        rowIdx: { type: Number, default: 0 },
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {

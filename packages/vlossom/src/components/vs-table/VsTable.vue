@@ -107,14 +107,11 @@ export default defineComponent({
                 return true;
             },
         },
-        responsive: {
-            type: Boolean,
-            default: false,
-        },
-        stickyHeader: {
-            type: Boolean,
-            default: false,
-        },
+        responsive: { type: Boolean, default: false },
+        stickyHeader: { type: Boolean, default: false },
+        loading: { type: Boolean, default: false },
+        serverMode: { type: Boolean, default: false },
+        virtualScroll: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -123,26 +120,11 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
         },
-        loading: {
-            type: Boolean,
-            default: false,
-        },
         pagination: {
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
         },
-        serverMode: {
-            type: Boolean,
-            default: false,
-        },
-        virtualScroll: {
-            type: Boolean,
-            default: false,
-        },
-        virtualScrollRootMargin: {
-            type: String,
-            default: '200px',
-        },
+        virtualScrollRootMargin: { type: String, default: '200px' },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
@@ -159,12 +141,8 @@ export default defineComponent({
                 return true;
             },
         },
-        page: {
-            type: Number as PropType<number>, // 0-based page index
-        },
-        pageSize: {
-            type: Number as PropType<number>,
-        },
+        page: { type: Number as PropType<number> }, // 0-based page index
+        pageSize: { type: Number as PropType<number> },
     },
     emits: [
         'click-cell',

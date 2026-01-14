@@ -71,14 +71,8 @@ export default defineComponent({
         VsTableSelectCell,
     },
     props: {
-        virtualScroll: {
-            type: Boolean,
-            default: false,
-        },
-        virtualScrollRootMargin: {
-            type: String,
-            default: '200px',
-        },
+        virtualScroll: { type: Boolean, default: false },
+        virtualScrollRootMargin: { type: String, default: '200px' },
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {

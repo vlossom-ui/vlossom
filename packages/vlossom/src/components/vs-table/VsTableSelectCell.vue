@@ -44,10 +44,7 @@ export default defineComponent({
             type: Array as PropType<Cell[]>,
             default: () => [],
         },
-        rowIdx: {
-            type: Number,
-            default: 0,
-        },
+        rowIdx: { type: Number, default: 0 },
     },
     emits: ['select-row'],
     setup(_props, { emit }) {
