@@ -23,6 +23,7 @@ function setupUseTable(
         pagination?: boolean | VsTablePaginationOptions;
         page?: number;
         pageSize?: number;
+        serverMode?: boolean;
     },
     options?: { searchInputRef?: Ref<VsSearchInputRef | null> },
 ) {
