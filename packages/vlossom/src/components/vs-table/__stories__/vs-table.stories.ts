@@ -486,3 +486,37 @@ export const WithSearchSortPagination: Story = {
         },
     },
 };
+
+export const Loading: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const isLoading = ref(true);
+
+            // 3초 후 데이터 로드 시뮬레이션
+            setTimeout(() => {
+                isLoading.value = false;
+            }, 3000);
+
+            return { isLoading, baseColumns, baseItems };
+        },
+        template: `
+            <div>
+                <p class="text-sm text-slate-600 mb-2">3초 후 데이터가 로드됩니다.</p>
+                <vs-table
+                    :columns="baseColumns"
+                    :items="baseItems"
+                    :loading="isLoading"
+                    search
+                />
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'loading이 true일 때 스켈레톤 UI가 표시되고, 검색 입력이 비활성화됩니다. 3초 후 실제 데이터로 전환됩니다.',
+            },
+        },
+    },
+};

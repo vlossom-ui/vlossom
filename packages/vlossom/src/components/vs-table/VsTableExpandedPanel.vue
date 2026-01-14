@@ -1,5 +1,5 @@
 <template>
-    <td colspan="100%" class="!p-0">
+    <td colspan="100%" class="p-0!">
         <vs-expandable :open="isExpanded(cells)">
             <slot name="expand" :cells :rowIdx />
         </vs-expandable>
@@ -22,10 +22,7 @@ export default defineComponent({
             type: Array as PropType<Cell[]>,
             required: true,
         },
-        rowIdx: {
-            type: Number,
-            required: true,
-        },
+        rowIdx: { type: Number, required: true },
     },
     setup() {
         const { isExpanded } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;

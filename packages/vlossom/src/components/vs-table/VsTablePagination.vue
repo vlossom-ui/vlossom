@@ -5,6 +5,7 @@
                 v-if="pagination.showPageSizeSelect"
                 v-model="pageSize"
                 :options="pageSizeOptions"
+                :disabled="loading"
                 option-label="label"
                 option-value="value"
                 no-clear
@@ -18,6 +19,7 @@
 
         <vs-pagination
             v-model="page"
+            :disabled="loading"
             :length="totalPages"
             :showing-length="pagination.showingLength"
             :edge-buttons="pagination.edgeButtons"
@@ -38,7 +40,7 @@ export default defineComponent({
     components: { VsPagination, VsSelect },
     emits: ['paginate'],
     setup(_, { emit }) {
-        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex } =
+        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
@@ -59,6 +61,7 @@ export default defineComponent({
             pageStartIndex,
             pageEndIndex,
             paginate,
+            loading,
         };
     },
 });
