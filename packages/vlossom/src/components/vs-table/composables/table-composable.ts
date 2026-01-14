@@ -131,7 +131,7 @@ export function useTable(
                     );
                 }
             }
-            return internalPageSize.value;
+            return currentPageSize;
         },
         set: (value: number) => {
             internalPageSize.value = value;
