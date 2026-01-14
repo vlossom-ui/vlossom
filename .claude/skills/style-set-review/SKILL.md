@@ -1,8 +1,6 @@
 ---
 name: style-set-review
 description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
-tags: [style-set, review, validation]
-version: 1.0.0
 ---
 
 # Style-Set 코드 리뷰

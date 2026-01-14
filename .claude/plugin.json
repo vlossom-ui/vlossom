@@ -1,0 +1,22 @@
+{
+  "name": "vlossom-styleset",
+  "version": "1.0.0",
+  "description": "Vlossom Style-Set 개발을 위한 Claude Code 플러그인 - 최소한의 변수, 최대한의 유연성 철학 기반",
+  "skills": [
+    {
+      "name": "style-set-create",
+      "file": "skills/style-set-create/SKILL.md",
+      "description": "새로운 컴포넌트의 StyleSet을 철학에 맞게 생성"
+    },
+    {
+      "name": "style-set-review",
+      "file": "skills/style-set-review/SKILL.md",
+      "description": "Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안"
+    },
+    {
+      "name": "style-set-migrate",
+      "file": "skills/style-set-migrate/SKILL.md",
+      "description": "기존 컴포넌트를 새로운 Style-Set 시스템으로 마이그레이션"
+    }
+  ]
+}

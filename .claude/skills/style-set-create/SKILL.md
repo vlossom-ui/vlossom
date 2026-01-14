@@ -1,8 +1,6 @@
 ---
 name: style-set-create
 description: 새로운 컴포넌트의 StyleSet을 철학에 맞게 생성
-tags: [style-set, create, guide]
-version: 1.0.0
 ---
 
 # Style-Set 생성 가이드

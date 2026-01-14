@@ -1,8 +1,6 @@
 ---
 name: style-set-migrate
 description: 기존 컴포넌트를 새로운 Style-Set 시스템으로 마이그레이션
-tags: [style-set, migration, refactoring]
-version: 1.0.0
 ---
 
 # Style-Set 마이그레이션 가이드
