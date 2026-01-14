@@ -228,9 +228,9 @@ describe('VsTable', () => {
                     props: {
                         items: serverItems,
                         pagination: {
-                            mode: 'server',
                             totalItemCount: 500,
                         },
+                        serverMode: true,
                         pageSize: 10,
                     },
                 });
@@ -252,9 +252,9 @@ describe('VsTable', () => {
                     props: {
                         items: serverItems,
                         pagination: {
-                            mode: 'server',
                             totalItemCount: 100,
                         },
+                        serverMode: true,
                         page: 0,
                         pageSize: 10,
                     },
@@ -280,9 +280,8 @@ describe('VsTable', () => {
                 const wrapper = mountTable({
                     props: {
                         items: serverItems,
-                        pagination: {
-                            mode: 'server',
-                        },
+                        pagination: true,
+                        serverMode: true,
                         page: 0,
                         pageSize: 10,
                     },
@@ -304,9 +303,9 @@ describe('VsTable', () => {
                     props: {
                         items: serverItems,
                         pagination: {
-                            mode: 'server',
                             totalItemCount: 150,
                         },
+                        serverMode: true,
                         page: 1,
                         pageSize: 10,
                     },

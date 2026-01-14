@@ -214,21 +214,25 @@
 
 ## Props
 
-| Prop                     | Type                                           | Default | Required | Description                                                                       |
-| ------------------------ | ---------------------------------------------- | ------- | -------- | --------------------------------------------------------------------------------- |
-| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                                                                |
-| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체                                                           |
-| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                                                                  |
-| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                       |
-| `responsive`             | `boolean`                                      | false   | -        | 좁은 화면에서 카드형(모바일) 레이아웃                                             |
-| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션                                                            |
-| `pagination`             | `boolean \| VsTablePaginationOptions`          | false   | -        | 페이지네이션 활성화 및 옵션                                                       |
-| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수                                              |
-| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수                                              |
-| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부                                                          |
-| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                  |
-| `page`(v-model)          | `number`                                       | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다. |
-| `pageSize` (v-model)     | `number`                                       | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시)                         |
+| Prop                      | Type                                           | Default   | Required | Description                                                                                                           |
+| ------------------------- | ---------------------------------------------- | --------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`             | `ColorScheme`                                  | -         | -        | 컴포넌트 색상 테마                                                                                                    |
+| `styleSet`                | `string \| VsTableStyleSet`                    | -         | -        | 커스텀 스타일 설정 객체                                                                                               |
+| `columns`                 | `ColumnDef[] \| string[] \| null`              | `[]`      | -        | 테이블 컬럼 정의                                                                                                      |
+| `items`                   | `Item[]`                                       | -         | **Yes**  | 테이블에 표시할 아이템 배열                                                                                           |
+| `responsive`              | `boolean`                                      | false     | -        | 좁은 화면에서 카드형(모바일) 레이아웃                                                                                 |
+| `search`                  | `boolean \| VsTableSearchOptions`              | false     | -        | 검색 입력 표시 및 옵션                                                                                                |
+| `pagination`              | `boolean \| VsTablePaginationOptions`          | false     | -        | 페이지네이션 활성화 및 옵션                                                                                           |
+| `selectable`              | `boolean \| (item, index?, items?) => boolean` | false     | -        | 행 선택 활성화 또는 조건부 선택 함수                                                                                  |
+| `expandable`              | `boolean \| (item, index?, items?) => boolean` | false     | -        | 행 확장 활성화 또는 조건부 확장 함수                                                                                  |
+| `stickyHeader`            | `boolean`                                      | false     | -        | 스크롤 시 헤더 고정 여부                                                                                              |
+| `loading`                 | `boolean`                                      | false     | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                |
+| `serverMode`              | `boolean`                                      | false     | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시 |
+| `virtualScroll`           | `boolean`                                      | false     | -        | 가상 스크롤 활성화. 대용량 데이터의 렌더링 성능 최적화                                                                |
+| `virtualScrollRootMargin` | `string`                                       | `'200px'` | -        | 가상 스크롤 시 미리 렌더링할 영역의 여백                                                                              |
+| `selectedItems`(v-model)  | `Item[]`                                       | `[]`      | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
+| `page`(v-model)           | `number`                                       | -         | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
+| `pageSize` (v-model)      | `number`                                       | -         | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
 
 ## Types
 
@@ -261,8 +265,7 @@ interface VsTablePaginationOptions {
     showingLength?: number;
     edgeButtons?: boolean;
     showTotal?: boolean;
-    mode?: 'client' | 'server';
-    totalItemCount?: number; // required when mode is 'server'
+    totalItemCount?: number; // required when serverMode is true
 }
 
 interface HeaderCell extends Cell {

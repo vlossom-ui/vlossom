@@ -15,8 +15,7 @@ export interface VsTablePaginationOptions {
     showingLength?: number;
     edgeButtons?: boolean;
     showTotal?: boolean;
-    mode?: 'client' | 'server';
-    totalItemCount?: number; // required when mode is 'server'
+    totalItemCount?: number; // required when serverMode is true
 }
 
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;

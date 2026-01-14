@@ -120,6 +120,10 @@ export default defineComponent({
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
         },
+        serverMode: {
+            type: Boolean,
+            default: false,
+        },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,

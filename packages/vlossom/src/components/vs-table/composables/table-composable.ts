@@ -39,6 +39,7 @@ export function useTable(
         selectedItems: rawSelectedItems,
         search: rawSearch,
         pagination: rawPagination,
+        serverMode: rawServerMode,
         page: rawPage,
         pageSize: rawPageSize,
     } = toRefs(props);
@@ -101,6 +102,7 @@ export function useTable(
             ...rawPagination.value,
         };
     });
+    const serverMode = computed(() => rawServerMode?.value ?? false);
     const internalPage = ref(0);
     const internalPageSize = ref(DEFAULT_PAGE_SIZE);
     const page = computed<number>({
@@ -139,12 +141,13 @@ export function useTable(
         page,
         pageSize,
         totalItemsCount,
+        serverMode,
     );
     const bodyCells = computed<BodyCell[][]>(() => {
         if (objectUtil.isEmpty(pagination.value)) {
             return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
         }
-        if (pagination.value.mode === 'server') {
+        if (serverMode.value) {
             return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
         }
         return rawBodyCells.value

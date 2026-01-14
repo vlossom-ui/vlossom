@@ -2,25 +2,33 @@ import { computed, type ComputedRef, type Ref } from 'vue';
 import { logUtil } from '@/utils';
 import { VsComponent } from '@/declaration';
 import type { VsTablePaginationOptions } from '../types';
+import { DEFAULT_PAGE_SIZE_ALL } from '../constants';
 
 export function useTablePagination(
     options: ComputedRef<VsTablePaginationOptions | null>,
     page: Ref<number>,
     pageSize: Ref<number>,
     totalItemsCount: ComputedRef<number>,
+    serverMode: Ref<boolean>,
 ) {
     const pageStartIndex = computed<number>(() => {
+        if (pageSize.value === DEFAULT_PAGE_SIZE_ALL) {
+            return 0;
+        }
         return page.value * pageSize.value;
     });
 
     const totalItems = computed<number>(() => {
-        if (options.value?.mode === 'server') {
+        if (serverMode.value) {
             return options.value?.totalItemCount ?? 0;
         }
         return totalItemsCount.value;
     });
 
     const pageEndIndex = computed<number>(() => {
+        if (pageSize.value === DEFAULT_PAGE_SIZE_ALL) {
+            return totalItems.value;
+        }
         const calculatedEnd = pageStartIndex.value + pageSize.value;
         return Math.min(calculatedEnd, totalItems.value);
     });
@@ -30,12 +38,12 @@ export function useTablePagination(
         if (!options.value || currentPageSize <= 0) {
             return 1;
         }
-        if (options.value.mode === 'server') {
+        if (serverMode.value) {
             if (!options.value.totalItemCount) {
                 logUtil.propError(
                     VsComponent.VsTable,
                     'VsTablePaginationOptions',
-                    'totalItemCount is required when mode is server',
+                    'totalItemCount is required when serverMode is true',
                 );
                 return -1;
             }
