@@ -12,6 +12,7 @@
         :no-messages
         :required
         :shake
+        :style-set="componentStyleSet.wrapper"
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
             <slot name="label" />
@@ -19,7 +20,7 @@
 
         <div
             :class="['vs-file-drop', colorSchemeClass, classObj, stateClasses]"
-            :style="styleSetVariables"
+            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
             @drop.prevent.stop="handleFileDrop"
             @dragenter.prevent.stop="setDragging(true)"
             @dragover.prevent.stop="setDragging(true)"
@@ -45,14 +46,14 @@
 
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
-                    <div class="vs-file-drop-placeholder">
+                    <div class="vs-file-drop-placeholder" :style="componentStyleSet.placeholder">
                         <i class="placeholder-icon size-6">
                             <vs-render :content="attachFileIcon" />
                         </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
 
-                    <div v-if="hasValue" class="vs-file-drop-files">
+                    <div v-if="hasValue" class="vs-file-drop-files" :style="componentStyleSet.files">
                         <div
                             v-for="(file, index) in inputValue as File[]"
                             :key="`${file.name}-${index}`"
@@ -83,6 +84,7 @@
                 v-if="!noClear && hasValue && !computedReadonly && !computedDisabled"
                 type="button"
                 class="vs-file-drop-close-button"
+                :style="componentStyleSet.closeButton"
                 aria-label="Clear"
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
@@ -162,19 +164,7 @@ export default defineComponent({
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const additionalStyleSet = computed(() => {
-            return objectUtil.shake({
-                width:
-                    width.value === undefined || objectUtil.isObject(width.value)
-                        ? undefined
-                        : stringUtil.toStringSize(width.value as string | number),
-                height:
-                    height.value === undefined || objectUtil.isObject(height.value)
-                        ? undefined
-                        : stringUtil.toStringSize(height.value as string | number),
-            });
-        });
-        const { styleSetVariables } = useStyleSet<VsFileDropStyleSet>(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(componentName, styleSet);
         const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useVsFileDropRules(
             required,
             max,
@@ -362,6 +352,7 @@ export default defineComponent({
             computedReadonly,
             shake,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             classObj,
             stateClasses,
