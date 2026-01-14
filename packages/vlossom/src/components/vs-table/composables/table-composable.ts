@@ -42,6 +42,7 @@ export function useTable(
         serverMode: rawServerMode,
         page: rawPage,
         pageSize: rawPageSize,
+        loading,
     } = toRefs(props);
 
     // normalize
@@ -217,6 +218,7 @@ export function useTable(
         expandable,
         headerCells,
         bodyCells,
+        loading,
         anyExpandable,
         isExpanded,
         toggleExpand,
@@ -254,6 +256,7 @@ export type TableComposable = {
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
+    loading: Ref<boolean | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
     page: ComputedRef<number>;
