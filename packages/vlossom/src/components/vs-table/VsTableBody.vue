@@ -1,5 +1,5 @@
 <template>
-    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="virtualScrollRootMargin">
+    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="'12.5rem'">
         <template v-if="bodyCells.length">
             <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
                 <tr>
@@ -72,7 +72,6 @@ export default defineComponent({
     },
     props: {
         virtualScroll: { type: Boolean, default: false },
-        virtualScrollRootMargin: { type: String, default: '200px' },
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {

@@ -29,13 +29,7 @@
                     <slot :name v-bind="slotData || {}" />
                 </template>
             </vs-table-header>
-            <vs-table-body
-                :virtual-scroll
-                :virtual-scroll-root-margin
-                @click-cell="clickCell"
-                @select-row="selectRow"
-                @expand-row="expandRow"
-            >
+            <vs-table-body :virtual-scroll @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
                 <template v-for="name in bodySlots" #[name]="slotData">
                     <slot :name v-bind="slotData || {}" />
                 </template>
@@ -124,7 +118,6 @@ export default defineComponent({
             type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
             default: false,
         },
-        virtualScrollRootMargin: { type: String, default: '200px' },
         // v-model
         selectedItems: {
             type: Array as PropType<Item[]>,
