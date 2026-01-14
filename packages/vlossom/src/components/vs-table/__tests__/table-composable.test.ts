@@ -1,9 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { nextTick, reactive, ref, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
-import { useTable } from '../composables/table-composable';
-import { SortType, type BodyCell, type ColumnDef, type HeaderCell, type Item } from '../types';
 import type { VsSearchInputRef } from '@/components';
+
+import { useTable } from '../composables/table-composable';
+import {
+    SortType,
+    type BodyCell,
+    type ColumnDef,
+    type HeaderCell,
+    type Item,
+    type VsTablePaginationOptions,
+} from '../types';
+import { DEFAULT_PAGE_SIZE } from '../constants';
 
 function setupUseTable(
     props: {
@@ -11,6 +20,10 @@ function setupUseTable(
         items: Item[];
         selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
         expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+        pagination?: boolean | VsTablePaginationOptions;
+        page?: number;
+        pageSize?: number;
+        serverMode?: boolean;
     },
     options?: { searchInputRef?: Ref<VsSearchInputRef | null> },
 ) {
@@ -160,6 +173,252 @@ describe('useTable', () => {
 
         const filteredNames = table.bodyCells.value.map((row) => row[1].value);
         expect(filteredNames).toEqual(['XYZ 사용자']);
+    });
+
+    describe('pagination', () => {
+        it('기본 옵션으로 페이지당 50개를 노출하고 총 페이지를 계산한다', async () => {
+            const items = Array.from({ length: 120 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+            const { table } = setupUseTable({
+                columns: ['name'],
+                items,
+                pagination: true,
+            });
+
+            await nextTick();
+
+            expect(table.pageSize.value).toBe(DEFAULT_PAGE_SIZE);
+            expect(table.bodyCells.value).toHaveLength(DEFAULT_PAGE_SIZE);
+            expect(table.totalPages.value).toBe(3);
+        });
+
+        it('커스텀 옵션을 적용하고 페이지 크기 변경 시 현재 페이지를 초기화한다', async () => {
+            const items = Array.from({ length: 60 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+            const { table, reactiveProps } = setupUseTable({
+                columns: ['name'],
+                items,
+                pagination: {
+                    pageSizeOptions: [
+                        { label: '20 items', value: 20 },
+                        { label: '50 items', value: 50 },
+                        { label: '100 items', value: 100 },
+                    ],
+                    showingLength: 5,
+                    edgeButtons: true,
+                    showTotal: false,
+                },
+                pageSize: 20,
+            });
+
+            await nextTick();
+
+            expect(table.pageSize.value).toBe(20);
+            expect(table.totalPages.value).toBe(3);
+            expect(table.bodyCells.value).toHaveLength(20);
+
+            reactiveProps.page = 2;
+            reactiveProps.pageSize = 10;
+            await nextTick();
+
+            expect(table.page.value).toBe(0);
+            expect(table.pageSize.value).toBe(10);
+            expect(table.totalPages.value).toBe(6);
+            expect(table.bodyCells.value).toHaveLength(10);
+        });
+
+        describe('server mode', () => {
+            it('서버 모드에서는 totalItemCount를 기반으로 총 페이지를 계산한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 500,
+                    },
+                    serverMode: true,
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(Math.ceil(500 / 10));
+                expect(table.bodyCells.value).toHaveLength(10);
+            });
+
+            it('서버 모드에서는 client-side pagination을 수행하지 않는다', async () => {
+                const currentPageItems = Array.from({ length: 10 }, (_, i) => ({
+                    id: `${20 + i}`,
+                    name: `User ${20 + i}`,
+                }));
+
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items: currentPageItems,
+                    pagination: {
+                        totalItemCount: 100,
+                    },
+                    serverMode: true,
+                    page: 2,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.bodyCells.value).toHaveLength(10);
+                expect(table.bodyCells.value[0][0].value).toBe('User 20');
+                expect(table.bodyCells.value[9][0].value).toBe('User 29');
+            });
+
+            it('서버 모드에서 totalItemCount가 없으면 에러를 발생시킨다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: true,
+                    serverMode: true,
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(-1);
+            });
+
+            it('서버 모드에서 pageSize 변경 시에도 totalItemCount 기반으로 총 페이지를 재계산한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table, reactiveProps } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 100,
+                    },
+                    serverMode: true,
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.totalPages.value).toBe(10);
+
+                reactiveProps.pageSize = 25;
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(4);
+            });
+
+            it('서버 모드에서 pageEndIndex가 totalItemCount 기반으로 올바르게 계산된다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 500,
+                    },
+                    serverMode: true,
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(0);
+                expect(table.pageEndIndex.value).toBe(10);
+                expect(table.totalItems.value).toBe(500);
+            });
+
+            it('서버 모드에서 중간 페이지의 pageEndIndex가 올바르게 계산된다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i + 50}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 500,
+                    },
+                    serverMode: true,
+                    page: 5,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(50);
+                expect(table.pageEndIndex.value).toBe(60);
+                expect(table.totalItems.value).toBe(500);
+            });
+
+            it('서버 모드에서 마지막 페이지의 pageEndIndex가 totalItemCount를 초과하지 않는다', async () => {
+                const items = Array.from({ length: 5 }, (_, i) => ({ id: `${i}`, name: `User ${i + 495}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 500,
+                    },
+                    serverMode: true,
+                    page: 49,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(490);
+                expect(table.pageEndIndex.value).toBe(500);
+                expect(table.totalItems.value).toBe(500);
+            });
+        });
+
+        describe('pageSize -1 (전체 데이터 표시)', () => {
+            it('pageSize가 -1이면 모든 데이터를 1페이지에 표시한다', async () => {
+                const items = Array.from({ length: 100 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: true,
+                    page: 0,
+                    pageSize: -1,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(0);
+                expect(table.pageEndIndex.value).toBe(100);
+                expect(table.totalItems.value).toBe(100);
+                expect(table.totalPages.value).toBe(1);
+            });
+
+            it('pageSize가 -1일 때 bodyCells에 모든 아이템이 포함된다', async () => {
+                const items = Array.from({ length: 50 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: true,
+                    page: 0,
+                    pageSize: -1,
+                });
+
+                await nextTick();
+                expect(table.bodyCells.value.length).toBe(50);
+                expect(table.bodyCells.value[0][0].value).toBe('User 0');
+                expect(table.bodyCells.value[49][0].value).toBe('User 49');
+            });
+
+            it('서버 모드에서 pageSize가 -1이면 totalItemCount 기반으로 전체 데이터를 표시한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        totalItemCount: 1000,
+                    },
+                    serverMode: true,
+                    page: 0,
+                    pageSize: -1,
+                });
+
+                await nextTick();
+                expect(table.pageStartIndex.value).toBe(0);
+                expect(table.pageEndIndex.value).toBe(1000);
+                expect(table.totalItems.value).toBe(1000);
+                expect(table.totalPages.value).toBe(1);
+            });
+        });
     });
 
     describe('expandable', () => {

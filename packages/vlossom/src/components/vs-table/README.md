@@ -153,6 +153,45 @@
 
 > `responsive`가 true이면 768px 이하에서 thead를 숨기고 각 행을 카드형으로 쌓아올리며, 각 셀이 헤더 라벨을 함께 표시합니다.
 
+### 페이지네이션 (Pagination)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="items"
+        pagination
+        @paginate="(page, pageSize) => console.log(page, pageSize)"
+    />
+</template>
+```
+
+> `pagination`을 `true`로 설정하면 내부적으로 `VsPagination`을 사용해 페이지네이션이 활성화되며, `paginate` 이벤트로 0-기반 페이지 인덱스와 페이지 크기를 받을 수 있습니다.
+
+```html
+<template>
+    <vs-table
+        :columns="columns"
+        :items="items"
+        :pagination="{
+            pageSize: 20,
+            pageSizeOptions: [
+                { label: '10 items', value: 10 },
+                { label: '20 items', value: 20 },
+                { label: '50 items', value: 50 }
+            ],
+            showPageSizeSelector: true,
+            showingLength: 5,
+            edgeButtons: true,
+            showTotal: true
+        }"
+    />
+</template>
+```
+
+> 페이지 크기 또는 검색/정렬 조건이 변경되면 첫 페이지로 자동 리셋됩니다.
+> 기본 옵션: `pageSize: 50`, `pageSizeOptions: [10, 25, 50, 100]`, `showPageSizeSelector: true`, `showingLength: 10`, `edgeButtons: false`, `showTotal: true`
+
 ### 행 확장 (Expand)
 
 ```html
@@ -179,18 +218,25 @@
 
 ## Props
 
-| Prop                     | Type                                           | Default | Required | Description                           |
-| ------------------------ | ---------------------------------------------- | ------- | -------- | ------------------------------------- |
-| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                    |
-| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체               |
-| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                      |
-| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열           |
-| `responsive`             | `boolean`                                      | false   | -        | 좁은 화면에서 카드형(모바일) 레이아웃 |
-| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션                |
-| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수  |
-| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수  |
-| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부              |
-| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)      |
+| Prop                      | Type                                           | Default   | Required | Description                                                                                                           |
+| ------------------------- | ---------------------------------------------- | --------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`             | `ColorScheme`                                  | -         | -        | 컴포넌트 색상 테마                                                                                                    |
+| `styleSet`                | `string \| VsTableStyleSet`                    | -         | -        | 커스텀 스타일 설정 객체                                                                                               |
+| `columns`                 | `ColumnDef[] \| string[] \| null`              | `[]`      | -        | 테이블 컬럼 정의                                                                                                      |
+| `items`                   | `Item[]`                                       | -         | **Yes**  | 테이블에 표시할 아이템 배열                                                                                           |
+| `responsive`              | `boolean`                                      | false     | -        | 좁은 화면에서 카드형(모바일) 레이아웃                                                                                 |
+| `search`                  | `boolean \| VsTableSearchOptions`              | false     | -        | 검색 입력 표시 및 옵션                                                                                                |
+| `pagination`              | `boolean \| VsTablePaginationOptions`          | false     | -        | 페이지네이션 활성화 및 옵션                                                                                           |
+| `selectable`              | `boolean \| (item, index?, items?) => boolean` | false     | -        | 행 선택 활성화 또는 조건부 선택 함수                                                                                  |
+| `expandable`              | `boolean \| (item, index?, items?) => boolean` | false     | -        | 행 확장 활성화 또는 조건부 확장 함수                                                                                  |
+| `stickyHeader`            | `boolean`                                      | false     | -        | 스크롤 시 헤더 고정 여부                                                                                              |
+| `loading`                 | `boolean`                                      | false     | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                |
+| `serverMode`              | `boolean`                                      | false     | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시 |
+| `virtualScroll`           | `boolean`                                      | false     | -        | 가상 스크롤 활성화. 대용량 데이터의 렌더링 성능 최적화                                                                |
+| `virtualScrollRootMargin` | `string`                                       | `'200px'` | -        | 가상 스크롤 시 미리 렌더링할 영역의 여백                                                                              |
+| `selectedItems`(v-model)  | `Item[]`                                       | `[]`      | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
+| `page`(v-model)           | `number`                                       | -         | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
+| `pageSize` (v-model)      | `number`                                       | -         | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
 
 ## Types
 
@@ -214,6 +260,18 @@ interface VsTableSearchOptions {
     placeholder?: string;
     useCaseSensitive?: boolean;
     useRegex?: boolean;
+}
+
+type VsTablePageSizeOptions = { label: string; value: number }[];
+
+interface VsTablePaginationOptions {
+    pageSize?: number;
+    pageSizeOptions?: VsTablePageSizeOptions;
+    showPageSizeSelector?: boolean;
+    showingLength?: number;
+    edgeButtons?: boolean;
+    showTotal?: boolean;
+    totalItemCount?: number; // required when serverMode is true
 }
 
 interface HeaderCell extends Cell {
@@ -252,12 +310,13 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 ## Events
 
-| Event        | Payload                                    | Description                              |
-| ------------ | ------------------------------------------ | ---------------------------------------- |
-| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                          |
-| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                 |
-| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                |
-| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환 |
+| Event        | Payload                                    | Description                                       |
+| ------------ | ------------------------------------------ | ------------------------------------------------- |
+| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
+| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
+| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
+| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
+| `paginate`   | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
 
 ## 특징
 
@@ -265,6 +324,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
 - **반응형 테이블**: `responsive` prop을 통해 모바일 환경에서 표 레이아웃이 자동으로 바뀌며, 각 셀에서 헤더 정보를 함께 보여줌
+- **페이지네이션**: `pagination` 옵션으로 `VsPagination` 기반 페이지 네비게이션과 총 아이템/페이지 크기 선택을 제공
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
