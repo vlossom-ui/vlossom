@@ -9,8 +9,9 @@ declare module 'vue' {
 
 export interface VsTableStyleSet {}
 
+export type VsTablePageSizeOptions = { label: string; value: number }[];
 export interface VsTablePaginationOptions {
-    pageSizeOptions?: number[];
+    pageSizeOptions?: VsTablePageSizeOptions;
     showPageSizeSelect?: boolean;
     showingLength?: number;
     edgeButtons?: boolean;

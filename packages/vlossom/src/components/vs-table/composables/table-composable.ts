@@ -113,7 +113,26 @@ export function useTable(
         },
     });
     const pageSize = computed<number>({
-        get: () => rawPageSize?.value ?? internalPageSize.value,
+        get: () => {
+            const currentPageSize = rawPageSize?.value;
+            const pageSizeOptions = pagination.value.pageSizeOptions;
+
+            if (!currentPageSize) {
+                return internalPageSize.value;
+            }
+            if (pageSizeOptions) {
+                const isValidPageSize = pageSizeOptions.some((option) => option.value === currentPageSize);
+
+                if (!isValidPageSize) {
+                    logUtil.propWarning(
+                        VsComponent.VsTable,
+                        'pageSize',
+                        `pageSize (${currentPageSize}) is not in [${pageSizeOptions.map((option) => option.value)}]`,
+                    );
+                }
+            }
+            return internalPageSize.value;
+        },
         set: (value: number) => {
             internalPageSize.value = value;
             cb?.updatePageSize(value);

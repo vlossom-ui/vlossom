@@ -394,7 +394,11 @@ export const WithCustomPagination: Story = {
         })),
         pageSize: 25,
         pagination: {
-            pageSizeOptions: [10, 25, 50],
+            pageSizeOptions: [
+                { label: '10 items', value: 10 },
+                { label: '25 items', value: 25 },
+                { label: '50 items', value: 50 },
+            ],
             showingLength: 5,
             edgeButtons: true,
         },
@@ -435,7 +439,11 @@ export const PaginationWithEvent: Story = {
                     :items="items"
                     :page-size="currentPageSize"
                     :pagination="{
-                        pageSizeOptions: [10, 20, 50],
+                        pageSizeOptions: [
+                            { label: '10 items', value: 10 },
+                            { label: '20 items', value: 20 },
+                            { label: '50 items', value: 50 }
+                        ],
                         showingLength: 5,
                         edgeButtons: true,
                         showTotal: true

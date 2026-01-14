@@ -175,7 +175,11 @@
         :items="items"
         :pagination="{
             pageSize: 20,
-            pageSizeOptions: [10, 20, 50],
+            pageSizeOptions: [
+                { label: '10 items', value: 10 },
+                { label: '20 items', value: 20 },
+                { label: '50 items', value: 50 }
+            ],
             showPageSizeSelector: true,
             showingLength: 5,
             edgeButtons: true,
@@ -258,9 +262,11 @@ interface VsTableSearchOptions {
     useRegex?: boolean;
 }
 
+type VsTablePageSizeOptions = { label: string; value: number }[];
+
 interface VsTablePaginationOptions {
     pageSize?: number;
-    pageSizeOptions?: number[];
+    pageSizeOptions?: VsTablePageSizeOptions;
     showPageSizeSelector?: boolean;
     showingLength?: number;
     edgeButtons?: boolean;

@@ -196,7 +196,11 @@ describe('useTable', () => {
                 columns: ['name'],
                 items,
                 pagination: {
-                    pageSizeOptions: [20, 50, 100],
+                    pageSizeOptions: [
+                        { label: '20 items', value: 20 },
+                        { label: '50 items', value: 50 },
+                        { label: '100 items', value: 100 },
+                    ],
                     showingLength: 5,
                     edgeButtons: true,
                     showTotal: false,
