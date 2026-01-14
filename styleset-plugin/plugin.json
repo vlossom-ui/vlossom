@@ -1,0 +1,10 @@
+{
+  "name": "vlossom-styleset",
+  "version": "1.0.0",
+  "description": "Vlossom 디자인 시스템의 StyleSet 작업을 지원하는 개발 도구. 새 StyleSet 생성, 기존 컴포넌트 마이그레이션, 코드 리뷰를 제공합니다.",
+  "author": {
+    "name": "Vlossom Team"
+  },
+  "keywords": ["vlossom", "styleset", "design-system", "component", "vue"],
+  "license": "MIT"
+}

@@ -1,0 +1,4 @@
+# Claude Code local settings
+**/.claude/*.local.md
+**/.claude/*.local.json
+**/.claude/settings.local.json
