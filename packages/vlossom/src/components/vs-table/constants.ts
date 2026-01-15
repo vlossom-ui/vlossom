@@ -31,6 +31,7 @@ export const DEFAULT_SORTABLE_OPTIONS: Partial<SortableOptions> = {
     animation: 150, // 드래그 애니메이션 속도 (ms)
     ghostClass: 'vs-table-row-ghost', // 드래그 중 원본 위치의 스타일 클래스
     dragClass: 'vs-table-row-drag', // 드래그 중인 요소의 스타일 클래스
+    draggable: '.vs-table-draggable-group', // 드래그 가능한 요소 selector (tbody)
     scroll: true, // 스크롤 활성화
     scrollSensitivity: 100, // 스크롤 감도 (px)
     scrollSpeed: 10, // 스크롤 속도 (px/frame)

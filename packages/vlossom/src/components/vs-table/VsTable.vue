@@ -272,6 +272,7 @@ export default defineComponent({
             expandRow,
             searchRows,
             paginate,
+            dragRow,
             updateSelectedItems,
             updatePage,
             updatePageSize,

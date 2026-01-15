@@ -2,31 +2,34 @@
     <!-- draggable 활성화 시 -->
     <draggable
         v-if="draggable"
-        tag="tbody"
-        :data-draggable="!loading"
         v-model="displayedBodyCells"
+        tag="div"
+        class="vs-table-draggable-wrapper"
         :item-key="getRowKey"
         :disabled="loading"
+        :data-draggable="!loading"
         v-bind="sortableOptions"
         @update="handleDragUpdate"
     >
         <template #item="{ element: cells, index: rowIdx }">
-            <vs-table-body-row
-                :cells
-                :rowIdx
-                @click-cell="clickCell"
-                @select-row="selectRow"
-                @expand-row="expandRow"
-            >
-                <!-- 모든 slot을 VsTableBodyRow로 전달 -->
-                <template v-for="name in Object.keys($slots)" #[name]="slotData">
-                    <slot :name v-bind="slotData || {}" />
-                </template>
-            </vs-table-body-row>
+            <tbody class="vs-table-draggable-group">
+                <vs-table-body-row
+                    :cells
+                    :rowIdx
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                >
+                    <!-- 모든 slot을 VsTableBodyRow로 전달 -->
+                    <template v-for="name in Object.keys($slots)" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body-row>
+            </tbody>
         </template>
 
         <!-- NO DATA 처리 -->
-        <template v-if="displayedBodyCells.length === 0">
+        <tbody v-if="displayedBodyCells.length === 0">
             <tr>
                 <td colspan="100%" class="h-52">
                     <div class="flex flex-col items-center justify-center text-gray-700">
@@ -35,7 +38,7 @@
                     </div>
                 </td>
             </tr>
-        </template>
+        </tbody>
     </draggable>
 
     <!-- 기존 vs-visible-render (draggable 비활성화 시) -->

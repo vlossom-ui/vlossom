@@ -1,35 +1,33 @@
 <template>
-    <template>
-        <tr>
-            <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
-                <template #select="{ cells, rowIdx }">
-                    <slot name="select" :cells :rowIdx />
-                </template>
-            </vs-table-select-cell>
-            <td
-                v-for="cell in cells"
-                :id="cell.id"
-                :key="cell.id"
-                :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
-                @click.prevent.stop="clickCell(cell, $event)"
-            >
-                <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
-                <template v-else>
-                    <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                        {{ cell.value }}
-                    </slot>
-                </template>
-            </td>
-            <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        </tr>
-        <tr v-if="anyExpandable">
-            <vs-table-expanded-panel :cells :rowIdx>
-                <template #expand="{ cells, rowIdx }">
-                    <slot name="expand" :cells :rowIdx />
-                </template>
-            </vs-table-expanded-panel>
-        </tr>
-    </template>
+    <tr>
+        <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
+            <template #select="{ cells, rowIdx }">
+                <slot name="select" :cells :rowIdx />
+            </template>
+        </vs-table-select-cell>
+        <td
+            v-for="cell in cells"
+            :id="cell.id"
+            :key="cell.id"
+            :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
+            @click.prevent.stop="clickCell(cell, $event)"
+        >
+            <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
+            <template v-else>
+                <slot :name="findMatchingSlotName(cell)" :item="cell.item">
+                    {{ cell.value }}
+                </slot>
+            </template>
+        </td>
+        <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
+    </tr>
+    <tr v-if="anyExpandable">
+        <vs-table-expanded-panel :cells :rowIdx>
+            <template #expand="{ cells, rowIdx }">
+                <slot name="expand" :cells :rowIdx />
+            </template>
+        </vs-table-expanded-panel>
+    </tr>
 </template>
 
 <script lang="ts">
