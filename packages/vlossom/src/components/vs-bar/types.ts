@@ -1,5 +1,5 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet, CssPosition } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { CssPosition } from '@/declaration';
 import type VsBar from './VsBar.vue';
 
 declare module 'vue' {
@@ -12,13 +12,9 @@ export type { VsBar };
 
 export interface VsBarRef extends ComponentPublicInstance<typeof VsBar> {}
 
-export interface VsBarStyleSet extends SizeStyleSet, BoxStyleSet {
-    position?: CssPosition;
-    top?: string | number;
-    bottom?: string | number;
-    left?: string | number;
-    right?: string | number;
-    zIndex?: string;
-    fontColor?: string;
-    boxShadow?: string;
+export interface VsBarStyleSet {
+    variables?: {
+        position?: CssPosition;
+    };
+    component?: CSSProperties;
 }

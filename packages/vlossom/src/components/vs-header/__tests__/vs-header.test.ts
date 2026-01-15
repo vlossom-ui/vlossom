@@ -67,7 +67,7 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.height).toBe('4rem');
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('4rem');
         });
 
         it('colorScheme이 주어지면 해당 colorScheme 클래스가 적용되어야 한다', () => {
@@ -91,9 +91,9 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBe('absolute');
-            expect(wrapper.vm.computedStyleSet.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.left).toBe(0);
+            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
 
         it('position prop이 fixed로 설정되면 positioned 상태가 되어야 한다', () => {
@@ -105,9 +105,9 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBe('fixed');
-            expect(wrapper.vm.computedStyleSet.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.left).toBe(0);
+            expect(wrapper.vm.position).toBe('fixed');
+            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
 
         it('position prop이 sticky로 설정되면 positioned 상태가 되어야 한다', () => {
@@ -119,9 +119,9 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBe('sticky');
-            expect(wrapper.vm.computedStyleSet.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.left).toBe(0);
+            expect(wrapper.vm.position).toBe('sticky');
+            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
 
         it('styleSet 객체가 주어지면 computedStyleSet에 병합되어야 한다', () => {
@@ -129,19 +129,21 @@ describe('VsHeader', () => {
             const wrapper = mount(VsHeader, {
                 props: {
                     styleSet: {
-                        backgroundColor: '#ff0000',
-                        height: '60px',
-                        padding: '0 1rem',
-                        zIndex: '1000',
+                        component: {
+                            backgroundColor: '#ff0000',
+                            height: '60px',
+                            padding: '0 1rem',
+                            zIndex: '1000',
+                        },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.backgroundColor).toBe('#ff0000');
-            expect(wrapper.vm.computedStyleSet.height).toBe('60px');
-            expect(wrapper.vm.computedStyleSet.padding).toBe('0 1rem');
-            expect(wrapper.vm.computedStyleSet.zIndex).toBe('1000');
+            expect(wrapper.vm.computedStyleSet.component?.backgroundColor).toBe('#ff0000');
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('60px');
+            expect(wrapper.vm.computedStyleSet.component?.padding).toBe('0 1rem');
+            expect(wrapper.vm.computedStyleSet.component?.zIndex).toBe('1000');
         });
 
         it('position과 height가 모두 주어지면 positioned 상태에서 height가 적용되어야 한다', () => {
@@ -154,10 +156,10 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBe('absolute');
-            expect(wrapper.vm.computedStyleSet.height).toBe('5rem');
-            expect(wrapper.vm.computedStyleSet.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.left).toBe(0);
+            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
+            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
 
         it('position이 relative일 때도 height가 적용되어야 한다', () => {
@@ -170,8 +172,8 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBe('relative');
-            expect(wrapper.vm.computedStyleSet.height).toBe('6rem'); // height prop이 적용됨
+            expect(wrapper.vm.position).toBe('relative');
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('6rem'); // height prop이 적용됨
         });
 
         it('position이 없어도 height가 적용되어야 한다', () => {
@@ -183,8 +185,8 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.position).toBeUndefined();
-            expect(wrapper.vm.computedStyleSet.height).toBe('7rem'); // height prop이 적용됨
+            expect(wrapper.vm.position).toBeUndefined();
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem'); // height prop이 적용됨
         });
     });
 

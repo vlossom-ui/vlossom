@@ -75,9 +75,10 @@ export default defineComponent({
         const activeTab = ref(0);
 
         const basicBarStyleSet: VsBarStyleSet = {
-            border: 'none',
-            backgroundColor: 'black',
-            fontColor: 'white',
+            component: {
+                border: 'none',
+                backgroundColor: 'black',
+            },
         };
 
         return {

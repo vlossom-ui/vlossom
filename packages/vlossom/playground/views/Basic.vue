@@ -38,9 +38,9 @@
         <h3 class="mb-4 font-semibold">VsBar</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Default</h4>
-            <vs-bar :style-set="{ padding: '1rem' }">Default Bar</vs-bar>
+            <vs-bar :style-set="{ component: { padding: '1rem' } }">Default Bar</vs-bar>
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Primary</h4>
-            <vs-bar primary :style-set="{ padding: '1rem' }">Primary Bar</vs-bar>
+            <vs-bar primary :style-set="{ component: { padding: '1rem' } }">Primary Bar</vs-bar>
         </div>
         <vs-divider style-set="playground" />
 

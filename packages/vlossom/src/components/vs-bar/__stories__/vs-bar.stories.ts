@@ -19,12 +19,14 @@ const meta: Meta<typeof VsBar> = {
         components: { VsBar },
         setup() {
             const preDefinedStyleSet: VsBarStyleSet = {
-                backgroundColor: '#2c3e50',
-                height: '60px',
-                padding: '0 1.5rem',
-                fontColor: '#ffffff',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            } as const;
+                component: {
+                    backgroundColor: '#2c3e50',
+                    height: '60px',
+                    padding: '0 1.5rem',
+                    color: '#ffffff',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                },
+            };
 
             useVlossom().styleSet = {
                 myBarStyleSet: { VsBar: { ...preDefinedStyleSet } },
@@ -87,15 +89,17 @@ export const NavigationBar: Story = {
         position: 'fixed',
         primary: true,
         styleSet: {
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '64px',
-            padding: '0 2rem',
-            zIndex: '1000',
-            backgroundColor: '#1976d2',
-            fontColor: '#ffffff',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            component: {
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '64px',
+                padding: '0 2rem',
+                zIndex: 1000,
+                backgroundColor: '#1976d2',
+                color: '#ffffff',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            },
         },
     },
     render: (args: any) => ({
@@ -128,13 +132,15 @@ export const StatusBar: Story = {
     args: {
         position: 'fixed',
         styleSet: {
-            left: 0,
-            bottom: 0,
-            height: '32px',
-            padding: '0 1rem',
-            backgroundColor: '#f5f5f5',
-            fontColor: '#666666',
-            border: '1px solid #e0e0e0',
+            component: {
+                left: 0,
+                bottom: 0,
+                height: '32px',
+                padding: '0 1rem',
+                backgroundColor: '#f5f5f5',
+                color: '#666666',
+                border: '1px solid #e0e0e0',
+            },
         },
     },
     render: (args: any) => ({
@@ -163,12 +169,14 @@ export const Toolbar: Story = {
     args: {
         position: 'absolute',
         styleSet: {
-            left: 0,
-            top: 0,
-            width: '56px',
-            height: '100%',
-            backgroundColor: '#2c3e50',
-            padding: '2.4rem 0',
+            component: {
+                left: 0,
+                top: 0,
+                width: '56px',
+                height: '100%',
+                backgroundColor: '#2c3e50',
+                padding: '2.4rem 0',
+            },
         },
     },
     render: (args: any) => ({
@@ -206,21 +214,21 @@ export const Positions: Story = {
             <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
                 <div>
                     <h4>Default (relative)</h4>
-                    <vs-bar :style-set='{ "backgroundColor": "#e3f2fd", "padding": "0.5rem", "border": "1px solid #2196f3" }'>
+                    <vs-bar :style-set='{ component: { backgroundColor: "#e3f2fd", padding: "0.5rem", border: "1px solid #2196f3" } }'>
                         Default Position Bar
                     </vs-bar>
                 </div>
 
                 <div style="position: relative; height: 100px; border: 1px solid #ddd;">
                     <h4>Absolute Position</h4>
-                    <vs-bar position="absolute" :style-set='{ "backgroundColor": "#fff3e0", "padding": "0.5rem", "top": "30px", "left": "10px", "border": "1px solid #ff9800" }'>
+                    <vs-bar position="absolute" :style-set='{ component: { backgroundColor: "#fff3e0", padding: "0.5rem", top: "30px", left: "10px", border: "1px solid #ff9800" } }'>
                         Absolute Bar
                     </vs-bar>
                 </div>
 
                 <div class="relative">
                     <h4>Fixed Position</h4>
-                    <vs-bar position="fixed" :style-set='{ "backgroundColor": "#f3e5f5", "padding": "0.5rem", "border": "1px solid #9c27b0" }'>
+                    <vs-bar position="fixed" :style-set='{ component: { backgroundColor: "#f3e5f5", padding: "0.5rem", border: "1px solid #9c27b0" } }'>
                         Fixed Bar
                     </vs-bar>
                 </div>
@@ -242,7 +250,9 @@ export const ColorScheme: Story = {
         components: { VsBar },
         setup() {
             const styleSet = {
-                padding: '0.5rem',
+                component: {
+                    padding: '0.5rem',
+                },
             };
             return { args, styleSet };
         },
@@ -280,12 +290,14 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e91e63',
-            border: '2px solid #ad1457',
-            fontColor: '#ffffff',
-            height: '56px',
-            padding: '0 2rem',
-            boxShadow: '0 4px 8px rgba(233, 30, 99, 0.3)',
+            component: {
+                backgroundColor: '#e91e63',
+                border: '2px solid #ad1457',
+                color: '#ffffff',
+                height: '56px',
+                padding: '0 2rem',
+                boxShadow: '0 4px 8px rgba(233, 30, 99, 0.3)',
+            },
         },
     },
 };

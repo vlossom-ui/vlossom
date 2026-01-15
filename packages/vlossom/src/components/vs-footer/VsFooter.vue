@@ -1,5 +1,5 @@
 <template>
-    <vs-bar :tag :class="['vs-footer', colorSchemeClass, classObj]" :style-set="computedStyleSet">
+    <vs-bar :tag :class="['vs-footer', colorSchemeClass, classObj]" :style-set="computedStyleSet" :position>
         <slot />
     </vs-bar>
 </template>
@@ -33,20 +33,25 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => {
             return objectUtil.shake({
-                position: position.value ? position.value : undefined,
-                height: height.value ? height.value : undefined,
+                component: objectUtil.shake({
+                    height: height.value || undefined,
+                }),
             });
         });
         const { componentStyleSet } = useStyleSet<VsFooterStyleSet>(componentName, styleSet, additionalStyleSet);
+
+        const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
+
         const computedStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => {
-            const isPositioned = position.value && ['absolute', 'fixed', 'sticky'].includes(position.value);
-            return objectUtil.shake({
-                ...componentStyleSet.value,
-                bottom: (isPositioned && componentStyleSet.value.bottom) || 0,
-                left: (isPositioned && componentStyleSet.value.left) || 0,
-                height: componentStyleSet.value.height || '3rem',
-                zIndex: componentStyleSet.value.zIndex || 'var(--vs-bar-z-index)',
-            });
+            return {
+                component: objectUtil.shake({
+                    ...componentStyleSet.value.component,
+                    bottom: (isPositioned.value && componentStyleSet.value.component?.bottom) || 0,
+                    left: (isPositioned.value && componentStyleSet.value.component?.left) || 0,
+                    height: componentStyleSet.value.component?.height || '3rem',
+                    zIndex: componentStyleSet.value.component?.zIndex || 'var(--vs-bar-z-index)',
+                }),
+            };
         });
 
         const classObj = computed(() => ({
@@ -62,13 +67,13 @@ export default defineComponent({
                 return;
             }
             const footerLayout: BarLayout = {
-                position: computedStyleSet.value.position || 'relative',
-                height: computedStyleSet.value.height || '3rem',
+                position: position.value || 'relative',
+                height: (computedStyleSet.value.component?.height as string) || '3rem',
             };
             layoutStore.setFooter(footerLayout);
         });
 
-        return { colorSchemeClass, computedStyleSet, classObj, isLayoutChild };
+        return { colorSchemeClass, computedStyleSet, classObj, isLayoutChild, position };
     },
 });
 </script>

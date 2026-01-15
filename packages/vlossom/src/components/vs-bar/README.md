@@ -88,24 +88,40 @@
 
 ```typescript
 interface VsBarStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-    top?: string | number;
-    bottom?: string | number;
-    left?: string | number;
-    right?: string | number;
-    zIndex?: string;
-    fontColor?: string;
-    boxShadow?: string;
+    variables?: {
+        position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
+    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <!-- 기본 스타일 커스터마이징 -->
+    <vs-bar :style-set="{
+        component: {
+            backgroundColor: '#2c3e50',
+            padding: '1rem',
+            color: '#ffffff',
+        }
+    }">
+        커스텀 바
+    </vs-bar>
+
+    <!-- position prop과 함께 사용 (position은 variables로 적용) -->
+    <vs-bar position="fixed" :style-set="{
+        component: {
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 1000,
+        }
+    }">
+        고정 바
+    </vs-bar>
+</template>
 ```
 
 ## Slots
