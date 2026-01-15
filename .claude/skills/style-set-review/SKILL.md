@@ -49,6 +49,13 @@ description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
 - [ ] `useStyleSet` 호출이 올바른가?
 - [ ] `baseStyleSet`이 필요한 경우 적절히 사용되었는가?
 - [ ] `additionalStyleSet`이 필요한 경우 적절히 사용되었는가?
+- [ ] **[P1] width, height props가 있는데 `additionalStyleSet`을 제거하지 않았는가?**
+- [ ] **반응형 breakpoint 지원을 위해 `objectUtil.isObject()` 체크를 했는가?**
+
+**additionalStyleSet vs baseStyleSet 구분**
+- [ ] Props를 StyleSet으로 변환하는 경우 → `additionalStyleSet` 사용
+- [ ] 하위 컴포넌트 기본값 설정 → `baseStyleSet` 사용
+- [ ] 둘의 용도를 혼동하지 않았는가?
 
 **Template 적용**
 - [ ] 루트 요소에 `styleSetVariables` + `componentStyleSet.component` 적용?
@@ -75,6 +82,60 @@ description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
 ### 3단계: 안티패턴 탐지
 
 다음 안티패턴이 있는지 확인:
+
+**❌ 안티패턴 0: additionalStyleSet 누락 (P1 - Critical)**
+
+width, height 같은 props를 StyleSet으로 변환해야 하는데 `additionalStyleSet`을 제거한 경우:
+
+```typescript
+// BAD - Props가 있는데 additionalStyleSet 없음
+export default defineComponent({
+    props: {
+        width: { type: [String, Number, Object], default: undefined },
+        height: { type: [String, Number, Object], default: undefined },
+        // ...
+    },
+    setup(props) {
+        const { styleSet } = toRefs(props);
+        
+        // ❌ additionalStyleSet 없음 - width, height props가 동작 안함!
+        const { componentStyleSet, styleSetVariables } = useStyleSet(
+            componentName,
+            styleSet
+        );
+    }
+});
+
+// GOOD - additionalStyleSet으로 Props 변환
+setup(props) {
+    const { styleSet, width, height } = toRefs(props);
+    
+    // ✅ Props를 StyleSet으로 변환
+    const additionalStyleSet = computed(() => {
+        return objectUtil.shake({
+            width:
+                width.value === undefined || objectUtil.isObject(width.value)
+                    ? undefined
+                    : stringUtil.toStringSize(width.value),
+            height:
+                height.value === undefined || objectUtil.isObject(height.value)
+                    ? undefined
+                    : stringUtil.toStringSize(height.value),
+        });
+    });
+    
+    const { componentStyleSet, styleSetVariables } = useStyleSet(
+        componentName,
+        styleSet,
+        additionalStyleSet  // 필수!
+    );
+}
+```
+
+**검증 방법**:
+1. Props에 `width`, `height`, `position` 등이 있는가?
+2. 있다면 `additionalStyleSet`이 있는가?
+3. `objectUtil.isObject()` 체크로 breakpoint를 지원하는가?
 
 **❌ 안티패턴 1: 과도한 변수 노출**
 ```typescript

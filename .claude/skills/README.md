@@ -104,6 +104,13 @@
 
 ## 🚀 빠른 시작
 
+### 0. ⚡ 빠른 참조가 필요한가요?
+```bash
+# useStyleSet의 세 번째 인자 가이드 (additionalStyleSet vs baseStyleSet)
+cat .claude/skills/QUICK_REFERENCE.md
+```
+👉 **추천**: 마이그레이션이나 새 컴포넌트 작성 전 반드시 읽어보세요!
+
 ### 1. 새 컴포넌트 개발
 ```bash
 # 1단계: StyleSet 생성
@@ -192,6 +199,7 @@ Skills를 활용한 개발의 기대 효과:
 
 ## 🔗 관련 문서
 
+- [⚡ Quick Reference - additionalStyleSet vs baseStyleSet](./QUICK_REFERENCE.md) ⭐ **필독!**
 - [Style-Set 가이드라인](../packages/vlossom/STYLE_SET_GUIDELINES.md)
 - [useStyleSet Composable](../packages/vlossom/src/composables/style-set-composable.ts)
 - [컴포넌트 예제](../packages/vlossom/src/components/)
@@ -213,6 +221,10 @@ Skills를 활용한 개발의 기대 효과:
 - ❌ 3단계 이상 중첩
 - ❌ 의미 없는 그룹명 사용
 - ❌ BoxStyleSet 같은 공통 인터페이스 extends
+- ❌ **[P1] additionalStyleSet 제거** ⚠️ width/height props가 동작 안함!
+- ❌ baseStyleSet과 additionalStyleSet 혼동
+
+👉 자세한 내용: [QUICK_REFERENCE.md](./QUICK_REFERENCE.md)
 
 ---
 

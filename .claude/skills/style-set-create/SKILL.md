@@ -127,11 +127,16 @@ export interface Vs[ComponentName]StyleSet {
 
 #### Setup 함수
 
+**중요: Props를 StyleSet으로 주입하는 경우**
+
+width, height 같은 props를 StyleSet으로 변환해야 하는 경우 `additionalStyleSet`을 사용합니다.
+
 ```typescript
 import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { objectUtil, stringUtil } from '@/utils';
 import type { Vs[ComponentName]StyleSet } from './types';
 
 const componentName = VsComponent.Vs[ComponentName];
@@ -141,14 +146,34 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<Vs[ComponentName]StyleSet>(),
+        // Props로 제공되는 width, height
+        width: { type: [String, Number, Object], default: undefined },
+        height: { type: [String, Number, Object], default: undefined },
         // 기타 props
     },
     setup(props) {
-        const { colorScheme, styleSet } = toRefs(props);
+        const { colorScheme, styleSet, width, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        // baseStyleSet이 필요한 경우
+        // Props를 StyleSet으로 변환 (additionalStyleSet)
+        // - width, height props가 있을 때
+        // - 반응형 breakpoint 지원 필요할 때 (Object 타입)
+        const additionalStyleSet: ComputedRef<Partial<Vs[ComponentName]StyleSet>> = computed(() => {
+            return objectUtil.shake({
+                width:
+                    width.value === undefined || objectUtil.isObject(width.value)
+                        ? undefined
+                        : stringUtil.toStringSize(width.value as string | number),
+                height:
+                    height.value === undefined || objectUtil.isObject(height.value)
+                        ? undefined
+                        : stringUtil.toStringSize(height.value as string | number),
+            });
+        });
+
+        // 하위 컴포넌트 기본값 설정 (baseStyleSet)
+        // - 하위 컴포넌트의 기본 스타일을 제어할 때만
         const baseStyleSet: ComputedRef<Vs[ComponentName]StyleSet> = computed(() => {
             return {
                 // 하위 컴포넌트 기본값
@@ -160,10 +185,14 @@ export default defineComponent({
             };
         });
 
+        // useStyleSet 호출
+        // - additionalStyleSet: Props → StyleSet 변환시
+        // - baseStyleSet: 하위 컴포넌트 기본값 설정시
+        // - 둘 다 필요하면 additionalStyleSet 우선
         const { componentStyleSet, styleSetVariables } = useStyleSet<Vs[ComponentName]StyleSet>(
             componentName,
             styleSet,
-            baseStyleSet, // 선택적
+            additionalStyleSet, // 또는 baseStyleSet, 또는 생략
         );
 
         return {

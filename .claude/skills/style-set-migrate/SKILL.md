@@ -195,12 +195,20 @@ export type VsComponentStyleSetLegacy = Omit<VsComponentStyleSet, 'variables' | 
 
 #### 3-2. 컴포넌트 수정
 
+**중요: `useStyleSet`의 세 번째 인자 이해하기**
+
+`useStyleSet`은 세 번째 인자로 `baseStyleSet` 또는 `additionalStyleSet`을 받을 수 있습니다:
+
+- **`baseStyleSet`**: 하위 컴포넌트의 기본값을 설정할 때 사용 (예: VsButton의 VsLoading 기본 스타일)
+- **`additionalStyleSet`**: Props를 StyleSet으로 변환해 주입할 때 사용 (예: width, height props → CSS 변수)
+
 ```vue
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { objectUtil, stringUtil } from '@/utils';
 import type { VsComponentStyleSet } from './types';
 
 const componentName = VsComponent.VsComponent;
@@ -210,24 +218,46 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsComponentStyleSet>(),
+        width: { type: [String, Number, Object], default: undefined },
+        height: { type: [String, Number, Object], default: undefined },
         // ... 기타 props
     },
     setup(props) {
-        const { colorScheme, styleSet } = toRefs(props);
+        const { colorScheme, styleSet, width, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        // baseStyleSet이 필요한 경우
+        // ⚠️ CRITICAL: additionalStyleSet을 사용해야 하는 경우
+        // - width, height 같은 props를 StyleSet으로 변환해야 할 때
+        // - 반응형 breakpoint를 고려해야 할 때 (Object 타입 체크)
+        const additionalStyleSet: ComputedRef<Partial<VsComponentStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                width:
+                    width.value === undefined || objectUtil.isObject(width.value)
+                        ? undefined
+                        : stringUtil.toStringSize(width.value as string | number),
+                height:
+                    height.value === undefined || objectUtil.isObject(height.value)
+                        ? undefined
+                        : stringUtil.toStringSize(height.value as string | number),
+            });
+        });
+
+        // baseStyleSet을 사용하는 경우 (하위 컴포넌트 기본값)
         const baseStyleSet: ComputedRef<VsComponentStyleSet> = computed(() => {
             return {
                 // 하위 컴포넌트 기본값 등
+                childComponent: {
+                    component: { width: '100%' },
+                },
             };
         });
 
+        // 둘 다 필요하면 additionalStyleSet을 우선 사용
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsComponentStyleSet>(
             componentName,
             styleSet,
-            baseStyleSet,
+            additionalStyleSet, // 또는 baseStyleSet
         );
 
         return {
@@ -606,6 +636,162 @@ interface VsComponentStyleSet {
 - [Style-Set 가이드라인](./STYLE_SET_GUIDELINES.md)
 - [VsComponent README](./src/components/vs-component/README.md)
 ```
+
+## ⚠️ 흔한 실수와 해결 방법
+
+### 실수 1: additionalStyleSet 제거 (P1 - Critical)
+
+**증상**:
+- width, height props가 동작하지 않음
+- 반응형 breakpoint가 적용되지 않음
+
+**잘못된 코드**:
+```typescript
+// ❌ BAD: additionalStyleSet을 제거함
+const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+    componentName,
+    styleSet
+);
+```
+
+**올바른 코드**:
+```typescript
+// ✅ GOOD: additionalStyleSet으로 props를 StyleSet으로 변환
+const additionalStyleSet = computed(() => {
+    return objectUtil.shake({
+        width:
+            width.value === undefined || objectUtil.isObject(width.value)
+                ? undefined
+                : stringUtil.toStringSize(width.value as string | number),
+        height:
+            height.value === undefined || objectUtil.isObject(height.value)
+                ? undefined
+                : stringUtil.toStringSize(height.value as string | number),
+    });
+});
+
+const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+    componentName,
+    styleSet,
+    additionalStyleSet  // 반드시 포함!
+);
+```
+
+**체크 방법**:
+```bash
+# 마이그레이션 전 파일에서 additionalStyleSet 확인
+git show <commit>~1:path/to/Component.vue | grep -A10 "additionalStyleSet"
+
+# 마이그레이션 후에도 필요하면 반드시 유지
+```
+
+### 실수 2: CSS 변수와 속성 중복 (P3 - Minor)
+
+**증상**:
+- CSS에 사용되지 않는 변수가 남아있음
+- 속성 위치가 변경되어 정리 가능한 코드가 남음
+
+**예시**:
+```css
+/* 마이그레이션 전 */
+.vs-file-drop {
+    --vs-file-drop-width: initial;
+    --vs-file-drop-height: initial;
+    
+    width: var(--vs-file-drop-width, 100%);
+    height: var(--vs-file-drop-height, auto);
+    padding: 1rem;  /* 하드코딩됨 */
+}
+
+/* 마이그레이션 후 - padding도 variables로 이동했다면 */
+.vs-file-drop {
+    --vs-file-drop-width: initial;
+    --vs-file-drop-height: initial;
+    --vs-file-drop-padding: initial;  /* 새로 추가 */
+    
+    width: var(--vs-file-drop-width, 100%);
+    height: var(--vs-file-drop-height, auto);
+    padding: var(--vs-file-drop-padding, 1rem);  /* 변수로 변경 */
+}
+
+/* ⚠️ 이 경우 변수들을 그룹화하거나 정리할 수 있음 */
+```
+
+**개선 방향** (P3이므로 선택적):
+- 위치 변경과 함께 관련 CSS도 정리
+- 불필요한 변수 제거
+- 그룹화 가능한 속성은 그룹화
+
+### 실수 3: baseStyleSet과 additionalStyleSet 혼동
+
+**차이점 이해**:
+
+| | baseStyleSet | additionalStyleSet |
+|---|---|---|
+| **용도** | 하위 컴포넌트 기본값 설정 | Props를 StyleSet으로 변환 |
+| **예시** | VsButton의 VsLoading 스타일 | width, height props |
+| **병합 방식** | StyleSet과 deep merge | StyleSet과 shallow merge |
+| **반응성** | 보통 정적 | 보통 반응형 (computed) |
+
+**예시**:
+```typescript
+// baseStyleSet - 하위 컴포넌트 스타일 제어
+const baseStyleSet = computed(() => ({
+    loading: {  // 하위 VsLoading 컴포넌트
+        component: { width: '1rem', height: '1rem' },
+    },
+}));
+
+// additionalStyleSet - Props를 StyleSet으로
+const additionalStyleSet = computed(() => ({
+    width: stringUtil.toStringSize(width.value),
+    height: stringUtil.toStringSize(height.value),
+}));
+```
+
+### 실수 4: 반응형 Breakpoint 처리 누락
+
+**잘못된 코드**:
+```typescript
+// ❌ BAD: Object 타입(breakpoint) 체크 없음
+const additionalStyleSet = computed(() => ({
+    width: stringUtil.toStringSize(width.value),
+}));
+// width가 { sm: '100%', md: '50%' } 형태일 때 에러!
+```
+
+**올바른 코드**:
+```typescript
+// ✅ GOOD: Object 타입 체크로 breakpoint 지원
+const additionalStyleSet = computed(() => ({
+    width:
+        width.value === undefined || objectUtil.isObject(width.value)
+            ? undefined  // breakpoint 객체는 다른 곳에서 처리
+            : stringUtil.toStringSize(width.value),
+}));
+```
+
+## 마이그레이션 체크리스트
+
+마이그레이션 완료 후 반드시 확인:
+
+### 기능 체크
+- [ ] 기존 width, height props가 정상 동작하는가?
+- [ ] 반응형 breakpoint가 적용되는가?
+- [ ] 하위 컴포넌트 스타일이 유지되는가?
+- [ ] additionalStyleSet이 필요한데 제거하지 않았는가?
+- [ ] baseStyleSet이 필요한데 제거하지 않았는가?
+
+### 코드 품질 체크
+- [ ] 불필요한 CSS 변수가 제거되었는가?
+- [ ] TypeScript 타입 에러가 없는가?
+- [ ] ESLint 경고가 없는가?
+- [ ] 중복된 스타일이 정리되었는가?
+
+### 테스트 체크
+- [ ] 기존 테스트가 통과하는가?
+- [ ] 시각적 변화가 없는가?
+- [ ] Props 전달이 정상적인가?
 
 ## 마이그레이션 우선순위
 
