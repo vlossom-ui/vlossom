@@ -1,5 +1,4 @@
 import { computed, ref, watch, type Ref } from 'vue';
-import { objectUtil } from '@/utils';
 import type { Item } from '../types';
 
 export function useTableSelect(
@@ -19,7 +18,9 @@ export function useTableSelect(
         return selectedIds.value.length > 0 && selectedIds.value.length < selectableItems.value.length;
     });
     const selectedAll = computed(() => {
-        return selectedIds.value.length === selectableItems.value.length;
+        const selectableLength = selectableItems.value.length;
+        // 선택 가능한 항목이 없으면 false 반환 (빈 테이블 처리)
+        return selectableLength > 0 && selectedIds.value.length === selectableLength;
     });
 
     function toggleSelectAll(): void {
@@ -35,10 +36,11 @@ export function useTableSelect(
         const currentIds = selectedIds.value;
 
         if (nextIds.length === currentIds.length) {
-            const sortedNextIds = [...nextIds].sort();
-            const sortedCurrentIds = [...currentIds].sort();
+            // O(n) Set 비교: 정렬보다 효율적
+            const currentIdSet = new Set(currentIds);
+            const allMatch = nextIds.every((id) => currentIdSet.has(id));
 
-            if (objectUtil.isEqual(sortedNextIds, sortedCurrentIds)) {
+            if (allMatch) {
                 return;
             }
         }

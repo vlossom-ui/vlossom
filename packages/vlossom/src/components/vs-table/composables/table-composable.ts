@@ -5,6 +5,7 @@ import {
     watch,
     type ComputedRef,
     type Ref,
+    type ShallowRef,
     type TemplateRef,
     type WritableComputedRef,
 } from 'vue';
@@ -286,7 +287,7 @@ export type TableComposable = {
     initialize: () => void;
     toggleSelectAll: () => void;
     // Drag composable
-    displayOrder: Ref<number[]>;
+    displayOrder: ShallowRef<number[]>;
     displayedBodyCells: WritableComputedRef<BodyCell[][]>;
     createDragPayload: (event: import('sortablejs').SortableEvent) => import('../types').DragPayload | null;
     resetDisplayOrder: () => void;

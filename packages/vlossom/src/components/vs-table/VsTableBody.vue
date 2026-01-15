@@ -7,13 +7,7 @@
         v-model="displayedBodyCells"
         :item-key="getRowKey"
         :disabled="loading"
-        :animation="150"
-        ghost-class="vs-table-row-ghost"
-        drag-class="vs-table-row-drag"
-        :scroll="true"
-        :scroll-sensitivity="100"
-        :scroll-speed="10"
-        :force-fallback="false"
+        v-bind="sortableOptions"
         @update="handleDragUpdate"
     >
         <template #item="{ element: cells, index: rowIdx }">
@@ -80,6 +74,7 @@
 import { defineComponent, inject } from 'vue';
 import { type BodyCell, type DragPayload, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
+import { DEFAULT_SORTABLE_OPTIONS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
@@ -133,6 +128,7 @@ export default defineComponent({
             displayedBodyCells,
             loading,
             tableIcons,
+            sortableOptions: DEFAULT_SORTABLE_OPTIONS,
             clickCell,
             getRowItem,
             getRowId,

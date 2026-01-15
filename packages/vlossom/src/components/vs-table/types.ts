@@ -108,12 +108,16 @@ export function getRowId(row: BodyCell[]): string | undefined {
  *
  * @property from - 드래그 시작 위치의 글로벌 인덱스 (전체 items 배열 기준)
  * @property to - 드래그 종료 위치의 글로벌 인덱스 (전체 items 배열 기준)
+ * @property oldIndex - Sortable.js의 원본 DOM 인덱스 (디버깅용)
+ * @property newIndex - Sortable.js의 새 DOM 인덱스 (디버깅용)
  * @property fromItem - 드래그된 아이템
  * @property toItem - 드래그 목적지의 아이템
  */
 export interface DragPayload {
     from: number;
     to: number;
+    oldIndex: number;
+    newIndex: number;
     fromItem: Item;
     toItem: Item;
 }

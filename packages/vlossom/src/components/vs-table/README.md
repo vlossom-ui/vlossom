@@ -350,6 +350,8 @@ interface BodyCell<I = Item> extends Cell<I> {
 interface DragPayload {
     from: number;        // 드래그 시작 위치의 글로벌 인덱스
     to: number;          // 드래그 종료 위치의 글로벌 인덱스
+    oldIndex: number;    // Sortable.js의 원본 DOM 인덱스 (디버깅용)
+    newIndex: number;    // Sortable.js의 새 DOM 인덱스 (디버깅용)
     fromItem: Item;      // 드래그된 아이템
     toItem: Item;        // 드래그 목적지의 아이템
 }
