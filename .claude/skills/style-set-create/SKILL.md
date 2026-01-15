@@ -185,14 +185,14 @@ export default defineComponent({
             };
         });
 
-        // useStyleSet 호출
-        // - additionalStyleSet: Props → StyleSet 변환시
-        // - baseStyleSet: 하위 컴포넌트 기본값 설정시
-        // - 둘 다 필요하면 additionalStyleSet 우선
+        // useStyleSet 호출 - 세 번째 인자는 상황에 따라:
+        // - Props(width/height)가 있으면: additionalStyleSet
+        // - 하위 컴포넌트 기본값 설정이 필요하면: baseStyleSet  
+        // - 둘 다 없으면: 생략
         const { componentStyleSet, styleSetVariables } = useStyleSet<Vs[ComponentName]StyleSet>(
             componentName,
             styleSet,
-            additionalStyleSet, // 또는 baseStyleSet, 또는 생략
+            additionalStyleSet, // 위 조건에 따라 선택
         );
 
         return {

@@ -757,7 +757,8 @@ const additionalStyleSet = computed(() => ({
 const additionalStyleSet = computed(() => ({
     width: stringUtil.toStringSize(width.value),
 }));
-// width가 { sm: '100%', md: '50%' } 형태일 때 에러!
+// ⚠️ width가 { sm: '100%', md: '50%' } 같은 breakpoint 객체일 때 
+// stringUtil.toStringSize()가 객체를 문자열로 변환하려 해서 TypeError 발생!
 ```
 
 **올바른 코드**:
