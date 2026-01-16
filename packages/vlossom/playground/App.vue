@@ -78,6 +78,7 @@ export default defineComponent({
             component: {
                 border: 'none',
                 backgroundColor: 'black',
+                color: 'white',
             },
         };
 

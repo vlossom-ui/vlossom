@@ -1,5 +1,9 @@
 <template>
-    <component :is="tag" :class="['vs-bar', colorSchemeClass, classObj]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+    <component
+        :is="tag"
+        :class="['vs-bar', colorSchemeClass, classObj]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+    >
         <slot />
     </component>
 </template>
@@ -28,9 +32,9 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const additionalStyleSet: ComputedRef<Partial<VsBarStyleSet>> = computed(() => {
             return objectUtil.shake({
-                variables: {
-                    position: position.value ? position.value : undefined,
-                },
+                component: objectUtil.shake({
+                    position: position.value || undefined,
+                }),
             });
         });
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsBarStyleSet>(

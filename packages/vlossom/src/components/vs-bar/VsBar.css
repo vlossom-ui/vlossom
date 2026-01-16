@@ -1,15 +1,10 @@
+@reference 'tailwindcss';
+
 .vs-bar {
-    --vs-bar-position: initial;
+    @apply relative box-border h-auto w-full rounded-none p-0;
 
-    @apply box-border w-full;
-
-    position: var(--vs-bar-position, relative);
     border: 1px solid var(--vs-line-color);
-    border-radius: 0;
     background-color: var(--vs-comp-bg);
-    padding: 0;
-    width: 100%;
-    height: auto;
     color: var(--vs-comp-font);
 
     &.vs-primary {

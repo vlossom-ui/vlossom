@@ -46,6 +46,7 @@ export default defineComponent({
             return {
                 component: objectUtil.shake({
                     ...componentStyleSet.value.component,
+                    position: position.value || undefined,
                     top: (isPositioned.value && componentStyleSet.value.component?.top) || 0,
                     left: (isPositioned.value && componentStyleSet.value.component?.left) || 0,
                     height: componentStyleSet.value.component?.height || '3rem',

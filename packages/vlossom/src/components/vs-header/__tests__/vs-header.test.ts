@@ -91,7 +91,8 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.props('position')).toBe('absolute');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('absolute');
             expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -105,7 +106,8 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('fixed');
+            expect(wrapper.props('position')).toBe('fixed');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('fixed');
             expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -119,7 +121,8 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('sticky');
+            expect(wrapper.props('position')).toBe('sticky');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('sticky');
             expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -156,7 +159,7 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.props('position')).toBe('absolute');
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
             expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
@@ -172,7 +175,7 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('relative');
+            expect(wrapper.props('position')).toBe('relative');
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('6rem'); // height prop이 적용됨
         });
 
@@ -185,7 +188,7 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBeUndefined();
+            expect(wrapper.props('position')).toBeUndefined();
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem'); // height prop이 적용됨
         });
     });

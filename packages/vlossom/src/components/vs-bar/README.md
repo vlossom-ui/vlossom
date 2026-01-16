@@ -88,9 +88,6 @@
 
 ```typescript
 interface VsBarStyleSet {
-    variables?: {
-        position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-    };
     component?: CSSProperties;
 }
 ```
@@ -110,7 +107,7 @@ interface VsBarStyleSet {
         커스텀 바
     </vs-bar>
 
-    <!-- position prop과 함께 사용 (position은 variables로 적용) -->
+    <!-- position prop과 함께 사용 -->
     <vs-bar position="fixed" :style-set="{
         component: {
             top: 0,

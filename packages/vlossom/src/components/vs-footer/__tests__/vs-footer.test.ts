@@ -91,7 +91,8 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.props('position')).toBe('absolute');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('absolute');
             expect(wrapper.vm.computedStyleSet.component?.bottom).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -105,7 +106,8 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('fixed');
+            expect(wrapper.props('position')).toBe('fixed');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('fixed');
             expect(wrapper.vm.computedStyleSet.component?.bottom).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -119,7 +121,8 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('sticky');
+            expect(wrapper.props('position')).toBe('sticky');
+            expect(wrapper.vm.computedStyleSet.component?.position).toBe('sticky');
             expect(wrapper.vm.computedStyleSet.component?.bottom).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
@@ -156,7 +159,7 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('absolute');
+            expect(wrapper.props('position')).toBe('absolute');
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
             expect(wrapper.vm.computedStyleSet.component?.bottom).toBe(0);
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
@@ -172,8 +175,8 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBe('relative');
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('6rem'); // height prop이 적용됨
+            expect(wrapper.props('position')).toBe('relative');
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('6rem');
         });
 
         it('position이 없어도 height가 적용되어야 한다', () => {
@@ -185,8 +188,8 @@ describe('VsFooter', () => {
             });
 
             // then
-            expect(wrapper.vm.position).toBeUndefined();
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem'); // height prop이 적용됨
+            expect(wrapper.props('position')).toBeUndefined();
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem');
         });
     });
 
@@ -285,7 +288,7 @@ describe('VsFooter', () => {
             // then
             expect(setFooterSpy).toHaveBeenCalledWith({
                 position: 'relative',
-                height: '6rem', // height prop이 적용됨
+                height: '6rem',
             });
         });
     });
