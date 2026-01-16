@@ -1,8 +1,13 @@
 <template>
-    <vs-responsive :class="['vs-block', colorSchemeClass]" :style="styleSetVariables" :grid :width>
+    <vs-responsive
+        :class="['vs-block', colorSchemeClass]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :grid
+        :width
+    >
         <vs-inner-scroll>
             <template #header v-if="$slots['title']">
-                <div class="vs-block-title">
+                <div class="vs-block-title" :style="componentStyleSet.title">
                     <slot name="title" />
                 </div>
             </template>
@@ -14,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -36,16 +41,26 @@ export default defineComponent({
     },
     setup(props) {
         const { colorScheme, styleSet, height } = toRefs(props);
+
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const additionalStyleSet = computed(() => {
+
+        const additionalStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => {
             return objectUtil.shake({
-                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                component: objectUtil.shake({
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                }),
             });
         });
-        const { styleSetVariables } = useStyleSet<VsBlockStyleSet>(componentName, styleSet, additionalStyleSet);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsBlockStyleSet>(
+            componentName,
+            styleSet,
+            additionalStyleSet,
+        );
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
         };
     },

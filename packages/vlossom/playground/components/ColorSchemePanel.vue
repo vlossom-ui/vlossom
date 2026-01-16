@@ -29,11 +29,13 @@ import type { ColorScheme } from '@/declaration';
 import type { VsBlockStyleSet } from '@/components/vs-block/types';
 
 const panelStyleSet: VsBlockStyleSet = {
-    width: '18rem',
-    backgroundColor: 'var(--vs-no-color)',
+    component: {
+        width: '18rem',
+        backgroundColor: 'var(--vs-no-color)',
+    },
     title: {
         backgroundColor: 'var(--vs-no-color)',
-        fontColor: 'var(--vs-no-color-inverse)',
+        color: 'var(--vs-no-color-inverse)',
     },
 };
 

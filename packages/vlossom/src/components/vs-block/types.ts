@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsBlock from './VsBlock.vue';
 
 declare module 'vue' {
@@ -12,13 +11,11 @@ export type { VsBlock };
 
 export interface VsBlockRef extends ComponentPublicInstance<typeof VsBlock> {}
 
-export interface VsBlockStyleSet extends SizeStyleSet, BoxStyleSet {
-    boxShadow?: string;
-    fontColor?: string;
-
-    title?: {
-        backgroundColor?: string;
-        fontColor?: string;
+export interface VsBlockStyleSet {
+    variables?: {
         padding?: string;
+        border?: string;
     };
+    component?: CSSProperties;
+    title?: CSSProperties;
 }

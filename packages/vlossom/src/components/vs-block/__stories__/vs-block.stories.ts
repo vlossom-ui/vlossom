@@ -44,17 +44,21 @@ const meta: Meta<typeof VsBlock> = {
         components: { VsBlock },
         setup() {
             const preDefinedStyleSet: VsBlockStyleSet = {
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e9ecef',
-                borderRadius: '8px',
-                padding: '1.5rem',
-                title: {
-                    backgroundColor: '#f8f9fa',
-                    fontColor: '#212529',
+                variables: {
+                    border: '1px solid #e9ecef',
                     padding: '1.5rem',
                 },
-                fontColor: '#495057',
-            } as const;
+                component: {
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '8px',
+                    color: '#495057',
+                },
+                title: {
+                    backgroundColor: '#f8f9fa',
+                    color: '#212529',
+                    padding: '1.5rem',
+                },
+            };
 
             useVlossom().styleSet = {
                 myStyleSet: { VsBlock: { ...preDefinedStyleSet } },
@@ -190,17 +194,21 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e3f2fd',
-            border: '2px solid #2196f3',
-            borderRadius: '12px',
-            padding: '2rem',
-            boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
-            title: {
-                backgroundColor: '#e3f2fd',
-                fontColor: '#1976d2',
+            variables: {
+                border: '2px solid #2196f3',
                 padding: '2rem',
             },
-            fontColor: '#1565c0',
+            component: {
+                backgroundColor: '#e3f2fd',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
+                color: '#1565c0',
+            },
+            title: {
+                backgroundColor: '#e3f2fd',
+                color: '#1976d2',
+                padding: '2rem',
+            },
         },
     },
 };

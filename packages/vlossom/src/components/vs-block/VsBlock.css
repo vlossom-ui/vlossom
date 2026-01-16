@@ -1,39 +1,24 @@
 .vs-block {
-    --vs-block-width: initial;
-    --vs-block-height: initial;
-
-    --vs-block-border: initial;
-    --vs-block-borderRadius: initial;
-    --vs-block-backgroundColor: initial;
     --vs-block-padding: initial;
-    --vs-block-opacity: initial;
-
-    --vs-block-boxShadow: initial;
-    --vs-block-fontColor: initial;
-
-    --vs-block-title-backgroundColor: initial;
-    --vs-block-title-fontColor: initial;
+    --vs-block-border: initial;
     --vs-block-title-padding: initial;
 
     @apply relative w-full overflow-auto;
 
-    opacity: var(--vs-block-opacity, 1);
     container-type: inline-size;
-    box-shadow: var(--vs-block-boxShadow, var(--vs-area-shadow-outer));
+    box-shadow: var(--vs-area-shadow-outer);
     border: var(--vs-block-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-block-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-block-backgroundColor, var(--vs-area-bg));
-    width: var(--vs-block-width, auto);
-    height: var(--vs-block-height, auto);
-    color: var(--vs-block-fontColor, var(--vs-font-color));
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    background-color: var(--vs-area-bg);
+    color: var(--vs-font-color);
 
     .vs-block-title {
         @apply relative w-full;
 
         border-bottom: var(--vs-block-border, 1px solid var(--vs-line-color));
-        background-color: var(--vs-block-title-backgroundColor, var(--vs-comp-bg));
+        background-color: var(--vs-comp-bg);
         padding: var(--vs-block-title-padding, 0.8rem 1.6rem);
-        color: var(--vs-block-title-fontColor, var(--vs-comp-font));
+        color: var(--vs-comp-font);
         font-weight: 500;
     }
 
