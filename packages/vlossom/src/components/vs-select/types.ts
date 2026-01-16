@@ -21,11 +21,11 @@ export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSel
 export interface VsSelectStyleSet {
     variables?: {
         height?: string;
-        selected: {
+        selected?: {
             backgroundColor?: string;
             fontWeight?: number;
         };
-        focused: {
+        focused?: {
             border?: string;
             borderRadius?: string;
             backgroundColor?: string;
