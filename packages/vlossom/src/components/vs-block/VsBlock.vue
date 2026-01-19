@@ -44,6 +44,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
+        const baseStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => {
             return objectUtil.shake({
                 component: objectUtil.shake({
@@ -55,6 +56,7 @@ export default defineComponent({
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsBlockStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
             additionalStyleSet,
         );
 

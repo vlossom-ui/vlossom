@@ -31,6 +31,7 @@ export default defineComponent({
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const baseStyleSet: ComputedRef<Partial<VsHeaderStyleSet>> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsHeaderStyleSet>> = computed(() => {
             return objectUtil.shake({
                 component: objectUtil.shake({
@@ -38,7 +39,12 @@ export default defineComponent({
                 }),
             });
         });
-        const { componentStyleSet } = useStyleSet<VsHeaderStyleSet>(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet } = useStyleSet<VsHeaderStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
 
