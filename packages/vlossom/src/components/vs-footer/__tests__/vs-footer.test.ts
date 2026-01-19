@@ -191,6 +191,27 @@ describe('VsFooter', () => {
             expect(wrapper.props('position')).toBeUndefined();
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem');
         });
+
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsFooter, {
+                props: {
+                    height: '5rem',
+                    styleSet: {
+                        component: {
+                            height: '3rem',
+                            backgroundColor: '#ff0000',
+                        },
+                    },
+                },
+            });
+
+            // then
+            // props(additionalStyleSet)가 styleSet보다 우선되므로 height는 '5rem'
+            expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
+            // styleSet의 다른 값은 그대로 유지
+            expect(wrapper.vm.computedStyleSet.component?.backgroundColor).toBe('#ff0000');
+        });
     });
 
     describe('vs-layout의 자식일 때', () => {

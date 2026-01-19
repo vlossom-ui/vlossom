@@ -107,4 +107,27 @@ describe('VsBlock', () => {
             });
         });
     });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBlock, {
+                props: {
+                    height: '500px',
+                    styleSet: {
+                        component: {
+                            height: '300px',
+                            backgroundColor: '#ff0000',
+                        },
+                    },
+                },
+            });
+
+            // then
+            // props(additionalStyleSet)가 styleSet보다 우선되므로 height는 '500px'
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('500px');
+            // styleSet의 다른 값은 그대로 유지
+            expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#ff0000');
+        });
+    });
 });
