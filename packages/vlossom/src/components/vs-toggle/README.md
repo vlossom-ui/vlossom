@@ -88,25 +88,46 @@ const handleToggle = (value: boolean) => {
 ## Types
 
 ```typescript
-interface VsToggleStyleSet {
-    width?: string;
-    height?: string;
+interface VsToggleStyleSet extends VsButtonStyleSet {}
+```
 
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string;
+VsToggle은 VsButton을 래핑하므로 VsButtonStyleSet을 상속받습니다.
 
-    fontColor?: string;
-
-    loading?: {
-        width?: string;
-        height?: string;
-        color?: string;
-        barWidth?: string;
+```typescript
+interface VsButtonStyleSet {
+    variables?: {
+        padding?: string;
     };
+    component?: CSSProperties;
+    loading?: VsLoadingStyleSet;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-toggle
+        v-model="isToggled"
+        :style-set="{
+            variables: {
+                padding: '1rem 2rem',
+            },
+            component: {
+                backgroundColor: '#4caf50',
+                borderRadius: '8px',
+            },
+        }"
+    >
+        Toggle Me
+    </vs-toggle>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const isToggled = ref(false);
+</script>
 ```
 
 ## 특징

@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, ref, watch } from 'vue';
+import { computed, defineComponent, toRefs, ref, watch, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -46,7 +46,13 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToggleStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsToggleStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToggleStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const isToggled = ref(modelValue.value);
 
