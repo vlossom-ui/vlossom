@@ -1,6 +1,9 @@
 <template>
     <vs-responsive :width :grid>
-        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="styleSetVariables">
+        <div
+            :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]"
+            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        >
             <div class="vs-step-line">
                 <div class="vs-step-progress" :style="progressWidth" />
             </div>
@@ -101,16 +104,25 @@ export default defineComponent({
 
         const gapCount = computed(() => steps.value.length - 1);
 
+        const baseStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => ({}));
+
         const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                height: height.value,
-                width: width.value,
-                gap: gap.value || '0',
-                gapCount: gapCount.value,
+                variables: objectUtil.shake({
+                    height: height.value || undefined,
+                    width: width.value || undefined,
+                    gap: gap.value || '0',
+                    gapCount: gapCount.value || undefined,
+                }),
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsStepsStyleSet>(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const stepRefs: Ref<HTMLElement[]> = ref([]);
 
@@ -153,6 +165,7 @@ export default defineComponent({
         return {
             // Style
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             progressWidth,
 

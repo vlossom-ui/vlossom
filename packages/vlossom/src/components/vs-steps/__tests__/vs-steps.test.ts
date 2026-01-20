@@ -468,6 +468,88 @@ describe('VsSteps', () => {
         });
     });
 
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
+                    styleSet: {
+                        variables: {
+                            step: {
+                                backgroundColor: '#f5f5f5',
+                                border: '2px solid #ddd',
+                                borderRadius: '50%',
+                                size: '2rem',
+                            },
+                            activeStep: {
+                                backgroundColor: '#4caf50',
+                                border: '2px solid #4caf50',
+                                size: '2.5rem',
+                            },
+                        },
+                        component: {
+                            margin: '2rem auto',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-steps-gap': '0',
+                '--vs-steps-gapCount': 2,
+                '--vs-steps-step-backgroundColor': '#f5f5f5',
+                '--vs-steps-step-border': '2px solid #ddd',
+                '--vs-steps-step-borderRadius': '50%',
+                '--vs-steps-step-size': '2rem',
+                '--vs-steps-activeStep-backgroundColor': '#4caf50',
+                '--vs-steps-activeStep-border': '2px solid #4caf50',
+                '--vs-steps-activeStep-size': '2.5rem',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                margin: '2rem auto',
+            });
+        });
+    });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
+                    gap: '4rem',
+                    height: '400px',
+                    styleSet: {
+                        variables: {
+                            gap: '2rem',
+                            height: '200px',
+                            step: {
+                                backgroundColor: '#ff0000',
+                                size: '3rem',
+                            },
+                        },
+                        component: {
+                            margin: '1rem',
+                        },
+                    },
+                },
+            });
+
+            // then
+            // props가 우선되어야 함 (gap, height는 additionalStyleSet으로 덮어씌워짐)
+            expect(wrapper.vm.styleSetVariables['--vs-steps-gap']).toBe('4rem');
+            expect(wrapper.vm.styleSetVariables['--vs-steps-height']).toBe('400px');
+            // styleSet의 나머지 값은 유지되어야 함
+            expect(wrapper.vm.componentStyleSet.variables?.step?.backgroundColor).toBe('#ff0000');
+            expect(wrapper.vm.componentStyleSet.variables?.step?.size).toBe('3rem');
+            expect(wrapper.vm.componentStyleSet.component?.margin).toBe('1rem');
+        });
+    });
+
     describe('progress bar', () => {
         it('첫 번째 스텝이 선택되었을 때 진행 바가 0%여야 한다', async () => {
             // given, when

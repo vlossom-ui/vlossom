@@ -21,17 +21,19 @@ const meta: Meta<typeof VsSteps> = {
         components: { VsSteps },
         setup() {
             const preDefinedStyleSet: VsStepsStyleSet = {
-                step: {
-                    backgroundColor: '#f5f5f5',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '50%',
-                    padding: '0.5rem',
-                    opacity: 0.8,
-                    size: '2.5rem',
-                },
-                activeStep: {
-                    backgroundColor: '#1e88e5',
-                    size: '2.5rem',
+                variables: {
+                    step: {
+                        backgroundColor: '#f5f5f5',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '50%',
+                        padding: '0.5rem',
+                        opacity: 0.8,
+                        size: '2.5rem',
+                    },
+                    activeStep: {
+                        backgroundColor: '#1e88e5',
+                        size: '2.5rem',
+                    },
                 },
             } as const;
 
@@ -440,13 +442,18 @@ export const StyleSet: Story = {
     args: {
         steps: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
-            step: {
-                size: '3rem',
+            variables: {
+                step: {
+                    size: '3rem',
+                },
+                activeStep: {
+                    backgroundColor: '#e188e5',
+                    border: '2px solid #002abf',
+                    size: '3rem',
+                },
             },
-            activeStep: {
-                backgroundColor: '#e188e5',
-                border: '2px solid #002abf',
-                size: '3rem',
+            component: {
+                margin: '2rem auto',
             },
         },
         modelValue: 1,

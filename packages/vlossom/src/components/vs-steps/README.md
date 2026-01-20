@@ -252,27 +252,67 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 
 ```typescript
 interface VsStepsStyleSet {
-    step?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        size?: string;
+    variables?: {
+        height?: string; // 전체 높이
+        width?: string; // 전체 너비
+        gap?: string; // 스텝 간격
+        gapCount?: number; // 스텝 개수 - 1
+        step?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+            padding?: string;
+            opacity?: number;
+            size?: string;
+        };
+        activeStep?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+            padding?: string;
+            opacity?: number;
+            size?: string;
+        };
     };
-
-    activeStep?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        size?: string;
-    };
-
-    height?: string;
-    width?: string;
+    component?: CSSProperties; // 루트 요소 직접 스타일
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-steps
+        v-model="currentStep"
+        :steps="steps"
+        :style-set="{
+            variables: {
+                step: {
+                    backgroundColor: '#f5f5f5',
+                    border: '2px solid #ddd',
+                    borderRadius: '50%',
+                    size: '2rem',
+                },
+                activeStep: {
+                    backgroundColor: '#4caf50',
+                    border: '2px solid #4caf50',
+                    size: '2.5rem',
+                },
+                gap: '4rem',
+            },
+            component: {
+                margin: '2rem auto',
+            },
+        }"
+    />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const currentStep = ref(1);
+const steps = ['Account', 'Profile', 'Settings', 'Complete'];
+</script>
 ```
 
 ## Slots
