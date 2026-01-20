@@ -43,15 +43,37 @@
 
 ```typescript
 interface VsSkeletonStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-
-    fontColor?: string;
+    variables?: {
+        backgroundColor?: string; // 배경 애니메이션 색상
+        fontColor?: string; // 텍스트 색상
+    };
+    component?: CSSProperties; // 루트 요소 직접 스타일
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <div class="w-[200px] h-[100px]">
+        <vs-skeleton
+            :style-set="{
+                variables: {
+                    backgroundColor: '#e0e0e0',
+                    fontColor: '#999999',
+                },
+                component: {
+                    width: '300px',
+                    height: '150px',
+                    border: '1px solid #ccc',
+                    borderRadius: '12px',
+                },
+            }"
+        >
+            Loading...
+        </vs-skeleton>
+    </div>
+</template>
 ```
 
 ## 특징

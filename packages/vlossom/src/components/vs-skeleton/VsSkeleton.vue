@@ -1,5 +1,8 @@
 <template>
-    <div :class="['vs-skeleton', colorSchemeClass]" :style="styleSetVariables">
+    <div
+        :class="['vs-skeleton', colorSchemeClass]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+    >
         <div class="vs-skeleton-bg" />
         <div class="vs-skeleton-inner">
             <slot />
@@ -8,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { type ComputedRef, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -26,10 +29,17 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsSkeletonStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
         };
     },

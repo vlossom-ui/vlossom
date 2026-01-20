@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsSkeleton from './VsSkeleton.vue';
 
 declare module 'vue' {
@@ -12,6 +11,10 @@ export type { VsSkeleton };
 
 export interface VsSkeletonRef extends ComponentPublicInstance<typeof VsSkeleton> {}
 
-export interface VsSkeletonStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding' | 'opacity'> {
-    fontColor?: string;
+export interface VsSkeletonStyleSet {
+    variables?: {
+        backgroundColor?: string;
+        fontColor?: string;
+    };
+    component?: CSSProperties;
 }

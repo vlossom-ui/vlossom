@@ -1,19 +1,13 @@
 .vs-skeleton {
-    --vs-skeleton-width: initial;
-    --vs-skeleton-height: initial;
-
     --vs-skeleton-backgroundColor: initial;
-    --vs-skeleton-border: initial;
-    --vs-skeleton-borderRadius: initial;
-
     --vs-skeleton-fontColor: initial;
 
     @apply relative overflow-hidden;
 
-    border: var(--vs-skeleton-border, none);
-    border-radius: var(--vs-skeleton-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
-    width: var(--vs-skeleton-width, 100%);
-    height: var(--vs-skeleton-height, 100%);
+    border: none;
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-sm));
+    width: 100%;
+    height: 100%;
 
     .vs-skeleton-bg {
         @apply absolute h-full w-full;

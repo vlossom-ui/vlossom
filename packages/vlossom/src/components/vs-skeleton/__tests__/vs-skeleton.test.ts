@@ -3,25 +3,36 @@ import { mount } from '@vue/test-utils';
 import VsSkeleton from '../VsSkeleton.vue';
 
 describe('VsSkeleton', () => {
-    describe('style-set', () => {
-        it('styleSet을 통해 커스텀 크기를 설정할 수 있어야 한다', () => {
-            // given
-            const customStyleSet = {
-                width: '150px',
-                height: '75px',
-            };
-
-            // when
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given, when
             const wrapper = mount(VsSkeleton, {
                 props: {
-                    styleSet: customStyleSet,
+                    styleSet: {
+                        variables: {
+                            backgroundColor: '#e0e0e0',
+                            fontColor: '#999999',
+                        },
+                        component: {
+                            width: '150px',
+                            height: '75px',
+                            border: '1px solid #ccc',
+                            borderRadius: '8px',
+                        },
+                    },
                 },
             });
 
             // then
             expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-skeleton-width': '150px',
-                '--vs-skeleton-height': '75px',
+                '--vs-skeleton-backgroundColor': '#e0e0e0',
+                '--vs-skeleton-fontColor': '#999999',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '150px',
+                height: '75px',
+                border: '1px solid #ccc',
+                borderRadius: '8px',
             });
         });
     });
