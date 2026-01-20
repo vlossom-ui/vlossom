@@ -214,10 +214,43 @@ export const WithGap: Story = {
             },
         },
     },
+    render: (args: any) => ({
+        components: { VsSteps },
+        setup() {
+            const step0 = ref(1);
+            const step1 = ref(1);
+            const step2 = ref(1);
+            const step3 = ref(1);
+            const step4 = ref(1);
+            return { args, step0, step1, step2, step3, step4 };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 0 (기본값)</p>
+                    <vs-steps :steps="args.steps" v-model="step0" gap="0" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 1rem</p>
+                    <vs-steps :steps="args.steps" v-model="step1" gap="1rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 3rem</p>
+                    <vs-steps :steps="args.steps" v-model="step2" gap="3rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 6rem</p>
+                    <vs-steps :steps="args.steps" v-model="step3" gap="6rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 10rem</p>
+                    <vs-steps :steps="args.steps" v-model="step4" gap="10rem" />
+                </div>
+            </div>
+        `,
+    }),
     args: {
         steps: ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
-        gap: '6rem',
-        modelValue: 1,
     },
 };
 
