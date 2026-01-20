@@ -202,7 +202,7 @@ export interface VsButtonStyleSet {
 }
 ```
 
-#### Pattern C: 중첩 variables (상태별 그룹화)
+#### Pattern C-1: 중첩 variables (상태별 그룹화)
 
 ```typescript
 export interface VsSelectStyleSet {
@@ -219,6 +219,64 @@ export interface VsSelectStyleSet {
   component?: CSSProperties;
 }
 ```
+
+#### Pattern C-2: 중첩 variables (영역별 그룹화)
+
+동일한 접두사를 가진 속성들을 그룹화. CSS에서 특정 하위 요소에 적용되는 스타일들.
+
+```typescript
+// BEFORE - 평탄한 구조
+export interface VsLabelValueStyleSet {
+  variables?: {
+    labelBackgroundColor?: string;
+    labelFontColor?: string;
+    labelFontSize?: string;
+    valueBackgroundColor?: string;
+    valueFontColor?: string;
+    // ...
+  };
+}
+
+// AFTER - 영역별 그룹화
+interface LabelVariables {
+  backgroundColor?: string;
+  fontColor?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  padding?: string;
+  verticalAlign?: string;
+  width?: string;
+}
+
+interface ValueVariables {
+  backgroundColor?: string;
+  fontColor?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  padding?: string;
+  verticalAlign?: string;
+}
+
+export interface VsLabelValueStyleSet {
+  variables?: {
+    border?: string;
+    borderRadius?: string;
+    label?: LabelVariables;
+    value?: ValueVariables;
+  };
+  component?: CSSProperties;
+}
+```
+
+**CSS 변수 변환:**
+
+- `label: { backgroundColor: '#fff' }` → `--vs-label-value-label-backgroundColor: #fff`
+- 하이픈(`-`)으로 중첩 구조가 연결됨
+
+**사용 시점:**
+
+- 동일한 접두사를 가진 속성이 3개 이상
+- CSS에서 특정 하위 요소(`.vs-label`, `.vs-value`)에만 적용되는 스타일
 
 #### Pattern D: 상위 컴포넌트 StyleSet 상속
 
