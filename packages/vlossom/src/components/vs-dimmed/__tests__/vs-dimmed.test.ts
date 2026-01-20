@@ -87,54 +87,26 @@ describe('vs-dimmed', () => {
         });
     });
 
-    describe('style-set', () => {
-        it('styleSet으로 backgroundColor를 설정할 수 있어야 한다', () => {
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsDimmed, {
                 props: {
                     styleSet: {
-                        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                        component: {
+                            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                            opacity: 0.7,
+                            backdropFilter: 'blur(4px)',
+                        },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-dimmed-backgroundColor': 'rgba(255, 0, 0, 0.5)',
-            });
-        });
-
-        it('styleSet으로 opacity를 설정할 수 있어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsDimmed, {
-                props: {
-                    styleSet: {
-                        opacity: 0.7,
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-dimmed-opacity': 0.7,
-            });
-        });
-
-        it('styleSet으로 backgroundColor와 opacity를 동시에 설정할 수 있어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsDimmed, {
-                props: {
-                    styleSet: {
-                        backgroundColor: 'rgba(0, 255, 0, 1)',
-                        opacity: 0.6,
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-dimmed-backgroundColor': 'rgba(0, 255, 0, 1)',
-                '--vs-dimmed-opacity': 0.6,
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                opacity: 0.7,
+                backdropFilter: 'blur(4px)',
             });
         });
     });

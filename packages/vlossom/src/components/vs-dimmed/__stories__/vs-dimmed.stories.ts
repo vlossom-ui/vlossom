@@ -74,8 +74,10 @@ export const StyleSet: Story = {
     args: {
         modelValue: true,
         styleSet: {
-            backgroundColor: 'rgba(255, 0, 0, 1)',
-            opacity: 0.5,
+            component: {
+                backgroundColor: 'rgba(255, 0, 0, 1)',
+                opacity: 0.5,
+            },
         },
     },
     render: (args: any) => ({
@@ -102,8 +104,10 @@ export const PreDefinedStyleSet: Story = {
         components: { VsDimmed },
         setup() {
             const preDefinedStyleSet: VsDimmedStyleSet = {
-                backgroundColor: 'rgba(0, 255, 0, 1)',
-                opacity: 0.6,
+                component: {
+                    backgroundColor: 'rgba(0, 255, 0, 1)',
+                    opacity: 0.6,
+                },
             };
 
             useVlossom().styleSet = {

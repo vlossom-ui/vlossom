@@ -38,9 +38,27 @@
 
 ```typescript
 interface VsDimmedStyleSet {
-    backgroundColor?: string; // 배경 색상 (기본값: var(--vs-black))
-    opacity?: number; // 투명도 (기본값: 0.4)
+    component?: CSSProperties; // 루트 요소 직접 스타일
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <div class="relative h-screen w-full">
+        <vs-dimmed
+            v-model="isVisible"
+            :style-set="{
+                component: {
+                    backgroundColor: '#000000',
+                    opacity: 0.6,
+                    backdropFilter: 'blur(4px)',
+                },
+            }"
+        />
+    </div>
+</template>
 ```
 
 ## 특징

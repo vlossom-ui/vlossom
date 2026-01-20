@@ -1,13 +1,10 @@
 @reference 'tailwindcss';
 
 .vs-dimmed {
-    --vs-dimmed-backgroundColor: initial;
-    --vs-dimmed-opacity: initial;
-
     @apply pointer-events-auto absolute top-0 left-0 h-full w-full;
 
-    opacity: var(--vs-dimmed-opacity, 0.4);
-    background-color: var(--vs-dimmed-backgroundColor, var(--vs-black));
+    opacity: 0.4;
+    background-color: var(--vs-black);
 }
 
 .dimmed-enter-active,
