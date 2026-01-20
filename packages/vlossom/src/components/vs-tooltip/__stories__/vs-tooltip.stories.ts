@@ -357,14 +357,19 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e188e5',
-            border: '2px solid #e188e5',
-            borderRadius: '12px',
-            padding: '0.8rem 1.2rem',
-            width: '300px',
-            height: '100px',
-            arrowColor: '#e188e5',
-            arrowSize: '0.5rem',
+            variables: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                borderRadius: '12px',
+                padding: '0.8rem 1.2rem',
+                width: '300px',
+                height: '100px',
+                arrowColor: '#e188e5',
+                arrowSize: '0.5rem',
+            },
+            component: {
+                color: '#fff',
+            },
         },
         align: 'start',
         placement: 'right',
@@ -386,12 +391,14 @@ export const PreDefinedStyleSet: Story = {
         components: { VsTooltip, VsButton },
         setup() {
             const preDefinedStyleSet: VsTooltipStyleSet = {
-                backgroundColor: '#1e88e5',
-                border: '2px solid #1e88e5',
-                borderRadius: '8px',
-                padding: '0.5rem 1rem',
-                arrowColor: '#1e88e5',
-                arrowSize: '0.4rem',
+                variables: {
+                    backgroundColor: '#1e88e5',
+                    border: '2px solid #1e88e5',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
+                    arrowColor: '#1e88e5',
+                    arrowSize: '0.4rem',
+                },
             } as const;
 
             useVlossom().styleSet = {

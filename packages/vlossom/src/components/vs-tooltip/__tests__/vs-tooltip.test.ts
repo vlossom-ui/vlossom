@@ -341,4 +341,51 @@ describe('vs-tooltip', () => {
             }
         });
     });
+
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given
+            const targetId = 'test-target';
+            const btn = document.createElement('button');
+            btn.id = targetId;
+            document.body.appendChild(btn);
+
+            // when
+            const wrapper = mount(VsTooltip, {
+                props: {
+                    target: `#${targetId}`,
+                    styleSet: {
+                        variables: {
+                            backgroundColor: '#333',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '0.5rem 1rem',
+                            arrowColor: '#333',
+                            arrowSize: '0.5rem',
+                        },
+                        component: {
+                            color: '#fff',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-tooltip-backgroundColor': '#333',
+                '--vs-tooltip-border': 'none',
+                '--vs-tooltip-borderRadius': '8px',
+                '--vs-tooltip-padding': '0.5rem 1rem',
+                '--vs-tooltip-arrowColor': '#333',
+                '--vs-tooltip-arrowSize': '0.5rem',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                color: '#fff',
+            });
+
+            // cleanup
+            wrapper.unmount();
+            document.body.removeChild(btn);
+        });
+    });
 });

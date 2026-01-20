@@ -109,18 +109,47 @@
 
 ```typescript
 interface VsTooltipStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    arrowColor?: string;
-    arrowSize?: string;
+    variables?: {
+        width?: string;
+        height?: string;
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+        arrowColor?: string;
+        arrowSize?: string;
+    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <div>
+        <button id="my-button">Hover me</button>
+        <vs-tooltip
+            target="#my-button"
+            :style-set="{
+                variables: {
+                    backgroundColor: '#333',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
+                    arrowColor: '#333',
+                    arrowSize: '0.5rem',
+                },
+                component: {
+                    color: '#fff',
+                },
+            }"
+        >
+            Custom styled tooltip
+        </vs-tooltip>
+    </div>
+</template>
 ```
 
 ## Slots

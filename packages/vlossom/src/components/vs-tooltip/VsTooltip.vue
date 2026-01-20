@@ -68,7 +68,13 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsTooltipStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTooltipStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const computedShow: WritableComputedRef<boolean> = computed({
             get() {
@@ -105,7 +111,7 @@ export default defineComponent({
         });
 
         const tooltipStyle = computed(() => {
-            return { ...styleSetVariables.value };
+            return { ...styleSetVariables.value, ...componentStyleSet.value.component };
         });
 
         const computedCallbacks: ComputedRef<OverlayCallbacks> = computed(() => {
@@ -220,6 +226,7 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             computedShow,
             onTooltipEnter,
