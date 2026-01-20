@@ -67,19 +67,67 @@
 
 ```typescript
 interface VsDividerStyleSet {
-    border?: string; // 구분선 스타일 (색상, 두께, 형태)
-    opacity?: number; // 구분선 투명도
+    variables?: {
+        border?: string; // 구분선 스타일 (색상, 두께, 형태)
 
-    horizontal?: {
-        width?: string; // 가로 구분선 너비
-        margin?: string; // 가로 구분선 여백
-    };
+        horizontal?: {
+            width?: string; // 가로 구분선 너비
+            margin?: string; // 가로 구분선 여백
+        };
 
-    vertical?: {
-        height?: string; // 세로 구분선 높이
-        margin?: string; // 세로 구분선 여백
+        vertical?: {
+            height?: string; // 세로 구분선 높이
+            margin?: string; // 세로 구분선 여백
+        };
     };
+    component?: CSSProperties; // 루트 요소 직접 스타일
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <!-- variables를 사용한 CSS 변수 스타일링 -->
+    <vs-divider
+        :style-set="{
+            variables: {
+                border: '2px solid #333',
+                horizontal: {
+                    width: '80%',
+                    margin: '1rem 0',
+                },
+            },
+        }"
+    />
+
+    <!-- component를 사용한 직접 스타일링 -->
+    <vs-divider
+        :style-set="{
+            component: {
+                opacity: 0.8,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            },
+        }"
+    />
+
+    <!-- variables와 component를 함께 사용 -->
+    <vs-divider
+        vertical
+        :style-set="{
+            variables: {
+                border: '1px dashed #e91e63',
+                vertical: {
+                    height: '4rem',
+                    margin: '0 1rem',
+                },
+            },
+            component: {
+                opacity: 0.6,
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징
