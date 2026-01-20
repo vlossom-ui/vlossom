@@ -3,7 +3,10 @@
         <vs-header position="sticky" :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-between px-8">
                 <div class="flex items-center gap-2">
-                    <vs-image src="/assets/vlossom-logo.png" :style-set="{ height: '36px', width: '36px' }" />
+                    <vs-image
+                        src="/assets/vlossom-logo.png"
+                        :style-set="{ variables: { height: '36px', width: '36px' } }"
+                    />
                     <h1 class="text-2xl font-bold">Vlossom Playground</h1>
                 </div>
                 <div class="flex items-center gap-2">

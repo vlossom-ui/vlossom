@@ -84,23 +84,46 @@
 
 ```typescript
 interface VsImageStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    opacity?: string | number;
-
-    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
-    skeleton?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        borderRadius?: string;
-        animation?: string;
+    variables?: {
+        width?: string; // 이미지 너비
+        height?: string; // 이미지 높이
+        border?: string; // 테두리
+        borderRadius?: string; // 모서리 둥글기
+        objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down'; // 이미지 피팅 방식
     };
+    component?: CSSProperties; // 루트 요소 직접 스타일
+    skeleton?: VsSkeletonStyleSet; // 스켈레톤 스타일
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-image
+        src="https://example.com/image.jpg"
+        alt="Styled Image"
+        :style-set="{
+            variables: {
+                width: '300px',
+                height: '300px',
+                border: '3px solid #e91e63',
+                borderRadius: '50%',
+                objectFit: 'cover',
+            },
+            component: {
+                backgroundColor: '#f5f5f5',
+                opacity: 0.9,
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+            },
+            skeleton: {
+                component: {
+                    backgroundColor: '#e0e0e0',
+                },
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

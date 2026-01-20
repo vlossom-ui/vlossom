@@ -83,11 +83,13 @@ export const Lazy: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            border: '3px solid black',
-            borderRadius: '100%',
-            width: '300px',
-            height: '300px',
-            objectFit: 'cover',
+            variables: {
+                border: '3px solid black',
+                borderRadius: '100%',
+                width: '300px',
+                height: '300px',
+                objectFit: 'cover',
+            },
         },
     },
 };
