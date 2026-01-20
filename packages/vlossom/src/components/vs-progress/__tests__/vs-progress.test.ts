@@ -192,4 +192,73 @@ describe('VsProgress', () => {
             expect(wrapper.vm.computedMax).toBe(66.66);
         });
     });
+
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsProgress, {
+                props: {
+                    value: 75,
+                    max: 100,
+                    styleSet: {
+                        variables: {
+                            backgroundColor: '#f0f0f0',
+                            border: '2px solid #ddd',
+                            borderRadius: '8px',
+                            fontColor: '#333',
+                            textShadow: '0 0 4px rgba(0,0,0,0.3)',
+                            valueColor: '#4caf50',
+                        },
+                        component: {
+                            width: '400px',
+                            height: '24px',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-progress-backgroundColor': '#f0f0f0',
+                '--vs-progress-border': '2px solid #ddd',
+                '--vs-progress-borderRadius': '8px',
+                '--vs-progress-fontColor': '#333',
+                '--vs-progress-textShadow': '0 0 4px rgba(0,0,0,0.3)',
+                '--vs-progress-valueColor': '#4caf50',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '400px',
+                height: '24px',
+            });
+        });
+    });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // VsProgress는 현재 additionalStyleSet을 사용하지 않지만,
+            // 향후 확장을 대비한 우선순위 테스트
+            // given, when
+            const wrapper = mount(VsProgress, {
+                props: {
+                    value: 50,
+                    max: 100,
+                    styleSet: {
+                        variables: {
+                            valueColor: '#ff0000',
+                        },
+                        component: {
+                            width: '300px',
+                            height: '20px',
+                        },
+                    },
+                },
+            });
+
+            // then
+            // styleSet의 값이 그대로 적용되어야 함
+            expect(wrapper.vm.componentStyleSet.variables?.valueColor).toBe('#ff0000');
+            expect(wrapper.vm.componentStyleSet.component?.width).toBe('300px');
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('20px');
+        });
+    });
 });

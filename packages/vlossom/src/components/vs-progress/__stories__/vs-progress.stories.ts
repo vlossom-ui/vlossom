@@ -20,13 +20,17 @@ const meta: Meta<typeof VsProgress> = {
         components: { VsProgress },
         setup() {
             const preDefinedStyleSet: VsProgressStyleSet = {
-                width: '20rem',
-                height: '1.5rem',
-                borderRadius: '8px',
-                backgroundColor: '#f0f0f0',
-                valueColor: '#1e88e5',
-                fontColor: '#fff',
-                textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                variables: {
+                    borderRadius: '8px',
+                    backgroundColor: '#f0f0f0',
+                    valueColor: '#1e88e5',
+                    fontColor: '#fff',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                },
+                component: {
+                    width: '20rem',
+                    height: '1.5rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -178,13 +182,17 @@ export const StyleSet: Story = {
         max: 100,
         label: '80%',
         styleSet: {
-            width: '25rem',
-            height: '2rem',
-            borderRadius: '12px',
-            backgroundColor: '#e0e0e0',
-            valueColor: '#e188e5',
-            fontColor: '#fff',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+            variables: {
+                borderRadius: '12px',
+                backgroundColor: '#e0e0e0',
+                valueColor: '#e188e5',
+                fontColor: '#fff',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+            },
+            component: {
+                width: '25rem',
+                height: '2rem',
+            },
         },
     },
 };

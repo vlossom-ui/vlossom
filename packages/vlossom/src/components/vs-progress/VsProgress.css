@@ -1,21 +1,17 @@
 @reference 'tailwindcss';
 
 .vs-progress {
-    --vs-progress-width: initial;
-    --vs-progress-height: initial;
-
     --vs-progress-backgroundColor: initial;
     --vs-progress-border: initial;
     --vs-progress-borderRadius: initial;
-
     --vs-progress-fontColor: initial;
     --vs-progress-textShadow: initial;
     --vs-progress-valueColor: initial;
 
     @apply relative appearance-none text-center;
 
-    width: var(--vs-progress-width, 100%);
-    height: var(--vs-progress-height, 1rem);
+    width: 100%;
+    height: 1rem;
 }
 
 .vs-progress[value]::-webkit-progress-bar {
