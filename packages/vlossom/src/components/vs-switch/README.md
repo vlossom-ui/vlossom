@@ -114,29 +114,49 @@ const selectedOptions = ref([]);
 
 ```typescript
 interface VsSwitchStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    handleColor?: string;
-    handleSize?: string;
-
-    wrapper?: {
-        label?: {
-            marginBottom?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: string;
-        };
-
-        messages?: {
-            marginTop?: string;
-            fontSize?: string;
-        };
+    variables?: {
+        width?: string;
+        height?: string;
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        fontColor?: string;
+        handleColor?: string;
+        handleSize?: string;
     };
+    component?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-switch
+        v-model="value"
+        :style-set="{
+            variables: {
+                width: 'fit-content',
+                height: '2.5rem',
+                backgroundColor: '#f5f5f5',
+                border: '2px solid #ddd',
+                borderRadius: '2rem',
+                handleSize: '1.8rem',
+                handleColor: '#4caf50',
+            },
+            component: {
+                margin: '1rem 0',
+            },
+        }"
+    />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const value = ref(false);
+</script>
 ```
 
 ## Slots

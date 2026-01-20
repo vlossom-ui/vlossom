@@ -16,7 +16,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
+        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
             <label class="vs-switch-wrap" :for="computedId">
                 <input
                     ref="switchRef"
@@ -51,7 +51,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
+import {
+    computed,
+    defineComponent,
+    ref,
+    toRefs,
+    useTemplateRef,
+    type ComputedRef,
+    type PropType,
+    type TemplateRef,
+} from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
@@ -108,7 +117,13 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsSwitchStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const inputValue = ref(modelValue.value);
 

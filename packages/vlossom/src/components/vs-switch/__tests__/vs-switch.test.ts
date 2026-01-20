@@ -485,4 +485,43 @@ describe('VsSwitch', () => {
             expect(updateModelValueEvent).toBeUndefined();
         });
     });
+
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsSwitch, {
+                props: {
+                    modelValue: false,
+                    styleSet: {
+                        variables: {
+                            width: 'fit-content',
+                            height: '2.5rem',
+                            backgroundColor: '#f5f5f5',
+                            border: '2px solid #ddd',
+                            borderRadius: '2rem',
+                            handleSize: '1.8rem',
+                            handleColor: '#4caf50',
+                        },
+                        component: {
+                            margin: '1rem 0',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-switch-width': 'fit-content',
+                '--vs-switch-height': '2.5rem',
+                '--vs-switch-backgroundColor': '#f5f5f5',
+                '--vs-switch-border': '2px solid #ddd',
+                '--vs-switch-borderRadius': '2rem',
+                '--vs-switch-handleSize': '1.8rem',
+                '--vs-switch-handleColor': '#4caf50',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                margin: '1rem 0',
+            });
+        });
+    });
 });
