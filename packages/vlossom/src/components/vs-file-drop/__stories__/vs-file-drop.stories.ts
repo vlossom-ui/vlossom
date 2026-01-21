@@ -426,11 +426,15 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 파일 드롭',
         styleSet: {
-            border: '2px dashed #ff5722',
-            borderRadius: '16px',
-            backgroundColor: '#ffebee',
-            dragBackgroundColor: '#ffccbc',
-            padding: '2rem',
+            variables: {
+                dragBackgroundColor: '#ffccbc',
+                padding: '2rem',
+            },
+            component: {
+                border: '2px dashed #ff5722',
+                borderRadius: '16px',
+                backgroundColor: '#ffebee',
+            },
         },
     },
 };

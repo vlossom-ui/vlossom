@@ -63,17 +63,35 @@
 
 ```typescript
 interface VsChipStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-
-    fontColor?: string;
+    variables?: {
+        height?: string;
+    };
+    component?: CSSProperties;
+    icon?: CSSProperties;
+    closeButton?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-chip
+        :style-set="{
+            variables: {
+                height: '3rem',
+            },
+            component: {
+                backgroundColor: '#f3e5f5',
+                border: '2px solid #9c27b0',
+                borderRadius: '20px',
+                color: '#7b1fa2',
+            },
+        }"
+    >
+        커스텀 칩
+    </vs-chip>
+</template>
 ```
 
 ## Slots

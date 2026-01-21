@@ -71,6 +71,50 @@ function checkScroll() {
 </script>
 ```
 
+## Types
+
+```typescript
+interface VsInnerScrollStyleSet {
+    component?: CSSProperties;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
+}
+```
+
+## StyleSet 사용 예시
+
+```html
+<template>
+    <vs-inner-scroll
+        :style-set="{
+            component: {
+                backgroundColor: '#f5f5f5',
+            },
+            header: {
+                padding: '24px',
+            },
+            content: {
+                padding: '24px',
+            },
+            footer: {
+                padding: '16px',
+            },
+        }"
+    >
+        <template #header>
+            <div>Header Content</div>
+        </template>
+
+        <div>Scrollable Content</div>
+
+        <template #footer>
+            <div>Footer Content</div>
+        </template>
+    </vs-inner-scroll>
+</template>
+```
+
 ## Props
 
 | Prop         | Type      | Default | Required | Description             |

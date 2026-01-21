@@ -53,23 +53,29 @@ describe('VsChip', () => {
             expect(wrapper.vm.colorSchemeClass).toBe('vs-color-scheme-green');
         });
 
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
+        it('styleSet 객체가 주어지면 CSS 변수와 컴포넌트 스타일이 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsChip, {
                 props: {
                     styleSet: {
-                        backgroundColor: '#ff0000',
-                        width: '200px',
-                        height: '50px',
+                        variables: {
+                            height: '50px',
+                        },
+                        component: {
+                            backgroundColor: '#ff0000',
+                            width: '200px',
+                        },
                     },
                 },
             });
 
             // then
             expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-chip-backgroundColor': '#ff0000',
-                '--vs-chip-width': '200px',
                 '--vs-chip-height': '50px',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                backgroundColor: '#ff0000',
+                width: '200px',
             });
         });
     });

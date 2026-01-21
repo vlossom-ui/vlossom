@@ -44,10 +44,10 @@
 ```typescript
 interface VsSkeletonStyleSet {
     variables?: {
-        backgroundColor?: string; // 배경 애니메이션 색상
-        fontColor?: string; // 텍스트 색상
+        backgroundColor?: string;
+        fontColor?: string;
     };
-    component?: CSSProperties; // 루트 요소 직접 스타일
+    component?: CSSProperties;
 }
 ```
 

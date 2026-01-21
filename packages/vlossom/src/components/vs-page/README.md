@@ -67,19 +67,15 @@
 ## Types
 
 ```typescript
-interface TitleVariables {
-    padding?: string;
-}
-
-interface DescriptionVariables {
-    padding?: string;
-}
-
 interface VsPageStyleSet {
     variables?: {
         padding?: string;
-        title?: TitleVariables;
-        description?: DescriptionVariables;
+        title?: {
+            padding?: string;
+        };
+        description?: {
+            padding?: string;
+        };
     };
     component?: CSSProperties;
 }

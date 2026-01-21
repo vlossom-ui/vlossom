@@ -169,16 +169,15 @@ function handleDrop(droppedFiles: File[]) {
 export type FileDropValueType = File[];
 
 interface VsFileDropStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    width?: string | number | Breakpoints;
-    height?: string | number | Breakpoints;
-    dragBackgroundColor?: string;
-    iconColor?: string;
-
+    variables?: {
+        padding?: string;
+        dragBackgroundColor?: string;
+        iconColor?: string;
+    };
+    component?: CSSProperties;
+    placeholder?: CSSProperties;
+    files?: CSSProperties;
+    closeButton?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```

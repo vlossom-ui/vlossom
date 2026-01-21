@@ -253,10 +253,8 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 ```typescript
 interface VsStepsStyleSet {
     variables?: {
-        height?: string; // 전체 높이
-        width?: string; // 전체 너비
-        gap?: string; // 스텝 간격
-        gapCount?: number; // 스텝 개수 - 1
+        height?: string;
+        width?: string;
         step?: {
             backgroundColor?: string;
             border?: string;
@@ -274,7 +272,7 @@ interface VsStepsStyleSet {
             size?: string;
         };
     };
-    component?: CSSProperties; // 루트 요소 직접 스타일
+    component?: CSSProperties;
 }
 ```
 

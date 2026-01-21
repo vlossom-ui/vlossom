@@ -143,7 +143,7 @@ styleSet을 통한 스타일 커스터마이징:
 ```typescript
 interface VsTextWrapStyleSet {
     variables?: {
-        width?: string;
+        width?: string | number;
         copyIcon?: {
             width?: string;
             height?: string;

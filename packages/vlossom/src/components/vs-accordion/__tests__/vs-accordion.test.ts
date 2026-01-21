@@ -336,6 +336,49 @@ describe('VsAccordion', () => {
         });
     });
 
+    describe('styleSet', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+            // given, when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: {
+                    styleSet: {
+                        variables: {
+                            arrowColor: '#e91e63',
+                            arrowSize: '12px',
+                            arrowSpacing: '1.5rem',
+                            border: '2px solid #333',
+                        },
+                        component: {
+                            width: '500px',
+                            borderRadius: '12px',
+                        },
+                        title: {
+                            backgroundColor: '#f5f5f5',
+                            padding: '1rem 1.5rem',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-accordion-arrowColor': '#e91e63',
+                '--vs-accordion-arrowSize': '12px',
+                '--vs-accordion-arrowSpacing': '1.5rem',
+                '--vs-accordion-border': '2px solid #333',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '500px',
+                borderRadius: '12px',
+            });
+            expect(wrapper.vm.componentStyleSet.title).toEqual({
+                backgroundColor: '#f5f5f5',
+                padding: '1rem 1.5rem',
+            });
+        });
+    });
+
     describe('상태 관리', () => {
         it('isOpen 상태가 변경되면 VsExpandable 컴포넌트에 올바르게 전달되어야 한다', async () => {
             // given

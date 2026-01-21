@@ -85,14 +85,14 @@
 ```typescript
 interface VsImageStyleSet {
     variables?: {
-        width?: string; // 이미지 너비
-        height?: string; // 이미지 높이
-        border?: string; // 테두리
-        borderRadius?: string; // 모서리 둥글기
-        objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down'; // 이미지 피팅 방식
+        width?: string;
+        height?: string;
+        border?: string;
+        borderRadius?: string;
+        objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
     };
-    component?: CSSProperties; // 루트 요소 직접 스타일
-    skeleton?: VsSkeletonStyleSet; // 스켈레톤 스타일
+    component?: CSSProperties;
+    skeleton?: VsSkeletonStyleSet;
 }
 ```
 

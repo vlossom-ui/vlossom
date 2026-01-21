@@ -41,9 +41,40 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsExpandableStyleSet {
-    backgroundColor?: string;
-    padding?: string;
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <div>
+        <button @click="isOpen = !isOpen">
+            {{ isOpen ? '축소' : '확장' }}
+        </button>
+        <vs-expandable
+            :open="isOpen"
+            :style-set="{
+                component: {
+                    backgroundColor: '#f0f0f0',
+                    padding: '2rem',
+                    borderRadius: '8px',
+                },
+            }"
+        >
+            <div>
+                <p>커스텀 스타일이 적용된 확장 가능한 콘텐츠입니다.</p>
+            </div>
+        </vs-expandable>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const isOpen = ref(false);
+</script>
 ```
 
 ## Slots

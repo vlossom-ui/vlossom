@@ -68,19 +68,17 @@
 ```typescript
 interface VsDividerStyleSet {
     variables?: {
-        border?: string; // 구분선 스타일 (색상, 두께, 형태)
-
+        border?: string;
         horizontal?: {
-            width?: string; // 가로 구분선 너비
-            margin?: string; // 가로 구분선 여백
+            width?: string;
+            margin?: string;
         };
-
         vertical?: {
-            height?: string; // 세로 구분선 높이
-            margin?: string; // 세로 구분선 여백
+            height?: string;
+            margin?: string;
         };
     };
-    component?: CSSProperties; // 루트 요소 직접 스타일
+    component?: CSSProperties;
 }
 ```
 

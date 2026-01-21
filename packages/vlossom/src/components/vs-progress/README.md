@@ -60,14 +60,14 @@ const progress = ref(75);
 ```typescript
 interface VsProgressStyleSet {
     variables?: {
-        backgroundColor?: string; // 프로그레스 바 배경 색상
-        border?: string; // 프로그레스 바 테두리
-        borderRadius?: string; // 프로그레스 바 모서리 둥글기
-        fontColor?: string; // 라벨 텍스트 색상
-        textShadow?: string; // 라벨 텍스트 그림자
-        valueColor?: string; // 진행 값 색상
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        fontColor?: string;
+        textShadow?: string;
+        valueColor?: string;
     };
-    component?: CSSProperties; // 루트 요소 직접 스타일
+    component?: CSSProperties;
 }
 ```
 

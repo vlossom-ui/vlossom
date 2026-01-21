@@ -18,13 +18,17 @@ const meta: Meta<typeof VsButton> = {
         components: { VsButton },
         setup() {
             const preDefinedStyleSet: VsButtonStyleSet = {
-                backgroundColor: '#1e88e5',
-                border: '2px solid #1e88e5',
-                borderRadius: '8px',
-                fontColor: '#fff',
-                height: '3rem',
-                padding: '0 1.5rem',
-                width: 'auto',
+                component: {
+                    backgroundColor: '#1e88e5',
+                    border: '2px solid #1e88e5',
+                    borderRadius: '8px',
+                    color: '#fff',
+                    height: '3rem',
+                    width: 'auto',
+                },
+                variables: {
+                    padding: '0 1.5rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -243,13 +247,17 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e188e5',
-            border: '2px solid #e188e5',
-            borderRadius: '12px',
-            fontColor: '#fff',
-            padding: '0 2rem',
-            width: 'auto',
-            height: '4rem',
+            component: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                borderRadius: '12px',
+                color: '#fff',
+                width: 'auto',
+                height: '4rem',
+            },
+            variables: {
+                padding: '0 2rem',
+            },
         },
     },
 };

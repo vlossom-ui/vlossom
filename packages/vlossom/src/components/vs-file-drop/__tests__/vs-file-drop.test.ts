@@ -9,52 +9,34 @@ function createFile(name = 'test.png', type = 'image/png') {
 
 describe('vs-file-drop', () => {
     describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
+        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsFileDrop, {
                 props: {
                     styleSet: {
-                        backgroundColor: '#f0f0f0',
-                        border: '2px dashed #1e88e5',
-                        padding: '2rem',
+                        variables: {
+                            padding: '2rem',
+                            dragBackgroundColor: '#ffccbc',
+                            iconColor: '#ff5722',
+                        },
+                        component: {
+                            backgroundColor: '#f0f0f0',
+                            border: '2px dashed #1e88e5',
+                        },
                     },
                 },
             });
 
             // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style).toEqual({
-                '--vs-file-drop-backgroundColor': '#f0f0f0',
-                '--vs-file-drop-border': '2px dashed #1e88e5',
-                '--vs-file-drop-height': 'auto',
+            expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-file-drop-padding': '2rem',
+                '--vs-file-drop-dragBackgroundColor': '#ffccbc',
+                '--vs-file-drop-iconColor': '#ff5722',
             });
-        });
-
-        it('width prop이 주어지면 CSS 변수에 포함된다', () => {
-            // given, when
-            const wrapper = mount(VsFileDrop, {
-                props: {
-                    width: '500px',
-                },
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                backgroundColor: '#f0f0f0',
+                border: '2px dashed #1e88e5',
             });
-
-            // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style['--vs-file-drop-width']).toBe('500px');
-        });
-
-        it('height prop이 주어지면 CSS 변수에 포함된다', () => {
-            // given, when
-            const wrapper = mount(VsFileDrop, {
-                props: {
-                    height: '300px',
-                },
-            });
-
-            // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style['--vs-file-drop-height']).toBe('300px');
         });
     });
 

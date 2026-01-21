@@ -172,7 +172,9 @@ export const CustomStyle: Story = {
             header: {
                 padding: '24px',
             },
-            padding: '24px',
+            content: {
+                padding: '24px',
+            },
             footer: {
                 padding: '16px',
             },
@@ -233,7 +235,9 @@ export const PreDefinedStyleSet: Story = {
                 header: {
                     padding: '20px',
                 },
-                padding: '28px',
+                content: {
+                    padding: '28px',
+                },
                 footer: {
                     padding: '20px',
                 },

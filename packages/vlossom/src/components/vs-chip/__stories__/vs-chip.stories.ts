@@ -18,13 +18,17 @@ const meta: Meta<typeof VsChip> = {
         components: { VsChip },
         setup() {
             const preDefinedStyleSet: VsChipStyleSet = {
-                backgroundColor: '#e3f2fd',
-                border: '1px solid #2196f3',
-                borderRadius: '16px',
-                fontColor: '#1976d2',
-                height: '2rem',
-                padding: '0 0.75rem',
-                width: 'auto',
+                variables: {
+                    height: '2rem',
+                },
+                component: {
+                    backgroundColor: '#e3f2fd',
+                    border: '1px solid #2196f3',
+                    borderRadius: '16px',
+                    color: '#1976d2',
+                    padding: '0 0.75rem',
+                    width: 'auto',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -198,14 +202,18 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#f3e5f5',
-            border: '2px solid #9c27b0',
-            borderRadius: '20px',
-            fontColor: '#7b1fa2',
-            height: '2.5rem',
-            opacity: 0.8,
-            padding: '0 1rem',
-            width: 'auto',
+            variables: {
+                height: '2.5rem',
+            },
+            component: {
+                backgroundColor: '#f3e5f5',
+                border: '2px solid #9c27b0',
+                borderRadius: '20px',
+                color: '#7b1fa2',
+                opacity: 0.8,
+                padding: '0 1rem',
+                width: 'auto',
+            },
         },
     },
 };

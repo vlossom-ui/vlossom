@@ -202,28 +202,13 @@ function checkScroll() {
 
 ```typescript
 interface VsGroupedListStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    gap?: string;
-    group?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
+    variables?: {
+        gap?: string;
+        height?: string;
     };
-    item?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-    };
+    layout?: VsInnerScrollStyleSet;
+    group?: CSSProperties;
+    item?: CSSProperties;
 }
 
 interface VsGroupedListGroup {

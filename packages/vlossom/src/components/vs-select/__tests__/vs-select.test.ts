@@ -751,4 +751,79 @@ describe('VsSelect', () => {
             expect(wrapper.props('modelValue')).toEqual(['Banana']);
         });
     });
+
+    describe('styleSet', () => {
+        it('styleSet이 적용되어야 한다', () => {
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    styleSet: {
+                        variables: {
+                            height: '3rem',
+                            selected: {
+                                backgroundColor: '#e3f2fd',
+                                fontWeight: 700,
+                            },
+                            focused: {
+                                border: '2px solid #2196f3',
+                                borderRadius: '8px',
+                                backgroundColor: '#f5f5f5',
+                            },
+                        },
+                        component: {
+                            fontSize: '1rem',
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-select-height': '3rem',
+                '--vs-select-selected-backgroundColor': '#e3f2fd',
+                '--vs-select-selected-fontWeight': 700,
+                '--vs-select-focused-border': '2px solid #2196f3',
+                '--vs-select-focused-borderRadius': '8px',
+                '--vs-select-focused-backgroundColor': '#f5f5f5',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                fontSize: '1rem',
+            });
+        });
+
+        it('variables만 설정할 수 있다', () => {
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    styleSet: {
+                        variables: {
+                            height: '4rem',
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-select-height': '4rem',
+            });
+        });
+
+        it('component만 설정할 수 있다', () => {
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    styleSet: {
+                        component: {
+                            backgroundColor: '#ffffff',
+                            padding: '1rem',
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                backgroundColor: '#ffffff',
+                padding: '1rem',
+            });
+        });
+    });
 });

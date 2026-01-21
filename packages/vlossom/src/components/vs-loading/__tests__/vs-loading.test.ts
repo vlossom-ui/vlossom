@@ -48,10 +48,14 @@ describe('VsLoading', () => {
         it('styleSet이 주어지면 커스텀 스타일이 적용되어야 한다', () => {
             // given
             const styleSet = {
-                width: '100px',
-                height: '120px',
-                color: '#ff0000',
-                barWidth: '20%',
+                variables: {
+                    color: '#ff0000',
+                    barWidth: '20%',
+                },
+                component: {
+                    width: '100px',
+                    height: '120px',
+                },
             };
 
             // when
@@ -63,18 +67,24 @@ describe('VsLoading', () => {
 
             // then
             expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-width': '100px',
-                '--vs-loading-height': '120px',
                 '--vs-loading-color': '#ff0000',
                 '--vs-loading-barWidth': '20%',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '100px',
+                height: '120px',
             });
         });
 
         it('styleSet의 일부 속성만 주어져도 올바르게 적용되어야 한다', () => {
             // given
             const styleSet = {
-                width: '50px',
-                color: '#00ff00',
+                variables: {
+                    color: '#00ff00',
+                },
+                component: {
+                    width: '50px',
+                },
             };
 
             // when
@@ -86,8 +96,10 @@ describe('VsLoading', () => {
 
             // then
             expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-width': '50px',
                 '--vs-loading-color': '#00ff00',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '50px',
             });
         });
 
@@ -123,9 +135,9 @@ describe('VsLoading', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-width': '200px',
-                '--vs-loading-height': '150px',
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '200px',
+                height: '150px',
             });
         });
 
@@ -143,9 +155,9 @@ describe('VsLoading', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-width': '300px',
-                '--vs-loading-height': '250px',
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '300px',
+                height: '250px',
             });
         });
 
@@ -154,8 +166,10 @@ describe('VsLoading', () => {
             const width = '400px';
             const height = '300px';
             const styleSet = {
-                width: '100px',
-                height: '80px',
+                component: {
+                    width: '100px',
+                    height: '80px',
+                },
             };
 
             // when
@@ -168,9 +182,9 @@ describe('VsLoading', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-width': '400px',
-                '--vs-loading-height': '300px',
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '400px',
+                height: '300px',
             });
         });
     });

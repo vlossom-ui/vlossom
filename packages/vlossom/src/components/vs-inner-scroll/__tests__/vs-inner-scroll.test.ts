@@ -22,18 +22,34 @@ describe('VsInnerScroll', () => {
             const wrapper = mount(VsInnerScroll, {
                 props: {
                     styleSet: {
-                        padding: '20px',
-                        header: { padding: '10px' },
-                        footer: { padding: '15px' },
+                        component: {
+                            backgroundColor: '#f5f5f5',
+                        },
+                        header: {
+                            padding: '10px',
+                        },
+                        content: {
+                            padding: '20px',
+                        },
+                        footer: {
+                            padding: '15px',
+                        },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-inner-scroll-padding': '20px',
-                '--vs-inner-scroll-header-padding': '10px',
-                '--vs-inner-scroll-footer-padding': '15px',
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                backgroundColor: '#f5f5f5',
+            });
+            expect(wrapper.vm.componentStyleSet.header).toEqual({
+                padding: '10px',
+            });
+            expect(wrapper.vm.componentStyleSet.content).toEqual({
+                padding: '20px',
+            });
+            expect(wrapper.vm.componentStyleSet.footer).toEqual({
+                padding: '15px',
             });
         });
     });

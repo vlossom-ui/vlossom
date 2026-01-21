@@ -11,9 +11,13 @@ const meta: Meta<typeof VsLoading> = {
         components: { VsLoading },
         setup() {
             const preDefinedStyleSet: VsLoadingStyleSet = {
-                width: '9rem',
-                height: '12rem',
-                color: 'cyan',
+                variables: {
+                    color: 'cyan',
+                },
+                component: {
+                    width: '9rem',
+                    height: '12rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -79,8 +83,10 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            width: '4rem',
-            height: '4rem',
+            component: {
+                width: '4rem',
+                height: '4rem',
+            },
         },
     },
 };

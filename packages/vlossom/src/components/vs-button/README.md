@@ -73,24 +73,41 @@
 
 ```typescript
 interface VsButtonStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string;
-
-    fontColor?: string;
-
-    loading?: {
-        width?: string;
-        height?: string;
-        color?: string;
-        barWidth?: string;
+    variables?: {
+        padding?: string;
     };
+    component?: CSSProperties;
+    loading?: VsLoadingStyleSet;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-button
+        :style-set="{
+            variables: {
+                padding: '0 2rem',
+            },
+            component: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                borderRadius: '12px',
+                color: '#fff',
+                height: '4rem',
+            },
+            loading: {
+                component: {
+                    width: '50%',
+                    height: '70%',
+                },
+            },
+        }"
+    >
+        커스텀 버튼
+    </vs-button>
+</template>
 ```
 
 ## Slots
