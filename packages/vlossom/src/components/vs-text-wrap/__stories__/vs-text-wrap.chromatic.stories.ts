@@ -41,22 +41,26 @@ const meta: Meta<typeof VsTextWrap> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">커스텀 아이콘 스타일</h3>
                     <div style="display:flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
-                        <vs-text-wrap 
-                            v-bind="args" 
-                            copy 
+                        <vs-text-wrap
+                            v-bind="args"
+                            copy
                             link="https://example.com"
                             :style-set="{
-                                copyIcon: { color: '#ff5722', width: '2rem', height: '2rem' },
-                                linkIcon: { color: '#2196f3', width: '2rem', height: '2rem' }
+                                variables: {
+                                    copyIcon: { color: '#ff5722', width: '2rem', height: '2rem' },
+                                    linkIcon: { color: '#2196f3', width: '2rem', height: '2rem' }
+                                }
                             }"
                         >
                             Custom Icon Size and Color
                         </vs-text-wrap>
-                        <vs-text-wrap 
-                            v-bind="args" 
-                            copy 
+                        <vs-text-wrap
+                            v-bind="args"
+                            copy
                             :style-set="{
-                                copyIcon: { color: '#9c27b0', width: '1rem', height: '1rem' }
+                                variables: {
+                                    copyIcon: { color: '#9c27b0', width: '1rem', height: '1rem' }
+                                }
                             }"
                         >
                             Small Purple Copy Icon
@@ -88,14 +92,16 @@ const meta: Meta<typeof VsTextWrap> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">모든 기능 조합</h3>
                     <div style="display:flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
-                        <vs-text-wrap 
-                            v-bind="args" 
-                            copy 
-                            link="https://example.com" 
+                        <vs-text-wrap
+                            v-bind="args"
+                            copy
+                            link="https://example.com"
                             width="250px"
                             :style-set="{
-                                copyIcon: { color: '#4caf50' },
-                                linkIcon: { color: '#03a9f4' }
+                                variables: {
+                                    copyIcon: { color: '#4caf50' },
+                                    linkIcon: { color: '#03a9f4' }
+                                }
                             }"
                         >
                             https://example.com/very/long/url/path/to/resource

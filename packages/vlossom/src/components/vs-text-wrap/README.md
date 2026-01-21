@@ -76,6 +76,59 @@ const textContent = computed(() => textWrapRef.value?.contentText || '');
 </script>
 ```
 
+### StyleSet 사용 예시
+
+styleSet을 통한 스타일 커스터마이징:
+
+```html
+<template>
+    <vs-text-wrap
+        copy
+        link="https://example.com"
+        :style-set="{
+            variables: {
+                width: '500px',
+                copyIcon: {
+                    width: '1.5rem',
+                    height: '1.5rem',
+                    color: '#ff5722',
+                },
+                linkIcon: {
+                    width: '1.5rem',
+                    height: '1.5rem',
+                    color: '#2196f3',
+                },
+            },
+            component: {
+                backgroundColor: '#f5f5f5',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+            },
+        }"
+    >
+        커스텀 스타일이 적용된 텍스트
+    </vs-text-wrap>
+</template>
+```
+
+**참고**: `width`는 prop으로도 설정할 수 있으며, prop으로 설정한 값이 styleSet보다 우선순위가 높습니다.
+
+```html
+<template>
+    <!-- width prop 사용 (styleSet보다 우선) -->
+    <vs-text-wrap
+        width="300px"
+        :style-set="{
+            variables: {
+                width: '500px',
+            },
+        }"
+    >
+        실제 너비는 300px이 적용됩니다 (prop이 우선)
+    </vs-text-wrap>
+</template>
+```
+
 ## Props
 
 | Prop       | Type                           | Default | Required | Description                           |
@@ -88,16 +141,21 @@ const textContent = computed(() => textWrapRef.value?.contentText || '');
 ## Types
 
 ```typescript
-interface IconStyleSet {
-    width?: string;
-    height?: string;
-    color?: string;
-}
-
 interface VsTextWrapStyleSet {
-    width?: string | number;
-    copyIcon?: IconStyleSet;
-    linkIcon?: IconStyleSet;
+    variables?: {
+        width?: string;
+        copyIcon?: {
+            width?: string;
+            height?: string;
+            color?: string;
+        };
+        linkIcon?: {
+            width?: string;
+            height?: string;
+            color?: string;
+        };
+    };
+    component?: CSSProperties;
 }
 ```
 

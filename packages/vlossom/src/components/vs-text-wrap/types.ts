@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsTextWrap from './VsTextWrap.vue';
 
 declare module 'vue' {
@@ -12,12 +11,17 @@ export type { VsTextWrap };
 
 export interface VsTextWrapRef extends ComponentPublicInstance<typeof VsTextWrap> {}
 
-export interface IconStyleSet extends SizeStyleSet {
+interface IconVariables {
+    width?: string;
+    height?: string;
     color?: string;
 }
 
 export interface VsTextWrapStyleSet {
-    width?: string | number;
-    copyIcon?: IconStyleSet;
-    linkIcon?: IconStyleSet;
+    variables?: {
+        width?: string | number;
+        copyIcon?: IconVariables;
+        linkIcon?: IconVariables;
+    };
+    component?: CSSProperties;
 }
