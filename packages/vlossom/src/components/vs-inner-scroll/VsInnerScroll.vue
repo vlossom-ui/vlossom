@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-inner-scroll">
+    <div class="vs-inner-scroll" :style="styleSetVariables">
         <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.header">
             <slot name="header" />
         </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, useTemplateRef, type TemplateRef } from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, type ComputedRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
@@ -37,7 +37,13 @@ export default defineComponent({
         const { styleSet } = toRefs(props);
         const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
-        const { componentStyleSet } = useStyleSet(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsInnerScrollStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInnerScrollStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         function hasScroll() {
             if (!bodyRef.value) {
@@ -47,7 +53,7 @@ export default defineComponent({
             return bodyRef.value.scrollHeight > bodyRef.value.clientHeight;
         }
 
-        return { componentStyleSet, hasScroll, bodyRef };
+        return { componentStyleSet, styleSetVariables, hasScroll, bodyRef };
     },
 });
 </script>
