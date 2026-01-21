@@ -47,7 +47,7 @@ function useStyleSet<T>(
   component: VsComponent | string,
   styleSet: Ref<string | T | undefined>,
   baseStyleSet: Ref<Partial<T>> = ref({}), // 기본값 (가장 낮은 우선순위)
-  additionalStyleSet: Ref<Partial<T>> = ref({}), // props에서 오는 값 (가장 높은 우선순위)
+  additionalStyleSet: Ref<Partial<T>> = ref({}) // props에서 오는 값 (가장 높은 우선순위)
 );
 ```
 
@@ -451,7 +451,7 @@ export default defineComponent({
 
     // baseStyleSet: 하위 컴포넌트 기본값 (필요시)
     const baseStyleSet: ComputedRef<Partial<VsComponentStyleSet>> = computed(
-      () => ({}),
+      () => ({})
     );
 
     // additionalStyleSet: props에서 오는 동적 값 (필요시)
@@ -469,7 +469,7 @@ export default defineComponent({
         componentName,
         styleSet,
         baseStyleSet,
-        additionalStyleSet,
+        additionalStyleSet
       );
 
     return {
@@ -497,7 +497,7 @@ export default defineComponent({
 const { componentStyleSet, styleSetVariables } = useStyleSet<T>(
   componentName,
   styleSet,
-  additionalStyleSet, // 3번째 = baseStyleSet 자리!
+  additionalStyleSet // 3번째 = baseStyleSet 자리!
 );
 
 // CORRECT
@@ -505,7 +505,7 @@ const { componentStyleSet, styleSetVariables } = useStyleSet<T>(
   componentName,
   styleSet,
   baseStyleSet, // 3번째 = baseStyleSet
-  additionalStyleSet, // 4번째 = additionalStyleSet
+  additionalStyleSet // 4번째 = additionalStyleSet
 );
 
 // baseStyleSet 없이 additionalStyleSet만 사용하는 경우
@@ -514,7 +514,7 @@ const { componentStyleSet, styleSetVariables } = useStyleSet<T>(
   componentName,
   styleSet,
   baseStyleSet,
-  additionalStyleSet,
+  additionalStyleSet
 );
 ```
 
@@ -629,71 +629,20 @@ setup(props) {
 
 ### Types 섹션 업데이트
 
-**중요: 중첩 타입은 풀어서 명시**
-
-types.ts에서 별도 interface로 분리했더라도, README에서는 하나의 interface 안에 중첩 구조를 풀어서 보여준다. 사용자가 타입 구조를 한눈에 파악할 수 있도록 하기 위함.
-
 ```markdown
 ## Types
 
-\`\`\`typescript
+\\\`typescript
 interface VsComponentStyleSet {
 variables?: {
 padding?: string;
 border?: string;
-label?: {
-backgroundColor?: string;
-fontColor?: string;
-width?: string;
-};
-value?: {
-backgroundColor?: string;
-fontColor?: string;
-};
 };
 component?: CSSProperties;
 title?: CSSProperties;
 child?: VsChildStyleSet;
 }
 \`\`\`
-```
-
-**예시: VsTextWrap**
-
-```typescript
-// types.ts에서는 별도 interface 가능
-interface IconVariables {
-  width?: string;
-  height?: string;
-  color?: string;
-}
-
-export interface VsTextWrapStyleSet {
-  variables?: {
-    width?: string;
-    copyIcon?: IconVariables;
-    linkIcon?: IconVariables;
-  };
-  component?: CSSProperties;
-}
-
-// README.md에서는 풀어서 명시
-interface VsTextWrapStyleSet {
-  variables?: {
-    width?: string;
-    copyIcon?: {
-      width?: string;
-      height?: string;
-      color?: string;
-    };
-    linkIcon?: {
-      width?: string;
-      height?: string;
-      color?: string;
-    };
-  };
-  component?: CSSProperties;
-}
 ```
 
 ### StyleSet 사용 예시 수정
@@ -856,7 +805,7 @@ describe('복합 styleSet 조합', () => {
     expect(wrapper.vm.componentStyleSet.component?.height).toBe('500px');
     // styleSet의 다른 값은 그대로 유지
     expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe(
-      '#ff0000',
+      '#ff0000'
     );
   });
 });
@@ -925,6 +874,7 @@ npm test vs-text-wrap
 ### 테스트 결과 확인
 
 1. **모든 테스트 통과 확인**
+
    - `Test Files: X passed` 확인
    - `Tests: X passed` 확인
    - 실패한 테스트가 없어야 함
@@ -937,21 +887,23 @@ npm test vs-text-wrap
 ### 일반적인 테스트 실패 원인
 
 1. **additionalStyleSet의 빈 값 포함**
+
    ```typescript
    // 문제: width prop이 없을 때 빈 문자열이 포함됨
    expect(wrapper.vm.componentStyleSet.component).toEqual({
-       backgroundColor: '#f5f5f5',
-       // width: '', // 이 값이 포함되어 테스트 실패
+     backgroundColor: '#f5f5f5',
+     // width: '', // 이 값이 포함되어 테스트 실패
    });
 
    // 해결: 실제 값 포함하여 테스트
    expect(wrapper.vm.componentStyleSet.component).toEqual({
-       backgroundColor: '#f5f5f5',
-       width: '', // additionalStyleSet에서 오는 빈 값 포함
+     backgroundColor: '#f5f5f5',
+     width: '', // additionalStyleSet에서 오는 빈 값 포함
    });
    ```
 
 2. **styleSetVariables 형식 불일치**
+
    - CSS 변수명이 올바른지 확인
    - 중첩 구조가 올바르게 변환되는지 확인
 
