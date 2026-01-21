@@ -173,9 +173,6 @@ export const StyleSet: Story = {
                     padding: '0.75rem 1rem',
                 },
             },
-            component: {
-                opacity: 0.95,
-            },
         },
     },
     render: (args: any) => ({

@@ -117,10 +117,6 @@ describe('vs-image', () => {
                             height: '200px',
                             border: '2px solid red',
                         },
-                        component: {
-                            backgroundColor: '#f0f0f0',
-                            opacity: 0.8,
-                        },
                     },
                 },
             });
@@ -130,10 +126,6 @@ describe('vs-image', () => {
                 '--vs-image-width': '300px',
                 '--vs-image-height': '200px',
                 '--vs-image-border': '2px solid red',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f0f0f0',
-                opacity: 0.8,
             });
         });
     });

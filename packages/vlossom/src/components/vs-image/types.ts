@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { VsSkeletonStyleSet } from '@/components/vs-skeleton/types';
 import type VsImage from './VsImage.vue';
 
@@ -20,6 +20,5 @@ export interface VsImageStyleSet {
         borderRadius?: string;
         objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
     };
-    component?: CSSProperties;
     skeleton?: VsSkeletonStyleSet;
 }

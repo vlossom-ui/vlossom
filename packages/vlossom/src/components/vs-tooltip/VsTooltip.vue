@@ -13,7 +13,7 @@
         <template #default="{ placement: computedPlacement }">
             <div
                 :class="['vs-tooltip', colorSchemeClass, `vs-placement-${computedPlacement}`, `vs-align-${align}`]"
-                :style="tooltipStyle"
+                :style="styleSetVariables"
                 @mouseenter.stop="onTooltipEnter"
                 @mouseleave.stop="onTooltipLeave"
             >
@@ -70,11 +70,7 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<Partial<VsTooltipStyleSet>> = computed(() => ({}));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTooltipStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet, baseStyleSet);
 
         const computedShow: WritableComputedRef<boolean> = computed({
             get() {
@@ -108,10 +104,6 @@ export default defineComponent({
                     tooltipOver.value = false;
                 }
             },
-        });
-
-        const tooltipStyle = computed(() => {
-            return { ...styleSetVariables.value, ...componentStyleSet.value.component };
         });
 
         const computedCallbacks: ComputedRef<OverlayCallbacks> = computed(() => {
@@ -226,12 +218,10 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
-            componentStyleSet,
             styleSetVariables,
             computedShow,
             onTooltipEnter,
             onTooltipLeave,
-            tooltipStyle,
         };
     },
 });

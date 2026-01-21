@@ -363,9 +363,6 @@ describe('vs-tooltip', () => {
                             arrowColor: '#333',
                             arrowSize: '0.5rem',
                         },
-                        component: {
-                            color: '#fff',
-                        },
                     },
                 },
             });
@@ -378,9 +375,6 @@ describe('vs-tooltip', () => {
                 '--vs-tooltip-padding': '0.5rem 1rem',
                 '--vs-tooltip-arrowColor': '#333',
                 '--vs-tooltip-arrowSize': '0.5rem',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                color: '#fff',
             });
 
             // cleanup

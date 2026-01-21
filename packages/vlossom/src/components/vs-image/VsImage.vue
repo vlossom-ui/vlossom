@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-image" ref="vsImageRef" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+    <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
         <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.skeleton">
             <slot name="skeleton" />
         </vs-skeleton>

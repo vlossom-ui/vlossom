@@ -17,17 +17,15 @@ const meta: Meta<typeof VsTextWrap> = {
         components: { VsTextWrap },
         setup() {
             const preDefinedStyleSet: VsTextWrapStyleSet = {
-                variables: {
-                    copyIcon: {
-                        color: '#394867',
-                        width: '1.6rem',
-                        height: '1.6rem',
-                    },
-                    linkIcon: {
-                        color: '#526d82',
-                        width: '1.6rem',
-                        height: '1.6rem',
-                    },
+                copyIcon: {
+                    color: '#394867',
+                    width: '1.6rem',
+                    height: '1.6rem',
+                },
+                linkIcon: {
+                    color: '#526d82',
+                    width: '1.6rem',
+                    height: '1.6rem',
                 },
             } as const;
 
@@ -267,17 +265,15 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            variables: {
-                copyIcon: {
-                    color: '#394867',
-                    width: '2rem',
-                    height: '2rem',
-                },
-                linkIcon: {
-                    color: '#526d82',
-                    width: '2rem',
-                    height: '2rem',
-                },
+            copyIcon: {
+                color: '#394867',
+                width: '2rem',
+                height: '2rem',
+            },
+            linkIcon: {
+                color: '#526d82',
+                width: '2rem',
+                height: '2rem',
             },
         },
         copy: true,

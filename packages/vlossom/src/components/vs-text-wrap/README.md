@@ -88,21 +88,16 @@ styleSet을 통한 스타일 커스터마이징:
         :style-set="{
             variables: {
                 width: '500px',
-                copyIcon: {
-                    width: '1.5rem',
-                    height: '1.5rem',
-                    color: '#ff5722',
-                },
-                linkIcon: {
-                    width: '1.5rem',
-                    height: '1.5rem',
-                    color: '#2196f3',
-                },
             },
-            component: {
-                backgroundColor: '#f5f5f5',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
+            copyIcon: {
+                width: '1.5rem',
+                height: '1.5rem',
+                color: '#ff5722',
+            },
+            linkIcon: {
+                width: '1.5rem',
+                height: '1.5rem',
+                color: '#2196f3',
             },
         }"
     >
@@ -144,18 +139,9 @@ styleSet을 통한 스타일 커스터마이징:
 interface VsTextWrapStyleSet {
     variables?: {
         width?: string | number;
-        copyIcon?: {
-            width?: string;
-            height?: string;
-            color?: string;
-        };
-        linkIcon?: {
-            width?: string;
-            height?: string;
-            color?: string;
-        };
     };
-    component?: CSSProperties;
+    copyIcon?: CSSProperties;
+    linkIcon?: CSSProperties;
 }
 ```
 
@@ -176,6 +162,6 @@ interface VsTextWrapStyleSet {
 
 - **복사 기능**: `copy` prop으로 복사 버튼 활성화. HTML 태그는 제거하고 순수 텍스트만 복사됩니다.
 - **링크 기능**: `link` prop으로 링크 버튼 활성화. 클릭 시 새 탭에서 URL이 열립니다.
-- **아이콘 스타일링**: `styleSet`을 통해 복사/링크 아이콘의 색상, 크기를 개별적으로 커스터마이징할 수 있습니다.
+- **아이콘 스타일링**: `styleSet`의 `copyIcon`, `linkIcon` 속성을 통해 복사/링크 아이콘의 색상, 크기를 개별적으로 커스터마이징할 수 있습니다.
 - **너비 조절**: `width` prop으로 텍스트 영역의 너비를 설정하며, 긴 텍스트는 ellipsis로 표시됩니다.
 - **복사 피드백**: 복사 성공 시 2초간 체크 아이콘으로 변경되어 시각적 피드백을 제공합니다.

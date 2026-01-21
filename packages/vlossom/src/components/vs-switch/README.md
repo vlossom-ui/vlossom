@@ -124,7 +124,6 @@ interface VsSwitchStyleSet {
         handleColor?: string;
         handleSize?: string;
     };
-    component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
@@ -144,9 +143,6 @@ interface VsSwitchStyleSet {
                 borderRadius: '2rem',
                 handleSize: '1.8rem',
                 handleColor: '#4caf50',
-            },
-            component: {
-                margin: '1rem 0',
             },
         }"
     />

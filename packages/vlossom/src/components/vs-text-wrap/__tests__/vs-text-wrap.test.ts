@@ -50,21 +50,15 @@ describe('VsTextWrap', () => {
             const wrapper = mount(VsTextWrap, {
                 props: {
                     styleSet: {
-                        variables: {
-                            copyIcon: {
-                                color: '#ff0000',
-                                width: '2rem',
-                                height: '2rem',
-                            },
-                            linkIcon: {
-                                color: '#0000ff',
-                                width: '1.5rem',
-                                height: '1.5rem',
-                            },
+                        copyIcon: {
+                            color: '#ff0000',
+                            width: '2rem',
+                            height: '2rem',
                         },
-                        component: {
-                            backgroundColor: '#f5f5f5',
-                            padding: '0.5rem',
+                        linkIcon: {
+                            color: '#0000ff',
+                            width: '1.5rem',
+                            height: '1.5rem',
                         },
                     },
                     copy: true,
@@ -74,16 +68,16 @@ describe('VsTextWrap', () => {
 
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-text-wrap-width': '',
-                '--vs-text-wrap-copyIcon-color': '#ff0000',
-                '--vs-text-wrap-copyIcon-width': '2rem',
-                '--vs-text-wrap-copyIcon-height': '2rem',
-                '--vs-text-wrap-linkIcon-color': '#0000ff',
-                '--vs-text-wrap-linkIcon-width': '1.5rem',
-                '--vs-text-wrap-linkIcon-height': '1.5rem',
             });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f5f5f5',
-                padding: '0.5rem',
+            expect(wrapper.vm.componentStyleSet.copyIcon).toEqual({
+                color: '#ff0000',
+                width: '2rem',
+                height: '2rem',
+            });
+            expect(wrapper.vm.componentStyleSet.linkIcon).toEqual({
+                color: '#0000ff',
+                width: '1.5rem',
+                height: '1.5rem',
             });
         });
     });
@@ -97,15 +91,11 @@ describe('VsTextWrap', () => {
                         variables: {
                             width: '300px',
                         },
-                        component: {
-                            backgroundColor: '#ff0000',
-                        },
                     },
                 },
             });
 
             expect(wrapper.vm.styleSetVariables['--vs-text-wrap-width']).toBe('500px');
-            expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#ff0000');
         });
     });
 

@@ -37,9 +37,6 @@ describe('vs-label-value', () => {
                                 fontWeight: 600,
                             },
                         },
-                        component: {
-                            opacity: 0.95,
-                        },
                     },
                 },
             });
@@ -48,9 +45,6 @@ describe('vs-label-value', () => {
                 '--vs-label-value-border': '2px solid #e91e63',
                 '--vs-label-value-label-backgroundColor': '#f5f5f5',
                 '--vs-label-value-label-fontWeight': 600,
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                opacity: 0.95,
             });
         });
     });

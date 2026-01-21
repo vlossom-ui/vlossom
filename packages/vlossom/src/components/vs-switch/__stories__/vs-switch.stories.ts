@@ -200,9 +200,6 @@ export const StyleSet: Story = {
                 handleColor: '#2ecc71',
                 handleSize: '16px',
             },
-            component: {
-                margin: '1rem 0',
-            },
         },
     },
 };

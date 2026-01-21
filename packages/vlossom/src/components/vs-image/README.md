@@ -91,7 +91,6 @@ interface VsImageStyleSet {
         borderRadius?: string;
         objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
     };
-    component?: CSSProperties;
     skeleton?: VsSkeletonStyleSet;
 }
 ```
@@ -111,13 +110,8 @@ interface VsImageStyleSet {
                 borderRadius: '50%',
                 objectFit: 'cover',
             },
-            component: {
-                backgroundColor: '#f5f5f5',
-                opacity: 0.9,
-                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-            },
             skeleton: {
-                component: {
+                variables: {
                     backgroundColor: '#e0e0e0',
                 },
             },

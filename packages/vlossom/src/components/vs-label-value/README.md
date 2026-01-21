@@ -88,7 +88,6 @@ interface VsLabelValueStyleSet {
             verticalAlign?: string;
         };
     };
-    component?: CSSProperties;
 }
 ```
 
@@ -110,9 +109,6 @@ interface VsLabelValueStyleSet {
                     fontColor: '#333',
                     padding: '1rem 2rem',
                 },
-            },
-            component: {
-                opacity: 0.95,
             },
         }"
     >

@@ -120,7 +120,6 @@ interface VsTooltipStyleSet {
         arrowColor?: string;
         arrowSize?: string;
     };
-    component?: CSSProperties;
 }
 ```
 
@@ -140,9 +139,6 @@ interface VsTooltipStyleSet {
                     padding: '0.5rem 1rem',
                     arrowColor: '#333',
                     arrowSize: '0.5rem',
-                },
-                component: {
-                    color: '#fff',
                 },
             }"
         >

@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsSwitch from './VsSwitch.vue';
@@ -24,6 +24,5 @@ export interface VsSwitchStyleSet {
         handleColor?: string;
         handleSize?: string;
     };
-    component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

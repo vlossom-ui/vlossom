@@ -16,7 +16,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
             <label class="vs-switch-wrap" :for="computedId">
                 <input
                     ref="switchRef"

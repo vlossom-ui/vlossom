@@ -1,6 +1,5 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type VsLabelValue from './VsLabelValue.vue';
-import type { TextStyleSet } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -21,7 +20,7 @@ interface ValueVariables {
     verticalAlign?: string;
 }
 
-interface LabelVariables extends TextStyleSet {
+interface LabelVariables extends ValueVariables {
     width?: string;
 }
 
@@ -32,5 +31,4 @@ export interface VsLabelValueStyleSet {
         label?: LabelVariables;
         value?: ValueVariables;
     };
-    component?: CSSProperties;
 }

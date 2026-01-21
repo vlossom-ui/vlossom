@@ -502,9 +502,6 @@ describe('VsSwitch', () => {
                             handleSize: '1.8rem',
                             handleColor: '#4caf50',
                         },
-                        component: {
-                            margin: '1rem 0',
-                        },
                     },
                 },
             });
@@ -518,9 +515,6 @@ describe('VsSwitch', () => {
                 '--vs-switch-borderRadius': '2rem',
                 '--vs-switch-handleSize': '1.8rem',
                 '--vs-switch-handleColor': '#4caf50',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                margin: '1rem 0',
             });
         });
     });

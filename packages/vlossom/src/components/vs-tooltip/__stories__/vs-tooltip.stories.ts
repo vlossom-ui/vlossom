@@ -367,9 +367,6 @@ export const StyleSet: Story = {
                 arrowColor: '#e188e5',
                 arrowSize: '0.5rem',
             },
-            component: {
-                color: '#fff',
-            },
         },
         align: 'start',
         placement: 'right',
