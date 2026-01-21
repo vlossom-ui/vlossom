@@ -2,6 +2,7 @@
     <thead>
         <template v-if="headerCells.length">
             <tr>
+                <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-select-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="{ cells, rowIdx }">
                         <slot name="select" :cells :rowIdx />
@@ -48,6 +49,7 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
+import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableSelectCell from './VsTableSelectCell.vue';
 
@@ -55,6 +57,7 @@ export default defineComponent({
     components: {
         VsRender,
         VsSkeleton,
+        VsTableDragCell,
         VsTableExpandCell,
         VsTableSelectCell,
     },
