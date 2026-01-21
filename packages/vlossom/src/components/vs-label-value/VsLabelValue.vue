@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="{ ...componentStyleSet, ...styleSetVariables }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
         :width
         :grid
     >
@@ -14,10 +14,10 @@
     </vs-responsive>
 </template>
 <script lang="ts">
-import { type PropType, computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
-import { getResponsiveProps } from '@/props';
-import { VsComponent, type ColorScheme } from '@/declaration';
+import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
+import { VsComponent } from '@/declaration';
 import type { VsLabelValueStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -27,9 +27,9 @@ export default defineComponent({
     name: componentName,
     components: { VsResponsive },
     props: {
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsLabelValueStyleSet>(),
         ...getResponsiveProps(),
-        colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: [String, Object] as PropType<string | VsLabelValueStyleSet> },
         dense: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
     },
@@ -38,7 +38,13 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsLabelValueStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,

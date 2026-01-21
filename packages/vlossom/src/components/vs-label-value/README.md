@@ -67,31 +67,59 @@
 
 ```typescript
 interface VsLabelValueStyleSet {
-    border?: string;
-    borderRadius?: string;
-    opacity?: string | number;
-
-    label?: {
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-
-        backgroundColor?: string;
-        padding?: string;
-        verticalAlign?: string;
-        width?: string;
+    variables?: {
+        border?: string;
+        borderRadius?: string;
+        label?: {
+            backgroundColor?: string;
+            fontColor?: string;
+            fontSize?: string;
+            fontWeight?: string | number;
+            padding?: string;
+            verticalAlign?: string;
+            width?: string;
+        };
+        value?: {
+            backgroundColor?: string;
+            fontColor?: string;
+            fontSize?: string;
+            fontWeight?: string | number;
+            padding?: string;
+            verticalAlign?: string;
+        };
     };
-
-    value?: {
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-
-        backgroundColor?: string;
-        padding?: string;
-        verticalAlign?: string;
-    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-label-value
+        :style-set="{
+            variables: {
+                border: '2px solid #e91e63',
+                borderRadius: '12px',
+                label: {
+                    backgroundColor: '#f5f5f5',
+                    fontWeight: 600,
+                    width: '30%',
+                },
+                value: {
+                    fontColor: '#333',
+                    padding: '1rem 2rem',
+                },
+            },
+            component: {
+                opacity: 0.95,
+            },
+        }"
+    >
+        <template #label>사용자 정의 스타일</template>
+        커스터마이징된 값
+    </vs-label-value>
+</template>
 ```
 
 ## Slots

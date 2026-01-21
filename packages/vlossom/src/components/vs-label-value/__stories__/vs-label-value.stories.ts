@@ -12,17 +12,19 @@ const meta: Meta<typeof VsLabelValue> = {
         components: { VsLabelValue },
         setup() {
             const preDefinedStyleSet: VsLabelValueStyleSet = {
-                border: '2px solid #3b82f6',
-                borderRadius: '12px',
-                label: {
-                    backgroundColor: '#dbeafe',
-                    fontColor: '#1e40af',
-                    padding: '1rem 1.5rem',
-                },
-                value: {
-                    backgroundColor: '#f8fafc',
-                    fontColor: '#334155',
-                    padding: '1rem 1.5rem',
+                variables: {
+                    border: '2px solid #3b82f6',
+                    borderRadius: '12px',
+                    label: {
+                        backgroundColor: '#dbeafe',
+                        fontColor: '#1e40af',
+                        padding: '1rem 1.5rem',
+                    },
+                    value: {
+                        backgroundColor: '#f8fafc',
+                        fontColor: '#334155',
+                        padding: '1rem 1.5rem',
+                    },
                 },
             } as const;
 
@@ -157,17 +159,22 @@ export const ColorScheme: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            border: '2px solid #10b981',
-            borderRadius: '8px',
-            label: {
-                backgroundColor: '#a1e224',
-                fontColor: '#065f46',
-                padding: '0.75rem 1rem',
+            variables: {
+                border: '2px solid #10b981',
+                borderRadius: '8px',
+                label: {
+                    backgroundColor: '#a1e224',
+                    fontColor: '#065f46',
+                    padding: '0.75rem 1rem',
+                },
+                value: {
+                    backgroundColor: '#ecfdf5',
+                    fontColor: '#047857',
+                    padding: '0.75rem 1rem',
+                },
             },
-            value: {
-                backgroundColor: '#ecfdf5',
-                fontColor: '#047857',
-                padding: '0.75rem 1rem',
+            component: {
+                opacity: 0.95,
             },
         },
     },
