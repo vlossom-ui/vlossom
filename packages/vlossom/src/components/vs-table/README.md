@@ -216,6 +216,37 @@
 
 > `expandable`이 `true`이거나 조건을 만족하는 행만 확장 버튼이 표시되며, `expand` 슬롯을 통해 확장 영역을 커스텀합니다.
 
+### 행 드래그 (Draggable)
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="items"
+        draggable
+        @drag="handleDrag"
+    />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const items = ref([
+    { id: '1', name: 'Alice', age: 24, email: 'alice@example.com' },
+    { id: '2', name: 'Bob', age: 30, email: 'bob@example.com' },
+    { id: '3', name: 'Charlie', age: 28, email: 'charlie@example.com' },
+]);
+
+function handleDrag(event) {
+    const { oldIndex, newIndex } = event;
+    const movedItem = items.value.splice(oldIndex, 1)[0];
+    items.value.splice(newIndex, 0, movedItem);
+}
+</script>
+```
+
+> `draggable`을 활성화하면 각 행에 드래그 핸들이 표시되며, 행을 드래그하여 순서를 변경할 수 있습니다. `drag` 이벤트를 통해 드래그 완료 시점에 순서 변경을 처리할 수 있습니다.
+
 ### 가상 스크롤 (Virtual Scroll)
 
 ```html
@@ -261,6 +292,7 @@
 | `loading`                | `boolean`                                      | false   | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                |
 | `serverMode`             | `boolean`                                      | false   | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시 |
 | `virtualScroll`          | `boolean`                                      | false   | -        | 가상 스크롤 활성화. 대용량 데이터의 렌더링 성능 최적화                                                                |
+| `draggable`              | `boolean`                                      | false   | -        | 행 드래그 활성화. 행 순서를 드래그로 변경 가능                                                                        |
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
 | `page`(v-model)          | `number`                                       | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
 | `pageSize` (v-model)     | `number`                                       | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
@@ -344,6 +376,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 | `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
 | `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
 | `paginate`   | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
+| `drag`       | `(event: SortableEvent)`                   | 행 드래그 완료 시 발생 (oldIndex, newIndex 포함)  |
 
 ## 특징
 
@@ -354,6 +387,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **페이지네이션**: `pagination` 옵션으로 `VsPagination` 기반 페이지 네비게이션과 총 아이템/페이지 크기 선택을 제공
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
+- **행 드래그**: `draggable` prop으로 드래그 앤 드롭 기반 행 순서 변경 지원
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
 - **행 검색**: `search` 옵션으로 검색 입력을 제공하고, `skipSearch`로 제외 컬럼을 제어
 - **가상 스크롤**: `virtualScroll` 옵션으로 대용량 데이터셋의 렌더링 성능을 최적화하고 메모리 사용량 감소
