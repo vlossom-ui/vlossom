@@ -218,28 +218,22 @@ export default defineComponent({
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
         }
-
         function selectRow(row: BodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
         }
-
         function expandRow(row: BodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
         }
-
         function dragRow(event: SortableEvent): void {
             emit('drag', event);
         }
-
         function searchRows(searchText: string): void {
             const items = table.bodyCells.value.map((row) => getRowItem(row));
             emit('search', items, searchText);
         }
-
         function paginate(nextPage: number): void {
             emit('paginate', nextPage, table.pageSize.value);
         }
-
         function updateSelectedItems(items: Item[]): void {
             emit('update:selectedItems', items);
         }

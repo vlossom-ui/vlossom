@@ -16,7 +16,7 @@
                     @select-row="selectRow"
                     @expand-row="expandRow"
                 >
-                    <template v-for="name in Object.keys($slots)" #[name]="slotData">
+                    <template v-for="name in bodySlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
                 </vs-table-body-row>
@@ -55,9 +55,15 @@ export default defineComponent({
         draggable,
     },
     emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
-    setup(props, { emit }) {
+    setup(props, { slots, emit }) {
         const { bodyCells, loading } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        const bodySlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
 
         // NOTE: These values are arrays used to represent the **draggable** view.
         const displayOrder = ref<number[]>([]);
@@ -107,7 +113,7 @@ export default defineComponent({
         return {
             DEFAULT_SORTABLE_OPTIONS,
             TABLE_DRAG_WRAPPER_CLASS,
-            bodyCells,
+            bodySlots,
             displayedBodyCells,
             loading,
             tableIcons,
