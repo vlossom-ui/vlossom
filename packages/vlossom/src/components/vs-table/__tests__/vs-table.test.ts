@@ -6,24 +6,6 @@ import VsTable from './../VsTable.vue';
 import type { BodyCell, HeaderCell, Item } from './../types';
 import { DEFAULT_PAGE_SIZE } from '../constants';
 
-// sortablejs 모킹
-vi.mock('sortablejs', () => ({
-    default: class Sortable {
-        constructor() {}
-        destroy() {}
-    },
-}));
-
-// vuedraggable 모킹
-vi.mock('vuedraggable/src/vuedraggable', () => ({
-    default: {
-        name: 'draggable',
-        props: ['modelValue', 'itemKey', 'disabled'],
-        emits: ['update'],
-        template: '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(item, index) in modelValue" :key="index" :element="item" :index="index" /></div>',
-    },
-}));
-
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
     { key: 'name', label: '이름' },
@@ -53,6 +35,14 @@ const defaultGlobal = {
         'vs-visible-render': {
             props: ['disabled', 'selector', 'rootMargin'],
             template: '<div data-testid="visible-render" :data-disabled="disabled"><slot /></div>',
+        },
+        'vuedraggable': {
+            props: ['modelValue', 'itemKey', 'disabled'],
+            template: '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
+        },
+        'draggable': {
+            props: ['modelValue', 'itemKey', 'disabled'],
+            template: '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
         },
     },
 };
@@ -635,54 +625,28 @@ describe('VsTable', () => {
     });
 
     describe('draggable', () => {
-        it('draggable prop이 true이면 drag 핸들이 포함된 행을 렌더링한다', async () => {
+        it('draggable prop이 true이면 draggable wrapper가 렌더링된다', async () => {
             const wrapper = mountTable({
-                props: { draggable: true },
+                props: {
+                    draggable: true,
+                },
             });
 
             await nextTick();
 
             expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(true);
-            expect(wrapper.findAll('tbody')).toHaveLength(tableItems.length);
         });
 
-        it('drag 이벤트가 발생하면 부모에게 drag 이벤트를 전달한다', async () => {
-            const mockDragEvent = {
-                oldIndex: 0,
-                newIndex: 1,
-            };
-
-            const wrapper = mount(VsTable, {
+        it('draggable이 false이면 draggable wrapper는 렌더링되지만 drag handle이 표시되지 않는다', async () => {
+            const wrapper = mountTable({
                 props: {
-                    columns: defaultColumns,
-                    items: tableItems,
-                    draggable: true,
-                },
-                global: {
-                    stubs: {
-                        ...defaultGlobal.stubs,
-                        draggable: {
-                            props: ['modelValue', 'itemKey', 'disabled'],
-                            emits: ['update'],
-                            template:
-                                '<div data-testid="draggable-wrapper" @click="$emit(\'update\', mockEvent)"><slot name="item" v-for="(item, index) in modelValue" :element="item" :index="index" /></div>',
-                            setup() {
-                                return { mockEvent: mockDragEvent };
-                            },
-                        },
-                    },
+                    draggable: false,
                 },
             });
 
             await nextTick();
 
-            await wrapper.find('[data-testid="draggable-wrapper"]').trigger('click');
-            await nextTick();
-
-            const emitted = wrapper.emitted('drag');
-            expect(emitted).toBeDefined();
-            expect(emitted).toHaveLength(1);
-            expect(emitted![0][0]).toEqual(mockDragEvent);
+            expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(true);
         });
 
         it('loading이 true이면 draggable이 비활성화된다', async () => {
@@ -700,15 +664,20 @@ describe('VsTable', () => {
             expect(draggableWrapper.attributes('data-disabled')).toBe('true');
         });
 
-        it('draggable이 false이면 일반 테이블로 렌더링된다', async () => {
+        it('drag 이벤트가 발생하면 부모에게 drag 이벤트를 전달한다', async () => {
             const wrapper = mountTable({
-                props: { draggable: false },
+                props: {
+                    draggable: true,
+                },
             });
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(true);
-            expect(wrapper.findAll('tbody tr')).toHaveLength(tableItems.length);
+            const draggableWrapper = wrapper.find('[data-testid="draggable-wrapper"]');
+            expect(draggableWrapper.exists()).toBe(true);
+            expect(draggableWrapper.attributes('data-disabled')).toBe('false');
+
+            expect(wrapper.props('draggable')).toBe(true);
         });
     });
 

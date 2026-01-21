@@ -553,7 +553,8 @@ export const Draggable: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'draggable을 true로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다. drag 이벤트를 통해 oldIndex, newIndex 등의 정보를 받을 수 있습니다.',
+                story: `draggable을 true로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다.
+                        drag 이벤트를 통해 oldIndex, newIndex 등의 정보를 받을 수 있습니다.`,
             },
         },
     },
