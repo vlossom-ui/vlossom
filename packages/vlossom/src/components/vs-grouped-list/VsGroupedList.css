@@ -9,7 +9,6 @@
     border: none;
     border-radius: 0;
     background-color: var(--vs-no-color);
-    background-color: var(--vs-no-color);
     width: auto;
     max-height: var(--vs-grouped-list-height, auto);
 
