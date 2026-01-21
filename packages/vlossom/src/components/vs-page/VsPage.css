@@ -1,8 +1,6 @@
 .vs-page {
     --vs-page-padding: initial;
-
     --vs-page-title-padding: initial;
-
     --vs-page-description-padding: initial;
 
     @apply relative w-full;

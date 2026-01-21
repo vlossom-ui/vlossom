@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-page" :style="styleSetVariables">
+    <div class="vs-page" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
         <div v-if="$slots['title']" class="vs-page-title">
             <slot name="title" />
         </div>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
@@ -27,9 +27,16 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { styleSetVariables } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsPageStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPageStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         return {
+            componentStyleSet,
             styleSetVariables,
         };
     },

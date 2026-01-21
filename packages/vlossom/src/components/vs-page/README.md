@@ -24,6 +24,40 @@
 </template>
 ```
 
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-page
+        :style-set="{
+            variables: {
+                padding: '3rem 4rem',
+                title: {
+                    padding: '0 0 1.5rem 0',
+                },
+                description: {
+                    padding: '0 0 2rem 0',
+                },
+            },
+            component: {
+                backgroundColor: '#f9f9f9',
+                borderRadius: '8px',
+            },
+        }"
+    >
+        <template #title>
+            <h1>커스텀 스타일 페이지</h1>
+        </template>
+        <template #description>
+            <p>패딩과 배경색이 커스터마이징된 페이지입니다.</p>
+        </template>
+        <section>
+            <p>페이지 컨텐츠</p>
+        </section>
+    </vs-page>
+</template>
+```
+
 ## Props
 
 | Prop       | Type                       | Default | Required | Description             |
@@ -33,16 +67,21 @@
 ## Types
 
 ```typescript
-interface VsPageStyleSet {
+interface TitleVariables {
     padding?: string;
+}
 
-    title?: {
-        padding?: string;
-    };
+interface DescriptionVariables {
+    padding?: string;
+}
 
-    description?: {
+interface VsPageStyleSet {
+    variables?: {
         padding?: string;
+        title?: TitleVariables;
+        description?: DescriptionVariables;
     };
+    component?: CSSProperties;
 }
 ```
 

@@ -51,13 +51,15 @@ const meta: Meta<typeof VsPage> = {
         components: { VsPage },
         setup() {
             const preDefinedStyleSet: VsPageStyleSet = {
-                title: {
-                    padding: '0 0 1rem 0',
+                variables: {
+                    title: {
+                        padding: '0 0 1rem 0',
+                    },
+                    description: {
+                        padding: '0 0 2rem 0',
+                    },
+                    padding: '4rem 5rem',
                 },
-                description: {
-                    padding: '0 0 2rem 0',
-                },
-                padding: '4rem 5rem',
             } as const;
 
             useVlossom().styleSet = {
@@ -192,7 +194,9 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            padding: '1.2rem 3rem',
+            variables: {
+                padding: '1.2rem 3rem',
+            },
         },
     },
 };
@@ -207,12 +211,14 @@ export const NestedStyleSet: Story = {
     },
     args: {
         styleSet: {
-            padding: '2rem',
-            title: {
-                padding: '0 0 1.5rem 0',
-            },
-            description: {
-                padding: '1.5rem 0 2rem 0',
+            variables: {
+                padding: '2rem',
+                title: {
+                    padding: '0 0 1.5rem 0',
+                },
+                description: {
+                    padding: '1.5rem 0 2rem 0',
+                },
             },
         },
     },
