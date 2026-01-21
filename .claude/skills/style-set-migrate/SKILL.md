@@ -183,6 +183,93 @@ export interface VsNewStyleSet {
 }
 ```
 
+### component 속성 필요 여부 판단
+
+StyleSet에 `component?: CSSProperties` 속성을 포함할지 결정하는 기준.
+
+**핵심 원칙**: "이미 있는 variables 속성들로 스타일을 충분히 변경할 수 있으면 component 속성을 넣지 않는다"
+
+#### component가 불필요한 경우
+
+variables에 정의된 속성들이 컴포넌트의 스타일링 니즈를 충분히 커버하는 경우:
+
+```typescript
+// VsChip 예시 - component 불필요
+export interface VsChipStyleSet {
+  variables?: {
+    backgroundColor?: string;
+    border?: string;
+    borderRadius?: string;
+    fontColor?: string;
+    fontSize?: string;
+    padding?: string;
+  };
+  // component 없음 - variables로 충분
+}
+```
+
+**판단 기준:**
+
+1. variables에 주요 스타일 속성이 이미 정의되어 있는가?
+2. 사용자가 커스터마이징할 만한 속성들이 variables로 커버되는가?
+3. 컴포넌트 구조가 단순하여 추가적인 루트 스타일링이 불필요한가?
+
+**component 없이 사용하는 컴포넌트 예시:**
+
+| 컴포넌트 | variables 속성 | component 불필요 이유 |
+|----------|----------------|----------------------|
+| VsAvatar | size, border, borderRadius, backgroundColor | 아바타 스타일링에 필요한 모든 속성 커버 |
+| VsLoading | color | 로딩 인디케이터의 핵심 스타일 커버 |
+| VsChip | padding, fontSize, fontColor, backgroundColor, border, borderRadius | 칩 스타일링에 필요한 모든 속성 커버 |
+| VsGroupedList | 목록 관련 variables | 목록 구조 스타일링 충분 |
+| VsInnerScroll | 스크롤 관련 variables | 스크롤 영역 스타일링 충분 |
+| VsTextWrap | text, lineClamp 관련 variables | 텍스트 래핑 스타일링 충분 |
+
+#### component가 필요한 경우
+
+variables만으로 커버되지 않는 추가적인 스타일링이 필요한 경우:
+
+```typescript
+// VsButton 예시 - component 필요
+export interface VsButtonStyleSet {
+  variables?: {
+    padding?: string;
+  };
+  component?: CSSProperties;  // 추가 스타일링 지원
+  loading?: VsLoadingStyleSet;
+}
+```
+
+**component가 필요한 상황:**
+
+1. **복잡한 컴포넌트 구조**: 다양한 slot과 하위 요소가 있어 유연한 스타일링 필요
+2. **일회성 커스터마이징**: variables에 정의되지 않은 속성의 커스터마이징 필요
+3. **variables가 제한적**: 컴포넌트가 특정 속성만 variables로 노출하고, 추가 스타일링 여지를 남겨야 할 때
+
+**component를 사용하는 컴포넌트 예시:**
+
+| 컴포넌트 | component 필요 이유 |
+|----------|---------------------|
+| VsAccordion | 복잡한 접기/펴기 구조, 다양한 slot 지원 |
+| VsExpandable | 복잡한 확장 구조, 다양한 slot 지원 |
+| VsButton | 다양한 스타일 변형, 상호작용 상태가 많음 |
+
+#### 결정 흐름
+
+```
+1. CSS 분석으로 variables 후보 도출
+                ↓
+2. 도출된 variables가 컴포넌트 스타일링 니즈를 충분히 커버하는가?
+                ↓
+        ┌───────┴───────┐
+        ↓               ↓
+       Yes              No
+        ↓               ↓
+  component 제외    component 포함
+```
+
+---
+
 ### StyleSet 타입 패턴
 
 #### Pattern A: component만 사용 (가장 단순)
@@ -928,7 +1015,8 @@ npm test vs-text-wrap
 
 - [ ] 기존 `extends SizeStyleSet` 등 제거
 - [ ] `variables?` 정의 (CSS var() 참조 필요한 것만)
-- [ ] `component?: CSSProperties` 추가
+- [ ] **component 필요 여부 판단**: variables로 스타일링 니즈가 충분히 커버되면 component 제외
+- [ ] `component?: CSSProperties` 추가 (필요시에만)
 - [ ] 하위 컴포넌트 StyleSet 타입 추가 (필요시)
 - [ ] 특정 요소 CSSProperties 추가 (필요시)
 - [ ] **props로 받는 값은 StyleSet에서 제외** (additionalStyleSet 내부 구현)
@@ -1006,9 +1094,10 @@ styleSet: {
 ## 핵심 요약
 
 1. **CSS 분석 먼저** - 각 변수의 참조 위치 파악 → 유지/제거 결정
-2. **핵심 판단**: "루트에서만 사용?" → Yes면 component, No면 variables
-3. **기존 파일만 수정** - 새로운 스토리/테스트 추가 불필요
-4. **"복합 styleSet 조합" 테스트는 additionalStyleSet 사용 시에만 추가**
-5. **의존성**: 해당 컴포넌트를 사용하는 다른 파일들도 수정
-6. **테스트 실행 필수** - `npm test [component-name]`으로 검증, 모든 테스트 통과 확인
-7. **실제 코드 파일에 주석 달지 않음** - types.ts, Vue, CSS 등
+2. **variables 판단**: "루트에서만 사용?" → Yes면 제거 가능, No면 유지
+3. **component 필요 여부**: "variables로 스타일링 니즈가 충분히 커버되는가?" → Yes면 component 제외, No면 포함
+4. **기존 파일만 수정** - 새로운 스토리/테스트 추가 불필요
+5. **"복합 styleSet 조합" 테스트는 additionalStyleSet 사용 시에만 추가**
+6. **의존성**: 해당 컴포넌트를 사용하는 다른 파일들도 수정
+7. **테스트 실행 필수** - `npm test [component-name]`으로 검증, 모든 테스트 통과 확인
+8. **실제 코드 파일에 주석 달지 않음** - types.ts, Vue, CSS 등
