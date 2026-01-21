@@ -166,10 +166,10 @@
 
         <h3 class="mb-4 font-semibold">VsSkeleton</h3>
         <div class="flex flex-wrap items-center gap-4">
-            <vs-skeleton :style-set="{ width: '50px', height: '50px', borderRadius: '50%' }" />
+            <vs-skeleton :style-set="{ component: { width: '50px', height: '50px', borderRadius: '50%' } }" />
             <div class="flex flex-col gap-2">
-                <vs-skeleton :style-set="{ width: '150px', height: '20px' }" />
-                <vs-skeleton :style-set="{ width: '100px', height: '20px' }" />
+                <vs-skeleton :style-set="{ component: { width: '150px', height: '20px' } }" />
+                <vs-skeleton :style-set="{ component: { width: '100px', height: '20px' } }" />
             </div>
         </div>
         <vs-divider style-set="playground" />
@@ -223,7 +223,9 @@
                     class="flex w-40 flex-col items-center justify-center gap-2 rounded border border-dashed
                         border-gray-300 p-3 dark:border-gray-600"
                 >
-                    <vs-chip :primary="toggleValue" :style-set="{ width: '120px' }">{{ toggleValue }}</vs-chip>
+                    <vs-chip :primary="toggleValue" :style-set="{ component: { width: '120px' } }">{{
+                        toggleValue
+                    }}</vs-chip>
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
