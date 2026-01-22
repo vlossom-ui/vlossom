@@ -263,16 +263,49 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ```typescript
 interface VsTabsStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-
-    height?: string;
-    gap?: string;
-    tabWidth?: string;
+    variables?: {
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        gap?: string;
+        height?: string;
+        opacity?: number;
+        padding?: string;
+    };
+    scrollButton?: {
+        variables?: {
+            padding?: string;
+        };
+        component?: CSSProperties;
+        loading?: {
+            component?: CSSProperties;
+        };
+    };
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-tabs
+        v-model="selectedTab"
+        :tabs="tabs"
+        :style-set="{
+            variables: {
+                backgroundColor: '#f5f5f5',
+                gap: '0.5rem',
+                padding: '0 1.5rem',
+            },
+            scrollButton: {
+                component: {
+                    backgroundColor: '#e0e0e0',
+                    borderRadius: '4px',
+                },
+            },
+        }"
+    />
+</template>
 ```
 
 ## Slots

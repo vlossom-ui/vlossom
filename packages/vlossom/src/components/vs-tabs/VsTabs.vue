@@ -6,6 +6,7 @@
                 class="vs-tab-scroll-button"
                 :aria-label="vertical ? 'scroll up' : 'scroll left'"
                 :disabled="isFirstEdge"
+                :style-set="componentStyleSet.scrollButton"
                 tabindex="-1"
                 small
                 @click.prevent.stop="goPrev"
@@ -40,6 +41,7 @@
                 class="vs-tab-scroll-button"
                 :aria-label="vertical ? 'scroll down' : 'scroll right'"
                 :disabled="isLastEdge"
+                :style-set="componentStyleSet.scrollButton"
                 tabindex="-1"
                 small
                 @click.prevent.stop="goNext"
@@ -113,12 +115,29 @@ export default defineComponent({
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<Record<string, string> | null>(null);
+
+        const baseStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => ({
+            scrollButton: {
+                component: {
+                    padding: '0.4rem',
+                },
+            },
+        }));
+
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
+                variables: objectUtil.shake({
+                    height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
+                }),
             });
         });
-        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const {
             selectedIndex,
@@ -256,6 +275,7 @@ export default defineComponent({
         return {
             // Style
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             classObj,
 

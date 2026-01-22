@@ -21,10 +21,18 @@ const meta: Meta<typeof VsTabs> = {
         components: { VsTabs },
         setup() {
             const preDefinedStyleSet: VsTabsStyleSet = {
-                backgroundColor: '#1e88e5',
-                gap: '0.5rem',
-                height: '3rem',
-                padding: '0 1.5rem',
+                variables: {
+                    backgroundColor: '#1e88e5',
+                    gap: '0.5rem',
+                    height: '3rem',
+                    padding: '0 1.5rem',
+                },
+                scrollButton: {
+                    component: {
+                        backgroundColor: '#1565c0',
+                        borderRadius: '4px',
+                    },
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -479,17 +487,26 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: '인라인 스타일 객체를 사용한 커스텀 탭입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
+                story: '인라인 스타일 객체를 사용한 커스텀 탭입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다. scrollButton 속성으로 스크롤 버튼의 스타일도 커스터마이징할 수 있습니다.',
             },
         },
     },
     args: {
-        tabs: ['Custom 1', 'Custom 2', 'Custom 3'],
+        tabs: ['Custom 1', 'Custom 2', 'Custom 3', 'Custom 4', 'Custom 5', 'Custom 6', 'Custom 7', 'Custom 8'],
+        scrollButtons: 'show',
         styleSet: {
-            backgroundColor: '#e188e5',
-            gap: '1rem',
-            height: '3.5rem',
-            padding: '0 2rem',
+            variables: {
+                backgroundColor: '#e188e5',
+                gap: '1rem',
+                height: '3.5rem',
+                padding: '0 2rem',
+            },
+            scrollButton: {
+                component: {
+                    backgroundColor: '#b968c7',
+                    borderRadius: '8px',
+                },
+            },
         },
     },
 };
@@ -503,7 +520,8 @@ export const PreDefinedStyleSet: Story = {
         },
     },
     args: {
-        tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+        tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'],
+        scrollButtons: 'show',
         styleSet: 'myStyleSet',
     },
 };

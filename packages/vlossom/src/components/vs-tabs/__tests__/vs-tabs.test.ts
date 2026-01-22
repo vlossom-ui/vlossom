@@ -451,4 +451,84 @@ describe('VsTabs', () => {
             expect(customTabs).toHaveLength(3);
         });
     });
+
+    describe('styleSet', () => {
+        it('styleSet이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    styleSet: {
+                        variables: {
+                            backgroundColor: '#e188e5',
+                            border: '2px solid #333',
+                            gap: '1rem',
+                            opacity: 0.8,
+                            padding: '0 2rem',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-tabs-backgroundColor': '#e188e5',
+                '--vs-tabs-border': '2px solid #333',
+                '--vs-tabs-gap': '1rem',
+                '--vs-tabs-opacity': 0.8,
+                '--vs-tabs-padding': '0 2rem',
+            });
+        });
+
+        it('scrollButton styleSet이 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    scrollButtons: 'show',
+                    styleSet: {
+                        scrollButton: {
+                            component: {
+                                backgroundColor: '#b968c7',
+                                borderRadius: '8px',
+                            },
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.scrollButton).toEqual({
+                component: {
+                    backgroundColor: '#b968c7',
+                    borderRadius: '8px',
+                    padding: '0.4rem',
+                },
+            });
+        });
+    });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    height: '100px',
+                    styleSet: {
+                        variables: {
+                            backgroundColor: '#e188e5',
+                            height: '60px',
+                            padding: '0 2rem',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-tabs-height']).toBe('100px');
+            expect(wrapper.vm.styleSetVariables['--vs-tabs-backgroundColor']).toBe('#e188e5');
+            expect(wrapper.vm.styleSetVariables['--vs-tabs-padding']).toBe('0 2rem');
+        });
+    });
 });
