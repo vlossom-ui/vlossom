@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-toast', colorSchemeClass, { 'vs-toast-primary': primary }]"
-        :style="styleSetVariables"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -10,7 +10,7 @@
             class="vs-toast-close"
             :color-scheme="computedColorScheme"
             :primary
-            :style-set="{ padding: '0' }"
+            :style-set="{ variables: { padding: '0' } }"
             ghost
             @click="$emit('close')"
         >
@@ -47,7 +47,7 @@ export default defineComponent({
 
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsToastStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToastStyleSet>(componentName, styleSet);
 
         const holdToClose = ref(false);
         let timer: any = null;
@@ -85,6 +85,7 @@ export default defineComponent({
         return {
             computedColorScheme,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             onMouseEnter,
             onMouseLeave,

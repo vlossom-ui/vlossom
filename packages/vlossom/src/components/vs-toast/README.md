@@ -45,15 +45,37 @@
 
 ```typescript
 interface VsToastStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-
-    height?: string;
-    fontColor?: string;
+    variables?: {
+        backgroundColor?: string;
+        border?: string;
+        fontColor?: string;
+    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-toast
+        :style-set="{
+            variables: {
+                backgroundColor: '#4caf50',
+                border: '2px solid #2e7d32',
+                fontColor: '#ffffff',
+            },
+            component: {
+                borderRadius: '16px',
+                padding: '1rem 4rem',
+                height: '60px',
+            },
+        }"
+        @close="handleClose"
+    >
+        커스텀 스타일 토스트
+    </vs-toast>
+</template>
 ```
 
 ### Slots

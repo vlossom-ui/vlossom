@@ -21,12 +21,16 @@ const meta: Meta<typeof VsToast> = {
         components: { VsToast },
         setup() {
             const preDefinedStyleSet: VsToastStyleSet = {
-                backgroundColor: '#1e88e5',
-                border: '2px solid #1e88e5',
-                borderRadius: '8px',
-                fontColor: '#fff',
-                padding: '1rem 1.5rem',
-                height: 'auto',
+                variables: {
+                    backgroundColor: '#1e88e5',
+                    border: '2px solid #1e88e5',
+                    fontColor: '#fff',
+                },
+                component: {
+                    borderRadius: '8px',
+                    padding: '1rem 1.5rem',
+                    height: 'auto',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -161,12 +165,16 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            backgroundColor: '#e188e5',
-            border: '2px solid #e188e5',
-            borderRadius: '12px',
-            fontColor: '#fff',
-            padding: '1.5rem 2rem',
-            height: 'auto',
+            variables: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                fontColor: '#fff',
+            },
+            component: {
+                borderRadius: '12px',
+                padding: '1.5rem 2rem',
+                height: 'auto',
+            },
         },
     },
     render: (args: any) => ({

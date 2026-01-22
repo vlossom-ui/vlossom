@@ -3,20 +3,15 @@
 .vs-toast {
     --vs-toast-backgroundColor: initial;
     --vs-toast-border: initial;
-    --vs-toast-borderRadius: initial;
-    --vs-toast-padding: initial;
-    --vs-toast-opacity: initial;
-
-    --vs-toast-height: initial;
     --vs-toast-fontColor: initial;
 
     @apply pointer-events-auto relative flex w-fit items-center justify-center;
 
     border: var(--vs-toast-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-toast-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-lg));
     background-color: var(--vs-toast-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-toast-padding, 0.5rem 3.6rem);
-    height: var(--vs-toast-height, auto);
+    padding: 0.5rem 3.6rem;
+    height: auto;
     color: var(--vs-toast-fontColor, var(--vs-comp-font));
 
     .vs-toast-close {
