@@ -3,20 +3,17 @@
 .vs-modal-node {
     --vs-modal-node-width: initial;
     --vs-modal-node-height: initial;
-
     --vs-modal-node-backgroundColor: initial;
     --vs-modal-node-border: initial;
     --vs-modal-node-borderRadius: initial;
     --vs-modal-node-padding: initial;
     --vs-modal-node-opacity: initial;
-
     --vs-modal-node-boxShadow: initial;
     --vs-modal-node-fontColor: initial;
-    --vs-modal-node-zIndex: initial;
 
     @apply absolute top-0 left-0 h-full w-full;
 
-    z-index: var(--vs-modal-node-zIndex, var(--vs-modal-z-index));
+    z-index: var(--vs-modal-z-index);
 
     .vs-modal-wrap {
         @apply pointer-events-auto absolute top-1/2 left-1/2 overflow-auto;

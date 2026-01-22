@@ -78,30 +78,18 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 
 ```typescript
 interface VsModalNodeStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    boxShadow?: string;
-    fontColor?: string;
-    zIndex?: string;
-
-    dimmed?: {
+    variables?: {
+        width?: string;
+        height?: string;
         backgroundColor?: string;
-        opacity?: number;
-    };
-    layout?: {
-        header?: {
-            padding?: string;
-        };
+        border?: string;
+        borderRadius?: string;
         padding?: string;
-        footer?: {
-            padding?: string;
-        };
+        opacity?: number;
+        boxShadow?: string;
+        fontColor?: string;
     };
+    dimmed?: VsDimmedStyleSet;
 }
 
 type SizeProp = Size | string | number;
@@ -179,30 +167,18 @@ interface OverlayCallbacks<T = void> {
 
 ```typescript
 interface VsModalNodeStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    boxShadow?: string;
-    fontColor?: string;
-    zIndex?: string;
-
-    dimmed?: {
+    variables?: {
+        width?: string;
+        height?: string;
         backgroundColor?: string;
-        opacity?: number;
-    };
-    layout?: {
-        header?: {
-            padding?: string;
-        };
+        border?: string;
+        borderRadius?: string;
         padding?: string;
-        footer?: {
-            padding?: string;
-        };
+        opacity?: number;
+        boxShadow?: string;
+        fontColor?: string;
     };
+    dimmed?: VsDimmedStyleSet;
 }
 
 type SizeProp = Size | string | number;

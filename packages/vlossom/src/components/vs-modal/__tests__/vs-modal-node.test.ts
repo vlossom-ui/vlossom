@@ -11,7 +11,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
+            expect(wrapper.vm.componentStyleSet.variables).toEqual({
                 width: '70%',
                 height: '66%',
             });
@@ -24,7 +24,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
+            expect(wrapper.vm.componentStyleSet.variables).toEqual({
                 width: '500px',
                 height: '500px',
             });
@@ -39,7 +39,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
+            expect(wrapper.vm.componentStyleSet.variables).toEqual({
                 width: '600px',
                 height: '400px',
             });
@@ -54,7 +54,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
+            expect(wrapper.vm.componentStyleSet.variables).toEqual({
                 width: '600px',
                 height: '50%',
             });
@@ -69,10 +69,33 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
+            expect(wrapper.vm.componentStyleSet.variables).toEqual({
                 width: '45%',
                 height: '400px',
             });
+        });
+    });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 size props가 동시에 주어지면 size props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsModalNode, {
+                props: {
+                    size: 'lg',
+                    styleSet: {
+                        variables: {
+                            width: '300px',
+                            height: '200px',
+                            backgroundColor: '#f5f5f5',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.width).toBe('70%');
+            expect(wrapper.vm.componentStyleSet.variables?.height).toBe('66%');
+            expect(wrapper.vm.componentStyleSet.variables?.backgroundColor).toBe('#f5f5f5');
         });
     });
 

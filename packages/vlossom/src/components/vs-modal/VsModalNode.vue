@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, onMounted, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
-import { stringUtil } from '@/utils';
+import { objectUtil, stringUtil } from '@/utils';
 import type { VsModalNodeStyleSet } from './types';
 
 import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
@@ -70,7 +70,9 @@ export default defineComponent({
             return SIZES.includes(value as Size);
         }
 
-        const additionalStyleSet = computed(() => {
+        const baseStyleSet: ComputedRef<Partial<VsModalNodeStyleSet>> = computed(() => ({}));
+
+        const additionalStyleSet: ComputedRef<Partial<VsModalNodeStyleSet>> = computed(() => {
             if (!size.value) {
                 return {};
             }
@@ -90,12 +92,15 @@ export default defineComponent({
                 result['height'] = stringUtil.toStringSize(height);
             }
 
-            return result;
+            return objectUtil.shake({
+                variables: objectUtil.shake(result),
+            });
         });
 
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
             additionalStyleSet,
         );
 
