@@ -43,15 +43,12 @@ const handleThemeChange = (isDark: boolean) => {
 
 ```typescript
 interface VsThemeButtonStyleSet {
-    width?: string; // 너비
-    height?: string; // 높이
-
-    backgroundColor?: string; // 배경 색상
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    opacity?: number; // 투명도
-
-    iconColor?: string; // 아이콘 색상
+    variables?: {
+        width?: string;
+        height?: string;
+        iconColor?: string;
+    };
+    component?: CSSProperties;
 }
 ```
 
@@ -73,14 +70,16 @@ interface VsThemeButtonStyleSet {
 
 <script setup>
 const themeButtonStyle = {
-    toggle: {
-        backgroundColor: '#1f2937',
-        border: '2px solid #374151',
-        borderRadius: '50%',
+    variables: {
         width: '3.5rem',
         height: '3.5rem',
+        iconColor: '#fcd34d',
     },
-    iconColor: '#fcd34d',
+    component: {
+        backgroundColor: '#1f2937',
+        border: '2px solid #374151',
+        borderRadius: '0.5rem',
+    },
 };
 </script>
 ```

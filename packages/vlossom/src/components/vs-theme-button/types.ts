@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsThemeButton from './VsThemeButton.vue';
 
 declare module 'vue' {
@@ -12,6 +11,11 @@ export type { VsThemeButton };
 
 export interface VsThemeButtonRef extends ComponentPublicInstance<typeof VsThemeButton> {}
 
-export interface VsThemeButtonStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding'> {
-    iconColor?: string;
+export interface VsThemeButtonStyleSet {
+    variables?: {
+        width?: string;
+        height?: string;
+        iconColor?: string;
+    };
+    component?: CSSProperties;
 }
