@@ -1,6 +1,6 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsInputWrapper from './VsInputWrapper.vue';
-import type { TextStyleSet, Size } from '@/declaration';
+import type { Size } from '@/declaration';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -13,12 +13,17 @@ export type { VsInputWrapper };
 export interface VsInputWrapperRef extends ComponentPublicInstance<typeof VsInputWrapper> {}
 
 export interface VsInputWrapperStyleSet {
-    label?: TextStyleSet & {
-        marginBottom?: string;
+    variables?: {
+        label?: {
+            marginBottom?: string;
+            fontColor?: string;
+            fontSize?: string;
+            fontWeight?: number;
+            messagesMarginTop?: string;
+        };
     };
-
+    component?: CSSProperties;
     messages?: {
-        marginTop?: string;
         size?: Size;
     };
 }

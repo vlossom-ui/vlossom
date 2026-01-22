@@ -93,15 +93,17 @@ interface StateMessage<T extends string = UIState> {
 type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
 interface VsInputWrapperStyleSet {
-    label?: {
-        marginBottom?: string;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: string;
+    variables?: {
+        label?: {
+            marginBottom?: string;
+            fontColor?: string;
+            fontSize?: string;
+            fontWeight?: number;
+            messagesMarginTop?: string;
+        };
     };
-
+    component?: CSSProperties;
     messages?: {
-        marginTop?: string;
         size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     };
 }

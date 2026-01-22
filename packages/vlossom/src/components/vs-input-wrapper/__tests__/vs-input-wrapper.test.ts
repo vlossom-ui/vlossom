@@ -261,8 +261,39 @@ describe('VsInputWrapper', () => {
     });
 
     describe('styleSet', () => {
+        it('styleSet이 적용되어야 한다', () => {
+            const wrapper = mount(VsInputWrapper, {
+                props: {
+                    label: 'Test Label',
+                    messages: [{ state: 'error', text: '에러 메시지' }],
+                    styleSet: {
+                        variables: {
+                            label: {
+                                marginBottom: '1rem',
+                                fontColor: '#ff0000',
+                                fontSize: '16px',
+                                fontWeight: 600,
+                                messagesMarginTop: '0.5rem',
+                            },
+                        },
+                        component: {
+                            backgroundColor: '#f5f5f5',
+                            padding: '1rem',
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-input-wrapper-label-marginBottom': '1rem',
+                '--vs-input-wrapper-label-fontColor': '#ff0000',
+                '--vs-input-wrapper-label-fontSize': '16px',
+                '--vs-input-wrapper-label-fontWeight': 600,
+                '--vs-input-wrapper-label-messagesMarginTop': '0.5rem',
+            });
+        });
+
         it('styleSet의 messages size가 주어지면 messageSize에 반영되어야 한다', () => {
-            // given, when
             const wrapper = mount(VsInputWrapper, {
                 props: {
                     messages: [{ state: 'error', text: '에러 메시지' }],
@@ -274,7 +305,6 @@ describe('VsInputWrapper', () => {
                 },
             });
 
-            // then
             expect(wrapper.vm.messageSize).toBe('lg');
         });
     });

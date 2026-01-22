@@ -5,8 +5,7 @@
     --vs-input-wrapper-label-fontColor: initial;
     --vs-input-wrapper-label-fontSize: initial;
     --vs-input-wrapper-label-fontWeight: initial;
-
-    --vs-input-wrapper-messages-marginTop: initial;
+    --vs-input-wrapper-label-messagesMarginTop: initial;
 
     .vs-label {
         @apply flex items-center;
@@ -29,6 +28,6 @@
     }
 
     .vs-messages {
-        margin-top: var(--vs-input-wrapper-messages-marginTop, 0.2rem);
+        margin-top: var(--vs-input-wrapper-label-messagesMarginTop, 0.2rem);
     }
 }
