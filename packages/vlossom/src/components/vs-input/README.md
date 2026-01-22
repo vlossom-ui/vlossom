@@ -174,24 +174,25 @@ function clearInput() {
 ## Types
 
 ```typescript
-interface VsAttachmentStyleSet {
-    backgroundColor?: string;
-    padding?: string;
-    opacity?: number;
-}
-
 interface VsInputStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-    height?: string;
-    append?: VsAttachmentStyleSet; // append 슬롯 영역 스타일
-    prepend?: VsAttachmentStyleSet; // prepend 슬롯 영역 스타일
+    variables?: {
+        padding?: string;
+        fontColor?: string;
+        fontSize?: string;
+        fontWeight?: number;
+        prepend?: {
+            opacity?: number;
+            backgroundColor?: string;
+            padding?: string;
+        };
+        append?: {
+            opacity?: number;
+            backgroundColor?: string;
+            padding?: string;
+        };
+    };
+    component?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
 }
 ```
 

@@ -17,7 +17,10 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-input', colorSchemeClass, classObj, stateClasses]" :style="styleSetVariables">
+        <div
+            :class="['vs-input', colorSchemeClass, classObj, stateClasses]"
+            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        >
             <div v-if="$slots['prepend']" class="vs-prepend">
                 <slot name="prepend" />
             </div>
@@ -66,7 +69,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
+import {
+    computed,
+    defineComponent,
+    toRefs,
+    useTemplateRef,
+    type PropType,
+    type Ref,
+    type TemplateRef,
+    ref,
+    type ComputedRef,
+} from 'vue';
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
@@ -129,7 +142,15 @@ export default defineComponent({
         const isNumberInput = computed(() => type.value === 'number');
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
+
+        const baseStyleSet: ComputedRef<Partial<VsInputStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInputStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
+
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 
@@ -232,6 +253,7 @@ export default defineComponent({
             // Computed
             classObj,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             inputValue,
             computedMessages,
