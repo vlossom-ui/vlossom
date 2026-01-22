@@ -94,30 +94,56 @@
 
 ```typescript
 interface VsPaginationStyleSet {
-    gap?: string;
-
-    pageButton?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
+    variables?: {
+        gap?: string;
     };
-
+    pageButton?: {
+        variables?: {
+            padding?: string;
+        };
+        component?: CSSProperties;
+        loading?: {
+            component?: CSSProperties;
+        };
+    };
     controlButton?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
+        variables?: {
+            padding?: string;
+        };
+        component?: CSSProperties;
+        loading?: {
+            component?: CSSProperties;
+        };
     };
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-pagination
+        v-model="currentPage"
+        :length="20"
+        :style-set="{
+            variables: {
+                gap: '1rem',
+            },
+            pageButton: {
+                component: {
+                    width: '3rem',
+                    height: '3rem',
+                    backgroundColor: '#f5f5f5',
+                },
+            },
+            controlButton: {
+                component: {
+                    borderRadius: '50%',
+                },
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

@@ -19,9 +19,9 @@ export interface VsPaginationRef extends ComponentPublicInstance<typeof VsPagina
 }
 
 export interface VsPaginationStyleSet {
-    gap?: string;
-
+    variables?: {
+        gap?: string;
+    };
     pageButton?: Omit<VsButtonStyleSet, 'loading'>;
-
     controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }

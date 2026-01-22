@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -140,12 +140,18 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const baseStyleSet: ComputedRef<Partial<VsPaginationStyleSet>> = computed(() => ({
+            controlButton: {
+                component: {
+                    padding: '0.4rem',
+                },
+            },
+        }));
+
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
             componentName,
             styleSet,
-            ref({
-                controlButton: { padding: '0.4rem' },
-            }),
+            baseStyleSet,
         );
 
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));

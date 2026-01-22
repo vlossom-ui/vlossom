@@ -312,20 +312,24 @@ describe('VsPagination', () => {
                 props: {
                     length: 5,
                     styleSet: {
-                        gap: '2rem',
+                        variables: {
+                            gap: '2rem',
+                        },
+                        pageButton: {
+                            component: {
+                                borderRadius: '50%',
+                            },
+                        },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
-                gap: '2rem',
-                // edgeButton는 기본값이 있음
-                controlButton: { padding: '0.4rem' },
-            });
+            expect(wrapper.vm.componentStyleSet.variables?.gap).toBe('2rem');
+            expect(wrapper.vm.componentStyleSet.pageButton?.component?.borderRadius).toBe('50%');
+            expect(wrapper.vm.componentStyleSet.controlButton?.component?.padding).toBe('0.4rem');
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-pagination-gap': '2rem',
-                '--vs-pagination-controlButton-padding': '0.4rem',
             });
         });
     });
