@@ -6,16 +6,13 @@
     --vs-drawer-borderRadius: initial;
     --vs-drawer-padding: initial;
     --vs-drawer-opacity: initial;
-
-    --vs-drawer-position: initial;
     --vs-drawer-size: initial;
     --vs-drawer-boxShadow: initial;
-    --vs-drawer-zIndex: initial;
 
     @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
 
-    position: var(--vs-drawer-position, absolute);
-    z-index: var(--vs-drawer-zIndex, 100);
+    position: absolute;
+    z-index: 100;
 
     .vs-drawer-content {
         @apply pointer-events-auto absolute;

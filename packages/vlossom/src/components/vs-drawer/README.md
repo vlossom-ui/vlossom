@@ -144,24 +144,51 @@ const drawerOpen = ref(false);
 
 ```typescript
 interface VsDrawerStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    position?: 'absolute' | 'fixed';
-    size?: string;
-    boxShadow?: string;
-    zIndex?: number;
-
-    dimmed?: {
+    variables?: {
         backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
         opacity?: number;
+        size?: string;
+        boxShadow?: string;
+    };
+    component?: CSSProperties;
+    dimmed?: {
+        component?: CSSProperties;
     };
 }
 
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-drawer
+        v-model="drawerOpen"
+        :style-set="{
+            variables: {
+                backgroundColor: '#f5f5f5',
+                padding: '2rem',
+                borderRadius: '8px',
+                size: '400px',
+            },
+            component: {
+                position: 'fixed',
+                zIndex: 1000,
+            },
+            dimmed: {
+                component: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                },
+            },
+        }"
+    >
+        <h3>커스텀 스타일 드로어</h3>
+    </vs-drawer>
+</template>
 ```
 
 ## Slots
