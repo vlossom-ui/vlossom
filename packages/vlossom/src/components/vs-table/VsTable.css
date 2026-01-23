@@ -7,6 +7,14 @@
         @apply mx-auto w-full border-collapse;
     }
 
+    tbody tr {
+        @apply transition-colors duration-250 ease-in-out;
+
+        &:hover {
+            background-color: var(--vs-area-bg-hover);
+        }
+    }
+
     .vs-table-search-input {
         @apply mb-2 flex justify-end;
     }
@@ -20,13 +28,23 @@
             0 0.125rem 0.25rem rgba(0, 0, 0, 0.08);
         background-color: var(--vs-no-color);
     }
+
+    .vs-table-draggable-wrapper {
+        /* display: contents를 사용하는 이유:
+           - draggable의 wrapper 엘리먼트가 DOM 구조상 table, tr, tbody 등과 섞이면서 table 레이아웃이 깨지는 문제를 막기 위해
+           - 'display: contents'는 wrapper 자체를 렌더링하지 않고 자식만 렌더링시켜 table 구조를 그대로 유지
+           - 즉, drag&drop 컴포넌트의 불필요한 wrapper가 DOM에서 제거된 효과를 줌 */
+        display: contents;
+    }
 }
 
 th,
 td {
     @apply px-3.5 py-2.5;
-    border: 0.0625rem solid var(--vs-line-color);
-    text-align: left; /* left, center, right */
+    border-top: 0.0625rem solid var(--vs-line-color);
+    border-bottom: 0.0625rem solid var(--vs-line-color);
+    /* left, center, right */
+    text-align: left;
 }
 
 caption {
@@ -39,11 +57,12 @@ caption {
 
 @media (max-width: 768px) {
     .vs-table-responsive {
+
         tbody,
         th,
         td,
         tr {
-            @apply block w-full;
+            @apply block w-full border-x-0;
         }
 
         thead {
@@ -56,7 +75,8 @@ caption {
         }
 
         td {
-            @apply grid grid-cols-[minmax(6rem,9rem)_1fr] gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+            @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+            grid-column: minmax(6rem, 9rem) 1fr;
         }
 
         td:first-child {

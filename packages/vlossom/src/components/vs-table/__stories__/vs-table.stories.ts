@@ -520,3 +520,42 @@ export const Loading: Story = {
         },
     },
 };
+
+export const Draggable: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const items = ref([...baseItems]);
+
+            const onDrag = (event: any) => {
+                console.log('Drag event:', {
+                    oldIndex: event.oldIndex,
+                    newIndex: event.newIndex,
+                    from: event.from,
+                    to: event.to,
+                });
+            };
+
+            return { columns: baseColumns, items, onDrag };
+        },
+        template: `
+            <div>
+                <p class="text-sm text-slate-600 mb-2">행을 드래그해 순서를 변경할 수 있습니다. 콘솔에서 이벤트를 확인하세요.</p>
+                <vs-table
+                    :columns="columns"
+                    :items="items"
+                    draggable
+                    @drag="onDrag"
+                />
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: `draggable을 true로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다.
+                        drag 이벤트를 통해 oldIndex, newIndex 등의 정보를 받을 수 있습니다.`,
+            },
+        },
+    },
+};

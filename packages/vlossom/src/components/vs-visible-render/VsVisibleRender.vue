@@ -23,6 +23,7 @@ const componentName = VsComponent.VsVisibleRender;
 export default defineComponent({
     name: componentName,
     props: {
+        selector: { type: String, default: null },
         disabled: { type: Boolean, default: false },
         height: { type: [String, Number] },
         rootMargin: { type: String, default: '0px' },
@@ -41,9 +42,16 @@ export default defineComponent({
         },
     },
     setup(props) {
-        const { disabled, height, rootMargin, threshold } = toRefs(props);
+        const { disabled, height, rootMargin, threshold, selector } = toRefs(props);
 
-        const visibleRenderRef: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
+        const visibleRenderRefFallback: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
+        const visibleRenderRef = computed(() => {
+            if(!selector.value) {
+                return visibleRenderRefFallback.value;
+            }
+            const wrapper = visibleRenderRefFallback.value?.querySelector(selector.value) as HTMLElement | null;
+            return wrapper || visibleRenderRefFallback.value;
+        });
 
         let io: IntersectionObserver | null = null;
         let mo: MutationObserver | null = null;

@@ -53,6 +53,22 @@ export default defineConfig({
                     setupFiles: ['src/test/test-setup.ts'],
                     include: ['src/**/*.test.ts'],
                     exclude: ['src/**/*.stories.ts'],
+                    alias: {
+                        /**
+                         * [NOTE]
+                         * sortablejs = legacy / iife / commonjs / umd
+                         * so, we need to replace sortablejs with a mock "globally"
+                         *
+                         * → Import from @/declaration or @/components
+                         * → src/components/index.ts
+                         * → export { default as VsTable } from './vs-table/VsTable.vue'
+                         * → In VsTable.vue, import type { SortableEvent } from 'sortablejs'
+                         * → Loads sortablejs module
+                         * → sortablejs immediately runs navigator.userAgent.match() 💥
+                         *
+                         */
+                        sortablejs: fileURLToPath(new URL('./src/test/__mocks__/sortablejs.ts', import.meta.url)),
+                    },
                 },
             },
             {

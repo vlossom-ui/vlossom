@@ -1,5 +1,4 @@
 import { computed, ref, watch, type Ref } from 'vue';
-import { objectUtil } from '@/utils';
 import type { Item } from '../types';
 
 export function useTableSelect(
@@ -19,7 +18,8 @@ export function useTableSelect(
         return selectedIds.value.length > 0 && selectedIds.value.length < selectableItems.value.length;
     });
     const selectedAll = computed(() => {
-        return selectedIds.value.length === selectableItems.value.length;
+        const selectableLength = selectableItems.value.length;
+        return selectableLength > 0 && selectedIds.value.length === selectableLength;
     });
 
     function toggleSelectAll(): void {
@@ -35,14 +35,12 @@ export function useTableSelect(
         const currentIds = selectedIds.value;
 
         if (nextIds.length === currentIds.length) {
-            const sortedNextIds = [...nextIds].sort();
-            const sortedCurrentIds = [...currentIds].sort();
-
-            if (objectUtil.isEqual(sortedNextIds, sortedCurrentIds)) {
+            const currentIdSet = new Set(currentIds);
+            const allMatch = nextIds.every((id) => currentIdSet.has(id));
+            if (allMatch) {
                 return;
             }
         }
-
         selectedIds.value = nextIds;
     });
 
