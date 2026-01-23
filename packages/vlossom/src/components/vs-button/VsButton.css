@@ -8,7 +8,6 @@
     border: 1px solid var(--vs-line-color);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
     background-color: var(--vs-comp-bg);
-    width: var(auto);
     height: var(--vs-button-height, var(--vs-size-height));
     color: var(--vs-comp-font);
     font-size: var(--vs-size-font, inherit);
