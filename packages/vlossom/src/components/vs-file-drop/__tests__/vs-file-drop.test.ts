@@ -36,7 +36,63 @@ describe('vs-file-drop', () => {
             expect(wrapper.vm.componentStyleSet.component).toEqual({
                 backgroundColor: '#f0f0f0',
                 border: '2px dashed #1e88e5',
+                height: 'auto',
             });
+        });
+    });
+
+    describe('복합 styleSet 조합', () => {
+        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    width: '500px',
+                    height: '300px',
+                    styleSet: {
+                        component: {
+                            width: '200px',
+                            height: '100px',
+                            backgroundColor: '#f0f0f0',
+                        },
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.component?.width).toBe('500px');
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('300px');
+            expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#f0f0f0');
+        });
+
+        it('chip styleSet이 VsChip 컴포넌트에 전달되어야 한다', async () => {
+            // given
+            const files = [createFile('test.png')];
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    modelValue: files,
+                    styleSet: {
+                        chip: {
+                            variables: {
+                                height: '2rem',
+                            },
+                            component: {
+                                borderRadius: '8px',
+                            },
+                        },
+                    },
+                },
+            });
+            await flushPromises();
+
+            // then
+            const chip = wrapper.findComponent({ name: 'VsChip' });
+            expect(chip.exists()).toBe(true);
+
+            // componentStyleSet.chip에서 병합된 styleSet 확인
+            expect(wrapper.vm.componentStyleSet.chip?.variables?.height).toBe('2rem');
+            expect(wrapper.vm.componentStyleSet.chip?.component?.borderRadius).toBe('8px');
+            // baseStyleSet에서 설정된 width: '100%'도 포함되어야 함
+            expect(wrapper.vm.componentStyleSet.chip?.component?.width).toBe('100%');
         });
     });
 

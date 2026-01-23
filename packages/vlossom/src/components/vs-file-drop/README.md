@@ -82,10 +82,15 @@ const files = ref<File[]>([]);
         v-model="files"
         label="스타일 커스터마이징"
         :style-set="{
-            border: '2px dashed #1e88e5',
-            borderRadius: '16px',
-            dragBackgroundColor: '#e3f2fd',
-            iconColor: '#1e88e5'
+            variables: {
+                dragBackgroundColor: '#e3f2fd',
+                iconColor: '#1e88e5',
+                padding: '2rem'
+            },
+            component: {
+                border: '2px dashed #1e88e5',
+                borderRadius: '16px'
+            }
         }"
     />
 </template>
@@ -178,6 +183,7 @@ interface VsFileDropStyleSet {
     placeholder?: CSSProperties;
     files?: CSSProperties;
     closeButton?: CSSProperties;
+    chip?: VsChipStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```

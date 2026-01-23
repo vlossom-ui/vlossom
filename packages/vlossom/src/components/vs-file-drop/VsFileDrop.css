@@ -1,14 +1,12 @@
 @reference 'tailwindcss';
 
 .vs-file-drop {
-    /* CSS 변수 선언 (필터링된 것만) */
     --vs-file-drop-padding: initial;
     --vs-file-drop-dragBackgroundColor: initial;
     --vs-file-drop-iconColor: initial;
 
     @apply relative box-border hover:brightness-110 active:brightness-120;
 
-    /* 직접 값 사용 */
     border: solid 1px var(--vs-line-color);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-comp-bg);

@@ -32,10 +32,14 @@ const meta: Meta<typeof VsFileDrop> = {
             const files = ref<File[] | null>(null);
 
             const preDefinedStyleSet: VsFileDropStyleSet = {
-                border: '2px dashed #1e88e5',
-                borderRadius: '12px',
-                dragBackgroundColor: '#e3f2fd',
-                padding: '2rem',
+                variables: {
+                    dragBackgroundColor: '#e3f2fd',
+                    padding: '2rem',
+                },
+                component: {
+                    border: '2px dashed #1e88e5',
+                    borderRadius: '12px',
+                },
             } as const;
 
             useVlossom().styleSet = {

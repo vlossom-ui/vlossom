@@ -63,8 +63,8 @@
                                 :id="`${file.name}-${index}`"
                                 :color-scheme
                                 :closable="!computedReadonly && !computedDisabled"
+                                :style-set="componentStyleSet.chip"
                                 @close="handleFileRemove(file)"
-                                :style-set="{ width: '100%' }"
                             >
                                 <div class="vs-file-drop-file-wrapper">
                                     <span class="vs-file-drop-file-name">{{ file.name }} </span>
@@ -164,7 +164,31 @@ export default defineComponent({
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(componentName, styleSet);
+
+        const baseStyleSet: Ref<Partial<VsFileDropStyleSet>> = ref({
+            chip: {
+                component: {
+                    width: '100%',
+                },
+            },
+        });
+
+        const additionalStyleSet = computed<Partial<VsFileDropStyleSet>>(() => {
+            return objectUtil.shake({
+                component: objectUtil.shake({
+                    width: width.value,
+                    height: height.value,
+                }),
+            });
+        });
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
+
         const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useVsFileDropRules(
             required,
             max,
