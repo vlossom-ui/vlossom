@@ -2,18 +2,15 @@
 
 .vs-textarea {
     --vs-textarea-height: initial;
-
+    --vs-textarea-resize: initial;
     --vs-textarea-backgroundColor: initial;
     --vs-textarea-border: initial;
     --vs-textarea-borderRadius: initial;
     --vs-textarea-padding: initial;
     --vs-textarea-opacity: initial;
-
     --vs-textarea-fontColor: initial;
     --vs-textarea-fontSize: initial;
     --vs-textarea-fontWeight: initial;
-
-    --vs-textarea-resize: initial;
 
     @apply relative flex w-full overflow-hidden;
 

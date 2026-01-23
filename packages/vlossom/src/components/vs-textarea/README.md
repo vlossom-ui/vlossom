@@ -174,17 +174,56 @@ function clearTextarea() {
 
 ```typescript
 interface VsTextareaStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-    height?: string;
-    padding?: string;
-    resize?: string;
-    wrapper?: VsInputWrapperStyleSet;
+    variables?: {
+        height?: string;
+        resize?: string;
+        backgroundColor?: string;
+        border?: string;
+        borderRadius?: string;
+        padding?: string;
+        opacity?: number;
+        fontColor?: string;
+        fontSize?: string;
+        fontWeight?: number;
+    };
+    component?: CSSProperties;
+    wrapper?: {
+        variables?: {
+            label?: {
+                marginBottom?: string;
+                fontColor?: string;
+                fontSize?: string;
+                fontWeight?: number;
+                messagesMarginTop?: string;
+            };
+        };
+        component?: CSSProperties;
+        messages?: {
+            size?: Size;
+        };
+    };
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-textarea
+        v-model="description"
+        :style-set="{
+            variables: {
+                height: '10rem',
+                padding: '1rem',
+                border: '2px solid #333',
+            },
+            component: {
+                backgroundColor: '#f5f5f5',
+                borderRadius: '8px',
+            },
+        }"
+    />
+</template>
 ```
 
 ## Slots

@@ -4,24 +4,33 @@ import VsTextarea from './../VsTextarea.vue';
 
 describe('VsTextarea', () => {
     describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
+        it('styleSet 객체가 주어지면 CSS 변수와 component 스타일이 설정되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTextarea, {
                 props: {
                     styleSet: {
-                        backgroundColor: '#f0f0f0',
-                        height: '10rem',
-                        fontSize: '16px',
+                        variables: {
+                            backgroundColor: '#f0f0f0',
+                            height: '10rem',
+                            fontSize: '16px',
+                        },
+                        component: {
+                            width: '100%',
+                            opacity: 0.9,
+                        },
                     },
                 },
             });
 
             // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style).toEqual({
+            expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-textarea-backgroundColor': '#f0f0f0',
                 '--vs-textarea-height': '10rem',
                 '--vs-textarea-fontSize': '16px',
+            });
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
+                width: '100%',
+                opacity: 0.9,
             });
         });
     });
