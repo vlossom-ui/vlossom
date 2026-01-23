@@ -249,7 +249,7 @@ export const StyleSet: Story = {
                     padding: '0 1.5rem',
                 },
                 wrapper: {
-                    variables: {
+                    component: {
                         backgroundColor: '#f0f8ff',
                         border: '2px solid #1e88e5',
                         borderRadius: '12px',

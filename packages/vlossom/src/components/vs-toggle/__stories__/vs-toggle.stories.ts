@@ -157,11 +157,13 @@ export const ToggleExample1: Story = {
             });
 
             const menuButtonStyleSet: VsToggleStyleSet = {
-                width: size.value,
-                height: size.value,
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                border: '1px solid #ddd',
+                component: {
+                    width: size.value,
+                    height: size.value,
+                    borderRadius: '8px',
+                    backgroundColor: 'transparent',
+                    border: '1px solid #ddd',
+                },
             };
 
             const onToggle = (value: boolean) => {

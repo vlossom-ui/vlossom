@@ -22,9 +22,6 @@ describe('VsInnerScroll', () => {
             const wrapper = mount(VsInnerScroll, {
                 props: {
                     styleSet: {
-                        component: {
-                            backgroundColor: '#f5f5f5',
-                        },
                         header: {
                             padding: '10px',
                         },
@@ -39,9 +36,6 @@ describe('VsInnerScroll', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f5f5f5',
-            });
             expect(wrapper.vm.componentStyleSet.header).toEqual({
                 padding: '10px',
             });
