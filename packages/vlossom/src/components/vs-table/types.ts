@@ -7,7 +7,7 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableStyleSet {}
+export interface VsTableStyleSet { }
 
 export type VsTablePageSizeOptions = { label: string; value: number }[];
 export interface VsTablePaginationOptions {
@@ -23,10 +23,10 @@ type Join<Prev extends string, K extends string, Sep extends string> = Prev exte
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
-          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
-              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
-              : Join<Prev, K, Sep>;
-      }[Extract<keyof T, string>];
+        [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
+        ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
+        : Join<Prev, K, Sep>;
+    }[Extract<keyof T, string>];
 
 type JoinDotField<T> = JoinField<T, '.'>;
 

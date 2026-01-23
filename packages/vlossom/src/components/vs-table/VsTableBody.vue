@@ -1,40 +1,29 @@
 <template>
-    <vs-visible-render tag="tbody" :disabled="!virtualScroll" :root-margin="'12.5rem'">
-        <template v-if="bodyCells.length">
-            <template v-for="(cells, rowIdx) in bodyCells" :key="rowIdx">
-                <tr>
-                    <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
-                        <template #select="{ cells, rowIdx }">
-                            <slot name="select" :cells :rowIdx />
-                        </template>
-                    </vs-table-select-cell>
-                    <td
-                        v-for="cell in cells"
-                        :id="cell.id"
-                        :key="cell.id"
-                        :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
-                        @click.prevent.stop="clickCell(cell, $event)"
-                    >
-                        <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
-                        <template v-else>
-                            <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                                {{ cell.value }}
-                            </slot>
-                        </template>
-                    </td>
-                    <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-                </tr>
-                <tr v-if="anyExpandable">
-                    <vs-table-expanded-panel :cells :rowIdx>
-                        <template #expand="{ cells, rowIdx }">
-                            <slot name="expand" :cells :rowIdx />
-                        </template>
-                    </vs-table-expanded-panel>
-                </tr>
-            </template>
+    <draggable
+        v-model="displayedBodyCells"
+        v-bind="DEFAULT_SORTABLE_OPTIONS"
+        :class="TABLE_DRAG_WRAPPER_CLASS"
+        :item-key="getRowId"
+        :disabled="loading"
+        @update="handleDragUpdate"
+    >
+        <template #item="{ element: cells, index: rowIdx }">
+            <tbody>
+                <vs-table-body-row
+                    :cells
+                    :rowIdx
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                >
+                    <template v-for="name in bodySlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body-row>
+            </tbody>
         </template>
 
-        <template v-else>
+        <tbody v-if="displayedBodyCells.length === 0">
             <tr>
                 <td colspan="100%" class="h-52">
                     <div class="flex flex-col items-center justify-center text-gray-700">
@@ -43,70 +32,61 @@
                     </div>
                 </td>
             </tr>
-        </template>
-    </vs-visible-render>
+        </tbody>
+    </draggable>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
-import { stringUtil } from '@/utils';
+import { computed, defineComponent, inject, ref, watch } from 'vue';
 import { type BodyCell, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
+import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import draggable from 'vuedraggable/src/vuedraggable';
+import type { SortableEvent } from 'sortablejs';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
-import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
-import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
-import VsTableExpandCell from './VsTableExpandCell.vue';
-import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
-import VsTableSelectCell from './VsTableSelectCell.vue';
+import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
         VsRender,
-        VsSkeleton,
-        VsVisibleRender,
-        VsTableExpandCell,
-        VsTableExpandedPanel,
-        VsTableSelectCell,
+        VsTableBodyRow,
+        draggable,
     },
-    props: {
-        virtualScroll: { type: Boolean, default: false },
-    },
-    emits: ['click-cell', 'select-row', 'expand-row'],
-    setup(props, { emit, slots }) {
-        const { bodyCells, anyExpandable, headerCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+    emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
+    setup(props, { slots, emit }) {
+        const { bodyCells, loading } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
-        function findMatchingSlotName(cell: BodyCell): string {
-            const { id, colIdx, rowIdx, colKey } = cell;
+        const bodySlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
 
-            const candidatePriority = [
-                `body-${id}`,
-                `body-${stringUtil.kebabCase(colKey)}`,
-                `body-col${colIdx}-row${rowIdx}`,
-                `body-row${rowIdx}`,
-                `body-col${colIdx}`,
-                'body',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
+        // NOTE: These values are arrays used to represent the **draggable** view.
+        const displayOrder = ref<number[]>([]);
+        const displayedBodyCells = computed<BodyCell[][]>({
+            get(): BodyCell[][] {
+                const baseCells = bodyCells.value;
+                if (displayOrder.value.length === 0) {
+                    return baseCells;
+                }
+                return displayOrder.value.map((idx) => baseCells[idx]);
+            },
+            set(newCells: BodyCell[][]): void {
+                const baseCells = bodyCells.value;
+                const baseIds = baseCells.map(getRowId);
 
-            return candidatePriority[0] || '';
-        }
+                displayOrder.value = newCells
+                    .map((row) => baseIds.indexOf(getRowId(row)))
+                    .filter((idx) => idx !== -1);
+            },
+        });
 
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
-        }
-
-        function getHeaderLabel(colIdx: number, fallback: string): string {
-            if (loading?.value) {
-                return '_';
-            }
-            const header = headerCells.value?.[colIdx];
-            if (!header) {
-                return fallback;
-            }
-            return String(header.value ?? fallback);
         }
 
         function selectRow(row: BodyCell[], event: MouseEvent): void {
@@ -118,18 +98,31 @@ export default defineComponent({
             emit('expand-row', row, event);
         }
 
-        return {
+        function handleDragUpdate(event: SortableEvent): void {
+            emit('drag', event);
+        }
+
+        watch(
             bodyCells,
-            anyExpandable,
+            (newCells) => {
+                displayOrder.value = newCells.map((_, idx) => idx);
+            },
+            { immediate: true },
+        );
+
+        return {
+            DEFAULT_SORTABLE_OPTIONS,
+            TABLE_DRAG_WRAPPER_CLASS,
+            bodySlots,
+            displayedBodyCells,
             loading,
             tableIcons,
             clickCell,
-            findMatchingSlotName,
             getRowItem,
             getRowId,
             selectRow,
             expandRow,
-            getHeaderLabel,
+            handleDragUpdate,
         };
     },
 });
