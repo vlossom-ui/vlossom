@@ -9,32 +9,43 @@
             @search="searchRows"
         />
 
-        <table>
-            <vs-table-header
-                v-if="stickyHeader && headerInvisible"
-                class="vs-table-sticky-header"
-                @click-cell="clickCell"
-                @select-row="selectRow"
-            >
-                <template v-for="name in headerSlots" #[name]="slotData">
-                    <slot :name v-bind="slotData || {}" />
-                </template>
-            </vs-table-header>
+        <vs-visible-render
+            :disabled="!virtualScroll"
+            :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
+            root-margin="150px"
+        >
+            <table>
+                <vs-table-header
+                    v-if="stickyHeader && headerInvisible"
+                    class="vs-table-sticky-header"
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                >
+                    <template v-for="name in headerSlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-header>
 
-            <caption v-if="$slots['caption']">
-                <slot name="caption" />
-            </caption>
-            <vs-table-header ref="headerRef" @click-cell="clickCell" @select-row="selectRow">
-                <template v-for="name in headerSlots" #[name]="slotData">
-                    <slot :name v-bind="slotData || {}" />
-                </template>
-            </vs-table-header>
-            <vs-table-body :virtual-scroll @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow">
-                <template v-for="name in bodySlots" #[name]="slotData">
-                    <slot :name v-bind="slotData || {}" />
-                </template>
-            </vs-table-body>
-        </table>
+                <caption v-if="$slots['caption']">
+                    <slot name="caption" />
+                </caption>
+                <vs-table-header ref="headerRef" @click-cell="clickCell" @select-row="selectRow">
+                    <template v-for="name in headerSlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-header>
+                <vs-table-body
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                    @drag="dragRow"
+                >
+                    <template v-for="name in bodySlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body>
+            </table>
+        </vs-visible-render>
 
         <vs-table-pagination v-if="pagination" @paginate="paginate" />
     </div>
@@ -54,6 +65,7 @@ import {
     inject,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
+import type { SortableEvent } from 'sortablejs';
 import { LAYOUT_STORE_KEY, type SearchProps, VsComponent } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
@@ -69,6 +81,7 @@ import {
     type VsTablePaginationOptions,
     getRowItem,
 } from './types';
+import { TABLE_DRAG_WRAPPER_CLASS } from './constants';
 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
@@ -106,6 +119,7 @@ export default defineComponent({
         loading: { type: Boolean, default: false },
         serverMode: { type: Boolean, default: false },
         virtualScroll: { type: Boolean, default: false },
+        draggable: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
             default: false,
@@ -141,6 +155,7 @@ export default defineComponent({
         'click-cell',
         'select-row',
         'expand-row',
+        'drag',
         'search',
         'paginate',
         'update:selectedItems',
@@ -203,24 +218,22 @@ export default defineComponent({
         function clickCell(cell: BodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
         }
-
         function selectRow(row: BodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
         }
-
         function expandRow(row: BodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
         }
-
+        function dragRow(event: SortableEvent): void {
+            emit('drag', event);
+        }
         function searchRows(searchText: string): void {
             const items = table.bodyCells.value.map((row) => getRowItem(row));
             emit('search', items, searchText);
         }
-
         function paginate(nextPage: number): void {
             emit('paginate', nextPage, table.pageSize.value);
         }
-
         function updateSelectedItems(items: Item[]): void {
             emit('update:selectedItems', items);
         }
@@ -240,6 +253,7 @@ export default defineComponent({
         });
 
         return {
+            TABLE_DRAG_WRAPPER_CLASS,
             colorSchemeClass,
             styleSetVariables,
             classObj,
@@ -255,6 +269,7 @@ export default defineComponent({
             expandRow,
             searchRows,
             paginate,
+            dragRow,
             updateSelectedItems,
             updatePage,
             updatePageSize,
