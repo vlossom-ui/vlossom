@@ -239,13 +239,23 @@ export const StyleSet: Story = {
         useRegex: true,
         useCaseSensitive: true,
         styleSet: {
-            backgroundColor: '#f0f8ff',
-            border: '2px solid #1e88e5',
-            borderRadius: '12px',
-            fontColor: '#1565c0',
-            fontSize: '1.1rem',
-            height: '3.5rem',
-            padding: '0 1.5rem',
+            variables: {
+                height: '3.5rem',
+            },
+            input: {
+                variables: {
+                    fontColor: '#1565c0',
+                    fontSize: '1.1rem',
+                    padding: '0 1.5rem',
+                },
+                wrapper: {
+                    variables: {
+                        backgroundColor: '#f0f8ff',
+                        border: '2px solid #1e88e5',
+                        borderRadius: '12px',
+                    },
+                },
+            },
         },
     },
 };

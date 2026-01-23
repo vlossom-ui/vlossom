@@ -98,16 +98,26 @@ export default defineComponent({
         const isRegexOn = ref(regex.value);
 
         const { computedColorScheme } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(componentName, styleSet);
+
+        const baseStyleSet: ComputedRef<Partial<VsSearchInputStyleSet>> = computed(() => ({
+            input: {
+                variables: {
+                    append: {
+                        backgroundColor: 'transparent',
+                        padding: '0 0.3rem',
+                    },
+                },
+            },
+        }));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const computedStyleSet: ComputedRef<VsInputStyleSet> = computed(() => {
-            return {
-                ...componentStyleSet.value,
-                append: {
-                    backgroundColor: 'transparent',
-                    padding: '0 0.3rem',
-                },
-            };
+            return componentStyleSet.value.input || {};
         });
 
         function getToggleButtonStyleSet(toggle: boolean) {

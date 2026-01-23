@@ -16,4 +16,9 @@ export interface VsSearchInputRef extends ComponentPublicInstance<typeof VsSearc
     select: () => void;
 }
 
-export interface VsSearchInputStyleSet extends Omit<VsInputStyleSet, 'append' | 'prepend' | 'wrapper'> {}
+export interface VsSearchInputStyleSet {
+    variables?: {
+        height?: string;
+    };
+    input?: VsInputStyleSet;
+}

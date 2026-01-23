@@ -186,15 +186,46 @@ function onSearch(value: string) {
 
 ```typescript
 interface VsSearchInputStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-    height?: string;
+    variables?: {
+        height?: string;
+    };
+    input?: {
+        variables?: {
+            padding?: string;
+            fontColor?: string;
+            fontSize?: string;
+            fontWeight?: number;
+            prepend?: {
+                opacity?: number;
+                backgroundColor?: string;
+                padding?: string;
+            };
+            append?: {
+                opacity?: number;
+                backgroundColor?: string;
+                padding?: string;
+            };
+        };
+        component?: CSSProperties;
+        wrapper?: {
+            variables?: {
+                border?: string;
+                borderRadius?: string;
+                backgroundColor?: string;
+                opacity?: number;
+                height?: string;
+                focused?: {
+                    border?: string;
+                };
+                invalid?: {
+                    border?: string;
+                };
+            };
+            component?: CSSProperties;
+            inputContainer?: CSSProperties;
+            messageContainer?: CSSProperties;
+        };
+    };
 }
 
 interface VsSearchInputRef {
