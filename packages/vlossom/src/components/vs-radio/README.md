@@ -59,10 +59,12 @@
 
 ```typescript
 interface VsRadioStyleSet {
-    borderRadius?: string;
-    height?: string;
-    radioColor?: string;
-    radioSize?: string;
+    variables?: {
+        borderRadius?: string;
+        height?: string;
+        radioColor?: string;
+        radioSize?: string;
+    };
 }
 ```
 
@@ -152,10 +154,18 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsRadioSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
-    radio?: Omit<VsRadioStyleSet, 'wrapper'>;
+    variables?: {
+        gap?: string;
+        flexWrap?: string;
+    };
+    radio?: {
+        variables?: {
+            borderRadius?: string;
+            height?: string;
+            radioColor?: string;
+            radioSize?: string;
+        };
+    };
     wrapper?: VsInputWrapperStyleSet;
 }
 ```

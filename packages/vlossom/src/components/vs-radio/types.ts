@@ -18,16 +18,19 @@ export interface VsRadioRef extends ComponentPublicInstance<typeof VsRadio>, Foc
 export interface VsRadioSetRef extends ComponentPublicInstance<typeof VsRadioSet>, FocusableRef, FormChildRef {}
 
 export interface VsRadioStyleSet {
-    borderRadius?: string;
-    height?: string;
-    radioColor?: string;
-    radioSize?: string;
+    variables?: {
+        borderRadius?: string;
+        height?: string;
+        radioColor?: string;
+        radioSize?: string;
+    };
 }
 
 export interface VsRadioSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
-    radio?: Omit<VsRadioStyleSet, 'wrapper'>;
+    variables?: {
+        gap?: string;
+        flexWrap?: string;
+    };
+    radio?: VsRadioStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }
