@@ -111,10 +111,14 @@ export const StyleSet: Story = {
         label: 'Custom Style',
         options: ['Option 1', 'Option 2', 'Option 3'],
         styleSet: {
-            gap: '2rem',
+            variables: {
+                gap: '2rem',
+            },
             checkbox: {
-                checkboxColor: '#7c3aed',
-                checkboxSize: '1.2rem',
+                variables: {
+                    checkboxColor: '#7c3aed',
+                    checkboxSize: '1.2rem',
+                },
             },
         },
         modelValue: ['Option 1'],

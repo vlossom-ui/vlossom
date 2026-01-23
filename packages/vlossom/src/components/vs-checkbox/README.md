@@ -113,13 +113,31 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxStyleSet {
-    borderRadius?: string;
-    borderWidth?: string;
-    checkboxColor?: string;
-    checkboxSize?: string;
-    height?: string;
-
-    wrapper?: VsInputWrapperStyleSet;
+    variables?: {
+        borderRadius?: string;
+        borderWidth?: string;
+        checkboxColor?: string;
+        checkboxSize?: string;
+        height?: string;
+    };
+    wrapper?: {
+        variables?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+            labelColor?: string;
+            labelFontSize?: string;
+            labelFontWeight?: string | number;
+            labelMargin?: string;
+            labelWidth?: string;
+            messageMargin?: string;
+            messageFontSize?: string;
+            padding?: string;
+            requiredColor?: string;
+        };
+        label?: CSSProperties;
+        messages?: CSSProperties;
+    };
 }
 ```
 
@@ -233,11 +251,37 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
-    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
-    wrapper?: VsInputWrapperStyleSet;
+    variables?: {
+        gap?: string;
+        flexWrap?: string;
+    };
+    checkbox?: {
+        variables?: {
+            borderRadius?: string;
+            borderWidth?: string;
+            checkboxColor?: string;
+            checkboxSize?: string;
+            height?: string;
+        };
+    };
+    wrapper?: {
+        variables?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+            labelColor?: string;
+            labelFontSize?: string;
+            labelFontWeight?: string | number;
+            labelMargin?: string;
+            labelWidth?: string;
+            messageMargin?: string;
+            messageFontSize?: string;
+            padding?: string;
+            requiredColor?: string;
+        };
+        label?: CSSProperties;
+        messages?: CSSProperties;
+    };
 }
 ```
 

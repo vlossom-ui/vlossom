@@ -20,19 +20,21 @@ export interface VsCheckboxRef extends ComponentPublicInstance<typeof VsCheckbox
 export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheckboxSet>, FocusableRef, FormChildRef {}
 
 export interface VsCheckboxStyleSet {
-    borderRadius?: string;
-    borderWidth?: string;
-    checkboxColor?: string;
-    checkboxSize?: string;
-    height?: string;
-
+    variables?: {
+        borderRadius?: string;
+        borderWidth?: string;
+        checkboxColor?: string;
+        checkboxSize?: string;
+        height?: string;
+    };
     wrapper?: VsInputWrapperStyleSet;
 }
 
 export interface VsCheckboxSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
+    variables?: {
+        gap?: string;
+        flexWrap?: string;
+    };
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }

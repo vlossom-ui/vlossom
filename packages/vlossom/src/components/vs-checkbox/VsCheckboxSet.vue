@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type ComputedRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import {
     getColorSchemeProps,
@@ -124,7 +124,13 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<Partial<VsCheckboxSetStyleSet>> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const { stateClasses } = useStateClass(state);
 
