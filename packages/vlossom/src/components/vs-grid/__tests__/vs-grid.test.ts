@@ -27,7 +27,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 width: '600px',
                 height: '500px',
             });
@@ -42,7 +42,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 '--vs-grid-gridSize': 6,
             });
         });
@@ -57,7 +57,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 '--vs-grid-columnGap': '20px',
                 '--vs-grid-rowGap': '25px',
             });
@@ -73,23 +73,15 @@ describe('VsGrid', () => {
                             columnGap: '30px',
                             rowGap: '20px',
                         },
-                        component: {
-                            width: '800px',
-                            height: '600px',
-                        },
                     },
                 },
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 '--vs-grid-gridSize': 4,
                 '--vs-grid-columnGap': '30px',
                 '--vs-grid-rowGap': '20px',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                width: '800px',
-                height: '600px',
             });
         });
     });
@@ -109,10 +101,6 @@ describe('VsGrid', () => {
                         variables: {
                             gridSize: 8,
                         },
-                        component: {
-                            width: '1000px',
-                            height: '700px',
-                        },
                     },
                 },
             });
@@ -123,12 +111,10 @@ describe('VsGrid', () => {
             expect(grid.classes()).toContain('vs-grid');
 
             // additionalStyleSet이 styleSet보다 우선되므로 props 값이 적용됨
-            expect(wrapper.vm.styleSetVariables).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 '--vs-grid-gridSize': 16,
                 '--vs-grid-columnGap': '24px',
                 '--vs-grid-rowGap': '16px',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '1200px',
                 height: '800px',
             });
@@ -144,7 +130,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
+            expect(wrapper.vm.computedStyle).toMatchObject({
                 '--vs-grid-gridSize': 10,
                 '--vs-grid-columnGap': '12px',
             });

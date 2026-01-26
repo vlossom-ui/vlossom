@@ -58,7 +58,6 @@ interface VsGridStyleSet {
         columnGap?: string;
         rowGap?: string;
     };
-    component?: CSSProperties;
 }
 ```
 
@@ -72,10 +71,6 @@ interface VsGridStyleSet {
             columnGap: '1rem',
             rowGap: '1rem',
         },
-        component: {
-            padding: '1rem',
-            backgroundColor: '#f5f5f5',
-        }
     }">
         <div>Item 1</div>
         <div>Item 2</div>

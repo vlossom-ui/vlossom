@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type VsGrid from './VsGrid.vue';
 
 declare module 'vue' {
@@ -17,5 +17,4 @@ export interface VsGridStyleSet {
         columnGap?: string;
         rowGap?: string;
     };
-    component?: CSSProperties;
 }

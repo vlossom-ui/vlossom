@@ -1,11 +1,11 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+    <component :is="tag" class="vs-grid" :style="computedStyle">
         <slot />
     </component>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import { getGridProps, getStyleSetProps } from '@/props';
@@ -33,23 +33,21 @@ export default defineComponent({
                     columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
                     rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
                 }),
-                component: objectUtil.shake({
-                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                }),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGridStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-            additionalStyleSet,
-        );
+        const { styleSetVariables } = useStyleSet<VsGridStyleSet>(componentName, styleSet, baseStyleSet, additionalStyleSet);
+
+        const computedStyle = computed((): CSSProperties => {
+            return {
+                ...styleSetVariables.value,
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+            };
+        });
 
         return {
-            componentStyleSet,
-            styleSetVariables,
+            computedStyle,
         };
     },
 });
