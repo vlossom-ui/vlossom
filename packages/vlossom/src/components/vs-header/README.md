@@ -26,7 +26,7 @@
 ```html
 <template>
     <vs-layout>
-        <vs-header position="fixed" :style-set="{ height: '4rem', backgroundColor: '#2196f3', fontColor: '#ffffff' }">
+        <vs-header position="fixed" :style-set="{ component: { height: '4rem', backgroundColor: '#2196f3', color: '#ffffff' } }">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h1>My App</h1>
                 <nav>
@@ -58,7 +58,7 @@
 
 ```html
 <template>
-    <vs-header position="fixed" :style-set="{ height: '4rem', zIndex: '1000' }">
+    <vs-header position="fixed" :style-set="{ component: { height: '4rem', zIndex: 1000 } }">
         <div>항상 상단에 고정된 헤더</div>
     </vs-header>
 </template>
@@ -89,25 +89,11 @@
 
 ```typescript
 interface VsHeaderStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-    top?: string | number;
-    bottom?: string | number;
-    left?: string | number;
-    right?: string | number;
-    zIndex?: string;
-    fontColor?: string;
-    boxShadow?: string;
+    component?: CSSProperties;
 }
 ```
+
+`VsHeaderStyleSet`은 `VsBarStyleSet`을 확장하며, `component` 속성을 통해 CSS 속성을 직접 지정할 수 있습니다.
 
 ## Slots
 

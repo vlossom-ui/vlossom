@@ -154,9 +154,8 @@ interface VsDrawerStyleSet {
         boxShadow?: string;
     };
     component?: CSSProperties;
-    dimmed?: {
-        component?: CSSProperties;
-    };
+    dimmed?: VsDimmedStyleSet;
+    layout?: VsInnerScrollStyleSet;
 }
 
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;

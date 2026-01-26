@@ -53,10 +53,12 @@ const meta: Meta<typeof VsBlock> = {
                     borderRadius: '8px',
                     color: '#495057',
                 },
-                title: {
-                    backgroundColor: '#f8f9fa',
-                    color: '#212529',
-                    padding: '1.5rem',
+                layout: {
+                    header: {
+                        backgroundColor: '#f8f9fa',
+                        color: '#212529',
+                        padding: '1.5rem',
+                    },
                 },
             };
 
@@ -204,10 +206,12 @@ export const StyleSet: Story = {
                 boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
                 color: '#1565c0',
             },
-            title: {
-                backgroundColor: '#e3f2fd',
-                color: '#1976d2',
-                padding: '2rem',
+            layout: {
+                header: {
+                    backgroundColor: '#e3f2fd',
+                    color: '#1976d2',
+                    padding: '2rem',
+                },
             },
         },
     },

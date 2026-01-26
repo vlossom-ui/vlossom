@@ -92,7 +92,7 @@ interface VsBlockStyleSet {
         width?: string;
     };
     component?: CSSProperties;
-    title?: CSSProperties;
+    layout?: VsInnerScrollStyleSet;
 }
 ```
 
@@ -110,9 +110,11 @@ interface VsBlockStyleSet {
             backgroundColor: '#ecf0f1',
             borderRadius: '12px',
         },
-        title: {
-            backgroundColor: '#3498db',
-            color: '#ffffff',
+        layout: {
+            header: {
+                backgroundColor: '#3498db',
+                color: '#ffffff',
+            }
         }
     }">
         <template #title>커스텀 블록</template>

@@ -65,6 +65,7 @@ interface VsRadioStyleSet {
         radioColor?: string;
         radioSize?: string;
     };
+    wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
