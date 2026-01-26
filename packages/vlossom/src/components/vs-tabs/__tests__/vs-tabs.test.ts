@@ -499,10 +499,12 @@ describe('VsTabs', () => {
 
             // then
             expect(wrapper.vm.componentStyleSet.scrollButton).toEqual({
+                variables: {
+                    padding: '0.4rem',
+                },
                 component: {
                     backgroundColor: '#b968c7',
                     borderRadius: '8px',
-                    padding: '0.4rem',
                 },
             });
         });

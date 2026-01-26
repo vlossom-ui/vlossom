@@ -118,10 +118,12 @@ export default defineComponent({
 
         function getToggleButtonStyleSet(toggle: boolean) {
             return {
+                variables: {
+                    padding: '0',
+                },
                 component: {
                     backgroundColor: toggle ? 'var(--vs-area-bg)' : 'transparent',
                     border: toggle ? '1px solid var(--vs-primary-comp-bg)' : '1px solid var(--vs-comp-bg)',
-                    padding: '0',
                 },
             };
         }

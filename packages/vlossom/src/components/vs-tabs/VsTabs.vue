@@ -118,7 +118,7 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => ({
             scrollButton: {
-                component: {
+                variables: {
                     padding: '0.4rem',
                 },
             },

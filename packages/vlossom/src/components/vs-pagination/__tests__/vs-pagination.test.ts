@@ -327,7 +327,7 @@ describe('VsPagination', () => {
             // then
             expect(wrapper.vm.componentStyleSet.variables?.gap).toBe('2rem');
             expect(wrapper.vm.componentStyleSet.pageButton?.component?.borderRadius).toBe('50%');
-            expect(wrapper.vm.componentStyleSet.controlButton?.component?.padding).toBe('0.4rem');
+            expect(wrapper.vm.componentStyleSet.controlButton?.variables?.padding).toBe('0.4rem');
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-pagination-gap': '2rem',
             });

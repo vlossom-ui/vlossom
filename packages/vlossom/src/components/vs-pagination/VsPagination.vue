@@ -142,7 +142,7 @@ export default defineComponent({
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<Partial<VsPaginationStyleSet>> = computed(() => ({
             controlButton: {
-                component: {
+                variables: {
                     padding: '0.4rem',
                 },
             },
