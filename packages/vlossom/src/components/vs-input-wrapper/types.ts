@@ -14,6 +14,7 @@ export interface VsInputWrapperRef extends ComponentPublicInstance<typeof VsInpu
 
 export interface VsInputWrapperStyleSet {
     variables?: {
+        width?: string;
         label?: {
             marginBottom?: string;
             fontColor?: string;

@@ -1,9 +1,12 @@
 .vs-block {
-    --vs-block-padding: initial;
     --vs-block-border: initial;
+    --vs-block-padding: initial;
     --vs-block-title-padding: initial;
+    --vs-block-width: initial;
 
-    @apply relative w-full overflow-auto;
+    @apply relative overflow-auto;
+
+    width: var(--vs-block-width, 100%);
 
     container-type: inline-size;
     box-shadow: var(--vs-area-shadow-outer);

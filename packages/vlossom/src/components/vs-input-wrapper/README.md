@@ -94,6 +94,7 @@ type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
 interface VsInputWrapperStyleSet {
     variables?: {
+        width?: string;
         label?: {
             marginBottom?: string;
             fontColor?: string;

@@ -1,11 +1,14 @@
 @reference 'tailwindcss';
 
 .vs-input-wrapper {
+    --vs-input-wrapper-width: initial;
     --vs-input-wrapper-label-marginBottom: initial;
     --vs-input-wrapper-label-fontColor: initial;
     --vs-input-wrapper-label-fontSize: initial;
     --vs-input-wrapper-label-fontWeight: initial;
     --vs-input-wrapper-label-messagesMarginTop: initial;
+
+    width: var(--vs-input-wrapper-width, 100%);
 
     .vs-label {
         @apply flex items-center;

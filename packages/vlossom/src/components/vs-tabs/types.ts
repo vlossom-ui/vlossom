@@ -24,6 +24,7 @@ export interface VsTabsStyleSet {
         height?: string;
         opacity?: number;
         padding?: string;
+        width?: string;
     };
     scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
