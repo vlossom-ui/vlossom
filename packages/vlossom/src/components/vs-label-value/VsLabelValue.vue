@@ -1,10 +1,5 @@
 <template>
-    <vs-responsive
-        :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="styleSetVariables"
-        :width
-        :grid
-    >
+    <vs-responsive :class="['vs-label-value', colorSchemeClass, classObj]" :style="styleSetVariables" :width :grid>
         <div v-if="$slots['label']" class="vs-cell vs-label">
             <slot name="label" />
         </div>
@@ -14,7 +9,7 @@
     </vs-responsive>
 </template>
 <script lang="ts">
-import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -38,9 +33,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsLabelValueStyleSet>> = computed(() => ({}));
-
-        const { styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet, baseStyleSet);
+        const { styleSetVariables } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,

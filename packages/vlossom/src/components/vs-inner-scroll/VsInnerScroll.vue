@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, type ComputedRef, type TemplateRef } from 'vue';
+import { defineComponent, toRefs, useTemplateRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
@@ -37,13 +37,7 @@ export default defineComponent({
         const { styleSet } = toRefs(props);
         const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
-        const baseStyleSet: ComputedRef<Partial<VsInnerScrollStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInnerScrollStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInnerScrollStyleSet>(componentName, styleSet);
 
         function hasScroll() {
             if (!bodyRef.value) {

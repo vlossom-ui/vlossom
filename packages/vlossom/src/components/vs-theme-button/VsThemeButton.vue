@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed, type ComputedRef } from 'vue';
+import { defineComponent, toRefs, computed } from 'vue';
 import { useVlossom } from '@/framework';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
@@ -46,13 +46,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsThemeButtonStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsThemeButtonStyleSet>(componentName, styleSet);
 
         const isDarkTheme = computed(() => $vs.theme === 'dark');
 

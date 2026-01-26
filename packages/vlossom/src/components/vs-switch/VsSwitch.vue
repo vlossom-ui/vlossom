@@ -57,7 +57,6 @@ import {
     ref,
     toRefs,
     useTemplateRef,
-    type ComputedRef,
     type PropType,
     type TemplateRef,
 } from 'vue';
@@ -117,13 +116,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsSwitchStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(componentName, styleSet);
 
         const inputValue = ref(modelValue.value);
 

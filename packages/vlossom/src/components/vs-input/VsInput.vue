@@ -78,7 +78,6 @@ import {
     type Ref,
     type TemplateRef,
     ref,
-    type ComputedRef,
 } from 'vue';
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
@@ -143,13 +142,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsInputStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInputStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);

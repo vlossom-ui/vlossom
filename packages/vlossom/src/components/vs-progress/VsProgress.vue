@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -44,13 +44,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsProgressStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsProgressStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsProgressStyleSet>(componentName, styleSet);
 
         const { value, max } = toRefs(props);
 

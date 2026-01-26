@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type ComputedRef, type TemplateRef, useTemplateRef, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -98,13 +98,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsRadioStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsRadioStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsRadioStyleSet>(componentName, styleSet);
 
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 

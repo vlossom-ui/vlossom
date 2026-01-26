@@ -68,9 +68,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsTooltipStyleSet>> = computed(() => ({}));
-
-        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet, baseStyleSet);
+        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet);
 
         const computedShow: WritableComputedRef<boolean> = computed({
             get() {

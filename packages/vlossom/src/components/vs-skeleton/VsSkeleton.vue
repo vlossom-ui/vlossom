@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, toRefs } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -29,13 +29,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsSkeletonStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,

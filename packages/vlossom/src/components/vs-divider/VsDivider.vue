@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed, type ComputedRef } from 'vue';
+import { defineComponent, toRefs, computed } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -27,13 +27,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsDividerStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsDividerStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsDividerStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-vertical': vertical.value,

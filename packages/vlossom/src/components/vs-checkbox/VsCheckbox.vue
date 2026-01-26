@@ -54,7 +54,6 @@ import {
     toRefs,
     useTemplateRef,
     watch,
-    type ComputedRef,
     type PropType,
     type TemplateRef,
 } from 'vue';
@@ -116,13 +115,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsCheckboxStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(componentName, styleSet);
 
         const inputValue = ref(modelValue.value);
 

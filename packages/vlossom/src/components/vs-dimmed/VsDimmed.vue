@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { defineComponent, ref, toRefs, watch } from 'vue';
 import { useStyleSet } from '@/composables';
 import { getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
@@ -33,13 +33,7 @@ export default defineComponent({
 
         const isShow = ref(modelValue.value);
 
-        const baseStyleSet: ComputedRef<Partial<VsDimmedStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsDimmedStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsDimmedStyleSet>(componentName, styleSet);
 
         function show() {
             isShow.value = true;

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
+import { defineComponent, toRefs } from 'vue';
 import { useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
@@ -27,13 +27,7 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const baseStyleSet: ComputedRef<Partial<VsPageStyleSet>> = computed(() => ({}));
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPageStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
 
         return {
             componentStyleSet,
