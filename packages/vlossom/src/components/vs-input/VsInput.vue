@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -69,16 +70,7 @@
 </template>
 
 <script lang="ts">
-import {
-    computed,
-    defineComponent,
-    toRefs,
-    useTemplateRef,
-    type PropType,
-    type Ref,
-    type TemplateRef,
-    ref,
-} from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';

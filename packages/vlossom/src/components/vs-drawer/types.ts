@@ -1,6 +1,7 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsDimmedStyleSet } from '@/components/vs-dimmed/types';
 import type VsDrawer from './VsDrawer.vue';
+import type { VsInnerScrollStyleSet } from '@/components/vs-inner-scroll/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -27,4 +28,5 @@ export interface VsDrawerStyleSet {
     };
     component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
+    layout?: VsInnerScrollStyleSet;
 }

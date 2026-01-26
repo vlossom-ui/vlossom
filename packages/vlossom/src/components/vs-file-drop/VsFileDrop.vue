@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
@@ -12,7 +13,6 @@
         :no-messages
         :required
         :shake
-        :style-set="componentStyleSet.wrapper"
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
             <slot name="label" />

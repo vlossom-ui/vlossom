@@ -8,8 +8,8 @@
         >
             <vs-dimmed
                 v-if="dimmed"
+                :style-set="componentStyleSet.dimmed"
                 :model-value="isDimmed"
-                :style-set="dimmedStyleSet"
                 @click.prevent.stop="onClickDimmed"
             />
             <vs-focus-trap
@@ -17,7 +17,7 @@
                 :class="['vs-drawer-content', `vs-drawer-${placement}`]"
                 :disabled="!focusLock"
             >
-                <vs-inner-scroll :hide-scroll>
+                <vs-inner-scroll :style-set="componentStyleSet.layout" :hide-scroll>
                     <template #header>
                         <slot name="header" />
                     </template>
@@ -149,10 +149,6 @@ export default defineComponent({
             additionalStyleSet,
         );
 
-        const dimmedStyleSet = computed(() => {
-            return componentStyleSet.value.dimmed;
-        });
-
         const isDimmed = computed(() => dimmed.value && isOpen.value);
 
         const computedCallbacks = computed(() => {
@@ -238,7 +234,6 @@ export default defineComponent({
             isOpen,
             ANIMATION_DURATION,
             onClickDimmed,
-            dimmedStyleSet,
             isDimmed,
             openDrawer,
             closeDrawer,

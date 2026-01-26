@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :id="radioLabel ? '' : computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"

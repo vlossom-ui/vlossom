@@ -1,5 +1,6 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsBlock from './VsBlock.vue';
+import type { VsInnerScrollStyleSet } from '@/components/vs-inner-scroll/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -18,5 +19,5 @@ export interface VsBlockStyleSet {
         width?: string;
     };
     component?: CSSProperties;
-    title?: CSSProperties;
+    layout?: VsInnerScrollStyleSet;
 }

@@ -2,9 +2,9 @@
     <vs-input
         ref="inputRef"
         class="vs-search-input"
+        :style-set="componentStyleSet.input"
         v-model="searchText"
         :color-scheme="computedColorScheme"
-        :style-set="computedStyleSet"
         :style="styleSetVariables"
         :width
         :grid
@@ -65,7 +65,7 @@ import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/pro
 import { functionUtil } from '@/utils';
 import type { VsSearchInputStyleSet } from './types';
 
-import type { VsInputRef, VsInputStyleSet } from '@/components/vs-input/types';
+import type { VsInputRef } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
@@ -115,10 +115,6 @@ export default defineComponent({
             styleSet,
             baseStyleSet,
         );
-
-        const computedStyleSet: ComputedRef<VsInputStyleSet> = computed(() => {
-            return componentStyleSet.value.input || {};
-        });
 
         function getToggleButtonStyleSet(toggle: boolean) {
             return {
@@ -211,7 +207,7 @@ export default defineComponent({
             isCaseSensitiveOn,
             isRegexOn,
             computedColorScheme,
-            computedStyleSet,
+            componentStyleSet,
             styleSetVariables,
             onInputChange,
             getToggleButtonStyleSet,

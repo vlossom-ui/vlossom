@@ -1,16 +1,16 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
-        :style="componentStyleSet.wrapper"
-        :grid="grid"
+        :style-set="componentStyleSet.wrapper"
+        :width
+        :grid
         :id="computedId"
-        :label="label"
-        :required="required"
+        :label
+        :required
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :no-messages
+        :shake
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
@@ -51,15 +51,7 @@
 </template>
 
 <script lang="ts">
-import {
-    computed,
-    defineComponent,
-    ref,
-    toRefs,
-    useTemplateRef,
-    type PropType,
-    type TemplateRef,
-} from 'vue';
+import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
