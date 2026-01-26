@@ -5,7 +5,7 @@
         :grid
         :style="styleSetVariables"
     >
-        <component :is="groupLabel ? 'fieldset' : 'div'">
+        <component :is="groupLabel ? 'fieldset' : 'div'" :style="componentStyleSet.component">
             <component
                 :is="groupLabel ? 'legend' : 'div'"
                 v-if="!noLabel && (!!label || !!$slots.label)"
@@ -84,7 +84,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, messageSize, styleSetVariables };
+        return { needToShake, messageSize, styleSetVariables, componentStyleSet };
     },
 });
 </script>
