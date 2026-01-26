@@ -379,6 +379,92 @@ describe('VsAccordion', () => {
         });
     });
 
+    describe('styleSet 하위 속성 전달', () => {
+        it('title styleSet이 vs-accordion-title 요소에 적용되어야 한다', () => {
+            // given
+            const titleStyleSet = {
+                backgroundColor: '#f0f0f0',
+                padding: '1rem',
+                fontWeight: 'bold',
+            };
+
+            // when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: {
+                    styleSet: {
+                        title: titleStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.title).toEqual(titleStyleSet);
+            const titleElement = wrapper.find('.vs-accordion-title');
+            expect(titleElement.attributes('style')).toContain('background-color: rgb(240, 240, 240)');
+        });
+
+        it('expand styleSet이 vs-expandable 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const expandStyleSet = {
+                component: {
+                    backgroundColor: '#fafafa',
+                    padding: '1rem',
+                },
+            };
+
+            // when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: {
+                    styleSet: {
+                        expand: expandStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.expand).toEqual(expandStyleSet);
+            const vsExpandable = wrapper.findComponent({ name: 'VsExpandable' });
+            expect(vsExpandable.exists()).toBe(true);
+            expect(vsExpandable.props('styleSet')).toEqual(expandStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    arrowColor: '#2196f3',
+                    border: '1px solid #ccc',
+                },
+                title: {
+                    backgroundColor: '#e3f2fd',
+                    padding: '1rem',
+                },
+                expand: {
+                    component: {
+                        backgroundColor: '#ffffff',
+                        padding: '1.5rem',
+                    },
+                },
+            };
+
+            // when
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: {
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.title).toEqual(fullStyleSet.title);
+            expect(wrapper.vm.componentStyleSet.expand).toEqual(fullStyleSet.expand);
+            const vsExpandable = wrapper.findComponent({ name: 'VsExpandable' });
+            expect(vsExpandable.props('styleSet')).toEqual(fullStyleSet.expand);
+        });
+    });
+
     describe('상태 관리', () => {
         it('isOpen 상태가 변경되면 VsExpandable 컴포넌트에 올바르게 전달되어야 한다', async () => {
             // given

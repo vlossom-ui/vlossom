@@ -826,4 +826,162 @@ describe('VsSelect', () => {
             });
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('chip styleSet이 componentStyleSet에 설정되어야 한다', async () => {
+            // given
+            const chipStyleSet = {
+                variables: {
+                    height: '2rem',
+                },
+                component: {
+                    borderRadius: '16px',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: ['Apple'],
+                    multiple: true,
+                    closableChips: true,
+                    styleSet: {
+                        chip: chipStyleSet,
+                    },
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.componentStyleSet.chip).toEqual(chipStyleSet);
+        });
+
+        it('selectAllCheckbox styleSet이 componentStyleSet에 설정되어야 한다', () => {
+            // given
+            const selectAllCheckboxStyleSet = {
+                variables: {
+                    checkboxColor: '#2196f3',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: [],
+                    multiple: true,
+                    selectAll: true,
+                    styleSet: {
+                        selectAllCheckbox: selectAllCheckboxStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.selectAllCheckbox).toEqual(selectAllCheckboxStyleSet);
+        });
+
+        it('options styleSet이 componentStyleSet에 설정되어야 한다', () => {
+            // given
+            const optionsStyleSet = {
+                layout: {
+                    content: {
+                        maxHeight: '300px',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                    styleSet: {
+                        options: optionsStyleSet,
+                    },
+                },
+            });
+
+            // then
+            // 기본 스타일 (height: '30rem', layout.content.padding: '0.6rem 0.4rem')과 병합됨
+            expect(wrapper.vm.componentStyleSet.options?.layout?.content?.maxHeight).toBe('300px');
+            expect(wrapper.vm.componentStyleSet.options?.variables?.height).toBe('30rem');
+        });
+
+        it('option styleSet이 componentStyleSet에 설정되어야 한다', () => {
+            // given
+            const optionStyle = {
+                padding: '0.75rem 1rem',
+                fontSize: '1rem',
+            };
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                    styleSet: {
+                        option: optionStyle,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.option).toEqual(optionStyle);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', async () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    height: '3rem',
+                },
+                component: {
+                    borderRadius: '8px',
+                },
+                chip: {
+                    variables: {
+                        height: '1.5rem',
+                    },
+                },
+                selectAllCheckbox: {
+                    variables: {
+                        checkboxColor: '#4caf50',
+                    },
+                },
+                options: {
+                    variables: {
+                        gap: '0.5rem',
+                    },
+                },
+                option: {
+                    padding: '1rem',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: [],
+                    multiple: true,
+                    selectAll: true,
+                    closableChips: true,
+                    styleSet: fullStyleSet,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-select-height']).toBe('3rem');
+            expect(wrapper.vm.componentStyleSet.component).toEqual(fullStyleSet.component);
+            expect(wrapper.vm.componentStyleSet.chip).toEqual(fullStyleSet.chip);
+            expect(wrapper.vm.componentStyleSet.selectAllCheckbox).toEqual(fullStyleSet.selectAllCheckbox);
+            // options는 기본 스타일과 병합됨
+            expect(wrapper.vm.componentStyleSet.options?.variables?.gap).toBe('0.5rem');
+            expect(wrapper.vm.componentStyleSet.options?.variables?.height).toBe('30rem');
+            expect(wrapper.vm.componentStyleSet.option).toEqual(fullStyleSet.option);
+        });
+    });
 });

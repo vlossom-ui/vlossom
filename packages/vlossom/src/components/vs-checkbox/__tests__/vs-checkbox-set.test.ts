@@ -259,4 +259,97 @@ describe('VsCheckboxSet', () => {
             expect(updateModelValueEvent).toBeUndefined();
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('checkbox styleSet이 각 vs-checkbox 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const checkboxStyleSet = {
+                variables: {
+                    checkboxColor: '#2196f3',
+                    checkboxSize: '1.5rem',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B'],
+                    modelValue: [],
+                    styleSet: {
+                        checkbox: checkboxStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.checkbox).toEqual(checkboxStyleSet);
+            const vsCheckboxes = wrapper.findAllComponents({ name: 'VsCheckbox' });
+            expect(vsCheckboxes).toHaveLength(2);
+            vsCheckboxes.forEach((checkbox) => {
+                expect(checkbox.props('styleSet')).toEqual(checkboxStyleSet);
+            });
+        });
+
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f5f5f5',
+                    border: '1px solid #ccc',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B'],
+                    modelValue: [],
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    gap: '1rem',
+                    flexWrap: 'wrap',
+                },
+                checkbox: {
+                    variables: {
+                        checkboxColor: '#e91e63',
+                        checkboxSize: '1.25rem',
+                    },
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#333',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: [],
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.gap).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.checkbox).toEqual(fullStyleSet.checkbox);
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
+    });
 });

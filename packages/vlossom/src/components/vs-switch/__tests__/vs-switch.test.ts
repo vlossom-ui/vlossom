@@ -518,4 +518,62 @@ describe('VsSwitch', () => {
             });
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f0f0f0',
+                    border: '1px solid #ddd',
+                    labelColor: '#333',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSwitch, {
+                props: {
+                    modelValue: false,
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    width: '4rem',
+                    height: '2rem',
+                    backgroundColor: '#e3f2fd',
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#1976d2',
+                        labelFontSize: '0.875rem',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSwitch, {
+                props: {
+                    modelValue: false,
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-switch-width']).toBe('4rem');
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
+    });
 });

@@ -336,4 +336,73 @@ describe('VsSearchInput', () => {
             expect(result2).toBe(false);
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('input styleSet이 vs-input 컴포넌트에 전달되어야 한다', async () => {
+            // given
+            const inputStyleSet = {
+                variables: {
+                    backgroundColor: '#f5f5f5',
+                    border: '2px solid #2196f3',
+                    borderRadius: '8px',
+                },
+                component: {
+                    fontSize: '1rem',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    styleSet: {
+                        input: inputStyleSet,
+                    },
+                },
+            });
+            await nextTick();
+
+            // then
+            // 기본 스타일 (append: { backgroundColor: 'transparent', padding: '0 0.3rem' })과 병합됨
+            expect(wrapper.vm.componentStyleSet.input?.variables?.backgroundColor).toBe('#f5f5f5');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.border).toBe('2px solid #2196f3');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.borderRadius).toBe('8px');
+            expect(wrapper.vm.componentStyleSet.input?.component?.fontSize).toBe('1rem');
+            const vsInput = wrapper.findComponent({ name: 'VsInput' });
+            expect(vsInput.exists()).toBe(true);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', async () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    height: '3rem',
+                },
+                input: {
+                    variables: {
+                        backgroundColor: '#ffffff',
+                        border: '1px solid #ccc',
+                    },
+                    wrapper: {
+                        variables: {
+                            labelColor: '#333',
+                        },
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    styleSet: fullStyleSet,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.height).toBe('3rem');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.backgroundColor).toBe('#ffffff');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.border).toBe('1px solid #ccc');
+            expect(wrapper.vm.componentStyleSet.input?.wrapper?.variables?.labelColor).toBe('#333');
+        });
+    });
 });

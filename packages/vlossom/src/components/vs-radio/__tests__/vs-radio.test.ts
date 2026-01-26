@@ -291,6 +291,68 @@ describe('vs-radio', () => {
             expect(wrapper.emitted('blur')).toHaveLength(1);
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f5f5f5',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsRadio, {
+                props: {
+                    name: 'radio',
+                    radioValue: 'test',
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    borderRadius: '50%',
+                    height: '2rem',
+                    radioColor: '#2196f3',
+                    radioSize: '1.5rem',
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#333',
+                        labelFontSize: '1rem',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsRadio, {
+                props: {
+                    name: 'radio',
+                    radioValue: 'test',
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.borderRadius).toBe('50%');
+            expect(wrapper.vm.componentStyleSet.variables?.radioColor).toBe('#2196f3');
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
+    });
 });
 
 describe('vs-radio (multiple inputs)', () => {

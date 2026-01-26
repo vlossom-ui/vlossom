@@ -229,4 +229,97 @@ describe('VsRadioSet', () => {
             expect(wrapper.props('modelValue')).toBe(null);
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('radio styleSet이 각 vs-radio 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const radioStyleSet = {
+                variables: {
+                    radioColor: '#2196f3',
+                    radioSize: '1.5rem',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B'],
+                    modelValue: null,
+                    styleSet: {
+                        radio: radioStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.radio).toEqual(radioStyleSet);
+            const vsRadios = wrapper.findAllComponents({ name: 'VsRadio' });
+            expect(vsRadios).toHaveLength(2);
+            vsRadios.forEach((radio) => {
+                expect(radio.props('styleSet')).toEqual(radioStyleSet);
+            });
+        });
+
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f5f5f5',
+                    border: '1px solid #ccc',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B'],
+                    modelValue: null,
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    gap: '1rem',
+                    flexWrap: 'wrap',
+                },
+                radio: {
+                    variables: {
+                        radioColor: '#e91e63',
+                        radioSize: '1.25rem',
+                    },
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#333',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: null,
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.gap).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.radio).toEqual(fullStyleSet.radio);
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
+    });
 });

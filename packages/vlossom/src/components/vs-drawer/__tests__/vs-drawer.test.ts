@@ -245,6 +245,112 @@ describe('VsDrawer', () => {
         });
     });
 
+    describe('styleSet 하위 속성 전달', () => {
+        it('dimmed styleSet이 vs-dimmed 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const dimmedStyleSet = {
+                component: {
+                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: {
+                    ...defaultOptions.props,
+                    modelValue: true,
+                    dimmed: true,
+                    styleSet: {
+                        dimmed: dimmedStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.dimmed).toEqual(dimmedStyleSet);
+            const vsDimmed = wrapper.findComponent({ name: 'VsDimmed' });
+            expect(vsDimmed.exists()).toBe(true);
+            expect(vsDimmed.props('styleSet')).toEqual(dimmedStyleSet);
+        });
+
+        it('layout styleSet이 vs-inner-scroll 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const layoutStyleSet = {
+                header: {
+                    backgroundColor: '#f0f0f0',
+                    padding: '1rem',
+                },
+                content: {
+                    padding: '2rem',
+                },
+                footer: {
+                    backgroundColor: '#e0e0e0',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: {
+                    ...defaultOptions.props,
+                    modelValue: true,
+                    styleSet: {
+                        layout: layoutStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(layoutStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    backgroundColor: '#ffffff',
+                    padding: '1rem',
+                    size: '300px',
+                },
+                component: {
+                    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+                },
+                dimmed: {
+                    component: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    },
+                },
+                layout: {
+                    header: {
+                        borderBottom: '1px solid #ccc',
+                    },
+                    content: {
+                        padding: '1.5rem',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: {
+                    ...defaultOptions.props,
+                    modelValue: true,
+                    dimmed: true,
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.backgroundColor).toBe('#ffffff');
+            expect(wrapper.vm.componentStyleSet.variables?.padding).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.component?.boxShadow).toBe('0 0 10px rgba(0,0,0,0.1)');
+            expect(wrapper.vm.componentStyleSet.dimmed).toEqual(fullStyleSet.dimmed);
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(fullStyleSet.layout);
+        });
+    });
+
     describe('dimmed 기능', () => {
         it('dimmed가 true일 때 dimmed 요소가 렌더링되어야 한다', () => {
             // given, when

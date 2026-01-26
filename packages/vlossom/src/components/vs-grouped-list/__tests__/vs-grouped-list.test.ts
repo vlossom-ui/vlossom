@@ -317,4 +317,113 @@ describe('vs-grouped-list', () => {
             expect(groupedItems[0].items).toHaveLength(0);
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('layout styleSet이 vs-inner-scroll 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const layoutStyleSet = {
+                content: {
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: defaultItems,
+                    styleSet: {
+                        layout: layoutStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(layoutStyleSet);
+            const vsInnerScroll = wrapper.findComponent({ name: 'VsInnerScroll' });
+            expect(vsInnerScroll.exists()).toBe(true);
+            expect(vsInnerScroll.props('styleSet')).toEqual(layoutStyleSet);
+        });
+
+        it('group styleSet이 componentStyleSet에 설정되어야 한다', () => {
+            // given
+            const groupStyle = {
+                backgroundColor: '#f5f5f5',
+                padding: '0.5rem 1rem',
+                fontWeight: 'bold',
+            };
+
+            // when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: defaultItems,
+                    groupBy: (item: any) => item.category,
+                    styleSet: {
+                        group: groupStyle,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.group).toEqual(groupStyle);
+        });
+
+        it('item styleSet이 componentStyleSet에 설정되어야 한다', () => {
+            // given
+            const itemStyle = {
+                padding: '0.75rem 1rem',
+                borderBottom: '1px solid #eee',
+            };
+
+            // when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: defaultItems,
+                    styleSet: {
+                        item: itemStyle,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.item).toEqual(itemStyle);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    gap: '0.5rem',
+                    height: '300px',
+                },
+                layout: {
+                    content: {
+                        padding: '1rem',
+                    },
+                },
+                group: {
+                    backgroundColor: '#e3f2fd',
+                    fontWeight: 600,
+                },
+                item: {
+                    padding: '0.75rem',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: defaultItems,
+                    groupBy: (item: any) => item.category,
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-grouped-list-gap']).toBe('0.5rem');
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(fullStyleSet.layout);
+            expect(wrapper.vm.componentStyleSet.group).toEqual(fullStyleSet.group);
+            expect(wrapper.vm.componentStyleSet.item).toEqual(fullStyleSet.item);
+        });
+    });
 });

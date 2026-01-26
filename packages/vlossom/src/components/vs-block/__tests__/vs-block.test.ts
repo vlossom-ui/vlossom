@@ -130,4 +130,75 @@ describe('VsBlock', () => {
             expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#ff0000');
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('layout styleSet이 vs-inner-scroll 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const layoutStyleSet = {
+                header: {
+                    backgroundColor: '#f0f0f0',
+                    padding: '1rem',
+                },
+                content: {
+                    padding: '2rem',
+                },
+                footer: {
+                    backgroundColor: '#e0e0e0',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsBlock, {
+                props: {
+                    styleSet: {
+                        layout: layoutStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(layoutStyleSet);
+            const vsInnerScroll = wrapper.findComponent({ name: 'VsInnerScroll' });
+            expect(vsInnerScroll.exists()).toBe(true);
+            expect(vsInnerScroll.props('styleSet')).toEqual(layoutStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    border: '1px solid #ccc',
+                    padding: '1rem',
+                    width: '100%',
+                },
+                component: {
+                    backgroundColor: '#ffffff',
+                    borderRadius: '8px',
+                },
+                layout: {
+                    header: {
+                        backgroundColor: '#f5f5f5',
+                        fontWeight: 'bold',
+                    },
+                    content: {
+                        padding: '1.5rem',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsBlock, {
+                props: {
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.border).toBe('1px solid #ccc');
+            expect(wrapper.vm.componentStyleSet.variables?.padding).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#ffffff');
+            expect(wrapper.vm.componentStyleSet.component?.borderRadius).toBe('8px');
+            expect(wrapper.vm.componentStyleSet.layout).toEqual(fullStyleSet.layout);
+        });
+    });
 });

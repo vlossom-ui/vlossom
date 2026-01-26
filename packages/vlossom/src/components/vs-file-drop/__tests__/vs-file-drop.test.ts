@@ -94,6 +94,69 @@ describe('vs-file-drop', () => {
             // baseStyleSet에서 설정된 width: '100%'도 포함되어야 함
             expect(wrapper.vm.componentStyleSet.chip?.component?.width).toBe('100%');
         });
+
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f0f0f0',
+                    border: '1px solid #ddd',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', async () => {
+            // given
+            const files = [createFile('test.png')];
+            const fullStyleSet = {
+                variables: {
+                    padding: '1.5rem',
+                    dragBackgroundColor: '#e3f2fd',
+                },
+                component: {
+                    border: '2px dashed #2196f3',
+                },
+                chip: {
+                    variables: {
+                        height: '2rem',
+                    },
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#1976d2',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    modelValue: files,
+                    styleSet: fullStyleSet,
+                },
+            });
+            await flushPromises();
+
+            // then
+            expect(wrapper.vm.styleSetVariables['--vs-file-drop-padding']).toBe('1.5rem');
+            expect(wrapper.vm.componentStyleSet.chip?.variables?.height).toBe('2rem');
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
     });
 
     describe('v-model', () => {

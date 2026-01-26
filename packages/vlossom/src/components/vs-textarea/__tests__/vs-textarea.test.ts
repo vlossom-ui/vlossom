@@ -749,4 +749,70 @@ describe('VsTextarea', () => {
             expect(typeof wrapper.vm.inputValue).toBe('string');
         });
     });
+
+    describe('styleSet 하위 속성 전달', () => {
+        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
+            // given
+            const wrapperStyleSet = {
+                variables: {
+                    backgroundColor: '#f5f5f5',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                },
+            };
+
+            // when
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    styleSet: {
+                        wrapper: wrapperStyleSet,
+                    },
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
+            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
+            expect(vsInputWrapper.exists()).toBe(true);
+            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
+        });
+
+        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
+            // given
+            const fullStyleSet = {
+                variables: {
+                    backgroundColor: '#fafafa',
+                    height: '200px',
+                    fontSize: '1rem',
+                    fontColor: '#333',
+                    padding: '1rem',
+                },
+                component: {
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                },
+                wrapper: {
+                    variables: {
+                        labelColor: '#333',
+                        labelFontSize: '0.875rem',
+                        messageMargin: '0.25rem 0',
+                    },
+                },
+            };
+
+            // when
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    styleSet: fullStyleSet,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.variables?.backgroundColor).toBe('#fafafa');
+            expect(wrapper.vm.componentStyleSet.variables?.height).toBe('200px');
+            expect(wrapper.vm.componentStyleSet.component?.borderRadius).toBe('8px');
+            expect(wrapper.vm.componentStyleSet.component?.boxShadow).toBe('0 2px 4px rgba(0,0,0,0.1)');
+            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
+        });
+    });
 });
