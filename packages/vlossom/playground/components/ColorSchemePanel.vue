@@ -33,9 +33,11 @@ const panelStyleSet: VsBlockStyleSet = {
         width: '18rem',
         backgroundColor: 'var(--vs-no-color)',
     },
-    title: {
-        backgroundColor: 'var(--vs-no-color)',
-        color: 'var(--vs-no-color-inverse)',
+    layout: {
+        header: {
+            backgroundColor: 'var(--vs-no-color)',
+            color: 'var(--vs-no-color-inverse)',
+        },
     },
 };
 

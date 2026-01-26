@@ -294,8 +294,10 @@ describe('VsCheckboxSet', () => {
             // given
             const wrapperStyleSet = {
                 variables: {
-                    backgroundColor: '#f5f5f5',
-                    border: '1px solid #ccc',
+                    width: '100%',
+                    label: {
+                        fontColor: '#333',
+                    },
                 },
             };
 
@@ -332,7 +334,10 @@ describe('VsCheckboxSet', () => {
                 },
                 wrapper: {
                     variables: {
-                        labelColor: '#333',
+                        width: '200px',
+                        label: {
+                            fontColor: '#333',
+                        },
                     },
                 },
             };

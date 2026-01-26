@@ -324,7 +324,7 @@ describe('vs-grouped-list', () => {
             const layoutStyleSet = {
                 content: {
                     maxHeight: '400px',
-                    overflowY: 'auto',
+                    overflowY: 'auto' as const,
                 },
             };
 

@@ -755,9 +755,11 @@ describe('VsTextarea', () => {
             // given
             const wrapperStyleSet = {
                 variables: {
-                    backgroundColor: '#f5f5f5',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
+                    width: '100%',
+                    label: {
+                        fontColor: '#333',
+                        fontSize: '0.875rem',
+                    },
                 },
             };
 
@@ -793,9 +795,12 @@ describe('VsTextarea', () => {
                 },
                 wrapper: {
                     variables: {
-                        labelColor: '#333',
-                        labelFontSize: '0.875rem',
-                        messageMargin: '0.25rem 0',
+                        width: '200px',
+                        label: {
+                            fontColor: '#333',
+                            fontSize: '0.875rem',
+                            messagesMarginTop: '0.25rem',
+                        },
                     },
                 },
             };

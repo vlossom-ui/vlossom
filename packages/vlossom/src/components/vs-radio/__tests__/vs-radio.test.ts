@@ -297,9 +297,11 @@ describe('vs-radio', () => {
             // given
             const wrapperStyleSet = {
                 variables: {
-                    backgroundColor: '#f5f5f5',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
+                    width: '100%',
+                    label: {
+                        fontColor: '#333',
+                        fontSize: '0.875rem',
+                    },
                 },
             };
 
@@ -332,8 +334,11 @@ describe('vs-radio', () => {
                 },
                 wrapper: {
                     variables: {
-                        labelColor: '#333',
-                        labelFontSize: '1rem',
+                        width: '200px',
+                        label: {
+                            fontColor: '#333',
+                            fontSize: '1rem',
+                        },
                     },
                 },
             };

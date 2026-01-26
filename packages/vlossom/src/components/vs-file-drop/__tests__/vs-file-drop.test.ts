@@ -99,8 +99,10 @@ describe('vs-file-drop', () => {
             // given
             const wrapperStyleSet = {
                 variables: {
-                    backgroundColor: '#f0f0f0',
-                    border: '1px solid #ddd',
+                    width: '100%',
+                    label: {
+                        fontColor: '#333',
+                    },
                 },
             };
 
@@ -138,7 +140,10 @@ describe('vs-file-drop', () => {
                 },
                 wrapper: {
                     variables: {
-                        labelColor: '#1976d2',
+                        width: '100%',
+                        label: {
+                            fontColor: '#1976d2',
+                        },
                     },
                 },
             };

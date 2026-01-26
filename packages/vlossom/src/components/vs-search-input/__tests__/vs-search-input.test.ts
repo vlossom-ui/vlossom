@@ -342,12 +342,12 @@ describe('VsSearchInput', () => {
             // given
             const inputStyleSet = {
                 variables: {
-                    backgroundColor: '#f5f5f5',
-                    border: '2px solid #2196f3',
-                    borderRadius: '8px',
+                    padding: '0.5rem 1rem',
+                    fontColor: '#333',
+                    fontSize: '1rem',
                 },
                 component: {
-                    fontSize: '1rem',
+                    borderRadius: '8px',
                 },
             };
 
@@ -363,10 +363,10 @@ describe('VsSearchInput', () => {
 
             // then
             // 기본 스타일 (append: { backgroundColor: 'transparent', padding: '0 0.3rem' })과 병합됨
-            expect(wrapper.vm.componentStyleSet.input?.variables?.backgroundColor).toBe('#f5f5f5');
-            expect(wrapper.vm.componentStyleSet.input?.variables?.border).toBe('2px solid #2196f3');
-            expect(wrapper.vm.componentStyleSet.input?.variables?.borderRadius).toBe('8px');
-            expect(wrapper.vm.componentStyleSet.input?.component?.fontSize).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.padding).toBe('0.5rem 1rem');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.fontColor).toBe('#333');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.fontSize).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.input?.component?.borderRadius).toBe('8px');
             const vsInput = wrapper.findComponent({ name: 'VsInput' });
             expect(vsInput.exists()).toBe(true);
         });
@@ -379,12 +379,15 @@ describe('VsSearchInput', () => {
                 },
                 input: {
                     variables: {
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #ccc',
+                        padding: '0.75rem',
+                        fontColor: '#222',
                     },
                     wrapper: {
                         variables: {
-                            labelColor: '#333',
+                            width: '100%',
+                            label: {
+                                fontColor: '#333',
+                            },
                         },
                     },
                 },
@@ -400,9 +403,9 @@ describe('VsSearchInput', () => {
 
             // then
             expect(wrapper.vm.componentStyleSet.variables?.height).toBe('3rem');
-            expect(wrapper.vm.componentStyleSet.input?.variables?.backgroundColor).toBe('#ffffff');
-            expect(wrapper.vm.componentStyleSet.input?.variables?.border).toBe('1px solid #ccc');
-            expect(wrapper.vm.componentStyleSet.input?.wrapper?.variables?.labelColor).toBe('#333');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.padding).toBe('0.75rem');
+            expect(wrapper.vm.componentStyleSet.input?.variables?.fontColor).toBe('#222');
+            expect(wrapper.vm.componentStyleSet.input?.wrapper?.variables?.label?.fontColor).toBe('#333');
         });
     });
 });

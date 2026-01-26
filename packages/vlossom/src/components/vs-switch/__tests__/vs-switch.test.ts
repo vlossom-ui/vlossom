@@ -524,9 +524,10 @@ describe('VsSwitch', () => {
             // given
             const wrapperStyleSet = {
                 variables: {
-                    backgroundColor: '#f0f0f0',
-                    border: '1px solid #ddd',
-                    labelColor: '#333',
+                    width: '100%',
+                    label: {
+                        fontColor: '#333',
+                    },
                 },
             };
 
@@ -557,8 +558,11 @@ describe('VsSwitch', () => {
                 },
                 wrapper: {
                     variables: {
-                        labelColor: '#1976d2',
-                        labelFontSize: '0.875rem',
+                        width: '200px',
+                        label: {
+                            fontColor: '#1976d2',
+                            fontSize: '0.875rem',
+                        },
                     },
                 },
             };
