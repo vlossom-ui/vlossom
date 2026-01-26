@@ -40,7 +40,14 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, src, fallback, lazy } = toRefs(props);
 
-        const baseStyleSet: ComputedRef<Partial<VsImageStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<Partial<VsImageStyleSet>> = computed(() => ({
+            skeleton: {
+                component: {
+                    width: '100%',
+                    height: '100%',
+                },
+            },
+        }));
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsImageStyleSet>(
             componentName,
