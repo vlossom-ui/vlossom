@@ -1,4 +1,5 @@
 .vs-label-value {
+    --vs-label-value-width: initial;
     --vs-label-value-border: initial;
     --vs-label-value-borderRadius: initial;
 
@@ -19,8 +20,9 @@
     --vs-label-value-value-padding: initial;
     --vs-label-value-value-verticalAlign: initial;
 
-    @apply relative flex h-full w-full overflow-hidden;
+    @apply relative flex h-full overflow-hidden;
 
+    width: var(--vs-label-value-width, 100%);
     border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
     border-radius: var(--vs-label-value-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
 

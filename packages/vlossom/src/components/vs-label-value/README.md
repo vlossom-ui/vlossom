@@ -68,6 +68,7 @@
 ```typescript
 interface VsLabelValueStyleSet {
     variables?: {
+        width?: string;
         border?: string;
         borderRadius?: string;
         label?: {

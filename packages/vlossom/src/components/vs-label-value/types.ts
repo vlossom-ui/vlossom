@@ -26,6 +26,7 @@ interface LabelVariables extends ValueVariables {
 
 export interface VsLabelValueStyleSet {
     variables?: {
+        width?: string;
         border?: string;
         borderRadius?: string;
         label?: LabelVariables;
