@@ -297,6 +297,7 @@ interface VsSelectStyleSet {
         };
     };
     component?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
     chip?: VsChipStyleSet;
     selectAllCheckbox?: VsCheckboxStyleSet;
     options?: VsGroupedListStyleSet;

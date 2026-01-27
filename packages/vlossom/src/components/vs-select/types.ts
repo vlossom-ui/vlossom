@@ -6,6 +6,7 @@ import type VsSelectTrigger from './VsSelectTrigger.vue';
 import type { VsChipStyleSet } from '@/components/vs-chip/types';
 import type { VsGroupedListStyleSet } from '@/components/vs-grouped-list/types';
 import type { VsCheckboxStyleSet } from '@/components/vs-checkbox/types';
+import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 declare module 'vue' {
     interface GlobalComponents {
         VsSelect: typeof VsSelect;
@@ -32,6 +33,7 @@ export interface VsSelectStyleSet {
         };
     };
     component?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
     chip?: VsChipStyleSet;
     selectAllCheckbox?: VsCheckboxStyleSet;
     options?: VsGroupedListStyleSet;
