@@ -3,9 +3,9 @@
         :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
-        :style="styleSetVariables"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
     >
-        <component :is="groupLabel ? 'fieldset' : 'div'" :style="componentStyleSet.component">
+        <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
                 :is="groupLabel ? 'legend' : 'div'"
                 v-if="!noLabel && (!!label || !!$slots.label)"

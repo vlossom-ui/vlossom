@@ -6,7 +6,7 @@
     --vs-input-wrapper-label-fontColor: initial;
     --vs-input-wrapper-label-fontSize: initial;
     --vs-input-wrapper-label-fontWeight: initial;
-    --vs-input-wrapper-label-messagesMarginTop: initial;
+    --vs-input-wrapper-messages-marginTop: initial;
 
     width: var(--vs-input-wrapper-width, 100%);
 
@@ -31,6 +31,6 @@
     }
 
     .vs-messages {
-        margin-top: var(--vs-input-wrapper-label-messagesMarginTop, 0.2rem);
+        margin-top: var(--vs-input-wrapper-messages-marginTop, 0.2rem);
     }
 }

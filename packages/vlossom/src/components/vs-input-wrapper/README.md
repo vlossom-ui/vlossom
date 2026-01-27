@@ -100,7 +100,9 @@ interface VsInputWrapperStyleSet {
             fontColor?: string;
             fontSize?: string;
             fontWeight?: number;
-            messagesMarginTop?: string;
+        };
+        messages?: {
+            marginTop?: string;
         };
     };
     component?: CSSProperties;

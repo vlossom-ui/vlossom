@@ -273,7 +273,6 @@ describe('VsInputWrapper', () => {
                                 fontColor: '#ff0000',
                                 fontSize: '16px',
                                 fontWeight: 600,
-                                messagesMarginTop: '0.5rem',
                             },
                         },
                         component: {
@@ -289,7 +288,25 @@ describe('VsInputWrapper', () => {
                 '--vs-input-wrapper-label-fontColor': '#ff0000',
                 '--vs-input-wrapper-label-fontSize': '16px',
                 '--vs-input-wrapper-label-fontWeight': 600,
-                '--vs-input-wrapper-label-messagesMarginTop': '0.5rem',
+            });
+        });
+
+        it('styleSet의 messages marginTop이 적용되어야 한다', () => {
+            const wrapper = mount(VsInputWrapper, {
+                props: {
+                    messages: [{ state: 'error', text: '에러 메시지' }],
+                    styleSet: {
+                        variables: {
+                            messages: {
+                                marginTop: '0.5rem',
+                            },
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.styleSetVariables).toEqual({
+                '--vs-input-wrapper-messages-marginTop': '0.5rem',
             });
         });
 
