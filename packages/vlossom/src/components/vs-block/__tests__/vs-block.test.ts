@@ -168,8 +168,10 @@ describe('VsBlock', () => {
             const fullStyleSet = {
                 variables: {
                     border: '1px solid #ccc',
-                    padding: '1rem',
                     width: '100%',
+                    title: {
+                        padding: '1rem',
+                    },
                 },
                 component: {
                     backgroundColor: '#ffffff',
@@ -195,7 +197,7 @@ describe('VsBlock', () => {
 
             // then
             expect(wrapper.vm.componentStyleSet.variables?.border).toBe('1px solid #ccc');
-            expect(wrapper.vm.componentStyleSet.variables?.padding).toBe('1rem');
+            expect(wrapper.vm.componentStyleSet.variables?.title?.padding).toBe('1rem');
             expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#ffffff');
             expect(wrapper.vm.componentStyleSet.component?.borderRadius).toBe('8px');
             expect(wrapper.vm.componentStyleSet.layout).toEqual(fullStyleSet.layout);
