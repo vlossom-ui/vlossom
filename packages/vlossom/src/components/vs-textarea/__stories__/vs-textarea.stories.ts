@@ -413,13 +413,13 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 텍스트 영역',
         styleSet: {
-            variables: {
+            component: {
                 backgroundColor: '#f0f8ff',
                 border: '2px solid #1e88e5',
                 borderRadius: '12px',
-                fontColor: '#1565c0',
+                color: '#1565c0',
                 fontSize: '1.1rem',
-                height: '10rem',
+                minHeight: '10rem',
                 padding: '0.75rem 1rem',
             },
         },

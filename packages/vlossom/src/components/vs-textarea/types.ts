@@ -18,18 +18,6 @@ export interface VsTextareaRef extends ComponentPublicInstance<typeof VsTextarea
 export type VsTextareaValueType = string;
 
 export interface VsTextareaStyleSet {
-    variables?: {
-        height?: string;
-        resize?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-    };
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

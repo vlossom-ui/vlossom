@@ -174,34 +174,8 @@ function clearTextarea() {
 
 ```typescript
 interface VsTextareaStyleSet {
-    variables?: {
-        height?: string;
-        resize?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-    };
     component?: CSSProperties;
-    wrapper?: {
-        variables?: {
-            label?: {
-                marginBottom?: string;
-                fontColor?: string;
-                fontSize?: string;
-                fontWeight?: number;
-                messagesMarginTop?: string;
-            };
-        };
-        component?: CSSProperties;
-        messages?: {
-            size?: Size;
-        };
-    };
+    wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
@@ -212,12 +186,10 @@ interface VsTextareaStyleSet {
     <vs-textarea
         v-model="description"
         :style-set="{
-            variables: {
-                height: '10rem',
+            component: {
+                minHeight: '10rem',
                 padding: '1rem',
                 border: '2px solid #333',
-            },
-            component: {
                 backgroundColor: '#f5f5f5',
                 borderRadius: '8px',
             },
