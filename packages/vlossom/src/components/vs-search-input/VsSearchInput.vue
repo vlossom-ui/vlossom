@@ -99,16 +99,27 @@ export default defineComponent({
 
         const { computedColorScheme } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsSearchInputStyleSet>> = computed(() => ({
-            input: {
-                variables: {
-                    append: {
-                        backgroundColor: 'transparent',
-                        padding: '0 0.3rem',
+        const baseStyleSet: ComputedRef<Partial<VsSearchInputStyleSet>> = computed(() => {
+            const styleSetValue = styleSet.value;
+            const height =
+                styleSetValue && typeof styleSetValue !== 'string' ? styleSetValue.variables?.height : undefined;
+
+            return {
+                input: {
+                    variables: {
+                        append: {
+                            backgroundColor: 'transparent',
+                            padding: '0 0.3rem',
+                        },
                     },
+                    ...(height && {
+                        component: {
+                            height,
+                        },
+                    }),
                 },
-            },
-        }));
+            };
+        });
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(
             componentName,
