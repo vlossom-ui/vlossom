@@ -66,9 +66,7 @@ describe('VsTextWrap', () => {
                 },
             });
 
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-text-wrap-width': '',
-            });
+            expect(wrapper.vm.styleSetVariables).toEqual({});
             expect(wrapper.vm.componentStyleSet.copyIcon).toEqual({
                 color: '#ff0000',
                 width: '2rem',
@@ -83,6 +81,20 @@ describe('VsTextWrap', () => {
     });
 
     describe('복합 styleSet 조합', () => {
+        it('styleSet.variables.width로 너비를 설정할 수 있어야 한다', () => {
+            const wrapper = mount(VsTextWrap, {
+                props: {
+                    styleSet: {
+                        variables: {
+                            width: '300px',
+                        },
+                    },
+                },
+            });
+
+            expect(wrapper.vm.styleSetVariables['--vs-text-wrap-width']).toBe('300px');
+        });
+
         it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
             const wrapper = mount(VsTextWrap, {
                 props: {

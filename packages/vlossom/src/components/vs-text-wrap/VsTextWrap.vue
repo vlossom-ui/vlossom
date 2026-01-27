@@ -64,7 +64,7 @@ export default defineComponent({
             return objectUtil.shake({
                 variables: objectUtil.shake({
                     width:
-                        width.value === undefined || objectUtil.isObject(width.value)
+                        !width.value || objectUtil.isObject(width.value)
                             ? undefined
                             : stringUtil.toStringSize(width.value as string | number),
                 }),
