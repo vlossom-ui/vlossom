@@ -15,8 +15,12 @@ export interface VsBlockRef extends ComponentPublicInstance<typeof VsBlock> {}
 export interface VsBlockStyleSet {
     variables?: {
         border?: string;
-        padding?: string;
         width?: string;
+        title?: {
+            backgroundColor?: string;
+            color?: string;
+            padding?: string;
+        };
     };
     component?: CSSProperties;
     layout?: VsInnerScrollStyleSet;

@@ -1,44 +1,45 @@
 .vs-block {
     --vs-block-border: initial;
-    --vs-block-padding: initial;
-    --vs-block-title-padding: initial;
     --vs-block-width: initial;
+    --vs-block-title-backgroundColor: initial;
+    --vs-block-title-color: initial;
+    --vs-block-title-padding: initial;
 
     @apply relative overflow-auto;
-
-    width: var(--vs-block-width, 100%);
 
     container-type: inline-size;
     box-shadow: var(--vs-area-shadow-outer);
     border: var(--vs-block-border, 1px solid var(--vs-line-color));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-area-bg);
+
+    width: var(--vs-block-width, 100%);
     color: var(--vs-font-color);
 
     .vs-block-title {
         @apply relative w-full;
 
         border-bottom: var(--vs-block-border, 1px solid var(--vs-line-color));
-        background-color: var(--vs-comp-bg);
+        background-color: var(--vs-block-title-backgroundColor, var(--vs-comp-bg));
         padding: var(--vs-block-title-padding, 0.8rem 1.6rem);
-        color: var(--vs-comp-font);
+        color: var(--vs-block-title-color, var(--vs-comp-font));
         font-weight: 500;
     }
 
     .vs-block-content {
         @apply relative w-full;
 
-        padding: var(--vs-block-padding, 1.6rem 1.6rem);
+        padding: 1.6rem 1.6rem;
     }
 }
 
 @container (max-width: 1024px) {
     .vs-block {
         .vs-block-title {
-            padding: var(--vs-block-title-padding, 0.6rem 1.4rem);
+            padding: 0.6rem 1.4rem;
         }
         .vs-block-content {
-            padding: var(--vs-block-padding, 1.2rem 1.4rem);
+            padding: 1.2rem 1.4rem;
         }
     }
 }
@@ -46,10 +47,10 @@
 @container (max-width: 768px) {
     .vs-block {
         .vs-block-title {
-            padding: var(--vs-block-title-padding, 0.6rem 1.2rem);
+            padding: 0.6rem 1.2rem;
         }
         .vs-block-content {
-            padding: var(--vs-block-padding, 1rem 1.2rem);
+            padding: 1rem 1.2rem;
         }
     }
 }
@@ -57,10 +58,10 @@
 @container (max-width: 640px) {
     .vs-block {
         .vs-block-title {
-            padding: var(--vs-block-title-padding, 0.6rem 1rem);
+            padding: 0.6rem 1rem;
         }
         .vs-block-content {
-            padding: var(--vs-block-padding, 0.8rem 1rem);
+            padding: 0.8rem 1rem;
         }
     }
 }

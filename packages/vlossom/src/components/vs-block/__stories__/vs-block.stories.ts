@@ -46,19 +46,16 @@ const meta: Meta<typeof VsBlock> = {
             const preDefinedStyleSet: VsBlockStyleSet = {
                 variables: {
                     border: '1px solid #e9ecef',
-                    padding: '1.5rem',
+                    title: {
+                        backgroundColor: '#f8f9fa',
+                        color: '#212529',
+                        padding: '1.5rem',
+                    },
                 },
                 component: {
                     backgroundColor: '#f8f9fa',
                     borderRadius: '8px',
                     color: '#495057',
-                },
-                layout: {
-                    header: {
-                        backgroundColor: '#f8f9fa',
-                        color: '#212529',
-                        padding: '1.5rem',
-                    },
                 },
             };
 
@@ -198,20 +195,17 @@ export const StyleSet: Story = {
         styleSet: {
             variables: {
                 border: '2px solid #2196f3',
-                padding: '2rem',
+                title: {
+                    backgroundColor: '#e3f2fd',
+                    color: '#1976d2',
+                    padding: '2rem',
+                },
             },
             component: {
                 backgroundColor: '#e3f2fd',
                 borderRadius: '12px',
                 boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
                 color: '#1565c0',
-            },
-            layout: {
-                header: {
-                    backgroundColor: '#e3f2fd',
-                    color: '#1976d2',
-                    padding: '2rem',
-                },
             },
         },
     },
