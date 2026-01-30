@@ -5,6 +5,7 @@ import VsInput from '../VsInput.vue';
 describe('VsInput', () => {
     describe('styleSet', () => {
         it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
+            // given, when
             const wrapper = mount(VsInput, {
                 props: {
                     styleSet: {
@@ -22,6 +23,7 @@ describe('VsInput', () => {
                 },
             });
 
+            // then
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-input-fontSize': '16px',
                 '--vs-input-fontColor': '#333',
@@ -335,6 +337,7 @@ describe('VsInput', () => {
 
     describe('prepend/append styleSet', () => {
         it('prepend와 append styleSet이 주어지면 해당 CSS 변수가 설정되어야 한다', () => {
+            // given, when
             const wrapper = mount(VsInput, {
                 props: {
                     styleSet: {
@@ -354,6 +357,7 @@ describe('VsInput', () => {
                 },
             });
 
+            // then
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-input-prepend-backgroundColor': '#e0e0e0',
                 '--vs-input-prepend-padding': '0 1.5rem',

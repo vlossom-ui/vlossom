@@ -35,18 +35,21 @@ describe('VsTextWrap', () => {
         });
 
         it('width prop으로 너비를 설정할 수 있어야 한다', () => {
+            // given, when
             const wrapper = mount(VsTextWrap, {
                 props: {
                     width: '200px',
                 },
             });
 
+            // then
             expect(wrapper.vm.styleSetVariables['--vs-text-wrap-width']).toBe('200px');
         });
     });
 
     describe('styleSet', () => {
         it('styleSet이 적용되어야 한다', () => {
+            // given, when
             const wrapper = mount(VsTextWrap, {
                 props: {
                     styleSet: {
@@ -66,6 +69,7 @@ describe('VsTextWrap', () => {
                 },
             });
 
+            // then
             expect(wrapper.vm.styleSetVariables).toEqual({});
             expect(wrapper.vm.componentStyleSet.copyIcon).toEqual({
                 color: '#ff0000',

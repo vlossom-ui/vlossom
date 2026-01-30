@@ -4,6 +4,7 @@ import VsAvatar from './../VsAvatar.vue';
 
 describe('VaAvatar', () => {
     it('text contents를 slot에 넣을 수 있다', () => {
+        // given
         const text = 'AVATAR';
         const wrapper = mount(VsAvatar, {
             slots: {
@@ -11,10 +12,12 @@ describe('VaAvatar', () => {
             },
         });
 
+        // then
         expect(wrapper.html()).toContain(text);
     });
 
     it('image contents를 slot에 넣을 수 있다', () => {
+        // given
         const imgTag = '<img src="test-image" alt="avatar">';
         const wrapper = mount(VsAvatar, {
             slots: {
@@ -22,6 +25,7 @@ describe('VaAvatar', () => {
             },
         });
 
+        // then
         expect(wrapper.html()).toContain(imgTag);
     });
 
