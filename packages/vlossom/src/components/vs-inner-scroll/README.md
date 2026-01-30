@@ -117,9 +117,10 @@ interface VsInnerScrollStyleSet {
 
 ## Props
 
-| Prop         | Type      | Default | Required | Description             |
-| ------------ | --------- | ------- | -------- | ----------------------- |
-| `hideScroll` | `boolean` | `false` | -        | 스크롤바 표시/숨김 여부 |
+| Prop         | Type                              | Default | Required | Description             |
+| ------------ | --------------------------------- | ------- | -------- | ----------------------- |
+| `hideScroll` | `boolean`                         | `false` | -        | 스크롤바 표시/숨김 여부 |
+| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
 
 ## Methods
 
@@ -136,6 +137,16 @@ interface VsInnerScrollStyleSet {
 | `default` | 스크롤 가능한 본문 영역의 콘텐츠 |
 | `header`  | 상단에 고정되는 헤더 콘텐츠      |
 | `footer`  | 하단에 고정되는 푸터 콘텐츠      |
+
+## Types
+
+```typescript
+interface VsInnerScrollStyleSet {
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
+}
+```
 
 ## 특징
 
