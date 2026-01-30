@@ -8,10 +8,7 @@
     --vs-progress-textShadow: initial;
     --vs-progress-valueColor: initial;
 
-    @apply relative appearance-none text-center;
-
-    width: 100%;
-    height: 1rem;
+    @apply relative h-4 w-full appearance-none text-center;
 }
 
 .vs-progress[value]::-webkit-progress-bar {

@@ -3,7 +3,8 @@
     --vs-theme-button-height: initial;
     --vs-theme-button-iconColor: initial;
 
-    border-radius: 50%;
+    @apply rounded-full;
+
     width: var(--vs-theme-button-width, 2rem);
     height: var(--vs-theme-button-height, 2rem);
 
