@@ -13,7 +13,7 @@ export interface VsAvatarRef extends ComponentPublicInstance<typeof VsAvatar> {}
 
 export interface VsAvatarStyleSet {
     variables?: {
-        objectFit?: string;
+        objectFit?: CSSProperties['objectFit'] & {};
     };
     component?: CSSProperties;
 }
