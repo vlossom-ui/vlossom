@@ -1,6 +1,6 @@
 <template>
     <component v-if="draggableTable" :is="tag" :class="TABLE_DRAG_HANDLE_CLASS">
-        <vs-render :content="tableIcons.drag" />
+        <vs-render :content="tableIcons.dragHandle" />
     </component>
 </template>
 
