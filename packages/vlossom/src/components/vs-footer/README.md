@@ -93,8 +93,6 @@ interface VsFooterStyleSet {
 }
 ```
 
-`VsFooterStyleSet`은 `VsBarStyleSet`을 확장하며, `component` 속성을 통해 CSS 속성을 직접 지정할 수 있습니다.
-
 ## Slots
 
 | Slot      | Description               |
