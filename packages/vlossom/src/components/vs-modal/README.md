@@ -135,13 +135,13 @@ interface OverlayCallbacks<T = void> {
 ```html
 <template>
     <vs-modal-node
-        :color-scheme="colorScheme"
-        :style-set="styleSet"
-        :dim-close="dimClose"
-        :dimmed="dimmed"
-        :esc-close="escClose"
-        :size="size"
-        @close="handleClose"
+        :color-scheme
+        :style-set
+        :dim-close
+        :dimmed
+        :esc-close
+        :size
+        @close
     >
         <div>모달 내용</div>
     </vs-modal-node>

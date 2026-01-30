@@ -4,11 +4,11 @@
         :type="type"
         :class="['vs-button', colorSchemeClass, classObj]"
         :style="{ ...styleSetVariables, ...componentStyleSet.component }"
-        :disabled="disabled"
+        :disabled
         :tabindex="disabled || loading ? -1 : 0"
     >
         <div v-if="loading" class="vs-button-loading">
-            <vs-loading :color-scheme="colorScheme" :style-set="componentStyleSet.loading" />
+            <vs-loading :color-scheme :style-set="componentStyleSet.loading" />
         </div>
         <div class="vs-button-content">
             <slot />
