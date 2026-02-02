@@ -32,17 +32,15 @@ const defaultGlobal = {
             props: ['modelValue', 'options'],
             template: '<select data-testid="vs-select" ></select>',
         },
-        'vs-visible-render': {
-            props: ['disabled', 'selector', 'rootMargin'],
-            template: '<div data-testid="visible-render" :data-disabled="disabled"><slot /></div>',
-        },
-        'vuedraggable': {
+        vuedraggable: {
             props: ['modelValue', 'itemKey', 'disabled'],
-            template: '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
+            template:
+                '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
         },
-        'draggable': {
+        draggable: {
             props: ['modelValue', 'itemKey', 'disabled'],
-            template: '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
+            template:
+                '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
         },
     },
 };
@@ -678,52 +676,6 @@ describe('VsTable', () => {
             expect(draggableWrapper.attributes('data-disabled')).toBe('false');
 
             expect(wrapper.props('draggable')).toBe(true);
-        });
-    });
-
-    describe('virtualScroll', () => {
-        it('virtualScroll이 true이면 vs-visible-render가 활성화된다', async () => {
-            const wrapper = mountTable({
-                props: { virtualScroll: true },
-            });
-
-            await nextTick();
-
-            const visibleRender = wrapper.find('[data-testid="visible-render"]');
-            expect(visibleRender.exists()).toBe(true);
-            expect(visibleRender.attributes('data-disabled')).toBe('false');
-        });
-
-        it('virtualScroll이 false이면 vs-visible-render가 비활성화된다', async () => {
-            const wrapper = mountTable({
-                props: { virtualScroll: false },
-            });
-
-            await nextTick();
-
-            const visibleRender = wrapper.find('[data-testid="visible-render"]');
-            expect(visibleRender.exists()).toBe(true);
-            expect(visibleRender.attributes('data-disabled')).toBe('true');
-        });
-
-        it('virtualScroll을 사용하면 대량의 데이터도 렌더링할 수 있다', async () => {
-            const largeItems = Array.from({ length: 1000 }, (_, i) => ({
-                id: `${i}`,
-                name: `User ${i}`,
-                age: 20 + (i % 50),
-            }));
-
-            const wrapper = mountTable({
-                props: {
-                    items: largeItems,
-                    virtualScroll: true,
-                },
-            });
-
-            await nextTick();
-
-            expect(wrapper.find('[data-testid="visible-render"]').exists()).toBe(true);
-            expect(wrapper.findAll('tbody tr')).toHaveLength(largeItems.length);
         });
     });
 });
