@@ -14,18 +14,15 @@
                     :id="header.id"
                     @click.prevent.stop="clickCell(header, $event)"
                 >
-                    <vs-skeleton v-if="loading" :style-set="{ height: '1.25rem' }" />
-                    <template v-else>
-                        <slot :name="findMatchingSlotName(header)" :header>
-                            {{ header.value }}
-                            <vs-render
-                                v-if="header.sortable"
-                                class="inline"
-                                :content="getSortIcon(header)"
-                                @click="updateSortType(header.colKey)"
-                            />
-                        </slot>
-                    </template>
+                    <slot :name="findMatchingSlotName(header)" :header>
+                        {{ header.value }}
+                        <vs-render
+                            v-if="header.sortable"
+                            class="inline"
+                            :content="getSortIcon(header)"
+                            @click="updateSortType(header.colKey)"
+                        />
+                    </slot>
                 </th>
                 <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
             </tr>
@@ -48,7 +45,6 @@ import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
-import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
@@ -56,15 +52,13 @@ import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
 export default defineComponent({
     components: {
         VsRender,
-        VsSkeleton,
         VsTableDragCell,
         VsTableExpandCell,
         VsTableCheckboxCell,
     },
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, sortType, sortColumn, updateSortType, loading } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { headerCells, sortType, sortColumn, updateSortType } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -115,7 +109,6 @@ export default defineComponent({
             selectRow,
             getSortIcon,
             updateSortType,
-            loading,
         };
     },
 });
