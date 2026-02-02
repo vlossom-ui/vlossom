@@ -27,12 +27,6 @@
                 <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
             </tr>
         </template>
-
-        <template v-else>
-            <tr>
-                <th colspan="100%" class="h-10" />
-            </tr>
-        </template>
     </thead>
 </template>
 
