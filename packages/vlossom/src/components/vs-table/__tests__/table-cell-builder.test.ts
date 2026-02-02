@@ -15,7 +15,7 @@ describe('TableCellBuilder', () => {
 
     it('컬럼 정의가 없을 때 아이템 키를 기반으로 헤더/바디 셀을 생성한다', () => {
         const items = [{ id: '1', name: 'Alice', age: 24 }];
-        const builder = new TableCellBuilder(items, null);
+        const builder = new TableCellBuilder(items, []);
 
         const [header, ...body] = builder.build();
 

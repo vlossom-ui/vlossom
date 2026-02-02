@@ -120,7 +120,7 @@ export const NoColumnsAndItems: Story = {
 
 export const NullColumns: Story = {
     args: {
-        columns: null,
+        columns: [],
         items: baseItems,
     },
     parameters: {
