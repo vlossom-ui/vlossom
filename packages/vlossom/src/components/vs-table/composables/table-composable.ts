@@ -1,12 +1,4 @@
-import {
-    computed,
-    ref,
-    toRefs,
-    watch,
-    type ComputedRef,
-    type Ref,
-    type TemplateRef,
-} from 'vue';
+import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
@@ -56,9 +48,9 @@ export function useTable(
     } = toRefs(props);
 
     // normalize
-    const columns = computed<ColumnDef[] | null>(() => {
+    const columns = computed<ColumnDef[]>(() => {
         if (!rawColumns?.value) {
-            return null;
+            return [];
         }
         if (isColumnDefArray(rawColumns.value)) {
             return rawColumns.value;

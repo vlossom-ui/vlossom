@@ -96,7 +96,7 @@ export default defineComponent({
         ...getStyleSetProps<VsTableStyleSet>(),
         ...getSearchProps(),
         columns: {
-            type: Array as PropType<ColumnDef[] | string[] | null>,
+            type: Array as PropType<ColumnDef[] | string[]>,
             default: () => [],
         },
         items: {
