@@ -2,6 +2,7 @@
 
 .vs-table-pagination {
     @apply flex items-center justify-between py-4;
+    container-type: inline-size;
 }
 
 .vs-table-pagination-info {
@@ -13,7 +14,7 @@
     color: var(--vs-font-color);
 }
 
-@media (max-width: 768px) {
+@container (max-width: 1024px) {
     .vs-table-pagination {
         @apply flex-col-reverse items-center justify-center gap-2;
     }
