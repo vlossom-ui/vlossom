@@ -6,8 +6,8 @@
                     v-if="isRowSelectable(cells, rowIdx)"
                     multiple
                     :disabled="loading"
-                    v-model="selectedIds"
-                    :true-value="getRowId(cells)"
+                    v-model="selectedItems"
+                    :true-value="getRowItem(cells)"
                     @toggle="selectRow(cells, $event)"
                 />
             </slot>
@@ -31,7 +31,7 @@
 <script lang="ts">
 import { defineComponent, inject, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { getRowItem, type Cell, isBodyRow, getRowId } from './types';
+import { getRowItem, type Cell, isBodyRow } from './types';
 
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
@@ -50,7 +50,7 @@ export default defineComponent({
     setup(_props, { emit }) {
         const {
             anySelectable,
-            selectedIds,
+            selectedItems,
             selectable,
             items,
             selectedAll,
@@ -83,11 +83,11 @@ export default defineComponent({
 
         return {
             isBodyRow,
-            getRowId,
+            getRowItem,
             isRowSelectable,
             selectRow,
             anySelectable,
-            selectedIds,
+            selectedItems,
             selectedAll,
             selectedPartial,
             loading,

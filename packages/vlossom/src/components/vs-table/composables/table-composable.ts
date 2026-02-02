@@ -147,11 +147,13 @@ export function useTable(
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
-    const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
-        selectable,
-        items,
-        selectedItems,
-    );
+    const {
+        selectedItems: internalSelectedItems,
+        selectedAll,
+        selectedPartial,
+        anySelectable,
+        toggleSelectAll,
+    } = useTableSelect(selectable, items, selectedItems);
 
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
@@ -203,11 +205,7 @@ export function useTable(
         { deep: true },
     );
 
-    watch(selectedIds, (nextSelectedIds) => {
-        const nextSelectedItems = nextSelectedIds
-            .map((selectedId) => items.value.find((item) => item.id === selectedId))
-            .filter(Boolean) as Item[];
-
+    watch(internalSelectedItems, (nextSelectedItems) => {
         cb?.updateSelectedItems(nextSelectedItems);
     });
 
@@ -225,7 +223,7 @@ export function useTable(
         isExpanded,
         toggleExpand,
         anySelectable,
-        selectedIds,
+        selectedItems: internalSelectedItems,
         selectedAll,
         selectedPartial,
         toggleSelectAll,
@@ -251,7 +249,7 @@ export type TableComposable = {
     bodyCells: ComputedRef<BodyCell[][]>;
     anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;
-    selectedIds: Ref<string[]>;
+    selectedItems: Ref<Item[]>;
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
