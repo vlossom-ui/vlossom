@@ -150,11 +150,12 @@ export default defineComponent({
             type: Array as PropType<Item[]>,
             default: () => [],
             validator: (value: Item[], props: unknown) => {
+                const _props = props as PropsOf<VsComponent.VsTable>;
                 if (!Array.isArray(value)) {
                     logUtil.propError(componentName, 'pagedItems', 'pagedItems must be an array');
                     return false;
                 }
-                if (value.length !== (props as PropsOf<VsComponent.VsTable>).pageSize) {
+                if (!!_props.pageSize && value.length !== _props.pageSize) {
                     logUtil.propError(componentName, 'pagedItems', 'pagedItems must be the same length as items');
                     return false;
                 }
