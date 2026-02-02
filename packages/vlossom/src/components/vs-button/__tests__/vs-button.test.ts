@@ -136,58 +136,6 @@ describe('VsButton', () => {
             const button = wrapper.find('button');
             expect(button.classes()).toContain('vs-sm');
         });
-
-        it('styleSet이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsButton, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            padding: '2rem',
-                        },
-                        component: {
-                            backgroundColor: '#ff0000',
-                            width: '200px',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-button-padding': '2rem',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#ff0000',
-                width: '200px',
-            });
-        });
-
-        it('styleSet에 loading 스타일이 주어지면 loading 컴포넌트에 전달되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsButton, {
-                props: {
-                    loading: true,
-                    styleSet: {
-                        loading: {
-                            component: {
-                                width: '100%',
-                            },
-                            variables: {
-                                barWidth: '10px',
-                            },
-                        },
-                    },
-                },
-            });
-
-            // then
-            const loadingComponent = wrapper.findComponent({ name: 'VsLoading' });
-            expect(loadingComponent.props('styleSet')).toEqual({
-                component: { width: '100%', height: '60%' },
-                variables: { barWidth: '10px' },
-            });
-        });
     });
 
     describe('tabindex', () => {

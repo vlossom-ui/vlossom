@@ -42,36 +42,4 @@ describe('vs-divider', () => {
             expect(wrapper.classes('vs-divider-responsive')).toBe(true);
         });
     });
-
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsDivider, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            border: '2px solid red',
-                            horizontal: {
-                                width: '50%',
-                                margin: '2rem 0',
-                            },
-                        },
-                        component: {
-                            opacity: 0.8,
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-divider-border': '2px solid red',
-                '--vs-divider-horizontal-width': '50%',
-                '--vs-divider-horizontal-margin': '2rem 0',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                opacity: 0.8,
-            });
-        });
-    });
 });

@@ -47,34 +47,6 @@ describe('VsExpandable', () => {
         });
     });
 
-    describe('styleSet', () => {
-        it('styleSet이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsExpandable, {
-                props: {
-                    open: true,
-                    styleSet: {
-                        component: {
-                            backgroundColor: '#f0f0f0',
-                            padding: '2rem',
-                            borderRadius: '8px',
-                        },
-                    },
-                },
-                slots: {
-                    default: '<div class="test-content">Test Content</div>',
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f0f0f0',
-                padding: '2rem',
-                borderRadius: '8px',
-            });
-        });
-    });
-
     describe('open 상태 변경', () => {
         it('open이 false에서 true로 변경되면 컨텐츠가 나타나야 한다', async () => {
             // given

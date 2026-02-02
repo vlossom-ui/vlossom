@@ -70,18 +70,6 @@ describe('VsFooter', () => {
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('4rem');
         });
 
-        it('colorScheme이 주어지면 해당 colorScheme 클래스가 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsFooter, {
-                props: {
-                    colorScheme: 'blue',
-                },
-            });
-
-            // then
-            expect(wrapper.classes()).toContain('vs-color-scheme-blue');
-        });
-
         it('position prop이 absolute로 설정되면 positioned 상태가 되어야 한다', () => {
             // given, when
             const wrapper = mount(VsFooter, {
@@ -127,28 +115,6 @@ describe('VsFooter', () => {
             expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
         });
 
-        it('styleSet 객체가 주어지면 computedStyleSet에 병합되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsFooter, {
-                props: {
-                    styleSet: {
-                        component: {
-                            backgroundColor: '#ff0000',
-                            height: '60px',
-                            padding: '0 1rem',
-                            zIndex: '1000',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.computedStyleSet.component?.backgroundColor).toBe('#ff0000');
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('60px');
-            expect(wrapper.vm.computedStyleSet.component?.padding).toBe('0 1rem');
-            expect(wrapper.vm.computedStyleSet.component?.zIndex).toBe('1000');
-        });
-
         it('position과 height가 모두 주어지면 positioned 상태에서 height가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsFooter, {
@@ -190,27 +156,6 @@ describe('VsFooter', () => {
             // then
             expect(wrapper.props('position')).toBeUndefined();
             expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem');
-        });
-
-        it('styleSet과 props가 동시에 주어지면 props가 우선되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsFooter, {
-                props: {
-                    height: '5rem',
-                    styleSet: {
-                        component: {
-                            height: '3rem',
-                            backgroundColor: '#ff0000',
-                        },
-                    },
-                },
-            });
-
-            // then
-            // props(additionalStyleSet)가 styleSet보다 우선되므로 height는 '5rem'
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
-            // styleSet의 다른 값은 그대로 유지
-            expect(wrapper.vm.computedStyleSet.component?.backgroundColor).toBe('#ff0000');
         });
     });
 

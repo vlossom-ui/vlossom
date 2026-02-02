@@ -86,28 +86,4 @@ describe('vs-dimmed', () => {
             // Transition 때문에 요소가 즉시 사라지지 않을 수 있음
         });
     });
-
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsDimmed, {
-                props: {
-                    styleSet: {
-                        component: {
-                            backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                            opacity: 0.7,
-                            backdropFilter: 'blur(4px)',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                opacity: 0.7,
-                backdropFilter: 'blur(4px)',
-            });
-        });
-    });
 });

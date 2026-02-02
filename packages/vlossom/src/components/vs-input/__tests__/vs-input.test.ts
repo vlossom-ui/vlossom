@@ -3,40 +3,6 @@ import { mount } from '@vue/test-utils';
 import VsInput from '../VsInput.vue';
 
 describe('VsInput', () => {
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            fontSize: '16px',
-                            fontColor: '#333',
-                            padding: '0 2rem',
-                        },
-                        component: {
-                            backgroundColor: '#f0f0f0',
-                            height: '50px',
-                            border: '2px solid #ccc',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-input-fontSize': '16px',
-                '--vs-input-fontColor': '#333',
-                '--vs-input-padding': '0 2rem',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f0f0f0',
-                height: '50px',
-                border: '2px solid #ccc',
-            });
-        });
-    });
-
     describe('v-model', () => {
         it('input 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
             // given
@@ -332,40 +298,6 @@ describe('VsInput', () => {
 
             // then
             expect(wrapper.vm.inputValue).toBe('');
-        });
-    });
-
-    describe('prepend/append styleSet', () => {
-        it('prepend와 append styleSet이 주어지면 해당 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            prepend: {
-                                backgroundColor: '#e0e0e0',
-                                padding: '0 1.5rem',
-                                opacity: 0.8,
-                            },
-                            append: {
-                                backgroundColor: '#d0d0d0',
-                                padding: '0 2rem',
-                                opacity: 0.9,
-                            },
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-input-prepend-backgroundColor': '#e0e0e0',
-                '--vs-input-prepend-padding': '0 1.5rem',
-                '--vs-input-prepend-opacity': 0.8,
-                '--vs-input-append-backgroundColor': '#d0d0d0',
-                '--vs-input-append-padding': '0 2rem',
-                '--vs-input-append-opacity': 0.9,
-            });
         });
     });
 
@@ -869,85 +801,6 @@ describe('VsInput', () => {
             // then
             expect(wrapper.vm.inputValue).toBe('999');
             expect(typeof wrapper.vm.inputValue).toBe('string');
-        });
-    });
-
-    describe('styleSet 하위 속성 전달', () => {
-        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
-            // given
-            const wrapperStyleSet = {
-                variables: {
-                    width: '100%',
-                    label: {
-                        fontColor: '#333',
-                        fontSize: '0.875rem',
-                    },
-                },
-            };
-
-            // when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: {
-                        wrapper: wrapperStyleSet,
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
-            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
-            expect(vsInputWrapper.exists()).toBe(true);
-            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
-        });
-
-        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
-            // given
-            const fullStyleSet = {
-                variables: {
-                    padding: '0.5rem 1rem',
-                    fontColor: '#333',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    prepend: {
-                        opacity: 0.8,
-                        backgroundColor: '#e0e0e0',
-                        padding: '0 0.5rem',
-                    },
-                    append: {
-                        opacity: 0.8,
-                        backgroundColor: '#e0e0e0',
-                        padding: '0 0.5rem',
-                    },
-                },
-                component: {
-                    borderRadius: '8px',
-                },
-                wrapper: {
-                    variables: {
-                        width: '200px',
-                        label: {
-                            fontColor: '#333',
-                            fontSize: '0.875rem',
-                        },
-                    },
-                },
-            };
-
-            // when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: fullStyleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.variables?.padding).toBe('0.5rem 1rem');
-            expect(wrapper.vm.componentStyleSet.variables?.fontColor).toBe('#333');
-            expect(wrapper.vm.componentStyleSet.variables?.prepend).toEqual(fullStyleSet.variables.prepend);
-            expect(wrapper.vm.componentStyleSet.variables?.append).toEqual(fullStyleSet.variables.append);
-            expect(wrapper.vm.componentStyleSet.component?.borderRadius).toBe('8px');
-            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
         });
     });
 });

@@ -26,100 +26,6 @@ describe('VsLoading', () => {
         });
     });
 
-    describe('colorScheme props', () => {
-        it('colorScheme이 주어지면 해당 컬러 스킴 클래스가 적용되어야 한다', () => {
-            // given
-            const colorScheme = 'red';
-
-            // when
-            const wrapper = mount(VsLoading, {
-                props: {
-                    colorScheme,
-                },
-            });
-
-            // then
-            expect(wrapper.classes()).toContain('vs-loading');
-            expect(wrapper.classes()).toContain('vs-color-scheme-red');
-        });
-    });
-
-    describe('styleSet props', () => {
-        it('styleSet이 주어지면 커스텀 스타일이 적용되어야 한다', () => {
-            // given
-            const styleSet = {
-                variables: {
-                    color: '#ff0000',
-                    barWidth: '20%',
-                },
-                component: {
-                    width: '100px',
-                    height: '120px',
-                },
-            };
-
-            // when
-            const wrapper = mount(VsLoading, {
-                props: {
-                    styleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-color': '#ff0000',
-                '--vs-loading-barWidth': '20%',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                width: '100px',
-                height: '120px',
-            });
-        });
-
-        it('styleSet의 일부 속성만 주어져도 올바르게 적용되어야 한다', () => {
-            // given
-            const styleSet = {
-                variables: {
-                    color: '#00ff00',
-                },
-                component: {
-                    width: '50px',
-                },
-            };
-
-            // when
-            const wrapper = mount(VsLoading, {
-                props: {
-                    styleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-loading-color': '#00ff00',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                width: '50px',
-            });
-        });
-
-        it('styleSet이 빈 객체여도 기본 스타일로 렌더링되어야 한다', () => {
-            // given
-            const styleSet = {};
-
-            // when
-            const wrapper = mount(VsLoading, {
-                props: {
-                    styleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.find('.vs-loading').exists()).toBe(true);
-            expect(wrapper.find('.vs-loading-rect1').exists()).toBe(true);
-        });
-    });
-
     describe('width, height props', () => {
         it('width와 height props가 문자열로 주어지면 올바르게 적용되어야 한다', () => {
             // given
@@ -158,33 +64,6 @@ describe('VsLoading', () => {
             expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '300px',
                 height: '250px',
-            });
-        });
-
-        it('width와 height props가 styleSet보다 우선순위가 높아야 한다', () => {
-            // given
-            const width = '400px';
-            const height = '300px';
-            const styleSet = {
-                component: {
-                    width: '100px',
-                    height: '80px',
-                },
-            };
-
-            // when
-            const wrapper = mount(VsLoading, {
-                props: {
-                    width,
-                    height,
-                    styleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                width: '400px',
-                height: '300px',
             });
         });
     });

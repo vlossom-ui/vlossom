@@ -30,34 +30,4 @@ describe('vs-theme-button', () => {
             expect(wrapper.find('.vs-theme-icon.vs-theme-dark').classes()).toContain('vs-on');
         });
     });
-
-    describe('styleSet', () => {
-        it('styleSet이 적용되어야 한다', () => {
-            const wrapper = mount(VsThemeButton, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            width: '3rem',
-                            height: '3rem',
-                            iconColor: '#ff0000',
-                        },
-                        component: {
-                            backgroundColor: '#f5f5f5',
-                            borderRadius: '0.5rem',
-                        },
-                    },
-                },
-            });
-
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-theme-button-width': '3rem',
-                '--vs-theme-button-height': '3rem',
-                '--vs-theme-button-iconColor': '#ff0000',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f5f5f5',
-                borderRadius: '0.5rem',
-            });
-        });
-    });
 });

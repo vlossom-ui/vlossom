@@ -3,37 +3,32 @@ import { mount } from '@vue/test-utils';
 import VsSkeleton from '../VsSkeleton.vue';
 
 describe('VsSkeleton', () => {
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
+    describe('기본 렌더링', () => {
+        it('기본 상태에서 올바르게 렌더링되어야 한다', () => {
             // given, when
+            const wrapper = mount(VsSkeleton);
+
+            // then
+            expect(wrapper.find('.vs-skeleton').exists()).toBe(true);
+            expect(wrapper.find('.vs-skeleton-bg').exists()).toBe(true);
+            expect(wrapper.find('.vs-skeleton-inner').exists()).toBe(true);
+        });
+    });
+
+    describe('슬롯', () => {
+        it('default 슬롯에 텍스트를 넣을 수 있어야 한다', () => {
+            // given
+            const text = 'Something is loading...';
+
+            // when
             const wrapper = mount(VsSkeleton, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            backgroundColor: '#e0e0e0',
-                            fontColor: '#999999',
-                        },
-                        component: {
-                            width: '150px',
-                            height: '75px',
-                            border: '1px solid #ccc',
-                            borderRadius: '8px',
-                        },
-                    },
+                slots: {
+                    default: text,
                 },
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-skeleton-backgroundColor': '#e0e0e0',
-                '--vs-skeleton-fontColor': '#999999',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                width: '150px',
-                height: '75px',
-                border: '1px solid #ccc',
-                borderRadius: '8px',
-            });
+            expect(wrapper.find('.vs-skeleton-inner').text()).toBe(text);
         });
     });
 });

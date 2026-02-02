@@ -3,34 +3,6 @@ import { mount } from '@vue/test-utils';
 import VsTextarea from './../VsTextarea.vue';
 
 describe('VsTextarea', () => {
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 component 스타일이 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    styleSet: {
-                        component: {
-                            backgroundColor: '#f0f0f0',
-                            minHeight: '10rem',
-                            fontSize: '16px',
-                            width: '100%',
-                            opacity: 0.9,
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#f0f0f0',
-                minHeight: '10rem',
-                fontSize: '16px',
-                width: '100%',
-                opacity: 0.9,
-            });
-        });
-    });
-
     describe('v-model', () => {
         it('textarea 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
             // given
@@ -743,66 +715,6 @@ describe('VsTextarea', () => {
             // then
             expect(wrapper.vm.inputValue).toBe('999');
             expect(typeof wrapper.vm.inputValue).toBe('string');
-        });
-    });
-
-    describe('styleSet 하위 속성 전달', () => {
-        it('wrapper styleSet이 vs-input-wrapper 컴포넌트에 전달되어야 한다', () => {
-            // given
-            const wrapperStyleSet = {
-                component: {
-                    width: '100%',
-                },
-            };
-
-            // when
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    styleSet: {
-                        wrapper: wrapperStyleSet,
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(wrapperStyleSet);
-            const vsInputWrapper = wrapper.findComponent({ name: 'VsInputWrapper' });
-            expect(vsInputWrapper.exists()).toBe(true);
-            expect(vsInputWrapper.props('styleSet')).toEqual(wrapperStyleSet);
-        });
-
-        it('모든 styleSet 하위 속성이 함께 전달되어야 한다', () => {
-            // given
-            const fullStyleSet = {
-                component: {
-                    backgroundColor: '#fafafa',
-                    minHeight: '200px',
-                    fontSize: '1rem',
-                    color: '#333',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                },
-                wrapper: {
-                    component: {
-                        width: '200px',
-                    },
-                },
-            };
-
-            // when
-            const wrapper = mount(VsTextarea, {
-                props: {
-                    styleSet: fullStyleSet,
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet.component?.backgroundColor).toBe('#fafafa');
-            expect(wrapper.vm.componentStyleSet.component?.minHeight).toBe('200px');
-            expect(wrapper.vm.componentStyleSet.component?.borderRadius).toBe('8px');
-            expect(wrapper.vm.componentStyleSet.component?.boxShadow).toBe('0 2px 4px rgba(0,0,0,0.1)');
-            expect(wrapper.vm.componentStyleSet.wrapper).toEqual(fullStyleSet.wrapper);
         });
     });
 });

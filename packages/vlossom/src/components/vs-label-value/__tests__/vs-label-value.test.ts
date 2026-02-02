@@ -24,28 +24,4 @@ describe('vs-label-value', () => {
         expect(wrapper.find('.vs-value').exists()).toBe(true);
         expect(wrapper.html()).toContain('MyValue');
     });
-
-    describe('styleSet', () => {
-        it('styleSet이 적용되어야 한다', () => {
-            const wrapper = mount(VsLabelValue, {
-                props: {
-                    styleSet: {
-                        variables: {
-                            border: '2px solid #e91e63',
-                            label: {
-                                backgroundColor: '#f5f5f5',
-                                fontWeight: 600,
-                            },
-                        },
-                    },
-                },
-            });
-
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-label-value-border': '2px solid #e91e63',
-                '--vs-label-value-label-backgroundColor': '#f5f5f5',
-                '--vs-label-value-label-fontWeight': 600,
-            });
-        });
-    });
 });

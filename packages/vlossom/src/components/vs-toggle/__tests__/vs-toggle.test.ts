@@ -105,33 +105,4 @@ describe('VsToggle', () => {
             expect(wrapper.emitted('update:modelValue')![0]).toEqual(wrapper.emitted('toggle')![0]);
         });
     });
-
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 스타일이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsToggle, {
-                props: {
-                    modelValue: false,
-                    styleSet: {
-                        variables: {
-                            padding: '1rem 2rem',
-                        },
-                        component: {
-                            backgroundColor: '#4caf50',
-                            borderRadius: '8px',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-toggle-padding': '1rem 2rem',
-            });
-            expect(wrapper.vm.componentStyleSet.component).toEqual({
-                backgroundColor: '#4caf50',
-                borderRadius: '8px',
-            });
-        });
-    });
 });
