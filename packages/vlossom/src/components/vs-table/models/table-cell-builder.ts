@@ -13,13 +13,13 @@ export class TableCellBuilder {
 
     public constructor(
         private items: Item[],
-        private columnDefs: ColumnDef[] | string[] | null,
+        private columnDefs: ColumnDef[] | string[],
     ) {
         this.cellStrategy = this.getCellStrategy();
     }
 
     private getCellStrategy(): TableCellStrategy {
-        if (this.columnDefs === null) {
+        if (!this.columnDefs?.length) {
             return new NoColumnDefCellStrategy(this.items);
         }
         if (isColumnDefArray(this.columnDefs)) {
@@ -37,7 +37,7 @@ export class TableCellBuilder {
         return this;
     }
 
-    public updateColumnDefs(columnDefs: ColumnDef[] | string[] | null): TableCellBuilder {
+    public updateColumnDefs(columnDefs: ColumnDef[] | string[]): TableCellBuilder {
         if (objectUtil.isEqual(this.columnDefs, columnDefs)) {
             return this;
         }
