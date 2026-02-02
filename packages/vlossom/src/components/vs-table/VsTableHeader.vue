@@ -3,11 +3,11 @@
         <template v-if="headerCells.length">
             <tr>
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
-                <vs-table-select-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
+                <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="{ cells, rowIdx }">
                         <slot name="select" :cells :rowIdx />
                     </template>
-                </vs-table-select-cell>
+                </vs-table-checkbox-cell>
                 <th
                     v-for="header in headerCells"
                     :key="header.id"
@@ -51,7 +51,7 @@ import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
-import VsTableSelectCell from './VsTableSelectCell.vue';
+import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
 
 export default defineComponent({
     components: {
@@ -59,7 +59,7 @@ export default defineComponent({
         VsSkeleton,
         VsTableDragCell,
         VsTableExpandCell,
-        VsTableSelectCell,
+        VsTableCheckboxCell,
     },
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
