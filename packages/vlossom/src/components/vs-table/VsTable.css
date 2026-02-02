@@ -29,6 +29,11 @@
         background-color: var(--vs-no-color);
     }
 
+    .vs-table-responsive {
+        container-type: inline-size;
+        width: 100%;
+    }
+
     .vs-table-draggable-wrapper {
         /* display: contents를 사용하는 이유:
            - draggable의 wrapper 엘리먼트가 DOM 구조상 table, tr, tbody 등과 섞이면서 table 레이아웃이 깨지는 문제를 막기 위해
@@ -51,11 +56,7 @@ caption {
     @apply caption-bottom;
 }
 
-.vs-table-responsive table {
-    width: 100%;
-}
-
-@media (max-width: 768px) {
+@container (max-width: 1024px) {
     .vs-table-responsive {
 
         tbody,
