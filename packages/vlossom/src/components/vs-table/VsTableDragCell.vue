@@ -1,5 +1,5 @@
 <template>
-    <component v-if="draggableTable" :is="tag" :class="TABLE_DRAG_HANDLE_CLASS">
+    <component v-if="draggable" :is="tag" :class="TABLE_DRAG_HANDLE_CLASS">
         <vs-render :content="tableIcons.dragHandle" />
     </component>
 </template>
@@ -25,22 +25,17 @@ export default defineComponent({
     },
     setup(props) {
         const { cells } = toRefs(props);
-        const { draggable, responsive } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { draggable } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const tag = computed<Tag>(() => {
             return isBodyRow(cells.value) ? 'td' : 'th';
-        });
-
-        const draggableTable = computed<boolean | undefined>(() => {
-            return draggable?.value && !responsive?.value;
         });
 
         return {
             TABLE_DRAG_HANDLE_CLASS,
             tableIcons,
             tag,
-            draggableTable,
-            responsive,
+            draggable,
         };
     },
 });

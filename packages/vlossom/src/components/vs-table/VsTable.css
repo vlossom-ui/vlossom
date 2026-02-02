@@ -30,8 +30,8 @@
     }
 
     .vs-table-responsive {
+        @apply w-full;
         container-type: inline-size;
-        width: 100%;
     }
 
     .vs-table-draggable-wrapper {
@@ -58,7 +58,6 @@ caption {
 
 @container (max-width: 1024px) {
     .vs-table-responsive {
-
         tbody,
         th,
         td,
@@ -91,6 +90,10 @@ caption {
         td::before {
             @apply font-bold;
             content: attr(data-label);
+        }
+
+        td.vs-table-drag-handle {
+            @apply w-6 px-0 py-1;
         }
     }
 }
