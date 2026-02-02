@@ -21,10 +21,8 @@ const meta: Meta<typeof VsSwitch> = {
         setup() {
             const preDefinedStyleSet: VsSwitchStyleSet = {
                 variables: {
-                    backgroundColor: 'red',
-                    border: '3px solid blue',
-                    borderRadius: '8px',
                     handleColor: '#fff',
+                    handleSize: '18px',
                 },
             } as const;
 
@@ -194,9 +192,6 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             variables: {
-                border: '3px solid blue',
-                backgroundColor: '#fff',
-                borderRadius: '8px',
                 handleColor: '#2ecc71',
                 handleSize: '16px',
             },
