@@ -22,18 +22,18 @@
                 </vs-table-body-row>
             </tbody>
         </template>
-
-        <tbody v-if="displayedBodyCells.length === 0">
-            <tr>
-                <td colspan="100%" class="h-52">
-                    <div class="flex flex-col items-center justify-center text-gray-700">
-                        <vs-render :content="tableIcons.noData" />
-                        <p class="text-xl font-bold">NO DATA</p>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
     </draggable>
+
+    <tbody v-if="displayedBodyCells.length === 0">
+        <tr>
+            <td colspan="100%" class="h-52">
+                <div class="flex flex-col items-center justify-center text-gray-700">
+                    <vs-render :content="tableIcons.noData" />
+                    <p class="text-xl font-bold">NO DATA</p>
+                </div>
+            </td>
+        </tr>
+    </tbody>
 </template>
 
 <script lang="ts">
@@ -56,8 +56,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
-        const { bodyCells, loading } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
@@ -79,9 +78,7 @@ export default defineComponent({
                 const baseCells = bodyCells.value;
                 const baseIds = baseCells.map(getRowId);
 
-                displayOrder.value = newCells
-                    .map((row) => baseIds.indexOf(getRowId(row)))
-                    .filter((idx) => idx !== -1);
+                displayOrder.value = newCells.map((row) => baseIds.indexOf(getRowId(row))).filter((idx) => idx !== -1);
             },
         });
 
