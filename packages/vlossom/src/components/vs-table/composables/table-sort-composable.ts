@@ -4,7 +4,7 @@ import { objectUtil, compareUtil } from '@/utils';
 
 const SORT_TYPE_COUNT = Object.keys(SortType).filter((value) => !isNaN(Number(value))).length;
 
-export function useTableSort(columns: Ref<ColumnDef[] | null>) {
+export function useTableSort(columns: Ref<ColumnDef[]>) {
     const sortType = ref<SortType>(SortType.NONE);
     const sortColumn = ref<ColumnDef | null>(null);
 
@@ -12,7 +12,7 @@ export function useTableSort(columns: Ref<ColumnDef[] | null>) {
         if (sortType.value === SortType.NONE) {
             return 0;
         }
-        if (!columns.value || !sortColumn.value) {
+        if (!columns.value.length || !sortColumn.value) {
             return 0;
         }
         const aItem = aRow[0]?.item;
