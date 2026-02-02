@@ -9,14 +9,10 @@
             @search="searchRows"
         />
 
-        <vs-visible-render
-            :disabled="!virtualScroll"
-            :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
-            root-margin="150px"
-        >
+        <vs-visible-render :disabled="!virtualScroll" :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`" root-margin="150px">
             <table>
                 <vs-table-header
-                    v-if="stickyHeader && headerInvisible"
+                    v-if="useStickyHeader"
                     class="vs-table-sticky-header"
                     @click-cell="clickCell"
                     @select-row="selectRow"
@@ -29,17 +25,17 @@
                 <caption v-if="$slots['caption']">
                     <slot name="caption" />
                 </caption>
-                <vs-table-header ref="headerRef" @click-cell="clickCell" @select-row="selectRow">
+                <vs-table-header
+                    ref="headerRef"
+                    class="vs-table-original-header"
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                >
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
                 </vs-table-header>
-                <vs-table-body
-                    @click-cell="clickCell"
-                    @select-row="selectRow"
-                    @expand-row="expandRow"
-                    @drag="dragRow"
-                >
+                <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow" @drag="dragRow">
                     <template v-for="name in bodySlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
@@ -163,7 +159,7 @@ export default defineComponent({
         'update:pageSize',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive } = toRefs(props);
+        const { colorScheme, styleSet, responsive, stickyHeader } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -176,8 +172,8 @@ export default defineComponent({
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
-        const headerInvisible = ref(true);
-        const stickyHeaderTop = ref('0px');
+        const isHeaderOutOfView = ref<boolean>(true);
+        const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
         const table: TableComposable = useTable(
@@ -197,17 +193,16 @@ export default defineComponent({
                 ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
-
         const classObj = computed(() => ({
             'vs-table-responsive': responsive.value,
         }));
-
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
+        const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
             headerRef,
             ([{ isIntersecting }]) => {
-                headerInvisible.value = !isIntersecting;
+                isHeaderOutOfView.value = !isIntersecting;
                 if (isIntersecting) {
                     stickyHeaderTop.value = stringUtil.toStringSize(vsLayoutHeader.value.height);
                 }
@@ -260,7 +255,7 @@ export default defineComponent({
             headerRef,
             headerSlots,
             bodySlots,
-            headerInvisible,
+            useStickyHeader,
             stickyHeaderTop,
             searchOptions,
             table,
