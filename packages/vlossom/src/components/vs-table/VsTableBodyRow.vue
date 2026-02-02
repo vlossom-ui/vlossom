@@ -1,11 +1,11 @@
 <template>
     <tr>
         <vs-table-drag-cell :cells :rowIdx />
-        <vs-table-select-cell :cells :rowIdx @select-row="selectRow">
+        <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
                 <slot name="select" :cells :rowIdx />
             </template>
-        </vs-table-select-cell>
+        </vs-table-checkbox-cell>
         <template v-for="cell in cells" :key="cell.id">
             <td
                 :id="cell.id"
@@ -41,7 +41,7 @@ import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableExpandedPanel from './VsTableExpandedPanel.vue';
-import VsTableSelectCell from './VsTableSelectCell.vue';
+import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
 
 export default defineComponent({
     components: {
@@ -49,7 +49,7 @@ export default defineComponent({
         VsTableDragCell,
         VsTableExpandCell,
         VsTableExpandedPanel,
-        VsTableSelectCell,
+        VsTableCheckboxCell,
     },
     props: {
         cells: {
