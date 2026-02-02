@@ -9,7 +9,7 @@
             @search="searchRows"
         />
 
-        <vs-visible-render :disabled="!virtualScroll" :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`" root-margin="150px">
+        <vs-visible-render :disabled="noVirtualScroll" :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`" root-margin="150px">
             <table>
                 <vs-table-header
                     v-if="useStickyHeader"
@@ -110,11 +110,11 @@ export default defineComponent({
                 return true;
             },
         },
-        responsive: { type: Boolean, default: false },
+        noResponsive: { type: Boolean, default: false },
+        noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
         serverMode: { type: Boolean, default: false },
-        virtualScroll: { type: Boolean, default: false },
         draggable: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
@@ -159,7 +159,7 @@ export default defineComponent({
         'update:pageSize',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, stickyHeader } = toRefs(props);
+        const { colorScheme, styleSet, noResponsive, stickyHeader } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const additionalStyleSet = computed<Partial<VsTableStyleSet>>(() => {
@@ -194,7 +194,7 @@ export default defineComponent({
             ),
         );
         const classObj = computed(() => ({
-            'vs-table-responsive': responsive.value,
+            'vs-table-responsive': !noResponsive.value,
         }));
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
