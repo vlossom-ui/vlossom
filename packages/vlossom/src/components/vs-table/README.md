@@ -168,6 +168,37 @@
 
 > `pagination`을 `true`로 설정하면 내부적으로 `VsPagination`을 사용해 페이지네이션이 활성화되며, `paginate` 이벤트로 0-기반 페이지 인덱스와 페이지 크기를 받을 수 있습니다.
 
+#### 페이지 아이템 추적
+
+```html
+<template>
+    <vs-table
+        :columns="['name', 'age', 'email']"
+        :items="allItems"
+        pagination
+        v-model:paged-items="currentPageItems"
+        v-model:total-items="filteredItems"
+    />
+
+    <div class="mt-4">
+        <p>전체 아이템: {{ allItems.length }}개</p>
+        <p>필터링/검색된 아이템: {{ filteredItems.length }}개</p>
+        <p>현재 페이지 아이템: {{ currentPageItems.length }}개</p>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const allItems = ref([/* 1000개 아이템 */]);
+const currentPageItems = ref([]); // 현재 페이지에 표시되는 아이템 (예: 50개)
+const filteredItems = ref([]);    // 검색/정렬 후 전체 아이템 (예: 300개)
+</script>
+```
+
+> `v-model:paged-items`로 현재 페이지에 표시되는 아이템을, `v-model:total-items`로 검색/필터링/정렬된 전체 아이템을 추적할 수 있습니다.
+> 페이지 변경, 검색, 정렬 시 자동으로 업데이트됩니다.
+
 ```html
 <template>
     <vs-table
@@ -296,6 +327,8 @@ function handleDrag(event) {
 | `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
 | `page`(v-model)          | `number`                                       | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
 | `pageSize` (v-model)     | `number`                                       | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
+| `pagedItems` (v-model)   | `Item[]`                                       | `[]`    | -        | 현재 페이지에 표시되는 아이템 배열 (v-model). 페이지네이션, 검색, 정렬이 적용된 후 현재 페이지의 아이템만 포함        |
+| `totalItems` (v-model)   | `Item[]`                                       | `[]`    | -        | 검색/필터링/정렬이 적용된 전체 아이템 배열 (v-model). 페이지네이션 적용 전의 모든 아이템 포함                         |
 
 ## Types
 
@@ -385,6 +418,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
 - **반응형 테이블**: `responsive` prop을 통해 모바일 환경에서 표 레이아웃이 자동으로 바뀌며, 각 셀에서 헤더 정보를 함께 보여줌
 - **페이지네이션**: `pagination` 옵션으로 `VsPagination` 기반 페이지 네비게이션과 총 아이템/페이지 크기 선택을 제공
+- **데이터 추적**: `v-model:paged-items`와 `v-model:total-items`로 현재 페이지 및 필터링된 전체 데이터를 실시간 추적
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
 - **행 확장**: `expandable` prop과 `expand` 슬롯으로 행별 상세 영역 토글 가능
 - **행 드래그**: `draggable` prop으로 드래그 앤 드롭 기반 행 순서 변경 지원

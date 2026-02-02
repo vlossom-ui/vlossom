@@ -62,7 +62,7 @@ import {
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import { LAYOUT_STORE_KEY, type SearchProps, VsComponent } from '@/declaration';
+import { LAYOUT_STORE_KEY, type SearchProps, VsComponent, type PropsOf } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -146,6 +146,32 @@ export default defineComponent({
         },
         page: { type: Number as PropType<number> }, // 0-based page index
         pageSize: { type: Number as PropType<number> },
+        pagedItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [],
+            validator: (value: Item[], props: unknown) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be an array');
+                    return false;
+                }
+                if (value.length !== (props as PropsOf<VsComponent.VsTable>).pageSize) {
+                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be the same length as items');
+                    return false;
+                }
+                return true;
+            },
+        },
+        totalItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'totalItems', 'totalItems must be an array');
+                    return false;
+                }
+                return true;
+            },
+        },
     },
     emits: [
         'click-cell',
@@ -157,6 +183,8 @@ export default defineComponent({
         'update:selectedItems',
         'update:page',
         'update:pageSize',
+        'update:pagedItems',
+        'update:totalItems',
     ],
     setup(props, { slots, emit }) {
         const { colorScheme, styleSet, noResponsive, stickyHeader } = toRefs(props);
@@ -179,7 +207,7 @@ export default defineComponent({
         const table: TableComposable = useTable(
             props,
             { searchInputRef },
-            { updateSelectedItems, updatePage, updatePageSize },
+            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems },
         );
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
@@ -237,6 +265,12 @@ export default defineComponent({
         }
         function updatePageSize(pageSize: number): void {
             emit('update:pageSize', pageSize);
+        }
+        function updatePagedItems(items: Item[]): void {
+            emit('update:pagedItems', items);
+        }
+        function updateTotalItems(items: Item[]): void {
+            emit('update:totalItems', items);
         }
 
         onBeforeMount(() => {

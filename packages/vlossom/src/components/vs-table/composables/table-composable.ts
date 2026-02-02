@@ -29,6 +29,8 @@ export function useTable(
         updateSelectedItems: (items: Item[]) => void;
         updatePage: (page: number) => void;
         updatePageSize: (pageSize: number) => void;
+        updatePagedItems: (items: Item[]) => void;
+        updateTotalItems: (items: Item[]) => void;
     },
 ) {
     const {
@@ -166,17 +168,17 @@ export function useTable(
         totalItemsCount,
         serverMode,
     );
+    const preprocessedBodyCells = computed<BodyCell[][]>(() => {
+        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+    });
     const bodyCells = computed<BodyCell[][]>(() => {
         if (objectUtil.isEmpty(pagination.value)) {
-            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+            return preprocessedBodyCells.value;
         }
         if (serverMode.value) {
-            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+            return preprocessedBodyCells.value;
         }
-        return rawBodyCells.value
-            .filter(matchBySearch)
-            .sort(compareRows)
-            .slice(pageStartIndex.value, pageEndIndex.value);
+        return preprocessedBodyCells.value.slice(pageStartIndex.value, pageEndIndex.value);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -207,6 +209,22 @@ export function useTable(
 
     watch(internalSelectedItems, (nextSelectedItems) => {
         cb?.updateSelectedItems(nextSelectedItems);
+    });
+
+    watch(bodyCells, (nextBodyCells) => {
+        const pagedItems = nextBodyCells.map((row) => {
+            const firstCell = row[0];
+            return firstCell?.item || {};
+        });
+        cb?.updatePagedItems(pagedItems);
+    });
+
+    watch(preprocessedBodyCells, (nextBodyCells) => {
+        const nextTotalItems = nextBodyCells.map((row) => {
+            const firstCell = row[0];
+            return firstCell?.item || {};
+        });
+        cb?.updateTotalItems(nextTotalItems);
     });
 
     return {
