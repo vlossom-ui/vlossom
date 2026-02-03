@@ -184,8 +184,8 @@ export default defineComponent({
                     logUtil.propError(componentName, 'pagedItems', 'pagedItems must be an array');
                     return false;
                 }
-                if (!!_props.pageSize && value.length !== _props.pageSize) {
-                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be the same length as items');
+                if (!!_props.pageSize && value.length > _props.pageSize) {
+                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be less than pageSize.');
                     return false;
                 }
                 return true;
