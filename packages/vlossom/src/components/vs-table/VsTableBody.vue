@@ -1,5 +1,6 @@
 <template>
     <draggable
+        tag="tbody"
         v-model="displayedBodyCells"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
         :class="TABLE_DRAG_WRAPPER_CLASS"
@@ -7,20 +8,18 @@
         :disabled="loading"
         @update="handleDragUpdate"
     >
-        <template #item="{ element: cells, index: rowIdx }">
-            <tbody>
-                <vs-table-body-row
-                    :cells
-                    :rowIdx
-                    @click-cell="clickCell"
-                    @select-row="selectRow"
-                    @expand-row="expandRow"
-                >
-                    <template v-for="name in bodySlots" #[name]="slotData">
-                        <slot :name v-bind="slotData || {}" />
-                    </template>
-                </vs-table-body-row>
-            </tbody>
+        <template #item="{ element, index }">
+            <vs-table-body-row
+                :cells="element"
+                :rowIdx="index"
+                @click-cell="clickCell"
+                @select-row="selectRow"
+                @expand-row="expandRow"
+            >
+                <template v-for="name in bodySlots" #[name]="slotData">
+                    <slot :name v-bind="slotData || {}" />
+                </template>
+            </vs-table-body-row>
         </template>
     </draggable>
 

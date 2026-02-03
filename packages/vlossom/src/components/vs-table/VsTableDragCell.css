@@ -8,6 +8,6 @@ th.vs-table-drag-handle {
 }
 
 td.vs-table-drag-handle {
-    @apply w-6 cursor-grab px-0;
+    @apply w-6 cursor-grab !px-0;
     color: var(--vs-line-color);
 }

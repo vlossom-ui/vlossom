@@ -1,6 +1,6 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
+        <td v-if="anySelectable" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
@@ -15,7 +15,7 @@
     </template>
 
     <template v-else>
-        <th v-if="anySelectable" class="w-10" @click.prevent.stop="selectRow(cells, $event)">
+        <th v-if="anySelectable" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
                     :model-value="selectedAll"
