@@ -1,5 +1,5 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
-import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
+import { functionUtil, logUtil, objectUtil } from '@/utils';
 import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
@@ -61,10 +61,7 @@ export function useTable(
         });
     });
     const items = computed<Item[]>(() => {
-        return rawItems.value.map((item) => ({
-            ...item,
-            id: item.id ?? stringUtil.createID(),
-        }));
+        return rawItems.value;
     });
     const expandable = computed(() => {
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawExpandable?.value);
@@ -73,16 +70,7 @@ export function useTable(
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
     });
     const selectedItems = computed<Item[]>(() => {
-        if (!rawSelectedItems?.value) {
-            return [];
-        }
-        const itemIds = new Set(items.value.map((i) => i.id));
-        const invalidIdItems = rawSelectedItems.value.filter((item) => !itemIds.has(item.id));
-        if (invalidIdItems.length) {
-            logUtil.propError(VsComponent.VsTable, 'selectedItems', 'selectedItems id must be in items');
-            return [];
-        }
-        return rawSelectedItems.value;
+        return rawSelectedItems?.value ?? [];
     });
     const search = computed<Exclude<SearchProps, boolean>>(() => {
         if (!rawSearch?.value) {

@@ -137,10 +137,6 @@ export default defineComponent({
                     logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
                     return false;
                 }
-                if (value.some((item) => !item.id)) {
-                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must have id');
-                    return false;
-                }
                 return true;
             },
         },
