@@ -77,7 +77,7 @@ import {
     type VsTablePaginationOptions,
     getRowItem,
 } from './types';
-import { TABLE_DRAG_WRAPPER_CLASS } from './constants';
+import { DEFAULT_PAGE_SIZE, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
@@ -114,7 +114,22 @@ export default defineComponent({
         noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
-        serverMode: { type: Boolean, default: false },
+        serverMode: {
+            type: Boolean,
+            default: false,
+            validator: (serverMode: boolean, props: unknown) => {
+                const _props = props as PropsOf<VsComponent.VsTable>;
+                if (serverMode && typeof _props.pagination === 'object' && !_props.pagination.totalItemCount) {
+                    logUtil.propError(
+                        componentName,
+                        'serverMode',
+                        'totalItemCount is required when serverMode is true',
+                    );
+                    return false;
+                }
+                return true;
+            },
+        },
         draggable: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
@@ -141,7 +156,25 @@ export default defineComponent({
             },
         },
         page: { type: Number as PropType<number> }, // 0-based page index
-        pageSize: { type: Number as PropType<number> },
+        pageSize: {
+            type: Number as PropType<number>,
+            default: DEFAULT_PAGE_SIZE,
+            validator: (value: number, props: unknown) => {
+                const _props = props as PropsOf<VsComponent.VsTable>;
+                if (value <= 0) {
+                    logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 0');
+                    return false;
+                }
+                if (_props.pagination && typeof _props.pagination === 'object' && _props.pagination.pageSizeOptions) {
+                    const isValidPageSize = _props.pagination.pageSizeOptions.some((option) => option.value === value);
+                    if (!isValidPageSize) {
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize is not in pageSizeOptions');
+                        return true;
+                    }
+                }
+                return true;
+            },
+        },
         pagedItems: {
             type: Array as PropType<Item[]>,
             default: () => [],

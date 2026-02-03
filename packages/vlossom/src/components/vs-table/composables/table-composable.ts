@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
-import { functionUtil, logUtil, objectUtil } from '@/utils';
-import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
+import { functionUtil, objectUtil } from '@/utils';
+import { type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -56,7 +56,7 @@ export function useTable(
         if (isColumnDefArray(rawColumns.value)) {
             return rawColumns.value;
         }
-        return rawColumns.value.map((column) => {
+        return rawColumns.value.map((column: string) => {
             return { key: column, label: column } as ColumnDef;
         });
     });
@@ -107,21 +107,8 @@ export function useTable(
     const pageSize = computed<number>({
         get: () => {
             const currentPageSize = rawPageSize?.value;
-            const pageSizeOptions = pagination.value.pageSizeOptions;
-
             if (!currentPageSize) {
                 return internalPageSize.value;
-            }
-            if (pageSizeOptions) {
-                const isValidPageSize = pageSizeOptions.some((option) => option.value === currentPageSize);
-
-                if (!isValidPageSize) {
-                    logUtil.propWarning(
-                        VsComponent.VsTable,
-                        'pageSize',
-                        `pageSize (${currentPageSize}) is not in [${pageSizeOptions.map((option) => option.value)}]`,
-                    );
-                }
             }
             return currentPageSize;
         },
