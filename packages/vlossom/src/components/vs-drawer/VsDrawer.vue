@@ -129,7 +129,7 @@ export default defineComponent({
             return stringUtil.toStringSize(size.value);
         });
 
-        const baseStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({}));
 
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({

@@ -99,7 +99,7 @@ export default defineComponent({
 
         const { computedColorScheme } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: ComputedRef<Partial<VsSearchInputStyleSet>> = computed(() => {
+        const baseStyleSet: ComputedRef<VsSearchInputStyleSet> = computed(() => {
             const styleSetValue = styleSet.value;
             const height =
                 styleSetValue && typeof styleSetValue !== 'string' ? styleSetValue.variables?.height : undefined;

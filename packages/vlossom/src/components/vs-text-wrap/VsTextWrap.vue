@@ -58,7 +58,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, link, width } = toRefs(props);
 
-        const baseStyleSet: ComputedRef<Partial<VsTextWrapStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsTextWrapStyleSet> = computed(() => ({}));
 
         const additionalStyleSet: ComputedRef<Partial<VsTextWrapStyleSet>> = computed(() => {
             return objectUtil.shake({

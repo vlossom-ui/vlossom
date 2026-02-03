@@ -165,7 +165,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const baseStyleSet: Ref<Partial<VsFileDropStyleSet>> = ref({
+        const baseStyleSet: Ref<VsFileDropStyleSet> = ref({
             chip: {
                 component: {
                     width: '100%',

@@ -31,7 +31,7 @@ export default defineComponent({
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const baseStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => {
             return objectUtil.shake({
                 component: objectUtil.shake({

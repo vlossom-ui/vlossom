@@ -104,7 +104,7 @@ export default defineComponent({
 
         const gapCount = computed(() => steps.value.length - 1);
 
-        const baseStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsStepsStyleSet> = computed(() => ({}));
 
         const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
             return objectUtil.shake({

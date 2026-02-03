@@ -116,7 +116,7 @@ export default defineComponent({
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<Record<string, string> | null>(null);
 
-        const baseStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => ({
+        const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
             scrollButton: {
                 variables: {
                     padding: '0.4rem',

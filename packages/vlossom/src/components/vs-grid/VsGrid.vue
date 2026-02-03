@@ -25,7 +25,7 @@ export default defineComponent({
     setup(props) {
         const { width, height, gridSize, columnGap, rowGap, styleSet } = toRefs(props);
 
-        const baseStyleSet: ComputedRef<Partial<VsGridStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsGridStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsGridStyleSet>> = computed(() => {
             return objectUtil.shake({
                 variables: objectUtil.shake({
@@ -36,7 +36,12 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsGridStyleSet>(componentName, styleSet, baseStyleSet, additionalStyleSet);
+        const { styleSetVariables } = useStyleSet<VsGridStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const computedStyle = computed((): CSSProperties => {
             return {

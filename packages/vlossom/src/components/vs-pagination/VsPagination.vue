@@ -140,7 +140,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const baseStyleSet: ComputedRef<Partial<VsPaginationStyleSet>> = computed(() => ({
+        const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
             controlButton: {
                 variables: {
                     padding: '0.4rem',

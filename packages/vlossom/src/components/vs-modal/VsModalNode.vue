@@ -70,7 +70,7 @@ export default defineComponent({
             return SIZES.includes(value as Size);
         }
 
-        const baseStyleSet: ComputedRef<Partial<VsModalNodeStyleSet>> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsModalNodeStyleSet> = computed(() => ({}));
 
         const additionalStyleSet: ComputedRef<Partial<VsModalNodeStyleSet>> = computed(() => {
             if (!size.value) {
