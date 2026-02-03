@@ -74,6 +74,34 @@
            - 즉, drag&drop 컴포넌트의 불필요한 wrapper가 DOM에서 제거된 효과를 줌 */
         display: contents;
     }
+
+    /* Drag Cell */
+    th.vs-table-drag-handle {
+        @apply w-6 content-none;
+        svg {
+            @apply hidden;
+        }
+    }
+
+    td.vs-table-drag-handle {
+        @apply w-6 cursor-grab !px-0;
+        color: var(--vs-line-color);
+    }
+}
+
+/* Pagination */
+.vs-table-pagination {
+    @apply flex items-center justify-between py-4;
+    container-type: inline-size;
+}
+
+.vs-table-pagination-info {
+    @apply flex items-center gap-4;
+}
+
+.vs-total-items {
+    @apply text-sm whitespace-nowrap opacity-70;
+    color: var(--vs-font-color);
 }
 
 caption {
@@ -119,5 +147,9 @@ caption {
         td.vs-table-drag-handle {
             @apply w-6 px-0 py-1;
         }
+    }
+
+    .vs-table-pagination {
+        @apply flex-col-reverse items-center justify-center gap-2;
     }
 }

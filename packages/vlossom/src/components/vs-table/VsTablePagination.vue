@@ -66,5 +66,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style src="./VsTablePagination.css" />
