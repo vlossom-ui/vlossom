@@ -95,9 +95,7 @@ export default defineComponent({
                 `body-row${rowIdx}`,
                 `body-col${colIdx}`,
                 'body',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
+            ].filter((name) => name in slots);
 
             return candidatePriority[0] || '';
         }

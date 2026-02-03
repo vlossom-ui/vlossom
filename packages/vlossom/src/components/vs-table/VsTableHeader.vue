@@ -83,9 +83,7 @@ export default defineComponent({
                 `header-row${rowIdx}`,
                 `header-col${colIdx}`,
                 'header',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
+            ].filter((name) => name in slots);
 
             return candidatePriority[0] || '';
         }
