@@ -132,6 +132,9 @@ export function useTable(
         toggleSelectAll,
     } = useTableSelect(selectable, items, selectedItems);
 
+    const builtCellMatrix = computed<Cell[][]>(() => {
+        return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
+    });
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
@@ -169,18 +172,9 @@ export function useTable(
         initCells(tableCellBuilder.build());
     }
 
-    watch(
-        [columns, items],
-        ([nextColumnDefs, nextItems]) => {
-            const nextCells: Cell[][] = tableCellBuilder
-                .updateColumnDefs(nextColumnDefs)
-                .updateItems(nextItems)
-                .build();
-
-            initCells(nextCells);
-        },
-        { deep: true },
-    );
+    watch(builtCellMatrix, (matrix) => {
+        initCells(matrix);
+    });
 
     watch(internalSelectedItems, (nextSelectedItems) => {
         cb?.updateSelectedItems(nextSelectedItems);
