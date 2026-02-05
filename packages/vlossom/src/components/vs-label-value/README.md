@@ -56,38 +56,26 @@
 
 ## Props
 
-| Prop          | Type                             | Default | Required | Description             |
-| ------------- | -------------------------------- | ------- | -------- | ----------------------- |
-| `colorScheme` | `ColorScheme`                    | -       | -        | 컴포넌트 색상 테마      |
-| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
-| `dense`       | `boolean`                        | `false` | -        | 압축된 스타일 적용      |
-| `primary`     | `boolean`                        | `false` | -        | 강조 스타일 적용        |
+| Prop          | Type                             | Default | Required | Description                       |
+| ------------- | -------------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme` | `ColorScheme`                    | -       | -        | 컴포넌트 색상 테마                |
+| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
+| `width`       | `string`                         | -       | -        | 컴포넌트 너비 (예: `'400px'`)     |
+| `grid`        | `number`                         | -       | -        | 12 그리드 시스템 기반 너비 (1~12) |
+| `dense`       | `boolean`                        | `false` | -        | 압축된 스타일 적용                |
+| `primary`     | `boolean`                        | `false` | -        | 강조 스타일 적용                  |
 
 ## Types
 
 ```typescript
+import type { CSSProperties } from 'vue';
+
 interface VsLabelValueStyleSet {
     variables?: {
         width?: string;
         border?: string;
-        borderRadius?: string;
-        label?: {
-            backgroundColor?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: string | number;
-            padding?: string;
-            verticalAlign?: string;
-            width?: string;
-        };
-        value?: {
-            backgroundColor?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: string | number;
-            padding?: string;
-            verticalAlign?: string;
-        };
+        label?: CSSProperties;
+        value?: CSSProperties;
     };
 }
 ```
@@ -100,14 +88,14 @@ interface VsLabelValueStyleSet {
         :style-set="{
             variables: {
                 border: '2px solid #e91e63',
-                borderRadius: '12px',
                 label: {
                     backgroundColor: '#f5f5f5',
+                    color: '#333',
                     fontWeight: 600,
-                    width: '30%',
                 },
                 value: {
-                    fontColor: '#333',
+                    backgroundColor: '#fff',
+                    color: '#666',
                     padding: '1rem 2rem',
                 },
             },

@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsLabelValue from './VsLabelValue.vue';
 
 declare module 'vue' {
@@ -11,25 +11,11 @@ export type { VsLabelValue };
 
 export interface VsLabelValueRef extends ComponentPublicInstance<typeof VsLabelValue> {}
 
-interface ValueVariables {
-    backgroundColor?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: string | number;
-    padding?: string;
-    verticalAlign?: string;
-}
-
-interface LabelVariables extends ValueVariables {
-    width?: string;
-}
-
 export interface VsLabelValueStyleSet {
     variables?: {
         width?: string;
         border?: string;
-        borderRadius?: string;
-        label?: LabelVariables;
-        value?: ValueVariables;
+        label?: CSSProperties;
+        value?: CSSProperties;
     };
 }
