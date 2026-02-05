@@ -243,8 +243,8 @@ export const StyleSet: Story = {
                 height: '3.5rem',
             },
             input: {
-                variables: {
-                    fontColor: '#1565c0',
+                component: {
+                    color: '#1565c0',
                     fontSize: '1.1rem',
                     padding: '0 1.5rem',
                 },
