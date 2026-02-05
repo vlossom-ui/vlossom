@@ -18,7 +18,7 @@
                         {{ header.value }}
                         <vs-render
                             v-if="header.sortable"
-                            class="inline"
+                            class="w-auto! cursor-pointer pl-1"
                             :content="getSortIcon(header)"
                             @click="updateSortType(header.colKey)"
                         />

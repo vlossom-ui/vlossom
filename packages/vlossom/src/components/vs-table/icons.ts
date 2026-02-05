@@ -5,17 +5,17 @@ export const tableIcons = {
         </svg>
     `,
     sortAsc: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 5l4 5h-8l4-5z" fill="currentColor"/>
         </svg>
     `,
     sortDesc: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 19l-4-5h8l-4 5z" fill="currentColor"/>
         </svg>
     `,
     sortNone: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 5l4 5h-8l4-5zM12 19l-4-5h8l-4 5z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/>
         </svg>
     `,
