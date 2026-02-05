@@ -27,7 +27,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyle).toMatchObject({
+            expect(wrapper.vm.componentStyleSet.component).toMatchObject({
                 width: '600px',
                 height: '500px',
             });
@@ -42,12 +42,12 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyle).toMatchObject({
+            expect(wrapper.vm.styleSetVariables).toMatchObject({
                 '--vs-grid-gridSize': 6,
             });
         });
 
-        it('columnGap이 주어지면 올바른 CSS 변수가 설정되어야 한다', () => {
+        it('columnGap, rowGap이 주어지면 componentStyleSet에 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsGrid, {
                 props: {
@@ -57,9 +57,9 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyle).toMatchObject({
-                '--vs-grid-columnGap': '20px',
-                '--vs-grid-rowGap': '25px',
+            expect(wrapper.vm.componentStyleSet.component).toMatchObject({
+                columnGap: '20px',
+                rowGap: '25px',
             });
         });
     });

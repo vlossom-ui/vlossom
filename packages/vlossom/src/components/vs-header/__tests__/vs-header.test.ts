@@ -58,7 +58,7 @@ describe('VsHeader', () => {
             expect(vsBar.props('tag')).toBe('div');
         });
 
-        it('height prop이 주어지면 computedStyleSet에 height가 적용되어야 한다', () => {
+        it('height prop이 주어지면 componentStyleSet에 height가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsHeader, {
                 props: {
@@ -67,7 +67,7 @@ describe('VsHeader', () => {
             });
 
             // then
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('4rem');
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('4rem');
         });
 
         it('position prop이 absolute로 설정되면 positioned 상태가 되어야 한다', () => {
@@ -80,9 +80,9 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBe('absolute');
-            expect(wrapper.vm.computedStyleSet.component?.position).toBe('absolute');
-            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.position).toBe('absolute');
+            expect(wrapper.vm.componentStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.left).toBe(0);
         });
 
         it('position prop이 fixed로 설정되면 positioned 상태가 되어야 한다', () => {
@@ -95,9 +95,9 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBe('fixed');
-            expect(wrapper.vm.computedStyleSet.component?.position).toBe('fixed');
-            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.position).toBe('fixed');
+            expect(wrapper.vm.componentStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.left).toBe(0);
         });
 
         it('position prop이 sticky로 설정되면 positioned 상태가 되어야 한다', () => {
@@ -110,9 +110,9 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBe('sticky');
-            expect(wrapper.vm.computedStyleSet.component?.position).toBe('sticky');
-            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.position).toBe('sticky');
+            expect(wrapper.vm.componentStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.left).toBe(0);
         });
 
         it('position과 height가 모두 주어지면 positioned 상태에서 height가 적용되어야 한다', () => {
@@ -126,9 +126,9 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBe('absolute');
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('5rem');
-            expect(wrapper.vm.computedStyleSet.component?.top).toBe(0);
-            expect(wrapper.vm.computedStyleSet.component?.left).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('5rem');
+            expect(wrapper.vm.componentStyleSet.component?.top).toBe(0);
+            expect(wrapper.vm.componentStyleSet.component?.left).toBe(0);
         });
 
         it('position이 relative일 때도 height가 적용되어야 한다', () => {
@@ -142,7 +142,7 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBe('relative');
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('6rem'); // height prop이 적용됨
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('6rem');
         });
 
         it('position이 없어도 height가 적용되어야 한다', () => {
@@ -155,7 +155,7 @@ describe('VsHeader', () => {
 
             // then
             expect(wrapper.props('position')).toBeUndefined();
-            expect(wrapper.vm.computedStyleSet.component?.height).toBe('7rem'); // height prop이 적용됨
+            expect(wrapper.vm.componentStyleSet.component?.height).toBe('7rem');
         });
     });
 
