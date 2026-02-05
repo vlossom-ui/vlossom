@@ -2,7 +2,7 @@
     <component
         :is="tag"
         :class="['vs-bar', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="componentStyleSet.component"
     >
         <slot />
     </component>
@@ -38,7 +38,7 @@ export default defineComponent({
                 }),
             });
         });
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsBarStyleSet>(
+        const { componentStyleSet } = useStyleSet<VsBarStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -49,7 +49,7 @@ export default defineComponent({
             'vs-primary': primary.value,
         }));
 
-        return { colorSchemeClass, componentStyleSet, styleSetVariables, classObj };
+        return { colorSchemeClass, componentStyleSet, classObj };
     },
 });
 </script>

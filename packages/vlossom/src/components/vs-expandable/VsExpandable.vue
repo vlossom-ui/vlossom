@@ -1,6 +1,6 @@
 <template>
     <Transition name="vs-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
-        <div v-if="open" class="vs-expandable-wrapper" :style="styleSetVariables">
+        <div v-if="open" class="vs-expandable-wrapper">
             <div class="vs-expandable-content" :style="componentStyleSet.component">
                 <slot />
             </div>
@@ -26,7 +26,7 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;
@@ -85,7 +85,6 @@ export default defineComponent({
 
         return {
             componentStyleSet,
-            styleSetVariables,
             beforeEnter,
             enter,
             beforeLeave,

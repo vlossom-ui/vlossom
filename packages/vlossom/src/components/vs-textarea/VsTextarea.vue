@@ -22,7 +22,7 @@
             ref="textareaRef"
             :id="computedId"
             :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+            :style="componentStyleSet.component"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
             :name
@@ -97,7 +97,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min);
@@ -185,7 +185,6 @@ export default defineComponent({
             classObj,
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
             stateClasses,
             computedId,
             computedDisabled,
