@@ -15,9 +15,9 @@
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
                 <vs-inner-scroll
                     :class="['vs-drawer-content', `vs-drawer-${placement}`]"
-                    :style="{ ...componentStyleSet.content }"
                     :style-set="{
                         header: componentStyleSet.header,
+                        content: componentStyleSet.content,
                         footer: componentStyleSet.footer,
                     }"
                     :hide-scroll
