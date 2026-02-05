@@ -11,7 +11,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.variables).toEqual({
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '70%',
                 height: '66%',
             });
@@ -24,7 +24,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.variables).toEqual({
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '500px',
                 height: '500px',
             });
@@ -39,7 +39,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.variables).toEqual({
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '600px',
                 height: '400px',
             });
@@ -54,7 +54,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.variables).toEqual({
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '600px',
                 height: '50%',
             });
@@ -69,7 +69,7 @@ describe('VsModalNode', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.variables).toEqual({
+            expect(wrapper.vm.componentStyleSet.component).toEqual({
                 width: '45%',
                 height: '400px',
             });
