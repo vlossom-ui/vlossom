@@ -162,7 +162,7 @@ export default defineComponent({
             validator: (value: number, props: unknown) => {
                 const _props = props as PropsOf<VsComponent.VsTable>;
                 if (value <= 0) {
-                    logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 0');
+                    logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 1');
                     return false;
                 }
                 if (_props.pagination && typeof _props.pagination === 'object' && _props.pagination.pageSizeOptions) {
@@ -175,22 +175,7 @@ export default defineComponent({
                 return true;
             },
         },
-        pagedItems: {
-            type: Array as PropType<Item[]>,
-            default: () => [],
-            validator: (value: Item[], props: unknown) => {
-                const _props = props as PropsOf<VsComponent.VsTable>;
-                if (!Array.isArray(value)) {
-                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be an array');
-                    return false;
-                }
-                if (!!_props.pageSize && value.length > _props.pageSize) {
-                    logUtil.propError(componentName, 'pagedItems', 'pagedItems must be less than pageSize.');
-                    return false;
-                }
-                return true;
-            },
-        },
+        pagedItems: { type: Array as PropType<Item[]>, default: () => [] },
         totalItems: {
             type: Array as PropType<Item[]>,
             default: () => [],

@@ -11,7 +11,7 @@ export function getSearchProps() {
                 if (typeof value === 'boolean') {
                     return true;
                 }
-                return objectUtil.isEmpty(value);
+                return !objectUtil.isEmpty(value);
             },
         },
     };
