@@ -31,10 +31,6 @@ export interface VsCheckboxStyleSet {
 }
 
 export interface VsCheckboxSetStyleSet {
-    variables?: {
-        gap?: string;
-        flexWrap?: string;
-    };
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }

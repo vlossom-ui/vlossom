@@ -251,10 +251,6 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxSetStyleSet {
-    variables?: {
-        gap?: string;
-        flexWrap?: string;
-    };
     checkbox?: {
         variables?: {
             borderRadius?: string;

@@ -1,11 +1,8 @@
 .vs-checkbox-set {
-    --vs-checkbox-set-gap: initial;
-    --vs-checkbox-set-flex-wrap: initial;
-
     @apply flex flex-wrap items-center;
 
-    flex-wrap: var(--vs-checkbox-set-flex-wrap, wrap);
-    gap: var(--vs-checkbox-set-gap, 1.4rem);
+    flex-wrap: wrap;
+    gap: 1.4rem;
 
     &.vs-vertical {
         @apply flex-col items-start;
