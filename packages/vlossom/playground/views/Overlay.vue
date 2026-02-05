@@ -201,7 +201,7 @@ export default defineComponent({
         const drawerStyleSet = computed((): VsDrawerStyleSet => {
             if (drawerOptions.fixed && drawerOptions.placement !== 'bottom') {
                 return {
-                    variables: {
+                    content: {
                         padding: '3rem 0 0 0',
                     },
                 };
