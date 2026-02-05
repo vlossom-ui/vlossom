@@ -1,36 +1,23 @@
 @reference 'tailwindcss';
 
 .vs-input {
-    --vs-input-padding: initial;
-    --vs-input-fontColor: initial;
-    --vs-input-fontSize: initial;
-    --vs-input-fontWeight: initial;
-
-    --vs-input-prepend-backgroundColor: initial;
-    --vs-input-prepend-padding: initial;
-    --vs-input-prepend-opacity: initial;
-
-    --vs-input-append-backgroundColor: initial;
-    --vs-input-append-padding: initial;
-    --vs-input-append-opacity: initial;
-
     @apply relative box-border flex items-center overflow-hidden;
-    opacity: 1;
+
     border: solid 1px var(--vs-line-color);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
     height: var(--vs-default-comp-height-md);
-    color: var(--vs-input-fontColor, var(--vs-font-color));
-    font-weight: var(--vs-input-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-input-fontSize, var(--vs-font-size-md));
+    color: var(--vs-font-color);
+    font-weight: var(--vs-font-weight);
+    font-size: var(--vs-font-size-md);
 
     input {
         @apply w-full border-none bg-transparent outline-none;
 
-        padding: var(--vs-input-padding, 0 0.8rem);
-        color: var(--vs-input-fontColor, var(--vs-font-color));
-        font-weight: var(--vs-input-fontWeight, var(--vs-font-weight));
-        font-size: var(--vs-input-fontSize, var(--vs-font-size-md));
+        padding: 0 0.8rem;
+        color: var(--vs-font-color);
+        font-weight: var(--vs-font-weight);
+        font-size: var(--vs-font-size-md);
     }
 
     .vs-prepend,
@@ -38,16 +25,11 @@
         @apply relative flex h-full flex-nowrap items-center justify-center border-none whitespace-nowrap;
     }
 
-    .vs-prepend {
-        opacity: var(--vs-input-prepend-opacity, 1);
-        background-color: var(--vs-input-prepend-backgroundColor, var(--vs-primary-comp-bg));
-        padding: var(--vs-input-prepend-padding, 0 1rem);
-    }
-
+    .vs-prepend,
     .vs-append {
-        opacity: var(--vs-input-append-opacity, 1);
-        background-color: var(--vs-input-append-backgroundColor, var(--vs-primary-comp-bg));
-        padding: var(--vs-input-append-padding, 0 1rem);
+        opacity: 1;
+        background-color: var(--vs-primary-comp-bg);
+        padding: 0 1rem;
     }
 
     .vs-clear-button {

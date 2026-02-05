@@ -19,21 +19,9 @@ export type VsInputValueType = string | number | null;
 
 export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
-interface AttachmentVariables {
-    opacity?: number;
-    backgroundColor?: string;
-    padding?: string;
-}
-
 export interface VsInputStyleSet {
-    variables?: {
-        padding?: string;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-        prepend?: AttachmentVariables;
-        append?: AttachmentVariables;
-    };
+    prepend?: CSSProperties;
+    append?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

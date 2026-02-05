@@ -18,11 +18,8 @@
             <slot name="label" />
         </template>
 
-        <div
-            :class="['vs-input', colorSchemeClass, classObj, stateClasses]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
-        >
-            <div v-if="$slots['prepend']" class="vs-prepend">
+        <div :class="['vs-input', colorSchemeClass, classObj, stateClasses]" :style="componentStyleSet.component">
+            <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.prepend">
                 <slot name="prepend" />
             </div>
 
@@ -58,7 +55,7 @@
                 </i>
             </button>
 
-            <div v-if="$slots['append']" class="vs-append">
+            <div v-if="$slots['append']" class="vs-append" :style="componentStyleSet.append">
                 <slot name="append" />
             </div>
         </div>

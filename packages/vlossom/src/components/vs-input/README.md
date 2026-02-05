@@ -175,22 +175,8 @@ function clearInput() {
 
 ```typescript
 interface VsInputStyleSet {
-    variables?: {
-        padding?: string;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: number;
-        prepend?: {
-            opacity?: number;
-            backgroundColor?: string;
-            padding?: string;
-        };
-        append?: {
-            opacity?: number;
-            backgroundColor?: string;
-            padding?: string;
-        };
-    };
+    prepend?: CSSProperties;
+    append?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

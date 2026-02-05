@@ -511,22 +511,33 @@ export const StyleSet: Story = {
             const value = ref('');
             return { args, value };
         },
-        template: '<vs-input v-bind="args" v-model="value" />',
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-input v-bind="args" v-model="value" />
+                <vs-input v-bind="args" v-model="value">
+                    <template #prepend>https://</template>
+                    <template #append>.com</template>
+                </vs-input>
+            </div>
+        `,
     }),
     args: {
         label: '커스텀 스타일',
         placeholder: '커스텀 입력 필드',
         styleSet: {
-            variables: {
-                fontColor: '#1565c0',
-                fontSize: '1.1rem',
-                padding: '0 1.5rem',
-            },
             component: {
                 backgroundColor: '#f0f8ff',
                 border: '2px solid #1e88e5',
                 borderRadius: '12px',
                 height: '3.5rem',
+            },
+            prepend: {
+                backgroundColor: '#e3f2fd',
+                padding: '0 1rem',
+            },
+            append: {
+                backgroundColor: '#e3f2fd',
+                padding: '0 1rem',
             },
         },
     },
