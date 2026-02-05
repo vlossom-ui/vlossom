@@ -31,11 +31,19 @@ export default defineComponent({
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const baseStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => ({}));
+        const baseStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => ({
+            component: {
+                height: '3rem',
+                zIndex: 'var(--vs-bar-z-index)',
+                bottom: 0,
+                left: 0,
+            },
+        }));
         const additionalStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => {
             return objectUtil.shake({
                 component: objectUtil.shake({
                     height: height.value || undefined,
+                    position: position.value || undefined,
                 }),
             });
         });
@@ -49,14 +57,11 @@ export default defineComponent({
         const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
 
         const computedStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => {
+            const component = componentStyleSet.value.component || {};
             return {
                 component: objectUtil.shake({
-                    ...componentStyleSet.value.component,
-                    position: position.value || undefined,
-                    bottom: (isPositioned.value && componentStyleSet.value.component?.bottom) || 0,
-                    left: (isPositioned.value && componentStyleSet.value.component?.left) || 0,
-                    height: componentStyleSet.value.component?.height || '3rem',
-                    zIndex: componentStyleSet.value.component?.zIndex || 'var(--vs-bar-z-index)',
+                    ...component,
+                    ...(isPositioned.value ? {} : { bottom: 0, left: 0 }),
                 }),
             };
         });
