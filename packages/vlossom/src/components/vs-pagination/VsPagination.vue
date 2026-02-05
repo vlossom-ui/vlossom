@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]" :style="styleSetVariables">
+    <div :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]" :style="componentStyleSet.component">
         <vs-button
             v-if="edgeButtons"
             class="vs-pagination-control-button"

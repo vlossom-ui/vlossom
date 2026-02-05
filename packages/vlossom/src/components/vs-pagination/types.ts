@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsButtonStyleSet } from '@/components/vs-button/types';
 import type VsPagination from './VsPagination.vue';
 
@@ -19,9 +19,7 @@ export interface VsPaginationRef extends ComponentPublicInstance<typeof VsPagina
 }
 
 export interface VsPaginationStyleSet {
-    variables?: {
-        gap?: string;
-    };
+    component?: CSSProperties;
     pageButton?: Omit<VsButtonStyleSet, 'loading'>;
     controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }

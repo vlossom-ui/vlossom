@@ -94,26 +94,18 @@
 
 ```typescript
 interface VsPaginationStyleSet {
-    variables?: {
-        gap?: string;
-    };
+    component?: CSSProperties;
     pageButton?: {
         variables?: {
             padding?: string;
         };
         component?: CSSProperties;
-        loading?: {
-            component?: CSSProperties;
-        };
     };
     controlButton?: {
         variables?: {
             padding?: string;
         };
         component?: CSSProperties;
-        loading?: {
-            component?: CSSProperties;
-        };
     };
 }
 ```
@@ -126,7 +118,7 @@ interface VsPaginationStyleSet {
         v-model="currentPage"
         :length="20"
         :style-set="{
-            variables: {
+            component: {
                 gap: '1rem',
             },
             pageButton: {

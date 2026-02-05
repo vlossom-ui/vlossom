@@ -1,16 +1,14 @@
 @reference 'tailwindcss';
 
 .vs-pagination {
-    --vs-pagination-gap: initial;
-
     @apply relative flex items-center justify-center;
 
-    gap: var(--vs-pagination-gap, 0.5rem);
+    gap: 0.5rem;
 
     .vs-page-buttons {
         @apply flex items-center justify-center overflow-x-auto select-none;
 
-        gap: var(--vs-pagination-gap, 0.5rem);
+        gap: 0.5rem;
         margin-block: -4px;
         padding-block: 4px;
 

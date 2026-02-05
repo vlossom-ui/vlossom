@@ -244,7 +244,7 @@ export const StyleSet: Story = {
     args: {
         length: 10,
         styleSet: {
-            variables: {
+            component: {
                 gap: '2rem',
             },
             pageButton: {
