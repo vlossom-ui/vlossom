@@ -71,17 +71,6 @@ function checkScroll() {
 </script>
 ```
 
-## Types
-
-```typescript
-interface VsInnerScrollStyleSet {
-    component?: CSSProperties;
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
-}
-```
-
 ## StyleSet 사용 예시
 
 ```html
