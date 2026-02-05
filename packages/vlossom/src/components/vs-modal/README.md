@@ -77,18 +77,10 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 ### Types
 
 ```typescript
+import type { CSSProperties } from 'vue';
+
 interface VsModalNodeStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        boxShadow?: string;
-        fontColor?: string;
-    };
+    component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
 }
 
@@ -166,18 +158,10 @@ interface OverlayCallbacks<T = void> {
 ### Types
 
 ```typescript
+import type { CSSProperties } from 'vue';
+
 interface VsModalNodeStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        boxShadow?: string;
-        fontColor?: string;
-    };
+    component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
 }
 

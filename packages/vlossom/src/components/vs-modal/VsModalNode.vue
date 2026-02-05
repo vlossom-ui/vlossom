@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-modal-node', colorSchemeClass]" :style="styleSetVariables">
+    <div :class="['vs-modal-node', colorSchemeClass]">
         <vs-dimmed
             v-if="dimmed"
             :model-value="dimmed"
@@ -7,7 +7,13 @@
             @click.prevent.stop="onClickDimmed"
         />
         <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef">
-            <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
+            <div
+                class="vs-modal-wrap"
+                role="dialog"
+                aria-label="Modal"
+                :aria-modal="true"
+                :style="componentStyleSet.component"
+            >
                 <slot />
             </div>
         </vs-focus-trap>
@@ -93,7 +99,7 @@ export default defineComponent({
             }
 
             return objectUtil.shake({
-                variables: objectUtil.shake(result),
+                component: objectUtil.shake(result),
             });
         });
 

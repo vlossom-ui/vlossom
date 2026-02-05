@@ -1,16 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-modal-node {
-    --vs-modal-node-width: initial;
-    --vs-modal-node-height: initial;
-    --vs-modal-node-backgroundColor: initial;
-    --vs-modal-node-border: initial;
-    --vs-modal-node-borderRadius: initial;
-    --vs-modal-node-padding: initial;
-    --vs-modal-node-opacity: initial;
-    --vs-modal-node-boxShadow: initial;
-    --vs-modal-node-fontColor: initial;
-
     @apply absolute top-0 left-0 h-full w-full;
 
     z-index: var(--vs-modal-z-index);
@@ -19,14 +9,14 @@
         @apply pointer-events-auto absolute top-1/2 left-1/2 overflow-auto;
 
         transform: translate(-50%, -50%);
-        opacity: var(--vs-modal-node-opacity, 1);
-        box-shadow: var(--vs-modal-node-boxShadow, var(--vs-area-shadow-outer));
-        border: var(--vs-modal-node-border, none);
-        border-radius: var(--vs-modal-node-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-        background-color: var(--vs-modal-node-backgroundColor, var(--vs-area-bg));
-        padding: var(--vs-modal-node-padding, 1.8rem 2.4rem);
-        width: var(--vs-modal-node-width, fit-content);
-        height: var(--vs-modal-node-height, fit-content);
-        color: var(--vs-modal-node-fontColor, var(--vs-font-color));
+        opacity: 1;
+        box-shadow: var(--vs-area-shadow-outer);
+        border: none;
+        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        background-color: var(--vs-area-bg);
+        padding: 1.8rem 2.4rem;
+        width: fit-content;
+        height: fit-content;
+        color: var(--vs-font-color);
     }
 }
