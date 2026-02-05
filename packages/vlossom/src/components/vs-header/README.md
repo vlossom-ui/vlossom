@@ -88,10 +88,10 @@
 ## Types
 
 ```typescript
-interface VsHeaderStyleSet {
-    component?: CSSProperties;
-}
+interface VsHeaderStyleSet extends VsBarStyleSet {}
 ```
+
+> `VsBarStyleSet`에 대한 자세한 내용은 [VsBar](../vs-bar/README.md#types)를 참고하세요.
 
 ## Slots
 
