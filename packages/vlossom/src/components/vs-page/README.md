@@ -30,18 +30,16 @@
 <template>
     <vs-page
         :style-set="{
-            variables: {
-                padding: '3rem 4rem',
-                title: {
-                    padding: '0 0 1.5rem 0',
-                },
-                description: {
-                    padding: '0 0 2rem 0',
-                },
-            },
             component: {
                 backgroundColor: '#f9f9f9',
                 borderRadius: '8px',
+                padding: '3rem 4rem',
+            },
+            title: {
+                padding: '0 0 1.5rem 0',
+            },
+            description: {
+                padding: '0 0 2rem 0',
             },
         }"
     >
@@ -68,30 +66,24 @@
 
 ```typescript
 interface VsPageStyleSet {
-    variables?: {
-        padding?: string;
-        title?: {
-            padding?: string;
-        };
-        description?: {
-            padding?: string;
-        };
-    };
     component?: CSSProperties;
+    title?: CSSProperties;
+    description?: CSSProperties;
 }
 ```
 
 ## Slots
 
-| Slot          | Description                                                     |
-| ------------- | --------------------------------------------------------------- |
-| `default`     | 페이지의 메인 콘텐츠 영역                                       |
-| `title`       | 페이지 제목 (선택적, 볼드체 XL 사이즈, 줄바꿈 방지 기본 스타일) |
-| `description` | 페이지 설명 (선택적, 라이트 웨이트 SM 사이즈 기본 스타일)       |
+| Slot          | Description                |
+| ------------- | -------------------------- |
+| `default`     | 페이지의 메인 콘텐츠 영역  |
+| `title`       | 페이지 제목 (선택적)       |
+| `description` | 페이지 설명 (선택적)       |
 
 ## 특징
 
 - **반응형 패딩**: TailwindCSS의 Container Query를 사용하여 화면 크기에 따라 자동으로 패딩 조정
+    - 기본: `2rem 3rem`
     - 1024px 이하: `1.8rem 2.5rem`
     - 768px 이하: `1.4rem 2rem`
     - 640px 이하: `1rem 1.5rem`

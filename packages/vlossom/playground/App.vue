@@ -17,11 +17,11 @@
         </vs-header>
 
         <vs-container class="flex-1 pb-32 lg:pr-96">
-            <vs-page class="w-full" :style-set="{ variables: { padding: '0 2rem' } }">
+            <vs-page class="w-full" :style-set="{ component: { padding: '0 2rem' } }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
-                    <vs-page class="mb-8" :style-set="{ variables: { padding: '0' } }">
+                    <vs-page class="mb-8" :style-set="{ component: { padding: '0' } }">
                         <template #title>
                             <h2 class="mb-2 border-b-2 pb-2 text-2xl font-semibold">Sandbox</h2>
                         </template>

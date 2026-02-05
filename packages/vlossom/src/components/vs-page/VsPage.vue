@@ -1,9 +1,9 @@
 <template>
     <div class="vs-page" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
-        <div v-if="$slots['title']" class="vs-page-title">
+        <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.title">
             <slot name="title" />
         </div>
-        <div v-if="$slots['description']" class="vs-page-description">
+        <div v-if="$slots['description']" class="vs-page-description" :style="componentStyleSet.description">
             <slot name="description" />
         </div>
 

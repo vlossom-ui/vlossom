@@ -12,10 +12,7 @@ export type { VsPage };
 export interface VsPageRef extends ComponentPublicInstance<typeof VsPage> {}
 
 export interface VsPageStyleSet {
-    variables?: {
-        padding?: string;
-        title?: { padding?: string };
-        description?: { padding?: string };
-    };
     component?: CSSProperties;
+    title?: CSSProperties;
+    description?: CSSProperties;
 }
