@@ -12,12 +12,16 @@
                 :model-value="isDimmed"
                 @click.prevent.stop="onClickDimmed"
             />
-            <vs-focus-trap
-                ref="focusTrapRef"
-                :class="['vs-drawer-content', `vs-drawer-${placement}`]"
-                :disabled="!focusLock"
-            >
-                <vs-inner-scroll :style-set="componentStyleSet.layout" :hide-scroll>
+            <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
+                <vs-inner-scroll
+                    :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                    :style="{ ...componentStyleSet.content }"
+                    :style-set="{
+                        header: componentStyleSet.header,
+                        footer: componentStyleSet.footer,
+                    }"
+                    :hide-scroll
+                >
                     <template #header>
                         <slot name="header" />
                     </template>

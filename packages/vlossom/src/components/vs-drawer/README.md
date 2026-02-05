@@ -145,17 +145,13 @@ const drawerOpen = ref(false);
 ```typescript
 interface VsDrawerStyleSet {
     variables?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        size?: string;
-        boxShadow?: string;
+        size?: string; // 드로어 크기 (width 또는 height)
     };
-    component?: CSSProperties;
-    dimmed?: VsDimmedStyleSet;
-    layout?: VsInnerScrollStyleSet;
+    component?: CSSProperties; // .vs-drawer (최상위 컨테이너) 스타일
+    dimmed?: VsDimmedStyleSet; // 배경 딤드 스타일
+    header?: CSSProperties; // 헤더 슬롯 영역 스타일
+    content?: CSSProperties; // 드로어 컨텐츠 컨테이너 스타일 (backgroundColor, borderRadius 등)
+    footer?: CSSProperties; // 푸터 슬롯 영역 스타일
 }
 
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
@@ -169,14 +165,21 @@ type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
         v-model="drawerOpen"
         :style-set="{
             variables: {
-                backgroundColor: '#f5f5f5',
-                padding: '2rem',
-                borderRadius: '8px',
                 size: '400px',
             },
-            component: {
-                position: 'fixed',
-                zIndex: 1000,
+            content: {
+                backgroundColor: '#1e293b',
+                color: '#f8fafc',
+                borderRadius: '0 16px 16px 0',
+                boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)',
+            },
+            header: {
+                backgroundColor: '#334155',
+                borderBottom: '1px solid #475569',
+            },
+            footer: {
+                backgroundColor: '#334155',
+                borderTop: '1px solid #475569',
             },
             dimmed: {
                 component: {
