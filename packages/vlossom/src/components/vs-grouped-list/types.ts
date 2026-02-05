@@ -1,7 +1,6 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { OptionItem } from '@/declaration';
 import type VsGroupedList from './VsGroupedList.vue';
-import type { VsInnerScrollStyleSet } from '@/components/vs-inner-scroll/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -21,7 +20,9 @@ export interface VsGroupedListStyleSet {
         gap?: string;
         height?: string;
     };
-    layout?: VsInnerScrollStyleSet;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
     group?: CSSProperties;
     item?: CSSProperties;
 }

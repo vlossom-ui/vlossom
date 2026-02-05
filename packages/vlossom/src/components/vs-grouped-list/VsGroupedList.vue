@@ -3,7 +3,11 @@
         ref="innerScrollRef"
         class="vs-grouped-list"
         :style="styleSetVariables"
-        :style-set="componentStyleSet.layout"
+        :style-set="{
+            header: componentStyleSet.header,
+            content: componentStyleSet.content,
+            footer: componentStyleSet.footer,
+        }"
     >
         <template #header v-if="$slots.header">
             <slot name="header" />

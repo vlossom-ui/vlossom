@@ -206,7 +206,9 @@ interface VsGroupedListStyleSet {
         gap?: string;
         height?: string;
     };
-    layout?: VsInnerScrollStyleSet;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
     group?: CSSProperties;
     item?: CSSProperties;
 }
