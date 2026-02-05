@@ -5,7 +5,7 @@
         :grid
         :width
     >
-        <vs-inner-scroll :style-set="componentStyleSet.layout">
+        <vs-inner-scroll :style-set="{ header: componentStyleSet.title, content: componentStyleSet.content }">
             <template #header v-if="$slots['title']">
                 <div class="vs-block-title">
                     <slot name="title" />

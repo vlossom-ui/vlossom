@@ -96,7 +96,8 @@ interface VsBlockStyleSet {
         };
     };
     component?: CSSProperties;
-    layout?: VsInnerScrollStyleSet;
+    title?: CSSProperties;
+    content?: CSSProperties;
 }
 ```
 
