@@ -1,11 +1,11 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="computedStyle">
+    <component :is="tag" class="vs-grid" :style="[componentStyleSet.component, styleSetVariables]">
         <slot />
     </component>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import { getGridProps, getStyleSetProps } from '@/props';
@@ -28,31 +28,28 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsGridStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsGridStyleSet>> = computed(() => {
             return objectUtil.shake({
-                variables: objectUtil.shake({
-                    gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
+                component: objectUtil.shake({
+                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
                     columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
                     rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
+                }),
+                variables: objectUtil.shake({
+                    gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
                 }),
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsGridStyleSet>(
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGridStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
             additionalStyleSet,
         );
 
-        const computedStyle = computed((): CSSProperties => {
-            return {
-                ...styleSetVariables.value,
-                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-            };
-        });
-
         return {
-            computedStyle,
+            componentStyleSet,
+            styleSetVariables,
         };
     },
 });
