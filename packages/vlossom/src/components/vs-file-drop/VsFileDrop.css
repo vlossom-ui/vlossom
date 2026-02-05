@@ -1,7 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-file-drop {
-    --vs-file-drop-padding: initial;
     --vs-file-drop-dragBackgroundColor: initial;
     --vs-file-drop-iconColor: initial;
 
@@ -36,7 +35,7 @@
 
         .vs-file-drop-files {
             @apply m-1 flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-2 overflow-x-hidden overflow-y-auto;
-            padding: var(--vs-file-drop-padding, 1rem);
+            padding: 1rem;
 
             > div {
                 @apply flex w-full max-w-full min-w-0;
@@ -63,7 +62,7 @@
 
         .vs-file-drop-placeholder {
             @apply flex flex-col items-center justify-center;
-            padding: var(--vs-file-drop-padding, 1rem);
+            padding: 1rem;
 
             .placeholder-icon {
                 color: var(--vs-file-drop-iconColor, var(--vs-font-color));

@@ -84,12 +84,17 @@ const files = ref<File[]>([]);
         :style-set="{
             variables: {
                 dragBackgroundColor: '#e3f2fd',
-                iconColor: '#1e88e5',
-                padding: '2rem'
+                iconColor: '#1e88e5'
             },
             component: {
                 border: '2px dashed #1e88e5',
                 borderRadius: '16px'
+            },
+            files: {
+                padding: '2rem'
+            },
+            placeholder: {
+                padding: '2rem'
             }
         }"
     />
@@ -175,7 +180,6 @@ export type FileDropValueType = File[];
 
 interface VsFileDropStyleSet {
     variables?: {
-        padding?: string;
         dragBackgroundColor?: string;
         iconColor?: string;
     };

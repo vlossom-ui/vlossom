@@ -18,7 +18,6 @@ export type FileDropValueType = File[];
 
 export interface VsFileDropStyleSet {
     variables?: {
-        padding?: string;
         dragBackgroundColor?: string;
         iconColor?: string;
     };

@@ -34,11 +34,16 @@ const meta: Meta<typeof VsFileDrop> = {
             const preDefinedStyleSet: VsFileDropStyleSet = {
                 variables: {
                     dragBackgroundColor: '#e3f2fd',
-                    padding: '2rem',
                 },
                 component: {
                     border: '2px dashed #1e88e5',
                     borderRadius: '12px',
+                },
+                files: {
+                    padding: '2rem',
+                },
+                placeholder: {
+                    padding: '2rem',
                 },
             } as const;
 
@@ -432,12 +437,17 @@ export const StyleSet: Story = {
         styleSet: {
             variables: {
                 dragBackgroundColor: '#ffccbc',
-                padding: '2rem',
             },
             component: {
                 border: '2px dashed #ff5722',
                 borderRadius: '16px',
                 backgroundColor: '#ffebee',
+            },
+            files: {
+                padding: '2rem',
+            },
+            placeholder: {
+                padding: '2rem',
             },
         },
     },
