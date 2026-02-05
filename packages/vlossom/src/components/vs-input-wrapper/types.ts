@@ -13,20 +13,8 @@ export type { VsInputWrapper };
 export interface VsInputWrapperRef extends ComponentPublicInstance<typeof VsInputWrapper> {}
 
 export interface VsInputWrapperStyleSet {
-    variables?: {
-        width?: string;
-        label?: {
-            marginBottom?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: number;
-        };
-        messages?: {
-            marginTop?: string;
-        };
-    };
     component?: CSSProperties;
-    messages?: {
-        size?: Size;
-    };
+    label?: CSSProperties;
+    message?: CSSProperties;
+    messageSize?: Size;
 }

@@ -92,23 +92,13 @@ interface StateMessage<T extends string = UIState> {
 
 type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
 interface VsInputWrapperStyleSet {
-    variables?: {
-        width?: string;
-        label?: {
-            marginBottom?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: number;
-        };
-        messages?: {
-            marginTop?: string;
-        };
-    };
-    component?: CSSProperties;
-    messages?: {
-        size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-    };
+    component?: CSSProperties; // 루트 컴포넌트 스타일
+    label?: CSSProperties; // 라벨 영역 스타일
+    message?: CSSProperties; // 메시지 영역 스타일
+    messageSize?: Size; // 메시지 크기 (기본값: 'sm')
 }
 ```
 

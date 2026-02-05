@@ -3,7 +3,7 @@
         :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="componentStyleSet.component"
     >
         <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
@@ -11,6 +11,7 @@
                 v-if="!noLabel && (!!label || !!$slots.label)"
                 class="vs-label"
                 :class="{ 'vs-disabled': disabled }"
+                :style="componentStyleSet.label"
             >
                 <slot name="label">
                     <span>{{ label }}</span>
@@ -24,6 +25,7 @@
         <div
             v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
+            :style="componentStyleSet.message"
         >
             <slot name="messages">
                 <vs-message
@@ -69,8 +71,8 @@ export default defineComponent({
         const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
 
         const messageSize = computed((): Size => {
-            if (componentStyleSet.value?.messages?.size) {
-                return componentStyleSet.value.messages.size;
+            if (componentStyleSet.value?.messageSize) {
+                return componentStyleSet.value.messageSize;
             }
 
             return 'sm';
