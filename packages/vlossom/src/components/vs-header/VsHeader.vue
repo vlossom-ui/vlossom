@@ -1,5 +1,5 @@
 <template>
-    <vs-bar :tag :class="['vs-header', colorSchemeClass, classObj]" :style-set="computedStyleSet" :position>
+    <vs-bar :tag :class="['vs-header', colorSchemeClass, classObj]" :style-set="componentStyleSet" :position>
         <slot />
     </vs-bar>
 </template>
@@ -31,11 +31,23 @@ export default defineComponent({
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const baseStyleSet: ComputedRef<VsHeaderStyleSet> = computed(() => ({}));
+
+        const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
+
+        const baseStyleSet: ComputedRef<VsHeaderStyleSet> = computed(() => ({
+            component: {
+                height: '3rem',
+                zIndex: 'var(--vs-bar-z-index)',
+                top: 0,
+                left: 0,
+            },
+        }));
         const additionalStyleSet: ComputedRef<Partial<VsHeaderStyleSet>> = computed(() => {
             return objectUtil.shake({
                 component: objectUtil.shake({
                     height: height.value || undefined,
+                    position: position.value || undefined,
+                    ...(isPositioned.value ? {} : { top: 0, left: 0 }),
                 }),
             });
         });
@@ -45,21 +57,6 @@ export default defineComponent({
             baseStyleSet,
             additionalStyleSet,
         );
-
-        const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
-
-        const computedStyleSet: ComputedRef<VsHeaderStyleSet> = computed(() => {
-            return {
-                component: objectUtil.shake({
-                    ...componentStyleSet.value.component,
-                    position: position.value || undefined,
-                    top: (isPositioned.value && componentStyleSet.value.component?.top) || 0,
-                    left: (isPositioned.value && componentStyleSet.value.component?.left) || 0,
-                    height: componentStyleSet.value.component?.height || '3rem',
-                    zIndex: componentStyleSet.value.component?.zIndex || 'var(--vs-bar-z-index)',
-                }),
-            };
-        });
 
         const classObj = computed(() => ({
             'vs-primary': primary.value,
@@ -75,12 +72,12 @@ export default defineComponent({
             }
             const headerLayout: BarLayout = {
                 position: position.value || 'relative',
-                height: (computedStyleSet.value.component?.height as string) || '3rem',
+                height: (componentStyleSet.value.component?.height as string) || '3rem',
             };
             layoutStore.setHeader(headerLayout);
         });
 
-        return { colorSchemeClass, computedStyleSet, classObj, isLayoutChild, position };
+        return { colorSchemeClass, componentStyleSet, classObj, isLayoutChild, position };
     },
 });
 </script>

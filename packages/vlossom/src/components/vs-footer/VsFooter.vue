@@ -1,5 +1,5 @@
 <template>
-    <vs-bar :tag :class="['vs-footer', colorSchemeClass, classObj]" :style-set="computedStyleSet" :position>
+    <vs-bar :tag :class="['vs-footer', colorSchemeClass, classObj]" :style-set="componentStyleSet" :position>
         <slot />
     </vs-bar>
 </template>
@@ -31,6 +31,9 @@ export default defineComponent({
         const { colorScheme, styleSet, primary, position, height } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+
+        const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
+
         const baseStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => ({
             component: {
                 height: '3rem',
@@ -44,6 +47,7 @@ export default defineComponent({
                 component: objectUtil.shake({
                     height: height.value || undefined,
                     position: position.value || undefined,
+                    ...(isPositioned.value ? {} : { bottom: 0, left: 0 }),
                 }),
             });
         });
@@ -53,18 +57,6 @@ export default defineComponent({
             baseStyleSet,
             additionalStyleSet,
         );
-
-        const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
-
-        const computedStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => {
-            const component = componentStyleSet.value.component || {};
-            return {
-                component: objectUtil.shake({
-                    ...component,
-                    ...(isPositioned.value ? {} : { bottom: 0, left: 0 }),
-                }),
-            };
-        });
 
         const classObj = computed(() => ({
             'vs-primary': primary.value,
@@ -80,12 +72,12 @@ export default defineComponent({
             }
             const footerLayout: BarLayout = {
                 position: position.value || 'relative',
-                height: (computedStyleSet.value.component?.height as string) || '3rem',
+                height: (componentStyleSet.value.component?.height as string) || '3rem',
             };
             layoutStore.setFooter(footerLayout);
         });
 
-        return { colorSchemeClass, computedStyleSet, classObj, isLayoutChild, position };
+        return { colorSchemeClass, componentStyleSet, classObj, isLayoutChild, position };
     },
 });
 </script>
