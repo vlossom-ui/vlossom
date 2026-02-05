@@ -84,11 +84,35 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             variables: {
-                border: '3px solid black',
-                borderRadius: '100%',
                 width: '300px',
                 height: '300px',
-                objectFit: 'cover',
+            },
+        },
+    },
+};
+
+export const SkeletonStyleSet: Story = {
+    render: (args: any) => ({
+        components: { VsImage },
+        setup() {
+            return { args };
+        },
+        template: '<vs-image v-bind="args"/>',
+    }),
+    args: {
+        src: lazySrc,
+        styleSet: {
+            variables: {
+                width: '200px',
+                height: '200px',
+            },
+            skeleton: {
+                component: {
+                    width: '200px',
+                    height: '200px',
+                    borderRadius: '50%',
+                    backgroundColor: '#e0e0e0',
+                },
             },
         },
     },

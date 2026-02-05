@@ -9,6 +9,7 @@
             :alt="alt"
             @load.stop="onImageLoad"
             @error.stop="onImageError"
+            :style="{ ...componentStyleSet.component }"
         />
     </div>
 </template>
@@ -40,14 +41,7 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, src, fallback, lazy } = toRefs(props);
 
-        const baseStyleSet: ComputedRef<VsImageStyleSet> = computed(() => ({
-            skeleton: {
-                component: {
-                    width: '100%',
-                    height: '100%',
-                },
-            },
-        }));
+        const baseStyleSet: ComputedRef<VsImageStyleSet> = computed(() => ({}));
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsImageStyleSet>(
             componentName,
