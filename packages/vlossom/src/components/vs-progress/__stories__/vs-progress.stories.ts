@@ -21,11 +21,17 @@ const meta: Meta<typeof VsProgress> = {
         setup() {
             const preDefinedStyleSet: VsProgressStyleSet = {
                 variables: {
-                    borderRadius: '8px',
-                    backgroundColor: '#f0f0f0',
-                    valueColor: '#1e88e5',
-                    fontColor: '#fff',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                    bar: {
+                        borderRadius: '8px',
+                        backgroundColor: '#f0f0f0',
+                    },
+                    value: {
+                        backgroundColor: '#1e88e5',
+                    },
+                    label: {
+                        fontColor: '#fff',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                    },
                 },
                 component: {
                     width: '20rem',
@@ -183,11 +189,17 @@ export const StyleSet: Story = {
         label: '80%',
         styleSet: {
             variables: {
-                borderRadius: '12px',
-                backgroundColor: '#e0e0e0',
-                valueColor: '#e188e5',
-                fontColor: '#fff',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+                bar: {
+                    borderRadius: '12px',
+                    backgroundColor: '#e0e0e0',
+                },
+                value: {
+                    backgroundColor: '#e188e5',
+                },
+                label: {
+                    fontColor: '#fff',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+                },
             },
             component: {
                 width: '25rem',

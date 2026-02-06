@@ -13,12 +13,18 @@ export interface VsProgressRef extends ComponentPublicInstance<typeof VsProgress
 
 export interface VsProgressStyleSet {
     variables?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        fontColor?: string;
-        textShadow?: string;
-        valueColor?: string;
+        bar?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+        };
+        value?: {
+            backgroundColor?: string;
+        };
+        label?: {
+            textShadow?: string;
+            fontColor?: string;
+        };
     };
     component?: CSSProperties;
 }

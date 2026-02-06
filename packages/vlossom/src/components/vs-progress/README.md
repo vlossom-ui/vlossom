@@ -60,12 +60,18 @@ const progress = ref(75);
 ```typescript
 interface VsProgressStyleSet {
     variables?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        fontColor?: string;
-        textShadow?: string;
-        valueColor?: string;
+        bar?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+        };
+        value?: {
+            backgroundColor?: string;
+        };
+        label?: {
+            textShadow?: string;
+            fontColor?: string;
+        };
     };
     component?: CSSProperties;
 }
@@ -81,12 +87,18 @@ interface VsProgressStyleSet {
         label="업로드 중..."
         :style-set="{
             variables: {
-                backgroundColor: '#f0f0f0',
-                border: '2px solid #ddd',
-                borderRadius: '8px',
-                fontColor: '#333',
-                textShadow: '0 0 4px rgba(0,0,0,0.3)',
-                valueColor: '#4caf50',
+                bar: {
+                    backgroundColor: '#f0f0f0',
+                    border: '2px solid #ddd',
+                    borderRadius: '8px',
+                },
+                value: {
+                    backgroundColor: '#4caf50',
+                },
+                label: {
+                    fontColor: '#333',
+                    textShadow: '0 0 4px rgba(0,0,0,0.3)',
+                },
             },
             component: {
                 width: '400px',
