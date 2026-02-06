@@ -12,9 +12,7 @@ export type { VsTextWrap };
 export interface VsTextWrapRef extends ComponentPublicInstance<typeof VsTextWrap> {}
 
 export interface VsTextWrapStyleSet {
-    variables?: {
-        width?: string | number;
-    };
+    component?: CSSProperties;
     copyIcon?: CSSProperties;
     linkIcon?: CSSProperties;
 }

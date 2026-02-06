@@ -43,7 +43,7 @@ describe('VsTextWrap', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables['--vs-text-wrap-width']).toBe('200px');
+            expect(wrapper.vm.componentStyleSet.component?.width).toBe('200px');
         });
     });
 

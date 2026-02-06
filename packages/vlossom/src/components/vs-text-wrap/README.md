@@ -86,8 +86,8 @@ styleSet을 통한 스타일 커스터마이징:
         copy
         link="https://example.com"
         :style-set="{
-            variables: {
-                width: '500px',
+            component: {
+                width: '300px',
             },
             copyIcon: {
                 width: '1.5rem',
@@ -114,8 +114,8 @@ styleSet을 통한 스타일 커스터마이징:
     <vs-text-wrap
         width="300px"
         :style-set="{
-            variables: {
-                width: '500px',
+            component: {
+                width: '300px',
             },
         }"
     >
@@ -137,9 +137,7 @@ styleSet을 통한 스타일 커스터마이징:
 
 ```typescript
 interface VsTextWrapStyleSet {
-    variables?: {
-        width?: string | number;
-    };
+    component?: CSSProperties;
     copyIcon?: CSSProperties;
     linkIcon?: CSSProperties;
 }

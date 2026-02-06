@@ -1,10 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-text-wrap {
-    --vs-text-wrap-width: initial;
-
-    @apply relative inline-flex items-center overflow-x-auto;
-    width: var(--vs-text-wrap-width, 100%);
+    @apply relative inline-flex w-full items-center overflow-x-auto;
 
     .vs-text-wrap-contents {
         @apply relative truncate;

@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-text-wrap" :style="styleSetVariables">
+    <div class="vs-text-wrap" :style="componentStyleSet.component">
         <div ref="contentsRef" class="vs-text-wrap-contents">
             <slot />
         </div>
@@ -62,7 +62,7 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsTextWrapStyleSet>> = computed(() => {
             return objectUtil.shake({
-                variables: objectUtil.shake({
+                component: objectUtil.shake({
                     width:
                         !width.value || objectUtil.isObject(width.value)
                             ? undefined
@@ -71,7 +71,7 @@ export default defineComponent({
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTextWrapStyleSet>(
+        const { componentStyleSet } = useStyleSet<VsTextWrapStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -131,7 +131,6 @@ export default defineComponent({
 
         return {
             componentStyleSet,
-            styleSetVariables,
             contentText,
             contentsRef,
             copyInnerText,
