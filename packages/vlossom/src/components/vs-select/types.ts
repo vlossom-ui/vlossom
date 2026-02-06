@@ -22,10 +22,6 @@ export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSel
 export interface VsSelectStyleSet {
     variables?: {
         height?: string;
-        selected?: {
-            backgroundColor?: string;
-            fontWeight?: number;
-        };
         focused?: {
             border?: string;
             borderRadius?: string;
@@ -38,4 +34,5 @@ export interface VsSelectStyleSet {
     selectAllCheckbox?: VsCheckboxStyleSet;
     options?: VsGroupedListStyleSet;
     option?: CSSProperties;
+    selectedOption?: CSSProperties;
 }

@@ -90,7 +90,7 @@
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
                             <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
-                                <div class="vs-select-option">
+                                <div class="vs-select-option" :style="getOptionStyleSet(itemSlotProps.id)">
                                     {{ itemSlotProps.label }}
                                 </div>
                             </slot>
@@ -122,6 +122,7 @@ import {
     type PropType,
     type Ref,
     type TemplateRef,
+    type CSSProperties,
 } from 'vue';
 import { VsComponent, type OptionItem } from '@/declaration';
 import {
@@ -452,6 +453,13 @@ export default defineComponent({
             }, 50);
         }
 
+        function getOptionStyleSet(optionId: string): CSSProperties {
+            return {
+                ...componentStyleSet.value.option,
+                ...(isSelected(optionId) ? componentStyleSet.value.selectedOption : {}),
+            };
+        }
+
         function closeOptions() {
             if (!isOpen.value) {
                 return;
@@ -572,6 +580,7 @@ export default defineComponent({
             isEmpty,
             selectedOptions,
             deselectOption,
+            getOptionStyleSet,
         };
     },
 });

@@ -286,10 +286,6 @@ const selected = ref(null);
 interface VsSelectStyleSet {
     variables?: {
         height?: string;
-        selected?: {
-            backgroundColor?: string;
-            fontWeight?: number;
-        };
         focused?: {
             border?: string;
             borderRadius?: string;
@@ -302,6 +298,7 @@ interface VsSelectStyleSet {
     selectAllCheckbox?: VsCheckboxStyleSet;
     options?: VsGroupedListStyleSet;
     option?: CSSProperties;
+    selectedOption?: CSSProperties;
 }
 ```
 
@@ -315,10 +312,6 @@ interface VsSelectStyleSet {
         :style-set="{
             variables: {
                 height: '3rem',
-                selected: {
-                    backgroundColor: '#e3f2fd',
-                    fontWeight: 700,
-                },
                 focused: {
                     border: '2px solid #2196f3',
                     borderRadius: '8px',
@@ -327,6 +320,10 @@ interface VsSelectStyleSet {
             },
             component: {
                 fontSize: '1rem',
+            },
+            selectedOption: {
+                backgroundColor: '#e3f2fd',
+                fontWeight: 700,
             },
         }"
     />

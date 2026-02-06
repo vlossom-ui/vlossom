@@ -45,7 +45,7 @@
         }
 
         .vs-select-icon {
-            @apply flex size-5 flex-shrink-0 items-center justify-center;
+            @apply flex size-5 shrink-0 items-center justify-center;
 
             transition: transform 0.3s ease;
 
@@ -60,9 +60,6 @@
     --vs-select-focused-border: initial;
     --vs-select-focused-borderRadius: initial;
     --vs-select-focused-backgroundColor: initial;
-
-    --vs-select-selected-backgroundColor: initial;
-    --vs-select-selected-fontWeight: initial;
 
     @apply overflow-hidden;
 
@@ -103,10 +100,10 @@
         }
 
         &.selected {
-            background-color: var(--vs-select-selected-backgroundColor, var(--vs-comp-bg));
+            background-color: var(--vs-comp-bg);
 
             .vs-select-option {
-                font-weight: var(--vs-select-selected-fontWeight, var(--vs-font-weight-bold));
+                font-weight: var(--vs-font-weight-bold);
             }
         }
     }
