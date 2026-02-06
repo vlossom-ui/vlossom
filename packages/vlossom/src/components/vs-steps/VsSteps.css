@@ -1,24 +1,11 @@
 @reference 'tailwindcss';
 
 .vs-steps {
-    --vs-steps-step-backgroundColor: initial;
-    --vs-steps-step-border: initial;
-    --vs-steps-step-borderRadius: initial;
-    --vs-steps-step-padding: initial;
-    --vs-steps-step-opacity: initial;
-    --vs-steps-step-size: initial;
-
-    --vs-steps-activeStep-backgroundColor: initial;
-    --vs-steps-activeStep-border: initial;
-    --vs-steps-activeStep-borderRadius: initial;
-    --vs-steps-activeStep-padding: initial;
-    --vs-steps-activeStep-opacity: initial;
-    --vs-steps-activeStep-size: initial;
-
     --vs-steps-height: initial;
     --vs-steps-width: initial;
+    --vs-steps-step-size: initial;
 
-    --step-size: var(--vs-steps-step-size, var(--vs-steps-activeStep-size, 1.6rem));
+    --step-size: var(--vs-steps-step-size, 1.6rem);
 
     @apply relative select-none;
 
@@ -38,7 +25,7 @@
             @apply h-full opacity-80;
 
             transition: width 0.2s;
-            background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+            background-color: var(--vs-primary-comp-bg);
         }
     }
 
@@ -54,12 +41,10 @@
 
             .vs-step-num {
                 @apply flex items-center justify-center border font-semibold;
-                opacity: var(--vs-steps-step-opacity, initial);
 
-                border: var(--vs-steps-step-border, 1px solid var(--vs-line-color));
-                border-radius: var(--vs-steps-step-borderRadius, 100%);
-                background-color: var(--vs-steps-step-backgroundColor, var(--vs-comp-bg));
-                padding: var(--vs-steps-step-padding, initial);
+                border: 1px solid var(--vs-line-color);
+                border-radius: 100%;
+                background-color: var(--vs-comp-bg);
                 width: var(--step-size);
                 height: var(--step-size);
                 color: var(--vs-comp-font);
@@ -79,11 +64,9 @@
 
             &.vs-previous {
                 .vs-step-num {
-                    opacity: var(--vs-steps-activeStep-opacity, initial);
-                    border: var(--vs-steps-activeStep-border, 1px solid var(--vs-primary-comp-bg));
-                    border-radius: var(--vs-steps-activeStep-borderRadius, 100%);
-                    background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
-                    padding: var(--vs-steps-activeStep-padding, initial);
+                    border: 1px solid var(--vs-primary-comp-bg);
+                    border-radius: 100%;
+                    background-color: var(--vs-primary-comp-bg);
                     color: var(--vs-primary-comp-font);
                 }
 
@@ -94,15 +77,12 @@
 
             &.vs-selected {
                 .vs-step-num {
-                    opacity: var(--vs-steps-activeStep-opacity, initial);
                     transition-delay: 0.15s;
-                    outline: 3px solid var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
+                    outline: 3px solid var(--vs-primary-comp-bg);
                     outline-offset: 3px;
-                    border: var(--vs-steps-activeStep-border, 1px solid var(--vs-primary-comp-bg));
-                    border-radius: var(--vs-steps-activeStep-borderRadius, 100%);
-
-                    background-color: var(--vs-steps-activeStep-backgroundColor, var(--vs-primary-comp-bg));
-                    padding: var(--vs-steps-activeStep-padding, initial);
+                    border: 1px solid var(--vs-primary-comp-bg);
+                    border-radius: 100%;
+                    background-color: var(--vs-primary-comp-bg);
                     color: var(--vs-primary-comp-font);
                 }
 

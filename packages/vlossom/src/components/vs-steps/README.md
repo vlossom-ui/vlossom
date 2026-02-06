@@ -253,26 +253,14 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 ```typescript
 interface VsStepsStyleSet {
     variables?: {
-        height?: string;
-        width?: string;
-        step?: {
-            backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-            padding?: string;
-            opacity?: number;
-            size?: string;
-        };
-        activeStep?: {
-            backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-            padding?: string;
-            opacity?: number;
-            size?: string;
-        };
+        stepSize?: string;
     };
-    component?: CSSProperties;
+    step?: CSSProperties;
+    activeStep?: CSSProperties;
+    label?: CSSProperties;
+    activeLabel?: CSSProperties;
+    progress?: CSSProperties;
+    progressActive?: CSSProperties;
 }
 ```
 
@@ -284,22 +272,29 @@ interface VsStepsStyleSet {
         v-model="currentStep"
         :steps="steps"
         :style-set="{
-            variables: {
-                step: {
-                    backgroundColor: '#f5f5f5',
-                    border: '2px solid #ddd',
-                    borderRadius: '50%',
-                    size: '2rem',
-                },
-                activeStep: {
-                    backgroundColor: '#4caf50',
-                    border: '2px solid #4caf50',
-                    size: '2.5rem',
-                },
-                gap: '4rem',
+            step: {
+                backgroundColor: '#f5f5f5',
+                border: '2px solid #ddd',
+                borderRadius: '50%',
+                width: '2.5rem',
+                height: '2.5rem',
             },
-            component: {
-                margin: '2rem auto',
+            activeStep: {
+                backgroundColor: '#4caf50',
+                border: '2px solid #4caf50',
+            },
+            label: {
+                color: '#666',
+            },
+            activeLabel: {
+                color: '#000',
+                fontWeight: '700',
+            },
+            progress: {
+                backgroundColor: '#e0e0e0',
+            },
+            progressActive: {
+                backgroundColor: '#4caf50',
             },
         }"
     />

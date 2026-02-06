@@ -11,21 +11,14 @@ export type { VsSteps };
 
 export interface VsStepsRef extends ComponentPublicInstance<typeof VsSteps> {}
 
-interface StepVariables {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    size?: string;
-}
-
 export interface VsStepsStyleSet {
     variables?: {
-        height?: string;
-        width?: string;
-        step?: StepVariables;
-        activeStep?: StepVariables;
+        stepSize?: string;
     };
-    component?: CSSProperties;
+    step?: CSSProperties;
+    activeStep?: CSSProperties;
+    label?: CSSProperties;
+    activeLabel?: CSSProperties;
+    progress?: CSSProperties;
+    progressActive?: CSSProperties;
 }

@@ -1,9 +1,6 @@
 <template>
     <vs-responsive :width :grid>
-        <div
-            :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
-        >
+        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="{ ...styleSetVariables }">
             <div class="vs-step-line">
                 <div class="vs-step-progress" :style="progressWidth" />
             </div>
@@ -25,7 +22,7 @@
                     @click.prevent.stop="selectStep(index)"
                     @keydown.stop="(e) => handleKeydown(e, vertical)"
                 >
-                    <div class="vs-step-num">
+                    <div class="vs-step-num" :style="getStepStyleSet(index)">
                         <slot
                             name="step"
                             :step
@@ -37,7 +34,7 @@
                             {{ index + 1 }}
                         </slot>
                     </div>
-                    <div v-if="!noLabel" class="vs-step-label">
+                    <div v-if="!noLabel" class="vs-step-label" :style="getLabelStyleSet(index)">
                         <slot
                             name="label"
                             :step
@@ -66,6 +63,7 @@ import {
     type Ref,
     type PropType,
     type ComputedRef,
+    type CSSProperties,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -136,15 +134,33 @@ export default defineComponent({
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
-        const progressWidth = computed(() => {
+        const progressWidth: ComputedRef<CSSProperties> = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
             if (gapCount.value === 0) {
                 return { [dimensionKey]: '0%' };
             }
 
             const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
-            return { [dimensionKey]: `${percentage}%` };
+            return {
+                ...componentStyleSet.value.progress,
+                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.progressActive : {}),
+                [dimensionKey]: `${percentage}%`,
+            };
         });
+
+        function getStepStyleSet(index: number): CSSProperties {
+            return {
+                ...componentStyleSet.value.step,
+                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.activeStep : {}),
+            };
+        }
+
+        function getLabelStyleSet(index: number): CSSProperties {
+            return {
+                ...componentStyleSet.value.label,
+                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.activeLabel : {}),
+            };
+        }
 
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
@@ -168,6 +184,8 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             progressWidth,
+            getStepStyleSet,
+            getLabelStyleSet,
 
             // Selection State
             selectedIndex,
