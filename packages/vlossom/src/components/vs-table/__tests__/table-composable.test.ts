@@ -117,13 +117,13 @@ describe('useTable', () => {
         table.toggleSelectAll();
         await nextTick();
 
-        expect(table.selectedIds.value).toEqual(['1', '2']);
+        expect(table.selectedItems.value.map((item) => item.id)).toEqual(['1', '2']);
         expect(table.selectedAll.value).toBe(true);
 
         table.toggleSelectAll();
         await nextTick();
 
-        expect(table.selectedIds.value).toEqual([]);
+        expect(table.selectedItems.value).toEqual([]);
         expect(table.selectedAll.value).toBe(false);
     });
 
@@ -143,10 +143,10 @@ describe('useTable', () => {
         table.toggleSelectAll();
         await nextTick();
 
-        expect(table.selectedIds.value).toEqual(['1', '3']);
+        expect(table.selectedItems.value.map((item) => item.id)).toEqual(['1', '3']);
         expect(table.selectedAll.value).toBe(true);
 
-        table.selectedIds.value = ['1'];
+        table.selectedItems.value = [table.items.value.find((item) => item.id === '1')!];
         await nextTick();
 
         expect(table.selectedPartial.value).toBe(true);

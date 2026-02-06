@@ -20,6 +20,7 @@ const defaultGlobal = {
     stubs: {
         'vs-render': true,
         'vs-checkbox': true,
+        'vs-visible-render': { props: ['disabled', 'selector', 'rootMargin'], template: '<div><slot /></div>' },
         'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
         'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
         'vs-pagination': {
@@ -35,12 +36,12 @@ const defaultGlobal = {
         vuedraggable: {
             props: ['modelValue', 'itemKey', 'disabled'],
             template:
-                '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
+                '<tbody data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></tbody>',
         },
         draggable: {
             props: ['modelValue', 'itemKey', 'disabled'],
             template:
-                '<div data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></div>',
+                '<tbody data-testid="draggable-wrapper" :data-disabled="disabled"><slot name="item" v-for="(element, index) in modelValue" :key="index" :element="element" :index="index" /><slot /></tbody>',
         },
     },
 };
@@ -119,14 +120,14 @@ describe('VsTable', () => {
         it('`header-${id}` Slot이 `header-${colKey}` Slot보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'header-name-id-0': ({ header }: { header: HeaderCell }) => `ID-${header.id}`,
+                    'header-name-id-6': ({ header }: { header: HeaderCell }) => `ID-${header.id}`,
                     'header-name': ({ header }: { header: HeaderCell }) => `COL-${header.colKey}`,
                 },
             });
 
             await nextTick();
 
-            expect(headerTextsOf(wrapper)).toEqual(['ID-name-id-0', 'age']);
+            expect(headerTextsOf(wrapper)).toEqual(['ID-name-id-6', 'age']);
         });
 
         it('`body-col${colIdx}-row${rowIdx}` Slot이 `body-${colKey}` Slot보다 우선한다', async () => {
@@ -175,8 +176,8 @@ describe('VsTable', () => {
             await expandButtons[0].trigger('click');
             await nextTick();
 
-            const expandRow = wrapper.findAll('tbody tr')[1];
-            expect(expandRow.text()).toBe('0-Alice');
+            const expandedContent = wrapper.find('[data-testid="vs-expandable"]');
+            expect(expandedContent.text()).toBe('0-Alice');
         });
 
         it('expandable이 true면 확장 버튼을 클릭하면 expand-row를 발생시킨다', async () => {

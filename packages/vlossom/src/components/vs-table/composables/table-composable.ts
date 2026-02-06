@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
-import { functionUtil, logUtil, objectUtil, stringUtil } from '@/utils';
-import { type PropsOf, VsComponent, type SearchProps } from '@/declaration';
+import { functionUtil, objectUtil } from '@/utils';
+import { type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -29,6 +29,8 @@ export function useTable(
         updateSelectedItems: (items: Item[]) => void;
         updatePage: (page: number) => void;
         updatePageSize: (pageSize: number) => void;
+        updatePagedItems: (items: Item[]) => void;
+        updateTotalItems: (items: Item[]) => void;
     },
 ) {
     const {
@@ -54,15 +56,12 @@ export function useTable(
         if (isColumnDefArray(rawColumns.value)) {
             return rawColumns.value;
         }
-        return rawColumns.value.map((column) => {
+        return rawColumns.value.map((column: string) => {
             return { key: column, label: column } as ColumnDef;
         });
     });
     const items = computed<Item[]>(() => {
-        return rawItems.value.map((item) => ({
-            ...item,
-            id: item.id ?? stringUtil.createID(),
-        }));
+        return rawItems.value;
     });
     const expandable = computed(() => {
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawExpandable?.value);
@@ -71,16 +70,7 @@ export function useTable(
         return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
     });
     const selectedItems = computed<Item[]>(() => {
-        if (!rawSelectedItems?.value) {
-            return [];
-        }
-        const itemIds = new Set(items.value.map((i) => i.id));
-        const invalidIdItems = rawSelectedItems.value.filter((item) => !itemIds.has(item.id));
-        if (invalidIdItems.length) {
-            logUtil.propError(VsComponent.VsTable, 'selectedItems', 'selectedItems id must be in items');
-            return [];
-        }
-        return rawSelectedItems.value;
+        return rawSelectedItems?.value ?? [];
     });
     const search = computed<Exclude<SearchProps, boolean>>(() => {
         if (!rawSearch?.value) {
@@ -117,21 +107,8 @@ export function useTable(
     const pageSize = computed<number>({
         get: () => {
             const currentPageSize = rawPageSize?.value;
-            const pageSizeOptions = pagination.value.pageSizeOptions;
-
             if (!currentPageSize) {
                 return internalPageSize.value;
-            }
-            if (pageSizeOptions) {
-                const isValidPageSize = pageSizeOptions.some((option) => option.value === currentPageSize);
-
-                if (!isValidPageSize) {
-                    logUtil.propWarning(
-                        VsComponent.VsTable,
-                        'pageSize',
-                        `pageSize (${currentPageSize}) is not in [${pageSizeOptions.map((option) => option.value)}]`,
-                    );
-                }
             }
             return currentPageSize;
         },
@@ -147,12 +124,17 @@ export function useTable(
     const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
-    const { selectedIds, selectedAll, selectedPartial, anySelectable, toggleSelectAll } = useTableSelect(
-        selectable,
-        items,
-        selectedItems,
-    );
+    const {
+        selectedItems: internalSelectedItems,
+        selectedAll,
+        selectedPartial,
+        anySelectable,
+        toggleSelectAll,
+    } = useTableSelect(selectable, items, selectedItems);
 
+    const builtCellMatrix = computed<Cell[][]>(() => {
+        return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
+    });
     const headerCells = ref<HeaderCell[]>([]);
     const rawBodyCells = ref<BodyCell[][]>([]);
 
@@ -164,17 +146,17 @@ export function useTable(
         totalItemsCount,
         serverMode,
     );
+    const preprocessedBodyCells = computed<BodyCell[][]>(() => {
+        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+    });
     const bodyCells = computed<BodyCell[][]>(() => {
         if (objectUtil.isEmpty(pagination.value)) {
-            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+            return preprocessedBodyCells.value;
         }
         if (serverMode.value) {
-            return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+            return preprocessedBodyCells.value;
         }
-        return rawBodyCells.value
-            .filter(matchBySearch)
-            .sort(compareRows)
-            .slice(pageStartIndex.value, pageEndIndex.value);
+        return preprocessedBodyCells.value.slice(pageStartIndex.value, pageEndIndex.value);
     });
 
     function initCells(cellMatrix: Cell[][]): void {
@@ -190,25 +172,28 @@ export function useTable(
         initCells(tableCellBuilder.build());
     }
 
-    watch(
-        [columns, items],
-        ([nextColumnDefs, nextItems]) => {
-            const nextCells: Cell[][] = tableCellBuilder
-                .updateColumnDefs(nextColumnDefs)
-                .updateItems(nextItems)
-                .build();
+    watch(builtCellMatrix, (matrix) => {
+        initCells(matrix);
+    });
 
-            initCells(nextCells);
-        },
-        { deep: true },
-    );
-
-    watch(selectedIds, (nextSelectedIds) => {
-        const nextSelectedItems = nextSelectedIds
-            .map((selectedId) => items.value.find((item) => item.id === selectedId))
-            .filter(Boolean) as Item[];
-
+    watch(internalSelectedItems, (nextSelectedItems) => {
         cb?.updateSelectedItems(nextSelectedItems);
+    });
+
+    watch(bodyCells, (nextBodyCells) => {
+        const pagedItems = nextBodyCells.map((row) => {
+            const firstCell = row[0];
+            return firstCell?.item || {};
+        });
+        cb?.updatePagedItems(pagedItems);
+    });
+
+    watch(preprocessedBodyCells, (nextBodyCells) => {
+        const nextTotalItems = nextBodyCells.map((row) => {
+            const firstCell = row[0];
+            return firstCell?.item || {};
+        });
+        cb?.updateTotalItems(nextTotalItems);
     });
 
     return {
@@ -225,7 +210,7 @@ export function useTable(
         isExpanded,
         toggleExpand,
         anySelectable,
-        selectedIds,
+        selectedItems: internalSelectedItems,
         selectedAll,
         selectedPartial,
         toggleSelectAll,
@@ -251,7 +236,7 @@ export type TableComposable = {
     bodyCells: ComputedRef<BodyCell[][]>;
     anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;
-    selectedIds: Ref<string[]>;
+    selectedItems: Ref<Item[]>;
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;

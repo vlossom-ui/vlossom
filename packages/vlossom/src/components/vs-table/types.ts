@@ -7,7 +7,7 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableStyleSet { }
+export interface VsTableStyleSet {}
 
 export type VsTablePageSizeOptions = { label: string; value: number }[];
 export interface VsTablePaginationOptions {
@@ -23,10 +23,10 @@ type Join<Prev extends string, K extends string, Sep extends string> = Prev exte
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
-        [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
-        ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
-        : Join<Prev, K, Sep>;
-    }[Extract<keyof T, string>];
+          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
+              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
+              : Join<Prev, K, Sep>;
+      }[Extract<keyof T, string>];
 
 type JoinDotField<T> = JoinField<T, '.'>;
 
@@ -34,7 +34,7 @@ type JoinDotField<T> = JoinField<T, '.'>;
  * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type ColumnKey<I = Item> = JoinDotField<I>;
-export type Item = Record<string, unknown> & { id?: string };
+export type Item = Record<string, unknown>;
 export type Tag = 'td' | 'th';
 
 export enum SortType {
@@ -96,9 +96,5 @@ export function getRowItem(row: BodyCell[]): Item {
 }
 
 export function getRowId(row: BodyCell[]): string | undefined {
-    const item = getRowItem(row);
-    if (!item) {
-        return undefined;
-    }
-    return item.id;
+    return row[0]?.id ?? undefined;
 }

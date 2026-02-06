@@ -1,9 +1,7 @@
 <template>
-    <td colspan="100%" class="p-0!">
-        <vs-expandable :open="isExpanded(cells)">
-            <slot name="expand" :cells :rowIdx />
-        </vs-expandable>
-    </td>
+    <vs-expandable :open="isExpanded(cells)">
+        <slot name="expand" :cells :rowIdx />
+    </vs-expandable>
 </template>
 
 <script lang="ts">

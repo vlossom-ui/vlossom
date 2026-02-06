@@ -7,11 +7,44 @@
         @apply mx-auto w-full border-collapse;
     }
 
+    tr {
+        @apply grid;
+    }
+
+    thead tr {
+        > th {
+            grid-row: 1;
+        }
+    }
+
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
         &:hover {
             background-color: var(--vs-area-bg-hover);
+        }
+
+        > td:not(.vs-table-expanded-row) {
+            grid-row: 1;
+        }
+
+        > td.vs-table-expanded-row {
+            grid-row: 2;
+            grid-column: 1 / -1;
+            @apply border-0 p-0;
+        }
+    }
+
+    th,
+    td {
+        @apply flex items-center px-3.5 py-2.5;
+        border-top: 0.0625rem solid var(--vs-line-color);
+        border-bottom: 0.0625rem solid var(--vs-line-color);
+        /* left, center, right */
+        text-align: left;
+
+        > * {
+            @apply w-full;
         }
     }
 
@@ -41,15 +74,34 @@
            - 즉, drag&drop 컴포넌트의 불필요한 wrapper가 DOM에서 제거된 효과를 줌 */
         display: contents;
     }
+
+    /* Drag Cell */
+    th.vs-table-drag-handle {
+        @apply w-6 content-none;
+        svg {
+            @apply hidden;
+        }
+    }
+
+    td.vs-table-drag-handle {
+        @apply w-6 cursor-grab !px-0;
+        color: var(--vs-line-color);
+    }
 }
 
-th,
-td {
-    @apply px-3.5 py-2.5;
-    border-top: 0.0625rem solid var(--vs-line-color);
-    border-bottom: 0.0625rem solid var(--vs-line-color);
-    /* left, center, right */
-    text-align: left;
+/* Pagination */
+.vs-table-pagination {
+    @apply flex items-center justify-between py-4;
+    container-type: inline-size;
+}
+
+.vs-table-pagination-info {
+    @apply flex items-center gap-4;
+}
+
+.vs-total-items {
+    @apply text-sm whitespace-nowrap opacity-70;
+    color: var(--vs-font-color);
 }
 
 caption {
@@ -95,5 +147,9 @@ caption {
         td.vs-table-drag-handle {
             @apply w-6 px-0 py-1;
         }
+    }
+
+    .vs-table-pagination {
+        @apply flex-col-reverse items-center justify-center gap-2;
     }
 }

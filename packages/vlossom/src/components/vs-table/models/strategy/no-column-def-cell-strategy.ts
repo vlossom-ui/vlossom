@@ -24,7 +24,7 @@ export default class NoColumnDefCellStrategy implements TableCellStrategy {
         return this.items.map((item: Item, rowIdx: number) => {
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                id: `${key}-${item.id}`,
+                id: `${key}-${stringUtil.createID()}`,
                 value: item[key],
                 item,
                 colKey: key,
