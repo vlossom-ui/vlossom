@@ -12,9 +12,7 @@ export type { VsSkeleton };
 export interface VsSkeletonRef extends ComponentPublicInstance<typeof VsSkeleton> {}
 
 export interface VsSkeletonStyleSet {
-    variables?: {
-        backgroundColor?: string;
-        fontColor?: string;
-    };
+    backGround?: CSSProperties;
+    inner?: CSSProperties;
     component?: CSSProperties;
 }

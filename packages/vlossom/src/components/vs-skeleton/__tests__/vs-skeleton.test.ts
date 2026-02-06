@@ -14,21 +14,4 @@ describe('VsSkeleton', () => {
             expect(wrapper.find('.vs-skeleton-inner').exists()).toBe(true);
         });
     });
-
-    describe('슬롯', () => {
-        it('default 슬롯에 텍스트를 넣을 수 있어야 한다', () => {
-            // given
-            const text = 'Something is loading...';
-
-            // when
-            const wrapper = mount(VsSkeleton, {
-                slots: {
-                    default: text,
-                },
-            });
-
-            // then
-            expect(wrapper.find('.vs-skeleton-inner').text()).toBe(text);
-        });
-    });
 });

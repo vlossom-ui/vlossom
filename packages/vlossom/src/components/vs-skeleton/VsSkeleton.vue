@@ -1,10 +1,7 @@
 <template>
-    <div
-        :class="['vs-skeleton', colorSchemeClass]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
-    >
-        <div class="vs-skeleton-bg" />
-        <div class="vs-skeleton-inner">
+    <div :class="['vs-skeleton', colorSchemeClass]" :style="componentStyleSet.component">
+        <div class="vs-skeleton-bg" :style="componentStyleSet.backGround" />
+        <div class="vs-skeleton-inner" :style="componentStyleSet.inner">
             <slot />
         </div>
     </div>
@@ -29,12 +26,11 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSkeletonStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsSkeletonStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
         };
     },
 });
