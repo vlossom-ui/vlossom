@@ -20,7 +20,6 @@ export interface VsRadioSetRef extends ComponentPublicInstance<typeof VsRadioSet
 export interface VsRadioStyleSet {
     variables?: {
         borderRadius?: string;
-        height?: string;
         radioColor?: string;
         radioSize?: string;
     };
@@ -28,10 +27,6 @@ export interface VsRadioStyleSet {
 }
 
 export interface VsRadioSetStyleSet {
-    variables?: {
-        gap?: string;
-        flexWrap?: string;
-    };
     radio?: VsRadioStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }

@@ -61,7 +61,6 @@
 interface VsRadioStyleSet {
     variables?: {
         borderRadius?: string;
-        height?: string;
         radioColor?: string;
         radioSize?: string;
     };
@@ -155,17 +154,13 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsRadioSetStyleSet {
-    variables?: {
-        gap?: string;
-        flexWrap?: string;
-    };
     radio?: {
         variables?: {
             borderRadius?: string;
-            height?: string;
             radioColor?: string;
             radioSize?: string;
         };
+        wrapper?: VsInputWrapperStyleSet;
     };
     wrapper?: VsInputWrapperStyleSet;
 }

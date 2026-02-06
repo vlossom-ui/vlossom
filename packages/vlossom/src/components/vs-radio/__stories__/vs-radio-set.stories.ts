@@ -133,9 +133,6 @@ export const StyleSet: Story = {
         label: 'Custom Style',
         options: ['Option 1', 'Option 2', 'Option 3'],
         styleSet: {
-            variables: {
-                gap: '2rem',
-            },
             radio: {
                 variables: {
                     radioColor: '#7c3aed',
