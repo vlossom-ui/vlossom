@@ -1,11 +1,11 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td v-if="anyExpandable" class="w-10">
+        <td v-if="anyExpandable">
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 small
                 :disabled="loading"
-                :style-set="{ padding: '0', height: '100%', width: '100%' }"
+                :style-set="{ padding: '0' }"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <vs-render
@@ -17,7 +17,7 @@
         </td>
     </template>
     <template v-else>
-        <th v-if="anyExpandable" class="w-10" />
+        <th v-if="anyExpandable" />
     </template>
 </template>
 

@@ -1,6 +1,4 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
-import { logUtil } from '@/utils';
-import { VsComponent } from '@/declaration';
 import type { VsTablePaginationOptions } from '../types';
 import { DEFAULT_PAGE_SIZE_ALL } from '../constants';
 
@@ -40,11 +38,6 @@ export function useTablePagination(
         }
         if (serverMode.value) {
             if (!options.value.totalItemCount) {
-                logUtil.propError(
-                    VsComponent.VsTable,
-                    'VsTablePaginationOptions',
-                    'totalItemCount is required when serverMode is true',
-                );
                 return -1;
             }
             return Math.ceil(options.value.totalItemCount / currentPageSize);

@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr :style="gridStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
@@ -21,18 +21,18 @@
             </td>
         </template>
         <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-    </tr>
-    <tr v-if="anyExpandable">
-        <vs-table-expanded-panel :cells :rowIdx>
-            <template #expand="{ cells, rowIdx }">
-                <slot name="expand" :cells :rowIdx />
-            </template>
-        </vs-table-expanded-panel>
+        <td v-if="anyExpandable" class="vs-table-expanded-row">
+            <vs-table-expanded-panel :cells :rowIdx>
+                <template #expand="{ cells, rowIdx }">
+                    <slot name="expand" :cells :rowIdx />
+                </template>
+            </vs-table-expanded-panel>
+        </td>
     </tr>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, type PropType } from 'vue';
+import { defineComponent, inject, computed, type PropType } from 'vue';
 import { stringUtil } from '@/utils';
 import type { BodyCell } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -63,7 +63,27 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
-        const { anyExpandable, draggable, headerCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { anyExpandable, anySelectable, draggable, headerCells, loading } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        const gridStyle = computed(() => {
+            const cols: string[] = [];
+            if (draggable?.value) {
+                cols.push('auto');
+            }
+            if (anySelectable.value) {
+                cols.push('auto');
+            }
+            props.cells.forEach(() => {
+                cols.push('1fr');
+            });
+            if (anyExpandable.value) {
+                cols.push('auto');
+            }
+            return {
+                gridTemplateColumns: cols.join(' '),
+            };
+        });
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -75,9 +95,7 @@ export default defineComponent({
                 `body-row${rowIdx}`,
                 `body-col${colIdx}`,
                 'body',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
+            ].filter((name) => name in slots);
 
             return candidatePriority[0] || '';
         }
@@ -109,6 +127,7 @@ export default defineComponent({
             anyExpandable,
             draggable,
             loading,
+            gridStyle,
             clickCell,
             findMatchingSlotName,
             selectRow,

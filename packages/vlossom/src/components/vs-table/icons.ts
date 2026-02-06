@@ -5,17 +5,17 @@ export const tableIcons = {
         </svg>
     `,
     sortAsc: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 5l4 5h-8l4-5z" fill="currentColor"/>
         </svg>
     `,
     sortDesc: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 19l-4-5h8l-4 5z" fill="currentColor"/>
         </svg>
     `,
     sortNone: `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
             <path d="M12 5l4 5h-8l4-5zM12 19l-4-5h8l-4 5z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/>
         </svg>
     `,
@@ -25,7 +25,7 @@ export const tableIcons = {
         </svg>
     `,
     expandArrow: `
-        <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 -960 960 960">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="24" viewBox="0 -960 960 960">
             <path fill="currentColor" d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/>
         </svg>
     `,

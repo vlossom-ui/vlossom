@@ -6,7 +6,7 @@ export function useTableSelect(
     items: Ref<Item[]>,
     initialSelectedItems: Ref<Item[]>,
 ) {
-    const selectedIds = ref<string[]>(initialSelectedItems.value.map((item) => item.id!));
+    const selectedItems = ref<Item[]>([...initialSelectedItems.value]);
 
     const anySelectable = computed<boolean>(() => {
         return items.value.some(selectable.value);
@@ -15,37 +15,27 @@ export function useTableSelect(
         return items.value.filter(selectable.value);
     });
     const selectedPartial = computed(() => {
-        return selectedIds.value.length > 0 && selectedIds.value.length < selectableItems.value.length;
+        return selectedItems.value.length > 0 && selectedItems.value.length < selectableItems.value.length;
     });
     const selectedAll = computed(() => {
         const selectableLength = selectableItems.value.length;
-        return selectableLength > 0 && selectedIds.value.length === selectableLength;
+        return selectableLength > 0 && selectedItems.value.length === selectableLength;
     });
 
     function toggleSelectAll(): void {
         if (selectedAll.value) {
-            selectedIds.value = [];
+            selectedItems.value = [];
             return;
         }
-        selectedIds.value = selectableItems.value.map((item) => item.id!);
+        selectedItems.value = [...selectableItems.value];
     }
 
     watch(initialSelectedItems, (next) => {
-        const nextIds = next.map((item) => item.id!);
-        const currentIds = selectedIds.value;
-
-        if (nextIds.length === currentIds.length) {
-            const currentIdSet = new Set(currentIds);
-            const allMatch = nextIds.every((id) => currentIdSet.has(id));
-            if (allMatch) {
-                return;
-            }
-        }
-        selectedIds.value = nextIds;
+        selectedItems.value = [...next];
     });
 
     return {
-        selectedIds,
+        selectedItems,
         selectedAll,
         selectedPartial,
         anySelectable,

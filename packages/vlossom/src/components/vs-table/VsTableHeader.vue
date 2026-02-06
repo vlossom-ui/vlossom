@@ -1,7 +1,7 @@
 <template>
     <thead>
         <template v-if="headerCells.length">
-            <tr>
+            <tr :style="gridStyle">
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="{ cells, rowIdx }">
@@ -18,7 +18,7 @@
                         {{ header.value }}
                         <vs-render
                             v-if="header.sortable"
-                            class="inline"
+                            class="w-auto! cursor-pointer pl-1"
                             :content="getSortIcon(header)"
                             @click="updateSortType(header.colKey)"
                         />
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, computed } from 'vue';
 import { stringUtil } from '@/utils';
 import { SortType, type HeaderCell } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
@@ -52,7 +52,27 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, sortType, sortColumn, updateSortType } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType } =
+            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+
+        const gridStyle = computed(() => {
+            const cols: string[] = [];
+            if (draggable?.value) {
+                cols.push('auto');
+            }
+            if (anySelectable.value) {
+                cols.push('auto');
+            }
+            headerCells.value.forEach(() => {
+                cols.push('1fr');
+            });
+            if (anyExpandable.value) {
+                cols.push('auto');
+            }
+            return {
+                gridTemplateColumns: cols.join(' '),
+            };
+        });
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -63,9 +83,7 @@ export default defineComponent({
                 `header-row${rowIdx}`,
                 `header-col${colIdx}`,
                 'header',
-            ]
-                .map((name) => name.toLowerCase())
-                .filter((name) => name in slots);
+            ].filter((name) => name in slots);
 
             return candidatePriority[0] || '';
         }
@@ -98,6 +116,7 @@ export default defineComponent({
         return {
             HEADER_ROW_INDEX,
             headerCells,
+            gridStyle,
             findMatchingSlotName,
             clickCell,
             selectRow,

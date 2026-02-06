@@ -62,7 +62,7 @@ import {
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import { LAYOUT_STORE_KEY, type SearchProps, VsComponent } from '@/declaration';
+import { LAYOUT_STORE_KEY, type SearchProps, VsComponent, type PropsOf } from '@/declaration';
 import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -77,7 +77,7 @@ import {
     type VsTablePaginationOptions,
     getRowItem,
 } from './types';
-import { TABLE_DRAG_WRAPPER_CLASS } from './constants';
+import { DEFAULT_PAGE_SIZE, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
@@ -114,7 +114,22 @@ export default defineComponent({
         noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
-        serverMode: { type: Boolean, default: false },
+        serverMode: {
+            type: Boolean,
+            default: false,
+            validator: (serverMode: boolean, props: unknown) => {
+                const _props = props as PropsOf<VsComponent.VsTable>;
+                if (serverMode && typeof _props.pagination === 'object' && !_props.pagination.totalItemCount) {
+                    logUtil.propError(
+                        componentName,
+                        'serverMode',
+                        'totalItemCount is required when serverMode is true',
+                    );
+                    return false;
+                }
+                return true;
+            },
+        },
         draggable: { type: Boolean, default: false },
         selectable: {
             type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
@@ -137,15 +152,41 @@ export default defineComponent({
                     logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
                     return false;
                 }
-                if (value.some((item) => !item.id)) {
-                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must have id');
+                return true;
+            },
+        },
+        page: { type: Number as PropType<number> }, // 0-based page index
+        pageSize: {
+            type: Number as PropType<number>,
+            default: DEFAULT_PAGE_SIZE,
+            validator: (value: number, props: unknown) => {
+                const _props = props as PropsOf<VsComponent.VsTable>;
+                if (value <= 0) {
+                    logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 1');
+                    return false;
+                }
+                if (_props.pagination && typeof _props.pagination === 'object' && _props.pagination.pageSizeOptions) {
+                    const isValidPageSize = _props.pagination.pageSizeOptions.some((option) => option.value === value);
+                    if (!isValidPageSize) {
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize is not in pageSizeOptions');
+                        return true;
+                    }
+                }
+                return true;
+            },
+        },
+        pagedItems: { type: Array as PropType<Item[]>, default: () => [] },
+        totalItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'totalItems', 'totalItems must be an array');
                     return false;
                 }
                 return true;
             },
         },
-        page: { type: Number as PropType<number> }, // 0-based page index
-        pageSize: { type: Number as PropType<number> },
     },
     emits: [
         'click-cell',
@@ -157,6 +198,8 @@ export default defineComponent({
         'update:selectedItems',
         'update:page',
         'update:pageSize',
+        'update:pagedItems',
+        'update:totalItems',
     ],
     setup(props, { slots, emit }) {
         const { colorScheme, styleSet, noResponsive, stickyHeader } = toRefs(props);
@@ -179,7 +222,7 @@ export default defineComponent({
         const table: TableComposable = useTable(
             props,
             { searchInputRef },
-            { updateSelectedItems, updatePage, updatePageSize },
+            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems },
         );
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
@@ -237,6 +280,12 @@ export default defineComponent({
         }
         function updatePageSize(pageSize: number): void {
             emit('update:pageSize', pageSize);
+        }
+        function updatePagedItems(items: Item[]): void {
+            emit('update:pagedItems', items);
+        }
+        function updateTotalItems(items: Item[]): void {
+            emit('update:totalItems', items);
         }
 
         onBeforeMount(() => {
