@@ -114,12 +114,11 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 ```typescript
 interface VsCheckboxStyleSet {
     variables?: {
-        borderRadius?: string;
-        borderWidth?: string;
         checkboxColor?: string;
         checkboxSize?: string;
-        height?: string;
     };
+    checkboxInput?: CSSProperties;
+    checkboxLabel?: CSSProperties;
     wrapper?: {
         variables?: {
             backgroundColor?: string;
@@ -253,12 +252,11 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 interface VsCheckboxSetStyleSet {
     checkbox?: {
         variables?: {
-            borderRadius?: string;
-            borderWidth?: string;
             checkboxColor?: string;
             checkboxSize?: string;
-            height?: string;
         };
+        checkboxInput?: CSSProperties;
+        checkboxLabel?: CSSProperties;
     };
     wrapper?: {
         variables?: {

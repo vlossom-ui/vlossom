@@ -23,6 +23,7 @@
                     ref="checkboxRef"
                     type="checkbox"
                     :class="['vs-checkbox-input', stateClasses]"
+                    :style="componentStyleSet.checkboxInput"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :value="convertToString(trueValue)"
@@ -33,7 +34,11 @@
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
                 />
-                <div v-if="checkLabel || $slots['check-label']" class="vs-checkbox-label">
+                <div
+                    v-if="checkLabel || $slots['check-label']"
+                    class="vs-checkbox-label"
+                    :style="componentStyleSet.checkboxLabel"
+                >
                     <slot name="check-label">{{ checkLabel }}</slot>
                 </div>
             </label>

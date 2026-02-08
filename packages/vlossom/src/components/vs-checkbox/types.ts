@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsCheckbox from './VsCheckbox.vue';
@@ -21,12 +21,11 @@ export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheck
 
 export interface VsCheckboxStyleSet {
     variables?: {
-        borderRadius?: string;
-        borderWidth?: string;
         checkboxColor?: string;
         checkboxSize?: string;
-        height?: string;
     };
+    checkboxInput?: CSSProperties;
+    checkboxLabel?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 

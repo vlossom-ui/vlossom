@@ -14,7 +14,6 @@ const meta: Meta<typeof VsCheckbox> = {
         setup() {
             const preDefinedStyleSet: VsCheckboxStyleSet = {
                 variables: {
-                    borderRadius: '0.6rem',
                     checkboxColor: '#ffb300',
                     checkboxSize: '3rem',
                 },
@@ -209,7 +208,6 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             variables: {
-                borderRadius: '1.3rem',
                 checkboxColor: '#81c798',
                 checkboxSize: '4rem',
             },
