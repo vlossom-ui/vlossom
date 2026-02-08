@@ -110,16 +110,10 @@
 ```typescript
 interface VsTooltipStyleSet {
     variables?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
         arrowColor?: string;
         arrowSize?: string;
     };
+    component?: CSSProperties;
 }
 ```
 
@@ -133,12 +127,15 @@ interface VsTooltipStyleSet {
             target="#my-button"
             :style-set="{
                 variables: {
+                    arrowColor: '#333',
+                    arrowSize: '0.5rem',
+                },
+                component: {
                     backgroundColor: '#333',
                     border: 'none',
                     borderRadius: '8px',
                     padding: '0.5rem 1rem',
-                    arrowColor: '#333',
-                    arrowSize: '0.5rem',
+                    color: 'white',
                 },
             }"
         >

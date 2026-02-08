@@ -17,7 +17,7 @@
                 @mouseenter.stop="onTooltipEnter"
                 @mouseleave.stop="onTooltipLeave"
             >
-                <div class="vs-tooltip-contents">
+                <div class="vs-tooltip-contents" :style="componentStyleSet.component">
                     <slot />
                 </div>
             </div>
@@ -68,7 +68,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTooltipStyleSet>(componentName, styleSet);
 
         const computedShow: WritableComputedRef<boolean> = computed({
             get() {
@@ -217,6 +217,7 @@ export default defineComponent({
         return {
             colorSchemeClass,
             styleSetVariables,
+            componentStyleSet,
             computedShow,
             onTooltipEnter,
             onTooltipLeave,
