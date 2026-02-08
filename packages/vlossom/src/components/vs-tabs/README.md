@@ -264,24 +264,11 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 ```typescript
 interface VsTabsStyleSet {
     variables?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
         gap?: string;
-        height?: string;
-        opacity?: number;
-        padding?: string;
-        width?: string;
     };
-    scrollButton?: {
-        variables?: {
-            padding?: string;
-        };
-        component?: CSSProperties;
-        loading?: {
-            component?: CSSProperties;
-        };
-    };
+    tab?: CSSProperties;
+    activeTab?: CSSProperties;
+    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
 ```
 
@@ -293,16 +280,12 @@ interface VsTabsStyleSet {
         v-model="selectedTab"
         :tabs="tabs"
         :style-set="{
-            variables: {
-                backgroundColor: '#f5f5f5',
-                gap: '0.5rem',
-                padding: '0 1.5rem',
-            },
+            variables: { gap: '0.5rem' },
+            tab: { fontWeight: '600' },
+            activeTab: { backgroundColor: '#e8e8e8' },
             scrollButton: {
-                component: {
-                    backgroundColor: '#e0e0e0',
-                    borderRadius: '4px',
-                },
+                variables: { padding: '0.4rem' },
+                component: { borderRadius: '4px' },
             },
         }"
     />

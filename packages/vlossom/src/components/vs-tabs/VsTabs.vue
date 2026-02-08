@@ -16,11 +16,17 @@
 
             <div ref="tabsWrapRef" class="vs-tabs-wrap">
                 <ul role="tablist" class="vs-tab-list">
-                    <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
+                    <li
+                        v-if="indicatorStyle"
+                        class="vs-tab-indicator"
+                        :style="{ ...indicatorStyle, ...componentStyleSet.activeTab }"
+                        aria-hidden="true"
+                    />
                     <li
                         v-for="(tab, index) in tabs"
                         :key="tab"
                         ref="tabRefs"
+                        :style="getTabStyleSet(index)"
                         :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
                         role="tab"
                         :aria-selected="isSelected(index)"
@@ -65,6 +71,7 @@ import {
     type Ref,
     type PropType,
     type ComputedRef,
+    type CSSProperties,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -237,6 +244,13 @@ export default defineComponent({
 
         let resizeObserver: ResizeObserver | null = null;
 
+        function getTabStyleSet(index: number): CSSProperties {
+            return {
+                ...componentStyleSet.value.tab,
+                ...(isSelected(index) ? componentStyleSet.value.activeTab : {}),
+            };
+        }
+
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
 
@@ -278,6 +292,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             classObj,
+            getTabStyleSet,
 
             // Selection
             isSelected,

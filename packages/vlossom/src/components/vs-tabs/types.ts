@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsButtonStyleSet } from '@/components/vs-button/types';
 import type VsTabs from './VsTabs.vue';
 
@@ -17,14 +17,9 @@ export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
 
 export interface VsTabsStyleSet {
     variables?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
         gap?: string;
-        height?: string;
-        opacity?: number;
-        padding?: string;
-        width?: string;
     };
+    tab?: CSSProperties;
+    activeTab?: CSSProperties;
     scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
