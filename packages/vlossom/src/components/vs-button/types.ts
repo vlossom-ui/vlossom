@@ -17,6 +17,5 @@ export interface VsButtonStyleSet {
         padding?: string;
     };
     component?: CSSProperties;
-
     loading?: VsLoadingStyleSet;
 }
