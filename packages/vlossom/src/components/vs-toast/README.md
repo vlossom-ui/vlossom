@@ -45,11 +45,7 @@
 
 ```typescript
 interface VsToastStyleSet {
-    variables?: {
-        backgroundColor?: string;
-        border?: string;
-        fontColor?: string;
-    };
+    closeButton?: Omit<VsButtonStyleSet, 'loading'>;
     component?: CSSProperties;
 }
 ```
@@ -60,15 +56,18 @@ interface VsToastStyleSet {
 <template>
     <vs-toast
         :style-set="{
-            variables: {
-                backgroundColor: '#4caf50',
-                border: '2px solid #2e7d32',
-                fontColor: '#ffffff',
+            closeButton: {
+                component: {
+                    color: '#ffffff',
+                },
             },
             component: {
                 borderRadius: '16px',
                 padding: '1rem 4rem',
                 height: '60px',
+                backgroundColor: '#4caf50',
+                border: '2px solid #2e7d32',
+                color: '#ffffff',
             },
         }"
         @close="handleClose"

@@ -10,7 +10,7 @@
             class="vs-toast-close"
             :color-scheme="computedColorScheme"
             :primary
-            :style-set="{ variables: { padding: '0' } }"
+            :style-set="componentStyleSet.closeButton"
             ghost
             @click="$emit('close')"
         >
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, toRefs } from 'vue';
+import { computed, defineComponent, onMounted, ref, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -47,7 +47,21 @@ export default defineComponent({
 
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToastStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<VsToastStyleSet> = computed(() => {
+            return {
+                closeButton: {
+                    variables: {
+                        padding: '0',
+                    },
+                },
+            };
+        });
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsToastStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const holdToClose = ref(false);
         let timer: any = null;
