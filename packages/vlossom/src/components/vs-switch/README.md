@@ -115,15 +115,12 @@ const selectedOptions = ref([]);
 ```typescript
 interface VsSwitchStyleSet {
     variables?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        fontColor?: string;
         handleColor?: string;
         handleSize?: string;
     };
+    switchButton?: CSSProperties;
+    checkedSwitchButton?: CSSProperties;
+    component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
@@ -136,13 +133,16 @@ interface VsSwitchStyleSet {
         v-model="value"
         :style-set="{
             variables: {
-                width: 'fit-content',
-                height: '2.5rem',
-                backgroundColor: '#f5f5f5',
-                border: '2px solid #ddd',
-                borderRadius: '2rem',
                 handleSize: '1.8rem',
-                handleColor: '#4caf50',
+                handleColor: '#fff',
+            },
+            switchButton: {
+                borderRadius: '2rem',
+                border: '2px solid #ddd',
+            },
+            checkedSwitchButton: {
+                backgroundColor: '#4caf50',
+                borderColor: '#4caf50',
             },
         }"
     />
