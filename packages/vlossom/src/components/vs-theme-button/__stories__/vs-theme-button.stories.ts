@@ -51,9 +51,11 @@ export const StyleSet: Story = {
                 width: '3rem',
                 iconColor: '#B95C50',
             },
-            component: {
-                backgroundColor: '#DEB3AD',
-                borderRadius: '1rem',
+            button: {
+                component: {
+                    backgroundColor: '#DEB3AD',
+                    borderRadius: '1rem',
+                },
             },
         },
     },

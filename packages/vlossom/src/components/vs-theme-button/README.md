@@ -27,11 +27,11 @@ const handleThemeChange = (isDark: boolean) => {
 | `colorScheme` | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마      |
 | `styleSet`    | `string \| VsThemeButtonStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
 
-**VsButton에서 상속받은 Props:**
+**VsToggle에서 상속받은 Props:**
 
-- `circle`, `disabled`, `ghost`, `large`, `outline`, `primary`, `responsive`, `small`
+- `circle`, `disabled`, `ghost`, `loading`, `outline`, `primary`, `size`
 
-> **Note**: VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md) 및 [VsToggle README](../vs-toggle/README.md)를 참조하세요.
+> **Note**: VsToggle의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsToggle README](../vs-toggle/README.md)를 참조하세요.
 
 ## Events
 
@@ -48,7 +48,7 @@ interface VsThemeButtonStyleSet {
         height?: string;
         iconColor?: string;
     };
-    component?: CSSProperties;
+    button?: VsToggleStyleSet;
 }
 ```
 
@@ -75,10 +75,12 @@ const themeButtonStyle = {
         height: '3.5rem',
         iconColor: '#fcd34d',
     },
-    component: {
-        backgroundColor: '#1f2937',
-        border: '2px solid #374151',
-        borderRadius: '0.5rem',
+    button: {
+        component: {
+            backgroundColor: '#1f2937',
+            border: '2px solid #374151',
+            borderRadius: '0.5rem',
+        },
     },
 };
 </script>

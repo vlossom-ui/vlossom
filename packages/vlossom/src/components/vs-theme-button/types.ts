@@ -1,5 +1,6 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type VsThemeButton from './VsThemeButton.vue';
+import type { VsToggleStyleSet } from '@/components/vs-toggle/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -17,5 +18,5 @@ export interface VsThemeButtonStyleSet {
         height?: string;
         iconColor?: string;
     };
-    component?: CSSProperties;
+    button?: VsToggleStyleSet;
 }
