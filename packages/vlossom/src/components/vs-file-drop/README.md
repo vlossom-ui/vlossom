@@ -192,6 +192,10 @@ interface VsFileDropStyleSet {
 }
 ```
 
+> **참고**: 
+> - `chip`은 [VsChip](../vs-chip/README.md)의 StyleSet을 사용합니다.
+> - `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+
 ## Slots
 
 | Slot       | Props                   | Description                                       |

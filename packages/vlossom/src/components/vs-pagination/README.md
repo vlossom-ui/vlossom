@@ -95,20 +95,12 @@
 ```typescript
 interface VsPaginationStyleSet {
     component?: CSSProperties;
-    pageButton?: {
-        variables?: {
-            padding?: string;
-        };
-        component?: CSSProperties;
-    };
-    controlButton?: {
-        variables?: {
-            padding?: string;
-        };
-        component?: CSSProperties;
-    };
+    pageButton?: Omit<VsButtonStyleSet, 'loading'>;
+    controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
 ```
+
+> **참고**: `pageButton`과 `controlButton`은 [VsButton](../vs-button/README.md)의 StyleSet을 사용합니다.
 
 ### StyleSet 사용 예시
 

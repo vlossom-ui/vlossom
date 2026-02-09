@@ -189,43 +189,7 @@ interface VsSearchInputStyleSet {
     variables?: {
         height?: string;
     };
-    input?: {
-        variables?: {
-            padding?: string;
-            fontColor?: string;
-            fontSize?: string;
-            fontWeight?: number;
-            prepend?: {
-                opacity?: number;
-                backgroundColor?: string;
-                padding?: string;
-            };
-            append?: {
-                opacity?: number;
-                backgroundColor?: string;
-                padding?: string;
-            };
-        };
-        component?: CSSProperties;
-        wrapper?: {
-            variables?: {
-                border?: string;
-                borderRadius?: string;
-                backgroundColor?: string;
-                opacity?: number;
-                height?: string;
-                focused?: {
-                    border?: string;
-                };
-                invalid?: {
-                    border?: string;
-                };
-            };
-            component?: CSSProperties;
-            inputContainer?: CSSProperties;
-            messageContainer?: CSSProperties;
-        };
-    };
+    input?: VsInputStyleSet;
 }
 
 interface VsSearchInputRef {
@@ -236,6 +200,8 @@ interface VsSearchInputRef {
     clear: () => void;
 }
 ```
+
+> **참고**: `input`은 [VsInput](../vs-input/README.md)의 StyleSet을 사용합니다.
 
 ## 특징
 

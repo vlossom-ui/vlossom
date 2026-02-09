@@ -119,26 +119,11 @@ interface VsCheckboxStyleSet {
     };
     checkboxInput?: CSSProperties;
     checkboxLabel?: CSSProperties;
-    wrapper?: {
-        variables?: {
-            backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-            labelColor?: string;
-            labelFontSize?: string;
-            labelFontWeight?: string | number;
-            labelMargin?: string;
-            labelWidth?: string;
-            messageMargin?: string;
-            messageFontSize?: string;
-            padding?: string;
-            requiredColor?: string;
-        };
-        label?: CSSProperties;
-        messages?: CSSProperties;
-    };
+    wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> **참고**: `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
 
 ### Slots
 
@@ -250,28 +235,14 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxSetStyleSet {
-    checkbox?: {
-        variables?: {
-            checkboxColor?: string;
-            checkboxSize?: string;
-        };
-        checkboxInput?: CSSProperties;
-        checkboxLabel?: CSSProperties;
-    };
-    wrapper?: {
-        variables?: {
-            backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-            labelColor?: string;
-            labelFontSize?: string;
-            labelFontWeight?: string | number;
-            labelMargin?: string;
-            labelWidth?: string;
-            messageMargin?: string;
-            messageFontSize?: string;
-            padding?: string;
-            requiredColor?: string;
+    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
+    wrapper?: VsInputWrapperStyleSet;
+}
+```
+
+> **참고**: `checkbox`는 [VsCheckbox](#vscheckbox)의 StyleSet을 사용하며, `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+
+### Slots (VsCheckboxSet 전용)
         };
         label?: CSSProperties;
         messages?: CSSProperties;

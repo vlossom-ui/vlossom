@@ -95,6 +95,8 @@ interface VsImageStyleSet {
 }
 ```
 
+> **참고**: `skeleton`은 [VsSkeleton](../vs-skeleton/README.md)의 StyleSet을 사용합니다.
+
 ### StyleSet 사용 예시
 
 ```html

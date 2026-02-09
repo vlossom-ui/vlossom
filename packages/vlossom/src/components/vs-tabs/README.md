@@ -272,6 +272,8 @@ interface VsTabsStyleSet {
 }
 ```
 
+> **참고**: `scrollButton`은 [VsButton](../vs-button/README.md)의 StyleSet을 사용합니다.
+
 ### StyleSet 사용 예시
 
 ```html

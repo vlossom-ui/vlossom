@@ -68,6 +68,8 @@ interface VsRadioStyleSet {
 }
 ```
 
+> **참고**: `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+
 ---
 
 ## VsRadioSet
@@ -154,17 +156,12 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsRadioSetStyleSet {
-    radio?: {
-        variables?: {
-            borderRadius?: string;
-            radioColor?: string;
-            radioSize?: string;
-        };
-        wrapper?: VsInputWrapperStyleSet;
-    };
+    radio?: VsRadioStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> **참고**: `radio`는 [VsRadio](#vsradio)의 StyleSet을 사용하며, `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
 
 ### Props
 

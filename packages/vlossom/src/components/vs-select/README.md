@@ -302,6 +302,12 @@ interface VsSelectStyleSet {
 }
 ```
 
+> **참고**: 
+> - `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+> - `chip`은 [VsChip](../vs-chip/README.md)의 StyleSet을 사용합니다.
+> - `selectAllCheckbox`는 [VsCheckbox](../vs-checkbox/README.md)의 StyleSet을 사용합니다.
+> - `options`는 [VsGroupedList](../vs-grouped-list/README.md)의 StyleSet을 사용합니다.
+
 ## StyleSet 사용 예시
 
 ```html
