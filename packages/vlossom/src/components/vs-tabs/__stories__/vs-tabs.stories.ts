@@ -484,7 +484,8 @@ export const StyleSet: Story = {
         docs: {
             description: {
                 story:
-                    '인라인 스타일 객체를 사용한 커스텀 탭입니다. styleSet prop에 variables(gap), tab, activeTab, scrollButton을 전달하여 세밀한 커스터마이징이 가능합니다.',
+                    '인라인 스타일 객체를 사용한 커스텀 탭입니다.' +
+                    'styleSet prop에 variables(gap), tab, activeTab, scrollButton을 전달하여 세밀한 커스터마이징이 가능합니다.',
             },
         },
     },
