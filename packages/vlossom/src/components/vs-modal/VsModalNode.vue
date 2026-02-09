@@ -86,6 +86,7 @@ export default defineComponent({
             const result: Record<string, string> = {};
             const width = (typeof size.value === 'object' ? size.value.width : size.value) ?? 'md';
             const height = (typeof size.value === 'object' ? size.value.height : size.value) ?? 'md';
+
             if (isSize(width)) {
                 result['width'] = modalWidthSize[width];
             } else {
@@ -103,7 +104,7 @@ export default defineComponent({
             });
         });
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
+        const { componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -154,7 +155,6 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
-            styleSetVariables,
             componentStyleSet,
             focusLock,
             onClickDimmed,

@@ -68,7 +68,7 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet } = toRefs(props);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet(componentName, styleSet);
 
         const messageSize = computed((): Size => {
             if (componentStyleSet.value?.messageSize) {
@@ -86,7 +86,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, messageSize, styleSetVariables, componentStyleSet };
+        return { needToShake, messageSize, componentStyleSet };
     },
 });
 </script>

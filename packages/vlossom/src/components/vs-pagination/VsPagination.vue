@@ -148,11 +148,7 @@ export default defineComponent({
             },
         }));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-        );
+        const { componentStyleSet } = useStyleSet<VsPaginationStyleSet>(componentName, styleSet, baseStyleSet);
 
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
 
@@ -233,7 +229,6 @@ export default defineComponent({
             computedColorScheme,
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
             paginationIcons,
             selectedIndex,
             pages,
