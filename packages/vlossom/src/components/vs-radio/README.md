@@ -156,6 +156,7 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsRadioSetStyleSet {
+    component?: CSSProperties;
     radio?: VsRadioStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }
