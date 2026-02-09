@@ -1,9 +1,6 @@
 .vs-block {
     --vs-block-border: initial;
     --vs-block-width: initial;
-    --vs-block-title-backgroundColor: initial;
-    --vs-block-title-color: initial;
-    --vs-block-title-padding: initial;
 
     @apply relative overflow-auto;
 
@@ -20,14 +17,14 @@
         @apply relative w-full;
 
         border-bottom: var(--vs-block-border, 1px solid var(--vs-line-color));
-        background-color: var(--vs-block-title-backgroundColor, var(--vs-comp-bg));
-        padding: var(--vs-block-title-padding, 0.8rem 1.6rem);
-        color: var(--vs-block-title-color, var(--vs-comp-font));
+        background-color: var(--vs-comp-bg);
+        padding: 0.8rem 1.6rem;
+        color: var(--vs-comp-font);
         font-weight: 500;
     }
 
     .vs-block-content {
-        @apply relative w-full;
+        @apply relative h-full w-full;
 
         padding: 1.6rem 1.6rem;
     }

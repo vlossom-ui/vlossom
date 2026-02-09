@@ -15,11 +15,6 @@ export interface VsBlockStyleSet {
     variables?: {
         border?: string;
         width?: string;
-        title?: {
-            backgroundColor?: string;
-            color?: string;
-            padding?: string;
-        };
     };
     component?: CSSProperties;
     title?: CSSProperties;
