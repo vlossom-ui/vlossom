@@ -137,7 +137,6 @@ app.mount("#app");
 
 ## Links
 
-- [Storybook](https://main--6537e1aa0900e5e159cef498.chromatic.com/) <!-- Chromatic Storybook URL -->
 - [Changelog](packages/vlossom/CHANGELOG.md)
 - [npm](https://www.npmjs.com/package/vlossom)
 

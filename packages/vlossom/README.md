@@ -253,7 +253,6 @@ Or toggle at runtime with `<vs-theme-button />`.
 ## Links
 
 - [GitHub Repository](https://github.com/vlossom-ui/vlossom)
-- [Storybook](https://main--6537e1aa0900e5e159cef498.chromatic.com/) <!-- Chromatic Storybook URL -->
 - [Changelog](https://github.com/vlossom-ui/vlossom/blob/main/packages/vlossom/CHANGELOG.md)
 - [Contributing Guide](https://github.com/vlossom-ui/vlossom/blob/main/CONTRIBUTING.md)
 
