@@ -9,7 +9,7 @@ Vlossom is a vibrant and versatile **[Vue](https://vuejs.org/) UI library** desi
 > [!NOTE]
 > You are on the `v2` project. Check out the [v1 project](https://github.com/pubg/vlossom) for Vlossom `v1`. Both versions will be maintained in parallel.
 
-- **18 Color Schemes** — One prop to paint any component
+- **19 Color Schemes** — One prop to paint any component
 - **Layered Style Sets** — Global, named, or per-instance style overrides via CSS variables
 - **Overlay System** — Modal, Toast, Confirm as plugins with full app context inheritance
 - **Declarative Responsive** — Breakpoint objects instead of media queries
@@ -30,15 +30,20 @@ pnpm add vlossom
 import { createApp } from "vue";
 import App from "./App.vue";
 import { createVlossom } from "vlossom";
+import { VlossomComponents } from "vlossom";
 import "vlossom/styles";
 
 const app = createApp(App);
-app.use(createVlossom());
+app.use(
+  createVlossom({
+    components: VlossomComponents,
+  }),
+);
 app.mount("#app");
 ```
 
 > [!TIP]
-> For detailed usage guide including color schemes, style sets, and plugin configuration, see [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
+> vlossom은 컴퍼넌트 단위의 tree shaking을 지원합니다, see [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
 
 ```vue
 <template>
@@ -130,6 +135,16 @@ app.mount("#app");
 | [vs-theme-button](packages/vlossom/src/components/vs-theme-button/README.md)     | Dark/light theme toggle      |
 | [vs-tooltip](packages/vlossom/src/components/vs-tooltip/README.md)               | Tooltip popup                |
 
+## Links
+
+- [Storybook](https://main--6537e1aa0900e5e159cef498.chromatic.com/) <!-- Chromatic Storybook URL -->
+- [Changelog](packages/vlossom/CHANGELOG.md)
+- [npm](https://www.npmjs.com/package/vlossom)
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, commit conventions, and PR guidelines.
+
 ## Project Structure
 
 ```
@@ -171,10 +186,6 @@ For complex components, you may also include:
 - `vs-[name]-rules.ts` — validation rules
 - `icons.ts` — component-specific icons
 - `composables/` — component-specific composables
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, commit conventions, and PR guidelines.
 
 ## Releasing
 
