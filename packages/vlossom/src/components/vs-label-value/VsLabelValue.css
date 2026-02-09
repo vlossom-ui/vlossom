@@ -12,7 +12,7 @@
         @apply relative flex;
 
         &.vs-label {
-            @apply break-words whitespace-nowrap;
+            @apply wrap-break-words whitespace-nowrap;
 
             flex-basis: 20%;
             align-items: center;

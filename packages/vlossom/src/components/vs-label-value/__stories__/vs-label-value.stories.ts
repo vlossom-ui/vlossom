@@ -14,16 +14,16 @@ const meta: Meta<typeof VsLabelValue> = {
             const preDefinedStyleSet: VsLabelValueStyleSet = {
                 variables: {
                     border: '2px solid #3b82f6',
-                    label: {
-                        backgroundColor: '#dbeafe',
-                        color: '#1e40af',
-                        padding: '1rem 1.5rem',
-                    },
-                    value: {
-                        backgroundColor: '#f8fafc',
-                        color: '#334155',
-                        padding: '1rem 1.5rem',
-                    },
+                },
+                label: {
+                    backgroundColor: '#dbeafe',
+                    color: '#1e40af',
+                    padding: '1rem 1.5rem',
+                },
+                value: {
+                    backgroundColor: '#f8fafc',
+                    color: '#334155',
+                    padding: '1rem 1.5rem',
                 },
             } as const;
 
@@ -169,16 +169,16 @@ export const StyleSet: Story = {
             variables: {
                 width: '600px',
                 border: '2px solid #10b981',
-                label: {
-                    backgroundColor: '#a1e224',
-                    color: '#065f46',
-                    padding: '0.75rem 1rem',
-                },
-                value: {
-                    backgroundColor: '#ecfdf5',
-                    color: '#047857',
-                    padding: '0.75rem 1rem',
-                },
+            },
+            label: {
+                backgroundColor: '#a1e224',
+                color: '#065f46',
+                padding: '0.75rem 1rem',
+            },
+            value: {
+                backgroundColor: '#ecfdf5',
+                color: '#047857',
+                padding: '0.75rem 1rem',
             },
         },
     },

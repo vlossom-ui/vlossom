@@ -50,10 +50,16 @@
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Primary</h4>
-                <vs-label-value primary>
-                    <template #label>Status</template>
-                    Active
-                </vs-label-value>
+                <div class="flex flex-col gap-1">
+                    <vs-label-value primary>
+                        <template #label>Status</template>
+                        Active
+                    </vs-label-value>
+                    <vs-label-value primary>
+                        <template #label>Status</template>
+                        Inactive
+                    </vs-label-value>
+                </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Dense</h4>
@@ -125,8 +131,12 @@
                 >
                     <vs-chip :style-set="{ component: { width: '80px' } }">{{ progressValue }}%</vs-chip>
                     <div class="flex gap-2">
-                        <vs-button size="sm" :style-set="{ component: { width: '2.5rem' } }" @click="decreaseProgress">-</vs-button>
-                        <vs-button size="sm" :style-set="{ component: { width: '2.5rem' } }" @click="increaseProgress">+</vs-button>
+                        <vs-button size="sm" :style-set="{ component: { width: '2.5rem' } }" @click="decreaseProgress"
+                            >-</vs-button
+                        >
+                        <vs-button size="sm" :style-set="{ component: { width: '2.5rem' } }" @click="increaseProgress"
+                            >+</vs-button
+                        >
                     </div>
                 </div>
             </vs-responsive>

@@ -15,7 +15,8 @@ export interface VsLabelValueStyleSet {
     variables?: {
         width?: string;
         border?: string;
-        label?: CSSProperties;
-        value?: CSSProperties;
     };
+    label?: CSSProperties;
+    value?: CSSProperties;
+    component?: CSSProperties;
 }

@@ -66,14 +66,14 @@ export const AllVariants: Story = {
                             :style-set="{
                                 variables: {
                                     border: '2px solid #6366f1',
-                                    label: {
-                                        backgroundColor: '#6366f1',
-                                        color: '#ffffff',
-                                    },
-                                    value: {
-                                        backgroundColor: '#eef2ff',
-                                        color: '#4338ca',
-                                    },
+                                },
+                                label: {
+                                    backgroundColor: '#6366f1',
+                                    color: '#ffffff',
+                                },
+                                value: {
+                                    backgroundColor: '#eef2ff',
+                                    color: '#4338ca',
                                 },
                             }"
                         >

@@ -74,9 +74,10 @@ interface VsLabelValueStyleSet {
     variables?: {
         width?: string;
         border?: string;
-        label?: CSSProperties;
-        value?: CSSProperties;
     };
+    label?: CSSProperties;
+    value?: CSSProperties;
+    component?: CSSProperties;
 }
 ```
 
@@ -88,16 +89,16 @@ interface VsLabelValueStyleSet {
         :style-set="{
             variables: {
                 border: '2px solid #e91e63',
-                label: {
-                    backgroundColor: '#f5f5f5',
-                    color: '#333',
-                    fontWeight: 600,
-                },
-                value: {
-                    backgroundColor: '#fff',
-                    color: '#666',
-                    padding: '1rem 2rem',
-                },
+            },
+            label: {
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+                fontWeight: 600,
+            },
+            value: {
+                backgroundColor: '#fff',
+                color: '#666',
+                padding: '1rem 2rem',
             },
         }"
     >
