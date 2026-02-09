@@ -43,7 +43,7 @@ app.mount("#app");
 ```
 
 > [!TIP]
-> vlossom은 컴퍼넌트 단위의 tree shaking을 지원합니다, see [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
+> Vlossom supports per-component tree shaking. See [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
 
 ```vue
 <template>
