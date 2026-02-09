@@ -1,18 +1,18 @@
 # Vs[ComponentName]
 
-<!-- 컴포넌트에 대한 간단한 설명 -->
+<!-- Brief description of the component -->
 
-**Available Version**:<!-- 예시: 2.0.0+ -->
+**Available Version**: <!-- e.g., 2.0.0+ -->
 
-GitHub Wiki Link: <!-- 깃허브 위키 링크-->
+GitHub Wiki Link: <!-- GitHub wiki link -->
 
-## 미리보기
+## Preview
 
-<!-- 컴포넌트 이미지 -->
+<!-- Component image -->
 
-## 기본 사용법
+## Basic Usage
 
-<!-- 컴포넌트 사용 예시를 코드로 작성 -->
+<!-- Component usage example -->
 
 ```html
 <template></template>
@@ -20,7 +20,7 @@ GitHub Wiki Link: <!-- 깃허브 위키 링크-->
 
 ## Props
 
-<!-- Props 정보 작성 -->
+<!-- Props information -->
 
 | Prop | Type | Default | Required | Description |
 | ---- | ---- | ------- | -------- | ----------- |
@@ -29,7 +29,7 @@ GitHub Wiki Link: <!-- 깃허브 위키 링크-->
 
 ```typescript
 interface [ComponentName]StyleSet {
-  // 스타일 속성들
+  // Style properties
 }
 ```
 
