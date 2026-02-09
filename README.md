@@ -19,6 +19,6 @@ Vlossom is a vibrant and versatile [Vue](https://vuejs.org/) UI library designed
     </a>
 </p>
 
-## Credit
+## Credits
 
 - **[Pretendard](https://github.com/orioncactus/pretendard)** - Default font ([SIL Open Font License 1.1](https://github.com/orioncactus/pretendard/blob/main/LICENSE))
