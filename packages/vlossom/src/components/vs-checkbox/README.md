@@ -117,7 +117,7 @@ interface VsCheckboxStyleSet {
         checkboxColor?: string;
         checkboxSize?: string;
     };
-    checkboxInput?: CSSProperties;
+    checkbox?: CSSProperties;
     checkboxLabel?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
@@ -235,20 +235,13 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxSetStyleSet {
+    component?: CSSProperties;
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
-> **참고**: `checkbox`는 [VsCheckbox](#vscheckbox)의 StyleSet을 사용하며, `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
-
-### Slots (VsCheckboxSet 전용)
-        };
-        label?: CSSProperties;
-        messages?: CSSProperties;
-    };
-}
-```
+> **참고**: `component`는 체크박스 세트 컨테이너 스타일이며, `checkbox`는 [VsCheckbox](#vscheckbox)의 StyleSet을 사용하고, `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
 
 ### Slots
 

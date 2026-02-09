@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]">
+        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="componentStyleSet.component">
             <vs-checkbox
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"

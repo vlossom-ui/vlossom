@@ -24,12 +24,13 @@ export interface VsCheckboxStyleSet {
         checkboxColor?: string;
         checkboxSize?: string;
     };
-    checkboxInput?: CSSProperties;
+    checkbox?: CSSProperties;
     checkboxLabel?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 
 export interface VsCheckboxSetStyleSet {
+    component?: CSSProperties;
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }

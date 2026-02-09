@@ -211,6 +211,18 @@ export const StyleSet: Story = {
                 checkboxColor: '#81c798',
                 checkboxSize: '4rem',
             },
+            checkbox: {
+                borderRadius: '0.5rem',
+            },
+            checkboxLabel: {
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+            },
+            wrapper: {
+                label: {
+                    color: '#059669',
+                },
+            },
         },
     },
 };

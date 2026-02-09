@@ -23,7 +23,7 @@
                     ref="checkboxRef"
                     type="checkbox"
                     :class="['vs-checkbox-input', stateClasses]"
-                    :style="componentStyleSet.checkboxInput"
+                    :style="componentStyleSet.checkbox"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :value="convertToString(trueValue)"
