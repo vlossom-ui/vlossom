@@ -38,7 +38,7 @@
 
         <vs-footer :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-center text-sm">
-                <span>© 2025 Vlossom</span>
+                <span>© 2026 Vlossom</span>
             </div>
         </vs-footer>
     </vs-layout>
