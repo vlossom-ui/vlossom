@@ -14,7 +14,7 @@
 </p>
 
 > [!NOTE]
-> You are on the `v2` project. Check out the [v1 project](https://github.com/pubg/vlossom) for Vlossom `v1`.
+> You are on the `v2` project. Check out the [v1 project](https://github.com/pubg/vlossom) for Vlossom `v1`.  
 > Both versions will be maintained in parallel.
 
 - **Various Color Schemes** — Easily style any component with a single prop
