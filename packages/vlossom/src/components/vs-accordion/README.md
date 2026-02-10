@@ -92,6 +92,7 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsAccordionStyleSet {
+    component?: CSSProperties;
     variables?: {
         arrowColor?: string;
         arrowSize?: string;

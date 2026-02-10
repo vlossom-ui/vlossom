@@ -3,7 +3,7 @@
         :class="['vs-accordion', colorSchemeClass, classObj, { 'vs-accordion-open': isOpen }]"
         :width
         :grid
-        :style="styleSetVariables"
+        :style="[styleSetVariables, componentStyleSet.component]"
         :tabindex="disabled ? -1 : 0"
         @keydown.enter.prevent.stop="toggle"
         @keydown.space.prevent.stop="toggle"

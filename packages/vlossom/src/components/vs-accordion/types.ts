@@ -15,6 +15,7 @@ export interface VsAccordionRef extends ComponentPublicInstance<typeof VsAccordi
 }
 
 export interface VsAccordionStyleSet {
+    component?: CSSProperties;
     variables?: {
         arrowColor?: string;
         arrowSize?: string;
