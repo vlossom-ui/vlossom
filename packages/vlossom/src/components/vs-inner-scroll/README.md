@@ -77,9 +77,6 @@ function checkScroll() {
 <template>
     <vs-inner-scroll
         :style-set="{
-            component: {
-                backgroundColor: '#f5f5f5',
-            },
             header: {
                 padding: '24px',
             },
