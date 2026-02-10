@@ -32,10 +32,11 @@
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
         "lint": "eslint . && stylelint \"src/**/*.{css,scss}\"",
-        "format": "prettier --write src/",
+        "format": "prettier --write src/**/*.{js,ts,vue,json}",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "build-storybook:chromatic": "storybook build -c .storybook-chromatic"
+        "build-storybook:chromatic": "storybook build -c .storybook-chromatic",
+        "chromatic": "chromatic --build-script-name build-storybook:chromatic --exit-zero-on-changes"
     },
     "files": [
         "dist"

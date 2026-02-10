@@ -1,15 +1,23 @@
-<p>
-    <img alt="Vlossom Logo" width="100" src="./assets/vlossom-logo.png">
+<p align="center">
+    <img alt="Vlossom Logo" width="100" src="https://raw.githubusercontent.com/vlossom-ui/vlossom/main/assets/vlossom-logo.png">
 </p>
 
-# Vlossom [![Version](https://img.shields.io/npm/v/vlossom.svg)](https://www.npmjs.com/package/vlossom) [![License](https://img.shields.io/npm/l/vlossom.svg)](https://github.com/pubg/vlossom/blob/main/CONTRIBUTING.md#license)
+<h1 align="center">Vlossom</h1>
 
-Vlossom is a vibrant and versatile **[Vue](https://vuejs.org/) UI library** designed to blossom your web applications with elegance and ease.
+<p align="center">
+    A vibrant and versatile <a href="https://vuejs.org/">Vue 3</a> UI library designed to blossom your web applications with elegance and ease.
+</p>
+
+<p align="center">
+    <a href="https://www.npmjs.com/package/vlossom"><img src="https://img.shields.io/npm/v/vlossom.svg" alt="Version"></a>
+    <a href="https://github.com/vlossom-ui/vlossom/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/vlossom.svg" alt="License"></a>
+</p>
 
 > [!NOTE]
-> You are on the `v2` project. Check out the [v1 project](https://github.com/pubg/vlossom) for Vlossom `v1`. Both versions will be maintained in parallel.
+> You are on the `v2` project. Check out the [v1 project](https://github.com/pubg/vlossom) for Vlossom `v1`.
+> Both versions will be maintained in parallel.
 
-- **19 Color Schemes** — One prop to paint any component
+- **Various Color Schemes** — Easily style any component with a single prop
 - **Layered Style Sets** — Global, named, or per-instance style overrides via CSS variables
 - **Overlay System** — Modal, Toast, Confirm as plugins with full app context inheritance
 - **Declarative Responsive** — Breakpoint objects instead of media queries
@@ -25,12 +33,15 @@ npm install vlossom
 pnpm add vlossom
 ```
 
+> [!TIP]
+> Vlossom supports per-component tree shaking.  
+> See [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
+
 ```typescript
 // main.ts
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createVlossom } from "vlossom";
-import { VlossomComponents } from "vlossom";
+import { createVlossom, VlossomComponents } from "vlossom";
 import "vlossom/styles";
 
 const app = createApp(App);
@@ -41,9 +52,6 @@ app.use(
 );
 app.mount("#app");
 ```
-
-> [!TIP]
-> Vlossom supports per-component tree shaking. See [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
 
 ```vue
 <template>
