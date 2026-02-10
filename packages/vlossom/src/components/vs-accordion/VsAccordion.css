@@ -7,7 +7,7 @@
 
     @apply relative overflow-hidden;
 
-    border: 1px solid var(--vs-line-color);
+    border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     width: var(--vs-accordion-width, 100%);
 
