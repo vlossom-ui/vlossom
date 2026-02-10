@@ -57,7 +57,7 @@ app.mount('#app');
 ```
 
 > [!TIP]
-> Vlossom supports per-component tree shaking. See [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
+> Vlossom supports per-component tree shaking. See [VLOSSOM_USAGE_GUIDE.md](VLOSSOM_USAGE_GUIDE.md).
 
 ## Usage
 
@@ -183,27 +183,27 @@ function openEditor() {
 
 ### Layout
 
-[vs-container](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-container/README.md) · [vs-grid](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-grid/README.md) · [vs-layout](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-layout/README.md) · [vs-page](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-page/README.md) · [vs-responsive](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-responsive/README.md) · [vs-block](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-block/README.md) · [vs-header](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-header/README.md) · [vs-footer](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-footer/README.md)
+[vs-container](src/components/vs-container/README.md) · [vs-grid](src/components/vs-grid/README.md) · [vs-layout](src/components/vs-layout/README.md) · [vs-page](src/components/vs-page/README.md) · [vs-responsive](src/components/vs-responsive/README.md) · [vs-block](src/components/vs-block/README.md) · [vs-header](src/components/vs-header/README.md) · [vs-footer](src/components/vs-footer/README.md)
 
 ### Form
 
-[vs-input](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-input/README.md) · [vs-textarea](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-textarea/README.md) · [vs-checkbox](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-checkbox/README.md) · [vs-radio](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-radio/README.md) · [vs-select](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-select/README.md) · [vs-switch](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-switch/README.md) · [vs-toggle](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-toggle/README.md) · [vs-file-drop](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-file-drop/README.md) · [vs-search-input](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-search-input/README.md) · [vs-form](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-form/README.md) · [vs-input-wrapper](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-input-wrapper/README.md)
+[vs-input](src/components/vs-input/README.md) · [vs-textarea](src/components/vs-textarea/README.md) · [vs-checkbox](src/components/vs-checkbox/README.md) · [vs-radio](src/components/vs-radio/README.md) · [vs-select](src/components/vs-select/README.md) · [vs-switch](src/components/vs-switch/README.md) · [vs-toggle](src/components/vs-toggle/README.md) · [vs-file-drop](src/components/vs-file-drop/README.md) · [vs-search-input](src/components/vs-search-input/README.md) · [vs-form](src/components/vs-form/README.md) · [vs-input-wrapper](src/components/vs-input-wrapper/README.md)
 
 ### Display
 
-[vs-accordion](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-accordion/README.md) · [vs-avatar](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-avatar/README.md) · [vs-bar](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-bar/README.md) · [vs-chip](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-chip/README.md) · [vs-divider](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-divider/README.md) · [vs-expandable](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-expandable/README.md) · [vs-grouped-list](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-grouped-list/README.md) · [vs-image](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-image/README.md) · [vs-label-value](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-label-value/README.md) · [vs-skeleton](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-skeleton/README.md) · [vs-text-wrap](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-text-wrap/README.md)
+[vs-accordion](src/components/vs-accordion/README.md) · [vs-avatar](src/components/vs-avatar/README.md) · [vs-bar](src/components/vs-bar/README.md) · [vs-button](src/components/vs-button/README.md) · [vs-chip](src/components/vs-chip/README.md) · [vs-divider](src/components/vs-divider/README.md) · [vs-expandable](src/components/vs-expandable/README.md) · [vs-grouped-list](src/components/vs-grouped-list/README.md) · [vs-image](src/components/vs-image/README.md) · [vs-label-value](src/components/vs-label-value/README.md) · [vs-skeleton](src/components/vs-skeleton/README.md) · [vs-table](src/components/vs-table/README.md) · [vs-text-wrap](src/components/vs-text-wrap/README.md)
 
 ### Feedback
 
-[vs-loading](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-loading/README.md) · [vs-message](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-message/README.md) · [vs-modal](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-modal/README.md) · [vs-drawer](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-drawer/README.md) · [vs-dimmed](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-dimmed/README.md) · [vs-progress](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-progress/README.md) · [vs-toast](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-toast/README.md)
+[vs-loading](src/components/vs-loading/README.md) · [vs-message](src/components/vs-message/README.md) · [vs-modal](src/components/vs-modal/README.md) · [vs-drawer](src/components/vs-drawer/README.md) · [vs-dimmed](src/components/vs-dimmed/README.md) · [vs-progress](src/components/vs-progress/README.md) · [vs-toast](src/components/vs-toast/README.md)
 
 ### Navigation
 
-[vs-tabs](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-tabs/README.md) · [vs-pagination](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-pagination/README.md) · [vs-steps](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-steps/README.md) · [vs-index-view](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-index-view/README.md)
+[vs-tabs](src/components/vs-tabs/README.md) · [vs-pagination](src/components/vs-pagination/README.md) · [vs-steps](src/components/vs-steps/README.md) · [vs-index-view](src/components/vs-index-view/README.md)
 
 ### Utility
 
-[vs-floating](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-floating/README.md) · [vs-focus-trap](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-focus-trap/README.md) · [vs-inner-scroll](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-inner-scroll/README.md) · [vs-render](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-render/README.md) · [vs-visible-render](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-visible-render/README.md) · [vs-theme-button](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-theme-button/README.md) · [vs-tooltip](https://github.com/vlossom-ui/vlossom/tree/main/packages/vlossom/src/components/vs-tooltip/README.md)
+[vs-floating](src/components/vs-floating/README.md) · [vs-focus-trap](src/components/vs-focus-trap/README.md) · [vs-inner-scroll](src/components/vs-inner-scroll/README.md) · [vs-render](src/components/vs-render/README.md) · [vs-visible-render](src/components/vs-visible-render/README.md) · [vs-theme-button](src/components/vs-theme-button/README.md) · [vs-tooltip](src/components/vs-tooltip/README.md)
 
 ## Styling & Theming
 
@@ -257,9 +257,9 @@ Or toggle at runtime with `<vs-theme-button />`.
 ## Links
 
 - [GitHub Repository](https://github.com/vlossom-ui/vlossom)
-- [Changelog](https://github.com/vlossom-ui/vlossom/blob/main/packages/vlossom/CHANGELOG.md)
-- [Contributing Guide](https://github.com/vlossom-ui/vlossom/blob/main/CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing Guide](../../CONTRIBUTING.md)
 
 ## License
 
-[MIT](https://github.com/vlossom-ui/vlossom/blob/main/LICENSE)
+[MIT](../../LICENSE)
