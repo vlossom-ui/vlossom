@@ -159,6 +159,8 @@ function clearTextarea() {
 | `update:changed`    | `changed: boolean` | 값 변경 여부 업데이트   |
 | `update:valid`      | `valid: boolean`   | 검증 상태 업데이트      |
 | `change`            | `value: string`    | 입력값 변경 시 발생     |
+| `focus`             | `event: FocusEvent`| textarea 포커스 시 발생 |
+| `blur`              | `event: FocusEvent`| textarea 포커스 해제 시 발생 |
 
 ## Methods
 
@@ -174,7 +176,7 @@ function clearTextarea() {
 
 ```typescript
 interface VsTextareaStyleSet {
-    component?: CSSProperties;
+    textarea?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
@@ -189,7 +191,7 @@ interface VsTextareaStyleSet {
     <vs-textarea
         v-model="description"
         :style-set="{
-            component: {
+            textarea: {
                 minHeight: '10rem',
                 padding: '1rem',
                 border: '2px solid #333',

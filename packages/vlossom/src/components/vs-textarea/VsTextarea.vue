@@ -22,7 +22,7 @@
             ref="textareaRef"
             :id="computedId"
             :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]"
-            :style="componentStyleSet.component"
+            :style="componentStyleSet.textarea"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
             :name

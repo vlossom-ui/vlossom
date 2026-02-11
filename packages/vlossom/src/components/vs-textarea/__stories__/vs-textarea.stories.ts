@@ -413,7 +413,7 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 텍스트 영역',
         styleSet: {
-            component: {
+            textarea: {
                 backgroundColor: '#f0f8ff',
                 border: '2px solid #1e88e5',
                 borderRadius: '12px',
