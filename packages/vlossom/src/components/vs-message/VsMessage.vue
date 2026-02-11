@@ -11,6 +11,9 @@
 import { type PropType, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, type UIState, type Size } from '@/declaration';
 import { messageIcons } from './icons';
+import { getStyleSetProps } from '@/props';
+import { useStyleSet } from '@/composables';
+import type { VsMessageStyleSet } from './types';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
@@ -19,7 +22,7 @@ export default defineComponent({
     name: componentName,
     components: { VsRender },
     props: {
-        size: { type: String as PropType<Size>, default: 'md' },
+        ...getStyleSetProps<VsMessageStyleSet>(),
         state: {
             type: String as PropType<UIState>,
             default: 'idle',
@@ -27,7 +30,7 @@ export default defineComponent({
         text: { type: String, default: '' },
     },
     setup(props) {
-        const { state, size } = toRefs(props);
+        const { state, styleSet } = toRefs(props);
 
         const colorClass = computed(() => {
             switch (state.value) {
@@ -44,7 +47,17 @@ export default defineComponent({
             }
         });
 
-        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
+        const { componentStyleSet } = useStyleSet(componentName, styleSet);
+
+        const messageSize = computed((): Size => {
+            if (componentStyleSet.value?.size) {
+                return componentStyleSet.value.size;
+            }
+
+            return 'sm';
+        });
+
+        const sizeClass = computed(() => (messageSize.value ? `vs-${messageSize.value}` : ''));
 
         const icon = computed(() => {
             return messageIcons[state.value];

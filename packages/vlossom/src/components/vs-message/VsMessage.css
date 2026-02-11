@@ -4,19 +4,18 @@
     --vs-message-font-size: var(--vs-font-size-md);
 
     @apply flex items-start;
-
-    color: var(--vs-primary-comp-bg);
     fill: var(--vs-primary-comp-bg);
     stroke: var(--vs-primary-comp-bg);
+    color: var(--vs-primary-comp-bg);
 
     .vs-message-icon {
-        @apply flex-shrink-0;
+        @apply shrink-0;
         width: var(--vs-message-font-size);
         height: var(--vs-message-font-size);
     }
 
     .vs-message-text {
-        @apply ml-1 break-words;
+        @apply ml-1 wrap-break-word;
         font-size: var(--vs-message-font-size);
         line-height: var(--vs-message-font-size);
     }
