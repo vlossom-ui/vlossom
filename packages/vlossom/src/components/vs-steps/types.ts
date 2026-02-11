@@ -20,5 +20,5 @@ export interface VsStepsStyleSet {
     label?: CSSProperties;
     activeLabel?: CSSProperties;
     progress?: CSSProperties;
-    progressActive?: CSSProperties;
+    activeProgress?: CSSProperties;
 }

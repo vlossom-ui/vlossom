@@ -143,7 +143,7 @@ export default defineComponent({
             const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return {
                 ...componentStyleSet.value.progress,
-                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.progressActive : {}),
+                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.activeProgress : {}),
                 [dimensionKey]: `${percentage}%`,
             };
         });

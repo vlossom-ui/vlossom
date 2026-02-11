@@ -260,7 +260,7 @@ interface VsStepsStyleSet {
     label?: CSSProperties;
     activeLabel?: CSSProperties;
     progress?: CSSProperties;
-    progressActive?: CSSProperties;
+    activeProgress?: CSSProperties;
 }
 ```
 
@@ -293,7 +293,7 @@ interface VsStepsStyleSet {
             progress: {
                 backgroundColor: '#e0e0e0',
             },
-            progressActive: {
+            activeProgress: {
                 backgroundColor: '#4caf50',
             },
         }"

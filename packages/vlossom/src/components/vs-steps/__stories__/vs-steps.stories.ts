@@ -510,7 +510,7 @@ export const StyleSet: Story = {
             progress: {
                 backgroundColor: '#e0e0e0',
             },
-            progressActive: {
+            activeProgress: {
                 backgroundColor: '#e91e63',
             },
         },
