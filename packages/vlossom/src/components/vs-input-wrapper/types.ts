@@ -1,6 +1,6 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsInputWrapper from './VsInputWrapper.vue';
-import type { Size } from '@/declaration';
+import type { VsMessageStyleSet } from '@/components/vs-message/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -15,6 +15,6 @@ export interface VsInputWrapperRef extends ComponentPublicInstance<typeof VsInpu
 export interface VsInputWrapperStyleSet {
     component?: CSSProperties;
     label?: CSSProperties;
-    message?: CSSProperties;
-    messageSize?: Size;
+    messages?: CSSProperties;
+    message?: VsMessageStyleSet;
 }

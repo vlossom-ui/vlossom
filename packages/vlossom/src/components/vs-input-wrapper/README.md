@@ -85,6 +85,8 @@
 ## Types
 
 ```typescript
+import type { VsMessageStyleSet } from '@/components/vs-message/types';
+
 interface StateMessage<T extends string = UIState> {
     state: T;
     text: string;
@@ -92,14 +94,54 @@ interface StateMessage<T extends string = UIState> {
 
 type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
-type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
 interface VsInputWrapperStyleSet {
     component?: CSSProperties;
     label?: CSSProperties;
-    message?: CSSProperties;
-    messageSize?: Size;
+    messages?: CSSProperties; // 메세지 영역 스타일링
+    message?: VsMessageStyleSet;
 }
+```
+
+> **참고**: `message`는 [VsMessageStyleSet](../vs-message/README.md#types)의 StyleSet을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <!-- 메시지 크기 조정 -->
+    <vs-input-wrapper
+        label="이메일"
+        :messages="[
+            { state: 'error', text: '올바른 이메일 형식이 아닙니다.' }
+        ]"
+        :style-set="{
+            message: {
+                size: 'lg',
+            },
+        }"
+    >
+        <input type="email" />
+    </vs-input-wrapper>
+
+    <!-- 라벨 및 메시지 영역 스타일 -->
+    <vs-input-wrapper
+        label="이름"
+        :messages="[
+            { state: 'info', text: '실명을 입력해주세요.' }
+        ]"
+        :style-set="{
+            label: {
+                fontSize: '18px',
+                fontWeight: 'bold',
+            },
+            messages: {
+                marginTop: '8px',
+            },
+        }"
+    >
+        <input type="text" />
+    </vs-input-wrapper>
+</template>
 ```
 
 ## Slots

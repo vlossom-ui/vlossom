@@ -25,7 +25,7 @@
         <div
             v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
-            :style="componentStyleSet.message"
+            :style="componentStyleSet.messages"
         >
             <slot name="messages">
                 <vs-message
@@ -33,7 +33,7 @@
                     :key="`${text}-${index}`"
                     :state
                     :text
-                    :size="messageSize"
+                    :style-set="componentStyleSet.message"
                 />
             </slot>
         </div>
@@ -41,8 +41,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
-import { VsComponent, type StateMessage, type UIState, type Size } from '@/declaration';
+import { defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { VsComponent, type StateMessage, type UIState } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsInputWrapperStyleSet } from './types';
@@ -70,14 +70,6 @@ export default defineComponent({
 
         const { componentStyleSet } = useStyleSet(componentName, styleSet);
 
-        const messageSize = computed((): Size => {
-            if (componentStyleSet.value?.messageSize) {
-                return componentStyleSet.value.messageSize;
-            }
-
-            return 'sm';
-        });
-
         const needToShake = ref(false);
         watch(shake, () => {
             needToShake.value = true;
@@ -86,7 +78,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, messageSize, componentStyleSet };
+        return { needToShake, componentStyleSet };
     },
 });
 </script>
