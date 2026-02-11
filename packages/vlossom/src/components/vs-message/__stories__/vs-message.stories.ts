@@ -30,6 +30,13 @@ const meta: Meta<typeof VsMessage> = {
             control: 'text',
             description: '표시할 메시지 텍스트',
         },
+        styleSet: {
+            control: 'object',
+            description: '커스텀 스타일 설정 (size 등)',
+            table: {
+                type: { summary: 'VsMessageStyleSet | string' },
+            },
+        },
     },
 };
 

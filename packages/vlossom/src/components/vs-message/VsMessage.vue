@@ -49,12 +49,8 @@ export default defineComponent({
 
         const { componentStyleSet } = useStyleSet(componentName, styleSet);
 
-        const messageSize = computed((): Size => {
-            if (componentStyleSet.value?.size) {
-                return componentStyleSet.value.size;
-            }
-
-            return 'sm';
+        const messageSize = computed((): Size | undefined => {
+            return componentStyleSet.value?.size;
         });
 
         const sizeClass = computed(() => (messageSize.value ? `vs-${messageSize.value}` : ''));
