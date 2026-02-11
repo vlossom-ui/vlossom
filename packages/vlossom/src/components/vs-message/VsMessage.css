@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-message {
-    --vs-message-font-size: var(--vs-font-size-md);
+    --vs-message-size: initial;
 
     @apply flex items-start;
     fill: var(--vs-primary-comp-bg);
@@ -10,26 +10,13 @@
 
     .vs-message-icon {
         @apply shrink-0;
-        width: var(--vs-message-font-size);
-        height: var(--vs-message-font-size);
+        width: var(--vs-message-size);
+        height: var(--vs-message-size);
     }
 
     .vs-message-text {
         @apply ml-1 wrap-break-word;
-        font-size: var(--vs-message-font-size);
-        line-height: var(--vs-message-font-size);
-    }
-
-    &.vs-xs {
-        --vs-message-font-size: var(--vs-font-size-xs);
-    }
-    &.vs-sm {
-        --vs-message-font-size: var(--vs-font-size-sm);
-    }
-    &.vs-lg {
-        --vs-message-font-size: var(--vs-font-size-lg);
-    }
-    &.vs-xl {
-        --vs-message-font-size: var(--vs-font-size-xl);
+        font-size: var(--vs-message-size);
+        line-height: var(--vs-message-size);
     }
 }

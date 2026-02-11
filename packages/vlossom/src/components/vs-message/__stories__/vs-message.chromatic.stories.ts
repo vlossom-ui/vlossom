@@ -27,11 +27,11 @@ const meta: Meta<typeof VsMessage> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <vs-message v-bind="args" :style-set="{ size: 'xs' }" text="XS 메시지" />
-                        <vs-message v-bind="args" :style-set="{ size: 'sm' }" text="SM 메시지" />
+                        <vs-message v-bind="args" :style-set="{ variables: { size: '0.75rem' } }" text="XS 메시지" />
+                        <vs-message v-bind="args" :style-set="{ variables: { size: '0.875rem' } }" text="SM 메시지" />
                         <vs-message v-bind="args" text="기본 메시지" />
-                        <vs-message v-bind="args" :style-set="{ size: 'lg' }" text="LG 메시지" />
-                        <vs-message v-bind="args" :style-set="{ size: 'xl' }" text="XL 메시지" />
+                        <vs-message v-bind="args" :style-set="{ variables: { size: '1.25rem' } }" text="LG 메시지" />
+                        <vs-message v-bind="args" :style-set="{ variables: { size: '1.5rem' } }" text="XL 메시지" />
                     </div>
                 </div>
             </div>
