@@ -27,21 +27,6 @@
 </template>
 ```
 
-## Props
-
-| Prop         | Type                         | Default | Required | Description                |
-| ------------ | ---------------------------- | ------- | -------- | -------------------------- |
-| `modelValue` | `boolean`                    | `false` | -        | dimmed 표시 여부 (v-model) |
-| `styleSet`   | `string \| VsDimmedStyleSet` | -       | -        | 커스텀 스타일 설정 객체    |
-
-## Types
-
-```typescript
-interface VsDimmedStyleSet {
-    component?: CSSProperties;
-}
-```
-
 ### StyleSet 사용 예시
 
 ```html
@@ -59,6 +44,21 @@ interface VsDimmedStyleSet {
         />
     </div>
 </template>
+```
+
+## Props
+
+| Prop         | Type                         | Default | Required | Description                |
+| ------------ | ---------------------------- | ------- | -------- | -------------------------- |
+| `modelValue` | `boolean`                    | `false` | -        | dimmed 표시 여부 (v-model) |
+| `styleSet`   | `string \| VsDimmedStyleSet` | -       | -        | 커스텀 스타일 설정 객체    |
+
+## Types
+
+```typescript
+interface VsDimmedStyleSet {
+    component?: CSSProperties;
+}
 ```
 
 ## 특징
