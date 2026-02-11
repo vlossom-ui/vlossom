@@ -23,5 +23,5 @@ export interface VsAccordionStyleSet {
     };
     component?: CSSProperties;
     title?: CSSProperties;
-    expand?: VsExpandableStyleSet;
+    content?: VsExpandableStyleSet;
 }

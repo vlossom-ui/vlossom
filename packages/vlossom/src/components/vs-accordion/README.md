@@ -100,11 +100,11 @@ interface VsAccordionStyleSet {
     };
     component?: CSSProperties;
     title?: CSSProperties;
-    expand?: VsExpandableStyleSet;
+    content?: VsExpandableStyleSet;
 }
 ```
 
-> **참고**: `expand`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)의 StyleSet을 사용합니다.
+> **참고**: `content`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)의 StyleSet을 사용합니다.
 
 ### StyleSet 사용 예시
 
