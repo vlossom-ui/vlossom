@@ -190,6 +190,7 @@ interface VsSearchInputStyleSet {
         height?: string;
     };
     input?: VsInputStyleSet;
+    toggle?: VsToggleStyleSet;
 }
 
 interface VsSearchInputRef {
@@ -201,7 +202,7 @@ interface VsSearchInputRef {
 }
 ```
 
-> **참고**: `input`은 [VsInputStyleSet](../vs-input/README.md#types)의 StyleSet을 사용합니다.
+> **참고**: `input`은 [VsInputStyleSet](../vs-input/README.md#types)의 StyleSet을, `toggle`은 [VsToggleStyleSet](../vs-toggle/README.md#types)의 StyleSet을 사용합니다.
 
 ## 특징
 

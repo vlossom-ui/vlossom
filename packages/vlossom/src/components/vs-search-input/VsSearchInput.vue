@@ -22,8 +22,9 @@
                     v-if="useCaseSensitive"
                     v-model="isCaseSensitiveOn"
                     class="vs-search-input-toggle"
+                    :class="{ 'vs-search-input-toggle-on': isCaseSensitiveOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="getToggleButtonStyleSet(isCaseSensitiveOn)"
+                    :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
                     @toggle="$emit('update:caseSensitive', $event)"
@@ -34,8 +35,9 @@
                     v-if="useRegex"
                     v-model="isRegexOn"
                     class="vs-search-input-toggle"
+                    :class="{ 'vs-search-input-toggle-on': isRegexOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="getToggleButtonStyleSet(isRegexOn)"
+                    :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
                     @toggle="$emit('update:regex', $event)"
@@ -106,17 +108,24 @@ export default defineComponent({
 
             return {
                 input: {
-                    variables: {
-                        append: {
-                            backgroundColor: 'transparent',
-                            padding: '0 0.3rem',
-                        },
+                    append: {
+                        backgroundColor: 'transparent',
+                        padding: '0 0.3rem',
                     },
                     ...(height && {
                         component: {
                             height,
                         },
                     }),
+                },
+                toggle: {
+                    variables: {
+                        padding: '0',
+                    },
+                    component: {
+                        backgroundColor: 'transparent',
+                        border: '1px solid var(--vs-comp-bg)',
+                    },
                 },
             };
         });
@@ -126,18 +135,6 @@ export default defineComponent({
             styleSet,
             baseStyleSet,
         );
-
-        function getToggleButtonStyleSet(toggle: boolean) {
-            return {
-                variables: {
-                    padding: '0',
-                },
-                component: {
-                    backgroundColor: toggle ? 'var(--vs-area-bg)' : 'transparent',
-                    border: toggle ? '1px solid var(--vs-primary-comp-bg)' : '1px solid var(--vs-comp-bg)',
-                },
-            };
-        }
 
         const debouncedEmitSearch = functionUtil.debounce({ delay: 400 }, (value: string) => {
             emit('search', value);
@@ -223,7 +220,6 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             onInputChange,
-            getToggleButtonStyleSet,
             // Methods
             match,
             focus,
