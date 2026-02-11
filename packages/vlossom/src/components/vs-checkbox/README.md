@@ -123,7 +123,8 @@ interface VsCheckboxStyleSet {
 }
 ```
 
-> **참고**: `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### Slots
 
@@ -241,7 +242,11 @@ interface VsCheckboxSetStyleSet {
 }
 ```
 
-> **참고**: `component`는 체크박스 세트 컨테이너 스타일이며, `checkbox`는 [VsCheckboxStyleSet](#types)의 StyleSet을 사용하고, `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+>
+> - `component`는 체크박스 세트 컨테이너 스타일입니다.
+> - `checkbox`는 [VsCheckboxStyleSet](#types)을 사용합니다.
+> - `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### Slots
 

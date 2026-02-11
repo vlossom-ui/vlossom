@@ -102,7 +102,8 @@ interface VsInputWrapperStyleSet {
 }
 ```
 
-> **참고**: `message`는 [VsMessageStyleSet](../vs-message/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+> `message`는 [VsMessageStyleSet](../vs-message/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 

@@ -91,7 +91,8 @@ const handleToggle = (value: boolean) => {
 interface VsToggleStyleSet extends VsButtonStyleSet {}
 ```
 
-> **Note**: VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md)를 참조하세요.
+> [!NOTE]
+> VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md#types)를 참조하세요.
 
 ### StyleSet 사용 예시
 

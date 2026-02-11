@@ -182,7 +182,8 @@ interface VsInputStyleSet {
 }
 ```
 
-> **참고**: `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ## Slots
 

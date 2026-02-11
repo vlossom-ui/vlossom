@@ -50,7 +50,8 @@ interface VsToastStyleSet {
 }
 ```
 
-> **참고**: `closeButton`은 [VsButtonStyleSet](../vs-button/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+> `closeButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 

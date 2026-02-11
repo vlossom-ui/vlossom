@@ -100,7 +100,10 @@ interface VsPaginationStyleSet {
 }
 ```
 
-> **참고**: `pageButton`과 `controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+>
+> - `pageButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
+> - `controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 

@@ -157,7 +157,8 @@ interface VsDrawerStyleSet {
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 ```
 
-> **참고**: `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)의 StyleSet을 사용합니다.
+> [!NOTE]
+> `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 

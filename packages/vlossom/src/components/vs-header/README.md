@@ -91,7 +91,8 @@
 interface VsHeaderStyleSet extends VsBarStyleSet {}
 ```
 
-> `VsBarStyleSet`에 대한 자세한 내용은 [VsBar](../vs-bar/README.md#types)를 참고하세요.
+> [!NOTE]
+> VsBar의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsBar README](../vs-bar/README.md#types)를 참조하세요.
 
 ## Slots
 
