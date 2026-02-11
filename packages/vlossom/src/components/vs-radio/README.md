@@ -68,7 +68,7 @@ interface VsRadioStyleSet {
 }
 ```
 
-> **참고**: `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+> **참고**: `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)의 StyleSet을 사용합니다.
 
 ---
 
@@ -162,7 +162,7 @@ interface VsRadioSetStyleSet {
 }
 ```
 
-> **참고**: `radio`는 [VsRadio](#vsradio)의 StyleSet을 사용하며, `wrapper`는 [VsInputWrapper](../vs-input-wrapper/README.md)의 StyleSet을 사용합니다.
+> **참고**: `radio`는 [VsRadioStyleSet](#types)의 StyleSet을 사용하며, `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)의 StyleSet을 사용합니다.
 
 ### Props
 

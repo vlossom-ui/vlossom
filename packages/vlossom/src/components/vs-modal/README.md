@@ -93,7 +93,7 @@ interface OverlayCallbacks<T = void> {
 }
 ```
 
-> **참고**: `dimmed`는 [VsDimmed](../vs-dimmed/README.md)의 StyleSet을 사용합니다.
+> **참고**: `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)의 StyleSet을 사용합니다.
 
 ### Slots
 

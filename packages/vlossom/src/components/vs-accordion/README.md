@@ -104,7 +104,7 @@ interface VsAccordionStyleSet {
 }
 ```
 
-> **참고**: `expand`는 [VsExpandable](../vs-expandable/README.md)의 StyleSet을 사용합니다.
+> **참고**: `expand`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)의 StyleSet을 사용합니다.
 
 ### StyleSet 사용 예시
 

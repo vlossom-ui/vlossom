@@ -38,7 +38,7 @@
 
 ```typescript
 interface VsDimmedStyleSet {
-    component?: CSSProperties; // 루트 요소 직접 스타일
+    component?: CSSProperties;
 }
 ```
 

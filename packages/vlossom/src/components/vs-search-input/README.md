@@ -201,7 +201,7 @@ interface VsSearchInputRef {
 }
 ```
 
-> **참고**: `input`은 [VsInput](../vs-input/README.md)의 StyleSet을 사용합니다.
+> **참고**: `input`은 [VsInputStyleSet](../vs-input/README.md#types)의 StyleSet을 사용합니다.
 
 ## 특징
 

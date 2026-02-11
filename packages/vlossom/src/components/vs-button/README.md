@@ -81,7 +81,7 @@ interface VsButtonStyleSet {
 }
 ```
 
-> **참고**: `loading`은 [VsLoading](../vs-loading/README.md)의 StyleSet을 사용합니다.
+> **참고**: `loading`은 [VsLoadingStyleSet](../vs-loading/README.md#types)의 StyleSet을 사용합니다.
 
 ### StyleSet 사용 예시
 

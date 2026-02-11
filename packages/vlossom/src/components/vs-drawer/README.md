@@ -145,19 +145,19 @@ const drawerOpen = ref(false);
 ```typescript
 interface VsDrawerStyleSet {
     variables?: {
-        size?: string; // 드로어 크기 (width 또는 height)
+        size?: string;
     };
-    component?: CSSProperties; // .vs-drawer (최상위 컨테이너) 스타일
-    dimmed?: VsDimmedStyleSet; // 배경 딤드 스타일
-    header?: CSSProperties; // 헤더 슬롯 영역 스타일
-    content?: CSSProperties; // 드로어 컨텐츠 컨테이너 스타일 (backgroundColor, borderRadius 등)
-    footer?: CSSProperties; // 푸터 슬롯 영역 스타일
+    component?: CSSProperties;
+    dimmed?: VsDimmedStyleSet;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
 }
 
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 ```
 
-> **참고**: `dimmed`는 [VsDimmed](../vs-dimmed/README.md)의 StyleSet을 사용합니다.
+> **참고**: `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)의 StyleSet을 사용합니다.
 
 ### StyleSet 사용 예시
 
