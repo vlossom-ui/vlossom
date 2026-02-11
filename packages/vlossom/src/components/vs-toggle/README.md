@@ -93,16 +93,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 
 > **Note**: VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md)를 참조하세요.
 
-```typescript
-interface VsButtonStyleSet {
-    variables?: {
-        padding?: string;
-    };
-    component?: CSSProperties;
-    loading?: VsLoadingStyleSet;
-}
-```
-
 ### StyleSet 사용 예시
 
 ```html
