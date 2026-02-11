@@ -19,7 +19,7 @@ export interface VsSwitchStyleSet {
         handleSize?: string;
     };
     switchButton?: CSSProperties;
-    checkedSwitchButton?: CSSProperties;
+    activeSwitchButton?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

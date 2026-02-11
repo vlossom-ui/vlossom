@@ -119,7 +119,7 @@ interface VsSwitchStyleSet {
         handleSize?: string;
     };
     switchButton?: CSSProperties;
-    checkedSwitchButton?: CSSProperties;
+    activeSwitchButton?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
@@ -142,7 +142,7 @@ interface VsSwitchStyleSet {
                 borderRadius: '2rem',
                 border: '2px solid #ddd',
             },
-            checkedSwitchButton: {
+            activeSwitchButton: {
                 backgroundColor: '#4caf50',
                 borderColor: '#4caf50',
             },
