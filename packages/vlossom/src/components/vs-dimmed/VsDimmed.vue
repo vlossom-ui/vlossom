@@ -1,6 +1,11 @@
 <template>
     <Transition name="dimmed">
-        <div v-if="isShow" class="vs-dimmed" :style="styleSetVariables" aria-hidden="true" />
+        <div
+            v-if="isShow"
+            class="vs-dimmed"
+            :style="componentStyleSet.component"
+            aria-hidden="true"
+        />
     </Transition>
 </template>
 
@@ -28,7 +33,7 @@ export default defineComponent({
 
         const isShow = ref(modelValue.value);
 
-        const { styleSetVariables } = useStyleSet<VsDimmedStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsDimmedStyleSet>(componentName, styleSet);
 
         function show() {
             isShow.value = true;
@@ -48,7 +53,7 @@ export default defineComponent({
 
         return {
             isShow,
-            styleSetVariables,
+            componentStyleSet,
             show,
             hide,
         };

@@ -43,40 +43,7 @@ describe('VsTextWrap', () => {
             });
 
             // then
-            expect(wrapper.vm.styleSetVariables).toHaveProperty('--vs-text-wrap-width', '200px');
-        });
-
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsTextWrap, {
-                props: {
-                    styleSet: {
-                        copyIcon: {
-                            color: '#ff0000',
-                            width: '2rem',
-                            height: '2rem',
-                        },
-                        linkIcon: {
-                            color: '#0000ff',
-                            width: '1.5rem',
-                            height: '1.5rem',
-                        },
-                    },
-                    copy: true,
-                    link: 'https://example.com',
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-text-wrap-width': '',
-                '--vs-text-wrap-copyIcon-color': '#ff0000',
-                '--vs-text-wrap-copyIcon-width': '2rem',
-                '--vs-text-wrap-copyIcon-height': '2rem',
-                '--vs-text-wrap-linkIcon-color': '#0000ff',
-                '--vs-text-wrap-linkIcon-width': '1.5rem',
-                '--vs-text-wrap-linkIcon-height': '1.5rem',
-            });
+            expect(wrapper.vm.componentStyleSet.component?.width).toBe('200px');
         });
     });
 

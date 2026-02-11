@@ -34,7 +34,7 @@
 
 ### 반응형 구분선
 
-데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야합니다. (ex - vs-contianer)
+데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야 합니다. (예: vs-container)
 
 ```html
 <template>
@@ -67,19 +67,65 @@
 
 ```typescript
 interface VsDividerStyleSet {
-    border?: string; // 구분선 스타일 (색상, 두께, 형태)
-    opacity?: number; // 구분선 투명도
-
-    horizontal?: {
-        width?: string; // 가로 구분선 너비
-        margin?: string; // 가로 구분선 여백
+    variables?: {
+        border?: string;
+        horizontal?: {
+            width?: string;
+            margin?: string;
+        };
+        vertical?: {
+            height?: string;
+            margin?: string;
+        };
     };
-
-    vertical?: {
-        height?: string; // 세로 구분선 높이
-        margin?: string; // 세로 구분선 여백
-    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <!-- variables를 사용한 CSS 변수 스타일링 -->
+    <vs-divider
+        :style-set="{
+            variables: {
+                border: '2px solid #333',
+                horizontal: {
+                    width: '80%',
+                    margin: '1rem 0',
+                },
+            },
+        }"
+    />
+
+    <!-- component를 사용한 직접 스타일링 -->
+    <vs-divider
+        :style-set="{
+            component: {
+                opacity: 0.8,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            },
+        }"
+    />
+
+    <!-- variables와 component를 함께 사용 -->
+    <vs-divider
+        vertical
+        :style-set="{
+            variables: {
+                border: '1px dashed #e91e63',
+                vertical: {
+                    height: '4rem',
+                    margin: '0 1rem',
+                },
+            },
+            component: {
+                opacity: 0.6,
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

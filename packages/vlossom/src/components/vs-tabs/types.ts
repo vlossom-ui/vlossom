@@ -1,5 +1,5 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { VsButtonStyleSet } from '@/components/vs-button/types';
 import type VsTabs from './VsTabs.vue';
 
 declare module 'vue' {
@@ -15,7 +15,11 @@ export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
     goNext: () => void;
 }
 
-export interface VsTabsStyleSet extends BoxStyleSet {
-    height?: string | number;
-    gap?: string;
+export interface VsTabsStyleSet {
+    variables?: {
+        gap?: string;
+    };
+    tab?: CSSProperties;
+    activeTab?: CSSProperties;
+    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
 }

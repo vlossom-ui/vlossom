@@ -1,6 +1,7 @@
 import type { ComponentPublicInstance } from 'vue';
 import type { FocusableRef } from '@/declaration';
 import type { VsInputStyleSet } from '@/components/vs-input/types';
+import type { VsToggleStyleSet } from '@/components/vs-toggle/types';
 import type VsSearchInput from './VsSearchInput.vue';
 
 declare module 'vue' {
@@ -16,4 +17,10 @@ export interface VsSearchInputRef extends ComponentPublicInstance<typeof VsSearc
     select: () => void;
 }
 
-export interface VsSearchInputStyleSet extends Omit<VsInputStyleSet, 'append' | 'prepend' | 'wrapper'> {}
+export interface VsSearchInputStyleSet {
+    variables?: {
+        height?: string;
+    };
+    input?: VsInputStyleSet;
+    toggle?: VsToggleStyleSet;
+}

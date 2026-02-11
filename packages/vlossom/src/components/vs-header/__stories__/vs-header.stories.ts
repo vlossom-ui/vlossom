@@ -19,16 +19,17 @@ const meta: Meta<typeof VsHeader> = {
         components: { VsHeader },
         setup() {
             const preDefinedStyleSet: VsHeaderStyleSet = {
-                backgroundColor: '#1976d2',
-                border: '1px solid #1976d2',
-                borderRadius: '0',
-                fontColor: '#fff',
-                height: '4rem',
-                padding: '0 1.5rem',
-                width: '100%',
-                position: 'relative',
-                zIndex: 'var(--vs-bar-z-index)',
-            } as const;
+                component: {
+                    backgroundColor: '#1976d2',
+                    border: '1px solid #1976d2',
+                    borderRadius: '0',
+                    color: '#fff',
+                    height: '4rem',
+                    padding: '0 1.5rem',
+                    width: '100%',
+                    zIndex: 'var(--vs-bar-z-index)',
+                },
+            };
 
             useVlossom().styleSet = {
                 myHeaderStyleSet: { VsHeader: { ...preDefinedStyleSet } },
@@ -100,7 +101,9 @@ export const ColorScheme: Story = {
         components: { VsHeader },
         setup() {
             const styleSet = {
-                padding: '0.5rem',
+                component: {
+                    padding: '0.5rem',
+                },
             };
             return { args, styleSet };
         },
@@ -138,15 +141,16 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e188e5',
-            border: '2px solid #e188e5',
-            borderRadius: '8px',
-            fontColor: '#fff',
-            height: '5rem',
-            padding: '0 2rem',
-            width: '100%',
-            position: 'relative',
-            zIndex: 'var(--vs-bar-z-index)',
+            component: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                borderRadius: '8px',
+                color: '#fff',
+                height: '5rem',
+                padding: '0 2rem',
+                width: '100%',
+                zIndex: 'var(--vs-bar-z-index)',
+            },
         },
     },
 };

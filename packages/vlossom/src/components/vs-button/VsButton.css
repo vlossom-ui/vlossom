@@ -1,32 +1,16 @@
 @reference 'tailwindcss';
 
 .vs-button {
-    --vs-button-width: initial;
-    --vs-button-height: initial;
-
-    --vs-button-backgroundColor: initial;
-    --vs-button-border: initial;
-    --vs-button-borderRadius: initial;
     --vs-button-padding: initial;
-    --vs-button-opacity: initial;
-
-    --vs-button-fontColor: initial;
-
-    --vs-button-size-height: var(--vs-size-height, var(--vs-default-comp-height-md));
-    --vs-button-size-radius: var(--vs-size-radius, var(--vs-radius-md));
-    --vs-button-size-font: var(--vs-size-font, inherit);
-    --vs-button-size-padding: var(--vs-size-padding, var(--vs-padding-md));
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
 
-    opacity: var(--vs-button-opacity, 1);
-    border: var(--vs-button-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-button-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
-    width: var(--vs-button-width, auto);
-    height: var(--vs-button-height, var(--vs-button-size-height));
-    color: var(--vs-button-fontColor, var(--vs-comp-font));
-    font-size: var(--vs-button-size-font);
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
+    background-color: var(--vs-comp-bg);
+    height: var(--vs-button-height, var(--vs-size-height));
+    color: var(--vs-comp-font);
+    font-size: var(--vs-size-font, inherit);
 
     .vs-button-loading {
         @apply absolute flex h-full w-full items-center justify-center;
@@ -37,7 +21,7 @@
     .vs-button-content {
         @apply relative flex h-full w-full items-center justify-center whitespace-nowrap;
 
-        padding: var(--vs-button-padding, 0 var(--vs-button-size-padding));
+        padding: var(--vs-button-padding, 0 var(--vs-size-padding));
     }
 
     &.vs-loading-state {
@@ -51,38 +35,38 @@
     &.vs-ghost {
         @apply border-transparent bg-transparent;
 
-        color: var(--vs-button-fontColor, var(--vs-primary-comp-bg));
+        color: var(--vs-primary-comp-bg);
 
         &:hover {
-            background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+            background-color: var(--vs-comp-bg);
         }
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        border: var(--vs-button-border, 1px solid var(--vs-primary-comp-bg));
-        color: var(--vs-button-fontColor, var(--vs-primary-comp-bg));
+        border: 1px solid var(--vs-primary-comp-bg);
+        color: var(--vs-primary-comp-bg);
 
         &:hover {
-            background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+            background-color: var(--vs-comp-bg);
         }
     }
 
     &.vs-primary {
         @apply hover:brightness-104 active:brightness-108;
 
-        border: var(--vs-button-border, 1px solid var(--vs-primary-comp-bg));
-        background-color: var(--vs-button-backgroundColor, var(--vs-primary-comp-bg));
-        color: var(--vs-button-fontColor, var(--vs-primary-comp-font));
+        border: 1px solid var(--vs-primary-comp-bg);
+        background-color: var(--vs-primary-comp-bg);
+        color: var(--vs-primary-comp-font);
         font-weight: 500;
     }
 
     &.vs-circle {
         @apply rounded-full;
 
-        width: var(--vs-button-width, var(--vs-button-height, var(--vs-button-size-height)));
-        height: var(--vs-button-height, var(--vs-button-size-height));
+        width: var(--vs-size-height);
+        height: var(--vs-size-height);
     }
 
     @variant dark {

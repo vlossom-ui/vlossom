@@ -76,6 +76,54 @@ const textContent = computed(() => textWrapRef.value?.contentText || '');
 </script>
 ```
 
+### StyleSet 사용 예시
+
+styleSet을 통한 스타일 커스터마이징:
+
+```html
+<template>
+    <vs-text-wrap
+        copy
+        link="https://example.com"
+        :style-set="{
+            component: {
+                width: '300px',
+            },
+            copyIcon: {
+                width: '1.5rem',
+                height: '1.5rem',
+                color: '#ff5722',
+            },
+            linkIcon: {
+                width: '1.5rem',
+                height: '1.5rem',
+                color: '#2196f3',
+            },
+        }"
+    >
+        커스텀 스타일이 적용된 텍스트
+    </vs-text-wrap>
+</template>
+```
+
+**참고**: `width`는 prop으로도 설정할 수 있으며, prop으로 설정한 값이 styleSet보다 우선순위가 높습니다.
+
+```html
+<template>
+    <!-- width prop 사용 (styleSet보다 우선) -->
+    <vs-text-wrap
+        width="300px"
+        :style-set="{
+            component: {
+                width: '300px',
+            },
+        }"
+    >
+        실제 너비는 300px이 적용됩니다 (prop이 우선)
+    </vs-text-wrap>
+</template>
+```
+
 ## Props
 
 | Prop       | Type                           | Default | Required | Description                           |
@@ -88,16 +136,10 @@ const textContent = computed(() => textWrapRef.value?.contentText || '');
 ## Types
 
 ```typescript
-interface IconStyleSet {
-    width?: string;
-    height?: string;
-    color?: string;
-}
-
 interface VsTextWrapStyleSet {
-    width?: string | number;
-    copyIcon?: IconStyleSet;
-    linkIcon?: IconStyleSet;
+    component?: CSSProperties;
+    copyIcon?: CSSProperties;
+    linkIcon?: CSSProperties;
 }
 ```
 
@@ -110,14 +152,14 @@ interface VsTextWrapStyleSet {
 
 ## Events
 
-| Event    | Description                  | Payload        |
-| -------- | ---------------------------- | -------------- |
-| `copied` | 복사 버튼을 클릭했을 때 발생 | `text: string` |
+| Event    | Description            | Payload        |
+| -------- | ---------------------- | -------------- |
+| `copied` | 복사 버튼 클릭 시 발생 | `text: string` |
 
 ## 특징
 
 - **복사 기능**: `copy` prop으로 복사 버튼 활성화. HTML 태그는 제거하고 순수 텍스트만 복사됩니다.
 - **링크 기능**: `link` prop으로 링크 버튼 활성화. 클릭 시 새 탭에서 URL이 열립니다.
-- **아이콘 스타일링**: `styleSet`을 통해 복사/링크 아이콘의 색상, 크기를 개별적으로 커스터마이징할 수 있습니다.
+- **아이콘 스타일링**: `styleSet`의 `copyIcon`, `linkIcon` 속성을 통해 복사/링크 아이콘의 색상, 크기를 개별적으로 커스터마이징할 수 있습니다.
 - **너비 조절**: `width` prop으로 텍스트 영역의 너비를 설정하며, 긴 텍스트는 ellipsis로 표시됩니다.
 - **복사 피드백**: 복사 성공 시 2초간 체크 아이콘으로 변경되어 시각적 피드백을 제공합니다.

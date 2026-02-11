@@ -1,13 +1,4 @@
 .vs-tooltip {
-    --vs-tooltip-width: initial;
-    --vs-tooltip-height: initial;
-
-    --vs-tooltip-backgroundColor: initial;
-    --vs-tooltip-border: initial;
-    --vs-tooltip-borderRadius: initial;
-    --vs-tooltip-padding: initial;
-    --vs-tooltip-opacity: initial;
-
     --vs-tooltip-arrowColor: initial;
     --vs-tooltip-arrowSize: initial;
 
@@ -16,13 +7,10 @@
     .vs-tooltip-contents {
         @apply relative;
 
-        opacity: var(--vs-tooltip-opacity, 1);
-        border: var(--vs-tooltip-border, 0.1rem solid var(--vs-primary-comp-bg));
-        border-radius: var(--vs-tooltip-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-        background-color: var(--vs-tooltip-backgroundColor, var(--vs-area-bg));
-        padding: var(--vs-tooltip-padding, 0.2rem 0.6rem);
-        width: var(--vs-tooltip-width, auto);
-        height: var(--vs-tooltip-height, auto);
+        border: 0.1rem solid var(--vs-primary-comp-bg);
+        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        background-color: var(--vs-area-bg);
+        padding: 0.2rem 0.6rem;
 
         &::after {
             @apply absolute;

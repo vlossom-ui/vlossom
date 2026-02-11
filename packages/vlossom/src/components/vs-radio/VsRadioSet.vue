@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio-set', colorSchemeClass, classObj]" :style="styleSetVariables">
+        <div :class="['vs-radio-set', colorSchemeClass, classObj]" :style="componentStyleSet.component">
             <vs-radio
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -116,7 +116,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
 
         const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
 
@@ -199,7 +199,6 @@ export default defineComponent({
             radioRefs,
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
             classObj,
             computedId,
             computedMessages,

@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsAvatar from './VsAvatar.vue';
 
 declare module 'vue' {
@@ -12,7 +11,9 @@ export type { VsAvatar };
 
 export interface VsAvatarRef extends ComponentPublicInstance<typeof VsAvatar> {}
 
-export interface VsAvatarStyleSet extends SizeStyleSet, Omit<BoxStyleSet, 'padding'> {
-    fontColor?: string;
-    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
+export interface VsAvatarStyleSet {
+    variables?: {
+        objectFit?: CSSProperties['objectFit'] & {};
+    };
+    component?: CSSProperties;
 }

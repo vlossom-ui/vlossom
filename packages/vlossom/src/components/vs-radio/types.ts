@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsRadio from './VsRadio.vue';
@@ -18,16 +18,16 @@ export interface VsRadioRef extends ComponentPublicInstance<typeof VsRadio>, Foc
 export interface VsRadioSetRef extends ComponentPublicInstance<typeof VsRadioSet>, FocusableRef, FormChildRef {}
 
 export interface VsRadioStyleSet {
-    borderRadius?: string;
-    height?: string;
-    radioColor?: string;
-    radioSize?: string;
+    variables?: {
+        borderRadius?: string;
+        radioColor?: string;
+        radioSize?: string;
+    };
+    wrapper?: VsInputWrapperStyleSet;
 }
 
 export interface VsRadioSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
-    radio?: Omit<VsRadioStyleSet, 'wrapper'>;
+    component?: CSSProperties;
+    radio?: VsRadioStyleSet;
     wrapper?: VsInputWrapperStyleSet;
 }

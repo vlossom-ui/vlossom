@@ -1,5 +1,5 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, OptionItem, SizeStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { OptionItem } from '@/declaration';
 import type VsGroupedList from './VsGroupedList.vue';
 
 declare module 'vue' {
@@ -15,10 +15,16 @@ export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroup
     hasScroll: () => boolean;
 }
 
-export interface VsGroupedListStyleSet extends SizeStyleSet, BoxStyleSet {
-    gap?: string;
-    group?: BoxStyleSet;
-    item?: BoxStyleSet;
+export interface VsGroupedListStyleSet {
+    variables?: {
+        gap?: string;
+        height?: string;
+    };
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
+    group?: CSSProperties;
+    item?: CSSProperties;
 }
 
 export interface VsGroupedListGroup {

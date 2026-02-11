@@ -58,15 +58,14 @@
 
 ## Props
 
-| Prop          | Type                        | Default | Required | Description                     |
-| ------------- | --------------------------- | ------- | -------- | ------------------------------- |
-| `src`         | `string`                    | -       | ✅       | 이미지 소스 URL                 |
-| `alt`         | `string`                    | `''`    | -        | 이미지 대체 텍스트              |
-| `fallback`    | `string`                    | `''`    | -        | 로딩 실패 시 사용할 폴백 이미지 |
-| `lazy`        | `boolean`                   | `false` | -        | 지연 로딩 활성화                |
-| `noSkeleton`  | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 표시를 무시    |
-| `colorScheme` | `ColorScheme`               | -       | -        | 컴포넌트 색상 테마              |
-| `styleSet`    | `string \| VsImageStyleSet` | -       | -        | 커스텀 스타일 설정 객체         |
+| Prop         | Type                        | Default | Required | Description                     |
+| ------------ | --------------------------- | ------- | -------- | ------------------------------- |
+| `src`        | `string`                    | -       | ✅       | 이미지 소스 URL                 |
+| `alt`        | `string`                    | `''`    | -        | 이미지 대체 텍스트              |
+| `fallback`   | `string`                    | `''`    | -        | 로딩 실패 시 사용할 폴백 이미지 |
+| `lazy`       | `boolean`                   | `false` | -        | 지연 로딩 활성화                |
+| `noSkeleton` | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 표시를 무시    |
+| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | 커스텀 스타일 설정 객체         |
 
 ## Slots
 
@@ -76,31 +75,65 @@
 
 ## Events
 
-| Event   | Parameters | Description                         |
-| ------- | ---------- | ----------------------------------- |
-| `error` | -          | 이미지 로딩 실패 시 발생하는 이벤트 |
+| Event   | Parameters | Description              |
+| ------- | ---------- | ------------------------ |
+| `error` | -          | 이미지 로딩 실패 시 발생 |
 
 ## Types
 
 ```typescript
+import type { CSSProperties } from 'vue';
+import type { VsSkeletonStyleSet } from '@/components/vs-skeleton/types';
+
 interface VsImageStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    opacity?: string | number;
-
-    objectFit?: 'cover' | 'fill' | 'contain' | 'none' | 'scale-down';
-    skeleton?: {
+    variables?: {
         width?: string;
         height?: string;
-        backgroundColor?: string;
-        borderRadius?: string;
-        animation?: string;
     };
+    skeleton?: VsSkeletonStyleSet;
+    component?: CSSProperties;
 }
+```
+
+> [!NOTE]
+>
+> `skeleton`은 [VsSkeletonStyleSet](../vs-skeleton/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-image
+        src="https://example.com/image.jpg"
+        alt="Sized Image"
+        :style-set="{
+            variables: {
+                width: '300px',
+                height: '300px',
+            },
+        }"
+    />
+
+    <!-- skeleton 커스텀 -->
+    <vs-image
+        src="https://example.com/image.jpg"
+        alt="Custom Skeleton"
+        :style-set="{
+            variables: {
+                width: '200px',
+                height: '200px',
+            },
+            skeleton: {
+                component: {
+                    width: '200px',
+                    height: '200px',
+                    borderRadius: '50%',
+                    backgroundColor: '#e0e0e0',
+                },
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

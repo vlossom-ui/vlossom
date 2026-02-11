@@ -2,28 +2,18 @@
     --vs-image-width: initial;
     --vs-image-height: initial;
 
-    --vs-image-backgroundColor: initial;
-    --vs-image-border: initial;
-    --vs-image-borderRadius: initial;
-    --vs-image-opacity: initial;
-
-    --vs-image-objectFit: initial;
-
     @apply relative inline-block;
 
-    opacity: var(--vs-image-opacity, 100%);
-    background-color: var(--vs-image-backgroundColor, transparent);
+    background-color: transparent;
     width: var(--vs-image-width, 100%);
     height: var(--vs-image-height, 100%);
 
     .vs-image-tag {
-        @apply relative;
+        @apply relative h-full w-full;
 
-        border: var(--vs-image-border, none);
-        border-radius: var(--vs-image-borderRadius, 0);
-        width: var(--vs-image-width, 100%);
-        height: var(--vs-image-height, 100%);
-        object-fit: var(--vs-image-objectFit, contain);
+        border: none;
+        border-radius: 0;
+        object-fit: contain;
 
         &.vs-hidden {
             @apply absolute opacity-0;

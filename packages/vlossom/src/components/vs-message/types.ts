@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsMessage from './VsMessage.vue';
 
 declare module 'vue' {
@@ -10,3 +10,10 @@ declare module 'vue' {
 export type { VsMessage };
 
 export interface VsMessageRef extends ComponentPublicInstance<typeof VsMessage> {}
+
+export interface VsMessageStyleSet {
+    variables?: {
+        size?: string;
+    };
+    component?: CSSProperties;
+}

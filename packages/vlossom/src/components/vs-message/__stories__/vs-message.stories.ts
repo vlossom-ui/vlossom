@@ -26,14 +26,16 @@ const meta: Meta<typeof VsMessage> = {
             options: ['idle', 'info', 'success', 'warning', 'error'],
             description: '메시지의 상태',
         },
-        size: {
-            control: 'select',
-            options: ['xs', 'sm', 'md', 'lg', 'xl'],
-            description: '메시지의 크기',
-        },
         text: {
             control: 'text',
             description: '표시할 메시지 텍스트',
+        },
+        styleSet: {
+            control: 'object',
+            description: '커스텀 스타일 설정 (size 등)',
+            table: {
+                type: { summary: 'VsMessageStyleSet | string' },
+            },
         },
     },
 };
@@ -83,7 +85,7 @@ export const Sizes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '다양한 크기의 메시지들입니다. size prop을 사용하여 크기를 조정할 수 있습니다.',
+                story: '다양한 크기의 메시지들입니다. styleSet의 size를 사용하여 크기를 조정할 수 있습니다.',
             },
         },
     },
@@ -94,12 +96,19 @@ export const Sizes: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-message v-bind="args" size="xs" text="XS 메시지" />
-                <vs-message v-bind="args" size="sm" text="SM 메시지" />
+                <vs-message v-bind="args" :style-set="{ variables: { size: '0.75rem' } }" text="XS 메시지" />
+                <vs-message v-bind="args" :style-set="{ variables: { size: '0.875rem' } }" text="SM 메시지" />
                 <vs-message v-bind="args" text="기본 메시지" />
-                <vs-message v-bind="args" size="lg" text="LG 메시지" />
-                <vs-message v-bind="args" size="xl" text="XL 메시지" />
+                <vs-message v-bind="args" :style-set="{ variables: { size: '1.25rem' } }" text="LG 메시지" />
+                <vs-message v-bind="args" :style-set="{ variables: { size: '1.5rem' } }" text="XL 메시지" />
             </div>
         `,
     }),
+};
+
+export const PreDefinedStyleSet: Story = {
+    args: {
+        styleSet: 'myStyleSet',
+        text: '사전 정의된 스타일셋',
+    },
 };

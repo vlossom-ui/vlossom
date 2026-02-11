@@ -1,23 +1,14 @@
 @reference 'tailwindcss';
 
 .vs-toast {
-    --vs-toast-backgroundColor: initial;
-    --vs-toast-border: initial;
-    --vs-toast-borderRadius: initial;
-    --vs-toast-padding: initial;
-    --vs-toast-opacity: initial;
-
-    --vs-toast-height: initial;
-    --vs-toast-fontColor: initial;
-
     @apply pointer-events-auto relative flex w-fit items-center justify-center;
 
-    border: var(--vs-toast-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-toast-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-lg)));
-    background-color: var(--vs-toast-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-toast-padding, 0.5rem 3.6rem);
-    height: var(--vs-toast-height, auto);
-    color: var(--vs-toast-fontColor, var(--vs-comp-font));
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-lg));
+    background-color: var(--vs-comp-bg);
+    padding: 0.5rem 3.6rem;
+    height: auto;
+    color: var(--vs-comp-font);
 
     .vs-toast-close {
         @apply absolute top-1/2 right-4 flex items-center justify-center opacity-0 transition-opacity;
@@ -25,7 +16,7 @@
         transform: translateY(-50%);
         width: 1.2rem;
         height: 1.2rem;
-        color: var(--vs-toast-fontColor, var(--vs-comp-font));
+        color: var(--vs-comp-font);
     }
 
     &:hover .vs-toast-close {
@@ -33,12 +24,12 @@
     }
 
     &.vs-toast-primary {
-        border: var(--vs-toast-border, 1px solid var(--vs-primary-comp-bg));
-        background-color: var(--vs-toast-backgroundColor, var(--vs-primary-comp-bg));
-        color: var(--vs-toast-fontColor, var(--vs-primary-comp-font));
+        border: 1px solid var(--vs-primary-comp-bg);
+        background-color: var(--vs-primary-comp-bg);
+        color: var(--vs-primary-comp-font);
 
         .vs-toast-close {
-            color: var(--vs-toast-fontColor, var(--vs-primary-comp-font));
+            color: var(--vs-primary-comp-font);
         }
     }
 }

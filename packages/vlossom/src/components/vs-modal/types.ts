@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsDimmedStyleSet } from '@/components/vs-dimmed/types';
 import type VsModal from './VsModal.vue';
 import type VsModalNode from './VsModalNode.vue';
@@ -21,10 +20,7 @@ export interface VsModalNodeRef extends ComponentPublicInstance<typeof VsModalNo
 
 export interface VsModalViewRef extends ComponentPublicInstance<typeof VsModalView> {}
 
-export interface VsModalNodeStyleSet extends SizeStyleSet, BoxStyleSet {
-    boxShadow?: string;
-    fontColor?: string;
-    zIndex?: string;
-
+export interface VsModalNodeStyleSet {
+    component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
 }

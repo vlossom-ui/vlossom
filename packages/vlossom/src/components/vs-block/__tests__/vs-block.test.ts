@@ -68,43 +68,4 @@ describe('VsBlock', () => {
             expect(title.find('.test-title').text()).toBe('블록 제목');
         });
     });
-
-    describe('colorScheme prop', () => {
-        it('colorScheme이 주어지면 해당 색상 테마 클래스가 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBlock, {
-                props: {
-                    colorScheme: 'blue',
-                },
-            });
-
-            // then
-            const block = wrapper.find('.vs-block');
-            expect(block.classes()).toContain('vs-color-scheme-blue');
-        });
-
-        it('colorScheme이 주어지지 않으면 기본 색상 테마 클래스가 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBlock);
-
-            // then
-            const block = wrapper.find('.vs-block');
-            expect(block.classes()).toContain('vs-color-scheme-default');
-        });
-
-        it('다양한 colorScheme 값이 올바르게 적용되어야 한다', () => {
-            const colorSchemes = ['red', 'blue', 'green', 'yellow', 'purple'] as const;
-
-            colorSchemes.forEach((colorScheme) => {
-                // given, when
-                const wrapper = mount(VsBlock, {
-                    props: { colorScheme },
-                });
-
-                // then
-                const block = wrapper.find('.vs-block');
-                expect(block.classes()).toContain(`vs-color-scheme-${colorScheme}`);
-            });
-        });
-    });
 });

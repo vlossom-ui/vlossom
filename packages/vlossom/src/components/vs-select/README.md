@@ -242,8 +242,8 @@ const selected = ref(null);
 ## Props
 
 | Prop              | Type                                             | Default                   | Description                                         |
-| ----------------- | ------------------------------------------------ | ------------------------- | --------------------------------------------------- |
-| `disabled`        | `boolean`                                        | `false`                   | 컴포넌트 비활성화                                   |
+| ----------------- | ------------------------------------------------ | ------------------------- | --------------------------------------------------- | ------------- |
+| `disabled`        | `boolean`                                        | `false`                   | -                                                   | 비활성화 상태 |
 | `hidden`          | `boolean`                                        | `false`                   | 컴포넌트 숨김 여부                                  |
 | `id`              | `string`                                         | `''`                      | 컴포넌트 id                                         |
 | `label`           | `string`                                         | `''`                      | 입력 필드 라벨                                      |
@@ -284,85 +284,57 @@ const selected = ref(null);
 
 ```typescript
 interface VsSelectStyleSet {
-    // SizeStyleSet
-    width?: string;
-    height?: string;
-
-    // trigger 영역 스타일
-    trigger?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-    };
-
-    // 옵션 목록 영역 스타일
-    options?: {
-        // SizeStyleSet
-        width?: string;
+    variables?: {
         height?: string;
-
-        // BoxStyleSet
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-
-        gap?: string;
-
-        // 그룹 헤더 스타일
-        group?: {
-            backgroundColor?: string;
+        focused?: {
             border?: string;
             borderRadius?: string;
-            padding?: string;
-            opacity?: number;
-        };
-
-        // 옵션 아이템 스타일
-        item?: {
             backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-            padding?: string;
-            opacity?: number;
         };
     };
-
-    // 전체 선택 체크박스 스타일
-    selectAllCheckbox?: {
-        borderRadius?: string;
-        borderWidth?: string;
-        checkboxColor?: string;
-        checkboxSize?: string;
-        height?: string;
-
-        wrapper?: {
-            label?: {
-                fontColor?: string;
-                fontSize?: string;
-                fontWeight?: number;
-                marginBottom?: string;
-            };
-            messages?: {
-                marginTop?: string;
-                fontSize?: string;
-            };
-        };
-    };
-
-    // 개별 옵션 스타일
-    option?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        selectedBackgroundColor?: string;
-    };
+    component?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
+    chip?: VsChipStyleSet;
+    selectAllCheckbox?: VsCheckboxStyleSet;
+    options?: VsGroupedListStyleSet;
+    option?: CSSProperties;
+    selectedOption?: CSSProperties;
 }
+```
+
+> [!NOTE]
+>
+> - `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+> - `chip`은 [VsChipStyleSet](../vs-chip/README.md#types)을 사용합니다.
+> - `selectAllCheckbox`는 [VsCheckboxStyleSet](../vs-checkbox/README.md#types)을 사용합니다.
+> - `options`는 [VsGroupedListStyleSet](../vs-grouped-list/README.md#types)을 사용합니다.
+
+## StyleSet 사용 예시
+
+```html
+<template>
+    <vs-select
+        v-model="selected"
+        :options="options"
+        :style-set="{
+            variables: {
+                height: '3rem',
+                focused: {
+                    border: '2px solid #2196f3',
+                    borderRadius: '8px',
+                    backgroundColor: '#f5f5f5',
+                },
+            },
+            component: {
+                fontSize: '1rem',
+            },
+            selectedOption: {
+                backgroundColor: '#e3f2fd',
+                fontWeight: 700,
+            },
+        }"
+    />
+</template>
 ```
 
 ## Slots

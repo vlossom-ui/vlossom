@@ -2,7 +2,6 @@
 
 .vs-divider {
     --vs-divider-border: initial;
-    --vs-divider-opacity: initial;
 
     --vs-divider-horizontal-width: initial;
     --vs-divider-horizontal-margin: initial;
@@ -10,7 +9,7 @@
     --vs-divider-vertical-height: initial;
     --vs-divider-vertical-margin: initial;
 
-    opacity: var(--vs-divider-opacity, 50%);
+    opacity: 50%;
     margin: var(--vs-divider-horizontal-margin, 0.6rem 0);
     border-top: var(--vs-divider-border, 1px solid var(--vs-primary-comp-bg));
     width: var(--vs-divider-horizontal-width, 100%);

@@ -13,9 +13,10 @@ const meta: Meta<typeof VsCheckbox> = {
         components: { VsCheckbox },
         setup() {
             const preDefinedStyleSet: VsCheckboxStyleSet = {
-                borderRadius: '0.6rem',
-                checkboxColor: '#ffb300',
-                checkboxSize: '3rem',
+                variables: {
+                    checkboxColor: '#ffb300',
+                    checkboxSize: '3rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -206,9 +207,22 @@ export const Grid: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            borderRadius: '1.3rem',
-            checkboxColor: '#81c798',
-            checkboxSize: '4rem',
+            variables: {
+                checkboxColor: '#81c798',
+                checkboxSize: '4rem',
+            },
+            checkbox: {
+                borderRadius: '0.5rem',
+            },
+            checkboxLabel: {
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+            },
+            wrapper: {
+                label: {
+                    color: '#059669',
+                },
+            },
         },
     },
 };

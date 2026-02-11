@@ -2,12 +2,11 @@
 
 .vs-radio {
     --vs-radio-borderRadius: initial;
-    --vs-radio-height: initial;
     --vs-radio-radioColor: initial;
     --vs-radio-radioSize: initial;
 
     @apply relative flex items-center;
-    min-height: var(--vs-radio-height, var(--vs-default-comp-height-md));
+    min-height: var(--vs-default-comp-height-md);
 
     .vs-radio-wrap {
         @apply relative flex cursor-pointer flex-nowrap items-center justify-start select-none;
@@ -62,5 +61,4 @@
             }
         }
     }
-
 }

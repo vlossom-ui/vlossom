@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, SizeStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsSteps from './VsSteps.vue';
 
 declare module 'vue' {
@@ -12,11 +11,14 @@ export type { VsSteps };
 
 export interface VsStepsRef extends ComponentPublicInstance<typeof VsSteps> {}
 
-interface StepStyleSet extends BoxStyleSet {
-    size?: string;
-}
-
-export interface VsStepsStyleSet extends SizeStyleSet {
-    step?: StepStyleSet;
-    activeStep?: StepStyleSet;
+export interface VsStepsStyleSet {
+    variables?: {
+        stepSize?: string;
+    };
+    step?: CSSProperties;
+    activeStep?: CSSProperties;
+    label?: CSSProperties;
+    activeLabel?: CSSProperties;
+    progress?: CSSProperties;
+    activeProgress?: CSSProperties;
 }

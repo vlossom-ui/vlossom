@@ -12,16 +12,17 @@ const meta: Meta<typeof VsLabelValue> = {
         components: { VsLabelValue },
         setup() {
             const preDefinedStyleSet: VsLabelValueStyleSet = {
-                border: '2px solid #3b82f6',
-                borderRadius: '12px',
+                variables: {
+                    border: '2px solid #3b82f6',
+                },
                 label: {
                     backgroundColor: '#dbeafe',
-                    fontColor: '#1e40af',
+                    color: '#1e40af',
                     padding: '1rem 1.5rem',
                 },
                 value: {
                     backgroundColor: '#f8fafc',
-                    fontColor: '#334155',
+                    color: '#334155',
                     padding: '1rem 1.5rem',
                 },
             } as const;
@@ -49,6 +50,14 @@ const meta: Meta<typeof VsLabelValue> = {
         primary: {
             control: 'boolean',
             description: '강조 스타일 적용',
+        },
+        width: {
+            control: 'text',
+            description: '컴포넌트 너비 (예: 400px)',
+        },
+        grid: {
+            control: { type: 'number', min: 1, max: 12 },
+            description: '12 그리드 시스템 기반 너비 (1~12)',
         },
     },
 };
@@ -157,16 +166,17 @@ export const ColorScheme: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            border: '2px solid #10b981',
-            borderRadius: '8px',
+            variables: {
+                border: '2px solid #10b981',
+            },
             label: {
                 backgroundColor: '#a1e224',
-                fontColor: '#065f46',
+                color: '#065f46',
                 padding: '0.75rem 1rem',
             },
             value: {
                 backgroundColor: '#ecfdf5',
-                fontColor: '#047857',
+                color: '#047857',
                 padding: '0.75rem 1rem',
             },
         },
@@ -181,6 +191,35 @@ export const StyleSet: Story = {
                 <template #label>Custom Style</template>
                 ${LOREM_IPSUM}
             </vs-label-value>
+        `,
+    }),
+};
+
+export const GridLayout: Story = {
+    render: (args: any) => ({
+        components: { VsLabelValue },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                <vs-label-value>
+                    <template #label>Email</template>
+                    john@example.com
+                </vs-label-value>
+                <vs-label-value>
+                    <template #label>Phone</template>
+                    010-1234-5678
+                </vs-label-value>
+                <vs-label-value>
+                    <template #label>Address</template>
+                    Seoul, Korea
+                </vs-label-value>
+                <vs-label-value>
+                    <template #label>Company</template>
+                    Vlossom Inc.
+                </vs-label-value>
+            </div>
         `,
     }),
 };

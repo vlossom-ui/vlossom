@@ -1,11 +1,11 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="styleSetVariables">
+    <component :is="tag" class="vs-grid" :style="[componentStyleSet.component, styleSetVariables]">
         <slot />
     </component>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import { getGridProps, getStyleSetProps } from '@/props';
@@ -25,19 +25,30 @@ export default defineComponent({
     setup(props) {
         const { width, height, gridSize, columnGap, rowGap, styleSet } = toRefs(props);
 
-        const additionalStyleSet = computed(() => {
+        const baseStyleSet: ComputedRef<VsGridStyleSet> = computed(() => ({}));
+        const additionalStyleSet: ComputedRef<Partial<VsGridStyleSet>> = computed(() => {
             return objectUtil.shake({
-                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
-                columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
-                rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
+                component: objectUtil.shake({
+                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                    columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
+                    rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
+                }),
+                variables: objectUtil.shake({
+                    gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
+                }),
             });
         });
 
-        const { styleSetVariables } = useStyleSet(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGridStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         return {
+            componentStyleSet,
             styleSetVariables,
         };
     },

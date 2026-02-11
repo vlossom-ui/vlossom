@@ -291,45 +291,6 @@ describe('VsPagination', () => {
         });
     });
 
-    describe('스타일 props', () => {
-        it('colorScheme이 주어지면 해당 colorScheme 클래스가 적용되어야 한다', () => {
-            // given & when
-            const wrapper = mount(VsPagination, {
-                props: {
-                    length: 5,
-                    colorScheme: 'blue',
-                },
-            });
-
-            // then
-            expect(wrapper.vm.computedColorScheme).toBe('blue');
-            expect(wrapper.vm.colorSchemeClass).toBe('vs-color-scheme-blue');
-        });
-
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
-            // given & when
-            const wrapper = mount(VsPagination, {
-                props: {
-                    length: 5,
-                    styleSet: {
-                        gap: '2rem',
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.componentStyleSet).toEqual({
-                gap: '2rem',
-                // edgeButton는 기본값이 있음
-                controlButton: { padding: '0.4rem' },
-            });
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-pagination-gap': '2rem',
-                '--vs-pagination-controlButton-padding': '0.4rem',
-            });
-        });
-    });
-
     describe('pages 계산', () => {
         it('선택된 페이지를 중심으로 페이지 버튼이 표시되어야 한다', async () => {
             // given

@@ -22,7 +22,7 @@ describe('vs-theme-button', () => {
         it('darkMode로 동작할 때 vs-theme-button의 dark mode 아이콘이 활성화 되어야 한다', async () => {
             // given & when
             const wrapper = mount(VsThemeButton);
-            wrapper.vm.changeTheme(true /* isDark */);
+            wrapper.vm.changeTheme(true);
             await nextTick();
 
             // then

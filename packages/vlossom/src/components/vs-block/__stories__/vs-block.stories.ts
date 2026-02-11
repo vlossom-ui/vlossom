@@ -44,17 +44,20 @@ const meta: Meta<typeof VsBlock> = {
         components: { VsBlock },
         setup() {
             const preDefinedStyleSet: VsBlockStyleSet = {
-                backgroundColor: '#f8f9fa',
-                border: '1px solid #e9ecef',
-                borderRadius: '8px',
-                padding: '1.5rem',
+                variables: {
+                    border: '1px solid #e9ecef',
+                },
+                component: {
+                    backgroundColor: '#f8f9fa',
+                    borderRadius: '8px',
+                    color: '#495057',
+                },
                 title: {
                     backgroundColor: '#f8f9fa',
-                    fontColor: '#212529',
+                    color: '#212529',
                     padding: '1.5rem',
                 },
-                fontColor: '#495057',
-            } as const;
+            };
 
             useVlossom().styleSet = {
                 myStyleSet: { VsBlock: { ...preDefinedStyleSet } },
@@ -190,17 +193,20 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            backgroundColor: '#e3f2fd',
-            border: '2px solid #2196f3',
-            borderRadius: '12px',
-            padding: '2rem',
-            boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
+            variables: {
+                border: '2px solid #2196f3',
+            },
+            component: {
+                backgroundColor: '#e3f2fd',
+                borderRadius: '12px',
+                boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
+                color: '#1565c0',
+            },
             title: {
                 backgroundColor: '#e3f2fd',
-                fontColor: '#1976d2',
+                color: '#1976d2',
                 padding: '2rem',
             },
-            fontColor: '#1565c0',
         },
     },
 };
@@ -216,6 +222,79 @@ export const PreDefinedStyleSet: Story = {
     args: {
         styleSet: 'myStyleSet',
     },
+};
+
+export const HeightVariations: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '다양한 높이 설정의 블록들입니다. height prop을 사용하여 원하는 높이로 조정할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsBlock },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="display: flex; gap: 1rem;">
+                <vs-block v-bind="args" height="300px" width="200px">
+                    <template #title>고정 높이 (300px)</template>
+                    고정된 높이로 설정된 블록입니다. 스크롤이 생깁니다.
+                </vs-block>
+
+                <vs-block v-bind="args" height="400" width="200px">
+                    <template #title>숫자 높이 (400)</template>
+                    숫자로 높이를 설정하면 자동으로 px 단위가 적용됩니다.
+                </vs-block>
+
+                <vs-block v-bind="args" width="200px">
+                    <template #title>자동 높이</template>
+                    height를 지정하지 않으면 콘텐츠에 맞게 자동으로 높이가 조정됩니다.
+                </vs-block>
+            </div>
+        `,
+    }),
+};
+
+export const StyleCustomization: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '다양한 스타일 커스터마이징 예제입니다. variables, component, title, content 영역을 각각 커스터마이징할 수 있습니다.',
+            },
+        },
+    },
+    render: (args: any) => ({
+        components: { VsBlock },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-block :style-set="{ variables: { border: '3px dashed #9c27b0' }, component: { borderRadius: '16px' } }">
+                    <template #title>Border 커스텀</template>
+                    border 변수로 테두리 스타일을 변경할 수 있습니다.
+                </vs-block>
+
+                <vs-block :style-set="{ title: { backgroundColor: '#4caf50', color: '#fff', fontWeight: '700', padding: '1.5rem' } }">
+                    <template #title>Title 영역 커스텀</template>
+                    title 영역의 배경색, 글자색, 패딩 등을 변경할 수 있습니다.
+                </vs-block>
+
+                <vs-block :style-set="{ content: { backgroundColor: '#fff3e0', padding: '2rem', fontSize: '1.1rem' } }">
+                    <template #title>Content 영역 커스텀</template>
+                    content 영역의 배경색, 패딩, 폰트 크기 등을 변경할 수 있습니다.
+                </vs-block>
+
+                <vs-block :style-set="{ variables: { border: '2px solid #ff5722' }, component: { backgroundColor: '#ffebee', borderRadius: '20px', boxShadow: '0 8px 16px rgba(244, 67, 54, 0.2)' }, title: { backgroundColor: '#ff5722', color: '#fff', padding: '1rem 2rem' }, content: { padding: '2rem', lineHeight: '1.8' } }">
+                    <template #title>종합 커스텀</template>
+                    모든 영역을 동시에 커스터마이징하여 완전히 새로운 디자인을 만들 수 있습니다.
+                </vs-block>
+            </div>
+        `,
+    }),
 };
 
 export const Grid: Story = {

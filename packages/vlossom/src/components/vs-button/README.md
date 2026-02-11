@@ -57,7 +57,7 @@
 
 | Prop          | Type                                   | Default    | Required | Description                             |
 | ------------- | -------------------------------------- | ---------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                               | -          | -        | 버튼의 색상 테마                        |
+| `colorScheme` | `string`                               | -          | -        | 컴포넌트 색상 테마                      |
 | `styleSet`    | `string \| VsButtonStyleSet`           | -          | -        | 커스텀 스타일 설정 객체                 |
 | `circle`      | `boolean`                              | `false`    | -        | 원형 버튼 스타일 적용                   |
 | `disabled`    | `boolean`                              | `false`    | -        | 버튼 비활성화                           |
@@ -73,24 +73,45 @@
 
 ```typescript
 interface VsButtonStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string;
-
-    fontColor?: string;
-
-    loading?: {
-        width?: string;
-        height?: string;
-        color?: string;
-        barWidth?: string;
+    variables?: {
+        padding?: string;
     };
+    component?: CSSProperties;
+    loading?: VsLoadingStyleSet;
 }
+```
+
+> [!NOTE]
+>
+> `loading`은 [VsLoadingStyleSet](../vs-loading/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-button
+        :style-set="{
+            variables: {
+                padding: '0 2rem',
+            },
+            component: {
+                backgroundColor: '#e188e5',
+                border: '2px solid #e188e5',
+                borderRadius: '12px',
+                color: '#fff',
+                height: '4rem',
+            },
+            loading: {
+                component: {
+                    width: '50%',
+                    height: '70%',
+                },
+            },
+        }"
+    >
+        커스텀 버튼
+    </vs-button>
+</template>
 ```
 
 ## Slots

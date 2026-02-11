@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsTooltip from './VsTooltip.vue';
 
 declare module 'vue' {
@@ -12,7 +11,10 @@ export type { VsTooltip };
 
 export interface VsTooltipRef extends ComponentPublicInstance<typeof VsTooltip> {}
 
-export interface VsTooltipStyleSet extends SizeStyleSet, BoxStyleSet {
-    arrowColor?: string;
-    arrowSize?: string;
+export interface VsTooltipStyleSet {
+    variables?: {
+        arrowColor?: string;
+        arrowSize?: string;
+    };
+    component?: CSSProperties;
 }

@@ -1,6 +1,6 @@
 # VsModal & VsModalNode & VsModalView
 
-모달 다이얼로그를 표시하는 컴포넌트 시스템입니다. `VsModal`은 v-model을 사용한 선언적 모달 컴포넌트이고, `VsModalNode`는 개별 모달 노드 컴포넌트이며, `VsModalView`는 여러 모달을 그룹화하여 렌더링하는 컨테이너 컴포넌트입니다.
+모달 다이얼로그를 표시하는 컴포넌트입니다. `VsModal`은 v-model을 사용한 선언적 모달 컴포넌트이고, `VsModalNode`는 개별 모달 노드 컴포넌트이며, `VsModalView`는 여러 모달을 그룹화하여 렌더링하는 컨테이너 컴포넌트입니다.
 
 **Available Version**: 2.0.0+
 
@@ -61,7 +61,7 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 
 | Prop          | Type                                                  | Default  | Required | Description                                         |
 | ------------- | ----------------------------------------------------- | -------- | -------- | --------------------------------------------------- |
-| `colorScheme` | `string`                                              | -        | -        | 모달의 색상 테마                                    |
+| `colorScheme` | `string`                                              | -        | -        | 컴포넌트 색상 테마                                  |
 | `styleSet`    | `string \| VsModalNodeStyleSet`                       | -        | -        | 커스텀 스타일 설정 객체                             |
 | `container`   | `string`                                              | `'body'` | -        | 모달이 렌더링될 컨테이너 선택자 (#으로 시작하는 ID) |
 | `escClose`    | `boolean`                                             | `true`   | -        | ESC 키로 모달 닫기 기능 활성화 여부                 |
@@ -77,31 +77,11 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 ### Types
 
 ```typescript
-interface VsModalNodeStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    boxShadow?: string;
-    fontColor?: string;
-    zIndex?: string;
+import type { CSSProperties } from 'vue';
 
-    dimmed?: {
-        backgroundColor?: string;
-        opacity?: number;
-    };
-    layout?: {
-        header?: {
-            padding?: string;
-        };
-        padding?: string;
-        footer?: {
-            padding?: string;
-        };
-    };
+interface VsModalNodeStyleSet {
+    component?: CSSProperties;
+    dimmed?: VsDimmedStyleSet;
 }
 
 type SizeProp = Size | string | number;
@@ -113,6 +93,10 @@ interface OverlayCallbacks<T = void> {
 }
 ```
 
+> [!NOTE]
+>
+> `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)을 사용합니다.
+
 ### Slots
 
 | Slot      | Description                    |
@@ -123,11 +107,11 @@ interface OverlayCallbacks<T = void> {
 
 ### Events
 
-| Event               | Description                                | Payload   |
-| ------------------- | ------------------------------------------ | --------- |
-| `update:modelValue` | 모달 열림/닫힘 상태 변경 시 발생 (v-model) | `boolean` |
-| `open`              | 모달이 열릴 때 발생                        | -         |
-| `close`             | 모달이 닫힐 때 발생                        | -         |
+| Event               | Description             | Payload   |
+| ------------------- | ----------------------- | --------- |
+| `update:modelValue` | v-model 값 변경 시 발생 | `boolean` |
+| `open`              | 모달 열림 시 발생       | -         |
+| `close`             | 모달 닫힘 시 발생       | -         |
 
 ### 특징
 
@@ -147,13 +131,13 @@ interface OverlayCallbacks<T = void> {
 ```html
 <template>
     <vs-modal-node
-        :color-scheme="colorScheme"
-        :style-set="styleSet"
-        :dim-close="dimClose"
-        :dimmed="dimmed"
-        :esc-close="escClose"
-        :size="size"
-        @close="handleClose"
+        :color-scheme
+        :style-set
+        :dim-close
+        :dimmed
+        :esc-close
+        :size
+        @close
     >
         <div>모달 내용</div>
     </vs-modal-node>
@@ -164,7 +148,7 @@ interface OverlayCallbacks<T = void> {
 
 | Prop          | Type                                                  | Default | Required | Description                         |
 | ------------- | ----------------------------------------------------- | ------- | -------- | ----------------------------------- |
-| `colorScheme` | `string`                                              | -       | -        | 모달의 색상 테마                    |
+| `colorScheme` | `string`                                              | -       | -        | 컴포넌트 색상 테마                  |
 | `styleSet`    | `string \| VsModalNodeStyleSet`                       | -       | -        | 커스텀 스타일 설정 객체             |
 | `escClose`    | `boolean`                                             | `true`  | -        | ESC 키로 모달 닫기 기능 활성화 여부 |
 | `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | 모달 크기 설정                      |
@@ -178,31 +162,11 @@ interface OverlayCallbacks<T = void> {
 ### Types
 
 ```typescript
-interface VsModalNodeStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-    boxShadow?: string;
-    fontColor?: string;
-    zIndex?: string;
+import type { CSSProperties } from 'vue';
 
-    dimmed?: {
-        backgroundColor?: string;
-        opacity?: number;
-    };
-    layout?: {
-        header?: {
-            padding?: string;
-        };
-        padding?: string;
-        footer?: {
-            padding?: string;
-        };
-    };
+interface VsModalNodeStyleSet {
+    component?: CSSProperties;
+    dimmed?: VsDimmedStyleSet;
 }
 
 type SizeProp = Size | string | number;
@@ -224,10 +188,10 @@ interface OverlayCallbacks<T = void> {
 
 ### Events
 
-| Event          | Description               | Payload |
-| -------------- | ------------------------- | ------- |
-| `close`        | 모달이 닫힐 때 발생       | -       |
-| `click-dimmed` | dim 영역을 클릭할 때 발생 | -       |
+| Event          | Description           | Payload |
+| -------------- | --------------------- | ------- |
+| `close`        | 모달 닫힘 시 발생     | -       |
+| `click-dimmed` | dim 영역 클릭 시 발생 | -       |
 
 ### 특징
 

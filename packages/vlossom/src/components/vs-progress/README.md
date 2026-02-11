@@ -59,17 +59,54 @@ const progress = ref(75);
 
 ```typescript
 interface VsProgressStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-
-    fontColor?: string; // 라벨 텍스트 색상
-    textShadow?: string; // 라벨 텍스트 그림자
-    valueColor?: string; // 진행률 바의 색상
+    variables?: {
+        bar?: {
+            backgroundColor?: string;
+            border?: string;
+            borderRadius?: string;
+        };
+        value?: {
+            backgroundColor?: string;
+        };
+        label?: {
+            textShadow?: string;
+            fontColor?: string;
+        };
+    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-progress
+        :value="75"
+        :max="100"
+        label="업로드 중..."
+        :style-set="{
+            variables: {
+                bar: {
+                    backgroundColor: '#f0f0f0',
+                    border: '2px solid #ddd',
+                    borderRadius: '8px',
+                },
+                value: {
+                    backgroundColor: '#4caf50',
+                },
+                label: {
+                    fontColor: '#333',
+                    textShadow: '0 0 4px rgba(0,0,0,0.3)',
+                },
+            },
+            component: {
+                width: '400px',
+                height: '24px',
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

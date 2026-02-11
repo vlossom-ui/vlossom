@@ -239,7 +239,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 | Prop            | Type                                                   | Default  | Required | Description                                                                    |
 | --------------- | ------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------ |
-| `colorScheme`   | `string`                                               | -        | -        | 탭의 색상 테마                                                                 |
+| `colorScheme`   | `string`                                               | -        | -        | 컴포넌트 색상 테마                                                             |
 | `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | 커스텀 스타일 설정 객체                                                        |
 | `width`         | `string \| number \| Breakpoints`                      | -        | -        | 탭 너비. 단일 값 또는 브레이크포인트 객체                                      |
 | `grid`          | `string \| number \| Breakpoints`                      | -        | -        | 12컬럼 그리드 시스템에서 차지할 컬럼 수. 단일 값 또는 브레이크포인트 객체      |
@@ -256,23 +256,44 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 | Event               | Parameters | Description                   |
 | ------------------- | ---------- | ----------------------------- |
-| `update:modelValue` | `number`   | 선택된 탭 인덱스 변경 시 발생 |
+| `update:modelValue` | `number`   | v-model 값 변경 시 발생       |
 | `change`            | `number`   | 선택된 탭 인덱스 변경 시 발생 |
 
 ## Types
 
 ```typescript
 interface VsTabsStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-
-    height?: string;
-    gap?: string;
-    tabWidth?: string;
+    variables?: {
+        gap?: string;
+    };
+    tab?: CSSProperties;
+    activeTab?: CSSProperties;
+    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
+```
+
+> [!NOTE]
+>
+> `scrollButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-tabs
+        v-model="selectedTab"
+        :tabs="tabs"
+        :style-set="{
+            variables: { gap: '0.5rem' },
+            tab: { fontWeight: '600' },
+            activeTab: { backgroundColor: '#e8e8e8' },
+            scrollButton: {
+                variables: { padding: '0.4rem' },
+                component: { borderRadius: '4px' },
+            },
+        }"
+    />
+</template>
 ```
 
 ## Slots

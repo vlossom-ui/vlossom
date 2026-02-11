@@ -259,23 +259,4 @@ describe('VsInputWrapper', () => {
             vi.useRealTimers();
         });
     });
-
-    describe('styleSet', () => {
-        it('styleSet의 messages size가 주어지면 messageSize에 반영되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    messages: [{ state: 'error', text: '에러 메시지' }],
-                    styleSet: {
-                        messages: {
-                            size: 'lg',
-                        },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.messageSize).toBe('lg');
-        });
-    });
 });

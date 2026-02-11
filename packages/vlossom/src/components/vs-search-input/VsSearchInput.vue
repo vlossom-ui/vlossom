@@ -2,9 +2,9 @@
     <vs-input
         ref="inputRef"
         class="vs-search-input"
+        :style-set="componentStyleSet.input"
         v-model="searchText"
         :color-scheme="computedColorScheme"
-        :style-set="computedStyleSet"
         :style="styleSetVariables"
         :width
         :grid
@@ -22,8 +22,9 @@
                     v-if="useCaseSensitive"
                     v-model="isCaseSensitiveOn"
                     class="vs-search-input-toggle"
+                    :class="{ 'vs-search-input-toggle-on': isCaseSensitiveOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="getToggleButtonStyleSet(isCaseSensitiveOn)"
+                    :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
                     @toggle="$emit('update:caseSensitive', $event)"
@@ -34,8 +35,9 @@
                     v-if="useRegex"
                     v-model="isRegexOn"
                     class="vs-search-input-toggle"
+                    :class="{ 'vs-search-input-toggle-on': isRegexOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="getToggleButtonStyleSet(isRegexOn)"
+                    :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
                     @toggle="$emit('update:regex', $event)"
@@ -65,7 +67,7 @@ import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/pro
 import { functionUtil } from '@/utils';
 import type { VsSearchInputStyleSet } from './types';
 
-import type { VsInputRef, VsInputStyleSet } from '@/components/vs-input/types';
+import type { VsInputRef } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
@@ -98,25 +100,41 @@ export default defineComponent({
         const isRegexOn = ref(regex.value);
 
         const { computedColorScheme } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(componentName, styleSet);
 
-        const computedStyleSet: ComputedRef<VsInputStyleSet> = computed(() => {
+        const baseStyleSet: ComputedRef<VsSearchInputStyleSet> = computed(() => {
+            const styleSetValue = styleSet.value;
+            const height =
+                styleSetValue && typeof styleSetValue !== 'string' ? styleSetValue.variables?.height : undefined;
+
             return {
-                ...componentStyleSet.value,
-                append: {
-                    backgroundColor: 'transparent',
-                    padding: '0 0.3rem',
+                input: {
+                    append: {
+                        backgroundColor: 'transparent',
+                        padding: '0 0.3rem',
+                    },
+                    ...(height && {
+                        component: {
+                            height,
+                        },
+                    }),
+                },
+                toggle: {
+                    variables: {
+                        padding: '0',
+                    },
+                    component: {
+                        backgroundColor: 'transparent',
+                        border: '1px solid var(--vs-comp-bg)',
+                    },
                 },
             };
         });
 
-        function getToggleButtonStyleSet(toggle: boolean) {
-            return {
-                backgroundColor: toggle ? 'var(--vs-area-bg)' : 'transparent',
-                border: toggle ? '1px solid var(--vs-primary-comp-bg)' : '1px solid var(--vs-comp-bg)',
-                padding: '0',
-            };
-        }
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSearchInputStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const debouncedEmitSearch = functionUtil.debounce({ delay: 400 }, (value: string) => {
             emit('search', value);
@@ -199,10 +217,9 @@ export default defineComponent({
             isCaseSensitiveOn,
             isRegexOn,
             computedColorScheme,
-            computedStyleSet,
+            componentStyleSet,
             styleSetVariables,
             onInputChange,
-            getToggleButtonStyleSet,
             // Methods
             match,
             focus,

@@ -21,17 +21,27 @@ const meta: Meta<typeof VsSteps> = {
         components: { VsSteps },
         setup() {
             const preDefinedStyleSet: VsStepsStyleSet = {
+                variables: {
+                    stepSize: '2.5rem',
+                },
                 step: {
                     backgroundColor: '#f5f5f5',
                     border: '1px solid #e0e0e0',
                     borderRadius: '50%',
                     padding: '0.5rem',
-                    opacity: 0.8,
-                    size: '2.5rem',
+                    width: '2.5rem',
+                    height: '2.5rem',
                 },
                 activeStep: {
                     backgroundColor: '#1e88e5',
-                    size: '2.5rem',
+                    border: '2px solid #1565c0',
+                },
+                label: {
+                    color: '#666',
+                },
+                activeLabel: {
+                    color: '#1e88e5',
+                    fontWeight: '700',
                 },
             } as const;
 
@@ -212,10 +222,43 @@ export const WithGap: Story = {
             },
         },
     },
+    render: (args: any) => ({
+        components: { VsSteps },
+        setup() {
+            const step0 = ref(1);
+            const step1 = ref(1);
+            const step2 = ref(1);
+            const step3 = ref(1);
+            const step4 = ref(1);
+            return { args, step0, step1, step2, step3, step4 };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 0 (기본값)</p>
+                    <vs-steps :steps="args.steps" v-model="step0" gap="0" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 1rem</p>
+                    <vs-steps :steps="args.steps" v-model="step1" gap="1rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 3rem</p>
+                    <vs-steps :steps="args.steps" v-model="step2" gap="3rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 6rem</p>
+                    <vs-steps :steps="args.steps" v-model="step3" gap="6rem" />
+                </div>
+                <div>
+                    <p style="margin: 0 0 0.5rem 0; font-size: 0.875rem; color: #666;">gap: 10rem</p>
+                    <vs-steps :steps="args.steps" v-model="step4" gap="10rem" />
+                </div>
+            </div>
+        `,
+    }),
     args: {
         steps: ['Step 1', 'Step 2', 'Step 3', 'Step 4'],
-        gap: '6rem',
-        modelValue: 1,
     },
 };
 
@@ -440,13 +483,35 @@ export const StyleSet: Story = {
     args: {
         steps: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
+            variables: {
+                stepSize: '3rem',
+            },
             step: {
-                size: '3rem',
+                backgroundColor: '#f0f0f0',
+                border: '2px dashed #999',
+                borderRadius: '8px',
+                width: '3rem',
+                height: '3rem',
             },
             activeStep: {
-                backgroundColor: '#e188e5',
-                border: '2px solid #002abf',
-                size: '3rem',
+                backgroundColor: '#e91e63',
+                border: '3px solid #c2185b',
+                borderRadius: '50%',
+            },
+            label: {
+                fontSize: '0.875rem',
+                color: '#999',
+            },
+            activeLabel: {
+                fontSize: '1rem',
+                color: '#e91e63',
+                fontWeight: 'bold',
+            },
+            progress: {
+                backgroundColor: '#e0e0e0',
+            },
+            activeProgress: {
+                backgroundColor: '#e91e63',
             },
         },
         modelValue: 1,

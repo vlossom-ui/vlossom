@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-modal-node', colorSchemeClass]" :style="styleSetVariables">
+    <div :class="['vs-modal-node', colorSchemeClass]">
         <vs-dimmed
             v-if="dimmed"
             :model-value="dimmed"
@@ -7,7 +7,13 @@
             @click.prevent.stop="onClickDimmed"
         />
         <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef">
-            <div class="vs-modal-wrap" role="dialog" aria-label="Modal" :aria-modal="true">
+            <div
+                class="vs-modal-wrap"
+                role="dialog"
+                aria-label="Modal"
+                :aria-modal="true"
+                :style="componentStyleSet.component"
+            >
                 <slot />
             </div>
         </vs-focus-trap>
@@ -15,12 +21,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, onMounted, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
 import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
-import { stringUtil } from '@/utils';
+import { objectUtil, stringUtil } from '@/utils';
 import type { VsModalNodeStyleSet } from './types';
 
 import VsDimmed from '@/components/vs-dimmed/VsDimmed.vue';
@@ -70,7 +76,9 @@ export default defineComponent({
             return SIZES.includes(value as Size);
         }
 
-        const additionalStyleSet = computed(() => {
+        const baseStyleSet: ComputedRef<VsModalNodeStyleSet> = computed(() => ({}));
+
+        const additionalStyleSet: ComputedRef<Partial<VsModalNodeStyleSet>> = computed(() => {
             if (!size.value) {
                 return {};
             }
@@ -78,6 +86,7 @@ export default defineComponent({
             const result: Record<string, string> = {};
             const width = (typeof size.value === 'object' ? size.value.width : size.value) ?? 'md';
             const height = (typeof size.value === 'object' ? size.value.height : size.value) ?? 'md';
+
             if (isSize(width)) {
                 result['width'] = modalWidthSize[width];
             } else {
@@ -90,12 +99,15 @@ export default defineComponent({
                 result['height'] = stringUtil.toStringSize(height);
             }
 
-            return result;
+            return objectUtil.shake({
+                component: objectUtil.shake(result),
+            });
         });
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
+        const { componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
             additionalStyleSet,
         );
 
@@ -143,7 +155,6 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
-            styleSetVariables,
             componentStyleSet,
             focusLock,
             onClickDimmed,

@@ -1,5 +1,5 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, TextStyleSet, FocusableRef, FormChildRef } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type VsTextarea from './VsTextarea.vue';
 
@@ -17,9 +17,7 @@ export interface VsTextareaRef extends ComponentPublicInstance<typeof VsTextarea
 
 export type VsTextareaValueType = string;
 
-export interface VsTextareaStyleSet extends BoxStyleSet, TextStyleSet {
-    height?: string;
-    resize?: string;
-
+export interface VsTextareaStyleSet {
+    textarea?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

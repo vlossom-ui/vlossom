@@ -1,56 +1,36 @@
 .vs-label-value {
     --vs-label-value-border: initial;
-    --vs-label-value-borderRadius: initial;
-    --vs-label-value-opacity: initial;
-
-    --vs-label-value-label-fontColor: initial;
-    --vs-label-value-label-fontSize: initial;
-    --vs-label-value-label-fontWeight: initial;
-
-    --vs-label-value-label-backgroundColor: initial;
-    --vs-label-value-label-padding: initial;
-    --vs-label-value-label-verticalAlign: initial;
-    --vs-label-value-label-width: initial;
-
-    --vs-label-value-value-fontColor: initial;
-    --vs-label-value-value-fontSize: initial;
-    --vs-label-value-value-fontWeight: initial;
-
-    --vs-label-value-value-backgroundColor: initial;
-    --vs-label-value-value-padding: initial;
-    --vs-label-value-value-verticalAlign: initial;
 
     @apply relative flex h-full w-full overflow-hidden;
 
-    opacity: var(--vs-label-value-opacity, 1);
     border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-label-value-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-sm)));
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-sm));
 
     > .vs-cell {
         @apply relative flex;
 
         &.vs-label {
-            @apply break-words whitespace-nowrap;
+            @apply wrap-break-word whitespace-nowrap;
 
-            flex-basis: var(--vs-label-value-label-width, 20%);
-            align-items: var(--vs-label-value-label-verticalAlign, center);
+            flex-basis: 20%;
+            align-items: center;
             border-right: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-            background-color: var(--vs-label-value-label-backgroundColor, var(--vs-comp-bg));
-            padding: var(--vs-label-value-label-padding, 0.6rem 1.2rem);
-            color: var(--vs-label-value-label-fontColor, var(--vs-comp-font));
-            font-weight: var(--vs-label-value-label-fontWeight, 500);
-            font-size: var(--vs-label-value-label-fontSize, var(--vs-font-size-md));
+            background-color: var(--vs-comp-bg);
+            padding: 0.6rem 1.2rem;
+            color: var(--vs-comp-font);
+            font-weight: 500;
+            font-size: var(--vs-font-size-md);
         }
 
         &.vs-value {
             @apply flex-1 overflow-x-auto;
 
-            align-items: var(--vs-label-value-value-verticalAlign, center);
-            background-color: var(--vs-label-value-value-backgroundColor, var(--vs-no-color));
-            padding: var(--vs-label-value-value-padding, 0.6rem 1.2rem);
-            color: var(--vs-label-value-value-fontColor, var(--vs-comp-font));
-            font-weight: var(--vs-label-value-value-fontWeight, 500);
-            font-size: var(--vs-label-value-value-fontSize, var(--vs-font-size-md));
+            align-items: center;
+            background-color: var(--vs-no-color);
+            padding: 0.6rem 1.2rem;
+            color: var(--vs-comp-font);
+            font-weight: 500;
+            font-size: var(--vs-font-size-md);
         }
     }
 
@@ -59,21 +39,21 @@
 
         .vs-label {
             border-right: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-label-value-label-backgroundColor, var(--vs-primary-comp-bg));
-            color: var(--vs-label-value-label-fontColor, var(--vs-primary-comp-font));
+            background-color: var(--vs-primary-comp-bg);
+            color: var(--vs-primary-comp-font);
         }
     }
 
     &.vs-dense {
         > .vs-cell {
             &.vs-label {
-                padding: var(--vs-label-value-label-padding, var(--vs-label-value-label-padding, 0.2rem 0.8rem));
-                font-size: var(--vs-label-value-label-fontSize, var(--vs-font-size-xs));
+                padding: 0.2rem 0.8rem;
+                font-size: var(--vs-font-size-xs);
             }
 
             &.vs-value {
-                padding: var(--vs-label-value-value-padding, var(--vs-label-value-value-padding, 0.2rem 0.8rem));
-                font-size: var(--vs-label-value-value-fontSize, var(--vs-font-size-xs));
+                padding: 0.2rem 0.8rem;
+                font-size: var(--vs-font-size-xs);
             }
         }
     }

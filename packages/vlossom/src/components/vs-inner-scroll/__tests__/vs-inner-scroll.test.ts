@@ -16,25 +16,5 @@ describe('VsInnerScroll', () => {
             const body = wrapper.find('.vs-inner-scroll-body');
             expect(body.classes()).toContain('vs-hide-scroll');
         });
-
-        it('styleSet 객체가 주어지면 추가 스타일이 적용되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInnerScroll, {
-                props: {
-                    styleSet: {
-                        padding: '20px',
-                        header: { padding: '10px' },
-                        footer: { padding: '15px' },
-                    },
-                },
-            });
-
-            // then
-            expect(wrapper.vm.styleSetVariables).toEqual({
-                '--vs-inner-scroll-padding': '20px',
-                '--vs-inner-scroll-header-padding': '10px',
-                '--vs-inner-scroll-footer-padding': '15px',
-            });
-        });
     });
 });

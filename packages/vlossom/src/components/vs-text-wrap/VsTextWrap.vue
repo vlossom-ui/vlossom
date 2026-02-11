@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-text-wrap" :style="styleSetVariables">
+    <div class="vs-text-wrap" :style="componentStyleSet.component">
         <div ref="contentsRef" class="vs-text-wrap-contents">
             <slot />
         </div>
@@ -13,7 +13,12 @@
                 aria-label="copy"
                 @click.prevent.stop="copyInnerText"
             >
-                <vs-render class="vs-icon-container" :class="{ copied }" :content="computedCopyIcon" />
+                <vs-render
+                    class="vs-icon-container"
+                    :class="{ copied }"
+                    :style="componentStyleSet.copyIcon"
+                    :content="computedCopyIcon"
+                />
             </button>
 
             <button
@@ -23,14 +28,14 @@
                 aria-label="link"
                 @click.prevent.stop="openLink"
             >
-                <vs-render class="vs-icon-container" :content="linkIcon" />
+                <vs-render class="vs-icon-container" :style="componentStyleSet.linkIcon" :content="linkIcon" />
             </button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type PropType, type Ref } from 'vue';
+import { computed, defineComponent, ref, toRefs, type ComputedRef, type PropType, type Ref } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
@@ -53,16 +58,25 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, link, width } = toRefs(props);
 
-        const additionalStyleSet = computed(() => {
+        const baseStyleSet: ComputedRef<VsTextWrapStyleSet> = computed(() => ({}));
+
+        const additionalStyleSet: ComputedRef<Partial<VsTextWrapStyleSet>> = computed(() => {
             return objectUtil.shake({
-                width:
-                    width.value === undefined || objectUtil.isObject(width.value)
-                        ? undefined
-                        : stringUtil.toStringSize(width.value as string | number),
+                component: objectUtil.shake({
+                    width:
+                        !width.value || objectUtil.isObject(width.value)
+                            ? undefined
+                            : stringUtil.toStringSize(width.value as string | number),
+                }),
             });
         });
 
-        const { styleSetVariables } = useStyleSet<VsTextWrapStyleSet>(componentName, styleSet, additionalStyleSet);
+        const { componentStyleSet } = useStyleSet<VsTextWrapStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const contentsRef: Ref<HTMLElement | null> = ref(null);
         const copied = ref(false);
@@ -116,7 +130,7 @@ export default defineComponent({
         }
 
         return {
-            styleSetVariables,
+            componentStyleSet,
             contentText,
             contentsRef,
             copyInnerText,

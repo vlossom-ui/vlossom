@@ -2,9 +2,9 @@
     <vs-toggle
         :model-value="isDarkTheme"
         class="vs-theme-button"
-        :color-scheme="colorScheme"
+        :color-scheme
+        :style-set="componentStyleSet.button"
         :style="styleSetVariables"
-        :style-set="componentStyleSet"
         :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
         :disabled="disabled"
         :loading="loading"

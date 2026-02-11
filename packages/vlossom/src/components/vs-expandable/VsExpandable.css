@@ -1,16 +1,12 @@
 /* VsExpandable 기본 구조 스타일 */
 .vs-expandable-wrapper {
-    --vs-expandable-backgroundColor: initial;
-    --vs-expandable-padding: initial;
-
     @apply relative w-full overflow-hidden;
-
-    background-color: var(--vs-expandable-backgroundColor, var(--vs-area-bg));
 
     .vs-expandable-content {
         @apply w-full;
 
-        padding: var(--vs-expandable-padding, 0.75rem 1rem);
+        background-color: var(--vs-area-bg);
+        padding: 0.75rem 1rem;
     }
 }
 

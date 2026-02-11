@@ -71,6 +71,36 @@ function checkScroll() {
 </script>
 ```
 
+## StyleSet 사용 예시
+
+```html
+<template>
+    <vs-inner-scroll
+        :style-set="{
+            header: {
+                padding: '24px',
+            },
+            content: {
+                padding: '24px',
+            },
+            footer: {
+                padding: '16px',
+            },
+        }"
+    >
+        <template #header>
+            <div>Header Content</div>
+        </template>
+
+        <div>Scrollable Content</div>
+
+        <template #footer>
+            <div>Footer Content</div>
+        </template>
+    </vs-inner-scroll>
+</template>
+```
+
 ## Props
 
 | Prop         | Type                              | Default | Required | Description             |
@@ -86,20 +116,6 @@ function checkScroll() {
 | ----------- | ---------- | --------- | ------------------------------ |
 | `hasScroll` | -          | `boolean` | 스크롤 가능 여부를 반환합니다. |
 
-## Types
-
-```typescript
-interface VsInnerScrollStyleSet {
-    header?: {
-        padding?: string; // 헤더 영역 패딩
-    };
-    padding?: string; // 본문 영역 패딩
-    footer?: {
-        padding?: string; // 푸터 영역 패딩
-    };
-}
-```
-
 ## Slots
 
 | Slot      | Description                      |
@@ -107,6 +123,16 @@ interface VsInnerScrollStyleSet {
 | `default` | 스크롤 가능한 본문 영역의 콘텐츠 |
 | `header`  | 상단에 고정되는 헤더 콘텐츠      |
 | `footer`  | 하단에 고정되는 푸터 콘텐츠      |
+
+## Types
+
+```typescript
+interface VsInnerScrollStyleSet {
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
+}
+```
 
 ## 특징
 

@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :id="radioLabel ? '' : computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
@@ -98,7 +99,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsRadioStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsRadioStyleSet>(componentName, styleSet);
 
         const inputValue = ref(checked.value ? radioValue.value : modelValue.value);
 
@@ -199,6 +200,7 @@ export default defineComponent({
             isChecked,
             colorSchemeClass,
             computedState,
+            componentStyleSet,
             styleSetVariables,
             classObj,
             stateClasses,

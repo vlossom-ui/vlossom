@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -17,13 +18,14 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-input', colorSchemeClass, classObj, stateClasses]" :style="styleSetVariables">
-            <div v-if="$slots['prepend']" class="vs-prepend">
+        <div :class="['vs-input', colorSchemeClass, classObj, stateClasses]" :style="componentStyleSet.component">
+            <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.prepend">
                 <slot name="prepend" />
             </div>
 
             <input
                 ref="inputRef"
+                :style="componentStyleSet.input"
                 :id="computedId"
                 :type
                 :value="inputValue"
@@ -54,7 +56,7 @@
                 </i>
             </button>
 
-            <div v-if="$slots['append']" class="vs-append">
+            <div v-if="$slots['append']" class="vs-append" :style="componentStyleSet.append">
                 <slot name="append" />
             </div>
         </div>
@@ -129,7 +131,9 @@ export default defineComponent({
         const isNumberInput = computed(() => type.value === 'number');
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
+
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 
@@ -232,6 +236,7 @@ export default defineComponent({
             // Computed
             classObj,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             inputValue,
             computedMessages,

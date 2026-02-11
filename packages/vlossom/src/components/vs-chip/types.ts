@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsChip from './VsChip.vue';
 
 declare module 'vue' {
@@ -12,6 +11,11 @@ export type { VsChip };
 
 export interface VsChipRef extends ComponentPublicInstance<typeof VsChip> {}
 
-export interface VsChipStyleSet extends SizeStyleSet, BoxStyleSet {
-    fontColor?: string;
+export interface VsChipStyleSet {
+    variables?: {
+        height?: string;
+    };
+    component?: CSSProperties;
+    icon?: CSSProperties;
+    closeButton?: CSSProperties;
 }

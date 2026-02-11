@@ -168,8 +168,10 @@ export const Grid: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            radioColor: '#ac77c8',
-            radioSize: '1.5rem',
+            variables: {
+                radioColor: '#ac77c8',
+                radioSize: '1.5rem',
+            },
         },
     },
 };

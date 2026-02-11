@@ -1,12 +1,10 @@
 .vs-theme-button {
     --vs-theme-button-width: initial;
     --vs-theme-button-height: initial;
-
-    --vs-theme-button-borderRadius: initial;
-
     --vs-theme-button-iconColor: initial;
 
-    border-radius: var(--vs-theme-button-borderRadius, 50%);
+    @apply rounded-full;
+
     width: var(--vs-theme-button-width, 2rem);
     height: var(--vs-theme-button-height, 2rem);
 

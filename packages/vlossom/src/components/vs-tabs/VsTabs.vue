@@ -6,6 +6,7 @@
                 class="vs-tab-scroll-button"
                 :aria-label="vertical ? 'scroll up' : 'scroll left'"
                 :disabled="isFirstEdge"
+                :style-set="componentStyleSet.scrollButton"
                 tabindex="-1"
                 small
                 @click.prevent.stop="goPrev"
@@ -15,11 +16,17 @@
 
             <div ref="tabsWrapRef" class="vs-tabs-wrap">
                 <ul role="tablist" class="vs-tab-list">
-                    <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
+                    <li
+                        v-if="indicatorStyle"
+                        class="vs-tab-indicator"
+                        :style="{ ...indicatorStyle, ...componentStyleSet.activeTab }"
+                        aria-hidden="true"
+                    />
                     <li
                         v-for="(tab, index) in tabs"
                         :key="tab"
                         ref="tabRefs"
+                        :style="getTabStyleSet(index)"
                         :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
                         role="tab"
                         :aria-selected="isSelected(index)"
@@ -40,6 +47,7 @@
                 class="vs-tab-scroll-button"
                 :aria-label="vertical ? 'scroll down' : 'scroll right'"
                 :disabled="isLastEdge"
+                :style-set="componentStyleSet.scrollButton"
                 tabindex="-1"
                 small
                 @click.prevent.stop="goNext"
@@ -63,6 +71,7 @@ import {
     type Ref,
     type PropType,
     type ComputedRef,
+    type CSSProperties,
 } from 'vue';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
@@ -113,12 +122,29 @@ export default defineComponent({
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<Record<string, string> | null>(null);
+
+        const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
+            scrollButton: {
+                variables: {
+                    padding: '0.4rem',
+                },
+            },
+        }));
+
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
+                variables: objectUtil.shake({
+                    height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
+                }),
             });
         });
-        const { styleSetVariables } = useStyleSet<VsTabsStyleSet>(componentName, styleSet, additionalStyleSet);
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const {
             selectedIndex,
@@ -218,6 +244,13 @@ export default defineComponent({
 
         let resizeObserver: ResizeObserver | null = null;
 
+        function getTabStyleSet(index: number): CSSProperties {
+            return {
+                ...componentStyleSet.value.tab,
+                ...(isSelected(index) ? componentStyleSet.value.activeTab : {}),
+            };
+        }
+
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
 
@@ -256,8 +289,10 @@ export default defineComponent({
         return {
             // Style
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             classObj,
+            getTabStyleSet,
 
             // Selection
             isSelected,

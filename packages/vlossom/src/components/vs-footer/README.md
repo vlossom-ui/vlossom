@@ -30,7 +30,7 @@
             <!-- vs-footer가 fixed일 때 자동으로 패딩이 조정됩니다 -->
             <main>Main Content</main>
         </vs-container>
-        <vs-footer position="fixed" :style-set="{ height: '4rem', backgroundColor: '#1976d2', fontColor: '#ffffff' }">
+        <vs-footer position="fixed" :style-set="{ component: { height: '4rem', backgroundColor: '#1976d2', color: '#ffffff' } }">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <p>&copy; 2024 My App</p>
                 <nav>
@@ -58,7 +58,7 @@
 
 ```html
 <template>
-    <vs-footer position="fixed" :style-set="{ height: '4rem', zIndex: '1000' }">
+    <vs-footer position="fixed" :style-set="{ component: { height: '4rem', zIndex: 1000 } }">
         <div>항상 하단에 고정된 푸터</div>
     </vs-footer>
 </template>
@@ -88,26 +88,12 @@
 ## Types
 
 ```typescript
-interface VsFooterStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-    top?: string | number;
-    bottom?: string | number;
-    left?: string | number;
-    right?: string | number;
-    zIndex?: string;
-    fontColor?: string;
-    boxShadow?: string;
-}
+interface VsFooterStyleSet extends VsBarStyleSet {}
 ```
+
+> [!NOTE]
+>
+> VsBar의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsBar README](../vs-bar/README.md#types)를 참조하세요.
 
 ## Slots
 

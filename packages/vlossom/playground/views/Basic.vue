@@ -38,9 +38,9 @@
         <h3 class="mb-4 font-semibold">VsBar</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Default</h4>
-            <vs-bar :style-set="{ padding: '1rem' }">Default Bar</vs-bar>
+            <vs-bar :style-set="{ component: { padding: '1rem' } }">Default Bar</vs-bar>
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Primary</h4>
-            <vs-bar primary :style-set="{ padding: '1rem' }">Primary Bar</vs-bar>
+            <vs-bar primary :style-set="{ component: { padding: '1rem' } }">Primary Bar</vs-bar>
         </div>
         <vs-divider style-set="playground" />
 
@@ -155,21 +155,21 @@
         <h3 class="mb-4 font-semibold">VsLoading</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
-            <div class="flex flex-wrap items-end gap-4">
-                <vs-loading width="24px" height="24px" />
-                <vs-loading width="36px" height="36px" />
-                <vs-loading width="50px" height="50px" />
-                <vs-loading width="70px" height="70px" />
+            <div class="flex flex-wrap items-center gap-4">
+                <vs-loading width="2rem" height="2rem" />
+                <vs-loading width="4rem" height="4rem" />
+                <vs-loading width="6rem" height="6rem" />
+                <vs-loading width="8rem" height="8rem" />
             </div>
         </div>
         <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsSkeleton</h3>
         <div class="flex flex-wrap items-center gap-4">
-            <vs-skeleton :style-set="{ width: '50px', height: '50px', borderRadius: '50%' }" />
+            <vs-skeleton :style-set="{ component: { width: '50px', height: '50px', borderRadius: '50%' } }" />
             <div class="flex flex-col gap-2">
-                <vs-skeleton :style-set="{ width: '150px', height: '20px' }" />
-                <vs-skeleton :style-set="{ width: '100px', height: '20px' }" />
+                <vs-skeleton :style-set="{ component: { width: '150px', height: '20px' } }" />
+                <vs-skeleton :style-set="{ component: { width: '100px', height: '20px' } }" />
             </div>
         </div>
         <vs-divider style-set="playground" />
@@ -223,7 +223,9 @@
                     class="flex w-40 flex-col items-center justify-center gap-2 rounded border border-dashed
                         border-gray-300 p-3 dark:border-gray-600"
                 >
-                    <vs-chip :primary="toggleValue" :style-set="{ width: '120px' }">{{ toggleValue }}</vs-chip>
+                    <vs-chip :primary="toggleValue" :style-set="{ component: { width: '120px' } }">{{
+                        toggleValue
+                    }}</vs-chip>
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">

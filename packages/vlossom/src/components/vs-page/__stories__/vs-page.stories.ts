@@ -51,14 +51,16 @@ const meta: Meta<typeof VsPage> = {
         components: { VsPage },
         setup() {
             const preDefinedStyleSet: VsPageStyleSet = {
+                component: {
+                    padding: '4rem 5rem',
+                },
                 title: {
                     padding: '0 0 1rem 0',
                 },
                 description: {
                     padding: '0 0 2rem 0',
                 },
-                padding: '4rem 5rem',
-            } as const;
+            };
 
             useVlossom().styleSet = {
                 myPageStyleSet: { VsPage: { ...preDefinedStyleSet } },
@@ -192,7 +194,9 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            padding: '1.2rem 3rem',
+            component: {
+                padding: '1.2rem 3rem',
+            },
         },
     },
 };
@@ -201,18 +205,27 @@ export const NestedStyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: '제목과 설명 영역에 개별적으로 다른 스타일을 적용한 페이지입니다. title, description 속성을 사용하여 각 영역별 세밀한 스타일링이 가능합니다.',
+                story:
+                    '제목, 설명, 본문 영역에 개별적으로 다른 스타일을 적용한 페이지입니다.' +
+                    'component, title, description, content 속성을 사용하여 각 영역별 세밀한 스타일링이 가능합니다.',
             },
         },
     },
     args: {
         styleSet: {
-            padding: '2rem',
+            component: {
+                padding: '2rem',
+            },
             title: {
                 padding: '0 0 1.5rem 0',
             },
             description: {
                 padding: '1.5rem 0 2rem 0',
+            },
+            content: {
+                padding: '1rem',
+                backgroundColor: '#f5f5f5',
+                borderRadius: '8px',
             },
         },
     },
@@ -225,7 +238,7 @@ export const NestedStyleSet: Story = {
         <vs-page v-bind="args">
             <template #title>Styled Page Title</template>
             <template #description>Styled description</template>
-            This is the main content area.
+            This is the main content area with custom styling.
         </vs-page>
     `,
     }),

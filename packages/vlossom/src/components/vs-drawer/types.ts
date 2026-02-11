@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsDimmedStyleSet } from '@/components/vs-dimmed/types';
 import type VsDrawer from './VsDrawer.vue';
 
@@ -16,11 +15,13 @@ export interface VsDrawerRef extends ComponentPublicInstance<typeof VsDrawer> {
     closeDrawer: () => void;
 }
 
-export interface VsDrawerStyleSet extends BoxStyleSet {
-    position?: 'absolute' | 'fixed';
-    size?: string;
-    boxShadow?: string;
-    zIndex?: number;
-
+export interface VsDrawerStyleSet {
+    variables?: {
+        size?: string;
+    };
+    component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
 }

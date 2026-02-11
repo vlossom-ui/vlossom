@@ -27,10 +27,29 @@
 
 ```typescript
 interface VsLoadingStyleSet {
-    width?: string; // 로딩 컴포넌트의 전체 너비
-    height?: string; // 로딩 컴포넌트의 전체 높이
-
-    color?: string; // 로딩 바의 색상
-    barWidth?: string; // 개별 로딩 바의 너비
+    variables?: {
+        barWidth?: string;
+        color?: string;
+    };
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```vue
+<template>
+    <vs-loading
+        :style-set="{
+            variables: {
+                barWidth: '15%',
+                color: '#ff6b6b',
+            },
+            component: {
+                width: '6rem',
+                height: '8rem',
+            },
+        }"
+    />
+</template>
 ```

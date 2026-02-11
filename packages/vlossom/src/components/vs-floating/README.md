@@ -162,9 +162,9 @@ const isOpen = ref(false);
 
 ## Events
 
-| Event               | Payload   | Description                 |
-| ------------------- | --------- | --------------------------- |
-| `update:modelValue` | `boolean` | v-model 값 업데이트 시 발생 |
+| Event               | Payload   | Description             |
+| ------------------- | --------- | ----------------------- |
+| `update:modelValue` | `boolean` | v-model 값 변경 시 발생 |
 
 ## Slots
 

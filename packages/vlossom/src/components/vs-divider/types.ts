@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsDivider from './VsDivider.vue';
 
 declare module 'vue' {
@@ -12,16 +12,18 @@ export type { VsDivider };
 export interface VsDividerRef extends ComponentPublicInstance<typeof VsDivider> {}
 
 export interface VsDividerStyleSet {
-    border?: string;
-    opacity?: number;
+    variables?: {
+        border?: string;
 
-    horizontal?: {
-        width?: string;
-        margin?: string;
-    };
+        horizontal?: {
+            width?: string;
+            margin?: string;
+        };
 
-    vertical?: {
-        height?: string;
-        margin?: string;
+        vertical?: {
+            height?: string;
+            margin?: string;
+        };
     };
+    component?: CSSProperties;
 }

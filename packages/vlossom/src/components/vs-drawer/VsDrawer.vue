@@ -4,20 +4,24 @@
             v-show="isOpen"
             ref="drawerRef"
             :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
-            :style="styleSetVariables"
+            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
         >
             <vs-dimmed
                 v-if="dimmed"
+                :style-set="componentStyleSet.dimmed"
                 :model-value="isDimmed"
-                :style-set="dimmedStyleSet"
                 @click.prevent.stop="onClickDimmed"
             />
-            <vs-focus-trap
-                ref="focusTrapRef"
-                :class="['vs-drawer-content', `vs-drawer-${placement}`]"
-                :disabled="!focusLock"
-            >
-                <vs-inner-scroll :hide-scroll>
+            <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
+                <vs-inner-scroll
+                    :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                    :style-set="{
+                        header: componentStyleSet.header,
+                        content: componentStyleSet.content,
+                        footer: componentStyleSet.footer,
+                    }"
+                    :hide-scroll
+                >
                     <template #header>
                         <slot name="header" />
                     </template>
@@ -129,22 +133,25 @@ export default defineComponent({
             return stringUtil.toStringSize(size.value);
         });
 
+        const baseStyleSet: ComputedRef<VsDrawerStyleSet> = computed(() => ({}));
+
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
-                position: fixed.value ? 'fixed' : undefined,
-                size: drawerSize.value,
+                variables: objectUtil.shake({
+                    size: drawerSize.value,
+                }),
+                component: objectUtil.shake({
+                    position: fixed.value ? 'fixed' : undefined,
+                }),
             });
         });
 
         const { styleSetVariables, componentStyleSet } = useStyleSet<VsDrawerStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
             additionalStyleSet,
         );
-
-        const dimmedStyleSet = computed(() => {
-            return componentStyleSet.value.dimmed;
-        });
 
         const isDimmed = computed(() => dimmed.value && isOpen.value);
 
@@ -226,11 +233,11 @@ export default defineComponent({
             drawerRef,
             focusTrapRef,
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             isOpen,
             ANIMATION_DURATION,
             onClickDimmed,
-            dimmedStyleSet,
             isDimmed,
             openDrawer,
             closeDrawer,

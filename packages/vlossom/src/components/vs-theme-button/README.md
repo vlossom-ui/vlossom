@@ -27,31 +27,28 @@ const handleThemeChange = (isDark: boolean) => {
 | `colorScheme` | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마      |
 | `styleSet`    | `string \| VsThemeButtonStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
 
-**VsButton에서 상속받은 Props:**
+**VsToggle에서 상속받은 Props:**
 
-- `circle`, `disabled`, `ghost`, `large`, `outline`, `primary`, `responsive`, `small`
+- `circle`, `disabled`, `ghost`, `loading`, `outline`, `primary`, `size`
 
-> **Note**: VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md) 및 [VsToggle README](../vs-toggle/README.md)를 참조하세요.
+> **Note**: VsToggle의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsToggle README](../vs-toggle/README.md)를 참조하세요.
 
 ## Events
 
-| Event    | Parameters | Description                                          |
-| -------- | ---------- | ---------------------------------------------------- |
-| `change` | `boolean`  | 테마가 변경될 때 발생 (`true`: Dark, `false`: Light) |
+| Event    | Parameters | Description                                      |
+| -------- | ---------- | ------------------------------------------------ |
+| `change` | `boolean`  | 테마 변경 시 발생 (`true`: Dark, `false`: Light) |
 
 ## Types
 
 ```typescript
 interface VsThemeButtonStyleSet {
-    width?: string; // 너비
-    height?: string; // 높이
-
-    backgroundColor?: string; // 배경 색상
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    opacity?: number; // 투명도
-
-    iconColor?: string; // 아이콘 색상
+    variables?: {
+        width?: string;
+        height?: string;
+        iconColor?: string;
+    };
+    button?: VsToggleStyleSet;
 }
 ```
 
@@ -73,14 +70,18 @@ interface VsThemeButtonStyleSet {
 
 <script setup>
 const themeButtonStyle = {
-    toggle: {
-        backgroundColor: '#1f2937',
-        border: '2px solid #374151',
-        borderRadius: '50%',
+    variables: {
         width: '3.5rem',
         height: '3.5rem',
+        iconColor: '#fcd34d',
     },
-    iconColor: '#fcd34d',
+    button: {
+        component: {
+            backgroundColor: '#1f2937',
+            border: '2px solid #374151',
+            borderRadius: '0.5rem',
+        },
+    },
 };
 </script>
 ```

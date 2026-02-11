@@ -43,20 +43,39 @@
 
 ```typescript
 interface VsSkeletonStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-
-    fontColor?: string;
+    background?: CSSProperties;
+    content?: CSSProperties;
+    component?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <div class="w-[200px] h-[100px]">
+        <vs-skeleton
+            :style-set="{
+                component: {
+                    borderRadius: '12px',
+                },
+                background: {
+                    backgroundColor: '#e0e0e0',
+                },
+                content: {
+                    color: '#999999',
+                },
+            }"
+        >
+            Loading...
+        </vs-skeleton>
+    </div>
+</template>
 ```
 
 ## 특징
 
-- **부드러운 애니메이션**: 0.8초 주기의 깜빡임 애니메이션으로 로딩 상태 표현
+- **부드러운 애니메이션**: 1초 주기의 깜빡임 애니메이션으로 로딩 상태 표현
 - **반응형 크기**: 부모 컨테이너의 크기에 맞춰 자동 조절 (기본 100%)
 - **유연한 콘텐츠**: slot을 통해 로딩 텍스트나 아이콘 표시 가능
-- **커스터마이징**: CSS 변수와 styleSet을 통한 세밀한 스타일 제어
+- **커스터마이징**: styleSet을 통한 세밀한 스타일 제어

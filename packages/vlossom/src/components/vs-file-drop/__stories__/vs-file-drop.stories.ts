@@ -32,10 +32,19 @@ const meta: Meta<typeof VsFileDrop> = {
             const files = ref<File[] | null>(null);
 
             const preDefinedStyleSet: VsFileDropStyleSet = {
-                border: '2px dashed #1e88e5',
-                borderRadius: '12px',
-                dragBackgroundColor: '#e3f2fd',
-                padding: '2rem',
+                variables: {
+                    dragBackgroundColor: '#e3f2fd',
+                },
+                component: {
+                    border: '2px dashed #1e88e5',
+                    borderRadius: '12px',
+                },
+                files: {
+                    padding: '2rem',
+                },
+                placeholder: {
+                    padding: '2rem',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -426,11 +435,20 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 파일 드롭',
         styleSet: {
-            border: '2px dashed #ff5722',
-            borderRadius: '16px',
-            backgroundColor: '#ffebee',
-            dragBackgroundColor: '#ffccbc',
-            padding: '2rem',
+            variables: {
+                dragBackgroundColor: '#ffccbc',
+            },
+            component: {
+                border: '2px dashed #ff5722',
+                borderRadius: '16px',
+                backgroundColor: '#ffebee',
+            },
+            files: {
+                padding: '2rem',
+            },
+            placeholder: {
+                padding: '2rem',
+            },
         },
     },
 };

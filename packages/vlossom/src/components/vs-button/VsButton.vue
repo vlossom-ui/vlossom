@@ -3,12 +3,12 @@
         ref="buttonRef"
         :type="type"
         :class="['vs-button', colorSchemeClass, classObj]"
-        :style="styleSetVariables"
-        :disabled="disabled"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :disabled
         :tabindex="disabled || loading ? -1 : 0"
     >
         <div v-if="loading" class="vs-button-loading">
-            <vs-loading :color-scheme="colorScheme" :style-set="loadingStyleSet" />
+            <vs-loading :color-scheme :style-set="componentStyleSet.loading" />
         </div>
         <div class="vs-button-content">
             <slot />
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, watch, type TemplateRef } from 'vue';
+import { computed, defineComponent, toRefs, useTemplateRef, watch, type ComputedRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -42,7 +42,21 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => {
+            return {
+                loading: {
+                    component: {
+                        width: '30%',
+                        height: '60%',
+                    },
+                },
+            };
+        });
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const sizeClass = computed(() => `vs-${size.value}`);
 
@@ -58,14 +72,6 @@ export default defineComponent({
             [sizeClass.value]: !!sizeClass.value,
         }));
 
-        const loadingStyleSet = computed(() => {
-            return {
-                width: '30%',
-                height: '60%',
-                ...componentStyleSet.value.loading,
-            };
-        });
-
         watch(loading, () => {
             // focus 상태일 때 loading이 true가 되어도 focus가 유지되는 버그 해결
             if (buttonRef.value && loading.value) {
@@ -73,7 +79,7 @@ export default defineComponent({
             }
         });
 
-        return { colorSchemeClass, styleSetVariables, classObj, buttonRef, loadingStyleSet };
+        return { colorSchemeClass, styleSetVariables, classObj, buttonRef, componentStyleSet };
     },
 });
 </script>

@@ -135,33 +135,66 @@ const drawerOpen = ref(false);
 
 | Event               | Payload   | Description                       |
 | ------------------- | --------- | --------------------------------- |
-| `update:modelValue` | `boolean` | v-model 값 업데이트 시 발생       |
-| `open`              | -         | 드로어가 열릴 때 발생             |
-| `close`             | -         | 드로어가 닫힐 때 발생             |
+| `update:modelValue` | `boolean` | v-model 값 변경 시 발생           |
+| `open`              | -         | 드로어 열림 시 발생               |
+| `close`             | -         | 드로어 닫힘 시 발생               |
 | `click-dimmed`      | -         | 배경(dimmed overlay) 클릭 시 발생 |
 
 ## Types
 
 ```typescript
 interface VsDrawerStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string | number;
-
-    position?: 'absolute' | 'fixed';
-    size?: string;
-    boxShadow?: string;
-    zIndex?: number;
-
-    dimmed?: {
-        backgroundColor?: string;
-        opacity?: number;
+    variables?: {
+        size?: string;
     };
+    component?: CSSProperties;
+    dimmed?: VsDimmedStyleSet;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
 }
 
 type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
+```
+
+> [!NOTE]
+>
+> `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-drawer
+        v-model="drawerOpen"
+        :style-set="{
+            variables: {
+                size: '400px',
+            },
+            content: {
+                backgroundColor: '#1e293b',
+                color: '#f8fafc',
+                borderRadius: '0 16px 16px 0',
+                boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)',
+            },
+            header: {
+                backgroundColor: '#334155',
+                borderBottom: '1px solid #475569',
+            },
+            footer: {
+                backgroundColor: '#334155',
+                borderTop: '1px solid #475569',
+            },
+            dimmed: {
+                component: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                },
+            },
+        }"
+    >
+        <h3>커스텀 스타일 드로어</h3>
+    </vs-drawer>
+</template>
 ```
 
 ## Slots

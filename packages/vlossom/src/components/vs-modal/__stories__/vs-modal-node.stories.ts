@@ -21,14 +21,16 @@ const meta: Meta<typeof VsModalNode> = {
         components: { VsModalNode },
         setup() {
             const preDefinedStyleSet: VsModalNodeStyleSet = {
-                backgroundColor: '#ffffff',
-                border: '1px solid #e0e0e0',
-                borderRadius: '8px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                fontColor: '#333333',
-                padding: '2rem',
-                width: '500px',
-                height: '400px',
+                component: {
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                    color: '#333333',
+                    padding: '2rem',
+                    width: '500px',
+                    height: '400px',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -234,14 +236,16 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            backgroundColor: '#f8f9fa',
-            border: '2px solid #1e88e5',
-            borderRadius: '12px',
-            boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
-            fontColor: '#1e88e5',
-            padding: '2rem',
-            width: '550px',
-            height: '450px',
+            component: {
+                backgroundColor: '#f8f9fa',
+                border: '2px solid #1e88e5',
+                borderRadius: '12px',
+                boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
+                color: '#1e88e5',
+                padding: '2rem',
+                width: '550px',
+                height: '450px',
+            },
         },
     },
     render: (args: any) => ({

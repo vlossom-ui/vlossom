@@ -68,10 +68,10 @@ const handleToggle = (value: boolean) => {
 
 ## Events
 
-| Event               | Parameters | Description                                  |
-| ------------------- | ---------- | -------------------------------------------- |
-| `update:modelValue` | `boolean`  | v-model 값이 변경될 때 발생                  |
-| `toggle`            | `boolean`  | 토글 상태가 변경될 때 발생하는 커스텀 이벤트 |
+| Event               | Parameters | Description             |
+| ------------------- | ---------- | ----------------------- |
+| `update:modelValue` | `boolean`  | v-model 값 변경 시 발생 |
+| `toggle`            | `boolean`  | 토글 상태 변경 시 발생  |
 
 ## Slots
 
@@ -88,25 +88,38 @@ const handleToggle = (value: boolean) => {
 ## Types
 
 ```typescript
-interface VsToggleStyleSet {
-    width?: string;
-    height?: string;
+interface VsToggleStyleSet extends VsButtonStyleSet {}
+```
 
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: string;
+> [!NOTE]
+>
+> VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md#types)를 참조하세요.
 
-    fontColor?: string;
+### StyleSet 사용 예시
 
-    loading?: {
-        width?: string;
-        height?: string;
-        color?: string;
-        barWidth?: string;
-    };
-}
+```html
+<template>
+    <vs-toggle
+        v-model="isToggled"
+        :style-set="{
+            variables: {
+                padding: '1rem 2rem',
+            },
+            component: {
+                backgroundColor: '#4caf50',
+                borderRadius: '8px',
+            },
+        }"
+    >
+        Toggle Me
+    </vs-toggle>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const isToggled = ref(false);
+</script>
 ```
 
 ## 특징

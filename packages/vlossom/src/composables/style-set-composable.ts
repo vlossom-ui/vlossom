@@ -1,4 +1,4 @@
-import { computed, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { VsComponent } from '@/declaration';
 import { useOptionsStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -6,24 +6,35 @@ import { objectUtil, stringUtil } from '@/utils';
 export function useStyleSet<T extends { [key: string]: any }>(
     component: VsComponent | string,
     styleSet: Ref<string | T | undefined>,
-    additionalStyleSet?: Ref<Partial<T>>,
+    baseStyleSet: Ref<Partial<T>> = ref({}),
+    additionalStyleSet: Ref<Partial<T>> = ref({}),
 ) {
     const componentStyleSet: ComputedRef<Partial<T>> = computed(() => {
-        let resultStyleSet: Partial<T> = {};
+        let resolvedStyleSet: Partial<T> = {};
 
         if (styleSet.value) {
             if (typeof styleSet.value === 'string') {
-                resultStyleSet = useOptionsStore().getComponentStyleSet<T>(styleSet.value, component);
+                resolvedStyleSet = useOptionsStore().getComponentStyleSet<T>(styleSet.value, component);
             } else {
-                resultStyleSet = styleSet.value;
+                resolvedStyleSet = styleSet.value;
             }
         }
 
-        return objectUtil.assign(resultStyleSet, additionalStyleSet?.value ?? {});
+        const shakenBaseStyleSet = objectUtil.shake(baseStyleSet.value) as Partial<T>;
+        const shakenAdditionalStyleSet = objectUtil.shake(additionalStyleSet.value) as Partial<T>;
+
+        const mergedStyleSet = objectUtil.assign(shakenBaseStyleSet, resolvedStyleSet);
+        return objectUtil.assign(mergedStyleSet, shakenAdditionalStyleSet);
     });
 
     const styleSetVariables: ComputedRef<Record<string, string>> = computed(() => {
-        return Object.entries(componentStyleSet.value).reduce(
+        const variables = componentStyleSet.value.variables;
+
+        if (!variables) {
+            return {};
+        }
+
+        return Object.entries(variables).reduce(
             (acc, [key, value]) => {
                 if (objectUtil.isObject(value)) {
                     const nestedStyleSet = value;

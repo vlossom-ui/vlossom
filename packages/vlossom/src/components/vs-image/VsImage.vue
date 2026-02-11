@@ -1,6 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="styleSetVariables.skeleton">
+        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
@@ -9,6 +9,7 @@
             :alt="alt"
             @load.stop="onImageLoad"
             @error.stop="onImageError"
+            :style="{ ...componentStyleSet.component }"
         />
     </div>
 </template>
@@ -40,7 +41,13 @@ export default defineComponent({
     setup(props, { emit }) {
         const { styleSet, src, fallback, lazy } = toRefs(props);
 
-        const { styleSetVariables } = useStyleSet<VsImageStyleSet>(componentName, styleSet);
+        const baseStyleSet: ComputedRef<VsImageStyleSet> = computed(() => ({}));
+
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsImageStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const vsImageRef = ref(null);
 
@@ -93,7 +100,15 @@ export default defineComponent({
             });
         }
 
-        return { styleSetVariables, computedSrc, vsImageRef, isLoading, onImageLoad, onImageError };
+        return {
+            componentStyleSet,
+            styleSetVariables,
+            computedSrc,
+            vsImageRef,
+            isLoading,
+            onImageLoad,
+            onImageError,
+        };
     },
 });
 </script>

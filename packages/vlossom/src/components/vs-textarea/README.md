@@ -129,7 +129,7 @@ function clearTextarea() {
 | `styleSet`       | `string \| VsTextareaStyleSet`    | -                         | -        | 커스텀 스타일 설정 객체                         |
 | `autocomplete`   | `boolean`                         | `false`                   | -        | 자동완성 활성화 여부                            |
 | `changed`        | `boolean`                         | `false`                   | -        | 값 변경 여부 (v-model:changed)                  |
-| `disabled`       | `boolean`                         | `false`                   | -        | 입력 필드 비활성화                              |
+| `disabled`       | `boolean`                         | `false`                   | -        | 비활성화 상태                                   |
 | `grid`           | `string \| number \| Breakpoints` | -                         | -        | 그리드 레이아웃 크기                            |
 | `hidden`         | `boolean`                         | `false`                   | -        | 컴포넌트 숨김 여부                              |
 | `id`             | `string`                          | -                         | -        | textarea 요소의 id                              |
@@ -153,38 +153,55 @@ function clearTextarea() {
 
 ## Events
 
-| Event               | Parameters         | Description             |
-| ------------------- | ------------------ | ----------------------- |
-| `update:modelValue` | `value: string`    | v-model 값 변경 시 발생 |
-| `update:changed`    | `changed: boolean` | 값 변경 여부 업데이트   |
-| `update:valid`      | `valid: boolean`   | 검증 상태 업데이트      |
-| `change`            | `value: string`    | 입력값 변경 시 발생     |
+| Event               | Parameters          | Description                  |
+| ------------------- | ------------------- | ---------------------------- |
+| `update:modelValue` | `value: string`     | v-model 값 변경 시 발생      |
+| `update:changed`    | `changed: boolean`  | 값 변경 여부 업데이트        |
+| `update:valid`      | `valid: boolean`    | 검증 상태 업데이트           |
+| `change`            | `value: string`     | 입력값 변경 시 발생          |
+| `focus`             | `event: FocusEvent` | textarea 포커스 시 발생      |
+| `blur`              | `event: FocusEvent` | textarea 포커스 해제 시 발생 |
 
-## Methods
+## Exposed Methods
 
-| Method       | Return Type | Description                         |
-| ------------ | ----------- | ----------------------------------- |
-| `focus()`    | `void`      | textarea에 포커스를 줍니다          |
-| `blur()`     | `void`      | textarea의 포커스를 제거합니다      |
-| `select()`   | `void`      | textarea의 모든 텍스트를 선택합니다 |
-| `clear()`    | `void`      | textarea의 값을 초기화합니다        |
-| `validate()` | `boolean`   | 유효성 검사를 수행합니다            |
+| Method     | Parameters | Return Type | Description                   |
+| ---------- | ---------- | ----------- | ----------------------------- |
+| `focus`    | -          | `void`      | textarea에 포커스 설정        |
+| `blur`     | -          | `void`      | textarea의 포커스 제거        |
+| `select`   | -          | `void`      | textarea 텍스트 전체 선택     |
+| `clear`    | -          | `void`      | textarea 값 초기화            |
+| `validate` | -          | `boolean`   | 유효성 검사 수행 및 결과 반환 |
 
 ## Types
 
 ```typescript
 interface VsTextareaStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-    height?: string;
-    padding?: string;
-    resize?: string;
+    textarea?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
+```
+
+> [!NOTE]
+>
+> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-textarea
+        v-model="description"
+        :style-set="{
+            textarea: {
+                minHeight: '10rem',
+                padding: '1rem',
+                border: '2px solid #333',
+                backgroundColor: '#f5f5f5',
+                borderRadius: '8px',
+            },
+        }"
+    />
+</template>
 ```
 
 ## Slots

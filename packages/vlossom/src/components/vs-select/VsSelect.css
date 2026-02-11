@@ -3,20 +3,13 @@
 .vs-select {
     --vs-select-height: initial;
 
-    --vs-select-trigger-backgroundColor: initial;
-    --vs-select-trigger-border: initial;
-    --vs-select-trigger-borderRadius: initial;
-    --vs-select-trigger-padding: initial;
-    --vs-select-trigger-opacity: initial;
-
     .vs-select-trigger {
         @apply relative box-border flex cursor-pointer items-center gap-1;
 
-        opacity: var(--vs-select-trigger-opacity, 1);
-        border: var(--vs-select-trigger-border, solid 1px var(--vs-line-color));
-        border-radius: var(--vs-select-trigger-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-        background-color: var(--vs-select-trigger-backgroundColor, var(--vs-no-color));
-        padding: var(--vs-select-trigger-padding, 0.2rem 0.8rem);
+        border: 1px solid var(--vs-line-color);
+        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        background-color: var(--vs-no-color);
+        padding: 0.2rem 0.8rem;
         min-height: var(--vs-select-height, var(--vs-default-comp-height-md));
 
         .vs-select-value {
@@ -52,7 +45,7 @@
         }
 
         .vs-select-icon {
-            @apply flex size-5 flex-shrink-0 items-center justify-center;
+            @apply flex size-5 shrink-0 items-center justify-center;
 
             transition: transform 0.3s ease;
 
@@ -64,22 +57,15 @@
 }
 
 .vs-select-options {
-    --vs-select-option-border: initial;
-    --vs-select-option-borderRadius: initial;
-    --vs-select-option-padding: initial;
-    --vs-select-option-backgroundColor: initial;
-    --vs-select-option-opacity: initial;
-    --vs-select-option-selectedBackgroundColor: initial;
-    --vs-select-options-height: initial;
+    --vs-select-focused-border: initial;
+    --vs-select-focused-borderRadius: initial;
+    --vs-select-focused-backgroundColor: initial;
 
     @apply overflow-hidden;
 
-    opacity: var(--vs-select-option-opacity, 1);
-    border: var(--vs-select-option-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-select-option-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-select-option-backgroundColor, var(--vs-no-color));
-    padding: var(--vs-select-option-padding, 0.6rem 0.4rem);
-    max-height: var(--vs-select-options-height, 30rem);
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    background-color: var(--vs-no-color);
 
     .vs-select-focusable {
         border: 1px solid transparent;
@@ -87,12 +73,12 @@
         &.vs-focusable-active {
             @apply box-content;
 
-            border: 1px solid var(--vs-line-color) !important;
+            border: var(--vs-select-focused-border, 1px solid var(--vs-line-color)) !important;
             border-radius: var(
-                --vs-select-option-borderRadius,
+                --vs-select-focused-borderRadius,
                 calc(var(--vs-radius-ratio) * var(--vs-radius-md))
             ) !important;
-            background-color: var(--vs-select-option-hoverBackgroundColor, var(--vs-area-bg-active)) !important;
+            background-color: var(--vs-select-focused-backgroundColor, var(--vs-area-bg-active)) !important;
         }
     }
 
@@ -114,7 +100,7 @@
         }
 
         &.selected {
-            background-color: var(--vs-select-option-selectedBackgroundColor, var(--vs-comp-bg));
+            background-color: var(--vs-comp-bg);
 
             .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);

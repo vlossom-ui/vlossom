@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { SizeStyleSet, BoxStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { VsLoadingStyleSet } from '@/components/vs-loading/types';
 import type VsButton from './VsButton.vue';
 
@@ -13,8 +12,10 @@ export type { VsButton };
 
 export interface VsButtonRef extends ComponentPublicInstance<typeof VsButton> {}
 
-export interface VsButtonStyleSet extends SizeStyleSet, BoxStyleSet {
-    fontColor?: string;
-
+export interface VsButtonStyleSet {
+    variables?: {
+        padding?: string;
+    };
+    component?: CSSProperties;
     loading?: VsLoadingStyleSet;
 }

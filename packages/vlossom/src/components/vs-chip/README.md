@@ -52,7 +52,7 @@
 
 | Prop          | Type                                   | Default | Required | Description                             |
 | ------------- | -------------------------------------- | ------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                               | -       | -        | 칩의 색상 테마                          |
+| `colorScheme` | `string`                               | -       | -        | 컴포넌트 색상 테마                      |
 | `styleSet`    | `string \| VsChipStyleSet`             | -       | -        | 커스텀 스타일 설정 객체                 |
 | `closable`    | `boolean`                              | `false` | -        | 닫기 버튼 표시 여부                     |
 | `outline`     | `boolean`                              | `false` | -        | outline 스타일 설정                     |
@@ -63,17 +63,35 @@
 
 ```typescript
 interface VsChipStyleSet {
-    width?: string;
-    height?: string;
-
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-
-    fontColor?: string;
+    variables?: {
+        height?: string;
+    };
+    component?: CSSProperties;
+    icon?: CSSProperties;
+    closeButton?: CSSProperties;
 }
+```
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-chip
+        :style-set="{
+            variables: {
+                height: '3rem',
+            },
+            component: {
+                backgroundColor: '#f3e5f5',
+                border: '2px solid #9c27b0',
+                borderRadius: '20px',
+                color: '#7b1fa2',
+            },
+        }"
+    >
+        커스텀 칩
+    </vs-chip>
+</template>
 ```
 
 ## Slots
@@ -85,9 +103,9 @@ interface VsChipStyleSet {
 
 ## Events
 
-| Event   | Description                  | Payload |
-| ------- | ---------------------------- | ------- |
-| `close` | 닫기 버튼을 클릭했을 때 발생 | -       |
+| Event   | Description            | Payload |
+| ------- | ---------------------- | ------- |
+| `close` | 닫기 버튼 클릭 시 발생 | -       |
 
 ## 특징
 

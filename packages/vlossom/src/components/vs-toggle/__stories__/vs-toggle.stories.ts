@@ -20,10 +20,14 @@ const meta: Meta<typeof VsToggle> = {
         components: { VsToggle },
         setup() {
             const preDefinedStyleSet: VsToggleStyleSet = {
-                backgroundColor: '#1e88e5',
-                height: '3rem',
-                padding: '0 1.5rem',
-                width: 'auto',
+                variables: {
+                    padding: '0 1.5rem',
+                },
+                component: {
+                    backgroundColor: '#1e88e5',
+                    height: '3rem',
+                    width: 'auto',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -153,11 +157,13 @@ export const ToggleExample1: Story = {
             });
 
             const menuButtonStyleSet: VsToggleStyleSet = {
-                width: size.value,
-                height: size.value,
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                border: '1px solid #ddd',
+                component: {
+                    width: size.value,
+                    height: size.value,
+                    borderRadius: '8px',
+                    backgroundColor: 'transparent',
+                    border: '1px solid #ddd',
+                },
             };
 
             const onToggle = (value: boolean) => {

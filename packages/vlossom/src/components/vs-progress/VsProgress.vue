@@ -1,7 +1,7 @@
 <template>
     <progress
         :class="['vs-progress', colorSchemeClass]"
-        :style="styleSetVariables"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
         :value="computedValue"
         :max="computedMax"
         :data-label="label"
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, computed } from 'vue';
+import { computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -44,7 +44,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsProgressStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsProgressStyleSet>(componentName, styleSet);
 
         const { value, max } = toRefs(props);
 
@@ -71,6 +71,7 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             computedValue,
             computedMax,

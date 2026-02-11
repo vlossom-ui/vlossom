@@ -3,29 +3,6 @@ import { mount } from '@vue/test-utils';
 import VsInput from '../VsInput.vue';
 
 describe('VsInput', () => {
-    describe('styleSet', () => {
-        it('styleSet 객체가 주어지면 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: {
-                        backgroundColor: '#f0f0f0',
-                        height: '50px',
-                        fontSize: '16px',
-                    },
-                },
-            });
-
-            // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style).toEqual({
-                '--vs-input-backgroundColor': '#f0f0f0',
-                '--vs-input-height': '50px',
-                '--vs-input-fontSize': '16px',
-            });
-        });
-    });
-
     describe('v-model', () => {
         it('input 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
             // given
@@ -321,39 +298,6 @@ describe('VsInput', () => {
 
             // then
             expect(wrapper.vm.inputValue).toBe('');
-        });
-    });
-
-    describe('prepend/append styleSet', () => {
-        it('prepend와 append styleSet이 주어지면 해당 CSS 변수가 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInput, {
-                props: {
-                    styleSet: {
-                        prepend: {
-                            backgroundColor: '#e0e0e0',
-                            padding: '0 1.5rem',
-                            opacity: 0.8,
-                        },
-                        append: {
-                            backgroundColor: '#d0d0d0',
-                            padding: '0 2rem',
-                            opacity: 0.9,
-                        },
-                    },
-                },
-            });
-
-            // then
-            const style = wrapper.vm.styleSetVariables;
-            expect(style).toEqual({
-                '--vs-input-prepend-backgroundColor': '#e0e0e0',
-                '--vs-input-prepend-padding': '0 1.5rem',
-                '--vs-input-prepend-opacity': 0.8,
-                '--vs-input-append-backgroundColor': '#d0d0d0',
-                '--vs-input-append-padding': '0 2rem',
-                '--vs-input-append-opacity': 0.9,
-            });
         });
     });
 

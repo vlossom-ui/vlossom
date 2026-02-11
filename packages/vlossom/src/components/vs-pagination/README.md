@@ -75,10 +75,10 @@
 
 ## Events
 
-| Event               | Parameters | Description                 |
-| ------------------- | ---------- | --------------------------- |
-| `update:modelValue` | `number`   | v-model 값이 변경될 때 발생 |
-| `change`            | `number`   | 페이지가 변경될 때 발생     |
+| Event               | Parameters | Description             |
+| ------------------- | ---------- | ----------------------- |
+| `update:modelValue` | `number`   | v-model 값 변경 시 발생 |
+| `change`            | `number`   | 페이지 변경 시 발생     |
 
 ## Slots
 
@@ -94,30 +94,43 @@
 
 ```typescript
 interface VsPaginationStyleSet {
-    gap?: string;
-
-    pageButton?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
-    };
-
-    controlButton?: {
-        width?: string;
-        height?: string;
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-        padding?: string;
-        opacity?: number;
-        fontColor?: string;
-    };
+    component?: CSSProperties;
+    pageButton?: Omit<VsButtonStyleSet, 'loading'>;
+    controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
+```
+
+> [!NOTE]
+>
+> - `pageButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
+> - `controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-pagination
+        v-model="currentPage"
+        :length="20"
+        :style-set="{
+            component: {
+                gap: '1rem',
+            },
+            pageButton: {
+                component: {
+                    width: '3rem',
+                    height: '3rem',
+                    backgroundColor: '#f5f5f5',
+                },
+            },
+            controlButton: {
+                component: {
+                    borderRadius: '50%',
+                },
+            },
+        }"
+    />
+</template>
 ```
 
 ## 특징

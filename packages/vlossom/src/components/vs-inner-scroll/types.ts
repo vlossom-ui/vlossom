@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsInnerScroll from './VsInnerScroll.vue';
 
 declare module 'vue' {
@@ -14,7 +14,7 @@ export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInner
 }
 
 export interface VsInnerScrollStyleSet {
-    header?: { padding?: string };
-    padding?: string;
-    footer?: { padding?: string };
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
 }

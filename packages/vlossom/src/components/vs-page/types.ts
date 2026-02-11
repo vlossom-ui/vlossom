@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsPage from './VsPage.vue';
 
 declare module 'vue' {
@@ -12,9 +12,8 @@ export type { VsPage };
 export interface VsPageRef extends ComponentPublicInstance<typeof VsPage> {}
 
 export interface VsPageStyleSet {
-    padding?: string;
-
-    title?: { padding?: string };
-
-    description?: { padding?: string };
+    component?: CSSProperties;
+    title?: CSSProperties;
+    description?: CSSProperties;
+    content?: CSSProperties;
 }

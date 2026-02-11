@@ -1,6 +1,6 @@
 # VsCheckbox & VsCheckboxSet
 
-체크박스 입력을 위한 컴포넌트입니다. 단일 체크박스와 여러 옵션을 선택할 수 있는 체크박스 그룹을 제공합니다.
+체크박스 입력을 위한 컴포넌트입니다. 단일 체크박스(`VsCheckbox`)와 여러 옵션을 선택할 수 있는 체크박스 그룹(`VsCheckboxSet`)을 제공합니다.
 
 **Available Version**: 2.0.0+
 
@@ -97,7 +97,7 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 | Prop            | Type                           | Default | Required | Description                                                                           |
 | --------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                                                    |
+| `colorScheme`   | `string`                       | -       | -        | 컴포넌트 색상 테마                                                                    |
 | `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                                                               |
 | `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                                                        |
 | `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                                                               |
@@ -113,15 +113,19 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxStyleSet {
-    borderRadius?: string;
-    borderWidth?: string;
-    checkboxColor?: string;
-    checkboxSize?: string;
-    height?: string;
-
+    variables?: {
+        checkboxColor?: string;
+        checkboxSize?: string;
+    };
+    checkbox?: CSSProperties;
+    checkboxLabel?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> [!NOTE]
+>
+> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### Slots
 
@@ -233,13 +237,17 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ```typescript
 interface VsCheckboxSetStyleSet {
-    gap?: string;
-    flexWrap?: string;
-
+    component?: CSSProperties;
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
     wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> [!NOTE]
+>
+> - `component`는 체크박스 세트 컨테이너 스타일입니다.
+> - `checkbox`는 [VsCheckboxStyleSet](#types)을 사용합니다.
+> - `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### Slots
 

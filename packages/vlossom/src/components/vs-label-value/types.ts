@@ -1,5 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
-import type { BoxStyleSet, TextStyleSet } from '@/declaration';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type VsLabelValue from './VsLabelValue.vue';
 
 declare module 'vue' {
@@ -12,17 +11,11 @@ export type { VsLabelValue };
 
 export interface VsLabelValueRef extends ComponentPublicInstance<typeof VsLabelValue> {}
 
-export interface VsLabelValueStyleSet extends Omit<BoxStyleSet, 'backgroundColor' | 'padding'> {
-    label?: TextStyleSet & {
-        backgroundColor?: string;
-        padding?: string;
-        verticalAlign?: string;
-        width?: string;
+export interface VsLabelValueStyleSet {
+    variables?: {
+        border?: string;
     };
-
-    value?: TextStyleSet & {
-        backgroundColor?: string;
-        padding?: string;
-        verticalAlign?: string;
-    };
+    component?: CSSProperties;
+    label?: CSSProperties;
+    value?: CSSProperties;
 }

@@ -20,10 +20,10 @@ const meta: Meta<typeof VsSwitch> = {
         components: { VsSwitch },
         setup() {
             const preDefinedStyleSet: VsSwitchStyleSet = {
-                backgroundColor: 'red',
-                border: '3px solid blue',
-                borderRadius: '8px',
-                handleColor: '#fff',
+                variables: {
+                    handleColor: '#fff',
+                    handleSize: '18px',
+                },
             } as const;
 
             useVlossom().styleSet = {
@@ -191,11 +191,10 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            border: '3px solid blue',
-            backgroundColor: '#fff',
-            borderRadius: '8px',
-            handleColor: '#2ecc71',
-            handleSize: '16px',
+            variables: {
+                handleColor: '#2ecc71',
+                handleSize: '16px',
+            },
         },
     },
 };

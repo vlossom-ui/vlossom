@@ -3,7 +3,7 @@
         :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
-        :style="styleSetVariables"
+        :style="componentStyleSet.component"
     >
         <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
@@ -11,6 +11,7 @@
                 v-if="!noLabel && (!!label || !!$slots.label)"
                 class="vs-label"
                 :class="{ 'vs-disabled': disabled }"
+                :style="componentStyleSet.label"
             >
                 <slot name="label">
                     <span>{{ label }}</span>
@@ -24,6 +25,7 @@
         <div
             v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
+            :style="componentStyleSet.messages"
         >
             <slot name="messages">
                 <vs-message
@@ -31,7 +33,7 @@
                     :key="`${text}-${index}`"
                     :state
                     :text
-                    :size="messageSize"
+                    :style-set="componentStyleSet.message"
                 />
             </slot>
         </div>
@@ -39,8 +41,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
-import { VsComponent, type StateMessage, type UIState, type Size } from '@/declaration';
+import { defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { VsComponent, type StateMessage, type UIState } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsInputWrapperStyleSet } from './types';
@@ -66,15 +68,7 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet } = toRefs(props);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet(componentName, styleSet);
-
-        const messageSize = computed((): Size => {
-            if (componentStyleSet.value?.messages?.size) {
-                return componentStyleSet.value.messages.size;
-            }
-
-            return 'sm';
-        });
+        const { componentStyleSet } = useStyleSet(componentName, styleSet);
 
         const needToShake = ref(false);
         watch(shake, () => {
@@ -84,7 +78,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, messageSize, styleSetVariables };
+        return { needToShake, componentStyleSet };
     },
 });
 </script>

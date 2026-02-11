@@ -15,6 +15,11 @@
             height: calc(var(--vs-search-input-height, var(--vs-default-comp-height-md)) * 0.8);
             font-size: calc(var(--vs-search-input-height, var(--vs-default-comp-height-md)) * 0.4);
 
+            &.vs-search-input-toggle-on {
+                border: 1px solid var(--vs-primary-comp-bg) !important;
+                background-color: var(--vs-area-bg) !important;
+            }
+
             .vs-search-input-toggle-text {
                 @apply select-none;
             }

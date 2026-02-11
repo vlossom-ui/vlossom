@@ -1,38 +1,28 @@
 @reference 'tailwindcss';
 
 .vs-drawer {
-    --vs-drawer-backgroundColor: initial;
-    --vs-drawer-border: initial;
-    --vs-drawer-borderRadius: initial;
-    --vs-drawer-padding: initial;
-    --vs-drawer-opacity: initial;
-
-    --vs-drawer-position: initial;
     --vs-drawer-size: initial;
-    --vs-drawer-boxShadow: initial;
-    --vs-drawer-zIndex: initial;
 
     @apply pointer-events-none top-0 left-0 h-full w-full overflow-hidden;
 
-    position: var(--vs-drawer-position, absolute);
-    z-index: var(--vs-drawer-zIndex, 100);
+    position: absolute;
+    z-index: 100;
 
     .vs-drawer-content {
         @apply pointer-events-auto absolute;
 
-        opacity: var(--vs-drawer-opacity, 1);
-        box-shadow: var(--vs-drawer-boxShadow, none);
-        border-radius: var(--vs-drawer-borderRadius, 0);
-        background-color: var(--vs-drawer-backgroundColor, var(--vs-comp-bg));
-        padding: var(--vs-drawer-padding, 0);
+        box-shadow: none;
+        border-radius: 0;
+        background-color: var(--vs-area-bg);
+        padding: 0;
 
         &.vs-drawer-left {
             @apply top-0 left-0;
 
             transform: translateX(0);
-            border-right: var(--vs-drawer-border, 1px solid var(--vs-line-color));
-            border-top-right-radius: var(--vs-drawer-borderRadius, 0);
-            border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
+            border-right: 1px solid var(--vs-line-color);
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
             width: var(--vs-drawer-size);
             height: 100%;
         }
@@ -41,9 +31,9 @@
             @apply top-0 right-0;
 
             transform: translateX(0);
-            border-left: var(--vs-drawer-border, 1px solid var(--vs-line-color));
-            border-top-left-radius: var(--vs-drawer-borderRadius, 0);
-            border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
+            border-left: 1px solid var(--vs-line-color);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
             width: var(--vs-drawer-size);
             height: 100%;
         }
@@ -52,9 +42,9 @@
             @apply top-0 left-0;
 
             transform: translateY(0);
-            border-bottom: var(--vs-drawer-border, 1px solid var(--vs-line-color));
-            border-bottom-right-radius: var(--vs-drawer-borderRadius, 0);
-            border-bottom-left-radius: var(--vs-drawer-borderRadius, 0);
+            border-bottom: 1px solid var(--vs-line-color);
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
             width: 100%;
             height: var(--vs-drawer-size);
         }
@@ -63,9 +53,9 @@
             @apply bottom-0 left-0;
 
             transform: translateY(0);
-            border-top: var(--vs-drawer-border, 1px solid var(--vs-line-color));
-            border-top-right-radius: var(--vs-drawer-borderRadius, 0);
-            border-top-left-radius: var(--vs-drawer-borderRadius, 0);
+            border-top: 1px solid var(--vs-line-color);
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
             width: 100%;
             height: var(--vs-drawer-size);
         }

@@ -3,34 +3,6 @@ import { mount } from '@vue/test-utils';
 import VsMessage from './../VsMessage.vue';
 
 describe('VsMessage', () => {
-    describe('size prop', () => {
-        it('size prop이 주어지지 않으면 사이즈 클래스가 없다', () => {
-            // given, when
-            const wrapper = mount(VsMessage);
-
-            // then
-            expect(wrapper.classes()).not.toContain('vs-xs');
-            expect(wrapper.classes()).not.toContain('vs-sm');
-            expect(wrapper.classes()).not.toContain('vs-lg');
-            expect(wrapper.classes()).not.toContain('vs-xl');
-        });
-
-        it('size prop에 따라 해당하는 클래스가 적용된다', () => {
-            // given
-            const sizes = ['xs', 'sm', 'lg', 'xl'] as const;
-
-            sizes.forEach((size) => {
-                // when
-                const wrapper = mount(VsMessage, {
-                    props: { size },
-                });
-
-                // then
-                expect(wrapper.classes()).toContain(`vs-${size}`);
-            });
-        });
-    });
-
     describe('colorClass', () => {
         it('state가 설정되지 않으면 기본 idle 색상 클래스가 적용되어야 한다', () => {
             // given, when

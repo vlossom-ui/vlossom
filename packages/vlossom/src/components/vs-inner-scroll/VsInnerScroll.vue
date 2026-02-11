@@ -1,14 +1,18 @@
 <template>
-    <div class="vs-inner-scroll" :style="styleSetVariables">
-        <div v-if="$slots['header']" class="vs-inner-scroll-header">
+    <div class="vs-inner-scroll">
+        <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.header">
             <slot name="header" />
         </div>
 
-        <div ref="bodyRef" :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]">
+        <div
+            ref="bodyRef"
+            :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]"
+            :style="componentStyleSet.content"
+        >
             <slot />
         </div>
 
-        <div v-if="$slots['footer']" class="vs-inner-scroll-footer">
+        <div v-if="$slots['footer']" class="vs-inner-scroll-footer" :style="componentStyleSet.footer">
             <slot name="footer" />
         </div>
     </div>
@@ -33,7 +37,7 @@ export default defineComponent({
         const { styleSet } = toRefs(props);
         const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
-        const { styleSetVariables } = useStyleSet(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsInnerScrollStyleSet>(componentName, styleSet);
 
         function hasScroll() {
             if (!bodyRef.value) {
@@ -43,7 +47,7 @@ export default defineComponent({
             return bodyRef.value.scrollHeight > bodyRef.value.clientHeight;
         }
 
-        return { styleSetVariables, hasScroll, bodyRef };
+        return { componentStyleSet, hasScroll, bodyRef };
     },
 });
 </script>

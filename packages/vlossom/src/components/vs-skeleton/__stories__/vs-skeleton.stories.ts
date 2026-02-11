@@ -100,7 +100,7 @@ export const StyleSetUsages: Story = {
 
             <vs-grid :grid-size="3" :column-gap="16" :row-gap="16" width="500px" height="200px" class="mt-4">
                 <div class="flex flex-row items-center justify-center">
-                    <vs-avatar :style-set="{ border: 'unset' }">
+                    <vs-avatar :style-set="{ component: { border: 'unset' } }">
                         <img v-if="!isLoading" src="https://upload.wikimedia.org/wikipedia/en/a/a6/Pok%C3%A9mon_Pikachu_art.png" alt="pikachu">
                         <vs-skeleton color-scheme="yellow" v-else />
                     </vs-avatar>
@@ -127,7 +127,7 @@ export const StyleSetUsages: Story = {
                     </div>
                 </div>
                 <div class="flex flex-row items-center justify-center">
-                    <vs-avatar :style-set="{ border: 'unset' }">
+                    <vs-avatar :style-set="{ component: { border: 'unset' } }">
                         <img v-if="!isLoading" src="https://upload.wikimedia.org/wikipedia/en/5/59/Pok%C3%A9mon_Squirtle_art.png" alt="pikachu">
                         <vs-skeleton color-scheme="blue" v-else />
                     </vs-avatar>

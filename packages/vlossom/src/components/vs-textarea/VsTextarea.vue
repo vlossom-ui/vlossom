@@ -1,6 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
+        :style-set="componentStyleSet.wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -21,7 +22,7 @@
             ref="textareaRef"
             :id="computedId"
             :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]"
-            :style="styleSetVariables"
+            :style="componentStyleSet.textarea"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
             :name
@@ -95,7 +96,9 @@ export default defineComponent({
         const inputValue: Ref<VsTextareaValueType> = ref(modelValue.value);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { styleSetVariables } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
+
+        const { componentStyleSet } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
+
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min);
 
@@ -181,7 +184,7 @@ export default defineComponent({
             // Computed
             classObj,
             colorSchemeClass,
-            styleSetVariables,
+            componentStyleSet,
             stateClasses,
             computedId,
             computedDisabled,

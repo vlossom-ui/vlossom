@@ -67,7 +67,7 @@
 
 | Prop          | Type                               | Default | Required | Description                        |
 | ------------- | ---------------------------------- | ------- | -------- | ---------------------------------- |
-| `disabled`    | `boolean`                          | `false` | -        | 입력 필드 비활성화                 |
+| `disabled`    | `boolean`                          | `false` | -        | 비활성화 상태                      |
 | `hidden`      | `boolean`                          | `false` | -        | 입력 래퍼 숨김                     |
 | `id`          | `string`                           | `''`    | -        | 입력 래퍼의 고유 ID                |
 | `label`       | `string`                           | `''`    | -        | 입력 필드 라벨 텍스트              |
@@ -78,13 +78,15 @@
 | `messages`    | `StateMessage<UIState>[]`          | `[]`    | -        | 표시할 메시지 배열                 |
 | `shake`       | `boolean`                          | `false` | -        | 흔들림 애니메이션 트리거           |
 | `width`       | `string \| number \| Breakpoints`  | -       | -        | 반응형 너비 설정                   |
-| `grid`        | `string \| number \| Breakpoints`  | -       | -        | 그리드 레이아웃 설정               |
+| `grid`        | `string \| number \| Breakpoints`  | -       | -        | 그리드 레이아웃 크기               |
 | `colorScheme` | `ColorScheme`                      | -       | -        | 컴포넌트 색상 테마                 |
 | `styleSet`    | `string \| VsInputWrapperStyleSet` | -       | -        | 커스텀 스타일 설정 객체            |
 
 ## Types
 
 ```typescript
+import type { VsMessageStyleSet } from '@/components/vs-message/types';
+
 interface StateMessage<T extends string = UIState> {
     state: T;
     text: string;
@@ -93,18 +95,55 @@ interface StateMessage<T extends string = UIState> {
 type UIState = 'idle' | 'info' | 'success' | 'warning' | 'error';
 
 interface VsInputWrapperStyleSet {
-    label?: {
-        marginBottom?: string;
-        fontColor?: string;
-        fontSize?: string;
-        fontWeight?: string;
-    };
-
-    messages?: {
-        marginTop?: string;
-        size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-    };
+    component?: CSSProperties;
+    label?: CSSProperties;
+    messages?: CSSProperties; // 메시지 영역 스타일링
+    message?: VsMessageStyleSet;
 }
+```
+
+> [!NOTE]
+>
+> `message`는 [VsMessageStyleSet](../vs-message/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <!-- 메시지 크기 조정 -->
+    <vs-input-wrapper
+        label="이메일"
+        :messages="[
+            { state: 'error', text: '올바른 이메일 형식이 아닙니다.' }
+        ]"
+        :style-set="{
+            message: {
+                size: 'lg',
+            },
+        }"
+    >
+        <input type="email" />
+    </vs-input-wrapper>
+
+    <!-- 라벨 및 메시지 영역 스타일 -->
+    <vs-input-wrapper
+        label="이름"
+        :messages="[
+            { state: 'info', text: '실명을 입력해주세요.' }
+        ]"
+        :style-set="{
+            label: {
+                fontSize: '18px',
+                fontWeight: 'bold',
+            },
+            messages: {
+                marginTop: '8px',
+            },
+        }"
+    >
+        <input type="text" />
+    </vs-input-wrapper>
+</template>
 ```
 
 ## Slots

@@ -1,18 +1,7 @@
 @reference 'tailwindcss';
 
 .vs-text-wrap {
-    --vs-text-wrap-width: initial;
-
-    --vs-text-wrap-copyIcon-width: initial;
-    --vs-text-wrap-copyIcon-height: initial;
-    --vs-text-wrap-copyIcon-color: initial;
-
-    --vs-text-wrap-linkIcon-width: initial;
-    --vs-text-wrap-linkIcon-height: initial;
-    --vs-text-wrap-linkIcon-color: initial;
-
-    @apply relative inline-flex items-center overflow-x-auto;
-    width: var(--vs-text-wrap-width, 100%);
+    @apply relative inline-flex w-full items-center overflow-x-auto;
 
     .vs-text-wrap-contents {
         @apply relative truncate;
@@ -26,9 +15,9 @@
 
             &.vs-copy-button {
                 .vs-icon-container {
-                    width: var(--vs-text-wrap-copyIcon-width, 1.2rem);
-                    height: var(--vs-text-wrap-copyIcon-height, 1.2rem);
-                    color: var(--vs-text-wrap-copyIcon-color, var(--vs-indigo-500));
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    color: var(--vs-indigo-500);
 
                     &.copied {
                         color: var(--vs-green-500);
@@ -38,9 +27,9 @@
 
             &.vs-link-button {
                 .vs-icon-container {
-                    width: var(--vs-text-wrap-linkIcon-width, 1.2rem);
-                    height: var(--vs-text-wrap-linkIcon-height, 1.2rem);
-                    color: var(--vs-text-wrap-linkIcon-color, var(--vs-blue-500));
+                    width: 1.2rem;
+                    height: 1.2rem;
+                    color: var(--vs-blue-500);
                 }
             }
 

@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="styleSetVariables">
+        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="componentStyleSet.component">
             <vs-checkbox
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -124,7 +124,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
         const { stateClasses } = useStateClass(state);
 
@@ -217,7 +217,6 @@ export default defineComponent({
             checkboxRefs,
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
             classObj,
             stateClasses,
             computedId,

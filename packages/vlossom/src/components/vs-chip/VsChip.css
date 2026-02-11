@@ -1,43 +1,33 @@
 .vs-chip {
-    --vs-chip-width: initial;
     --vs-chip-height: initial;
 
-    --vs-chip-backgroundColor: initial;
-    --vs-chip-border: initial;
-    --vs-chip-borderRadius: initial;
-    --vs-chip-padding: initial;
-    --vs-chip-opacity: initial;
-
-    --vs-chip-fontColor: initial;
-
-    --vs-chip-size-height: var(--vs-size-height, var(--vs-default-comp-height-sm));
-    --vs-chip-size-font: var(--vs-size-font, var(--vs-font-size-sm));
-    --vs-chip-size-padding: var(--vs-size-padding, var(--vs-padding-sm));
-    --vs-chip-size-icon-padding: 0.15rem;
+    --vs-chip-computed-height: var(--vs-chip-height, var(--vs-size-height));
+    --vs-chip-icon-size: calc(var(--vs-chip-computed-height) * 0.75);
+    --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.13);
 
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
 
-    opacity: var(--vs-chip-opacity, 1);
-    border: var(--vs-chip-border, 1px solid var(--vs-line-color));
-    border-radius: var(--vs-chip-borderRadius, calc(var(--vs-chip-size-height) / 2));
-    background-color: var(--vs-chip-backgroundColor, var(--vs-comp-bg));
-    padding: var(--vs-chip-padding, 0 var(--vs-chip-size-padding));
-    width: var(--vs-chip-width, auto);
-    height: var(--vs-chip-height, var(--vs-chip-size-height));
-    min-height: var(--vs-chip-height, var(--vs-chip-size-height));
-    color: var(--vs-chip-fontColor, var(--vs-comp-font));
-    font-size: var(--vs-chip-size-font);
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-chip-computed-height) / 2);
+    background-color: var(--vs-comp-bg);
+    width: auto;
+    height: var(--vs-chip-computed-height);
+    min-height: var(--vs-chip-computed-height);
+    color: var(--vs-comp-font);
+    font-size: var(--vs-size-font);
     line-height: 2;
     user-select: none;
 
-    .vs-icon-container {
+    .vs-chip-icon {
         @apply flex items-center justify-center;
 
-        border: var(--vs-chip-border, 1px solid var(--vs-line-color));
+        border: 1px solid var(--vs-line-color);
         border-radius: 50%;
-        width: calc(var(--vs-chip-height, var(--vs-chip-size-height)) * 0.75);
-        height: calc(var(--vs-chip-height, var(--vs-chip-size-height)) * 0.75);
-        color: var(--vs-chip-fontColor, var(--vs-comp-font));
+        min-width: var(--vs-chip-icon-size);
+        max-width: var(--vs-chip-icon-size);
+        min-height: var(--vs-chip-icon-size);
+        max-height: var(--vs-chip-icon-size);
+        color: var(--vs-comp-font);
     }
 
     .vs-chip-close-button {
@@ -45,51 +35,35 @@
     }
 
     &:has(.vs-chip-icon) {
-        padding-left: var(--vs-chip-size-icon-padding);
+        padding-left: var(--vs-chip-icon-margin);
     }
 
     &:has(.vs-chip-close-button) {
-        padding-right: var(--vs-chip-size-icon-padding);
+        padding-right: var(--vs-chip-icon-margin);
     }
 
     .vs-chip-content {
         @apply w-full truncate text-center;
-        padding: 0 0.4rem;
-    }
-
-    &.vs-xs {
-        --vs-chip-size-icon-padding: 0.1rem;
-    }
-
-    &.vs-md {
-        --vs-chip-size-icon-padding: 0.2rem;
-    }
-
-    &.vs-lg {
-        --vs-chip-size-icon-padding: 0.25rem;
-    }
-
-    &.vs-xl {
-        --vs-chip-size-icon-padding: 0.3rem;
+        padding: 0 var(--vs-size-padding);
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-bg));
-        color: var(--vs-chip-fontColor, var(--vs-primary-comp-bg));
+        border: 1px solid var(--vs-primary-comp-bg);
+        color: var(--vs-primary-comp-bg);
     }
 
     &.vs-primary {
         @apply hover:brightness-104 active:brightness-108;
 
-        border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-bg));
-        background-color: var(--vs-chip-backgroundColor, var(--vs-primary-comp-bg));
-        color: var(--vs-chip-fontColor, var(--vs-primary-comp-font));
+        border: 1px solid var(--vs-primary-comp-bg);
+        background-color: var(--vs-primary-comp-bg);
+        color: var(--vs-primary-comp-font);
 
-        .vs-icon-container {
-            border: var(--vs-chip-border, 1px solid var(--vs-primary-comp-font));
-            color: var(--vs-chip-fontColor, var(--vs-primary-comp-font));
+        .vs-chip-icon {
+            border: 1px solid var(--vs-primary-comp-font);
+            color: var(--vs-primary-comp-font);
         }
     }
 

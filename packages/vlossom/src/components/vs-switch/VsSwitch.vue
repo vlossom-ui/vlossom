@@ -1,22 +1,25 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :width="width"
-        :style="componentStyleSet.wrapper"
-        :grid="grid"
+        :style-set="componentStyleSet.wrapper"
+        :width
+        :grid
         :id="computedId"
-        :label="label"
-        :required="required"
+        :label
+        :required
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :no-messages="noMessages"
-        :shake="shake"
+        :no-messages
+        :shake
     >
         <template #label v-if="label || $slots['label']">
             <slot name="label" />
         </template>
 
-        <div :class="['vs-switch', colorSchemeClass, classObj]" :style="styleSetVariables">
+        <div
+            :class="['vs-switch', colorSchemeClass, classObj]"
+            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        >
             <label class="vs-switch-wrap" :for="computedId">
                 <input
                     ref="switchRef"
@@ -33,7 +36,7 @@
                     @change.stop="onChange"
                 />
 
-                <div :class="['vs-switch-button', stateClasses]">
+                <div :class="['vs-switch-button', stateClasses]" :style="getSwitchButtonStyle()">
                     <span class="vs-status-label" data-value="true" v-show="isChecked">
                         <slot name="true-label"> {{ trueLabel }} </slot>
                     </span>
@@ -51,7 +54,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
+import {
+    computed,
+    defineComponent,
+    ref,
+    toRefs,
+    useTemplateRef,
+    type CSSProperties,
+    type PropType,
+    type TemplateRef,
+} from 'vue';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
@@ -213,6 +225,13 @@ export default defineComponent({
             switchRef.value?.blur();
         }
 
+        function getSwitchButtonStyle(): CSSProperties {
+            return {
+                ...componentStyleSet.value.switchButton,
+                ...(isChecked.value ? componentStyleSet.value.activeSwitchButton : {}),
+            };
+        }
+
         return {
             switchRef,
             colorSchemeClass,
@@ -228,6 +247,7 @@ export default defineComponent({
             inputValue,
             isChecked,
             shake,
+            getSwitchButtonStyle,
             onChange,
             onFocus,
             onBlur,

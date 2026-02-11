@@ -1,5 +1,8 @@
 <template>
-    <div :class="['vs-divider', colorSchemeClass, classObj]" :style="styleSetVariables" />
+    <div
+        :class="['vs-divider', colorSchemeClass, classObj]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+    />
 </template>
 
 <script lang="ts">
@@ -24,7 +27,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables } = useStyleSet<VsDividerStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsDividerStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-vertical': vertical.value,
@@ -33,6 +36,7 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
+            componentStyleSet,
             styleSetVariables,
             classObj,
         };

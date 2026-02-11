@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]" :style="styleSetVariables">
+    <div :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]" :style="componentStyleSet.component">
         <vs-button
             v-if="edgeButtons"
             class="vs-pagination-control-button"
@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -140,13 +140,15 @@ export default defineComponent({
     setup(props, { emit }) {
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
-            componentName,
-            styleSet,
-            ref({
-                controlButton: { padding: '0.4rem' },
-            }),
-        );
+        const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
+            controlButton: {
+                variables: {
+                    padding: '0.4rem',
+                },
+            },
+        }));
+
+        const { componentStyleSet } = useStyleSet<VsPaginationStyleSet>(componentName, styleSet, baseStyleSet);
 
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
 
@@ -227,7 +229,6 @@ export default defineComponent({
             computedColorScheme,
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
             paginationIcons,
             selectedIndex,
             pages,

@@ -1,37 +1,31 @@
 .vs-page {
-    --vs-page-padding: initial;
-
-    --vs-page-title-padding: initial;
-
-    --vs-page-description-padding: initial;
-
     @apply relative w-full;
 
-    padding: var(--vs-page-padding, 2rem 3rem);
+    padding: 2rem 3rem;
 
     .vs-page-title {
-        padding: var(--vs-page-title-padding, 0 0 1.2rem 0);
+        padding: 0 0 1.2rem 0;
     }
 
     .vs-page-description {
-        padding: var(--vs-page-description-padding, 0 0 1.2rem 0);
+        padding: 0 0 1.2rem 0;
     }
 }
 
 @container (max-width: 1024px) {
     .vs-page {
-        padding: var(--vs-page-padding, 1.8rem 2.5rem);
+        padding: 1.8rem 2.5rem;
     }
 }
 
 @container (max-width: 768px) {
     .vs-page {
-        padding: var(--vs-page-padding, 1.4rem 2rem);
+        padding: 1.4rem 2rem;
     }
 }
 
 @container (max-width: 640px) {
     .vs-page {
-        padding: var(--vs-page-padding, 1rem 1.5rem);
+        padding: 1rem 1.5rem;
     }
 }

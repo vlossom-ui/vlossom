@@ -92,29 +92,46 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsAccordionStyleSet {
-    // 아코디언 전용 속성들
-    width?: string; // 아코디언 전체 너비
-    arrowColor?: string; // 화살표 색상
-
-    border?: string; // 테두리 스타일
-    borderRadius?: string; // 모서리 둥글기
-    opacity?: string | number; // 투명도
-
-    // 제목 영역 스타일
-    title?: {
-        backgroundColor?: string; // 제목 영역 배경색
-        fontColor?: string; // 제목 텍스트 색상
-        height?: string; // 제목 영역 높이
-        padding?: string; // 제목 영역 내부 여백
+    variables?: {
+        arrowColor?: string;
+        arrowSize?: string;
+        arrowSpacing?: string;
+        border?: string;
     };
-
-    // 확장 영역 스타일
-    expand?: {
-        backgroundColor?: string; // 확장 영역 배경색
-        padding?: string; // 확장 영역 내부 여백
-        fontColor?: string; // 확장 영역 텍스트 색상
-    };
+    component?: CSSProperties;
+    title?: CSSProperties;
+    content?: VsExpandableStyleSet;
 }
+```
+
+> [!NOTE]
+>
+> `content`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)을 사용합니다.
+
+### StyleSet 사용 예시
+
+```html
+<template>
+    <vs-accordion
+        :style-set="{
+            variables: {
+                arrowColor: '#e91e63',
+                arrowSize: '12px',
+                arrowSpacing: '1.5rem',
+                border: '2px solid #333',
+            },
+            title: {
+                backgroundColor: '#f5f5f5',
+                padding: '1rem 1.5rem',
+            },
+        }"
+    >
+        <template #title>
+            <h3>커스텀 스타일 아코디언</h3>
+        </template>
+        <p>커스텀 스타일이 적용된 아코디언입니다.</p>
+    </vs-accordion>
+</template>
 ```
 
 ## Slots

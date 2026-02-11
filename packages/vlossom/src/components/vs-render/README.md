@@ -40,9 +40,9 @@
 
 ## Props
 
-| Prop      | Type                  | Default | Required | Description                                                          |
-| --------- | --------------------- | ------- | -------- | -------------------------------------------------------------------- |
-| `content` | `string \| Component` | -       | O        | 렌더링할 콘텐츠. HTML 문자열 또는 Vue 컴포넌트(옵션 API, 컴포지션 API, 함수형 컴포넌트) |
+| Prop      | Type                  | Default | Required | Description                                     |
+| --------- | --------------------- | ------- | -------- | ----------------------------------------------- |
+| `content` | `string \| Component` | -       | ✅       | 렌더링할 콘텐츠 (HTML 문자열 또는 Vue 컴포넌트) |
 
 ## Attrs
 

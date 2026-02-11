@@ -136,25 +136,6 @@ describe('VsButton', () => {
             const button = wrapper.find('button');
             expect(button.classes()).toContain('vs-sm');
         });
-
-        it('styleSet에 loading 스타일이 주어지면 loading 컴포넌트에 전달되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsButton, {
-                props: {
-                    loading: true,
-                    styleSet: {
-                        loading: {
-                            width: '100%',
-                            barWidth: '10px',
-                        },
-                    },
-                },
-            });
-
-            // then
-            const loadingComponent = wrapper.findComponent({ name: 'VsLoading' });
-            expect(loadingComponent.props('styleSet')).toEqual({ width: '100%', height: '60%', barWidth: '10px' });
-        });
     });
 
     describe('tabindex', () => {

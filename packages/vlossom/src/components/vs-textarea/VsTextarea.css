@@ -1,31 +1,14 @@
 @reference 'tailwindcss';
 
 .vs-textarea {
-    --vs-textarea-height: initial;
+    @apply relative flex w-full resize-y overflow-hidden outline-none;
 
-    --vs-textarea-backgroundColor: initial;
-    --vs-textarea-border: initial;
-    --vs-textarea-borderRadius: initial;
-    --vs-textarea-padding: initial;
-    --vs-textarea-opacity: initial;
-
-    --vs-textarea-fontColor: initial;
-    --vs-textarea-fontSize: initial;
-    --vs-textarea-fontWeight: initial;
-
-    --vs-textarea-resize: initial;
-
-    @apply relative flex w-full overflow-hidden;
-
-    opacity: var(--vs-textarea-opacity, 1);
-    outline: none;
-    border: var(--vs-textarea-border, solid 1px var(--vs-line-color));
-    border-radius: var(--vs-textarea-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-textarea-backgroundColor, var(--vs-no-color));
-    padding: var(--vs-textarea-padding, 0.3rem 0.6rem);
-    min-height: var(--vs-textarea-height, 6rem);
-    resize: var(--vs-textarea-resize, vertical);
-    color: var(--vs-textarea-fontColor, var(--vs-font-color));
-    font-weight: var(--vs-textarea-fontWeight, var(--vs-font-weight));
-    font-size: var(--vs-textarea-fontSize, var(--vs-font-size-md));
+    border: solid 1px var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    background-color: var(--vs-no-color);
+    padding: 0.3rem 0.6rem;
+    min-height: 6rem;
+    color: var(--vs-font-color);
+    font-weight: var(--vs-font-weight);
+    font-size: var(--vs-font-size-md);
 }
