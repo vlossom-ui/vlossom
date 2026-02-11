@@ -25,6 +25,7 @@
 
             <input
                 ref="inputRef"
+                :style="componentStyleSet.input"
                 :id="computedId"
                 :type
                 :value="inputValue"

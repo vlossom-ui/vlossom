@@ -531,6 +531,11 @@ export const StyleSet: Story = {
                 borderRadius: '12px',
                 height: '3.5rem',
             },
+            input: {
+                fontSize: '1.1rem',
+                fontWeight: '600',
+                color: '#0d47a1',
+            },
             prepend: {
                 backgroundColor: '#e3f2fd',
                 padding: '0 1rem',

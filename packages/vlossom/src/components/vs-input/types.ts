@@ -22,6 +22,7 @@ export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | '
 export interface VsInputStyleSet {
     prepend?: CSSProperties;
     append?: CSSProperties;
+    input?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }

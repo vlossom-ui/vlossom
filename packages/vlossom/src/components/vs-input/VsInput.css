@@ -15,6 +15,9 @@
         @apply h-full w-full border-none bg-transparent outline-none;
 
         padding: 0 0.8rem;
+        color: var(--vs-font-color);
+        font-weight: var(--vs-font-weight);
+        font-size: var(--vs-font-size-md);
     }
 
     .vs-prepend,

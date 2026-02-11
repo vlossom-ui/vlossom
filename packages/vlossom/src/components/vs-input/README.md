@@ -177,6 +177,7 @@ function clearInput() {
 interface VsInputStyleSet {
     prepend?: CSSProperties;
     append?: CSSProperties;
+    input?: CSSProperties;
     component?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
