@@ -72,7 +72,6 @@ import type { CSSProperties } from 'vue';
 
 interface VsLabelValueStyleSet {
     variables?: {
-        width?: string;
         border?: string;
     };
     label?: CSSProperties;

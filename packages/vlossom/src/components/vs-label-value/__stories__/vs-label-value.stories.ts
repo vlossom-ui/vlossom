@@ -167,7 +167,6 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             variables: {
-                width: '600px',
                 border: '2px solid #10b981',
             },
             label: {

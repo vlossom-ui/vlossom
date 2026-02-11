@@ -13,10 +13,9 @@ export interface VsLabelValueRef extends ComponentPublicInstance<typeof VsLabelV
 
 export interface VsLabelValueStyleSet {
     variables?: {
-        width?: string;
         border?: string;
     };
+    component?: CSSProperties;
     label?: CSSProperties;
     value?: CSSProperties;
-    component?: CSSProperties;
 }
