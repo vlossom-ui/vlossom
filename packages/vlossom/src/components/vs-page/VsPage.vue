@@ -7,7 +7,9 @@
             <slot name="description" />
         </div>
 
-        <slot />
+        <div class="vs-page-content" :style="componentStyleSet.content">
+            <slot />
+        </div>
     </div>
 </template>
 
