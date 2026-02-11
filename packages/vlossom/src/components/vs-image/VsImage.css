@@ -9,12 +9,10 @@
     height: var(--vs-image-height, 100%);
 
     .vs-image-tag {
-        @apply relative;
+        @apply relative h-full w-full;
 
         border: none;
         border-radius: 0;
-        width: var(--vs-image-width, 100%);
-        height: var(--vs-image-height, 100%);
         object-fit: contain;
 
         &.vs-hidden {
