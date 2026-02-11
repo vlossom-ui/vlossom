@@ -61,25 +61,6 @@ export interface Breakpoints {
     xl?: string | number;
 }
 
-export interface SizeStyleSet {
-    width?: string;
-    height?: string;
-}
-
-export interface BoxStyleSet {
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    opacity?: number;
-}
-
-export interface TextStyleSet {
-    fontColor?: string;
-    fontSize?: string;
-    fontWeight?: number;
-}
-
 export type UIState = 'idle' | 'success' | 'info' | 'error' | 'warning';
 
 export interface StateMessage<T extends string = UIState> {
