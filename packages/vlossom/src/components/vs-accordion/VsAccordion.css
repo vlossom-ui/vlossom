@@ -3,13 +3,11 @@
     --vs-accordion-arrowSize: initial;
     --vs-accordion-arrowSpacing: initial;
     --vs-accordion-border: initial;
-    --vs-accordion-width: initial;
 
-    @apply relative overflow-hidden;
+    @apply relative w-full overflow-hidden;
 
     border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    width: var(--vs-accordion-width, 100%);
 
     .vs-accordion-title {
         @apply relative w-full cursor-pointer outline-none hover:brightness-96 active:brightness-92;

@@ -92,14 +92,13 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsAccordionStyleSet {
-    component?: CSSProperties;
     variables?: {
         arrowColor?: string;
         arrowSize?: string;
         arrowSpacing?: string;
         border?: string;
-        width?: string;
     };
+    component?: CSSProperties;
     title?: CSSProperties;
     expand?: VsExpandableStyleSet;
 }
@@ -118,7 +117,6 @@ interface VsAccordionStyleSet {
                 arrowSize: '12px',
                 arrowSpacing: '1.5rem',
                 border: '2px solid #333',
-                width: '500px',
             },
             title: {
                 backgroundColor: '#f5f5f5',
