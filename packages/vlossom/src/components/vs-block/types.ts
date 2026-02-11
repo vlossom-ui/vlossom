@@ -14,7 +14,6 @@ export interface VsBlockRef extends ComponentPublicInstance<typeof VsBlock> {}
 export interface VsBlockStyleSet {
     variables?: {
         border?: string;
-        width?: string;
     };
     component?: CSSProperties;
     title?: CSSProperties;

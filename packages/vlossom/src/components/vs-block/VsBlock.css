@@ -1,8 +1,7 @@
 .vs-block {
     --vs-block-border: initial;
-    --vs-block-width: initial;
 
-    @apply relative overflow-auto;
+    @apply relative w-full overflow-auto;
 
     container-type: inline-size;
     box-shadow: var(--vs-area-shadow-outer);
@@ -10,7 +9,6 @@
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-area-bg);
 
-    width: var(--vs-block-width, 100%);
     color: var(--vs-font-color);
 
     .vs-block-title {
