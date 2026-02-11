@@ -21,6 +21,9 @@ const meta: Meta<typeof VsSteps> = {
         components: { VsSteps },
         setup() {
             const preDefinedStyleSet: VsStepsStyleSet = {
+                variables: {
+                    stepSize: '2.5rem',
+                },
                 step: {
                     backgroundColor: '#f5f5f5',
                     border: '1px solid #e0e0e0',
@@ -480,6 +483,9 @@ export const StyleSet: Story = {
     args: {
         steps: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
+            variables: {
+                stepSize: '3rem',
+            },
             step: {
                 backgroundColor: '#f0f0f0',
                 border: '2px dashed #999',

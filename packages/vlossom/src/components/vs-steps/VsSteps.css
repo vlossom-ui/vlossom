@@ -3,9 +3,9 @@
 .vs-steps {
     --vs-steps-height: initial;
     --vs-steps-width: initial;
-    --vs-steps-step-size: initial;
+    --vs-steps-stepSize: initial;
 
-    --step-size: var(--vs-steps-step-size, 1.6rem);
+    --step-size: var(--vs-steps-stepSize, 1.6rem);
 
     @apply relative select-none;
 
