@@ -13,7 +13,7 @@
         background-color: var(--vs-line-color);
     }
 
-    .vs-skeleton-inner {
+    .vs-skeleton-content {
         @apply relative flex h-full w-full items-center justify-center;
 
         color: var(--vs-font-color);

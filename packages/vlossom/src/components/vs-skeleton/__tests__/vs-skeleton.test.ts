@@ -11,7 +11,7 @@ describe('VsSkeleton', () => {
             // then
             expect(wrapper.find('.vs-skeleton').exists()).toBe(true);
             expect(wrapper.find('.vs-skeleton-bg').exists()).toBe(true);
-            expect(wrapper.find('.vs-skeleton-inner').exists()).toBe(true);
+            expect(wrapper.find('.vs-skeleton-content').exists()).toBe(true);
         });
     });
 });

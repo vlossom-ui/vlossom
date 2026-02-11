@@ -43,8 +43,8 @@
 
 ```typescript
 interface VsSkeletonStyleSet {
-    backGround?: CSSProperties;
-    inner?: CSSProperties;
+    background?: CSSProperties;
+    content?: CSSProperties;
     component?: CSSProperties;
 }
 ```
@@ -59,10 +59,10 @@ interface VsSkeletonStyleSet {
                 component: {
                     borderRadius: '12px',
                 },
-                backGround: {
+                background: {
                     backgroundColor: '#e0e0e0',
                 },
-                inner: {
+                content: {
                     color: '#999999',
                 },
             }"
