@@ -138,7 +138,7 @@ function clearInput() {
 | `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | 커스텀 스타일 설정 객체                         |
 | `autocomplete`   | `boolean`                                                                   | `false`                   | -        | 자동완성 활성화 여부                            |
 | `changed`        | `boolean`                                                                   | `false`                   | -        | 값 변경 여부 (v-model:changed)                  |
-| `disabled`       | `boolean`                                                                   | `false`                   | -        | 입력 필드 비활성화                              |
+| `disabled`       | `boolean`                                                                   | `false`                   | -        | 비활성화 상태                                   |
 | `grid`           | `string \| number \| Breakpoints`                                           | -                         | -        | 그리드 레이아웃 크기                            |
 | `hidden`         | `boolean`                                                                   | `false`                   | -        | 컴포넌트 숨김 여부                              |
 | `id`             | `string`                                                                    | -                         | -        | input 요소의 id                                 |
@@ -171,6 +171,14 @@ function clearInput() {
 | `update:valid`      | `valid: boolean`        | 검증 상태 업데이트      |
 | `change`            | `value: InputValueType` | 입력값 변경 시 발생     |
 
+## Exposed Methods
+
+| Method   | Parameters | Return Type | Description                  |
+| -------- | ---------- | ----------- | ---------------------------- |
+| `focus`  | -          | `void`      | 입력 필드에 포커스 설정      |
+| `select` | -          | `void`      | 입력 필드의 텍스트 전체 선택 |
+| `clear`  | -          | `void`      | 입력 필드의 값 초기화        |
+
 ## Types
 
 ```typescript
@@ -184,6 +192,7 @@ interface VsInputStyleSet {
 ```
 
 > [!NOTE]
+>
 > `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ## Slots

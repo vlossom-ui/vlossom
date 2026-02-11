@@ -60,9 +60,9 @@ const currentIndex = ref(0);
 
 ## Events
 
-| Event               | Payload  | Description                |
-| ------------------- | -------- | -------------------------- |
-| `update:modelValue` | `number` | 인덱스 값이 변경될 때 발생 |
+| Event               | Payload  | Description             |
+| ------------------- | -------- | ----------------------- |
+| `update:modelValue` | `number` | v-model 값 변경 시 발생 |
 
 ## Methods
 

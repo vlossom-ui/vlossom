@@ -16,7 +16,7 @@
 </template>
 ```
 
-### v-model로 on/off 제어
+### v-model로 표시/숨김 제어
 
 ```html
 <template>
@@ -64,7 +64,7 @@ interface VsDimmedStyleSet {
 ## 특징
 
 - **절대 위치**: 기본적으로 `position: absolute`로 부모 요소를 가득 채움 (`top: 0, left: 0, width: 100%, height: 100%`)
-- **v-model 지원**: `v-model`을 통해 on/off 제어 가능
+- **v-model 지원**: `v-model`을 통해 표시/숨김 제어 가능
 - **내장 애니메이션**: opacity 기반 페이드 인/아웃 효과가 내장되어 있음
 - **접근성**: `aria-hidden="true"` 속성으로 스크린 리더에서 숨김 처리
 - **커스터마이징**: CSS 변수와 styleSet을 통한 유연한 스타일 변경

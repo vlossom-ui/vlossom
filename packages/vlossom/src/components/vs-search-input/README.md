@@ -1,6 +1,6 @@
 # VsSearchInput
 
-검색 기능을 제공하는 입력 컴포넌트입니다. vs-input을 기반으로 만들어졌으며, 대소문자 구분 및 정규식 검색 옵션을 제공합니다.<br />
+검색 기능을 제공하는 입력 컴포넌트입니다. vs-input을 기반으로 만들어졌으며, 대소문자 구분 및 정규식 검색 옵션을 제공합니다.
 입력 시 debounce를 적용하여 400ms마다 search 이벤트를 emit합니다.
 
 **Available Version**: 2.0.0+
@@ -138,31 +138,31 @@ function onSearch(value: string) {
 
 ## Props
 
-| Prop                 | Type                              | Default | Required | Description                       |
-| -------------------- | --------------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme`        | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                |
-| `styleSet`           | `string \| VsSearchInputStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
-| `use-case-sensitive` | `boolean`                         | `false` | -        | 대소문자 구분 토글 버튼 표시 여부 |
-| `use-regex`          | `boolean`                         | `false` | -        | 정규식 토글 버튼 표시 여부        |
-| `disabled`           | `boolean`                         | `false` | -        | 비활성화 상태                     |
-| `readonly`           | `boolean`                         | `false` | -        | 읽기 전용 상태                    |
-| `placeholder`        | `string`                          | `''`    | -        | 플레이스홀더 텍스트               |
-| `width`              | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비                     |
-| `grid`               | `string \| number \| Breakpoints` | -       | -        | Grid 설정                         |
-| `modelValue`         | `string`                          | `''`    | -        | v-model 바인딩 (검색어)           |
-| `caseSensitive`      | `boolean`                         | `false` | -        | v-model:case-sensitive 바인딩     |
-| `regex`              | `boolean`                         | `false` | -        | v-model:regex 바인딩              |
+| Prop               | Type                              | Default | Required | Description                       |
+| ------------------ | --------------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme`      | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                |
+| `styleSet`         | `string \| VsSearchInputStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
+| `useCaseSensitive` | `boolean`                         | `false` | -        | 대소문자 구분 토글 버튼 표시 여부 |
+| `useRegex`         | `boolean`                         | `false` | -        | 정규식 토글 버튼 표시 여부        |
+| `disabled`         | `boolean`                         | `false` | -        | 비활성화 상태                     |
+| `readonly`         | `boolean`                         | `false` | -        | 읽기 전용 상태                    |
+| `placeholder`      | `string`                          | `''`    | -        | 플레이스홀더 텍스트               |
+| `width`            | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비                     |
+| `grid`             | `string \| number \| Breakpoints` | -       | -        | 그리드 레이아웃 크기              |
+| `modelValue`       | `string`                          | `''`    | -        | v-model 바인딩 (검색어)           |
+| `caseSensitive`    | `boolean`                         | `false` | -        | v-model:case-sensitive 바인딩     |
+| `regex`            | `boolean`                         | `false` | -        | v-model:regex 바인딩              |
 
 ## Events
 
-| Event                  | Parameters       | Description                                   |
-| ---------------------- | ---------------- | --------------------------------------------- |
-| `search`               | `value: string`  | 검색어 입력 시 발생 (debounce 적용, 400ms)    |
-| `update:modelValue`    | `value: string`  | v-model 바인딩 업데이트 이벤트                |
-| `update:caseSensitive` | `value: boolean` | v-model:case-sensitive 바인딩 업데이트 이벤트 |
-| `update:regex`         | `value: boolean` | v-model:regex 바인딩 업데이트 이벤트          |
+| Event                  | Parameters       | Description                                    |
+| ---------------------- | ---------------- | ---------------------------------------------- |
+| `search`               | `value: string`  | 검색어 입력 시 발생 (debounce 적용, 400ms)     |
+| `update:modelValue`    | `value: string`  | v-model 바인딩 업데이트 시 발생                |
+| `update:caseSensitive` | `value: boolean` | v-model:case-sensitive 바인딩 업데이트 시 발생 |
+| `update:regex`         | `value: boolean` | v-model:regex 바인딩 업데이트 시 발생          |
 
-## Methods
+## Exposed Methods
 
 컴포넌트에 ref로 접근하여 사용할 수 있는 메서드들입니다.
 

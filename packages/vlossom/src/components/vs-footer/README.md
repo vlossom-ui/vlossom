@@ -92,6 +92,7 @@ interface VsFooterStyleSet extends VsBarStyleSet {}
 ```
 
 > [!NOTE]
+>
 > VsBar의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsBar README](../vs-bar/README.md#types)를 참조하세요.
 
 ## Slots

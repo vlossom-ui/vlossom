@@ -1,6 +1,6 @@
 # VsGroupedList
 
-props로 전달된 items를 group으로 묶어서 나열하는 컴포넌트입니다. 그룹핑 기능을 지원하며, 가상 렌더링을 통해 대량의 아이템을 효율적으로 표시할 수 있습니다.<br />
+아이템을 그룹별로 묶어서 나열하는 컴포넌트입니다. 그룹핑 기능을 지원하며, 가상 렌더링을 통해 대량의 아이템을 효율적으로 표시할 수 있습니다.
 아이템 클릭 시 이벤트를 emit하며, 특정 아이템으로 스크롤하는 기능을 제공합니다.
 
 **참고**: `items` prop은 `OptionItem[]` 형식이어야 합니다. `useOptionList` composable을 이용해서 원본 데이터를 `OptionItem[]`로 변환할 수 있습니다.
@@ -174,9 +174,9 @@ function checkScroll() {
 
 ## Events
 
-| Event        | Parameters                                                                                                                                        | Description         |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `click-item` | `{ id: string, item: any, label: string, value: any, disabled: boolean, index: number, groupedIndex: number, group: string, groupIndex: number }` | 아이템 클릭 시 발생 |
+| Event        | Parameters                                                                     | Description         |
+| ------------ | ------------------------------------------------------------------------------ | ------------------- |
+| `click-item` | `{ id, item, label, value, disabled, index, groupedIndex, group, groupIndex }` | 아이템 클릭 시 발생 |
 
 ## Methods
 

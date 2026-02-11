@@ -1,6 +1,6 @@
 # VsToast & VsToastView
 
-토스트 알림 메시지를 표시하는 컴포넌트 시스템입니다. `VsToast`는 개별 토스트 아이템 컴포넌트이고, `VsToastView`는 여러 토스트를 그룹화하여 위치별로 관리하는 컨테이너 컴포넌트입니다.
+토스트 알림 메시지를 표시하는 컴포넌트입니다. `VsToast`는 개별 토스트 아이템 컴포넌트이고, `VsToastView`는 여러 토스트를 그룹화하여 위치별로 관리하는 컨테이너 컴포넌트입니다.
 
 **Available Version**: 2.0.0+
 
@@ -35,7 +35,7 @@
 
 | Prop          | Type                        | Default | Required | Description                                               |
 | ------------- | --------------------------- | ------- | -------- | --------------------------------------------------------- |
-| `colorScheme` | `string`                    | -       | -        | 토스트의 색상 테마                                        |
+| `colorScheme` | `string`                    | -       | -        | 컴포넌트 색상 테마                                        |
 | `styleSet`    | `string \| VsToastStyleSet` | -       | -        | 커스텀 스타일 설정 객체                                   |
 | `autoClose`   | `boolean`                   | `true`  | -        | 자동 닫기 기능 활성화 여부                                |
 | `primary`     | `boolean`                   | `true`  | -        | 주요 스타일 적용 여부                                     |
@@ -51,6 +51,7 @@ interface VsToastStyleSet {
 ```
 
 > [!NOTE]
+>
 > `closeButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
@@ -88,9 +89,9 @@ interface VsToastStyleSet {
 
 ### Events
 
-| Event   | Description                                              | Payload |
-| ------- | -------------------------------------------------------- | ------- |
-| `close` | 토스트가 닫힐 때 발생 (닫기 버튼 클릭 또는 자동 닫기 시) | -       |
+| Event   | Description                                         | Payload |
+| ------- | --------------------------------------------------- | ------- |
+| `close` | 토스트 닫힘 시 발생 (닫기 버튼 클릭 또는 자동 닫기) | -       |
 
 ### 특징
 

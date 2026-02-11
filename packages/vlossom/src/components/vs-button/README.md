@@ -57,7 +57,7 @@
 
 | Prop          | Type                                   | Default    | Required | Description                             |
 | ------------- | -------------------------------------- | ---------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                               | -          | -        | 버튼의 색상 테마                        |
+| `colorScheme` | `string`                               | -          | -        | 컴포넌트 색상 테마                      |
 | `styleSet`    | `string \| VsButtonStyleSet`           | -          | -        | 커스텀 스타일 설정 객체                 |
 | `circle`      | `boolean`                              | `false`    | -        | 원형 버튼 스타일 적용                   |
 | `disabled`    | `boolean`                              | `false`    | -        | 버튼 비활성화                           |
@@ -82,6 +82,7 @@ interface VsButtonStyleSet {
 ```
 
 > [!NOTE]
+>
 > `loading`은 [VsLoadingStyleSet](../vs-loading/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시

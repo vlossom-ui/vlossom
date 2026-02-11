@@ -1,6 +1,6 @@
 # VsRadio & VsRadioSet
 
-라디오 입력을 위한 컴포넌트 모음입니다. 단일 라디오와 여러 옵션 중 하나를 고르는 라디오 그룹 컴포넌트를 제공합니다.
+라디오 입력을 위한 컴포넌트입니다. 단일 라디오와 여러 옵션 중 하나를 고르는 라디오 그룹 컴포넌트를 제공합니다.
 
 **Available Version**: 2.0.0+
 
@@ -31,7 +31,7 @@
 | `radioLabel`  | `string`                    | `''`    | -        | 라디오 오른쪽에 표시할 라벨      |
 | `checked`     | `boolean`                   | `false` | -        | 초기 선택 여부                   |
 | `styleSet`    | `string \| VsRadioStyleSet` | -       | -        | 스타일셋 키 또는 인라인 스타일셋 |
-| `colorScheme` | `string`                    | -       | -        | 색상 테마 키                     |
+| `colorScheme` | `string`                    | -       | -        | 컴포넌트 색상 테마               |
 
 `id`, `label`, `messages`, `rules`, `required`, `disabled`, `readonly`, `width`, `grid`, `noMessages` 등 공통 Input Props도 그대로 사용할 수 있습니다.
 
@@ -69,6 +69,7 @@ interface VsRadioStyleSet {
 ```
 
 > [!NOTE]
+>
 > `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ---

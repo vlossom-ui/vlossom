@@ -1,6 +1,6 @@
 # VsCheckbox & VsCheckboxSet
 
-체크박스 입력을 위한 컴포넌트입니다. 단일 체크박스와 여러 옵션을 선택할 수 있는 체크박스 그룹을 제공합니다.
+체크박스 입력을 위한 컴포넌트입니다. 단일 체크박스(`VsCheckbox`)와 여러 옵션을 선택할 수 있는 체크박스 그룹(`VsCheckboxSet`)을 제공합니다.
 
 **Available Version**: 2.0.0+
 
@@ -97,7 +97,7 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 | Prop            | Type                           | Default | Required | Description                                                                           |
 | --------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | 체크박스 색상 테마                                                                    |
+| `colorScheme`   | `string`                       | -       | -        | 컴포넌트 색상 테마                                                                    |
 | `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                                                               |
 | `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                                                        |
 | `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                                                               |
@@ -124,6 +124,7 @@ interface VsCheckboxStyleSet {
 ```
 
 > [!NOTE]
+>
 > `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### Slots

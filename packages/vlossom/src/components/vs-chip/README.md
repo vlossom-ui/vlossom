@@ -52,7 +52,7 @@
 
 | Prop          | Type                                   | Default | Required | Description                             |
 | ------------- | -------------------------------------- | ------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                               | -       | -        | 칩의 색상 테마                          |
+| `colorScheme` | `string`                               | -       | -        | 컴포넌트 색상 테마                      |
 | `styleSet`    | `string \| VsChipStyleSet`             | -       | -        | 커스텀 스타일 설정 객체                 |
 | `closable`    | `boolean`                              | `false` | -        | 닫기 버튼 표시 여부                     |
 | `outline`     | `boolean`                              | `false` | -        | outline 스타일 설정                     |
@@ -103,9 +103,9 @@ interface VsChipStyleSet {
 
 ## Events
 
-| Event   | Description                  | Payload |
-| ------- | ---------------------------- | ------- |
-| `close` | 닫기 버튼을 클릭했을 때 발생 | -       |
+| Event   | Description            | Payload |
+| ------- | ---------------------- | ------- |
+| `close` | 닫기 버튼 클릭 시 발생 | -       |
 
 ## 특징
 

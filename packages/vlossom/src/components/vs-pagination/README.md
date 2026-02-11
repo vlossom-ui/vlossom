@@ -75,10 +75,10 @@
 
 ## Events
 
-| Event               | Parameters | Description                 |
-| ------------------- | ---------- | --------------------------- |
-| `update:modelValue` | `number`   | v-model 값이 변경될 때 발생 |
-| `change`            | `number`   | 페이지가 변경될 때 발생     |
+| Event               | Parameters | Description             |
+| ------------------- | ---------- | ----------------------- |
+| `update:modelValue` | `number`   | v-model 값 변경 시 발생 |
+| `change`            | `number`   | 페이지 변경 시 발생     |
 
 ## Slots
 

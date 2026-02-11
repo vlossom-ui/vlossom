@@ -135,9 +135,9 @@ const drawerOpen = ref(false);
 
 | Event               | Payload   | Description                       |
 | ------------------- | --------- | --------------------------------- |
-| `update:modelValue` | `boolean` | v-model 값 업데이트 시 발생       |
-| `open`              | -         | 드로어가 열릴 때 발생             |
-| `close`             | -         | 드로어가 닫힐 때 발생             |
+| `update:modelValue` | `boolean` | v-model 값 변경 시 발생           |
+| `open`              | -         | 드로어 열림 시 발생               |
+| `close`             | -         | 드로어 닫힘 시 발생               |
 | `click-dimmed`      | -         | 배경(dimmed overlay) 클릭 시 발생 |
 
 ## Types
@@ -158,6 +158,7 @@ type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 ```
 
 > [!NOTE]
+>
 > `dimmed`는 [VsDimmedStyleSet](../vs-dimmed/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시

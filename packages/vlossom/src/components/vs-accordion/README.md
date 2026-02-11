@@ -105,6 +105,7 @@ interface VsAccordionStyleSet {
 ```
 
 > [!NOTE]
+>
 > `content`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시

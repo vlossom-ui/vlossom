@@ -229,7 +229,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 
 | Prop          | Type                                                    | Default | Required | Description                                                                          |
 | ------------- | ------------------------------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------ |
-| `colorScheme` | `string`                                                | -       | -        | 스텝의 색상 테마                                                                     |
+| `colorScheme` | `string`                                                | -       | -        | 컴포넌트 색상 테마                                                                   |
 | `styleSet`    | `string \| VsStepsStyleSet`                             | -       | -        | 커스텀 스타일 설정 객체                                                              |
 | `width`       | `string \| number \| Breakpoints`                       | -       | -        | 너비. 단일 값 또는 브레이크포인트 객체                                               |
 | `grid`        | `string \| number \| Breakpoints`                       | -       | -        | 12컬럼 그리드 시스템에서 차지할 컬럼 수. 단일 값 또는 브레이크포인트 객체            |
@@ -245,7 +245,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 
 | Event               | Parameters | Description                     |
 | ------------------- | ---------- | ------------------------------- |
-| `update:modelValue` | `number`   | 선택된 스텝 인덱스 변경 시 발생 |
+| `update:modelValue` | `number`   | v-model 값 변경 시 발생         |
 | `change`            | `number`   | 선택된 스텝 인덱스 변경 시 발생 |
 
 ## Types

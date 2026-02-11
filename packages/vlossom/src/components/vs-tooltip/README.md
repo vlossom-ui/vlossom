@@ -89,21 +89,21 @@
 
 ## Props
 
-| Prop            | Type                                     | Default    | Required | Description                        |
-| --------------- | ---------------------------------------- | ---------- | -------- | ---------------------------------- |
-| `target`        | `string`                                 | -          | `true`   | 툴팁을 표시할 대상 요소의 CSS selector |
-| `colorScheme`   | `string`                                 | -          | -        | 툴팁의 색상 테마             |
-| `styleSet`      | `string \| VsTooltipStyleSet`            | -          | -        | 커스텀 스타일 설정 객체      |
-| `align`         | `'start' \| 'center' \| 'end'`           | `'center'` | -        | 툴팁의 정렬 방식             |
-| `clickable`     | `boolean`                                | `false`    | -        | 클릭으로 툴팁 열기/닫기      |
-| `contentsHover` | `boolean`                                | `false`    | -        | 툴팁 내용에 호버 가능        |
-| `disabled`      | `boolean`                                | `false`    | -        | 툴팁 비활성화                |
-| `enterDelay`    | `number`                                 | `0`        | -        | 툴팁 표시 지연 시간 (ms)     |
-| `escClose`      | `boolean`                                | `true`     | -        | ESC 키로 툴팁 닫기           |
-| `leaveDelay`    | `number`                                 | `0`        | -        | 툴팁 숨김 지연 시간 (ms)     |
-| `margin`        | `string \| number`                       | `10`       | -        | 툴팁과 트리거 요소 간의 간격 |
-| `noAnimation`   | `boolean`                                | `false`    | -        | 애니메이션 비활성화          |
-| `placement`     | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    | -        | 툴팁 표시 위치               |
+| Prop            | Type                                     | Default    | Required | Description                            |
+| --------------- | ---------------------------------------- | ---------- | -------- | -------------------------------------- |
+| `target`        | `string`                                 | -          | ✅       | 툴팁을 표시할 대상 요소의 CSS selector |
+| `colorScheme`   | `string`                                 | -          | -        | 컴포넌트 색상 테마                     |
+| `styleSet`      | `string \| VsTooltipStyleSet`            | -          | -        | 커스텀 스타일 설정 객체                |
+| `align`         | `'start' \| 'center' \| 'end'`           | `'center'` | -        | 툴팁의 정렬 방식                       |
+| `clickable`     | `boolean`                                | `false`    | -        | 클릭 시 툴팁 열기/닫기                 |
+| `contentsHover` | `boolean`                                | `false`    | -        | 툴팁 내용에 호버 가능                  |
+| `disabled`      | `boolean`                                | `false`    | -        | 툴팁 비활성화                          |
+| `enterDelay`    | `number`                                 | `0`        | -        | 툴팁 표시 지연 시간 (ms)               |
+| `escClose`      | `boolean`                                | `true`     | -        | ESC 키로 툴팁 닫기                     |
+| `leaveDelay`    | `number`                                 | `0`        | -        | 툴팁 숨김 지연 시간 (ms)               |
+| `margin`        | `string \| number`                       | `10`       | -        | 툴팁과 트리거 요소 간의 간격           |
+| `noAnimation`   | `boolean`                                | `false`    | -        | 애니메이션 비활성화                    |
+| `placement`     | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    | -        | 툴팁 표시 위치                         |
 
 ## Types
 

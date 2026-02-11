@@ -35,9 +35,9 @@ const handleThemeChange = (isDark: boolean) => {
 
 ## Events
 
-| Event    | Parameters | Description                                          |
-| -------- | ---------- | ---------------------------------------------------- |
-| `change` | `boolean`  | 테마가 변경될 때 발생 (`true`: Dark, `false`: Light) |
+| Event    | Parameters | Description                                      |
+| -------- | ---------- | ------------------------------------------------ |
+| `change` | `boolean`  | 테마 변경 시 발생 (`true`: Dark, `false`: Light) |
 
 ## Types
 

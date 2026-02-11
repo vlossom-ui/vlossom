@@ -94,21 +94,21 @@ const selectedOptions = ref([]);
 
 **반응형 Props:**
 
-| Prop    | Type                              | Default | Description          |
-| ------- | --------------------------------- | ------- | -------------------- |
-| `width` | `string \| number \| Breakpoints` | -       | 컴포넌트 너비 설정   |
-| `grid`  | `string \| number \| Breakpoints` | -       | 그리드 레이아웃 설정 |
+| Prop    | Type                              | Default | Description        |
+| ------- | --------------------------------- | ------- | ------------------ | -------------------- |
+| `width` | `string \| number \| Breakpoints` | -       | 컴포넌트 너비 설정 |
+| `grid`  | `string \| number \| Breakpoints` | -       | -                  | 그리드 레이아웃 크기 |
 
 ## Events
 
-| Event               | Parameters | Description                    |
-| ------------------- | ---------- | ------------------------------ |
-| `update:modelValue` | `any`      | v-model 값이 변경될 때 발생    |
-| `update:changed`    | `boolean`  | 변경 여부 상태 업데이트        |
-| `update:valid`      | `boolean`  | 유효성 검증 결과 업데이트      |
-| `change`            | `any`      | 값이 변경될 때 발생            |
-| `focus`             | `Event`    | 스위치가 포커스를 받을 때 발생 |
-| `blur`              | `Event`    | 스위치가 포커스를 잃을 때 발생 |
+| Event               | Parameters | Description                |
+| ------------------- | ---------- | -------------------------- |
+| `update:modelValue` | `any`      | v-model 값 변경 시 발생    |
+| `update:changed`    | `boolean`  | 변경 여부 상태 업데이트    |
+| `update:valid`      | `boolean`  | 유효성 검증 결과 업데이트  |
+| `change`            | `any`      | 값 변경 시 발생            |
+| `focus`             | `Event`    | 스위치 포커스 시 발생      |
+| `blur`              | `Event`    | 스위치 포커스 해제 시 발생 |
 
 ## Types
 
@@ -126,6 +126,7 @@ interface VsSwitchStyleSet {
 ```
 
 > [!NOTE]
+>
 > `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시

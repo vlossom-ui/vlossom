@@ -66,7 +66,7 @@
 | `gridSize`  | `string \| number` | -       | -        | 그리드 컬럼 수         |
 | `columnGap` | `string \| number` | -       | -        | 컬럼 간 간격           |
 | `rowGap`    | `string \| number` | -       | -        | 행 간 간격             |
-| `disabled`  | `boolean`          | `false` | -        | 폼 전체 비활성화 상태  |
+| `disabled`  | `boolean`          | `false` | -        | 비활성화 상태          |
 | `readonly`  | `boolean`          | `false` | -        | 폼 전체 읽기 전용 상태 |
 
 ## Slots
@@ -75,12 +75,12 @@
 | --------- | -------------------------- |
 | `default` | 폼 내부에 배치할 폼 요소들 |
 
-## Methods
+## Exposed Methods
 
-| Method     | Parameters | Description                     |
-| ---------- | ---------- | ------------------------------- |
-| `validate` | -          | 폼 검증을 수행하고 결과를 반환  |
-| `clear`    | -          | 폼 내 모든 입력 요소들을 초기화 |
+| Method     | Parameters | Return Type | Description                                                              |
+| ---------- | ---------- | ----------- | ------------------------------------------------------------------------ |
+| `validate` | -          | `boolean`   | 폼 검증을 수행하고, 모든 필드가 유효하면 true, 아니면 false를 반환합니다 |
+| `clear`    | -          | `void`      | 폼 내 모든 입력 요소들을 초기화합니다                                    |
 
 ## Events
 

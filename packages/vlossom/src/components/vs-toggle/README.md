@@ -68,10 +68,10 @@ const handleToggle = (value: boolean) => {
 
 ## Events
 
-| Event               | Parameters | Description                                  |
-| ------------------- | ---------- | -------------------------------------------- |
-| `update:modelValue` | `boolean`  | v-model 값이 변경될 때 발생                  |
-| `toggle`            | `boolean`  | 토글 상태가 변경될 때 발생하는 커스텀 이벤트 |
+| Event               | Parameters | Description             |
+| ------------------- | ---------- | ----------------------- |
+| `update:modelValue` | `boolean`  | v-model 값 변경 시 발생 |
+| `toggle`            | `boolean`  | 토글 상태 변경 시 발생  |
 
 ## Slots
 
@@ -92,6 +92,7 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 ```
 
 > [!NOTE]
+>
 > VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md#types)를 참조하세요.
 
 ### StyleSet 사용 예시

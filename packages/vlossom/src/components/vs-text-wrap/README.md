@@ -152,9 +152,9 @@ interface VsTextWrapStyleSet {
 
 ## Events
 
-| Event    | Description                  | Payload        |
-| -------- | ---------------------------- | -------------- |
-| `copied` | 복사 버튼을 클릭했을 때 발생 | `text: string` |
+| Event    | Description            | Payload        |
+| -------- | ---------------------- | -------------- |
+| `copied` | 복사 버튼 클릭 시 발생 | `text: string` |
 
 ## 특징
 

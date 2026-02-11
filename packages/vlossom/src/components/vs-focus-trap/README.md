@@ -39,9 +39,9 @@
 
 ## Props
 
-| Prop       | Type      | Default | Required | Description                      |
-| ---------- | --------- | ------- | -------- | -------------------------------- |
-| `disabled` | `boolean` | `false` | -        | Tab 키로 포커스 순환 활성화 여부 |
+| Prop       | Type      | Default | Required | Description            |
+| ---------- | --------- | ------- | -------- | ---------------------- |
+| `disabled` | `boolean` | `false` | -        | 포커스 트랩 비활성화 여부 |
 
 ## Slots
 

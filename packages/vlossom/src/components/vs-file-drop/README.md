@@ -147,7 +147,7 @@ function handleDrop(droppedFiles: File[]) {
 | `min`         | `number \| string`                | `Number.MIN_SAFE_INTEGER` | -        | 업로드해야 하는 최소 파일 개수                     |
 | `colorScheme` | `ColorScheme`                     | -                         | -        | 컴포넌트 색상 테마                                 |
 | `styleSet`    | `string \| VsFileDropStyleSet`    | -                         | -        | 커스텀 스타일 설정 객체                            |
-| `disabled`    | `boolean`                         | `false`                   | -        | 파일 업로드 비활성화                               |
+| `disabled`    | `boolean`                         | `false`                   | -        | 비활성화 상태                                      |
 | `grid`        | `string \| number \| Breakpoints` | -                         | -        | 그리드 레이아웃 크기                               |
 | `hidden`      | `boolean`                         | `false`                   | -        | 컴포넌트 숨김 여부                                 |
 | `id`          | `string`                          | -                         | -        | input 요소의 id                                    |
@@ -166,12 +166,12 @@ function handleDrop(droppedFiles: File[]) {
 
 ## Events
 
-| Event               | Parameters | Description                                  |
-| ------------------- | ---------- | -------------------------------------------- |
-| `update:modelValue` | `File[]`   | v-model 값 변경 시 발생                      |
-| `update:changed`    | `File[]`   | 파일 선택 대화상자로 파일을 선택했을 때 발생 |
-| `update:valid`      | `boolean`  | 검증 상태 업데이트                           |
-| `drop`              | `File[]`   | 파일을 드래그 앤 드롭했을 때 발생            |
+| Event               | Parameters | Description                                                                |
+| ------------------- | ---------- | -------------------------------------------------------------------------- |
+| `update:modelValue` | `File[]`   | v-model 값 변경 시 발생                                                    |
+| `update:changed`    | `File[]`   | 파일 선택 대화상자를 통해 파일이 선택될 때 발생 (v-model:changed 업데이트) |
+| `update:valid`      | `boolean`  | 검증 상태 업데이트                                                         |
+| `drop`              | `File[]`   | 파일을 드래그 앤 드롭했을 때 발생                                          |
 
 ## Types
 

@@ -75,9 +75,9 @@
 
 ## Events
 
-| Event   | Parameters | Description                         |
-| ------- | ---------- | ----------------------------------- |
-| `error` | -          | 이미지 로딩 실패 시 발생하는 이벤트 |
+| Event   | Parameters | Description              |
+| ------- | ---------- | ------------------------ |
+| `error` | -          | 이미지 로딩 실패 시 발생 |
 
 ## Types
 
@@ -96,6 +96,7 @@ interface VsImageStyleSet {
 ```
 
 > [!NOTE]
+>
 > `skeleton`은 [VsSkeletonStyleSet](../vs-skeleton/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시

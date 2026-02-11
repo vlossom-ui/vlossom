@@ -34,7 +34,7 @@
 
 ### 반응형 구분선
 
-데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야합니다. (ex - vs-contianer)
+데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야 합니다. (예: vs-container)
 
 ```html
 <template>
