@@ -13,12 +13,9 @@
         border-radius: 1.5rem;
         background-color: var(--vs-area-bg);
 
-        /* width: fit-content;
+        width: auto;
         height: 2rem;
-        color: var(--vs-font-color); */
-        width: var(--vs-switch-width, auto);
-        height: var(--vs-switch-height, 2rem);
-        color: var(--vs-switch-fontColor, var(--vs-font-color));
+        color: var(--vs-font-color);
         font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
