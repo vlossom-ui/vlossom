@@ -8,18 +8,18 @@
     min-height: var(--vs-default-comp-height-md);
 
     .vs-switch-button {
-        @apply relative flex cursor-pointer select-none items-center px-2.5 transition-all duration-300;
+        @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
         border: 1px solid var(--vs-line-color);
         border-radius: 1.5rem;
         background-color: var(--vs-area-bg);
 
-        width: fit-content;
+        width: auto;
         height: 2rem;
         color: var(--vs-font-color);
         font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
-            @apply ml-1.5 block w-full select-none whitespace-nowrap break-all pr-0 text-center;
+            @apply ml-1.5 block w-full pr-0 text-center break-all whitespace-nowrap select-none;
             padding-left: calc(var(--vs-switch-handleSize, 1.2rem));
         }
 
@@ -33,7 +33,7 @@
     }
 
     .vs-switch-input {
-        @apply pointer-events-none absolute left-0 top-0 opacity-0;
+        @apply pointer-events-none absolute top-0 left-0 opacity-0;
     }
 
     &.vs-checked {
