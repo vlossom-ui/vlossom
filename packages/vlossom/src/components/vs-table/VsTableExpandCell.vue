@@ -5,7 +5,7 @@
                 v-if="isExpandable(cells, rowIdx)"
                 small
                 :disabled="loading"
-                :style-set="{ padding: '0' }"
+                :style-set="{ variables: { padding: '0' } }"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <vs-render
