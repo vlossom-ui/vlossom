@@ -41,14 +41,28 @@ description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
 **API 품질**
 - [ ] 타입명이 `Vs[ComponentName]StyleSet` 규칙을 따르는가?
 - [ ] 모든 속성이 optional(`?`)로 정의되었는가?
-- [ ] JSDoc 주석이 필요한 곳에 추가되었는가?
+- [ ] 타입 안전한 CSS 속성을 사용했는가? (`CSSProperties['objectFit'] & {}` 등)
+- [ ] props로 받는 값이 StyleSet 인터페이스에 포함되지 않았는가? (additionalStyleSet 내부 구현으로 처리)
+- [ ] form 컴포넌트에서 `wrapper?: VsInputWrapperStyleSet`이 포함되었는가?
+
+**네이밍 규칙**
+- [ ] 상태 수식어가 prefix 패턴인가? (`activeStep` ✅, `stepActive` ❌)
+- [ ] 속성명이 내용을 반영하는가? (`content` ✅, `expand` ❌)
+
+**관심사 분리**
+- [ ] 기본 테마 색상(backgroundColor, fontColor)이 variables에 노출되지 않았는가?
+- [ ] 상태별 색상(selected, focused 등)은 variables에 적절히 포함되었는가?
 
 #### ✅ 체크리스트 2: 컴포넌트 구현 (.vue)
 
 **useStyleSet 사용**
 - [ ] `useStyleSet` 호출이 올바른가?
 - [ ] `baseStyleSet`이 필요한 경우 적절히 사용되었는가?
-- [ ] `additionalStyleSet`이 필요한 경우 적절히 사용되었는가?
+- [ ] `additionalStyleSet`이 4번째 인자로 전달되는가? (3번째에 넣으면 base 자리!)
+- [ ] 고정값 baseStyleSet에 `ref` 사용을 검토했는가? (`computed`도 허용)
+- [ ] 같은 모듈에서 여러 import가 하나로 통합되었는가?
+- [ ] 실제 코드 파일에 불필요한 주석이 없는가? (types.ts, Vue, CSS)
+- [ ] README.md의 Types 섹션이 새 StyleSet 구조를 반영하는가?
 
 **Template 적용**
 - [ ] 루트 요소에 `styleSetVariables` + `componentStyleSet.component` 적용?
@@ -71,6 +85,9 @@ description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
 **코드 품질**
 - [ ] 중복된 스타일이 제거되었는가?
 - [ ] 불필요한 `initial` 값이 정리되었는가?
+- [ ] rem 단위를 우선 사용했는가? (px 대신)
+- [ ] 하위 컴포넌트에서 참조하는 CSS 변수가 보존되었는가?
+- [ ] default 값 설정이 불필요한 속성은 제거했는가? (`opacity: 1`, `height: auto` 등)
 
 ### 3단계: 안티패턴 탐지
 
@@ -122,6 +139,78 @@ interface VsCardStyleSet {
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
     /* 모든 것이 변수... */
+}
+```
+
+**❌ 안티패턴 5: additionalStyleSet을 3번째 인자에 배치**
+```typescript
+// BAD - additionalStyleSet이 baseStyleSet 자리에 들어감 (우선순위 낮아짐)
+useStyleSet(componentName, styleSet, additionalStyleSet);
+
+// GOOD - 반드시 4번째 인자
+useStyleSet(componentName, styleSet, baseStyleSet, additionalStyleSet);
+
+// GOOD - additionalStyleSet만 필요할 때 빈 baseStyleSet 사용
+const baseStyleSet: Ref<Vs[ComponentName]StyleSet> = ref({});
+useStyleSet(componentName, styleSet, baseStyleSet, additionalStyleSet);
+```
+
+**❌ 안티패턴 6: 상태 수식어 suffix 패턴**
+```typescript
+// BAD - suffix 패턴 (코드베이스 비표준)
+stepActive?: CSSProperties;
+labelActive?: CSSProperties;
+
+// GOOD - prefix 패턴 (코드베이스 표준)
+activeStep?: CSSProperties;
+activeLabel?: CSSProperties;
+```
+
+**❌ 안티패턴 7: px 단위 사용**
+```css
+/* BAD */
+padding: 12px 16px;
+font-size: 14px;
+
+/* GOOD */
+padding: 0.75rem 1rem;
+font-size: var(--vs-size-font);
+```
+
+**❌ 안티패턴 8: 기본 테마 색상을 variables에 노출**
+```typescript
+// BAD - 기본 테마 색상 (ColorScheme이 자동 관리)
+variables?: {
+    backgroundColor?: string;  // var(--vs-comp-bg)로 자동 적용됨
+    fontColor?: string;        // var(--vs-comp-font)으로 자동 적용됨
+};
+
+// GOOD - 컴포넌트 고유 속성만
+variables?: {
+    padding?: string;
+    arrowSize?: string;
+};
+
+// OK - 상태별 색상은 variables에 포함 가능
+variables?: {
+    selected?: {
+        backgroundColor?: string;  // 선택 상태의 특수 색상
+    };
+};
+```
+
+**❌ 안티패턴 9: props로 받는 값을 StyleSet 인터페이스에 포함**
+```typescript
+// BAD - height는 props로 받아서 additionalStyleSet으로 처리됨
+export interface VsBarStyleSet {
+    variables?: {
+        height?: string;  // props.height로 이미 받고 있음
+    };
+}
+
+// GOOD - props 값은 additionalStyleSet 내부 구현으로만 처리
+export interface VsBarStyleSet {
+    component?: CSSProperties;
 }
 ```
 
@@ -255,9 +344,9 @@ interface VsCardStyleSet {
 
 ## 참고 문서
 
-- [STYLE_SET_GUIDELINES.md](../../packages/vlossom/STYLE_SET_GUIDELINES.md)
-- [useStyleSet Composable](../../packages/vlossom/src/composables/style-set-composable.ts)
-- [VsButton 예제](../../packages/vlossom/src/components/vs-button/)
+- [STYLE_SET_GUIDELINES.md](../../../packages/vlossom/STYLE_SET_GUIDELINES.md)
+- [useStyleSet Composable](../../../packages/vlossom/src/composables/style-set-composable.ts)
+- [VsButton 예제](../../../packages/vlossom/src/components/vs-button/)
 
 ## 사용 방법
 
