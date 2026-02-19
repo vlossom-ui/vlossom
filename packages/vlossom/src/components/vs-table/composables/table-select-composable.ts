@@ -1,4 +1,5 @@
 import { computed, ref, watch, type Ref } from 'vue';
+import { objectUtil } from '@/utils';
 import type { Item } from '../types';
 
 export function useTableSelect(
@@ -31,6 +32,10 @@ export function useTableSelect(
     }
 
     watch(initialSelectedItems, (next) => {
+        const current = selectedItems.value;
+        if (objectUtil.isEqual(current, next)) {
+            return;
+        }
         selectedItems.value = [...next];
     });
 
