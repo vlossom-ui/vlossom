@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, objectUtil } from '@/utils';
-import { type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
+import { type UIState, type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -38,6 +38,7 @@ export function useTable(
         items: rawItems,
         selectable: rawSelectable,
         expandable: rawExpandable,
+        state: rawState,
         selectedItems: rawSelectedItems,
         search: rawSearch,
         pagination: rawPagination,
@@ -64,10 +65,13 @@ export function useTable(
         return rawItems.value;
     });
     const expandable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?]>(rawExpandable?.value);
+        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawExpandable?.value);
     });
     const selectable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
+        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawSelectable?.value);
+    });
+    const state = computed(() => {
+        return functionUtil.toCallable<[Item, number?, Item[]?], UIState>(rawState?.value);
     });
     const selectedItems = computed<Item[]>(() => {
         return rawSelectedItems?.value ?? [];
@@ -202,6 +206,7 @@ export function useTable(
         items,
         selectable,
         expandable,
+        state,
         draggable,
         headerCells,
         bodyCells,
@@ -241,6 +246,7 @@ export type TableComposable = {
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
+    state: ComputedRef<(item: Item, index?: number, items?: Item[]) => UIState>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     loading: Ref<boolean | undefined> | undefined;

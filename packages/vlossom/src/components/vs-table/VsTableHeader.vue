@@ -1,7 +1,7 @@
 <template>
     <thead>
         <template v-if="headerCells.length">
-            <tr :style="gridStyle">
+            <tr :style="{ ...gridStyle, ...rowStyle }">
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="{ cells, rowIdx }">
@@ -12,6 +12,7 @@
                     v-for="header in headerCells"
                     :key="header.id"
                     :id="header.id"
+                    :style="cellStyle"
                     @click.prevent.stop="clickCell(header, $event)"
                 >
                     <slot :name="findMatchingSlotName(header)" :header>
@@ -31,9 +32,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, type ComputedRef } from 'vue';
 import { stringUtil } from '@/utils';
-import { SortType, type HeaderCell } from './types';
+import { SortType, TABLE_STYLE_SET_TOKEN, type HeaderCell, type VsTableStyleSet } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -54,7 +55,10 @@ export default defineComponent({
     setup(_props, { slots, emit }) {
         const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
+        const rowStyle = computed(() => tableStyleSet?.value?.row);
+        const cellStyle = computed(() => tableStyleSet?.value?.cell);
         const gridStyle = computed(() => {
             const cols: string[] = [];
             if (draggable?.value) {
@@ -122,6 +126,8 @@ export default defineComponent({
             selectRow,
             getSortIcon,
             updateSortType,
+            rowStyle,
+            cellStyle,
         };
     },
 });

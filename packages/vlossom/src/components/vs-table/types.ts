@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'vue';
 import type { SizeProp, TextAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 
@@ -7,7 +8,21 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableStyleSet {}
+export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
+
+export interface VsTableStyleSet {
+    variables?: {
+        stickyHeaderTop?: string;
+        selectedBackgroundColor?: string;
+        selectedFontColor?: string;
+        headerBackgroundColor?: string;
+        headerFontColor?: string;
+    };
+    component?: CSSProperties;
+    row?: CSSProperties;
+    cell?: CSSProperties;
+    expand?: CSSProperties;
+}
 
 export type VsTablePageSizeOptions = { label: string; value: number }[];
 export interface VsTablePaginationOptions {

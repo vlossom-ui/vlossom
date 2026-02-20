@@ -231,6 +231,16 @@ export const VisualRegressionMatrix: Story = {
                 </section>
 
                 <section class="chromatic-section">
+                    <h3>행별 state (UI 상태)</h3>
+                    <vs-table
+                        :columns="baseColumns"
+                        :items="baseItems.map((item, i) =>
+                            ({ ...item, status: ['success', 'warning', 'error', 'info'][i % 4] as UIState }))"
+                        :state="(item) => item.status"
+                    />
+                </section>
+
+                <section class="chromatic-section">
                     <h3>로딩 상태</h3>
                     <vs-table :columns="baseColumns" :items="baseItems" pagination loading search />
                 </section>

@@ -1,5 +1,5 @@
 <template>
-    <tr :style="gridStyle">
+    <tr :class="[classObj, stateClasses]" :style="{ ...gridStyle, ...rowStyle }">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
@@ -9,6 +9,7 @@
         <template v-for="cell in cells" :key="cell.id">
             <td
                 :id="cell.id"
+                :style="cellStyle"
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
@@ -21,7 +22,7 @@
             </td>
         </template>
         <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        <td v-if="anyExpandable" class="vs-table-expanded-row">
+        <td v-if="anyExpandable" class="vs-table-expanded-row" :style="expandStyle">
             <vs-table-expanded-panel :cells :rowIdx>
                 <template #expand="{ cells, rowIdx }">
                     <slot name="expand" :cells :rowIdx />
@@ -32,9 +33,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type PropType } from 'vue';
+import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs } from 'vue';
 import { stringUtil } from '@/utils';
-import type { BodyCell } from './types';
+import { useStateClass } from '@/composables';
+import type { UIState } from '@/declaration';
+import { TABLE_STYLE_SET_TOKEN, type BodyCell, type VsTableStyleSet, getRowItem } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
@@ -63,9 +66,36 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
-        const { anyExpandable, anySelectable, draggable, headerCells, loading } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { cells, rowIdx: rowIndex } = toRefs(props);
+        const {
+            anyExpandable,
+            anySelectable,
+            draggable,
+            headerCells,
+            loading,
+            selectedItems,
+            state: stateFn,
+            items,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+        const state = computed<UIState>(() => {
+            return stateFn.value(getRowItem(cells.value), rowIndex.value, items?.value);
+        });
+        const { stateClasses } = useStateClass(state);
 
+        const isSelected = computed(() => {
+            if (!anySelectable.value) {
+                return false;
+            }
+            return selectedItems.value.includes(getRowItem(props.cells));
+        });
+        const classObj = {
+            'vs-selected': isSelected.value,
+        };
+
+        const rowStyle = computed(() => tableStyleSet?.value?.row);
+        const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const expandStyle = computed(() => tableStyleSet?.value?.expand);
         const gridStyle = computed(() => {
             const cols: string[] = [];
             if (draggable?.value) {
@@ -128,6 +158,11 @@ export default defineComponent({
             draggable,
             loading,
             gridStyle,
+            classObj,
+            rowStyle,
+            cellStyle,
+            expandStyle,
+            stateClasses,
             clickCell,
             findMatchingSlotName,
             selectRow,

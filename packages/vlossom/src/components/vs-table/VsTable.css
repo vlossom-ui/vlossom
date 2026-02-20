@@ -1,6 +1,12 @@
 @reference 'tailwindcss';
 
 .vs-table {
+    --vs-table-stickyHeaderTop: initial;
+    --vs-table-selectedBackgroundColor: initial;
+    --vs-table-selectedFontColor: initial;
+    --vs-table-headerBackgroundColor: initial;
+    --vs-table-headerFontColor: initial;
+
     @apply relative w-full;
 
     table {
@@ -17,11 +23,27 @@
         }
     }
 
+    thead tr th {
+        background-color: var(--vs-table-headerBackgroundColor);
+        color: var(--vs-table-headerFontColor);
+    }
+
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
         &:hover {
             background-color: var(--vs-area-bg-hover);
+        }
+
+        &.vs-state-box {
+            outline: 0.1875rem dotted var(--vs-state-color);
+            outline-offset: -0.1875rem;
+            background-color: color-mix(in oklch, var(--vs-state-color) 28% transparent);
+        }
+
+        &.vs-selected {
+            background-color: var(--vs-table-selectedBackgroundColor, var(--vs-area-bg-active));
+            color: var(--vs-table-selectedFontColor);
         }
 
         > td:not(.vs-table-expanded-row) {
@@ -31,15 +53,18 @@
         > td.vs-table-expanded-row {
             grid-row: 2;
             grid-column: 1 / -1;
-            @apply border-0 p-0;
+            border-top: none;
+            border-bottom: 0.0625rem solid var(--vs-line-color);
+            padding: 0;
         }
     }
 
     th,
     td {
-        @apply flex items-center px-3.5 py-2.5;
+        @apply flex items-center;
         border-top: 0.0625rem solid var(--vs-line-color);
         border-bottom: 0.0625rem solid var(--vs-line-color);
+        padding: 0.625rem 0.875rem;
         text-align: left;
 
         > * {
@@ -61,9 +86,29 @@
         background-color: var(--vs-no-color);
     }
 
-    .vs-table-responsive {
+    &.vs-responsive {
         @apply w-full;
         container-type: inline-size;
+    }
+
+    &.vs-dense {
+        th,
+        td {
+            padding: 0.375rem 0.5rem;
+            font-size: var(--vs-font-size-sm);
+        }
+
+        td.vs-table-expanded-row {
+            padding: 0;
+        }
+    }
+
+    &.vs-primary {
+        thead tr th {
+            border-color: var(--vs-primary-comp-bg);
+            background-color: var(--vs-primary-comp-bg);
+            color: var(--vs-primary-comp-font);
+        }
     }
 
     .vs-table-draggable-wrapper {
@@ -83,7 +128,7 @@
     }
 
     td.vs-table-drag-handle {
-        @apply w-6 cursor-grab !px-0;
+        @apply w-6 cursor-grab px-0!;
         color: var(--vs-line-color);
     }
 }
@@ -108,7 +153,7 @@ caption {
 }
 
 @container (max-width: 1024px) {
-    .vs-table-responsive {
+    .vs-responsive {
         tbody,
         th,
         td,
@@ -150,5 +195,10 @@ caption {
 
     .vs-table-pagination {
         @apply flex-col-reverse items-center justify-center gap-2;
+    }
+
+    .vs-dense .vs-responsive td {
+        padding: 0.375rem 0.5rem;
+        font-size: var(--vs-font-size-sm);
     }
 }
