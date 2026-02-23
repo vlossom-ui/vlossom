@@ -17,6 +17,7 @@
                 <vs-table-header
                     v-if="useStickyHeader"
                     class="vs-table-sticky-header"
+                    :style="{ top: stickyHeaderTop }"
                     @click-cell="clickCell"
                     @select-row="selectRow"
                 >
@@ -64,7 +65,7 @@ import {
     inject,
     type ComputedRef,
 } from 'vue';
-import { useIntersectionObserver } from '@vueuse/core';
+import { useIntersectionObserver, useWindowScroll } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
 import { LAYOUT_STORE_KEY, type SearchProps, type UIState, VsComponent, type PropsOf } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
@@ -217,10 +218,11 @@ export default defineComponent({
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const { y: scrollY } = useWindowScroll();
+
         const isHeaderOutOfView = ref<boolean>(true);
         const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
-
         const baseStyleSet = ref({});
         const additionalStyleSet = computed<VsTableStyleSet>(() => {
             return {
@@ -265,11 +267,15 @@ export default defineComponent({
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
             headerRef,
-            ([{ isIntersecting }]) => {
+            ([{ isIntersecting, boundingClientRect }]) => {
                 isHeaderOutOfView.value = !isIntersecting;
                 if (isIntersecting) {
-                    console.log('isIntersecting', vsLayoutHeader.value.height);
-                    stickyHeaderTop.value = stringUtil.toStringSize(vsLayoutHeader.value.height);
+                    const headerHeight = vsLayoutHeader.value.height;
+                    if (stringUtil.toStringSize(boundingClientRect.top + scrollY.value) > headerHeight) {
+                        stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
+                        return;
+                    }
+                    stickyHeaderTop.value = '0px';
                 }
             },
             { threshold: 1 },

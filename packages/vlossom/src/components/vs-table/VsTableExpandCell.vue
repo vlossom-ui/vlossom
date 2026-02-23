@@ -4,6 +4,7 @@
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 small
+                :primary
                 :disabled="loading"
                 :style-set="{ variables: { padding: '0' } }"
                 @click.prevent.stop="expandRow(cells, $event)"
@@ -44,7 +45,7 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading } =
+        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
@@ -70,6 +71,7 @@ export default defineComponent({
             tableIcons,
             cellStyle,
             loading,
+            primary,
         };
     },
 });

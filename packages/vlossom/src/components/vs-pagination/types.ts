@@ -19,6 +19,10 @@ export interface VsPaginationRef extends ComponentPublicInstance<typeof VsPagina
 }
 
 export interface VsPaginationStyleSet {
+    variables?: {
+        selectedButtonBackgroundColor?: string;
+        selectedButtonFontColor?: string;
+    };
     component?: CSSProperties;
     pageButton?: Omit<VsButtonStyleSet, 'loading'>;
     controlButton?: Omit<VsButtonStyleSet, 'loading'>;

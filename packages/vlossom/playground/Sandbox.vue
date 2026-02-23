@@ -160,7 +160,7 @@
         <section>
             <h2 class="section-title">15. 고정 헤더 (sticky-header)</h2>
             <p class="section-desc">스크롤해도 헤더가 상단에 고정됩니다</p>
-            <div style="max-height: 260px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 0.5rem">
+            <div style="max-height: 260px; overflow-y: auto; border-radius: 0.5rem">
                 <vs-table :columns="empCols" :items="manyEmployees" sticky-header />
             </div>
         </section>
@@ -203,7 +203,10 @@
                 :selectable="() => true"
                 :expandable="() => true"
                 draggable
+                search
+                pagination
                 v-model:selectedItems="selected21"
+                :page-size="5"
             >
                 <template #expand="{ cells }">
                     <div class="p-4 text-sm text-gray-600">{{ cells[0]?.item.name }} — {{ cells[0]?.item.email }}</div>
@@ -322,6 +325,7 @@ export default defineComponent({
         ];
 
         // ── 상태 ───────────────────────────────────
+        const tableScrollRef = ref<HTMLElement | null>(null);
         const isLoading = ref(false);
         const selectedEmployees = ref<Item[]>([]);
         const selected21 = ref<Item[]>([]);
@@ -368,6 +372,7 @@ export default defineComponent({
             manyEmployees,
             serverItems,
             nestedItems,
+            tableScrollRef,
             isLoading,
             selectedEmployees,
             selected21,

@@ -97,9 +97,9 @@ export default defineComponent({
             }
             return selectedItems.value.includes(getRowItem(props.cells));
         });
-        const classObj = {
+        const classObj = computed(() => ({
             'vs-selected': isSelected.value,
-        };
+        }));
 
         const rowStyle = computed(() => tableStyleSet?.value?.row);
         const cellStyle = computed(() => tableStyleSet?.value?.cell);

@@ -18,6 +18,7 @@
         <th v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
+                    :style-set="headerCheckboxStyle"
                     :model-value="selectedAll"
                     :disabled="loading"
                     :indeterminate="selectedPartial"
@@ -57,10 +58,21 @@ export default defineComponent({
             selectedPartial,
             toggleSelectAll,
             loading,
+            primary,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const headerCheckboxStyle = computed(() => {
+            if (primary?.value) {
+                return {
+                    variables: {
+                        checkboxColor: 'var(--vs-line-color)',
+                    },
+                };
+            }
+            return {};
+        });
 
         function isRowSelectable(row: Cell[], rowIdx: number): boolean {
             if (!isBodyRow(row)) {
@@ -95,6 +107,8 @@ export default defineComponent({
             selectedPartial,
             cellStyle,
             loading,
+            primary,
+            headerCheckboxStyle,
         };
     },
 });
