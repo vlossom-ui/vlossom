@@ -13,7 +13,15 @@
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
-                <vs-skeleton v-if="loading" :style-set="{ component: { height: '1.25rem' } }" />
+                <vs-skeleton
+                    v-if="loading"
+                    :style-set="{
+                        component: {
+                            height: '100%',
+                            minHeight: `calc(var(--vs-line-height) * 1rem)`,
+                        },
+                    }"
+                />
                 <template v-else>
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         {{ cell.value }}

@@ -19,7 +19,7 @@
                         {{ header.value }}
                         <vs-render
                             v-if="header.sortable"
-                            class="w-auto! cursor-pointer pl-1"
+                            class="w-auto! shrink-0 cursor-pointer"
                             :content="getSortIcon(header)"
                             @click="updateSortType(header.colKey)"
                         />

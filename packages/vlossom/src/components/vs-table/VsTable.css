@@ -23,27 +23,24 @@
         }
     }
 
-    thead tr th {
-        background-color: var(--vs-table-headerBackgroundColor);
-        color: var(--vs-table-headerFontColor);
+    thead tr {
+        background-color: var(--vs-table-headerBackgroundColor, var(--vs-comp-bg));
+        color: var(--vs-table-headerFontColor, var(--vs-comp-font));
     }
 
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
-        &:hover {
-            background-color: var(--vs-area-bg-hover);
-        }
-
         &.vs-state-box {
-            outline: 0.1875rem dotted var(--vs-state-color);
-            outline-offset: -0.1875rem;
-            background-color: color-mix(in oklch, var(--vs-state-color) 28% transparent);
+            @apply outline-offset-[-0.1625rem];
+            outline: none;
+            border-left: 0.1625rem solid var(--vs-state-color);
+            background-color: color-mix(in oklch, var(--vs-state-color) 8%, transparent 20%);
         }
 
         &.vs-selected {
             background-color: var(--vs-table-selectedBackgroundColor, var(--vs-area-bg-active));
-            color: var(--vs-table-selectedFontColor);
+            color: var(--vs-table-selectedFontColor, var(--vs-area-font-active));
         }
 
         > td:not(.vs-table-expanded-row) {
@@ -53,16 +50,29 @@
         > td.vs-table-expanded-row {
             grid-row: 2;
             grid-column: 1 / -1;
-            border-top: none;
-            border-bottom: 0.0625rem solid var(--vs-line-color);
+            border: none;
             padding: 0;
+        }
+
+        &:hover {
+            background-color: var(--vs-area-bg-hover);
         }
     }
 
-    th,
-    td {
+    th {
         @apply flex items-center;
         border-top: 0.0625rem solid var(--vs-line-color);
+        border-bottom: 0.0625rem solid var(--vs-line-color);
+        padding: 0.625rem 0.875rem;
+        text-align: left;
+
+        > * {
+            @apply w-full;
+        }
+    }
+
+    td {
+        @apply flex items-center;
         border-bottom: 0.0625rem solid var(--vs-line-color);
         padding: 0.625rem 0.875rem;
         text-align: left;
@@ -94,21 +104,24 @@
     &.vs-dense {
         th,
         td {
-            padding: 0.375rem 0.5rem;
+            @apply px-[0.375rem] py-[0.5rem];
             font-size: var(--vs-font-size-sm);
         }
 
         td.vs-table-expanded-row {
-            padding: 0;
+            @apply px-0 py-0;
         }
     }
 
     &.vs-primary {
         thead tr th {
             border-color: var(--vs-primary-comp-bg);
-            background-color: var(--vs-primary-comp-bg);
-            color: var(--vs-primary-comp-font);
+            background-color: var(--vs-header-backgroundColor, var(--vs-primary-comp-bg));
+            color: var(--vs-header-fontColor, var(--vs-primary-comp-font));
+            font-weight: var(--vs-font-weight-bold);
         }
+
+        /* 색상 적용 필요한곳 찾고 적용 */
     }
 
     .vs-table-draggable-wrapper {
@@ -121,7 +134,7 @@
 
     /* Drag Cell */
     th.vs-table-drag-handle {
-        @apply w-6 content-none;
+        @apply w-6 px-0!;
         svg {
             @apply hidden;
         }
@@ -153,52 +166,57 @@ caption {
 }
 
 @container (max-width: 1024px) {
-    .vs-responsive {
-        tbody,
-        th,
-        td,
-        tr {
-            @apply block w-full border-x-0;
+    .vs-table {
+        &.vs-responsive {
+            tbody,
+            th,
+            td,
+            tr {
+                @apply block w-full border-x-0;
+            }
+
+            thead {
+                @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
+            }
+
+            tbody tr {
+                @apply mx-0 mb-3 border border-solid;
+                border: 0.0325rem solid var(--vs-line-color);
+            }
+
+            td {
+                @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+                grid-column: minmax(6rem, 9rem) 1fr;
+            }
+
+            td:first-child {
+                @apply border-t-0;
+            }
+
+            td:last-child {
+                @apply border-b-0;
+            }
+
+            td::before {
+                @apply font-bold;
+                content: attr(data-label);
+            }
+
+            td.vs-table-drag-handle {
+                @apply w-6 px-0 py-1;
+            }
+
+            &.vs-dense {
+                td,
+                th {
+                    @apply px-[0.375rem] py-[0.5rem];
+                    font-size: var(--vs-font-size-sm);
+                }
+            }
         }
 
-        thead {
-            @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
+        .vs-table-pagination {
+            @apply flex-col-reverse items-center justify-center gap-2;
         }
-
-        tbody tr {
-            @apply mx-0 mb-3 border border-solid;
-            border: 0.0325rem solid var(--vs-line-color);
-        }
-
-        td {
-            @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
-            grid-column: minmax(6rem, 9rem) 1fr;
-        }
-
-        td:first-child {
-            @apply border-t-0;
-        }
-
-        td:last-child {
-            @apply border-b-0;
-        }
-
-        td::before {
-            @apply font-bold;
-            content: attr(data-label);
-        }
-
-        td.vs-table-drag-handle {
-            @apply w-6 px-0 py-1;
-        }
-    }
-
-    .vs-table-pagination {
-        @apply flex-col-reverse items-center justify-center gap-2;
-    }
-
-    .vs-dense .vs-responsive td {
-        padding: 0.375rem 0.5rem;
-        font-size: var(--vs-font-size-sm);
     }
 }

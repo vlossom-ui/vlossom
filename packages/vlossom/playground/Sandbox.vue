@@ -15,6 +15,7 @@
                 선택된 항목: {{ selectedEmployees.map((e) => e.name).join(', ') }}
             </div>
             <vs-table
+                no-responsive
                 :columns="empCols"
                 :items="employees"
                 :selectable="() => true"
@@ -144,7 +145,7 @@
             <vs-table
                 :columns="empCols"
                 :items="employees"
-                :state="(row) => (row.role === 'Manager' ? 'info' : row.role === 'Lead' ? 'success' : undefined)"
+                :state="(row) => (row.role === 'Manager' ? 'info' : row.role === 'Lead' ? 'success' : 'error')"
             />
         </section>
 
@@ -168,7 +169,7 @@
         <section>
             <h2 class="section-title">16. 컴팩트 모드 (dense)</h2>
             <p class="section-desc">셀 패딩을 줄여 더 많은 데이터를 표시합니다</p>
-            <vs-table :columns="empCols" :items="employees" dense />
+            <vs-table no-responsive :columns="empCols" :items="employees" dense />
         </section>
 
         <!-- ⑰ primary 모드 -->
@@ -215,6 +216,7 @@
             <h2 class="section-title">21. 전체 기능 조합</h2>
             <p class="section-desc">검색 + 페이지네이션 + 선택 + 확장을 모두 조합합니다</p>
             <vs-table
+                :style-set="styleSet"
                 :columns="empCols"
                 :items="manyEmployees"
                 search
@@ -332,6 +334,13 @@ export default defineComponent({
             { label: '20', value: 20 },
             { label: '50', value: 50 },
         ];
+        const styleSet = ref({
+            component: {
+                row: {
+                    color: 'red',
+                },
+            },
+        });
 
         // ── 핸들러 ─────────────────────────────────
         function toggleLoading() {
@@ -346,8 +355,8 @@ export default defineComponent({
             actionLog.value = `삭제: ${item.name}`;
         }
 
-        function getRowState(row: Item): UIState | undefined {
-            return (row.status as UIState) ?? undefined;
+        function getRowState(row: Item): UIState {
+            return (row.status as UIState) ?? 'idle';
         }
 
         return {
@@ -370,6 +379,7 @@ export default defineComponent({
             handleEdit,
             handleDelete,
             getRowState,
+            styleSet,
         };
     },
 });

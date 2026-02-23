@@ -268,6 +268,7 @@ export default defineComponent({
             ([{ isIntersecting }]) => {
                 isHeaderOutOfView.value = !isIntersecting;
                 if (isIntersecting) {
+                    console.log('isIntersecting', vsLayoutHeader.value.height);
                     stickyHeaderTop.value = stringUtil.toStringSize(vsLayoutHeader.value.height);
                 }
             },
