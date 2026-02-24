@@ -94,6 +94,14 @@
         }
     }
 
+    th,
+    td {
+        * {
+            min-height: unset;
+            line-height: var(--vs-default-comp-height-md);
+        }
+    }
+
     .vs-table-search-input {
         @apply mb-2 flex justify-end;
     }
@@ -225,7 +233,10 @@ caption {
                 td,
                 th {
                     @apply px-[0.375rem] py-[0.5rem];
-                    font-size: var(--vs-font-size-sm);
+                    * {
+                        font-size: var(--vs-font-size-sm);
+                        line-height: var(--vs-default-comp-height-sm);
+                    }
                 }
             }
         }

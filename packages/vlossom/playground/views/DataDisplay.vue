@@ -183,11 +183,66 @@
                 <vs-text-wrap copy link="https://github.com">Copy and open link</vs-text-wrap>
             </vs-responsive>
         </vs-grid>
+        <vs-divider style-set="playground" />
+
+        <h3 class="mb-4 font-semibold">VsTable</h3>
+        <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
+            <vs-grid :grid-size="12">
+                <vs-checkbox-set
+                    v-model="tablePropsSelected"
+                    :options="tablePropsOptions"
+                    option-label="label"
+                    option-value="value"
+                    :grid="{ xs: 12, sm: 6, md: 4, lg: 8 }"
+                    :style-set="{ wrapper: { component: { width: '100%' } } }"
+                />
+            </vs-grid>
+        </div>
+        <vs-table
+            :columns="tableColumns"
+            :items="tableItems"
+            :dense="tablePropsSelected.includes('dense')"
+            :primary="tablePropsSelected.includes('primary')"
+            :selectable="tablePropsSelected.includes('selectable')"
+            :no-responsive="tablePropsSelected.includes('noResponsive')"
+            :sticky-header="tablePropsSelected.includes('stickyHeader')"
+            :loading="tablePropsSelected.includes('loading')"
+            :draggable="tablePropsSelected.includes('draggable')"
+            :expandable="tablePropsSelected.includes('expandable')"
+            :search="tablePropsSelected.includes('search')"
+            :pagination="tablePropsSelected.includes('pagination')"
+            :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
+            v-model:selected-items="tableSelectedItems"
+        >
+            <template #body-row1="{ item }">
+                <div v-if="tablePropsSelected.includes('customSlot')">
+                    <vs-input v-model="item.score" />
+                </div>
+                <span v-else class="w-full"> {{ item.score }} </span>
+            </template>
+            <template #body-col2="{ item }">
+                <div v-if="tablePropsSelected.includes('customSlot')">
+                    <vs-input v-model="item.score" />
+                </div>
+                <span v-else class="w-full"> {{ item.score }} </span>
+            </template>
+            <template #expand="{ cells }">
+                <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
+                    {{ cells[0]?.item.name }} — Score: {{ cells[0]?.item.score }}
+                </div>
+            </template>
+        </vs-table>
+
+        <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
+        </p>
     </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import type { UIState } from '@/declaration';
+import type { ColumnDef, Item } from '@/components';
 
 export default defineComponent({
     name: 'DataDisplay',
@@ -213,6 +268,61 @@ export default defineComponent({
             progressValue.value = Math.max(MIN_PROGRESS, progressValue.value - PROGRESS_STEP);
         }
 
+        // VsTable
+        const tablePropsOptions = [
+            { value: 'dense', label: 'Dense' },
+            { value: 'primary', label: 'Primary' },
+            { value: 'selectable', label: 'Selectable' },
+            { value: 'noResponsive', label: 'NoResponsive' },
+            { value: 'stickyHeader', label: 'StickyHeader' },
+            { value: 'loading', label: 'Loading' },
+            { value: 'draggable', label: 'Draggable' },
+            { value: 'expandable', label: 'Expandable' },
+            { value: 'search', label: 'Search' },
+            { value: 'pagination', label: 'Pagination' },
+            { value: 'state', label: 'UI State' },
+            { value: 'textAlignRight', label: 'Text Align Right' },
+            { value: 'customSlot', label: 'Custom Slot' },
+        ];
+        const tablePropsSelected = ref<string[]>([]);
+        const tableSelectedItems = ref<Item[]>([]);
+        const tableColumns = computed<ColumnDef[]>(() =>
+            [
+                { key: 'name', label: 'Name', sortable: true },
+                { key: 'role', label: 'Role' },
+                { key: 'status', label: 'Status' },
+                { key: 'score', label: 'Score', sortable: true },
+            ].map((column) => ({
+                ...column,
+                align: tablePropsSelected.value.includes('textAlignRight') ? 'right' : 'left',
+            })),
+        );
+        const tableItems: Item[] = [
+            { name: 'Alice', role: 'Admin', status: 'Active', score: 95 },
+            { name: 'Bob', role: 'Editor', status: 'Inactive', score: 20 },
+            { name: 'Charlie', role: 'Viewer', status: 'Active', score: 88 },
+            { name: 'Diana', role: 'Admin', status: 'Active', score: 91 },
+            { name: 'Eve', role: 'Editor', status: 'Active', score: 35 },
+            { name: 'Frank', role: 'Viewer', status: 'Active', score: 72 },
+            { name: 'Grace', role: 'Editor', status: 'Inactive', score: 45 },
+            { name: 'Henry', role: 'Admin', status: 'Active', score: 98 },
+        ];
+        function getRowState(item: Item): UIState {
+            if (item.status === 'Inactive') {
+                return 'error';
+            }
+            if (Number(item.score) >= 0 && Number(item.score) < 50) {
+                return 'warning';
+            }
+            if (Number(item.score) >= 90) {
+                return 'success';
+            }
+            if (item.status !== 'Active') {
+                return 'idle';
+            }
+            return 'info';
+        }
+
         return {
             progressValue,
             stepDefault,
@@ -224,6 +334,12 @@ export default defineComponent({
             pageGhost,
             increaseProgress,
             decreaseProgress,
+            tableSelectedItems,
+            tablePropsOptions,
+            tablePropsSelected,
+            tableColumns,
+            tableItems,
+            getRowState,
         };
     },
 });
