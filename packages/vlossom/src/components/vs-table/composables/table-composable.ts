@@ -19,7 +19,13 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZE_OPTIONS,
+    DEFAULT_PAGINATION_OPTIONS,
+    TABLE_SEARCH_OPTIONS,
+    toDefaultPageSizeOptions,
+} from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -90,18 +96,27 @@ export function useTable(
         if (!rawPagination?.value) {
             return {};
         }
-        if (typeof rawPagination?.value === 'boolean') {
-            return DEFAULT_PAGINATION_OPTIONS;
+        if (typeof rawPagination?.value !== 'boolean') {
+            return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
         }
 
-        return {
-            ...DEFAULT_PAGINATION_OPTIONS,
-            ...rawPagination.value,
-        };
+        if (
+            typeof rawPageSize?.value === 'number' &&
+            !DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value) // warning: page size not in pageSizeOptions
+        ) {
+            return {
+                ...DEFAULT_PAGINATION_OPTIONS,
+                pageSizeOptions: [
+                    ...DEFAULT_PAGE_SIZE_OPTIONS,
+                    toDefaultPageSizeOptions(rawPageSize.value as number),
+                ].sort((a, b) => a.value - b.value),
+            };
+        }
+        return DEFAULT_PAGINATION_OPTIONS;
     });
     const serverMode = computed(() => rawServerMode?.value ?? false);
     const internalPage = ref(0);
-    const internalPageSize = ref(DEFAULT_PAGE_SIZE);
+    const internalPageSize = ref(Number.NaN);
     const page = computed<number>({
         get: () => rawPage?.value ?? internalPage.value,
         set: (value: number) => {
@@ -111,9 +126,12 @@ export function useTable(
     });
     const pageSize = computed<number>({
         get: () => {
+            if(!Number.isNaN(internalPageSize.value)) {
+                return internalPageSize.value;
+            }
             const currentPageSize = rawPageSize?.value;
             if (!currentPageSize) {
-                return internalPageSize.value;
+                return DEFAULT_PAGE_SIZE;
             }
             return currentPageSize;
         },

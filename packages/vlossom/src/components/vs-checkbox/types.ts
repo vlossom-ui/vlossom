@@ -21,6 +21,7 @@ export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheck
 
 export interface VsCheckboxStyleSet {
     variables?: {
+        checkboxCheckedColor?: string;
         checkboxColor?: string;
         checkboxSize?: string;
     };

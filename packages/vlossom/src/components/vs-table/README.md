@@ -337,15 +337,14 @@ function handleDrag(event) {
 ```typescript
 interface VsTableStyleSet {
     variables?: {
+        stickyHeaderTop?: string;
         selectedBackgroundColor?: string;
         selectedFontColor?: string;
-        headerBackgroundColor?: string;
-        headerFontColor?: string;
     };
     component?: CSSProperties;
+    header?: CSSProperties;
     row?: CSSProperties;
     cell?: CSSProperties;
-    expand?: CSSProperties;
 }
 ```
 

@@ -1,15 +1,15 @@
 <template>
-    <tr :class="[classObj, stateClasses]" :style="{ ...gridStyle, ...rowStyle }">
+    <tr :class="[classObj, stateClasses]" :style="rowStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
                 <slot name="select" :cells :rowIdx />
             </template>
         </vs-table-checkbox-cell>
-        <template v-for="cell in cells" :key="cell.id">
+        <template v-for="(cell, index) in cells" :key="cell.id">
             <td
                 :id="cell.id"
-                :style="cellStyle"
+                :style="getCellStyle(index)"
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
@@ -24,13 +24,15 @@
                 />
                 <template v-else>
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                        {{ cell.value }}
+                        <span class="w-full">
+                            {{ cell.value }}
+                        </span>
                     </slot>
                 </template>
             </td>
         </template>
         <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        <td v-if="anyExpandable" class="vs-table-expanded-row" :style="expandStyle">
+        <td v-if="anyExpandable" class="vs-table-expanded-row">
             <vs-table-expanded-panel :cells :rowIdx>
                 <template #expand="{ cells, rowIdx }">
                     <slot name="expand" :cells :rowIdx />
@@ -41,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs } from 'vue';
+import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
@@ -84,6 +86,7 @@ export default defineComponent({
             selectedItems,
             state: stateFn,
             items,
+            columns,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const state = computed<UIState>(() => {
@@ -101,9 +104,7 @@ export default defineComponent({
             'vs-selected': isSelected.value,
         }));
 
-        const rowStyle = computed(() => tableStyleSet?.value?.row);
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
-        const expandStyle = computed(() => tableStyleSet?.value?.expand);
         const gridStyle = computed(() => {
             const cols: string[] = [];
             if (draggable?.value) {
@@ -122,6 +123,17 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
+        const rowStyle = computed(() => ({ ...tableStyleSet?.value?.row, ...gridStyle.value }));
+
+        function getCellStyle(index: number): CSSProperties {
+            return {
+                ...cellStyle.value,
+                width: columns.value?.[index]?.width,
+                maxWidth: columns.value?.[index]?.maxWidth,
+                minWidth: columns.value?.[index]?.minWidth,
+                textAlign: columns.value?.[index]?.align,
+            };
+        }
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -165,11 +177,9 @@ export default defineComponent({
             anyExpandable,
             draggable,
             loading,
-            gridStyle,
             classObj,
             rowStyle,
-            cellStyle,
-            expandStyle,
+            getCellStyle,
             stateClasses,
             clickCell,
             findMatchingSlotName,

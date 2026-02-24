@@ -51,6 +51,12 @@
             grid-column: 1 / -1;
             border: none;
             padding: 0;
+
+            .vs-table-expand-fallback {
+                margin: 0;
+                font: inherit;
+                white-space: pre-wrap;
+            }
         }
 
         &:hover {
@@ -136,17 +142,22 @@
         display: contents;
     }
 
-    /* Drag Cell */
     th.vs-table-drag-handle {
         @apply w-6 px-0!;
         svg {
             @apply hidden;
         }
     }
-
     td.vs-table-drag-handle {
         @apply w-6 cursor-grab px-0!;
         color: var(--vs-line-color);
+    }
+
+    th.vs-table-expand-handle {
+        @apply w-16;
+    }
+    td.vs-table-expand-handle {
+        @apply w-16;
     }
 }
 

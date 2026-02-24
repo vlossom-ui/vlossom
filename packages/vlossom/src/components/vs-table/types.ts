@@ -15,16 +15,15 @@ export interface VsTableStyleSet {
         stickyHeaderTop?: string;
         selectedBackgroundColor?: string;
         selectedFontColor?: string;
-        headerBackgroundColor?: string;
-        headerFontColor?: string;
     };
     component?: CSSProperties;
+    header?: CSSProperties;
     row?: CSSProperties;
     cell?: CSSProperties;
-    expand?: CSSProperties;
 }
 
-export type VsTablePageSizeOptions = { label: string; value: number }[];
+export type VsTablePageSizeOption = { label: string; value: number };
+export type VsTablePageSizeOptions = VsTablePageSizeOption[];
 export interface VsTablePaginationOptions {
     pageSizeOptions?: VsTablePageSizeOptions;
     showPageSizeSelect?: boolean;

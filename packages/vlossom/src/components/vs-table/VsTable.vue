@@ -82,8 +82,9 @@ import {
     type VsTableStyleSet,
     type VsTablePaginationOptions,
     getRowItem,
+    type VsTablePageSizeOptions,
 } from './types';
-import { DEFAULT_PAGE_SIZE, TABLE_DRAG_WRAPPER_CLASS } from './constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
@@ -177,10 +178,15 @@ export default defineComponent({
                     logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 1');
                     return false;
                 }
-                if (_props.pagination && typeof _props.pagination === 'object' && _props.pagination.pageSizeOptions) {
-                    const isValidPageSize = _props.pagination.pageSizeOptions.some((option) => option.value === value);
+                if (_props.pagination) {
+                    const pageSizeOptions: VsTablePageSizeOptions =
+                        typeof _props.pagination === 'object'
+                            ? (_props.pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS)
+                            : DEFAULT_PAGE_SIZE_OPTIONS;
+
+                    const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
                     if (!isValidPageSize) {
-                        logUtil.propWarning(componentName, 'pageSize', 'pageSize is not in pageSizeOptions');
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
                         return true;
                     }
                 }
