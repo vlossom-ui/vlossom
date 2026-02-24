@@ -28,7 +28,9 @@ export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
             return this.columnDefs.map((header: ColumnDef, colIdx: number) => ({
                 tag,
                 id: `${stringUtil.kebabCase(header.key)}-${stringUtil.createID()}`,
-                value: objectUtil.get(item, header.key),
+                value: header.transform
+                    ? header.transform(objectUtil.get(item, header.key), item)
+                    : objectUtil.get(item, header.key),
                 item,
                 colKey: header.key,
                 colIdx,

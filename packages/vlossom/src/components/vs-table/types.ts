@@ -67,7 +67,7 @@ export interface ColumnDef<I = Item> {
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
     skipSearch?: boolean;
-    transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
+    transform?: (value: unknown, item: I) => unknown;
 }
 
 export interface Cell<I = Item> {
