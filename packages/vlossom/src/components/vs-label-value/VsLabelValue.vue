@@ -32,9 +32,10 @@ export default defineComponent({
         ...getResponsiveProps(),
         dense: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
+        vertical: { type: Boolean, default: false },
     },
     setup(props) {
-        const { colorScheme, styleSet, dense, primary } = toRefs(props);
+        const { colorScheme, styleSet, dense, primary, vertical } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -43,6 +44,7 @@ export default defineComponent({
         const classObj = computed(() => ({
             'vs-dense': dense.value,
             'vs-primary': primary.value,
+            'vs-vertical': vertical.value,
         }));
 
         return {

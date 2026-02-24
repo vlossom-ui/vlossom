@@ -57,10 +57,8 @@
             }
         }
     }
-}
 
-@container (max-width: 768px) {
-    .vs-label-value {
+    &.vs-vertical {
         @apply w-full flex-col;
 
         > .vs-cell {
