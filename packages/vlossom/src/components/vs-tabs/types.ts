@@ -18,6 +18,7 @@ export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
 export interface VsTabsStyleSet {
     variables?: {
         gap?: string;
+        line?: string;
     };
     tab?: CSSProperties;
     activeTab?: CSSProperties;
