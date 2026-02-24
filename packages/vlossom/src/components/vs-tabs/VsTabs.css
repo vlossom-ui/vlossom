@@ -3,7 +3,7 @@
 .vs-tabs {
     --vs-tabs-gap: initial;
     --vs-tabs-height: initial;
-    --vs-tabs-line: initial;
+    --vs-tabs-divider: initial;
 
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     --tab-border: 1px solid transparent;
@@ -22,7 +22,7 @@
         .vs-tab-list {
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
 
-            border-bottom: var(--vs-tabs-line, 1px solid var(--tab-border-color));
+            border-bottom: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
             height: var(--vs-tabs-height, var(--vs-default-comp-height-md));
 
             .vs-tab-item {
@@ -98,7 +98,7 @@
             .vs-tab-list {
                 @apply flex-col items-stretch;
 
-                border-right: var(--vs-tabs-line, 1px solid var(--tab-border-color));
+                border-right: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
                 border-bottom: 0;
 
                 .vs-tab-item {

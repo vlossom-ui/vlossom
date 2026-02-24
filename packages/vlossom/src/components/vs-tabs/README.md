@@ -265,7 +265,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 interface VsTabsStyleSet {
     variables?: {
         gap?: string;
-        line?: string;
+        divider?: CSSProperties['border'];
     };
     tab?: CSSProperties;
     activeTab?: CSSProperties;
@@ -285,7 +285,7 @@ interface VsTabsStyleSet {
         v-model="selectedTab"
         :tabs="tabs"
         :style-set="{
-            variables: { gap: '0.5rem', line: '2px solid #ccc' },
+            variables: { gap: '0.5rem', divider: '2px solid #ccc' },
             tab: { fontWeight: '600' },
             activeTab: { backgroundColor: '#e8e8e8' },
             scrollButton: {

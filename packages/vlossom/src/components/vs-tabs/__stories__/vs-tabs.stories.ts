@@ -485,7 +485,7 @@ export const StyleSet: Story = {
             description: {
                 story:
                     '인라인 스타일 객체를 사용한 커스텀 탭입니다.' +
-                    'styleSet prop에 variables(gap, line), tab, activeTab, scrollButton을 전달하여 세밀한 커스터마이징이 가능합니다.',
+                    'styleSet prop에 variables(gap, divider), tab, activeTab, scrollButton을 전달하여 세밀한 커스터마이징이 가능합니다.',
             },
         },
     },
@@ -493,7 +493,7 @@ export const StyleSet: Story = {
         tabs: ['Custom 1', 'Custom 2', 'Custom 3', 'Custom 4', 'Custom 5', 'Custom 6', 'Custom 7', 'Custom 8'],
         scrollButtons: 'show',
         styleSet: {
-            variables: { gap: '1rem', line: '2px solid #b968c7' },
+            variables: { gap: '1rem', divider: '2px solid #b968c7' },
             tab: { fontWeight: '600' },
             activeTab: { backgroundColor: '#f0e6f5' },
             scrollButton: {
