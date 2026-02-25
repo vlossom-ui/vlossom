@@ -40,7 +40,6 @@
         @apply flex items-center px-3.5 py-2.5;
         border-top: 0.0625rem solid var(--vs-line-color);
         border-bottom: 0.0625rem solid var(--vs-line-color);
-        /* left, center, right */
         text-align: left;
 
         > * {
