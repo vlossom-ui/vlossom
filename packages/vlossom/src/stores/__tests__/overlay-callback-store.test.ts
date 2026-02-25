@@ -43,7 +43,7 @@ describe('OverlayCallbackStore', () => {
             // then
             expect(store.overlays.value).toHaveLength(1);
             expect(store.overlays.value[0][0]).toBe(overlayId);
-            expect(store.overlays.value[0][1]).toBe(callbacks);
+            expect(store.overlays.value[0][1]).toStrictEqual(callbacks);
             expect(vlossomOpenCallback).toHaveBeenCalledTimes(1);
             expect(openCallback).toHaveBeenCalledTimes(1);
         });
@@ -71,9 +71,7 @@ describe('OverlayCallbackStore', () => {
             const callbacks: Ref<OverlayCallbacks> = ref({});
 
             // when & then
-            expect(async () => {
-                await store.push(overlayId, callbacks);
-            }).not.toThrow();
+            expect(() => store.push(overlayId, callbacks)).not.toThrow();
             expect(store.overlays.value).toHaveLength(1);
         });
     });
@@ -145,9 +143,7 @@ describe('OverlayCallbackStore', () => {
             await store.push(overlayId, callbacks);
 
             // when & then
-            expect(async () => {
-                await store.pop();
-            }).not.toThrow();
+            expect(() => store.pop()).not.toThrow();
             expect(store.overlays.value).toHaveLength(0);
         });
     });
@@ -182,9 +178,7 @@ describe('OverlayCallbackStore', () => {
             await store.push(overlayId, callbacks);
 
             // when & then
-            expect(async () => {
-                await store.remove('non-existing-overlay');
-            }).not.toThrow();
+            expect(() => store.remove('non-existing-overlay')).not.toThrow();
             expect(store.overlays.value).toHaveLength(1);
         });
 
@@ -257,9 +251,7 @@ describe('OverlayCallbackStore', () => {
 
         it('overlay가 없을 때도 정상 작동해야 한다', async () => {
             // when & then
-            expect(async () => {
-                await store.clear();
-            }).not.toThrow();
+            expect(() => store.clear()).not.toThrow();
         });
 
         it('인자를 모든 콜백에 전달해야 한다', async () => {
