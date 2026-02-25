@@ -54,6 +54,7 @@ export function useTable(
         loading,
         draggable,
         primary,
+        dense,
     } = toRefs(props);
 
     // normalize
@@ -96,23 +97,24 @@ export function useTable(
         if (!rawPagination?.value) {
             return {};
         }
-        if (typeof rawPagination?.value !== 'boolean') {
-            return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+        if (typeof rawPagination?.value === 'boolean') {
+            return DEFAULT_PAGINATION_OPTIONS;
         }
+        if (typeof rawPageSize?.value === 'number') {
+            const isValidPageSize = DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value);
+            if (!isValidPageSize) {
+                return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+            }
 
-        if (
-            typeof rawPageSize?.value === 'number' &&
-            !DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value) // warning: page size not in pageSizeOptions
-        ) {
+            const pageSizeOptions = [...DEFAULT_PAGE_SIZE_OPTIONS]
+                .concat(toDefaultPageSizeOptions(rawPageSize.value as number))
+                .sort((a, b) => a.value - b.value);
             return {
                 ...DEFAULT_PAGINATION_OPTIONS,
-                pageSizeOptions: [
-                    ...DEFAULT_PAGE_SIZE_OPTIONS,
-                    toDefaultPageSizeOptions(rawPageSize.value as number),
-                ].sort((a, b) => a.value - b.value),
+                pageSizeOptions,
             };
         }
-        return DEFAULT_PAGINATION_OPTIONS;
+        return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
     });
     const serverMode = computed(() => rawServerMode?.value ?? false);
     const internalPage = ref(0);
@@ -126,7 +128,8 @@ export function useTable(
     });
     const pageSize = computed<number>({
         get: () => {
-            if(!Number.isNaN(internalPageSize.value)) {
+            // NaN === internalPageSize, means that pageSize is about to be initialized
+            if (!Number.isNaN(internalPageSize.value)) {
                 return internalPageSize.value;
             }
             const currentPageSize = rawPageSize?.value;
@@ -139,7 +142,8 @@ export function useTable(
             internalPageSize.value = value;
             cb?.updatePageSize(value);
 
-            page.value = 0; // NOTE: reset page to 0 when page size changes
+            // reset page to 0 when page size changes
+            page.value = 0;
         },
     });
 
@@ -250,6 +254,7 @@ export function useTable(
         pageStartIndex,
         pageEndIndex,
         primary,
+        dense,
     };
 }
 
@@ -272,6 +277,7 @@ export type TableComposable = {
     loading: Ref<boolean | undefined> | undefined;
     draggable: Ref<boolean | undefined> | undefined;
     primary: Ref<boolean | undefined> | undefined;
+    dense: Ref<boolean | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
     page: ComputedRef<number>;

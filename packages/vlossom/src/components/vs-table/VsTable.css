@@ -125,7 +125,10 @@
         th,
         td {
             @apply px-[0.375rem] py-[0.5rem];
-            font-size: var(--vs-font-size-sm);
+            * {
+                font-size: var(--vs-font-size-sm);
+                line-height: var(--vs-default-comp-height-sm);
+            }
         }
 
         td.vs-table-expanded-row {

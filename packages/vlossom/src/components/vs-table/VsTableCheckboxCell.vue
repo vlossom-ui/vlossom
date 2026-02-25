@@ -65,15 +65,15 @@ export default defineComponent({
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
         const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
-            if (primary?.value) {
-                return {
-                    variables: {
-                        checkboxColor: 'var(--vs-comp-bg)',
-                        checkboxCheckedColor: 'var(--vs-comp-font)',
-                    },
-                };
+            if (!primary?.value) {
+                return {};
             }
-            return {};
+            return {
+                variables: {
+                    checkboxColor: 'var(--vs-comp-bg)',
+                    checkboxCheckedColor: 'var(--vs-comp-font)',
+                },
+            };
         });
 
         function isRowSelectable(row: Cell[], rowIdx: number): boolean {

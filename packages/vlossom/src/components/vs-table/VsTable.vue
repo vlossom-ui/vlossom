@@ -127,14 +127,16 @@ export default defineComponent({
             type: Boolean,
             default: false,
             validator: (serverMode: boolean, props: unknown) => {
-                const _props = props as PropsOf<VsComponent.VsTable>;
-                if (serverMode && typeof _props.pagination === 'object' && !_props.pagination.totalItemCount) {
-                    logUtil.propError(
-                        componentName,
-                        'serverMode',
-                        'totalItemCount is required when serverMode is true',
-                    );
-                    return false;
+                const { pagination } = props as PropsOf<VsComponent.VsTable>;
+                if (serverMode && typeof pagination === 'object') {
+                    if (!pagination.totalItemCount) {
+                        logUtil.propError(
+                            componentName,
+                            'serverMode',
+                            'totalItemCount is required when serverMode is true',
+                        );
+                        return false;
+                    }
                 }
                 return true;
             },
@@ -173,17 +175,22 @@ export default defineComponent({
             type: Number as PropType<number>,
             default: DEFAULT_PAGE_SIZE,
             validator: (value: number, props: unknown) => {
-                const _props = props as PropsOf<VsComponent.VsTable>;
+                const { pagination } = props as PropsOf<VsComponent.VsTable>;
                 if (value <= 0) {
                     logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 1');
                     return false;
                 }
-                if (_props.pagination) {
+                if (pagination && typeof pagination === 'object') {
                     const pageSizeOptions: VsTablePageSizeOptions =
-                        typeof _props.pagination === 'object'
-                            ? (_props.pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS)
-                            : DEFAULT_PAGE_SIZE_OPTIONS;
-
+                        pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS;
+                    const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
+                    if (!isValidPageSize) {
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
+                        return true;
+                    }
+                }
+                if (pagination && typeof pagination === 'boolean') {
+                    const pageSizeOptions: VsTablePageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS;
                     const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
                     if (!isValidPageSize) {
                         logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
@@ -277,6 +284,7 @@ export default defineComponent({
                 isHeaderOutOfView.value = !isIntersecting;
                 if (isIntersecting) {
                     const headerHeight = vsLayoutHeader.value.height;
+                    // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
                     if (stringUtil.toStringSize(boundingClientRect.top + scrollY.value) > headerHeight) {
                         stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
                         return;

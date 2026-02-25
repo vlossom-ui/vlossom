@@ -13,15 +13,7 @@
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
-                <vs-skeleton
-                    v-if="loading"
-                    :style-set="{
-                        component: {
-                            height: '100%',
-                            minHeight: `calc(var(--vs-line-height) * 1rem)`,
-                        },
-                    }"
-                />
+                <vs-skeleton v-if="loading" :style-set="skeletonStyleSet" />
                 <template v-else>
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
                         <span class="w-full">
@@ -87,6 +79,7 @@ export default defineComponent({
             state: stateFn,
             items,
             columns,
+            dense,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const state = computed<UIState>(() => {
@@ -124,6 +117,14 @@ export default defineComponent({
             };
         });
         const rowStyle = computed(() => ({ ...tableStyleSet?.value?.row, ...gridStyle.value }));
+        const skeletonStyleSet = computed(() => ({
+            component: {
+                height: '100%',
+                minHeight: dense?.value
+                    ? 'calc(var(--vs-default-comp-height-sm))'
+                    : 'calc(var(--vs-default-comp-height-md))',
+            },
+        }));
 
         function getCellStyle(index: number): CSSProperties {
             return {
@@ -179,6 +180,7 @@ export default defineComponent({
             loading,
             classObj,
             rowStyle,
+            skeletonStyleSet,
             getCellStyle,
             stateClasses,
             clickCell,

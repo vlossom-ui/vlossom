@@ -16,7 +16,7 @@
                     @click.prevent.stop="clickCell(header, $event)"
                 >
                     <slot :name="findMatchingSlotName(header)" :header>
-                        <div class="block w-full p-0!" style="text-align: inherit">
+                        <div>
                             {{ header.value }}
                             <vs-render
                                 v-if="header.sortable"

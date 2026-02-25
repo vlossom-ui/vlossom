@@ -28,13 +28,8 @@ export default defineComponent({
         const { draggable } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
-        const tag = computed<Tag>(() => {
-            return isBodyRow(cells.value) ? 'td' : 'th';
-        });
-
-        const cellStyle = computed(() => {
-            return tableStyleSet?.value?.cell;
-        });
+        const tag = computed<Tag>(() => (isBodyRow(cells.value) ? 'td' : 'th'));
+        const cellStyle = computed(() => tableStyleSet?.value?.cell);
 
         return {
             TABLE_DRAG_HANDLE_CLASS,
