@@ -19,7 +19,7 @@
     thead tr th {
         grid-row: 1;
         color: var(--vs-table-headerFontColor, var(--vs-comp-font));
-        font-weight: var(--vs-font-weight-medium);
+        font-weight: var(--vs-font-weight);
     }
 
     thead tr {
@@ -39,7 +39,7 @@
 
         &.vs-selected {
             background-color: var(--vs-table-selectedBackgroundColor, var(--vs-area-bg-active));
-            color: var(--vs-table-selectedFontColor, var(--vs-area-font-active));
+            color: var(--vs-table-selectedFontColor, var(--vs-font-color));
         }
 
         > td:not(.vs-table-expanded-row) {

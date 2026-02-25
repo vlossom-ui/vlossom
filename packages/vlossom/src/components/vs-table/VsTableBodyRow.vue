@@ -39,6 +39,7 @@ import { defineComponent, inject, computed, type ComputedRef, type PropType, toR
 import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
+import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
 import { TABLE_STYLE_SET_TOKEN, type BodyCell, type VsTableStyleSet, getRowItem } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
@@ -97,8 +98,8 @@ export default defineComponent({
             'vs-selected': isSelected.value,
         }));
 
-        const cellStyle = computed(() => tableStyleSet?.value?.cell);
-        const gridStyle = computed(() => {
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
                 cols.push('auto');
@@ -116,8 +117,11 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
-        const rowStyle = computed(() => ({ ...tableStyleSet?.value?.row, ...gridStyle.value }));
-        const skeletonStyleSet = computed(() => ({
+        const rowStyle = computed<CSSProperties | undefined>(() => ({
+            ...tableStyleSet?.value?.row,
+            ...gridStyle.value,
+        }));
+        const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
             component: {
                 height: '100%',
                 minHeight: dense?.value

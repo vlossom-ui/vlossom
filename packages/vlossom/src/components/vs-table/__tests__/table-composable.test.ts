@@ -365,15 +365,15 @@ describe('useTable', () => {
             });
         });
 
-        describe('pageSize -1 (전체 데이터 표시)', () => {
-            it('pageSize가 -1이면 모든 데이터를 1페이지에 표시한다', async () => {
+        describe('pageSize Infinity (전체 데이터 표시)', () => {
+            it('pageSize가 Infinity이면 모든 데이터를 1페이지에 표시한다', async () => {
                 const items = Array.from({ length: 100 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const { table } = setupUseTable({
                     columns: ['name'],
                     items,
                     pagination: true,
                     page: 0,
-                    pageSize: -1,
+                    pageSize: Infinity,
                 });
 
                 await nextTick();
@@ -383,14 +383,14 @@ describe('useTable', () => {
                 expect(table.totalPages.value).toBe(1);
             });
 
-            it('pageSize가 -1일 때 bodyCells에 모든 아이템이 포함된다', async () => {
+            it('pageSize가 Infinity일 때 bodyCells에 모든 아이템이 포함된다', async () => {
                 const items = Array.from({ length: 50 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const { table } = setupUseTable({
                     columns: ['name'],
                     items,
                     pagination: true,
                     page: 0,
-                    pageSize: -1,
+                    pageSize: Infinity,
                 });
 
                 await nextTick();
@@ -399,7 +399,7 @@ describe('useTable', () => {
                 expect(table.bodyCells.value[49][0].value).toBe('User 49');
             });
 
-            it('서버 모드에서 pageSize가 -1이면 totalItemCount 기반으로 전체 데이터를 표시한다', async () => {
+            it('서버 모드에서 pageSize가 Infinity이면 totalItemCount 기반으로 전체 데이터를 표시한다', async () => {
                 const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const { table } = setupUseTable({
                     columns: ['name'],
@@ -409,7 +409,7 @@ describe('useTable', () => {
                     },
                     serverMode: true,
                     page: 0,
-                    pageSize: -1,
+                    pageSize: Infinity,
                 });
 
                 await nextTick();

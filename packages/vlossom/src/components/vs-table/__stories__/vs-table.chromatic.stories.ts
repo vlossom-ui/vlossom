@@ -235,7 +235,7 @@ export const VisualRegressionMatrix: Story = {
                     <vs-table
                         :columns="baseColumns"
                         :items="baseItems.map((item, i) =>
-                            ({ ...item, status: ['success', 'warning', 'error', 'info'][i % 4] as UIState }))"
+                            ({ ...item, status: ['success', 'warning', 'error', 'info'][i % 4] }))"
                         :state="(item) => item.status"
                     />
                 </section>

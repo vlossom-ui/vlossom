@@ -59,8 +59,8 @@ export default defineComponent({
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
-        const cellStyle = computed(() => tableStyleSet?.value?.cell);
-        const gridStyle = computed(() => {
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
                 cols.push('auto');
@@ -78,7 +78,7 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
-        const headerStyle = computed(() => ({
+        const headerStyle = computed<CSSProperties | undefined>(() => ({
             ...tableStyleSet?.value?.row,
             ...tableStyleSet?.value?.header,
             ...gridStyle.value,

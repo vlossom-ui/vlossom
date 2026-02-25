@@ -105,12 +105,14 @@ export function useTable(
             if (!isValidPageSize) {
                 return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
             }
-
+            const addedOption = toDefaultPageSizeOptions(rawPageSize.value as number);
             const pageSizeOptions = [...DEFAULT_PAGE_SIZE_OPTIONS]
-                .concat(toDefaultPageSizeOptions(rawPageSize.value as number))
+                .filter((option) => option.value !== addedOption.value)
+                .concat(addedOption)
                 .sort((a, b) => a.value - b.value);
             return {
                 ...DEFAULT_PAGINATION_OPTIONS,
+                ...rawPagination.value,
                 pageSizeOptions,
             };
         }
@@ -141,7 +143,6 @@ export function useTable(
         set: (value: number) => {
             internalPageSize.value = value;
             cb?.updatePageSize(value);
-
             // reset page to 0 when page size changes
             page.value = 0;
         },
