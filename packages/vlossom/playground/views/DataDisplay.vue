@@ -187,16 +187,13 @@
 
         <h3 class="mb-4 font-semibold">VsTable</h3>
         <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
-            <vs-grid :grid-size="12">
-                <vs-checkbox-set
-                    v-model="tablePropsSelected"
-                    :options="tablePropsOptions"
-                    option-label="label"
-                    option-value="value"
-                    :grid="{ xs: 12, sm: 6, md: 4, lg: 8 }"
-                    :style-set="{ wrapper: { component: { width: '100%' } } }"
-                />
-            </vs-grid>
+            <vs-checkbox-set
+                v-model="tablePropsSelected"
+                :options="tablePropsOptions"
+                option-label="label"
+                option-value="value"
+                :style-set="{ wrapper: { component: { width: '100%' } } }"
+            />
         </div>
         <vs-table
             :columns="tableColumns"
@@ -307,17 +304,20 @@ export default defineComponent({
             { name: 'Grace', role: 'Editor', status: 'Inactive', score: 45 },
             { name: 'Henry', role: 'Admin', status: 'Active', score: 98 },
         ];
-        function getRowState(item: Item): UIState {
+        function getRowState(item: Item, index?: number): UIState {
             if (item.status === 'Inactive') {
                 return 'error';
             }
-            if (Number(item.score) >= 0 && Number(item.score) < 50) {
+            if (index === undefined) {
+                return 'idle';
+            }
+            if (index % 2 === 0) {
                 return 'warning';
             }
-            if (Number(item.score) >= 90) {
+            if (index % 3 === 0) {
                 return 'success';
             }
-            if (item.status !== 'Active') {
+            if (index % 5 === 0) {
                 return 'idle';
             }
             return 'info';
