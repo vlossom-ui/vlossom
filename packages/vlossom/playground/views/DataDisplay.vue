@@ -178,40 +178,42 @@
                 :style-set="{ wrapper: { component: { width: '100%' } } }"
             />
         </div>
-        <vs-table
-            :columns="tableColumns"
-            :items="tableItems"
-            :dense="tablePropsSelected.includes('dense')"
-            :primary="tablePropsSelected.includes('primary')"
-            :selectable="tablePropsSelected.includes('selectable')"
-            :no-responsive="tablePropsSelected.includes('noResponsive')"
-            :sticky-header="tablePropsSelected.includes('stickyHeader')"
-            :loading="tablePropsSelected.includes('loading')"
-            :draggable="tablePropsSelected.includes('draggable')"
-            :expandable="tablePropsSelected.includes('expandable')"
-            :search="tablePropsSelected.includes('search')"
-            :pagination="tablePropsSelected.includes('pagination')"
-            :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
-            v-model:selected-items="tableSelectedItems"
-        >
-            <template #body-row1="{ item }">
-                <div v-if="tablePropsSelected.includes('customSlot')">
-                    <vs-input v-model="item.score" />
-                </div>
-                <span v-else class="w-full"> {{ item.score }} </span>
-            </template>
-            <template #body-col2="{ item }">
-                <div v-if="tablePropsSelected.includes('customSlot')">
-                    <vs-input v-model="item.score" />
-                </div>
-                <span v-else class="w-full"> {{ item.score }} </span>
-            </template>
-            <template #expand="{ cells }">
-                <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
-                    {{ cells[0]?.item.name }} — Score: {{ cells[0]?.item.score }}
-                </div>
-            </template>
-        </vs-table>
+        <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
+            <vs-table
+                :columns="tableColumns"
+                :items="tableItems"
+                :dense="tablePropsSelected.includes('dense')"
+                :primary="tablePropsSelected.includes('primary')"
+                :selectable="tablePropsSelected.includes('selectable')"
+                :no-responsive="tablePropsSelected.includes('noResponsive')"
+                :sticky-header="tablePropsSelected.includes('stickyHeader')"
+                :loading="tablePropsSelected.includes('loading')"
+                :draggable="tablePropsSelected.includes('draggable')"
+                :expandable="tablePropsSelected.includes('expandable')"
+                :search="tablePropsSelected.includes('search')"
+                :pagination="tablePropsSelected.includes('pagination')"
+                :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
+                v-model:selected-items="tableSelectedItems"
+            >
+                <template #body-row1="{ item }">
+                    <div v-if="tablePropsSelected.includes('customSlot')">
+                        <vs-input v-model="item.score" />
+                    </div>
+                    <span v-else class="w-full"> {{ item.score }} </span>
+                </template>
+                <template #body-col2="{ item }">
+                    <div v-if="tablePropsSelected.includes('customSlot')">
+                        <vs-input v-model="item.score" />
+                    </div>
+                    <span v-else class="w-full"> {{ item.score }} </span>
+                </template>
+                <template #expand="{ cells }">
+                    <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
+                        {{ cells[0]?.item.name }} — Score: {{ cells[0]?.item.score }}
+                    </div>
+                </template>
+            </vs-table>
+        </div>
 
         <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
             Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}

@@ -65,7 +65,7 @@ import {
     inject,
     type ComputedRef,
 } from 'vue';
-import { useIntersectionObserver, useWindowScroll } from '@vueuse/core';
+import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
 import { LAYOUT_STORE_KEY, type SearchProps, type UIState, VsComponent, type PropsOf } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
@@ -231,7 +231,6 @@ export default defineComponent({
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
-        const { y: scrollY } = useWindowScroll();
 
         const isHeaderOutOfView = ref<boolean>(true);
         const stickyHeaderTop = ref<string>('0px');
@@ -269,10 +268,10 @@ export default defineComponent({
             headerRef,
             ([{ isIntersecting, boundingClientRect }]) => {
                 isHeaderOutOfView.value = !isIntersecting;
-                if (isIntersecting) {
+                if (!isIntersecting) {
                     const headerHeight = vsLayoutHeader.value.height;
                     // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
-                    if (stringUtil.toStringSize(boundingClientRect.top + scrollY.value) > headerHeight) {
+                    if (stringUtil.toStringSize(boundingClientRect.top) < stringUtil.toStringSize(headerHeight)) {
                         stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
                         return;
                     }
