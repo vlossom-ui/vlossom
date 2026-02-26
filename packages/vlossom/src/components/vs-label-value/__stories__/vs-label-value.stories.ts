@@ -51,6 +51,14 @@ const meta: Meta<typeof VsLabelValue> = {
             control: 'boolean',
             description: '강조 스타일 적용',
         },
+        vertical: {
+            control: 'boolean',
+            description: '레이블-값을 항상 세로 배치',
+        },
+        responsiveVertical: {
+            control: 'boolean',
+            description: '컨테이너 768px 이하에서 세로 배치로 전환',
+        },
         width: {
             control: 'text',
             description: '컴포넌트 너비 (예: 400px)',
@@ -120,6 +128,44 @@ export const Dense: Story = {
                 <template #label>Dense</template>
                 ${LOREM_IPSUM}
             </vs-label-value>
+        `,
+    }),
+};
+
+export const Vertical: Story = {
+    args: {
+        vertical: true,
+    },
+    render: (args: any) => ({
+        components: { VsLabelValue },
+        setup() {
+            return { args };
+        },
+        template: `
+            <vs-label-value v-bind="args">
+                <template #label>Vertical Layout</template>
+                레이블이 위, 값이 아래로 배치됩니다.
+            </vs-label-value>
+        `,
+    }),
+};
+
+export const ResponsiveVertical: Story = {
+    args: {
+        responsiveVertical: true,
+    },
+    render: (args: any) => ({
+        components: { VsLabelValue },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div style="container-type: inline-size; width: 100%;">
+                <vs-label-value v-bind="args">
+                    <template #label>Responsive Vertical</template>
+                    ${LOREM_IPSUM}
+                </vs-label-value>
+            </div>
         `,
     }),
 };

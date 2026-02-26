@@ -43,9 +43,9 @@
 
 ```html
 <template>
-    <!-- 화면 크기가 작아지면 세로로 배치됩니다 -->
+    <!-- responsive-vertical 사용 시 컨테이너 768px 이하에서 세로 배치 -->
     <div class="max-w-md">
-        <vs-label-value>
+        <vs-label-value responsive-vertical>
             <template #label>긴 레이블 텍스트</template>
             이것은 반응형 동작을 테스트하기 위한 긴 값입니다.
             화면 크기가 작아지면 세로로 배치됩니다.
@@ -56,14 +56,16 @@
 
 ## Props
 
-| Prop          | Type                             | Default | Required | Description                       |
-| ------------- | -------------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`                    | -       | -        | 컴포넌트 색상 테마                |
-| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
-| `width`       | `string`                         | -       | -        | 컴포넌트 너비 (예: `'400px'`)     |
-| `grid`        | `number`                         | -       | -        | 12 그리드 시스템 기반 너비 (1~12) |
-| `dense`       | `boolean`                        | `false` | -        | 압축된 스타일 적용                |
-| `primary`     | `boolean`                        | `false` | -        | 강조 스타일 적용                  |
+| Prop                 | Type                             | Default | Required | Description                                    |
+| -------------------- | -------------------------------- | ------- | -------- | ---------------------------------------------- |
+| `colorScheme`        | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                             |
+| `styleSet`           | `string \| VsLabelValueStyleSet` | -       | -        | 커스텀 스타일 설정 객체                        |
+| `width`              | `string`                         | -       | -        | 컴포넌트 너비 (예: `'400px'`)                  |
+| `grid`               | `number`                         | -       | -        | 12 그리드 시스템 기반 너비 (1~12)              |
+| `dense`              | `boolean`                        | `false` | -        | 압축된 스타일 적용                             |
+| `primary`            | `boolean`                        | `false` | -        | 강조 스타일 적용                               |
+| `vertical`           | `boolean`                        | `false` | -        | 레이블-값을 항상 세로 배치                     |
+| `responsiveVertical` | `boolean`                        | `false` | -        | 컨테이너 768px 이하에서 세로 배치로 전환       |
 
 ## Types
 
@@ -74,9 +76,9 @@ interface VsLabelValueStyleSet {
     variables?: {
         border?: string;
     };
+    component?: CSSProperties;
     label?: CSSProperties;
     value?: CSSProperties;
-    component?: CSSProperties;
 }
 ```
 
@@ -116,8 +118,7 @@ interface VsLabelValueStyleSet {
 
 ## 특징
 
-- **반응형 레이아웃**: 컨테이너 쿼리를 사용하여 768px 이하에서 자동으로 세로 배치로 전환
-- **Tailwind CSS 통합**: Tailwind 클래스와 CSS 변수의 하이브리드 접근 방식으로 최적화된 스타일링
+- **세로/반응형 레이아웃**: `vertical`로 항상 세로 배치, `responsiveVertical`로 컨테이너 쿼리 768px 이하에서 세로 배치 전환
 - **유연한 커스터마이징**: 레이블과 값 영역을 각각 독립적으로 스타일링 가능
 - **Dense 모드**: 공간이 제한된 환경에서 사용할 수 있는 압축된 스타일
 - **Primary 강조**: 중요한 정보를 강조하기 위한 primary 스타일
