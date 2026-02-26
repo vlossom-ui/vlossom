@@ -55,7 +55,7 @@ const meta: Meta<typeof VsLabelValue> = {
             control: 'boolean',
             description: '레이블-값을 항상 세로 배치',
         },
-        responsiveVertical: {
+        responsive: {
             control: 'boolean',
             description: '컨테이너 768px 이하에서 세로 배치로 전환',
         },
@@ -150,9 +150,9 @@ export const Vertical: Story = {
     }),
 };
 
-export const ResponsiveVertical: Story = {
+export const Responsive: Story = {
     args: {
-        responsiveVertical: true,
+        responsive: true,
     },
     render: (args: any) => ({
         components: { VsLabelValue },
