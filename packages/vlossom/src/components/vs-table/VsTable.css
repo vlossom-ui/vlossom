@@ -3,8 +3,6 @@
 .vs-table {
     --vs-table-selectedBackgroundColor: initial;
     --vs-table-selectedFontColor: initial;
-    --vs-table-headerBackgroundColor: initial;
-    --vs-table-headerFontColor: initial;
 
     @apply relative w-full;
 
@@ -18,13 +16,8 @@
 
     thead tr th {
         grid-row: 1;
-        color: var(--vs-table-headerFontColor, var(--vs-comp-font));
+        color: var(--vs-comp-font);
         font-weight: var(--vs-font-weight);
-    }
-
-    thead tr {
-        background-color: var(--vs-table-headerBackgroundColor, var(--vs-comp-bg));
-        color: var(--vs-table-headerFontColor, var(--vs-comp-font));
     }
 
     tbody tr {

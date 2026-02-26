@@ -236,21 +236,8 @@ export default defineComponent({
         const isHeaderOutOfView = ref<boolean>(true);
         const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
-        const baseStyleSet = ref({});
-        const additionalStyleSet = computed<VsTableStyleSet>(() => {
-            return {
-                variables: {
-                    stickyHeaderTop: stickyHeaderTop.value,
-                },
-            };
-        });
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTableStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-            additionalStyleSet,
-        );
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
         const table: TableComposable = useTable(
             props,
             { searchInputRef },

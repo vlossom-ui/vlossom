@@ -12,7 +12,6 @@ export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
 
 export interface VsTableStyleSet {
     variables?: {
-        stickyHeaderTop?: string;
         selectedBackgroundColor?: string;
         selectedFontColor?: string;
     };

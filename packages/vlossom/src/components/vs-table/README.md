@@ -337,7 +337,6 @@ function handleDrag(event) {
 ```typescript
 interface VsTableStyleSet {
     variables?: {
-        stickyHeaderTop?: string;
         selectedBackgroundColor?: string;
         selectedFontColor?: string;
     };
