@@ -336,13 +336,10 @@ function handleDrag(event) {
 
 ```typescript
 interface VsTableStyleSet {
-    variables?: {
-        selectedBackgroundColor?: string;
-        selectedFontColor?: string;
-    };
     component?: CSSProperties;
     header?: CSSProperties;
     row?: CSSProperties;
+    selectedRow?: CSSProperties;
     cell?: CSSProperties;
 }
 ```

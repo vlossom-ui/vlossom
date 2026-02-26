@@ -1,9 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-table {
-    --vs-table-selectedBackgroundColor: initial;
-    --vs-table-selectedFontColor: initial;
-
     @apply relative w-full;
 
     table {
@@ -28,11 +25,6 @@
             outline: none;
             border-left: 0.1625rem solid var(--vs-state-color);
             background-color: color-mix(in oklch, var(--vs-state-color) 8%, transparent 20%);
-        }
-
-        &.vs-selected {
-            background-color: var(--vs-table-selectedBackgroundColor, var(--vs-area-bg-active));
-            color: var(--vs-table-selectedFontColor, var(--vs-font-color));
         }
 
         > td:not(.vs-table-expanded-row) {

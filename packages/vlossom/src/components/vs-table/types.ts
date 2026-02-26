@@ -11,13 +11,10 @@ declare module 'vue' {
 export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
 
 export interface VsTableStyleSet {
-    variables?: {
-        selectedBackgroundColor?: string;
-        selectedFontColor?: string;
-    };
     component?: CSSProperties;
     header?: CSSProperties;
     row?: CSSProperties;
+    selectedRow?: CSSProperties;
     cell?: CSSProperties;
 }
 
