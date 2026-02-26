@@ -59,7 +59,7 @@
     }
 
     &.vs-vertical {
-        @apply w-full flex-col;
+        @apply flex-col;
 
         > .vs-cell {
             @apply justify-start px-[1.2rem] py-[0.8rem];
@@ -74,6 +74,29 @@
             > .vs-cell {
                 &.vs-label {
                     border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+                }
+            }
+        }
+    }
+
+    @container (max-width: 768px) {
+        &.vs-responsive-vertical {
+            @apply flex-col;
+
+            > .vs-cell {
+                @apply justify-start px-[1.2rem] py-[0.8rem];
+
+                &.vs-label {
+                    @apply basis-auto border-r-0;
+                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+                }
+            }
+
+            &.vs-primary {
+                > .vs-cell {
+                    &.vs-label {
+                        border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+                    }
                 }
             }
         }
