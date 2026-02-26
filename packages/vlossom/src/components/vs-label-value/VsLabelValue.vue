@@ -8,7 +8,7 @@
         <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.label">
             <slot name="label" />
         </div>
-        <div v-if="$slots.default" class="vs-cell vs-value" :style="componentStyleSet.value">
+        <div class="vs-cell vs-value" :style="componentStyleSet.value">
             <slot />
         </div>
     </vs-responsive>
