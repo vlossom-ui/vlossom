@@ -58,7 +58,6 @@ description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
 **useStyleSet 사용**
 - [ ] `useStyleSet` 호출이 올바른가?
 - [ ] `baseStyleSet`이 필요한 경우 적절히 사용되었는가?
-- [ ] `additionalStyleSet`이 4번째 인자로 전달되는가? (3번째에 넣으면 base 자리!)
 - [ ] 고정값 baseStyleSet에 `ref` 사용을 검토했는가? (`computed`도 허용)
 - [ ] 같은 모듈에서 여러 import가 하나로 통합되었는가?
 - [ ] 실제 코드 파일에 불필요한 주석이 없는가? (types.ts, Vue, CSS)
@@ -142,20 +141,7 @@ interface VsCardStyleSet {
 }
 ```
 
-**❌ 안티패턴 5: additionalStyleSet을 3번째 인자에 배치**
-```typescript
-// BAD - additionalStyleSet이 baseStyleSet 자리에 들어감 (우선순위 낮아짐)
-useStyleSet(componentName, styleSet, additionalStyleSet);
-
-// GOOD - 반드시 4번째 인자
-useStyleSet(componentName, styleSet, baseStyleSet, additionalStyleSet);
-
-// GOOD - additionalStyleSet만 필요할 때 빈 baseStyleSet 사용
-const baseStyleSet: Ref<Vs[ComponentName]StyleSet> = ref({});
-useStyleSet(componentName, styleSet, baseStyleSet, additionalStyleSet);
-```
-
-**❌ 안티패턴 6: 상태 수식어 suffix 패턴**
+**❌ 안티패턴 5: 상태 수식어 suffix 패턴**
 ```typescript
 // BAD - suffix 패턴 (코드베이스 비표준)
 stepActive?: CSSProperties;
@@ -166,7 +152,7 @@ activeStep?: CSSProperties;
 activeLabel?: CSSProperties;
 ```
 
-**❌ 안티패턴 7: px 단위 사용**
+**❌ 안티패턴 6: px 단위 사용**
 ```css
 /* BAD */
 padding: 12px 16px;
@@ -177,7 +163,7 @@ padding: 0.75rem 1rem;
 font-size: var(--vs-size-font);
 ```
 
-**❌ 안티패턴 8: 기본 테마 색상을 variables에 노출**
+**❌ 안티패턴 7: 기본 테마 색상을 variables에 노출**
 ```typescript
 // BAD - 기본 테마 색상 (ColorScheme이 자동 관리)
 variables?: {
@@ -199,7 +185,7 @@ variables?: {
 };
 ```
 
-**❌ 안티패턴 9: props로 받는 값을 StyleSet 인터페이스에 포함**
+**❌ 안티패턴 8: props로 받는 값을 StyleSet 인터페이스에 포함**
 ```typescript
 // BAD - height는 props로 받아서 additionalStyleSet으로 처리됨
 export interface VsBarStyleSet {

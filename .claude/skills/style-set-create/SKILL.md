@@ -189,7 +189,6 @@ export default defineComponent({
 | `baseStyleSet` (3번째) | 하위 컴포넌트 기본값, 고정 스타일 | `ref({})` 권장 (고정값), `computed` 허용 (반응성 필요시) |
 | `additionalStyleSet` (4번째) | props에서 오는 동적 값 (최우선) | `computed` (항상 반응성 필요) |
 
-> **주의**: `additionalStyleSet`을 3번째에 넣으면 `baseStyleSet` 자리에 들어가서 우선순위가 낮아짐!
 
 > **성능 팁**: 고정값은 `ref({...})`가 `computed(() => ({...}))`보다 효율적이지만, 둘 다 허용됩니다.
 
@@ -286,9 +285,7 @@ export default defineComponent({
 - [ ] import가 같은 모듈에서 통합되었는가?
 
 #### 컴포넌트
-- [ ] `useStyleSet` 호출 인자 순서가 올바른가? (3번째=base, 4번째=additional)
 - [ ] `baseStyleSet`이 고정값이면 `ref` 사용을 검토했는가? (`computed`도 허용, `ref` 권장)
-- [ ] `additionalStyleSet`이 있다면 반드시 4번째 인자인가?
 - [ ] Template에서 스타일 병합 순서가 올바른가?
 - [ ] 하위 컴포넌트에 `:style-set` prop 전달하는가?
 - [ ] undefined spread 안전한가? (`styleSetVariables`와 `componentStyleSet`은 useStyleSet이 보장)
