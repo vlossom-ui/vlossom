@@ -168,23 +168,6 @@
         </vs-grid>
         <vs-divider style-set="playground" />
 
-        <h3 class="mb-4 font-semibold">VsTextWrap</h3>
-        <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Copy</h4>
-                <vs-text-wrap copy>Copy this text to clipboard</vs-text-wrap>
-            </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Link</h4>
-                <vs-text-wrap link="https://github.com">Open GitHub</vs-text-wrap>
-            </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Both</h4>
-                <vs-text-wrap copy link="https://github.com">Copy and open link</vs-text-wrap>
-            </vs-responsive>
-        </vs-grid>
-        <vs-divider style-set="playground" />
-
         <h3 class="mb-4 font-semibold">VsTable</h3>
         <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
             <vs-checkbox-set
@@ -233,6 +216,23 @@
         <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
             Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
         </p>
+        <vs-divider style-set="playground" />
+
+        <h3 class="mb-4 font-semibold">VsTextWrap</h3>
+        <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Copy</h4>
+                <vs-text-wrap copy>Copy this text to clipboard</vs-text-wrap>
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Link</h4>
+                <vs-text-wrap link="https://github.com">Open GitHub</vs-text-wrap>
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Both</h4>
+                <vs-text-wrap copy link="https://github.com">Copy and open link</vs-text-wrap>
+            </vs-responsive>
+        </vs-grid>
     </section>
 </template>
 
