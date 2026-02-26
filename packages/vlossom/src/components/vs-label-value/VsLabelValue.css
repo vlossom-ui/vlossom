@@ -68,6 +68,10 @@
                 @apply basis-auto border-r-0;
                 border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
             }
+
+            &.vs-value {
+                min-height: 2.5rem;
+            }
         }
 
         &.vs-primary {
@@ -89,6 +93,10 @@
                 &.vs-label {
                     @apply basis-auto border-r-0;
                     border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+                }
+
+                &.vs-value {
+                    min-height: 2.5rem;
                 }
             }
 
