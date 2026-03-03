@@ -8,7 +8,7 @@
         <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.label">
             <slot name="label" />
         </div>
-        <div v-if="$slots.default" class="vs-cell vs-value" :style="componentStyleSet.value">
+        <div class="vs-cell vs-value" :style="componentStyleSet.value">
             <slot />
         </div>
     </vs-responsive>
@@ -32,9 +32,11 @@ export default defineComponent({
         ...getResponsiveProps(),
         dense: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
+        vertical: { type: Boolean, default: false },
+        responsive: { type: Boolean, default: false },
     },
     setup(props) {
-        const { colorScheme, styleSet, dense, primary } = toRefs(props);
+        const { colorScheme, styleSet, dense, primary, vertical, responsive } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -43,6 +45,8 @@ export default defineComponent({
         const classObj = computed(() => ({
             'vs-dense': dense.value,
             'vs-primary': primary.value,
+            'vs-vertical': vertical.value,
+            'vs-responsive-vertical': responsive.value,
         }));
 
         return {
