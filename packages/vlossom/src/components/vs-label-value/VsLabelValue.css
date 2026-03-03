@@ -81,6 +81,14 @@
                 }
             }
         }
+
+        &.vs-dense {
+            > .vs-cell {
+                &.vs-value {
+                    min-height: 1.5rem;
+                }
+            }
+        }
     }
 
     @container (max-width: 768px) {
@@ -104,6 +112,14 @@
                 > .vs-cell {
                     &.vs-label {
                         border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+                    }
+                }
+            }
+
+            &.vs-dense {
+                > .vs-cell {
+                    &.vs-value {
+                        min-height: 1.5rem;
                     }
                 }
             }
