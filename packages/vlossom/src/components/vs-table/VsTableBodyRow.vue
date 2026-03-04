@@ -1,5 +1,5 @@
 <template>
-    <tr :class="stateClasses" :style="rowStyle">
+    <tr :class="[classObj, stateClasses]" :style="rowStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
@@ -95,6 +95,10 @@ export default defineComponent({
             return selectedItems.value.includes(getRowItem(props.cells));
         });
 
+        const classObj = computed(() => ({
+            'vs-selected': isSelected.value,
+        }));
+
         const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
         const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
@@ -115,13 +119,15 @@ export default defineComponent({
             };
         });
         const rowStyle = computed<CSSProperties | undefined>(() => {
-            const selectedStyleSet = tableStyleSet?.value?.selectedRow ?? {
-                backgroundColor: 'var(--vs-area-bg-active)',
-                color: 'var(--vs-font-color)',
-            };
+            if (isSelected.value) {
+                return {
+                    ...tableStyleSet?.value?.row,
+                    ...tableStyleSet?.value?.selectedRow,
+                    ...gridStyle.value,
+                };
+            }
             return {
                 ...tableStyleSet?.value?.row,
-                ...(isSelected.value ? selectedStyleSet : {}),
                 ...gridStyle.value,
             };
         });
@@ -186,6 +192,7 @@ export default defineComponent({
             anyExpandable,
             draggable,
             loading,
+            classObj,
             rowStyle,
             skeletonStyleSet,
             getCellStyle,
