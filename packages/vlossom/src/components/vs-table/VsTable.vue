@@ -1,8 +1,5 @@
 <template>
-    <div
-        :class="['vs-table', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
-    >
+    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
         <vs-search-input
             v-if="search"
             ref="searchInputRef"
@@ -236,7 +233,7 @@ export default defineComponent({
         const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
         const table: TableComposable = useTable(
             props,
             { searchInputRef },
@@ -327,7 +324,6 @@ export default defineComponent({
         return {
             TABLE_DRAG_WRAPPER_CLASS,
             colorSchemeClass,
-            styleSetVariables,
             componentStyleSet,
             classObj,
             headerRef,
