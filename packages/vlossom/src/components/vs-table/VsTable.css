@@ -1,6 +1,8 @@
 @reference 'tailwindcss';
 
 .vs-table {
+    --vs-table-sticky-header-z-index: 100;
+
     @apply relative w-full;
 
     table {
@@ -98,7 +100,7 @@
 
     .vs-table-sticky-header {
         @apply sticky w-full;
-        z-index: var(--vs-table-z-index);
+        z-index: var(--vs-table-sticky-header-z-index);
         box-shadow: 0 0.125rem 0.25rem var(--vs-comp-shadow);
         background-color: var(--vs-no-color);
     }
