@@ -1,21 +1,24 @@
 <template>
-    <tr :style="gridStyle">
+    <tr :class="[classObj, stateClasses]" :style="rowStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="{ cells, rowIdx }">
                 <slot name="select" :cells :rowIdx />
             </template>
         </vs-table-checkbox-cell>
-        <template v-for="cell in cells" :key="cell.id">
+        <template v-for="(cell, index) in cells" :key="cell.id">
             <td
                 :id="cell.id"
+                :style="getCellStyle(index)"
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
-                <vs-skeleton v-if="loading" :style-set="{ component: { height: '1.25rem' } }" />
+                <vs-skeleton v-if="loading" :style-set="skeletonStyleSet" />
                 <template v-else>
                     <slot :name="findMatchingSlotName(cell)" :item="cell.item">
-                        {{ cell.value }}
+                        <span class="w-full">
+                            {{ cell.value }}
+                        </span>
                     </slot>
                 </template>
             </td>
@@ -32,9 +35,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type PropType } from 'vue';
+import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
-import type { BodyCell } from './types';
+import { useStateClass } from '@/composables';
+import type { UIState } from '@/declaration';
+import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
+import { TABLE_STYLE_SET_TOKEN, type BodyCell, type VsTableStyleSet, getRowItem } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
@@ -63,10 +69,38 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
-        const { anyExpandable, anySelectable, draggable, headerCells, loading } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { cells, rowIdx: rowIndex } = toRefs(props);
+        const {
+            anyExpandable,
+            anySelectable,
+            draggable,
+            headerCells,
+            loading,
+            selectedItems,
+            state: stateFn,
+            items,
+            columns,
+            dense,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+        const state = computed<UIState>(() => {
+            return stateFn.value(getRowItem(cells.value), rowIndex.value, items?.value);
+        });
+        const { stateClasses } = useStateClass(state);
 
-        const gridStyle = computed(() => {
+        const isSelected = computed(() => {
+            if (!anySelectable.value) {
+                return false;
+            }
+            return selectedItems.value.includes(getRowItem(props.cells));
+        });
+
+        const classObj = computed(() => ({
+            'vs-selected': isSelected.value,
+        }));
+
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
                 cols.push('auto');
@@ -84,6 +118,37 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
+        const rowStyle = computed<CSSProperties | undefined>(() => {
+            if (isSelected.value) {
+                return {
+                    ...tableStyleSet?.value?.row,
+                    ...tableStyleSet?.value?.selectedRow,
+                    ...gridStyle.value,
+                };
+            }
+            return {
+                ...tableStyleSet?.value?.row,
+                ...gridStyle.value,
+            };
+        });
+        const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
+            component: {
+                height: '100%',
+                minHeight: dense?.value
+                    ? 'calc(var(--vs-default-comp-height-sm))'
+                    : 'calc(var(--vs-default-comp-height-md))',
+            },
+        }));
+
+        function getCellStyle(index: number): CSSProperties {
+            return {
+                ...cellStyle.value,
+                width: columns.value?.[index]?.width,
+                maxWidth: columns.value?.[index]?.maxWidth,
+                minWidth: columns.value?.[index]?.minWidth,
+                textAlign: columns.value?.[index]?.align,
+            };
+        }
 
         function findMatchingSlotName(cell: BodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
@@ -127,7 +192,11 @@ export default defineComponent({
             anyExpandable,
             draggable,
             loading,
-            gridStyle,
+            classObj,
+            rowStyle,
+            skeletonStyleSet,
+            getCellStyle,
+            stateClasses,
             clickCell,
             findMatchingSlotName,
             selectRow,

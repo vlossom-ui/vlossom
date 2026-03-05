@@ -1,11 +1,12 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td v-if="anyExpandable">
+        <td v-if="anyExpandable" class="vs-table-expand-handle" :style="cellStyle">
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 small
+                :primary
                 :disabled="loading"
-                :style-set="{ variables: { padding: '0' } }"
+                :style-set="{ variables: { padding: '0' }, component: { height: '2rem' } }"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <vs-render
@@ -17,14 +18,14 @@
         </td>
     </template>
     <template v-else>
-        <th v-if="anyExpandable" />
+        <th v-if="anyExpandable" class="vs-table-expand-handle" :style="cellStyle" />
     </template>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, type PropType } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { type Cell, getRowItem, isBodyRow, type BodyCell } from './types';
+import { type Cell, getRowItem, isBodyRow, type BodyCell, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
 import { tableIcons } from './icons';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
@@ -44,8 +45,11 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading } =
+        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+
+        const cellStyle = computed(() => tableStyleSet?.value?.cell);
 
         function isExpandable(cells: BodyCell[], rowIdx: number): boolean {
             return expandable.value(getRowItem(cells), rowIdx, items.value);
@@ -65,7 +69,9 @@ export default defineComponent({
             isExpanded,
             expandRow,
             tableIcons,
+            cellStyle,
             loading,
+            primary,
         };
     },
 });

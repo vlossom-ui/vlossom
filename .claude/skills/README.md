@@ -162,10 +162,7 @@
 # 1단계: 현재 상태 리뷰
 /style-set-review VsOldComponent
 
-# 2단계: 개선 방안 확인
-
-# 3단계: 필요시 마이그레이션
-/style-set-migrate VsOldComponent
+# 2단계: 리뷰 결과에 따라 개선
 ```
 
 ### 3. PR 리뷰 시
@@ -237,9 +234,9 @@ Skills를 활용한 개발의 기대 효과:
 
 ## 🔗 관련 문서
 
-- [Style-Set 가이드라인](../packages/vlossom/STYLE_SET_GUIDELINES.md)
-- [useStyleSet Composable](../packages/vlossom/src/composables/style-set-composable.ts)
-- [컴포넌트 예제](../packages/vlossom/src/components/)
+- [Style-Set 가이드라인](../../packages/vlossom/STYLE_SET_GUIDELINES.md)
+- [useStyleSet Composable](../../packages/vlossom/src/composables/style-set-composable.ts)
+- [컴포넌트 예제](../../packages/vlossom/src/components/)
 
 ---
 
@@ -247,10 +244,10 @@ Skills를 활용한 개발의 기대 효과:
 
 ### Skill 활용 팁
 
-1. **순서대로 사용**: create → 구현 → review → (필요시) migrate
+1. **순서대로 사용**: create → 구현 → review
 2. **자주 리뷰**: 작은 단위로 자주 검증
 3. **가이드라인 참고**: 상세한 내용은 STYLE_SET_GUIDELINES.md 참고
-4. **예제 학습**: 기존 마이그레이션된 컴포넌트(VsButton, VsAccordion 등) 참고
+4. **예제 학습**: 기존 컴포넌트(VsButton, VsAccordion 등) 참고
 
 ### 일반적인 실수 방지
 

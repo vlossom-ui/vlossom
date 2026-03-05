@@ -1,7 +1,7 @@
 <template>
     <thead>
         <template v-if="headerCells.length">
-            <tr :style="gridStyle">
+            <tr :style="headerStyle">
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="{ cells, rowIdx }">
@@ -9,19 +9,22 @@
                     </template>
                 </vs-table-checkbox-cell>
                 <th
-                    v-for="header in headerCells"
+                    v-for="(header, index) in headerCells"
                     :key="header.id"
                     :id="header.id"
+                    :style="getCellStyle(index)"
                     @click.prevent.stop="clickCell(header, $event)"
                 >
                     <slot :name="findMatchingSlotName(header)" :header>
-                        {{ header.value }}
-                        <vs-render
-                            v-if="header.sortable"
-                            class="w-auto! cursor-pointer pl-1"
-                            :content="getSortIcon(header)"
-                            @click="updateSortType(header.colKey)"
-                        />
+                        <div>
+                            {{ header.value }}
+                            <vs-render
+                                v-if="header.sortable"
+                                class="inline-block shrink-0 cursor-pointer align-middle"
+                                :content="getSortIcon(header)"
+                                @click="updateSortType(header.colKey)"
+                            />
+                        </div>
                     </slot>
                 </th>
                 <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
@@ -31,9 +34,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed } from 'vue';
+import { defineComponent, inject, computed, type ComputedRef, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
-import { SortType, type HeaderCell } from './types';
+import { SortType, TABLE_STYLE_SET_TOKEN, type HeaderCell, type VsTableStyleSet } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -52,10 +55,12 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row'],
     setup(_props, { slots, emit }) {
-        const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType } =
+        const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType, columns } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
-        const gridStyle = computed(() => {
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
                 cols.push('auto');
@@ -73,6 +78,21 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
+        const headerStyle = computed<CSSProperties | undefined>(() => ({
+            ...tableStyleSet?.value?.row,
+            ...tableStyleSet?.value?.header,
+            ...gridStyle.value,
+        }));
+
+        function getCellStyle(index: number): CSSProperties {
+            return {
+                ...cellStyle.value,
+                width: columns.value?.[index]?.width,
+                maxWidth: columns.value?.[index]?.maxWidth,
+                minWidth: columns.value?.[index]?.minWidth,
+                textAlign: columns.value?.[index]?.align,
+            };
+        }
 
         function findMatchingSlotName(header: HeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
@@ -116,12 +136,13 @@ export default defineComponent({
         return {
             HEADER_ROW_INDEX,
             headerCells,
-            gridStyle,
             findMatchingSlotName,
             clickCell,
             selectRow,
             getSortIcon,
             updateSortType,
+            headerStyle,
+            getCellStyle,
         };
     },
 });

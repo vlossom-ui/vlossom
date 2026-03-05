@@ -128,10 +128,11 @@ export interface Vs[ComponentName]StyleSet {
 #### Setup 함수
 
 ```typescript
-import { computed, defineComponent, toRefs, type ComputedRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type ComputedRef, type Ref } from 'vue';
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { objectUtil } from '@/utils';
 import type { Vs[ComponentName]StyleSet } from './types';
 
 const componentName = VsComponent.Vs[ComponentName];
@@ -148,22 +149,28 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        // baseStyleSet이 필요한 경우
-        const baseStyleSet: ComputedRef<Vs[ComponentName]StyleSet> = computed(() => {
-            return {
-                // 하위 컴포넌트 기본값
-                childComponent: {
-                    component: {
-                        width: '100%',
-                    },
-                },
-            };
+        // ✅ 기본값이 있는 경우: 반응성이 필요하면 computed, 아니면 ref 사용
+        const baseStyleSet: Ref<Vs[ComponentName]StyleSet> = ref({
+            childComponent: {
+                component: { width: '100%' },
+            },
+        });
+
+        // ✅ props에서 동적 값이 오는 경우: additionalStyleSet (4번째 인자)
+        // objectUtil.shake는 undefined 값의 키를 제거하여 불필요한 오버라이드 방지
+        const additionalStyleSet = computed<Vs[ComponentName]StyleSet>(() => {
+            return objectUtil.shake({
+                component: objectUtil.shake({
+                    height: props.height || undefined,
+                }),
+            });
         });
 
         const { componentStyleSet, styleSetVariables } = useStyleSet<Vs[ComponentName]StyleSet>(
             componentName,
             styleSet,
-            baseStyleSet, // 선택적
+            baseStyleSet,          // 3번째: 기본값 (가장 낮은 우선순위)
+            additionalStyleSet,    // 4번째: props 동적 값 (가장 높은 우선순위)
         );
 
         return {
@@ -174,6 +181,16 @@ export default defineComponent({
     },
 });
 ```
+
+#### useStyleSet 인자 규칙
+
+| 인자 | 용도 | 반응성 |
+|------|------|--------|
+| `baseStyleSet` (3번째) | 하위 컴포넌트 기본값, 고정 스타일 | `ref({})` 권장 (고정값), `computed` 허용 (반응성 필요시) |
+| `additionalStyleSet` (4번째) | props에서 오는 동적 값 (최우선) | `computed` (항상 반응성 필요) |
+
+
+> **성능 팁**: 고정값은 `ref({...})`가 `computed(() => ({...}))`보다 효율적이지만, 둘 다 허용됩니다.
 
 #### Template
 
@@ -257,20 +274,29 @@ export default defineComponent({
 - [ ] 인터페이스명이 `Vs[ComponentName]StyleSet`인가?
 - [ ] `variables`에 자주 변경되는 속성만 있는가?
 - [ ] 중첩이 2단계를 넘지 않는가?
-- [ ] `component?: CSSProperties` 포함되었는가?
+- [ ] `component?: CSSProperties` 포함되었는가? (루트 스타일링 필요시)
 - [ ] 하위 컴포넌트 StyleSet이 올바르게 참조되는가?
-- [ ] JSDoc 주석이 추가되었는가?
+- [ ] `wrapper?: VsInputWrapperStyleSet` 포함되었는가? (form 컴포넌트에서 VsInputWrapper 사용시)
+- [ ] 타입 안전한 CSS 속성 타입을 사용했는가? (`CSSProperties['objectFit'] & {}` 등)
+
+#### 네이밍
+- [ ] 상태 수식어가 prefix 패턴인가? (`activeStep` ✅, `stepActive` ❌)
+- [ ] 속성명이 내용을 반영하는가? (`content` ✅, `expand` ❌ — 동작이 아닌 내용 기반)
+- [ ] import가 같은 모듈에서 통합되었는가?
 
 #### 컴포넌트
-- [ ] `useStyleSet` 호출이 올바른가?
+- [ ] `baseStyleSet`이 고정값이면 `ref` 사용을 검토했는가? (`computed`도 허용, `ref` 권장)
 - [ ] Template에서 스타일 병합 순서가 올바른가?
 - [ ] 하위 컴포넌트에 `:style-set` prop 전달하는가?
+- [ ] undefined spread 안전한가? (`styleSetVariables`와 `componentStyleSet`은 useStyleSet이 보장)
+- [ ] README.md의 Types 섹션이 새 StyleSet 구조를 반영하는가?
 
 #### CSS
 - [ ] 변수명이 `--vs-[component]-[property]` 규칙을 따르는가?
 - [ ] 불필요한 CSS 변수가 없는가?
-- [ ] fallback 값이 적절한가?
-- [ ] 디자인 토큰을 우선 사용하는가?
+- [ ] fallback 값이 적절한가? (디자인 토큰 우선: `var(--vs-comp-bg)`)
+- [ ] rem 단위를 우선 사용했는가? (px 대신 rem)
+- [ ] 기존 CSS 변수가 하위 컴포넌트에서 참조되면 보존했는가?
 
 ## 실전 예제
 
@@ -406,11 +432,153 @@ export interface VsCardStyleSet {
 - 사용자가 직접 제어해야 함
 - slot으로 제공되는 콘텐츠
 
+## 코딩 규칙 (Rules 기반)
+
+### 네이밍 규칙
+
+**상태 수식어는 prefix 패턴 사용:**
+
+```typescript
+// ✅ CORRECT: prefix 패턴 (코드베이스 표준)
+step?: CSSProperties;
+activeStep?: CSSProperties;
+label?: CSSProperties;
+activeLabel?: CSSProperties;
+progress?: CSSProperties;
+activeProgress?: CSSProperties;
+
+// ❌ WRONG: suffix 패턴
+stepActive?: CSSProperties;
+labelActive?: CSSProperties;
+```
+
+**속성명은 내용 기반 (동작이 아닌):**
+
+```typescript
+// ✅ CORRECT: 내용을 반영
+content?: CSSProperties;   // 무엇이 들어있는지
+title?: CSSProperties;
+
+// ❌ WRONG: 동작을 반영
+expand?: CSSProperties;    // 무엇을 하는지
+```
+
+### 타입 안전성
+
+**CSSProperties 인덱싱으로 타입 안전한 CSS 값:**
+
+```typescript
+// ✅ CORRECT: 타입 안전 (& {}는 자동완성 지원 트릭)
+variables?: {
+    objectFit?: CSSProperties['objectFit'] & {};
+};
+
+// ❌ WRONG: 범용 string
+variables?: {
+    objectFit?: string;  // 아무 값이나 가능
+};
+```
+
+### Partial<T> 사용 가이드
+
+```typescript
+// ✅ PREFERRED (baseStyleSet 고정값): Partial 없이 ref 사용
+const baseStyleSet: Ref<VsButtonStyleSet> = ref({...})
+
+// ✅ OK (additionalStyleSet): computed 필요, Partial 허용
+const additionalStyleSet: ComputedRef<Partial<VsButtonStyleSet>> = computed(...)
+// 또는 Partial 없이도 가능 (모든 속성이 이미 optional)
+const additionalStyleSet = computed<VsButtonStyleSet>(() => ({...}))
+```
+
+> **참고**: `Partial<T>`는 모든 속성이 이미 optional이면 기술적으로 불필요하지만, 기존 코드베이스에서 `additionalStyleSet`에 광범위하게 사용 중이므로 허용됩니다.
+
+### 성능: computed vs ref
+
+```typescript
+// ✅ PREFERRED: 고정값은 ref 사용 (반응성 오버헤드 없음)
+const baseStyleSet: Ref<VsButtonStyleSet> = ref({
+    loading: { component: { width: '30%' } },
+});
+
+// ✅ OK: computed도 허용 (기존 코드에서 광범위 사용)
+const baseStyleSet = computed<VsButtonStyleSet>(() => ({
+    loading: { component: { width: '30%' } },
+}));
+
+// ✅ BEST: baseStyleSet/additionalStyleSet 모두 불필요하면 생략
+const { componentStyleSet } = useStyleSet(componentName, styleSet);
+
+// ✅ OK: additionalStyleSet만 필요할 때 빈 baseStyleSet은 ref 사용
+const baseStyleSet: Ref<VsButtonStyleSet> = ref({});
+const { componentStyleSet } = useStyleSet(componentName, styleSet, baseStyleSet, additionalStyleSet);
+```
+
+### CSS 단위 규칙
+
+```css
+/* ✅ CORRECT: rem 단위 우선 */
+padding: var(--vs-component-padding, 0.75rem 1rem);
+font-size: var(--vs-size-font);
+width: 2rem;
+
+/* ❌ WRONG: px 단위 사용 */
+padding: 12px 16px;
+font-size: 14px;
+width: 32px;
+```
+
+### ColorScheme과 variables의 관계
+
+```typescript
+// 기본 테마 색상(--vs-comp-bg, --vs-comp-font)은 variables에 넣지 않음
+// → ColorScheme이 자동 적용
+
+// ✅ CORRECT: 컴포넌트 고유 속성만
+variables?: {
+    padding?: string;
+    arrowSize?: string;
+};
+
+// ❌ WRONG: 기본 테마 색상을 variables에 노출
+variables?: {
+    backgroundColor?: string;  // var(--vs-comp-bg)로 자동 적용됨
+    fontColor?: string;        // var(--vs-comp-font)으로 자동 적용됨
+};
+
+// ✅ OK: 상태별/영역별 색상은 variables에 포함 가능
+variables?: {
+    selected?: {
+        backgroundColor?: string;  // 선택 상태의 특수 색상
+    };
+    focused?: {
+        backgroundColor?: string;  // 포커스 상태의 특수 색상
+    };
+};
+```
+
+### 에러 처리: spread 안전성
+
+`useStyleSet`의 반환값은 항상 안전한 객체를 보장하므로, 루트 요소의 기본 패턴은 안전합니다:
+
+```vue
+<!-- ✅ SAFE: useStyleSet이 반환한 값은 항상 객체 -->
+<div :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+```
+
+단, 자식 컴포넌트의 StyleSet을 전달할 때는 optional chaining 불필요 (undefined는 :style-set prop에서 무시됨):
+
+```vue
+<!-- ✅ CORRECT: undefined면 자식 컴포넌트가 기본 동작 -->
+<vs-loading :style-set="componentStyleSet.loading" />
+```
+
 ## 참고 문서
 
-- [STYLE_SET_GUIDELINES.md](../../packages/vlossom/STYLE_SET_GUIDELINES.md)
-- [useStyleSet Composable](../../packages/vlossom/src/composables/style-set-composable.ts)
-- [기존 컴포넌트 예제](../../packages/vlossom/src/components/)
+- [STYLE_SET_GUIDELINES.md](../../../packages/vlossom/STYLE_SET_GUIDELINES.md)
+- [useStyleSet Composable](../../../packages/vlossom/src/composables/style-set-composable.ts)
+- [기존 컴포넌트 예제](../../../packages/vlossom/src/components/)
+- [프로젝트 규칙](../../rules/) — architecture, naming, type-safety 등
 
 ## 사용 방법
 

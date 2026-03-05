@@ -1,6 +1,6 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import type { VsTablePaginationOptions } from '../types';
-import { DEFAULT_PAGE_SIZE_ALL } from '../constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_ALL } from '../constants';
 
 export function useTablePagination(
     options: ComputedRef<VsTablePaginationOptions | null>,
@@ -32,8 +32,11 @@ export function useTablePagination(
     });
 
     const totalPages = computed<number>(() => {
-        const currentPageSize = pageSize.value ?? 50;
-        if (!options.value || currentPageSize <= 0) {
+        const currentPageSize = pageSize.value ?? DEFAULT_PAGE_SIZE;
+        if (!options.value) {
+            return 1;
+        }
+        if (currentPageSize <= 0 || currentPageSize === DEFAULT_PAGE_SIZE_ALL) {
             return 1;
         }
         if (serverMode.value) {

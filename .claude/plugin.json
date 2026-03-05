@@ -12,11 +12,6 @@
       "name": "style-set-review",
       "file": "skills/style-set-review/SKILL.md",
       "description": "Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안"
-    },
-    {
-      "name": "style-set-migrate",
-      "file": "skills/style-set-migrate/SKILL.md",
-      "description": "기존 컴포넌트를 새로운 Style-Set 시스템으로 마이그레이션"
     }
   ]
 }

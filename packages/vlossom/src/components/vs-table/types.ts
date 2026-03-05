@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'vue';
 import type { SizeProp, TextAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 
@@ -7,9 +8,18 @@ declare module 'vue' {
     }
 }
 
-export interface VsTableStyleSet {}
+export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
 
-export type VsTablePageSizeOptions = { label: string; value: number }[];
+export interface VsTableStyleSet {
+    component?: CSSProperties;
+    header?: CSSProperties;
+    row?: CSSProperties;
+    selectedRow?: CSSProperties;
+    cell?: CSSProperties;
+}
+
+export type VsTablePageSizeOption = { label: string; value: number };
+export type VsTablePageSizeOptions = VsTablePageSizeOption[];
 export interface VsTablePaginationOptions {
     pageSizeOptions?: VsTablePageSizeOptions;
     showPageSizeSelect?: boolean;
@@ -53,7 +63,7 @@ export interface ColumnDef<I = Item> {
     sortable?: boolean;
     sortBy?: ColumnKey<I>;
     skipSearch?: boolean;
-    transform?: (value: unknown, item: I) => unknown; // TODO: missing implementation
+    transform?: (value: unknown, item: I) => unknown;
 }
 
 export interface Cell<I = Item> {

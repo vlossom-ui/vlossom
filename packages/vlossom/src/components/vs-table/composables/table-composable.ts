@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, objectUtil } from '@/utils';
-import { type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
+import { type UIState, type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -19,7 +19,13 @@ import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
 import { useTablePagination } from './table-pagination-composable';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGINATION_OPTIONS, TABLE_SEARCH_OPTIONS } from '../constants';
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZE_OPTIONS,
+    DEFAULT_PAGINATION_OPTIONS,
+    TABLE_SEARCH_OPTIONS,
+    toDefaultPageSizeOptions,
+} from '../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -38,6 +44,7 @@ export function useTable(
         items: rawItems,
         selectable: rawSelectable,
         expandable: rawExpandable,
+        state: rawState,
         selectedItems: rawSelectedItems,
         search: rawSearch,
         pagination: rawPagination,
@@ -46,6 +53,8 @@ export function useTable(
         pageSize: rawPageSize,
         loading,
         draggable,
+        primary,
+        dense,
     } = toRefs(props);
 
     // normalize
@@ -64,10 +73,13 @@ export function useTable(
         return rawItems.value;
     });
     const expandable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?]>(rawExpandable?.value);
+        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawExpandable?.value);
     });
     const selectable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?]>(rawSelectable?.value);
+        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawSelectable?.value);
+    });
+    const state = computed(() => {
+        return functionUtil.toCallable<[Item, number?, Item[]?], UIState>(rawState?.value);
     });
     const selectedItems = computed<Item[]>(() => {
         return rawSelectedItems?.value ?? [];
@@ -88,15 +100,27 @@ export function useTable(
         if (typeof rawPagination?.value === 'boolean') {
             return DEFAULT_PAGINATION_OPTIONS;
         }
-
-        return {
-            ...DEFAULT_PAGINATION_OPTIONS,
-            ...rawPagination.value,
-        };
+        if (typeof rawPageSize?.value === 'number') {
+            const isValidPageSize = DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value);
+            if (!isValidPageSize) {
+                return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+            }
+            const addedOption = toDefaultPageSizeOptions(rawPageSize.value as number);
+            const pageSizeOptions = [...DEFAULT_PAGE_SIZE_OPTIONS]
+                .filter((option) => option.value !== addedOption.value)
+                .concat(addedOption)
+                .sort((a, b) => a.value - b.value);
+            return {
+                ...DEFAULT_PAGINATION_OPTIONS,
+                ...rawPagination.value,
+                pageSizeOptions,
+            };
+        }
+        return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
     });
     const serverMode = computed(() => rawServerMode?.value ?? false);
     const internalPage = ref(0);
-    const internalPageSize = ref(DEFAULT_PAGE_SIZE);
+    const internalPageSize = ref(Number.NaN);
     const page = computed<number>({
         get: () => rawPage?.value ?? internalPage.value,
         set: (value: number) => {
@@ -106,17 +130,21 @@ export function useTable(
     });
     const pageSize = computed<number>({
         get: () => {
+            // NaN === internalPageSize, means that pageSize is about to be initialized
+            if (!Number.isNaN(internalPageSize.value)) {
+                return internalPageSize.value;
+            }
             const currentPageSize = rawPageSize?.value;
             if (!currentPageSize) {
-                return internalPageSize.value;
+                return DEFAULT_PAGE_SIZE;
             }
             return currentPageSize;
         },
         set: (value: number) => {
             internalPageSize.value = value;
             cb?.updatePageSize(value);
-
-            page.value = 0; // NOTE: reset page to 0 when page size changes
+            // reset page to 0 when page size changes
+            page.value = 0;
         },
     });
 
@@ -202,6 +230,7 @@ export function useTable(
         items,
         selectable,
         expandable,
+        state,
         draggable,
         headerCells,
         bodyCells,
@@ -225,6 +254,8 @@ export function useTable(
         totalItems,
         pageStartIndex,
         pageEndIndex,
+        primary,
+        dense,
     };
 }
 
@@ -241,10 +272,13 @@ export type TableComposable = {
     selectedPartial: ComputedRef<boolean>;
     selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
     expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
+    state: ComputedRef<(item: Item, index?: number, items?: Item[]) => UIState>;
     sortType: Ref<SortType>;
     sortColumn: Ref<ColumnDef | null>;
     loading: Ref<boolean | undefined> | undefined;
     draggable: Ref<boolean | undefined> | undefined;
+    primary: Ref<boolean | undefined> | undefined;
+    dense: Ref<boolean | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
     page: ComputedRef<number>;

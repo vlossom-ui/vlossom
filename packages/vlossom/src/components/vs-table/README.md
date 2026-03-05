@@ -143,15 +143,15 @@
 
 ```html
 <template>
-    <vs-table
-        :columns="['id', 'name', 'order', 'checked', 'created', 'desc']"
-        :items="items"
-        responsive
-    />
+    <!-- 반응형 기본 활성화 (1024px 이하에서 카드형으로 전환) -->
+    <vs-table :columns="columns" :items="items" />
+
+    <!-- 반응형 비활성화 (항상 테이블 레이아웃 유지) -->
+    <vs-table :columns="columns" :items="items" no-responsive />
 </template>
 ```
 
-> `responsive`가 true이면 768px 이하에서 thead를 숨기고 각 행을 카드형으로 쌓아올리며, 각 셀이 헤더 라벨을 함께 표시합니다.
+> 반응형은 기본 활성화 상태입니다. `no-responsive`를 사용하면 컨테이너 너비와 무관하게 항상 테이블 레이아웃을 유지합니다.
 
 ### 페이지네이션 (Pagination)
 
@@ -205,23 +205,22 @@ const filteredItems = ref([]);    // 검색/정렬 후 전체 아이템 (예: 30
         :columns="columns"
         :items="items"
         :pagination="{
-            pageSize: 20,
             pageSizeOptions: [
-                { label: '10 items', value: 10 },
-                { label: '20 items', value: 20 },
-                { label: '50 items', value: 50 }
+                { label: '10', value: 10 },
+                { label: '20', value: 20 },
+                { label: '50', value: 50 }
             ],
-            showPageSizeSelector: true,
+            showPageSizeSelect: true,
             showingLength: 5,
             edgeButtons: true,
             showTotal: true
         }"
+        v-model:pageSize="pageSize"
     />
 </template>
 ```
 
 > 페이지 크기 또는 검색/정렬 조건이 변경되면 첫 페이지로 자동 리셋됩니다.
-> 기본 옵션: `pageSize: 50`, `pageSizeOptions: [10, 25, 50, 100]`, `showPageSizeSelector: true`, `showingLength: 10`, `edgeButtons: false`, `showTotal: true`
 
 ### 행 확장 (Expand)
 
@@ -282,15 +281,15 @@ function handleDrag(event) {
 
 ```html
 <template>
-    <vs-table
-        :columns="['name', 'age', 'email']"
-        :items="largeDataset"
-        virtualScroll
-    />
+    <!-- 가상 스크롤 기본 활성화 -->
+    <vs-table :columns="columns" :items="largeDataset" />
+
+    <!-- 가상 스크롤 비활성화 (모든 행을 한 번에 렌더링) -->
+    <vs-table :columns="columns" :items="items" no-virtual-scroll />
 </template>
 ```
 
-> `virtualScroll`을 활성화하면 화면에 보이는 행만 렌더링하여 대용량 데이터셋의 성능을 최적화합니다.
+> 가상 스크롤은 기본 활성화 상태입니다. `no-virtual-scroll`을 사용하면 비활성화됩니다.
 
 ### 로딩 상태 (Loading)
 
@@ -308,29 +307,42 @@ function handleDrag(event) {
 
 ## Props
 
-| Prop                     | Type                                           | Default | Required | Description                                                                                                           |
-| ------------------------ | ---------------------------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| `colorScheme`            | `ColorScheme`                                  | -       | -        | 컴포넌트 색상 테마                                                                                                    |
-| `styleSet`               | `string \| VsTableStyleSet`                    | -       | -        | 커스텀 스타일 설정 객체                                                                                               |
-| `columns`                | `ColumnDef[] \| string[] \| null`              | `[]`    | -        | 테이블 컬럼 정의                                                                                                      |
-| `items`                  | `Item[]`                                       | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                                                           |
-| `responsive`             | `boolean`                                      | false   | -        | 좁은 화면에서 카드형(모바일) 레이아웃                                                                                 |
-| `search`                 | `boolean \| VsTableSearchOptions`              | false   | -        | 검색 입력 표시 및 옵션                                                                                                |
-| `pagination`             | `boolean \| VsTablePaginationOptions`          | false   | -        | 페이지네이션 활성화 및 옵션                                                                                           |
-| `selectable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 선택 활성화 또는 조건부 선택 함수                                                                                  |
-| `expandable`             | `boolean \| (item, index?, items?) => boolean` | false   | -        | 행 확장 활성화 또는 조건부 확장 함수                                                                                  |
-| `stickyHeader`           | `boolean`                                      | false   | -        | 스크롤 시 헤더 고정 여부                                                                                              |
-| `loading`                | `boolean`                                      | false   | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                |
-| `serverMode`             | `boolean`                                      | false   | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시 |
-| `virtualScroll`          | `boolean`                                      | false   | -        | 가상 스크롤 활성화. 대용량 데이터의 렌더링 성능 최적화                                                                |
-| `draggable`              | `boolean`                                      | false   | -        | 행 드래그 활성화. 행 순서를 드래그로 변경 가능                                                                        |
-| `selectedItems`(v-model) | `Item[]`                                       | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                      |
-| `page`(v-model)          | `number`                                       | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                     |
-| `pageSize` (v-model)     | `number`                                       | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.      |
-| `pagedItems` (v-model)   | `Item[]`                                       | `[]`    | -        | 현재 페이지에 표시되는 아이템 배열 (v-model). 페이지네이션, 검색, 정렬이 적용된 후 현재 페이지의 아이템만 포함        |
-| `totalItems` (v-model)   | `Item[]`                                       | `[]`    | -        | 검색/필터링/정렬이 적용된 전체 아이템 배열 (v-model). 페이지네이션 적용 전의 모든 아이템 포함                         |
+| Prop                     | Type                                             | Default | Required | Description                                                                                                                                                |
+| ------------------------ | ------------------------------------------------ | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`            | `ColorScheme`                                    | -       | -        | 컴포넌트 색상 테마                                                                                                                                         |
+| `styleSet`               | `string \| VsTableStyleSet`                      | -       | -        | 커스텀 스타일 설정 객체                                                                                                                                    |
+| `columns`                | `ColumnDef[] \| string[] \| null`                | `[]`    | -        | 테이블 컬럼 정의                                                                                                                                           |
+| `items`                  | `Item[]`                                         | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                                                                                                |
+| `dense`                  | `boolean`                                        | false   | -        | 컴팩트 모드. padding과 font-size를 줄여 밀도 높은 레이아웃 제공                                                                                            |
+| `primary`                | `boolean`                                        | false   | -        | 헤더에 primary 색상 테마 적용. `styleSet.header`와 동시 사용 시 `styleSet.header`(인라인)가 우선됩니다                                                     |
+| `noResponsive`           | `boolean`                                        | false   | -        | 반응형 레이아웃 비활성화. 기본값 false(반응형 ON). true 시 항상 테이블 레이아웃 유지                                                                       |
+| `search`                 | `boolean \| VsTableSearchOptions`                | false   | -        | 검색 입력 표시 및 옵션                                                                                                                                     |
+| `pagination`             | `boolean \| VsTablePaginationOptions`            | false   | -        | 페이지네이션 활성화 및 옵션                                                                                                                                |
+| `selectable`             | `boolean \| (item, index?, items?) => boolean`   | false   | -        | 행 선택 활성화 또는 조건부 선택 함수                                                                                                                       |
+| `expandable`             | `boolean \| (item, index?, items?) => boolean`   | false   | -        | 행 확장 활성화 또는 조건부 확장 함수                                                                                                                       |
+| `stickyHeader`           | `boolean`                                        | false   | -        | 스크롤 시 헤더 고정 여부                                                                                                                                   |
+| `loading`                | `boolean`                                        | false   | -        | 로딩 상태. 활성화 시 스켈레톤 UI 표시 및 검색 비활성화                                                                                                     |
+| `serverMode`             | `boolean`                                        | false   | -        | 서버 사이드 페이지네이션 모드. true일 경우 클라이언트 사이드 페이지네이션을 수행하지 않고 서버에서 받은 데이터만 표시                                      |
+| `noVirtualScroll`        | `boolean`                                        | false   | -        | 가상 스크롤 비활성화. 기본값 false(가상 스크롤 ON). true 시 모든 행을 한 번에 렌더링                                                                       |
+| `draggable`              | `boolean`                                        | false   | -        | 행 드래그 활성화. 행 순서를 드래그로 변경 가능                                                                                                             |
+| `state`                  | `UIState \| (row, rowIndex?, items?) => UIState` | -       | -        | 행별 UI 상태. 상수 또는 콜백. `info` / `success` / `warning` / `error` 반환 시 해당 행에 `vs-state-*` 클래스가 적용됩니다 (selectable, expandable과 유사). |
+| `selectedItems`(v-model) | `Item[]`                                         | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                                                           |
+| `page`(v-model)          | `number`                                         | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                                                          |
+| `pageSize` (v-model)     | `number`                                         | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.                                           |
+| `pagedItems` (v-model)   | `Item[]`                                         | `[]`    | -        | 현재 페이지에 표시되는 아이템 배열 (v-model). 페이지네이션, 검색, 정렬이 적용된 후 현재 페이지의 아이템만 포함                                             |
+| `totalItems` (v-model)   | `Item[]`                                         | `[]`    | -        | 검색/필터링/정렬이 적용된 전체 아이템 배열 (v-model). 페이지네이션 적용 전의 모든 아이템 포함                                                              |
 
 ## Types
+
+```typescript
+interface VsTableStyleSet {
+    component?: CSSProperties;
+    header?: CSSProperties;
+    row?: CSSProperties;
+    selectedRow?: CSSProperties;
+    cell?: CSSProperties;
+}
+```
 
 ```typescript
 type ColumnKey<I = Item> = JoinDotField<I>;
@@ -357,9 +369,8 @@ interface VsTableSearchOptions {
 type VsTablePageSizeOptions = { label: string; value: number }[];
 
 interface VsTablePaginationOptions {
-    pageSize?: number;
     pageSizeOptions?: VsTablePageSizeOptions;
-    showPageSizeSelector?: boolean;
+    showPageSizeSelect?: boolean;
     showingLength?: number;
     edgeButtons?: boolean;
     showTotal?: boolean;
@@ -416,7 +427,7 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **다양한 컬럼 입력**: 객체/문자열/null 컬럼 정의를 지원해 유연한 초기 설정 가능
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
-- **반응형 테이블**: `responsive` prop을 통해 모바일 환경에서 표 레이아웃이 자동으로 바뀌며, 각 셀에서 헤더 정보를 함께 보여줌
+- **반응형 테이블**: 기본 활성화. 1024px 이하 컨테이너에서 카드형으로 전환하며, 각 셀에서 헤더 정보를 함께 표시. `no-responsive`로 비활성화 가능
 - **페이지네이션**: `pagination` 옵션으로 `VsPagination` 기반 페이지 네비게이션과 총 아이템/페이지 크기 선택을 제공
 - **데이터 추적**: `v-model:paged-items`와 `v-model:total-items`로 현재 페이지 및 필터링된 전체 데이터를 실시간 추적
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
@@ -424,5 +435,5 @@ interface BodyCell<I = Item> extends Cell<I> {
 - **행 드래그**: `draggable` prop으로 드래그 앤 드롭 기반 행 순서 변경 지원
 - **컬럼 정렬**: `sortable` 옵션으로 오름차순/내림차순 정렬, `sortBy`로 중첩 경로 정렬 지원
 - **행 검색**: `search` 옵션으로 검색 입력을 제공하고, `skipSearch`로 제외 컬럼을 제어
-- **가상 스크롤**: `virtualScroll` 옵션으로 대용량 데이터셋의 렌더링 성능을 최적화하고 메모리 사용량 감소
+- **가상 스크롤**: 기본 활성화. 화면에 보이는 행만 렌더링하여 대용량 데이터 성능 최적화. `no-virtual-scroll`로 비활성화 가능
 - **로딩 상태**: `loading` prop으로 스켈레톤 UI를 표시하여 데이터 로딩 중 사용자 경험 향상

@@ -1,5 +1,5 @@
 import type { SearchProps } from '@/declaration';
-import type { VsTablePageSizeOptions, VsTablePaginationOptions } from './types';
+import type { VsTablePageSizeOption, VsTablePageSizeOptions, VsTablePaginationOptions } from './types';
 import type { Options as SortableOptions } from 'sortablejs';
 
 export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
@@ -8,11 +8,13 @@ export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
     useRegex: true,
 } as const;
 
-export const DEFAULT_PAGE_SIZE_ALL = -1;
+export const DEFAULT_PAGE_SIZE_ALL = Infinity;
 export const DEFAULT_PAGE_SIZE = 50;
+export function toDefaultPageSizeOptions(pageSize: number): VsTablePageSizeOption {
+    return { label: `${pageSize} items`, value: pageSize };
+}
 export const DEFAULT_PAGE_SIZE_OPTIONS: VsTablePageSizeOptions = [
-    { label: '50 items', value: 50 },
-    { label: '100 items', value: 100 },
+    ...[50, 100].map(toDefaultPageSizeOptions),
     { label: 'All', value: DEFAULT_PAGE_SIZE_ALL },
 ];
 export const DEFAULT_PAGINATION_OPTIONS: VsTablePaginationOptions = {

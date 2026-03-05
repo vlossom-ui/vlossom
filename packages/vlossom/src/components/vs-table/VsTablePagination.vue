@@ -19,6 +19,9 @@
 
         <vs-pagination
             v-model="page"
+            :ghost="!primary"
+            :outline="!primary"
+            :style-set="paginationStyleSet"
             :disabled="loading"
             :length="totalPages"
             :showing-length="pagination.showingLength"
@@ -30,6 +33,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject } from 'vue';
+import type { VsPaginationStyleSet } from '../vs-pagination/types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsTablePageSizeOptions } from './types';
 
@@ -40,11 +44,23 @@ export default defineComponent({
     components: { VsPagination, VsSelect },
     emits: ['paginate'],
     setup(_, { emit }) {
-        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading } =
+        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
             return pagination.value.pageSizeOptions ?? [];
+        });
+
+        const paginationStyleSet = computed<VsPaginationStyleSet>(() => {
+            if (primary?.value) {
+                return {};
+            }
+            return {
+                variables: {
+                    selectedButtonBackgroundColor: 'var(--vs-comp-bg)',
+                    selectedButtonFontColor: 'var(--vs-comp-font)',
+                },
+            };
         });
 
         function paginate(nextPage: number): void {
@@ -62,6 +78,8 @@ export default defineComponent({
             pageEndIndex,
             paginate,
             loading,
+            primary,
+            paginationStyleSet,
         };
     },
 });

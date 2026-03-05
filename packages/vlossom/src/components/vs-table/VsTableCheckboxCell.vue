@@ -1,6 +1,6 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td v-if="anySelectable" @click.prevent.stop="selectRow(cells, $event)">
+        <td v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
@@ -15,9 +15,10 @@
     </template>
 
     <template v-else>
-        <th v-if="anySelectable" @click.prevent.stop="selectRow(cells, $event)">
+        <th v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
+                    :style-set="headerCheckboxStyle"
                     :model-value="selectedAll"
                     :disabled="loading"
                     :indeterminate="selectedPartial"
@@ -29,9 +30,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, type PropType } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { getRowItem, type Cell, isBodyRow } from './types';
+import type { VsCheckboxStyleSet } from '../vs-checkbox/types';
+import { getRowItem, type Cell, isBodyRow, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
 
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
@@ -57,7 +59,22 @@ export default defineComponent({
             selectedPartial,
             toggleSelectAll,
             loading,
+            primary,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+
+        const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
+            if (!primary?.value) {
+                return {};
+            }
+            return {
+                variables: {
+                    checkboxColor: 'var(--vs-comp-bg)',
+                    checkboxCheckedColor: 'var(--vs-comp-font)',
+                },
+            };
+        });
 
         function isRowSelectable(row: Cell[], rowIdx: number): boolean {
             if (!isBodyRow(row)) {
@@ -90,7 +107,10 @@ export default defineComponent({
             selectedItems,
             selectedAll,
             selectedPartial,
+            cellStyle,
             loading,
+            primary,
+            headerCheckboxStyle,
         };
     },
 });
