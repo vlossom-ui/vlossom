@@ -70,7 +70,7 @@ $colors:
                 --vs-comp-shadow: rgba(255, 255, 255, 0.25);
 
                 --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
-                --vs-primary-comp-bg: var(--vs-#{$color}-600);
+                --vs-primary-comp-bg: var(--vs-#{$color}-500);
                 --vs-primary-comp-shadow: rgba(0, 0, 0, 0.4);
 
                 --vs-font-color: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
