@@ -20,7 +20,5 @@
 
     /* Area variables */
     --vs-area-bg: initial;
-    --vs-area-bg-hover: initial;
-    --vs-area-bg-active: initial;
     --vs-area-shadow-outer: initial;
 }
