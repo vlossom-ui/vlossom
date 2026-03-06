@@ -47,7 +47,7 @@
         <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsInput</h3>
-        <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+        <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-input v-model="inputText" label="Text" placeholder="Enter text..." :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input
@@ -67,7 +67,7 @@
             <vs-input label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Readonly" model-value="Readonly value" readonly :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input label="Required" placeholder="Required field" required :grid="{ xs: 12, md: 6, lg: 3 }" />
-        </vs-grid>
+        </vs-form>
         <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsRadio & VsRadioSet</h3>
