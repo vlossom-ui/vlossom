@@ -38,7 +38,7 @@
         color: var(--vs-cs-bg-primary);
 
         &:hover {
-            background-color: var(--vs-cs-bg-colored);
+            @apply hover:brightness-96 active:brightness-92;
         }
     }
 
@@ -75,6 +75,10 @@
 
     @variant dark {
         @apply hover:brightness-104 active:brightness-108;
+
+        &.vs-ghost {
+            @apply hover:brightness-96 active:brightness-92;
+        }
 
         &.vs-primary {
             @apply hover:brightness-96 active:brightness-92;

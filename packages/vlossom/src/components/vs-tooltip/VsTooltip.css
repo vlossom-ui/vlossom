@@ -9,7 +9,7 @@
 
         border: 0.1rem solid var(--vs-cs-bg-primary);
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        background-color: var(--vs-cs-bg-colored);
+        background-color: var(--vs-cs-bg);
         padding: 0.2rem 0.6rem;
 
         &::after {

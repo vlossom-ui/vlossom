@@ -11,7 +11,7 @@ $colors:
         --vs-cs-font-primary: var(--vs-white);
 
         --vs-cs-bg: var(--vs-white);
-        --vs-cs-bg-colored: var(--vs-white);
+        --vs-cs-bg-colored: var(--vs-gray-100);
         --vs-cs-bg-primary: var(--vs-black);
 
         --vs-cs-shadow-color: rgba(0, 0, 0, 0.16);
@@ -27,7 +27,7 @@ $colors:
             --vs-cs-font-primary: var(--vs-black);
 
             --vs-cs-bg: var(--vs-black);
-            --vs-cs-bg-colored: var(--vs-black);
+            --vs-cs-bg-colored: var(--vs-gray-800);
             --vs-cs-bg-primary: var(--vs-white);
 
             --vs-cs-shadow-color: rgba(255, 255, 255, 0.25);
@@ -44,7 +44,7 @@ $colors:
             --vs-cs-font-primary: var(--vs-#{$color}-50);
 
             --vs-cs-bg: var(--vs-#{$color}-100);
-            --vs-cs-bg-colored: var(--vs-#{$color}-50);
+            --vs-cs-bg-colored: var(--vs-#{$color}-200);
             --vs-cs-bg-primary: var(--vs-#{$color}-600);
 
             --vs-cs-shadow-color: rgba(0, 0, 0, 0.25);

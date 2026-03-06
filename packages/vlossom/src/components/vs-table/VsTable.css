@@ -30,7 +30,7 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg-colored-active);
+            background-color: var(--vs-cs-bg);
             color: var(--vs-cs-font);
         }
 
@@ -52,7 +52,7 @@
         }
 
         &:hover {
-            background-color: var(--vs-cs-bg-colored-hover);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
