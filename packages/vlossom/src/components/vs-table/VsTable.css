@@ -1,0 +1,240 @@
+@reference 'tailwindcss';
+
+.vs-table {
+    --vs-table-sticky-header-z-index: 100;
+
+    @apply relative w-full;
+
+    table {
+        @apply mx-auto w-full border-collapse;
+    }
+
+    tr {
+        @apply grid;
+    }
+
+    thead tr th {
+        grid-row: 1;
+        color: var(--vs-comp-font);
+        font-weight: var(--vs-font-weight);
+    }
+
+    tbody tr {
+        @apply transition-colors duration-250 ease-in-out;
+
+        &.vs-state-box {
+            @apply outline-offset-[-0.1625rem];
+            outline: none;
+            border-left: 0.1625rem solid var(--vs-state-color);
+            background-color: color-mix(in oklch, var(--vs-state-color) 8%, transparent 20%);
+        }
+
+        &.vs-selected {
+            background-color: var(--vs-area-bg-active);
+            color: var(--vs-font-color);
+        }
+
+        > td:not(.vs-table-expanded-row) {
+            grid-row: 1;
+        }
+
+        > td.vs-table-expanded-row {
+            grid-row: 2;
+            grid-column: 1 / -1;
+            border: none;
+            padding: 0;
+
+            .vs-table-expand-fallback {
+                margin: 0;
+                font: inherit;
+                white-space: pre-wrap;
+            }
+        }
+
+        &:hover {
+            background-color: var(--vs-area-bg-hover);
+        }
+    }
+
+    th {
+        @apply flex items-center;
+        border-top: 0.0625rem solid var(--vs-line-color);
+        border-bottom: 0.0625rem solid var(--vs-line-color);
+        padding: 0.625rem 0.875rem;
+        text-align: left;
+
+        &:first-child {
+            border-left: 0.0625rem solid var(--vs-line-color);
+        }
+        &:last-child {
+            border-right: 0.0625rem solid var(--vs-line-color);
+        }
+
+        > * {
+            @apply w-full;
+        }
+    }
+
+    td {
+        @apply flex items-center;
+        border-bottom: 0.0625rem solid var(--vs-line-color);
+        padding: 0.625rem 0.875rem;
+        text-align: left;
+
+        > * {
+            @apply w-full;
+        }
+    }
+
+    th,
+    td {
+        * {
+            min-height: unset;
+            line-height: var(--vs-default-comp-height-md);
+        }
+    }
+
+    .vs-table-search-input {
+        @apply mb-2 flex justify-end;
+    }
+
+    .vs-table-sticky-header {
+        @apply sticky w-full;
+        z-index: var(--vs-table-sticky-header-z-index);
+        box-shadow: 0 0.125rem 0.25rem var(--vs-comp-shadow);
+        background-color: var(--vs-no-color);
+    }
+
+    &.vs-responsive {
+        @apply w-full;
+        container-type: inline-size;
+    }
+
+    &.vs-dense {
+        th,
+        td {
+            @apply px-[0.375rem] py-[0.5rem];
+            * {
+                font-size: var(--vs-font-size-sm);
+                line-height: var(--vs-default-comp-height-sm);
+            }
+        }
+
+        td.vs-table-expanded-row {
+            @apply px-0 py-0;
+        }
+    }
+
+    &.vs-primary {
+        thead tr th {
+            border-color: var(--vs-line-color);
+            background-color: var(--vs-primary-comp-bg);
+            color: var(--vs-primary-comp-font);
+            font-weight: var(--vs-font-weight-bold);
+        }
+    }
+
+    .vs-table-draggable-wrapper {
+        /* display: contents를 사용하는 이유:
+           - draggable의 wrapper 엘리먼트가 DOM 구조상 table, tr, tbody 등과 섞이면서 table 레이아웃이 깨지는 문제를 막기 위해
+           - 'display: contents'는 wrapper 자체를 렌더링하지 않고 자식만 렌더링시켜 table 구조를 그대로 유지
+           - 즉, drag&drop 컴포넌트의 불필요한 wrapper가 DOM에서 제거된 효과를 줌 */
+        display: contents;
+    }
+
+    th.vs-table-drag-handle {
+        @apply w-6 px-0!;
+        svg {
+            @apply hidden;
+        }
+    }
+    td.vs-table-drag-handle {
+        @apply w-6 cursor-grab px-0!;
+        color: var(--vs-line-color);
+    }
+
+    th.vs-table-expand-handle {
+        @apply w-16;
+    }
+    td.vs-table-expand-handle {
+        @apply w-16;
+    }
+}
+
+/* Pagination */
+.vs-table-pagination {
+    @apply flex items-center justify-between py-4;
+    container-type: inline-size;
+}
+
+.vs-table-pagination-info {
+    @apply flex items-center gap-4;
+}
+
+.vs-total-items {
+    @apply text-sm whitespace-nowrap opacity-70;
+    color: var(--vs-font-color);
+}
+
+caption {
+    @apply caption-bottom;
+}
+
+@container (max-width: 1024px) {
+    .vs-table {
+        &.vs-responsive {
+            tbody,
+            th,
+            td,
+            tr {
+                @apply block w-full border-x-0;
+            }
+
+            thead {
+                @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
+            }
+
+            tbody tr {
+                @apply mx-0 mb-3 border border-solid;
+                border: 0.0325rem solid var(--vs-line-color);
+            }
+
+            td {
+                @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+                grid-column: minmax(6rem, 9rem) 1fr;
+            }
+
+            td:first-child {
+                @apply border-t-0;
+            }
+
+            td:last-child {
+                @apply border-b-0;
+            }
+
+            td::before {
+                @apply font-bold;
+                content: attr(data-label);
+            }
+
+            td.vs-table-drag-handle {
+                @apply w-6 px-0 py-1;
+            }
+
+            &.vs-dense {
+                td,
+                th {
+                    @apply px-[0.375rem] py-[0.5rem];
+                    * {
+                        font-size: var(--vs-font-size-sm);
+                        line-height: var(--vs-default-comp-height-sm);
+                    }
+                }
+            }
+        }
+
+        .vs-table-pagination {
+            @apply flex-col-reverse items-center justify-center gap-2;
+        }
+    }
+}

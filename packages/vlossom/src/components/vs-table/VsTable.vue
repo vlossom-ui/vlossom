@@ -1,0 +1,350 @@
+<template>
+    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
+        <vs-search-input
+            v-if="search"
+            ref="searchInputRef"
+            class="vs-table-search-input"
+            v-bind="searchOptions"
+            :disabled="loading"
+            @search="searchRows"
+        />
+
+        <vs-visible-render :disabled="noVirtualScroll" :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`" root-margin="150px">
+            <table>
+                <vs-table-header
+                    v-if="useStickyHeader"
+                    class="vs-table-sticky-header"
+                    :style="{ top: stickyHeaderTop }"
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                >
+                    <template v-for="name in headerSlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-header>
+
+                <caption v-if="$slots['caption']">
+                    <slot name="caption" />
+                </caption>
+                <vs-table-header
+                    ref="headerRef"
+                    class="vs-table-original-header"
+                    @click-cell="clickCell"
+                    @select-row="selectRow"
+                >
+                    <template v-for="name in headerSlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-header>
+                <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow" @drag="dragRow">
+                    <template v-for="name in bodySlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body>
+            </table>
+        </vs-visible-render>
+
+        <vs-table-pagination v-if="pagination" @paginate="paginate" />
+    </div>
+</template>
+
+<script lang="ts">
+import {
+    type PropType,
+    defineComponent,
+    provide,
+    toRefs,
+    computed,
+    ref,
+    onBeforeMount,
+    useTemplateRef,
+    onBeforeUnmount,
+    inject,
+    type ComputedRef,
+} from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
+import type { SortableEvent } from 'sortablejs';
+import { LAYOUT_STORE_KEY, type SearchProps, type UIState, VsComponent, type PropsOf } from '@/declaration';
+import { logUtil, stringUtil } from '@/utils';
+import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
+import { useColorScheme, useStyleSet } from '@/composables';
+import { LayoutStore } from '@/stores';
+
+import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
+import {
+    TABLE_STYLE_SET_TOKEN,
+    type BodyCell,
+    type ColumnDef,
+    type Item,
+    type VsTableStyleSet,
+    type VsTablePaginationOptions,
+    getRowItem,
+    type VsTablePageSizeOptions,
+} from './types';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
+
+import type { VsSearchInputRef } from '../vs-search-input/types';
+
+import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
+import VsTableHeader from './VsTableHeader.vue';
+import VsTableBody from './VsTableBody.vue';
+import VsTablePagination from './VsTablePagination.vue';
+
+const componentName = VsComponent.VsTable;
+
+export default defineComponent({
+    name: componentName,
+    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination },
+    props: {
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsTableStyleSet>(),
+        ...getSearchProps(),
+        columns: {
+            type: Array as PropType<ColumnDef[] | string[]>,
+            default: () => [],
+        },
+        items: {
+            type: Array as PropType<Item[]>,
+            required: true,
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'items', 'items must be an array');
+                    return false;
+                }
+                return true;
+            },
+        },
+        dense: { type: Boolean, default: false },
+        primary: { type: Boolean, default: false },
+        noResponsive: { type: Boolean, default: false },
+        noVirtualScroll: { type: Boolean, default: false },
+        stickyHeader: { type: Boolean, default: false },
+        loading: { type: Boolean, default: false },
+        serverMode: {
+            type: Boolean,
+            default: false,
+            validator: (serverMode: boolean, props: unknown) => {
+                const { pagination } = props as PropsOf<VsComponent.VsTable>;
+                if (serverMode && typeof pagination === 'object') {
+                    if (!pagination.totalItemCount) {
+                        logUtil.propError(
+                            componentName,
+                            'serverMode',
+                            'totalItemCount is required when serverMode is true',
+                        );
+                        return false;
+                    }
+                }
+                return true;
+            },
+        },
+        draggable: { type: Boolean, default: false },
+        selectable: {
+            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
+        expandable: {
+            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            default: false,
+        },
+        state: {
+            type: [String, Function] as PropType<UIState | ((item: Item, index?: number, items?: Item[]) => UIState)>,
+            default: 'idle',
+        },
+        pagination: {
+            type: [Boolean, Object] as PropType<boolean | VsTablePaginationOptions>,
+            default: false,
+        },
+        // v-model
+        selectedItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [] as Item[],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
+                    return false;
+                }
+                return true;
+            },
+        },
+        page: { type: Number as PropType<number> }, // 0-based page index
+        pageSize: {
+            type: Number as PropType<number>,
+            default: DEFAULT_PAGE_SIZE,
+            validator: (value: number, props: unknown) => {
+                const { pagination } = props as PropsOf<VsComponent.VsTable>;
+                if (value <= 0) {
+                    logUtil.propError(componentName, 'pageSize', 'pageSize must be greater than or equal to 1');
+                    return false;
+                }
+                if (pagination && typeof pagination === 'object') {
+                    const pageSizeOptions: VsTablePageSizeOptions =
+                        pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS;
+                    const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
+                    if (!isValidPageSize) {
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
+                        return true;
+                    }
+                }
+                if (pagination && typeof pagination === 'boolean') {
+                    const pageSizeOptions: VsTablePageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS;
+                    const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
+                    if (!isValidPageSize) {
+                        logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
+                        return true;
+                    }
+                }
+                return true;
+            },
+        },
+        pagedItems: { type: Array as PropType<Item[]>, default: () => [] },
+        totalItems: {
+            type: Array as PropType<Item[]>,
+            default: () => [],
+            validator: (value: Item[]) => {
+                if (!Array.isArray(value)) {
+                    logUtil.propError(componentName, 'totalItems', 'totalItems must be an array');
+                    return false;
+                }
+                return true;
+            },
+        },
+    },
+    emits: [
+        'click-cell',
+        'select-row',
+        'expand-row',
+        'drag',
+        'search',
+        'paginate',
+        'update:selectedItems',
+        'update:page',
+        'update:pageSize',
+        'update:pagedItems',
+        'update:totalItems',
+    ],
+    setup(props, { slots, emit }) {
+        const { colorScheme, styleSet, noResponsive, stickyHeader, dense, primary } = toRefs(props);
+
+        const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
+        const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+
+        const isHeaderOutOfView = ref<boolean>(true);
+        const stickyHeaderTop = ref<string>('0px');
+        const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { componentStyleSet } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
+        const table: TableComposable = useTable(
+            props,
+            { searchInputRef },
+            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems },
+        );
+
+        provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
+        provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
+
+        const headerSlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['header', 'select'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
+        const bodySlots = computed(() =>
+            Object.keys(slots).filter((slotName) =>
+                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+            ),
+        );
+        const classObj = computed(() => ({
+            'vs-responsive': !noResponsive.value,
+            'vs-dense': dense.value,
+            'vs-primary': primary.value,
+        }));
+        const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
+        const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
+
+        const { pause: pauseHeaderObserver } = useIntersectionObserver(
+            headerRef,
+            ([{ isIntersecting, boundingClientRect }]) => {
+                isHeaderOutOfView.value = !isIntersecting;
+                if (!isIntersecting) {
+                    const headerHeight = vsLayoutHeader.value.height;
+                    // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
+                    if (stringUtil.toStringSize(boundingClientRect.top) < stringUtil.toStringSize(headerHeight)) {
+                        stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
+                        return;
+                    }
+                    stickyHeaderTop.value = '0px';
+                }
+            },
+            { threshold: 1 },
+        );
+
+        function clickCell(cell: BodyCell, event: MouseEvent): void {
+            emit('click-cell', cell, event);
+        }
+        function selectRow(row: BodyCell[], event: MouseEvent): void {
+            emit('select-row', row, event);
+        }
+        function expandRow(row: BodyCell[], event: MouseEvent): void {
+            emit('expand-row', row, event);
+        }
+        function dragRow(event: SortableEvent): void {
+            emit('drag', event);
+        }
+        function searchRows(searchText: string): void {
+            const items = table.bodyCells.value.map((row) => getRowItem(row));
+            emit('search', items, searchText);
+        }
+        function paginate(nextPage: number): void {
+            emit('paginate', nextPage, table.pageSize.value);
+        }
+        function updateSelectedItems(items: Item[]): void {
+            emit('update:selectedItems', items);
+        }
+        function updatePage(page: number): void {
+            emit('update:page', page);
+        }
+        function updatePageSize(pageSize: number): void {
+            emit('update:pageSize', pageSize);
+        }
+        function updatePagedItems(items: Item[]): void {
+            emit('update:pagedItems', items);
+        }
+        function updateTotalItems(items: Item[]): void {
+            emit('update:totalItems', items);
+        }
+
+        onBeforeMount(() => {
+            table.initialize();
+        });
+
+        onBeforeUnmount(() => {
+            pauseHeaderObserver();
+        });
+
+        return {
+            TABLE_DRAG_WRAPPER_CLASS,
+            colorSchemeClass,
+            componentStyleSet,
+            classObj,
+            headerRef,
+            headerSlots,
+            bodySlots,
+            useStickyHeader,
+            stickyHeaderTop,
+            searchOptions,
+            table,
+            clickCell,
+            selectRow,
+            expandRow,
+            searchRows,
+            paginate,
+            dragRow,
+            updateSelectedItems,
+            updatePage,
+            updatePageSize,
+        };
+    },
+});
+</script>
+
+<style src="./VsTable.css" />
