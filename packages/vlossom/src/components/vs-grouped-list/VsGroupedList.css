@@ -36,9 +36,5 @@
             background-color: var(--vs-no-color);
             padding: 0.2rem 1.2rem;
         }
-
-        .vs-focused-index {
-            background-color: var(--vs-area-bg-hover);
-        }
     }
 }

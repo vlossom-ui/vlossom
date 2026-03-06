@@ -78,7 +78,7 @@
                 --vs-select-focused-borderRadius,
                 calc(var(--vs-radius-ratio) * var(--vs-radius-md))
             ) !important;
-            background-color: var(--vs-select-focused-backgroundColor, var(--vs-area-bg-active)) !important;
+            background-color: var(--vs-select-focused-backgroundColor, var(--vs-area-bg)) !important;
         }
     }
 
