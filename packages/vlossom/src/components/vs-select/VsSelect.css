@@ -6,11 +6,11 @@
     .vs-select-trigger {
         @apply relative box-border flex cursor-pointer items-center gap-1;
 
-        border: 1px solid var(--vs-line-color);
+        border: 1px solid var(--vs-cs-line);
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-no-color);
         padding: 0.2rem 0.8rem;
-        min-height: var(--vs-select-height, var(--vs-default-comp-height-md));
+        min-height: var(--vs-select-height, var(--vs-comp-height-md));
 
         .vs-select-value {
             @apply flex flex-1 flex-wrap items-center gap-1;
@@ -31,7 +31,7 @@
 
             transition: opacity 0.4s;
             background: none;
-            color: var(--vs-font-color);
+            color: var(--vs-cs-font);
 
             &:focus {
                 @apply cursor-pointer opacity-100;
@@ -63,7 +63,7 @@
 
     @apply overflow-hidden;
 
-    border: 1px solid var(--vs-line-color);
+    border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
 
@@ -73,12 +73,12 @@
         &.vs-focusable-active {
             @apply box-content;
 
-            border: var(--vs-select-focused-border, 1px solid var(--vs-line-color)) !important;
+            border: var(--vs-select-focused-border, 1px solid var(--vs-cs-line)) !important;
             border-radius: var(
                 --vs-select-focused-borderRadius,
                 calc(var(--vs-radius-ratio) * var(--vs-radius-md))
             ) !important;
-            background-color: var(--vs-select-focused-backgroundColor, var(--vs-area-bg)) !important;
+            background-color: var(--vs-select-focused-backgroundColor, var(--vs-cs-bg-colored)) !important;
         }
     }
 
@@ -100,7 +100,7 @@
         }
 
         &.selected {
-            background-color: var(--vs-comp-bg);
+            background-color: var(--vs-cs-bg);
 
             .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);

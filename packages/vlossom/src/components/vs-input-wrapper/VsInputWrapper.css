@@ -6,7 +6,7 @@
 
         margin-bottom: 0.1rem;
         min-height: 1.5rem;
-        color: var(--vs-font-color);
+        color: var(--vs-cs-font);
         font-weight: var(--vs-font-weight);
         font-size: var(--vs-font-size-sm);
     }
@@ -16,7 +16,7 @@
 
         top: 0.1rem;
         margin-left: 0.2rem;
-        color: var(--vs-primary-comp-bg);
+        color: var(--vs-cs-bg-primary);
         font-weight: var(--vs-font-weight);
         font-size: var(--vs-font-size-sm);
     }

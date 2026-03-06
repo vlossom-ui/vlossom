@@ -4,20 +4,20 @@
     @apply relative w-full overflow-auto;
 
     container-type: inline-size;
-    box-shadow: var(--vs-area-shadow-outer);
-    border: var(--vs-block-border, 1px solid var(--vs-line-color));
+    box-shadow: var(--vs-cs-shadow);
+    border: var(--vs-block-border, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-area-bg);
+    background-color: var(--vs-cs-bg-colored);
 
-    color: var(--vs-font-color);
+    color: var(--vs-cs-font);
 
     .vs-block-title {
         @apply relative w-full;
 
-        border-bottom: var(--vs-block-border, 1px solid var(--vs-line-color));
-        background-color: var(--vs-comp-bg);
+        border-bottom: var(--vs-block-border, 1px solid var(--vs-cs-line));
+        background-color: var(--vs-cs-bg);
         padding: 0.8rem 1.6rem;
-        color: var(--vs-comp-font);
+        color: var(--vs-cs-font-colored);
         font-weight: 500;
     }
 

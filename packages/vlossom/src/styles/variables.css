@@ -37,11 +37,11 @@
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 99999;
 
-        --vs-default-comp-height-xs: 1.4rem;
-        --vs-default-comp-height-sm: 1.6rem;
-        --vs-default-comp-height-md: 2rem;
-        --vs-default-comp-height-lg: 2.4rem;
-        --vs-default-comp-height-xl: 2.8rem;
+        --vs-comp-height-xs: 1.4rem;
+        --vs-comp-height-sm: 1.6rem;
+        --vs-comp-height-md: 2rem;
+        --vs-comp-height-lg: 2.4rem;
+        --vs-comp-height-xl: 2.8rem;
 
         --vs-padding-xs: 0.4rem;
         --vs-padding-sm: 0.6rem;

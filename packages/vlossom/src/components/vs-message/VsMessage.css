@@ -4,9 +4,9 @@
     --vs-message-size: initial;
 
     @apply flex items-start;
-    fill: var(--vs-primary-comp-bg);
-    stroke: var(--vs-primary-comp-bg);
-    color: var(--vs-primary-comp-bg);
+    fill: var(--vs-cs-bg-primary);
+    stroke: var(--vs-cs-bg-primary);
+    color: var(--vs-cs-bg-primary);
 
     .vs-message-icon {
         @apply shrink-0;

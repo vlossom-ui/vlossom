@@ -57,8 +57,8 @@ export default defineComponent({
             }
             return {
                 variables: {
-                    selectedButtonBackgroundColor: 'var(--vs-comp-bg)',
-                    selectedButtonFontColor: 'var(--vs-comp-font)',
+                    selectedButtonBackgroundColor: 'var(--vs-cs-bg)',
+                    selectedButtonFontColor: 'var(--vs-cs-font-colored)',
                 },
             };
         });

@@ -13,14 +13,14 @@
 
         box-shadow: none;
         border-radius: 0;
-        background-color: var(--vs-area-bg);
+        background-color: var(--vs-cs-bg-colored);
         padding: 0;
 
         &.vs-drawer-left {
             @apply top-0 left-0;
 
             transform: translateX(0);
-            border-right: 1px solid var(--vs-line-color);
+            border-right: 1px solid var(--vs-cs-line);
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
             width: var(--vs-drawer-size);
@@ -31,7 +31,7 @@
             @apply top-0 right-0;
 
             transform: translateX(0);
-            border-left: 1px solid var(--vs-line-color);
+            border-left: 1px solid var(--vs-cs-line);
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
             width: var(--vs-drawer-size);
@@ -42,7 +42,7 @@
             @apply top-0 left-0;
 
             transform: translateY(0);
-            border-bottom: 1px solid var(--vs-line-color);
+            border-bottom: 1px solid var(--vs-cs-line);
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
             width: 100%;
@@ -53,7 +53,7 @@
             @apply bottom-0 left-0;
 
             transform: translateY(0);
-            border-top: 1px solid var(--vs-line-color);
+            border-top: 1px solid var(--vs-cs-line);
             border-top-right-radius: 0;
             border-top-left-radius: 0;
             width: 100%;

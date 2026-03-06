@@ -12,7 +12,7 @@
                         v-for="color in colorOptions"
                         :key="color"
                         :class="['color-btn', { selected: selectedColorScheme === color }]"
-                        :style="{ '--btn-color': `var(--vs-${color}-500)` }"
+                        :style="{ '--btn-color': `var(--vs-${color}-600)` }"
                         @click="setColorScheme(color)"
                     />
                 </vs-grid>

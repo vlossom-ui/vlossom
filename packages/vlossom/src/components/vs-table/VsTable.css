@@ -15,7 +15,7 @@
 
     thead tr th {
         grid-row: 1;
-        color: var(--vs-comp-font);
+        color: var(--vs-cs-font-colored);
         font-weight: var(--vs-font-weight);
     }
 
@@ -30,8 +30,8 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-area-bg-active);
-            color: var(--vs-font-color);
+            background-color: var(--vs-cs-bg-colored-active);
+            color: var(--vs-cs-font);
         }
 
         > td:not(.vs-table-expanded-row) {
@@ -52,22 +52,22 @@
         }
 
         &:hover {
-            background-color: var(--vs-area-bg-hover);
+            background-color: var(--vs-cs-bg-colored-hover);
         }
     }
 
     th {
         @apply flex items-center;
-        border-top: 0.0625rem solid var(--vs-line-color);
-        border-bottom: 0.0625rem solid var(--vs-line-color);
+        border-top: 0.0625rem solid var(--vs-cs-line);
+        border-bottom: 0.0625rem solid var(--vs-cs-line);
         padding: 0.625rem 0.875rem;
         text-align: left;
 
         &:first-child {
-            border-left: 0.0625rem solid var(--vs-line-color);
+            border-left: 0.0625rem solid var(--vs-cs-line);
         }
         &:last-child {
-            border-right: 0.0625rem solid var(--vs-line-color);
+            border-right: 0.0625rem solid var(--vs-cs-line);
         }
 
         > * {
@@ -77,7 +77,7 @@
 
     td {
         @apply flex items-center;
-        border-bottom: 0.0625rem solid var(--vs-line-color);
+        border-bottom: 0.0625rem solid var(--vs-cs-line);
         padding: 0.625rem 0.875rem;
         text-align: left;
 
@@ -90,7 +90,7 @@
     td {
         * {
             min-height: unset;
-            line-height: var(--vs-default-comp-height-md);
+            line-height: var(--vs-comp-height-md);
         }
     }
 
@@ -101,7 +101,7 @@
     .vs-table-sticky-header {
         @apply sticky w-full;
         z-index: var(--vs-table-sticky-header-z-index);
-        box-shadow: 0 0.125rem 0.25rem var(--vs-comp-shadow);
+        box-shadow: var(--vs-cs-shadow);
         background-color: var(--vs-no-color);
     }
 
@@ -116,7 +116,7 @@
             @apply px-[0.375rem] py-[0.5rem];
             * {
                 font-size: var(--vs-font-size-sm);
-                line-height: var(--vs-default-comp-height-sm);
+                line-height: var(--vs-comp-height-sm);
             }
         }
 
@@ -127,9 +127,9 @@
 
     &.vs-primary {
         thead tr th {
-            border-color: var(--vs-line-color);
-            background-color: var(--vs-primary-comp-bg);
-            color: var(--vs-primary-comp-font);
+            border-color: var(--vs-cs-line);
+            background-color: var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font-primary);
             font-weight: var(--vs-font-weight-bold);
         }
     }
@@ -150,7 +150,7 @@
     }
     td.vs-table-drag-handle {
         @apply w-6 cursor-grab px-0!;
-        color: var(--vs-line-color);
+        color: var(--vs-cs-line);
     }
 
     th.vs-table-expand-handle {
@@ -173,7 +173,7 @@
 
 .vs-total-items {
     @apply text-sm whitespace-nowrap opacity-70;
-    color: var(--vs-font-color);
+    color: var(--vs-cs-font);
 }
 
 caption {
@@ -196,7 +196,7 @@ caption {
 
             tbody tr {
                 @apply mx-0 mb-3 border border-solid;
-                border: 0.0325rem solid var(--vs-line-color);
+                border: 0.0325rem solid var(--vs-cs-line);
             }
 
             td {
@@ -227,7 +227,7 @@ caption {
                     @apply px-[0.375rem] py-[0.5rem];
                     * {
                         font-size: var(--vs-font-size-sm);
-                        line-height: var(--vs-default-comp-height-sm);
+                        line-height: var(--vs-comp-height-sm);
                     }
                 }
             }

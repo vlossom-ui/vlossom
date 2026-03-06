@@ -124,7 +124,7 @@ export default defineComponent({
                     },
                     component: {
                         backgroundColor: 'transparent',
-                        border: '1px solid var(--vs-comp-bg)',
+                        border: '1px solid var(--vs-cs-bg)',
                     },
                 },
             };

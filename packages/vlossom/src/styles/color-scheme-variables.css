@@ -4,21 +4,16 @@
  * and must be kept in sync with that file.
  */
 :root {
-    /* Component base variables */
-    --vs-comp-font: initial;
-    --vs-comp-bg: initial;
-    --vs-comp-shadow: initial;
+    --vs-cs-line: initial;
 
-    /* Primary component variables */
-    --vs-primary-comp-font: initial;
-    --vs-primary-comp-bg: initial;
-    --vs-primary-comp-shadow: initial;
+    --vs-cs-font: initial;
+    --vs-cs-font-colored: initial;
+    --vs-cs-font-primary: initial;
 
-    /* Font and line colors */
-    --vs-font-color: initial;
-    --vs-line-color: initial;
+    --vs-cs-bg: initial;
+    --vs-cs-bg-colored: initial;
+    --vs-cs-bg-primary: initial;
 
-    /* Area variables */
-    --vs-area-bg: initial;
-    --vs-area-shadow-outer: initial;
+    --vs-cs-shadow-color: initial;
+    --vs-cs-shadow: initial;
 }

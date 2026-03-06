@@ -6,26 +6,26 @@
 
     @apply relative w-full overflow-hidden;
 
-    border: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+    border: var(--vs-accordion-border, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
 
     .vs-accordion-title {
         @apply relative w-full cursor-pointer outline-none hover:brightness-96 active:brightness-92;
 
-        background-color: var(--vs-comp-bg);
+        background-color: var(--vs-cs-bg);
         padding: 0.75rem 1rem;
         height: auto;
-        color: var(--vs-comp-font);
+        color: var(--vs-cs-font-colored);
 
         /* 화살표 아이콘 추가 */
         &::after {
             position: absolute;
             top: 50%;
-            right: var(--vs-accordion-arrowSpacing, 2rem);
+            right: var(--vs-accordion-arrowSpacing, 5%);
             transform: translateY(-50%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-top: var(--vs-accordion-arrowSize, 0.625rem) solid
-                var(--vs-accordion-arrowColor, var(--vs-primary-comp-bg));
+                var(--vs-accordion-arrowColor, var(--vs-cs-bg-primary));
             border-right: calc(var(--vs-accordion-arrowSize, 0.625rem) * 0.8) solid transparent;
             border-left: calc(var(--vs-accordion-arrowSize, 0.625rem) * 0.8) solid transparent;
             width: 0;
@@ -44,7 +44,7 @@
 
     &.vs-accordion-open {
         .vs-accordion-title {
-            border-bottom: var(--vs-accordion-border, 1px solid var(--vs-line-color));
+            border-bottom: var(--vs-accordion-border, 1px solid var(--vs-cs-line));
         }
         .vs-accordion-title::after {
             transform: translateY(-50%) rotate(180deg);
@@ -52,23 +52,23 @@
     }
 
     &.vs-primary {
-        border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+        border: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
 
         .vs-accordion-title {
             @apply hover:brightness-104 active:brightness-108;
 
-            border: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-primary-comp-bg);
-            color: var(--vs-primary-comp-font);
+            border: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
+            background-color: var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font-primary);
 
             &::after {
-                border-top-color: var(--vs-accordion-arrowColor, var(--vs-primary-comp-font));
+                border-top-color: var(--vs-accordion-arrowColor, var(--vs-cs-font-primary));
             }
         }
 
         &.vs-accordion-open {
             .vs-accordion-title {
-                border-bottom: var(--vs-accordion-border, 1px solid var(--vs-primary-comp-bg));
+                border-bottom: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
             }
         }
     }

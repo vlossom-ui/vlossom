@@ -22,8 +22,8 @@
 
         .vs-page-button {
             &.vs-primary {
-                background-color: var(--vs-pagination-selectedButtonBackgroundColor, var(--vs-primary-comp-bg));
-                color: var(--vs-pagination-selectedButtonFontColor, var(--vs-primary-comp-font));
+                background-color: var(--vs-pagination-selectedButtonBackgroundColor, var(--vs-cs-bg-primary));
+                color: var(--vs-pagination-selectedButtonFontColor, var(--vs-cs-font-primary));
             }
         }
     }

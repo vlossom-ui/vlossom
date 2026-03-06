@@ -24,7 +24,7 @@
         @apply inline-block h-full;
 
         animation: vs-loading-animation 1s infinite cubic-bezier(0.25, 0.25, 0.75, 0.75);
-        background-color: var(--vs-loading-color, var(--vs-primary-comp-bg));
+        background-color: var(--vs-loading-color, var(--vs-cs-bg-primary));
         width: var(--vs-loading-barWidth, 11.11%);
     }
 

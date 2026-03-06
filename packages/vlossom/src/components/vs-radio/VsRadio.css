@@ -6,7 +6,7 @@
     --vs-radio-radioSize: initial;
 
     @apply relative flex items-center;
-    min-height: var(--vs-default-comp-height-md);
+    min-height: var(--vs-comp-height-md);
 
     .vs-radio-wrap {
         @apply relative flex cursor-pointer flex-nowrap items-center justify-start select-none;
@@ -16,11 +16,11 @@
             pointer-events: none;
 
             &:checked + .vs-radio-label {
-                color: var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
+                color: var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
 
                 &:before {
                     box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.3rem) / 3)
-                        var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
+                        var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
                 }
             }
         }
@@ -28,13 +28,13 @@
         .vs-radio-label {
             @apply flex cursor-pointer items-center whitespace-nowrap select-none;
             padding: 0.2rem 0;
-            color: var(--vs-font-color);
+            color: var(--vs-cs-font);
 
             &:before {
                 @apply bg-transparent;
                 transition: box-shadow 0.25s ease;
                 margin-right: 0.5rem;
-                box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-primary-comp-bg));
+                box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
                 border-radius: var(--vs-radio-borderRadius, 50%);
                 width: var(--vs-radio-radioSize, 1.3rem);
                 height: var(--vs-radio-radioSize, 1.3rem);
@@ -46,7 +46,7 @@
     &.vs-focus-visible {
         .vs-radio-input:focus-visible + .vs-radio-label {
             &:before {
-                outline: 1px solid var(--vs-line-color) !important;
+                outline: 1px solid var(--vs-cs-line) !important;
                 outline-offset: 2px !important;
             }
         }

@@ -10,7 +10,7 @@
 
     .vs-focus-visible:focus-visible,
     .vs-focus-within:focus-within {
-        outline: 1px solid var(--vs-line-color) !important;
+        outline: 1px solid var(--vs-cs-line) !important;
         outline-offset: 2px !important;
     }
 
@@ -25,35 +25,35 @@
 
     /* Size variants */
     .vs-xs {
-        --vs-size-height: var(--vs-default-comp-height-xs);
+        --vs-size-height: var(--vs-comp-height-xs);
         --vs-size-font: var(--vs-font-size-xs);
         --vs-size-radius: var(--vs-radius-xs);
         --vs-size-padding: var(--vs-padding-xs);
     }
 
     .vs-sm {
-        --vs-size-height: var(--vs-default-comp-height-sm);
+        --vs-size-height: var(--vs-comp-height-sm);
         --vs-size-font: var(--vs-font-size-sm);
         --vs-size-radius: var(--vs-radius-sm);
         --vs-size-padding: var(--vs-padding-sm);
     }
 
     .vs-md {
-        --vs-size-height: var(--vs-default-comp-height-md);
+        --vs-size-height: var(--vs-comp-height-md);
         --vs-size-font: var(--vs-font-size-md);
         --vs-size-radius: var(--vs-radius-md);
         --vs-size-padding: var(--vs-padding-md);
     }
 
     .vs-lg {
-        --vs-size-height: var(--vs-default-comp-height-lg);
+        --vs-size-height: var(--vs-comp-height-lg);
         --vs-size-font: var(--vs-font-size-lg);
         --vs-size-radius: var(--vs-radius-lg);
         --vs-size-padding: var(--vs-padding-lg);
     }
 
     .vs-xl {
-        --vs-size-height: var(--vs-default-comp-height-xl);
+        --vs-size-height: var(--vs-comp-height-xl);
         --vs-size-font: var(--vs-font-size-xl);
         --vs-size-radius: var(--vs-radius-xl);
         --vs-size-padding: var(--vs-padding-xl);
