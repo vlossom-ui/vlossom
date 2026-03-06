@@ -1,9 +1,9 @@
 @layer utilities {
     :root {
         --vs-state-color-info: var(--vs-blue-300);
-        --vs-state-color-success: var(--vs-green-500);
+        --vs-state-color-success: var(--vs-green-600);
         --vs-state-color-warning: var(--vs-amber-400);
-        --vs-state-color-error: var(--vs-red-500);
+        --vs-state-color-error: var(--vs-red-600);
 
         @variant dark {
             --vs-state-color-info: var(--vs-blue-700);

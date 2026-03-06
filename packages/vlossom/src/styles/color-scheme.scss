@@ -34,7 +34,7 @@ $colors:
 
             --vs-font-color: var(--vs-gray-50);
 
-            --vs-line-color: var(--vs-gray-500);
+            --vs-line-color: var(--vs-gray-600);
 
             --vs-area-bg: var(--vs-black);
             --vs-area-shadow-outer: 0 0 0.5rem 0 var(--vs-comp-shadow);
@@ -44,17 +44,17 @@ $colors:
     @each $color in $colors {
         .vs-color-scheme-#{$color} {
             --vs-comp-font: var(--vs-#{$color}-950);
-            --vs-comp-bg: var(--vs-#{$color}-200);
+            --vs-comp-bg: var(--vs-#{$color}-100);
             --vs-comp-bg-hover: var(--vs-#{$color}-200);
             --vs-comp-shadow: rgba(0, 0, 0, 0.25);
 
             --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
-            --vs-primary-comp-bg: var(--vs-#{$color}-500);
+            --vs-primary-comp-bg: var(--vs-#{$color}-600);
             --vs-primary-comp-shadow: rgba(0, 0, 0, 0.25);
 
             --vs-font-color: var(--vs-#{$color}-950);
 
-            --vs-line-color: var(--vs-#{$color}-400);
+            --vs-line-color: var(--vs-#{$color}-500);
 
             --vs-area-bg: var(--vs-#{$color}-50);
             --vs-area-shadow-outer: 0 0 1rem 0 var(--vs-comp-shadow);
@@ -70,7 +70,7 @@ $colors:
                 --vs-comp-shadow: rgba(255, 255, 255, 0.25);
 
                 --vs-primary-comp-font: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);
-                --vs-primary-comp-bg: var(--vs-#{$color}-500);
+                --vs-primary-comp-bg: var(--vs-#{$color}-600);
                 --vs-primary-comp-shadow: rgba(0, 0, 0, 0.4);
 
                 --vs-font-color: color-mix(in oklch, var(--vs-#{$color}-50) 25%, white 75%);

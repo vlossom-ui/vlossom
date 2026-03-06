@@ -17,10 +17,10 @@
                 .vs-icon-container {
                     width: 1.2rem;
                     height: 1.2rem;
-                    color: var(--vs-indigo-500);
+                    color: var(--vs-indigo-600);
 
                     &.copied {
-                        color: var(--vs-green-500);
+                        color: var(--vs-green-600);
                     }
                 }
             }
@@ -29,7 +29,7 @@
                 .vs-icon-container {
                     width: 1.2rem;
                     height: 1.2rem;
-                    color: var(--vs-blue-500);
+                    color: var(--vs-blue-600);
                 }
             }
 
