@@ -38,7 +38,7 @@
         color: var(--vs-primary-comp-bg);
 
         &:hover {
-            background-color: var(--vs-comp-bg);
+            background-color: var(--vs-area-bg);
         }
     }
 
@@ -60,6 +60,10 @@
         background-color: var(--vs-primary-comp-bg);
         color: var(--vs-primary-comp-font);
         font-weight: 500;
+
+        &:hover {
+            background-color: var(--vs-primary-comp-bg);
+        }
     }
 
     &.vs-circle {
