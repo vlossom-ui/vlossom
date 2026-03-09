@@ -38,18 +38,17 @@
         color: var(--vs-cs-bg-primary);
 
         &:hover {
-            @apply hover:brightness-96 active:brightness-92;
+            background-color: var(--vs-cs-bg-light);
         }
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        border: 1px solid var(--vs-cs-bg-primary);
         color: var(--vs-cs-bg-primary);
 
         &:hover {
-            background-color: var(--vs-cs-bg);
+            background-color: var(--vs-cs-bg-light);
         }
     }
 
@@ -73,21 +72,21 @@
         height: var(--vs-size-height);
     }
 
-    @variant dark {
-        @apply hover:brightness-104 active:brightness-108;
-
-        &.vs-ghost {
-            @apply hover:brightness-96 active:brightness-92;
-        }
-
-        &.vs-primary {
-            @apply hover:brightness-96 active:brightness-92;
-        }
-    }
-
     @container (max-width: 768px) {
         &.vs-responsive {
             @apply w-full;
         }
+    }
+}
+
+:root.vs-dark .vs-button {
+    @apply hover:brightness-116 active:brightness-132;
+
+    &.vs-ghost {
+        @apply hover:brightness-96 active:brightness-92;
+    }
+
+    &.vs-primary {
+        @apply hover:brightness-96 active:brightness-92;
     }
 }
