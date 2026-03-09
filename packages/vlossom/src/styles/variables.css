@@ -3,13 +3,13 @@
         --vs-no-color: var(--vs-white);
         --vs-no-color-inverse: var(--vs-black);
 
-        --vs-app-bg: white;
+        --vs-app-bg: var(--vs-no-color);
 
         @variant dark {
             --vs-no-color: var(--vs-black);
             --vs-no-color-inverse: var(--vs-white);
 
-            --vs-app-bg: #121212;
+            --vs-app-bg: var(--vs-no-color);
         }
 
         --vs-line-height: 1.6;
@@ -20,11 +20,11 @@
 
         --vs-white-space: normal;
 
-        --vs-font-size-xs: 0.6rem;
-        --vs-font-size-sm: 0.8rem;
+        --vs-font-size-xs: 0.7rem;
+        --vs-font-size-sm: 0.85rem;
         --vs-font-size-md: 1rem;
         --vs-font-size-lg: 1.2rem;
-        --vs-font-size-xl: 1.4rem;
+        --vs-font-size-xl: 1.5rem;
 
         --vs-radius-ratio: 1;
         --vs-radius-xs: 0.2rem;
@@ -37,11 +37,11 @@
         --vs-modal-z-index: 5000;
         --vs-toast-z-index: 99999;
 
-        --vs-comp-height-xs: 1.4rem;
+        --vs-comp-height-xs: 1.5rem;
         --vs-comp-height-sm: 1.8rem;
-        --vs-comp-height-md: 2.1rem;
-        --vs-comp-height-lg: 2.4rem;
-        --vs-comp-height-xl: 2.8rem;
+        --vs-comp-height-md: 2rem;
+        --vs-comp-height-lg: 2.2rem;
+        --vs-comp-height-xl: 2.5rem;
 
         --vs-padding-xs: 0.4rem;
         --vs-padding-sm: 0.6rem;

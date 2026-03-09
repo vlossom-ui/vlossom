@@ -7,7 +7,6 @@
         <div class="flex flex-col gap-12">
             <!-- Color Scheme Table -->
             <section>
-                <h2 class="section-title">Color Scheme Table</h2>
                 <div class="overflow-x-auto">
                     <table class="min-w-full border-collapse text-sm">
                         <thead>
@@ -110,7 +109,7 @@
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row">
                     <span class="preview-label">{{ cs.name }}</span>
                     <div class="preview-items">
-                        <vs-switch :color-scheme="cs.value" v-model="switchOff" label="Off" />
+                        <vs-switch :color-scheme="cs.value" v-model="switchOff" false-label="Offline Switch" />
                         <vs-switch :color-scheme="cs.value" v-model="switchOn" label="On" />
                         <vs-switch :color-scheme="cs.value" v-model="switchOn" disabled label="Disabled" />
                     </div>
@@ -219,12 +218,22 @@
             </section>
             <!-- ───── VsInput ───── -->
             <section>
+                <div class="flex w-full gap-2">
+                    <vs-input placeholder="Default" required label="Required" /><vs-button>Search</vs-button>
+                    <vs-switch />
+                </div>
                 <h2 class="section-title">VsInput</h2>
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row">
                     <span class="preview-label">{{ cs.name }}</span>
                     <div class="preview-items flex-wrap">
-                        <vs-input :color-scheme="cs.value" model-value="" placeholder="Default" />
-                        <vs-input :color-scheme="cs.value" model-value="" placeholder="Disabled" disabled />
+                        <vs-input :color-scheme="cs.value" label="Default" model-value="" placeholder="Default" />
+                        <vs-input
+                            :color-scheme="cs.value"
+                            label="Disabled"
+                            model-value=""
+                            placeholder="Disabled"
+                            disabled
+                        />
                     </div>
                 </div>
             </section>
@@ -270,12 +279,20 @@
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row">
                     <span class="preview-label">{{ cs.name }}</span>
                     <div class="preview-items">
-                        <vs-search-input :color-scheme="cs.value" v-model="searchValue" placeholder="Search..." />
+                        <vs-search-input
+                            :color-scheme="cs.value"
+                            v-model="searchValue"
+                            placeholder="Search..."
+                            useRegex
+                            useCaseSensitive
+                        />
                         <vs-search-input
                             :color-scheme="cs.value"
                             v-model="searchValue"
                             placeholder="Disabled"
                             disabled
+                            useRegex
+                            useCaseSensitive
                         />
                     </div>
                 </div>
@@ -289,6 +306,8 @@
                     <div class="preview-items flex-1 flex-col gap-2">
                         <vs-tabs :color-scheme="cs.value" v-model="tabValue" :tabs="tabItems" />
                         <vs-tabs :color-scheme="cs.value" v-model="tabValue" :tabs="tabItems" primary />
+                        <vs-tabs :color-scheme="cs.value" v-model="tabValue" :tabs="tabItems" dense />
+                        <vs-tabs :color-scheme="cs.value" v-model="tabValue" :tabs="tabItems" dense primary />
                     </div>
                 </div>
             </section>
@@ -321,8 +340,8 @@
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row items-start">
                     <span class="preview-label mt-1">{{ cs.name }}</span>
                     <div class="preview-items flex-1 flex-col gap-2">
-                        <vs-progress :color-scheme="cs.value" :value="40" />
-                        <vs-progress :color-scheme="cs.value" :value="75" primary />
+                        <vs-progress :color-scheme="cs.value" value="40" max="100" />
+                        <vs-progress :color-scheme="cs.value" value="75" max="100" primary />
                     </div>
                 </div>
             </section>
@@ -372,11 +391,21 @@
                     <div class="preview-items flex-col gap-2">
                         <vs-label-value :color-scheme="cs.value">
                             <template #label>Label</template>
-                            Value
                         </vs-label-value>
                         <vs-label-value :color-scheme="cs.value" primary>
                             <template #label>Primary</template>
-                            Value
+                        </vs-label-value>
+                        <vs-label-value :color-scheme="cs.value" dense>
+                            <template #label>Dense</template>
+                        </vs-label-value>
+                        <vs-label-value :color-scheme="cs.value" vertical>
+                            <template #label>Label</template>
+                        </vs-label-value>
+                        <vs-label-value :color-scheme="cs.value" vertical primary>
+                            <template #label>Primary</template>
+                        </vs-label-value>
+                        <vs-label-value :color-scheme="cs.value" vertical dense>
+                            <template #label>Dense</template>
                         </vs-label-value>
                     </div>
                 </div>
@@ -427,8 +456,19 @@
                 <h2 class="section-title">VsTable</h2>
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row items-start">
                     <span class="preview-label mt-2">{{ cs.name }}</span>
-                    <div class="preview-items flex-1">
+                    <div class="preview-items w-full">
                         <vs-table :color-scheme="cs.value" :columns="tableColumns" :items="tableRows" class="flex-1" />
+
+                        <vs-table
+                            :color-scheme="cs.value"
+                            :columns="tableColumns"
+                            :items="tableRows"
+                            class="flex-1"
+                            dense
+                            selectable
+                            expandable
+                            sticky-header
+                        />
                     </div>
                 </div>
             </section>
@@ -539,9 +579,11 @@ const csVariables = [
     { key: '--vs-cs-font-colored', label: '--vs-cs-font-colored' },
     { key: '--vs-cs-font-primary', label: '--vs-cs-font-primary' },
     { key: '--vs-cs-bg-area', label: '--vs-cs-bg-area' },
+    { key: '--vs-cs-bg-area-colored', label: '--vs-cs-bg-area-colored' },
     { key: '--vs-cs-bg', label: '--vs-cs-bg' },
     { key: '--vs-cs-bg-colored', label: '--vs-cs-bg-colored' },
     { key: '--vs-cs-bg-comp', label: '--vs-cs-bg-comp' },
+    { key: '--vs-cs-bg-comp-colored', label: '--vs-cs-bg-comp-colored' },
     { key: '--vs-cs-bg-primary', label: '--vs-cs-bg-primary' },
     { key: '--vs-cs-shadow-color', label: '--vs-cs-shadow-color' },
 ];

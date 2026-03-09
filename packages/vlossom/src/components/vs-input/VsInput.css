@@ -8,7 +8,6 @@
     background-color: var(--vs-cs-bg-area);
     height: var(--vs-comp-height-md);
     color: var(--vs-cs-font);
-    font-weight: var(--vs-font-weight);
     font-size: var(--vs-font-size-md);
 
     input {
@@ -16,7 +15,6 @@
 
         padding: 0 0.8rem;
         color: var(--vs-cs-font);
-        font-weight: var(--vs-font-weight);
         font-size: var(--vs-font-size-md);
     }
 

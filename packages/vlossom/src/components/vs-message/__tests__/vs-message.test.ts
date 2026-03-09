@@ -9,7 +9,7 @@ describe('VsMessage', () => {
             const wrapper = mount(VsMessage);
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-default');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-default');
         });
 
         it('idle state일 때 기본 색상 클래스가 적용되어야 한다', () => {
@@ -21,7 +21,7 @@ describe('VsMessage', () => {
             });
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-default');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-default');
         });
 
         it('info state일 때 파란색 클래스가 적용되어야 한다', () => {
@@ -33,7 +33,7 @@ describe('VsMessage', () => {
             });
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-blue');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-blue');
         });
 
         it('success state일 때 초록색 클래스가 적용되어야 한다', () => {
@@ -45,7 +45,7 @@ describe('VsMessage', () => {
             });
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-green');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-green');
         });
 
         it('warning state일 때 노란색 클래스가 적용되어야 한다', () => {
@@ -57,7 +57,7 @@ describe('VsMessage', () => {
             });
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-amber');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-amber');
         });
 
         it('error state일 때 빨간색 클래스가 적용되어야 한다', () => {
@@ -69,7 +69,7 @@ describe('VsMessage', () => {
             });
 
             // then
-            expect(wrapper.vm.colorClass).toBe('vs-color-scheme-red');
+            expect(wrapper.vm.colorClass).toBe('vs-cs-red');
         });
     });
 

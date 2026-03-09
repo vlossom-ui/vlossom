@@ -6,7 +6,7 @@
                 small
                 :primary
                 :disabled="loading"
-                :style-set="{ variables: { padding: '0' }, component: { height: '2rem' } }"
+                :style-set="{ variables: { padding: '0' }, component: { height: '1.4rem' } }"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <vs-render
@@ -32,10 +32,7 @@ import VsButton from '@/components/vs-button/VsButton.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
 export default defineComponent({
-    components: {
-        VsButton,
-        VsRender,
-    },
+    components: { VsButton, VsRender },
     props: {
         cells: {
             type: Array as PropType<Cell[]>,

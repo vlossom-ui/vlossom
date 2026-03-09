@@ -15,7 +15,7 @@
         @apply relative w-full;
 
         border-bottom: var(--vs-block-border, 1px solid var(--vs-cs-line));
-        background-color: var(--vs-cs-bg);
+        background-color: var(--vs-cs-bg-colored);
         padding: 0.5rem 1.2rem;
         color: var(--vs-cs-font-colored);
         font-weight: 500;

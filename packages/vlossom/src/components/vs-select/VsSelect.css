@@ -72,12 +72,6 @@
 
         &.vs-focusable-active {
             @apply box-content;
-
-            border: var(--vs-select-focused-border, 1px solid var(--vs-cs-line)) !important;
-            border-radius: var(
-                --vs-select-focused-borderRadius,
-                calc(var(--vs-radius-ratio) * var(--vs-radius-md))
-            ) !important;
             background-color: var(--vs-select-focused-backgroundColor, var(--vs-cs-bg-colored)) !important;
         }
     }
@@ -100,7 +94,7 @@
         }
 
         &.selected {
-            background-color: var(--vs-cs-bg-area);
+            background-color: var(--vs-cs-bg-comp-colored);
 
             .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);

@@ -17,7 +17,7 @@ describe('VsInputWrapper', () => {
             const requiredStar = wrapper.find('.vs-required-star');
             expect(requiredStar.exists()).toBe(true);
             expect(requiredStar.text()).toBe('*');
-            expect(requiredStar.classes()).toContain('vs-color-scheme-red');
+            expect(requiredStar.classes()).toContain('vs-cs-red');
         });
 
         it('disabled prop이 true이면 라벨, 필수 표시, 메시지 영역에 disabled 클래스가 적용되어야 한다', () => {

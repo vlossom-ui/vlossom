@@ -30,7 +30,7 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg-area);
+            background-color: var(--vs-cs-bg-comp-colored);
             color: var(--vs-cs-font);
         }
 
@@ -154,10 +154,10 @@
     }
 
     th.vs-table-expand-handle {
-        @apply w-16;
+        @apply w-10;
     }
     td.vs-table-expand-handle {
-        @apply w-16;
+        @apply w-10;
     }
 }
 

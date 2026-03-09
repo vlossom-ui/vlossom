@@ -77,14 +77,25 @@ export default defineComponent({
         ColorScheme,
     },
     setup() {
-        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example', 'Color Palette', 'Color Scheme'];
+        const tabs = [
+            'Sandbox',
+            'Basic',
+            'Inputs',
+            'Data Display',
+            'Overlay',
+            'Form Example',
+            'Color Palette',
+            'Color Scheme',
+        ];
         const activeTab = ref(0);
 
         const basicBarStyleSet: VsBarStyleSet = {
             component: {
-                border: 'none',
                 backgroundColor: 'black',
                 color: 'white',
+                border: 'none',
+                height: '60px',
+                borderBottom: '1px solid gray',
             },
         };
 

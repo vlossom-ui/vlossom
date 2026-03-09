@@ -35,10 +35,9 @@
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
 
-                padding: 0 0.8rem;
+                padding: 0 1.2rem;
 
                 color: var(--vs-cs-font);
-                font-weight: var(--vs-font-weight);
                 font-size: var(--vs-font-size-md);
 
                 &:not(:last-child) {
@@ -70,9 +69,13 @@
     }
 
     &.vs-dense {
-        .vs-tabs-wrap .vs-tab-list .vs-tab-item {
-            padding: 0 0.6rem;
-            font-size: var(--vs-font-size-sm);
+        .vs-tabs-wrap .vs-tab-list {
+            height: var(--vs-tabs-height, var(--vs-comp-height-xs));
+
+            .vs-tab-item {
+                padding: 0 0.8rem;
+                font-size: var(--vs-font-size-sm);
+            }
         }
     }
 

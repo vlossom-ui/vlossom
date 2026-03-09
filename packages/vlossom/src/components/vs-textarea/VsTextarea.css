@@ -9,6 +9,5 @@
     padding: 0.3rem 0.6rem;
     min-height: 6rem;
     color: var(--vs-cs-font);
-    font-weight: var(--vs-font-weight);
     font-size: var(--vs-font-size-md);
 }

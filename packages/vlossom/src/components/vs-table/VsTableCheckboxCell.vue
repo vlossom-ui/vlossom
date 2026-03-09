@@ -38,9 +38,7 @@ import { getRowItem, type Cell, isBodyRow, TABLE_STYLE_SET_TOKEN, type VsTableSt
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
 export default defineComponent({
-    components: {
-        VsCheckbox,
-    },
+    components: { VsCheckbox },
     props: {
         cells: {
             type: Array as PropType<Cell[]>,

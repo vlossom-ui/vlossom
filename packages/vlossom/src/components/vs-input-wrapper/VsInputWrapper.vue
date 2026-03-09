@@ -16,7 +16,7 @@
                 <slot name="label">
                     <span>{{ label }}</span>
                 </slot>
-                <i v-if="required" class="vs-required-star vs-color-scheme-red">*</i>
+                <i v-if="required" class="vs-required-star vs-cs-red">*</i>
             </component>
 
             <slot />

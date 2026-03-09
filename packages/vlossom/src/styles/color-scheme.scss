@@ -11,9 +11,11 @@ $colors:
         --vs-cs-font-primary: var(--vs-white);
 
         --vs-cs-bg-area: var(--vs-white);
+        --vs-cs-bg-area-colored: var(--vs-gray-50);
         --vs-cs-bg: var(--vs-white);
         --vs-cs-bg-colored: var(--vs-gray-100);
-        --vs-cs-bg-comp: var(--vs-gray-100);
+        --vs-cs-bg-comp: var(--vs-white);
+        --vs-cs-bg-comp-colored: var(--vs-gray-200);
         --vs-cs-bg-primary: var(--vs-black);
 
         --vs-cs-shadow-color: rgba(0, 0, 0, 0.16);
@@ -29,9 +31,11 @@ $colors:
             --vs-cs-font-primary: var(--vs-black);
 
             --vs-cs-bg-area: var(--vs-black);
+            --vs-cs-bg-area-colored: var(--vs-gray-800);
             --vs-cs-bg: var(--vs-black);
-            --vs-cs-bg-colored: var(--vs-gray-800);
-            --vs-cs-bg-comp: var(--vs-gray-700);
+            --vs-cs-bg-colored: var(--vs-gray-700);
+            --vs-cs-bg-comp: var(--vs-black);
+            --vs-cs-bg-comp-colored: var(--vs-gray-600);
             --vs-cs-bg-primary: var(--vs-white);
 
             --vs-cs-shadow-color: rgba(255, 255, 255, 0.25);
@@ -41,16 +45,18 @@ $colors:
 
     @each $color in $colors {
         .vs-cs-#{$color} {
-            --vs-cs-line: var(--vs-#{$color}-500);
+            --vs-cs-line: var(--vs-#{$color}-600);
 
             --vs-cs-font: var(--vs-#{$color}-900);
             --vs-cs-font-colored: var(--vs-#{$color}-800);
             --vs-cs-font-primary: var(--vs-#{$color}-50);
 
             --vs-cs-bg-area: var(--vs-#{$color}-50);
+            --vs-cs-bg-area-colored: var(--vs-#{$color}-50);
             --vs-cs-bg: var(--vs-#{$color}-100);
             --vs-cs-bg-colored: var(--vs-#{$color}-100);
             --vs-cs-bg-comp: var(--vs-#{$color}-200);
+            --vs-cs-bg-comp-colored: var(--vs-#{$color}-200);
             --vs-cs-bg-primary: var(--vs-#{$color}-600);
 
             --vs-cs-shadow-color: rgba(0, 0, 0, 0.25);
@@ -68,9 +74,11 @@ $colors:
                 --vs-cs-font-primary: var(--vs-#{$color}-50);
 
                 --vs-cs-bg-area: var(--vs-#{$color}-950);
+                --vs-cs-bg-area-colored: var(--vs-#{$color}-950);
                 --vs-cs-bg: var(--vs-#{$color}-900);
-                --vs-cs-bg-colored: var(--vs-#{$color}-800);
+                --vs-cs-bg-colored: var(--vs-#{$color}-900);
                 --vs-cs-bg-comp: var(--vs-#{$color}-800);
+                --vs-cs-bg-comp-colored: var(--vs-#{$color}-800);
                 --vs-cs-bg-primary: var(--vs-#{$color}-700);
 
                 --vs-cs-shadow-color: rgba(255, 255, 255, 0.25);

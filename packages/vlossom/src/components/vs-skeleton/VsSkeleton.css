@@ -10,7 +10,7 @@
         @apply absolute h-full w-full;
 
         animation: skeleton-blink 1s ease infinite alternate;
-        background-color: var(--vs-cs-line);
+        background-color: var(--vs-cs-bg-colored);
     }
 
     .vs-skeleton-content {
