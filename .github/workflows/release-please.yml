@@ -19,8 +19,6 @@ jobs:
             - uses: googleapis/release-please-action@v4
               id: release
               with:
-                  path: packages/vlossom
-                  release-type: node
                   token: ${{ secrets.GITHUB_TOKEN }}
                   config-file: release-please-config.json
                   manifest-file: release-please-manifest.json
@@ -28,6 +26,7 @@ jobs:
             - name: Print release-please outputs
               run: |
                   echo "Release created: ${{ steps.release.outputs.releases_created }}"
+
     publish-vlossom:
         needs: release-please
         if: ${{ needs.release-please.outputs.ok-to-deploy == 'true' }}
@@ -43,6 +42,7 @@ jobs:
                   node-version-file: '.nvmrc'
                   cache: 'pnpm'
                   cache-dependency-path: ./packages/vlossom/pnpm-lock.yaml
+                  registry-url: 'https://registry.npmjs.org'
             - name: Install dependencies
               working-directory: ./packages/vlossom
               run: pnpm install
@@ -53,4 +53,4 @@ jobs:
               working-directory: ./packages/vlossom
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.VLOSSOM_NPM_TOKEN }}
-              run: pnpm publish --access public
+              run: pnpm publish --access public --no-git-checks
