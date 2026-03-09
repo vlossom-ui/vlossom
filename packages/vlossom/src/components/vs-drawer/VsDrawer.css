@@ -13,7 +13,7 @@
 
         box-shadow: none;
         border-radius: 0;
-        background-color: var(--vs-cs-bg);
+        background-color: var(--vs-cs-bg-area);
         padding: 0;
 
         &.vs-drawer-left {

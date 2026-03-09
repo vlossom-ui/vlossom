@@ -50,8 +50,12 @@
     &.vs-outline {
         @apply bg-transparent;
 
-        border: 1px solid var(--vs-cs-bg-primary);
-        color: var(--vs-cs-bg-primary);
+        border: 1px solid var(--vs-cs-line);
+        color: var(--vs-cs-font-colored);
+
+        &:hover {
+            background-color: var(--vs-cs-bg);
+        }
     }
 
     &.vs-primary {

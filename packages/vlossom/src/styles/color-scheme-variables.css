@@ -10,9 +10,10 @@
     --vs-cs-font-colored: initial;
     --vs-cs-font-primary: initial;
 
-    --vs-cs-bg-light: initial;
+    --vs-cs-bg-area: initial;
     --vs-cs-bg: initial;
     --vs-cs-bg-colored: initial;
+    --vs-cs-bg-comp: initial;
     --vs-cs-bg-primary: initial;
 
     --vs-cs-shadow-color: initial;

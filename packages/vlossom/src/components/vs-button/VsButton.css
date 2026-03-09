@@ -35,20 +35,20 @@
     &.vs-ghost {
         @apply border-transparent bg-transparent;
 
-        color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-font-colored);
 
         &:hover {
-            background-color: var(--vs-cs-bg-light);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-font-colored);
 
         &:hover {
-            background-color: var(--vs-cs-bg-light);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
