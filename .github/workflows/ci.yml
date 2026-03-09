@@ -25,6 +25,7 @@ jobs:
               run: pnpm lint
 
     vlossom-build:
+        needs: vlossom-lint
         timeout-minutes: 10
         runs-on: ubuntu-latest
         steps:
@@ -41,9 +42,6 @@ jobs:
             - name: Install dependencies
               working-directory: ./packages/vlossom
               run: pnpm install
-            - name: Run eslint
-              working-directory: ./packages/vlossom
-              run: pnpm lint
             - name: Build vlossom
               working-directory: ./packages/vlossom
               run: pnpm build
@@ -65,9 +63,6 @@ jobs:
             - name: Install dependencies
               working-directory: ./packages/vlossom
               run: pnpm install
-            - name: Install Playwright
-              working-directory: ./packages/vlossom
-              run: npx playwright install --with-deps
             - name: Build Storybook
               working-directory: ./packages/vlossom
               run: pnpm build-storybook --quiet
