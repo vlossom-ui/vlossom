@@ -54,26 +54,23 @@
                     </div>
 
                     <div v-if="hasValue" class="vs-file-drop-files" :style="componentStyleSet.files">
-                        <div
+                        <vs-chip
                             v-for="(file, index) in inputValue as File[]"
                             :key="`${file.name}-${index}`"
                             class="vs-file-drop-file"
+                            :id="`${file.name}-${index}`"
+                            :color-scheme
+                            :closable="!computedReadonly && !computedDisabled"
+                            :style-set="componentStyleSet.chip"
+                            @close="handleFileRemove(file)"
                         >
-                            <vs-chip
-                                :id="`${file.name}-${index}`"
-                                :color-scheme
-                                :closable="!computedReadonly && !computedDisabled"
-                                :style-set="componentStyleSet.chip"
-                                @close="handleFileRemove(file)"
-                            >
-                                <div class="vs-file-drop-file-wrapper">
-                                    <span class="vs-file-drop-file-name">{{ file.name }} </span>
-                                    <span class="vs-file-drop-file-size">
-                                        {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
-                                    </span>
-                                </div>
-                            </vs-chip>
-                        </div>
+                            <div class="vs-file-drop-file-wrapper">
+                                <span class="vs-file-drop-file-name">{{ file.name }} </span>
+                                <span class="vs-file-drop-file-size">
+                                    {{ `(${stringUtil.toFileSizeFormat(file.size)})` }}
+                                </span>
+                            </div>
+                        </vs-chip>
                     </div>
                     <span v-if="inputValue.length > 1" class="vs-file-drop-file-count">
                         {{ inputValue.length }} files selected

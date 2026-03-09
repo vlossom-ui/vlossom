@@ -4,11 +4,12 @@
     --vs-file-drop-dragBackgroundColor: initial;
     --vs-file-drop-iconColor: initial;
 
-    @apply relative box-border hover:brightness-110 active:brightness-120;
+    @apply relative box-border hover:brightness-102 active:brightness-105;
 
     border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-cs-bg);
+    background-color: var(--vs-cs-bg-area);
+    padding: 1.6rem 2rem 0.5rem 2rem;
     width: 100%;
     height: auto;
 
@@ -19,7 +20,7 @@
 
     &.vs-dragging {
         outline: 2px dashed var(--vs-cs-line);
-        background-color: var(--vs-file-drop-dragBackgroundColor, var(--vs-cs-bg));
+        background-color: var(--vs-file-drop-dragBackgroundColor, var(--vs-cs-bg-area));
     }
 
     .vs-file-drop-ref {
@@ -31,38 +32,34 @@
     }
 
     .vs-file-drop-content {
-        @apply flex min-h-0 w-full min-w-0 flex-col items-center justify-center;
+        @apply flex w-full flex-col items-center justify-center;
 
         .vs-file-drop-files {
-            @apply m-1 flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-2 overflow-x-hidden overflow-y-auto;
-            padding: 1rem;
+            @apply flex w-full flex-col items-center justify-center gap-3;
 
             > div {
                 @apply flex w-full max-w-full min-w-0;
             }
 
             .vs-file-drop-file-wrapper {
-                @apply flex w-full max-w-full min-w-0 items-center;
+                @apply flex items-center;
 
                 .vs-file-drop-file-name {
                     @apply truncate;
 
-                    color: var(--vs-cs-font);
                     font-size: var(--vs-font-size-md);
                 }
 
                 .vs-file-drop-file-size {
                     @apply ml-2 shrink-0;
 
-                    color: var(--vs-cs-font);
                     font-size: var(--vs-font-size-xs);
                 }
             }
         }
 
         .vs-file-drop-placeholder {
-            @apply flex flex-col items-center justify-center;
-            padding: 1rem;
+            @apply flex flex-col items-center justify-center pb-3;
 
             .placeholder-icon {
                 color: var(--vs-file-drop-iconColor, var(--vs-cs-font));
@@ -75,7 +72,7 @@
         }
 
         .vs-file-drop-file-count {
-            @apply w-full shrink-0 px-4 pb-2 text-right;
+            @apply w-full shrink-0 px-4 text-right;
 
             color: var(--vs-cs-font);
             font-size: var(--vs-font-size-xs);

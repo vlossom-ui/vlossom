@@ -19,7 +19,7 @@
                 color: var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
 
                 &:before {
-                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.3rem) / 3)
+                    box-shadow: inset 0 0 0 calc(var(--vs-radio-radioSize, 1.4rem) / 3)
                         var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
                 }
             }
@@ -28,7 +28,7 @@
         .vs-radio-label {
             @apply flex cursor-pointer items-center whitespace-nowrap select-none;
             padding: 0.2rem 0;
-            color: var(--vs-cs-font);
+            color: var(--vs-cs-font-colored);
 
             &:before {
                 @apply bg-transparent;
@@ -36,8 +36,8 @@
                 margin-right: 0.5rem;
                 box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
                 border-radius: var(--vs-radio-borderRadius, 50%);
-                width: var(--vs-radio-radioSize, 1.3rem);
-                height: var(--vs-radio-radioSize, 1.3rem);
+                width: var(--vs-radio-radioSize, 1.4rem);
+                height: var(--vs-radio-radioSize, 1.4rem);
                 content: '';
             }
         }
