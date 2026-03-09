@@ -30,7 +30,7 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg);
+            background-color: var(--vs-cs-bg-area);
             color: var(--vs-cs-font);
         }
 

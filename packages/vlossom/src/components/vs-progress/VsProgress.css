@@ -16,7 +16,7 @@
 
     border: var(--vs-progress-bar-border, 1px solid var(--vs-cs-line));
     border-radius: var(--vs-progress-bar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-progress-bar-backgroundColor, var(--vs-cs-bg));
+    background-color: var(--vs-progress-bar-backgroundColor, var(--vs-cs-bg-area));
 }
 
 .vs-progress[value]::-webkit-progress-value {

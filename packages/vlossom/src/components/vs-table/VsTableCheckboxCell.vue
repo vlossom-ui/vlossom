@@ -70,7 +70,7 @@ export default defineComponent({
             }
             return {
                 variables: {
-                    checkboxColor: 'var(--vs-cs-bg)',
+                    checkboxColor: 'var(--vs-cs-bg-area)',
                     checkboxCheckedColor: 'var(--vs-cs-font-colored)',
                 },
             };

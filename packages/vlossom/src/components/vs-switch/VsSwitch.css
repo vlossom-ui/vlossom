@@ -11,7 +11,7 @@
         @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
         border: 1px solid var(--vs-cs-line);
         border-radius: 1.5rem;
-        background-color: var(--vs-cs-bg);
+        background-color: var(--vs-cs-bg-area);
 
         width: auto;
         height: 2rem;

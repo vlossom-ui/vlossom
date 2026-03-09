@@ -8,7 +8,7 @@
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     --tab-border: 1px solid transparent;
     --tab-border-color: var(--vs-cs-line);
-    --tab-bg: var(--vs-cs-bg);
+    --tab-bg: var(--vs-cs-bg-area);
     --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @apply relative flex items-center gap-2 select-none;

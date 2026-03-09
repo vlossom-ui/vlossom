@@ -13,7 +13,7 @@
         box-shadow: var(--vs-cs-shadow);
         border: none;
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        background-color: var(--vs-cs-bg);
+        background-color: var(--vs-cs-bg-area);
         padding: 1.8rem 2.4rem;
         width: auto;
         height: auto;

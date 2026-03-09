@@ -100,7 +100,7 @@
         }
 
         &.selected {
-            background-color: var(--vs-cs-bg);
+            background-color: var(--vs-cs-bg-area);
 
             .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);

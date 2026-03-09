@@ -44,7 +44,7 @@
 
                 border: 1px solid var(--vs-cs-line);
                 border-radius: 100%;
-                background-color: var(--vs-cs-bg);
+                background-color: var(--vs-cs-bg-area);
                 width: var(--step-size);
                 height: var(--step-size);
                 color: var(--vs-cs-font-colored);

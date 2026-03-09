@@ -33,6 +33,7 @@
                     <Overlay />
                     <FormExample />
                     <ColorPalette />
+                    <ColorScheme />
                 </vs-index-view>
             </vs-page>
 
@@ -56,6 +57,7 @@ import Overlay from './views/Overlay.vue';
 import Sandbox from './Sandbox.vue';
 import FormExample from './components/FormExample.vue';
 import ColorPalette from './views/ColorPalette.vue';
+import ColorScheme from './views/ColorScheme.vue';
 import ColorSchemePanel from './components/ColorSchemePanel.vue';
 import ColorSchemePanelButton from './components/ColorSchemePanelButton.vue';
 import type { VsBarStyleSet } from '@/components/vs-bar/types';
@@ -72,9 +74,10 @@ export default defineComponent({
         ColorSchemePanel,
         ColorSchemePanelButton,
         ColorPalette,
+        ColorScheme,
     },
     setup() {
-        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example', 'Color Palette'];
+        const tabs = ['Sandbox', 'Basic', 'Inputs', 'Data Display', 'Overlay', 'Form Example', 'Color Palette', 'Color Scheme'];
         const activeTab = ref(0);
 
         const basicBarStyleSet: VsBarStyleSet = {
