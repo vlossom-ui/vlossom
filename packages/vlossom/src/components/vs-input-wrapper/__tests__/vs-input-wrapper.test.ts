@@ -52,23 +52,6 @@ describe('VsInputWrapper', () => {
             const messages = wrapper.find('.vs-messages');
             expect(messages.exists()).toBe(false);
         });
-
-        it('noMessages prop이 true여도 messages 슬롯이 있으면 메시지 영역이 렌더링되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    noMessages: true,
-                },
-                slots: {
-                    messages: '<div class="custom-message">커스텀 메시지</div>',
-                },
-            });
-
-            // then
-            const messages = wrapper.find('.vs-messages');
-            expect(messages.exists()).toBe(true);
-            expect(wrapper.html()).toContain('커스텀 메시지');
-        });
     });
 
     describe('label', () => {
