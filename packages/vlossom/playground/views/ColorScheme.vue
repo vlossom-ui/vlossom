@@ -99,6 +99,7 @@
                             disabled
                             check-label="Disabled"
                         ></vs-checkbox>
+                        <vs-checkbox :color-scheme="cs.value" indeterminate check-label="Indeterminate" />
                     </div>
                 </div>
             </section>

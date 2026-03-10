@@ -48,7 +48,7 @@
                 background-color: var(--vs-checkbox-checkboxColor, var(--vs-cs-bg-primary));
 
                 &:before {
-                    @apply scale-100;
+                    transform: scale(1);
                     clip-path: polygon(0% 38%, 100% 38%, 100% 62%, 0% 62%);
                     background-color: var(--vs-checkbox-checkboxCheckedColor, var(--vs-cs-font-primary));
                 }
