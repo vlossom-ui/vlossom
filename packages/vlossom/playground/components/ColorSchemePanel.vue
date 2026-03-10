@@ -1,6 +1,6 @@
 <template>
     <div class="z-99">
-        <vs-block :style-set="panelStyleSet">
+        <vs-accordion :style-set="{ component: { width: '15rem' } }">
             <template #title><p class="font-bold">Color Scheme Panel</p></template>
             <vs-focus-trap>
                 <vs-grid :grid-size="5" column-gap="0.8rem" row-gap="0.8rem">
@@ -17,7 +17,7 @@
                     />
                 </vs-grid>
             </vs-focus-trap>
-        </vs-block>
+        </vs-accordion>
     </div>
 </template>
 
@@ -26,18 +26,6 @@ import { defineComponent, ref } from 'vue';
 import { useVlossom } from '@/framework';
 import { COLORS } from '@/declaration/constants';
 import type { ColorScheme } from '@/declaration';
-import type { VsBlockStyleSet } from '@/components/vs-block/types';
-
-const panelStyleSet: VsBlockStyleSet = {
-    component: {
-        width: '18rem',
-        backgroundColor: 'var(--vs-no-color)',
-    },
-    title: {
-        backgroundColor: 'var(--vs-no-color)',
-        color: 'var(--vs-no-color-inverse)',
-    },
-};
 
 export default defineComponent({
     name: 'ColorSchemePanel',
@@ -59,7 +47,6 @@ export default defineComponent({
         }
 
         return {
-            panelStyleSet,
             colorOptions,
             selectedColorScheme,
             setColorScheme,
