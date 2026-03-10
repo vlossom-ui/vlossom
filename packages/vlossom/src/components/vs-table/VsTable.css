@@ -8,9 +8,9 @@
 
     table {
         @apply mx-auto;
-        min-width: 100%;
         border-collapse: separate;
         border-spacing: 0;
+        min-width: 100%;
     }
 
     tr {
@@ -164,10 +164,10 @@
     }
 
     th.vs-table-expand-handle {
-        @apply w-10;
+        width: 3rem;
     }
     td.vs-table-expand-handle {
-        @apply w-10;
+        width: 3rem;
     }
 }
 

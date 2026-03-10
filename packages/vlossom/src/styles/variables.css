@@ -3,14 +3,12 @@
         --vs-no-color: var(--vs-white);
         --vs-no-color-inverse: var(--vs-black);
 
-        --vs-app-bg: var(--vs-no-color);
-
         @variant dark {
             --vs-no-color: var(--vs-black);
             --vs-no-color-inverse: var(--vs-white);
-
-            --vs-app-bg: var(--vs-no-color);
         }
+
+        --vs-app-bg: var(--vs-no-color);
 
         --vs-line-height: 1.6;
 

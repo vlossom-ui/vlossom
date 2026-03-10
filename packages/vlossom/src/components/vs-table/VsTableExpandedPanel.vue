@@ -1,5 +1,8 @@
 <template>
-    <vs-expandable :open="isExpanded(cells)">
+    <vs-expandable
+        :open="isExpanded(cells)"
+        :style-set="{ component: { backgroundColor: 'var(--vs-cs-bg-area-colored)' } }"
+    >
         <slot name="expand" :cells :rowIdx />
     </vs-expandable>
 </template>
