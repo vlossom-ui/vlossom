@@ -439,15 +439,6 @@
                             :target="`#tooltip-${cs.name}-1`"
                             tooltip="Default tooltip"
                         />
-                        <vs-button :id="`tooltip-${cs.name}-2`" :color-scheme="cs.value" primary
-                            >Hover (Primary)</vs-button
-                        >
-                        <vs-tooltip
-                            :color-scheme="cs.value"
-                            :target="`#tooltip-${cs.name}-2`"
-                            tooltip="Primary tooltip"
-                            primary
-                        />
                     </div>
                 </div>
             </section>
@@ -458,18 +449,55 @@
                 <div v-for="cs in previewColors" :key="cs.name" class="preview-row items-start">
                     <span class="preview-label mt-2">{{ cs.name }}</span>
                     <div class="preview-items w-full">
-                        <vs-table :color-scheme="cs.value" :columns="tableColumns" :items="tableRows" class="flex-1" />
-
-                        <vs-table
-                            :color-scheme="cs.value"
-                            :columns="tableColumns"
-                            :items="tableRows"
-                            class="flex-1"
-                            dense
-                            selectable
-                            expandable
-                            sticky-header
-                        />
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                draggable
+                            >
+                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
+                            </vs-table>
+                        </div>
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                draggable
+                            >
+                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
+                            </vs-table>
+                        </div>
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                primary
+                                draggable
+                            >
+                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
+                            </vs-table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -631,6 +659,14 @@ export default defineComponent({
         const tableRows = [
             { name: 'Alice', role: 'Admin' },
             { name: 'Bob', role: 'User' },
+            { name: 'Charlie', role: 'Guest' },
+            { name: 'David', role: 'Admin' },
+            { name: 'Eve', role: 'User' },
+            { name: 'Frank', role: 'Guest' },
+            { name: 'George', role: 'Admin' },
+            { name: 'Hannah', role: 'User' },
+            { name: 'Ivy', role: 'Guest' },
+            { name: 'Jack', role: 'Admin' },
         ];
 
         // Modal

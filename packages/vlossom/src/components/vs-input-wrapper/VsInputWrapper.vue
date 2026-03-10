@@ -23,7 +23,7 @@
         </component>
 
         <div
-            v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
+            v-if="!noMessages && messages.length > 0"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
             :style="componentStyleSet.messages"
         >

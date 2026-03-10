@@ -6,7 +6,9 @@
     @apply relative w-full;
 
     table {
-        @apply mx-auto w-full border-collapse;
+        @apply mx-auto w-full;
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
     tr {
@@ -65,9 +67,11 @@
 
         &:first-child {
             border-left: 0.0625rem solid var(--vs-cs-line);
+            border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
         &:last-child {
             border-right: 0.0625rem solid var(--vs-cs-line);
+            border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
 
         > * {

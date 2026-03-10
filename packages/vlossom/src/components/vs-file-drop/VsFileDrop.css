@@ -37,10 +37,6 @@
         .vs-file-drop-files {
             @apply flex w-full flex-col items-center justify-center gap-3;
 
-            > div {
-                @apply flex w-full max-w-full min-w-0;
-            }
-
             .vs-file-drop-file-wrapper {
                 @apply flex items-center;
 
