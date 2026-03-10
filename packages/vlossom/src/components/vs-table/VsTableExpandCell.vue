@@ -3,11 +3,20 @@
         <td v-if="anyExpandable" class="vs-table-expand-handle" :style="cellStyle">
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
-                small
-                :primary
+                :color-scheme
                 :disabled="loading"
-                :style-set="{ variables: { padding: '0' }, component: { height: '1.4rem' } }"
+                :style-set="{
+                    variables: { padding: '0' },
+                    component: {
+                        border: 'none',
+                        height: '1.4rem',
+                        width: '1.4rem',
+                        backgroundColor: 'var(--vs-cs-bg-colored)',
+                        color: 'var(--vs-cs-font-colored)',
+                    },
+                }"
                 @click.prevent.stop="expandRow(cells, $event)"
+                small
             >
                 <vs-render
                     class="transition-transform"
@@ -23,9 +32,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType, type Ref } from 'vue';
+import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { type Cell, getRowItem, isBodyRow, type BodyCell, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
+import {
+    type Cell,
+    getRowItem,
+    isBodyRow,
+    type BodyCell,
+    TABLE_STYLE_SET_TOKEN,
+    TABLE_COLOR_SCHEME_TOKEN,
+    type VsTableStyleSet,
+} from './types';
 import { tableIcons } from './icons';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
@@ -45,6 +63,7 @@ export default defineComponent({
         const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
 
@@ -69,6 +88,7 @@ export default defineComponent({
             cellStyle,
             loading,
             primary,
+            colorScheme,
         };
     },
 });

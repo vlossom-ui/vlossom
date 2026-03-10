@@ -15,10 +15,14 @@
         @apply grid;
     }
 
-    thead tr th {
-        grid-row: 1;
-        color: var(--vs-cs-font-colored);
-        font-weight: var(--vs-font-weight);
+    thead tr {
+        background-color: var(--vs-cs-bg-area-colored);
+
+        th {
+            grid-row: 1;
+            color: var(--vs-cs-font-colored);
+            font-weight: var(--vs-font-weight);
+        }
     }
 
     tbody tr {

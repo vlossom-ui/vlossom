@@ -5,6 +5,7 @@
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
                     multiple
+                    :color-scheme
                     :disabled="loading"
                     v-model="selectedItems"
                     :true-value="getRowItem(cells)"
@@ -19,6 +20,7 @@
             <slot name="select" :cells :rowIdx>
                 <vs-checkbox
                     :style-set="headerCheckboxStyle"
+                    :color-scheme
                     :model-value="selectedAll"
                     :disabled="loading"
                     :indeterminate="selectedPartial"
@@ -30,10 +32,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType, type Ref } from 'vue';
+import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsCheckboxStyleSet } from '../vs-checkbox/types';
-import { getRowItem, type Cell, isBodyRow, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
+import {
+    getRowItem,
+    type Cell,
+    isBodyRow,
+    TABLE_STYLE_SET_TOKEN,
+    TABLE_COLOR_SCHEME_TOKEN,
+    type VsTableStyleSet,
+} from './types';
 
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
@@ -60,6 +70,7 @@ export default defineComponent({
             primary,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
         const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
@@ -109,6 +120,7 @@ export default defineComponent({
             loading,
             primary,
             headerCheckboxStyle,
+            colorScheme,
         };
     },
 });

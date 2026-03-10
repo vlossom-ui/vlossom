@@ -39,6 +39,64 @@
                 </div>
             </section>
 
+            <!-- ───── VsTable ───── -->
+            <section>
+                <h2 class="section-title">VsTable</h2>
+                <div v-for="cs in previewColors" :key="cs.name" class="preview-row items-start">
+                    <span class="preview-label mt-2">{{ cs.name }}</span>
+                    <div class="preview-items w-full">
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                draggable
+                            >
+                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
+                            </vs-table>
+                        </div>
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                draggable
+                            >
+                            </vs-table>
+                        </div>
+                        <div class="w-full">
+                            <vs-table
+                                :color-scheme="cs.value"
+                                :columns="tableColumns"
+                                :items="tableRows"
+                                class="flex-1"
+                                dense
+                                selectable
+                                expandable
+                                sticky-header
+                                pagination
+                                primary
+                                draggable
+                            >
+                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
+                            </vs-table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- ───── VsButton ───── -->
             <section>
                 <h2 class="section-title">VsButton</h2>
@@ -439,65 +497,6 @@
                             :target="`#tooltip-${cs.name}-1`"
                             tooltip="Default tooltip"
                         />
-                    </div>
-                </div>
-            </section>
-
-            <!-- ───── VsTable ───── -->
-            <section>
-                <h2 class="section-title">VsTable</h2>
-                <div v-for="cs in previewColors" :key="cs.name" class="preview-row items-start">
-                    <span class="preview-label mt-2">{{ cs.name }}</span>
-                    <div class="preview-items w-full">
-                        <div class="w-full">
-                            <vs-table
-                                :color-scheme="cs.value"
-                                :columns="tableColumns"
-                                :items="tableRows"
-                                class="flex-1"
-                                dense
-                                selectable
-                                expandable
-                                sticky-header
-                                pagination
-                                draggable
-                            >
-                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
-                            </vs-table>
-                        </div>
-                        <div class="w-full">
-                            <vs-table
-                                :color-scheme="cs.value"
-                                :columns="tableColumns"
-                                :items="tableRows"
-                                class="flex-1"
-                                dense
-                                selectable
-                                expandable
-                                sticky-header
-                                pagination
-                                draggable
-                            >
-                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
-                            </vs-table>
-                        </div>
-                        <div class="w-full">
-                            <vs-table
-                                :color-scheme="cs.value"
-                                :columns="tableColumns"
-                                :items="tableRows"
-                                class="flex-1"
-                                dense
-                                selectable
-                                expandable
-                                sticky-header
-                                pagination
-                                primary
-                                draggable
-                            >
-                                <template #expand="expandData"> Hello World, {{ expandData }} </template>
-                            </vs-table>
-                        </div>
                     </div>
                 </div>
             </section>
