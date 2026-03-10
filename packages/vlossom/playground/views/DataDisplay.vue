@@ -88,16 +88,6 @@
                     <vs-message state="error" text="This is an error message" />
                 </div>
             </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
-                <div class="flex flex-col gap-2">
-                    <vs-message state="info" text="XS message" size="xs" />
-                    <vs-message state="info" text="SM message" size="sm" />
-                    <vs-message state="info" text="MD message" />
-                    <vs-message state="info" text="LG message" size="lg" />
-                    <vs-message state="info" text="XL message" size="xl" />
-                </div>
-            </vs-responsive>
         </vs-grid>
         <vs-divider style-set="playground" />
 

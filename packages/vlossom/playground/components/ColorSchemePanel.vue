@@ -1,6 +1,6 @@
 <template>
     <div class="z-99">
-        <vs-accordion :style-set="{ component: { width: '15rem' } }">
+        <vs-accordion :style-set="{ component: { width: '15rem' } }" open>
             <template #title><p class="font-bold">Color Scheme Panel</p></template>
             <vs-focus-trap>
                 <vs-grid :grid-size="5" column-gap="0.8rem" row-gap="0.8rem">
