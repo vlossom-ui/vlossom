@@ -53,4 +53,11 @@ jobs:
               working-directory: ./packages/vlossom
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.VLOSSOM_NPM_TOKEN }}
-              run: pnpm publish --access public --no-git-checks
+              run: |
+                  VERSION=$(node -p "require('./package.json').version")
+                  if [[ "$VERSION" == *"-"* ]]; then
+                    TAG=$(echo "$VERSION" | sed 's/.*-\([a-zA-Z]*\).*/\1/')
+                    pnpm publish --access public --no-git-checks --tag $TAG
+                  else
+                    pnpm publish --access public --no-git-checks
+                  fi
