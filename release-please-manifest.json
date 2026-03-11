@@ -1,4 +1,3 @@
 {
-    "packages/vlossom": "2.0.0-alpha",
-    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/manifest.json"
+    "packages/vlossom": "2.0.0-alpha"
 }
