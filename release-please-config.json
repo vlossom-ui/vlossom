@@ -1,7 +1,6 @@
 {
     "draft": false,
     "prerelease": true,
-    "include-v-in-tag": true,
     "packages": {
         "packages/vlossom": {
             "release-type": "node",

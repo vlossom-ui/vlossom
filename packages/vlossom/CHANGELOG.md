@@ -3,6 +3,13 @@
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
 
+### Bug Fixes
+
+* refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
+
+## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
+
+
 ### Features
 
 * **AlertPlugin:** create alert plugin for vlossom framework ([#200](https://github.com/vlossom-ui/vlossom/issues/200)) ([86166c0](https://github.com/vlossom-ui/vlossom/commit/86166c09c6cfa004fe0d914669ac26be6e853975))
