@@ -6,6 +6,14 @@
 ### Bug Fixes
 
 * refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
+* refresh PR merge state relase please ([7a4e113](https://github.com/vlossom-ui/vlossom/commit/7a4e113d1632a0e108fe15827376e571dcb17880))
+
+## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
+
+
+### Bug Fixes
+
+* refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
 
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
