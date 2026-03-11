@@ -4,7 +4,6 @@
     @apply relative w-full overflow-auto;
 
     container-type: inline-size;
-    box-shadow: var(--vs-cs-shadow);
     border: var(--vs-block-border, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-cs-bg-area);
