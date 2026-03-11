@@ -5,11 +5,11 @@
 
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
 
-    border: 1px solid var(--vs-line-color);
+    border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
-    background-color: var(--vs-comp-bg);
+    background-color: var(--vs-cs-bg);
     height: var(--vs-button-height, var(--vs-size-height));
-    color: var(--vs-comp-font);
+    color: var(--vs-cs-font-colored);
     font-size: var(--vs-size-font, inherit);
 
     .vs-button-loading {
@@ -35,31 +35,34 @@
     &.vs-ghost {
         @apply border-transparent bg-transparent;
 
-        color: var(--vs-primary-comp-bg);
+        color: var(--vs-cs-font-colored);
 
         &:hover {
-            background-color: var(--vs-comp-bg);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        border: 1px solid var(--vs-primary-comp-bg);
-        color: var(--vs-primary-comp-bg);
+        color: var(--vs-cs-font-colored);
 
         &:hover {
-            background-color: var(--vs-comp-bg);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
     &.vs-primary {
         @apply hover:brightness-104 active:brightness-108;
 
-        border: 1px solid var(--vs-primary-comp-bg);
-        background-color: var(--vs-primary-comp-bg);
-        color: var(--vs-primary-comp-font);
+        border: 1px solid var(--vs-cs-bg-primary);
+        background-color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-font-primary);
         font-weight: 500;
+
+        &:hover {
+            background-color: var(--vs-cs-bg-primary);
+        }
     }
 
     &.vs-circle {
@@ -69,17 +72,21 @@
         height: var(--vs-size-height);
     }
 
-    @variant dark {
-        @apply hover:brightness-104 active:brightness-108;
-
-        &.vs-primary {
-            @apply hover:brightness-96 active:brightness-92;
-        }
-    }
-
     @container (max-width: 768px) {
         &.vs-responsive {
             @apply w-full;
         }
+    }
+}
+
+:root.vs-dark .vs-button {
+    @apply hover:brightness-116 active:brightness-132;
+
+    &.vs-ghost {
+        @apply hover:brightness-96 active:brightness-92;
+    }
+
+    &.vs-primary {
+        @apply hover:brightness-96 active:brightness-92;
     }
 }

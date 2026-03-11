@@ -14,16 +14,16 @@
 .vs-progress[value]::-webkit-progress-bar {
     @apply overflow-hidden;
 
-    border: var(--vs-progress-bar-border, 1px solid var(--vs-line-color));
+    border: var(--vs-progress-bar-border, 1px solid var(--vs-cs-line));
     border-radius: var(--vs-progress-bar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-progress-bar-backgroundColor, var(--vs-comp-bg));
+    background-color: var(--vs-progress-bar-backgroundColor, var(--vs-cs-bg-area));
 }
 
 .vs-progress[value]::-webkit-progress-value {
     @apply relative;
 
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: var(--vs-progress-value-backgroundColor, var(--vs-primary-comp-bg));
+    background-color: var(--vs-progress-value-backgroundColor, var(--vs-cs-bg-primary));
 }
 
 .vs-progress:before {

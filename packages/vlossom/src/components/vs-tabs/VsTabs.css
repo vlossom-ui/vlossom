@@ -7,14 +7,14 @@
 
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     --tab-border: 1px solid transparent;
-    --tab-border-color: var(--vs-line-color);
-    --tab-bg: var(--vs-comp-bg);
+    --tab-border-color: var(--vs-cs-line);
+    --tab-bg: var(--vs-cs-bg-area);
     --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @apply relative flex items-center gap-2 select-none;
 
     width: 100%;
-    height: var(--vs-tabs-height, var(--vs-default-comp-height-md));
+    height: var(--vs-tabs-height, var(--vs-comp-height-md));
 
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
@@ -23,7 +23,7 @@
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
 
             border-bottom: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
-            height: var(--vs-tabs-height, var(--vs-default-comp-height-md));
+            height: var(--vs-tabs-height, var(--vs-comp-height-md));
 
             .vs-tab-item {
                 @apply relative flex h-full cursor-pointer items-center justify-center bg-transparent text-center whitespace-nowrap;
@@ -35,10 +35,9 @@
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
 
-                padding: 0 0.8rem;
+                padding: 0 1.2rem;
 
-                color: var(--vs-font-color);
-                font-weight: var(--vs-font-weight);
+                color: var(--vs-cs-font);
                 font-size: var(--vs-font-size-md);
 
                 &:not(:last-child) {
@@ -70,9 +69,13 @@
     }
 
     &.vs-dense {
-        .vs-tabs-wrap .vs-tab-list .vs-tab-item {
-            padding: 0 0.6rem;
-            font-size: var(--vs-font-size-sm);
+        .vs-tabs-wrap .vs-tab-list {
+            height: var(--vs-tabs-height, var(--vs-comp-height-xs));
+
+            .vs-tab-item {
+                padding: 0 0.8rem;
+                font-size: var(--vs-font-size-sm);
+            }
         }
     }
 
@@ -80,7 +83,7 @@
         @apply shrink-0;
 
         width: 1.5rem;
-        color: var(--vs-comp-font);
+        color: var(--vs-cs-font-colored);
 
         .vs-tab-scroll-icon {
             @apply size-5 shrink-0;
@@ -114,7 +117,7 @@
                     }
 
                     &:hover:not(.vs-disabled):not(.vs-selected) {
-                        border-right-color: var(--vs-area-bg);
+                        border-right-color: var(--vs-cs-bg-colored);
                     }
                 }
 
@@ -147,12 +150,12 @@
             border-bottom-color: var(--tab-border-color);
 
             .vs-tab-indicator {
-                border-color: var(--vs-primary-comp-bg);
-                background-color: var(--vs-primary-comp-bg);
+                border-color: var(--vs-cs-bg-primary);
+                background-color: var(--vs-cs-bg-primary);
             }
 
             .vs-tab-item.vs-selected {
-                color: var(--vs-primary-comp-font);
+                color: var(--vs-cs-font-primary);
             }
         }
 

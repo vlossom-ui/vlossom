@@ -17,7 +17,7 @@ describe('VsInputWrapper', () => {
             const requiredStar = wrapper.find('.vs-required-star');
             expect(requiredStar.exists()).toBe(true);
             expect(requiredStar.text()).toBe('*');
-            expect(requiredStar.classes()).toContain('vs-color-scheme-red');
+            expect(requiredStar.classes()).toContain('vs-cs-red');
         });
 
         it('disabled prop이 true이면 라벨, 필수 표시, 메시지 영역에 disabled 클래스가 적용되어야 한다', () => {
@@ -51,23 +51,6 @@ describe('VsInputWrapper', () => {
             // then
             const messages = wrapper.find('.vs-messages');
             expect(messages.exists()).toBe(false);
-        });
-
-        it('noMessages prop이 true여도 messages 슬롯이 있으면 메시지 영역이 렌더링되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsInputWrapper, {
-                props: {
-                    noMessages: true,
-                },
-                slots: {
-                    messages: '<div class="custom-message">커스텀 메시지</div>',
-                },
-            });
-
-            // then
-            const messages = wrapper.find('.vs-messages');
-            expect(messages.exists()).toBe(true);
-            expect(wrapper.html()).toContain('커스텀 메시지');
         });
     });
 

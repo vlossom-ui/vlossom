@@ -16,14 +16,14 @@
                 <slot name="label">
                     <span>{{ label }}</span>
                 </slot>
-                <i v-if="required" class="vs-required-star vs-color-scheme-red">*</i>
+                <i v-if="required" class="vs-required-star vs-cs-red">*</i>
             </component>
 
             <slot />
         </component>
 
         <div
-            v-if="(!noMessages && messages.length > 0) || !!$slots.messages"
+            v-if="!noMessages && messages.length > 0"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
             :style="componentStyleSet.messages"
         >

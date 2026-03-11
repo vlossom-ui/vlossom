@@ -5,6 +5,7 @@
                 v-if="pagination.showPageSizeSelect"
                 v-model="pageSize"
                 :options="pageSizeOptions"
+                :color-scheme
                 :disabled="loading"
                 option-label="label"
                 option-value="value"
@@ -19,9 +20,7 @@
 
         <vs-pagination
             v-model="page"
-            :ghost="!primary"
-            :outline="!primary"
-            :style-set="paginationStyleSet"
+            :color-scheme
             :disabled="loading"
             :length="totalPages"
             :showing-length="pagination.showingLength"
@@ -32,10 +31,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject } from 'vue';
-import type { VsPaginationStyleSet } from '../vs-pagination/types';
+import { computed, defineComponent, inject, type Ref } from 'vue';
+import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import type { VsTablePageSizeOptions } from './types';
+import { TABLE_COLOR_SCHEME_TOKEN, type VsTablePageSizeOptions } from './types';
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
@@ -46,21 +45,10 @@ export default defineComponent({
     setup(_, { emit }) {
         const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
             return pagination.value.pageSizeOptions ?? [];
-        });
-
-        const paginationStyleSet = computed<VsPaginationStyleSet>(() => {
-            if (primary?.value) {
-                return {};
-            }
-            return {
-                variables: {
-                    selectedButtonBackgroundColor: 'var(--vs-comp-bg)',
-                    selectedButtonFontColor: 'var(--vs-comp-font)',
-                },
-            };
         });
 
         function paginate(nextPage: number): void {
@@ -79,7 +67,7 @@ export default defineComponent({
             paginate,
             loading,
             primary,
-            paginationStyleSet,
+            colorScheme,
         };
     },
 });

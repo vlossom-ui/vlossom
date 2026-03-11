@@ -3,12 +3,12 @@
 
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
-    border: 1px solid var(--vs-line-color);
+    border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-comp-bg);
+    background-color: var(--vs-cs-bg-area);
     width: 3.6rem;
     height: 3.6rem;
-    color: var(--vs-comp-font);
+    color: var(--vs-cs-font-colored);
 
     :deep(img) {
         @apply block h-full w-full;

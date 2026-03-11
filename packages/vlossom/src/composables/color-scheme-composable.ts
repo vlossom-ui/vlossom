@@ -13,7 +13,7 @@ export function useColorScheme(component: VsComponent | string, colorScheme: Ref
             undefined,
     );
 
-    const colorSchemeClass = computed(() => `vs-color-scheme-${computedColorScheme.value || 'default'}`);
+    const colorSchemeClass = computed(() => `vs-cs-${computedColorScheme.value || 'default'}`);
 
     return {
         computedColorScheme,

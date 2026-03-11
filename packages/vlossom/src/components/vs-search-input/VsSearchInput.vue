@@ -26,6 +26,7 @@
                     :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
+                    :ghost="!isCaseSensitiveOn"
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
                     @toggle="$emit('update:caseSensitive', $event)"
                 >
@@ -39,6 +40,7 @@
                     :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.toggle"
                     :disabled="disabled || readonly"
+                    :ghost="!isRegexOn"
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
                     @toggle="$emit('update:regex', $event)"
                 >
@@ -121,10 +123,6 @@ export default defineComponent({
                 toggle: {
                     variables: {
                         padding: '0',
-                    },
-                    component: {
-                        backgroundColor: 'transparent',
-                        border: '1px solid var(--vs-comp-bg)',
                     },
                 },
             };

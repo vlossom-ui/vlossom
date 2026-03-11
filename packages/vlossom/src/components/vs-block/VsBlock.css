@@ -4,37 +4,36 @@
     @apply relative w-full overflow-auto;
 
     container-type: inline-size;
-    box-shadow: var(--vs-area-shadow-outer);
-    border: var(--vs-block-border, 1px solid var(--vs-line-color));
+    border: var(--vs-block-border, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-area-bg);
+    background-color: var(--vs-cs-bg-area);
 
-    color: var(--vs-font-color);
+    color: var(--vs-cs-font);
 
     .vs-block-title {
         @apply relative w-full;
 
-        border-bottom: var(--vs-block-border, 1px solid var(--vs-line-color));
-        background-color: var(--vs-comp-bg);
-        padding: 0.8rem 1.6rem;
-        color: var(--vs-comp-font);
+        border-bottom: var(--vs-block-border, 1px solid var(--vs-cs-line));
+        background-color: var(--vs-cs-bg-colored);
+        padding: 0.5rem 1.2rem;
+        color: var(--vs-cs-font-colored);
         font-weight: 500;
     }
 
     .vs-block-content {
         @apply relative h-full w-full;
 
-        padding: 1.6rem 1.6rem;
+        padding: 0.8rem 1.2rem;
     }
 }
 
 @container (max-width: 1024px) {
     .vs-block {
         .vs-block-title {
-            padding: 0.6rem 1.4rem;
+            padding: 0.4rem 1rem;
         }
         .vs-block-content {
-            padding: 1.2rem 1.4rem;
+            padding: 0.7rem 1rem;
         }
     }
 }
@@ -42,10 +41,10 @@
 @container (max-width: 768px) {
     .vs-block {
         .vs-block-title {
-            padding: 0.6rem 1.2rem;
+            padding: 0.3rem 0.9rem;
         }
         .vs-block-content {
-            padding: 1rem 1.2rem;
+            padding: 0.6rem 0.9rem;
         }
     }
 }
@@ -53,10 +52,10 @@
 @container (max-width: 640px) {
     .vs-block {
         .vs-block-title {
-            padding: 0.6rem 1rem;
+            padding: 0.2rem 0.8rem;
         }
         .vs-block-content {
-            padding: 0.8rem 1rem;
+            padding: 0.5rem 0.8rem;
         }
     }
 }

@@ -35,15 +35,15 @@ export default defineComponent({
         const colorClass = computed(() => {
             switch (state.value) {
                 case 'info':
-                    return 'vs-color-scheme-blue';
+                    return 'vs-cs-blue';
                 case 'success':
-                    return 'vs-color-scheme-green';
+                    return 'vs-cs-green';
                 case 'warning':
-                    return 'vs-color-scheme-amber';
+                    return 'vs-cs-amber';
                 case 'error':
-                    return 'vs-color-scheme-red';
+                    return 'vs-cs-red';
                 default:
-                    return 'vs-color-scheme-default';
+                    return 'vs-cs-default';
             }
         });
 

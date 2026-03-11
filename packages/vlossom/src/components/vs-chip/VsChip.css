@@ -7,13 +7,13 @@
 
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
 
-    border: 1px solid var(--vs-line-color);
+    border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-chip-computed-height) / 2);
-    background-color: var(--vs-comp-bg);
+    background-color: var(--vs-cs-bg);
     width: auto;
     height: var(--vs-chip-computed-height);
     min-height: var(--vs-chip-computed-height);
-    color: var(--vs-comp-font);
+    color: var(--vs-cs-font-colored);
     font-size: var(--vs-size-font);
     line-height: 2;
     user-select: none;
@@ -21,13 +21,13 @@
     .vs-chip-icon {
         @apply flex items-center justify-center;
 
-        border: 1px solid var(--vs-line-color);
+        border: 1px solid var(--vs-cs-line);
         border-radius: 50%;
         min-width: var(--vs-chip-icon-size);
         max-width: var(--vs-chip-icon-size);
         min-height: var(--vs-chip-icon-size);
         max-height: var(--vs-chip-icon-size);
-        color: var(--vs-comp-font);
+        color: var(--vs-cs-font-colored);
     }
 
     .vs-chip-close-button {
@@ -50,20 +50,24 @@
     &.vs-outline {
         @apply bg-transparent;
 
-        border: 1px solid var(--vs-primary-comp-bg);
-        color: var(--vs-primary-comp-bg);
+        border: 1px solid var(--vs-cs-line);
+        color: var(--vs-cs-font-colored);
+
+        &:hover {
+            background-color: var(--vs-cs-bg);
+        }
     }
 
     &.vs-primary {
         @apply hover:brightness-104 active:brightness-108;
 
-        border: 1px solid var(--vs-primary-comp-bg);
-        background-color: var(--vs-primary-comp-bg);
-        color: var(--vs-primary-comp-font);
+        border: 1px solid var(--vs-cs-bg-primary);
+        background-color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-font-primary);
 
         .vs-chip-icon {
-            border: 1px solid var(--vs-primary-comp-font);
-            color: var(--vs-primary-comp-font);
+            border: 1px solid var(--vs-cs-font-primary);
+            color: var(--vs-cs-font-primary);
         }
     }
 

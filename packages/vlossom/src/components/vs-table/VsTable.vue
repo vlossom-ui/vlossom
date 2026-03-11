@@ -61,10 +61,18 @@ import {
     onBeforeUnmount,
     inject,
     type ComputedRef,
+    type Ref,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import { LAYOUT_STORE_KEY, type SearchProps, type UIState, VsComponent, type PropsOf } from '@/declaration';
+import {
+    LAYOUT_STORE_KEY,
+    type SearchProps,
+    type UIState,
+    VsComponent,
+    type PropsOf,
+    type ColorScheme,
+} from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -73,6 +81,7 @@ import { LayoutStore } from '@/stores';
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
     TABLE_STYLE_SET_TOKEN,
+    TABLE_COLOR_SCHEME_TOKEN,
     type BodyCell,
     type ColumnDef,
     type Item,
@@ -241,6 +250,7 @@ export default defineComponent({
         );
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
+        provide<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN, colorScheme as Ref<ColorScheme>);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>

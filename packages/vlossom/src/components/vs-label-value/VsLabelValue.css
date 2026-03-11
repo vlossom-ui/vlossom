@@ -3,7 +3,7 @@
 
     @apply relative flex h-full w-full overflow-hidden;
 
-    border: var(--vs-label-value-border, 1px solid var(--vs-line-color));
+    border: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-sm));
 
     > .vs-cell {
@@ -14,10 +14,11 @@
 
             flex-basis: 20%;
             align-items: center;
-            border-right: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-            background-color: var(--vs-comp-bg);
-            padding: 0.6rem 1.2rem;
-            color: var(--vs-comp-font);
+            border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+            background-color: var(--vs-cs-bg);
+            padding: 0 1rem;
+            min-height: var(--vs-comp-height-md);
+            color: var(--vs-cs-font-colored);
             font-weight: 500;
             font-size: var(--vs-font-size-md);
         }
@@ -27,32 +28,35 @@
 
             align-items: center;
             background-color: var(--vs-no-color);
-            padding: 0.6rem 1.2rem;
-            color: var(--vs-comp-font);
+            padding: 0 1rem;
+            min-height: var(--vs-comp-height-md);
+            color: var(--vs-cs-font-colored);
             font-weight: 500;
             font-size: var(--vs-font-size-md);
         }
     }
 
     &.vs-primary {
-        border: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
+        border: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
 
         .vs-label {
-            border-right: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
-            background-color: var(--vs-primary-comp-bg);
-            color: var(--vs-primary-comp-font);
+            border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
+            background-color: var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font-primary);
         }
     }
 
     &.vs-dense {
         > .vs-cell {
             &.vs-label {
-                padding: 0.2rem 0.8rem;
+                padding: 0 0.8rem;
+                min-height: var(--vs-comp-height-xs);
                 font-size: var(--vs-font-size-xs);
             }
 
             &.vs-value {
-                padding: 0.2rem 0.8rem;
+                padding: 0 0.8rem;
+                min-height: var(--vs-comp-height-xs);
                 font-size: var(--vs-font-size-xs);
             }
         }
@@ -62,30 +66,18 @@
         @apply flex-col;
 
         > .vs-cell {
-            @apply justify-start px-[1.2rem] py-[0.8rem];
+            @apply justify-start;
 
             &.vs-label {
                 @apply basis-auto border-r-0;
-                border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-            }
-
-            &.vs-value {
-                min-height: 2.5rem;
+                border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             }
         }
 
         &.vs-primary {
             > .vs-cell {
                 &.vs-label {
-                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
-                }
-            }
-        }
-
-        &.vs-dense {
-            > .vs-cell {
-                &.vs-value {
-                    min-height: 1.5rem;
+                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
                 }
             }
         }
@@ -96,30 +88,18 @@
             @apply flex-col;
 
             > .vs-cell {
-                @apply justify-start px-[1.2rem] py-[0.8rem];
+                @apply justify-start;
 
                 &.vs-label {
                     @apply basis-auto border-r-0;
-                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-line-color));
-                }
-
-                &.vs-value {
-                    min-height: 2.5rem;
+                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
                 }
             }
 
             &.vs-primary {
                 > .vs-cell {
                     &.vs-label {
-                        border-bottom: var(--vs-label-value-border, 1px solid var(--vs-primary-comp-bg));
-                    }
-                }
-            }
-
-            &.vs-dense {
-                > .vs-cell {
-                    &.vs-value {
-                        min-height: 1.5rem;
+                        border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
                     }
                 }
             }

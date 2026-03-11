@@ -3,20 +3,18 @@
 .vs-input {
     @apply relative box-border flex items-center overflow-hidden;
 
-    border: solid 1px var(--vs-line-color);
+    border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-no-color);
-    height: var(--vs-default-comp-height-md);
-    color: var(--vs-font-color);
-    font-weight: var(--vs-font-weight);
+    background-color: var(--vs-cs-bg-area);
+    height: var(--vs-comp-height-md);
+    color: var(--vs-cs-font);
     font-size: var(--vs-font-size-md);
 
     input {
         @apply h-full w-full border-none bg-transparent outline-none;
 
         padding: 0 0.8rem;
-        color: var(--vs-font-color);
-        font-weight: var(--vs-font-weight);
+        color: var(--vs-cs-font);
         font-size: var(--vs-font-size-md);
     }
 
@@ -28,7 +26,7 @@
     .vs-prepend,
     .vs-append {
         opacity: 1;
-        background-color: var(--vs-primary-comp-bg);
+        background-color: var(--vs-cs-bg-primary);
         padding: 0 1rem;
     }
 
@@ -37,7 +35,7 @@
         transition: opacity 0.4s;
 
         background: none;
-        color: var(--vs-input-fontColor, var(--vs-font-color));
+        color: var(--vs-input-fontColor, var(--vs-cs-font));
 
         &:focus {
             @apply cursor-pointer opacity-100;

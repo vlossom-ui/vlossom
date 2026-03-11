@@ -16,9 +16,9 @@ export const PROMPT_CANCEL = 'vlossom:prompt-cancel';
 export const ANIMATION_DURATION = 300;
 
 export const COLORS = [
+    'brown',
     'red',
     'orange',
-    'brown',
     'amber',
     'yellow',
     'lime',

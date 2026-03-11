@@ -134,9 +134,7 @@ export default defineComponent({
         const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
             component: {
                 height: '100%',
-                minHeight: dense?.value
-                    ? 'calc(var(--vs-default-comp-height-sm))'
-                    : 'calc(var(--vs-default-comp-height-md))',
+                minHeight: dense?.value ? 'calc(var(--vs-comp-height-sm))' : 'calc(var(--vs-comp-height-md))',
             },
         }));
 

@@ -4,19 +4,27 @@
     --vs-table-sticky-header-z-index: 100;
 
     @apply relative w-full;
+    overflow-x: auto;
 
     table {
-        @apply mx-auto w-full border-collapse;
+        @apply mx-auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 100%;
     }
 
     tr {
         @apply grid;
     }
 
-    thead tr th {
-        grid-row: 1;
-        color: var(--vs-comp-font);
-        font-weight: var(--vs-font-weight);
+    thead tr {
+        background-color: var(--vs-cs-bg-area-colored);
+
+        th {
+            grid-row: 1;
+            color: var(--vs-cs-font-colored);
+            font-weight: var(--vs-font-weight);
+        }
     }
 
     tbody tr {
@@ -30,8 +38,8 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-area-bg-active);
-            color: var(--vs-font-color);
+            background-color: var(--vs-cs-bg-comp-colored);
+            color: var(--vs-cs-font);
         }
 
         > td:not(.vs-table-expanded-row) {
@@ -52,22 +60,24 @@
         }
 
         &:hover {
-            background-color: var(--vs-area-bg-hover);
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 
     th {
         @apply flex items-center;
-        border-top: 0.0625rem solid var(--vs-line-color);
-        border-bottom: 0.0625rem solid var(--vs-line-color);
+        border-top: 0.0625rem solid var(--vs-cs-line);
+        border-bottom: 0.0625rem solid var(--vs-cs-line);
         padding: 0.625rem 0.875rem;
         text-align: left;
 
         &:first-child {
-            border-left: 0.0625rem solid var(--vs-line-color);
+            border-left: 0.0625rem solid var(--vs-cs-line);
+            border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
         &:last-child {
-            border-right: 0.0625rem solid var(--vs-line-color);
+            border-right: 0.0625rem solid var(--vs-cs-line);
+            border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
 
         > * {
@@ -77,7 +87,7 @@
 
     td {
         @apply flex items-center;
-        border-bottom: 0.0625rem solid var(--vs-line-color);
+        border-bottom: 0.0625rem solid var(--vs-cs-line);
         padding: 0.625rem 0.875rem;
         text-align: left;
 
@@ -90,7 +100,7 @@
     td {
         * {
             min-height: unset;
-            line-height: var(--vs-default-comp-height-md);
+            line-height: var(--vs-comp-height-md);
         }
     }
 
@@ -101,7 +111,7 @@
     .vs-table-sticky-header {
         @apply sticky w-full;
         z-index: var(--vs-table-sticky-header-z-index);
-        box-shadow: 0 0.125rem 0.25rem var(--vs-comp-shadow);
+        box-shadow: var(--vs-cs-shadow);
         background-color: var(--vs-no-color);
     }
 
@@ -116,7 +126,7 @@
             @apply px-[0.375rem] py-[0.5rem];
             * {
                 font-size: var(--vs-font-size-sm);
-                line-height: var(--vs-default-comp-height-sm);
+                line-height: var(--vs-comp-height-sm);
             }
         }
 
@@ -127,9 +137,9 @@
 
     &.vs-primary {
         thead tr th {
-            border-color: var(--vs-line-color);
-            background-color: var(--vs-primary-comp-bg);
-            color: var(--vs-primary-comp-font);
+            border-color: var(--vs-cs-line);
+            background-color: var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font-primary);
             font-weight: var(--vs-font-weight-bold);
         }
     }
@@ -150,14 +160,14 @@
     }
     td.vs-table-drag-handle {
         @apply w-6 cursor-grab px-0!;
-        color: var(--vs-line-color);
+        color: var(--vs-cs-line);
     }
 
     th.vs-table-expand-handle {
-        @apply w-16;
+        width: 3rem;
     }
     td.vs-table-expand-handle {
-        @apply w-16;
+        width: 3rem;
     }
 }
 
@@ -173,7 +183,7 @@
 
 .vs-total-items {
     @apply text-sm whitespace-nowrap opacity-70;
-    color: var(--vs-font-color);
+    color: var(--vs-cs-font);
 }
 
 caption {
@@ -196,7 +206,7 @@ caption {
 
             tbody tr {
                 @apply mx-0 mb-3 border border-solid;
-                border: 0.0325rem solid var(--vs-line-color);
+                border: 0.0325rem solid var(--vs-cs-line);
             }
 
             td {
@@ -227,7 +237,7 @@ caption {
                     @apply px-[0.375rem] py-[0.5rem];
                     * {
                         font-size: var(--vs-font-size-sm);
-                        line-height: var(--vs-default-comp-height-sm);
+                        line-height: var(--vs-comp-height-sm);
                     }
                 }
             }

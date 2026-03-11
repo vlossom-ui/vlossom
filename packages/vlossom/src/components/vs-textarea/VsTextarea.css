@@ -3,12 +3,11 @@
 .vs-textarea {
     @apply relative flex w-full resize-y overflow-hidden outline-none;
 
-    border: solid 1px var(--vs-line-color);
+    border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-no-color);
+    background-color: var(--vs-cs-bg-area);
     padding: 0.3rem 0.6rem;
     min-height: 6rem;
-    color: var(--vs-font-color);
-    font-weight: var(--vs-font-weight);
+    color: var(--vs-cs-font);
     font-size: var(--vs-font-size-md);
 }
