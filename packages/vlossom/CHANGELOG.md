@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.1-alpha) (2026-03-11)
+
+
+### Bug Fixes
+
+* refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
+
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
 
