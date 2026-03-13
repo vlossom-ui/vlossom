@@ -623,6 +623,111 @@ describe('VsTable', () => {
         });
     });
 
+    describe('ColumnDef width/minWidth/maxWidth', () => {
+        it('width가 정의된 컬럼은 grid-template-columns에 고정 크기로 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name', width: '200px' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('200px');
+            expect(style).toContain('1fr');
+        });
+
+        it('minWidth만 정의된 컬럼은 minmax(min, 1fr)로 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name', minWidth: '150px' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('minmax(150px, 1fr)');
+        });
+
+        it('maxWidth만 정의된 컬럼은 minmax(auto, max)로 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name', maxWidth: '300px' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('minmax(auto, 300px)');
+        });
+
+        it('minWidth와 maxWidth가 모두 정의된 컬럼은 minmax(min, max)로 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name', minWidth: '100px', maxWidth: '400px' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('minmax(100px, 400px)');
+        });
+
+        it('숫자 타입의 width는 px 단위로 변환되어 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name', width: 250 },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('250px');
+        });
+
+        it('width/minWidth/maxWidth가 없는 컬럼은 기본값 1fr로 반영된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const headerRow = wrapper.find('thead tr');
+            const style = headerRow.attributes('style') ?? '';
+            expect(style).toContain('grid-template-columns: 1fr 1fr');
+        });
+    });
+
     describe('draggable', () => {
         it('draggable prop이 true이면 draggable wrapper가 렌더링된다', async () => {
             const wrapper = mountTable({

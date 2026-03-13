@@ -40,7 +40,13 @@ import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
 import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
-import { TABLE_STYLE_SET_TOKEN, type VsTableBodyCell, type VsTableStyleSet, getRowItem } from './types';
+import {
+    TABLE_STYLE_SET_TOKEN,
+    type VsTableBodyCell,
+    type VsTableStyleSet,
+    type VsTableColumnDef,
+    getRowItem,
+} from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
@@ -108,8 +114,8 @@ export default defineComponent({
             if (anySelectable.value) {
                 cols.push('auto');
             }
-            props.cells.forEach(() => {
-                cols.push('1fr');
+            props.cells.forEach((_, index) => {
+                cols.push(getGridColumnWidth(columns.value?.[index]));
             });
             if (anyExpandable.value) {
                 cols.push('auto');
@@ -138,12 +144,31 @@ export default defineComponent({
             },
         }));
 
+        function getGridColumnWidth(column?: VsTableColumnDef): string {
+            if (!column) {
+                return '1fr';
+            }
+            const { width, minWidth, maxWidth } = column;
+            if (width) {
+                return stringUtil.toStringSize(width);
+            }
+            const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
+            const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
+            if (min && max) {
+                return `minmax(${min}, ${max})`;
+            }
+            if (min) {
+                return `minmax(${min}, 1fr)`;
+            }
+            if (max) {
+                return `minmax(auto, ${max})`;
+            }
+            return '1fr';
+        }
+
         function getCellStyle(index: number): CSSProperties {
             return {
                 ...cellStyle.value,
-                width: columns.value?.[index]?.width,
-                maxWidth: columns.value?.[index]?.maxWidth,
-                minWidth: columns.value?.[index]?.minWidth,
                 textAlign: columns.value?.[index]?.align,
             };
         }

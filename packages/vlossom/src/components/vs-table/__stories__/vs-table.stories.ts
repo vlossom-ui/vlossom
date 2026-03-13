@@ -536,6 +536,25 @@ export const Loading: Story = {
     },
 };
 
+export const ColumnWidth: Story = {
+    args: {
+        columns: [
+            { key: 'name', label: 'Name', width: '200px' },
+            { key: 'age', label: 'Age', minWidth: '80px', maxWidth: '150px' },
+            { key: 'metadata.email', label: 'Email', minWidth: '200px' },
+        ],
+        items: baseItems,
+        noResponsive: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'ColumnDef의 width, minWidth, maxWidth로 컬럼 너비를 제어합니다. width는 고정 크기, minWidth/maxWidth는 CSS grid minmax()로 변환됩니다.',
+            },
+        },
+    },
+};
+
 export const Draggable: Story = {
     render: () => ({
         components: { VsTable },
