@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
-import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from './../types';
+import type { VsTableBodyCell, VsTableItem, VsTableColumnDef } from './../types';
 import { DEFAULT_PAGE_SIZE } from '../constants';
 
 const defaultColumns = ['name', 'age'];
@@ -105,7 +105,7 @@ describe('VsTable', () => {
         it('`header-${colKey}` Slot이 기본 렌더링보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'header-name': ({ header }: { header: VsTableHeaderCell }) => `HEADER-${header.colKey}`,
+                    'header-name': ({ item }: { item: VsTableColumnDef }) => `HEADER-${item.key}`,
                     'body-name': ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-NAME-${item.name}`,
                     'body-age': ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-AGE-${item.age}`,
                 },
@@ -120,14 +120,14 @@ describe('VsTable', () => {
         it('`header-${id}` Slot이 `header-${colKey}` Slot보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'header-name-id-6': ({ header }: { header: VsTableHeaderCell }) => `ID-${header.id}`,
-                    'header-name': ({ header }: { header: VsTableHeaderCell }) => `COL-${header.colKey}`,
+                    'header-name-id-6': ({ value }: { value: unknown }) => `ID-${value}`,
+                    'header-name': ({ item }: { item: VsTableColumnDef }) => `COL-${item.key}`,
                 },
             });
 
             await nextTick();
 
-            expect(headerTextsOf(wrapper)).toEqual(['ID-name-id-6', 'age']);
+            expect(headerTextsOf(wrapper)).toEqual(['ID-name', 'age']);
         });
 
         it('`body-col${colIdx}-row${rowIdx}` Slot이 `body-${colKey}` Slot보다 우선한다', async () => {
@@ -146,7 +146,8 @@ describe('VsTable', () => {
         it('"header", "body" Slot은 전체 셀에 대한 slot을 제공하며 최후 fallback으로 적용된다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    header: ({ header }: { header: VsTableHeaderCell }) => `HEADER-${header.colIdx}-${header.colKey}`,
+                    header: ({ colIdx, item }: { colIdx: number; item: VsTableColumnDef }) =>
+                        `HEADER-${colIdx}-${item.key}`,
                     body: ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-${item.id}`,
                 },
             });
@@ -163,8 +164,8 @@ describe('VsTable', () => {
             const wrapper = mountTable({
                 props: { expandable: true },
                 slots: {
-                    expand: ({ cells, rowIdx }: { cells: VsTableBodyCell[]; rowIdx: number }) =>
-                        h('div', {}, `${rowIdx}-${cells[0].item.name}`),
+                    expand: ({ item, rowIdx }: { item: VsTableItem; rowIdx: number }) =>
+                        h('div', {}, `${rowIdx}-${item.name}`),
                 },
             });
 

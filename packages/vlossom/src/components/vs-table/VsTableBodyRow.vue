@@ -2,8 +2,8 @@
     <tr :class="[classObj, stateClasses]" :style="rowStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
-            <template #select="{ cells, rowIdx }">
-                <slot name="select" :cells :rowIdx />
+            <template #select="slotData">
+                <slot name="select" v-bind="slotData" />
             </template>
         </vs-table-checkbox-cell>
         <template v-for="(cell, index) in cells" :key="cell.id">
@@ -15,7 +15,13 @@
             >
                 <vs-skeleton v-if="loading" :style-set="skeletonStyleSet" />
                 <template v-else>
-                    <slot :name="findMatchingSlotName(cell)" :item="cell.item">
+                    <slot
+                        :name="findMatchingSlotName(cell)"
+                        :item="cell.item"
+                        :value="cell.value"
+                        :colIdx="cell.colIdx"
+                        :rowIdx="cell.rowIdx"
+                    >
                         <span class="w-full">
                             {{ cell.value }}
                         </span>
@@ -26,8 +32,8 @@
         <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
         <td v-if="anyExpandable" class="vs-table-expanded-row">
             <vs-table-expanded-panel :cells :rowIdx>
-                <template #expand="{ cells, rowIdx }">
-                    <slot name="expand" :cells :rowIdx />
+                <template #expand="slotData">
+                    <slot name="expand" v-bind="slotData" />
                 </template>
             </vs-table-expanded-panel>
         </td>

@@ -4,8 +4,8 @@
             <tr :style="headerStyle">
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
-                    <template #select="{ cells, rowIdx }">
-                        <slot name="select" :cells :rowIdx />
+                    <template #select="slotData">
+                        <slot name="select" v-bind="slotData" />
                     </template>
                 </vs-table-checkbox-cell>
                 <th
@@ -15,7 +15,13 @@
                     :style="getCellStyle(index)"
                     @click.prevent.stop="clickCell(header, $event)"
                 >
-                    <slot :name="findMatchingSlotName(header)" :header>
+                    <slot
+                        :name="findMatchingSlotName(header)"
+                        :item="columns?.[header.colIdx]"
+                        :value="header.value"
+                        :colIdx="header.colIdx"
+                        :rowIdx="header.rowIdx"
+                    >
                         <div>
                             {{ header.value }}
                             <vs-render
@@ -61,7 +67,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row'],
     setup(props, { slots, emit }) {
-        const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType, columns } =
+        const { headerCells, columns, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
@@ -166,6 +172,7 @@ export default defineComponent({
             selectRow,
             getSortIcon,
             updateSortType,
+            columns,
             headerStyle,
             getCellStyle,
         };
