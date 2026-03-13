@@ -34,9 +34,12 @@ type Join<Prev extends string, K extends string, Sep extends string> = Prev exte
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
-          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
-              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
-              : Join<Prev, K, Sep>;
+          // 0 extends 1 & T[K] is a type guard to check if T[K] is a record
+          [K in Extract<keyof T, string>]: 0 extends 1 & T[K]
+              ? Join<Prev, K, Sep>
+              : T[K] extends Record<string, any>
+                ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
+                : Join<Prev, K, Sep>;
       }[Extract<keyof T, string>];
 
 type JoinDotField<T> = JoinField<T, '.'>;
@@ -45,7 +48,7 @@ type JoinDotField<T> = JoinField<T, '.'>;
  * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
-export type VsTableItem = Record<string, unknown>;
+export type VsTableItem = Record<string, any>;
 export type VsTableTag = 'td' | 'th';
 
 export enum VsTableSortType {
