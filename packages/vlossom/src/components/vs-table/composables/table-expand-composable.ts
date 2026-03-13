@@ -1,9 +1,9 @@
 import { computed, reactive, type Ref } from 'vue';
-import { isBodyRow, getRowId, getRowItem, type Item, type Cell } from '../types';
+import { isVsTableBodyRow, getRowId, getRowItem, type VsTableItem, type VsTableCell } from '../types';
 
 export function useTableExpand(
-    expandable: Ref<(item: Item, index?: number, items?: Item[]) => boolean>,
-    items: Ref<Item[]>,
+    expandable: Ref<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>,
+    items: Ref<VsTableItem[]>,
 ) {
     const expanded = reactive(new Set());
 
@@ -11,8 +11,8 @@ export function useTableExpand(
         return items.value.some(expandable.value);
     });
 
-    function isExpanded(row: Cell[]): boolean {
-        if (!isBodyRow(row)) {
+    function isExpanded(row: VsTableCell[]): boolean {
+        if (!isVsTableBodyRow(row)) {
             return false;
         }
         const rowId = getRowId(row);
@@ -22,8 +22,8 @@ export function useTableExpand(
         return expanded.has(rowId);
     }
 
-    function toggleExpand(row: Cell[]): boolean {
-        if (!isBodyRow(row)) {
+    function toggleExpand(row: VsTableCell[]): boolean {
+        if (!isVsTableBodyRow(row)) {
             return false;
         }
         const rowItem = getRowItem(row);

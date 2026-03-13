@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { stringUtil } from '@/utils';
 import { TableCellBuilder } from '../models/table-cell-builder';
-import type { ColumnDef } from '../types';
+import type { VsTableColumnDef } from '../types';
 
 describe('TableCellBuilder', () => {
     beforeEach(() => {
@@ -53,7 +53,7 @@ describe('TableCellBuilder', () => {
     });
 
     it('객체 컬럼 정의를 사용하고, 업데이트 시 새로운 팩토리로 재생성한다', () => {
-        const columnDefs: ColumnDef[] = [
+        const columnDefs: VsTableColumnDef[] = [
             { key: 'name', label: '이름' },
             { key: 'age', label: '나이' },
         ];
@@ -63,7 +63,7 @@ describe('TableCellBuilder', () => {
         const [header] = builder.build();
         expect(header.map((h) => h.value)).toEqual(['이름', '나이']);
 
-        const nextColumnDefs: ColumnDef[] = [{ key: 'title', label: '제목' }];
+        const nextColumnDefs: VsTableColumnDef[] = [{ key: 'title', label: '제목' }];
         const nextItems = [{ id: '99', title: 'Hello' }];
 
         builder.updateColumnDefs(nextColumnDefs).updateItems(nextItems);

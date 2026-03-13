@@ -40,7 +40,7 @@ import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
 import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
-import { TABLE_STYLE_SET_TOKEN, type BodyCell, type VsTableStyleSet, getRowItem } from './types';
+import { TABLE_STYLE_SET_TOKEN, type VsTableBodyCell, type VsTableStyleSet, getRowItem } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
@@ -59,7 +59,7 @@ export default defineComponent({
     },
     props: {
         cells: {
-            type: Array as PropType<BodyCell[]>,
+            type: Array as PropType<VsTableBodyCell[]>,
             required: true,
         },
         rowIdx: {
@@ -148,7 +148,7 @@ export default defineComponent({
             };
         }
 
-        function findMatchingSlotName(cell: BodyCell): string {
+        function findMatchingSlotName(cell: VsTableBodyCell): string {
             const { id, colIdx, rowIdx, colKey } = cell;
 
             const candidatePriority = [
@@ -163,7 +163,7 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
-        function clickCell(cell: BodyCell, event: MouseEvent): void {
+        function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
         }
 
@@ -178,11 +178,11 @@ export default defineComponent({
             return String(header.value ?? fallback);
         }
 
-        function selectRow(row: BodyCell[], event: MouseEvent): void {
+        function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
         }
 
-        function expandRow(row: BodyCell[], event: MouseEvent): void {
+        function expandRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
         }
 

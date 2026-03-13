@@ -82,9 +82,9 @@ import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './compos
 import {
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
-    type BodyCell,
-    type ColumnDef,
-    type Item,
+    type VsTableBodyCell,
+    type VsTableColumnDef,
+    type VsTableItem,
     type VsTableStyleSet,
     type VsTablePaginationOptions,
     getRowItem,
@@ -109,13 +109,13 @@ export default defineComponent({
         ...getStyleSetProps<VsTableStyleSet>(),
         ...getSearchProps(),
         columns: {
-            type: Array as PropType<ColumnDef[] | string[]>,
+            type: Array as PropType<VsTableColumnDef[] | string[]>,
             default: () => [],
         },
         items: {
-            type: Array as PropType<Item[]>,
+            type: Array as PropType<VsTableItem[]>,
             required: true,
-            validator: (value: Item[]) => {
+            validator: (value: VsTableItem[]) => {
                 if (!Array.isArray(value)) {
                     logUtil.propError(componentName, 'items', 'items must be an array');
                     return false;
@@ -149,15 +149,21 @@ export default defineComponent({
         },
         draggable: { type: Boolean, default: false },
         selectable: {
-            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            type: [Boolean, Function] as PropType<
+                boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)
+            >,
             default: false,
         },
         expandable: {
-            type: [Boolean, Function] as PropType<boolean | ((item: Item, index?: number, items?: Item[]) => boolean)>,
+            type: [Boolean, Function] as PropType<
+                boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)
+            >,
             default: false,
         },
         state: {
-            type: [String, Function] as PropType<UIState | ((item: Item, index?: number, items?: Item[]) => UIState)>,
+            type: [String, Function] as PropType<
+                UIState | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => UIState)
+            >,
             default: 'idle',
         },
         pagination: {
@@ -166,9 +172,9 @@ export default defineComponent({
         },
         // v-model
         selectedItems: {
-            type: Array as PropType<Item[]>,
-            default: () => [] as Item[],
-            validator: (value: Item[]) => {
+            type: Array as PropType<VsTableItem[]>,
+            default: () => [] as VsTableItem[],
+            validator: (value: VsTableItem[]) => {
                 if (!Array.isArray(value)) {
                     logUtil.propError(componentName, 'selectedItems', 'selectedItems must be an array');
                     return false;
@@ -206,11 +212,11 @@ export default defineComponent({
                 return true;
             },
         },
-        pagedItems: { type: Array as PropType<Item[]>, default: () => [] },
+        pagedItems: { type: Array as PropType<VsTableItem[]>, default: () => [] },
         totalItems: {
-            type: Array as PropType<Item[]>,
+            type: Array as PropType<VsTableItem[]>,
             default: () => [],
-            validator: (value: Item[]) => {
+            validator: (value: VsTableItem[]) => {
                 if (!Array.isArray(value)) {
                     logUtil.propError(componentName, 'totalItems', 'totalItems must be an array');
                     return false;
@@ -288,13 +294,13 @@ export default defineComponent({
             { threshold: 1 },
         );
 
-        function clickCell(cell: BodyCell, event: MouseEvent): void {
+        function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
         }
-        function selectRow(row: BodyCell[], event: MouseEvent): void {
+        function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
         }
-        function expandRow(row: BodyCell[], event: MouseEvent): void {
+        function expandRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
         }
         function dragRow(event: SortableEvent): void {
@@ -307,7 +313,7 @@ export default defineComponent({
         function paginate(nextPage: number): void {
             emit('paginate', nextPage, table.pageSize.value);
         }
-        function updateSelectedItems(items: Item[]): void {
+        function updateSelectedItems(items: VsTableItem[]): void {
             emit('update:selectedItems', items);
         }
         function updatePage(page: number): void {
@@ -316,10 +322,10 @@ export default defineComponent({
         function updatePageSize(pageSize: number): void {
             emit('update:pageSize', pageSize);
         }
-        function updatePagedItems(items: Item[]): void {
+        function updatePagedItems(items: VsTableItem[]): void {
             emit('update:pagedItems', items);
         }
-        function updateTotalItems(items: Item[]): void {
+        function updateTotalItems(items: VsTableItem[]): void {
             emit('update:totalItems', items);
         }
 

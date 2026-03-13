@@ -44,61 +44,61 @@ type JoinDotField<T> = JoinField<T, '.'>;
 /**
  * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
-export type ColumnKey<I = Item> = JoinDotField<I>;
-export type Item = Record<string, unknown>;
-export type Tag = 'td' | 'th';
+export type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
+export type VsTableItem = Record<string, unknown>;
+export type VsTableTag = 'td' | 'th';
 
-export enum SortType {
+export enum VsTableSortType {
     NONE,
     ASCEND,
     DESCEND,
 }
 
-export interface ColumnDef<I = Item> {
-    key: ColumnKey<I>;
+export interface VsTableColumnDef<I = VsTableItem> {
+    key: VsTableColumnKey<I>;
     label: string;
     align?: TextAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
     sortable?: boolean;
-    sortBy?: ColumnKey<I>;
+    sortBy?: VsTableColumnKey<I>;
     skipSearch?: boolean;
     transform?: (value: unknown, item: I) => unknown;
 }
 
-export interface Cell<I = Item> {
-    tag: Tag;
+export interface VsTableCell<I = VsTableItem> {
+    tag: VsTableTag;
     id: string;
     value: unknown; // display
-    colKey: ColumnKey<I>;
+    colKey: VsTableColumnKey<I>;
     rowIdx: number;
     colIdx: number;
 }
 
-export interface HeaderCell extends Cell {
+export interface VsTableHeaderCell extends VsTableCell {
     tag: 'th';
     sortable: boolean;
 }
 
-export interface BodyCell<I = Item> extends Cell<I> {
+export interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
     tag: 'td';
     item: I;
 }
 
-export function isColumnDef(value: unknown): value is ColumnDef {
+export function isVsTableColumnDef(value: unknown): value is VsTableColumnDef {
     return typeof value === 'object' && value !== null && 'key' in value && 'label' in value;
 }
 
-export function isColumnDefArray(value: unknown): value is ColumnDef[] {
-    return Array.isArray(value) && value.length > 0 && value.every(isColumnDef);
+export function isVsTableColumnDefArray(value: unknown): value is VsTableColumnDef[] {
+    return Array.isArray(value) && value.length > 0 && value.every(isVsTableColumnDef);
 }
 
-export function isBodyRow(row: Cell[]): row is BodyCell[] {
+export function isVsTableBodyRow(row: VsTableCell[]): row is VsTableBodyCell[] {
     return row[0]?.tag === 'td';
 }
 
-export function getRowItem(row: BodyCell[]): Item {
+export function getRowItem(row: VsTableBodyCell[]): VsTableItem {
     const anyCell = row[0];
     if (!anyCell) {
         return {};
@@ -106,6 +106,6 @@ export function getRowItem(row: BodyCell[]): Item {
     return anyCell.item;
 }
 
-export function getRowId(row: BodyCell[]): string | undefined {
+export function getRowId(row: VsTableBodyCell[]): string | undefined {
     return row[0]?.id ?? undefined;
 }

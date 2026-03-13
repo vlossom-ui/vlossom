@@ -5,21 +5,21 @@ import type { VsSearchInputRef } from '@/components';
 
 import { useTable } from '../composables/table-composable';
 import {
-    SortType,
-    type BodyCell,
-    type ColumnDef,
-    type HeaderCell,
-    type Item,
+    VsTableSortType,
+    type VsTableBodyCell,
+    type VsTableColumnDef,
+    type VsTableHeaderCell,
+    type VsTableItem,
     type VsTablePaginationOptions,
 } from '../types';
 import { DEFAULT_PAGE_SIZE } from '../constants';
 
 function setupUseTable(
     props: {
-        columns: ColumnDef[] | string[] | null;
-        items: Item[];
-        selectable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
-        expandable?: ((item: Item, index?: number, items?: Item[]) => boolean) | boolean;
+        columns: VsTableColumnDef[] | string[] | null;
+        items: VsTableItem[];
+        selectable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
+        expandable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
         pagination?: boolean | VsTablePaginationOptions;
         page?: number;
         pageSize?: number;
@@ -52,7 +52,7 @@ describe('useTable', () => {
 
         await nextTick();
 
-        const columns = table.columns.value as ColumnDef[] | null;
+        const columns = table.columns.value as VsTableColumnDef[] | null;
         expect(columns).toEqual([
             { key: 'name', label: 'name' },
             { key: 'age', label: 'age' },
@@ -60,7 +60,7 @@ describe('useTable', () => {
     });
 
     it('초기 마운트 시 헤더/바디 셀을 생성한다', async () => {
-        const columns: ColumnDef[] = [
+        const columns: VsTableColumnDef[] = [
             { key: 'name', label: '이름' },
             { key: 'age', label: '나이' },
         ];
@@ -72,8 +72,8 @@ describe('useTable', () => {
 
         await nextTick();
 
-        const headerCells = table.headerCells.value as HeaderCell[];
-        const bodyCells = table.bodyCells.value as BodyCell[][];
+        const headerCells = table.headerCells.value as VsTableHeaderCell[];
+        const bodyCells = table.bodyCells.value as VsTableBodyCell[][];
 
         expect(headerCells.map((h) => h.value)).toEqual(['이름', '나이']);
         expect(bodyCells).toHaveLength(2);
@@ -92,8 +92,8 @@ describe('useTable', () => {
         reactiveProps.items = [{ id: '99', title: '새 항목' }];
         await nextTick();
 
-        const columns = table.columns.value as ColumnDef[] | null;
-        const bodyCells = table.bodyCells.value as BodyCell[][];
+        const columns = table.columns.value as VsTableColumnDef[] | null;
+        const bodyCells = table.bodyCells.value as VsTableBodyCell[][];
 
         expect(columns?.map((c) => c.key)).toEqual(['title']);
         expect(bodyCells[0][0]).toMatchObject({ value: '새 항목', colKey: 'title' });
@@ -458,7 +458,7 @@ describe('useTable', () => {
         });
     });
     describe('정렬', () => {
-        const sortableColumns: ColumnDef[] = [
+        const sortableColumns: VsTableColumnDef[] = [
             { key: 'id', label: 'ID', sortable: true },
             { key: 'name', label: '이름', sortable: true },
         ];
@@ -475,7 +475,7 @@ describe('useTable', () => {
             });
             await nextTick();
 
-            expect(table.sortType.value).toBe(SortType.NONE);
+            expect(table.sortType.value).toBe(VsTableSortType.NONE);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 
@@ -492,7 +492,7 @@ describe('useTable', () => {
             table.updateSortType('id');
             await nextTick();
 
-            expect(table.sortType.value).toBe(SortType.ASCEND);
+            expect(table.sortType.value).toBe(VsTableSortType.ASCEND);
             expect(getNames(table)).toEqual(['Alice', 'Bob']);
         });
 
@@ -510,7 +510,7 @@ describe('useTable', () => {
             table.updateSortType('id'); // DESCEND
             await nextTick();
 
-            expect(table.sortType.value).toBe(SortType.DESCEND);
+            expect(table.sortType.value).toBe(VsTableSortType.DESCEND);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 
@@ -529,7 +529,7 @@ describe('useTable', () => {
             table.updateSortType('id'); // NONE
             await nextTick();
 
-            expect(table.sortType.value).toBe(SortType.NONE);
+            expect(table.sortType.value).toBe(VsTableSortType.NONE);
             expect(getNames(table)).toEqual(['Bob', 'Alice']);
         });
 

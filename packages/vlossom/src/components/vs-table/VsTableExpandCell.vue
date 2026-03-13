@@ -36,10 +36,10 @@ import { computed, defineComponent, inject, type ComputedRef, type PropType, typ
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import {
-    type Cell,
+    type VsTableCell,
     getRowItem,
-    isBodyRow,
-    type BodyCell,
+    isVsTableBodyRow,
+    type VsTableBodyCell,
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
     type VsTableStyleSet,
@@ -53,7 +53,7 @@ export default defineComponent({
     components: { VsButton, VsRender },
     props: {
         cells: {
-            type: Array as PropType<Cell[]>,
+            type: Array as PropType<VsTableCell[]>,
             default: () => [],
         },
         rowIdx: { type: Number, default: 0 },
@@ -67,11 +67,11 @@ export default defineComponent({
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
 
-        function isExpandable(cells: BodyCell[], rowIdx: number): boolean {
+        function isExpandable(cells: VsTableBodyCell[], rowIdx: number): boolean {
             return expandable.value(getRowItem(cells), rowIdx, items.value);
         }
 
-        function expandRow(cells: Cell[], event: MouseEvent): void {
+        function expandRow(cells: VsTableCell[], event: MouseEvent): void {
             if (!toggleExpand(cells)) {
                 return;
             }
@@ -79,7 +79,7 @@ export default defineComponent({
         }
 
         return {
-            isBodyRow,
+            isBodyRow: isVsTableBodyRow,
             isExpandable,
             anyExpandable,
             isExpanded,
