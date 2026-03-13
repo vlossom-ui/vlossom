@@ -61,7 +61,6 @@ import {
     onBeforeUnmount,
     inject,
     type ComputedRef,
-    type Ref,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
@@ -247,7 +246,7 @@ export default defineComponent({
         const isHeaderOutOfView = ref<boolean>(true);
         const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
-        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
         const { componentStyleSet } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
         const table: TableComposable = useTable(
             props,
@@ -256,7 +255,7 @@ export default defineComponent({
         );
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
-        provide<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN, colorScheme as Ref<ColorScheme>);
+        provide<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN, computedColorScheme);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
