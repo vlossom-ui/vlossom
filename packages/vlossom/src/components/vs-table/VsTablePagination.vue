@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type Ref } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import { TABLE_COLOR_SCHEME_TOKEN, type VsTablePageSizeOptions } from './types';
@@ -45,7 +45,7 @@ export default defineComponent({
     setup(_, { emit }) {
         const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
+        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
             return pagination.value.pageSizeOptions ?? [];
