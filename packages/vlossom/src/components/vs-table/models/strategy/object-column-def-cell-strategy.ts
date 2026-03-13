@@ -1,16 +1,16 @@
 import { objectUtil, stringUtil } from '@/utils';
-import type { BodyCell, ColumnDef, HeaderCell, Item } from '../../types';
+import type { VsTableBodyCell, VsTableColumnDef, VsTableHeaderCell, VsTableItem } from '../../types';
 import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
     public constructor(
-        private items: Item[],
-        private columnDefs: ColumnDef[],
+        private items: VsTableItem[],
+        private columnDefs: VsTableColumnDef[],
     ) {}
 
-    public createHeaderCell(): HeaderCell[] {
+    public createHeaderCell(): VsTableHeaderCell[] {
         const tag = 'th';
-        return this.columnDefs.map((header: ColumnDef, idx: number) => ({
+        return this.columnDefs.map((header: VsTableColumnDef, idx: number) => ({
             ...header,
             tag,
             id: `${stringUtil.kebabCase(header.key)}-${stringUtil.createID()}`,
@@ -22,10 +22,10 @@ export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
         }));
     }
 
-    public createBodyCell(): BodyCell[][] {
+    public createBodyCell(): VsTableBodyCell[][] {
         const tag = 'td';
-        return this.items.map((item: Item, rowIdx: number) => {
-            return this.columnDefs.map((header: ColumnDef, colIdx: number) => ({
+        return this.items.map((item: VsTableItem, rowIdx: number) => {
+            return this.columnDefs.map((header: VsTableColumnDef, colIdx: number) => ({
                 tag,
                 id: `${stringUtil.kebabCase(header.key)}-${stringUtil.createID()}`,
                 value: header.transform

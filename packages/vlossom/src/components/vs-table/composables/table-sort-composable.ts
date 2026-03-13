@@ -1,15 +1,15 @@
 import { ref, type Ref } from 'vue';
-import { SortType, type ColumnDef, type BodyCell } from '../types';
+import { VsTableSortType, type VsTableColumnDef, type VsTableBodyCell } from '../types';
 import { objectUtil, compareUtil } from '@/utils';
 
-const SORT_TYPE_COUNT = Object.keys(SortType).filter((value) => !isNaN(Number(value))).length;
+const SORT_TYPE_COUNT = Object.keys(VsTableSortType).filter((value) => !isNaN(Number(value))).length;
 
-export function useTableSort(columns: Ref<ColumnDef[]>) {
-    const sortType = ref<SortType>(SortType.NONE);
-    const sortColumn = ref<ColumnDef | null>(null);
+export function useTableSort(columns: Ref<VsTableColumnDef[]>) {
+    const sortType = ref<VsTableSortType>(VsTableSortType.NONE);
+    const sortColumn = ref<VsTableColumnDef | null>(null);
 
-    function compareRows(aRow: BodyCell[], bRow: BodyCell[]): number {
-        if (sortType.value === SortType.NONE) {
+    function compareRows(aRow: VsTableBodyCell[], bRow: VsTableBodyCell[]): number {
+        if (sortType.value === VsTableSortType.NONE) {
             return 0;
         }
         if (!columns.value.length || !sortColumn.value) {
@@ -23,7 +23,7 @@ export function useTableSort(columns: Ref<ColumnDef[]>) {
         const sortKey = sortColumn.value.sortBy ?? sortColumn.value.key;
         const aValue: unknown = objectUtil.get(aItem, sortKey);
         const bValue: unknown = objectUtil.get(bItem, sortKey);
-        const direction = sortType.value === SortType.ASCEND ? 1 : -1;
+        const direction = sortType.value === VsTableSortType.ASCEND ? 1 : -1;
 
         return direction * compareUtil.compareValues(aValue, bValue);
     }
@@ -36,8 +36,8 @@ export function useTableSort(columns: Ref<ColumnDef[]>) {
         if (!targetColumn) {
             return;
         }
-        const current: SortType = sortType.value ?? SortType.NONE;
-        const next: SortType = (current + 1) % SORT_TYPE_COUNT;
+        const current: VsTableSortType = sortType.value ?? VsTableSortType.NONE;
+        const next: VsTableSortType = (current + 1) % SORT_TYPE_COUNT;
 
         sortType.value = next;
         sortColumn.value = targetColumn;

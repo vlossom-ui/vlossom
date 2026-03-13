@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, ref, watch } from 'vue';
-import { type BodyCell, getRowId, getRowItem } from './types';
+import { type VsTableBodyCell, getRowId, getRowItem } from './types';
 import { tableIcons } from './icons';
 import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -65,15 +65,15 @@ export default defineComponent({
 
         // NOTE: These values are arrays used to represent the **draggable** view.
         const displayOrder = ref<number[]>([]);
-        const displayedBodyCells = computed<BodyCell[][]>({
-            get(): BodyCell[][] {
+        const displayedBodyCells = computed<VsTableBodyCell[][]>({
+            get(): VsTableBodyCell[][] {
                 const baseCells = bodyCells.value;
                 if (displayOrder.value.length === 0) {
                     return baseCells;
                 }
                 return displayOrder.value.map((idx) => baseCells[idx]);
             },
-            set(newCells: BodyCell[][]): void {
+            set(newCells: VsTableBodyCell[][]): void {
                 const baseCells = bodyCells.value;
                 const baseIds = baseCells.map(getRowId);
 
@@ -81,16 +81,16 @@ export default defineComponent({
             },
         });
 
-        function clickCell(cell: BodyCell, event: MouseEvent): void {
+        function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
         }
 
-        function selectRow(row: BodyCell[], event: MouseEvent): void {
+        function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
             emit('click-cell', { ...row[0] }, event);
         }
 
-        function expandRow(row: BodyCell[], event: MouseEvent): void {
+        function expandRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('expand-row', row, event);
         }
 
@@ -114,7 +114,7 @@ export default defineComponent({
             loading,
             tableIcons,
             clickCell,
-            getRowItem,
+            getRowItem: getRowItem,
             getRowId,
             selectRow,
             expandRow,

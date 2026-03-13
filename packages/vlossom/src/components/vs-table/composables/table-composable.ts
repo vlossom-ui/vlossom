@@ -4,13 +4,13 @@ import { type UIState, type VsComponent, type PropsOf, type SearchProps } from '
 import type { VsSearchInputRef } from '@/components';
 
 import {
-    isColumnDefArray,
-    type SortType,
-    type BodyCell,
-    type ColumnDef,
-    type HeaderCell,
-    type Cell,
-    type Item,
+    isVsTableColumnDefArray,
+    type VsTableSortType,
+    type VsTableBodyCell,
+    type VsTableColumnDef,
+    type VsTableHeaderCell,
+    type VsTableCell,
+    type VsTableItem,
     type VsTablePaginationOptions,
 } from '../types';
 import { TableCellBuilder } from '../models/table-cell-builder';
@@ -32,11 +32,11 @@ export function useTable(
     props: PropsOf<VsComponent.VsTable>,
     refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
     cb?: {
-        updateSelectedItems: (items: Item[]) => void;
+        updateSelectedItems: (items: VsTableItem[]) => void;
         updatePage: (page: number) => void;
         updatePageSize: (pageSize: number) => void;
-        updatePagedItems: (items: Item[]) => void;
-        updateTotalItems: (items: Item[]) => void;
+        updatePagedItems: (items: VsTableItem[]) => void;
+        updateTotalItems: (items: VsTableItem[]) => void;
     },
 ) {
     const {
@@ -58,30 +58,30 @@ export function useTable(
     } = toRefs(props);
 
     // normalize
-    const columns = computed<ColumnDef[]>(() => {
+    const columns = computed<VsTableColumnDef[]>(() => {
         if (!rawColumns?.value) {
             return [];
         }
-        if (isColumnDefArray(rawColumns.value)) {
+        if (isVsTableColumnDefArray(rawColumns.value)) {
             return rawColumns.value;
         }
         return rawColumns.value.map((column: string) => {
-            return { key: column, label: column } as ColumnDef;
+            return { key: column, label: column } as VsTableColumnDef;
         });
     });
-    const items = computed<Item[]>(() => {
+    const items = computed<VsTableItem[]>(() => {
         return rawItems.value;
     });
     const expandable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawExpandable?.value);
+        return functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawExpandable?.value);
     });
     const selectable = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?], boolean>(rawSelectable?.value);
+        return functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawSelectable?.value);
     });
     const state = computed(() => {
-        return functionUtil.toCallable<[Item, number?, Item[]?], UIState>(rawState?.value);
+        return functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], UIState>(rawState?.value);
     });
-    const selectedItems = computed<Item[]>(() => {
+    const selectedItems = computed<VsTableItem[]>(() => {
         return rawSelectedItems?.value ?? [];
     });
     const search = computed<Exclude<SearchProps, boolean>>(() => {
@@ -160,11 +160,11 @@ export function useTable(
         toggleSelectAll,
     } = useTableSelect(selectable, items, selectedItems);
 
-    const builtCellMatrix = computed<Cell[][]>(() => {
+    const builtCellMatrix = computed<VsTableCell[][]>(() => {
         return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
     });
-    const headerCells = ref<HeaderCell[]>([]);
-    const rawBodyCells = ref<BodyCell[][]>([]);
+    const headerCells = ref<VsTableHeaderCell[]>([]);
+    const rawBodyCells = ref<VsTableBodyCell[][]>([]);
 
     const totalItemsCount = computed(() => rawBodyCells.value.filter(matchBySearch).length);
     const { totalPages, totalItems, pageStartIndex, pageEndIndex } = useTablePagination(
@@ -174,10 +174,10 @@ export function useTable(
         totalItemsCount,
         serverMode,
     );
-    const preprocessedBodyCells = computed<BodyCell[][]>(() => {
+    const preprocessedBodyCells = computed<VsTableBodyCell[][]>(() => {
         return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
     });
-    const bodyCells = computed<BodyCell[][]>(() => {
+    const bodyCells = computed<VsTableBodyCell[][]>(() => {
         if (objectUtil.isEmpty(pagination.value)) {
             return preprocessedBodyCells.value;
         }
@@ -187,10 +187,10 @@ export function useTable(
         return preprocessedBodyCells.value.slice(pageStartIndex.value, pageEndIndex.value);
     });
 
-    function initCells(cellMatrix: Cell[][]): void {
+    function initCells(cellMatrix: VsTableCell[][]): void {
         const [header, ...body] = cellMatrix;
-        const nextHeaderCells = [...header] as HeaderCell[];
-        const nextBodyCells = [...body] as BodyCell[][];
+        const nextHeaderCells = [...header] as VsTableHeaderCell[];
+        const nextBodyCells = [...body] as VsTableBodyCell[][];
 
         headerCells.value = nextHeaderCells;
         rawBodyCells.value = nextBodyCells;
@@ -261,20 +261,20 @@ export function useTable(
 
 // return type of useTable
 export type TableComposable = {
-    columns: ComputedRef<ColumnDef[] | null>;
-    items: Ref<Item[]>;
-    headerCells: Ref<HeaderCell[]>;
-    bodyCells: ComputedRef<BodyCell[][]>;
+    columns: ComputedRef<VsTableColumnDef[] | null>;
+    items: Ref<VsTableItem[]>;
+    headerCells: Ref<VsTableHeaderCell[]>;
+    bodyCells: ComputedRef<VsTableBodyCell[][]>;
     anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;
-    selectedItems: Ref<Item[]>;
+    selectedItems: Ref<VsTableItem[]>;
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
-    selectable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
-    expandable: ComputedRef<(item: Item, index?: number, items?: Item[]) => boolean>;
-    state: ComputedRef<(item: Item, index?: number, items?: Item[]) => UIState>;
-    sortType: Ref<SortType>;
-    sortColumn: Ref<ColumnDef | null>;
+    selectable: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>;
+    expandable: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>;
+    state: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => UIState>;
+    sortType: Ref<VsTableSortType>;
+    sortColumn: Ref<VsTableColumnDef | null>;
     loading: Ref<boolean | undefined> | undefined;
     draggable: Ref<boolean | undefined> | undefined;
     primary: Ref<boolean | undefined> | undefined;
@@ -287,8 +287,8 @@ export type TableComposable = {
     totalItems: ComputedRef<number>;
     pageStartIndex: ComputedRef<number>;
     pageEndIndex: ComputedRef<number>;
-    isExpanded: (row: Cell[]) => boolean;
-    toggleExpand: (row: Cell[]) => boolean;
+    isExpanded: (row: VsTableCell[]) => boolean;
+    toggleExpand: (row: VsTableCell[]) => boolean;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;
     toggleSelectAll: () => void;

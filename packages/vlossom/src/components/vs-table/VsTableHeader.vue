@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent, inject, computed, type ComputedRef, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
-import { SortType, TABLE_STYLE_SET_TOKEN, type HeaderCell, type VsTableStyleSet } from './types';
+import { VsTableSortType, TABLE_STYLE_SET_TOKEN, type VsTableHeaderCell, type VsTableStyleSet } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -94,7 +94,7 @@ export default defineComponent({
             };
         }
 
-        function findMatchingSlotName(header: HeaderCell): string {
+        function findMatchingSlotName(header: VsTableHeaderCell): string {
             const { id, colIdx, rowIdx, colKey } = header;
             const candidatePriority = [
                 `header-${id}`,
@@ -108,27 +108,27 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
-        function getSortIcon(header: HeaderCell) {
+        function getSortIcon(header: VsTableHeaderCell) {
             if (!header.sortable) {
                 return '';
             }
             if (header.colKey !== sortColumn.value?.key) {
                 return tableIcons.sortNone;
             }
-            if (sortType.value === SortType.ASCEND) {
+            if (sortType.value === VsTableSortType.ASCEND) {
                 return tableIcons.sortAsc;
             }
-            if (sortType.value === SortType.DESCEND) {
+            if (sortType.value === VsTableSortType.DESCEND) {
                 return tableIcons.sortDesc;
             }
             return tableIcons.sortNone;
         }
 
-        function clickCell(cell: HeaderCell, event: MouseEvent): void {
+        function clickCell(cell: VsTableHeaderCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
         }
 
-        function selectRow(row: HeaderCell[], event: MouseEvent): void {
+        function selectRow(row: VsTableHeaderCell[], event: MouseEvent): void {
             emit('select-row', row, event);
             emit('click-cell', { ...row[0] }, event);
         }

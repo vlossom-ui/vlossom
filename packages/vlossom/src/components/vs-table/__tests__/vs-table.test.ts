@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
-import type { BodyCell, HeaderCell, Item } from './../types';
+import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from './../types';
 import { DEFAULT_PAGE_SIZE } from '../constants';
 
 const defaultColumns = ['name', 'age'];
@@ -105,9 +105,9 @@ describe('VsTable', () => {
         it('`header-${colKey}` Slot이 기본 렌더링보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'header-name': ({ header }: { header: HeaderCell }) => `HEADER-${header.colKey}`,
-                    'body-name': ({ item }: { item: BodyCell['item'] }) => `BODY-NAME-${item.name}`,
-                    'body-age': ({ item }: { item: BodyCell['item'] }) => `BODY-AGE-${item.age}`,
+                    'header-name': ({ header }: { header: VsTableHeaderCell }) => `HEADER-${header.colKey}`,
+                    'body-name': ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-NAME-${item.name}`,
+                    'body-age': ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-AGE-${item.age}`,
                 },
             });
 
@@ -120,8 +120,8 @@ describe('VsTable', () => {
         it('`header-${id}` Slot이 `header-${colKey}` Slot보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'header-name-id-6': ({ header }: { header: HeaderCell }) => `ID-${header.id}`,
-                    'header-name': ({ header }: { header: HeaderCell }) => `COL-${header.colKey}`,
+                    'header-name-id-6': ({ header }: { header: VsTableHeaderCell }) => `ID-${header.id}`,
+                    'header-name': ({ header }: { header: VsTableHeaderCell }) => `COL-${header.colKey}`,
                 },
             });
 
@@ -133,7 +133,7 @@ describe('VsTable', () => {
         it('`body-col${colIdx}-row${rowIdx}` Slot이 `body-${colKey}` Slot보다 우선한다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    'body-age': ({ item }: { item: BodyCell['item'] }) => `AGE-${item.age}`,
+                    'body-age': ({ item }: { item: VsTableBodyCell['item'] }) => `AGE-${item.age}`,
                     'body-col1-row0': () => 'ROWCOL-OVERRIDE',
                 },
             });
@@ -146,8 +146,8 @@ describe('VsTable', () => {
         it('"header", "body" Slot은 전체 셀에 대한 slot을 제공하며 최후 fallback으로 적용된다', async () => {
             const wrapper = mountTable({
                 slots: {
-                    header: ({ header }: { header: HeaderCell }) => `HEADER-${header.colIdx}-${header.colKey}`,
-                    body: ({ item }: { item: BodyCell['item'] }) => `BODY-${item.id}`,
+                    header: ({ header }: { header: VsTableHeaderCell }) => `HEADER-${header.colIdx}-${header.colKey}`,
+                    body: ({ item }: { item: VsTableBodyCell['item'] }) => `BODY-${item.id}`,
                 },
             });
 
@@ -163,7 +163,7 @@ describe('VsTable', () => {
             const wrapper = mountTable({
                 props: { expandable: true },
                 slots: {
-                    expand: ({ cells, rowIdx }: { cells: BodyCell[]; rowIdx: number }) =>
+                    expand: ({ cells, rowIdx }: { cells: VsTableBodyCell[]; rowIdx: number }) =>
                         h('div', {}, `${rowIdx}-${cells[0].item.name}`),
                 },
             });
@@ -193,7 +193,7 @@ describe('VsTable', () => {
             const emitted = wrapper.emitted('expand-row');
             expect(emitted).toHaveLength(1);
 
-            const [cells] = emitted![0] as [BodyCell[], Event];
+            const [cells] = emitted![0] as [VsTableBodyCell[], Event];
             expect(cells).toHaveLength(defaultColumns.length);
             expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
             expect(cells[0].item).toStrictEqual(tableItems[0]);
@@ -341,7 +341,7 @@ describe('VsTable', () => {
             const emitted = wrapper.emitted('click-cell');
             expect(emitted).toHaveLength(1);
 
-            const [cell, event] = emitted![0] as [BodyCell, Event];
+            const [cell, event] = emitted![0] as [VsTableBodyCell, Event];
             expect(event).toBeInstanceOf(Event);
             expect((event as Event).type).toBe('click');
             expect(cell).toMatchObject({
@@ -366,7 +366,7 @@ describe('VsTable', () => {
             const emitted = wrapper.emitted('select-row');
             expect(emitted).toHaveLength(1);
 
-            const [cells, event] = emitted![0] as [BodyCell[], Event];
+            const [cells, event] = emitted![0] as [VsTableBodyCell[], Event];
             expect(event).toBeInstanceOf(Event);
             expect((event as Event).type).toBe('click');
             expect(cells).toHaveLength(2);
@@ -390,8 +390,8 @@ describe('VsTable', () => {
             expect(emittedSelect).toHaveLength(1);
             expect(emittedClickCell).toHaveLength(1);
 
-            const [selectCells] = emittedSelect![0] as [BodyCell[], Event];
-            const [clickCell] = emittedClickCell![0] as [BodyCell, Event];
+            const [selectCells] = emittedSelect![0] as [VsTableBodyCell[], Event];
+            const [clickCell] = emittedClickCell![0] as [VsTableBodyCell, Event];
 
             expect(selectCells[0]).toMatchObject(clickCell);
         });
@@ -424,7 +424,7 @@ describe('VsTable', () => {
             const emittedExpandRow = wrapper.emitted('expand-row');
             expect(emittedExpandRow).toHaveLength(1);
 
-            const [emittedCells, emittedEvent] = emittedExpandRow![0] as [BodyCell[], Event];
+            const [emittedCells, emittedEvent] = emittedExpandRow![0] as [VsTableBodyCell[], Event];
             expect(emittedEvent).toBeInstanceOf(Event);
             expect(emittedCells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0 });
         });
@@ -459,7 +459,7 @@ describe('VsTable', () => {
             const emittedSearchRows = wrapper.emitted('search');
             expect(emittedSearchRows).toHaveLength(1);
 
-            const [emittedItems, emittedSearchText] = emittedSearchRows![0] as [Item[], string];
+            const [emittedItems, emittedSearchText] = emittedSearchRows![0] as [VsTableItem[], string];
             expect(emittedSearchText).toBe('Alice');
             expect(emittedItems).toHaveLength(tableItems.length);
             expect(emittedItems[0]).toMatchObject({ id: '1', name: 'Alice', age: 24 });

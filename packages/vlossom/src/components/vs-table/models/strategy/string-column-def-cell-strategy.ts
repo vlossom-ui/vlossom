@@ -1,14 +1,14 @@
 import { objectUtil, stringUtil } from '@/utils';
-import type { BodyCell, HeaderCell, Item } from '../../types';
+import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from '../../types';
 import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class StringKeyColumnDefCellStrategy implements TableCellStrategy {
     public constructor(
-        private items: Item[],
+        private items: VsTableItem[],
         private columnDefs: string[],
     ) {}
 
-    public createHeaderCell(): HeaderCell[] {
+    public createHeaderCell(): VsTableHeaderCell[] {
         const tag = 'th';
         return this.columnDefs.map((headerKey: string, idx: number) => ({
             tag,
@@ -21,9 +21,9 @@ export default class StringKeyColumnDefCellStrategy implements TableCellStrategy
         }));
     }
 
-    public createBodyCell(): BodyCell[][] {
+    public createBodyCell(): VsTableBodyCell[][] {
         const tag = 'td';
-        return this.items.map((item: Item, rowIdx: number) => {
+        return this.items.map((item: VsTableItem, rowIdx: number) => {
             return this.columnDefs.map((headerKey: string, colIdx: number) => ({
                 tag,
                 id: `${stringUtil.kebabCase(headerKey)}-${stringUtil.createID()}`,

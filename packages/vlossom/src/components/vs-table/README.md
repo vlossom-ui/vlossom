@@ -311,8 +311,8 @@ function handleDrag(event) {
 | ------------------------ | ------------------------------------------------ | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `colorScheme`            | `ColorScheme`                                    | -       | -        | 컴포넌트 색상 테마                                                                                                                                         |
 | `styleSet`               | `string \| VsTableStyleSet`                      | -       | -        | 커스텀 스타일 설정 객체                                                                                                                                    |
-| `columns`                | `ColumnDef[] \| string[] \| null`                | `[]`    | -        | 테이블 컬럼 정의                                                                                                                                           |
-| `items`                  | `Item[]`                                         | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                                                                                                |
+| `columns`                | `VsTableColumnDef[] \| string[] \| null`         | `[]`    | -        | 테이블 컬럼 정의                                                                                                                                           |
+| `items`                  | `VsTableItem[]`                                  | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                                                                                                |
 | `dense`                  | `boolean`                                        | false   | -        | 컴팩트 모드. padding과 font-size를 줄여 밀도 높은 레이아웃 제공                                                                                            |
 | `primary`                | `boolean`                                        | false   | -        | 헤더에 primary 색상 테마 적용. `styleSet.header`와 동시 사용 시 `styleSet.header`(인라인)가 우선됩니다                                                     |
 | `noResponsive`           | `boolean`                                        | false   | -        | 반응형 레이아웃 비활성화. 기본값 false(반응형 ON). true 시 항상 테이블 레이아웃 유지                                                                       |
@@ -326,11 +326,11 @@ function handleDrag(event) {
 | `noVirtualScroll`        | `boolean`                                        | false   | -        | 가상 스크롤 비활성화. 기본값 false(가상 스크롤 ON). true 시 모든 행을 한 번에 렌더링                                                                       |
 | `draggable`              | `boolean`                                        | false   | -        | 행 드래그 활성화. 행 순서를 드래그로 변경 가능                                                                                                             |
 | `state`                  | `UIState \| (row, rowIndex?, items?) => UIState` | -       | -        | 행별 UI 상태. 상수 또는 콜백. `info` / `success` / `warning` / `error` 반환 시 해당 행에 `vs-state-*` 클래스가 적용됩니다 (selectable, expandable과 유사). |
-| `selectedItems`(v-model) | `Item[]`                                         | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                                                           |
+| `selectedItems`(v-model) | `VsTableItem[]`                                  | `[]`    | -        | 선택된 행(아이템) 배열 (v-model)                                                                                                                           |
 | `page`(v-model)          | `number`                                         | -       | -        | 현재 페이지 인덱스 (0부터 시작, v-model). 페이지네이션 옵션 활성화 시 사용합니다.                                                                          |
 | `pageSize` (v-model)     | `number`                                         | -       | -        | 페이지 당 아이템(행) 개수 (v-model, 페이지네이션 사용 시). `-1`로 설정하면 전체 데이터를 한 페이지에 표시합니다.                                           |
-| `pagedItems` (v-model)   | `Item[]`                                         | `[]`    | -        | 현재 페이지에 표시되는 아이템 배열 (v-model). 페이지네이션, 검색, 정렬이 적용된 후 현재 페이지의 아이템만 포함                                             |
-| `totalItems` (v-model)   | `Item[]`                                         | `[]`    | -        | 검색/필터링/정렬이 적용된 전체 아이템 배열 (v-model). 페이지네이션 적용 전의 모든 아이템 포함                                                              |
+| `pagedItems` (v-model)   | `VsTableItem[]`                                  | `[]`    | -        | 현재 페이지에 표시되는 아이템 배열 (v-model). 페이지네이션, 검색, 정렬이 적용된 후 현재 페이지의 아이템만 포함                                             |
+| `totalItems` (v-model)   | `VsTableItem[]`                                  | `[]`    | -        | 검색/필터링/정렬이 적용된 전체 아이템 배열 (v-model). 페이지네이션 적용 전의 모든 아이템 포함                                                              |
 
 ## Types
 
@@ -345,17 +345,17 @@ interface VsTableStyleSet {
 ```
 
 ```typescript
-type ColumnKey<I = Item> = JoinDotField<I>;
+type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
 
-interface ColumnDef<I = Item> {
-    key: ColumnKey<I>;
+interface VsTableColumnDef<I = VsTableItem> {
+    key: VsTableColumnKey<I>;
     label: string;
     align?: TextAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
     sortable?: boolean;
-    sortBy?: ColumnKey<I>;
+    sortBy?: VsTableColumnKey<I>;
     skipSearch?: boolean;
     transform?: (value: unknown, item: I) => unknown;
 }
@@ -377,12 +377,12 @@ interface VsTablePaginationOptions {
     totalItemCount?: number; // required when serverMode is true
 }
 
-interface HeaderCell extends Cell {
+interface VsTableHeaderCell extends VsTableCell {
     tag: 'th';
     sortable: boolean;
 }
 
-interface BodyCell<I = Item> extends Cell<I> {
+interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
     tag: 'td';
     item: I;
 }
@@ -415,10 +415,10 @@ interface BodyCell<I = Item> extends Cell<I> {
 
 | Event        | Payload                                    | Description                                       |
 | ------------ | ------------------------------------------ | ------------------------------------------------- |
-| `click-cell` | `(cell: BodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
-| `select-row` | `(row: BodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
-| `expand-row` | `(row: BodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
-| `search`     | `(rows: BodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
+| `click-cell` | `(cell: VsTableBodyCell, event: MouseEvent)`      | 셀 클릭 시 발생                                   |
+| `select-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | 행(셀 배열) 선택 시 발생                          |
+| `expand-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | 행 확장 버튼 클릭 시 발생                         |
+| `search`     | `(rows: VsTableBodyCell[][], searchText: string)` | 검색 입력 시 필터링된 행과 검색어를 반환          |
 | `paginate`   | `(page: number, pageSize: number)`         | 페이지네이션 변경 시 현재 페이지/페이지 크기 반환 |
 | `drag`       | `(event: SortableEvent)`                   | 행 드래그 완료 시 발생 (oldIndex, newIndex 포함)  |
 

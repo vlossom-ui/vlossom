@@ -38,8 +38,8 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 import type { VsCheckboxStyleSet } from '../vs-checkbox/types';
 import {
     getRowItem,
-    type Cell,
-    isBodyRow,
+    type VsTableCell,
+    isVsTableBodyRow,
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
     type VsTableStyleSet,
@@ -51,7 +51,7 @@ export default defineComponent({
     components: { VsCheckbox },
     props: {
         cells: {
-            type: Array as PropType<Cell[]>,
+            type: Array as PropType<VsTableCell[]>,
             default: () => [],
         },
         rowIdx: { type: Number, default: 0 },
@@ -85,16 +85,16 @@ export default defineComponent({
             };
         });
 
-        function isRowSelectable(row: Cell[], rowIdx: number): boolean {
-            if (!isBodyRow(row)) {
+        function isRowSelectable(row: VsTableCell[], rowIdx: number): boolean {
+            if (!isVsTableBodyRow(row)) {
                 return false;
             }
             const item = getRowItem(row);
             return selectable.value(item, rowIdx, items.value);
         }
 
-        function selectRow(row: Cell[], event: MouseEvent): void {
-            if (!isBodyRow(row)) {
+        function selectRow(row: VsTableCell[], event: MouseEvent): void {
+            if (!isVsTableBodyRow(row)) {
                 toggleSelectAll();
                 emit('select-row', row, event);
                 return;
@@ -108,8 +108,8 @@ export default defineComponent({
         }
 
         return {
-            isBodyRow,
-            getRowItem,
+            isBodyRow: isVsTableBodyRow,
+            getRowItem: getRowItem,
             isRowSelectable,
             selectRow,
             anySelectable,

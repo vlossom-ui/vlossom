@@ -231,7 +231,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import type { UIState } from '@/declaration';
-import type { ColumnDef, Item } from '@/components';
+import type { VsTableColumnDef, VsTableItem } from '@/components';
 
 export default defineComponent({
     name: 'DataDisplay',
@@ -274,8 +274,8 @@ export default defineComponent({
             { value: 'customSlot', label: 'Custom Slot' },
         ];
         const tablePropsSelected = ref<string[]>([]);
-        const tableSelectedItems = ref<Item[]>([]);
-        const tableColumns = computed<ColumnDef[]>(() =>
+        const tableSelectedItems = ref<VsTableItem[]>([]);
+        const tableColumns = computed<VsTableColumnDef[]>(() =>
             [
                 { key: 'name', label: 'Name', sortable: true },
                 { key: 'role', label: 'Role' },
@@ -286,7 +286,7 @@ export default defineComponent({
                 align: tablePropsSelected.value.includes('textAlignRight') ? 'right' : 'left',
             })),
         );
-        const tableItems: Item[] = [
+        const tableItems: VsTableItem[] = [
             { name: 'Alice', role: 'Admin', status: 'Active', score: 95 },
             { name: 'Bob', role: 'Editor', status: 'Inactive', score: 20 },
             { name: 'Charlie', role: 'Viewer', status: 'Active', score: 88 },
@@ -296,7 +296,7 @@ export default defineComponent({
             { name: 'Grace', role: 'Editor', status: 'Inactive', score: 45 },
             { name: 'Henry', role: 'Admin', status: 'Active', score: 98 },
         ];
-        function getRowState(item: Item, index?: number): UIState {
+        function getRowState(item: VsTableItem, index?: number): UIState {
             if (item.status === 'Inactive') {
                 return 'error';
             }
