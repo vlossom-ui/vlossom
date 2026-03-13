@@ -36,7 +36,13 @@
 <script lang="ts">
 import { defineComponent, inject, computed, type ComputedRef, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
-import { VsTableSortType, TABLE_STYLE_SET_TOKEN, type VsTableHeaderCell, type VsTableStyleSet } from './types';
+import {
+    VsTableSortType,
+    TABLE_STYLE_SET_TOKEN,
+    type VsTableHeaderCell,
+    type VsTableStyleSet,
+    type VsTableColumnDef,
+} from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -54,7 +60,7 @@ export default defineComponent({
         VsTableCheckboxCell,
     },
     emits: ['click-cell', 'select-row'],
-    setup(_props, { slots, emit }) {
+    setup(props, { slots, emit }) {
         const { headerCells, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType, columns } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
@@ -68,8 +74,8 @@ export default defineComponent({
             if (anySelectable.value) {
                 cols.push('auto');
             }
-            headerCells.value.forEach(() => {
-                cols.push('1fr');
+            headerCells.value.forEach((_, index) => {
+                cols.push(getGridColumnWidth(columns.value?.[index]));
             });
             if (anyExpandable.value) {
                 cols.push('auto');
@@ -84,12 +90,31 @@ export default defineComponent({
             ...gridStyle.value,
         }));
 
+        function getGridColumnWidth(column?: VsTableColumnDef): string {
+            if (!column) {
+                return '1fr';
+            }
+            const { width, minWidth, maxWidth } = column;
+            if (width) {
+                return stringUtil.toStringSize(width);
+            }
+            const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
+            const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
+            if (min && max) {
+                return `minmax(${min}, ${max})`;
+            }
+            if (min) {
+                return `minmax(${min}, 1fr)`;
+            }
+            if (max) {
+                return `minmax(auto, ${max})`;
+            }
+            return '1fr';
+        }
+
         function getCellStyle(index: number): CSSProperties {
             return {
                 ...cellStyle.value,
-                width: columns.value?.[index]?.width,
-                maxWidth: columns.value?.[index]?.maxWidth,
-                minWidth: columns.value?.[index]?.minWidth,
                 textAlign: columns.value?.[index]?.align,
             };
         }
