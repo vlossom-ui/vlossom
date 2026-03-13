@@ -60,12 +60,12 @@
             <span class="font-bold text-blue-500">사용자 목록</span>
         </template>
 
-        <template #header-name="{ header }">
-            <span class="bg-yellow-200 font-semibold">{{ header.value }}*</span>
+        <template #header-name="{ value }">
+            <span class="bg-yellow-200 font-semibold">{{ value }}*</span>
         </template>
 
-        <template #body-age="{ item }">
-            <span class="text-emerald-600">{{ item.age }} 세</span>
+        <template #body-age="{ item, value }">
+            <span class="text-emerald-600">{{ item.age }} 세 ({{ value }})</span>
         </template>
     </vs-table>
 </template>
@@ -234,10 +234,10 @@ const filteredItems = ref([]);    // 검색/정렬 후 전체 아이템 (예: 30
         :items="items"
         :expandable="(item) => item.age >= 30"
     >
-        <template #expand="{ cells, rowIdx }">
+        <template #expand="{ item, rowIdx }">
             <div class="p-4 bg-slate-50">
                 <p class="font-semibold">상세 정보 (row {{ rowIdx }})</p>
-                <p>{{ cells[0].item.name }} / {{ cells[0].item.age }}세</p>
+                <p>{{ item.name }} / {{ item.age }}세</p>
             </div>
         </template>
     </vs-table>
@@ -390,26 +390,35 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 
 ## Slots
 
-| Slot 이름 패턴                     | 설명                                        |
-| ---------------------------------- | ------------------------------------------- |
-| `caption`                          | `<caption>` 영역 커스텀                     |
-| `select`                           | 선택 컬럼 영역 커스텀 (`{ cells, rowIdx }`) |
-| `expand`                           | 확장 행 영역 커스텀 (`{ cells, rowIdx }`)   |
-| `header`                           | 모든 헤더 셀 공통 렌더링                    |
-| `header-${colKey}`                 | 특정 컬럼 키의 헤더 셀                      |
-| `header-${id}`                     | 특정 헤더 셀 id (우선순위 높음)             |
-| `header-col${colIdx}-row${rowIdx}` | 컬럼/행 인덱스 기반 헤더 셀                 |
-| `header-row${rowIdx}`              | 특정 헤더 행 전체                           |
-| `header-col${colIdx}`              | 특정 헤더 컬럼 전체                         |
-| `body`                             | 모든 바디 셀 공통 렌더링                    |
-| `body-${colKey}`                   | 특정 컬럼 키의 바디 셀                      |
-| `body-${id}`                       | 특정 바디 셀 id (우선순위 높음)             |
-| `body-col${colIdx}-row${rowIdx}`   | 컬럼/행 인덱스 기반 바디 셀                 |
-| `body-row${rowIdx}`                | 특정 행의 모든 셀                           |
-| `body-col${colIdx}`                | 특정 컬럼의 모든 셀                         |
+| Slot 이름 패턴                     | 설명                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `caption`                          | `<caption>` 영역 커스텀                                                  |
+| `select`                           | 선택 컬럼 영역 커스텀 (`{ item, value, rowIdx }`)                        |
+| `expand`                           | 확장 행 영역 커스텀 (`{ item, value, rowIdx }`)                          |
+| `header`                           | 모든 헤더 셀 공통 렌더링 (`{ item: ColumnDef, value, colIdx, rowIdx }`)  |
+| `header-${colKey}`                 | 특정 컬럼 키의 헤더 셀                                                   |
+| `header-${id}`                     | 특정 헤더 셀 id (우선순위 높음)                                          |
+| `header-col${colIdx}-row${rowIdx}` | 컬럼/행 인덱스 기반 헤더 셀                                              |
+| `header-row${rowIdx}`              | 특정 헤더 행 전체                                                        |
+| `header-col${colIdx}`              | 특정 헤더 컬럼 전체                                                      |
+| `body`                             | 모든 바디 셀 공통 렌더링 (`{ item: Item, value, colIdx, rowIdx }`)       |
+| `body-${colKey}`                   | 특정 컬럼 키의 바디 셀                                                   |
+| `body-${id}`                       | 특정 바디 셀 id (우선순위 높음)                                          |
+| `body-col${colIdx}-row${rowIdx}`   | 컬럼/행 인덱스 기반 바디 셀                                              |
+| `body-row${rowIdx}`                | 특정 행의 모든 셀                                                        |
+| `body-col${colIdx}`                | 특정 컬럼의 모든 셀                                                      |
 
 > 셀의 슬롯에는 우선순위가 존재합니다.
 > 슬롯 우선순위는 보다 구체적인 패턴(`*-id`) → `*-colKey` → 인덱스 기반 → 범용 슬롯 순으로 선택됩니다.
+
+### 슬롯 바인딩 상세
+
+| 슬롯 유형 | `item`             | `value`       | `colIdx` | `rowIdx` |
+| --------- | ------------------ | ------------- | -------- | -------- |
+| header    | `ColumnDef` 객체   | 헤더 표시 값  | O        | O        |
+| body      | 행의 아이템 (`I`)  | 셀 표시 값    | O        | O        |
+| select    | 행 아이템 / `null` | 선택 여부     | -        | O        |
+| expand    | 행 아이템          | 확장 여부     | -        | O        |
 
 ## Events
 

@@ -171,10 +171,10 @@ export const VisualRegressionMatrix: Story = {
                 <section class="chromatic-section">
                     <h3>행 확장</h3>
                     <vs-table :columns="baseColumns" :items="baseItems" :expandable="expandable" no-responsive>
-                        <template #expand="{ cells, rowIdx }">
+                        <template #expand="{ item, rowIdx }">
                             <div class="p-3 bg-slate-50 rounded">
                                 <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
-                                <p class="text-sm text-slate-600">{{ cells[0].item.metadata.email }}</p>
+                                <p class="text-sm text-slate-600">{{ item.metadata.email }}</p>
                             </div>
                         </template>
                     </vs-table>
@@ -187,15 +187,15 @@ export const VisualRegressionMatrix: Story = {
                             <span class="font-bold text-blue-500">Custom Caption</span>
                         </template>
 
-                        <template #header="{ header }">
+                        <template #header="{ value }">
                             <span class="bg-yellow-300 font-semibold">
-                                {{ header.value }}
+                                {{ value }}
                             </span>
                         </template>
 
-                        <template #header-name="{ header }">
+                        <template #header-name="{ value }">
                             <span class="flex items-center gap-2 text-amber-700">
-                                {{ header.value }} <span class="text-xs font-semibold">custom</span>
+                                {{ value }} <span class="text-xs font-semibold">custom</span>
                             </span>
                         </template>
 
