@@ -30,13 +30,16 @@ export interface VsTablePaginationOptions {
     totalItemCount?: number; // required when serverMode is true
 }
 
+type IsAny<T> = 0 extends 1 & T ? true : false;
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
-          [K in Extract<keyof T, string>]: T[K] extends Record<string, any>
-              ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
-              : Join<Prev, K, Sep>;
+          [K in Extract<keyof T, string>]: IsAny<T[K]> extends true
+              ? Join<Prev, K, Sep>
+              : T[K] extends Record<string, any>
+                ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
+                : Join<Prev, K, Sep>;
       }[Extract<keyof T, string>];
 
 type JoinDotField<T> = JoinField<T, '.'>;
@@ -45,7 +48,7 @@ type JoinDotField<T> = JoinField<T, '.'>;
  * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
-export type VsTableItem = Record<string, unknown>;
+export type VsTableItem = Record<string, any>;
 export type VsTableTag = 'td' | 'th';
 
 export enum VsTableSortType {
