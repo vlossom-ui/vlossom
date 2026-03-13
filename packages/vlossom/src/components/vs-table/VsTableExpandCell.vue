@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef, type PropType, type Ref } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import {
@@ -63,7 +63,7 @@ export default defineComponent({
         const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
-        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
+        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
 

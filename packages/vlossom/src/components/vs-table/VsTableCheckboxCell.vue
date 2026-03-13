@@ -1,7 +1,7 @@
 <template>
     <template v-if="isBodyRow(cells)">
         <td v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
-            <slot name="select" :cells :rowIdx>
+            <slot name="select" :item="getRowItem(cells)" :value="isSelected(cells)" :rowIdx>
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
                     multiple
@@ -17,7 +17,7 @@
 
     <template v-else>
         <th v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
-            <slot name="select" :cells :rowIdx>
+            <slot name="select" :item="null" :value="isSelected(cells)" :rowIdx="HEADER_ROW_INDEX">
                 <vs-checkbox
                     :style-set="headerCheckboxStyle"
                     :color-scheme
@@ -32,10 +32,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef, type PropType, type Ref } from 'vue';
+import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsCheckboxStyleSet } from '../vs-checkbox/types';
+import { HEADER_ROW_INDEX } from './models/strategy';
 import {
     getRowItem,
     type VsTableCell,
@@ -54,10 +55,10 @@ export default defineComponent({
             type: Array as PropType<VsTableCell[]>,
             default: () => [],
         },
-        rowIdx: { type: Number, default: 0 },
+        rowIdx: { type: Number, required: true },
     },
     emits: ['select-row'],
-    setup(_props, { emit }) {
+    setup(props, { emit }) {
         const {
             anySelectable,
             selectedItems,
@@ -68,9 +69,10 @@ export default defineComponent({
             toggleSelectAll,
             loading,
             primary,
+            columns,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
-        const colorScheme = inject<Ref<ColorScheme>>(TABLE_COLOR_SCHEME_TOKEN);
+        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
         const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
@@ -93,6 +95,13 @@ export default defineComponent({
             return selectable.value(item, rowIdx, items.value);
         }
 
+        function isSelected(row: VsTableCell[]): boolean {
+            if (isVsTableBodyRow(row)) {
+                return selectedItems.value.includes(getRowItem(row));
+            }
+            return selectedAll.value || selectedPartial.value;
+        }
+
         function selectRow(row: VsTableCell[], event: MouseEvent): void {
             if (!isVsTableBodyRow(row)) {
                 toggleSelectAll();
@@ -108,8 +117,10 @@ export default defineComponent({
         }
 
         return {
+            HEADER_ROW_INDEX,
             isBodyRow: isVsTableBodyRow,
-            getRowItem: getRowItem,
+            getRowItem,
+            isSelected,
             isRowSelectable,
             selectRow,
             anySelectable,
@@ -121,6 +132,7 @@ export default defineComponent({
             primary,
             headerCheckboxStyle,
             colorScheme,
+            columns,
         };
     },
 });

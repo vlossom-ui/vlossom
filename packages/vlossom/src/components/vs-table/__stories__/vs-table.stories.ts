@@ -178,15 +178,15 @@ export const CustomSlots: Story = {
                     <span class="font-bold text-blue-500">Custom Caption</span>
                 </template>
 
-                <template #header="{ header }">
+                <template #header="{ value }">
                     <span class="bg-yellow-300 font-semibold">
-                        {{ header.value }}
+                        {{ value }}
                     </span>
                 </template>
 
-                <template #header-name="{ header }">
+                <template #header-name="{ value }">
                     <span class="flex items-center gap-2 text-amber-700">
-                        {{ header.value }} <span class="text-xs font-semibold">custom</span>
+                        {{ value }} <span class="text-xs font-semibold">custom</span>
                     </span>
                 </template>
 
@@ -296,11 +296,11 @@ export const Expandable: Story = {
         },
         template: `
             <vs-table :columns="columns" :items="items" :expandable="expandable" no-responsive>
-                <template #expand="{ cells, rowIdx }">
+                <template #expand="{ item, rowIdx }">
                     <div class="p-3 bg-slate-50 rounded">
                         <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
                         <p class="text-sm text-slate-600">
-                            {{ cells[0].item.description }} - {{ cells[0].item.metadata.email }}
+                            {{ item.description }} - {{ item.metadata.email }}
                         </p>
                     </div>
                 </template>
@@ -531,6 +531,25 @@ export const Loading: Story = {
         docs: {
             description: {
                 story: 'loading이 true일 때 스켈레톤 UI가 표시되고, 검색 입력이 비활성화됩니다. 3초 후 실제 데이터로 전환됩니다.',
+            },
+        },
+    },
+};
+
+export const ColumnWidth: Story = {
+    args: {
+        columns: [
+            { key: 'name', label: 'Name', width: '200px' },
+            { key: 'age', label: 'Age', minWidth: '80px', maxWidth: '150px' },
+            { key: 'metadata.email', label: 'Email', minWidth: '200px' },
+        ],
+        items: baseItems,
+        noResponsive: true,
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'ColumnDef의 width, minWidth, maxWidth로 컬럼 너비를 제어합니다. width는 고정 크기, minWidth/maxWidth는 CSS grid minmax()로 변환됩니다.',
             },
         },
     },
