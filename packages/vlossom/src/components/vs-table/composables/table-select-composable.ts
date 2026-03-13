@@ -1,18 +1,18 @@
 import { computed, ref, watch, type Ref } from 'vue';
 import { objectUtil } from '@/utils';
-import type { Item } from '../types';
+import type { VsTableItem } from '../types';
 
 export function useTableSelect(
-    selectable: Ref<(item: Item, index?: number, items?: Item[]) => boolean>,
-    items: Ref<Item[]>,
-    initialSelectedItems: Ref<Item[]>,
+    selectable: Ref<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>,
+    items: Ref<VsTableItem[]>,
+    initialSelectedItems: Ref<VsTableItem[]>,
 ) {
-    const selectedItems = ref<Item[]>([...initialSelectedItems.value]);
+    const selectedItems = ref<VsTableItem[]>([...initialSelectedItems.value]);
 
     const anySelectable = computed<boolean>(() => {
         return items.value.some(selectable.value);
     });
-    const selectableItems = computed<Item[]>(() => {
+    const selectableItems = computed<VsTableItem[]>(() => {
         return items.value.filter(selectable.value);
     });
     const selectedPartial = computed(() => {

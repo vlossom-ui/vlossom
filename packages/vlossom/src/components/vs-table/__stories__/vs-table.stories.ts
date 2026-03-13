@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
 import VsInput from '../../vs-input/VsInput.vue';
-import type { Item } from '../types';
+import type { VsTableItem } from '../types';
 
 const baseColumns = [
     { key: 'name', label: 'Name' },
@@ -236,7 +236,7 @@ export const Selectable: Story = {
     args: {
         columns: baseColumns,
         items: baseItems,
-        selectable: (item: Item) => item.name !== 'Jim',
+        selectable: (item: VsTableItem) => item.name !== 'Jim',
         noResponsive: true,
     },
     parameters: {
@@ -291,7 +291,7 @@ export const Expandable: Story = {
                 ...item,
                 description: `${item.name} 상세 정보`,
             }));
-            const expandable = (item: Item) => Number(item.age) >= 30;
+            const expandable = (item: VsTableItem) => Number(item.age) >= 30;
             return { columns: baseColumns, items, expandable };
         },
         template: `
