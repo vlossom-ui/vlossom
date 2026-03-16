@@ -30,12 +30,12 @@ export interface VsTablePaginationOptions {
     totalItemCount?: number; // required when serverMode is true
 }
 
+type IsAny<T> = 0 extends 1 & T ? true : false;
 type Join<Prev extends string, K extends string, Sep extends string> = Prev extends '' ? K : `${Prev}${Sep}${K}`;
 type JoinField<T, Sep extends string, Prev extends string = ''> = keyof T extends never
     ? string
     : {
-          // 0 extends 1 & T[K] is a type guard to check if T[K] is a record
-          [K in Extract<keyof T, string>]: 0 extends 1 & T[K]
+          [K in Extract<keyof T, string>]: IsAny<T[K]> extends true
               ? Join<Prev, K, Sep>
               : T[K] extends Record<string, any>
                 ? Join<Prev, K, Sep> | JoinField<T[K], Sep, Join<Prev, K, Sep>>
