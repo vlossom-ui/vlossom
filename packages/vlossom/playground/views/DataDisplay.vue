@@ -197,9 +197,9 @@
                     </div>
                     <span v-else class="w-full"> {{ item.score }} </span>
                 </template>
-                <template #expand="{ cells }">
+                <template #expand="{ item }">
                     <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
-                        {{ cells[0]?.item.name }} — Score: {{ cells[0]?.item.score }}
+                        {{ item.name }} — Score: {{ item.score }}
                     </div>
                 </template>
             </vs-table>
