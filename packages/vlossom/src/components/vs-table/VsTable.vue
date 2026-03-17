@@ -283,7 +283,7 @@ export default defineComponent({
                 if (!isIntersecting) {
                     const headerHeight = vsLayoutHeader.value.height;
                     // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
-                    if (stringUtil.toStringSize(boundingClientRect.top) < stringUtil.toStringSize(headerHeight)) {
+                    if (boundingClientRect.top < Number(headerHeight)) {
                         stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
                         return;
                     }
