@@ -124,7 +124,7 @@ export default defineComponent({
         },
         dense: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
-        noResponsive: { type: Boolean, default: false },
+        responsive: { type: Boolean, default: false },
         noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
@@ -238,7 +238,7 @@ export default defineComponent({
         'update:totalItems',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, noResponsive, stickyHeader, dense, primary } = toRefs(props);
+        const { colorScheme, styleSet, responsive, stickyHeader, dense, primary } = toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
@@ -269,7 +269,7 @@ export default defineComponent({
             ),
         );
         const classObj = computed(() => ({
-            'vs-responsive': !noResponsive.value,
+            'vs-responsive': responsive.value,
             'vs-dense': dense.value,
             'vs-primary': primary.value,
         }));

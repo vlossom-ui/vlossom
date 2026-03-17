@@ -175,7 +175,7 @@
                 :dense="tablePropsSelected.includes('dense')"
                 :primary="tablePropsSelected.includes('primary')"
                 :selectable="tablePropsSelected.includes('selectable')"
-                :no-responsive="tablePropsSelected.includes('noResponsive')"
+                :responsive="tablePropsSelected.includes('responsive')"
                 :sticky-header="tablePropsSelected.includes('stickyHeader')"
                 :loading="tablePropsSelected.includes('loading')"
                 :draggable="tablePropsSelected.includes('draggable')"
@@ -262,7 +262,7 @@ export default defineComponent({
             { value: 'dense', label: 'Dense' },
             { value: 'primary', label: 'Primary' },
             { value: 'selectable', label: 'Selectable' },
-            { value: 'noResponsive', label: 'NoResponsive' },
+            { value: 'responsive', label: 'Responsive' },
             { value: 'stickyHeader', label: 'StickyHeader' },
             { value: 'loading', label: 'Loading' },
             { value: 'draggable', label: 'Draggable' },

@@ -82,42 +82,42 @@ export const VisualRegressionMatrix: Story = {
             <div class="chromatic-wrapper" style="display: flex; flex-direction: column; gap: 2rem; padding: 1rem;">
                 <section class="chromatic-section">
                     <h3>기본 테이블</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" no-responsive />
+                    <vs-table :columns="baseColumns" :items="baseItems" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>아이템 없음 (헤더만 표시)</h3>
-                    <vs-table :columns="baseColumns" :items="[]" no-responsive />
+                    <vs-table :columns="baseColumns" :items="[]" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>컬럼/아이템 모두 없음</h3>
-                    <vs-table :items="[]" no-responsive />
+                    <vs-table :items="[]" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>컬럼이 null인 경우 (아이템 키 기반 생성)</h3>
-                    <vs-table :columns="null" :items="baseItems" no-responsive />
+                    <vs-table :columns="null" :items="baseItems" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>문자열 컬럼</h3>
-                    <vs-table :columns="baseColumns.map((c) => c.key)" :items="baseItems" no-responsive />
+                    <vs-table :columns="baseColumns.map((c) => c.key)" :items="baseItems" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>선택 가능 행 (전체 선택 토글)</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" selectable no-responsive />
+                    <vs-table :columns="baseColumns" :items="baseItems" selectable />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>커스텀 선택 조건 (Jane 제외)</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" :selectable="customSelectableRow.selectable" no-responsive />
+                    <vs-table :columns="baseColumns" :items="baseItems" :selectable="customSelectableRow.selectable" />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>선택 슬롯 커스텀</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" selectable no-responsive>
+                    <vs-table :columns="baseColumns" :items="baseItems" selectable>
                         <template #select="{ rowIdx }">
                             <span class="text-xs text-slate-500">Row {{ rowIdx + 1 }}</span>
                         </template>
@@ -126,7 +126,7 @@ export const VisualRegressionMatrix: Story = {
 
                 <section class="chromatic-section">
                     <h3>정렬 가능한 컬럼</h3>
-                    <vs-table :columns="sortableColumns" :items="[...baseItems].reverse()" no-responsive />
+                    <vs-table :columns="sortableColumns" :items="[...baseItems].reverse()" />
                 </section>
 
                 <section class="chromatic-section">
@@ -139,13 +139,12 @@ export const VisualRegressionMatrix: Story = {
                         ]"
                         :items="baseItems"
                         :search="{ placeholder: 'Search by name', useCaseSensitive: false, useRegex: true }"
-                        no-responsive
                     />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>페이지네이션 기본</h3>
-                    <vs-table :columns="sortableColumns" :items="paginationItems" pagination no-responsive />
+                    <vs-table :columns="sortableColumns" :items="paginationItems" pagination />
                 </section>
 
                 <section class="chromatic-section">
@@ -164,13 +163,12 @@ export const VisualRegressionMatrix: Story = {
                             edgeButtons: true,
                             showTotal: true
                         }"
-                        no-responsive
                             />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>행 확장</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" :expandable="expandable" no-responsive>
+                    <vs-table :columns="baseColumns" :items="baseItems" :expandable="expandable">
                         <template #expand="{ item, rowIdx }">
                             <div class="p-3 bg-slate-50 rounded">
                                 <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
@@ -182,7 +180,7 @@ export const VisualRegressionMatrix: Story = {
 
                 <section class="chromatic-section">
                     <h3>커스텀 슬롯</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" no-responsive>
+                    <vs-table :columns="baseColumns" :items="baseItems">
                         <template #caption>
                             <span class="font-bold text-blue-500">Custom Caption</span>
                         </template>
@@ -239,13 +237,12 @@ export const VisualRegressionMatrix: Story = {
                         :items="baseItems.map((item, i) =>
                             ({ ...item, status: ['success', 'warning', 'error', 'info'][i % 4] }))"
                         :state="(item) => item.status"
-                        no-responsive
                     />
                 </section>
 
                 <section class="chromatic-section">
                     <h3>로딩 상태</h3>
-                    <vs-table :columns="baseColumns" :items="baseItems" pagination loading search no-responsive />
+                    <vs-table :columns="baseColumns" :items="baseItems" pagination loading search />
                 </section>
             </div>
         `,
