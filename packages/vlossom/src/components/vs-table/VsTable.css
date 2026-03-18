@@ -4,13 +4,20 @@
     --vs-table-sticky-header-z-index: 100;
 
     @apply relative w-full;
-    overflow-x: auto;
+
+    .vs-table-content {
+        @apply min-w-full overflow-x-auto;
+    }
+
+    .vs-table-sticky-wrapper {
+        @apply sticky w-full overflow-hidden;
+        z-index: var(--vs-table-sticky-header-z-index);
+    }
 
     table {
-        @apply mx-auto;
+        @apply mx-auto min-w-full;
         border-collapse: separate;
         border-spacing: 0;
-        min-width: 100%;
     }
 
     tr {
@@ -109,8 +116,7 @@
     }
 
     .vs-table-sticky-header {
-        @apply sticky w-full;
-        z-index: var(--vs-table-sticky-header-z-index);
+        @apply w-full;
         box-shadow: var(--vs-cs-shadow);
         background-color: var(--vs-no-color);
     }
@@ -193,6 +199,14 @@ caption {
 @container (max-width: 1024px) {
     .vs-table {
         &.vs-responsive {
+            .vs-table-content {
+                @apply overflow-x-visible;
+            }
+
+            table {
+                @apply min-w-full;
+            }
+
             tbody,
             th,
             td,
