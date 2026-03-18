@@ -9,40 +9,54 @@
             @search="searchRows"
         />
 
-        <vs-visible-render :disabled="noVirtualScroll" :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`" root-margin="150px">
+        <div
+            v-if="useStickyHeader"
+            ref="stickyScrollRef"
+            class="vs-table-sticky-wrapper"
+            :style="{ top: stickyHeaderTop }"
+        >
             <table>
-                <vs-table-header
-                    v-if="useStickyHeader"
-                    class="vs-table-sticky-header"
-                    :style="{ top: stickyHeaderTop }"
-                    @click-cell="clickCell"
-                    @select-row="selectRow"
-                >
+                <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
                     </template>
                 </vs-table-header>
-
-                <caption v-if="$slots['caption']">
-                    <slot name="caption" />
-                </caption>
-                <vs-table-header
-                    ref="headerRef"
-                    class="vs-table-original-header"
-                    @click-cell="clickCell"
-                    @select-row="selectRow"
-                >
-                    <template v-for="name in headerSlots" #[name]="slotData">
-                        <slot :name v-bind="slotData || {}" />
-                    </template>
-                </vs-table-header>
-                <vs-table-body @click-cell="clickCell" @select-row="selectRow" @expand-row="expandRow" @drag="dragRow">
-                    <template v-for="name in bodySlots" #[name]="slotData">
-                        <slot :name v-bind="slotData || {}" />
-                    </template>
-                </vs-table-body>
             </table>
-        </vs-visible-render>
+        </div>
+
+        <div class="vs-table-content" ref="scrollWrapperRef">
+            <vs-visible-render
+                :disabled="noVirtualScroll"
+                :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
+                root-margin="150px"
+            >
+                <table>
+                    <caption v-if="$slots['caption']">
+                        <slot name="caption" />
+                    </caption>
+                    <vs-table-header
+                        ref="headerRef"
+                        class="vs-table-original-header"
+                        @click-cell="clickCell"
+                        @select-row="selectRow"
+                    >
+                        <template v-for="name in headerSlots" #[name]="slotData">
+                            <slot :name v-bind="slotData || {}" />
+                        </template>
+                    </vs-table-header>
+                    <vs-table-body
+                        @click-cell="clickCell"
+                        @select-row="selectRow"
+                        @expand-row="expandRow"
+                        @drag="dragRow"
+                    >
+                        <template v-for="name in bodySlots" #[name]="slotData">
+                            <slot :name v-bind="slotData || {}" />
+                        </template>
+                    </vs-table-body>
+                </table>
+            </vs-visible-render>
+        </div>
 
         <vs-table-pagination v-if="pagination" @paginate="paginate" />
     </div>
@@ -57,8 +71,11 @@ import {
     computed,
     ref,
     onBeforeMount,
+    onMounted,
     useTemplateRef,
     onBeforeUnmount,
+    watch,
+    nextTick,
     inject,
     type ComputedRef,
 } from 'vue';
@@ -124,7 +141,7 @@ export default defineComponent({
         },
         dense: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
-        noResponsive: { type: Boolean, default: false },
+        responsive: { type: Boolean, default: false },
         noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
@@ -238,10 +255,12 @@ export default defineComponent({
         'update:totalItems',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, noResponsive, stickyHeader, dense, primary } = toRefs(props);
+        const { colorScheme, styleSet, responsive, stickyHeader, dense, primary } = toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const scrollWrapperRef = useTemplateRef<HTMLDivElement>('scrollWrapperRef');
+        const stickyScrollRef = useTemplateRef<HTMLDivElement>('stickyScrollRef');
 
         const isHeaderOutOfView = ref<boolean>(true);
         const stickyHeaderTop = ref<string>('0px');
@@ -269,7 +288,7 @@ export default defineComponent({
             ),
         );
         const classObj = computed(() => ({
-            'vs-responsive': !noResponsive.value,
+            'vs-responsive': responsive.value,
             'vs-dense': dense.value,
             'vs-primary': primary.value,
         }));
@@ -283,15 +302,22 @@ export default defineComponent({
                 if (!isIntersecting) {
                     const headerHeight = vsLayoutHeader.value.height;
                     // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
-                    if (stringUtil.toStringSize(boundingClientRect.top) < stringUtil.toStringSize(headerHeight)) {
+                    if (boundingClientRect.top < Number(headerHeight)) {
                         stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
                         return;
                     }
                     stickyHeaderTop.value = '0px';
                 }
             },
-            { threshold: 1 },
+            // The '999999px' value for rootMargin ensures that the header visibility is considered partially hidden when an x-overflow occurs.
+            { threshold: 0, rootMargin: '0px 999999px' },
         );
+
+        function syncStickyScroll() {
+            if (stickyScrollRef.value && scrollWrapperRef.value) {
+                stickyScrollRef.value.scrollLeft = scrollWrapperRef.value.scrollLeft;
+            }
+        }
 
         function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
@@ -328,12 +354,23 @@ export default defineComponent({
             emit('update:totalItems', items);
         }
 
+        watch(useStickyHeader, (visible) => {
+            if (visible) {
+                nextTick(syncStickyScroll);
+            }
+        });
+
         onBeforeMount(() => {
             table.initialize();
         });
 
+        onMounted(() => {
+            scrollWrapperRef.value?.addEventListener('scroll', syncStickyScroll, { passive: true });
+        });
+
         onBeforeUnmount(() => {
             pauseHeaderObserver();
+            scrollWrapperRef.value?.removeEventListener('scroll', syncStickyScroll);
         });
 
         return {
@@ -342,6 +379,8 @@ export default defineComponent({
             componentStyleSet,
             classObj,
             headerRef,
+            scrollWrapperRef,
+            stickyScrollRef,
             headerSlots,
             bodySlots,
             useStickyHeader,

@@ -82,9 +82,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    args: {
-        noResponsive: true,
-    },
+    args: {},
     parameters: {
         docs: {
             description: {
@@ -97,7 +95,6 @@ export const NoItemsWithHeader: Story = {
     args: {
         columns: baseColumns,
         items: [],
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -112,7 +109,6 @@ export const NoColumnsAndItems: Story = {
     args: {
         columns: [],
         items: [],
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -127,7 +123,6 @@ export const NullColumns: Story = {
     args: {
         columns: [],
         items: baseItems,
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -142,7 +137,6 @@ export const StringColumns: Story = {
     args: {
         columns: baseColumns.map((column) => column.key),
         items: baseItems,
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -173,7 +167,7 @@ export const CustomSlots: Story = {
             };
         },
         template: `
-            <vs-table :columns="columns" :items="items" no-responsive>
+            <vs-table :columns="columns" :items="items">
                 <template #caption>
                     <span class="font-bold text-blue-500">Custom Caption</span>
                 </template>
@@ -237,7 +231,6 @@ export const Selectable: Story = {
         columns: baseColumns,
         items: baseItems,
         selectable: (item: VsTableItem) => item.name !== 'Jim',
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -252,7 +245,6 @@ export const SortableColumns: Story = {
     args: {
         columns: sortableColumns,
         items: [...baseItems].reverse(),
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -272,7 +264,6 @@ export const Searchable: Story = {
         ],
         items: baseItems,
         search: { placeholder: 'Search name only', useRegex: true, useCaseSensitive: false },
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -295,7 +286,7 @@ export const Expandable: Story = {
             return { columns: baseColumns, items, expandable };
         },
         template: `
-            <vs-table :columns="columns" :items="items" :expandable="expandable" no-responsive>
+            <vs-table :columns="columns" :items="items" :expandable="expandable">
                 <template #expand="{ item, rowIdx }">
                     <div class="p-3 bg-slate-50 rounded">
                         <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
@@ -330,7 +321,7 @@ export const StickyHeader: Story = {
         },
         template: `
             <div style="height: 360px; overflow: auto; border: 1px solid #e5e7eb; padding: 8px;">
-                <vs-table :columns="columns" :items="items" stickyHeader no-responsive />
+                <vs-table :columns="columns" :items="items" stickyHeader />
             </div>
         `,
     }),
@@ -360,14 +351,14 @@ export const Responsive: Story = {
         template: `
             <div style="max-width: 720px; border: 1px solid #e5e7eb; padding: 8px;">
                 <p class="text-sm text-slate-600 mb-2">브라우저 폭을 줄이면 카드형으로 변합니다.</p>
-                <vs-table :columns="columns" :items="items" />
+                <vs-table :columns="columns" :items="items" responsive />
             </div>
         `,
     }),
     parameters: {
         docs: {
             description: {
-                story: '좁은 화면에서 카드형(모바일) 테이블 레이아웃을 확인합니다. no-responsive를 켜면 반응형 레이아웃을 비활성화합니다.',
+                story: '좁은 화면에서 카드형(모바일) 테이블 레이아웃을 확인합니다. responsive를 켜면 반응형 레이아웃을 활성화합니다.',
             },
         },
     },
@@ -383,7 +374,6 @@ export const WithPagination: Story = {
             metadata: { email: `user${i + 1}@example.com` },
         })),
         pagination: true,
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -413,7 +403,6 @@ export const WithCustomPagination: Story = {
             showingLength: 5,
             edgeButtons: true,
         },
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -449,7 +438,6 @@ export const PaginationWithEvent: Story = {
                 <vs-table
                     :columns="columns"
                     :items="items"
-                    no-responsive
                     :page-size="currentPageSize"
                     :pagination="{
                         pageSizeOptions: [
@@ -490,7 +478,6 @@ export const WithSearchSortPagination: Story = {
         search: true,
         pageSize: 20,
         pagination: true,
-        noResponsive: true,
     },
     parameters: {
         docs: {
@@ -522,7 +509,6 @@ export const Loading: Story = {
                     :items="baseItems"
                     :loading="isLoading"
                     search
-                    no-responsive
                 />
             </div>
         `,
@@ -544,12 +530,14 @@ export const ColumnWidth: Story = {
             { key: 'metadata.email', label: 'Email', minWidth: '200px' },
         ],
         items: baseItems,
-        noResponsive: true,
     },
     parameters: {
         docs: {
             description: {
-                story: 'ColumnDef의 width, minWidth, maxWidth로 컬럼 너비를 제어합니다. width는 고정 크기, minWidth/maxWidth는 CSS grid minmax()로 변환됩니다.',
+                story: `
+                    ColumnDef의 width, minWidth, maxWidth로 컬럼 너비를 제어합니다.
+                    width는 고정 크기, minWidth/maxWidth는 CSS grid minmax()로 변환됩니다.
+                `,
             },
         },
     },
@@ -579,7 +567,6 @@ export const Draggable: Story = {
                     :columns="columns"
                     :items="items"
                     draggable
-                    no-responsive
                     @drag="onDrag"
                 />
             </div>
