@@ -143,15 +143,15 @@
 
 ```html
 <template>
-    <!-- 반응형 기본 활성화 (1024px 이하에서 카드형으로 전환) -->
-    <vs-table :columns="columns" :items="items" />
+    <!-- 반응형 활성화 (1024px 이하에서 카드형으로 전환) -->
+    <vs-table :columns="columns" :items="items" responsive />
 
-    <!-- 반응형 비활성화 (항상 테이블 레이아웃 유지) -->
-    <vs-table :columns="columns" :items="items" no-responsive />
+    <!-- 반응형 비활성화 (항상 테이블 레이아웃 유지, 기본값) -->
+    <vs-table :columns="columns" :items="items" />
 </template>
 ```
 
-> 반응형은 기본 활성화 상태입니다. `no-responsive`를 사용하면 컨테이너 너비와 무관하게 항상 테이블 레이아웃을 유지합니다.
+> 반응형은 기본 비활성화 상태입니다. `responsive`를 사용하면 컨테이너 너비에 따라 카드형 레이아웃으로 전환됩니다.
 
 ### 페이지네이션 (Pagination)
 
@@ -315,7 +315,7 @@ function handleDrag(event) {
 | `items`                  | `VsTableItem[]`                                  | -       | **Yes**  | 테이블에 표시할 아이템 배열                                                                                                                                |
 | `dense`                  | `boolean`                                        | false   | -        | 컴팩트 모드. padding과 font-size를 줄여 밀도 높은 레이아웃 제공                                                                                            |
 | `primary`                | `boolean`                                        | false   | -        | 헤더에 primary 색상 테마 적용. `styleSet.header`와 동시 사용 시 `styleSet.header`(인라인)가 우선됩니다                                                     |
-| `noResponsive`           | `boolean`                                        | false   | -        | 반응형 레이아웃 비활성화. 기본값 false(반응형 ON). true 시 항상 테이블 레이아웃 유지                                                                       |
+| `responsive`             | `boolean`                                        | false   | -        | 반응형 레이아웃 활성화. 기본값 false(반응형 OFF). true 시 1024px 이하에서 카드형으로 전환                                                                  |
 | `search`                 | `boolean \| VsTableSearchOptions`                | false   | -        | 검색 입력 표시 및 옵션                                                                                                                                     |
 | `pagination`             | `boolean \| VsTablePaginationOptions`            | false   | -        | 페이지네이션 활성화 및 옵션                                                                                                                                |
 | `selectable`             | `boolean \| (item, index?, items?) => boolean`   | false   | -        | 행 선택 활성화 또는 조건부 선택 함수                                                                                                                       |
@@ -436,7 +436,7 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 - **다양한 컬럼 입력**: 객체/문자열/null 컬럼 정의를 지원해 유연한 초기 설정 가능
 - **슬롯 기반 커스터마이징**: 헤더/바디 셀 단위로 세밀한 우선순위 슬롯 렌더링
 - **반응형 스타일링**: `styleSet`, `colorScheme`로 디자인 시스템 일관성 유지
-- **반응형 테이블**: 기본 활성화. 1024px 이하 컨테이너에서 카드형으로 전환하며, 각 셀에서 헤더 정보를 함께 표시. `no-responsive`로 비활성화 가능
+- **반응형 테이블**: `responsive` prop으로 활성화. 1024px 이하 컨테이너에서 카드형으로 전환하며, 각 셀에서 헤더 정보를 함께 표시
 - **페이지네이션**: `pagination` 옵션으로 `VsPagination` 기반 페이지 네비게이션과 총 아이템/페이지 크기 선택을 제공
 - **데이터 추적**: `v-model:paged-items`와 `v-model:total-items`로 현재 페이지 및 필터링된 전체 데이터를 실시간 추적
 - **행 선택**: `selectable` prop으로 체크박스 기반 행 선택 및 조건부 선택 지원
