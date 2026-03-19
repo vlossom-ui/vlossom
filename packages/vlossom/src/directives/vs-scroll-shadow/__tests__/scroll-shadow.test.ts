@@ -101,6 +101,8 @@ describe('v-scroll-shadow', () => {
             // given
             const el = createScrollableElement();
             vi.spyOn(window, 'getComputedStyle').mockReturnValue({
+                overflowX: '',
+                overflowY: 'scroll',
                 getPropertyValue: (prop: string) => {
                     if (prop === 'container-type') {
                         return 'inline-size';
@@ -176,9 +178,10 @@ describe('v-scroll-shadow', () => {
         it('원래 container-type이 있던 경우 복구되어야 한다', () => {
             // given
             const el = createScrollableElement();
-            // el.style.containerType을 직접 설정해야 activate에서 저장된다
             el.style.containerType = 'inline-size';
             vi.spyOn(window, 'getComputedStyle').mockReturnValue({
+                overflowX: '',
+                overflowY: 'scroll',
                 getPropertyValue: (prop: string) => {
                     if (prop === 'container-type') {
                         return 'inline-size';
