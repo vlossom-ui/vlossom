@@ -7,14 +7,16 @@ const SCROLL_STATE_VALUE = 'scroll-state';
 // global state
 const originalContainerTypeMap = new WeakMap<HTMLElement, string>();
 
-function verifyScrollContainer(el: HTMLElement): void {
+function verifyScrollContainer(el: HTMLElement): boolean {
     const isScrollable = domUtil.isScrollableX(el) || domUtil.isScrollableY(el);
     if (!isScrollable) {
         logUtil.warning(
             'v-scroll-shadow',
             `Element is not a scrollable container. "overflow" must be "auto" or "scroll" ${el}`,
         );
+        return false;
     }
+    return true;
 }
 
 function activate(el: HTMLElement): void {
@@ -54,7 +56,9 @@ export const scrollShadow: Directive<HTMLElement, boolean | undefined> = {
         if (binding.value === false) {
             return;
         }
-        verifyScrollContainer(el);
+        if (!verifyScrollContainer(el)) {
+            return;
+        }
         activate(el);
     },
 
@@ -64,10 +68,12 @@ export const scrollShadow: Directive<HTMLElement, boolean | undefined> = {
         }
         if (binding.value === false) {
             deactivate(el);
-        } else {
-            verifyScrollContainer(el);
-            activate(el);
+            return;
         }
+        if (!verifyScrollContainer(el)) {
+            return;
+        }
+        activate(el);
     },
 
     unmounted(el) {
