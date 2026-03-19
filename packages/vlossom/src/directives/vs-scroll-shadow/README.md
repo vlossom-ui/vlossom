@@ -13,8 +13,15 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import { scrollShadow as vScrollShadow } from 'vlossom';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { scrollShadow } from 'vlossom';
+
+export default defineComponent({
+    directives: {
+        scrollShadow,
+    },
+});
 </script>
 ```
 
@@ -32,9 +39,9 @@ binding value로 활성화 여부를 동적으로 제어할 수 있습니다.
 
 ## Binding
 
-| Binding | Type | Default | Description |
-| --- | --- | --- | --- |
-| `value` | `boolean \| undefined` | `undefined` | `false`이면 비활성화 |
+| Binding | Type                   | Default     | Description                                  |
+| ------- | ---------------------- | ----------- | -------------------------------------------- |
+| `value` | `boolean \| undefined` | `undefined` | `false`이면 비활성화, `undefined`이면 활성화 |
 
 ## 주의사항
 
