@@ -37,6 +37,8 @@
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
+        border-left: 0.3rem solid transparent;
+
         &.vs-stated {
             border-left: 0.3rem solid var(--vs-state-color);
             background-color: var(--vs-state-color-bg);
