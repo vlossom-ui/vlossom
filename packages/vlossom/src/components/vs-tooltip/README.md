@@ -10,12 +10,19 @@
 
 ```html
 <template>
-    <vs-button id="my-button">Hover Me</vs-button>
-    <vs-tooltip target="#my-button">
+    <vs-button id="my-button-id">Hover Me</vs-button>
+    <vs-tooltip target="#my-button-id">
         <span>이것은 툴팁입니다</span>
+    </vs-tooltip>
+    <vs-button class="my-button-class">Hover Me</vs-button>
+    <vs-tooltip target=".my-button-class">
+        <span>그것은 툴팁입니다</span>
     </vs-tooltip>
 </template>
 ```
+
+> **Note** > `target` prop에는 `querySelector`가 지원하는 모든 CSS 선택자를 사용할 수 있습니다.
+> 예시: `#my-id`, `.my-class`, `[data-attr="value"]` 등
 
 ### 클릭 가능한 툴팁
 
