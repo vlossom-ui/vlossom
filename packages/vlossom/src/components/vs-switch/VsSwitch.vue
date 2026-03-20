@@ -36,7 +36,7 @@
                     @change.stop="onChange"
                 />
 
-                <div :class="['vs-switch-button', stateClasses]" :style="getSwitchButtonStyle()">
+                <div :class="['vs-switch-button', stateBoxClasses]" :style="getSwitchButtonStyle()">
                     <span class="vs-status-label" data-value="true" v-show="isChecked">
                         <slot name="true-label"> {{ trueLabel }} </slot>
                     </span>
@@ -189,7 +189,7 @@ export default defineComponent({
             },
         );
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
 
         async function onChange() {
             if (computedDisabled.value || computedReadonly.value) {
@@ -237,7 +237,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             classObj,
-            stateClasses,
+            stateBoxClasses,
             computedId,
             computedDisabled,
             computedReadonly,

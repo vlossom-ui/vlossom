@@ -126,7 +126,7 @@ export default defineComponent({
 
         const { componentStyleSet } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
-        const { stateClasses } = useStateClass(state);
+        const { stateBoxClasses } = useStateClass(state);
 
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
 
@@ -218,7 +218,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             classObj,
-            stateClasses,
+            stateBoxClasses,
             computedId,
             computedMessages,
             computedState,

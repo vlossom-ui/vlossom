@@ -4,20 +4,20 @@ import { ref } from 'vue';
 import type { UIState } from '@/declaration';
 
 describe('state-class-composable', () => {
-    describe('stateClasses class', () => {
+    describe('stateBoxClasses class', () => {
         it('stated', () => {
             // given
             const stated: UIState[] = ['info', 'success', 'error', 'warning'];
 
             // when
-            const classes = stated.map((state) => useStateClass(ref(state)).stateClasses.value);
+            const classes = stated.map((state) => useStateClass(ref(state)).stateBoxClasses.value);
 
             // then
             expect(classes).toEqual([
-                { 'vs-state-box': true, 'vs-state-info': true },
-                { 'vs-state-box': true, 'vs-state-success': true },
-                { 'vs-state-box': true, 'vs-state-error': true },
-                { 'vs-state-box': true, 'vs-state-warning': true },
+                { 'vs-stated': true, 'vs-state-box': true, 'vs-state-info': true },
+                { 'vs-stated': true, 'vs-state-box': true, 'vs-state-success': true },
+                { 'vs-stated': true, 'vs-state-box': true, 'vs-state-error': true },
+                { 'vs-stated': true, 'vs-state-box': true, 'vs-state-warning': true },
             ]);
         });
 
@@ -26,10 +26,10 @@ describe('state-class-composable', () => {
             const notStated: UIState[] = ['idle'];
 
             // when
-            const classes = notStated.map((state) => useStateClass(ref(state)).stateClasses.value);
+            const classes = notStated.map((state) => useStateClass(ref(state)).stateBoxClasses.value);
 
             // then
-            expect(classes).toEqual([{ 'vs-state-box': false, 'vs-state-idle': false }]);
+            expect(classes).toEqual([{}]);
         });
     });
 });
