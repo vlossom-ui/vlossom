@@ -48,11 +48,14 @@ export default defineComponent({
             if (!htmlString || !/<[^>]*>/.test(htmlString)) {
                 return () => h('span', attrs, htmlString);
             }
-
             // HTML이 있는 경우 파싱하여 적절한 태그로 렌더링
             try {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(htmlString, 'text/html');
+                const needRootElement = doc.body.childNodes.length > 1;
+                if (needRootElement) {
+                    return renderStringAsComponent(`<div>${htmlString}</div>`);
+                }
                 const element = doc.body.firstElementChild;
 
                 if (!element) {

@@ -43,17 +43,6 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
     <vs-modal v-model="isOpen" size="lg">
         <div>큰 모달</div>
     </vs-modal>
-
-    <!-- 헤더/푸터 슬롯 -->
-    <vs-modal v-model="isOpen">
-        <template #header>
-            <h2>모달 헤더</h2>
-        </template>
-        <div>모달 내용</div>
-        <template #footer>
-            <button @click="isOpen = false">닫기</button>
-        </template>
-    </vs-modal>
 </template>
 ```
 
@@ -99,11 +88,9 @@ interface OverlayCallbacks<T = void> {
 
 ### Slots
 
-| Slot      | Description                    |
-| --------- | ------------------------------ |
-| `default` | 모달 내부에 표시할 콘텐츠      |
-| `header`  | 모달 헤더 영역에 표시할 콘텐츠 |
-| `footer`  | 모달 푸터 영역에 표시할 콘텐츠 |
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `default` | 모달 내부에 표시할 콘텐츠 |
 
 ### Events
 
@@ -180,11 +167,9 @@ interface OverlayCallbacks<T = void> {
 
 ### Slots
 
-| Slot      | Description                    |
-| --------- | ------------------------------ |
-| `default` | 모달 내부에 표시할 콘텐츠      |
-| `header`  | 모달 헤더 영역에 표시할 콘텐츠 |
-| `footer`  | 모달 푸터 영역에 표시할 콘텐츠 |
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `default` | 모달 내부에 표시할 콘텐츠 |
 
 ### Events
 
