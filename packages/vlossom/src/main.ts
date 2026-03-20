@@ -3,6 +3,7 @@ import './styles/index.scss';
 
 export * from './composables';
 export * from './declaration';
+export * from './directives';
 export * from './framework';
 export * from './props';
 export * from './stores';
