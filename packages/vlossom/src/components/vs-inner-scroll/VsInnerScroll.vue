@@ -6,6 +6,7 @@
 
         <div
             ref="bodyRef"
+            v-scroll-shadow
             :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]"
             :style="componentStyleSet.content"
         >
@@ -23,11 +24,13 @@ import { defineComponent, toRefs, useTemplateRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
+import { scrollShadow } from '@/directives';
 import type { VsInnerScrollStyleSet } from './types';
 
 const componentName = VsComponent.VsInnerScroll;
 export default defineComponent({
     name: componentName,
+    directives: { scrollShadow },
     props: {
         ...getStyleSetProps<VsInnerScrollStyleSet>(),
         hideScroll: { type: Boolean, default: false },

@@ -4,9 +4,10 @@
 
 @custom-variant dark (&:where(.vs-dark, .vs-dark *));
 
-@import './variables.css';
 @import './animation.css';
+@import './base.css';
+@import './directives.css';
+@import './mixin.css';
 @import './palette.css';
 @import './state.css';
-@import './mixin.css';
-@import './base.css';
+@import './variables.css';

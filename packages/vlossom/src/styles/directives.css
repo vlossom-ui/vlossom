@@ -1,0 +1,50 @@
+/* packages/vlossom/src/directives/vs-scroll-shadow/scroll-shadow.ts */
+.vs-scroll-shadow {
+    container-type: scroll-state;
+
+    &::before,
+    &::after {
+        display: block;
+        position: sticky;
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+        width: 100%;
+        height: 1.5rem;
+        pointer-events: none;
+        content: '';
+    }
+
+    &::before {
+        top: 0;
+        margin-bottom: -1.5rem;
+        background: linear-gradient(
+            to bottom,
+            var(--vs-cs-shadow-color, rgba(0, 0, 0, 0.2)) 0%,
+            rgba(0, 0, 0, 0.1) 30%,
+            rgba(0, 0, 0, 0.03) 60%,
+            transparent 100%
+        );
+
+        @container scroll-state(scrollable: top) {
+            opacity: 1;
+        }
+    }
+
+    &::after {
+        bottom: 0;
+        margin-top: -1.5rem;
+        background: linear-gradient(
+            to top,
+            var(--vs-cs-shadow-color, rgba(0, 0, 0, 0.2)) 0%,
+            rgba(0, 0, 0, 0.1) 30%,
+            rgba(0, 0, 0, 0.03) 60%,
+            transparent 100%
+        );
+
+        @container scroll-state(scrollable: bottom) {
+            opacity: 1;
+        }
+    }
+}
