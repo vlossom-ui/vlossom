@@ -18,7 +18,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-input', colorSchemeClass, classObj, stateClasses]" :style="componentStyleSet.component">
+        <div :class="['vs-input', colorSchemeClass, classObj, stateBoxClasses]" :style="componentStyleSet.component">
             <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.prepend">
                 <slot name="prepend" />
             </div>
@@ -194,7 +194,7 @@ export default defineComponent({
             'vs-readonly': computedReadonly.value,
         }));
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
 
         const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
@@ -244,7 +244,7 @@ export default defineComponent({
             computedReadonly,
             renderClearButton,
             shake,
-            stateClasses,
+            stateBoxClasses,
             computedId,
 
             // Methods

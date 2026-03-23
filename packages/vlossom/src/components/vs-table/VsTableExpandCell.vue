@@ -9,8 +9,8 @@
                     variables: { padding: '0' },
                     component: {
                         border: 'none',
-                        height: '1.4rem',
-                        width: '1.4rem',
+                        height: '1.8rem',
+                        width: '1.8rem',
                         backgroundColor: 'var(--vs-cs-bg-area-colored)',
                         color: 'var(--vs-cs-font-colored)',
                     },

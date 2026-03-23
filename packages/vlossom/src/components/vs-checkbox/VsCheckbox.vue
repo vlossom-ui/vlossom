@@ -22,7 +22,7 @@
                 <input
                     ref="checkboxRef"
                     type="checkbox"
-                    :class="['vs-checkbox-input', stateClasses]"
+                    :class="['vs-checkbox-input', stateBoxClasses]"
                     :style="componentStyleSet.checkbox"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
@@ -183,7 +183,7 @@ export default defineComponent({
             },
         );
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
 
         const classObj = computed(() => ({
             'vs-checked': isChecked.value,
@@ -246,7 +246,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             classObj,
-            stateClasses,
+            stateBoxClasses,
             computedId,
             computedDisabled,
             computedReadonly,

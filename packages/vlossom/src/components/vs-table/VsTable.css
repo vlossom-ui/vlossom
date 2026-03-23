@@ -37,11 +37,11 @@
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
-        &.vs-state-box {
-            @apply outline-offset-[-0.1625rem];
-            outline: none;
-            border-left: 0.1625rem solid var(--vs-state-color);
-            background-color: color-mix(in oklch, var(--vs-state-color) 8%, transparent 20%);
+        border-left: 0.3rem solid transparent;
+
+        &.vs-stated {
+            border-left: 0.3rem solid var(--vs-state-color);
+            background-color: var(--vs-state-color-bg);
         }
 
         &.vs-selected {
@@ -73,17 +73,17 @@
 
     th {
         @apply flex items-center;
-        border-top: 0.0625rem solid var(--vs-cs-line);
-        border-bottom: 0.0625rem solid var(--vs-cs-line);
-        padding: 0.625rem 0.875rem;
+        border-top: 1px solid var(--vs-cs-line);
+        border-bottom: 1px solid var(--vs-cs-line);
+        padding: 0.6rem 0.8rem;
         text-align: left;
 
         &:first-child {
-            border-left: 0.0625rem solid var(--vs-cs-line);
+            border-left: 1px solid var(--vs-cs-line);
             border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
         &:last-child {
-            border-right: 0.0625rem solid var(--vs-cs-line);
+            border-right: 1px solid var(--vs-cs-line);
             border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
 
@@ -94,8 +94,8 @@
 
     td {
         @apply flex items-center;
-        border-bottom: 0.0625rem solid var(--vs-cs-line);
-        padding: 0.625rem 0.875rem;
+        border-bottom: 1px solid var(--vs-cs-line);
+        padding: 0.6rem 0.8rem;
         text-align: left;
 
         > * {
@@ -170,10 +170,10 @@
     }
 
     th.vs-table-expand-handle {
-        width: 3rem;
+        width: 3.6rem;
     }
     td.vs-table-expand-handle {
-        width: 3rem;
+        width: 3.6rem;
     }
 }
 

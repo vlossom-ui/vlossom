@@ -16,7 +16,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio', colorSchemeClass, classObj, stateClasses]" :style="styleSetVariables">
+        <div :class="['vs-radio', colorSchemeClass, classObj, stateBoxClasses]" :style="styleSetVariables">
             <label class="vs-radio-wrap" :for="computedId">
                 <input
                     ref="radioRef"
@@ -152,7 +152,7 @@ export default defineComponent({
             },
         );
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
 
         const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,
@@ -203,7 +203,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             classObj,
-            stateClasses,
+            stateBoxClasses,
             computedDisabled,
             computedReadonly,
             inputValue,

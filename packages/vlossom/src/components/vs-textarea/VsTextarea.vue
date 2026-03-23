@@ -21,7 +21,7 @@
         <textarea
             ref="textareaRef"
             :id="computedId"
-            :class="['vs-textarea', colorSchemeClass, classObj, stateClasses]"
+            :class="['vs-textarea', colorSchemeClass, classObj, stateBoxClasses]"
             :style="componentStyleSet.textarea"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
@@ -149,7 +149,7 @@ export default defineComponent({
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
         }));
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
 
         function updateValue(event: Event) {
             const target = event.target as HTMLTextAreaElement;
@@ -185,7 +185,7 @@ export default defineComponent({
             classObj,
             colorSchemeClass,
             componentStyleSet,
-            stateClasses,
+            stateBoxClasses,
             computedId,
             computedDisabled,
             computedReadonly,

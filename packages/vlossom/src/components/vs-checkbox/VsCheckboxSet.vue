@@ -65,7 +65,7 @@ import {
     getStyleSetProps,
     getMinMaxProps,
 } from '@/props';
-import { useColorScheme, useInput, useStateClass, useStyleSet, useInputOption } from '@/composables';
+import { useColorScheme, useInput, useStyleSet, useInputOption } from '@/composables';
 import { objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
@@ -125,8 +125,6 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const { componentStyleSet } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
-
-        const { stateClasses } = useStateClass(state);
 
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
 
@@ -218,7 +216,6 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             classObj,
-            stateClasses,
             computedId,
             computedMessages,
             computedState,
