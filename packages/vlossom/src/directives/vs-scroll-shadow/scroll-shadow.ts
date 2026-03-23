@@ -1,5 +1,5 @@
 import type { Directive } from 'vue';
-import { logUtil, domUtil } from '@/utils';
+import { domUtil } from '@/utils';
 
 const SCROLL_SHADOW_MIXIN_CLASS = 'vs-scroll-shadow';
 const SCROLL_STATE_VALUE = 'scroll-state';
@@ -10,10 +10,6 @@ const originalContainerTypeMap = new WeakMap<HTMLElement, string>();
 function verifyScrollContainer(el: HTMLElement): boolean {
     const isScrollable = domUtil.isScrollableX(el) || domUtil.isScrollableY(el);
     if (!isScrollable) {
-        logUtil.warning(
-            'v-scroll-shadow',
-            `Element is not a scrollable container. "overflow" must be "auto" or "scroll" ${el}`,
-        );
         return false;
     }
     return true;
