@@ -82,7 +82,6 @@ export default defineComponent({
         ...getStyleSetProps<VsDrawerStyleSet>(),
         ...getOverlayProps(),
         fixed: { type: Boolean, default: false },
-        layoutResponsive: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
@@ -106,7 +105,6 @@ export default defineComponent({
             fixed,
             open: initialOpen,
             modelValue,
-            layoutResponsive,
             placement,
             size,
         } = toRefs(props);
@@ -207,31 +205,33 @@ export default defineComponent({
                 isOpen: isOpen.value,
                 placement: placement.value,
                 size: drawerSize.value || DRAWER_SIZE.sm,
-                responsive: layoutResponsive.value,
+                responsive: true,
             });
         });
 
-        const NEEDS_PADDING_POSITIONS = ['absolute', 'fixed'];
-
         const layoutStyles = computed(() => {
-            if (!isLayoutChild.value || !layoutResponsive.value) {
+            if (!isLayoutChild.value) {
                 return {};
             }
 
+            const NEEDS_OFFSET_POSITIONS = ['absolute', 'fixed', 'sticky'];
             const style: { [key: string]: string } = {};
             const { position: headerPosition, height: headerHeight } = layoutStore.header.value;
+            const { position: footerPosition, height: footerHeight } = layoutStore.footer.value;
 
-            if (placement.value === 'top' && NEEDS_PADDING_POSITIONS.includes(headerPosition)) {
+            if (placement.value === 'top' && NEEDS_OFFSET_POSITIONS.includes(headerPosition) && headerHeight) {
                 style.top = headerHeight;
             }
 
+            if (placement.value === 'bottom' && NEEDS_OFFSET_POSITIONS.includes(footerPosition) && footerHeight) {
+                style.bottom = footerHeight;
+            }
+
             if (placement.value === 'left' || placement.value === 'right') {
-                if (NEEDS_PADDING_POSITIONS.includes(headerPosition)) {
+                if (NEEDS_OFFSET_POSITIONS.includes(headerPosition) && headerHeight) {
                     style.paddingTop = headerHeight;
                 }
-
-                const { position: footerPosition, height: footerHeight } = layoutStore.footer.value;
-                if (NEEDS_PADDING_POSITIONS.includes(footerPosition)) {
+                if (NEEDS_OFFSET_POSITIONS.includes(footerPosition) && footerHeight) {
                     style.paddingBottom = footerHeight;
                 }
             }

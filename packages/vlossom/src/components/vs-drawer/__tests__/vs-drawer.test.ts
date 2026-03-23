@@ -375,27 +375,6 @@ describe('VsDrawer', () => {
                 isOpen: true,
                 placement: 'left',
                 size: '40%',
-                responsive: false,
-            });
-        });
-
-        it('layoutResponsive prop이 true일 때 responsive 옵션이 전달되어야 한다', () => {
-            // given
-            const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
-
-            // when
-            mount(MockVsLayout, {
-                slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'right', size: 'lg', layoutResponsive: true }),
-                },
-                global: { stubs: layoutStubs },
-            });
-
-            // then
-            expect(setDrawerSpy).toHaveBeenCalledWith({
-                isOpen: true,
-                placement: 'right',
-                size: '60%',
                 responsive: true,
             });
         });
@@ -422,23 +401,6 @@ describe('VsDrawer', () => {
             Transition: { template: '<div><slot /></div>' },
         };
 
-        it('layoutResponsive가 false이면 layoutStyles가 빈 객체를 반환해야 한다', () => {
-            // given
-            layoutStore.setHeader({ position: 'fixed', height: '3rem' });
-
-            // when
-            const wrapper = mount(MockVsLayout, {
-                slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: false }),
-                },
-                global: { stubs: layoutStubs },
-            });
-
-            // then
-            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
-            expect(drawerVm.layoutStyles).toEqual({});
-        });
-
         it('placement가 left이고 header가 fixed이면 paddingTop이 적용되어야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'fixed', height: '3rem' });
@@ -446,7 +408,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: true }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -463,7 +425,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'right', layoutResponsive: true }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'right' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -480,7 +442,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'top', layoutResponsive: true }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'top' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -490,6 +452,57 @@ describe('VsDrawer', () => {
             expect(drawerVm.layoutStyles.top).toBe('3rem');
         });
 
+        it('placement가 top이고 header가 sticky이면 top offset이 적용되어야 한다', () => {
+            // given
+            layoutStore.setHeader({ position: 'sticky', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'top' }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.top).toBe('3rem');
+        });
+
+        it('placement가 bottom이고 footer가 fixed이면 bottom offset이 적용되어야 한다', () => {
+            // given
+            layoutStore.setFooter({ position: 'fixed', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'bottom' }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.bottom).toBe('3rem');
+        });
+
+        it('placement가 bottom이고 footer가 sticky이면 bottom offset이 적용되어야 한다', () => {
+            // given
+            layoutStore.setFooter({ position: 'sticky', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'bottom' }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.bottom).toBe('3rem');
+        });
+
         it('header position이 relative이면 padding이 적용되지 않아야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'relative', height: '3rem' });
@@ -497,7 +510,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: true }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left' }),
                 },
                 global: { stubs: layoutStubs },
             });
