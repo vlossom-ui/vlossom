@@ -15,6 +15,7 @@
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
                 <vs-inner-scroll
                     :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                    :style="layoutStyles"
                     :style-set="{
                         header: componentStyleSet.header,
                         content: componentStyleSet.content,
@@ -81,8 +82,8 @@ export default defineComponent({
         ...getStyleSetProps<VsDrawerStyleSet>(),
         ...getOverlayProps(),
         fixed: { type: Boolean, default: false },
-        layoutResponsive: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
+        layoutResponsive: { type: Boolean, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
             default: 'left',
@@ -104,8 +105,8 @@ export default defineComponent({
             escClose,
             fixed,
             open: initialOpen,
-            modelValue,
             layoutResponsive,
+            modelValue,
             placement,
             size,
         } = toRefs(props);
@@ -210,6 +211,36 @@ export default defineComponent({
             });
         });
 
+        const layoutStyles = computed(() => {
+            if (!isLayoutChild.value) {
+                return {};
+            }
+
+            const NEEDS_OFFSET_POSITIONS = ['absolute', 'fixed', 'sticky'];
+            const style: { [key: string]: string } = {};
+            const { position: headerPosition, height: headerHeight } = layoutStore.header.value;
+            const { position: footerPosition, height: footerHeight } = layoutStore.footer.value;
+
+            if (placement.value === 'top' && NEEDS_OFFSET_POSITIONS.includes(headerPosition) && headerHeight) {
+                style.top = headerHeight;
+            }
+
+            if (placement.value === 'bottom' && NEEDS_OFFSET_POSITIONS.includes(footerPosition) && footerHeight) {
+                style.bottom = footerHeight;
+            }
+
+            if (placement.value === 'left' || placement.value === 'right') {
+                if (NEEDS_OFFSET_POSITIONS.includes(headerPosition) && headerHeight) {
+                    style.paddingTop = headerHeight;
+                }
+                if (NEEDS_OFFSET_POSITIONS.includes(footerPosition) && footerHeight) {
+                    style.paddingBottom = footerHeight;
+                }
+            }
+
+            return style;
+        });
+
         onBeforeMount(() => {
             if (initialOpen.value || modelValue.value) {
                 openDrawer();
@@ -241,6 +272,7 @@ export default defineComponent({
             isDimmed,
             openDrawer,
             closeDrawer,
+            layoutStyles,
         };
     },
 });

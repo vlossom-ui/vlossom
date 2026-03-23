@@ -21,35 +21,39 @@ export default defineComponent({
         const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
 
         const { header, footer, drawers } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
+
+        function getDrawerPadding(drawerSize: string, isOpen: boolean, responsive: boolean, barPadding?: string) {
+            if (!responsive || !isOpen || !drawerSize) {
+                return undefined;
+            }
+            return barPadding ? `calc(${barPadding} + ${drawerSize})` : drawerSize;
+        }
+
         const layoutStyles = computed(() => {
             if (!isLayoutChild.value) {
                 return {};
             }
 
-            const needPadding = ['absolute', 'fixed', 'sticky'];
+            const NEEDS_PADDING_POSITIONS = ['absolute', 'fixed', 'sticky'];
             const { position: headerPosition, height: headerHeight } = header.value;
-            const headerStyles = objectUtil.shake({
-                paddingTop: needPadding.includes(headerPosition) && headerHeight ? headerHeight : undefined,
-            });
+            const headerPaddingTop =
+                NEEDS_PADDING_POSITIONS.includes(headerPosition) && headerHeight ? headerHeight : undefined;
 
             const { position: footerPosition, height: footerHeight } = footer.value;
-            const footerStyles = objectUtil.shake({
-                paddingBottom: needPadding.includes(footerPosition) && footerHeight ? footerHeight : undefined,
-            });
+            const footerPaddingBottom =
+                NEEDS_PADDING_POSITIONS.includes(footerPosition) && footerHeight ? footerHeight : undefined;
 
             const { left, top, bottom, right } = drawers.value;
-            const drawerStyles = objectUtil.shake({
-                paddingLeft: left.isOpen && left.responsive && left.size ? left.size : undefined,
-                paddingTop: top.isOpen && top.responsive && top.size ? top.size : undefined,
-                paddingBottom: bottom.isOpen && bottom.responsive && bottom.size ? bottom.size : undefined,
-                paddingRight: right.isOpen && right.responsive && right.size ? right.size : undefined,
-            });
 
-            return {
-                ...headerStyles,
-                ...footerStyles,
-                ...drawerStyles,
-            };
+            return objectUtil.shake({
+                paddingTop:
+                    getDrawerPadding(top.size, top.isOpen, top.responsive, headerPaddingTop) ?? headerPaddingTop,
+                paddingBottom:
+                    getDrawerPadding(bottom.size, bottom.isOpen, bottom.responsive, footerPaddingBottom) ??
+                    footerPaddingBottom,
+                paddingLeft: getDrawerPadding(left.size, left.isOpen, left.responsive),
+                paddingRight: getDrawerPadding(right.size, right.isOpen, right.responsive),
+            });
         });
 
         return { layoutStyles };
