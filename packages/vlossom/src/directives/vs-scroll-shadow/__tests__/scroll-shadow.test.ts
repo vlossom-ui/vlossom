@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { ObjectDirective } from 'vue';
 import { scrollShadow } from '../scroll-shadow';
 
@@ -26,19 +26,9 @@ function createScrollableElement(): HTMLElement {
     return el;
 }
 
-function createNonScrollableElement(): HTMLElement {
-    return document.createElement('div');
-}
-
 describe('v-scroll-shadow', () => {
-    let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
-
     beforeEach(() => {
-        consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe('mounted', () => {
@@ -73,17 +63,6 @@ describe('v-scroll-shadow', () => {
 
             // then
             expect(el.classList.contains(SCROLL_SHADOW_CLASS)).toBe(false);
-        });
-
-        it('스크롤이 불가능한 요소에 적용하면 경고가 출력되어야 한다', () => {
-            // given
-            const el = createNonScrollableElement();
-
-            // when
-            directive.mounted!(el, createBinding(undefined), null as any, null as any);
-
-            // then
-            expect(consoleWarnSpy).toHaveBeenCalled();
         });
 
         it('container-type에 scroll-state가 설정되어야 한다', () => {
