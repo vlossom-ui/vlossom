@@ -82,6 +82,27 @@ export interface VsButtonStyleSet {
 
 ---
 
+## Server Deployment
+
+The MCP server runs as a **self-hosted stdio process**, registered in the AI assistant's MCP config (e.g., Claude Desktop's `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "vlossom": {
+      "command": "node",
+      "args": ["/path/to/packages/vlossom-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
+The server communicates over **stdio** (standard MCP transport), requiring no open ports or network setup. The team hosts this process on their own infrastructure; external developers point their AI assistant config at the server endpoint (stdio or HTTP SSE, depending on MCP client support).
+
+After a release pipeline run, the MCP server process is restarted to pick up the updated `components-meta.json`. The restart mechanism (webhook, SSH command, or process manager like PM2) is left to the operator's choice and is not prescribed in this spec.
+
+---
+
 ## Architecture
 
 ### Package Location
@@ -172,8 +193,8 @@ Uses `unified`/`remark` to parse markdown:
 - Code blocks → usage examples
 - Events / Slots / Methods tables
 
-**Stage 3 — TypeScript parser** (uses `ts-morph`)
-Analyzes `types.ts` AST:
+**Stage 3 — TypeScript parser** (runs per component, in parallel — same concurrency as Stage 2)
+Uses `ts-morph` to analyze `types.ts` AST:
 - Extracts `Vs{Name}StyleSet` interface fully
 - Resolves nested types and cross-component StyleSet references
 - Builds a dependency graph (e.g., `VsButtonStyleSet → VsLoadingStyleSet`)
@@ -182,9 +203,49 @@ Analyzes `types.ts` AST:
 - Combines README data + type data
 - Validates that the StyleSet code block in `## Types` matches the `ts-morph` extraction
 - Logs warnings on mismatch (does not fail the build)
+- If a component's README is missing or unparseable, logs a warning and excludes that component from the output (does not abort the full build)
+- If `ts-morph` fails to parse a `types.ts`, the component's `styleSet.parsed` field is set to `null` and `styleSet.raw` retains the README code block as fallback
 
 **Stage 5 — Output**
 Writes `packages/vlossom-mcp/data/components-meta.json`
+
+### Error Handling
+
+**Pipeline errors** (non-fatal by default):
+| Scenario | Behavior |
+|---|---|
+| README missing for a component | Warning logged; component excluded from output |
+| `types.ts` parse failure | Warning logged; `styleSet.parsed` set to `null`, `raw` used as fallback |
+| README ↔ `types.ts` mismatch | Warning logged; `ts-morph` result takes precedence |
+| All components fail | Build fails with exit code 1 |
+
+**MCP tool errors** (returned as structured MCP error responses):
+| Scenario | Response |
+|---|---|
+| Unknown component name | `{ error: "Component 'VsXxx' not found", suggestions: [...] }` |
+| `components-meta.json` not found at startup | Server exits with clear message: "Run `pnpm build:meta` first" |
+| `validate_component_usage` receives unparseable Vue code | `{ error: "Could not parse template", detail: "..." }` |
+
+### Version Management
+
+The `version` field in `components-meta.json` mirrors the Vlossom library version (e.g., `"2.0.0"`). When the library releases `v2.1.0`, the pipeline re-runs and overwrites the file with `"version": "2.1.0"`. There is no separate schema version — the JSON structure itself is considered stable within a major version. Breaking schema changes would be accompanied by a major version bump in `vlossom-mcp` itself.
+
+### Component Relationship Data
+
+The `relationships` field (used by `get_component_relationships`) is **statically defined** in a hand-maintained file `scripts/relationships.ts` within `vlossom-mcp`. It is merged into `components-meta.json` at Stage 5. This approach is chosen over automated inference because component pairing is a semantic decision (e.g., VsForm ↔ VsInput is intentional API design, not just co-occurrence). The file is updated manually when new component pairings are introduced.
+
+```typescript
+// scripts/relationships.ts
+// Relationships are unidirectional as defined here.
+// The build pipeline does NOT auto-generate reverse entries.
+// e.g., VsForm lists VsButton, but VsButton does not list VsForm.
+export const relationships: Record<string, string[]> = {
+  VsForm: ['VsInput', 'VsTextarea', 'VsSelect', 'VsCheckbox', 'VsRadio', 'VsButton'],
+  VsTable: ['VsPagination', 'VsLoading', 'VsCheckbox'],
+  VsModal: ['VsDimmed', 'VsButton'],
+  // ...
+}
+```
 
 ### Output Schema (`components-meta.json`)
 
@@ -218,7 +279,8 @@ Writes `packages/vlossom-mcp/data/components-meta.json`
         }
       },
       "examples": ["<vs-button primary>버튼</vs-button>"],
-      "dependencies": ["VsLoadingStyleSet"]
+      "dependencies": ["VsLoadingStyleSet"],  // StyleSet cross-refs (from ts-morph)
+      "relationships": ["VsLoading"]          // commonly paired components (from relationships.ts)
     }
   },
   "_meta": {
@@ -245,7 +307,7 @@ Tools are organized by the AI's natural workflow: discover → understand → ad
 | `suggest_components(useCase)` | Natural language use case → recommended component combination with rationale |
 | `get_component_relationships(name)` | Returns components frequently used together (e.g., VsForm ↔ VsInput, VsTable ↔ VsPagination) |
 
-> `search_components` uses keyword matching. `suggest_components` uses intent-based reasoning. When `_meta.extension.embeddingReady` is `true`, `search_components` is automatically replaced with the semantic search implementation.
+> `search_components` uses keyword matching against `name` and `description` fields in `components-meta.json`. `suggest_components` returns the full `list_components` data as structured context for the calling AI to reason over — the server does not implement intent matching itself. `get_component_relationships` reads the `relationships` field populated from `scripts/relationships.ts` at build time. When `_meta.extension.embeddingReady` is `true`, `search_components` is automatically replaced with the semantic search implementation.
 
 ### Group 2: Understanding — "How does this work?"
 
@@ -260,6 +322,14 @@ Tools are organized by the AI's natural workflow: discover → understand → ad
 | Tool | Description |
 |---|---|
 | `adapt_type_to_component(userType, name, mode)` | Maps user's TypeScript type → Vlossom props (`data` mode), or style object → StyleSet (`style` mode). `auto` infers mode from type shape. Returns `mappedCode`, `explanation`, and `unmapped[]`. |
+
+**Implementation strategy**: This tool is **metadata-guided, LLM-executed**. The MCP server fetches the target component's props schema and StyleSet structure from `components-meta.json`, then constructs a structured prompt with that schema as context and passes the user's type + component constraints to the calling AI to perform the mapping. The server does not implement its own type inference engine — it acts as a context provider, ensuring the AI always has the correct, up-to-date Vlossom type definitions when generating the mapping.
+
+**`userType` input format**: A raw TypeScript string — either an interface definition (e.g., `"interface User { id: number; name: string }"`) or a plain object literal (e.g., `"{ color: 'red', size: 'large' }"`). The server passes this string as-is to the AI context.
+
+**`auto` mode inference rule**: If the input contains CSS property names (e.g., `color`, `backgroundColor`, `borderRadius`, `padding`) or Vlossom StyleSet keys (`variables`, `component`), mode is inferred as `style`. Otherwise, `data`.
+
+**`unmapped[]`**: An array of field names from the user's input that could not be mapped to any Vlossom prop or StyleSet property. Type: `string[]`.
 
 **Example — data mode:**
 ```typescript
@@ -288,6 +358,18 @@ const styleSet: VsButtonStyleSet = {
 |---|---|
 | `generate_component_code(name, requirements)` | Component name + requirements → Vue template code (handles forms, tables, modals, etc.) |
 | `validate_component_usage(code)` | Vue code snippet → checks prop type errors, missing required props, invalid slot usage |
+
+**`generate_component_code` implementation strategy**: The server fetches the relevant component metadata (props, slots, examples, relationships) from `components-meta.json` and returns it as structured context. The calling AI uses this context to generate accurate Vue template code. The server does not generate code itself — it ensures the AI has precise, version-matched component specs before generating.
+
+**`validate_component_usage` input format**: Accepts a `<template>` block string or a complete SFC string. The server extracts the `<template>` section before parsing. Plain HTML snippets without Vue-specific syntax (`:prop`, `v-model`) are also accepted but will produce limited results.
+
+**`validate_component_usage` scope and implementation**: Static validation only — the server parses the provided Vue template string using `@vue/compiler-dom`, extracts component names and bound props, then checks them against `components-meta.json` for:
+- Unknown prop names
+- Props bound with wrong value types (where type is unambiguous, e.g., `boolean` prop receiving a string)
+- Missing required props
+- Unknown slot names
+
+Dynamic runtime behavior (reactivity, conditional rendering correctness) is out of scope. Parser: `@vue/compiler-dom` for template AST extraction.
 
 ### Typical AI Call Flows
 
@@ -334,8 +416,10 @@ This preserves full backward compatibility and keeps the upgrade path zero-frict
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
     "ts-morph": "latest",
+    "unified": "latest",
     "remark": "latest",
-    "remark-parse": "latest"
+    "remark-parse": "latest",
+    "@vue/compiler-dom": "latest"
   },
   "devDependencies": {
     "tsx": "latest"
