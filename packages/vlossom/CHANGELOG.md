@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.1.0-alpha) (2026-03-23)
+## [2.0.0-beta.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-beta.1) (2026-03-23)
 
 
 ### Features
