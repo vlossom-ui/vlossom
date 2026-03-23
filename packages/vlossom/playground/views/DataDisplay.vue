@@ -4,6 +4,7 @@
 
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsTable</h3>
         <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
             <vs-checkbox-set
                 v-model="tablePropsSelected"
