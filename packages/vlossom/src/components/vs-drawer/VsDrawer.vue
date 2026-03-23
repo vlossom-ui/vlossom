@@ -15,6 +15,7 @@
             <vs-focus-trap ref="focusTrapRef" :disabled="!focusLock">
                 <vs-inner-scroll
                     :class="['vs-drawer-content', `vs-drawer-${placement}`]"
+                    :style="layoutStyles"
                     :style-set="{
                         header: componentStyleSet.header,
                         content: componentStyleSet.content,
@@ -210,6 +211,34 @@ export default defineComponent({
             });
         });
 
+        const NEEDS_PADDING_POSITIONS = ['absolute', 'fixed'];
+
+        const layoutStyles = computed(() => {
+            if (!isLayoutChild.value || !layoutResponsive.value) {
+                return {};
+            }
+
+            const style: { [key: string]: string } = {};
+            const { position: headerPosition, height: headerHeight } = layoutStore.header.value;
+
+            if (placement.value === 'top' && NEEDS_PADDING_POSITIONS.includes(headerPosition)) {
+                style.top = headerHeight;
+            }
+
+            if (placement.value === 'left' || placement.value === 'right') {
+                if (NEEDS_PADDING_POSITIONS.includes(headerPosition)) {
+                    style.paddingTop = headerHeight;
+                }
+
+                const { position: footerPosition, height: footerHeight } = layoutStore.footer.value;
+                if (NEEDS_PADDING_POSITIONS.includes(footerPosition)) {
+                    style.paddingBottom = footerHeight;
+                }
+            }
+
+            return style;
+        });
+
         onBeforeMount(() => {
             if (initialOpen.value || modelValue.value) {
                 openDrawer();
@@ -241,6 +270,7 @@ export default defineComponent({
             isDimmed,
             openDrawer,
             closeDrawer,
+            layoutStyles,
         };
     },
 });

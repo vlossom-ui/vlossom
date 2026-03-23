@@ -68,9 +68,16 @@ const drawerOpen = ref(false);
 
 ### vs-layout과 함께 사용하는 반응형 드로어
 
+`layout-responsive`를 사용하면 두 가지 반응이 자동으로 발생합니다.
+
+1. **vs-container 패딩 조정**: Drawer가 열리면 `vs-container`가 해당 방향의 padding을 자동으로 추가합니다.
+2. **Drawer 내부 위치 보정**: `vs-header` / `vs-footer`가 `absolute` 또는 `fixed`로 배치된 경우, Drawer 자체가 상하 padding 또는 `top` offset을 자동으로 조정해 겹치지 않도록 합니다.
+
 ```html
 <template>
     <vs-layout>
+        <vs-header position="absolute" primary>Header</vs-header>
+
         <vs-drawer
             placement="left"
             size="280px"
@@ -91,12 +98,13 @@ const drawerOpen = ref(false);
             </template>
         </vs-drawer>
 
-        <vs-header>Header Content</vs-header>
         <vs-container>
-            <!-- 드로어가 열린 상태에서 자동으로 왼쪽 패딩이 적용됩니다 -->
+            <!-- Drawer 열림 → paddingLeft 자동 추가 -->
+            <!-- Header absolute → paddingTop 자동 추가 -->
             <main>Main Content</main>
         </vs-container>
-        <vs-footer>Footer Content</vs-footer>
+
+        <vs-footer position="absolute" primary>Footer</vs-footer>
     </vs-layout>
 </template>
 ```
@@ -205,12 +213,25 @@ type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 | `header`  | 드로어 상단 헤더 영역     |
 | `footer`  | 드로어 하단 푸터 영역     |
 
-## 특징
+## Methods
 
-- **다양한 위치 지원**: `left`, `right`, `top`, `bottom` 4방향에서 슬라이딩
-- **유연한 크기 조절**: 사전 정의된 크기(`xs`~`xl`) 또는 픽셀/퍼센트 등 커스텀 크기 지원
-- **오버레이 기능**: 배경 어둡게 처리, 배경 클릭으로 닫기, ESC 키로 닫기 등
-- **접근성**: 포커스 트랩 기능으로 키보드 네비게이션 지원
-- **애니메이션**: 부드러운 슬라이딩 애니메이션 효과
-- **v-model 지원**: 양방향 데이터 바인딩을 통한 상태 관리
-- **vs-layout 연동**: 반응형 레이아웃 구성을 위한 레이아웃 시스템과의 완벽한 통합
+| Method        | Parameters | Description            |
+| ------------- | ---------- | ---------------------- |
+| `openDrawer`  | -          | 드로어를 프로그래밍 방식으로 엽니다 |
+| `closeDrawer` | -          | 드로어를 프로그래밍 방식으로 닫습니다 |
+
+```html
+<template>
+    <vs-drawer ref="drawerRef" v-model="drawerOpen">
+        <p>Drawer content</p>
+    </vs-drawer>
+    <vs-button @click="drawerRef.openDrawer()">Open</vs-button>
+    <vs-button @click="drawerRef.closeDrawer()">Close</vs-button>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const drawerRef = ref(null);
+const drawerOpen = ref(false);
+</script>
+```

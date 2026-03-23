@@ -347,6 +347,17 @@ describe('VsDrawer', () => {
             template: '<div><slot /></div>',
         });
 
+        const layoutStubs = {
+            'vs-focus-trap': {
+                template: '<div class="vs-focus-trap-stub"><slot /></div>',
+                methods: { focus: vi.fn(), blur: vi.fn() },
+            },
+            'vs-inner-scroll': {
+                template: '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
+            },
+            Transition: { template: '<div><slot /></div>' },
+        };
+
         it('vs-layout의 자식일 때 layoutStore.setDrawer가 호출되어야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
@@ -354,28 +365,9 @@ describe('VsDrawer', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () =>
-                        h(VsDrawer, {
-                            modelValue: true,
-                            placement: 'left',
-                            size: 'md',
-                        }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', size: 'md' }),
                 },
-                global: {
-                    stubs: {
-                        'vs-focus-trap': {
-                            template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                            methods: { focus: vi.fn(), blur: vi.fn() },
-                        },
-                        'vs-inner-scroll': {
-                            template:
-                                '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-                        },
-                        Transition: {
-                            template: '<div><slot /></div>',
-                        },
-                    },
-                },
+                global: { stubs: layoutStubs },
             });
 
             // then
@@ -387,36 +379,16 @@ describe('VsDrawer', () => {
             });
         });
 
-        it('layoutResponsive가 true일 때 responsive 옵션이 전달되어야 한다', () => {
+        it('layoutResponsive prop이 true일 때 responsive 옵션이 전달되어야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
 
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () =>
-                        h(VsDrawer, {
-                            modelValue: true,
-                            placement: 'right',
-                            size: 'lg',
-                            layoutResponsive: true,
-                        }),
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'right', size: 'lg', layoutResponsive: true }),
                 },
-                global: {
-                    stubs: {
-                        'vs-focus-trap': {
-                            template: '<div class="vs-focus-trap-stub"><slot /></div>',
-                            methods: { focus: vi.fn(), blur: vi.fn() },
-                        },
-                        'vs-inner-scroll': {
-                            template:
-                                '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
-                        },
-                        Transition: {
-                            template: '<div><slot /></div>',
-                        },
-                    },
-                },
+                global: { stubs: layoutStubs },
             });
 
             // then
@@ -426,6 +398,113 @@ describe('VsDrawer', () => {
                 size: '60%',
                 responsive: true,
             });
+        });
+    });
+
+    describe('layoutStyles', () => {
+        const MockVsLayout = defineComponent({
+            name: VsComponent.VsLayout,
+            setup() {
+                provide(LAYOUT_STORE_KEY, layoutStore);
+                return {};
+            },
+            template: '<div><slot /></div>',
+        });
+
+        const layoutStubs = {
+            'vs-focus-trap': {
+                template: '<div class="vs-focus-trap-stub"><slot /></div>',
+                methods: { focus: vi.fn(), blur: vi.fn() },
+            },
+            'vs-inner-scroll': {
+                template: '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
+            },
+            Transition: { template: '<div><slot /></div>' },
+        };
+
+        it('layoutResponsive가 false이면 layoutStyles가 빈 객체를 반환해야 한다', () => {
+            // given
+            layoutStore.setHeader({ position: 'fixed', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: false }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles).toEqual({});
+        });
+
+        it('placement가 left이고 header가 fixed이면 paddingTop이 적용되어야 한다', () => {
+            // given
+            layoutStore.setHeader({ position: 'fixed', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: true }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.paddingTop).toBe('3rem');
+        });
+
+        it('placement가 right이고 footer가 fixed이면 paddingBottom이 적용되어야 한다', () => {
+            // given
+            layoutStore.setFooter({ position: 'fixed', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'right', layoutResponsive: true }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.paddingBottom).toBe('3rem');
+        });
+
+        it('placement가 top이고 header가 fixed이면 top offset이 적용되어야 한다', () => {
+            // given
+            layoutStore.setHeader({ position: 'fixed', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'top', layoutResponsive: true }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.top).toBe('3rem');
+        });
+
+        it('header position이 relative이면 padding이 적용되지 않아야 한다', () => {
+            // given
+            layoutStore.setHeader({ position: 'relative', height: '3rem' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', layoutResponsive: true }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            const drawerVm = wrapper.findComponent(VsDrawer).vm as any;
+            expect(drawerVm.layoutStyles.paddingTop).toBeUndefined();
         });
     });
 });
