@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsLayout
 
 애플리케이션의 전체 레이아웃을 관리하는 레이아웃 컴포넌트입니다. 각 드로어(drawer)의 `responsive` 속성에 따라 동적으로 패딩을 조정하여 반응형 레이아웃을 제공합니다.

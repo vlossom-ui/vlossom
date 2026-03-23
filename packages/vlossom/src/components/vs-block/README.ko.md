@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsBlock
 
 콘텐츠를 명확히 구분하고 그룹핑하는 블록형 컨테이너 컴포넌트입니다. 제목과 본문 콘텐츠를 분리하여 표시할 수 있으며, Container Query를 활용한 반응형 패딩을 제공합니다.

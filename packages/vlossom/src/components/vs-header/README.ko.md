@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsHeader
 
 웹 애플리케이션의 헤더 영역을 담당하는 컴포넌트입니다. `vs-layout`과 함께 사용하면 레이아웃 스토어를 통해 자동으로 상태가 관리됩니다.
