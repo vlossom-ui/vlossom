@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.1.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.1.0-alpha) (2026-03-23)
+
+
+### Features
+
+* **directives:** add `scroll-shadow` directive ([#369](https://github.com/vlossom-ui/vlossom/issues/369)) ([34df9a0](https://github.com/vlossom-ui/vlossom/commit/34df9a0d1e870cfc0888710656cfe2be9bba9771))
+
+
+### Bug Fixes
+
+* **component:** HTML string parsing error and update docs for specifications ([#372](https://github.com/vlossom-ui/vlossom/issues/372)) ([0cd0fe2](https://github.com/vlossom-ui/vlossom/commit/0cd0fe2eac033d642b3fdd6f9499a94a402de79a))
+* **components:** resolve issues in VsTable and VsCheckbox ([#371](https://github.com/vlossom-ui/vlossom/issues/371)) ([d5c373f](https://github.com/vlossom-ui/vlossom/commit/d5c373f1a78c91b1066a970b1da12bb3c821d0b7))
+* **scroll-shadow:** remove verify warning ([4becf7d](https://github.com/vlossom-ui/vlossom/commit/4becf7dda717267a9909506708661836ec0f634e))
+* **test:** remove wrong test ([4adb946](https://github.com/vlossom-ui/vlossom/commit/4adb946c0299263253838360d0d28ec1f7d62b0e))
+* **VsDrawer:** add missing layout-responsive action ([#377](https://github.com/vlossom-ui/vlossom/issues/377)) ([b6b4c7a](https://github.com/vlossom-ui/vlossom/commit/b6b4c7a433316d88f3ab0ce150380d917ebaca5e))
+* **VsRender:** trim htmlString ([#375](https://github.com/vlossom-ui/vlossom/issues/375)) ([97c54e6](https://github.com/vlossom-ui/vlossom/commit/97c54e6e9ac56f173d65f1ddcac2b187ccc9d3b1))
+* **VsTable/types:** introduce IsAny type utility for improved type checks ([5ee452e](https://github.com/vlossom-ui/vlossom/commit/5ee452ed99c4c0fac376ab7bbba93d7562512c1f))
+* **VsTable:** change `item` prop type declaration for user experience ([5ee452e](https://github.com/vlossom-ui/vlossom/commit/5ee452ed99c4c0fac376ab7bbba93d7562512c1f))
+* **VsTable:** change state background color ([#374](https://github.com/vlossom-ui/vlossom/issues/374)) ([4cda1e1](https://github.com/vlossom-ui/vlossom/commit/4cda1e17df5ac03a387476e02abf747aa78ed08b))
+* **VsTable:** enhance slot bindings in table components for improved data access ([8ae50b3](https://github.com/vlossom-ui/vlossom/commit/8ae50b3827d5717d942d3ad10522d1c2e6b1d25a))
+* **VsTable:** update color scheme injection to use ComputedRef for component state reactivty ([cd66498](https://github.com/vlossom-ui/vlossom/commit/cd66498e47aa81a9ae3ddb3d6b798ec01546d2ed))
+* **VsTable:** width, minWdith, maxWidth in ColumnDef are not applied ([de74762](https://github.com/vlossom-ui/vlossom/commit/de74762f79a7a1d928db1479c6005a905990f741))
+
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
 
