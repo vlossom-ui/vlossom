@@ -2,17 +2,36 @@ import { type Ref, computed } from 'vue';
 import type { UIState } from '@/declaration';
 
 export function useStateClass(state: Ref<UIState>) {
-    const stateClasses = computed(() => {
+    const isStated = computed(() => {
         const stated = ['info', 'success', 'error', 'warning'];
+        return stated.includes(state.value);
+    });
 
-        const isStated = stated.includes(state.value);
+    const stateClasses = computed(() => {
+        if (!isStated.value) {
+            return {};
+        }
+
         return {
-            'vs-state-box': isStated,
-            [`vs-state-${state.value}`]: isStated,
+            'vs-stated': isStated.value,
+            [`vs-state-${state.value}`]: isStated.value,
+        };
+    });
+
+    const stateBoxClasses = computed(() => {
+        if (!isStated.value) {
+            return {};
+        }
+
+        return {
+            'vs-state-box': isStated.value,
+            ...stateClasses.value,
         };
     });
 
     return {
+        isStated,
         stateClasses,
+        stateBoxClasses,
     };
 }

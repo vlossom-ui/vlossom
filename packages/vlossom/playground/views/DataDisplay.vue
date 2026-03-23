@@ -2,6 +2,61 @@
     <section>
         <h2 class="mb-6 border-b-2 pb-2 text-2xl font-semibold">Data Display</h2>
 
+        <vs-divider style-set="playground" />
+
+        <h3 class="mb-4 font-semibold">VsTable</h3>
+        <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
+            <vs-checkbox-set
+                v-model="tablePropsSelected"
+                :options="tablePropsOptions"
+                option-label="label"
+                option-value="value"
+                :style-set="{ wrapper: { component: { width: '100%' } } }"
+            />
+        </div>
+        <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
+            <vs-table
+                :columns="tableColumns"
+                :items="tableItems"
+                :dense="tablePropsSelected.includes('dense')"
+                :primary="tablePropsSelected.includes('primary')"
+                :selectable="tablePropsSelected.includes('selectable')"
+                :responsive="tablePropsSelected.includes('responsive')"
+                :sticky-header="tablePropsSelected.includes('stickyHeader')"
+                :loading="tablePropsSelected.includes('loading')"
+                :draggable="tablePropsSelected.includes('draggable')"
+                :expandable="tablePropsSelected.includes('expandable')"
+                :search="tablePropsSelected.includes('search')"
+                :pagination="tablePropsSelected.includes('pagination')"
+                :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
+                v-model:selected-items="tableSelectedItems"
+            >
+                <template #body-row1="{ item }">
+                    <div v-if="tablePropsSelected.includes('customSlot')">
+                        <vs-input v-model="item.score" />
+                    </div>
+                    <span v-else class="w-full"> {{ item.score }} </span>
+                </template>
+                <template #body-col2="{ item }">
+                    <div v-if="tablePropsSelected.includes('customSlot')">
+                        <vs-input v-model="item.score" />
+                    </div>
+                    <span v-else class="w-full"> {{ item.score }} </span>
+                </template>
+                <template #expand="{ item }">
+                    <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
+                        {{ item.name }} — Score: {{ item.score }}
+                    </div>
+                </template>
+            </vs-table>
+        </div>
+
+        <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
+        </p>
+
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsImage</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -156,58 +211,6 @@
                 <vs-steps v-model="stepVertical" :steps="['Step 1', 'Step 2', 'Step 3']" vertical height="150px" />
             </vs-responsive>
         </vs-grid>
-        <vs-divider style-set="playground" />
-
-        <h3 class="mb-4 font-semibold">VsTable</h3>
-        <div class="mb-4 rounded border border-dashed border-gray-300 p-3 dark:border-gray-600">
-            <vs-checkbox-set
-                v-model="tablePropsSelected"
-                :options="tablePropsOptions"
-                option-label="label"
-                option-value="value"
-                :style-set="{ wrapper: { component: { width: '100%' } } }"
-            />
-        </div>
-        <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
-            <vs-table
-                :columns="tableColumns"
-                :items="tableItems"
-                :dense="tablePropsSelected.includes('dense')"
-                :primary="tablePropsSelected.includes('primary')"
-                :selectable="tablePropsSelected.includes('selectable')"
-                :responsive="tablePropsSelected.includes('responsive')"
-                :sticky-header="tablePropsSelected.includes('stickyHeader')"
-                :loading="tablePropsSelected.includes('loading')"
-                :draggable="tablePropsSelected.includes('draggable')"
-                :expandable="tablePropsSelected.includes('expandable')"
-                :search="tablePropsSelected.includes('search')"
-                :pagination="tablePropsSelected.includes('pagination')"
-                :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
-                v-model:selected-items="tableSelectedItems"
-            >
-                <template #body-row1="{ item }">
-                    <div v-if="tablePropsSelected.includes('customSlot')">
-                        <vs-input v-model="item.score" />
-                    </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
-                </template>
-                <template #body-col2="{ item }">
-                    <div v-if="tablePropsSelected.includes('customSlot')">
-                        <vs-input v-model="item.score" />
-                    </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
-                </template>
-                <template #expand="{ item }">
-                    <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
-                        {{ item.name }} — Score: {{ item.score }}
-                    </div>
-                </template>
-            </vs-table>
-        </div>
-
-        <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
-        </p>
         <vs-divider style-set="playground" />
 
         <h3 class="mb-4 font-semibold">VsTextWrap</h3>

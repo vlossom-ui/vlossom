@@ -19,7 +19,7 @@
         </template>
 
         <div
-            :class="['vs-file-drop', colorSchemeClass, classObj, stateClasses]"
+            :class="['vs-file-drop', colorSchemeClass, classObj, stateBoxClasses]"
             :style="{ ...styleSetVariables, ...componentStyleSet.component }"
             @drop.prevent.stop="handleFileDrop"
             @dragenter.prevent.stop="setDragging(true)"
@@ -232,7 +232,7 @@ export default defineComponent({
             'vs-dragging': dragging.value,
         }));
 
-        const { stateClasses } = useStateClass(computedState);
+        const { stateBoxClasses } = useStateClass(computedState);
         const hasValue = computed(() => inputValue.value.length > 0);
 
         function setDragging(value: boolean) {
@@ -376,7 +376,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             classObj,
-            stateClasses,
+            stateBoxClasses,
             dragging,
             inputValue,
             hasValue,

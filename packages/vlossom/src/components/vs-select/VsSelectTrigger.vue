@@ -1,7 +1,7 @@
 <template>
     <div
         ref="triggerRef"
-        :class="['vs-select-trigger', stateClasses, triggerClassObj]"
+        :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
         :style="styleSet?.component"
         tabindex="0"
         @focus="$emit('focus', $event)"
@@ -98,7 +98,7 @@ export default defineComponent({
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
 
-        const { stateClasses } = useStateClass(state);
+        const { stateBoxClasses } = useStateClass(state);
 
         const renderClearButton = computed(() => !noClear.value && !readonly.value && !disabled.value);
 
@@ -127,7 +127,7 @@ export default defineComponent({
             triggerRef,
             selectIcons,
             closeIcon,
-            stateClasses,
+            stateBoxClasses,
             renderClearButton,
             displayLabel,
             triggerClassObj,
