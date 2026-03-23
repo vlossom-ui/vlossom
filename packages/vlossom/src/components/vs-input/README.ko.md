@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsInput
 
 다양한 타입과 검증 기능을 지원하는 입력 컴포넌트입니다. text, email, password, number 등 여러 input 타입을 제공하며, 문자열 수정자(modifiers)를 통해 입력값을 자동으로 변환할 수 있습니다.
