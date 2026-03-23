@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsSearchInput
 
 검색 기능을 제공하는 입력 컴포넌트입니다. vs-input을 기반으로 만들어졌으며, 대소문자 구분 및 정규식 검색 옵션을 제공합니다.

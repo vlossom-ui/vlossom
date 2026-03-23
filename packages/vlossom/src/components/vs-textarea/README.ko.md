@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsTextarea
 
 여러 줄의 텍스트를 입력할 수 있는 텍스트 영역 컴포넌트입니다. 문자열 수정자(modifiers)를 통해 입력값을 자동으로 변환할 수 있으며, 검증 기능을 제공합니다.

@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsSwitch
 
 ON/OFF 상태를 토글할 수 있는 스위치 컴포넌트입니다. `v-model`을 지원하며, 키보드 접근성과 커스텀 레이블을 제공합니다.
