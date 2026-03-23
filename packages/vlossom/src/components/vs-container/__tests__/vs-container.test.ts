@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { provide, defineComponent } from 'vue';
+import { provide, defineComponent, h } from 'vue';
 import { LayoutStore } from '@/stores';
 import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import VsContainer from './../VsContainer.vue';
@@ -145,114 +145,71 @@ describe('VsContainer', () => {
         });
 
         describe('각 방향별 drawer 테스트', () => {
-            it('left drawer가 열려있고 responsive이며 size가 설정되어 있을 때 왼쪽 패딩이 적용되어야 한다', () => {
+            it('left drawer가 열려있고 drawerResponsive이면 왼쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'left',
-                    isOpen: true,
-                    responsive: true,
-                    size: '200px',
-                });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, responsive: true, size: '200px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({
-                    paddingLeft: '200px',
-                });
+                expect(container.vm.layoutStyles).toEqual({ paddingLeft: '200px' });
             });
 
-            it('top drawer가 열려있고 responsive이며 size가 설정되어 있을 때 위쪽 패딩이 적용되어야 한다', () => {
+            it('top drawer가 열려있고 drawerResponsive이면 위쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'top',
-                    isOpen: true,
-                    responsive: true,
-                    size: '150px',
-                });
+                layoutStore.setDrawer({ placement: 'top', isOpen: true, responsive: true, size: '150px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({
-                    paddingTop: '150px',
-                });
+                expect(container.vm.layoutStyles).toEqual({ paddingTop: '150px' });
             });
 
-            it('right drawer가 열려있고 responsive이며 size가 설정되어 있을 때 오른쪽 패딩이 적용되어야 한다', () => {
+            it('right drawer가 열려있고 drawerResponsive이면 오른쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'right',
-                    isOpen: true,
-                    responsive: true,
-                    size: '250px',
-                });
+                layoutStore.setDrawer({ placement: 'right', isOpen: true, responsive: true, size: '250px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({
-                    paddingRight: '250px',
-                });
+                expect(container.vm.layoutStyles).toEqual({ paddingRight: '250px' });
             });
 
-            it('bottom drawer가 열려있고 responsive이며 size가 설정되어 있을 때 아래쪽 패딩이 적용되어야 한다', () => {
+            it('bottom drawer가 열려있고 drawerResponsive이면 아래쪽 패딩이 적용되어야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'bottom',
-                    isOpen: true,
-                    responsive: true,
-                    size: '100px',
-                });
+                layoutStore.setDrawer({ placement: 'bottom', isOpen: true, responsive: true, size: '100px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({
-                    paddingBottom: '100px',
-                });
+                expect(container.vm.layoutStyles).toEqual({ paddingBottom: '100px' });
             });
         });
 
         describe('drawer 조건 테스트', () => {
             it('drawer가 닫혀있으면 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'left',
-                    isOpen: false,
-                    responsive: true,
-                    size: '200px',
-                });
+                layoutStore.setDrawer({ placement: 'left', isOpen: false, responsive: true, size: '200px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
@@ -260,20 +217,13 @@ describe('VsContainer', () => {
                 expect(container.vm.layoutStyles).toEqual({});
             });
 
-            it('drawer가 responsive하지 않으면 패딩이 적용되지 않아야 한다', () => {
+            it('drawerResponsive가 false이면 drawer가 열려있어도 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'left',
-                    isOpen: true,
-                    responsive: false,
-                    size: '200px',
-                });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, responsive: true, size: '200px' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: VsContainer },
                 });
 
                 // then
@@ -283,18 +233,11 @@ describe('VsContainer', () => {
 
             it('drawer의 size가 빈 문자열이면 패딩이 적용되지 않아야 한다', () => {
                 // given
-                layoutStore.setDrawer({
-                    placement: 'left',
-                    isOpen: true,
-                    responsive: true,
-                    size: '',
-                });
+                layoutStore.setDrawer({ placement: 'left', isOpen: true, responsive: true, size: '' });
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
@@ -313,9 +256,7 @@ describe('VsContainer', () => {
 
                 // when
                 const wrapper = mount(MockVsLayout, {
-                    slots: {
-                        default: VsContainer,
-                    },
+                    slots: { default: () => h(VsContainer, { drawerResponsive: true }) },
                 });
 
                 // then
@@ -351,7 +292,7 @@ describe('VsContainer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: VsContainer,
+                    default: () => h(VsContainer, { drawerResponsive: true }),
                 },
             });
 
@@ -365,7 +306,7 @@ describe('VsContainer', () => {
             });
         });
 
-        it('header는 sticky이고 drawer는 top/bottom일 때 padding-top이 중복되지 않고 올바르게 계산되어야 한다', () => {
+        it('header가 sticky이고 top drawer가 열려있을 때 paddingTop은 header + drawer 크기의 합이어야 한다', () => {
             // given
             layoutStore.setHeader({ position: 'sticky', height: '60px' });
             layoutStore.setDrawer({ placement: 'top', isOpen: true, responsive: true, size: '40px' });
@@ -374,16 +315,36 @@ describe('VsContainer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: VsContainer,
+                    default: () => h(VsContainer, { drawerResponsive: true }),
                 },
             });
 
             // then
             const container = wrapper.findComponent(VsContainer);
-            // drawerStyles가 나중에 spread되므로 drawer의 paddingTop이 우선됨
+            // top drawer는 header 아래에서 시작하므로 paddingTop = headerHeight + drawerSize
             expect(container.vm.layoutStyles).toEqual({
-                paddingTop: '40px',
+                paddingTop: 'calc(60px + 40px)',
                 paddingBottom: '50px',
+            });
+        });
+
+        it('footer가 fixed이고 bottom drawer가 열려있을 때 paddingBottom은 footer + drawer 크기의 합이어야 한다', () => {
+            // given
+            layoutStore.setFooter({ position: 'fixed', height: '60px' });
+            layoutStore.setDrawer({ placement: 'bottom', isOpen: true, responsive: true, size: '50px' });
+
+            // when
+            const wrapper = mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsContainer, { drawerResponsive: true }),
+                },
+            });
+
+            // then
+            const container = wrapper.findComponent(VsContainer);
+            // bottom drawer는 footer 위에서 끝나므로 paddingBottom = footerHeight + drawerSize
+            expect(container.vm.layoutStyles).toEqual({
+                paddingBottom: 'calc(60px + 50px)',
             });
         });
 
@@ -397,7 +358,7 @@ describe('VsContainer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: VsContainer,
+                    default: () => h(VsContainer, { drawerResponsive: true }),
                 },
             });
 
