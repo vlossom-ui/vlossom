@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-inner-scroll">
+    <div class="vs-inner-scroll" :style="componentStyleSet.component">
         <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.header">
             <slot name="header" />
         </div>

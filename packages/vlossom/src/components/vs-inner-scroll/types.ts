@@ -14,6 +14,7 @@ export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInner
 }
 
 export interface VsInnerScrollStyleSet {
+    component?: CSSProperties;
     header?: CSSProperties;
     content?: CSSProperties;
     footer?: CSSProperties;
