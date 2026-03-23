@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsTextWrap
 
 텍스트를 감싸고 복사/링크 기능을 제공하는 컴포넌트입니다.

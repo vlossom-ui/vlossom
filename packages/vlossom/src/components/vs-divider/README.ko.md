@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsDivider
 
 콘텐츠 영역을 시각적으로 구분하는 구분선 컴포넌트입니다. 가로형과 세로형 구분선을 지원하며, Container Query를 활용한 반응형 동작이 가능합니다.

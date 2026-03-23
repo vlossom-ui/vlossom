@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsInnerScroll
 
 내부 스크롤이 가능한 컨테이너 컴포넌트입니다.

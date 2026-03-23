@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsImage
 
 이미지를 표시하는 컴포넌트입니다. 지연 로딩(Lazy Loading), 폴백 이미지, 로딩 스켈레톤 등 다양한 기능을 지원합니다.
