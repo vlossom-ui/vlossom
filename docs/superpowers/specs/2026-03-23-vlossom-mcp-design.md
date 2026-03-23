@@ -121,7 +121,8 @@ packages/
     │   │   ├── discovery.ts     ← list, search, suggest, relationships
     │   │   ├── understanding.ts ← get_component, get_style_set, get_version_info
     │   │   ├── adaptation.ts    ← adapt_type_to_component
-    │   │   └── generation.ts    ← generate_component_code, validate_component_usage
+    │   │   ├── generation.ts    ← generate_component_code, validate_component_usage
+    │   │   └── action.ts        ← report_issue
     │   └── extension/
     │       └── semantic.ts      ← (optional) approach 3 extension point
     └── data/
@@ -371,6 +372,53 @@ const styleSet: VsButtonStyleSet = {
 
 Dynamic runtime behavior (reactivity, conditional rendering correctness) is out of scope. Parser: `@vue/compiler-dom` for template AST extraction.
 
+`v-model` is treated as a `modelValue` prop binding during validation — if the target component does not declare `modelValue` in its props, it is flagged as an unknown prop.
+
+### Group 5: Action — "Report to the Vlossom team"
+
+| Tool | Description |
+|---|---|
+| `report_issue(title, body, labels?)` | Creates a GitHub issue on the Vlossom repository directly from the AI assistant |
+
+**Use cases**:
+- Developer encounters unexpected component behavior → AI creates a bug report with context
+- `validate_component_usage` surfaces what appears to be a Vlossom bug → AI offers to file the issue
+- Developer wants to request a new component or prop → AI formats and submits a feature request
+
+**Implementation**:
+The server calls the GitHub REST API (`POST /repos/vlossom-ui/vlossom/issues`) using a personal access token configured via environment variable `VLOSSOM_GITHUB_TOKEN`. The token requires `issues: write` scope on the `vlossom-ui/vlossom` repository.
+
+```typescript
+// Environment variable required at server startup
+// VLOSSOM_GITHUB_TOKEN=ghp_xxx
+
+// Tool input
+{
+  title: string;           // Issue title
+  body: string;            // Issue body (Markdown supported)
+  labels?: string[];       // Optional: ['bug', 'enhancement', 'question']
+}
+
+// Tool output
+{
+  issueUrl: string;        // https://github.com/vlossom-ui/vlossom/issues/123
+  issueNumber: number;
+}
+```
+
+**Error handling**:
+| Scenario | Response |
+|---|---|
+| `VLOSSOM_GITHUB_TOKEN` not set | `{ error: "GitHub token not configured. Set VLOSSOM_GITHUB_TOKEN." }` |
+| Token lacks `issues: write` permission | `{ error: "GitHub API returned 403. Check token scope." }` |
+| GitHub API unreachable | `{ error: "GitHub API request failed", detail: "..." }` |
+
+**Security note**: The token is read from the environment at server startup and never exposed through any MCP tool response.
+
+**User confirmation requirement**: The calling AI is expected to confirm with the user before invoking this tool. Automatic issue creation without user awareness is considered misuse. MCP clients that support human-in-the-loop confirmation (e.g., Claude Desktop's tool approval prompt) are the recommended integration path.
+
+---
+
 ### Typical AI Call Flows
 
 ```
@@ -384,6 +432,11 @@ Dynamic runtime behavior (reactivity, conditional rendering correctness) is out 
 "How do I style VsButton?"
   → get_style_set("VsButton")
   → adapt_type_to_component(myStyle, "VsButton", "style")
+
+"VsTable crashes when data is empty — can you report this?"
+  → get_component("VsTable")       // gather context for issue body
+  → report_issue("VsTable crashes on empty data", "...")
+  → returns: { issueUrl: "https://github.com/vlossom-ui/vlossom/issues/456" }
 ```
 
 ---
@@ -419,13 +472,23 @@ This preserves full backward compatibility and keeps the upgrade path zero-frict
     "unified": "latest",
     "remark": "latest",
     "remark-parse": "latest",
-    "@vue/compiler-dom": "latest"
+    "@vue/compiler-dom": "latest",
+    "@octokit/rest": "latest"
   },
   "devDependencies": {
     "tsx": "latest"
   }
+  // Note: all dependencies shown as "latest" for spec clarity.
+  // Final implementation must pin specific versions, especially
+  // @modelcontextprotocol/sdk and ts-morph which have breaking change history.
 }
 ```
+
+### Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `VLOSSOM_GITHUB_TOKEN` | Optional | GitHub PAT with `issues: write` scope. If absent, `report_issue` returns an error; all other tools function normally. |
 
 ### MCP Server Startup Sequence
 
@@ -434,8 +497,11 @@ This preserves full backward compatibility and keeps the upgrade path zero-frict
 2. Check _meta.extension.embeddingReady
    → true:  activate semantic.ts, replace search_components
    → false: use keyword-based search_components
-3. Register all MCP tools
-4. Begin listening
+3. Check VLOSSOM_GITHUB_TOKEN
+   → present:  report_issue tool registered and active
+   → absent:   report_issue tool registered but returns config error on call
+4. Register all MCP tools
+5. Begin listening
 ```
 
 ---
