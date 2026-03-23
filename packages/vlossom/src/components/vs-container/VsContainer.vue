@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, getCurrentInstance, inject, toRefs } from 'vue';
+import { computed, defineComponent, getCurrentInstance, inject } from 'vue';
 import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import { LayoutStore } from '@/stores';
 import { objectUtil } from '@/utils';
@@ -14,16 +14,21 @@ const componentName = VsComponent.VsContainer;
 export default defineComponent({
     name: componentName,
     props: {
-        drawerResponsive: { type: Boolean, default: false },
         tag: { type: String, default: 'div' },
     },
-    setup(props) {
-        const { drawerResponsive } = toRefs(props);
-
+    setup() {
         // only for vs-layout children
         const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
 
         const { header, footer, drawers } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
+
+        function getDrawerPadding(drawerSize: string, isOpen: boolean, responsive: boolean, barPadding?: string) {
+            if (!responsive || !isOpen || !drawerSize) {
+                return undefined;
+            }
+            return barPadding ? `calc(${barPadding} + ${drawerSize})` : drawerSize;
+        }
+
         const layoutStyles = computed(() => {
             if (!isLayoutChild.value) {
                 return {};
@@ -40,31 +45,14 @@ export default defineComponent({
 
             const { left, top, bottom, right } = drawers.value;
 
-            const topDrawerPadding = (() => {
-                if (!drawerResponsive.value || !top.isOpen || !top.size) {
-                    return undefined;
-                }
-                if (headerPaddingTop) {
-                    return `calc(${headerPaddingTop} + ${top.size})`;
-                }
-                return top.size;
-            })();
-
-            const bottomDrawerPadding = (() => {
-                if (!drawerResponsive.value || !bottom.isOpen || !bottom.size) {
-                    return undefined;
-                }
-                if (footerPaddingBottom) {
-                    return `calc(${footerPaddingBottom} + ${bottom.size})`;
-                }
-                return bottom.size;
-            })();
-
             return objectUtil.shake({
-                paddingTop: topDrawerPadding ?? headerPaddingTop,
-                paddingBottom: bottomDrawerPadding ?? footerPaddingBottom,
-                paddingLeft: drawerResponsive.value && left.isOpen && left.size ? left.size : undefined,
-                paddingRight: drawerResponsive.value && right.isOpen && right.size ? right.size : undefined,
+                paddingTop:
+                    getDrawerPadding(top.size, top.isOpen, top.responsive, headerPaddingTop) ?? headerPaddingTop,
+                paddingBottom:
+                    getDrawerPadding(bottom.size, bottom.isOpen, bottom.responsive, footerPaddingBottom) ??
+                    footerPaddingBottom,
+                paddingLeft: getDrawerPadding(left.size, left.isOpen, left.responsive),
+                paddingRight: getDrawerPadding(right.size, right.isOpen, right.responsive),
             });
         });
 

@@ -353,7 +353,8 @@ describe('VsDrawer', () => {
                 methods: { focus: vi.fn(), blur: vi.fn() },
             },
             'vs-inner-scroll': {
-                template: '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
+                template:
+                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
             },
             Transition: { template: '<div><slot /></div>' },
         };
@@ -365,7 +366,8 @@ describe('VsDrawer', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left', size: 'md' }),
+                    default: () =>
+                        h(VsDrawer, { modelValue: true, placement: 'left', size: 'md', layoutResponsive: true }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -396,7 +398,8 @@ describe('VsDrawer', () => {
                 methods: { focus: vi.fn(), blur: vi.fn() },
             },
             'vs-inner-scroll': {
-                template: '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
+                template:
+                    '<div class="vs-inner-scroll-stub"><slot name="header" /><slot /><slot name="footer" /></div>',
             },
             Transition: { template: '<div><slot /></div>' },
         };

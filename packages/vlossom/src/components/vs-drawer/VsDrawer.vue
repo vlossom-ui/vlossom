@@ -83,6 +83,7 @@ export default defineComponent({
         ...getOverlayProps(),
         fixed: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
+        layoutResponsive: { type: Boolean, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
             default: 'left',
@@ -104,6 +105,7 @@ export default defineComponent({
             escClose,
             fixed,
             open: initialOpen,
+            layoutResponsive,
             modelValue,
             placement,
             size,
@@ -205,7 +207,7 @@ export default defineComponent({
                 isOpen: isOpen.value,
                 placement: placement.value,
                 size: drawerSize.value || DRAWER_SIZE.sm,
-                responsive: true,
+                responsive: layoutResponsive.value,
             });
         });
 
