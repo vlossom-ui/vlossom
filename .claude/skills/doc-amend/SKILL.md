@@ -14,7 +14,8 @@ description: Use when vlossom feature/fix/removal work is done and commits are r
 | 종류 | 패턴 |
 | ---- | ---- |
 | 테스트 | `__tests__/*.test.ts` |
-| README | `README.md` |
+| README (영어) | `README.md` |
+| README (한국어) | `README.ko.md` |
 | Stories | `*.stories.ts` |
 | Markdown | `*.md` (CHANGELOG, MIGRATION 등) |
 
@@ -59,11 +60,11 @@ git show --stat <hash>
 
 | 소스 변경 | 확인할 문서 |
 | --------- | ----------- |
-| 컴포넌트 props/events/slots 추가·변경·제거 | `README.md` Props·Events·Slots 테이블 |
-| 컴포넌트 StyleSet 변경 | `README.md` Types 섹션 |
+| 컴포넌트/디렉티브 props·binding·events·slots 추가·변경·제거 | `README.md` 해당 테이블 + `README.ko.md` 동기화 |
+| 컴포넌트 StyleSet 변경 | `README.md` Types 섹션 + `README.ko.md` 동기화 |
 | 새 동작/버그 수정 | `__tests__/*.test.ts` |
-| 새 컴포넌트 추가 | `README.md` 전체, `__tests__/`, `*.stories.ts` |
-| 컴포넌트 제거 | 관련 문서 파일 삭제 여부 |
+| 새 컴포넌트 또는 디렉티브 추가 | `README.md` 전체 (영어), `README.ko.md` 전체 (한국어), `__tests__/`, `*.stories.ts` |
+| 컴포넌트/디렉티브 제거 | 관련 문서 파일 삭제 여부 (`README.md`, `README.ko.md` 모두) |
 
 ---
 
@@ -76,11 +77,60 @@ git show --stat <hash>
 
 ### 문서 품질 기준
 
-**README.md**
-- component-review skill의 Documentation 섹션 체크리스트를 따른다
-- 영어로 작성
-- Props/Events/Slots/Methods 테이블 — `Version` 컬럼 포함
+**README.md + README.ko.md (이중언어 구조)**
+- 이 프로젝트는 이중언어 README를 사용한다:
+  - `README.md` — 영어 (공식 문서)
+  - `README.ko.md` — 한국어 (번역본)
+- 새 컴포넌트/디렉티브를 추가하거나 README를 수정할 때는 **두 파일 모두** 작성/업데이트한다
+
+### 파일별 첫 줄 교차 링크
+
+`README.md` (영어):
+```
+> 한국어: [README.ko.md](./README.ko.md)
+```
+
+`README.ko.md` (한국어):
+```
+> English: [README.md](./README.md)
+```
+
+### README.md 섹션 구조 (10개, 순서 고정)
+
+```
+# Vs[ComponentName]
+[English description]
+
+**Available Version**: X.Y.Z+
+
+GitHub Wiki Link: <!-- link -->
+
+## Preview
+<!-- image -->
+
+## Basic Usage
+[code examples — Korean strings translated to English]
+
+## Props
+| Prop | Type | Default | Required | Description |
+
+## Types
+[StyleSet interface + StyleSet example]
+
+## Events
+| Event | Payload | Description |
+
+## Slots
+| Slot | Description |
+
+## Methods
+| Method | Parameters | Description |
+```
+
+- Props/Events/Slots/Methods가 없으면 빈 테이블 헤더만 유지
 - Types 섹션에 현재 StyleSet 구조 반영
+- 원본 한국어 README의 모든 props·events·slots·methods를 정확히 번역 (누락 금지)
+- component-review skill의 Documentation 섹션 체크리스트를 따른다
 
 **테스트 (`__tests__/*.test.ts`)**
 - `given / when / then` 구조 사용
