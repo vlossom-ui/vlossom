@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # Alert Plugin
 
 단순 알림(Alert) 다이얼로그를 띄우고 사용자가 확인 버튼을 누를 때까지 대기하는 Promise 기반 플러그인입니다. 내부적으로 `modal-plugin`을 활용하여 다이얼로그를 렌더링합니다.

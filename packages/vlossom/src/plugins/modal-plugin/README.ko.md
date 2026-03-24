@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # Modal Plugin
 
 Modal을 표시하기 위한 플러그인입니다.

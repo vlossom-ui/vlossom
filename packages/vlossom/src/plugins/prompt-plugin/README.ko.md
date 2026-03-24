@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # Prompt Plugin
 
 Prompt Plugin은 모달 기반의 입력 다이얼로그를 손쉽게 띄우고 사용자가 입력한 값을 `Promise`로 돌려받을 수 있도록 도와주는 플러그인입니다. 내부적으로 `modal-plugin`과 `VsInput` 컴포넌트를 활용하여 입력 검증까지 한 번에 처리합니다.
