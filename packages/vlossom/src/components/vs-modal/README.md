@@ -1,96 +1,74 @@
 > 한국어: [README.ko.md](./README.ko.md)
 
-# VsModal
+# VsModal & VsModalNode & VsModalView
 
-A modal dialog component. Provides an overlay to display content above the main page. Use the `vs-modal-node` component inside to place modal content within the page, or use the `modal-plugin` for programmatic control.
+A modal dialog component. `VsModal` is a declarative component using v-model, `VsModalNode` is an individual modal node component, and `VsModalView` is a container component that groups and renders multiple modals.
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
+> **Note**: Practical usage examples are provided via the `modal-plugin`. See the plugin documentation for details.
 
-## Preview
+## VsModal
 
-<!-- Component image -->
+A declarative component that manages modal open/close state using v-model.
 
-## Basic Usage
-
-### VsModalNode — Inline Modal
+### Basic Usage
 
 ```html
 <template>
-    <vs-button @click="isOpen = true">Open Modal</vs-button>
+    <!-- Default modal -->
+    <vs-modal v-model="isOpen" @open="handleOpen" @close="handleClose">
+        <div>
+            <h2>Modal Title</h2>
+            <p>Modal content</p>
+        </div>
+        <vs-button color-scheme="red" @click="isOpen = false">Close</vs-button>
+    </vs-modal>
 
-    <vs-modal-node v-model="isOpen">
+    <!-- Close when dimmed background is clicked -->
+    <vs-modal v-model="isOpen" dim-close dimmed>
         <div>Modal content</div>
-        <div>Second line of content</div>
-        <vs-button @click="isOpen = false">Close</vs-button>
-    </vs-modal-node>
-</template>
+    </vs-modal>
 
-<script setup>
-import { ref } from 'vue';
-const isOpen = ref(false);
-</script>
-```
+    <!-- Close with ESC key -->
+    <vs-modal v-model="isOpen" esc-close>
+        <div>Modal content</div>
+    </vs-modal>
 
-### Custom Size
+    <!-- Custom container -->
+    <vs-modal v-model="isOpen" container="#my-container">
+        <div>Modal content</div>
+    </vs-modal>
 
-```html
-<template>
-    <vs-modal-node v-model="isOpen" :size="{ width: '600px', height: '400px' }">
-        <div>Custom size modal</div>
-    </vs-modal-node>
+    <!-- Custom size -->
+    <vs-modal v-model="isOpen" size="lg">
+        <div>Large modal</div>
+    </vs-modal>
 </template>
 ```
 
-### Close on Dimmed Background Click
+### Props
 
-```html
-<template>
-    <vs-modal-node v-model="isOpen" dim-close>
-        <div>Close by clicking the background</div>
-    </vs-modal-node>
-</template>
-```
+| Prop          | Type                                                  | Default  | Required | Description                                            |
+| ------------- | ----------------------------------------------------- | -------- | -------- | ------------------------------------------------------ |
+| `colorScheme` | `string`                                              | -        | -        | Color scheme for the component                         |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                       | -        | -        | Custom style configuration object                      |
+| `container`   | `string`                                              | `'body'` | -        | Container selector where the modal is rendered         |
+| `escClose`    | `boolean`                                             | `true`   | -        | Whether to close the modal with the ESC key            |
+| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal size                                             |
+| `callbacks`   | `OverlayCallbacks`                                    | `{}`     | -        | Overlay callback functions                             |
+| `dimClose`    | `boolean`                                             | `true`   | -        | Whether to close when the dimmed background is clicked |
+| `dimmed`      | `boolean`                                             | `false`  | -        | Whether to show the dimmed background                  |
+| `focusLock`   | `boolean`                                             | `false`  | -        | Whether to lock keyboard focus inside the modal        |
+| `hideScroll`  | `boolean`                                             | `false`  | -        | Whether to hide the scrollbar                          |
+| `id`          | `string`                                              | `''`     | -        | Modal ID                                               |
+| `modelValue`  | `boolean`                                             | `false`  | -        | Modal open/close state (v-model)                       |
 
-### Close on ESC Key
-
-```html
-<template>
-    <vs-modal-node v-model="isOpen" esc-close>
-        <div>Close by pressing the ESC key</div>
-    </vs-modal-node>
-</template>
-```
-
-### Programmatic (modal-plugin)
+### Types
 
 ```typescript
-import { useVlossom } from '@/framework';
+import type { CSSProperties } from 'vue';
 
-const $vs = useVlossom();
-const modalId = $vs.modal.open('Modal content');
-```
-
-> See [Modal Plugin](../../plugins/modal-plugin/README.md) for full programmatic API.
-
-## Props (VsModalNode)
-
-| Prop          | Type                                                   | Default | Required | Description                                        |
-| ------------- | ------------------------------------------------------ | ------- | -------- | -------------------------------------------------- |
-| `modelValue`  | `boolean`                                              | `false` | -        | Show/hide state (v-model)                          |
-| `colorScheme` | `ColorScheme`                                          | -       | -        | Color scheme for the component                     |
-| `styleSet`    | `string \| VsModalNodeStyleSet`                        | -       | -        | Custom style configuration object                  |
-| `dimClose`    | `boolean`                                              | `false` | -        | Close modal when dimmed background is clicked      |
-| `dimmed`      | `boolean`                                              | `false` | -        | Show dimmed background                             |
-| `escClose`    | `boolean`                                              | `true`  | -        | Close modal when ESC key is pressed                |
-| `focusLock`   | `boolean`                                              | `false` | -        | Lock keyboard focus inside the modal               |
-| `hideScroll`  | `boolean`                                              | `false` | -        | Hide scrollbar when modal is open                  |
-| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }`  | -       | -        | Modal size                                         |
-
-## Types
-
-```typescript
 interface VsModalNodeStyleSet {
     component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
@@ -109,21 +87,108 @@ interface OverlayCallbacks<T = void> {
 >
 > `dimmed` uses [VsDimmedStyleSet](../vs-dimmed/README.md#types).
 
-## Events (VsModalNode)
+### Slots
 
-| Event               | Payload   | Description                             |
-| ------------------- | --------- | --------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes  |
-| `open`              | -         | Emitted when the modal opens            |
-| `close`             | -         | Emitted when the modal closes           |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | Content to display inside the modal  |
 
-## Slots (VsModalNode)
+### Events
 
-| Slot      | Description                        |
-| --------- | ---------------------------------- |
-| `default` | Content to display inside the modal |
+| Event               | Payload   | Description                              |
+| ------------------- | --------- | ---------------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes   |
+| `open`              | -         | Emitted when the modal opens             |
+| `close`             | -         | Emitted when the modal closes            |
 
-## Methods
+---
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+## VsModalNode
+
+A component that renders an individual modal node. Provides dimmed background, focus trap, and scroll management.
+
+### Basic Usage
+
+```html
+<template>
+    <vs-modal-node
+        :color-scheme
+        :style-set
+        :dim-close
+        :dimmed
+        :esc-close
+        :size
+        @close
+    >
+        <div>Modal content</div>
+    </vs-modal-node>
+</template>
+```
+
+### Props
+
+| Prop          | Type                                                  | Default | Required | Description                                            |
+| ------------- | ----------------------------------------------------- | ------- | -------- | ------------------------------------------------------ |
+| `colorScheme` | `string`                                              | -       | -        | Color scheme for the component                         |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                       | -       | -        | Custom style configuration object                      |
+| `escClose`    | `boolean`                                             | `true`  | -        | Whether to close the modal with the ESC key            |
+| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | Modal size                                             |
+| `callbacks`   | `OverlayCallbacks`                                    | `{}`    | -        | Overlay callback functions                             |
+| `dimClose`    | `boolean`                                             | `false` | -        | Whether to close when the dimmed background is clicked |
+| `dimmed`      | `boolean`                                             | `false` | -        | Whether to show the dimmed background                  |
+| `focusLock`   | `boolean`                                             | `false` | -        | Whether to lock keyboard focus inside the modal        |
+| `hideScroll`  | `boolean`                                             | `false` | -        | Whether to hide the scrollbar                          |
+| `id`          | `string`                                              | `''`    | -        | Modal ID                                               |
+
+### Types
+
+```typescript
+import type { CSSProperties } from 'vue';
+
+interface VsModalNodeStyleSet {
+    component?: CSSProperties;
+    dimmed?: VsDimmedStyleSet;
+}
+
+type SizeProp = Size | string | number;
+
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+interface OverlayCallbacks<T = void> {
+    [eventName: string]: (...args: any[]) => T | Promise<T>;
+}
+```
+
+### Slots
+
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | Content to display inside the modal  |
+
+### Events
+
+| Event          | Payload | Description                              |
+| -------------- | ------- | ---------------------------------------- |
+| `close`        | -       | Emitted when the modal closes            |
+| `click-dimmed` | -       | Emitted when the dimmed area is clicked  |
+
+---
+
+## VsModalView
+
+A container component that groups and renders multiple modals. Automatically mounted via `modal-plugin`, rendering each modal appropriately based on its properties.
+
+### Props
+
+| Prop        | Type     | Default  | Required | Description                              |
+| ----------- | -------- | -------- | -------- | ---------------------------------------- |
+| `container` | `string` | `'body'` | -        | Container selector where modals render   |
+
+---
+
+### Component Relationship
+
+`VsModalView` uses `VsModalNode` internally to render each modal.
+When a modal is added via `modal-plugin`, `VsModalView` mounts automatically and displays the modal in the appropriate container.
+
+`VsModal` manages modal open/close state using v-model and uses `modal-plugin` internally to display the modal.
