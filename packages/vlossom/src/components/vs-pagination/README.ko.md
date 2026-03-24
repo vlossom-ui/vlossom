@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsPagination
 
 페이지 네비게이션을 위한 페이지네이션 컴포넌트입니다. `v-model`을 지원하며, 전체 페이지 수에 따라 자동으로 페이지 버튼을 생성합니다.

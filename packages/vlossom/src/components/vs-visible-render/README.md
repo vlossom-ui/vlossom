@@ -1,0 +1,107 @@
+> 한국어: [README.ko.md](./README.ko.md)
+
+# VsVisibleRender
+
+A container component that tracks the visibility of child elements using `IntersectionObserver`. Automatically sets the `data-io-visible="true"` attribute when a child element enters the viewport, enabling visibility-based rendering optimization.
+
+**Available Version**: 2.0.0+
+
+GitHub Wiki Link: <!-- GitHub wiki link -->
+
+## Preview
+
+<!-- Component image -->
+
+## Basic Usage
+
+### Default Visibility Tracking Container
+
+```html
+<template>
+    <vs-visible-render>
+        <div>First item</div>
+        <div>Second item</div>
+        <div>Third item</div>
+        <!-- More items... -->
+    </vs-visible-render>
+</template>
+```
+
+### Fixed Height Container
+
+```html
+<template>
+    <vs-visible-render height="500px">
+        <div v-for="item in items" :key="item.id">
+            {{ item.content }}
+        </div>
+    </vs-visible-render>
+</template>
+```
+
+### Custom IntersectionObserver Options
+
+```html
+<template>
+    <vs-visible-render root-margin="100px" :threshold="0.5">
+        <div v-for="item in items" :key="item.id">
+            {{ item.content }}
+        </div>
+    </vs-visible-render>
+</template>
+```
+
+### Disabled Mode
+
+```html
+<template>
+    <vs-visible-render disabled>
+        <div>All child elements are always visible</div>
+    </vs-visible-render>
+</template>
+```
+
+### Custom Tag
+
+```html
+<template>
+    <vs-visible-render tag="ul">
+        <li v-for="item in items" :key="item.id">
+            {{ item.content }}
+        </li>
+    </vs-visible-render>
+</template>
+```
+
+## Props
+
+| Prop         | Type               | Default | Required | Description                                                                          |
+| ------------ | ------------------ | ------- | -------- | ------------------------------------------------------------------------------------ |
+| `disabled`   | `boolean`          | `false` | -        | Disable IntersectionObserver — all children are always visible when `true`           |
+| `height`     | `string \| number` | -       | -        | Container height — automatically applies `overflow-y: auto` when set                |
+| `rootMargin` | `string`           | `'0px'` | -        | `rootMargin` option for IntersectionObserver                                         |
+| `tag`        | `string`           | `'div'` | -        | HTML tag to render as                                                                |
+| `threshold`  | `number`           | `0`     | -        | `threshold` option for IntersectionObserver (0–1)                                    |
+
+## Types
+
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot      | Description                                                              |
+| --------- | ------------------------------------------------------------------------ |
+| `default` | Child elements to track for visibility. Each child is observed individually |
+
+## Methods
+
+| Method            | Parameters      | Description                                  |
+| ----------------- | --------------- | -------------------------------------------- |
+| `scrollToElement` | `HTMLElement`   | Scroll to the specified child element        |

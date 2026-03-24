@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsModal & VsModalNode & VsModalView
 
 모달 다이얼로그를 표시하는 컴포넌트입니다. `VsModal`은 v-model을 사용한 선언적 모달 컴포넌트이고, `VsModalNode`는 개별 모달 노드 컴포넌트이며, `VsModalView`는 여러 모달을 그룹화하여 렌더링하는 컨테이너 컴포넌트입니다.

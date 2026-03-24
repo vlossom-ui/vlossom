@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsThemeButton
 
 Vlossom 프레임워크의 Light/Dark 테마를 전환하는 전용 버튼 컴포넌트입니다. 내부적으로 VsToggle을 사용하며, 태양과 달 아이콘으로 현재 테마 상태를 시각적으로 표시합니다.

@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsVisibleRender
 
 IntersectionObserver를 사용하여 자식 요소들의 가시성을 추적하는 컨테이너 컴포넌트입니다.<br />

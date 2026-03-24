@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsIndexView
 
 슬롯 콘텐츠 중 특정 인덱스에 해당하는 항목만 렌더링하는 인덱스 기반 뷰 컴포넌트입니다. v-model을 통해 현재 표시할 인덱스를 제어할 수 있으며, keep-alive 옵션으로 컴포넌트 상태 보존이 가능합니다.

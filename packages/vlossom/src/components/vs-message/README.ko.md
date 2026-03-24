@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsMessage
 
 다양한 상태와 메시지를 표시하는 메시지 컴포넌트입니다.

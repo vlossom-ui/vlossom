@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsLoading
 
 로딩 상태를 나타내는 인라인 애니메이션 컴포넌트입니다.

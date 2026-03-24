@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsToast & VsToastView
 
 토스트 알림 메시지를 표시하는 컴포넌트입니다. `VsToast`는 개별 토스트 아이템 컴포넌트이고, `VsToastView`는 여러 토스트를 그룹화하여 위치별로 관리하는 컨테이너 컴포넌트입니다.

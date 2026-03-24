@@ -1,3 +1,5 @@
+> English: [README.md](./README.md)
+
 # VsProgress
 
 작업의 진행률을 시각적으로 표시하는 진행률 표시 컴포넌트입니다. HTML5 `<progress>` 요소를 기반으로 하며, 다양한 스타일 커스터마이징과 라벨 표시를 지원합니다.
