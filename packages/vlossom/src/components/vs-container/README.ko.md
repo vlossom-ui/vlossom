@@ -2,34 +2,34 @@
 
 # VsContainer
 
-A container component responsible for the content area. Supports CSS Container Query.
-When used as a child of `vs-layout`, it automatically adjusts padding based on the positions of the header and footer to prevent content overlap. When a `vs-drawer` inside the same `vs-layout` has `layout-responsive` set, it also responds to that drawer's open/close state.
+콘텐츠 영역을 담당하는 컨테이너 컴포넌트입니다. CSS Container Query를 지원합니다.
+`vs-layout`과 함께 사용될 때 헤더와 푸터의 위치에 따라 자동으로 패딩을 조정하여 콘텐츠가 겹치지 않도록 보장합니다. 같은 `vs-layout` 안의 `vs-drawer`에 `layout-responsive`가 설정된 경우, 해당 드로어의 열림/닫힘 상태에도 반응합니다.
 
 **Available Version**: 2.0.0+
 
-## Basic Usage
+## 기본 사용법
 
-### Standalone container
+### 독립적인 컨테이너
 
 ```html
 <template>
     <vs-container>
-        <h1>Main Content</h1>
-        <p>Content inside the container.</p>
+        <h1>메인 콘텐츠</h1>
+        <p>컨테이너 내부의 콘텐츠입니다.</p>
     </vs-container>
 </template>
 ```
 
-### With vs-layout (header / footer auto-padding)
+### vs-layout과 함께 사용 (헤더/푸터 자동 패딩)
 
 ```html
 <template>
     <vs-layout>
         <vs-header position="fixed">Header</vs-header>
 
-        <!-- paddingTop / paddingBottom are automatically applied based on header/footer position -->
+        <!-- paddingTop / paddingBottom이 헤더/푸터 위치에 따라 자동 적용됩니다 -->
         <vs-container>
-            <main>Main Content</main>
+            <main>메인 콘텐츠</main>
         </vs-container>
 
         <vs-footer position="absolute">Footer</vs-footer>
@@ -37,7 +37,7 @@ When used as a child of `vs-layout`, it automatically adjusts padding based on t
 </template>
 ```
 
-### With vs-drawer (layout-responsive)
+### vs-drawer와 함께 사용 (layout-responsive)
 
 ```html
 <template>
@@ -45,15 +45,15 @@ When used as a child of `vs-layout`, it automatically adjusts padding based on t
         <vs-header position="absolute">Header</vs-header>
 
         <!--
-            layout-responsive on vs-drawer: when this drawer opens, vs-container
-            automatically adds padding in the corresponding direction
-            (e.g. paddingLeft when left drawer is open).
-            Header/footer padding is applied to vs-container regardless.
+            vs-drawer의 layout-responsive: 이 드로어가 열리면 vs-container가
+            해당 방향의 패딩을 자동으로 추가합니다
+            (예: 왼쪽 드로어가 열리면 paddingLeft 적용).
+            헤더/푸터 패딩은 layout-responsive 없이도 vs-container에 자동 적용됩니다.
         -->
         <vs-drawer placement="left" layout-responsive v-model="leftOpen" size="280px" />
 
         <vs-container>
-            <main>Main Content</main>
+            <main>메인 콘텐츠</main>
         </vs-container>
 
         <vs-footer position="absolute">Footer</vs-footer>
@@ -61,7 +61,7 @@ When used as a child of `vs-layout`, it automatically adjusts padding based on t
 </template>
 ```
 
-### Custom tag
+### 커스텀 태그 사용
 
 ```html
 <template>
@@ -75,13 +75,29 @@ When used as a child of `vs-layout`, it automatically adjusts padding based on t
 
 | Prop  | Type     | Default | Required | Description        |
 | ----- | -------- | ------- | -------- | ------------------ |
-| `tag` | `string` | `'div'` | -        | HTML tag to render |
+| `tag` | `string` | `'div'` | -        | 렌더링할 HTML 태그 |
+
+## Types
+
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description                           |
-| --------- | ------------------------------------- |
-| `default` | Content to place inside the container |
+| Slot      | Description                   |
+| --------- | ----------------------------- |
+| `default` | 컨테이너 내부에 배치할 콘텐츠 |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## 특징
 
