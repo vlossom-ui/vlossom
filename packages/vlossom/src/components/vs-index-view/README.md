@@ -2,7 +2,7 @@
 
 # VsIndexView
 
-A component that tracks scroll position and activates navigation links accordingly. Useful for long-page layouts that need a sidebar navigation showing which section is currently in view.
+An index-based view component that renders only the slot content at a specific index. The current index to display can be controlled via v-model, and component state can be preserved using the keep-alive option.
 
 **Available Version**: 2.0.0+
 
@@ -18,63 +18,63 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 
 ```html
 <template>
-    <vs-index-view
-        v-model="currentIndex"
-        :items="sections"
-    />
-    <div>
-        <section id="section-0">Section 1 content</section>
-        <section id="section-1">Section 2 content</section>
-        <section id="section-2">Section 3 content</section>
-    </div>
+    <vs-index-view v-model="currentIndex">
+        <div>First content</div>
+        <div>Second content</div>
+        <div>Third content</div>
+    </vs-index-view>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
 const currentIndex = ref(0);
-const sections = [
-    { label: 'Section 1', target: '#section-0' },
-    { label: 'Section 2', target: '#section-1' },
-    { label: 'Section 3', target: '#section-2' },
-];
 </script>
 ```
 
-### Custom Slot
+### Disable keep-alive
 
 ```html
 <template>
-    <vs-index-view v-model="currentIndex" :items="sections">
-        <template #item="{ item, index, active }">
-            <div :class="{ 'font-bold text-blue-500': active }">
-                {{ index + 1 }}. {{ item.label }}
-            </div>
-        </template>
+    <vs-index-view v-model="currentIndex" :keep-alive="false">
+        <MyComponent />
+        <AnotherComponent />
+        <ThirdComponent />
+    </vs-index-view>
+</template>
+```
+
+### Dynamic Content with v-for
+
+```html
+<template>
+    <vs-index-view v-model="currentIndex">
+        <div v-for="item in items" :key="item.id" class="item-card">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+        </div>
     </vs-index-view>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                            | Default | Required | Description                                    |
-| ------------- | ------------------------------- | ------- | -------- | ---------------------------------------------- |
-| `modelValue`  | `number`                        | `0`     | -        | Current active index (v-model)                 |
-| `colorScheme` | `ColorScheme`                   | -       | -        | Color scheme for the component                 |
-| `styleSet`    | `string \| VsIndexViewStyleSet` | -       | -        | Custom style configuration object              |
-| `items`       | `IndexItem[]`                   | `[]`    | -        | Array of index items with label and target     |
+| Prop         | Type                              | Default | Required | Description                                              |
+| ------------ | --------------------------------- | ------- | -------- | -------------------------------------------------------- |
+| `modelValue` | `number`                          | `0`     | -        | Index of the slot content to display (v-model binding)  |
+| `keepAlive`  | `boolean`                         | `false` | -        | Whether to use keep-alive for component state preservation |
+| `width`      | `string \| number \| Breakpoints` | -       | -        | Responsive width setting                                 |
+| `grid`       | `string \| number \| Breakpoints` | -       | -        | Responsive grid column count                             |
 
 ## Types
 
 ```typescript
-interface IndexItem {
-    label: string;
-    target: string; // CSS selector for the target section
-}
-
-interface VsIndexViewStyleSet {
-    component?: CSSProperties;
-    item?: CSSProperties;
-    activeItem?: CSSProperties;
+interface Breakpoints {
+    xs?: string | number; // 0px and above
+    sm?: string | number; // 640px and above
+    md?: string | number; // 768px and above
+    lg?: string | number; // 1024px and above
+    xl?: string | number; // 1280px and above
 }
 ```
 
@@ -86,11 +86,12 @@ interface VsIndexViewStyleSet {
 
 ## Slots
 
-| Slot   | Props                                          | Description                              |
-| ------ | ---------------------------------------------- | ---------------------------------------- |
-| `item` | `{ item: IndexItem, index: number, active: boolean }` | Custom rendering for each index item |
+| Slot      | Description                                                                   |
+| --------- | ----------------------------------------------------------------------------- |
+| `default` | Contents to display by index. Each child element becomes one index entry.     |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Method        | Parameter | Description                        |
+| ------------- | --------- | ---------------------------------- |
+| `updateIndex` | `number`  | Change the index and emit an event |

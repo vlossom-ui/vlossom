@@ -58,8 +58,8 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 | ------------- | ----------------------------- | ------- | -------- | --------------------------------- |
 | `colorScheme` | `ColorScheme`                 | -       | -        | Color scheme for the component    |
 | `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style configuration object |
-| `width`       | `string`                      | -       | -        | Loading indicator width           |
-| `height`      | `string`                      | -       | -        | Loading indicator height          |
+| `width`       | `string \| number`            | -       | -        | Loading indicator width (default 8rem)  |
+| `height`      | `string \| number`            | -       | -        | Loading indicator height (default 10rem) |
 
 ## Types
 

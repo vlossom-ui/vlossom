@@ -2,7 +2,7 @@
 
 # VsPagination
 
-A pagination component for navigating through pages of data. Supports edge buttons, customizable number of visible page buttons, and total item count display.
+A pagination component for page navigation. Supports `v-model` and automatically generates page buttons based on the total page count.
 
 **Available Version**: 2.0.0+
 
@@ -18,24 +18,7 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 
 ```html
 <template>
-    <vs-pagination v-model="currentPage" :total="100" />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const currentPage = ref(0);
-</script>
-```
-
-### Custom Page Size
-
-```html
-<template>
-    <vs-pagination
-        v-model="currentPage"
-        :total="500"
-        :page-size="20"
-    />
+    <vs-pagination v-model="currentPage" :length="10" @change="handlePageChange" />
 </template>
 ```
 
@@ -43,93 +26,112 @@ const currentPage = ref(0);
 
 ```html
 <template>
-    <vs-pagination
-        v-model="currentPage"
-        :total="200"
-        edge-buttons
-    />
+    <vs-pagination v-model="currentPage" :length="20" edge-buttons />
 </template>
 ```
 
-### Show Total Count
+### Adjust Visible Page Count
 
 ```html
 <template>
-    <vs-pagination
-        v-model="currentPage"
-        :total="150"
-        show-total
-    />
+    <vs-pagination v-model="currentPage" :length="100" :showing-length="5" />
 </template>
 ```
 
-### Page Size Selector
+### Style Variants
 
 ```html
 <template>
-    <vs-pagination
-        v-model="currentPage"
-        v-model:page-size="pageSize"
-        :total="500"
-        show-page-size-select
-        :page-size-options="[
-            { label: '10', value: 10 },
-            { label: '20', value: 20 },
-            { label: '50', value: 50 },
-        ]"
-    />
+    <vs-pagination v-model="currentPage" :length="10" ghost />
+    <vs-pagination v-model="currentPage" :length="10" outline />
 </template>
+```
 
-<script setup>
-import { ref } from 'vue';
-const currentPage = ref(0);
-const pageSize = ref(10);
-</script>
+### Custom Page Number
+
+```html
+<template>
+    <vs-pagination v-model="currentPage" :length="10">
+        <template #page="{ page }">
+            Page {{ page }}
+        </template>
+    </vs-pagination>
+</template>
 ```
 
 ## Props
 
-| Prop                 | Type                                   | Default     | Required | Description                                      |
-| -------------------- | -------------------------------------- | ----------- | -------- | ------------------------------------------------ |
-| `modelValue`         | `number`                               | `0`         | -        | Current page index — 0-based (v-model)           |
-| `total`              | `number`                               | `0`         | -        | Total number of items                            |
-| `colorScheme`        | `ColorScheme`                          | -           | -        | Color scheme for the component                   |
-| `styleSet`           | `string \| VsPaginationStyleSet`       | -           | -        | Custom style configuration object                |
-| `pageSize`           | `number`                               | `10`        | -        | Number of items per page (v-model:page-size)     |
-| `pageSizeOptions`    | `{ label: string; value: number }[]`   | -           | -        | Page size options for the selector               |
-| `edgeButtons`        | `boolean`                              | `false`     | -        | Show first/last page buttons                     |
-| `showingLength`      | `number`                               | `5`         | -        | Number of page number buttons to display         |
-| `showPageSizeSelect` | `boolean`                              | `false`     | -        | Show page size selector                          |
-| `showTotal`          | `boolean`                              | `false`     | -        | Show total item count                            |
+| Prop            | Type                             | Default | Required | Description                                     |
+| --------------- | -------------------------------- | ------- | -------- | ----------------------------------------------- |
+| `modelValue`    | `number`                         | `0`     | -        | Current page bound via v-model (0-based)         |
+| `length`        | `number`                         | `1`     | ✓        | Total number of pages (must be 1 or more)        |
+| `showingLength` | `number`                         | `10`    | -        | Number of page buttons to display (1 or more)    |
+| `edgeButtons`   | `boolean`                        | `false` | -        | Show first/last page buttons                     |
+| `disabled`      | `boolean`                        | `false` | -        | Disable the entire pagination                    |
+| `ghost`         | `boolean`                        | `false` | -        | Apply ghost style                                |
+| `outline`       | `boolean`                        | `false` | -        | Apply outline style                              |
+| `colorScheme`   | `ColorScheme`                    | -       | -        | Color scheme for the component                   |
+| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style configuration object                |
 
 ## Types
 
 ```typescript
 interface VsPaginationStyleSet {
-    variables?: {
-        gap?: string;
-    };
     component?: CSSProperties;
-    button?: VsButtonStyleSet;
-    activeButton?: VsButtonStyleSet;
+    pageButton?: Omit<VsButtonStyleSet, 'loading'>;
+    controlButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
 ```
 
 > [!NOTE]
 >
-> `button` and `activeButton` use [VsButtonStyleSet](../vs-button/README.md#types).
+> - `pageButton` uses [VsButtonStyleSet](../vs-button/README.md#types).
+> - `controlButton` uses [VsButtonStyleSet](../vs-button/README.md#types).
+
+### StyleSet Example
+
+```html
+<template>
+    <vs-pagination
+        v-model="currentPage"
+        :length="20"
+        :style-set="{
+            component: {
+                gap: '1rem',
+            },
+            pageButton: {
+                component: {
+                    width: '3rem',
+                    height: '3rem',
+                    backgroundColor: '#f5f5f5',
+                },
+            },
+            controlButton: {
+                component: {
+                    borderRadius: '50%',
+                },
+            },
+        }"
+    />
+</template>
+```
 
 ## Events
 
-| Event               | Payload  | Description                              |
-| ------------------- | -------- | ---------------------------------------- |
-| `update:modelValue` | `number` | Emitted when the current page changes    |
-| `update:pageSize`   | `number` | Emitted when the page size changes       |
+| Event               | Parameters | Description                          |
+| ------------------- | ---------- | ------------------------------------ |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes |
+| `change`            | `number`   | Emitted when the page changes        |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot    | Props      | Description                              |
+| ------- | ---------- | ---------------------------------------- |
+| `first` | -          | Content for the first-page button        |
+| `prev`  | -          | Content for the previous-page button     |
+| `page`  | `{ page }` | Content for page number buttons          |
+| `next`  | -          | Content for the next-page button         |
+| `last`  | -          | Content for the last-page button         |
 
 ## Methods
 

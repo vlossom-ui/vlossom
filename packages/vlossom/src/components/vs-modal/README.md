@@ -82,22 +82,26 @@ const modalId = $vs.modal.open('Modal content');
 | `colorScheme` | `ColorScheme`                                          | -       | -        | Color scheme for the component                     |
 | `styleSet`    | `string \| VsModalNodeStyleSet`                        | -       | -        | Custom style configuration object                  |
 | `dimClose`    | `boolean`                                              | `false` | -        | Close modal when dimmed background is clicked      |
-| `dimmed`      | `boolean`                                              | `true`  | -        | Show dimmed background                             |
-| `escClose`    | `boolean`                                              | `false` | -        | Close modal when ESC key is pressed                |
-| `focusLock`   | `boolean`                                              | `true`  | -        | Lock keyboard focus inside the modal               |
-| `hideScroll`  | `boolean`                                              | `true`  | -        | Hide scrollbar when modal is open                  |
-| `size`        | `string \| { width?: string; height?: string }`        | -       | -        | Modal size                                         |
+| `dimmed`      | `boolean`                                              | `false` | -        | Show dimmed background                             |
+| `escClose`    | `boolean`                                              | `true`  | -        | Close modal when ESC key is pressed                |
+| `focusLock`   | `boolean`                                              | `false` | -        | Lock keyboard focus inside the modal               |
+| `hideScroll`  | `boolean`                                              | `false` | -        | Hide scrollbar when modal is open                  |
+| `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }`  | -       | -        | Modal size                                         |
 
 ## Types
 
 ```typescript
 interface VsModalNodeStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
     component?: CSSProperties;
     dimmed?: VsDimmedStyleSet;
+}
+
+type SizeProp = Size | string | number;
+
+type Size = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+interface OverlayCallbacks<T = void> {
+    [eventName: string]: (...args: any[]) => T | Promise<T>;
 }
 ```
 

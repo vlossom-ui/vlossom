@@ -2,7 +2,7 @@
 
 # VsTabs
 
-A tab navigation component for organizing content into multiple panels. Supports horizontal and vertical layouts, scroll buttons for overflow, and keyboard navigation.
+A tab navigation component. Supports horizontal/vertical layouts and scroll buttons for building various tab interfaces.
 
 **Available Version**: 2.0.0+
 
@@ -18,92 +18,250 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 
 ```html
 <template>
-    <vs-tabs v-model="selectedTab" :tabs="['Tab 1', 'Tab 2', 'Tab 3']">
-        <template #tab-content-0>
-            <p>Content of Tab 1</p>
-        </template>
-        <template #tab-content-1>
-            <p>Content of Tab 2</p>
-        </template>
-        <template #tab-content-2>
-            <p>Content of Tab 3</p>
-        </template>
-    </vs-tabs>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
+
 const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 </script>
-```
-
-### Object Tabs
-
-```html
-<template>
-    <vs-tabs
-        v-model="selectedTab"
-        :tabs="[
-            { label: 'Profile', value: 'profile' },
-            { label: 'Settings', value: 'settings' },
-            { label: 'Activity', value: 'activity' },
-        ]"
-        tab-label="label"
-        tab-value="value"
-    >
-        <template #tab-content-profile>
-            <p>Profile content</p>
-        </template>
-        <template #tab-content-settings>
-            <p>Settings content</p>
-        </template>
-        <template #tab-content-activity>
-            <p>Activity content</p>
-        </template>
-    </vs-tabs>
-</template>
 ```
 
 ### Vertical Tabs
 
 ```html
 <template>
-    <vs-tabs v-model="tab" :tabs="['A', 'B', 'C']" vertical>
-        <template #tab-content-0>Vertical Tab 1</template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" vertical />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### Custom Tab Content
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs">
+        <template #tab="{ tab, index }">
+            <span>🎉 {{ tab }}</span>
+        </template>
     </vs-tabs>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Home', 'Profile', 'Settings'];
+</script>
 ```
 
 ### Disabled Tabs
 
+#### Disable All Tabs (Boolean)
+
 ```html
 <template>
-    <vs-tabs
-        v-model="tab"
-        :tabs="tabs"
-        :tabs-disabled="(tab) => tab === 'Disabled'"
-    />
+    <vs-tabs v-model="selectedTab" :tabs="tabs" :disabled="true" />
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+#### Conditional Disable (Function)
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" :disabled="isTabDisabled" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(1);
+const tabs = ['Tab 0', 'Tab 1', 'Tab 2', 'Tab 3'];
+
+function isTabDisabled(tab: string, index: number): boolean {
+    return index % 2 === 0; // disable even-indexed tabs
+}
+</script>
+```
+
+To disable specific indexes:
+
+```typescript
+function isTabDisabled(tab: string, index: number): boolean {
+    return [1, 3].includes(index);
+}
+```
+
+### Primary Color Theme
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" primary />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'];
+</script>
+```
+
+### Show Scroll Buttons
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" scroll-buttons="show" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8'];
+</script>
+```
+
+### Fixed Width
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" width="600px" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### Responsive Width
+
+```html
+<template>
+    <vs-grid>
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :width="{ xs: '100%', sm: '90%', md: '70%', lg: '50%', xl: '30%' }"
+        />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Home', 'Profile', 'Settings', 'Messages'];
+</script>
+```
+
+### Fixed Height
+
+```html
+<template>
+    <vs-tabs v-model="selectedTab" :tabs="tabs" height="60px" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### Grid System
+
+```html
+<template>
+    <vs-grid column-gap="16px" row-gap="16px">
+        <vs-tabs v-model="selectedTab" :tabs="tabs" :grid="8" />
+        <vs-tabs v-model="selectedTab" :tabs="tabs" :grid="4" />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
+```
+
+### Responsive Grid
+
+```html
+<template>
+    <vs-grid column-gap="16px" row-gap="16px">
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+        <vs-tabs
+            v-model="selectedTab"
+            :tabs="tabs"
+            :grid="{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }"
+        />
+    </vs-grid>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const selectedTab = ref(0);
+const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+</script>
 ```
 
 ## Props
 
-| Prop           | Type                                              | Default | Required | Description                                          |
-| -------------- | ------------------------------------------------- | ------- | -------- | ---------------------------------------------------- |
-| `modelValue`   | `any`                                             | -       | -        | v-model binding (selected tab value or index)        |
-| `colorScheme`  | `ColorScheme`                                     | -       | -        | Color scheme for the component                       |
-| `styleSet`     | `string \| VsTabsStyleSet`                        | -       | -        | Custom style configuration object                    |
-| `tabs`         | `any[]`                                           | `[]`    | -        | Array of tab definitions (string or object)          |
-| `tabLabel`     | `string`                                          | `''`    | -        | Property to use as label from a tab object           |
-| `tabValue`     | `string`                                          | `''`    | -        | Property to use as value from a tab object           |
-| `tabsDisabled` | `boolean \| (tab, index) => boolean`              | `false` | -        | Disable all tabs or conditionally disable per tab    |
-| `vertical`     | `boolean`                                         | `false` | -        | Apply vertical layout                                |
+| Prop            | Type                                                   | Default  | Required | Description                                                                          |
+| --------------- | ------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------------ |
+| `colorScheme`   | `string`                                               | -        | -        | Color scheme for the component                                                       |
+| `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | Custom style configuration object                                                    |
+| `width`         | `string \| number \| Breakpoints`                      | -        | -        | Tab width — single value or breakpoints object                                       |
+| `grid`          | `string \| number \| Breakpoints`                      | -        | -        | Number of columns in the 12-column grid — single value or breakpoints object         |
+| `height`        | `string \| number`                                     | `'auto'` | -        | Tab height                                                                           |
+| `dense`         | `boolean`                                              | `false`  | -        | Apply compact style                                                                  |
+| `disabled`      | `boolean \| ((tab: string, index: number) => boolean)` | `false`  | -        | Disable tabs. `boolean` disables all; a function disables conditionally per tab      |
+| `primary`       | `boolean`                                              | `false`  | -        | Apply primary color theme                                                            |
+| `scrollButtons` | `'hide' \| 'show' \| 'auto'`                           | `'auto'` | -        | Scroll button visibility mode                                                        |
+| `tabs`          | `string[]`                                             | `[]`     | -        | Array of tab labels                                                                  |
+| `vertical`      | `boolean`                                              | `false`  | -        | Apply vertical layout                                                                |
+| `modelValue`    | `number`                                               | `0`      | -        | Selected tab index (v-model)                                                         |
 
 ## Types
 
 ```typescript
 interface VsTabsStyleSet {
-    component?: CSSProperties;
+    variables?: {
+        gap?: string;
+        divider?: CSSProperties['border'];
+    };
     tab?: CSSProperties;
     activeTab?: CSSProperties;
     scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
@@ -112,24 +270,42 @@ interface VsTabsStyleSet {
 
 > [!NOTE]
 >
-> `scrollButton` uses [VsButtonStyleSet](../vs-button/README.md#types) (excluding `loading`).
+> `scrollButton` uses [VsButtonStyleSet](../vs-button/README.md#types).
+
+### StyleSet Example
+
+```html
+<template>
+    <vs-tabs
+        v-model="selectedTab"
+        :tabs="tabs"
+        :style-set="{
+            variables: { gap: '0.5rem', divider: '2px solid #ccc' },
+            tab: { fontWeight: '600' },
+            activeTab: { backgroundColor: '#e8e8e8' },
+            scrollButton: {
+                variables: { padding: '0.4rem' },
+                component: { borderRadius: '4px' },
+            },
+        }"
+    />
+</template>
+```
 
 ## Events
 
-| Event               | Payload | Description                             |
-| ------------------- | ------- | --------------------------------------- |
-| `update:modelValue` | `any`   | Emitted when the v-model value changes  |
-| `change`            | `any`   | Emitted when the selected tab changes   |
+| Event               | Parameters | Description                                 |
+| ------------------- | ---------- | ------------------------------------------- |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes      |
+| `change`            | `number`   | Emitted when the selected tab index changes |
 
 ## Slots
 
-| Slot                    | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| `tab-content-${value}`  | Content for the tab matching the given value/index |
+| Slot  | Props            | Description                  |
+| ----- | ---------------- | ---------------------------- |
+| `tab` | `{ tab, index }` | Custom content for each tab  |
 
 ## Methods
 
-| Method   | Parameters | Description            |
-| -------- | ---------- | ---------------------- |
-| `goPrev` | -          | Navigate to previous tab |
-| `goNext` | -          | Navigate to next tab   |
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

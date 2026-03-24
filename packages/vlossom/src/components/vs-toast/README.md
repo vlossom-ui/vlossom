@@ -65,29 +65,32 @@ $vs.toast.error('An error occurred.');
 
 ## Props (VsToast)
 
-| Prop          | Type                       | Default | Required | Description                       |
-| ------------- | -------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`              | -       | -        | Color scheme for the component    |
-| `styleSet`    | `string \| VsToastStyleSet` | -      | -        | Custom style configuration object |
-| `primary`     | `boolean`                  | `false` | -        | Apply primary style               |
+| Prop          | Type                        | Default | Required | Description                                                          |
+| ------------- | --------------------------- | ------- | -------- | -------------------------------------------------------------------- |
+| `colorScheme` | `ColorScheme`               | -       | -        | Color scheme for the component                                       |
+| `styleSet`    | `string \| VsToastStyleSet` | -       | -        | Custom style configuration object                                    |
+| `autoClose`   | `boolean`                   | `true`  | -        | Whether to auto-close                                                |
+| `primary`     | `boolean`                   | `true`  | -        | Apply primary style                                                  |
+| `timeout`     | `number`                    | `5000`  | -        | Auto-close delay in milliseconds (only applies when `autoClose` is `true`) |
 
 ## Types
 
 ```typescript
 interface VsToastStyleSet {
-    variables?: {
-        backgroundColor?: string;
-        border?: string;
-        fontColor?: string;
-    };
+    closeButton?: Omit<VsButtonStyleSet, 'loading'>;
     component?: CSSProperties;
 }
 ```
 
+> [!NOTE]
+>
+> `closeButton` uses [VsButtonStyleSet](../vs-button/README.md#types).
+
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event   | Payload | Description                                                              |
+| ------- | ------- | ------------------------------------------------------------------------ |
+| `close` | -       | Emitted when the toast closes (via close button or auto-close timeout)   |
 
 ## Slots (VsToast)
 
