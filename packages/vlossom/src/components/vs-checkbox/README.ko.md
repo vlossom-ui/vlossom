@@ -116,6 +116,7 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 ```typescript
 interface VsCheckboxStyleSet {
     variables?: {
+        checkboxCheckedColor?: string;
         checkboxColor?: string;
         checkboxSize?: string;
     };

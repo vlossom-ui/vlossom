@@ -69,6 +69,35 @@ const selectedOptions = ref([]);
 </script>
 ```
 
+### StyleSet Example
+
+```html
+<template>
+    <vs-switch
+        v-model="value"
+        :style-set="{
+            variables: {
+                handleSize: '1.8rem',
+                handleColor: '#fff',
+            },
+            switchButton: {
+                borderRadius: '2rem',
+                border: '2px solid #ddd',
+            },
+            activeSwitchButton: {
+                backgroundColor: '#4caf50',
+                borderColor: '#4caf50',
+            },
+        }"
+    />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const value = ref(false);
+</script>
+```
+
 ## Props
 
 | Prop             | Type                              | Default | Required | Description                                   |
@@ -96,17 +125,6 @@ const selectedOptions = ref([]);
 | `width`          | `string \| number \| Breakpoints` | -       | -        | Component width                               |
 | `grid`           | `string \| number \| Breakpoints` | -       | -        | Grid layout size                              |
 
-## Events
-
-| Event               | Parameters | Description                                |
-| ------------------- | ---------- | ------------------------------------------ |
-| `update:modelValue` | `any`      | Emitted when the v-model value changes     |
-| `update:changed`    | `boolean`  | Emitted when the changed state updates     |
-| `update:valid`      | `boolean`  | Emitted when the validation result updates |
-| `change`            | `any`      | Emitted when the value changes             |
-| `focus`             | `Event`    | Emitted when the switch receives focus     |
-| `blur`              | `Event`    | Emitted when the switch loses focus        |
-
 ## Types
 
 ```typescript
@@ -126,35 +144,16 @@ interface VsSwitchStyleSet {
 >
 > `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
 
-### StyleSet Example
+## Events
 
-```html
-<template>
-    <vs-switch
-        v-model="value"
-        :style-set="{
-            variables: {
-                handleSize: '1.8rem',
-                handleColor: '#fff',
-            },
-            switchButton: {
-                borderRadius: '2rem',
-                border: '2px solid #ddd',
-            },
-            activeSwitchButton: {
-                backgroundColor: '#4caf50',
-                borderColor: '#4caf50',
-            },
-        }"
-    />
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const value = ref(false);
-</script>
-```
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
+| `update:modelValue` | `any`     | Emitted when the v-model value changes     |
+| `update:changed`    | `boolean` | Emitted when the changed state updates     |
+| `update:valid`      | `boolean` | Emitted when the validation result updates |
+| `change`            | `any`     | Emitted when the value changes             |
+| `focus`             | `Event`   | Emitted when the switch receives focus     |
+| `blur`              | `Event`   | Emitted when the switch loses focus        |
 
 ## Slots
 
@@ -163,7 +162,7 @@ const value = ref(false);
 | `label`    | Custom label content   |
 | `messages` | Custom message content |
 
-## Exposed Methods
+## Methods
 
 | Method     | Parameters | Description                  |
 | ---------- | ---------- | ---------------------------- |

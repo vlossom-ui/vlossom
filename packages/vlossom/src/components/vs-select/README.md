@@ -309,7 +309,7 @@ interface VsSelectStyleSet {
 > - `selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types).
 > - `options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types).
 
-## StyleSet Example
+### StyleSet Example
 
 ```html
 <template>
@@ -337,21 +337,9 @@ interface VsSelectStyleSet {
 </template>
 ```
 
-## Slots
-
-| Slot             | Props                                      | Description                             |
-| ---------------- | ------------------------------------------ | --------------------------------------- |
-| `default`        | -                                          | Content displayed in the outer wrapper  |
-| `label`          | -                                          | Label area of the input wrapper         |
-| `option`         | `{ id, label, value, disabled, selected }` | Custom template for each option         |
-| `group`          | `{ groupName }`                            | Custom template for group headers       |
-| `options-header` | -                                          | Header displayed above the options list |
-| `options-footer` | -                                          | Footer displayed below the options list |
-| `messages`       | -                                          | Bottom message area                     |
-
 ## Events
 
-| Event               | Parameters     | Description                               |
+| Event               | Payload        | Description                               |
 | ------------------- | -------------- | ----------------------------------------- |
 | `update:modelValue` | `any \| any[]` | Emitted when the v-model value changes    |
 | `update:changed`    | `boolean`      | Emitted when the changed state updates    |
@@ -364,7 +352,19 @@ interface VsSelectStyleSet {
 | `focus`             | `FocusEvent`   | Emitted when the trigger receives focus   |
 | `blur`              | `FocusEvent`   | Emitted when the trigger loses focus      |
 
-## Exposed Methods
+## Slots
+
+| Slot             | Props                                      | Description                             |
+| ---------------- | ------------------------------------------ | --------------------------------------- |
+| `default`        | -                                          | Content displayed in the outer wrapper  |
+| `label`          | -                                          | Label area of the input wrapper         |
+| `option`         | `{ id, label, value, disabled, selected }` | Custom template for each option         |
+| `group`          | `{ groupName }`                            | Custom template for group headers       |
+| `options-header` | -                                          | Header displayed above the options list |
+| `options-footer` | -                                          | Footer displayed below the options list |
+| `messages`       | -                                          | Bottom message area                     |
+
+## Methods
 
 | Method     | Return Type | Description                                      |
 | ---------- | ----------- | ------------------------------------------------ |
@@ -372,8 +372,6 @@ interface VsSelectStyleSet {
 | `clear`    | `void`      | Clear all selected values                        |
 | `focus`    | `void`      | Set focus on the trigger                         |
 | `blur`     | `void`      | Remove focus from the trigger                    |
-
----
 
 ## Features
 
