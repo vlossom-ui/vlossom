@@ -67,23 +67,6 @@ A pagination component for page navigation. Supports `v-model` and automatically
 | `colorScheme`   | `ColorScheme`                    | -       | -        | Color scheme for the component                |
 | `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style configuration object             |
 
-## Events
-
-| Event               | Parameters | Description                            |
-| ------------------- | ---------- | -------------------------------------- |
-| `update:modelValue` | `number`   | Emitted when the v-model value changes |
-| `change`            | `number`   | Emitted when the page changes          |
-
-## Slots
-
-| Slot    | Props      | Description                          |
-| ------- | ---------- | ------------------------------------ |
-| `first` | -          | Content for the first-page button    |
-| `prev`  | -          | Content for the previous-page button |
-| `page`  | `{ page }` | Content for page number buttons      |
-| `next`  | -          | Content for the next-page button     |
-| `last`  | -          | Content for the last-page button     |
-
 ## Types
 
 ```typescript
@@ -126,6 +109,28 @@ interface VsPaginationStyleSet {
     />
 </template>
 ```
+
+## Events
+
+| Event               | Parameters | Description                            |
+| ------------------- | ---------- | -------------------------------------- |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes |
+| `change`            | `number`   | Emitted when the page changes          |
+
+## Slots
+
+| Slot    | Props      | Description                          |
+| ------- | ---------- | ------------------------------------ |
+| `first` | -          | Content for the first-page button    |
+| `prev`  | -          | Content for the previous-page button |
+| `page`  | `{ page }` | Content for page number buttons      |
+| `next`  | -          | Content for the next-page button     |
+| `last`  | -          | Content for the last-page button     |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

@@ -77,17 +77,28 @@ A container component that tracks the visibility of child elements using `Inters
 | `tag`        | `string`           | `'div'` | -        | HTML tag to render as                                                      |
 | `threshold`  | `number`           | `0`     | -        | `threshold` option for IntersectionObserver (0–1)                          |
 
-## Methods
+## Types
 
-| Method            | Parameters    | Description                           |
-| ----------------- | ------------- | ------------------------------------- |
-| `scrollToElement` | `HTMLElement` | Scroll to the specified child element |
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
 | Slot      | Description                                                                 |
 | --------- | --------------------------------------------------------------------------- |
 | `default` | Child elements to track for visibility. Each child is observed individually |
+
+## Methods
+
+| Method            | Parameters    | Description                           |
+| ----------------- | ------------- | ------------------------------------- |
+| `scrollToElement` | `HTMLElement` | Scroll to the specified child element |
 
 ## Features
 
@@ -98,10 +109,3 @@ A container component that tracks the visibility of child elements using `Inters
 - **Flexible height setting**: Control container height and scroll behavior via the `height` prop
 - **Option customization**: Fine-tune IntersectionObserver behavior via `rootMargin` and `threshold`
 - **Disable support**: Disable visibility tracking as needed via the `disabled` prop
-
-## Use Cases
-
-- **Virtual scroll**: Optimize performance for large data lists by rendering only visible items
-- **Lazy loading**: Load images or heavy components only when they enter the viewport
-- **Infinite scroll**: Load additional data when the scroll reaches the bottom
-- **Animation trigger**: Trigger animations when an element becomes visible

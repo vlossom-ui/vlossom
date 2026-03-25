@@ -415,6 +415,11 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 | `paginate`   | `(page: number, pageSize: number)`                | Emitted on pagination change                                |
 | `drag`       | `(event: SortableEvent)`                          | Emitted when drag is complete (includes oldIndex, newIndex) |
 
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+
 ## Features
 
 - **Multiple column input types**: Supports object/string/null column definitions for flexible initial configuration
@@ -425,8 +430,3 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 - **Data tracking**: Real-time tracking of current page and filtered data via `v-model:paged-items` and `v-model:total-items`
 - **Row selection**: Checkbox-based row selection and conditional selection via the `selectable` prop
 - **Row expansion**: Toggle per-row detail areas via the `expandable` prop and `expand` slot
-- **Row drag**: Drag-and-drop row reordering via the `draggable` prop
-- **Column sorting**: Ascending/descending sort via `sortable`; nested path sorting via `sortBy`
-- **Row search**: Search input via the `search` option; exclude columns via `skipSearch`
-- **Virtual scroll**: Enabled by default. Renders only visible rows for large dataset performance. Disable with `no-virtual-scroll`
-- **Loading state**: Display skeleton UI via the `loading` prop to improve UX during data loading

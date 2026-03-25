@@ -127,6 +127,12 @@ interface VsTextWrapStyleSet {
 }
 ```
 
+## Events
+
+| Event    | Payload        | Description                             |
+| -------- | -------------- | --------------------------------------- |
+| `copied` | `text: string` | Emitted when the copy button is clicked |
+
 ## Slots
 
 | Slot      | Props | Description                           |
@@ -134,11 +140,10 @@ interface VsTextWrapStyleSet {
 | `default` | -     | Text content to display               |
 | `actions` | -     | Slot for adding custom action buttons |
 
-## Events
+## Methods
 
-| Event    | Payload        | Description                             |
-| -------- | -------------- | --------------------------------------- |
-| `copied` | `text: string` | Emitted when the copy button is clicked |
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
