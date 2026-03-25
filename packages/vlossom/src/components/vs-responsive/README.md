@@ -70,7 +70,15 @@ interface Breakpoints {
 }
 ```
 
-### Breakpoints Reference
+## Slots
+
+| Slot      | Description                    |
+| --------- | ------------------------------ |
+| `default` | Content of the responsive area |
+
+## Breakpoints
+
+The component supports the following breakpoints:
 
 | Breakpoint | Min Width | Description           |
 | ---------- | --------- | --------------------- |
@@ -79,22 +87,6 @@ interface Breakpoints {
 | `md`       | 768px     | Medium (tablet)       |
 | `lg`       | 1024px    | Large (desktop)       |
 | `xl`       | 1280px    | Extra large (desktop) |
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot      | Description                    |
-| --------- | ------------------------------ |
-| `default` | Content of the responsive area |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

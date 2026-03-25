@@ -54,6 +54,7 @@ A container component with internal scrolling. Keeps header and footer areas fix
 <template>
     <vs-inner-scroll ref="innerScrollRef">
         <div>Scrollable content</div>
+        <div>More content...</div>
     </vs-inner-scroll>
     <button @click="checkScroll">Check if scrollable</button>
 </template>
@@ -71,12 +72,15 @@ function checkScroll() {
 </script>
 ```
 
-### StyleSet Example
+## StyleSet Example
 
 ```html
 <template>
     <vs-inner-scroll
         :style-set="{
+            component: {
+                backgroundColor: '#f5f5f5',
+            },
             header: {
                 padding: '24px',
             },
@@ -91,7 +95,9 @@ function checkScroll() {
         <template #header>
             <div>Header Content</div>
         </template>
+
         <div>Scrollable Content</div>
+
         <template #footer>
             <div>Footer Content</div>
         </template>
@@ -106,20 +112,13 @@ function checkScroll() {
 | `hideScroll` | `boolean`                         | `false` | -        | Hide or show the scrollbar        |
 | `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style configuration object |
 
-## Types
+## Methods
 
-```typescript
-interface VsInnerScrollStyleSet {
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
-}
-```
+These methods are available by accessing the component via `ref`.
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Method      | Parameters | Return    | Description                                 |
+| ----------- | ---------- | --------- | ------------------------------------------- |
+| `hasScroll` | -          | `boolean` | Returns whether the container is scrollable |
 
 ## Slots
 
@@ -129,11 +128,16 @@ interface VsInnerScrollStyleSet {
 | `header`  | Fixed header content at the top    |
 | `footer`  | Fixed footer content at the bottom |
 
-## Methods
+## Types
 
-| Method      | Parameters | Return    | Description                                 |
-| ----------- | ---------- | --------- | ------------------------------------------- |
-| `hasScroll` | -          | `boolean` | Returns whether the container is scrollable |
+```typescript
+interface VsInnerScrollStyleSet {
+    component?: CSSProperties;
+    header?: CSSProperties;
+    content?: CSSProperties;
+    footer?: CSSProperties;
+}
+```
 
 ## Features
 

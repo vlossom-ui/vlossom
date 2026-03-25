@@ -77,18 +77,27 @@ When used as a child of `vs-layout`, it automatically adjusts padding based on t
 | ----- | -------- | ------- | -------- | ------------------ |
 | `tag` | `string` | `'div'` | -        | HTML tag to render |
 
+## Types
+
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
 | Slot      | Description                           |
 | --------- | ------------------------------------- |
 | `default` | Content to place inside the container |
 
-## 특징
+## Methods
 
-- **자동 패딩 조정**: `vs-layout`의 자식일 때, 헤더와 푸터가 `absolute`, `fixed`, `sticky` 포지션을 사용하면 자동으로 패딩을 추가하여 콘텐츠 겹침 방지
-- **드로어 반응형 패딩**: `vs-drawer`에 `layout-responsive`를 설정하면 해당 드로어가 열릴 때 vs-container의 해당 방향 패딩이 자동 조정. 위아래 드로어는 헤더/푸터 높이까지 합산하여 계산
-- **컨테이너 쿼리**: `container-type: inline-size` 지원으로 반응형 디자인 구현 가능
-- **유연한 태그**: `tag` prop을 통해 `div`, `main`, `section` 등 다양한 HTML 태그로 렌더링 가능
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
