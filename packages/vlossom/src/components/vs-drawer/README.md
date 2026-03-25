@@ -136,6 +136,15 @@ When placed inside `vs-layout`, two behaviors happen automatically:
 | `size`             | `SizeProp`                               | `'sm'`   | -        | Drawer size (`'xs'`\|`'sm'`\|`'md'`\|`'lg'`\|`'xl'` or custom value)                      |
 | `modelValue`       | `boolean`                                | `false`  | -        | Value for v-model binding                                                                 |
 
+## Events
+
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes     |
+| `open`              | -         | Emitted when the drawer opens              |
+| `close`             | -         | Emitted when the drawer closes             |
+| `click-dimmed`      | -         | Emitted when the dimmed overlay is clicked |
+
 ## Types
 
 ```typescript
@@ -192,15 +201,6 @@ type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
     </vs-drawer>
 </template>
 ```
-
-## Events
-
-| Event               | Payload   | Description                                |
-| ------------------- | --------- | ------------------------------------------ |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes     |
-| `open`              | -         | Emitted when the drawer opens              |
-| `close`             | -         | Emitted when the drawer closes             |
-| `click-dimmed`      | -         | Emitted when the dimmed overlay is clicked |
 
 ## Slots
 

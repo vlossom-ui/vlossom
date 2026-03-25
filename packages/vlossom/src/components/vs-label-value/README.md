@@ -56,33 +56,6 @@ A component that displays a label and value pair. Useful for form information, u
 </template>
 ```
 
-### StyleSet Example
-
-```html
-<template>
-    <vs-label-value
-        :style-set="{
-            variables: {
-                border: '2px solid #e91e63',
-            },
-            label: {
-                backgroundColor: '#f5f5f5',
-                color: '#333',
-                fontWeight: 600,
-            },
-            value: {
-                backgroundColor: '#fff',
-                color: '#666',
-                padding: '1rem 2rem',
-            },
-        }"
-    >
-        <template #label>Custom Style</template>
-        Customized value
-    </vs-label-value>
-</template>
-```
-
 ## Props
 
 | Prop          | Type                             | Default | Required | Description                                     |
@@ -111,10 +84,32 @@ interface VsLabelValueStyleSet {
 }
 ```
 
-## Events
+### StyleSet Example
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+```html
+<template>
+    <vs-label-value
+        :style-set="{
+            variables: {
+                border: '2px solid #e91e63',
+            },
+            label: {
+                backgroundColor: '#f5f5f5',
+                color: '#333',
+                fontWeight: 600,
+            },
+            value: {
+                backgroundColor: '#fff',
+                color: '#666',
+                padding: '1rem 2rem',
+            },
+        }"
+    >
+        <template #label>Custom Style</template>
+        Customized value
+    </vs-label-value>
+</template>
+```
 
 ## Slots
 
@@ -122,11 +117,6 @@ interface VsLabelValueStyleSet {
 | --------- | ------------------------------------ |
 | `label`   | Content to display in the label area |
 | `default` | Content to display in the value area |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

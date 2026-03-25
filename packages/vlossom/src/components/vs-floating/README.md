@@ -95,7 +95,7 @@ const isOpen = ref(false);
 
 | Prop          | Type                                                 | Default                  | Required | Description                                        |
 | ------------- | ---------------------------------------------------- | ------------------------ | -------- | -------------------------------------------------- |
-| `target`      | `string`                                             | -                        | ✅       | CSS selector for the target element                |
+| `target`      | `string`                                             | -                        | `true`   | CSS selector for the target element                |
 | `align`       | `'start' \| 'center' \| 'end'`                       | `'start'`                | -        | Alignment of the floating element                  |
 | `disabled`    | `boolean`                                            | `false`                  | -        | Disable the floating                               |
 | `enterDelay`  | `string \| number`                                   | `0`                      | -        | Show delay in milliseconds                         |
@@ -106,12 +106,6 @@ const isOpen = ref(false);
 | `noAnimation` | `boolean`                                            | `false`                  | -        | Disable animation                                  |
 | `overlayId`   | `string`                                             | `'#vs-floating-overlay'` | -        | ID of the overlay container where floating renders |
 | `placement`   | `'top' \| 'right' \| 'bottom' \| 'left' \| 'middle'` | `'bottom'`               | -        | Preferred position                                 |
-
-## Types
-
-```typescript
-// No StyleSet for this component
-```
 
 ## Events
 
@@ -124,11 +118,6 @@ const isOpen = ref(false);
 | Slot      | Props                      | Description                                        |
 | --------- | -------------------------- | -------------------------------------------------- |
 | `default` | `{ placement: Placement }` | Floating content — provides the computed placement |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

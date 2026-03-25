@@ -2,47 +2,17 @@
 
 # VsLoading
 
-An animated loading indicator component. Displays a series of animated bars. Supports flexible size configuration and color customization.
+An inline animated loading indicator component.
 
 **Available Version**: 2.0.0+
 
 ## Basic Usage
 
-### Default Loading
-
-```html
+```vue
 <template>
     <vs-loading />
-</template>
-```
-
-### Custom Size
-
-```html
-<template>
-    <vs-loading width="2rem" height="2rem" />
-    <vs-loading width="4rem" height="4rem" />
-    <vs-loading width="6rem" height="6rem" />
-    <vs-loading width="8rem" height="8rem" />
-</template>
-```
-
-### StyleSet Example
-
-```html
-<template>
-    <vs-loading
-        :style-set="{
-            variables: {
-                color: '#e91e63',
-                barWidth: '15%',
-            },
-            component: {
-                width: '4rem',
-                height: '4rem',
-            },
-        }"
-    />
+    <vs-loading width="100px" height="50px" />
+    <vs-loading :width="200" :height="100" />
 </template>
 ```
 
@@ -60,24 +30,28 @@ An animated loading indicator component. Displays a series of animated bars. Sup
 ```typescript
 interface VsLoadingStyleSet {
     variables?: {
-        color?: string;
         barWidth?: string;
+        color?: string;
     };
     component?: CSSProperties;
 }
 ```
 
-## Events
+### StyleSet Example
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+```vue
+<template>
+    <vs-loading
+        :style-set="{
+            variables: {
+                barWidth: '15%',
+                color: '#ff6b6b',
+            },
+            component: {
+                width: '6rem',
+                height: '8rem',
+            },
+        }"
+    />
+</template>
+```
