@@ -34,8 +34,6 @@ A block container component for clearly separating and grouping content. Display
 
 ### Used with VsGrid
 
-Combine with VsGrid to build responsive grid layouts.
-
 ```html
 <template>
     <!-- Each block occupies 1 column in a 3-column grid -->
@@ -56,7 +54,7 @@ Combine with VsGrid to build responsive grid layouts.
 </template>
 ```
 
-You can also specify different column counts for different screen sizes.
+### Responsive Grid
 
 ```html
 <template>
@@ -122,6 +120,11 @@ interface VsBlockStyleSet {
 </template>
 ```
 
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
 | Slot      | Description                         |
@@ -129,18 +132,14 @@ interface VsBlockStyleSet {
 | `title`   | Title displayed at the top of block |
 | `default` | Main content of the block body      |
 
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+
 ## Features
 
 - **Clear content separation**: Visually separates the title and body to clarify information structure
 - **Container Query responsive**: Padding is automatically adjusted based on container size for optimal layout on all screen sizes
 - **Responsive grid support**: Use the `grid` prop with `VsGrid` to specify different column counts by screen size for flexible layouts
 - **Independent styling**: Customize the title and body areas with different styles
-
-## Container Query Behavior
-
-The block provides responsive padding as follows:
-
-- **Over 1024px**: title `0.8rem 1.6rem`, body `1.6rem 1.6rem`
-- **768px–1024px**: title `0.6rem 1.4rem`, body `1.2rem 1.4rem`
-- **640px–768px**: title `0.6rem 1.2rem`, body `1rem 1.2rem`
-- **Under 640px**: title `0.6rem 1rem`, body `0.8rem 1rem`

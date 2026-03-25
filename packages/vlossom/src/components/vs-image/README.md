@@ -58,6 +58,23 @@ An image display component. Supports lazy loading, fallback images, and skeleton
 </template>
 ```
 
+### StyleSet Example
+
+```html
+<template>
+    <vs-image
+        src="https://example.com/image.jpg"
+        alt="Sized Image"
+        :style-set="{
+            variables: {
+                width: '300px',
+                height: '300px',
+            },
+        }"
+    />
+</template>
+```
+
 ## Props
 
 | Prop         | Type                        | Default | Required | Description                            |
@@ -68,18 +85,6 @@ An image display component. Supports lazy loading, fallback images, and skeleton
 | `lazy`       | `boolean`                   | `false` | -        | Enable lazy loading                    |
 | `noSkeleton` | `boolean`                   | `false` | -        | Disable skeleton display while loading |
 | `styleSet`   | `string \| VsImageStyleSet` | -       | -        | Custom style configuration object      |
-
-## Slots
-
-| Slot       | Description                                         |
-| ---------- | --------------------------------------------------- |
-| `skeleton` | Skeleton content displayed while loading (optional) |
-
-## Events
-
-| Event   | Parameters | Description                      |
-| ------- | ---------- | -------------------------------- |
-| `error` | -          | Emitted when image loading fails |
 
 ## Types
 
@@ -101,42 +106,22 @@ interface VsImageStyleSet {
 >
 > `skeleton` uses [VsSkeletonStyleSet](../vs-skeleton/README.md#types).
 
-### StyleSet Example
+## Events
 
-```html
-<template>
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Sized Image"
-        :style-set="{
-            variables: {
-                width: '300px',
-                height: '300px',
-            },
-        }"
-    />
+| Event   | Payload | Description                      |
+| ------- | ------- | -------------------------------- |
+| `error` | -       | Emitted when image loading fails |
 
-    <!-- Custom skeleton -->
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Custom Skeleton"
-        :style-set="{
-            variables: {
-                width: '200px',
-                height: '200px',
-            },
-            skeleton: {
-                component: {
-                    width: '200px',
-                    height: '200px',
-                    borderRadius: '50%',
-                    backgroundColor: '#e0e0e0',
-                },
-            },
-        }"
-    />
-</template>
-```
+## Slots
+
+| Slot       | Description                                         |
+| ---------- | --------------------------------------------------- |
+| `skeleton` | Skeleton content displayed while loading (optional) |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

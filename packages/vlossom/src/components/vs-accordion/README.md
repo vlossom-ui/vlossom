@@ -136,6 +136,13 @@ interface VsAccordionStyleSet {
 </template>
 ```
 
+## Events
+
+| Event               | Payload   | Description                            |
+| ------------------- | --------- | -------------------------------------- |
+| `toggle`            | `boolean` | Emitted when the accordion is toggled  |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
+
 ## Slots
 
 | Slot      | Description                                  |
@@ -143,12 +150,10 @@ interface VsAccordionStyleSet {
 | `default` | Accordion content (the collapsible area)     |
 | `title`   | Accordion title (the clickable trigger area) |
 
-## Events
+## Methods
 
-| Event               | Parameters | Description                            |
-| ------------------- | ---------- | -------------------------------------- |
-| `toggle`            | `boolean`  | Emitted when the accordion is toggled  |
-| `update:modelValue` | `boolean`  | Emitted when the v-model value changes |
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
