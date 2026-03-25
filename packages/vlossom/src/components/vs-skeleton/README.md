@@ -28,29 +28,6 @@ A skeleton UI component displayed while content is loading. Communicates the loa
 </template>
 ```
 
-## Props
-
-| Prop          | Type                           | Default | Required | Description                       |
-| ------------- | ------------------------------ | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`                  | -       | -        | Color scheme for the component    |
-| `styleSet`    | `string \| VsSkeletonStyleSet` | -       | -        | Custom style configuration object |
-
-## Slots
-
-| Slot      | Description                                                  |
-| --------- | ------------------------------------------------------------ |
-| `default` | Text or content to display on top of the skeleton (optional) |
-
-## Types
-
-```typescript
-interface VsSkeletonStyleSet {
-    background?: CSSProperties;
-    content?: CSSProperties;
-    component?: CSSProperties;
-}
-```
-
 ### StyleSet Example
 
 ```html
@@ -74,6 +51,39 @@ interface VsSkeletonStyleSet {
     </div>
 </template>
 ```
+
+## Props
+
+| Prop          | Type                           | Default | Required | Description                       |
+| ------------- | ------------------------------ | ------- | -------- | --------------------------------- |
+| `colorScheme` | `ColorScheme`                  | -       | -        | Color scheme for the component    |
+| `styleSet`    | `string \| VsSkeletonStyleSet` | -       | -        | Custom style configuration object |
+
+## Types
+
+```typescript
+interface VsSkeletonStyleSet {
+    background?: CSSProperties;
+    content?: CSSProperties;
+    component?: CSSProperties;
+}
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot      | Description                                                  |
+| --------- | ------------------------------------------------------------ |
+| `default` | Text or content to display on top of the skeleton (optional) |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

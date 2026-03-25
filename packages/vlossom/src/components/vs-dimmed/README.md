@@ -63,6 +63,22 @@ interface VsDimmedStyleSet {
 }
 ```
 
+## Events
+
+| Event               | Payload   | Description                     |
+| ------------------- | --------- | ------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when visibility changes |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+
 ## Features
 
 - **Absolute positioning**: Fills the parent element with `position: absolute` by default (`top: 0, left: 0, width: 100%, height: 100%`)

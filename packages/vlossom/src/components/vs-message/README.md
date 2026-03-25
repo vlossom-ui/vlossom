@@ -8,21 +8,38 @@ A message component for displaying validation or status messages. Supports `idle
 
 ## Basic Usage
 
+### Default Message
+
+```html
+<template>
+    <vs-message text="Please enter your email address." />
+</template>
+```
+
 ### State Variants
 
 ```html
 <template>
-    <vs-message text="This is a default message." />
     <vs-message state="info" text="This is an informational message." />
-    <vs-message state="success" text="Completed successfully." />
-    <vs-message state="warning" text="Please proceed with caution." />
-    <vs-message state="error" text="An error has occurred." />
+    <vs-message state="success" text="Saved successfully." />
+    <vs-message state="warning" text="Please check again." />
+    <vs-message state="error" text="An error occurred." />
+</template>
+```
 
-    <!-- Size adjustment -->
-    <vs-message :style-set="{ variables: { size: '1.5rem' } }" text="Large message" />
+### Size Adjustment via StyleSet
 
-    <!-- Using a predefined StyleSet -->
-    <vs-message style-set="myStyleSet" text="Custom styled message" />
+```html
+<template>
+    <vs-message
+        state="info"
+        text="Custom sized message"
+        :style-set="{
+            variables: {
+                size: '1.2rem',
+            },
+        }"
+    />
 </template>
 ```
 
@@ -39,11 +56,26 @@ A message component for displaying validation or status messages. Supports `idle
 ```typescript
 interface VsMessageStyleSet {
     variables?: {
-        size?: string;
+        size?: string; // icon size — must use variables for CSS variable binding
     };
     component?: CSSProperties;
 }
 ```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

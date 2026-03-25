@@ -40,11 +40,28 @@ A focus trap component that confines keyboard focus to a specific area. Used to 
 </template>
 ```
 
+## Notes
+
+- **Single child element**: The focus trap must contain exactly one child element.
+- **Focusable elements**: The component works correctly only when it contains focusable elements (`button`, `input`, `a`, `[tabindex]`, etc.).
+- **Keyboard cycle**: Tab and Shift+Tab cycle focus only within the trap. When `disabled` is `true`, cycling is disabled.
+
 ## Props
 
 | Prop       | Type      | Default | Required | Description            |
 | ---------- | --------- | ------- | -------- | ---------------------- |
 | `disabled` | `boolean` | `false` | -        | Disable the focus trap |
+
+## Types
+
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
@@ -58,12 +75,6 @@ A focus trap component that confines keyboard focus to a specific area. Used to 
 | ------- | ---------- | ---------------------------------------------------- |
 | `focus` | -          | Activate the focus trap and set focus                |
 | `blur`  | -          | Deactivate the focus trap and restore previous focus |
-
-## Usage Notes
-
-- **Single child element**: The focus trap must contain exactly one child element.
-- **Focusable elements**: The component works correctly only when it contains focusable elements (`button`, `input`, `a`, `[tabindex]`, etc.).
-- **Keyboard cycle**: Tab and Shift+Tab cycle focus only within the trap. When `disabled` is `true`, cycling is disabled.
 
 ## Features
 
