@@ -50,28 +50,6 @@ A chip component for displaying small pieces of information or tags. Supports ic
 </template>
 ```
 
-### StyleSet Example
-
-```html
-<template>
-    <vs-chip
-        :style-set="{
-            variables: {
-                height: '3rem',
-            },
-            component: {
-                backgroundColor: '#f3e5f5',
-                border: '2px solid #9c27b0',
-                borderRadius: '20px',
-                color: '#7b1fa2',
-            },
-        }"
-    >
-        Custom Chip
-    </vs-chip>
-</template>
-```
-
 ## Props
 
 | Prop          | Type                                   | Default | Required | Description                             |
@@ -96,11 +74,27 @@ interface VsChipStyleSet {
 }
 ```
 
-## Events
+### StyleSet Example
 
-| Event   | Payload | Description                              |
-| ------- | ------- | ---------------------------------------- |
-| `close` | -       | Emitted when the close button is clicked |
+```html
+<template>
+    <vs-chip
+        :style-set="{
+            variables: {
+                height: '3rem',
+            },
+            component: {
+                backgroundColor: '#f3e5f5',
+                border: '2px solid #9c27b0',
+                borderRadius: '20px',
+                color: '#7b1fa2',
+            },
+        }"
+    >
+        Custom Chip
+    </vs-chip>
+</template>
+```
 
 ## Slots
 
@@ -109,10 +103,11 @@ interface VsChipStyleSet {
 | `default` | Content to display inside the chip      |
 | `icon`    | Icon to display at the left of the chip |
 
-## Methods
+## Events
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Event   | Parameters | Description                              |
+| ------- | ---------- | ---------------------------------------- |
+| `close` | -          | Emitted when the close button is clicked |
 
 ## Features
 

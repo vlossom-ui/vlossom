@@ -54,25 +54,24 @@ A flexible bar component that can be positioned anywhere. Useful as a navigation
 
 ```html
 <template>
-    <vs-bar position="fixed"><span>Fixed bar</span></vs-bar>
-    <vs-bar position="absolute"><span>Absolute bar</span></vs-bar>
-    <vs-bar position="sticky"><span>Sticky bar</span></vs-bar>
-    <vs-bar position="static"><span>Static bar</span></vs-bar>
-</template>
-```
+    <!-- CSS position: fixed -->
+    <vs-bar position="fixed">
+        <span>Fixed bar</span>
+    </vs-bar>
 
-### StyleSet Example
+    <!-- CSS position: absolute -->
+    <vs-bar position="absolute">
+        <span>Absolute bar</span>
+    </vs-bar>
 
-```html
-<template>
-    <vs-bar :style-set="{
-        component: {
-            backgroundColor: '#2c3e50',
-            padding: '1rem',
-            color: '#ffffff',
-        }
-    }">
-        Custom Bar
+    <!-- CSS position: sticky -->
+    <vs-bar position="sticky">
+        <span>Sticky bar</span>
+    </vs-bar>
+
+    <!-- CSS position: static -->
+    <vs-bar position="static">
+        <span>Static bar</span>
     </vs-bar>
 </template>
 ```
@@ -95,21 +94,40 @@ interface VsBarStyleSet {
 }
 ```
 
-## Events
+### StyleSet Example
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+```html
+<template>
+    <!-- Basic style customization -->
+    <vs-bar :style-set="{
+        component: {
+            backgroundColor: '#2c3e50',
+            padding: '1rem',
+            color: '#ffffff',
+        }
+    }">
+        Custom Bar
+    </vs-bar>
+
+    <!-- Used with position prop -->
+    <vs-bar position="fixed" :style-set="{
+        component: {
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 1000,
+        }
+    }">
+        Fixed Bar
+    </vs-bar>
+</template>
+```
 
 ## Slots
 
 | Slot      | Description                       |
 | --------- | --------------------------------- |
 | `default` | Content to display inside the bar |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

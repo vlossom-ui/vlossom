@@ -116,21 +116,11 @@ interface VsButtonStyleSet {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
 ## Slots
 
 | Slot      | Description                          |
 | --------- | ------------------------------------ |
 | `default` | Content to display inside the button |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

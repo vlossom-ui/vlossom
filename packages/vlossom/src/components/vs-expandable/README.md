@@ -27,8 +27,24 @@ A component that provides smooth expand/collapse animation for content. Enhances
 
 <script setup>
 import { ref } from 'vue';
+
 const isOpen = ref(false);
 </script>
+```
+
+## Props
+
+| Prop       | Type                             | Default | Required | Description                       |
+| ---------- | -------------------------------- | ------- | -------- | --------------------------------- |
+| `open`     | `boolean`                        | `false` | ✓        | Control expand/collapse state     |
+| `styleSet` | `string \| VsExpandableStyleSet` | -       | -        | Custom style configuration object |
+
+## Types
+
+```typescript
+interface VsExpandableStyleSet {
+    component?: CSSProperties;
+}
 ```
 
 ### StyleSet Example
@@ -58,40 +74,16 @@ const isOpen = ref(false);
 
 <script setup>
 import { ref } from 'vue';
+
 const isOpen = ref(false);
 </script>
 ```
-
-## Props
-
-| Prop       | Type                             | Default | Required | Description                       |
-| ---------- | -------------------------------- | ------- | -------- | --------------------------------- |
-| `open`     | `boolean`                        | `false` | ✓        | Control expand/collapse state     |
-| `styleSet` | `string \| VsExpandableStyleSet` | -       | -        | Custom style configuration object |
-
-## Types
-
-```typescript
-interface VsExpandableStyleSet {
-    component?: CSSProperties;
-}
-```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
 
 ## Slots
 
 | Slot      | Description                   |
 | --------- | ----------------------------- |
 | `default` | Content to expand or collapse |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

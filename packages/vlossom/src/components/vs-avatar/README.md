@@ -18,7 +18,31 @@ An avatar component for displaying user profile images, initials, or icons. Supp
 </template>
 ```
 
-### StyleSet Example
+## Props
+
+| Prop          | Type                         | Default | Required | Description                       |
+| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme` | `ColorScheme`                | -       | -        | Color scheme for the component    |
+| `styleSet`    | `string \| VsAvatarStyleSet` | -       | -        | Custom style configuration object |
+
+## Types
+
+```typescript
+interface VsAvatarStyleSet {
+    variables?: {
+        objectFit?: string;
+    };
+    component?: CSSProperties;
+}
+```
+
+## Slots
+
+| Slot      | Description                              |
+| --------- | ---------------------------------------- |
+| `default` | Avatar content (text, image, icon, etc.) |
+
+## StyleSet Example
 
 ```html
 <template>
@@ -39,40 +63,6 @@ An avatar component for displaying user profile images, initials, or icons. Supp
     </vs-avatar>
 </template>
 ```
-
-## Props
-
-| Prop          | Type                         | Default | Required | Description                       |
-| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`                | -       | -        | Color scheme for the component    |
-| `styleSet`    | `string \| VsAvatarStyleSet` | -       | -        | Custom style configuration object |
-
-## Types
-
-```typescript
-interface VsAvatarStyleSet {
-    variables?: {
-        objectFit?: string;
-    };
-    component?: CSSProperties;
-}
-```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot      | Description                              |
-| --------- | ---------------------------------------- |
-| `default` | Avatar content (text, image, icon, etc.) |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 
