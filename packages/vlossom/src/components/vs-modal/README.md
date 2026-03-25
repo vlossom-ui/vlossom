@@ -57,7 +57,7 @@ A declarative component that manages modal open/close state using v-model.
 | `escClose`    | `boolean`                                             | `true`   | -        | Whether to close the modal with the ESC key            |
 | `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal size                                             |
 | `callbacks`   | `OverlayCallbacks`                                    | `{}`     | -        | Overlay callback functions                             |
-| `dimClose`    | `boolean`                                             | `true`   | -        | Whether to close when the dimmed background is clicked |
+| `dimClose`    | `boolean`                                             | `false`  | -        | Whether to close when the dimmed background is clicked |
 | `dimmed`      | `boolean`                                             | `false`  | -        | Whether to show the dimmed background                  |
 | `focusLock`   | `boolean`                                             | `false`  | -        | Whether to lock keyboard focus inside the modal        |
 | `hideScroll`  | `boolean`                                             | `false`  | -        | Whether to hide the scrollbar                          |
@@ -134,7 +134,7 @@ A component that renders an individual modal node. Provides dimmed background, f
 | `escClose`    | `boolean`                                             | `true`  | -        | Whether to close the modal with the ESC key            |
 | `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | Modal size                                             |
 | `callbacks`   | `OverlayCallbacks`                                    | `{}`    | -        | Overlay callback functions                             |
-| `dimClose`    | `boolean`                                             | `false` | -        | Whether to close when the dimmed background is clicked |
+| `dimClose`    | `boolean`                                             | `true`  | -        | Whether to close when the dimmed background is clicked |
 | `dimmed`      | `boolean`                                             | `false` | -        | Whether to show the dimmed background                  |
 | `focusLock`   | `boolean`                                             | `false` | -        | Whether to lock keyboard focus inside the modal        |
 | `hideScroll`  | `boolean`                                             | `false` | -        | Whether to hide the scrollbar                          |

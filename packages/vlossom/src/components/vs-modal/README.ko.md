@@ -58,7 +58,7 @@ v-model을 사용하여 모달의 열림/닫힘 상태를 관리하는 선언적
 | `escClose`    | `boolean`                                             | `true`   | -        | ESC 키로 모달 닫기 기능 활성화 여부                 |
 | `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 모달 크기 설정                                      |
 | `callbacks`   | `OverlayCallbacks`                                    | `{}`     | -        | 오버레이 콜백 함수들                                |
-| `dimClose`    | `boolean`                                             | `true`   | -        | dimmed 영역 클릭 시 모달 닫기 여부                  |
+| `dimClose`    | `boolean`                                             | `false`  | -        | dimmed 영역 클릭 시 모달 닫기 여부                  |
 | `dimmed`      | `boolean`                                             | `false`  | -        | dimmed 배경 표시 여부                               |
 | `focusLock`   | `boolean`                                             | `false`  | -        | 포커스 잠금 기능 활성화 여부                        |
 | `hideScroll`  | `boolean`                                             | `false`  | -        | 스크롤바 숨기기 여부                                |
@@ -142,7 +142,7 @@ interface OverlayCallbacks<T = void> {
 | `escClose`    | `boolean`                                             | `true`  | -        | ESC 키로 모달 닫기 기능 활성화 여부 |
 | `size`        | `SizeProp \| { width?: SizeProp; height?: SizeProp }` | -       | -        | 모달 크기 설정                      |
 | `callbacks`   | `OverlayCallbacks`                                    | `{}`    | -        | 오버레이 콜백 함수들                |
-| `dimClose`    | `boolean`                                             | `false` | -        | dimmed 영역 클릭 시 모달 닫기 여부  |
+| `dimClose`    | `boolean`                                             | `true`  | -        | dimmed 영역 클릭 시 모달 닫기 여부  |
 | `dimmed`      | `boolean`                                             | `false` | -        | dimmed 배경 표시 여부               |
 | `focusLock`   | `boolean`                                             | `false` | -        | 포커스 잠금 기능 활성화 여부        |
 | `hideScroll`  | `boolean`                                             | `false` | -        | 스크롤바 숨기기 여부                |
