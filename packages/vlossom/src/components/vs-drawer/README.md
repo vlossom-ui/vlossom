@@ -124,6 +124,7 @@ When placed inside `vs-layout`, two behaviors happen automatically:
 | `colorScheme`      | `ColorScheme`                            | -        | -        | Color scheme for the component                                                            |
 | `styleSet`         | `string \| VsDrawerStyleSet`             | -        | -        | Custom style configuration object                                                         |
 | `callbacks`        | `OverlayCallbacks`                       | -        | -        | Callback functions called when overlay state changes                                      |
+| `hideScroll`       | `boolean`                                | `false`  | -        | Whether to hide the scrollbar in the drawer content area while keeping scroll behavior    |
 | `dimClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the dimmed background is clicked                         |
 | `dimmed`           | `boolean`                                | `false`  | -        | Whether to show a dimmed overlay over the background                                      |
 | `escClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the ESC key is pressed                                   |

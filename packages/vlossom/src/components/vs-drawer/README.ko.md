@@ -124,6 +124,7 @@ const drawerOpen = ref(false);
 | `colorScheme`      | `ColorScheme`                            | -        | -        | 컴포넌트 색상 테마                                                      |
 | `styleSet`         | `string \| VsDrawerStyleSet`             | -        | -        | 커스텀 스타일 설정 객체                                                 |
 | `callbacks`        | `OverlayCallbacks`                       | -        | -        | 오버레이 상태 변화 시 호출될 콜백 함수들                                |
+| `hideScroll`       | `boolean`                                | `false`  | -        | 드로어 본문 영역에서 스크롤바만 숨길지 여부(스크롤 동작은 유지)         |
 | `dimClose`         | `boolean`                                | `false`  | -        | 배경(dimmed) 클릭 시 드로어를 닫을지 여부                               |
 | `dimmed`           | `boolean`                                | `false`  | -        | 배경 어둡게 처리(dimmed overlay) 사용 여부                              |
 | `escClose`         | `boolean`                                | `false`  | -        | ESC 키 누를 시 드로어를 닫을지 여부                                     |
