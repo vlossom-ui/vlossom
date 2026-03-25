@@ -1,28 +1,30 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components';
-import type { VsTableBodyCell, VsTableColumnDef } from '../types';
+import { objectUtil } from '@/utils';
+import { getRowItem, type VsTableBodyCell, type VsTableColumnDef } from '../types';
 
 export function useTableSearch(ref: Ref<VsSearchInputRef | null>, columns: ComputedRef<VsTableColumnDef[] | null>) {
-    const searchColumnKeyList = computed<string[]>(() => {
+    const skipKeyList = computed<string[]>(() => {
         if (!columns.value) {
             return [];
         }
-        return columns.value.filter((col) => !col.skipSearch).map((column) => column.key);
+        return columns.value.filter((col) => col.skipSearch).map((column) => column.key);
     });
 
     function matchBySearch(row: VsTableBodyCell[]): boolean {
         if (!ref.value) {
             return true;
         }
-        const matchFn = ref.value.match;
+        const item = getRowItem(row);
+        if (!item) {
+            return false;
+        }
+        const brushedItem = objectUtil.omit(item, skipKeyList.value);
+        const crushedItem = objectUtil.crush(brushedItem);
+        const search = ref.value.match;
 
-        return row.some((cell) => {
-            if (!searchColumnKeyList.value.includes(cell.colKey)) {
-                return false;
-            }
-            const cellValue = cell.value ? String(cell.value) : '';
-            return matchFn(cellValue);
-        });
+        const flattenedItemText = Object.values(crushedItem).join(' ');
+        return search(flattenedItemText);
     }
 
     return {
