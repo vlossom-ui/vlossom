@@ -53,7 +53,7 @@ const progress = ref(75);
 | ------------- | ------------------------------ | ------- | -------- | -------------------------------- |
 | `colorScheme` | `ColorScheme`                  | -       | -        | 컴포넌트 색상 테마               |
 | `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | 커스텀 스타일 설정 객체          |
-| `max`         | `number \| string`             | `100`   | -        | 진행률의 최댓값                  |
+| `max`         | `number \| string`             | `1`     | -        | 진행률의 최댓값                  |
 | `value`       | `number \| string`             | `0`     | -        | 현재 진행률 값                   |
 | `label`       | `string`                       | `''`    | -        | 진행률과 함께 표시할 라벨 텍스트 |
 

@@ -43,7 +43,7 @@ const progress = ref(75);
 | ------------- | ------------------------------ | ------- | -------- | ----------------------------------------- |
 | `colorScheme` | `ColorScheme`                  | -       | -        | Color scheme for the component            |
 | `styleSet`    | `string \| VsProgressStyleSet` | -       | -        | Custom style configuration object         |
-| `max`         | `number \| string`             | `100`   | -        | Maximum progress value                    |
+| `max`         | `number \| string`             | `1`     | -        | Maximum progress value                    |
 | `value`       | `number \| string`             | `0`     | -        | Current progress value                    |
 | `label`       | `string`                       | `''`    | -        | Label text to display on the progress bar |
 
