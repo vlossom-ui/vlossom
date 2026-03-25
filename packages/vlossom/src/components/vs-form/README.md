@@ -97,3 +97,10 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 | ---------- | ---------- | ----------- | -------------------------------------------------------------------- |
 | `validate` | -          | `boolean`   | Run form validation; returns `true` if all fields pass, else `false` |
 | `clear`    | -          | `void`      | Reset all input elements in the form                                 |
+
+## Features
+
+- **Grid-based layout**: Responsive form layout using CSS Grid
+- **State management**: Shares form state with child components by providing FormStore
+- **Validation system**: Real-time validation and integrated validation
+- **Global state control**: Apply disabled/readonly state to the entire form

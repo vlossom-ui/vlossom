@@ -137,3 +137,9 @@ interface VsButtonStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Multiple style variants**: Provides `primary`, `outline`, `ghost`, `circle`, and more
+- **Size variants**: Adjust size via the `size` prop (`xs`, `sm`, `md`, `lg`, `xl`)
+- **Loading state**: Show a loading spinner via the `loading` prop

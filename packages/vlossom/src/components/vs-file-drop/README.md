@@ -172,3 +172,14 @@ interface VsFileDropStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Drag-and-drop support**: Drag files to upload or click to open the file dialog
+- **Single/multiple file upload**: Choose single or multiple file upload via the `multiple` prop
+- **File type restriction**: Allow only specific file types via the `accept` prop
+- **File count limit**: Limit the number of files via `min`/`max` props
+- **Individual file removal**: Display selected files as chips with individual removal
+- **Validation rules**: Custom validation rules and built-in validation (required, min, max, accept, multiple)
+- **Drag state detection**: Provides visual feedback while dragging files
+- **File size display**: Shows selected file sizes in a human-readable format

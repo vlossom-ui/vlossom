@@ -321,3 +321,13 @@ const steps = ['Account', 'Profile', 'Settings', 'Complete'];
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Horizontal/vertical layout**: Switch layout via the `vertical` prop
+- **Progress bar**: Visually shows current progress
+- **Keyboard navigation**: Navigate steps with arrow keys, Home, and End keys
+- **Disable steps**: Restrict selection by disabling specific steps
+- **Responsive support**: Adapt to various screen sizes via `width` and `grid` props
+- **Gap adjustment**: Customize the gap between steps via the `gap` prop
+- **Label options**: Control label visibility via the `noLabel` prop

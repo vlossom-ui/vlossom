@@ -135,3 +135,11 @@ const isOpen = ref(false);
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Automatic position calculation**: Automatically calculates the optimal position relative to the target element
+- **Flexible positioning**: Supports 5 positions (`top`, `right`, `bottom`, `left`, `middle`) and 3 alignment options (`start`, `center`, `end`)
+- **Animation support**: Smooth fade in/out effects (position-specific animations)
+- **Delay configuration**: Customizable show/hide delay times
+- **Follow width**: Set the floating element to match the target element's width via the `followWidth` prop

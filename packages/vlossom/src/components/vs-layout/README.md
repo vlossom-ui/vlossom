@@ -73,3 +73,9 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Cohesive layout**: Easily compose layouts using `vs-header`, `vs-container`, `vs-drawer`, and `vs-footer` together
+- **Layout store**: Provides layout state to child components via `LAYOUT_STORE_KEY` using `provide`
+- **Dynamic padding adjustment**: When a drawer's `responsive` prop is enabled, `vs-container` padding automatically adjusts based on open drawers

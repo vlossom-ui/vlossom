@@ -101,3 +101,10 @@ interface Breakpoints {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **CSS Container Queries**: Responsive design using CSS Container Queries
+- **Automatic class generation**: Automatically generates CSS classes based on breakpoints
+- **CSS variable support**: Dynamically generates CSS variables for styling flexibility
+- **Grid system integration**: Compose responsive grid layouts in conjunction with VsGrid

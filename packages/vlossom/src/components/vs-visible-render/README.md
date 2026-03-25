@@ -105,3 +105,13 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 | Method            | Parameters      | Description                                  |
 | ----------------- | --------------- | -------------------------------------------- |
 | `scrollToElement` | `HTMLElement`   | Scroll to the specified child element        |
+
+## Features
+
+- **IntersectionObserver based**: Efficient visibility tracking using the browser's native API
+- **Auto visibility attribute**: Automatically sets `data-io-visible="true"` when a child element enters the viewport
+- **Auto scroll root detection**: Uses the container as root if scrollable; otherwise uses the viewport
+- **Dynamic child element support**: Automatically re-observes when child elements change via MutationObserver
+- **Flexible height setting**: Control container height and scroll behavior via the `height` prop
+- **Option customization**: Fine-tune IntersectionObserver behavior via `rootMargin` and `threshold`
+- **Disable support**: Disable visibility tracking as needed via the `disabled` prop

@@ -176,3 +176,13 @@ interface VsSwitchStyleSet {
 | `blur`     | -          | Remove focus from the switch         |
 | `validate` | -          | Run validation                       |
 | `clear`    | -          | Reset the value                      |
+
+## Features
+
+- **Full accessibility**: Keyboard navigation (Tab, Space, Enter) and screen reader support
+- **Native behavior**: Automatically handles click and keyboard input via HTML label structure
+- **Multiple value types**: Supports all types including strings and objects, not just booleans
+- **Array mode**: Manage multiple switches as a single array via the `multiple` prop
+- **Validation system**: Validation and state display via `rules` and `required`
+- **Change control**: Implement pre-change confirmation logic via the `beforeChange` callback
+- **Responsive layout**: Responsive width and grid based on VsInputWrapper

@@ -425,3 +425,14 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Multiple column input types**: Supports object/string/null column definitions for flexible initial configuration
+- **Slot-based customization**: Fine-grained priority slot rendering at the header/body cell level
+- **Responsive styling**: Maintains design system consistency with `styleSet` and `colorScheme`
+- **Responsive table**: Activated via the `responsive` prop. Switches to card layout below 1024px container width, showing header info alongside each cell
+- **Pagination**: Provides VsPagination-based page navigation and total items/page size selection
+- **Data tracking**: Real-time tracking of current page and filtered data via `v-model:paged-items` and `v-model:total-items`
+- **Row selection**: Checkbox-based row selection and conditional selection via the `selectable` prop
+- **Row expansion**: Toggle per-row detail areas via the `expandable` prop and `expand` slot

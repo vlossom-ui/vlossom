@@ -98,3 +98,13 @@ interface VsPageStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Responsive padding**: Uses TailwindCSS Container Query to automatically adjust padding by screen size
+    - Default: `2rem 3rem`
+    - Below 1024px: `1.8rem 2.5rem`
+    - Below 768px: `1.4rem 2rem`
+    - Below 640px: `1rem 1.5rem`
+- **Structured layout**: Semantic structure with clear separation of title, description, and content
+- **Optional slots**: title and description can be used optionally as needed

@@ -126,3 +126,10 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 | Method     | Return Type | Description            |
 | ---------- | ----------- | ---------------------- |
 | `toggle()` | `void`      | Toggle the state       |
+
+## Features
+
+- **v-model support**: Manage toggle state with two-way data binding
+- **VsButton based**: Fully supports all VsButton styling options
+- **Event handling**: Detect state changes via the `toggle` event
+- **Accessibility**: Keyboard navigation and screen reader support based on button

@@ -238,3 +238,13 @@ const drawerRef = ref(null);
 const drawerOpen = ref(false);
 </script>
 ```
+
+## Features
+
+- **Multiple placement support**: Slides in from 4 directions: `left`, `right`, `top`, `bottom`
+- **Flexible sizing**: Supports predefined sizes (`xs`~`xl`) or custom pixel/percent values
+- **Overlay features**: Dimmed background, close on background click, close on ESC key, etc.
+- **Accessibility**: Keyboard navigation support via focus trap
+- **Animation**: Smooth sliding animation effect
+- **v-model support**: State management via two-way data binding
+- **vs-layout integration**: Automatically adjusts drawer padding and offset based on header/footer position. With `layout-responsive`, `vs-container` padding also responds to drawer open/close

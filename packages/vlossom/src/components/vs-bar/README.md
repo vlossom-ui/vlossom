@@ -116,3 +116,9 @@ interface VsBarStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Flexible positioning**: Provides `relative`, `absolute`, `fixed`, `sticky`, `static` CSS position options via the `position` prop
+- **Semantic HTML support**: Use appropriate HTML tags (`nav`, `header`, `footer`, `section`, etc.) via the `tag` prop
+- **Primary style**: Apply an emphasized primary style when needed

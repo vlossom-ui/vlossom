@@ -166,3 +166,13 @@ interface VsSearchInputRef {
 | `blur`   | -              | -         | Remove focus from the input field               |
 | `select` | -              | -         | Select all text in the input field              |
 | `clear`  | -              | -         | Clear the input value                           |
+
+## Features
+
+- **Based on vs-input**: Inherits all features and styles from vs-input
+- **Debounce applied**: Optimizes performance by emitting the `search` event every 400ms
+- **v-model support**: Supports v-model binding for `modelValue`, `caseSensitive`, and `regex`
+- **Case-sensitive toggle**: Provides a case-sensitive toggle button via the `use-case-sensitive` prop
+- **Regex search**: Provides a regex search toggle button via the `use-regex` prop
+- **match method**: Provides text matching functionality accessible via ref
+- **Type safety**: Ensures type safety via TypeScript

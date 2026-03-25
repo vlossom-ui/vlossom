@@ -140,3 +140,10 @@ interface VsInnerScrollStyleSet {
 | Method      | Parameters | Return    | Description                               |
 | ----------- | ---------- | --------- | ----------------------------------------- |
 | `hasScroll` | -          | `boolean` | Returns whether the container is scrollable |
+
+## Features
+
+- **Fixed header/footer**: Header and footer areas remain fixed without scrolling
+- **Content scroll**: Only the body scrolls when content exceeds the container height
+- **Container Query**: Supports `container-type: inline-size` for container-based styling
+- **Scrollbar control**: Control scrollbar visibility via the `hideScroll` prop

@@ -82,3 +82,8 @@ interface VsMessageStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **State-specific icons**: Automatically displays the appropriate icon for each state
+- **Color theme**: Applies a consistent color scheme based on the state

@@ -309,3 +309,12 @@ interface VsTabsStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Horizontal/vertical layout**: Switch layout via the `vertical` prop
+- **Keyboard navigation**: Navigate tabs with arrow keys, Home, and End keys
+- **Scroll support**: Scrolling and scroll buttons for long tab lists
+- **Disable tabs**: Restrict selection by disabling specific tabs
+- **Responsive support**: Adapt to various screen sizes via `width` and `grid` props
+- **Accessibility**: Screen reader support via ARIA attributes

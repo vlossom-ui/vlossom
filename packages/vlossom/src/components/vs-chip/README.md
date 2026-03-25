@@ -119,3 +119,11 @@ interface VsChipStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Color theme**: Apply predefined color combinations via the `colorScheme` prop
+- **Style customization**: Fine-tune styles via the `styleSet` prop
+- **Icon support**: Add icons via the `icon` slot
+- **Close functionality**: Show a close button and handle events via the `closable` prop
+- **Size variants**: Adjust size via the `size` prop (`xs`, `sm`, `md`, `lg`, `xl`)

@@ -128,3 +128,12 @@ interface VsImageStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Lazy loading**: Efficient lazy loading using IntersectionObserver
+- **Fallback support**: Automatically shows fallback image when loading fails
+- **Loading state**: Visualize loading state with skeleton UI
+- **Accessibility**: Accessibility support via alt text
+- **Responsive**: Flexible sizing and aspect ratio maintenance via object-fit
+- **Error handling**: Emits `error` event when image loading fails

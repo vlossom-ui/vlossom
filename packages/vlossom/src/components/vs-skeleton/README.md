@@ -90,3 +90,10 @@ interface VsSkeletonStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Smooth animation**: Represents loading state with a 1-second pulse animation
+- **Responsive size**: Automatically adjusts to the parent container size (default 100%)
+- **Flexible content**: Show loading text or icons via the slot
+- **Customizable**: Fine-grained style control via styleSet

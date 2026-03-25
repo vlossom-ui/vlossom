@@ -96,3 +96,12 @@ interface VsThemeButtonStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Auto theme detection**: Automatically reflects the current theme of the Vlossom framework
+- **Visual feedback**: Shows current theme state with sun (☀️) and moon (🌙) icons
+- **Animation effect**: Smooth icon transition animation
+- **VsToggle based**: Fully supports all VsToggle features and styling options
+- **Framework integration**: Automatically calls `useVlossom().toggleTheme()`
+- **Event emission**: Detect theme changes via the `change` event

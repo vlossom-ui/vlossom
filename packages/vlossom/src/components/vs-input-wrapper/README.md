@@ -152,3 +152,14 @@ interface VsInputWrapperStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Label management**: Automatic label rendering and custom label slot support
+- **Required indicator**: Visually mark required fields via the `required` prop
+- **Message system**: Display state-specific messages (info, success, warning, error)
+- **Style system**: Fine-grained style control via `colorScheme` and `styleSet`
+- **Responsive layout**: Responsive width and grid based on VsResponsive
+- **Shake animation**: Visual feedback on validation failure
+- **Accessibility**: Supports fieldset/legend structure for screen reader compatibility
+- **Customizable**: Full customization via label and message slots

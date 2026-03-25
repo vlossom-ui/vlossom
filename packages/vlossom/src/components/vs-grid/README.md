@@ -123,3 +123,8 @@ interface VsGridStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **CSS Grid based**: Uses the CSS Grid layout system
+- **Container Query**: Supports `container-type: inline-size`

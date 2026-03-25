@@ -137,3 +137,9 @@ interface VsPaginationStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **v-model support**: Manage current page state with two-way data binding (0-based index)
+- **Automatic page calculation**: Automatically calculates the visible page range centered on the current page
+- **VsButton based**: Consistent styling using VsButton for edge and page buttons

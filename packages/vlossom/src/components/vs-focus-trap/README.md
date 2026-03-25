@@ -81,3 +81,9 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 | ------- | ---------- | --------------------------------------------------- |
 | `focus` | -          | Activate the focus trap and set focus               |
 | `blur`  | -          | Deactivate the focus trap and restore previous focus |
+
+## Features
+
+- **Automatic focus management**: Automatically sets focus when the component mounts and restores the previous focus when it unmounts
+- **Keyboard cycle**: Tab/Shift+Tab cycles focus only within the component
+- **Flexible focus control**: Optionally disable focus lock via the `disabled` prop

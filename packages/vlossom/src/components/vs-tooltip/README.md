@@ -145,3 +145,11 @@ interface VsTooltipStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Multiple trigger modes**: Supports hover, click, and keyboard focus
+- **Flexible positioning**: 4-direction positioning and 3 alignment options
+- **Animation support**: Smooth fade in/out effects
+- **Accessibility**: Keyboard navigation and ESC key support
+- **Delay configuration**: Customizable show/hide delay times

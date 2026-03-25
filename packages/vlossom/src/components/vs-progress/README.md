@@ -121,3 +121,11 @@ interface VsProgressStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **HTML5 based**: Uses the standard `<progress>` element for accessibility and compatibility
+- **Automatic validation**: `max` and `value` values are automatically validated to allow only non-negative numbers
+- **Range clamping**: Automatically clamps `value` to `max` if it exceeds it
+- **Label display**: Show descriptive text alongside the progress bar
+- **Flexible styling**: Independent style customization for the progress bar and label

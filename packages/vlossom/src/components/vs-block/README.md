@@ -142,3 +142,10 @@ interface VsBlockStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Clear content separation**: Visually separates the title and body to clarify information structure
+- **Container Query responsive**: Padding is automatically adjusted based on container size for optimal layout on all screen sizes
+- **Responsive grid support**: Use the `grid` prop with `VsGrid` to specify different column counts by screen size for flexible layouts
+- **Independent styling**: Customize the title and body areas with different styles

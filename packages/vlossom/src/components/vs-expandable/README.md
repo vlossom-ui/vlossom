@@ -98,3 +98,10 @@ interface VsExpandableStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Smooth animation**: Natural expand/collapse effect using height and opacity
+- **Dynamic height calculation**: Automatically calculates height and applies animation based on content size
+- **Performance optimization**: Sets `height: auto` after transition completes to guarantee responsive behavior
+- **Versatile usage**: Can be used in accordions, dropdowns, toggle menus, and other UI patterns

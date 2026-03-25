@@ -217,3 +217,13 @@ interface VsCheckboxSetStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Single and group support**: Single checkbox and multiple-selection via checkbox group
+- **v-model support**: Two-way data binding
+- **Flexible option configuration**: Automatically extracts labels/values from object arrays
+- **Selection count limit**: Limit selectable items with `min`/`max` props
+- **Vertical/horizontal layout**: Switch between vertical and horizontal layout via the `vertical` prop
+- **Indeterminate state**: Represent partial selection with the `indeterminate` prop
+- **Customizable**: Fine-tune styles via the `styleSet` prop

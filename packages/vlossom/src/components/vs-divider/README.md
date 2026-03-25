@@ -137,3 +137,10 @@ interface VsDividerStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Multiple orientations**: Supports both horizontal and vertical dividers
+- **Container Query responsive**: Automatically switches orientation based on container size
+- **Accessibility**: Serves a semantic role for visual separation
+- **Customizable**: Flexible style changes via CSS variables and styleSet

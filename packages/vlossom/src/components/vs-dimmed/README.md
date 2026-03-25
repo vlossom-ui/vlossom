@@ -84,3 +84,15 @@ interface VsDimmedStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Absolute positioning**: Fills the parent element with `position: absolute` by default (`top: 0, left: 0, width: 100%, height: 100%`)
+- **v-model support**: Control show/hide via `v-model`
+- **Built-in animation**: Built-in opacity-based fade in/out effect
+- **Accessibility**: Hidden from screen readers via `aria-hidden="true"`
+- **Customizable**: Flexible style changes via CSS variables and styleSet
+
+## Notes
+
+- The parent element requires a `position: relative` or `position: absolute` style

@@ -150,3 +150,11 @@ interface VsTextWrapStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Copy feature**: Activate the copy button via the `copy` prop. Copies plain text only, stripping HTML tags
+- **Link feature**: Activate the link button via the `link` prop. Opens the URL in a new tab on click
+- **Icon styling**: Individually customize the color and size of copy/link icons via `copyIcon` and `linkIcon` in `styleSet`
+- **Width control**: Set the width of the text area via the `width` prop; long text is displayed with an ellipsis
+- **Copy feedback**: Changes to a check icon for 2 seconds after successful copy as visual feedback

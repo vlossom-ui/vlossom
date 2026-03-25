@@ -159,3 +159,10 @@ interface VsGroupedListStyleSet {
 | -------------- | ------------ | --------- | -------------------------------------------- |
 | `scrollToItem` | `id: string` | -         | Scroll to the item with the given id         |
 | `hasScroll`    | -            | `boolean` | Returns whether the list is scrollable       |
+
+## Features
+
+- **Virtual rendering**: Uses vs-visible-render to efficiently display large numbers of items
+- **Grouping support**: Classify items into groups via the `groupBy` function
+- **Custom slots**: Customize the UI via `header`, `footer`, `group`, and `item` slots
+- **Scroll control**: Scroll to a specific item via the `scrollToItem` method

@@ -79,3 +79,8 @@ interface VsAvatarStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Flexible content**: Supports text, images, icons, and more
+- **Image optimization**: Maintain image aspect ratio using the `object-fit` property

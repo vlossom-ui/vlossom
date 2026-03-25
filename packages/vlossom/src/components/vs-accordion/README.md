@@ -160,3 +160,11 @@ interface VsAccordionStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Keyboard accessibility**: Control the accordion with Enter and Space keys
+- **v-model support**: Manage open/close state with two-way data binding
+- **Flexible styling**: Customize the title and content areas independently
+- **Responsive support**: Adapts to various screen sizes
+- **Accessibility**: Designed for screen readers and keyboard users

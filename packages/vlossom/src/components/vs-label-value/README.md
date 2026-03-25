@@ -133,3 +133,11 @@ interface VsLabelValueStyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Vertical/responsive layout**: `vertical` always stacks vertically; `responsive` switches to vertical below 768px container query
+- **Flexible customization**: Style the label and value areas independently
+- **Dense mode**: Compact style for space-constrained environments
+- **Primary emphasis**: Primary style to highlight important information
+- **Accessibility**: Appropriate color contrast and visual hierarchy

@@ -118,3 +118,10 @@ interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Features
+
+- **Semantic HTML**: Uses `<header>` tag by default for semantic markup (changeable via `tag` prop)
+- **Layout integration**: Automatically registers state in the layout store when used as a child of `vs-layout`
+- **Auto padding adjustment**: `vs-container` automatically adjusts padding when `position` is `fixed`, `absolute`, or `sticky`
+- **Primary style**: Apply an emphasized primary style when needed

@@ -218,3 +218,12 @@ interface VsTextareaStyleSet {
 | `select`   | -          | `void`      | Select all text in the textarea          |
 | `clear`    | -          | `void`      | Clear the textarea value                 |
 | `validate` | -          | `boolean`   | Run validation and return the result     |
+
+## Features
+
+- **Multi-line text input**: Provides a textarea element suitable for long text or descriptions
+- **String modifiers**: Automatically transform input values via v-model's `capitalize`, `upper`, `lower` modifiers
+- **Character limit**: Limit minimum/maximum character count via `min`/`max` props
+- **Validation rules**: Custom validation rules and built-in validation (required, min, max)
+- **Text selection**: Select all text via the `select()` method
+- **Accessibility**: Screen reader support via `aria-required`

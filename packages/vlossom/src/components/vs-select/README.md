@@ -378,3 +378,17 @@ interface VsSelectStyleSet {
 | `clear`    | `void`          | Clear all selected values                      |
 | `focus`    | `void`          | Set focus on the trigger                       |
 | `blur`     | `void`          | Remove focus from the trigger                  |
+
+## Features
+
+- **Single/multiple selection**: Select a single value or multiple values as an array
+- **v-model support**: Two-way data binding
+- **Search**: Real-time search in the options list
+- **Select all**: Select/deselect all options in multiple selection mode
+- **Grouping**: Group options by category
+- **Disable options**: Make specific options unselectable
+- **Selection count limit**: Limit selectable items with `min`/`max` props
+- **Chip display**: Show selected items as chips in multiple selection mode
+- **Keyboard navigation**: Supports arrow keys, Enter, Space, Escape, and more
+- **Customizable**: Fine-grained customization via `styleSet` prop and slots
+- **Validation**: Built-in validation rules (required, min, max)

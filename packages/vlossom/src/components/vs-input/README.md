@@ -211,3 +211,13 @@ interface VsInputStyleSet {
 | `focus`  | -          | `void`      | Set focus on the input field        |
 | `select` | -          | `void`      | Select all text in the input field  |
 | `clear`  | -          | `void`      | Clear the input field value         |
+
+## Features
+
+- **Multiple input type support**: Provides text, email, password, number, tel, url, search, and more
+- **String modifiers**: Automatically transform input values via v-model's `capitalize`, `upper`, `lower` modifiers
+- **Number input validation**: Limit range with `min`/`max` props when `type="number"`
+- **Clear button**: Provides a clear button for quickly clearing the input value (can be disabled)
+- **Prepend/Append slots**: Add icons or text before and after the input field
+- **Validation rules**: Custom validation rules and built-in validation (required, min, max)
+- **Type safety**: Automatically converts number type to number and text type to string
