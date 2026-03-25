@@ -71,35 +71,30 @@ const selectedOptions = ref([]);
 
 ## Props
 
-| Prop             | Type                         | Default | Required | Description                    |
-| ---------------- | ---------------------------- | ------- | -------- | ------------------------------ |
-| `modelValue`     | `any`                        | `false` | -        | v-model로 바인딩되는 스위치 값 |
-| `colorScheme`    | `ColorScheme`                | -       | -        | 컴포넌트 색상 테마             |
-| `styleSet`       | `string \| VsSwitchStyleSet` | -       | -        | 커스텀 스타일 설정 객체        |
-| `label`          | `string`                     | `''`    | -        | 스위치의 레이블                |
-| `trueValue`      | `any`                        | `true`  | -        | true 상태의 값                 |
-| `falseValue`     | `any`                        | `false` | -        | false 상태의 값                |
-| `beforeChange`   | `Function`                   | `null`  | -        | 값 변경 전 실행되는 콜백 함수  |
-| `checked`        | `boolean`                    | `false` | -        | 초기 체크 상태                 |
-| `multiple`       | `boolean`                    | `false` | -        | 배열 모드 활성화               |
-| `disabled`       | `boolean`                    | `false` | -        | 스위치 비활성화                |
-| `readonly`       | `boolean`                    | `false` | -        | 읽기 전용 모드                 |
-| `required`       | `boolean`                    | `false` | -        | 필수 입력 여부                 |
-| `hidden`         | `boolean`                    | `false` | -        | 스위치 숨김 여부               |
-| `id`             | `string`                     | `''`    | -        | input 요소의 id 속성           |
-| `name`           | `string`                     | `''`    | -        | input 요소의 name 속성         |
-| `messages`       | `Message[]`                  | `[]`    | -        | 검증 메시지 배열               |
-| `rules`          | `Rule[]`                     | `[]`    | -        | 검증 규칙 배열                 |
-| `state`          | `UIState`                    | `idle`  | -        | 컴포넌트 상태                  |
-| `noMessages`     | `boolean`                    | `false` | -        | 메시지 영역 숨김               |
-| `noDefaultRules` | `boolean`                    | `false` | -        | 기본 검증 규칙 비활성화        |
-
-**반응형 Props:**
-
-| Prop    | Type                              | Default | Description |
-| ------- | --------------------------------- | ------- | ----------- | -------------------- |
-| `width` | `string \| number \| Breakpoints` | -       | -           | 컴포넌트 너비 설정   |
-| `grid`  | `string \| number \| Breakpoints` | -       | -           | 그리드 레이아웃 크기 |
+| Prop             | Type                              | Default | Required | Description                    |
+| ---------------- | --------------------------------- | ------- | -------- | ------------------------------ |
+| `modelValue`     | `any`                             | `false` | -        | v-model로 바인딩되는 스위치 값 |
+| `colorScheme`    | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마             |
+| `styleSet`       | `string \| VsSwitchStyleSet`      | -       | -        | 커스텀 스타일 설정 객체        |
+| `label`          | `string`                          | `''`    | -        | 스위치의 레이블                |
+| `trueValue`      | `any`                             | `true`  | -        | true 상태의 값                 |
+| `falseValue`     | `any`                             | `false` | -        | false 상태의 값                |
+| `beforeChange`   | `Function`                        | `null`  | -        | 값 변경 전 실행되는 콜백 함수  |
+| `checked`        | `boolean`                         | `false` | -        | 초기 체크 상태                 |
+| `multiple`       | `boolean`                         | `false` | -        | 배열 모드 활성화               |
+| `disabled`       | `boolean`                         | `false` | -        | 스위치 비활성화                |
+| `readonly`       | `boolean`                         | `false` | -        | 읽기 전용 모드                 |
+| `required`       | `boolean`                         | `false` | -        | 필수 입력 여부                 |
+| `hidden`         | `boolean`                         | `false` | -        | 스위치 숨김 여부               |
+| `id`             | `string`                          | `''`    | -        | input 요소의 id 속성           |
+| `name`           | `string`                          | `''`    | -        | input 요소의 name 속성         |
+| `messages`       | `Message[]`                       | `[]`    | -        | 검증 메시지 배열               |
+| `rules`          | `Rule[]`                          | `[]`    | -        | 검증 규칙 배열                 |
+| `state`          | `UIState`                         | `idle`  | -        | 컴포넌트 상태                  |
+| `noMessages`     | `boolean`                         | `false` | -        | 메시지 영역 숨김               |
+| `noDefaultRules` | `boolean`                         | `false` | -        | 기본 검증 규칙 비활성화        |
+| `width`          | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비 설정             |
+| `grid`           | `string \| number \| Breakpoints` | -       | -        | 그리드 레이아웃 크기           |
 
 ## Events
 
