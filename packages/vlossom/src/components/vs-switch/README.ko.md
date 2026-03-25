@@ -96,10 +96,10 @@ const selectedOptions = ref([]);
 
 **반응형 Props:**
 
-| Prop    | Type                              | Default | Description        |
-| ------- | --------------------------------- | ------- | ------------------ | -------------------- |
-| `width` | `string \| number \| Breakpoints` | -       | 컴포넌트 너비 설정 |
-| `grid`  | `string \| number \| Breakpoints` | -       | -                  | 그리드 레이아웃 크기 |
+| Prop    | Type                              | Default | Description |
+| ------- | --------------------------------- | ------- | ----------- | -------------------- |
+| `width` | `string \| number \| Breakpoints` | -       | -           | 컴포넌트 너비 설정   |
+| `grid`  | `string \| number \| Breakpoints` | -       | -           | 그리드 레이아웃 크기 |
 
 ## Events
 

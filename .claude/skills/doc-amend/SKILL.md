@@ -245,12 +245,39 @@ git show --stat <hash>
 
 ---
 
+## Phase 5: Verify (pnpm lint / format / test)
+
+After all amends and the rebase is complete, **always run the following commands** before pushing:
+
+```bash
+# 1. Format — aligns, fixes code style
+cd packages/vlossom
+pnpm prettier
+
+# 2. Lint — catches code issues
+pnpm lint
+
+# 3. Test — confirms nothing is broken
+pnpm test
+```
+
+Report results to the user. If any command fails:
+
+- **Format errors**: re-run prettier and re-commit
+- **Lint errors**: fix and amend the relevant commit (or add a new commit)
+- **Test failures**: investigate root cause; fix before pushing
+
+Only push after all three commands pass.
+
+---
+
 ## Caveats
 
 - **Finish Phase 2 (write docs) before Phase 4 (rebase).** Creating files mid-rebase risks conflicts.
 - **Do not run `git rebase --continue` on your own.** Run it only after the user approves the amend.
 - Rebasing a branch that was already pushed requires a force push; warn the user first.
 - Non-doc source files (`.vue`, `.ts`, etc.) are out of scope for this skill.
+- Always run Phase 5 (pnpm lint / format / test) before pushing.
 
 ---
 
