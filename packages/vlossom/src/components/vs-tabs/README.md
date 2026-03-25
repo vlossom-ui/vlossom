@@ -248,13 +248,6 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 | `vertical`      | `boolean`                                              | `false`  | -        | Apply vertical layout                                                           |
 | `modelValue`    | `number`                                               | `0`      | -        | Selected tab index (v-model)                                                    |
 
-## Events
-
-| Event               | Parameters | Description                                 |
-| ------------------- | ---------- | ------------------------------------------- |
-| `update:modelValue` | `number`   | Emitted when the v-model value changes      |
-| `change`            | `number`   | Emitted when the selected tab index changes |
-
 ## Types
 
 ```typescript
@@ -293,11 +286,23 @@ interface VsTabsStyleSet {
 </template>
 ```
 
+## Events
+
+| Event               | Parameters | Description                                 |
+| ------------------- | ---------- | ------------------------------------------- |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes      |
+| `change`            | `number`   | Emitted when the selected tab index changes |
+
 ## Slots
 
 | Slot  | Props            | Description                 |
 | ----- | ---------------- | --------------------------- |
 | `tab` | `{ tab, index }` | Custom content for each tab |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

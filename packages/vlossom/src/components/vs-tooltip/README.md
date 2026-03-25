@@ -12,26 +12,18 @@ A tooltip component supporting various trigger modes and positions. Supports hov
 
 ```html
 <template>
-    <vs-button id="my-button-id">Hover Me</vs-button>
-    <vs-tooltip target="#my-button-id">
+    <vs-button id="my-button">Hover Me</vs-button>
+    <vs-tooltip target="#my-button">
         <span>This is a tooltip</span>
-    </vs-tooltip>
-    <vs-button class="my-button-class">Hover Me</vs-button>
-    <vs-tooltip target=".my-button-class">
-        <span>That is a tooltip</span>
     </vs-tooltip>
 </template>
 ```
-
-> **Note**
-> Any CSS selector supported by `querySelector` can be used for the `target` prop.
-> Examples: `#my-id`, `.my-class`, `[data-attr="value"]`, etc.
 
 ### Clickable Tooltip
 
 ```html
 <template>
-    <vs-button id="clickable-button">Click me</vs-button>
+    <vs-button id="clickable-button">Click Me</vs-button>
     <vs-tooltip target="#clickable-button" clickable>
         <span>Tooltip opened by clicking</span>
     </vs-tooltip>
@@ -49,51 +41,56 @@ A tooltip component supporting various trigger modes and positions. Supports hov
 </template>
 ```
 
-### Clickable and Hoverable Tooltip
-
-```html
-<template>
-    <vs-button id="click-hover-button">Click and Hover Me</vs-button>
-    <vs-tooltip target="#click-hover-button" clickable contents-hover>
-        <span>Opens on click and you can also hover over the tooltip content</span>
-    </vs-tooltip>
-</template>
-```
-
 ### Various Positions
 
 ```html
 <template>
-    <div style="display: flex; gap: 1rem;">
-        <vs-button id="top-button">Top</vs-button>
-        <vs-tooltip target="#top-button" placement="top">top</vs-tooltip>
+    <vs-button id="top-button">Top</vs-button>
+    <vs-tooltip target="#top-button" placement="top">top</vs-tooltip>
 
-        <vs-button id="right-button">Right</vs-button>
-        <vs-tooltip target="#right-button" placement="right">right</vs-tooltip>
+    <vs-button id="right-button">Right</vs-button>
+    <vs-tooltip target="#right-button" placement="right">right</vs-tooltip>
 
-        <vs-button id="bottom-button">Bottom</vs-button>
-        <vs-tooltip target="#bottom-button" placement="bottom">bottom</vs-tooltip>
+    <vs-button id="bottom-button">Bottom</vs-button>
+    <vs-tooltip target="#bottom-button" placement="bottom">bottom</vs-tooltip>
 
-        <vs-button id="left-button">Left</vs-button>
-        <vs-tooltip target="#left-button" placement="left">left</vs-tooltip>
-    </div>
+    <vs-button id="left-button">Left</vs-button>
+    <vs-tooltip target="#left-button" placement="left">left</vs-tooltip>
 </template>
 ```
 
-### Alignment Options
+### Alignment
 
 ```html
 <template>
-    <div style="display: flex; gap: 1rem;">
-        <vs-button id="start-button">Start</vs-button>
-        <vs-tooltip target="#start-button" placement="top" align="start">start</vs-tooltip>
+    <vs-tooltip target="#btn" placement="top" align="start">start</vs-tooltip>
+    <vs-tooltip target="#btn" placement="top" align="center">center</vs-tooltip>
+    <vs-tooltip target="#btn" placement="top" align="end">end</vs-tooltip>
+</template>
+```
 
-        <vs-button id="center-button">Center</vs-button>
-        <vs-tooltip target="#center-button" placement="top" align="center">center</vs-tooltip>
+### StyleSet Example
 
-        <vs-button id="end-button">End</vs-button>
-        <vs-tooltip target="#end-button" placement="top" align="end">end</vs-tooltip>
-    </div>
+```html
+<template>
+    <vs-tooltip
+        target="#my-button"
+        :style-set="{
+            variables: {
+                arrowColor: '#333',
+                arrowSize: '0.5rem',
+            },
+            component: {
+                backgroundColor: '#333',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '0.5rem 1rem',
+                color: 'white',
+            },
+        }"
+    >
+        Custom styled tooltip
+    </vs-tooltip>
 </template>
 ```
 
@@ -127,39 +124,21 @@ interface VsTooltipStyleSet {
 }
 ```
 
-### StyleSet Example
+## Events
 
-```html
-<template>
-    <div>
-        <button id="my-button">Hover me</button>
-        <vs-tooltip
-            target="#my-button"
-            :style-set="{
-                variables: {
-                    arrowColor: '#333',
-                    arrowSize: '0.5rem',
-                },
-                component: {
-                    backgroundColor: '#333',
-                    border: 'none',
-                    borderRadius: '8px',
-                    padding: '0.5rem 1rem',
-                    color: 'white',
-                },
-            }"
-        >
-            Custom styled tooltip
-        </vs-tooltip>
-    </div>
-</template>
-```
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
 | Slot      | Description     |
 | --------- | --------------- |
 | `default` | Tooltip content |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
