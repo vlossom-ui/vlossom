@@ -49,24 +49,3 @@ A utility component for rendering dynamic content. Supports string HTML and Vue 
 ## Attrs
 
 All attrs passed to `VsRender` are bound to the rendered root element (or component).
-
-## Types
-
-```typescript
-// No StyleSet for this component
-```
-
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |

@@ -54,6 +54,47 @@ const handleToggle = (value: boolean) => {
 </script>
 ```
 
+## Props
+
+| Prop          | Type                         | Default | Required | Description                       |
+| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
+| `modelValue`  | `boolean`                    | `false` | -        | Toggle state bound via v-model    |
+| `colorScheme` | `ColorScheme`                | -       | -        | Color scheme for the component    |
+| `styleSet`    | `string \| VsToggleStyleSet` | -       | -        | Custom style configuration object |
+
+**Props inherited from VsButton**: `circle`, `disabled`, `ghost`, `large`, `loading`, `outline`, `primary`, `responsive`, `small`
+
+> **Note**: All styling props from VsButton are supported. See [VsButton README](../vs-button/README.md) for details.
+
+## Events
+
+| Event               | Parameters | Description                            |
+| ------------------- | ---------- | -------------------------------------- |
+| `update:modelValue` | `boolean`  | Emitted when the v-model value changes |
+| `toggle`            | `boolean`  | Emitted when the toggle state changes  |
+
+## Slots
+
+| Slot      | Description                                 |
+| --------- | ------------------------------------------- |
+| `default` | Content to display inside the toggle button |
+
+## Methods
+
+| Method     | Return Type | Description      |
+| ---------- | ----------- | ---------------- |
+| `toggle()` | `void`      | Toggle the state |
+
+## Types
+
+```typescript
+interface VsToggleStyleSet extends VsButtonStyleSet {}
+```
+
+> [!NOTE]
+>
+> Supports all styling props from VsButton. See [VsButton README](../vs-button/README.md#types) for details.
+
 ### StyleSet Example
 
 ```html
@@ -76,50 +117,10 @@ const handleToggle = (value: boolean) => {
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
 const isToggled = ref(false);
 </script>
 ```
-
-## Props
-
-| Prop          | Type                         | Default | Required | Description                       |
-| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
-| `modelValue`  | `boolean`                    | `false` | -        | Toggle state bound via v-model    |
-| `colorScheme` | `ColorScheme`                | -       | -        | Color scheme for the component    |
-| `styleSet`    | `string \| VsToggleStyleSet` | -       | -        | Custom style configuration object |
-
-**Props inherited from VsButton**: `circle`, `disabled`, `ghost`, `large`, `loading`, `outline`, `primary`, `responsive`, `small`
-
-> **Note**: All styling props from VsButton are supported. See [VsButton README](../vs-button/README.md) for details.
-
-## Types
-
-```typescript
-interface VsToggleStyleSet extends VsButtonStyleSet {}
-```
-
-> [!NOTE]
->
-> Supports all styling props from VsButton. See [VsButton README](../vs-button/README.md#types) for details.
-
-## Events
-
-| Event               | Payload   | Description                            |
-| ------------------- | --------- | -------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
-| `toggle`            | `boolean` | Emitted when the toggle state changes  |
-
-## Slots
-
-| Slot      | Description                                 |
-| --------- | ------------------------------------------- |
-| `default` | Content to display inside the toggle button |
-
-## Methods
-
-| Method     | Return Type | Description      |
-| ---------- | ----------- | ---------------- |
-| `toggle()` | `void`      | Toggle the state |
 
 ## Features
 

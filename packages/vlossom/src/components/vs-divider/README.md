@@ -50,43 +50,10 @@ Automatically switches from vertical (desktop) to horizontal (mobile). The paren
 </template>
 <style>
 .navigation {
+    ...;
     container-type: inline-size;
 }
 </style>
-```
-
-### StyleSet Example
-
-```html
-<template>
-    <vs-divider
-        :style-set="{
-            variables: {
-                border: '2px solid #333',
-                horizontal: {
-                    width: '80%',
-                    margin: '1rem 0',
-                },
-            },
-        }"
-    />
-
-    <vs-divider
-        vertical
-        :style-set="{
-            variables: {
-                border: '1px dashed #e91e63',
-                vertical: {
-                    height: '4rem',
-                    margin: '0 1rem',
-                },
-            },
-            component: {
-                opacity: 0.6,
-            },
-        }"
-    />
-</template>
 ```
 
 ## Props
@@ -117,20 +84,51 @@ interface VsDividerStyleSet {
 }
 ```
 
-## Events
+### StyleSet Example
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+```html
+<template>
+    <!-- CSS variable styling using variables -->
+    <vs-divider
+        :style-set="{
+            variables: {
+                border: '2px solid #333',
+                horizontal: {
+                    width: '80%',
+                    margin: '1rem 0',
+                },
+            },
+        }"
+    />
 
-## Slots
+    <!-- Direct styling using component -->
+    <vs-divider
+        :style-set="{
+            component: {
+                opacity: 0.8,
+                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+            },
+        }"
+    />
 
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+    <!-- Using variables and component together -->
+    <vs-divider
+        vertical
+        :style-set="{
+            variables: {
+                border: '1px dashed #e91e63',
+                vertical: {
+                    height: '4rem',
+                    margin: '0 1rem',
+                },
+            },
+            component: {
+                opacity: 0.6,
+            },
+        }"
+    />
+</template>
+```
 
 ## Features
 
@@ -138,3 +136,19 @@ interface VsDividerStyleSet {
 - **Container Query responsive**: Automatically switches orientation based on container size
 - **Accessibility**: Serves a semantic role for visual separation
 - **Customizable**: Flexible style changes via CSS variables and styleSet
+
+## Container Query Behavior
+
+When the `responsive` prop is `true`, the component behaves as follows:
+
+- **Above 768px**: Maintains vertical divider
+- **768px or below**: Automatically switches to horizontal divider
+
+```css
+/* Responsive behavior CSS */
+@container (max-width: 768px) {
+    .vs-divider.vs-vertical.vs-divider-responsive {
+        /* vertical → horizontal divider conversion */
+    }
+}
+```

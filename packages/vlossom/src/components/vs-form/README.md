@@ -67,30 +67,24 @@ A grid-based form component for managing and validating form elements. Provides 
 | `disabled`  | `boolean`          | `false` | -        | Disable all form elements   |
 | `readonly`  | `boolean`          | `false` | -        | Set entire form to readonly |
 
-## Types
-
-```typescript
-// No StyleSet for this component
-```
-
-## Events
-
-| Event   | Payload    | Description                                          |
-| ------- | ---------- | ---------------------------------------------------- |
-| `error` | `string[]` | Emitted on validation failure with invalid field IDs |
-
 ## Slots
 
 | Slot      | Description                        |
 | --------- | ---------------------------------- |
 | `default` | Form elements to place in the form |
 
-## Methods
+## Exposed Methods
 
 | Method     | Parameters | Return Type | Description                                                          |
 | ---------- | ---------- | ----------- | -------------------------------------------------------------------- |
 | `validate` | -          | `boolean`   | Run form validation; returns `true` if all fields pass, else `false` |
 | `clear`    | -          | `void`      | Reset all input elements in the form                                 |
+
+## Events
+
+| Event   | Payload    | Description                                          |
+| ------- | ---------- | ---------------------------------------------------- |
+| `error` | `string[]` | Emitted on validation failure with invalid field IDs |
 
 ## Features
 
