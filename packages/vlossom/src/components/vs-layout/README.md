@@ -41,11 +41,32 @@ A layout component that manages the overall application structure. Dynamically a
 </template>
 ```
 
+## Props
+
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+
+## Types
+
+```typescript
+// No StyleSet for this component
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
 | Slot      | Description                        |
 | --------- | ---------------------------------- |
 | `default` | Content to place inside the layout |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

@@ -97,11 +97,21 @@ interface VsFooterStyleSet extends VsBarStyleSet {}
 >
 > Supports all styling props from VsBar. See [VsBar README](../vs-bar/README.md#types) for details.
 
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
 | Slot      | Description                          |
 | --------- | ------------------------------------ |
 | `default` | Content to display inside the footer |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
@@ -109,18 +119,3 @@ interface VsFooterStyleSet extends VsBarStyleSet {}
 - **Layout integration**: Automatically registers state in the layout store when used as a child of `vs-layout`
 - **Auto padding adjustment**: `vs-container` automatically adjusts padding when `position` is `fixed`, `absolute`, or `sticky`
 - **Primary style**: Apply an emphasized primary style when needed
-- **Bottom correction**: For footers, correcting the `bottom` value is more important than `top`
-
-## Layout Store Integration
-
-When used as a child of `vs-layout`, the following behavior occurs:
-
-1. **Auto registration**: The footer's `position` and `height` information is automatically registered in the layout store
-2. **Real-time updates**: When props or styleSet change, the layout store is also automatically updated
-3. **Container integration**: `vs-container` references the footer's position and height to apply appropriate padding
-
-## Differences from Header
-
-- **Default tag**: `footer` (vs-header uses `header`)
-- **Position correction**: Corrects the `bottom` value (vs-header corrects the `top` value)
-- **Purpose**: Handles the bottom area of a page or section

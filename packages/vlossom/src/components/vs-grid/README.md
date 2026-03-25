@@ -102,32 +102,21 @@ interface VsGridStyleSet {
 </template>
 ```
 
-#### Combining component + variables
+## Events
 
-```html
-<template>
-    <vs-grid :style-set="{
-        component: {
-            width: '100%',
-            padding: '1rem',
-        },
-        variables: {
-            gridSize: 6,
-            columnGap: '0.5rem',
-            rowGap: '0.5rem',
-        },
-    }">
-        <div>Item 1</div>
-        <div>Item 2</div>
-    </vs-grid>
-</template>
-```
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
 | Slot      | Description                      |
 | --------- | -------------------------------- |
 | `default` | Content to place inside the grid |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 

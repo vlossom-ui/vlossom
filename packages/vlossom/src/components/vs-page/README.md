@@ -75,6 +75,11 @@ interface VsPageStyleSet {
 }
 ```
 
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
 | Slot          | Description                   |
@@ -82,6 +87,11 @@ interface VsPageStyleSet {
 | `default`     | Main content area of the page |
 | `title`       | Page title (optional)         |
 | `description` | Page description (optional)   |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
 
 ## Features
 
