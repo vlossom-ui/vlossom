@@ -45,11 +45,11 @@ A message component for displaying validation or status messages. Supports `idle
 
 ## Props
 
-| Prop       | Type                          | Default  | Required | Description                                         |
-| ---------- | ----------------------------- | -------- | -------- | --------------------------------------------------- |
-| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | - | Message state (determines icon and color) |
-| `text`     | `string`                      | `''`     | -        | Message text to display                             |
-| `styleSet` | `string \| VsMessageStyleSet` | -        | -        | Custom style configuration object                   |
+| Prop       | Type                                                    | Default  | Required | Description                               |
+| ---------- | ------------------------------------------------------- | -------- | -------- | ----------------------------------------- |
+| `state`    | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | -        | Message state (determines icon and color) |
+| `text`     | `string`                                                | `''`     | -        | Message text to display                   |
+| `styleSet` | `string \| VsMessageStyleSet`                           | -        | -        | Custom style configuration object         |
 
 ## Types
 

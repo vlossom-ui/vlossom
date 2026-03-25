@@ -69,13 +69,13 @@ A container component that tracks the visibility of child elements using `Inters
 
 ## Props
 
-| Prop         | Type               | Default | Required | Description                                                                          |
-| ------------ | ------------------ | ------- | -------- | ------------------------------------------------------------------------------------ |
-| `disabled`   | `boolean`          | `false` | -        | Disable IntersectionObserver — all children are always visible when `true`           |
-| `height`     | `string \| number` | -       | -        | Container height — automatically applies `overflow-y: auto` when set                |
-| `rootMargin` | `string`           | `'0px'` | -        | `rootMargin` option for IntersectionObserver                                         |
-| `tag`        | `string`           | `'div'` | -        | HTML tag to render as                                                                |
-| `threshold`  | `number`           | `0`     | -        | `threshold` option for IntersectionObserver (0–1)                                    |
+| Prop         | Type               | Default | Required | Description                                                                |
+| ------------ | ------------------ | ------- | -------- | -------------------------------------------------------------------------- |
+| `disabled`   | `boolean`          | `false` | -        | Disable IntersectionObserver — all children are always visible when `true` |
+| `height`     | `string \| number` | -       | -        | Container height — automatically applies `overflow-y: auto` when set       |
+| `rootMargin` | `string`           | `'0px'` | -        | `rootMargin` option for IntersectionObserver                               |
+| `tag`        | `string`           | `'div'` | -        | HTML tag to render as                                                      |
+| `threshold`  | `number`           | `0`     | -        | `threshold` option for IntersectionObserver (0–1)                          |
 
 ## Types
 
@@ -90,15 +90,15 @@ A container component that tracks the visibility of child elements using `Inters
 
 ## Slots
 
-| Slot      | Description                                                              |
-| --------- | ------------------------------------------------------------------------ |
+| Slot      | Description                                                                 |
+| --------- | --------------------------------------------------------------------------- |
 | `default` | Child elements to track for visibility. Each child is observed individually |
 
 ## Methods
 
-| Method            | Parameters      | Description                                  |
-| ----------------- | --------------- | -------------------------------------------- |
-| `scrollToElement` | `HTMLElement`   | Scroll to the specified child element        |
+| Method            | Parameters    | Description                           |
+| ----------------- | ------------- | ------------------------------------- |
+| `scrollToElement` | `HTMLElement` | Scroll to the specified child element |
 
 ## Features
 

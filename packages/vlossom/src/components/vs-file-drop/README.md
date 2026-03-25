@@ -95,31 +95,31 @@ const files = ref<File[]>([]);
 
 ## Props
 
-| Prop          | Type                              | Default                   | Required | Description                                              |
-| ------------- | --------------------------------- | ------------------------- | -------- | -------------------------------------------------------- |
-| `modelValue`  | `File[]`                          | `[]`                      | -        | v-model binding value                                    |
-| `accept`      | `string`                          | `''`                      | -        | Accepted file types (e.g. `.png,.jpg,.pdf`, `image/*`)  |
-| `multiple`    | `boolean`                         | `false`                   | -        | Allow multiple file uploads                              |
-| `max`         | `number \| string`                | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of files                                  |
-| `min`         | `number \| string`                | `Number.MIN_SAFE_INTEGER` | -        | Minimum number of files required                         |
-| `colorScheme` | `ColorScheme`                     | -                         | -        | Color scheme for the component                           |
-| `styleSet`    | `string \| VsFileDropStyleSet`    | -                         | -        | Custom style configuration object                        |
-| `disabled`    | `boolean`                         | `false`                   | -        | Disable the component                                    |
-| `grid`        | `string \| number \| Breakpoints` | -                         | -        | Grid layout size                                         |
-| `hidden`      | `boolean`                         | `false`                   | -        | Hide the component                                       |
-| `id`          | `string`                          | -                         | -        | The `id` attribute of the input element                  |
-| `label`       | `string`                          | -                         | -        | Label text                                               |
-| `messages`    | `Message<FileDropValueType>[]`    | `[]`                      | -        | Validation messages to display                           |
-| `name`        | `string`                          | -                         | -        | The `name` attribute of the input element                |
-| `noLabel`     | `boolean`                         | `false`                   | -        | Hide the label area                                      |
-| `noMessages`  | `boolean`                         | `false`                   | -        | Hide the messages area                                   |
-| `placeholder` | `string`                          | -                         | -        | Placeholder text                                         |
-| `readonly`    | `boolean`                         | `false`                   | -        | Readonly mode (no remove or new file selection)          |
-| `required`    | `boolean`                         | `false`                   | -        | Mark as required                                         |
-| `rules`       | `Rule<FileDropValueType>[]`       | `[]`                      | -        | Custom validation rules                                  |
-| `state`       | `UIState`                         | `'idle'`                  | -        | Input state (idle, success, info, error, warning)        |
-| `width`       | `string \| number \| Breakpoints` | -                         | -        | Component width                                          |
-| `height`      | `string \| number \| Breakpoints` | -                         | -        | Component height                                         |
+| Prop          | Type                              | Default                   | Required | Description                                            |
+| ------------- | --------------------------------- | ------------------------- | -------- | ------------------------------------------------------ |
+| `modelValue`  | `File[]`                          | `[]`                      | -        | v-model binding value                                  |
+| `accept`      | `string`                          | `''`                      | -        | Accepted file types (e.g. `.png,.jpg,.pdf`, `image/*`) |
+| `multiple`    | `boolean`                         | `false`                   | -        | Allow multiple file uploads                            |
+| `max`         | `number \| string`                | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of files                                |
+| `min`         | `number \| string`                | `Number.MIN_SAFE_INTEGER` | -        | Minimum number of files required                       |
+| `colorScheme` | `ColorScheme`                     | -                         | -        | Color scheme for the component                         |
+| `styleSet`    | `string \| VsFileDropStyleSet`    | -                         | -        | Custom style configuration object                      |
+| `disabled`    | `boolean`                         | `false`                   | -        | Disable the component                                  |
+| `grid`        | `string \| number \| Breakpoints` | -                         | -        | Grid layout size                                       |
+| `hidden`      | `boolean`                         | `false`                   | -        | Hide the component                                     |
+| `id`          | `string`                          | -                         | -        | The `id` attribute of the input element                |
+| `label`       | `string`                          | -                         | -        | Label text                                             |
+| `messages`    | `Message<FileDropValueType>[]`    | `[]`                      | -        | Validation messages to display                         |
+| `name`        | `string`                          | -                         | -        | The `name` attribute of the input element              |
+| `noLabel`     | `boolean`                         | `false`                   | -        | Hide the label area                                    |
+| `noMessages`  | `boolean`                         | `false`                   | -        | Hide the messages area                                 |
+| `placeholder` | `string`                          | -                         | -        | Placeholder text                                       |
+| `readonly`    | `boolean`                         | `false`                   | -        | Readonly mode (no remove or new file selection)        |
+| `required`    | `boolean`                         | `false`                   | -        | Mark as required                                       |
+| `rules`       | `Rule<FileDropValueType>[]`       | `[]`                      | -        | Custom validation rules                                |
+| `state`       | `UIState`                         | `'idle'`                  | -        | Input state (idle, success, info, error, warning)      |
+| `width`       | `string \| number \| Breakpoints` | -                         | -        | Component width                                        |
+| `height`      | `string \| number \| Breakpoints` | -                         | -        | Component height                                       |
 
 ## Types
 
@@ -147,20 +147,20 @@ interface VsFileDropStyleSet {
 
 ## Events
 
-| Event               | Payload   | Description                                                        |
-| ------------------- | --------- | ------------------------------------------------------------------ |
-| `update:modelValue` | `File[]`  | Emitted when the v-model value changes                             |
-| `update:changed`    | `File[]`  | Emitted when files are selected via the dialog (v-model:changed)   |
-| `update:valid`      | `boolean` | Emitted when the validation state updates                          |
-| `drop`              | `File[]`  | Emitted when files are drag-and-dropped                            |
+| Event               | Payload   | Description                                                      |
+| ------------------- | --------- | ---------------------------------------------------------------- |
+| `update:modelValue` | `File[]`  | Emitted when the v-model value changes                           |
+| `update:changed`    | `File[]`  | Emitted when files are selected via the dialog (v-model:changed) |
+| `update:valid`      | `boolean` | Emitted when the validation state updates                        |
+| `drop`              | `File[]`  | Emitted when files are drag-and-dropped                          |
 
 ## Slots
 
-| Slot       | Props                   | Description                                         |
-| ---------- | ----------------------- | --------------------------------------------------- |
+| Slot       | Props                   | Description                                           |
+| ---------- | ----------------------- | ----------------------------------------------------- |
 | `default`  | `{ dragging: boolean }` | Custom content (dragging state provided as slot prop) |
-| `label`    | -                       | Custom label content                                |
-| `messages` | -                       | Custom message content                              |
+| `label`    | -                       | Custom label content                                  |
+| `messages` | -                       | Custom message content                                |
 
 ## Methods
 

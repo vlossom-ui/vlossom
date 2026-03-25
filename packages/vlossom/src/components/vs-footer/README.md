@@ -78,14 +78,14 @@ A component for the footer area of a web application. When used inside `vs-layou
 
 ## Props
 
-| Prop          | Type                                                          | Default      | Required | Description                                          |
-| ------------- | ------------------------------------------------------------- | ------------ | -------- | ---------------------------------------------------- |
-| `colorScheme` | `ColorScheme`                                                 | -            | -        | Color scheme for the component                       |
-| `styleSet`    | `string \| VsFooterStyleSet`                                  | -            | -        | Custom style configuration object                    |
-| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position value                                   |
-| `height`      | `string`                                                      | -            | -        | Footer height                                        |
-| `primary`     | `boolean`                                                     | `false`      | -        | Apply emphasized primary style                       |
-| `tag`         | `string`                                                      | `'footer'`   | -        | HTML tag to render as (default: footer)              |
+| Prop          | Type                                                          | Default      | Required | Description                             |
+| ------------- | ------------------------------------------------------------- | ------------ | -------- | --------------------------------------- |
+| `colorScheme` | `ColorScheme`                                                 | -            | -        | Color scheme for the component          |
+| `styleSet`    | `string \| VsFooterStyleSet`                                  | -            | -        | Custom style configuration object       |
+| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position value                      |
+| `height`      | `string`                                                      | -            | -        | Footer height                           |
+| `primary`     | `boolean`                                                     | `false`      | -        | Apply emphasized primary style          |
+| `tag`         | `string`                                                      | `'footer'`   | -        | HTML tag to render as (default: footer) |
 
 ## Types
 
@@ -104,9 +104,9 @@ interface VsFooterStyleSet extends VsBarStyleSet {}
 
 ## Slots
 
-| Slot      | Description                           |
-| --------- | ------------------------------------- |
-| `default` | Content to display inside the footer  |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | Content to display inside the footer |
 
 ## Methods
 

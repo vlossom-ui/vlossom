@@ -65,9 +65,9 @@ interface VsAvatarStyleSet {
 
 ## Slots
 
-| Slot      | Description                                     |
-| --------- | ----------------------------------------------- |
-| `default` | Avatar content (text, image, icon, etc.)        |
+| Slot      | Description                              |
+| --------- | ---------------------------------------- |
+| `default` | Avatar content (text, image, icon, etc.) |
 
 ## Methods
 

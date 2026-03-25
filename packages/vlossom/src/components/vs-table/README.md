@@ -292,30 +292,30 @@ function handleDrag(event) {
 
 ## Props
 
-| Prop                      | Type                                             | Default | Required | Description                                                                                                                                    |
-| ------------------------- | ------------------------------------------------ | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `colorScheme`             | `ColorScheme`                                    | -       | -        | Color scheme for the component                                                                                                                 |
-| `styleSet`                | `string \| VsTableStyleSet`                      | -       | -        | Custom style configuration object                                                                                                              |
-| `columns`                 | `VsTableColumnDef[] \| string[] \| null`         | `[]`    | -        | Table column definitions                                                                                                                       |
-| `items`                   | `VsTableItem[]`                                  | -       | **Yes**  | Array of items to display                                                                                                                      |
-| `dense`                   | `boolean`                                        | `false` | -        | Compact mode — reduces padding and font-size                                                                                                   |
-| `primary`                 | `boolean`                                        | `false` | -        | Apply primary color to the header. When used with `styleSet.header`, the inline style takes precedence                                         |
-| `responsive`              | `boolean`                                        | `false` | -        | Enable responsive layout. Default `false`. When `true`, switches to card layout below 1024px                                                   |
-| `search`                  | `boolean \| VsTableSearchOptions`                | `false` | -        | Show search input and configure search options                                                                                                 |
-| `pagination`              | `boolean \| VsTablePaginationOptions`            | `false` | -        | Enable pagination and configure pagination options                                                                                             |
-| `selectable`              | `boolean \| (item, index?, items?) => boolean`   | `false` | -        | Enable row selection or conditional selection function                                                                                         |
-| `expandable`              | `boolean \| (item, index?, items?) => boolean`   | `false` | -        | Enable row expansion or conditional expansion function                                                                                         |
-| `stickyHeader`            | `boolean`                                        | `false` | -        | Pin header while scrolling                                                                                                                     |
-| `loading`                 | `boolean`                                        | `false` | -        | Show skeleton UI and disable search                                                                                                            |
-| `serverMode`              | `boolean`                                        | `false` | -        | Server-side pagination mode — only renders provided data without client-side pagination                                                        |
-| `noVirtualScroll`         | `boolean`                                        | `false` | -        | Disable virtual scroll. Default `false`. When `true`, renders all rows at once                                                                 |
-| `draggable`               | `boolean`                                        | `false` | -        | Enable drag-and-drop row reordering                                                                                                            |
-| `state`                   | `UIState \| (row, rowIndex?, items?) => UIState` | -       | -        | Per-row UI state — constant or callback. Returning `info` / `success` / `warning` / `error` applies `vs-state-*` class to that row            |
-| `selectedItems` (v-model) | `VsTableItem[]`                                  | `[]`    | -        | Array of selected rows (v-model)                                                                                                               |
-| `page` (v-model)          | `number`                                         | -       | -        | Current page index — 0-based (v-model). Used when pagination is enabled.                                                                       |
-| `pageSize` (v-model)      | `number`                                         | -       | -        | Items per page (v-model). Set to `-1` to show all data on one page.                                                                            |
-| `pagedItems` (v-model)    | `VsTableItem[]`                                  | `[]`    | -        | Items on the current page (v-model). Only includes items on the current page after pagination, search, and sort are applied.                   |
-| `totalItems` (v-model)    | `VsTableItem[]`                                  | `[]`    | -        | All items after search/filter/sort (v-model). Contains all items before pagination is applied.                                                 |
+| Prop                      | Type                                             | Default | Required | Description                                                                                                                        |
+| ------------------------- | ------------------------------------------------ | ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`             | `ColorScheme`                                    | -       | -        | Color scheme for the component                                                                                                     |
+| `styleSet`                | `string \| VsTableStyleSet`                      | -       | -        | Custom style configuration object                                                                                                  |
+| `columns`                 | `VsTableColumnDef[] \| string[] \| null`         | `[]`    | -        | Table column definitions                                                                                                           |
+| `items`                   | `VsTableItem[]`                                  | -       | **Yes**  | Array of items to display                                                                                                          |
+| `dense`                   | `boolean`                                        | `false` | -        | Compact mode — reduces padding and font-size                                                                                       |
+| `primary`                 | `boolean`                                        | `false` | -        | Apply primary color to the header. When used with `styleSet.header`, the inline style takes precedence                             |
+| `responsive`              | `boolean`                                        | `false` | -        | Enable responsive layout. Default `false`. When `true`, switches to card layout below 1024px                                       |
+| `search`                  | `boolean \| VsTableSearchOptions`                | `false` | -        | Show search input and configure search options                                                                                     |
+| `pagination`              | `boolean \| VsTablePaginationOptions`            | `false` | -        | Enable pagination and configure pagination options                                                                                 |
+| `selectable`              | `boolean \| (item, index?, items?) => boolean`   | `false` | -        | Enable row selection or conditional selection function                                                                             |
+| `expandable`              | `boolean \| (item, index?, items?) => boolean`   | `false` | -        | Enable row expansion or conditional expansion function                                                                             |
+| `stickyHeader`            | `boolean`                                        | `false` | -        | Pin header while scrolling                                                                                                         |
+| `loading`                 | `boolean`                                        | `false` | -        | Show skeleton UI and disable search                                                                                                |
+| `serverMode`              | `boolean`                                        | `false` | -        | Server-side pagination mode — only renders provided data without client-side pagination                                            |
+| `noVirtualScroll`         | `boolean`                                        | `false` | -        | Disable virtual scroll. Default `false`. When `true`, renders all rows at once                                                     |
+| `draggable`               | `boolean`                                        | `false` | -        | Enable drag-and-drop row reordering                                                                                                |
+| `state`                   | `UIState \| (row, rowIndex?, items?) => UIState` | -       | -        | Per-row UI state — constant or callback. Returning `info` / `success` / `warning` / `error` applies `vs-state-*` class to that row |
+| `selectedItems` (v-model) | `VsTableItem[]`                                  | `[]`    | -        | Array of selected rows (v-model)                                                                                                   |
+| `page` (v-model)          | `number`                                         | -       | -        | Current page index — 0-based (v-model). Used when pagination is enabled.                                                           |
+| `pageSize` (v-model)      | `number`                                         | -       | -        | Items per page (v-model). Set to `-1` to show all data on one page.                                                                |
+| `pagedItems` (v-model)    | `VsTableItem[]`                                  | `[]`    | -        | Items on the current page (v-model). Only includes items on the current page after pagination, search, and sort are applied.       |
+| `totalItems` (v-model)    | `VsTableItem[]`                                  | `[]`    | -        | All items after search/filter/sort (v-model). Contains all items before pagination is applied.                                     |
 
 ## Types
 
@@ -375,23 +375,23 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 
 ## Slots
 
-| Slot Pattern                       | Description                                                                        |
-| ---------------------------------- | ---------------------------------------------------------------------------------- |
-| `caption`                          | Customize the `<caption>` element                                                  |
-| `select`                           | Selection column area (`{ item, value, rowIdx }`)                                  |
-| `expand`                           | Expanded row area (`{ item, value, rowIdx }`)                                      |
+| Slot Pattern                       | Description                                                                          |
+| ---------------------------------- | ------------------------------------------------------------------------------------ |
+| `caption`                          | Customize the `<caption>` element                                                    |
+| `select`                           | Selection column area (`{ item, value, rowIdx }`)                                    |
+| `expand`                           | Expanded row area (`{ item, value, rowIdx }`)                                        |
 | `header`                           | Common rendering for all header cells (`{ item: ColumnDef, value, colIdx, rowIdx }`) |
-| `header-${colKey}`                 | Header cell for a specific column key                                              |
-| `header-${id}`                     | Specific header cell by id (highest priority)                                      |
-| `header-col${colIdx}-row${rowIdx}` | Header cell by column/row index                                                    |
-| `header-row${rowIdx}`              | All cells in a specific header row                                                 |
-| `header-col${colIdx}`              | All cells in a specific header column                                              |
-| `body`                             | Common rendering for all body cells (`{ item: Item, value, colIdx, rowIdx }`)     |
-| `body-${colKey}`                   | Body cell for a specific column key                                                |
-| `body-${id}`                       | Specific body cell by id (highest priority)                                        |
-| `body-col${colIdx}-row${rowIdx}`   | Body cell by column/row index                                                      |
-| `body-row${rowIdx}`                | All cells in a specific body row                                                   |
-| `body-col${colIdx}`                | All cells in a specific body column                                                |
+| `header-${colKey}`                 | Header cell for a specific column key                                                |
+| `header-${id}`                     | Specific header cell by id (highest priority)                                        |
+| `header-col${colIdx}-row${rowIdx}` | Header cell by column/row index                                                      |
+| `header-row${rowIdx}`              | All cells in a specific header row                                                   |
+| `header-col${colIdx}`              | All cells in a specific header column                                                |
+| `body`                             | Common rendering for all body cells (`{ item: Item, value, colIdx, rowIdx }`)        |
+| `body-${colKey}`                   | Body cell for a specific column key                                                  |
+| `body-${id}`                       | Specific body cell by id (highest priority)                                          |
+| `body-col${colIdx}-row${rowIdx}`   | Body cell by column/row index                                                        |
+| `body-row${rowIdx}`                | All cells in a specific body row                                                     |
+| `body-col${colIdx}`                | All cells in a specific body column                                                  |
 
 > Slot priority: `*-id` (most specific) → `*-colKey` → index-based → generic slot.
 
@@ -406,13 +406,13 @@ interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
 
 ## Events
 
-| Event        | Payload                                           | Description                                                |
-| ------------ | ------------------------------------------------- | ---------------------------------------------------------- |
-| `click-cell` | `(cell: VsTableBodyCell, event: MouseEvent)`      | Emitted when a cell is clicked                             |
-| `select-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | Emitted when a row (cell array) is selected                |
-| `expand-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | Emitted when a row's expand button is clicked              |
-| `search`     | `(rows: VsTableBodyCell[][], searchText: string)` | Emitted on search — provides filtered rows and search text |
-| `paginate`   | `(page: number, pageSize: number)`                | Emitted on pagination change                               |
+| Event        | Payload                                           | Description                                                 |
+| ------------ | ------------------------------------------------- | ----------------------------------------------------------- |
+| `click-cell` | `(cell: VsTableBodyCell, event: MouseEvent)`      | Emitted when a cell is clicked                              |
+| `select-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | Emitted when a row (cell array) is selected                 |
+| `expand-row` | `(row: VsTableBodyCell[], event: MouseEvent)`     | Emitted when a row's expand button is clicked               |
+| `search`     | `(rows: VsTableBodyCell[][], searchText: string)` | Emitted on search — provides filtered rows and search text  |
+| `paginate`   | `(page: number, pageSize: number)`                | Emitted on pagination change                                |
 | `drag`       | `(event: SortableEvent)`                          | Emitted when drag is complete (includes oldIndex, newIndex) |
 
 ## Methods

@@ -42,9 +42,9 @@ A utility component for rendering dynamic content. Supports string HTML and Vue 
 
 ## Props
 
-| Prop      | Type                  | Default | Required | Description                                          |
-| --------- | --------------------- | ------- | -------- | ---------------------------------------------------- |
-| `content` | `string \| Component` | -       | ✅       | Content to render (HTML string or Vue component)     |
+| Prop      | Type                  | Default | Required | Description                                      |
+| --------- | --------------------- | ------- | -------- | ------------------------------------------------ |
+| `content` | `string \| Component` | -       | ✅       | Content to render (HTML string or Vue component) |
 
 ## Attrs
 

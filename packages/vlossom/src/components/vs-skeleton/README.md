@@ -76,8 +76,8 @@ interface VsSkeletonStyleSet {
 
 ## Slots
 
-| Slot      | Description                                         |
-| --------- | --------------------------------------------------- |
+| Slot      | Description                                                  |
+| --------- | ------------------------------------------------------------ |
 | `default` | Text or content to display on top of the skeleton (optional) |
 
 ## Methods

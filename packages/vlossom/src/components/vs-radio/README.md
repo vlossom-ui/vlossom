@@ -97,25 +97,25 @@ const confirmBeforeChange = async (from, to, optionValue) => {
 
 ### VsRadio Props
 
-| Prop          | Type                        | Default | Required | Description                              |
-| ------------- | --------------------------- | ------- | -------- | ---------------------------------------- |
-| `radioValue`  | `any`                       | -       | ✅       | Value set on v-model when selected       |
-| `radioLabel`  | `string`                    | `''`    | -        | Label displayed to the right of the radio|
-| `checked`     | `boolean`                   | `false` | -        | Initial checked state                    |
-| `styleSet`    | `string \| VsRadioStyleSet` | -       | -        | Style key or inline style set            |
-| `colorScheme` | `string`                    | -       | -        | Color scheme for the component           |
+| Prop          | Type                        | Default | Required | Description                               |
+| ------------- | --------------------------- | ------- | -------- | ----------------------------------------- |
+| `radioValue`  | `any`                       | -       | ✅       | Value set on v-model when selected        |
+| `radioLabel`  | `string`                    | `''`    | -        | Label displayed to the right of the radio |
+| `checked`     | `boolean`                   | `false` | -        | Initial checked state                     |
+| `styleSet`    | `string \| VsRadioStyleSet` | -       | -        | Style key or inline style set             |
+| `colorScheme` | `string`                    | -       | -        | Color scheme for the component            |
 
 Also supports common Input Props: `id`, `label`, `messages`, `rules`, `required`, `disabled`, `readonly`, `width`, `grid`, `noMessages`, etc.
 
 ### VsRadioSet Props
 
-| Prop           | Type                           | Default | Required | Description                                                                         |
-| -------------- | ------------------------------ | ------- | -------- | ----------------------------------------------------------------------------------- |
-| `options`      | `any[]`                        | `[]`    | ✅       | List of options to render                                                           |
-| `optionLabel`  | `string`                       | `''`    | -        | Property path to read the label from an option object                               |
-| `optionValue`  | `string`                       | `''`    | -        | Property path to read the value from an option object                               |
-| `vertical`     | `boolean`                      | `false` | -        | Arrange radios vertically                                                           |
-| `styleSet`     | `string \| VsRadioSetStyleSet` | -       | -        | Group and item style customization                                                  |
+| Prop           | Type                           | Default | Required | Description                                                                          |
+| -------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------------------------ |
+| `options`      | `any[]`                        | `[]`    | ✅       | List of options to render                                                            |
+| `optionLabel`  | `string`                       | `''`    | -        | Property path to read the label from an option object                                |
+| `optionValue`  | `string`                       | `''`    | -        | Property path to read the value from an option object                                |
+| `vertical`     | `boolean`                      | `false` | -        | Arrange radios vertically                                                            |
+| `styleSet`     | `string \| VsRadioSetStyleSet` | -       | -        | Group and item style customization                                                   |
 | `beforeChange` | `Function`                     | -       | -        | Async function called before change (from, to, optionValue; cancel if returns false) |
 
 ## Types
@@ -146,22 +146,22 @@ interface VsRadioSetStyleSet {
 
 ### VsRadio Events
 
-| Event               | Payload      | Description                              |
-| ------------------- | ------------ | ---------------------------------------- |
-| `update:modelValue` | `any`        | Emitted when the v-model value changes   |
-| `update:changed`    | `boolean`    | Emitted when the changed state updates   |
-| `update:valid`      | `boolean`    | Emitted when the validation state changes|
-| `change`            | `Event`      | Native radio change event                |
-| `toggle`            | `boolean`    | Emitted after toggle with checked state  |
-| `focus`             | `FocusEvent` | Emitted when the radio receives focus    |
-| `blur`              | `FocusEvent` | Emitted when the radio loses focus       |
+| Event               | Payload      | Description                               |
+| ------------------- | ------------ | ----------------------------------------- |
+| `update:modelValue` | `any`        | Emitted when the v-model value changes    |
+| `update:changed`    | `boolean`    | Emitted when the changed state updates    |
+| `update:valid`      | `boolean`    | Emitted when the validation state changes |
+| `change`            | `Event`      | Native radio change event                 |
+| `toggle`            | `boolean`    | Emitted after toggle with checked state   |
+| `focus`             | `FocusEvent` | Emitted when the radio receives focus     |
+| `blur`              | `FocusEvent` | Emitted when the radio loses focus        |
 
 ### VsRadioSet Events
 
-| Event               | Payload | Description                                    |
-| ------------------- | ------- | ---------------------------------------------- |
-| `update:modelValue` | `any`   | Emitted when the selected value changes        |
-| `change`            | `any`   | Emitted when an inner radio fires change       |
+| Event               | Payload | Description                                     |
+| ------------------- | ------- | ----------------------------------------------- |
+| `update:modelValue` | `any`   | Emitted when the selected value changes         |
+| `change`            | `any`   | Emitted when an inner radio fires change        |
 | `focus`             | `any`   | Emitted on item focus (option and event passed) |
 | `blur`              | `any`   | Emitted on item blur (option and event passed)  |
 
@@ -169,19 +169,19 @@ interface VsRadioSetStyleSet {
 
 ### VsRadio Slots
 
-| Slot          | Description                                      |
-| ------------- | ------------------------------------------------ |
-| `label`       | Top label area of the input wrapper              |
-| `radio-label` | Radio item label (replaceable via slot)          |
-| `messages`    | Bottom message area                              |
+| Slot          | Description                             |
+| ------------- | --------------------------------------- |
+| `label`       | Top label area of the input wrapper     |
+| `radio-label` | Radio item label (replaceable via slot) |
+| `messages`    | Bottom message area                     |
 
 ### VsRadioSet Slots
 
-| Slot          | Description                                   |
-| ------------- | --------------------------------------------- |
-| `label`       | Group top label area                          |
-| `radio-label` | Label area for each item (custom markup)      |
-| `messages`    | Group bottom message area                     |
+| Slot          | Description                              |
+| ------------- | ---------------------------------------- |
+| `label`       | Group top label area                     |
+| `radio-label` | Label area for each item (custom markup) |
+| `messages`    | Group bottom message area                |
 
 ## Methods
 

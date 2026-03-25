@@ -59,13 +59,13 @@ A grid-based form component for managing and validating form elements. Provides 
 
 ## Props
 
-| Prop        | Type               | Default | Required | Description                   |
-| ----------- | ------------------ | ------- | -------- | ----------------------------- |
-| `gridSize`  | `string \| number` | -       | -        | Number of grid columns        |
-| `columnGap` | `string \| number` | -       | -        | Gap between columns           |
-| `rowGap`    | `string \| number` | -       | -        | Gap between rows              |
-| `disabled`  | `boolean`          | `false` | -        | Disable all form elements     |
-| `readonly`  | `boolean`          | `false` | -        | Set entire form to readonly   |
+| Prop        | Type               | Default | Required | Description                 |
+| ----------- | ------------------ | ------- | -------- | --------------------------- |
+| `gridSize`  | `string \| number` | -       | -        | Number of grid columns      |
+| `columnGap` | `string \| number` | -       | -        | Gap between columns         |
+| `rowGap`    | `string \| number` | -       | -        | Gap between rows            |
+| `disabled`  | `boolean`          | `false` | -        | Disable all form elements   |
+| `readonly`  | `boolean`          | `false` | -        | Set entire form to readonly |
 
 ## Types
 
@@ -75,8 +75,8 @@ A grid-based form component for managing and validating form elements. Provides 
 
 ## Events
 
-| Event   | Payload    | Description                                       |
-| ------- | ---------- | ------------------------------------------------- |
+| Event   | Payload    | Description                                          |
+| ------- | ---------- | ---------------------------------------------------- |
 | `error` | `string[]` | Emitted on validation failure with invalid field IDs |
 
 ## Slots

@@ -89,17 +89,17 @@ interface OverlayCallbacks<T = void> {
 
 ### Slots
 
-| Slot      | Description                          |
-| --------- | ------------------------------------ |
-| `default` | Content to display inside the modal  |
+| Slot      | Description                         |
+| --------- | ----------------------------------- |
+| `default` | Content to display inside the modal |
 
 ### Events
 
-| Event               | Payload   | Description                              |
-| ------------------- | --------- | ---------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes   |
-| `open`              | -         | Emitted when the modal opens             |
-| `close`             | -         | Emitted when the modal closes            |
+| Event               | Payload   | Description                            |
+| ------------------- | --------- | -------------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
+| `open`              | -         | Emitted when the modal opens           |
+| `close`             | -         | Emitted when the modal closes          |
 
 ---
 
@@ -161,16 +161,16 @@ interface OverlayCallbacks<T = void> {
 
 ### Slots
 
-| Slot      | Description                          |
-| --------- | ------------------------------------ |
-| `default` | Content to display inside the modal  |
+| Slot      | Description                         |
+| --------- | ----------------------------------- |
+| `default` | Content to display inside the modal |
 
 ### Events
 
-| Event          | Payload | Description                              |
-| -------------- | ------- | ---------------------------------------- |
-| `close`        | -       | Emitted when the modal closes            |
-| `click-dimmed` | -       | Emitted when the dimmed area is clicked  |
+| Event          | Payload | Description                             |
+| -------------- | ------- | --------------------------------------- |
+| `close`        | -       | Emitted when the modal closes           |
+| `click-dimmed` | -       | Emitted when the dimmed area is clicked |
 
 ---
 
@@ -180,9 +180,9 @@ A container component that groups and renders multiple modals. Automatically mou
 
 ### Props
 
-| Prop        | Type     | Default  | Required | Description                              |
-| ----------- | -------- | -------- | -------- | ---------------------------------------- |
-| `container` | `string` | `'body'` | -        | Container selector where modals render   |
+| Prop        | Type     | Default  | Required | Description                            |
+| ----------- | -------- | -------- | -------- | -------------------------------------- |
+| `container` | `string` | `'body'` | -        | Container selector where modals render |
 
 ---
 

@@ -108,13 +108,13 @@ function scrollToFirst() {
 
 ## Props
 
-| Prop          | Type                                                      | Default | Required | Description                            |
-| ------------- | --------------------------------------------------------- | ------- | -------- | -------------------------------------- |
-| `colorScheme` | `ColorScheme`                                             | -       | -        | Color scheme for the component         |
-| `styleSet`    | `string \| VsGroupedListStyleSet`                         | -       | -        | Custom style configuration object      |
-| `items`       | `OptionItem[]`                                            | `[]`    | -        | Item array (OptionItem format)          |
-| `groupBy`     | `(item: any, index: number) => string \| null` \| `null`  | `null`  | -        | Function to classify items into groups |
-| `groupOrder`  | `string[]`                                                | `[]`    | -        | Specify display order of groups        |
+| Prop          | Type                                                     | Default | Required | Description                            |
+| ------------- | -------------------------------------------------------- | ------- | -------- | -------------------------------------- |
+| `colorScheme` | `ColorScheme`                                            | -       | -        | Color scheme for the component         |
+| `styleSet`    | `string \| VsGroupedListStyleSet`                        | -       | -        | Custom style configuration object      |
+| `items`       | `OptionItem[]`                                           | `[]`    | -        | Item array (OptionItem format)         |
+| `groupBy`     | `(item: any, index: number) => string \| null` \| `null` | `null`  | -        | Function to classify items into groups |
+| `groupOrder`  | `string[]`                                               | `[]`    | -        | Specify display order of groups        |
 
 ## Types
 
@@ -134,8 +134,8 @@ interface VsGroupedListStyleSet {
 
 ## Events
 
-| Event        | Payload                                                                          | Description               |
-| ------------ | -------------------------------------------------------------------------------- | ------------------------- |
+| Event        | Payload                                                                        | Description                     |
+| ------------ | ------------------------------------------------------------------------------ | ------------------------------- |
 | `click-item` | `{ id, item, label, value, disabled, index, groupedIndex, group, groupIndex }` | Emitted when an item is clicked |
 
 ## Slots
@@ -149,10 +149,10 @@ interface VsGroupedListStyleSet {
 
 ## Methods
 
-| Method         | Parameters   | Return    | Description                                  |
-| -------------- | ------------ | --------- | -------------------------------------------- |
-| `scrollToItem` | `id: string` | -         | Scroll to the item with the given id         |
-| `hasScroll`    | -            | `boolean` | Returns whether the list is scrollable       |
+| Method         | Parameters   | Return    | Description                            |
+| -------------- | ------------ | --------- | -------------------------------------- |
+| `scrollToItem` | `id: string` | -         | Scroll to the item with the given id   |
+| `hasScroll`    | -            | `boolean` | Returns whether the list is scrollable |
 
 ## Features
 

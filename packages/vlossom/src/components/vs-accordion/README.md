@@ -81,14 +81,14 @@ const isOpen = ref(false);
 
 ## Props
 
-| Prop          | Type                            | Default | Required | Description                          |
-| ------------- | ------------------------------- | ------- | -------- | ------------------------------------ |
-| `colorScheme` | `ColorScheme`                   | -       | -        | Color scheme for the component       |
-| `styleSet`    | `string \| VsAccordionStyleSet` | -       | -        | Custom style configuration object    |
-| `disabled`    | `boolean`                       | `false` | -        | Disable the accordion                |
-| `open`        | `boolean`                       | `false` | -        | Initial open state                   |
-| `primary`     | `boolean`                       | `false` | -        | Apply emphasized primary style       |
-| `modelValue`  | `boolean`                       | `false` | -        | v-model binding value                |
+| Prop          | Type                            | Default | Required | Description                       |
+| ------------- | ------------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme` | `ColorScheme`                   | -       | -        | Color scheme for the component    |
+| `styleSet`    | `string \| VsAccordionStyleSet` | -       | -        | Custom style configuration object |
+| `disabled`    | `boolean`                       | `false` | -        | Disable the accordion             |
+| `open`        | `boolean`                       | `false` | -        | Initial open state                |
+| `primary`     | `boolean`                       | `false` | -        | Apply emphasized primary style    |
+| `modelValue`  | `boolean`                       | `false` | -        | v-model binding value             |
 
 ## Types
 
@@ -138,17 +138,17 @@ interface VsAccordionStyleSet {
 
 ## Events
 
-| Event               | Payload   | Description                              |
-| ------------------- | --------- | ---------------------------------------- |
-| `toggle`            | `boolean` | Emitted when the accordion is toggled    |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes   |
+| Event               | Payload   | Description                            |
+| ------------------- | --------- | -------------------------------------- |
+| `toggle`            | `boolean` | Emitted when the accordion is toggled  |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
 
 ## Slots
 
-| Slot      | Description                                      |
-| --------- | ------------------------------------------------ |
-| `default` | Accordion content (the collapsible area)         |
-| `title`   | Accordion title (the clickable trigger area)     |
+| Slot      | Description                                  |
+| --------- | -------------------------------------------- |
+| `default` | Accordion content (the collapsible area)     |
+| `title`   | Accordion title (the clickable trigger area) |
 
 ## Methods
 

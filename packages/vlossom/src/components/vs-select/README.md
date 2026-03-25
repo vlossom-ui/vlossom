@@ -241,44 +241,44 @@ const selected = ref(null);
 
 ## Props
 
-| Prop              | Type                                              | Default                   | Required | Description                                                      |
-| ----------------- | ------------------------------------------------- | ------------------------- | -------- | ---------------------------------------------------------------- |
-| `colorScheme`     | `ColorScheme`                                     | -                         | -        | Color scheme for the component                                   |
-| `styleSet`        | `string \| VsSelectStyleSet`                      | -                         | -        | Custom style configuration object                                |
-| `disabled`        | `boolean`                                         | `false`                   | -        | Disable the component                                            |
-| `hidden`          | `boolean`                                         | `false`                   | -        | Hide the component                                               |
-| `id`              | `string`                                          | `''`                      | -        | Component id                                                     |
-| `label`           | `string`                                          | `''`                      | -        | Input field label                                                |
-| `noLabel`         | `boolean`                                         | `false`                   | -        | Hide the label area                                              |
-| `noMessages`      | `boolean`                                         | `false`                   | -        | Hide the messages area                                           |
-| `required`        | `boolean`                                         | `false`                   | -        | Mark as required                                                 |
-| `small`           | `boolean`                                         | `false`                   | -        | Apply small size                                                 |
-| `messages`        | `Message[]`                                       | `[]`                      | -        | Validation messages to display                                   |
-| `name`            | `string`                                          | `''`                      | -        | The `name` attribute of the input element                        |
-| `noDefaultRules`  | `boolean`                                         | `false`                   | -        | Disable built-in validation rules                                |
-| `placeholder`     | `string`                                          | `''`                      | -        | Placeholder text when nothing is selected                        |
-| `readonly`        | `boolean`                                         | `false`                   | -        | Set to readonly mode                                             |
-| `rules`           | `Rule[]`                                          | `[]`                      | -        | Custom validation rules                                          |
-| `state`           | `UIState`                                         | `'idle'`                  | -        | Input state (idle, success, info, error, warning)                |
-| `changed`         | `boolean`                                         | `false`                   | -        | Whether the value has changed (v-model:changed)                  |
-| `valid`           | `boolean`                                         | `false`                   | -        | Whether validation passed (v-model:valid)                        |
-| `width`           | `string \| number \| Breakpoints`                 | -                         | -        | Component width                                                  |
-| `grid`            | `string \| number \| Breakpoints`                 | -                         | -        | Grid layout size                                                 |
-| `options`         | `any[]`                                           | `[]`                      | -        | Array of selectable options                                      |
-| `optionLabel`     | `string`                                          | `''`                      | -        | Property to use as the label from an option object               |
-| `optionValue`     | `string`                                          | `''`                      | -        | Property to use as the value from an option object               |
-| `groupBy`         | `(option, index) => string \| null`               | `null`                    | -        | Function to group options                                        |
-| `groupOrder`      | `string[]`                                        | `[]`                      | -        | Specify the display order of groups                              |
-| `min`             | `number \| string`                                | `0`                       | -        | Minimum number of selections in multiple mode                    |
-| `max`             | `number \| string`                                | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of selections in multiple mode                    |
-| `closableChips`   | `boolean`                                         | `false`                   | -        | Show close button on chips in multiple mode                      |
-| `collapseChips`   | `boolean`                                         | `false`                   | -        | Collapse chips in multiple mode                                  |
-| `multiple`        | `boolean`                                         | `false`                   | -        | Enable multiple selection mode                                   |
-| `noClear`         | `boolean`                                         | `false`                   | -        | Hide the clear button                                            |
-| `optionsDisabled` | `boolean \| (option, index, options) => boolean`  | `false`                   | -        | Disable specific options via function or boolean                 |
-| `search`          | `SearchProps`                                     | `false`                   | -        | Enable search and configure search options                       |
-| `selectAll`       | `boolean`                                         | `false`                   | -        | Show select-all checkbox (only works in multiple mode)           |
-| `modelValue`      | `any \| any[]`                                    | `null`                    | -        | v-model binding value                                            |
+| Prop              | Type                                             | Default                   | Required | Description                                            |
+| ----------------- | ------------------------------------------------ | ------------------------- | -------- | ------------------------------------------------------ |
+| `colorScheme`     | `ColorScheme`                                    | -                         | -        | Color scheme for the component                         |
+| `styleSet`        | `string \| VsSelectStyleSet`                     | -                         | -        | Custom style configuration object                      |
+| `disabled`        | `boolean`                                        | `false`                   | -        | Disable the component                                  |
+| `hidden`          | `boolean`                                        | `false`                   | -        | Hide the component                                     |
+| `id`              | `string`                                         | `''`                      | -        | Component id                                           |
+| `label`           | `string`                                         | `''`                      | -        | Input field label                                      |
+| `noLabel`         | `boolean`                                        | `false`                   | -        | Hide the label area                                    |
+| `noMessages`      | `boolean`                                        | `false`                   | -        | Hide the messages area                                 |
+| `required`        | `boolean`                                        | `false`                   | -        | Mark as required                                       |
+| `small`           | `boolean`                                        | `false`                   | -        | Apply small size                                       |
+| `messages`        | `Message[]`                                      | `[]`                      | -        | Validation messages to display                         |
+| `name`            | `string`                                         | `''`                      | -        | The `name` attribute of the input element              |
+| `noDefaultRules`  | `boolean`                                        | `false`                   | -        | Disable built-in validation rules                      |
+| `placeholder`     | `string`                                         | `''`                      | -        | Placeholder text when nothing is selected              |
+| `readonly`        | `boolean`                                        | `false`                   | -        | Set to readonly mode                                   |
+| `rules`           | `Rule[]`                                         | `[]`                      | -        | Custom validation rules                                |
+| `state`           | `UIState`                                        | `'idle'`                  | -        | Input state (idle, success, info, error, warning)      |
+| `changed`         | `boolean`                                        | `false`                   | -        | Whether the value has changed (v-model:changed)        |
+| `valid`           | `boolean`                                        | `false`                   | -        | Whether validation passed (v-model:valid)              |
+| `width`           | `string \| number \| Breakpoints`                | -                         | -        | Component width                                        |
+| `grid`            | `string \| number \| Breakpoints`                | -                         | -        | Grid layout size                                       |
+| `options`         | `any[]`                                          | `[]`                      | -        | Array of selectable options                            |
+| `optionLabel`     | `string`                                         | `''`                      | -        | Property to use as the label from an option object     |
+| `optionValue`     | `string`                                         | `''`                      | -        | Property to use as the value from an option object     |
+| `groupBy`         | `(option, index) => string \| null`              | `null`                    | -        | Function to group options                              |
+| `groupOrder`      | `string[]`                                       | `[]`                      | -        | Specify the display order of groups                    |
+| `min`             | `number \| string`                               | `0`                       | -        | Minimum number of selections in multiple mode          |
+| `max`             | `number \| string`                               | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of selections in multiple mode          |
+| `closableChips`   | `boolean`                                        | `false`                   | -        | Show close button on chips in multiple mode            |
+| `collapseChips`   | `boolean`                                        | `false`                   | -        | Collapse chips in multiple mode                        |
+| `multiple`        | `boolean`                                        | `false`                   | -        | Enable multiple selection mode                         |
+| `noClear`         | `boolean`                                        | `false`                   | -        | Hide the clear button                                  |
+| `optionsDisabled` | `boolean \| (option, index, options) => boolean` | `false`                   | -        | Disable specific options via function or boolean       |
+| `search`          | `SearchProps`                                    | `false`                   | -        | Enable search and configure search options             |
+| `selectAll`       | `boolean`                                        | `false`                   | -        | Show select-all checkbox (only works in multiple mode) |
+| `modelValue`      | `any \| any[]`                                   | `null`                    | -        | v-model binding value                                  |
 
 ## Types
 
@@ -339,39 +339,39 @@ interface VsSelectStyleSet {
 
 ## Events
 
-| Event               | Payload        | Description                              |
-| ------------------- | -------------- | ---------------------------------------- |
-| `update:modelValue` | `any \| any[]` | Emitted when the v-model value changes   |
-| `update:changed`    | `boolean`      | Emitted when the changed state updates   |
+| Event               | Payload        | Description                               |
+| ------------------- | -------------- | ----------------------------------------- |
+| `update:modelValue` | `any \| any[]` | Emitted when the v-model value changes    |
+| `update:changed`    | `boolean`      | Emitted when the changed state updates    |
 | `update:valid`      | `boolean`      | Emitted when the validation state updates |
-| `change`            | `any \| any[]` | Emitted when the selected value changes  |
-| `click-option`      | `OptionItem`   | Emitted when an option is clicked        |
-| `open`              | -              | Emitted when the options list opens      |
-| `close`             | -              | Emitted when the options list closes     |
-| `clear`             | -              | Emitted when the clear button is clicked |
-| `focus`             | `FocusEvent`   | Emitted when the trigger receives focus  |
-| `blur`              | `FocusEvent`   | Emitted when the trigger loses focus     |
+| `change`            | `any \| any[]` | Emitted when the selected value changes   |
+| `click-option`      | `OptionItem`   | Emitted when an option is clicked         |
+| `open`              | -              | Emitted when the options list opens       |
+| `close`             | -              | Emitted when the options list closes      |
+| `clear`             | -              | Emitted when the clear button is clicked  |
+| `focus`             | `FocusEvent`   | Emitted when the trigger receives focus   |
+| `blur`              | `FocusEvent`   | Emitted when the trigger loses focus      |
 
 ## Slots
 
-| Slot             | Props                                      | Description                                  |
-| ---------------- | ------------------------------------------ | -------------------------------------------- |
-| `default`        | -                                          | Content displayed in the outer wrapper       |
-| `label`          | -                                          | Label area of the input wrapper              |
-| `option`         | `{ id, label, value, disabled, selected }` | Custom template for each option              |
-| `group`          | `{ groupName }`                            | Custom template for group headers            |
-| `options-header` | -                                          | Header displayed above the options list      |
-| `options-footer` | -                                          | Footer displayed below the options list      |
-| `messages`       | -                                          | Bottom message area                          |
+| Slot             | Props                                      | Description                             |
+| ---------------- | ------------------------------------------ | --------------------------------------- |
+| `default`        | -                                          | Content displayed in the outer wrapper  |
+| `label`          | -                                          | Label area of the input wrapper         |
+| `option`         | `{ id, label, value, disabled, selected }` | Custom template for each option         |
+| `group`          | `{ groupName }`                            | Custom template for group headers       |
+| `options-header` | -                                          | Header displayed above the options list |
+| `options-footer` | -                                          | Footer displayed below the options list |
+| `messages`       | -                                          | Bottom message area                     |
 
 ## Methods
 
-| Method     | Return Type     | Description                                    |
-| ---------- | --------------- | ---------------------------------------------- |
-| `validate` | `boolean`       | Validate the current value and return the result |
-| `clear`    | `void`          | Clear all selected values                      |
-| `focus`    | `void`          | Set focus on the trigger                       |
-| `blur`     | `void`          | Remove focus from the trigger                  |
+| Method     | Return Type | Description                                      |
+| ---------- | ----------- | ------------------------------------------------ |
+| `validate` | `boolean`   | Validate the current value and return the result |
+| `clear`    | `void`      | Clear all selected values                        |
+| `focus`    | `void`      | Set focus on the trigger                         |
+| `blur`     | `void`      | Remove focus from the trigger                    |
 
 ## Features
 

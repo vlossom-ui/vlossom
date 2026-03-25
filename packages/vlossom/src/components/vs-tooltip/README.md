@@ -96,21 +96,21 @@ A tooltip component supporting various trigger modes and positions. Supports hov
 
 ## Props
 
-| Prop            | Type                                     | Default    | Required | Description                              |
-| --------------- | ---------------------------------------- | ---------- | -------- | ---------------------------------------- |
-| `target`        | `string`                                 | -          | ✅       | CSS selector for the target element      |
-| `colorScheme`   | `string`                                 | -          | -        | Color scheme for the component           |
-| `styleSet`      | `string \| VsTooltipStyleSet`            | -          | -        | Custom style configuration object        |
-| `align`         | `'start' \| 'center' \| 'end'`           | `'center'` | -        | Tooltip alignment                        |
-| `clickable`     | `boolean`                                | `false`    | -        | Toggle tooltip on click                  |
-| `contentsHover` | `boolean`                                | `false`    | -        | Allow hovering over tooltip content      |
-| `disabled`      | `boolean`                                | `false`    | -        | Disable the tooltip                      |
-| `enterDelay`    | `number`                                 | `0`        | -        | Show delay in milliseconds               |
-| `escClose`      | `boolean`                                | `true`     | -        | Close tooltip on ESC key                 |
-| `leaveDelay`    | `number`                                 | `0`        | -        | Hide delay in milliseconds               |
-| `margin`        | `string \| number`                       | `10`       | -        | Gap between tooltip and target element   |
-| `noAnimation`   | `boolean`                                | `false`    | -        | Disable animation                        |
-| `placement`     | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    | -        | Tooltip position                         |
+| Prop            | Type                                     | Default    | Required | Description                            |
+| --------------- | ---------------------------------------- | ---------- | -------- | -------------------------------------- |
+| `target`        | `string`                                 | -          | ✅       | CSS selector for the target element    |
+| `colorScheme`   | `string`                                 | -          | -        | Color scheme for the component         |
+| `styleSet`      | `string \| VsTooltipStyleSet`            | -          | -        | Custom style configuration object      |
+| `align`         | `'start' \| 'center' \| 'end'`           | `'center'` | -        | Tooltip alignment                      |
+| `clickable`     | `boolean`                                | `false`    | -        | Toggle tooltip on click                |
+| `contentsHover` | `boolean`                                | `false`    | -        | Allow hovering over tooltip content    |
+| `disabled`      | `boolean`                                | `false`    | -        | Disable the tooltip                    |
+| `enterDelay`    | `number`                                 | `0`        | -        | Show delay in milliseconds             |
+| `escClose`      | `boolean`                                | `true`     | -        | Close tooltip on ESC key               |
+| `leaveDelay`    | `number`                                 | `0`        | -        | Hide delay in milliseconds             |
+| `margin`        | `string \| number`                       | `10`       | -        | Gap between tooltip and target element |
+| `noAnimation`   | `boolean`                                | `false`    | -        | Disable animation                      |
+| `placement`     | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'`    | -        | Tooltip position                       |
 
 ## Types
 
@@ -131,9 +131,9 @@ interface VsTooltipStyleSet {
 
 ## Slots
 
-| Slot      | Description         |
-| --------- | ------------------- |
-| `default` | Tooltip content     |
+| Slot      | Description     |
+| --------- | --------------- |
+| `default` | Tooltip content |
 
 ## Methods
 

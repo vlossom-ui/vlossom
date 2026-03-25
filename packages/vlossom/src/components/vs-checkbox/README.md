@@ -115,30 +115,30 @@ const selectedOptions = ref([]);
 
 ### VsCheckbox Props
 
-| Prop            | Type                           | Default | Required | Description                                                                            |
-| --------------- | ------------------------------ | ------- | -------- | -------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | Color scheme for the component                                                         |
-| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | Custom style configuration object                                                      |
-| `checked`       | `boolean`                      | `false` | -        | Initial checked state                                                                  |
-| `checkLabel`    | `string`                       | -       | -        | Label displayed next to the checkbox                                                   |
-| `indeterminate` | `boolean`                      | `false` | -        | Show indeterminate (partially selected) state                                          |
-| `multiple`      | `boolean`                      | `false` | -        | Enable array mode (v-model operates as an array)                                       |
-| `trueValue`     | `any`                          | `true`  | -        | Value stored in v-model when checked                                                   |
-| `falseValue`    | `any`                          | `false` | -        | Value stored in v-model when unchecked                                                 |
+| Prop            | Type                           | Default | Required | Description                                                                                         |
+| --------------- | ------------------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                       | -       | -        | Color scheme for the component                                                                      |
+| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | Custom style configuration object                                                                   |
+| `checked`       | `boolean`                      | `false` | -        | Initial checked state                                                                               |
+| `checkLabel`    | `string`                       | -       | -        | Label displayed next to the checkbox                                                                |
+| `indeterminate` | `boolean`                      | `false` | -        | Show indeterminate (partially selected) state                                                       |
+| `multiple`      | `boolean`                      | `false` | -        | Enable array mode (v-model operates as an array)                                                    |
+| `trueValue`     | `any`                          | `true`  | -        | Value stored in v-model when checked                                                                |
+| `falseValue`    | `any`                          | `false` | -        | Value stored in v-model when unchecked                                                              |
 | `beforeChange`  | `Function`                     | -       | -        | Async function called before state change (receives from, to, optionValue; cancel if returns false) |
 
 Also supports common Input Props: `id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules`, etc.
 
 ### VsCheckboxSet Props
 
-| Prop           | Type               | Default | Required | Description                                                                             |
-| -------------- | ------------------ | ------- | -------- | --------------------------------------------------------------------------------------- |
-| `options`      | `any[]`            | -       | ✅       | Array of selectable options                                                             |
-| `optionLabel`  | `string`           | -       | -        | Property to use as the label from an option object                                      |
-| `optionValue`  | `string`           | -       | -        | Property to use as the value from an option object                                      |
-| `vertical`     | `boolean`          | `false` | -        | Apply vertical layout                                                                   |
-| `min`          | `number \| string` | `0`     | -        | Minimum number of selections                                                            |
-| `max`          | `number \| string` | -       | -        | Maximum number of selections                                                            |
+| Prop           | Type               | Default | Required | Description                                                                                         |
+| -------------- | ------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `options`      | `any[]`            | -       | ✅       | Array of selectable options                                                                         |
+| `optionLabel`  | `string`           | -       | -        | Property to use as the label from an option object                                                  |
+| `optionValue`  | `string`           | -       | -        | Property to use as the value from an option object                                                  |
+| `vertical`     | `boolean`          | `false` | -        | Apply vertical layout                                                                               |
+| `min`          | `number \| string` | `0`     | -        | Minimum number of selections                                                                        |
+| `max`          | `number \| string` | -       | -        | Maximum number of selections                                                                        |
 | `beforeChange` | `Function`         | -       | -        | Async function called before state change (receives from, to, optionValue; cancel if returns false) |
 
 ## Types
@@ -170,42 +170,42 @@ interface VsCheckboxSetStyleSet {
 
 ### VsCheckbox Events
 
-| Event               | Payload                 | Description                                   |
-| ------------------- | ----------------------- | --------------------------------------------- |
-| `update:modelValue` | `any \| any[]`          | Emitted when the v-model value changes        |
-| `change`            | `any`                   | Emitted when the checked state changes        |
-| `toggle`            | `(boolean, MouseEvent)` | Emitted on toggle (passes post-toggle state)  |
-| `focus`             | `FocusEvent`            | Emitted when the checkbox receives focus      |
-| `blur`              | `FocusEvent`            | Emitted when the checkbox loses focus         |
+| Event               | Payload                 | Description                                  |
+| ------------------- | ----------------------- | -------------------------------------------- |
+| `update:modelValue` | `any \| any[]`          | Emitted when the v-model value changes       |
+| `change`            | `any`                   | Emitted when the checked state changes       |
+| `toggle`            | `(boolean, MouseEvent)` | Emitted on toggle (passes post-toggle state) |
+| `focus`             | `FocusEvent`            | Emitted when the checkbox receives focus     |
+| `blur`              | `FocusEvent`            | Emitted when the checkbox loses focus        |
 
 ### VsCheckboxSet Events
 
-| Event               | Payload                | Description                                      |
-| ------------------- | ---------------------- | ------------------------------------------------ |
-| `update:modelValue` | `any[]`                | Emitted when the v-model value changes           |
-| `change`            | `any`                  | Emitted when the checked state changes           |
-| `focus`             | `(option, FocusEvent)` | Emitted when a checkbox receives focus           |
-| `blur`              | `(option, FocusEvent)` | Emitted when a checkbox loses focus              |
+| Event               | Payload                | Description                            |
+| ------------------- | ---------------------- | -------------------------------------- |
+| `update:modelValue` | `any[]`                | Emitted when the v-model value changes |
+| `change`            | `any`                  | Emitted when the checked state changes |
+| `focus`             | `(option, FocusEvent)` | Emitted when a checkbox receives focus |
+| `blur`              | `(option, FocusEvent)` | Emitted when a checkbox loses focus    |
 
 ## Slots
 
 ### VsCheckbox Slots
 
-| Slot          | Description                               |
-| ------------- | ----------------------------------------- |
-| `default`     | Content displayed in the outer wrapper    |
-| `label`       | Label area of the input wrapper           |
-| `check-label` | Label displayed next to the checkbox      |
-| `messages`    | Bottom message area                       |
+| Slot          | Description                            |
+| ------------- | -------------------------------------- |
+| `default`     | Content displayed in the outer wrapper |
+| `label`       | Label area of the input wrapper        |
+| `check-label` | Label displayed next to the checkbox   |
+| `messages`    | Bottom message area                    |
 
 ### VsCheckboxSet Slots
 
-| Slot          | Description                                       |
-| ------------- | ------------------------------------------------- |
-| `default`     | Content displayed in the outer wrapper            |
-| `label`       | Label area of the input wrapper                   |
-| `check-label` | Label for each checkbox (scoped slot)             |
-| `messages`    | Bottom message area                               |
+| Slot          | Description                            |
+| ------------- | -------------------------------------- |
+| `default`     | Content displayed in the outer wrapper |
+| `label`       | Label area of the input wrapper        |
+| `check-label` | Label for each checkbox (scoped slot)  |
+| `messages`    | Bottom message area                    |
 
 ## Methods
 

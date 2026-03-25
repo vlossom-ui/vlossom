@@ -97,20 +97,20 @@ function onSearch(value: string) {
 
 ## Props
 
-| Prop               | Type                              | Default | Required | Description                                  |
-| ------------------ | --------------------------------- | ------- | -------- | -------------------------------------------- |
-| `colorScheme`      | `ColorScheme`                     | -       | -        | Color scheme for the component               |
-| `styleSet`         | `string \| VsSearchInputStyleSet` | -       | -        | Custom style configuration object            |
-| `useCaseSensitive` | `boolean`                         | `false` | -        | Show the case-sensitive toggle button        |
-| `useRegex`         | `boolean`                         | `false` | -        | Show the regex toggle button                 |
-| `disabled`         | `boolean`                         | `false` | -        | Disable the component                        |
-| `readonly`         | `boolean`                         | `false` | -        | Set to readonly mode                         |
-| `placeholder`      | `string`                          | `''`    | -        | Placeholder text                             |
-| `width`            | `string \| number \| Breakpoints` | -       | -        | Component width                              |
-| `grid`             | `string \| number \| Breakpoints` | -       | -        | Grid layout size                             |
-| `modelValue`       | `string`                          | `''`    | -        | v-model binding (search text)                |
-| `caseSensitive`    | `boolean`                         | `false` | -        | v-model:case-sensitive binding               |
-| `regex`            | `boolean`                         | `false` | -        | v-model:regex binding                        |
+| Prop               | Type                              | Default | Required | Description                           |
+| ------------------ | --------------------------------- | ------- | -------- | ------------------------------------- |
+| `colorScheme`      | `ColorScheme`                     | -       | -        | Color scheme for the component        |
+| `styleSet`         | `string \| VsSearchInputStyleSet` | -       | -        | Custom style configuration object     |
+| `useCaseSensitive` | `boolean`                         | `false` | -        | Show the case-sensitive toggle button |
+| `useRegex`         | `boolean`                         | `false` | -        | Show the regex toggle button          |
+| `disabled`         | `boolean`                         | `false` | -        | Disable the component                 |
+| `readonly`         | `boolean`                         | `false` | -        | Set to readonly mode                  |
+| `placeholder`      | `string`                          | `''`    | -        | Placeholder text                      |
+| `width`            | `string \| number \| Breakpoints` | -       | -        | Component width                       |
+| `grid`             | `string \| number \| Breakpoints` | -       | -        | Grid layout size                      |
+| `modelValue`       | `string`                          | `''`    | -        | v-model binding (search text)         |
+| `caseSensitive`    | `boolean`                         | `false` | -        | v-model:case-sensitive binding        |
+| `regex`            | `boolean`                         | `false` | -        | v-model:regex binding                 |
 
 ## Types
 
@@ -139,12 +139,12 @@ interface VsSearchInputRef {
 
 ## Events
 
-| Event                  | Payload          | Description                                        |
-| ---------------------- | ---------------- | -------------------------------------------------- |
-| `search`               | `value: string`  | Emitted on input with debounce (400ms)             |
-| `update:modelValue`    | `value: string`  | Emitted when the v-model binding updates           |
-| `update:caseSensitive` | `value: boolean` | Emitted when the v-model:case-sensitive updates    |
-| `update:regex`         | `value: boolean` | Emitted when the v-model:regex updates             |
+| Event                  | Payload          | Description                                     |
+| ---------------------- | ---------------- | ----------------------------------------------- |
+| `search`               | `value: string`  | Emitted on input with debounce (400ms)          |
+| `update:modelValue`    | `value: string`  | Emitted when the v-model binding updates        |
+| `update:caseSensitive` | `value: boolean` | Emitted when the v-model:case-sensitive updates |
+| `update:regex`         | `value: boolean` | Emitted when the v-model:regex updates          |
 
 ## Slots
 

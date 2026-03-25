@@ -75,13 +75,13 @@ A block container component for clearly separating and grouping content. Display
 
 ## Props
 
-| Prop          | Type                              | Default | Required | Description                                  |
-| ------------- | --------------------------------- | ------- | -------- | -------------------------------------------- |
-| `colorScheme` | `ColorScheme`                     | -       | -        | Color scheme for the component               |
-| `styleSet`    | `string \| VsBlockStyleSet`       | -       | -        | Custom style configuration object            |
+| Prop          | Type                              | Default | Required | Description                                   |
+| ------------- | --------------------------------- | ------- | -------- | --------------------------------------------- |
+| `colorScheme` | `ColorScheme`                     | -       | -        | Color scheme for the component                |
+| `styleSet`    | `string \| VsBlockStyleSet`       | -       | -        | Custom style configuration object             |
 | `grid`        | `string \| number \| Breakpoints` | -       | -        | Grid column span (supports responsive values) |
-| `width`       | `string \| number`                | -       | -        | Block width                                  |
-| `height`      | `string \| number`                | -       | -        | Block height                                 |
+| `width`       | `string \| number`                | -       | -        | Block width                                   |
+| `height`      | `string \| number`                | -       | -        | Block height                                  |
 
 ## Types
 

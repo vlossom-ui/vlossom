@@ -59,9 +59,9 @@ A layout component that manages the overall application structure. Dynamically a
 
 ## Slots
 
-| Slot      | Description                             |
-| --------- | --------------------------------------- |
-| `default` | Content to place inside the layout      |
+| Slot      | Description                        |
+| --------- | ---------------------------------- |
+| `default` | Content to place inside the layout |
 
 ## Methods
 

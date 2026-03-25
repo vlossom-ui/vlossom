@@ -35,12 +35,12 @@ An individual toast message component. Supports auto-close, color schemes, and c
 
 ### Props
 
-| Prop          | Type                        | Default | Required | Description                                                          |
-| ------------- | --------------------------- | ------- | -------- | -------------------------------------------------------------------- |
-| `colorScheme` | `string`                    | -       | -        | Color scheme for the component                                       |
-| `styleSet`    | `string \| VsToastStyleSet` | -       | -        | Custom style configuration object                                    |
-| `autoClose`   | `boolean`                   | `true`  | -        | Whether to auto-close                                                |
-| `primary`     | `boolean`                   | `true`  | -        | Apply primary style                                                  |
+| Prop          | Type                        | Default | Required | Description                                                                |
+| ------------- | --------------------------- | ------- | -------- | -------------------------------------------------------------------------- |
+| `colorScheme` | `string`                    | -       | -        | Color scheme for the component                                             |
+| `styleSet`    | `string \| VsToastStyleSet` | -       | -        | Custom style configuration object                                          |
+| `autoClose`   | `boolean`                   | `true`  | -        | Whether to auto-close                                                      |
+| `primary`     | `boolean`                   | `true`  | -        | Apply primary style                                                        |
 | `timeout`     | `number`                    | `5000`  | -        | Auto-close delay in milliseconds (only applies when `autoClose` is `true`) |
 
 ### Types
@@ -85,15 +85,15 @@ interface VsToastStyleSet {
 
 ### Slots
 
-| Slot      | Description                        |
-| --------- | ---------------------------------- |
+| Slot      | Description                         |
+| --------- | ----------------------------------- |
 | `default` | Content to display inside the toast |
 
 ### Events
 
-| Event   | Payload | Description                                                              |
-| ------- | ------- | ------------------------------------------------------------------------ |
-| `close` | -       | Emitted when the toast closes (via close button or auto-close timeout)   |
+| Event   | Payload | Description                                                            |
+| ------- | ------- | ---------------------------------------------------------------------- |
+| `close` | -       | Emitted when the toast closes (via close button or auto-close timeout) |
 
 ---
 
@@ -103,9 +103,9 @@ A container component that groups and renders multiple toasts by position. Autom
 
 ### Props
 
-| Prop        | Type     | Default  | Required | Description                              |
-| ----------- | -------- | -------- | -------- | ---------------------------------------- |
-| `container` | `string` | `'body'` | -        | Container selector where toasts render   |
+| Prop        | Type     | Default  | Required | Description                            |
+| ----------- | -------- | -------- | -------- | -------------------------------------- |
+| `container` | `string` | `'body'` | -        | Container selector where toasts render |
 
 ---
 

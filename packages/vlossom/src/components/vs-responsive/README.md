@@ -52,11 +52,11 @@ A utility component for responsive design. Uses CSS Container Queries to automat
 
 ## Props
 
-| Prop    | Type                              | Default | Required | Description                                        |
-| ------- | --------------------------------- | ------- | -------- | -------------------------------------------------- |
-| `width` | `string \| number \| Breakpoints` | -       | -        | Component width — single value or responsive object |
+| Prop    | Type                              | Default | Required | Description                                          |
+| ------- | --------------------------------- | ------- | -------- | ---------------------------------------------------- |
+| `width` | `string \| number \| Breakpoints` | -       | -        | Component width — single value or responsive object  |
 | `grid`  | `string \| number \| Breakpoints` | -       | -        | Grid column span — single value or responsive object |
-| `tag`   | `string`                          | `div`   | -        | HTML tag to render as                              |
+| `tag`   | `string`                          | `div`   | -        | HTML tag to render as                                |
 
 ## Types
 
@@ -72,13 +72,13 @@ interface Breakpoints {
 
 ### Breakpoints Reference
 
-| Breakpoint | Min Width | Description          |
-| ---------- | --------- | -------------------- |
-| `xs`       | 0px       | Default (mobile)     |
-| `sm`       | 640px     | Small (tablet)       |
-| `md`       | 768px     | Medium (tablet)      |
-| `lg`       | 1024px    | Large (desktop)      |
-| `xl`       | 1280px    | Extra large (desktop)|
+| Breakpoint | Min Width | Description           |
+| ---------- | --------- | --------------------- |
+| `xs`       | 0px       | Default (mobile)      |
+| `sm`       | 640px     | Small (tablet)        |
+| `md`       | 768px     | Medium (tablet)       |
+| `lg`       | 1024px    | Large (desktop)       |
+| `xl`       | 1280px    | Extra large (desktop) |
 
 ## Events
 

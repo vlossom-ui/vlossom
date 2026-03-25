@@ -233,20 +233,20 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ## Props
 
-| Prop            | Type                                                   | Default  | Required | Description                                                                          |
-| --------------- | ------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------------ |
-| `colorScheme`   | `string`                                               | -        | -        | Color scheme for the component                                                       |
-| `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | Custom style configuration object                                                    |
-| `width`         | `string \| number \| Breakpoints`                      | -        | -        | Tab width — single value or breakpoints object                                       |
-| `grid`          | `string \| number \| Breakpoints`                      | -        | -        | Number of columns in the 12-column grid — single value or breakpoints object         |
-| `height`        | `string \| number`                                     | `'auto'` | -        | Tab height                                                                           |
-| `dense`         | `boolean`                                              | `false`  | -        | Apply compact style                                                                  |
-| `disabled`      | `boolean \| ((tab: string, index: number) => boolean)` | `false`  | -        | Disable tabs. `boolean` disables all; a function disables conditionally per tab      |
-| `primary`       | `boolean`                                              | `false`  | -        | Apply primary color theme                                                            |
-| `scrollButtons` | `'hide' \| 'show' \| 'auto'`                           | `'auto'` | -        | Scroll button visibility mode                                                        |
-| `tabs`          | `string[]`                                             | `[]`     | -        | Array of tab labels                                                                  |
-| `vertical`      | `boolean`                                              | `false`  | -        | Apply vertical layout                                                                |
-| `modelValue`    | `number`                                               | `0`      | -        | Selected tab index (v-model)                                                         |
+| Prop            | Type                                                   | Default  | Required | Description                                                                     |
+| --------------- | ------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                                               | -        | -        | Color scheme for the component                                                  |
+| `styleSet`      | `string \| VsTabsStyleSet`                             | -        | -        | Custom style configuration object                                               |
+| `width`         | `string \| number \| Breakpoints`                      | -        | -        | Tab width — single value or breakpoints object                                  |
+| `grid`          | `string \| number \| Breakpoints`                      | -        | -        | Number of columns in the 12-column grid — single value or breakpoints object    |
+| `height`        | `string \| number`                                     | `'auto'` | -        | Tab height                                                                      |
+| `dense`         | `boolean`                                              | `false`  | -        | Apply compact style                                                             |
+| `disabled`      | `boolean \| ((tab: string, index: number) => boolean)` | `false`  | -        | Disable tabs. `boolean` disables all; a function disables conditionally per tab |
+| `primary`       | `boolean`                                              | `false`  | -        | Apply primary color theme                                                       |
+| `scrollButtons` | `'hide' \| 'show' \| 'auto'`                           | `'auto'` | -        | Scroll button visibility mode                                                   |
+| `tabs`          | `string[]`                                             | `[]`     | -        | Array of tab labels                                                             |
+| `vertical`      | `boolean`                                              | `false`  | -        | Apply vertical layout                                                           |
+| `modelValue`    | `number`                                               | `0`      | -        | Selected tab index (v-model)                                                    |
 
 ## Types
 
@@ -295,9 +295,9 @@ interface VsTabsStyleSet {
 
 ## Slots
 
-| Slot  | Props            | Description                  |
-| ----- | ---------------- | ---------------------------- |
-| `tab` | `{ tab, index }` | Custom content for each tab  |
+| Slot  | Props            | Description                 |
+| ----- | ---------------- | --------------------------- |
+| `tab` | `{ tab, index }` | Custom content for each tab |
 
 ## Methods
 

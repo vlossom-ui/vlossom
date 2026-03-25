@@ -110,12 +110,12 @@ const textContent = computed(() => textWrapRef.value?.contentText || '');
 
 ## Props
 
-| Prop       | Type                           | Default | Required | Description                                      |
-| ---------- | ------------------------------ | ------- | -------- | ------------------------------------------------ |
-| `styleSet` | `string \| VsTextWrapStyleSet` | -       | -        | Custom style configuration object                |
-| `copy`     | `boolean`                      | `false` | -        | Show copy button                                 |
-| `link`     | `string`                       | `''`    | -        | Link URL (shows link button when provided)       |
-| `width`    | `string \| number`             | `''`    | -        | Width of the text content area                   |
+| Prop       | Type                           | Default | Required | Description                                |
+| ---------- | ------------------------------ | ------- | -------- | ------------------------------------------ |
+| `styleSet` | `string \| VsTextWrapStyleSet` | -       | -        | Custom style configuration object          |
+| `copy`     | `boolean`                      | `false` | -        | Show copy button                           |
+| `link`     | `string`                       | `''`    | -        | Link URL (shows link button when provided) |
+| `width`    | `string \| number`             | `''`    | -        | Width of the text content area             |
 
 ## Types
 
@@ -129,16 +129,16 @@ interface VsTextWrapStyleSet {
 
 ## Events
 
-| Event    | Payload        | Description                       |
-| -------- | -------------- | --------------------------------- |
+| Event    | Payload        | Description                             |
+| -------- | -------------- | --------------------------------------- |
 | `copied` | `text: string` | Emitted when the copy button is clicked |
 
 ## Slots
 
-| Slot      | Props | Description                                     |
-| --------- | ----- | ----------------------------------------------- |
-| `default` | -     | Text content to display                         |
-| `actions` | -     | Slot for adding custom action buttons           |
+| Slot      | Props | Description                           |
+| --------- | ----- | ------------------------------------- |
+| `default` | -     | Text content to display               |
+| `actions` | -     | Slot for adding custom action buttons |
 
 ## Methods
 

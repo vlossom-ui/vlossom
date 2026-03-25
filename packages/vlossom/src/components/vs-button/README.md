@@ -57,19 +57,19 @@ A versatile button component supporting various styles and states. Provides load
 
 ## Props
 
-| Prop          | Type                                    | Default    | Required | Description                                       |
-| ------------- | --------------------------------------- | ---------- | -------- | ------------------------------------------------- |
-| `colorScheme` | `string`                                | -          | -        | Color scheme for the component                    |
-| `styleSet`    | `string \| VsButtonStyleSet`            | -          | -        | Custom style configuration object                 |
-| `circle`      | `boolean`                               | `false`    | -        | Apply circular button style                       |
-| `disabled`    | `boolean`                               | `false`    | -        | Disable the button                                |
-| `ghost`       | `boolean`                               | `false`    | -        | Apply ghost style with transparent background     |
-| `loading`     | `boolean`                               | `false`    | -        | Show loading spinner                              |
-| `outline`     | `boolean`                               | `false`    | -        | Apply outline style                               |
-| `primary`     | `boolean`                               | `false`    | -        | Apply primary style for main actions              |
-| `responsive`  | `boolean`                               | `false`    | -        | Apply responsive style                            |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -          | -        | Button size                                       |
-| `type`        | `'button' \| 'submit' \| 'reset'`       | `'button'` | -        | The `type` attribute of the HTML button element   |
+| Prop          | Type                                   | Default    | Required | Description                                     |
+| ------------- | -------------------------------------- | ---------- | -------- | ----------------------------------------------- |
+| `colorScheme` | `string`                               | -          | -        | Color scheme for the component                  |
+| `styleSet`    | `string \| VsButtonStyleSet`           | -          | -        | Custom style configuration object               |
+| `circle`      | `boolean`                              | `false`    | -        | Apply circular button style                     |
+| `disabled`    | `boolean`                              | `false`    | -        | Disable the button                              |
+| `ghost`       | `boolean`                              | `false`    | -        | Apply ghost style with transparent background   |
+| `loading`     | `boolean`                              | `false`    | -        | Show loading spinner                            |
+| `outline`     | `boolean`                              | `false`    | -        | Apply outline style                             |
+| `primary`     | `boolean`                              | `false`    | -        | Apply primary style for main actions            |
+| `responsive`  | `boolean`                              | `false`    | -        | Apply responsive style                          |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -          | -        | Button size                                     |
+| `type`        | `'button' \| 'submit' \| 'reset'`      | `'button'` | -        | The `type` attribute of the HTML button element |
 
 ## Types
 
@@ -123,8 +123,8 @@ interface VsButtonStyleSet {
 
 ## Slots
 
-| Slot      | Description                        |
-| --------- | ---------------------------------- |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
 | `default` | Content to display inside the button |
 
 ## Methods

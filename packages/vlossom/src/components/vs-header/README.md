@@ -78,14 +78,14 @@ A component for the header area of a web application. When used inside `vs-layou
 
 ## Props
 
-| Prop          | Type                                                          | Default      | Required | Description                                          |
-| ------------- | ------------------------------------------------------------- | ------------ | -------- | ---------------------------------------------------- |
-| `colorScheme` | `ColorScheme`                                                 | -            | -        | Color scheme for the component                       |
-| `styleSet`    | `string \| VsHeaderStyleSet`                                  | -            | -        | Custom style configuration object                    |
-| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position value                                   |
-| `height`      | `string`                                                      | -            | -        | Header height                                        |
-| `primary`     | `boolean`                                                     | `false`      | -        | Apply emphasized primary style                       |
-| `tag`         | `string`                                                      | `'header'`   | -        | HTML tag to render as (default: header)              |
+| Prop          | Type                                                          | Default      | Required | Description                             |
+| ------------- | ------------------------------------------------------------- | ------------ | -------- | --------------------------------------- |
+| `colorScheme` | `ColorScheme`                                                 | -            | -        | Color scheme for the component          |
+| `styleSet`    | `string \| VsHeaderStyleSet`                                  | -            | -        | Custom style configuration object       |
+| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position value                      |
+| `height`      | `string`                                                      | -            | -        | Header height                           |
+| `primary`     | `boolean`                                                     | `false`      | -        | Apply emphasized primary style          |
+| `tag`         | `string`                                                      | `'header'`   | -        | HTML tag to render as (default: header) |
 
 ## Types
 
@@ -104,9 +104,9 @@ interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 ## Slots
 
-| Slot      | Description                           |
-| --------- | ------------------------------------- |
-| `default` | Content to display inside the header  |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | Content to display inside the header |
 
 ## Methods
 

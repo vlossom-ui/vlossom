@@ -223,19 +223,19 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 
 ## Props
 
-| Prop          | Type                                                    | Default | Required | Description                                                                              |
-| ------------- | ------------------------------------------------------- | ------- | -------- | ---------------------------------------------------------------------------------------- |
-| `colorScheme` | `string`                                                | -       | -        | Color scheme for the component                                                           |
-| `styleSet`    | `string \| VsStepsStyleSet`                             | -       | -        | Custom style configuration object                                                        |
-| `width`       | `string \| number \| Breakpoints`                       | -       | -        | Width — single value or breakpoints object                                               |
-| `grid`        | `string \| number \| Breakpoints`                       | -       | -        | Number of columns in the 12-column grid — single value or breakpoints object             |
-| `height`      | `string`                                                | -       | -        | Height                                                                                   |
-| `gap`         | `string \| number`                                      | `''`    | -        | Gap between steps                                                                        |
-| `noLabel`     | `boolean`                                               | `false` | -        | Hide step labels                                                                         |
-| `disabled`    | `boolean \| ((step: string, index: number) => boolean)` | `false` | -        | Disable steps. `boolean` disables all; a function disables conditionally per step        |
-| `steps`       | `string[]`                                              | `[]`    | -        | Array of step labels                                                                     |
-| `vertical`    | `boolean`                                               | `false` | -        | Apply vertical layout                                                                    |
-| `modelValue`  | `number`                                                | `0`     | -        | Currently selected step index (v-model)                                                  |
+| Prop          | Type                                                    | Default | Required | Description                                                                       |
+| ------------- | ------------------------------------------------------- | ------- | -------- | --------------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                | -       | -        | Color scheme for the component                                                    |
+| `styleSet`    | `string \| VsStepsStyleSet`                             | -       | -        | Custom style configuration object                                                 |
+| `width`       | `string \| number \| Breakpoints`                       | -       | -        | Width — single value or breakpoints object                                        |
+| `grid`        | `string \| number \| Breakpoints`                       | -       | -        | Number of columns in the 12-column grid — single value or breakpoints object      |
+| `height`      | `string`                                                | -       | -        | Height                                                                            |
+| `gap`         | `string \| number`                                      | `''`    | -        | Gap between steps                                                                 |
+| `noLabel`     | `boolean`                                               | `false` | -        | Hide step labels                                                                  |
+| `disabled`    | `boolean \| ((step: string, index: number) => boolean)` | `false` | -        | Disable steps. `boolean` disables all; a function disables conditionally per step |
+| `steps`       | `string[]`                                              | `[]`    | -        | Array of step labels                                                              |
+| `vertical`    | `boolean`                                               | `false` | -        | Apply vertical layout                                                             |
+| `modelValue`  | `number`                                                | `0`     | -        | Currently selected step index (v-model)                                           |
 
 ## Types
 
@@ -306,10 +306,10 @@ const steps = ['Account', 'Profile', 'Settings', 'Complete'];
 
 ## Slots
 
-| Slot    | Props                                                 | Description                          |
-| ------- | ----------------------------------------------------- | ------------------------------------ |
-| `step`  | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step number  |
-| `label` | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step label   |
+| Slot    | Props                                                 | Description                         |
+| ------- | ----------------------------------------------------- | ----------------------------------- |
+| `step`  | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step number |
+| `label` | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step label  |
 
 ## Methods
 

@@ -48,9 +48,9 @@ A focus trap component that confines keyboard focus to a specific area. Used to 
 
 ## Props
 
-| Prop       | Type      | Default | Required | Description               |
-| ---------- | --------- | ------- | -------- | ------------------------- |
-| `disabled` | `boolean` | `false` | -        | Disable the focus trap    |
+| Prop       | Type      | Default | Required | Description            |
+| ---------- | --------- | ------- | -------- | ---------------------- |
+| `disabled` | `boolean` | `false` | -        | Disable the focus trap |
 
 ## Types
 
@@ -65,15 +65,15 @@ A focus trap component that confines keyboard focus to a specific area. Used to 
 
 ## Slots
 
-| Slot      | Description                                                              |
-| --------- | ------------------------------------------------------------------------ |
+| Slot      | Description                                                             |
+| --------- | ----------------------------------------------------------------------- |
 | `default` | A single child element to apply the focus trap to (must be exactly one) |
 
 ## Methods
 
-| Method  | Parameters | Description                                         |
-| ------- | ---------- | --------------------------------------------------- |
-| `focus` | -          | Activate the focus trap and set focus               |
+| Method  | Parameters | Description                                          |
+| ------- | ---------- | ---------------------------------------------------- |
+| `focus` | -          | Activate the focus trap and set focus                |
 | `blur`  | -          | Deactivate the focus trap and restore previous focus |
 
 ## Features

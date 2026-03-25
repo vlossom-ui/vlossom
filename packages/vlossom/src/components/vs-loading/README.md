@@ -48,11 +48,11 @@ An animated loading indicator component. Displays a series of animated bars. Sup
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                       |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`                 | -       | -        | Color scheme for the component    |
-| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style configuration object |
-| `width`       | `string \| number`            | -       | -        | Loading indicator width (default 8rem)  |
+| Prop          | Type                          | Default | Required | Description                              |
+| ------------- | ----------------------------- | ------- | -------- | ---------------------------------------- |
+| `colorScheme` | `ColorScheme`                 | -       | -        | Color scheme for the component           |
+| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style configuration object        |
+| `width`       | `string \| number`            | -       | -        | Loading indicator width (default 8rem)   |
 | `height`      | `string \| number`            | -       | -        | Loading indicator height (default 10rem) |
 
 ## Types

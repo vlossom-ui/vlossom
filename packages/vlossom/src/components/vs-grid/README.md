@@ -41,15 +41,15 @@ A grid component for easily composing CSS Grid layouts. Provides a responsive gr
 
 ## Props
 
-| Prop        | Type                       | Default | Required | Description                           |
-| ----------- | -------------------------- | ------- | -------- | ------------------------------------- |
-| `gridSize`  | `string \| number`         | -       | -        | Number of grid columns (default 12)   |
-| `columnGap` | `string \| number`         | -       | -        | Gap between columns (default 0)       |
-| `rowGap`    | `string \| number`         | -       | -        | Gap between rows (default 0)          |
-| `width`     | `string \| number`         | -       | -        | Component width (default 100%)        |
-| `height`    | `string \| number`         | -       | -        | Component height (default 100%)       |
-| `tag`       | `string`                   | `div`   | -        | HTML tag to render as                 |
-| `styleSet`  | `string \| VsGridStyleSet` | -       | -        | Custom style configuration object     |
+| Prop        | Type                       | Default | Required | Description                         |
+| ----------- | -------------------------- | ------- | -------- | ----------------------------------- |
+| `gridSize`  | `string \| number`         | -       | -        | Number of grid columns (default 12) |
+| `columnGap` | `string \| number`         | -       | -        | Gap between columns (default 0)     |
+| `rowGap`    | `string \| number`         | -       | -        | Gap between rows (default 0)        |
+| `width`     | `string \| number`         | -       | -        | Component width (default 100%)      |
+| `height`    | `string \| number`         | -       | -        | Component height (default 100%)     |
+| `tag`       | `string`                   | `div`   | -        | HTML tag to render as               |
+| `styleSet`  | `string \| VsGridStyleSet` | -       | -        | Custom style configuration object   |
 
 ## Types
 
@@ -109,9 +109,9 @@ interface VsGridStyleSet {
 
 ## Slots
 
-| Slot      | Description                           |
-| --------- | ------------------------------------- |
-| `default` | Content to place inside the grid      |
+| Slot      | Description                      |
+| --------- | -------------------------------- |
+| `default` | Content to place inside the grid |
 
 ## Methods
 

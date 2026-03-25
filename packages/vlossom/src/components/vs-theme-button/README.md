@@ -49,10 +49,10 @@ const themeButtonStyle = {
 
 ## Props
 
-| Prop          | Type                              | Default | Required | Description                           |
-| ------------- | --------------------------------- | ------- | -------- | ------------------------------------- |
-| `colorScheme` | `ColorScheme`                     | -       | -        | Color scheme for the component        |
-| `styleSet`    | `string \| VsThemeButtonStyleSet` | -       | -        | Custom style configuration object     |
+| Prop          | Type                              | Default | Required | Description                       |
+| ------------- | --------------------------------- | ------- | -------- | --------------------------------- |
+| `colorScheme` | `ColorScheme`                     | -       | -        | Color scheme for the component    |
+| `styleSet`    | `string \| VsThemeButtonStyleSet` | -       | -        | Custom style configuration object |
 
 **Props inherited from VsToggle**: `circle`, `disabled`, `ghost`, `loading`, `outline`, `primary`, `size`
 
@@ -77,8 +77,8 @@ interface VsThemeButtonStyleSet {
 
 ## Events
 
-| Event    | Payload   | Description                                       |
-| -------- | --------- | ------------------------------------------------- |
+| Event    | Payload   | Description                                            |
+| -------- | --------- | ------------------------------------------------------ |
 | `change` | `boolean` | Emitted on theme change (`true`: Dark, `false`: Light) |
 
 ## Slots

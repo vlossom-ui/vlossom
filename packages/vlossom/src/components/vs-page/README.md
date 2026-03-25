@@ -82,11 +82,11 @@ interface VsPageStyleSet {
 
 ## Slots
 
-| Slot          | Description                      |
-| ------------- | -------------------------------- |
-| `default`     | Main content area of the page    |
-| `title`       | Page title (optional)            |
-| `description` | Page description (optional)      |
+| Slot          | Description                   |
+| ------------- | ----------------------------- |
+| `default`     | Main content area of the page |
+| `title`       | Page title (optional)         |
+| `description` | Page description (optional)   |
 
 ## Methods
 

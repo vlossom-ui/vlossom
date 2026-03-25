@@ -93,19 +93,19 @@ const isOpen = ref(false);
 
 ## Props
 
-| Prop          | Type                                                  | Default                  | Required | Description                                      |
-| ------------- | ----------------------------------------------------- | ------------------------ | -------- | ------------------------------------------------ |
-| `target`      | `string`                                              | -                        | ✅       | CSS selector for the target element              |
-| `align`       | `'start' \| 'center' \| 'end'`                        | `'start'`                | -        | Alignment of the floating element                |
-| `disabled`    | `boolean`                                             | `false`                  | -        | Disable the floating                             |
-| `enterDelay`  | `string \| number`                                    | `0`                      | -        | Show delay in milliseconds                       |
-| `followWidth` | `boolean`                                             | `false`                  | -        | Match the target element's width                 |
-| `leaveDelay`  | `string \| number`                                    | `0`                      | -        | Hide delay in milliseconds                       |
-| `margin`      | `string \| number`                                    | `5`                      | -        | Gap between floating and target element          |
-| `modelValue`  | `boolean`                                             | `false`                  | -        | Show/hide state bound via v-model                |
-| `noAnimation` | `boolean`                                             | `false`                  | -        | Disable animation                                |
-| `overlayId`   | `string`                                              | `'#vs-floating-overlay'` | -        | ID of the overlay container where floating renders |
-| `placement`   | `'top' \| 'right' \| 'bottom' \| 'left' \| 'middle'`  | `'bottom'`               | -        | Preferred position                               |
+| Prop          | Type                                                 | Default                  | Required | Description                                        |
+| ------------- | ---------------------------------------------------- | ------------------------ | -------- | -------------------------------------------------- |
+| `target`      | `string`                                             | -                        | ✅       | CSS selector for the target element                |
+| `align`       | `'start' \| 'center' \| 'end'`                       | `'start'`                | -        | Alignment of the floating element                  |
+| `disabled`    | `boolean`                                            | `false`                  | -        | Disable the floating                               |
+| `enterDelay`  | `string \| number`                                   | `0`                      | -        | Show delay in milliseconds                         |
+| `followWidth` | `boolean`                                            | `false`                  | -        | Match the target element's width                   |
+| `leaveDelay`  | `string \| number`                                   | `0`                      | -        | Hide delay in milliseconds                         |
+| `margin`      | `string \| number`                                   | `5`                      | -        | Gap between floating and target element            |
+| `modelValue`  | `boolean`                                            | `false`                  | -        | Show/hide state bound via v-model                  |
+| `noAnimation` | `boolean`                                            | `false`                  | -        | Disable animation                                  |
+| `overlayId`   | `string`                                             | `'#vs-floating-overlay'` | -        | ID of the overlay container where floating renders |
+| `placement`   | `'top' \| 'right' \| 'bottom' \| 'left' \| 'middle'` | `'bottom'`               | -        | Preferred position                                 |
 
 ## Types
 
@@ -115,15 +115,15 @@ const isOpen = ref(false);
 
 ## Events
 
-| Event               | Payload   | Description                             |
-| ------------------- | --------- | --------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes  |
+| Event               | Payload   | Description                            |
+| ------------------- | --------- | -------------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
 
 ## Slots
 
-| Slot      | Props                      | Description                                          |
-| --------- | -------------------------- | ---------------------------------------------------- |
-| `default` | `{ placement: Placement }` | Floating content — provides the computed placement   |
+| Slot      | Props                      | Description                                        |
+| --------- | -------------------------- | -------------------------------------------------- |
+| `default` | `{ placement: Placement }` | Floating content — provides the computed placement |
 
 ## Methods
 

@@ -101,10 +101,10 @@ function checkScroll() {
 
 ## Props
 
-| Prop         | Type                              | Default | Required | Description                        |
-| ------------ | --------------------------------- | ------- | -------- | ---------------------------------- |
-| `hideScroll` | `boolean`                         | `false` | -        | Hide or show the scrollbar         |
-| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style configuration object  |
+| Prop         | Type                              | Default | Required | Description                       |
+| ------------ | --------------------------------- | ------- | -------- | --------------------------------- |
+| `hideScroll` | `boolean`                         | `false` | -        | Hide or show the scrollbar        |
+| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style configuration object |
 
 ## Types
 
@@ -123,16 +123,16 @@ interface VsInnerScrollStyleSet {
 
 ## Slots
 
-| Slot      | Description                             |
-| --------- | --------------------------------------- |
-| `default` | Scrollable body content                 |
-| `header`  | Fixed header content at the top         |
-| `footer`  | Fixed footer content at the bottom      |
+| Slot      | Description                        |
+| --------- | ---------------------------------- |
+| `default` | Scrollable body content            |
+| `header`  | Fixed header content at the top    |
+| `footer`  | Fixed footer content at the bottom |
 
 ## Methods
 
-| Method      | Parameters | Return    | Description                               |
-| ----------- | ---------- | --------- | ----------------------------------------- |
+| Method      | Parameters | Return    | Description                                 |
+| ----------- | ---------- | --------- | ------------------------------------------- |
 | `hasScroll` | -          | `boolean` | Returns whether the container is scrollable |
 
 ## Features

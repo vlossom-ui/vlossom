@@ -50,10 +50,10 @@ A component that darkens the background for overlays, modals, and similar UI pat
 
 ## Props
 
-| Prop         | Type                         | Default | Required | Description                        |
-| ------------ | ---------------------------- | ------- | -------- | ---------------------------------- |
+| Prop         | Type                         | Default | Required | Description                                   |
+| ------------ | ---------------------------- | ------- | -------- | --------------------------------------------- |
 | `modelValue` | `boolean`                    | `false` | -        | Whether the dimmed overlay is shown (v-model) |
-| `styleSet`   | `string \| VsDimmedStyleSet` | -       | -        | Custom style configuration object  |
+| `styleSet`   | `string \| VsDimmedStyleSet` | -       | -        | Custom style configuration object             |
 
 ## Types
 
@@ -65,9 +65,9 @@ interface VsDimmedStyleSet {
 
 ## Events
 
-| Event                | Payload   | Description                        |
-| -------------------- | --------- | ---------------------------------- |
-| `update:modelValue`  | `boolean` | Emitted when visibility changes    |
+| Event               | Payload   | Description                     |
+| ------------------- | --------- | ------------------------------- |
+| `update:modelValue` | `boolean` | Emitted when visibility changes |
 
 ## Slots
 

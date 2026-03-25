@@ -77,14 +77,14 @@ An image display component. Supports lazy loading, fallback images, and skeleton
 
 ## Props
 
-| Prop         | Type                        | Default | Required | Description                              |
-| ------------ | --------------------------- | ------- | -------- | ---------------------------------------- |
-| `src`        | `string`                    | -       | ✅       | Image source URL                         |
-| `alt`        | `string`                    | `''`    | -        | Alternative text for the image           |
-| `fallback`   | `string`                    | `''`    | -        | Fallback image URL when loading fails    |
-| `lazy`       | `boolean`                   | `false` | -        | Enable lazy loading                      |
-| `noSkeleton` | `boolean`                   | `false` | -        | Disable skeleton display while loading   |
-| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | Custom style configuration object        |
+| Prop         | Type                        | Default | Required | Description                            |
+| ------------ | --------------------------- | ------- | -------- | -------------------------------------- |
+| `src`        | `string`                    | -       | ✅       | Image source URL                       |
+| `alt`        | `string`                    | `''`    | -        | Alternative text for the image         |
+| `fallback`   | `string`                    | `''`    | -        | Fallback image URL when loading fails  |
+| `lazy`       | `boolean`                   | `false` | -        | Enable lazy loading                    |
+| `noSkeleton` | `boolean`                   | `false` | -        | Disable skeleton display while loading |
+| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | Custom style configuration object      |
 
 ## Types
 
@@ -108,14 +108,14 @@ interface VsImageStyleSet {
 
 ## Events
 
-| Event   | Payload | Description                        |
-| ------- | ------- | ---------------------------------- |
-| `error` | -       | Emitted when image loading fails   |
+| Event   | Payload | Description                      |
+| ------- | ------- | -------------------------------- |
+| `error` | -       | Emitted when image loading fails |
 
 ## Slots
 
-| Slot       | Description                                    |
-| ---------- | ---------------------------------------------- |
+| Slot       | Description                                         |
+| ---------- | --------------------------------------------------- |
 | `skeleton` | Skeleton content displayed while loading (optional) |
 
 ## Methods

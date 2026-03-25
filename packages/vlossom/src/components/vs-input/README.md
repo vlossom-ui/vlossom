@@ -134,35 +134,35 @@ function clearInput() {
 
 ## Props
 
-| Prop             | Type                                                                        | Default                   | Required | Description                                             |
-| ---------------- | --------------------------------------------------------------------------- | ------------------------- | -------- | ------------------------------------------------------- |
-| `colorScheme`    | `ColorScheme`                                                               | -                         | -        | Color scheme for the component                          |
-| `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | Custom style configuration object                       |
-| `autocomplete`   | `boolean`                                                                   | `false`                   | -        | Enable autocomplete                                     |
-| `changed`        | `boolean`                                                                   | `false`                   | -        | Whether the value has changed (v-model:changed)         |
-| `disabled`       | `boolean`                                                                   | `false`                   | -        | Disable the input                                       |
-| `grid`           | `string \| number \| Breakpoints`                                           | -                         | -        | Grid layout size                                        |
-| `hidden`         | `boolean`                                                                   | `false`                   | -        | Hide the component                                      |
-| `id`             | `string`                                                                    | -                         | -        | The `id` attribute of the input element                 |
-| `label`          | `string`                                                                    | -                         | -        | Input field label                                       |
-| `max`            | `number \| string`                                                          | `Number.MAX_SAFE_INTEGER` | -        | Maximum value for number type                           |
-| `messages`       | `Message<InputValueType>[]`                                                 | `[]`                      | -        | Validation messages to display                          |
-| `min`            | `number \| string`                                                          | `Number.MIN_SAFE_INTEGER` | -        | Minimum value for number type                           |
-| `modelValue`     | `string \| number \| null`                                                  | `null`                    | -        | v-model binding value                                   |
-| `modelModifiers` | `StringModifiers`                                                           | `{}`                      | -        | String modifiers (capitalize, upper, lower)             |
-| `name`           | `string`                                                                    | -                         | -        | The `name` attribute of the input element               |
-| `noClear`        | `boolean`                                                                   | `false`                   | -        | Hide the clear button                                   |
-| `noDefaultRules` | `boolean`                                                                   | `false`                   | -        | Disable built-in validation rules                       |
-| `noLabel`        | `boolean`                                                                   | `false`                   | -        | Hide the label area                                     |
-| `noMessages`     | `boolean`                                                                   | `false`                   | -        | Hide the messages area                                  |
-| `placeholder`    | `string`                                                                    | -                         | -        | Placeholder text                                        |
-| `readonly`       | `boolean`                                                                   | `false`                   | -        | Set to readonly mode                                    |
-| `required`       | `boolean`                                                                   | `false`                   | -        | Mark as required                                        |
-| `rules`          | `Rule<InputValueType>[]`                                                    | `[]`                      | -        | Custom validation rules                                 |
-| `state`          | `UIState`                                                                   | `'idle'`                  | -        | Input state (idle, success, info, error, warning)       |
-| `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | Input type                                              |
-| `valid`          | `boolean`                                                                   | `false`                   | -        | Whether validation passed (v-model:valid)               |
-| `width`          | `string \| number \| Breakpoints`                                           | -                         | -        | Component width                                         |
+| Prop             | Type                                                                        | Default                   | Required | Description                                       |
+| ---------------- | --------------------------------------------------------------------------- | ------------------------- | -------- | ------------------------------------------------- |
+| `colorScheme`    | `ColorScheme`                                                               | -                         | -        | Color scheme for the component                    |
+| `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | Custom style configuration object                 |
+| `autocomplete`   | `boolean`                                                                   | `false`                   | -        | Enable autocomplete                               |
+| `changed`        | `boolean`                                                                   | `false`                   | -        | Whether the value has changed (v-model:changed)   |
+| `disabled`       | `boolean`                                                                   | `false`                   | -        | Disable the input                                 |
+| `grid`           | `string \| number \| Breakpoints`                                           | -                         | -        | Grid layout size                                  |
+| `hidden`         | `boolean`                                                                   | `false`                   | -        | Hide the component                                |
+| `id`             | `string`                                                                    | -                         | -        | The `id` attribute of the input element           |
+| `label`          | `string`                                                                    | -                         | -        | Input field label                                 |
+| `max`            | `number \| string`                                                          | `Number.MAX_SAFE_INTEGER` | -        | Maximum value for number type                     |
+| `messages`       | `Message<InputValueType>[]`                                                 | `[]`                      | -        | Validation messages to display                    |
+| `min`            | `number \| string`                                                          | `Number.MIN_SAFE_INTEGER` | -        | Minimum value for number type                     |
+| `modelValue`     | `string \| number \| null`                                                  | `null`                    | -        | v-model binding value                             |
+| `modelModifiers` | `StringModifiers`                                                           | `{}`                      | -        | String modifiers (capitalize, upper, lower)       |
+| `name`           | `string`                                                                    | -                         | -        | The `name` attribute of the input element         |
+| `noClear`        | `boolean`                                                                   | `false`                   | -        | Hide the clear button                             |
+| `noDefaultRules` | `boolean`                                                                   | `false`                   | -        | Disable built-in validation rules                 |
+| `noLabel`        | `boolean`                                                                   | `false`                   | -        | Hide the label area                               |
+| `noMessages`     | `boolean`                                                                   | `false`                   | -        | Hide the messages area                            |
+| `placeholder`    | `string`                                                                    | -                         | -        | Placeholder text                                  |
+| `readonly`       | `boolean`                                                                   | `false`                   | -        | Set to readonly mode                              |
+| `required`       | `boolean`                                                                   | `false`                   | -        | Mark as required                                  |
+| `rules`          | `Rule<InputValueType>[]`                                                    | `[]`                      | -        | Custom validation rules                           |
+| `state`          | `UIState`                                                                   | `'idle'`                  | -        | Input state (idle, success, info, error, warning) |
+| `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | Input type                                        |
+| `valid`          | `boolean`                                                                   | `false`                   | -        | Whether validation passed (v-model:valid)         |
+| `width`          | `string \| number \| Breakpoints`                                           | -                         | -        | Component width                                   |
 
 ## Types
 
@@ -182,29 +182,29 @@ interface VsInputStyleSet {
 
 ## Events
 
-| Event               | Payload                 | Description                          |
-| ------------------- | ----------------------- | ------------------------------------ |
-| `update:modelValue` | `value: InputValueType` | Emitted when the v-model value changes |
-| `update:changed`    | `changed: boolean`      | Emitted when the changed state updates |
+| Event               | Payload                 | Description                               |
+| ------------------- | ----------------------- | ----------------------------------------- |
+| `update:modelValue` | `value: InputValueType` | Emitted when the v-model value changes    |
+| `update:changed`    | `changed: boolean`      | Emitted when the changed state updates    |
 | `update:valid`      | `valid: boolean`        | Emitted when the validation state updates |
-| `change`            | `value: InputValueType` | Emitted when the input value changes  |
+| `change`            | `value: InputValueType` | Emitted when the input value changes      |
 
 ## Slots
 
-| Slot       | Description                              |
-| ---------- | ---------------------------------------- |
-| `label`    | Custom label content                     |
+| Slot       | Description                               |
+| ---------- | ----------------------------------------- |
+| `label`    | Custom label content                      |
 | `prepend`  | Content to display before the input field |
 | `append`   | Content to display after the input field  |
-| `messages` | Custom message content                   |
+| `messages` | Custom message content                    |
 
 ## Methods
 
-| Method   | Parameters | Return Type | Description                         |
-| -------- | ---------- | ----------- | ----------------------------------- |
-| `focus`  | -          | `void`      | Set focus on the input field        |
-| `select` | -          | `void`      | Select all text in the input field  |
-| `clear`  | -          | `void`      | Clear the input field value         |
+| Method   | Parameters | Return Type | Description                        |
+| -------- | ---------- | ----------- | ---------------------------------- |
+| `focus`  | -          | `void`      | Set focus on the input field       |
+| `select` | -          | `void`      | Select all text in the input field |
+| `clear`  | -          | `void`      | Clear the input field value        |
 
 ## Features
 

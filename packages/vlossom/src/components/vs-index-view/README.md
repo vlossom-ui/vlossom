@@ -53,12 +53,12 @@ const currentIndex = ref(0);
 
 ## Props
 
-| Prop         | Type                              | Default | Required | Description                                              |
-| ------------ | --------------------------------- | ------- | -------- | -------------------------------------------------------- |
-| `modelValue` | `number`                          | `0`     | -        | Index of the slot content to display (v-model binding)  |
+| Prop         | Type                              | Default | Required | Description                                                |
+| ------------ | --------------------------------- | ------- | -------- | ---------------------------------------------------------- |
+| `modelValue` | `number`                          | `0`     | -        | Index of the slot content to display (v-model binding)     |
 | `keepAlive`  | `boolean`                         | `false` | -        | Whether to use keep-alive for component state preservation |
-| `width`      | `string \| number \| Breakpoints` | -       | -        | Responsive width setting                                 |
-| `grid`       | `string \| number \| Breakpoints` | -       | -        | Responsive grid column count                             |
+| `width`      | `string \| number \| Breakpoints` | -       | -        | Responsive width setting                                   |
+| `grid`       | `string \| number \| Breakpoints` | -       | -        | Responsive grid column count                               |
 
 ## Types
 
@@ -74,15 +74,15 @@ interface Breakpoints {
 
 ## Events
 
-| Event               | Payload  | Description                             |
-| ------------------- | -------- | --------------------------------------- |
-| `update:modelValue` | `number` | Emitted when the v-model value changes  |
+| Event               | Payload  | Description                            |
+| ------------------- | -------- | -------------------------------------- |
+| `update:modelValue` | `number` | Emitted when the v-model value changes |
 
 ## Slots
 
-| Slot      | Description                                                                   |
-| --------- | ----------------------------------------------------------------------------- |
-| `default` | Contents to display by index. Each child element becomes one index entry.     |
+| Slot      | Description                                                               |
+| --------- | ------------------------------------------------------------------------- |
+| `default` | Contents to display by index. Each child element becomes one index entry. |
 
 ## Methods
 

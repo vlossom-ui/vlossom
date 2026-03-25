@@ -88,22 +88,22 @@ A wrapper component for input fields. Provides label, required indicator, messag
 
 ## Props
 
-| Prop          | Type                               | Default | Required | Description                             |
-| ------------- | ---------------------------------- | ------- | -------- | --------------------------------------- |
-| `disabled`    | `boolean`                          | `false` | -        | Disable the wrapper                     |
-| `hidden`      | `boolean`                          | `false` | -        | Hide the input wrapper                  |
-| `id`          | `string`                           | `''`    | -        | Unique ID for the input wrapper         |
-| `label`       | `string`                           | `''`    | -        | Label text for the input field          |
-| `noLabel`     | `boolean`                          | `false` | -        | Disable label display                   |
-| `noMessages`  | `boolean`                          | `false` | -        | Disable message display                 |
-| `required`    | `boolean`                          | `false` | -        | Show required indicator (red asterisk)  |
-| `groupLabel`  | `boolean`                          | `false` | -        | Render label as fieldset/legend         |
-| `messages`    | `StateMessage<UIState>[]`          | `[]`    | -        | Array of messages to display            |
-| `shake`       | `boolean`                          | `false` | -        | Trigger shake animation                 |
-| `width`       | `string \| number \| Breakpoints`  | -       | -        | Responsive width                        |
-| `grid`        | `string \| number \| Breakpoints`  | -       | -        | Grid layout size                        |
-| `colorScheme` | `ColorScheme`                      | -       | -        | Color scheme for the component          |
-| `styleSet`    | `string \| VsInputWrapperStyleSet` | -       | -        | Custom style configuration object       |
+| Prop          | Type                               | Default | Required | Description                            |
+| ------------- | ---------------------------------- | ------- | -------- | -------------------------------------- |
+| `disabled`    | `boolean`                          | `false` | -        | Disable the wrapper                    |
+| `hidden`      | `boolean`                          | `false` | -        | Hide the input wrapper                 |
+| `id`          | `string`                           | `''`    | -        | Unique ID for the input wrapper        |
+| `label`       | `string`                           | `''`    | -        | Label text for the input field         |
+| `noLabel`     | `boolean`                          | `false` | -        | Disable label display                  |
+| `noMessages`  | `boolean`                          | `false` | -        | Disable message display                |
+| `required`    | `boolean`                          | `false` | -        | Show required indicator (red asterisk) |
+| `groupLabel`  | `boolean`                          | `false` | -        | Render label as fieldset/legend        |
+| `messages`    | `StateMessage<UIState>[]`          | `[]`    | -        | Array of messages to display           |
+| `shake`       | `boolean`                          | `false` | -        | Trigger shake animation                |
+| `width`       | `string \| number \| Breakpoints`  | -       | -        | Responsive width                       |
+| `grid`        | `string \| number \| Breakpoints`  | -       | -        | Grid layout size                       |
+| `colorScheme` | `ColorScheme`                      | -       | -        | Color scheme for the component         |
+| `styleSet`    | `string \| VsInputWrapperStyleSet` | -       | -        | Custom style configuration object      |
 
 ## Types
 
@@ -136,11 +136,11 @@ interface VsInputWrapperStyleSet {
 
 ## Slots
 
-| Slot       | Description                                 |
-| ---------- | ------------------------------------------- |
+| Slot       | Description                                   |
+| ---------- | --------------------------------------------- |
 | `default`  | Input field component (input, textarea, etc.) |
-| `label`    | Custom label content                        |
-| `messages` | Custom message content                      |
+| `label`    | Custom label content                          |
+| `messages` | Custom message content                        |
 
 ## Methods
 

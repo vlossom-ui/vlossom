@@ -91,12 +91,12 @@ Automatically switches from vertical (desktop) to horizontal (mobile). The paren
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                                              |
-| ------------- | ----------------------------- | ------- | -------- | -------------------------------------------------------- |
-| `colorScheme` | `ColorScheme`                 | -       | -        | Color scheme for the component                           |
-| `styleSet`    | `string \| VsDividerStyleSet` | -       | -        | Custom style configuration object                        |
-| `vertical`    | `boolean`                     | `false` | -        | Vertical divider (false: horizontal, true: vertical)     |
-| `responsive`  | `boolean`                     | `false` | -        | Responsive mode — switches orientation at 768px          |
+| Prop          | Type                          | Default | Required | Description                                          |
+| ------------- | ----------------------------- | ------- | -------- | ---------------------------------------------------- |
+| `colorScheme` | `ColorScheme`                 | -       | -        | Color scheme for the component                       |
+| `styleSet`    | `string \| VsDividerStyleSet` | -       | -        | Custom style configuration object                    |
+| `vertical`    | `boolean`                     | `false` | -        | Vertical divider (false: horizontal, true: vertical) |
+| `responsive`  | `boolean`                     | `false` | -        | Responsive mode — switches orientation at 768px      |
 
 ## Types
 

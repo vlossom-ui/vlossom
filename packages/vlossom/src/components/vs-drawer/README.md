@@ -119,22 +119,22 @@ When placed inside `vs-layout`, two behaviors happen automatically:
 
 ## Props
 
-| Prop               | Type                                     | Default  | Required | Description                                                               |
-| ------------------ | ---------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
-| `colorScheme`      | `ColorScheme`                            | -        | -        | Color scheme for the component                                            |
-| `styleSet`         | `string \| VsDrawerStyleSet`             | -        | -        | Custom style configuration object                                         |
-| `callbacks`        | `OverlayCallbacks`                       | -        | -        | Callback functions called when overlay state changes                      |
-| `dimClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the dimmed background is clicked         |
-| `dimmed`           | `boolean`                                | `false`  | -        | Whether to show a dimmed overlay over the background                      |
-| `escClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the ESC key is pressed                   |
-| `focusLock`        | `boolean`                                | `false`  | -        | Whether to trap keyboard focus inside the drawer                          |
-| `id`               | `string`                                 | -        | -        | Unique identifier                                                         |
-| `fixed`            | `boolean`                                | `false`  | -        | Whether to use fixed position (`position: fixed`)                         |
+| Prop               | Type                                     | Default  | Required | Description                                                                               |
+| ------------------ | ---------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------------------- |
+| `colorScheme`      | `ColorScheme`                            | -        | -        | Color scheme for the component                                                            |
+| `styleSet`         | `string \| VsDrawerStyleSet`             | -        | -        | Custom style configuration object                                                         |
+| `callbacks`        | `OverlayCallbacks`                       | -        | -        | Callback functions called when overlay state changes                                      |
+| `dimClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the dimmed background is clicked                         |
+| `dimmed`           | `boolean`                                | `false`  | -        | Whether to show a dimmed overlay over the background                                      |
+| `escClose`         | `boolean`                                | `false`  | -        | Whether to close the drawer when the ESC key is pressed                                   |
+| `focusLock`        | `boolean`                                | `false`  | -        | Whether to trap keyboard focus inside the drawer                                          |
+| `id`               | `string`                                 | -        | -        | Unique identifier                                                                         |
+| `fixed`            | `boolean`                                | `false`  | -        | Whether to use fixed position (`position: fixed`)                                         |
 | `layoutResponsive` | `boolean`                                | `false`  | -        | Whether to auto-adjust `vs-container` padding when drawer opens/closes inside `vs-layout` |
-| `open`             | `boolean`                                | `false`  | -        | Initial open state (uncontrolled mode)                                    |
-| `placement`        | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'` | -        | Which side the drawer slides in from                                      |
-| `size`             | `SizeProp`                               | `'sm'`   | -        | Drawer size (`'xs'`\|`'sm'`\|`'md'`\|`'lg'`\|`'xl'` or custom value)    |
-| `modelValue`       | `boolean`                                | `false`  | -        | Value for v-model binding                                                 |
+| `open`             | `boolean`                                | `false`  | -        | Initial open state (uncontrolled mode)                                                    |
+| `placement`        | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'` | -        | Which side the drawer slides in from                                                      |
+| `size`             | `SizeProp`                               | `'sm'`   | -        | Drawer size (`'xs'`\|`'sm'`\|`'md'`\|`'lg'`\|`'xl'` or custom value)                      |
+| `modelValue`       | `boolean`                                | `false`  | -        | Value for v-model binding                                                                 |
 
 ## Types
 
@@ -195,27 +195,27 @@ type SizeProp = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number;
 
 ## Events
 
-| Event               | Payload   | Description                                    |
-| ------------------- | --------- | ---------------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes         |
-| `open`              | -         | Emitted when the drawer opens                  |
-| `close`             | -         | Emitted when the drawer closes                 |
-| `click-dimmed`      | -         | Emitted when the dimmed overlay is clicked     |
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
+| `update:modelValue` | `boolean` | Emitted when the v-model value changes     |
+| `open`              | -         | Emitted when the drawer opens              |
+| `close`             | -         | Emitted when the drawer closes             |
+| `click-dimmed`      | -         | Emitted when the dimmed overlay is clicked |
 
 ## Slots
 
-| Slot      | Description                              |
-| --------- | ---------------------------------------- |
-| `default` | Main content area of the drawer          |
-| `header`  | Header area at the top of the drawer     |
-| `footer`  | Footer area at the bottom of the drawer  |
+| Slot      | Description                             |
+| --------- | --------------------------------------- |
+| `default` | Main content area of the drawer         |
+| `header`  | Header area at the top of the drawer    |
+| `footer`  | Footer area at the bottom of the drawer |
 
 ## Methods
 
-| Method        | Parameters | Description                                      |
-| ------------- | ---------- | ------------------------------------------------ |
-| `openDrawer`  | -          | Programmatically opens the drawer                |
-| `closeDrawer` | -          | Programmatically closes the drawer               |
+| Method        | Parameters | Description                        |
+| ------------- | ---------- | ---------------------------------- |
+| `openDrawer`  | -          | Programmatically opens the drawer  |
+| `closeDrawer` | -          | Programmatically closes the drawer |
 
 ```html
 <template>

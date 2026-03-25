@@ -74,14 +74,14 @@ A chip component for displaying small pieces of information or tags. Supports ic
 
 ## Props
 
-| Prop          | Type                                    | Default | Required | Description                              |
-| ------------- | --------------------------------------- | ------- | -------- | ---------------------------------------- |
-| `colorScheme` | `string`                                | -       | -        | Color scheme for the component           |
-| `styleSet`    | `string \| VsChipStyleSet`              | -       | -        | Custom style configuration object        |
-| `closable`    | `boolean`                               | `false` | -        | Show close button                        |
-| `outline`     | `boolean`                               | `false` | -        | Apply outline style                      |
-| `primary`     | `boolean`                               | `false` | -        | Apply primary style for key information  |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -       | -        | Chip size                                |
+| Prop          | Type                                   | Default | Required | Description                             |
+| ------------- | -------------------------------------- | ------- | -------- | --------------------------------------- |
+| `colorScheme` | `string`                               | -       | -        | Color scheme for the component          |
+| `styleSet`    | `string \| VsChipStyleSet`             | -       | -        | Custom style configuration object       |
+| `closable`    | `boolean`                              | `false` | -        | Show close button                       |
+| `outline`     | `boolean`                              | `false` | -        | Apply outline style                     |
+| `primary`     | `boolean`                              | `false` | -        | Apply primary style for key information |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -       | -        | Chip size                               |
 
 ## Types
 
@@ -98,15 +98,15 @@ interface VsChipStyleSet {
 
 ## Events
 
-| Event   | Payload | Description                       |
-| ------- | ------- | --------------------------------- |
+| Event   | Payload | Description                              |
+| ------- | ------- | ---------------------------------------- |
 | `close` | -       | Emitted when the close button is clicked |
 
 ## Slots
 
-| Slot      | Description                       |
-| --------- | --------------------------------- |
-| `default` | Content to display inside the chip |
+| Slot      | Description                             |
+| --------- | --------------------------------------- |
+| `default` | Content to display inside the chip      |
 | `icon`    | Icon to display at the left of the chip |
 
 ## Methods

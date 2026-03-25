@@ -84,9 +84,9 @@ interface VsExpandableStyleSet {
 
 ## Slots
 
-| Slot      | Description                         |
-| --------- | ----------------------------------- |
-| `default` | Content to expand or collapse       |
+| Slot      | Description                   |
+| --------- | ----------------------------- |
+| `default` | Content to expand or collapse |
 
 ## Methods
 

@@ -187,31 +187,31 @@ interface VsTextareaStyleSet {
 
 ## Events
 
-| Event               | Payload             | Description                                  |
-| ------------------- | ------------------- | -------------------------------------------- |
-| `update:modelValue` | `value: string`     | Emitted when the v-model value changes       |
-| `update:changed`    | `changed: boolean`  | Emitted when the changed state updates       |
-| `update:valid`      | `valid: boolean`    | Emitted when the validation state updates    |
-| `change`            | `value: string`     | Emitted when the input value changes         |
-| `focus`             | `event: FocusEvent` | Emitted when the textarea receives focus     |
-| `blur`              | `event: FocusEvent` | Emitted when the textarea loses focus        |
+| Event               | Payload             | Description                               |
+| ------------------- | ------------------- | ----------------------------------------- |
+| `update:modelValue` | `value: string`     | Emitted when the v-model value changes    |
+| `update:changed`    | `changed: boolean`  | Emitted when the changed state updates    |
+| `update:valid`      | `valid: boolean`    | Emitted when the validation state updates |
+| `change`            | `value: string`     | Emitted when the input value changes      |
+| `focus`             | `event: FocusEvent` | Emitted when the textarea receives focus  |
+| `blur`              | `event: FocusEvent` | Emitted when the textarea loses focus     |
 
 ## Slots
 
-| Slot       | Description           |
-| ---------- | --------------------- |
-| `label`    | Custom label content  |
-| `messages` | Custom message content|
+| Slot       | Description            |
+| ---------- | ---------------------- |
+| `label`    | Custom label content   |
+| `messages` | Custom message content |
 
 ## Methods
 
-| Method     | Parameters | Return Type | Description                              |
-| ---------- | ---------- | ----------- | ---------------------------------------- |
-| `focus`    | -          | `void`      | Set focus on the textarea                |
-| `blur`     | -          | `void`      | Remove focus from the textarea           |
-| `select`   | -          | `void`      | Select all text in the textarea          |
-| `clear`    | -          | `void`      | Clear the textarea value                 |
-| `validate` | -          | `boolean`   | Run validation and return the result     |
+| Method     | Parameters | Return Type | Description                          |
+| ---------- | ---------- | ----------- | ------------------------------------ |
+| `focus`    | -          | `void`      | Set focus on the textarea            |
+| `blur`     | -          | `void`      | Remove focus from the textarea       |
+| `select`   | -          | `void`      | Select all text in the textarea      |
+| `clear`    | -          | `void`      | Clear the textarea value             |
+| `validate` | -          | `boolean`   | Run validation and return the result |
 
 ## Features
 

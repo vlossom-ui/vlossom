@@ -102,9 +102,9 @@ interface VsBarStyleSet {
 
 ## Slots
 
-| Slot      | Description                        |
-| --------- | ---------------------------------- |
-| `default` | Content to display inside the bar  |
+| Slot      | Description                       |
+| --------- | --------------------------------- |
+| `default` | Content to display inside the bar |
 
 ## Methods
 

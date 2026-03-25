@@ -100,30 +100,30 @@ const value = ref(false);
 
 ## Props
 
-| Prop             | Type                         | Default | Required | Description                                     |
-| ---------------- | ---------------------------- | ------- | -------- | ----------------------------------------------- |
-| `modelValue`     | `any`                        | `false` | -        | Switch value bound via v-model                  |
-| `colorScheme`    | `ColorScheme`                | -       | -        | Color scheme for the component                  |
-| `styleSet`       | `string \| VsSwitchStyleSet` | -       | -        | Custom style configuration object               |
-| `label`          | `string`                     | `''`    | -        | Switch label                                    |
-| `trueValue`      | `any`                        | `true`  | -        | Value for the ON state                          |
-| `falseValue`     | `any`                        | `false` | -        | Value for the OFF state                         |
-| `beforeChange`   | `Function`                   | `null`  | -        | Callback function called before value changes   |
-| `checked`        | `boolean`                    | `false` | -        | Initial checked state                           |
-| `multiple`       | `boolean`                    | `false` | -        | Enable array mode                               |
-| `disabled`       | `boolean`                    | `false` | -        | Disable the switch                              |
-| `readonly`       | `boolean`                    | `false` | -        | Set to readonly mode                            |
-| `required`       | `boolean`                    | `false` | -        | Mark as required                                |
-| `hidden`         | `boolean`                    | `false` | -        | Hide the switch                                 |
-| `id`             | `string`                     | `''`    | -        | The `id` attribute of the input element         |
-| `name`           | `string`                     | `''`    | -        | The `name` attribute of the input element       |
-| `messages`       | `Message[]`                  | `[]`    | -        | Validation message array                        |
-| `rules`          | `Rule[]`                     | `[]`    | -        | Validation rule array                           |
-| `state`          | `UIState`                    | `idle`  | -        | Component state                                 |
-| `noMessages`     | `boolean`                    | `false` | -        | Hide the messages area                          |
-| `noDefaultRules` | `boolean`                    | `false` | -        | Disable built-in validation rules               |
-| `width`          | `string \| number \| Breakpoints` | -  | -        | Component width                                 |
-| `grid`           | `string \| number \| Breakpoints` | -  | -        | Grid layout size                                |
+| Prop             | Type                              | Default | Required | Description                                   |
+| ---------------- | --------------------------------- | ------- | -------- | --------------------------------------------- |
+| `modelValue`     | `any`                             | `false` | -        | Switch value bound via v-model                |
+| `colorScheme`    | `ColorScheme`                     | -       | -        | Color scheme for the component                |
+| `styleSet`       | `string \| VsSwitchStyleSet`      | -       | -        | Custom style configuration object             |
+| `label`          | `string`                          | `''`    | -        | Switch label                                  |
+| `trueValue`      | `any`                             | `true`  | -        | Value for the ON state                        |
+| `falseValue`     | `any`                             | `false` | -        | Value for the OFF state                       |
+| `beforeChange`   | `Function`                        | `null`  | -        | Callback function called before value changes |
+| `checked`        | `boolean`                         | `false` | -        | Initial checked state                         |
+| `multiple`       | `boolean`                         | `false` | -        | Enable array mode                             |
+| `disabled`       | `boolean`                         | `false` | -        | Disable the switch                            |
+| `readonly`       | `boolean`                         | `false` | -        | Set to readonly mode                          |
+| `required`       | `boolean`                         | `false` | -        | Mark as required                              |
+| `hidden`         | `boolean`                         | `false` | -        | Hide the switch                               |
+| `id`             | `string`                          | `''`    | -        | The `id` attribute of the input element       |
+| `name`           | `string`                          | `''`    | -        | The `name` attribute of the input element     |
+| `messages`       | `Message[]`                       | `[]`    | -        | Validation message array                      |
+| `rules`          | `Rule[]`                          | `[]`    | -        | Validation rule array                         |
+| `state`          | `UIState`                         | `idle`  | -        | Component state                               |
+| `noMessages`     | `boolean`                         | `false` | -        | Hide the messages area                        |
+| `noDefaultRules` | `boolean`                         | `false` | -        | Disable built-in validation rules             |
+| `width`          | `string \| number \| Breakpoints` | -       | -        | Component width                               |
+| `grid`           | `string \| number \| Breakpoints` | -       | -        | Grid layout size                              |
 
 ## Types
 
@@ -146,14 +146,14 @@ interface VsSwitchStyleSet {
 
 ## Events
 
-| Event               | Payload   | Description                              |
-| ------------------- | --------- | ---------------------------------------- |
-| `update:modelValue` | `any`     | Emitted when the v-model value changes   |
-| `update:changed`    | `boolean` | Emitted when the changed state updates   |
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
+| `update:modelValue` | `any`     | Emitted when the v-model value changes     |
+| `update:changed`    | `boolean` | Emitted when the changed state updates     |
 | `update:valid`      | `boolean` | Emitted when the validation result updates |
-| `change`            | `any`     | Emitted when the value changes           |
-| `focus`             | `Event`   | Emitted when the switch receives focus   |
-| `blur`              | `Event`   | Emitted when the switch loses focus      |
+| `change`            | `any`     | Emitted when the value changes             |
+| `focus`             | `Event`   | Emitted when the switch receives focus     |
+| `blur`              | `Event`   | Emitted when the switch loses focus        |
 
 ## Slots
 
@@ -164,12 +164,12 @@ interface VsSwitchStyleSet {
 
 ## Methods
 
-| Method     | Parameters | Description                          |
-| ---------- | ---------- | ------------------------------------ |
-| `focus`    | -          | Set focus on the switch              |
-| `blur`     | -          | Remove focus from the switch         |
-| `validate` | -          | Run validation                       |
-| `clear`    | -          | Reset the value                      |
+| Method     | Parameters | Description                  |
+| ---------- | ---------- | ---------------------------- |
+| `focus`    | -          | Set focus on the switch      |
+| `blur`     | -          | Remove focus from the switch |
+| `validate` | -          | Run validation               |
+| `clear`    | -          | Reset the value              |
 
 ## Features
 

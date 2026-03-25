@@ -55,17 +55,17 @@ A pagination component for page navigation. Supports `v-model` and automatically
 
 ## Props
 
-| Prop            | Type                             | Default | Required | Description                                     |
-| --------------- | -------------------------------- | ------- | -------- | ----------------------------------------------- |
-| `modelValue`    | `number`                         | `0`     | -        | Current page bound via v-model (0-based)         |
-| `length`        | `number`                         | `1`     | ✓        | Total number of pages (must be 1 or more)        |
-| `showingLength` | `number`                         | `10`    | -        | Number of page buttons to display (1 or more)    |
-| `edgeButtons`   | `boolean`                        | `false` | -        | Show first/last page buttons                     |
-| `disabled`      | `boolean`                        | `false` | -        | Disable the entire pagination                    |
-| `ghost`         | `boolean`                        | `false` | -        | Apply ghost style                                |
-| `outline`       | `boolean`                        | `false` | -        | Apply outline style                              |
-| `colorScheme`   | `ColorScheme`                    | -       | -        | Color scheme for the component                   |
-| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style configuration object                |
+| Prop            | Type                             | Default | Required | Description                                   |
+| --------------- | -------------------------------- | ------- | -------- | --------------------------------------------- |
+| `modelValue`    | `number`                         | `0`     | -        | Current page bound via v-model (0-based)      |
+| `length`        | `number`                         | `1`     | ✓        | Total number of pages (must be 1 or more)     |
+| `showingLength` | `number`                         | `10`    | -        | Number of page buttons to display (1 or more) |
+| `edgeButtons`   | `boolean`                        | `false` | -        | Show first/last page buttons                  |
+| `disabled`      | `boolean`                        | `false` | -        | Disable the entire pagination                 |
+| `ghost`         | `boolean`                        | `false` | -        | Apply ghost style                             |
+| `outline`       | `boolean`                        | `false` | -        | Apply outline style                           |
+| `colorScheme`   | `ColorScheme`                    | -       | -        | Color scheme for the component                |
+| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style configuration object             |
 
 ## Types
 
@@ -112,20 +112,20 @@ interface VsPaginationStyleSet {
 
 ## Events
 
-| Event               | Parameters | Description                          |
-| ------------------- | ---------- | ------------------------------------ |
+| Event               | Parameters | Description                            |
+| ------------------- | ---------- | -------------------------------------- |
 | `update:modelValue` | `number`   | Emitted when the v-model value changes |
-| `change`            | `number`   | Emitted when the page changes        |
+| `change`            | `number`   | Emitted when the page changes          |
 
 ## Slots
 
-| Slot    | Props      | Description                              |
-| ------- | ---------- | ---------------------------------------- |
-| `first` | -          | Content for the first-page button        |
-| `prev`  | -          | Content for the previous-page button     |
-| `page`  | `{ page }` | Content for page number buttons          |
-| `next`  | -          | Content for the next-page button         |
-| `last`  | -          | Content for the last-page button         |
+| Slot    | Props      | Description                          |
+| ------- | ---------- | ------------------------------------ |
+| `first` | -          | Content for the first-page button    |
+| `prev`  | -          | Content for the previous-page button |
+| `page`  | `{ page }` | Content for page number buttons      |
+| `next`  | -          | Content for the next-page button     |
+| `last`  | -          | Content for the last-page button     |
 
 ## Methods
 

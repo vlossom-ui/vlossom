@@ -85,16 +85,16 @@ A component that displays a label and value pair. Useful for form information, u
 
 ## Props
 
-| Prop          | Type                             | Default | Required | Description                                        |
-| ------------- | -------------------------------- | ------- | -------- | -------------------------------------------------- |
-| `colorScheme` | `ColorScheme`                    | -       | -        | Color scheme for the component                     |
-| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | Custom style configuration object                  |
-| `width`       | `string`                         | -       | -        | Component width (e.g. `'400px'`)                   |
-| `grid`        | `number`                         | -       | -        | Width based on 12-column grid system (1–12)        |
-| `dense`       | `boolean`                        | `false` | -        | Apply compact style                                |
-| `primary`     | `boolean`                        | `false` | -        | Apply emphasized primary style                     |
-| `vertical`    | `boolean`                        | `false` | -        | Always stack label and value vertically            |
-| `responsive`  | `boolean`                        | `false` | -        | Switch to vertical layout below 768px container    |
+| Prop          | Type                             | Default | Required | Description                                     |
+| ------------- | -------------------------------- | ------- | -------- | ----------------------------------------------- |
+| `colorScheme` | `ColorScheme`                    | -       | -        | Color scheme for the component                  |
+| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | Custom style configuration object               |
+| `width`       | `string`                         | -       | -        | Component width (e.g. `'400px'`)                |
+| `grid`        | `number`                         | -       | -        | Width based on 12-column grid system (1–12)     |
+| `dense`       | `boolean`                        | `false` | -        | Apply compact style                             |
+| `primary`     | `boolean`                        | `false` | -        | Apply emphasized primary style                  |
+| `vertical`    | `boolean`                        | `false` | -        | Always stack label and value vertically         |
+| `responsive`  | `boolean`                        | `false` | -        | Switch to vertical layout below 768px container |
 
 ## Types
 
@@ -118,8 +118,8 @@ interface VsLabelValueStyleSet {
 
 ## Slots
 
-| Slot      | Description                      |
-| --------- | -------------------------------- |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
 | `label`   | Content to display in the label area |
 | `default` | Content to display in the value area |
 
