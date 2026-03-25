@@ -243,44 +243,44 @@ const selected = ref(null);
 
 ## Props
 
-| Prop              | Type                                             | Default                   | Required | Description                                         |
-| ----------------- | ------------------------------------------------ | ------------------------- | -------- | --------------------------------------------------- |
-| `disabled`        | `boolean`                                        | `false`                   | -        | 비활성화 상태                                       |
-| `hidden`          | `boolean`                                        | `false`                   | 컴포넌트 숨김 여부                                  |
-| `id`              | `string`                                         | `''`                      | 컴포넌트 id                                         |
-| `label`           | `string`                                         | `''`                      | 입력 필드 라벨                                      |
-| `noLabel`         | `boolean`                                        | `false`                   | 라벨 영역 숨김                                      |
-| `noMessages`      | `boolean`                                        | `false`                   | 메시지 영역 숨김                                    |
-| `required`        | `boolean`                                        | `false`                   | 필수 입력 여부                                      |
-| `small`           | `boolean`                                        | `false`                   | 작은 크기                                           |
-| `messages`        | `Message[]`                                      | `[]`                      | 메시지 표시                                         |
-| `name`            | `string`                                         | `''`                      | input 요소의 name 속성                              |
-| `noDefaultRules`  | `boolean`                                        | `false`                   | 기본 검증 규칙 비활성화                             |
-| `placeholder`     | `string`                                         | `''`                      | 아무것도 선택되지 않았을 때 표시할 텍스트           |
-| `readonly`        | `boolean`                                        | `false`                   | 읽기 전용 상태                                      |
-| `rules`           | `Rule[]`                                         | `[]`                      | 커스텀 검증 규칙                                    |
-| `state`           | `UIState`                                        | `'idle'`                  | 입력 상태 (idle, success, info, error, warning)     |
-| `changed`         | `boolean`                                        | `false`                   | 값 변경 여부 (v-model:changed)                      |
-| `valid`           | `boolean`                                        | `false`                   | 검증 통과 여부 (v-model:valid)                      |
-| `width`           | `string \| number \| Breakpoints`                | -                         | 컴포넌트 너비                                       |
-| `grid`            | `string \| number \| Breakpoints`                | -                         | 그리드 레이아웃 크기                                |
-| `colorScheme`     | `ColorScheme`                                    | -                         | 컴포넌트 색상 테마                                  |
-| `styleSet`        | `string \| VsSelectStyleSet`                     | -                         | 커스텀 스타일 설정 객체                             |
-| `options`         | `any[]`                                          | `[]`                      | 선택 가능한 옵션 배열                               |
-| `optionLabel`     | `string`                                         | `''`                      | 옵션 객체에서 라벨로 사용할 속성                    |
-| `optionValue`     | `string`                                         | `''`                      | 옵션 객체에서 값으로 사용할 속성                    |
-| `groupBy`         | `(option, index) => string \| null`              | `null`                    | 옵션을 그룹화할 함수                                |
-| `groupOrder`      | `string[]`                                       | `[]`                      | 그룹 표시 순서 지정                                 |
-| `min`             | `number \| string`                               | `0`                       | 다중 선택 시 최소 선택 개수                         |
-| `max`             | `number \| string`                               | `Number.MAX_SAFE_INTEGER` | 다중 선택 시 최대 선택 개수                         |
-| `closableChips`   | `boolean`                                        | `false`                   | 다중 선택 시 칩에 닫기 버튼 표시                    |
-| `collapseChips`   | `boolean`                                        | `false`                   | 다중 선택 시 칩을 축약하여 표시                     |
-| `multiple`        | `boolean`                                        | `false`                   | 다중 선택 모드 활성화                               |
-| `noClear`         | `boolean`                                        | `false`                   | 선택 해제(clear) 버튼 숨기기                        |
-| `optionsDisabled` | `boolean \| (option, index, options) => boolean` | `false`                   | 특정 옵션을 비활성화하는 함수 또는 boolean          |
-| `search`          | `SearchProps`                                    | `false`                   | 검색 기능 활성화 및 옵션                            |
-| `selectAll`       | `boolean`                                        | `false`                   | 전체 선택 체크박스 표시 (다중 선택 모드에서만 동작) |
-| `modelValue`      | `any \| any[]`                                   | `null`                    | v-model 바인딩 값                                   |
+| Prop              | Type                                             | Default                   | Required                                   | Description                                         |
+| ----------------- | ------------------------------------------------ | ------------------------- | ------------------------------------------ | --------------------------------------------------- |
+| `disabled`        | `boolean`                                        | `false`                   | -                                          | 비활성화 상태                                       |
+| `hidden`          | `boolean`                                        | `false`                   | -                                          | 컴포넌트 숨김 여부                                  |
+| `id`              | `string`                                         | `''`                      | -                                          | 컴포넌트 id                                         |
+| `label`           | `string`                                         | `''`                      | -                                          | 입력 필드 라벨                                      |
+| `noLabel`         | `boolean`                                        | `false`                   | -                                          | 라벨 영역 숨김                                      |
+| `noMessages`      | `boolean`                                        | `false`                   | -                                          | 메시지 영역 숨김                                    |
+| `required`        | `boolean`                                        | `false`                   | -                                          | 필수 입력 여부                                      |
+| `small`           | `boolean`                                        | `false`                   | -                                          | 작은 크기                                           |
+| `messages`        | `Message[]`                                      | `[]`                      | -                                          | 메시지 표시                                         |
+| `name`            | `string`                                         | `''`                      | -                                          | input 요소의 name 속성                              |
+| `noDefaultRules`  | `boolean`                                        | `false`                   | -                                          | 기본 검증 규칙 비활성화                             |
+| `placeholder`     | `string`                                         | `''`                      | -                                          | 아무것도 선택되지 않았을 때 표시할 텍스트           |
+| `readonly`        | `boolean`                                        | `false`                   | -                                          | 읽기 전용 상태                                      |
+| `rules`           | `Rule[]`                                         | `[]`                      | -                                          | 커스텀 검증 규칙                                    |
+| `state`           | `UIState`                                        | `'idle'`                  | -                                          | 입력 상태 (idle, success, info, error, warning)     |
+| `changed`         | `boolean`                                        | `false`                   | -                                          | 값 변경 여부 (v-model:changed)                      |
+| `valid`           | `boolean`                                        | `false`                   | -                                          | 검증 통과 여부 (v-model:valid)                      |
+| `width`           | `string \| number \| Breakpoints`                | -                         | 컴포넌트 너비                              |
+| `grid`            | `string \| number \| Breakpoints`                | -                         | 그리드 레이아웃 크기                       |
+| `colorScheme`     | `ColorScheme`                                    | -                         | -                                          | 컴포넌트 색상 테마                                  |
+| `styleSet`        | `string \| VsSelectStyleSet`                     | -                         | 커스텀 스타일 설정 객체                    |
+| `options`         | `any[]`                                          | `[]`                      | -                                          | 선택 가능한 옵션 배열                               |
+| `optionLabel`     | `string`                                         | `''`                      | -                                          | 옵션 객체에서 라벨로 사용할 속성                    |
+| `optionValue`     | `string`                                         | `''`                      | -                                          | 옵션 객체에서 값으로 사용할 속성                    |
+| `groupBy`         | `(option, index) => string \| null`              | `null`                    | 옵션을 그룹화할 함수                       |
+| `groupOrder`      | `string[]`                                       | `[]`                      | -                                          | 그룹 표시 순서 지정                                 |
+| `min`             | `number \| string`                               | `0`                       | 다중 선택 시 최소 선택 개수                |
+| `max`             | `number \| string`                               | `Number.MAX_SAFE_INTEGER` | 다중 선택 시 최대 선택 개수                |
+| `closableChips`   | `boolean`                                        | `false`                   | -                                          | 다중 선택 시 칩에 닫기 버튼 표시                    |
+| `collapseChips`   | `boolean`                                        | `false`                   | -                                          | 다중 선택 시 칩을 축약하여 표시                     |
+| `multiple`        | `boolean`                                        | `false`                   | -                                          | 다중 선택 모드 활성화                               |
+| `noClear`         | `boolean`                                        | `false`                   | -                                          | 선택 해제(clear) 버튼 숨기기                        |
+| `optionsDisabled` | `boolean \| (option, index, options) => boolean` | `false`                   | 특정 옵션을 비활성화하는 함수 또는 boolean |
+| `search`          | `SearchProps`                                    | `false`                   | -                                          | 검색 기능 활성화 및 옵션                            |
+| `selectAll`       | `boolean`                                        | `false`                   | -                                          | 전체 선택 체크박스 표시 (다중 선택 모드에서만 동작) |
+| `modelValue`      | `any \| any[]`                                   | `null`                    | v-model 바인딩 값                          |
 
 ## Types
 
