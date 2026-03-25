@@ -6,12 +6,6 @@ A multi-line text input component. Supports string modifiers for automatic value
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Textarea

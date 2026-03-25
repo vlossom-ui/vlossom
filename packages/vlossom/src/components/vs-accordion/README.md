@@ -6,12 +6,6 @@ A collapsible content area component. Click the title to expand or collapse the 
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Accordion

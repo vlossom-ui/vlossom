@@ -6,12 +6,6 @@ A search input component built on top of `vs-input`. Provides case-sensitive and
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Search Input

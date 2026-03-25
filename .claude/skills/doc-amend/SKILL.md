@@ -103,11 +103,6 @@ git show --stat <hash>
 
 **Available Version**: X.Y.Z+
 
-GitHub Wiki Link: <!-- link -->
-
-## Preview
-<!-- image -->
-
 ## Basic Usage
 [code examples — Korean strings translated to English]
 
@@ -132,7 +127,7 @@ GitHub Wiki Link: <!-- link -->
 
 - Props/Events/Slots/Methods가 없으면 빈 테이블 헤더만 유지
 - **`## 특징` → `## Features`**: 한국어 README에 `## 특징` 섹션이 있으면 반드시 영어로 번역하여 `## Features`로 포함한다. 생략 불가.
-- `GitHub Wiki Link`와 `## Preview` 플레이스홀더는 영어 README에만 추가한다 (한국어에는 없어도 됨)
+- `GitHub Wiki Link`나 `## Preview` 같은 플레이스홀더는 포함하지 않는다
 - Types 섹션에 현재 StyleSet 구조 반영
 - 원본 한국어 README의 모든 props·events·slots·methods를 정확히 번역 (누락 금지)
 - component-review skill의 Documentation 섹션 체크리스트를 따른다

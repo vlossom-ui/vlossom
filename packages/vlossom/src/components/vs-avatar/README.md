@@ -6,12 +6,6 @@ An avatar component for displaying user profile images, initials, or icons. Supp
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Image Avatar

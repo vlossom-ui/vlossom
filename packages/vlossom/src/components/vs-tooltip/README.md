@@ -6,12 +6,6 @@ A tooltip component supporting various trigger modes and positions. Supports hov
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Tooltip

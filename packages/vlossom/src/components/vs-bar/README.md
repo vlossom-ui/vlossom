@@ -6,12 +6,6 @@ A flexible bar component that can be positioned anywhere. Useful as a navigation
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Bar

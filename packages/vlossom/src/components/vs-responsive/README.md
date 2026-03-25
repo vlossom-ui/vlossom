@@ -6,12 +6,6 @@ A utility component for responsive design. Uses CSS Container Queries to automat
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Responsive Width

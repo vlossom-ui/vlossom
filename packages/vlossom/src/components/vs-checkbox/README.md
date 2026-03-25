@@ -6,12 +6,6 @@ Checkbox input components. Provides a single checkbox (`VsCheckbox`) and a check
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### VsCheckbox — Single Checkbox

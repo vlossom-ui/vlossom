@@ -6,12 +6,6 @@ A container component that tracks the visibility of child elements using `Inters
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Visibility Tracking Container

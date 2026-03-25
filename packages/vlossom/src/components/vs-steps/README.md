@@ -6,12 +6,6 @@ A step indicator component for multi-step processes. Provides horizontal/vertica
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Steps

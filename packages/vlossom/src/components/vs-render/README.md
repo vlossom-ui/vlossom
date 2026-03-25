@@ -6,12 +6,6 @@ A utility component for rendering dynamic content. Supports string HTML and Vue 
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Rendering HTML String

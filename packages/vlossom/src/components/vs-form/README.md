@@ -6,12 +6,6 @@ A grid-based form component for managing and validating form elements. Provides 
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Form

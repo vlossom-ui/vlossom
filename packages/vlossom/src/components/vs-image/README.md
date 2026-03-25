@@ -6,12 +6,6 @@ An image display component. Supports lazy loading, fallback images, and skeleton
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Image

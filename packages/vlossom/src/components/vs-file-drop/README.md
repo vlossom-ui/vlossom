@@ -6,12 +6,6 @@ A file upload component that supports drag-and-drop and click-to-browse. Selecte
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default File Upload

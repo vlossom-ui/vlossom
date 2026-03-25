@@ -6,12 +6,6 @@ A divider component that visually separates content areas. Supports horizontal a
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Horizontal Divider (Default)

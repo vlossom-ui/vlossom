@@ -6,12 +6,6 @@ A sidebar drawer component that slides in from the edge of the screen. Can be us
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Drawer

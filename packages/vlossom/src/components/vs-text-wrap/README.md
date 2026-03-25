@@ -6,12 +6,6 @@ A component that wraps text and provides copy and link actions.
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Text Wrap

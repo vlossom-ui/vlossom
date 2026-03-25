@@ -6,12 +6,6 @@ A flexible input component supporting multiple types and validation. Provides te
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Input

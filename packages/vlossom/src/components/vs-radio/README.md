@@ -6,12 +6,6 @@ Radio input components. Provides a single radio button (`VsRadio`) and a radio g
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### VsRadio — Single Radio

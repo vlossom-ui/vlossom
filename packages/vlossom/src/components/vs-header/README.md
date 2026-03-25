@@ -6,12 +6,6 @@ A component for the header area of a web application. When used inside `vs-layou
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Header

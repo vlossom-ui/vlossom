@@ -6,12 +6,6 @@ A progress bar component that visually represents task completion status. Based 
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Progress

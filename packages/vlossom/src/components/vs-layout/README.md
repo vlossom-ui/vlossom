@@ -6,12 +6,6 @@ A layout component that manages the overall application structure. Dynamically a
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Layout

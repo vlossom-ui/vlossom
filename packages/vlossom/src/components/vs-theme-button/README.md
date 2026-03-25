@@ -6,12 +6,6 @@ A dedicated button component for toggling the Vlossom framework's Light/Dark the
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Theme Button

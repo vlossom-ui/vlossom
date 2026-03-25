@@ -6,12 +6,6 @@ An index-based view component that renders only the slot content at a specific i
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Index View

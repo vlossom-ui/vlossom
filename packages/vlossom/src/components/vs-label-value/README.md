@@ -6,12 +6,6 @@ A component that displays a label and value pair. Useful for form information, u
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Label-Value

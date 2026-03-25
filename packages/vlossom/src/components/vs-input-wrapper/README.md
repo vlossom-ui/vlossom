@@ -6,12 +6,6 @@ A wrapper component for input fields. Provides label, required indicator, messag
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Input Wrapper

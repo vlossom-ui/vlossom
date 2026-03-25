@@ -6,12 +6,6 @@ A component that renders tabular data based on column definitions and an item ar
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Object Column Definition

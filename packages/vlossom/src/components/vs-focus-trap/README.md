@@ -6,12 +6,6 @@ A focus trap component that confines keyboard focus to a specific area. Used to 
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Focus Trap

@@ -6,12 +6,6 @@ A skeleton UI component displayed while content is loading. Communicates the loa
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Skeleton

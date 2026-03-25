@@ -6,12 +6,6 @@ A message component for displaying validation or status messages. Supports `idle
 
 **Available Version**: 2.0.0+
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
-
-## Preview
-
-<!-- Component image -->
-
 ## Basic Usage
 
 ### Default Message
