@@ -91,9 +91,17 @@ interface VsToastStyleSet {
 
 ### Events
 
-| Event   | Payload | Description                                                            |
-| ------- | ------- | ---------------------------------------------------------------------- |
-| `close` | -       | Emitted when the toast closes (via close button or auto-close timeout) |
+| Event   | Parameters | Description                                                            |
+| ------- | ---------- | ---------------------------------------------------------------------- |
+| `close` | -          | Emitted when the toast closes (via close button or auto-close timeout) |
+
+### Features
+
+- **Auto-close**: Automatically closes after a specified time via the `autoClose` prop and `timeout`
+- **Hover pause**: Pauses the auto-close timer while the mouse hovers over the toast
+- **Color scheme**: Applies a consistent color scheme via the `colorScheme` prop
+- **Style customization**: Fine-grained style adjustment via the `styleSet` prop
+- **Close button**: A close button is provided by default for manual dismissal
 
 ---
 
@@ -106,6 +114,13 @@ A container component that groups and renders multiple toasts by position. Autom
 | Prop        | Type     | Default  | Required | Description                            |
 | ----------- | -------- | -------- | -------- | -------------------------------------- |
 | `container` | `string` | `'body'` | -        | Container selector where toasts render |
+
+### Features
+
+- **Automatic grouping**: Automatically groups toasts by `placement` and `align` properties
+- **Position-based rendering**: Renders toasts sharing the same position in a single container
+- **Transition effects**: Uses `TransitionGroup` for smooth animations when toasts are added or removed
+- **Fixed positioning**: Applies `position: fixed` style when `container` is `'body'`
 
 ---
 

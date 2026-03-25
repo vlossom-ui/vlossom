@@ -98,10 +98,39 @@ import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 const groupedListRef = useTemplateRef<VsGroupedListRef>('groupedListRef');
 const items = ref([
     { id: 'vs-1', item: { id: 1, name: 'Item 1' }, label: 'Item 1', value: 1, index: 0, disabled: false },
+    { id: 'vs-2', item: { id: 2, name: 'Item 2' }, label: 'Item 2', value: 2, index: 1, disabled: false },
+    { id: 'vs-3', item: { id: 3, name: 'Item 3' }, label: 'Item 3', value: 3, index: 2, disabled: false },
 ]);
 
 function scrollToFirst() {
-    groupedListRef.value?.scrollToItem(items.value[0].id);
+    // Pass the OptionItem's id
+    groupedListRef.value?.scrollToItem(items.value[2].id);
+}
+</script>
+```
+
+### Using hasScroll
+
+```html
+<template>
+    <vs-grouped-list ref="groupedListRef" :items="items" />
+    <button @click="checkScroll">Check if scrollable</button>
+</template>
+
+<script setup lang="ts">
+import { ref, useTemplateRef } from 'vue';
+import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
+
+const groupedListRef = useTemplateRef<VsGroupedListRef>('groupedListRef');
+const items = ref([
+    { id: 'vs-1', item: { id: 1, name: 'Item 1' }, label: 'Item 1', value: 1, index: 0, disabled: false },
+    { id: 'vs-2', item: { id: 2, name: 'Item 2' }, label: 'Item 2', value: 2, index: 1, disabled: false },
+    { id: 'vs-3', item: { id: 3, name: 'Item 3' }, label: 'Item 3', value: 3, index: 2, disabled: false },
+]);
+
+function checkScroll() {
+    const canScroll = groupedListRef.value?.hasScroll();
+    console.log('Scrollable:', canScroll);
 }
 </script>
 ```
@@ -115,6 +144,32 @@ function scrollToFirst() {
 | `items`       | `OptionItem[]`                                           | `[]`    | -        | Item array (OptionItem format)         |
 | `groupBy`     | `(item: any, index: number) => string \| null` \| `null` | `null`  | -        | Function to classify items into groups |
 | `groupOrder`  | `string[]`                                               | `[]`    | -        | Specify display order of groups        |
+
+## Events
+
+| Event        | Parameters                                                                     | Description                     |
+| ------------ | ------------------------------------------------------------------------------ | ------------------------------- |
+| `click-item` | `{ id, item, label, value, disabled, index, groupedIndex, group, groupIndex }` | Emitted when an item is clicked |
+
+## Methods
+
+These methods are available by accessing the component via a template ref.
+
+| Method         | Parameters   | Return    | Description                            |
+| -------------- | ------------ | --------- | -------------------------------------- |
+| `scrollToItem` | `id: string` | -         | Scroll to the item with the given id   |
+| `hasScroll`    | -            | `boolean` | Returns whether the list is scrollable |
+
+### scrollToItem Behavior
+
+- Finds the `OptionItem` with the given `id` in `items`.
+- Scrolls to the DOM element of the found item.
+- Does nothing if the item is not found or the DOM element does not exist.
+
+### hasScroll Behavior
+
+- Checks whether the internal scroll container is scrollable.
+- Returns `true` if scrollable, `false` otherwise.
 
 ## Types
 
@@ -130,13 +185,17 @@ interface VsGroupedListStyleSet {
     group?: CSSProperties;
     item?: CSSProperties;
 }
+
+interface VsGroupedListGroup {
+    name: string;
+    items: OptionItem[];
+}
+
+interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
+    scrollToItem: (id: string) => void;
+    hasScroll: () => boolean;
+}
 ```
-
-## Events
-
-| Event        | Payload                                                                        | Description                     |
-| ------------ | ------------------------------------------------------------------------------ | ------------------------------- |
-| `click-item` | `{ id, item, label, value, disabled, index, groupedIndex, group, groupIndex }` | Emitted when an item is clicked |
 
 ## Slots
 
@@ -146,13 +205,6 @@ interface VsGroupedListStyleSet {
 | `footer` | -                                                                          | Displayed below the item list |
 | `group`  | `{ group: string, groupIndex: number, items: any[] }`                      | Custom group header rendering |
 | `item`   | `OptionItem & { groupedIndex: number, group: string, groupIndex: number }` | Custom item rendering         |
-
-## Methods
-
-| Method         | Parameters   | Return    | Description                            |
-| -------------- | ------------ | --------- | -------------------------------------- |
-| `scrollToItem` | `id: string` | -         | Scroll to the item with the given id   |
-| `hasScroll`    | -            | `boolean` | Returns whether the list is scrollable |
 
 ## Features
 

@@ -101,21 +101,6 @@ interface VsProgressStyleSet {
 </template>
 ```
 
-## Events
-
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-
 ## Features
 
 - **HTML5 based**: Uses the standard `<progress>` element for accessibility and compatibility

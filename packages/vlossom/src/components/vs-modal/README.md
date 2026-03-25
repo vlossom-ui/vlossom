@@ -95,11 +95,18 @@ interface OverlayCallbacks<T = void> {
 
 ### Events
 
-| Event               | Payload   | Description                            |
-| ------------------- | --------- | -------------------------------------- |
-| `update:modelValue` | `boolean` | Emitted when the v-model value changes |
-| `open`              | -         | Emitted when the modal opens           |
-| `close`             | -         | Emitted when the modal closes          |
+| Event               | Parameters | Description                            |
+| ------------------- | ---------- | -------------------------------------- |
+| `update:modelValue` | `boolean`  | Emitted when the v-model value changes |
+| `open`              | -          | Emitted when the modal opens           |
+| `close`             | -          | Emitted when the modal closes          |
+
+### Features
+
+- **v-model support**: Manages modal open/close state via the `modelValue` prop with two-way binding
+- **Plugin integration**: Uses `modal-plugin` internally to display the modal
+- **Container targeting**: The `container` prop lets you specify the container where the modal renders
+- **Closing**: The `escClose` and `dimClose` props provide automatic closing on ESC key press and dimmed area clicks
 
 ---
 
@@ -167,10 +174,18 @@ interface OverlayCallbacks<T = void> {
 
 ### Events
 
-| Event          | Payload | Description                             |
-| -------------- | ------- | --------------------------------------- |
-| `close`        | -       | Emitted when the modal closes           |
-| `click-dimmed` | -       | Emitted when the dimmed area is clicked |
+| Event          | Parameters | Description                             |
+| -------------- | ---------- | --------------------------------------- |
+| `close`        | -          | Emitted when the modal closes           |
+| `click-dimmed` | -          | Emitted when the dimmed area is clicked |
+
+### Features
+
+- **Size configuration**: The `size` prop accepts `Size` type values (`xs`, `sm`, `md`, `lg`, `xl`) or direct size values (string, number)
+- **Dimmed background**: The `dimmed` prop shows a dimmed background overlay
+- **Focus management**: Uses the `vs-focus-trap` component to restrict focus inside the modal
+- **Scroll management**: Uses the `vs-inner-scroll` component to manage scrolling inside the modal
+- **Auto size calculation**: When `size` is a `Size` type, the modal size is automatically calculated using predefined size ratios
 
 ---
 
@@ -183,6 +198,12 @@ A container component that groups and renders multiple modals. Automatically mou
 | Prop        | Type     | Default  | Required | Description                            |
 | ----------- | -------- | -------- | -------- | -------------------------------------- |
 | `container` | `string` | `'body'` | -        | Container selector where modals render |
+
+### Features
+
+- **Automatic rendering**: Automatically renders when a modal is added via `modal-plugin`
+- **Transition effects**: Uses `TransitionGroup` for smooth animations when modals are added or removed
+- **Fixed positioning**: Applies `position: fixed` style when `container` is `'body'`
 
 ---
 

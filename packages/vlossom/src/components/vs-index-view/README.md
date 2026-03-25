@@ -60,6 +60,18 @@ const currentIndex = ref(0);
 | `width`      | `string \| number \| Breakpoints` | -       | -        | Responsive width setting                                   |
 | `grid`       | `string \| number \| Breakpoints` | -       | -        | Responsive grid column count                               |
 
+## Events
+
+| Event               | Parameters | Description                            |
+| ------------------- | ---------- | -------------------------------------- |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes |
+
+## Methods
+
+| Method        | Parameter | Description                        |
+| ------------- | --------- | ---------------------------------- |
+| `updateIndex` | `number`  | Change the index and emit an event |
+
 ## Types
 
 ```typescript
@@ -72,23 +84,11 @@ interface Breakpoints {
 }
 ```
 
-## Events
-
-| Event               | Payload  | Description                            |
-| ------------------- | -------- | -------------------------------------- |
-| `update:modelValue` | `number` | Emitted when the v-model value changes |
-
 ## Slots
 
 | Slot      | Description                                                               |
 | --------- | ------------------------------------------------------------------------- |
 | `default` | Contents to display by index. Each child element becomes one index entry. |
-
-## Methods
-
-| Method        | Parameter | Description                        |
-| ------------- | --------- | ---------------------------------- |
-| `updateIndex` | `number`  | Change the index and emit an event |
 
 ## Features
 

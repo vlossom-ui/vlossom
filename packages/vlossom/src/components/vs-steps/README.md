@@ -237,6 +237,13 @@ const steps = ['Step 1', 'Step 2', 'Step 3'];
 | `vertical`    | `boolean`                                               | `false` | -        | Apply vertical layout                                                             |
 | `modelValue`  | `number`                                                | `0`     | -        | Currently selected step index (v-model)                                           |
 
+## Events
+
+| Event               | Parameters | Description                                  |
+| ------------------- | ---------- | -------------------------------------------- |
+| `update:modelValue` | `number`   | Emitted when the v-model value changes       |
+| `change`            | `number`   | Emitted when the selected step index changes |
+
 ## Types
 
 ```typescript
@@ -297,24 +304,12 @@ const steps = ['Account', 'Profile', 'Settings', 'Complete'];
 </script>
 ```
 
-## Events
-
-| Event               | Parameters | Description                                  |
-| ------------------- | ---------- | -------------------------------------------- |
-| `update:modelValue` | `number`   | Emitted when the v-model value changes       |
-| `change`            | `number`   | Emitted when the selected step index changes |
-
 ## Slots
 
 | Slot    | Props                                                 | Description                         |
 | ------- | ----------------------------------------------------- | ----------------------------------- |
 | `step`  | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step number |
 | `label` | `{ step, index, isSelected, isPrevious, isDisabled }` | Custom content for each step label  |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 
