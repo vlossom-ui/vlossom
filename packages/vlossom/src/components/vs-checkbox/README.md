@@ -6,9 +6,15 @@ Checkbox input components. Provides a single checkbox (`VsCheckbox`) and a check
 
 **Available Version**: 2.0.0+
 
-## Basic Usage
+---
 
-### VsCheckbox — Single Checkbox
+## VsCheckbox
+
+A single checkbox component.
+
+### Basic Usage
+
+#### Single Checkbox
 
 ```html
 <template>
@@ -16,7 +22,7 @@ Checkbox input components. Provides a single checkbox (`VsCheckbox`) and a check
 </template>
 ```
 
-### Custom Values
+#### Custom Values
 
 ```html
 <template>
@@ -34,7 +40,7 @@ const agreement = ref('no');
 </script>
 ```
 
-### Indeterminate State
+#### Indeterminate State
 
 ```html
 <template>
@@ -42,12 +48,22 @@ const agreement = ref('no');
 </template>
 ```
 
-### Array Mode
+#### Array Mode
 
 ```html
 <template>
-    <vs-checkbox v-model="selectedTags" check-label="Tag 1" :true-value="'tag1'" multiple />
-    <vs-checkbox v-model="selectedTags" check-label="Tag 2" :true-value="'tag2'" multiple />
+    <vs-checkbox
+        v-model="selectedTags"
+        check-label="Tag 1"
+        :true-value="'tag1'"
+        multiple
+    />
+    <vs-checkbox
+        v-model="selectedTags"
+        check-label="Tag 2"
+        :true-value="'tag2'"
+        multiple
+    />
 </template>
 
 <script setup>
@@ -56,24 +72,91 @@ const selectedTags = ref([]);
 </script>
 ```
 
-### Before Change Confirmation
+#### Before Change Confirmation
 
 ```html
 <template>
-    <vs-checkbox v-model="checked" check-label="I agree" :before-change="confirmBeforeChange" />
+    <vs-checkbox
+        v-model="checked"
+        check-label="I agree"
+        :before-change="confirmBeforeChange"
+    />
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
 const checked = ref(false);
 
 const confirmBeforeChange = async (from, to, optionValue) => {
+    // from: value before change, to: value after change, optionValue: trueValue
     return confirm('Are you sure you want to agree?');
 };
 </script>
 ```
 
-### VsCheckboxSet — Checkbox Group
+### Props
+
+| Prop            | Type                           | Default | Required | Description                                                                                         |
+| --------------- | ------------------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                       | -       | -        | Color scheme for the component                                                                      |
+| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | Custom style configuration object                                                                   |
+| `checked`       | `boolean`                      | `false` | -        | Initial checked state                                                                               |
+| `checkLabel`    | `string`                       | -       | -        | Label displayed next to the checkbox                                                                |
+| `indeterminate` | `boolean`                      | `false` | -        | Show indeterminate (partially selected) state                                                       |
+| `multiple`      | `boolean`                      | `false` | -        | Enable array mode (v-model operates as an array)                                                    |
+| `trueValue`     | `any`                          | `true`  | -        | Value stored in v-model when checked                                                                |
+| `falseValue`    | `any`                          | `false` | -        | Value stored in v-model when unchecked                                                              |
+| `beforeChange`  | `Function`                     | -       | -        | Async function called before state change (receives from, to, optionValue; cancel if returns false) |
+
+Also supports common Input Props: `id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules`, etc.
+
+### Types
+
+```typescript
+interface VsCheckboxStyleSet {
+    variables?: {
+        checkboxColor?: string;
+        checkboxSize?: string;
+    };
+    checkbox?: CSSProperties;
+    checkboxLabel?: CSSProperties;
+    wrapper?: VsInputWrapperStyleSet;
+}
+```
+
+> [!NOTE]
+>
+> `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
+
+### Slots
+
+| Slot          | Description                            |
+| ------------- | -------------------------------------- |
+| `default`     | Content displayed in the outer wrapper |
+| `label`       | Label area of the input wrapper        |
+| `check-label` | Label displayed next to the checkbox   |
+| `messages`    | Bottom message area                    |
+
+### Events
+
+| Event               | Parameters              | Description                                  |
+| ------------------- | ----------------------- | -------------------------------------------- |
+| `update:modelValue` | `any \| any[]`          | Emitted when the v-model value changes       |
+| `change`            | `any`                   | Emitted when the checked state changes       |
+| `toggle`            | `(boolean, MouseEvent)` | Emitted on toggle (passes post-toggle state) |
+| `focus`             | `FocusEvent`            | Emitted when the checkbox receives focus     |
+| `blur`              | `FocusEvent`            | Emitted when the checkbox loses focus        |
+
+---
+
+## VsCheckboxSet
+
+A checkbox group component for selecting multiple options.
+
+### Basic Usage
+
+#### Checkbox Group
 
 ```html
 <template>
@@ -95,7 +178,7 @@ const selectedOptions = ref([]);
 </script>
 ```
 
-### Vertical Layout
+#### Vertical Layout
 
 ```html
 <template>
@@ -103,7 +186,7 @@ const selectedOptions = ref([]);
 </template>
 ```
 
-### Selection Count Limit
+#### Min/Max Selection Limit
 
 ```html
 <template>
@@ -111,25 +194,34 @@ const selectedOptions = ref([]);
 </template>
 ```
 
-## Props
+#### Before Change Confirmation
 
-### VsCheckbox Props
+```html
+<template>
+    <vs-checkbox-set
+        v-model="selected"
+        :options="options"
+        :before-change="confirmBeforeChange"
+    />
+</template>
 
-| Prop            | Type                           | Default | Required | Description                                                                                         |
-| --------------- | ------------------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | Color scheme for the component                                                                      |
-| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | Custom style configuration object                                                                   |
-| `checked`       | `boolean`                      | `false` | -        | Initial checked state                                                                               |
-| `checkLabel`    | `string`                       | -       | -        | Label displayed next to the checkbox                                                                |
-| `indeterminate` | `boolean`                      | `false` | -        | Show indeterminate (partially selected) state                                                       |
-| `multiple`      | `boolean`                      | `false` | -        | Enable array mode (v-model operates as an array)                                                    |
-| `trueValue`     | `any`                          | `true`  | -        | Value stored in v-model when checked                                                                |
-| `falseValue`    | `any`                          | `false` | -        | Value stored in v-model when unchecked                                                              |
-| `beforeChange`  | `Function`                     | -       | -        | Async function called before state change (receives from, to, optionValue; cancel if returns false) |
+<script setup>
+import { ref } from 'vue';
 
-Also supports common Input Props: `id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules`, etc.
+const options = [
+    { label: 'Option 1', value: 'opt1' },
+    { label: 'Option 2', value: 'opt2' },
+];
+const selected = ref([]);
 
-### VsCheckboxSet Props
+const confirmBeforeChange = async (from, to, optionValue) => {
+    // from: array before change, to: array after change, optionValue: selected/deselected option value
+    return confirm(`Do you want to change the selection?`);
+};
+</script>
+```
+
+### Props
 
 | Prop           | Type               | Default | Required | Description                                                                                         |
 | -------------- | ------------------ | ------- | -------- | --------------------------------------------------------------------------------------------------- |
@@ -141,19 +233,11 @@ Also supports common Input Props: `id`, `label`, `required`, `disabled`, `readon
 | `max`          | `number \| string` | -       | -        | Maximum number of selections                                                                        |
 | `beforeChange` | `Function`         | -       | -        | Async function called before state change (receives from, to, optionValue; cancel if returns false) |
 
-## Types
+Also supports common Input Props: `id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules`, etc.
+
+### Types
 
 ```typescript
-interface VsCheckboxStyleSet {
-    variables?: {
-        checkboxColor?: string;
-        checkboxSize?: string;
-    };
-    checkbox?: CSSProperties;
-    checkboxLabel?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
-}
-
 interface VsCheckboxSetStyleSet {
     component?: CSSProperties;
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
@@ -163,54 +247,29 @@ interface VsCheckboxSetStyleSet {
 
 > [!NOTE]
 >
+> - `component` is the style for the checkbox set container.
+> - `checkbox` uses [VsCheckboxStyleSet](#types).
 > - `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
-> - `checkbox` in VsCheckboxSetStyleSet uses [VsCheckboxStyleSet](#types).
 
-## Events
+### Slots
 
-### VsCheckbox Events
+| Slot          | Description                                           |
+| ------------- | ----------------------------------------------------- |
+| `default`     | Content displayed in the outer wrapper                |
+| `label`       | Label area of the input wrapper                       |
+| `check-label` | Label for each checkbox (scoped slot)                 |
+| `messages`    | Bottom message area                                   |
 
-| Event               | Payload                 | Description                                  |
-| ------------------- | ----------------------- | -------------------------------------------- |
-| `update:modelValue` | `any \| any[]`          | Emitted when the v-model value changes       |
-| `change`            | `any`                   | Emitted when the checked state changes       |
-| `toggle`            | `(boolean, MouseEvent)` | Emitted on toggle (passes post-toggle state) |
-| `focus`             | `FocusEvent`            | Emitted when the checkbox receives focus     |
-| `blur`              | `FocusEvent`            | Emitted when the checkbox loses focus        |
+### Events
 
-### VsCheckboxSet Events
+| Event               | Parameters             | Description                                        |
+| ------------------- | ---------------------- | -------------------------------------------------- |
+| `update:modelValue` | `any[]`                | Emitted when the v-model value changes             |
+| `change`            | `any`                  | Emitted when the checked state changes             |
+| `focus`             | `(option, FocusEvent)` | Emitted when a checkbox receives focus             |
+| `blur`              | `(option, FocusEvent)` | Emitted when a checkbox loses focus                |
 
-| Event               | Payload                | Description                            |
-| ------------------- | ---------------------- | -------------------------------------- |
-| `update:modelValue` | `any[]`                | Emitted when the v-model value changes |
-| `change`            | `any`                  | Emitted when the checked state changes |
-| `focus`             | `(option, FocusEvent)` | Emitted when a checkbox receives focus |
-| `blur`              | `(option, FocusEvent)` | Emitted when a checkbox loses focus    |
-
-## Slots
-
-### VsCheckbox Slots
-
-| Slot          | Description                            |
-| ------------- | -------------------------------------- |
-| `default`     | Content displayed in the outer wrapper |
-| `label`       | Label area of the input wrapper        |
-| `check-label` | Label displayed next to the checkbox   |
-| `messages`    | Bottom message area                    |
-
-### VsCheckboxSet Slots
-
-| Slot          | Description                            |
-| ------------- | -------------------------------------- |
-| `default`     | Content displayed in the outer wrapper |
-| `label`       | Label area of the input wrapper        |
-| `check-label` | Label for each checkbox (scoped slot)  |
-| `messages`    | Bottom message area                    |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+---
 
 ## Features
 

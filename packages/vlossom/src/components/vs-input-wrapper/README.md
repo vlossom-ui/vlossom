@@ -64,28 +64,6 @@ A wrapper component for input fields. Provides label, required indicator, messag
 </template>
 ```
 
-### StyleSet Example
-
-```html
-<template>
-    <vs-input-wrapper
-        label="Name"
-        :messages="[{ state: 'info', text: 'Please enter your real name.' }]"
-        :style-set="{
-            label: {
-                fontSize: '18px',
-                fontWeight: 'bold',
-            },
-            messages: {
-                marginTop: '8px',
-            },
-        }"
-    >
-        <input type="text" />
-    </vs-input-wrapper>
-</template>
-```
-
 ## Props
 
 | Prop          | Type                               | Default | Required | Description                            |
@@ -129,10 +107,45 @@ interface VsInputWrapperStyleSet {
 >
 > `message` uses [VsMessageStyleSet](../vs-message/README.md#types).
 
-## Events
+### StyleSet Example
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+```html
+<template>
+    <!-- Adjust message size -->
+    <vs-input-wrapper
+        label="Email"
+        :messages="[
+            { state: 'error', text: 'Please enter a valid email address.' }
+        ]"
+        :style-set="{
+            message: {
+                size: 'lg',
+            },
+        }"
+    >
+        <input type="email" />
+    </vs-input-wrapper>
+
+    <!-- Style the label and messages area -->
+    <vs-input-wrapper
+        label="Name"
+        :messages="[
+            { state: 'info', text: 'Please enter your real name.' }
+        ]"
+        :style-set="{
+            label: {
+                fontSize: '18px',
+                fontWeight: 'bold',
+            },
+            messages: {
+                marginTop: '8px',
+            },
+        }"
+    >
+        <input type="text" />
+    </vs-input-wrapper>
+</template>
+```
 
 ## Slots
 
@@ -141,11 +154,6 @@ interface VsInputWrapperStyleSet {
 | `default`  | Input field component (input, textarea, etc.) |
 | `label`    | Custom label content                          |
 | `messages` | Custom message content                        |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 

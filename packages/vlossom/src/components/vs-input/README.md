@@ -164,6 +164,23 @@ function clearInput() {
 | `valid`          | `boolean`                                                                   | `false`                   | -        | Whether validation passed (v-model:valid)         |
 | `width`          | `string \| number \| Breakpoints`                                           | -                         | -        | Component width                                   |
 
+## Events
+
+| Event               | Parameters              | Description                               |
+| ------------------- | ----------------------- | ----------------------------------------- |
+| `update:modelValue` | `value: InputValueType` | Emitted when the v-model value changes    |
+| `update:changed`    | `changed: boolean`      | Emitted when the changed state updates    |
+| `update:valid`      | `valid: boolean`        | Emitted when the validation state updates |
+| `change`            | `value: InputValueType` | Emitted when the input value changes      |
+
+## Exposed Methods
+
+| Method   | Parameters | Return Type | Description                        |
+| -------- | ---------- | ----------- | ---------------------------------- |
+| `focus`  | -          | `void`      | Set focus on the input field       |
+| `select` | -          | `void`      | Select all text in the input field |
+| `clear`  | -          | `void`      | Clear the input field value        |
+
 ## Types
 
 ```typescript
@@ -180,15 +197,6 @@ interface VsInputStyleSet {
 >
 > `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
 
-## Events
-
-| Event               | Payload                 | Description                               |
-| ------------------- | ----------------------- | ----------------------------------------- |
-| `update:modelValue` | `value: InputValueType` | Emitted when the v-model value changes    |
-| `update:changed`    | `changed: boolean`      | Emitted when the changed state updates    |
-| `update:valid`      | `valid: boolean`        | Emitted when the validation state updates |
-| `change`            | `value: InputValueType` | Emitted when the input value changes      |
-
 ## Slots
 
 | Slot       | Description                               |
@@ -197,14 +205,6 @@ interface VsInputStyleSet {
 | `prepend`  | Content to display before the input field |
 | `append`   | Content to display after the input field  |
 | `messages` | Custom message content                    |
-
-## Methods
-
-| Method   | Parameters | Return Type | Description                        |
-| -------- | ---------- | ----------- | ---------------------------------- |
-| `focus`  | -          | `void`      | Set focus on the input field       |
-| `select` | -          | `void`      | Select all text in the input field |
-| `clear`  | -          | `void`      | Clear the input field value        |
 
 ## Features
 

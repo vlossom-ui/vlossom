@@ -309,7 +309,7 @@ interface VsSelectStyleSet {
 > - `selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types).
 > - `options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types).
 
-### StyleSet Example
+## StyleSet Example
 
 ```html
 <template>
@@ -337,21 +337,6 @@ interface VsSelectStyleSet {
 </template>
 ```
 
-## Events
-
-| Event               | Payload        | Description                               |
-| ------------------- | -------------- | ----------------------------------------- |
-| `update:modelValue` | `any \| any[]` | Emitted when the v-model value changes    |
-| `update:changed`    | `boolean`      | Emitted when the changed state updates    |
-| `update:valid`      | `boolean`      | Emitted when the validation state updates |
-| `change`            | `any \| any[]` | Emitted when the selected value changes   |
-| `click-option`      | `OptionItem`   | Emitted when an option is clicked         |
-| `open`              | -              | Emitted when the options list opens       |
-| `close`             | -              | Emitted when the options list closes      |
-| `clear`             | -              | Emitted when the clear button is clicked  |
-| `focus`             | `FocusEvent`   | Emitted when the trigger receives focus   |
-| `blur`              | `FocusEvent`   | Emitted when the trigger loses focus      |
-
 ## Slots
 
 | Slot             | Props                                      | Description                             |
@@ -364,7 +349,22 @@ interface VsSelectStyleSet {
 | `options-footer` | -                                          | Footer displayed below the options list |
 | `messages`       | -                                          | Bottom message area                     |
 
-## Methods
+## Events
+
+| Event               | Parameters     | Description                               |
+| ------------------- | -------------- | ----------------------------------------- |
+| `update:modelValue` | `any \| any[]` | Emitted when the v-model value changes    |
+| `update:changed`    | `boolean`      | Emitted when the changed state updates    |
+| `update:valid`      | `boolean`      | Emitted when the validation state updates |
+| `change`            | `any \| any[]` | Emitted when the selected value changes   |
+| `click-option`      | `OptionItem`   | Emitted when an option is clicked         |
+| `open`              | -              | Emitted when the options list opens       |
+| `close`             | -              | Emitted when the options list closes      |
+| `clear`             | -              | Emitted when the clear button is clicked  |
+| `focus`             | `FocusEvent`   | Emitted when the trigger receives focus   |
+| `blur`              | `FocusEvent`   | Emitted when the trigger loses focus      |
+
+## Exposed Methods
 
 | Method     | Return Type | Description                                      |
 | ---------- | ----------- | ------------------------------------------------ |
@@ -372,6 +372,8 @@ interface VsSelectStyleSet {
 | `clear`    | `void`      | Clear all selected values                        |
 | `focus`    | `void`      | Set focus on the trigger                         |
 | `blur`     | `void`      | Remove focus from the trigger                    |
+
+---
 
 ## Features
 

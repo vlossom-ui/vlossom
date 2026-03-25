@@ -112,6 +112,35 @@ function onSearch(value: string) {
 | `caseSensitive`    | `boolean`                         | `false` | -        | v-model:case-sensitive binding        |
 | `regex`            | `boolean`                         | `false` | -        | v-model:regex binding                 |
 
+## Events
+
+| Event                  | Parameters       | Description                                     |
+| ---------------------- | ---------------- | ----------------------------------------------- |
+| `search`               | `value: string`  | Emitted on input with debounce (400ms)          |
+| `update:modelValue`    | `value: string`  | Emitted when the v-model binding updates        |
+| `update:caseSensitive` | `value: boolean` | Emitted when the v-model:case-sensitive updates |
+| `update:regex`         | `value: boolean` | Emitted when the v-model:regex updates          |
+
+## Exposed Methods
+
+Methods accessible via component ref.
+
+| Method   | Parameters     | Return    | Description                                     |
+| -------- | -------------- | --------- | ----------------------------------------------- |
+| `match`  | `text: string` | `boolean` | Check if the given text matches the search term |
+| `focus`  | -              | -         | Set focus on the input field                    |
+| `blur`   | -              | -         | Remove focus from the input field               |
+| `select` | -              | -         | Select all text in the input field              |
+| `clear`  | -              | -         | Clear the input value                           |
+
+### match Method Behavior
+
+- Always returns `true` when the search term is empty.
+- By default, performs case-insensitive search.
+- When the `use-case-sensitive` toggle is active, performs case-sensitive search.
+- When the `use-regex` toggle is active, performs regex search.
+- Falls back to plain text search if an invalid regex is entered.
+
 ## Types
 
 ```typescript
@@ -136,30 +165,6 @@ interface VsSearchInputRef {
 >
 > - `input` uses [VsInputStyleSet](../vs-input/README.md#types).
 > - `toggle` uses [VsToggleStyleSet](../vs-toggle/README.md#types).
-
-## Events
-
-| Event                  | Payload          | Description                                     |
-| ---------------------- | ---------------- | ----------------------------------------------- |
-| `search`               | `value: string`  | Emitted on input with debounce (400ms)          |
-| `update:modelValue`    | `value: string`  | Emitted when the v-model binding updates        |
-| `update:caseSensitive` | `value: boolean` | Emitted when the v-model:case-sensitive updates |
-| `update:regex`         | `value: boolean` | Emitted when the v-model:regex updates          |
-
-## Slots
-
-| Slot | Description |
-| ---- | ----------- |
-
-## Methods
-
-| Method   | Parameters     | Return    | Description                                     |
-| -------- | -------------- | --------- | ----------------------------------------------- |
-| `match`  | `text: string` | `boolean` | Check if the given text matches the search term |
-| `focus`  | -              | -         | Set focus on the input field                    |
-| `blur`   | -              | -         | Remove focus from the input field               |
-| `select` | -              | -         | Select all text in the input field              |
-| `clear`  | -              | -         | Clear the input value                           |
 
 ## Features
 

@@ -66,6 +66,15 @@ const files = ref<File[]>([]);
 </template>
 ```
 
+### Disabled and Readonly
+
+```html
+<template>
+    <vs-file-drop v-model="files1" label="Disabled" disabled />
+    <vs-file-drop v-model="files2" label="Readonly" readonly />
+</template>
+```
+
 ### Custom Style
 
 ```html
@@ -91,6 +100,41 @@ const files = ref<File[]>([]);
         }"
     />
 </template>
+```
+
+### Validation
+
+```html
+<template>
+    <vs-file-drop
+        v-model="files"
+        label="File Upload (min 1, max 5)"
+        required
+        :max="5"
+        :min="1"
+        :rules="[
+            (v) => !v || v.every((file) => file.size <= 10 * 1024 * 1024) || 'File size must be 10MB or less'
+        ]"
+    />
+</template>
+```
+
+### Drop Event Handling
+
+```html
+<template>
+    <vs-file-drop v-model="files" @drop="handleDrop" placeholder="Drop files to trigger the event" />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const files = ref<File[]>([]);
+
+function handleDrop(droppedFiles: File[]) {
+    console.log('Dropped files:', droppedFiles);
+}
+</script>
 ```
 
 ## Props
@@ -121,6 +165,15 @@ const files = ref<File[]>([]);
 | `width`       | `string \| number \| Breakpoints` | -                         | -        | Component width                                        |
 | `height`      | `string \| number \| Breakpoints` | -                         | -        | Component height                                       |
 
+## Events
+
+| Event               | Parameters | Description                                                      |
+| ------------------- | ---------- | ---------------------------------------------------------------- |
+| `update:modelValue` | `File[]`   | Emitted when the v-model value changes                           |
+| `update:changed`    | `File[]`   | Emitted when files are selected via the dialog (v-model:changed) |
+| `update:valid`      | `boolean`  | Emitted when the validation state updates                        |
+| `drop`              | `File[]`   | Emitted when files are drag-and-dropped                          |
+
 ## Types
 
 ```typescript
@@ -145,15 +198,6 @@ interface VsFileDropStyleSet {
 > - `chip` uses [VsChipStyleSet](../vs-chip/README.md#types).
 > - `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
 
-## Events
-
-| Event               | Payload   | Description                                                      |
-| ------------------- | --------- | ---------------------------------------------------------------- |
-| `update:modelValue` | `File[]`  | Emitted when the v-model value changes                           |
-| `update:changed`    | `File[]`  | Emitted when files are selected via the dialog (v-model:changed) |
-| `update:valid`      | `boolean` | Emitted when the validation state updates                        |
-| `drop`              | `File[]`  | Emitted when files are drag-and-dropped                          |
-
 ## Slots
 
 | Slot       | Props                   | Description                                           |
@@ -161,11 +205,6 @@ interface VsFileDropStyleSet {
 | `default`  | `{ dragging: boolean }` | Custom content (dragging state provided as slot prop) |
 | `label`    | -                       | Custom label content                                  |
 | `messages` | -                       | Custom message content                                |
-
-## Methods
-
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
 
 ## Features
 
