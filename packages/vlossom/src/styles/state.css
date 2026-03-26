@@ -16,10 +16,10 @@
             --vs-state-color-warning: var(--vs-yellow-700);
             --vs-state-color-error: var(--vs-red-700);
 
-            --vs-state-color-bg-info: var(--vs-blue-900);
-            --vs-state-color-bg-success: var(--vs-green-900);
-            --vs-state-color-bg-warning: var(--vs-yellow-900);
-            --vs-state-color-bg-error: var(--vs-red-900);
+            --vs-state-color-bg-info: var(--vs-blue-800);
+            --vs-state-color-bg-success: var(--vs-green-800);
+            --vs-state-color-bg-warning: var(--vs-yellow-800);
+            --vs-state-color-bg-error: var(--vs-red-800);
         }
 
         .vs-state-info {
