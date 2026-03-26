@@ -18,6 +18,10 @@
             @apply pointer-events-auto w-full;
             box-shadow: 0 0 0.8rem 0 var(--vs-cs-shadow-color);
             background-color: var(--vs-no-color);
+
+            th {
+                border-bottom: 1px solid var(--vs-cs-line);
+            }
         }
     }
 
@@ -32,6 +36,8 @@
     }
 
     thead tr {
+        border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-cs-bg-colored);
 
         th {
@@ -44,16 +50,17 @@
     tbody tr {
         @apply transition-colors duration-250 ease-in-out;
 
-        border-left: 0.3rem solid transparent;
-
         &.vs-stated {
-            border-left: 0.3rem solid var(--vs-state-color);
             background-color: var(--vs-state-color-bg);
         }
 
         &.vs-selected {
             background-color: var(--vs-cs-bg-comp-colored);
             color: var(--vs-cs-font);
+        }
+
+        &:last-child {
+            border-bottom: 1px solid var(--vs-cs-line);
         }
 
         > td:not(.vs-table-expanded-row) {
@@ -81,7 +88,6 @@
     th {
         @apply flex items-center;
         border-top: 1px solid var(--vs-cs-line);
-        border-bottom: 1px solid var(--vs-cs-line);
         padding: 0.6rem 0.8rem;
         text-align: left;
 
@@ -101,7 +107,7 @@
 
     td {
         @apply flex items-center;
-        border-bottom: 1px solid var(--vs-cs-line);
+        border-top: 1px solid var(--vs-cs-line);
         padding: 0.6rem 0.8rem;
         text-align: left;
 

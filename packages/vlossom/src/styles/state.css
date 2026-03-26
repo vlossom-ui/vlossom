@@ -2,13 +2,13 @@
     :root {
         --vs-state-color-info: var(--vs-blue-600);
         --vs-state-color-success: var(--vs-green-600);
-        --vs-state-color-warning: var(--vs-amber-600);
+        --vs-state-color-warning: var(--vs-yellow-600);
         --vs-state-color-error: var(--vs-red-600);
 
-        --vs-state-color-bg-info: var(--vs-blue-100);
-        --vs-state-color-bg-success: var(--vs-green-100);
-        --vs-state-color-bg-warning: var(--vs-amber-100);
-        --vs-state-color-bg-error: var(--vs-red-100);
+        --vs-state-color-bg-info: var(--vs-blue-200);
+        --vs-state-color-bg-success: var(--vs-green-200);
+        --vs-state-color-bg-warning: var(--vs-yellow-200);
+        --vs-state-color-bg-error: var(--vs-red-200);
 
         @variant dark {
             --vs-state-color-info: var(--vs-blue-700);
@@ -18,7 +18,7 @@
 
             --vs-state-color-bg-info: var(--vs-blue-900);
             --vs-state-color-bg-success: var(--vs-green-900);
-            --vs-state-color-bg-warning: var(--vs-amber-900);
+            --vs-state-color-bg-warning: var(--vs-yellow-900);
             --vs-state-color-bg-error: var(--vs-red-900);
         }
 

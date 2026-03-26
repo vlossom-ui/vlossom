@@ -48,7 +48,10 @@
                     <vs-button>{{ value }}</vs-button>
                 </template>
                 <template #expand="{ item }">
-                    <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
+                    <div
+                        class="flex items-center justify-center p-3 text-sm text-gray-600 dark:text-gray-400"
+                        :style="{ height: '200px' }"
+                    >
                         {{ item.name }} — Score: {{ item.score }}
                     </div>
                 </template>
