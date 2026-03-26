@@ -31,17 +31,21 @@
                 :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
                 v-model:selected-items="tableSelectedItems"
             >
-                <template #body-row1="{ item }">
+                <template #body-row1="{ item, value }">
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
+                    <span v-else class="w-full"> {{ value }} </span>
                 </template>
-                <template #body-col2="{ item }">
+                <template #body-col2="{ item, value }">
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
+                    <span v-else class="w-full"> {{ value.toUpperCase() }} </span>
+                </template>
+                <template #body-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
+                <template #body-score="{ value }">
+                    <vs-button>{{ value }}</vs-button>
                 </template>
                 <template #expand="{ item }">
                     <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
@@ -298,6 +302,14 @@ export default defineComponent({
             { name: 'Frank', role: 'Viewer', status: 'Active', score: 72 },
             { name: 'Grace', role: 'Editor', status: 'Inactive', score: 45 },
             { name: 'Henry', role: 'Admin', status: 'Active', score: 98 },
+            { name: 'Ivy', role: 'Viewer', status: 'Inactive', score: 65 },
+            { name: 'Jack', role: 'Editor', status: 'Active', score: 82 },
+            { name: 'Kate', role: 'Admin', status: 'Inactive', score: 78 },
+            { name: 'Liam', role: 'Viewer', status: 'Active', score: 93 },
+            { name: 'Mia', role: 'Editor', status: 'Inactive', score: 55 },
+            { name: 'Noah', role: 'Admin', status: 'Active', score: 97 },
+            { name: 'Olivia', role: 'Viewer', status: 'Inactive', score: 62 },
+            { name: 'Peter', role: 'Editor', status: 'Active', score: 85 },
         ];
         function getRowState(item: VsTableItem, index?: number): UIState {
             if (item.status === 'Inactive') {

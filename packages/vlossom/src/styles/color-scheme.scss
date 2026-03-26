@@ -18,7 +18,7 @@ $colors:
         --vs-cs-bg-comp-colored: var(--vs-gray-200);
         --vs-cs-bg-primary: var(--vs-black);
 
-        --vs-cs-shadow-color: rgba(0, 0, 0, 0.16);
+        --vs-cs-shadow-color: rgba(0, 0, 0, 0.5);
         --vs-cs-shadow: 0 0 1rem 0 var(--vs-cs-shadow-color);
     }
 
@@ -59,7 +59,7 @@ $colors:
             --vs-cs-bg-comp-colored: var(--vs-#{$color}-200);
             --vs-cs-bg-primary: var(--vs-#{$color}-600);
 
-            --vs-cs-shadow-color: rgba(0, 0, 0, 0.25);
+            --vs-cs-shadow-color: color-mix(in srgb, var(--vs-#{$color}-600) 70%, transparent);
             --vs-cs-shadow: 0 0 1rem 0 var(--vs-cs-shadow-color);
         }
     }
@@ -81,8 +81,8 @@ $colors:
                 --vs-cs-bg-comp-colored: var(--vs-#{$color}-800);
                 --vs-cs-bg-primary: var(--vs-#{$color}-700);
 
-                --vs-cs-shadow-color: rgba(255, 255, 255, 0.25);
-                --vs-cs-shadow: 0 0 0.5rem 0 var(--vs-cs-shadow-color);
+                --vs-cs-shadow-color: color-mix(in srgb, var(--vs-#{$color}-300) 90%, transparent);
+                --vs-cs-shadow: 0 0 1.5rem 0 var(--vs-cs-shadow-color);
             }
         }
     }

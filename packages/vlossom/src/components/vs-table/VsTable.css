@@ -10,8 +10,15 @@
     }
 
     .vs-table-sticky-wrapper {
-        @apply sticky w-full overflow-hidden;
+        @apply pointer-events-none sticky w-full overflow-hidden;
         z-index: var(--vs-table-sticky-header-z-index);
+        padding-bottom: 1rem;
+
+        .vs-table-sticky-header {
+            @apply pointer-events-auto w-full;
+            box-shadow: 0 0 0.8rem 0 var(--vs-cs-shadow-color);
+            background-color: var(--vs-no-color);
+        }
     }
 
     table {
@@ -113,12 +120,6 @@
 
     .vs-table-search-input {
         @apply mb-2 flex justify-end;
-    }
-
-    .vs-table-sticky-header {
-        @apply w-full;
-        box-shadow: var(--vs-cs-shadow);
-        background-color: var(--vs-no-color);
     }
 
     &.vs-responsive {
