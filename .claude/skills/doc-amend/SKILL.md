@@ -1,6 +1,7 @@
 ---
 name: doc-amend
 description: Use when vlossom feature/fix/removal work is done and commits are ready, to identify missing documentation files (tests, README, stories, markdown) and amend them back into the appropriate commits via interactive rebase with per-commit user confirmation.
+disable-model-invocation: true
 ---
 
 # Doc Amend
