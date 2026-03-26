@@ -5,7 +5,7 @@
 
     border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-cs-bg-area);
+    background-color: var(--vs-no-color);
     height: var(--vs-comp-height-md);
     color: var(--vs-cs-font);
     font-size: var(--vs-font-size-md);
