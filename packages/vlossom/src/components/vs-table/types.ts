@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'vue';
-import type { SizeProp, TextAlignment } from '@/declaration';
+import type { SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 
 declare module 'vue' {
@@ -60,8 +60,9 @@ export enum VsTableSortType {
 export interface VsTableColumnDef<I = VsTableItem> {
     key: VsTableColumnKey<I>;
     label: string;
-    align?: TextAlignment;
     headerAlign?: TextAlignment;
+    align?: TextAlignment;
+    verticalAlign?: VerticalAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
