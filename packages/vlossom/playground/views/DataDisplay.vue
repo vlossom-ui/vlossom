@@ -35,13 +35,13 @@
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ value }} </span>
+                    {{ value }}
                 </template>
                 <template #body-col2="{ item, value }">
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ value.toUpperCase() }} </span>
+                    {{ value.toUpperCase() }}
                 </template>
                 <template #body-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
                 <template #body-score="{ value }">
@@ -285,17 +285,15 @@ export default defineComponent({
         ];
         const tablePropsSelected = ref<string[]>([]);
         const tableSelectedItems = ref<VsTableItem[]>([]);
-        const tableColumns = computed<VsTableColumnDef[]>(() =>
-            [
-                { key: 'name', label: 'Name', sortable: true },
-                { key: 'role', label: 'Role' },
-                { key: 'status', label: 'Status' },
-                { key: 'score', label: 'Score', sortable: true },
-            ].map((column) => ({
-                ...column,
-                align: tablePropsSelected.value.includes('textAlignRight') ? 'right' : 'left',
-            })),
-        );
+        const tableColumns = computed<VsTableColumnDef[]>(() => {
+            const overrideAlign = tablePropsSelected.value.includes('textAlignRight') ? 'right' : undefined;
+            return [
+                { key: 'name', label: 'Name', sortable: true, align: overrideAlign ?? 'left' },
+                { key: 'role', label: 'Role', align: overrideAlign },
+                { key: 'status', label: 'Status', align: overrideAlign ?? 'right' },
+                { key: 'score', label: 'Score', sortable: true, align: overrideAlign ?? 'center' },
+            ];
+        });
         const tableItems: VsTableItem[] = [
             { name: 'Alice', role: 'Admin', status: 'Active', score: 95 },
             { name: 'Bob', role: 'Editor', status: 'Inactive', score: 20 },

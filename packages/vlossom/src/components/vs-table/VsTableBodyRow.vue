@@ -173,9 +173,17 @@ export default defineComponent({
         }
 
         function getCellStyle(index: number): CSSProperties {
+            const align = columns.value?.[index]?.align;
+            const justifyContentMap: Record<string, string> = {
+                left: 'flex-start',
+                center: 'center',
+                right: 'flex-end',
+            };
+
             return {
                 ...cellStyle.value,
-                textAlign: columns.value?.[index]?.align,
+                textAlign: align,
+                justifyContent: align ? justifyContentMap[align] : undefined,
             };
         }
 

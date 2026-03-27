@@ -120,7 +120,6 @@
     td {
         * {
             min-height: unset;
-            line-height: var(--vs-comp-height-md);
         }
     }
 
@@ -139,7 +138,6 @@
             @apply px-[0.375rem] py-[0.5rem];
             * {
                 font-size: var(--vs-font-size-sm);
-                line-height: var(--vs-comp-height-sm);
             }
         }
 
@@ -258,7 +256,6 @@ caption {
                     @apply px-[0.375rem] py-[0.5rem];
                     * {
                         font-size: var(--vs-font-size-sm);
-                        line-height: var(--vs-comp-height-sm);
                     }
                 }
             }
