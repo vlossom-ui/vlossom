@@ -143,3 +143,12 @@ interface VsBlockStyleSet {
 - **Container Query responsive**: Padding is automatically adjusted based on container size for optimal layout on all screen sizes
 - **Responsive grid support**: Use the `grid` prop with `VsGrid` to specify different column counts by screen size for flexible layouts
 - **Independent styling**: Customize the title and body areas with different styles
+
+## Container Query behavior
+
+The block applies responsive padding as follows:
+
+- **Above 1024px**: Title `0.8rem 1.6rem`, body `1.6rem 1.6rem`
+- **768px–1024px**: Title `0.6rem 1.4rem`, body `1.2rem 1.4rem`
+- **640px–768px**: Title `0.6rem 1.2rem`, body `1rem 1.2rem`
+- **640px and below**: Title `0.6rem 1rem`, body `0.8rem 1rem`
