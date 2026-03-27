@@ -11,7 +11,7 @@
                         border: 'none',
                         height: '1.8rem',
                         width: '1.8rem',
-                        backgroundColor: 'var(--vs-cs-bg-area-colored)',
+                        backgroundColor: 'var(--vs-cs-bg-colored)',
                         color: 'var(--vs-cs-font-colored)',
                     },
                 }"

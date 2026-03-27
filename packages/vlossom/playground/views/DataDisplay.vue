@@ -31,20 +31,27 @@
                 :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
                 v-model:selected-items="tableSelectedItems"
             >
-                <template #body-row1="{ item }">
+                <template #body-row1="{ item, value }">
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
+                    {{ value }}
                 </template>
-                <template #body-col2="{ item }">
+                <template #body-col2="{ item, value }">
                     <div v-if="tablePropsSelected.includes('customSlot')">
                         <vs-input v-model="item.score" />
                     </div>
-                    <span v-else class="w-full"> {{ item.score }} </span>
+                    {{ value.toUpperCase() }}
+                </template>
+                <template #body-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
+                <template #body-score="{ value }">
+                    <vs-button>{{ value }}</vs-button>
                 </template>
                 <template #expand="{ item }">
-                    <div class="p-3 text-sm text-gray-600 dark:text-gray-400">
+                    <div
+                        class="flex items-center justify-center p-3 text-sm text-gray-600 dark:text-gray-400"
+                        :style="{ height: '200px' }"
+                    >
                         {{ item.name }} — Score: {{ item.score }}
                     </div>
                 </template>
@@ -273,22 +280,18 @@ export default defineComponent({
             { value: 'search', label: 'Search' },
             { value: 'pagination', label: 'Pagination' },
             { value: 'state', label: 'UI State' },
-            { value: 'textAlignRight', label: 'Text Align Right' },
             { value: 'customSlot', label: 'Custom Slot' },
         ];
         const tablePropsSelected = ref<string[]>([]);
         const tableSelectedItems = ref<VsTableItem[]>([]);
-        const tableColumns = computed<VsTableColumnDef[]>(() =>
-            [
+        const tableColumns = computed<VsTableColumnDef[]>(() => {
+            return [
                 { key: 'name', label: 'Name', sortable: true },
                 { key: 'role', label: 'Role' },
-                { key: 'status', label: 'Status' },
-                { key: 'score', label: 'Score', sortable: true },
-            ].map((column) => ({
-                ...column,
-                align: tablePropsSelected.value.includes('textAlignRight') ? 'right' : 'left',
-            })),
-        );
+                { key: 'status', label: 'Status', align: 'right', headerAlign: 'center' },
+                { key: 'score', label: 'Score', sortable: true, align: 'center' },
+            ];
+        });
         const tableItems: VsTableItem[] = [
             { name: 'Alice', role: 'Admin', status: 'Active', score: 95 },
             { name: 'Bob', role: 'Editor', status: 'Inactive', score: 20 },
@@ -298,6 +301,14 @@ export default defineComponent({
             { name: 'Frank', role: 'Viewer', status: 'Active', score: 72 },
             { name: 'Grace', role: 'Editor', status: 'Inactive', score: 45 },
             { name: 'Henry', role: 'Admin', status: 'Active', score: 98 },
+            { name: 'Ivy', role: 'Viewer', status: 'Inactive', score: 65 },
+            { name: 'Jack', role: 'Editor', status: 'Active', score: 82 },
+            { name: 'Kate', role: 'Admin', status: 'Inactive', score: 78 },
+            { name: 'Liam', role: 'Viewer', status: 'Active', score: 93 },
+            { name: 'Mia', role: 'Editor', status: 'Inactive', score: 55 },
+            { name: 'Noah', role: 'Admin', status: 'Active', score: 97 },
+            { name: 'Olivia', role: 'Viewer', status: 'Inactive', score: 62 },
+            { name: 'Peter', role: 'Editor', status: 'Active', score: 85 },
         ];
         function getRowState(item: VsTableItem, index?: number): UIState {
             if (item.status === 'Inactive') {

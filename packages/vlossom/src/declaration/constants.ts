@@ -45,4 +45,6 @@ export const ALIGNMENTS = ['start', 'center', 'end'] as const;
 
 export const TEXT_ALIGNMENTS = ['left', 'center', 'right'] as const;
 
+export const VERTICAL_ALIGNMENTS = ['top', 'middle', 'bottom'] as const;
+
 export const NOT_SELECTED = -1;
