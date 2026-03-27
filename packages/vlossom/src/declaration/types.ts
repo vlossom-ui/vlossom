@@ -1,6 +1,6 @@
 import type { Component, Ref } from 'vue';
 import type { VsComponentRegistry } from '@/components/component-map';
-import type { ALIGNMENTS, COLORS, PLACEMENTS, SIZES, TEXT_ALIGNMENTS } from './constants';
+import type { ALIGNMENTS, COLORS, PLACEMENTS, SIZES, TEXT_ALIGNMENTS, VERTICAL_ALIGNMENTS } from './constants';
 import type { VsComponent } from './enums';
 
 export type ColorScheme = (typeof COLORS)[number];
@@ -30,6 +30,8 @@ export type Placement = (typeof PLACEMENTS)[number];
 export type Alignment = (typeof ALIGNMENTS)[number];
 
 export type TextAlignment = (typeof TEXT_ALIGNMENTS)[number];
+
+export type VerticalAlignment = (typeof VERTICAL_ALIGNMENTS)[number];
 
 export interface BarLayout {
     position: CssPosition;
