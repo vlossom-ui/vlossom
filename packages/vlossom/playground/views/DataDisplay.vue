@@ -280,18 +280,16 @@ export default defineComponent({
             { value: 'search', label: 'Search' },
             { value: 'pagination', label: 'Pagination' },
             { value: 'state', label: 'UI State' },
-            { value: 'textAlignRight', label: 'Text Align Right' },
             { value: 'customSlot', label: 'Custom Slot' },
         ];
         const tablePropsSelected = ref<string[]>([]);
         const tableSelectedItems = ref<VsTableItem[]>([]);
         const tableColumns = computed<VsTableColumnDef[]>(() => {
-            const overrideAlign = tablePropsSelected.value.includes('textAlignRight') ? 'right' : undefined;
             return [
-                { key: 'name', label: 'Name', sortable: true, align: overrideAlign ?? 'left' },
-                { key: 'role', label: 'Role', align: overrideAlign },
-                { key: 'status', label: 'Status', align: overrideAlign ?? 'right' },
-                { key: 'score', label: 'Score', sortable: true, align: overrideAlign ?? 'center' },
+                { key: 'name', label: 'Name', sortable: true },
+                { key: 'role', label: 'Role' },
+                { key: 'status', label: 'Status', align: 'right', headerAlign: 'center' },
+                { key: 'score', label: 'Score', sortable: true, align: 'center' },
             ];
         });
         const tableItems: VsTableItem[] = [

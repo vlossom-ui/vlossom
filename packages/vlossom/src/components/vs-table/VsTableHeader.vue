@@ -119,7 +119,7 @@ export default defineComponent({
         }
 
         function getCellStyle(index: number): CSSProperties {
-            const align = columns.value?.[index]?.align;
+            const align = columns.value?.[index]?.headerAlign;
             const justifyContentMap: Record<string, string> = {
                 left: 'flex-start',
                 center: 'center',

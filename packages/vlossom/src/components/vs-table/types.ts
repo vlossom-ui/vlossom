@@ -61,6 +61,7 @@ export interface VsTableColumnDef<I = VsTableItem> {
     key: VsTableColumnKey<I>;
     label: string;
     align?: TextAlignment;
+    headerAlign?: TextAlignment;
     minWidth?: SizeProp;
     maxWidth?: SizeProp;
     width?: SizeProp;
