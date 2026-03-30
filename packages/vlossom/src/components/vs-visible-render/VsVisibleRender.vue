@@ -46,7 +46,7 @@ export default defineComponent({
 
         const visibleRenderRefFallback: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
         const visibleRenderRef = computed(() => {
-            if(!selector.value) {
+            if (!selector.value) {
                 return visibleRenderRefFallback.value;
             }
             const wrapper = visibleRenderRefFallback.value?.querySelector(selector.value) as HTMLElement | null;
@@ -272,7 +272,6 @@ export default defineComponent({
         );
 
         return {
-            visibleRenderRef,
             containerStyle,
 
             // expose
