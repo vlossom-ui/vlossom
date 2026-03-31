@@ -11,4 +11,4 @@
 | Category | Method | Parameters | Description |
 | -------  | ------ | ---------- | ----------- |
 
-## Caution
+## Cautions

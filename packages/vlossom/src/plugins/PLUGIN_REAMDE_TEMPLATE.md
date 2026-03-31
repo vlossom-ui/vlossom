@@ -16,3 +16,5 @@
 ## Types
 
 <!-- exported types in types.ts -->
+
+## Caution

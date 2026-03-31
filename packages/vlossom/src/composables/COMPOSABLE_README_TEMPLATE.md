@@ -40,4 +40,6 @@
 ## Hooks
 
 | Hook | Description |
-| ---- | ----------- | 
+| ---- | ----------- |
+
+## Cautions

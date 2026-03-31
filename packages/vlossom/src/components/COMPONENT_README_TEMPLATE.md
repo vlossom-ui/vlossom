@@ -47,3 +47,5 @@ interface [ComponentName]StyleSet {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
+
+## Caution
