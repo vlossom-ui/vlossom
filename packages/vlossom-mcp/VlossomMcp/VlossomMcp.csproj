@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>VlossomMcp</RootNamespace>
+    <AssemblyName>VlossomMcp</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="0.1.0-preview.11" />
+    <PackageReference Include="Sprout.Hosting" Version="0.0.43" />
+  </ItemGroup>
+
+</Project>
