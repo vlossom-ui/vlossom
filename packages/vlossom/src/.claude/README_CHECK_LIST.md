@@ -12,7 +12,7 @@
 - [ ] 체크리스트 기반으로 작업을 10회 반복했는가
 - [ ] 문서 종류에 따른 README를 모두 대응했는가
 - [ ] 섹션 구조가 문서 종류 유형에 맞추어 일치하는가
-- [ ] 소스코드의 실제 기능을 **그대로** 반영하여 작성되었는가 
+- [ ] 소스코드의 실제 기능을 **그대로** 반영하여 작성되었는가
 - [ ] 영어 문서와 한글 문서가 서로 내용이 일치하는가
 - [ ] 영어 문서와 한글 문서를 서로 연결해주는 링크가 있는가
 - [ ] 매 회 문서 작성을 마무리하고 `cd packages/vlossom && pnpm format`을 실행시켰는가 (`.md` 파일은 포맷 대상 외이므로 소스코드 변경이 없는 경우 오류는 무시)
@@ -30,7 +30,7 @@
 
 ## diretive check list
 
-- [ ] packages/vlossom/src/directives/DIRECTIVE_README_TEMPLATE.md 
+- [ ] packages/vlossom/src/directives/DIRECTIVE_README_TEMPLATE.md
 
 ## composable check list
 
@@ -38,4 +38,4 @@
 
 ## util check list
 
-- [ ] packages/vlossom/src/utils/UTIL_REAMDE_TEMPLATE.md 
+- [ ] packages/vlossom/src/utils/UTIL_REAMDE_TEMPLATE.md
