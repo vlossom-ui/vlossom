@@ -4,11 +4,9 @@
 
 **Available Version**: <!-- e.g., 2.0.0+ -->
 
-GitHub Wiki Link: <!-- GitHub wiki link -->
+## Feature
 
-## Preview
-
-<!-- Component image -->
+<!-- impressive and shorthands -->
 
 ## Basic Usage
 
@@ -31,7 +29,9 @@ GitHub Wiki Link: <!-- GitHub wiki link -->
 interface [ComponentName]StyleSet {
   // Style properties
 }
+
 ```
+<!-- exported types in types.ts -->
 
 ## Events
 
