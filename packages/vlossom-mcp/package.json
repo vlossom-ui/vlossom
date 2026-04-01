@@ -1,10 +1,10 @@
 {
-    "name": "@vlossom/mcp",
-    "version": "0.1.0",
+    "name": "vlossom-mcp",
+    "version": "0.1.2",
     "description": "MCP server for Vlossom UI component library",
     "type": "module",
     "bin": {
-        "vlossom-mcp": "./dist/index.js"
+        "vlossom-mcp": "dist/index.js"
     },
     "main": "./dist/index.js",
     "scripts": {
@@ -33,9 +33,6 @@
         "directory": "packages/vlossom-mcp"
     },
     "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
     "keywords": [
         "mcp",
         "vlossom",
