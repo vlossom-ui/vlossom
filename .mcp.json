@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "vlossom": {
+            "command": "node",
+            "args": ["packages/vlossom-mcp/dist/index.js"],
+            "env": {
+                "VLOSSOM_GITHUB_TOKEN": ""
+            }
+        }
+    }
+}
