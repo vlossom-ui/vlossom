@@ -22,6 +22,8 @@ builder.Services
     .WithHttpTransport()
     .WithTools<VlossomComponentTools>();
 
+var azureAdConfig = builder.Configuration.GetSection("AzureAd");
+
 builder.Services
     .AddAuthentication(options =>
     {
@@ -30,22 +32,23 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
-        var azureAdConfig = builder.Configuration.GetSection("AzureAd");
         options.Authority = $"https://login.microsoftonline.com/{azureAdConfig["TenantId"]}/v2.0";
         options.Audience = azureAdConfig["ClientId"];
     });
+
 builder.Services.AddAuthorization();
+
+// ────────────────────────────────────────────────────────────────────────────
 
 var app = builder.Build();
 
 app.InitSproutApp();
-
 app.UseSerilogRequestLogging();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-// OAuth 메타데이터 오버라이드 - Sprout 기본값(localhost/authorize)을 Azure AD 엔드포인트로 교체
+// Sprout이 자동 등록하는 OAuth 메타데이터의 authorization_endpoint가 localhost를 가리키므로
+// Azure AD 엔드포인트로 오버라이드
 app.MapGet("/.well-known/oauth-authorization-server", (IConfiguration config) =>
 {
     var tenantId = config["AzureAd:TenantId"];
@@ -64,7 +67,7 @@ app.MapGet("/.well-known/oauth-authorization-server", (IConfiguration config) =>
 }).AllowAnonymous();
 
 // OAuth 2.0 Dynamic Client Registration (RFC 7591)
-// MCP 클라이언트(Claude Code)가 OAuth 플로우 시작 전 호출하는 엔드포인트
+// MCP 클라이언트가 OAuth 플로우 시작 전 Azure AD 앱 자격증명을 얻기 위해 호출
 app.MapPost("/register", async (HttpRequest request, IConfiguration config) =>
 {
     using var body = await System.Text.Json.JsonDocument.ParseAsync(request.Body);
@@ -80,14 +83,9 @@ app.MapPost("/register", async (HttpRequest request, IConfiguration config) =>
     });
 }).AllowAnonymous();
 
-// 로컬 개발 환경에서는 인증 불필요
 if (app.Environment.IsDevelopment())
-{
     app.MapMcp("/mcp").AllowAnonymous();
-}
 else
-{
     app.MapMcp("/mcp");
-}
 
 app.Run();
