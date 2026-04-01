@@ -10,6 +10,7 @@ builder.Services.AddSingleton<ComponentRegistry>();
 
 builder.Services
     .AddMcpServer()
+    .WithHttpTransport()
     .WithTools<VlossomComponentTools>();
 
 var app = builder.Build();
