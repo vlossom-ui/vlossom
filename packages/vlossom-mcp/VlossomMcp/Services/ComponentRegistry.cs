@@ -16,9 +16,10 @@ public class ComponentRegistry
     {
         _logger = logger;
 
-        var configuredPath = configuration["VlossomMcp:ComponentsPath"] ?? "../vlossom/src/components";
+        // dotnet run 실행 디렉토리(프로젝트 폴더) 기준으로 경로 계산
+        var configuredPath = configuration["VlossomMcp:ComponentsPath"] ?? "../../vlossom/src/components";
         _componentsPath = Path.GetFullPath(
-            Path.Combine(AppContext.BaseDirectory, configuredPath)
+            Path.Combine(Directory.GetCurrentDirectory(), configuredPath)
         );
     }
 
