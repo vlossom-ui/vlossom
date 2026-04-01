@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+
 namespace VlossomMcp.Services;
 
 public record ComponentInfo(
@@ -12,12 +14,12 @@ public class ComponentRegistry
     private readonly string _componentsPath;
     private IReadOnlyList<ComponentInfo>? _components;
 
-    public ComponentRegistry(ILogger<ComponentRegistry> logger, IConfiguration configuration)
+    public ComponentRegistry(ILogger<ComponentRegistry> logger, IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
         _logger = logger;
 
-        var configuredPath = configuration["VlossomMcp:ComponentsPath"] ?? "../../vlossom/src/components";
-        _componentsPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), configuredPath));
+        var configuredPath = configuration["VlossomMcp:ComponentsPath"] ?? "components";
+        _componentsPath = Path.GetFullPath(Path.Combine(hostEnvironment.ContentRootPath, configuredPath));
     }
 
     public IReadOnlyList<ComponentInfo> GetComponents()

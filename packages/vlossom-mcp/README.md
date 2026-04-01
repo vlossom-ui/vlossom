@@ -75,7 +75,7 @@ set ASPNETCORE_ENVIRONMENT=Development && dotnet run
 | 키                          | 기본값                          | 설명                      |
 | --------------------------- | ------------------------------- | ------------------------- |
 | `Ports:Http`                | `5100`                          | HTTP 포트                 |
-| `VlossomMcp:ComponentsPath` | `../../vlossom/src/components`  | 컴포넌트 디렉토리 경로    |
+| `VlossomMcp:ComponentsPath` | `components` (ContentRoot 기준) | 로컬 개발은 `appsettings.Development.json`에서 `../../vlossom/src/components` |
 | `AzureAd:TenantId`          | —                               | Azure AD 테넌트 ID        |
 | `AzureAd:ClientId`          | —                               | Azure AD 앱 클라이언트 ID |
 
