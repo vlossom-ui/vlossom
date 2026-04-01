@@ -5,8 +5,14 @@ export interface CreateIssueResult {
     issueNumber: number;
 }
 
+let runtimeToken: string | undefined;
+
+export function setGitHubToken(token: string): void {
+    runtimeToken = token;
+}
+
 export function getGitHubToken(): string | undefined {
-    return process.env["VLOSSOM_GITHUB_TOKEN"] || undefined;
+    return runtimeToken || process.env["VLOSSOM_GITHUB_TOKEN"] || undefined;
 }
 
 export async function createIssue(

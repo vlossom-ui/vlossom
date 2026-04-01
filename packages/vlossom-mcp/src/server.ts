@@ -2,6 +2,7 @@ import { createRequire } from "module";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerListComponents } from "./tools/list-components.js";
 import { registerCheckGitHubToken } from "./tools/check-github-token.js";
+import { registerSetGitHubToken } from "./tools/set-github-token.js";
 import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
 
@@ -13,6 +14,7 @@ export function createServer(): McpServer {
 
     registerListComponents(server);
     registerCheckGitHubToken(server);
+    registerSetGitHubToken(server);
     registerDraftIssue(server);
     registerReportIssue(server);
 
