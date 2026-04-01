@@ -3,6 +3,5 @@
 **/.claude/*.local.json
 **/.claude/settings.local.json
 
-# vlossom-mcp local secrets
-**/appsettings.Local.json
-**/appsettings.Production.json
+# vlossom-mcp
+**/vlossom-mcp/.env

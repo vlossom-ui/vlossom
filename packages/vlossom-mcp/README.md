@@ -4,99 +4,78 @@ Vlossom UI 컴포넌트 라이브러리를 AI 어시스턴트(Claude 등)가 정
 
 ## 사전 요구사항
 
-| 도구                                              | 버전     | 설치                         |
-| ------------------------------------------------- | -------- | ---------------------------- |
-| [.NET SDK](https://dotnet.microsoft.com/download) | 9.0 이상 | `dotnet --version` 으로 확인 |
-| Azure AD 앱 등록                                  | -        | TenantId, ClientId 필요      |
+| 도구        | 버전     |
+| ----------- | -------- |
+| Node.js     | 18.0 이상 |
 
 ## 기술 스택
 
-- .NET 9
-- [Sprout.Hosting](https://git.projectbro.com/PlatformDev/bitter) — 서버 인프라
-- [ModelContextProtocol](https://github.com/modelcontextprotocol/csharp-sdk) — MCP SDK
-- HTTP/SSE transport (JWT Bearer 인증)
+- Node.js / TypeScript
+- [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol/typescript-sdk) — MCP SDK
+- stdio transport (인증 없음)
 
 ## 제공 도구
 
-| 도구              | 설명                                   |
-| ----------------- | -------------------------------------- |
-| `list_components` | Vlossom 컴포넌트 전체 목록과 설명 반환 |
-
-## 실행 방법
-
-```bash
-cd packages/vlossom-mcp/VlossomMcp
-dotnet run
-```
-
-서버가 `http://localhost:5100`에서 시작됩니다.
+| 도구                  | 설명                                           |
+| --------------------- | ---------------------------------------------- |
+| `list_components`     | Vlossom 컴포넌트 전체 목록과 설명 반환         |
+| `check_github_token`  | GitHub 토큰 설정 여부 확인                     |
+| `draft_issue`         | bug / enhancement / question 이슈 초안 생성    |
+| `report_issue`        | vlossom-ui/vlossom 레포에 GitHub 이슈 등록     |
 
 ## AI 어시스턴트 연결
 
-Claude Code / Claude Desktop `claude.json`:
+### Claude Code / Claude Desktop
+
+`claude.json` (또는 `claude_desktop_config.json`):
 
 ```json
 {
     "mcpServers": {
         "vlossom": {
-            "type": "sse",
-            "url": "http://localhost:5100/mcp"
+            "command": "npx",
+            "args": ["-y", "@vlossom/mcp"],
+            "env": {
+                "VLOSSOM_GITHUB_TOKEN": "ghp_your_token_here"
+            }
         }
     }
 }
 ```
 
-> Azure AD OAuth를 통해 자동으로 인증됩니다.
-
-## 설정
-
-### 환경별 구성
-
-ASP.NET Core의 환경별 설정 파일을 사용합니다.
-
-| 파일                              | 용도        | Git 관리 |
-| --------------------------------- | ----------- | -------- |
-| `appsettings.json`                | 공통 기본값 | O        |
-| `appsettings.Development.json`    | 로컬 개발   | O        |
-| `appsettings.Production.json`     | 프로덕션    | X        |
-
-`ASPNETCORE_ENVIRONMENT` 환경변수로 환경을 선택합니다 (기본값: `Production`).
-
-**로컬 개발 실행:**
-
-```bash
-ASPNETCORE_ENVIRONMENT=Development dotnet run
-# 또는 Windows:
-set ASPNETCORE_ENVIRONMENT=Development && dotnet run
-```
-
-### 설정 키
-
-| 키                          | 기본값                          | 설명                      |
-| --------------------------- | ------------------------------- | ------------------------- |
-| `Ports:Http`                | `5100`                          | HTTP 포트                 |
-| `VlossomMcp:ComponentsPath` | `components` (ContentRoot 기준) | 로컬 개발은 `appsettings.Development.json`에서 `../../vlossom/src/components` |
-| `AzureAd:TenantId`          | —                               | Azure AD 테넌트 ID        |
-| `AzureAd:ClientId`          | —                               | Azure AD 앱 클라이언트 ID |
-
-### 프로덕션 배포
-
-`appsettings.Production.json` 파일 생성 (git 제외):
+### 로컬 개발 빌드로 연결 (모노레포 내부)
 
 ```json
 {
-    "AzureAd": {
-        "TenantId": "<prod-tenant-id>",
-        "ClientId": "<prod-client-id>"
+    "mcpServers": {
+        "vlossom": {
+            "command": "node",
+            "args": ["packages/vlossom-mcp/dist/index.js"]
+        }
     }
 }
 ```
 
-또는 환경변수 사용:
+## 환경변수
+
+| 변수                        | 필수 | 설명                                                    |
+| --------------------------- | ---- | ------------------------------------------------------- |
+| `VLOSSOM_GITHUB_TOKEN`      | 선택 | GitHub PAT (issues:write 권한). `report_issue` 사용 시 필요 |
+| `VLOSSOM_COMPONENTS_PATH`   | 선택 | 컴포넌트 디렉토리 절대경로. 미설정 시 모노레포 내 자동 탐색 |
+
+## 개발
 
 ```bash
-export AzureAd__TenantId=<prod-tenant-id>
-export AzureAd__ClientId=<prod-client-id>
+cd packages/vlossom-mcp
+
+# 의존성 설치
+npm install
+
+# 빌드
+npm run build
+
+# 빌드 후 직접 실행
+node dist/index.js
 ```
 
 ## 상세 계획

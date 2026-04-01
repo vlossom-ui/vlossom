@@ -1,5 +1,4 @@
-bin/
-obj/
-*.user
-.vs/
-appsettings.Production.json
+node_modules/
+dist/
+.env
+*.tsbuildinfo
