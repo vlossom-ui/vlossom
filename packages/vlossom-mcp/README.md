@@ -69,37 +69,6 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ---
 
-## Using a Token via Environment Variable
-
-If you prefer to set the token upfront instead of entering it at runtime:
-
-```json
-{
-    "mcpServers": {
-        "vlossom": {
-            "command": "npx",
-            "args": ["vlossom-mcp"],
-            "env": {
-                "VLOSSOM_GITHUB_TOKEN": "ghp_your_token_here"
-            }
-        }
-    }
-}
-```
-
-Token priority: **runtime (`set_github_token`)** > **`VLOSSOM_GITHUB_TOKEN` env var**
-
----
-
-## Environment Variables
-
-| Variable                  | Required | Description                                                      |
-| ------------------------- | -------- | ---------------------------------------------------------------- |
-| `VLOSSOM_GITHUB_TOKEN`    | Optional | GitHub PAT with `issues:write` scope. Required for `report_issue`. Can be set at runtime via `set_github_token` instead. |
-| `VLOSSOM_COMPONENTS_PATH` | Optional | Absolute path to the components directory. Auto-detected when running inside the monorepo. |
-
----
-
 ## Local Development (inside the monorepo)
 
 ```bash
