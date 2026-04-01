@@ -73,9 +73,10 @@ MVP에서는 동작하는 최소 단위로 범위를 좁혔습니다:
 ```
 GitHub (vlossom-ui/vlossom)
   packages/vlossom-mcp/ ← Sprout MCP 서버 소스
-        ↓ 미러 (jenqueens, pull 방식)
-GitLab (packages/vlossom-mcp/)
-  Jenkinsfile, Dockerfile 추가
+        ↓ GitLab mirror (pull)
+GitLab — 브랜치: gitlab/chore/mcp-server-mvp
+  Jenkinsfile (repo root)  ← 허용 브랜치: chore/mcp-server-mvp, 알림: #platform_unit_dev2_tool_error_monitor
+  Dockerfile  (repo root)  ← .NET 9 multi-stage build (arm64)
         ↓
 jenkins-eks
   Docker 이미지 빌드
@@ -84,7 +85,7 @@ flare.pubg.io
   k8s 환경에 이미지 배포
 ```
 
-**미결 사항**: jenqueens mirror가 pull 방식으로 자동 동작하는지 확인 필요 (설명은 자동이라고 되어 있음).
+**GitLab 브랜치 전략**: `gitlab/chore/mcp-server-mvp`는 GitHub에 없는 브랜치이므로 mirror sync 시 덮어씌워지지 않음. Jenkinsfile/Dockerfile은 이 브랜치에만 존재.
 
 ---
 
@@ -92,14 +93,18 @@ flare.pubg.io
 
 ```
 packages/vlossom-mcp/
-├── .gitignore
+├── .gitignore                        # bin/, obj/, appsettings.Production.json 제외
 ├── README.md
 └── VlossomMcp/
-    ├── VlossomMcp.csproj        # Sprout.Hosting + ModelContextProtocol.AspNetCore
-    ├── Program.cs               # 웹 호스트 + MCP 설정
-    ├── appsettings.json         # 포트 5100, 컴포넌트 경로
+    ├── VlossomMcp.csproj             # Sprout.Hosting + ModelContextProtocol.AspNetCore, 버전 0.1.0
+    ├── Program.cs                    # 웹 호스트, MCP, Azure AD 인증, OAuth 엔드포인트
+    ├── appsettings.json              # 포트 5100, 컴포넌트 경로, AzureAd 빈 값 (prod base)
+    ├── appsettings.Development.json  # AzureAd override만 포함 (TenantId, ClientId)
+    ├── appsettings.Production.json   # gitignore — prod 자격증명
+    ├── Properties/
+    │   └── launchSettings.json       # ASPNETCORE_ENVIRONMENT=Development 자동 설정
     ├── Services/
-    │   └── ComponentRegistry.cs # 컴포넌트 디렉토리 스캔 및 캐싱
+    │   └── ComponentRegistry.cs      # 컴포넌트 디렉토리 스캔 및 캐싱
     └── Tools/
         └── VlossomComponentTools.cs  # list_components 도구
 ```
