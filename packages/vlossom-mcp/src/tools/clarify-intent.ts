@@ -21,11 +21,13 @@ const choiceSchema = z.object({
 export function registerClarifyIntent(server: McpServer): void {
     server.tool(
         "clarify_intent",
-        "Call this when the user's query is ambiguous and maps to 3+ equally valid interpretations, " +
-            "OR when a previous tool's _meta.clarify is true. " +
-            "Generate exactly 3 candidate interpretations as candidates. " +
-            "The server validates and returns them as formatted choices to present to the user. " +
-            "After the user picks one, execute the corresponding pipeline without calling clarify_intent again.",
+        "Call this when you judge the user's intent to be ambiguous — " +
+            "i.e. the query could lead to meaningfully different tool pipelines. " +
+            "Do not apply a fixed rule; use your own judgment about whether clarification adds value. " +
+            "Also call this when a previous tool's _meta.clarify is true. " +
+            "Generate exactly 3 candidate interpretations as candidates, each with a distinct pipeline. " +
+            "After the server returns choices, present them to the user as numbered options and ask them to pick. " +
+            "Once the user picks, execute the chosen prompt as the next query without calling clarify_intent again.",
         {
             query: z.string().describe("The original user query verbatim"),
             candidates: z
