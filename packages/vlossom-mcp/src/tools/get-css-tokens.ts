@@ -30,14 +30,18 @@ export function registerGetCssTokens(server: McpServer): void {
         "Returns Vlossom CSS custom properties (--vs-* tokens) with their default and dark-mode values. " +
             "Call this when the user asks about color tokens, design variables, spacing, radius, or z-index. " +
             "Filter by category: 'color-scheme' for semantic colors, 'palette' for raw color values, " +
-            "'typography', 'radius', 'spacing', 'size', 'z-index', or 'all' for everything. " +
+            "'radius', 'spacing', 'z-index', 'misc', or 'all' for everything. " +
             "Always use these tokens instead of hardcoded values when generating styled code.",
         {
             category: z
-                .enum(["color-scheme", "palette", "typography", "radius", "spacing", "size", "z-index", "misc", "all"])
+                .enum(["color-scheme", "palette", "radius", "spacing", "z-index", "misc", "all"])
                 .optional()
                 .default("all")
-                .describe("Token category to filter by. Default: 'all'."),
+                .describe(
+                    "Token category to filter by. " +
+                    "Valid values: 'color-scheme' (semantic colors), 'palette' (raw color values), " +
+                    "'radius', 'spacing', 'z-index', 'misc', or 'all'. Default: 'all'.",
+                ),
             search: z
                 .string()
                 .optional()

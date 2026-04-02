@@ -15,9 +15,10 @@ export function registerDraftIssue(server: McpServer): void {
         {
             summary: z.string().describe("Brief one-line summary of the issue"),
             type: z
-                .enum(["bug", "feature", "question"])
+                .enum(["bug", "feature", "enhancement", "question"])
                 .default("bug")
-                .describe("Issue type"),
+                .transform((v) => (v === "enhancement" ? "feature" : v) as IssueType)
+                .describe("Issue type: 'bug', 'feature' (or 'enhancement'), 'question'. Default: 'bug'"),
             language: z
                 .enum(["ko", "en"])
                 .default("ko")

@@ -15,8 +15,9 @@ export function registerReportIssue(server: McpServer): void {
         {
             title: z.string().describe("Issue title — use the suggestedTitle from draft_issue"),
             type: z
-                .enum(["bug", "feature", "question"])
-                .describe("Issue type — must match the type from draft_issue"),
+                .enum(["bug", "feature", "enhancement", "question"])
+                .transform((v) => (v === "enhancement" ? "feature" : v) as IssueType)
+                .describe("Issue type — 'bug', 'feature' (or 'enhancement'), 'question'. Must match draft_issue type."),
             language: z
                 .enum(["ko", "en"])
                 .describe("Language — must match the language from draft_issue"),
