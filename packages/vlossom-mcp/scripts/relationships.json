@@ -150,5 +150,53 @@
   "VsTooltip": {
     "children": ["VsFloating"],
     "siblings": ["VsFloating"]
+  },
+  "VsAvatar": {
+    "children": [],
+    "siblings": ["VsImage"]
+  },
+  "VsContainer": {
+    "children": [],
+    "siblings": ["VsGrid", "VsLayout", "VsPage", "VsBlock"]
+  },
+  "VsDimmed": {
+    "children": [],
+    "siblings": []
+  },
+  "VsDivider": {
+    "children": [],
+    "siblings": []
+  },
+  "VsFocusTrap": {
+    "children": [],
+    "siblings": []
+  },
+  "VsIndexView": {
+    "children": ["VsResponsive"],
+    "siblings": ["VsTabs", "VsSteps"]
+  },
+  "VsLabelValue": {
+    "children": ["VsResponsive"],
+    "siblings": ["VsInput", "VsTextarea"]
+  },
+  "VsProgress": {
+    "children": [],
+    "siblings": ["VsLoading", "VsSkeleton"]
+  },
+  "VsRender": {
+    "children": [],
+    "siblings": []
+  },
+  "VsResponsive": {
+    "children": [],
+    "siblings": ["VsGrid"]
+  },
+  "VsTextWrap": {
+    "children": ["VsRender"],
+    "siblings": ["VsInput", "VsTextarea"]
+  },
+  "VsVisibleRender": {
+    "children": [],
+    "siblings": []
   }
 }

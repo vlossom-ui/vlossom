@@ -64,3 +64,13 @@ console.log(`Generated ${components.length} components → ${srcJsonPath}`);
 mkdirSync(distDataDir, { recursive: true });
 writeFileSync(join(distDataDir, "components-data.json"), json, "utf-8");
 console.log(`Copied → ${join(distDataDir, "components-data.json")}`);
+
+// Copy relationships.json (manually maintained) to src/data and dist/data
+const relSrc = join(__dirname, "relationships.json");
+const relDst = join(srcDataDir, "relationships.json");
+const relDistDst = join(distDataDir, "relationships.json");
+const relJson = readFileSync(relSrc, "utf-8");
+writeFileSync(relDst, relJson, "utf-8");
+writeFileSync(relDistDst, relJson, "utf-8");
+console.log(`Copied relationships.json → ${relDst}`);
+console.log(`Copied relationships.json → ${relDistDst}`);
