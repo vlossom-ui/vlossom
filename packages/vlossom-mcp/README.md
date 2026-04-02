@@ -37,46 +37,41 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ## Tools
 
-### Discovery & Lookup
+### Components
 
 | Tool                          | Description                                                                              |
 | ----------------------------- | ---------------------------------------------------------------------------------------- |
-| `clarify_intent`              | Disambiguates free-form or ambiguous queries; always call this before searching when the intent is unclear |
+| `clarify_intent`              | Disambiguates free-form or ambiguous queries; call this before searching when intent is unclear |
 | `list_components`             | Returns the full list of Vlossom components with names and descriptions                  |
-| `get_component`               | Returns props, StyleSet, events, and slots for a component                               |
 | `search_components`           | Searches by a specific component name or concrete keyword (e.g. `button`, `drawer`)     |
 | `suggest_components`          | Recommends components based on a natural-language use case                               |
+| `get_component`               | Returns props, StyleSet, events, slots, and methods for a component                      |
 | `compare_components`          | Compares two components side-by-side with differences and recommendations                |
 | `get_component_relationships` | Returns parent/child/sibling component relationships                                     |
 | `get_component_source`        | Returns the raw Vue source file for a component                                          |
-| `get_directive`               | Returns usage and options for Vlossom directives (e.g. `v-scroll-shadow`)                |
-| `get_composables`             | Returns usage info for composables like `useColorScheme`, `useStyleSet`                  |
-| `get_usage_examples`          | Returns annotated end-to-end pipeline walkthroughs showing how to chain tools together   |
 
-### Style System
+### API Reference
 
-| Tool             | Description                                                                                |
-| ---------------- | ------------------------------------------------------------------------------------------ |
-| `get_css_tokens`      | Returns all `--vs-*` CSS variables with default and dark-mode values, filterable by category |
-| `get_vlossom_options` | Returns available `createVlossom()` options and imperative plugin APIs (`$vsModal`, etc.)     |
-| `get_changelog`       | Fetches Vlossom version history from npm registry; shows breaking changes and features        |
-| `check_vlossom_setup` | Checks whether an installed version is up-to-date and returns a setup checklist              |
+| Tool              | Description                                                                      |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `get_directive`   | Returns usage and options for Vlossom directives (e.g. `v-scroll-shadow`)        |
+| `get_composables` | Returns usage info for composables like `useColorScheme`, `useStyleSet`          |
 
-### Code Generation
+### Style & Configuration
 
-| Tool                      | Description                                                                                    |
-| ------------------------- | ---------------------------------------------------------------------------------------------- |
-| `generate_component_code` | Generates a Vue SFC from a requirement; always designs StyleSet first _(planned)_              |
-| `generate_style_set`      | Generates a correct StyleSet applying the variables/component/child-ref philosophy _(planned)_ |
-| `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props _(planned)_                    |
+| Tool                  | Description                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------- |
+| `get_css_tokens`      | Returns all `--vs-*` CSS variables with default and dark-mode values, filterable by category      |
+| `get_vlossom_options` | Returns available `createVlossom()` options and imperative plugin APIs (`$vsModal`, etc.)         |
 
-### Validation
+### Setup & Versioning
 
-| Tool                       | Description                                                                         |
-| -------------------------- | ----------------------------------------------------------------------------------- |
-| `validate_component_usage` | Validates that component usage in code follows Vlossom conventions _(planned)_      |
+| Tool                  | Description                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `check_vlossom_setup` | Checks whether an installed version is up-to-date and returns a setup checklist          |
+| `get_changelog`       | Returns bundled Vlossom version history with breaking changes, features, and fixes        |
 
-### GitHub Issue Reporting
+### GitHub Issues
 
 | Tool                 | Description                                                                        |
 | -------------------- | ---------------------------------------------------------------------------------- |
@@ -84,6 +79,17 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 | `set_github_token`   | Stores a GitHub PAT in memory for the current session                              |
 | `draft_issue`        | Generates a structured issue template (bug / feature / question) with i18n support |
 | `report_issue`       | Creates a GitHub issue on the vlossom-ui/vlossom repository                        |
+
+### Planned
+
+| Tool                      | Description                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `generate_component_code` | Generates a Vue SFC from a requirement; always designs StyleSet first                          |
+| `generate_style_set`      | Generates a correct StyleSet applying the variables/component/child-ref philosophy             |
+| `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props                                |
+| `validate_component_usage`| Validates that component usage in code follows Vlossom conventions                             |
+
+> `get_usage_examples` — call this any time to see annotated end-to-end walkthroughs of how tools chain together.
 
 ---
 
