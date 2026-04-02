@@ -18,7 +18,8 @@
     "release:major": "npm version major && pnpm publish --no-git-checks"
   },
   "files": [
-    "dist"
+    "dist",
+    "skill"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
