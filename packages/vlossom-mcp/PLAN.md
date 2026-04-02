@@ -182,6 +182,8 @@ Implementation status — last updated 2026-04-02 (v0.4.0 + stepper UX):
 | `validate_component_usage`    | ✅      | ❌ Not implemented                                    |
 | `get_version_info`            | ✅      | ❌ Not implemented                                    |
 | `get_style_set`               | ✅      | ❌ Not implemented (merged into get_component)        |
+| `get_changelog`               | 🆕      | ❌ Not implemented                                    |
+| `check_vlossom_setup`         | 🆕      | ❌ Not implemented                                    |
 
 ### Data pipeline — resolved
 
@@ -574,6 +576,68 @@ output: {
 
 ---
 
+## Phase 3-C: Version & Setup Tools
+
+### `get_changelog`
+
+**Priority**: 🟠 High
+
+Fetches version history and migration info from npm registry or GitHub Releases. Ensures AI always has up-to-date changelog without manual maintenance.
+
+```typescript
+input: {
+  from?: string;  // "1.5.0" — starting version (omit for latest only)
+  to?: string;    // "2.0.0" — ending version (default: latest)
+}
+output: {
+  latestStable: string;
+  versions: Array<{
+    version: string;
+    date: string;
+    breaking: string[];
+    features: string[];
+    fixes: string[];
+    migrationGuide?: string;
+  }>;
+}
+```
+
+> Usage: "What changed in vlossom 2.0?" / "How do I migrate from 1.x to 2.0?"
+>
+> Pairs with `check_vlossom_setup`: when setup check detects an outdated version, call `get_changelog(from: currentVersion)` to surface migration steps.
+
+### `check_vlossom_setup`
+
+**Priority**: 🟠 High
+
+Receives the installed vlossom version and returns compatibility status, peer dependency requirements, and a setup checklist. Designed for AI-assisted onboarding and version diagnosis.
+
+```typescript
+input: {
+  version: string;                          // installed version e.g. "2.0.0-beta.1"
+  framework?: "vite" | "webpack" | "nuxt";  // optional build tool hint
+}
+output: {
+  version: string;
+  status: "stable" | "beta" | "outdated" | "unknown";
+  isLatest: boolean;
+  latestStable: string;
+  requiredPeerDeps: Record<string, string>; // { vue: "^3.4", tailwindcss: "^4.0" }
+  setupChecklist: Array<{
+    step: string;
+    required: boolean;
+    docs?: string;
+  }>;
+  knownIssues?: string[];
+}
+```
+
+> Usage: "Is my vlossom setup correct?" / "I'm on 1.5.0 — what do I need to upgrade?"
+>
+> Pipeline: `check_vlossom_setup` → outdated detected → `get_changelog(from: currentVersion)` → migration guide.
+
+---
+
 ## Additional Insights and Proposals
 
 ### 1. Tool Description Optimization
@@ -693,7 +757,7 @@ src/utils/
 [Done] 0.4.x — Stepper info (_meta) + Tool Attribution in all tools (Phase 4 early apply)
 
 [Next] 0.5.0 — get_component_source + get_directive + get_composables
-[Then] 0.6.0 — get_css_tokens + get_vlossom_options
+[Then] 0.6.0 — get_css_tokens + get_vlossom_options + get_changelog + check_vlossom_setup
 [Then] 0.7.0 — generate_component_code + generate_style_set + adapt_type_to_component
 [Then] 0.8.0 — get_form_recipe + diagnose_issue
 [Long] 1.0.0 — validate_component_usage + semantic search + MCP Prompts
@@ -731,6 +795,8 @@ packages/vlossom-mcp/
 │   │   ├── get-composables.ts      ← new (Phase 2)
 │   │   ├── get-css-tokens.ts       ← new (Phase 2-B)
 │   │   ├── get-vlossom-options.ts  ← new (Phase 2-B)
+│   │   ├── get-changelog.ts        ← new (Phase 3-C)
+│   │   ├── check-vlossom-setup.ts  ← new (Phase 3-C)
 │   │   ├── generate-code.ts        ← new (Phase 3)
 │   │   ├── generate-style-set.ts   ← new (Phase 3)
 │   │   ├── get-form-recipe.ts      ← new (Phase 3)
