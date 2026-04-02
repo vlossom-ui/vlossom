@@ -149,9 +149,6 @@ export function registerSuggestComponents(server: McpServer): void {
                 }
             }
 
-            // 휴리스틱 매칭 결과 수 기록 (clarify 신호 판단용)
-            const heuristicCount = orderedNames.length;
-
             // 2단계: 키워드 기반 메타데이터 검색
             for (const keyword of keywords) {
                 const searchMatches = searchByKeyword(all, keyword);
@@ -169,18 +166,17 @@ export function registerSuggestComponents(server: McpServer): void {
                 .map((name) => nameToMeta.get(name))
                 .filter((c): c is ComponentMeta => c !== undefined);
 
-            // 휴리스틱 매칭이 없고 결과가 3개 이상이면 쿼리가 모호함 → clarify 신호
-            const needsClarify = heuristicCount === 0 && components.length >= 3;
-
             const reasoning = buildReasoning(useCase, limitedNames, components);
             const shortUseCase = useCase.length > 28 ? useCase.slice(0, 25) + '…' : useCase;
-            const meta = recordStep("suggest_components", `Suggest: ${shortUseCase}`, Date.now() - start, needsClarify);
+            const meta = recordStep("suggest_components", `Suggest: ${shortUseCase}`, Date.now() - start);
 
             if (components.length === 0) {
                 return textResponse({
                     components: [],
                     reasoning,
-                    message: `No components matched for use case: '${useCase}'. Try search_components with a more specific keyword.`,
+                    message: `No components matched for use case: '${useCase}'.`,
+                    next_action: "suggest_issue",
+                    next_action_message: `💡 '${useCase}' does not match any existing Vlossom component. Would you like to file an enhancement issue?`,
                 }, meta);
             }
 
@@ -188,6 +184,8 @@ export function registerSuggestComponents(server: McpServer): void {
                 components,
                 reasoning,
                 total: components.length,
+                next_action: "get_component",
+                next_action_message: "Call get_component for each result to check props/StyleSet, then generate_component_code.",
             }, meta);
         }
     );

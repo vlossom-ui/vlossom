@@ -51,7 +51,11 @@ export function registerGetComponentSource(server: McpServer): void {
 
             if (!entry) {
                 return textResponse(
-                    { error: `Component '${name}' not found. Use list_components to see available components.` },
+                    {
+                        error: `Component '${name}' not found. Use list_components to see available components.`,
+                        next_action: "list_components",
+                        next_action_message: "Component not found. Call list_components to verify the exact name.",
+                    },
                     meta,
                 );
             }

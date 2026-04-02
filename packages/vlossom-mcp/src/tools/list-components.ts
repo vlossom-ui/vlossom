@@ -12,7 +12,11 @@ export function registerListComponents(server: McpServer): void {
             const start = Date.now();
             const result = getComponents();
             const meta = recordStep("list_components", "List all components", Date.now() - start);
-            return textResponse(result, meta);
+            return textResponse({
+                result,
+                next_action: "get_component",
+                next_action_message: "Pick a component from the list and call get_component for full details.",
+            }, meta);
         }
     );
 }

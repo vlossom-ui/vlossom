@@ -50,6 +50,10 @@ export function registerGetDirective(server: McpServer): void {
                     {
                         directives: all.map((d) => ({ name: d.name, description: d.description })),
                         count: all.length,
+                        next_action: "get_directive",
+                        next_action_message:
+                            "Call get_directive with a name to get full details. " +
+                            "Some directives also have composable equivalents — call get_composables to explore programmatic alternatives.",
                     },
                     meta,
                 );
@@ -65,12 +69,23 @@ export function registerGetDirective(server: McpServer): void {
                     {
                         error: `Directive '${name}' not found.`,
                         available: all.map((d) => d.name),
+                        next_action: "suggest_issue",
+                        next_action_message: `Directive '${name}' does not exist in Vlossom. Would you like to file an enhancement issue?`,
                     },
                     meta,
                 );
             }
 
-            return textResponse(entry, meta);
+            return textResponse(
+                {
+                    ...entry,
+                    next_action: "get_composables",
+                    next_action_message:
+                        "This directive may also be available as a composable for programmatic usage. " +
+                        "Call get_composables to check.",
+                },
+                meta,
+            );
         },
     );
 }

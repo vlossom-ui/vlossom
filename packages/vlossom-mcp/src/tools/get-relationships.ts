@@ -19,6 +19,8 @@ export function registerGetComponentRelationships(server: McpServer): void {
             if (!meta) {
                 return textResponse({
                     error: `Component '${name}' not found.`,
+                    next_action: "list_components",
+                    next_action_message: "Component not found. Call list_components to verify the exact name.",
                 }, stepMeta);
             }
 
@@ -27,6 +29,8 @@ export function registerGetComponentRelationships(server: McpServer): void {
             return textResponse({
                 component: meta.name,
                 ...relationships,
+                next_action: "get_component",
+                next_action_message: "Call get_component for each related component to understand the full composition structure.",
             }, stepMeta);
         }
     );

@@ -72,6 +72,10 @@ export function registerGetComposables(server: McpServer): void {
                             isPublic: c.isPublic,
                         })),
                         count: filtered.length,
+                        next_action: "get_composables",
+                        next_action_message:
+                            "Call get_composables with a name to get full details. " +
+                            "Some composables also have directive equivalents — call get_directive to explore declarative alternatives.",
                     },
                     meta,
                 );
@@ -98,12 +102,23 @@ export function registerGetComposables(server: McpServer): void {
                     {
                         error: `Composable '${name}' not found.`,
                         available: all.map((c) => c.name),
+                        next_action: "suggest_issue",
+                        next_action_message: `Composable '${name}' does not exist in Vlossom. Would you like to file an enhancement issue?`,
                     },
                     meta,
                 );
             }
 
-            return textResponse(entry, meta);
+            return textResponse(
+                {
+                    ...entry,
+                    next_action: "get_directive",
+                    next_action_message:
+                        "This composable may also be available as a directive for declarative template usage. " +
+                        "Call get_directive to check.",
+                },
+                meta,
+            );
         },
     );
 }

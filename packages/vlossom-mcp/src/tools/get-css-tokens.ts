@@ -58,7 +58,14 @@ export function registerGetCssTokens(server: McpServer): void {
             const label = search ? `Tokens: ${search}` : category === "all" ? "All tokens" : `Tokens: ${category}`;
             const meta = recordStep("get_css_tokens", label, Date.now() - start);
 
-            return textResponse({ tokens, count: tokens.length }, meta);
+            return textResponse({
+                tokens,
+                count: tokens.length,
+                next_action: "get_vlossom_options",
+                next_action_message:
+                    "Call get_vlossom_options to configure these tokens globally via createVlossom(), " +
+                    "or call get_component to apply them in a specific component's styleSet.",
+            }, meta);
         },
     );
 }

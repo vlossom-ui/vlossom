@@ -30,7 +30,11 @@ export function registerDraftIssue(server: McpServer): void {
             const start = Date.now();
             const draft = buildDraft(summary, type, language);
             const meta = recordStep("draft_issue", `Draft ${type} issue`, Date.now() - start);
-            return textResponse(draft, meta);
+            return textResponse({
+                ...draft,
+                next_action: "report_issue",
+                next_action_message: "📝 Draft is ready. Go through each required section with the user one by one, then call report_issue once all sections are confirmed.",
+            }, meta);
         }
     );
 }

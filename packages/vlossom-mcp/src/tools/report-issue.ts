@@ -49,6 +49,8 @@ export function registerReportIssue(server: McpServer): void {
                     error:
                         "VLOSSOM_GITHUB_TOKEN is not configured. " +
                         "Set the environment variable with a GitHub PAT that has issues:write scope.",
+                    next_action: "set_github_token",
+                    next_action_message: "GitHub token is not configured. Please set a token first, then retry report_issue.",
                 }, meta);
             }
             const body = buildBody(type, language, sectionContents);

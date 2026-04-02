@@ -35,12 +35,19 @@ export function registerSearchComponents(server: McpServer): void {
                 return textResponse({
                     results: [],
                     message: `No components found for query '${query}'`,
+                    next_action: "clarify_intent",
+                    next_action_message:
+                        "No components matched. Before filing an issue, call clarify_intent to check if the query " +
+                        "can be rephrased — the user may be describing an existing component in different words. " +
+                        "Only proceed to suggest_issue if clarification confirms the feature genuinely does not exist.",
                 }, meta);
             }
 
             return textResponse({
                 results,
                 total: results.length,
+                next_action: "get_component",
+                next_action_message: "Call get_component for each result to get full props/StyleSet details.",
             }, meta);
         }
     );

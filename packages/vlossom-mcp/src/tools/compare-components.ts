@@ -122,6 +122,8 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${a}' not found. Use list_components to see available components.`,
+                    next_action: "list_components",
+                    next_action_message: "Component not found. Call list_components to verify the exact name.",
                 }, meta);
             }
 
@@ -130,6 +132,8 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${b}' not found. Use list_components to see available components.`,
+                    next_action: "list_components",
+                    next_action_message: "Component not found. Call list_components to verify the exact name.",
                 }, meta);
             }
 
