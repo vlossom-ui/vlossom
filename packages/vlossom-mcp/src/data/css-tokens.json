@@ -1,0 +1,1279 @@
+[
+  {
+    "name": "--vs-amber-100",
+    "defaultValue": "oklch(92.7% 0.055 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-200",
+    "defaultValue": "oklch(88.8% 0.079 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-300",
+    "defaultValue": "oklch(84.8% 0.104 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-400",
+    "defaultValue": "oklch(80.8% 0.129 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-50",
+    "defaultValue": "oklch(96.7% 0.03 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-500",
+    "defaultValue": "oklch(76.9% 0.153 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-600",
+    "defaultValue": "oklch(72.9% 0.178 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-700",
+    "defaultValue": "oklch(59.3% 0.146 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-800",
+    "defaultValue": "oklch(45.8% 0.115 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-900",
+    "defaultValue": "oklch(32.2% 0.083 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-amber-950",
+    "defaultValue": "oklch(18.6% 0.052 84)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-app-bg",
+    "defaultValue": "var(--vs-no-color)",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-bar-z-index",
+    "defaultValue": "1000",
+    "category": "z-index"
+  },
+  {
+    "name": "--vs-black",
+    "defaultValue": "var(--color-black)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-blue-100",
+    "defaultValue": "oklch(87.6% 0.046 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-200",
+    "defaultValue": "oklch(81% 0.067 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-300",
+    "defaultValue": "oklch(74.3% 0.087 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-400",
+    "defaultValue": "oklch(67.7% 0.108 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-50",
+    "defaultValue": "oklch(94.2% 0.025 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-500",
+    "defaultValue": "oklch(61.1% 0.129 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-600",
+    "defaultValue": "oklch(54.5% 0.15 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-700",
+    "defaultValue": "oklch(44.2% 0.123 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-800",
+    "defaultValue": "oklch(34% 0.097 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-900",
+    "defaultValue": "oklch(23.8% 0.07 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-blue-950",
+    "defaultValue": "oklch(13.6% 0.044 262)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-100",
+    "defaultValue": "oklch(86.2% 0.023 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-200",
+    "defaultValue": "oklch(78.9% 0.034 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-300",
+    "defaultValue": "oklch(71.5% 0.044 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-400",
+    "defaultValue": "oklch(64.1% 0.055 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-50",
+    "defaultValue": "oklch(93.6% 0.012 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-500",
+    "defaultValue": "oklch(56.7% 0.066 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-600",
+    "defaultValue": "oklch(49.4% 0.077 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-700",
+    "defaultValue": "oklch(40.1% 0.063 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-800",
+    "defaultValue": "oklch(30.8% 0.05 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-900",
+    "defaultValue": "oklch(21.5% 0.036 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-brown-950",
+    "defaultValue": "oklch(12.2% 0.023 35)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-comp-height-lg",
+    "defaultValue": "2.2rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-comp-height-md",
+    "defaultValue": "2rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-comp-height-sm",
+    "defaultValue": "1.8rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-comp-height-xl",
+    "defaultValue": "2.5rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-comp-height-xs",
+    "defaultValue": "1.5rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-area",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-area-colored",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-colored",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-comp",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-comp-colored",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-bg-primary",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-font",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-font-colored",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-font-primary",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-line",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cs-shadow-color",
+    "defaultValue": "initial",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-cyan-100",
+    "defaultValue": "oklch(95% 0.025 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-200",
+    "defaultValue": "oklch(92.2% 0.036 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-300",
+    "defaultValue": "oklch(89.4% 0.047 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-400",
+    "defaultValue": "oklch(86.6% 0.058 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-50",
+    "defaultValue": "oklch(97.8% 0.014 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-500",
+    "defaultValue": "oklch(83.8% 0.069 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-600",
+    "defaultValue": "oklch(81% 0.08 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-700",
+    "defaultValue": "oklch(65.9% 0.066 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-800",
+    "defaultValue": "oklch(50.9% 0.052 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-900",
+    "defaultValue": "oklch(35.8% 0.037 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-cyan-950",
+    "defaultValue": "oklch(20.8% 0.023 194.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-emerald-100",
+    "defaultValue": "oklch(91.9% 0.041 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-200",
+    "defaultValue": "oklch(87.5% 0.059 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-300",
+    "defaultValue": "oklch(83.2% 0.078 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-400",
+    "defaultValue": "oklch(78.8% 0.097 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-50",
+    "defaultValue": "oklch(96.3% 0.022 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-500",
+    "defaultValue": "oklch(74.4% 0.115 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-600",
+    "defaultValue": "oklch(70% 0.134 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-700",
+    "defaultValue": "oklch(57% 0.11 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-800",
+    "defaultValue": "oklch(43.9% 0.086 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-900",
+    "defaultValue": "oklch(30.9% 0.062 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-emerald-950",
+    "defaultValue": "oklch(17.8% 0.039 151.5)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-font-size-lg",
+    "defaultValue": "1.2rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-size-md",
+    "defaultValue": "1rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-size-sm",
+    "defaultValue": "0.8rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-size-xl",
+    "defaultValue": "1.5rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-size-xs",
+    "defaultValue": "0.6rem",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-weight",
+    "defaultValue": "400",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-weight-bold",
+    "defaultValue": "600",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-font-weight-light",
+    "defaultValue": "200",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-fuchsia-100",
+    "defaultValue": "oklch(90% 0.064 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-200",
+    "defaultValue": "oklch(84.5% 0.093 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-300",
+    "defaultValue": "oklch(79.1% 0.123 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-400",
+    "defaultValue": "oklch(73.7% 0.152 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-50",
+    "defaultValue": "oklch(95.4% 0.035 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-500",
+    "defaultValue": "oklch(68.2% 0.181 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-600",
+    "defaultValue": "oklch(62.8% 0.21 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-700",
+    "defaultValue": "oklch(51.1% 0.173 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-800",
+    "defaultValue": "oklch(39.3% 0.135 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-900",
+    "defaultValue": "oklch(27.6% 0.098 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-fuchsia-950",
+    "defaultValue": "oklch(15.9% 0.061 335)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-gray-100",
+    "defaultValue": "oklch(90.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-200",
+    "defaultValue": "oklch(83% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-300",
+    "defaultValue": "oklch(75.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-400",
+    "defaultValue": "oklch(68% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-50",
+    "defaultValue": "oklch(98% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-500",
+    "defaultValue": "oklch(60.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-600",
+    "defaultValue": "oklch(53% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-700",
+    "defaultValue": "oklch(43.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-800",
+    "defaultValue": "oklch(34.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-900",
+    "defaultValue": "oklch(25.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-gray-950",
+    "defaultValue": "oklch(16.5% 0 0)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-100",
+    "defaultValue": "oklch(89.2% 0.042 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-200",
+    "defaultValue": "oklch(83.4% 0.061 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-300",
+    "defaultValue": "oklch(77.6% 0.081 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-400",
+    "defaultValue": "oklch(71.8% 0.1 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-50",
+    "defaultValue": "oklch(95% 0.023 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-500",
+    "defaultValue": "oklch(66% 0.119 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-600",
+    "defaultValue": "oklch(60.3% 0.139 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-700",
+    "defaultValue": "oklch(49% 0.114 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-800",
+    "defaultValue": "oklch(37.7% 0.089 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-900",
+    "defaultValue": "oklch(26.5% 0.065 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-green-950",
+    "defaultValue": "oklch(15.2% 0.04 152.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-100",
+    "defaultValue": "oklch(90% 0.048 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-200",
+    "defaultValue": "oklch(84.5% 0.071 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-300",
+    "defaultValue": "oklch(79.1% 0.093 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-400",
+    "defaultValue": "oklch(73.7% 0.116 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-50",
+    "defaultValue": "oklch(95.4% 0.026 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-500",
+    "defaultValue": "oklch(68.2% 0.138 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-600",
+    "defaultValue": "oklch(62.8% 0.161 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-700",
+    "defaultValue": "oklch(51.1% 0.132 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-800",
+    "defaultValue": "oklch(39.3% 0.103 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-900",
+    "defaultValue": "oklch(27.6% 0.075 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-indigo-950",
+    "defaultValue": "oklch(15.9% 0.046 275)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-100",
+    "defaultValue": "oklch(93.6% 0.053 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-200",
+    "defaultValue": "oklch(90% 0.078 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-300",
+    "defaultValue": "oklch(86.5% 0.102 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-400",
+    "defaultValue": "oklch(82.9% 0.127 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-50",
+    "defaultValue": "oklch(97.1% 0.029 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-500",
+    "defaultValue": "oklch(79.4% 0.151 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-600",
+    "defaultValue": "oklch(75.8% 0.176 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-700",
+    "defaultValue": "oklch(61.7% 0.144 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-800",
+    "defaultValue": "oklch(47.6% 0.113 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-900",
+    "defaultValue": "oklch(33.5% 0.082 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-lime-950",
+    "defaultValue": "oklch(19.4% 0.051 126)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-line-height",
+    "defaultValue": "1.6",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-modal-z-index",
+    "defaultValue": "5000",
+    "category": "z-index"
+  },
+  {
+    "name": "--vs-no-color",
+    "defaultValue": "var(--vs-white)",
+    "darkValue": "var(--vs-black)",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-no-color-inverse",
+    "defaultValue": "var(--vs-black)",
+    "darkValue": "var(--vs-white)",
+    "category": "color-scheme"
+  },
+  {
+    "name": "--vs-orange-100",
+    "defaultValue": "oklch(91.2% 0.046 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-200",
+    "defaultValue": "oklch(86.4% 0.067 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-300",
+    "defaultValue": "oklch(81.6% 0.088 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-400",
+    "defaultValue": "oklch(76.8% 0.109 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-50",
+    "defaultValue": "oklch(96% 0.025 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-500",
+    "defaultValue": "oklch(72% 0.13 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-600",
+    "defaultValue": "oklch(67.2% 0.152 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-700",
+    "defaultValue": "oklch(54.7% 0.125 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-800",
+    "defaultValue": "oklch(42.1% 0.098 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-900",
+    "defaultValue": "oklch(29.6% 0.071 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-orange-950",
+    "defaultValue": "oklch(17.1% 0.044 53.5)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-padding-lg",
+    "defaultValue": "1rem",
+    "category": "spacing"
+  },
+  {
+    "name": "--vs-padding-md",
+    "defaultValue": "0.8rem",
+    "category": "spacing"
+  },
+  {
+    "name": "--vs-padding-sm",
+    "defaultValue": "0.6rem",
+    "category": "spacing"
+  },
+  {
+    "name": "--vs-padding-xl",
+    "defaultValue": "1.2rem",
+    "category": "spacing"
+  },
+  {
+    "name": "--vs-padding-xs",
+    "defaultValue": "0.4rem",
+    "category": "spacing"
+  },
+  {
+    "name": "--vs-pink-100",
+    "defaultValue": "oklch(90.2% 0.059 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-200",
+    "defaultValue": "oklch(84.9% 0.087 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-300",
+    "defaultValue": "oklch(79.7% 0.114 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-400",
+    "defaultValue": "oklch(74.5% 0.142 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-50",
+    "defaultValue": "oklch(95.4% 0.032 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-500",
+    "defaultValue": "oklch(69.2% 0.169 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-600",
+    "defaultValue": "oklch(64% 0.197 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-700",
+    "defaultValue": "oklch(52.1% 0.162 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-800",
+    "defaultValue": "oklch(40.1% 0.127 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-900",
+    "defaultValue": "oklch(28.2% 0.092 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-pink-950",
+    "defaultValue": "oklch(16.2% 0.057 1.8)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-100",
+    "defaultValue": "oklch(90% 0.055 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-200",
+    "defaultValue": "oklch(84.5% 0.08 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-300",
+    "defaultValue": "oklch(79.1% 0.105 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-400",
+    "defaultValue": "oklch(73.7% 0.13 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-50",
+    "defaultValue": "oklch(95.4% 0.03 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-500",
+    "defaultValue": "oklch(68.2% 0.155 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-600",
+    "defaultValue": "oklch(62.8% 0.18 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-700",
+    "defaultValue": "oklch(51.1% 0.148 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-800",
+    "defaultValue": "oklch(39.3% 0.116 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-900",
+    "defaultValue": "oklch(27.6% 0.084 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-purple-950",
+    "defaultValue": "oklch(15.9% 0.052 315)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-radius-lg",
+    "defaultValue": "0.5rem",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-radius-md",
+    "defaultValue": "0.4rem",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-radius-ratio",
+    "defaultValue": "1",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-radius-sm",
+    "defaultValue": "0.3rem",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-radius-xl",
+    "defaultValue": "0.6rem",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-radius-xs",
+    "defaultValue": "0.2rem",
+    "category": "radius"
+  },
+  {
+    "name": "--vs-red-100",
+    "defaultValue": "oklch(88.8% 0.055 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-200",
+    "defaultValue": "oklch(82.8% 0.079 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-300",
+    "defaultValue": "oklch(76.7% 0.104 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-400",
+    "defaultValue": "oklch(70.6% 0.128 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-50",
+    "defaultValue": "oklch(94.9% 0.03 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-500",
+    "defaultValue": "oklch(64.5% 0.153 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-600",
+    "defaultValue": "oklch(58.5% 0.177 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-700",
+    "defaultValue": "oklch(47.5% 0.146 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-800",
+    "defaultValue": "oklch(36.6% 0.114 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-900",
+    "defaultValue": "oklch(25.6% 0.083 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-red-950",
+    "defaultValue": "oklch(14.7% 0.051 27)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-rose-100",
+    "defaultValue": "oklch(91.3% 0.057 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-200",
+    "defaultValue": "oklch(86.6% 0.083 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-300",
+    "defaultValue": "oklch(82% 0.109 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-400",
+    "defaultValue": "oklch(77.3% 0.135 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-50",
+    "defaultValue": "oklch(96% 0.031 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-500",
+    "defaultValue": "oklch(72.6% 0.161 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-600",
+    "defaultValue": "oklch(67.9% 0.187 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-700",
+    "defaultValue": "oklch(55.3% 0.153 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-800",
+    "defaultValue": "oklch(42.6% 0.12 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-900",
+    "defaultValue": "oklch(30% 0.087 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-rose-950",
+    "defaultValue": "oklch(17.3% 0.054 10)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-100",
+    "defaultValue": "oklch(90% 0.042 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-200",
+    "defaultValue": "oklch(84.5% 0.062 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-300",
+    "defaultValue": "oklch(79.1% 0.081 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-400",
+    "defaultValue": "oklch(73.7% 0.101 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-50",
+    "defaultValue": "oklch(95.4% 0.023 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-500",
+    "defaultValue": "oklch(68.2% 0.12 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-600",
+    "defaultValue": "oklch(62.8% 0.14 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-700",
+    "defaultValue": "oklch(51.1% 0.115 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-800",
+    "defaultValue": "oklch(39.3% 0.09 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-900",
+    "defaultValue": "oklch(27.6% 0.065 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-sky-950",
+    "defaultValue": "oklch(15.9% 0.041 230)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-teal-100",
+    "defaultValue": "oklch(89% 0.033 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-200",
+    "defaultValue": "oklch(83.1% 0.049 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-300",
+    "defaultValue": "oklch(77.2% 0.064 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-400",
+    "defaultValue": "oklch(71.3% 0.08 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-50",
+    "defaultValue": "oklch(94.9% 0.018 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-500",
+    "defaultValue": "oklch(65.4% 0.095 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-600",
+    "defaultValue": "oklch(59.5% 0.111 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-700",
+    "defaultValue": "oklch(48.2% 0.091 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-800",
+    "defaultValue": "oklch(37% 0.072 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-900",
+    "defaultValue": "oklch(25.7% 0.052 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-teal-950",
+    "defaultValue": "oklch(15% 0.033 185)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-toast-z-index",
+    "defaultValue": "99999",
+    "category": "z-index"
+  },
+  {
+    "name": "--vs-violet-100",
+    "defaultValue": "oklch(90% 0.052 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-200",
+    "defaultValue": "oklch(84.5% 0.076 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-300",
+    "defaultValue": "oklch(79.1% 0.099 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-400",
+    "defaultValue": "oklch(73.7% 0.123 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-50",
+    "defaultValue": "oklch(95.4% 0.028 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-500",
+    "defaultValue": "oklch(68.2% 0.147 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-600",
+    "defaultValue": "oklch(62.8% 0.171 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-700",
+    "defaultValue": "oklch(51.1% 0.14 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-800",
+    "defaultValue": "oklch(39.3% 0.11 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-900",
+    "defaultValue": "oklch(27.6% 0.079 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-violet-950",
+    "defaultValue": "oklch(15.9% 0.049 295)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-white",
+    "defaultValue": "var(--color-white)",
+    "category": "misc"
+  },
+  {
+    "name": "--vs-white-space",
+    "defaultValue": "normal",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-100",
+    "defaultValue": "oklch(94.4% 0.051 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-200",
+    "defaultValue": "oklch(91.3% 0.074 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-300",
+    "defaultValue": "oklch(88.2% 0.097 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-400",
+    "defaultValue": "oklch(85.1% 0.12 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-50",
+    "defaultValue": "oklch(97.5% 0.028 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-500",
+    "defaultValue": "oklch(82% 0.143 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-600",
+    "defaultValue": "oklch(78.9% 0.166 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-700",
+    "defaultValue": "oklch(64.2% 0.136 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-800",
+    "defaultValue": "oklch(49.6% 0.107 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-900",
+    "defaultValue": "oklch(34.9% 0.077 97)",
+    "category": "palette"
+  },
+  {
+    "name": "--vs-yellow-950",
+    "defaultValue": "oklch(20.3% 0.048 97)",
+    "category": "palette"
+  }
+]

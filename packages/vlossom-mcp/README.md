@@ -55,9 +55,10 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 | Tool             | Description                                                                                |
 | ---------------- | ------------------------------------------------------------------------------------------ |
-| `get_css_tokens` | Returns all `--vs-*` CSS variables with default values and light/dark variants _(planned)_ |
-| `get_plugin`         | Returns API docs for Vlossom plugins (`$vsModal`, `$vsAlert`, `$vsConfirm`, etc.) _(planned)_ |
-| `get_vlossom_options` | Returns available `createVlossom()` global configuration options _(planned)_                  |
+| `get_css_tokens`      | Returns all `--vs-*` CSS variables with default and dark-mode values, filterable by category |
+| `get_vlossom_options` | Returns available `createVlossom()` options and imperative plugin APIs (`$vsModal`, etc.)     |
+| `get_changelog`       | Fetches Vlossom version history from npm registry; shows breaking changes and features        |
+| `check_vlossom_setup` | Checks whether an installed version is up-to-date and returns a setup checklist              |
 
 ### Code Generation
 
@@ -117,8 +118,8 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 | ✅ 0.4.0 | `suggest_components`, `get_component_relationships`, `compare_components`      |
 | ✅ 0.5.0 | Stepper UX (`_meta`), session isolation, stepper format improvements           |
 | ✅ 0.6.0 | `clarify_intent` disambiguation gate (Phase 4-3)                               |
-| ✅ 0.7.0 | `get_component_source`, `get_directive`, `get_composables`                     |
-| 0.8.0    | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup` |
+| ✅ 0.7.0 | `get_component_source`, `get_directive`, `get_composables`                               |
+| ✅ 0.8.0 | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup`           |
 | 0.8.0    | `generate_component_code` (StyleSet-first), `generate_style_set`, `adapt_type_to_component` |
 | 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                       |
 
