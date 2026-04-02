@@ -18,11 +18,6 @@ export interface McpResponseMeta {
     toolsUsed: string[];
     /** Total elapsed time across all steps in the session (ms). */
     totalDurationMs: number;
-    /**
-     * When true, the result set is ambiguous enough that Claude should call
-     * clarify_intent before proceeding with further tool calls.
-     */
-    clarify?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -61,14 +56,11 @@ export function resetSession(): void {
 /**
  * Record a completed tool call and return accumulated session metadata.
  * Call this at the END of each tool handler, after execution finishes.
- *
- * @param clarify  When true, signals Claude to call clarify_intent before continuing.
  */
 export function recordStep(
     tool: string,
     label: string,
     durationMs: number,
-    clarify?: boolean,
 ): McpResponseMeta {
     const steps = getSession();
     steps.push({ step: steps.length + 1, label, tool, durationMs });
@@ -88,7 +80,6 @@ export function recordStep(
         steps: [...steps],
         toolsUsed,
         totalDurationMs,
-        ...(clarify && { clarify: true }),
     };
 }
 
