@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, existsSync } from "fs";
 import { join } from "path";
 import { resolveComponentsPath } from "../utils/path-resolver.js";
+import { BUNDLED_COMPONENTS } from "../data/components-data.js";
 
 export interface ComponentInfo {
     name: string;
@@ -15,10 +16,8 @@ export function getComponents(): ComponentInfo[] {
 
     const componentsPath = resolveComponentsPath();
     if (!componentsPath) {
-        process.stderr.write(
-            "Warning: Components directory not found. Set VLOSSOM_COMPONENTS_PATH environment variable.\n"
-        );
-        return [];
+        cache = BUNDLED_COMPONENTS;
+        return cache;
     }
 
     cache = readdirSync(componentsPath, { withFileTypes: true })
