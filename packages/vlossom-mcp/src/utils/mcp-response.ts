@@ -94,7 +94,17 @@ export function textResponse(data: unknown, meta?: McpResponseMeta) {
             : { result: data };
 
     if (meta) {
-        payload._meta = meta;
+        const metaWithRender: Record<string, unknown> = { ...meta };
+        if (meta.steps.length >= 2) {
+            metaWithRender._render =
+                "After your response, render a stepper exactly like this:\n\n" +
+                "vlossom-mcp ─────────────────────────────────────────────\n" +
+                "✔   N.  [tool — 22 chars left-aligned]   [label — 24 chars left-aligned]\n" +
+                "─────────────────────────────────────────────────────────\n" +
+                "[toolsUsed joined by ' · ']\n\n" +
+                "Rules: truncate tool/label at column width with …  ·  no per-step timing  ·  render AFTER main response, never before.";
+        }
+        payload._meta = metaWithRender;
     }
 
     return {
