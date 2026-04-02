@@ -6,6 +6,9 @@ import { registerSearchComponents } from "./tools/search-components.js";
 import { registerSuggestComponents } from "./tools/suggest-components.js";
 import { registerGetComponentRelationships } from "./tools/get-relationships.js";
 import { registerCompareComponents } from "./tools/compare-components.js";
+import { registerGetComponentSource } from "./tools/get-component-source.js";
+import { registerGetDirective } from "./tools/get-directive.js";
+import { registerGetComposables } from "./tools/get-composables.js";
 import { registerCheckGitHubToken } from "./tools/check-github-token.js";
 import { registerSetGitHubToken } from "./tools/set-github-token.js";
 import { registerClarifyIntent } from "./tools/clarify-intent.js";
@@ -98,6 +101,9 @@ export function createServer(): McpServer {
 
     registerClarifyIntent(server);
     registerListComponents(server);
+    registerGetComponentSource(server);
+    registerGetDirective(server);
+    registerGetComposables(server);
     registerGetComponent(server);
     registerSearchComponents(server);
     registerSuggestComponents(server);

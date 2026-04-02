@@ -1,0 +1,539 @@
+[
+  {
+    "name": "useClickOutside",
+    "dirName": "click-outside",
+    "description": "Registers a global click listener that fires a callback whenever a click occurs outside of the specified excluded elements.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "excludedSelectors",
+        "type": "string[]",
+        "default": "—",
+        "required": true,
+        "description": "Array of CSS selector strings. Clicks on elements matching any selector (or their ancestors) are ignored."
+      },
+      {
+        "name": "callback",
+        "type": "() => void",
+        "default": "—",
+        "required": true,
+        "description": "Function called when a click occurs outside all excluded elements."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <div ref=\"dropdownRef\" class=\"dropdown\">\n        <button @click=\"open\">Open</button>\n        <ul v-if=\"isOpen\">\n            <li>Item 1</li>\n        </ul>\n    </div>\n</template>\n\n<script setup>\nimport { ref, onMounted, onBeforeUnmount } from 'vue';\nimport { useClickOutside } from '@/composables';\n\nconst isOpen = ref(false);\n\nfunction open() {\n    isOpen.value = true;\n}\n\nconst { addClickOutsideListener, removeClickOutsideListener } = useClickOutside(['.dropdown'], () => {\n    isOpen.value = false;\n});\n\nonMounted(addClickOutsideListener);\nonBeforeUnmount(removeClickOutsideListener);\n</script>"
+  },
+  {
+    "name": "useColorScheme",
+    "dirName": "color-scheme",
+    "description": "Resolves the active color scheme for a component by merging the component-level prop, component-specific global configuration, and the global default — in that priority order.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "component",
+        "type": "VsComponent \\",
+        "default": "string",
+        "required": false,
+        "description": "Yes"
+      },
+      {
+        "name": "colorScheme",
+        "type": "Ref<ColorScheme \\",
+        "default": "undefined>",
+        "required": false,
+        "description": "Yes"
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <div :class=\"['vs-button', colorSchemeClass]\">\n        <slot />\n    </div>\n</template>\n\n<script setup>\nimport { toRefs } from 'vue';\nimport { useColorScheme } from '@/composables';\n\nconst props = defineProps({\n    colorScheme: String,\n});\n\nconst { colorScheme } = toRefs(props);\nconst { computedColorScheme, colorSchemeClass } = useColorScheme('VsButton', colorScheme);\n</script>"
+  },
+  {
+    "name": "useFocusable",
+    "dirName": "focusable",
+    "description": "Manages keyboard-accessible focus tracking within a wrapper element by querying `[data-focusable]` elements and updating a focus index with throttled mouse-move support.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "wrapperElement",
+        "type": "TemplateRef<HTMLElement>",
+        "default": "—",
+        "required": true,
+        "description": "Template ref pointing to the container element that holds `[data-focusable]` children."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <ul ref=\"listRef\">\n        <li\n            v-for=\"(item, i) in items\"\n            :key=\"i\"\n            data-focusable\n            @keydown.arrow-down.prevent=\"updateFocusIndex(i + 1)\"\n            @keydown.arrow-up.prevent=\"updateFocusIndex(i - 1)\"\n        >\n            {{ item }}\n        </li>\n    </ul>\n</template>\n\n<script setup>\nimport { ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';\nimport { useFocusable } from '@/composables';\n\nconst listRef = useTemplateRef('listRef');\nconst { focusIndex, updateFocusIndex, addMouseMoveListener, removeMouseMoveListener } = useFocusable(listRef);\n\nonMounted(addMouseMoveListener);\nonBeforeUnmount(removeMouseMoveListener);\n</script>"
+  },
+  {
+    "name": "useInput",
+    "dirName": "input",
+    "description": "Central composable for form input components. Orchestrates validation rules, user-facing messages, form integration, disabled/readonly states, and lifecycle callbacks in a single call.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "ctx",
+        "type": "{ emit: Function }",
+        "default": "—",
+        "required": true,
+        "description": "Component context providing the `emit` function."
+      },
+      {
+        "name": "inputParams",
+        "type": "InputComponentParams<T>",
+        "default": "—",
+        "required": true,
+        "description": "Object describing the input's reactive state and callbacks (see Types)."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <vs-input-wrapper :id=\"computedId\" :messages=\"computedMessages\" :state=\"computedState\">\n        <input\n            :id=\"computedId\"\n            v-model=\"inputValue\"\n            :disabled=\"computedDisabled\"\n            :readonly=\"computedReadonly\"\n            :class=\"{ 'vs-shake': shake }\"\n        />\n    </vs-input-wrapper>\n</template>\n\n<script setup>\nimport { ref, toRefs } from 'vue';\nimport { useInput } from '@/composables';\n\nconst props = defineProps({\n    modelValue: { type: String, default: '' },\n    disabled: Boolean,\n    readonly: Boolean,\n    rules: { type: Array, default: () => [] },\n    messages: { type: Array, default: () => [] },\n    id: { type: String, default: '' },\n    state: { type: String, default: 'idle' },\n});\n\nconst emit = defineEmits(['update:modelValue', 'update:valid', 'update:changed', 'change']);\nconst { modelValue, disabled, readonly, rules, messages, id, state } = toRefs(props);\n\nconst inputValue = ref(props.modelValue);\n\nconst { computedId, computedDisabled, computedReadonly, computedMessages, computedState, validate, clear, shake } =\n    useInput({ emit }, { inputValue, modelValue, disabled, readonly, rules, messages, id, state });\n</script>"
+  },
+  {
+    "name": "useInputForm",
+    "dirName": "input-form",
+    "description": "Connects an individual input component to the nearest parent `VsForm` via Vue's provide/inject mechanism, enabling form-level validation, clearing, and state synchronization.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "id",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive ref holding the input's unique id used to register in the form."
+      },
+      {
+        "name": "valid",
+        "type": "Ref<boolean>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive validity state of the input."
+      },
+      {
+        "name": "changed",
+        "type": "Ref<boolean>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive ref indicating whether the user has changed the value."
+      },
+      {
+        "name": "validate",
+        "type": "() => boolean",
+        "default": "—",
+        "required": true,
+        "description": "Validation function called when the form triggers validation."
+      },
+      {
+        "name": "clear",
+        "type": "() => void",
+        "default": "—",
+        "required": true,
+        "description": "Clear function called when the form triggers a clear."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { ref, computed } from 'vue';\nimport { useInputForm } from '@/composables';\n\n// Typically used internally by useInput\nconst id = computed(() => 'my-input-id');\nconst valid = ref(true);\nconst changed = ref(false);\n\nfunction validate() { return valid.value; }\nfunction clear() { changed.value = false; }\n\nconst { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate, clear);\n</script>"
+  },
+  {
+    "name": "useInputMessages",
+    "dirName": "input-messages",
+    "description": "Evaluates static and function-based messages for an input value and combines them with rule messages into a single reactive list.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "inputValue",
+        "type": "Ref<T>",
+        "default": "—",
+        "required": true,
+        "description": "The current input value passed to function-based messages."
+      },
+      {
+        "name": "messages",
+        "type": "Ref<Message<T>[]>",
+        "default": "—",
+        "required": true,
+        "description": "Array of static `StateMessage` objects or functions returning a `StateMessage`."
+      },
+      {
+        "name": "ruleMessages",
+        "type": "Ref<StateMessage[]>",
+        "default": "—",
+        "required": true,
+        "description": "Array of messages produced by validation rules (from `useInputRules`)."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { ref } from 'vue';\nimport { useInputMessages } from '@/composables';\n\nconst inputValue = ref('');\nconst messages = ref([\n    { state: 'info', text: 'Enter your username.' },\n    (val) => val.length > 10 ? { state: 'warning', text: 'Too long' } : null,\n]);\nconst ruleMessages = ref([]);\n\nconst { computedMessages, showRuleMessages, checkMessages } = useInputMessages(inputValue, messages, ruleMessages);\n</script>"
+  },
+  {
+    "name": "useInputOption",
+    "dirName": "input-option",
+    "description": "Keeps a selection-based input value in sync with its options list. When the options change, any selected value that no longer exists in the new list is cleared automatically.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "inputValue",
+        "type": "Ref<any>",
+        "default": "—",
+        "required": true,
+        "description": "The current selected value (or array of values when `multiple` is true)."
+      },
+      {
+        "name": "options",
+        "type": "Ref<any[]>",
+        "default": "—",
+        "required": true,
+        "description": "The full list of available options."
+      },
+      {
+        "name": "optionLabel",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path to extract the display label from an option object."
+      },
+      {
+        "name": "optionValue",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path to extract the value from an option object."
+      },
+      {
+        "name": "multiple",
+        "type": "Ref<boolean>",
+        "default": "ref(false)",
+        "required": false,
+        "description": "When `true`, `inputValue` is treated as an array and filtered on change."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { ref, toRefs } from 'vue';\nimport { useInputOption } from '@/composables';\n\nconst inputValue = ref(null);\nconst options = ref([{ label: 'Apple', value: 'apple' }, { label: 'Banana', value: 'banana' }]);\nconst optionLabel = ref('label');\nconst optionValue = ref('value');\n\nconst { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);\n</script>"
+  },
+  {
+    "name": "useInputRules",
+    "dirName": "input-rules",
+    "description": "Evaluates an array of synchronous and asynchronous validation rules against the current input value, collecting error messages into a reactive list.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "inputValue",
+        "type": "Ref<T>",
+        "default": "—",
+        "required": true,
+        "description": "The current input value passed to each rule function."
+      },
+      {
+        "name": "rules",
+        "type": "Ref<Rule<T>[]>",
+        "default": "—",
+        "required": true,
+        "description": "User-supplied validation rules."
+      },
+      {
+        "name": "defaultRules",
+        "type": "Ref<Rule<T>[]>",
+        "default": "—",
+        "required": true,
+        "description": "Built-in rules provided by the component (e.g. required, type checks)."
+      },
+      {
+        "name": "noDefaultRules",
+        "type": "Ref<boolean>",
+        "default": "—",
+        "required": true,
+        "description": "When `true`, only `rules` are applied; `defaultRules` are ignored."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { ref } from 'vue';\nimport { useInputRules } from '@/composables';\n\nconst inputValue = ref('');\nconst rules = ref([\n    (val) => val.length >= 3 || 'Minimum 3 characters required',\n    async (val) => {\n        const taken = await checkIfUsernameTaken(val);\n        return taken ? 'Username already taken' : '';\n    },\n]);\nconst defaultRules = ref([]);\nconst noDefaultRules = ref(false);\n\nconst { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);\n</script>"
+  },
+  {
+    "name": "useIndexSelector",
+    "dirName": "list-index-selector",
+    "description": "Manages index-based selection for a list of items with optional per-item or global disabled support, keyboard navigation, and edge detection.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "list",
+        "type": "Ref<any[]>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive array of items to select from."
+      },
+      {
+        "name": "disabled",
+        "type": "Ref<boolean \\",
+        "default": "((item: any, index: number) => boolean) \\",
+        "required": false,
+        "description": "`undefined`"
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <div @keydown=\"(e) => handleKeydown(e, true)\">\n        <div\n            v-for=\"(step, i) in steps\"\n            :key=\"i\"\n            :class=\"{ selected: isSelected(i), disabled: isDisabled(i) }\"\n            @click=\"selectIndex(i)\"\n        >\n            {{ step }}\n        </div>\n    </div>\n</template>\n\n<script setup>\nimport { ref } from 'vue';\nimport { useIndexSelector } from '@/composables';\n\nconst steps = ref(['Step 1', 'Step 2', 'Step 3']);\nconst disabled = ref(false);\n\nconst { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = useIndexSelector(steps, disabled);\n</script>"
+  },
+  {
+    "name": "useOptionLabelValue",
+    "dirName": "option-label-value",
+    "description": "Extracts display labels and underlying values from arbitrary option objects using configurable key paths.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "optionLabel",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path used to extract the display label from an option object."
+      },
+      {
+        "name": "optionValue",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path used to extract the value from an option object."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { ref } from 'vue';\nimport { useOptionLabelValue } from '@/composables';\n\nconst optionLabel = ref('name');\nconst optionValue = ref('id');\n\nconst { getOptionLabel, getOptionValue } = useOptionLabelValue(optionLabel, optionValue);\n\nconst option = { id: 1, name: 'Alice' };\nconsole.log(getOptionLabel(option)); // 'Alice'\nconsole.log(getOptionValue(option)); // 1\n</script>"
+  },
+  {
+    "name": "useOptionList",
+    "dirName": "option-list",
+    "description": "Transforms a raw options array into a normalized, computed list with stable ids, extracted labels/values, and per-item disabled state.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "options",
+        "type": "Ref<any[]>",
+        "default": "—",
+        "required": true,
+        "description": "Raw array of option items."
+      },
+      {
+        "name": "optionLabel",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path for extracting the display label."
+      },
+      {
+        "name": "optionValue",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Key path for extracting the value."
+      },
+      {
+        "name": "disabled",
+        "type": "Ref<boolean \\",
+        "default": "((option: any, index: number, options: any[]) => boolean)>",
+        "required": false,
+        "description": "Yes"
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <ul>\n        <li\n            v-for=\"option in computedOptions\"\n            :key=\"option.id\"\n            :class=\"{ disabled: option.disabled }\"\n        >\n            {{ option.label }}\n        </li>\n    </ul>\n</template>\n\n<script setup>\nimport { ref } from 'vue';\nimport { useOptionList } from '@/composables';\n\nconst options = ref([\n    { label: 'Apple', value: 'apple' },\n    { label: 'Banana', value: 'banana' },\n]);\nconst optionLabel = ref('label');\nconst optionValue = ref('value');\nconst disabled = ref(false);\n\nconst { computedOptions } = useOptionList(options, optionLabel, optionValue, disabled);\n</script>"
+  },
+  {
+    "name": "useOverlayCallback",
+    "dirName": "overlay-callback",
+    "description": "Manages the active/inactive lifecycle of an overlay component and registers its callbacks in the global overlay callback store so other parts of the app can trigger them.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "id",
+        "type": "Ref<string>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive ref for the overlay id. Falls back to an auto-generated id when empty."
+      },
+      {
+        "name": "callbacks",
+        "type": "Ref<OverlayCallbacks>",
+        "default": "ref({})",
+        "required": false,
+        "description": "Object containing optional lifecycle callbacks for the overlay."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <div v-if=\"isActivated || isUnmounting\" class=\"vs-modal\">\n        <!-- modal content -->\n    </div>\n</template>\n\n<script setup>\nimport { ref, toRefs } from 'vue';\nimport { useOverlayCallback } from '@/composables';\n\nconst props = defineProps({ id: { type: String, default: '' } });\nconst { id } = toRefs(props);\n\nconst callbacks = ref({\n    onBeforeOpen: () => console.log('before open'),\n    onOpen: () => console.log('opened'),\n});\n\nconst { overlayId, isActivated, isUnmounting, activate, deactivate } = useOverlayCallback(id, callbacks);\n</script>"
+  },
+  {
+    "name": "useOverlayDom",
+    "dirName": "overlay-dom",
+    "description": "Creates and appends a positioned overlay `<div>` element to a target DOM element, with configurable size, pointer events, and z-index.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [],
+    "returns": "",
+    "example": "<script setup>\nimport { onMounted } from 'vue';\nimport { useOverlayDom } from '@/composables';\n\nconst { appendOverlayDom } = useOverlayDom();\n\nonMounted(() => {\n    const container = document.querySelector('.vs-select');\n    appendOverlayDom(container, '#vs-select-overlay', {\n        zIndex: 6000,\n        pointerEvents: 'auto',\n    });\n});\n</script>"
+  },
+  {
+    "name": "usePositioning",
+    "dirName": "positioning",
+    "description": "Computes and maintains the absolute pixel position of an attachment element relative to a target CSS selector, with automatic viewport-overflow correction, scroll/resize tracking, and ResizeObserver support.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "target",
+        "type": "string",
+        "default": "—",
+        "required": true,
+        "description": "CSS selector string identifying the target element to position against."
+      },
+      {
+        "name": "attachment",
+        "type": "TemplateRef<HTMLElement>",
+        "default": "—",
+        "required": true,
+        "description": "Template ref of the element to be positioned."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <button id=\"trigger\" @click=\"toggleDropdown\">Open</button>\n    <div v-if=\"isVisible\" ref=\"dropdownRef\" class=\"dropdown\">\n        Dropdown content\n    </div>\n</template>\n\n<script setup>\nimport { useTemplateRef } from 'vue';\nimport { usePositioning } from '@/composables';\n\nconst dropdownRef = useTemplateRef('dropdownRef');\nconst { isVisible, appear, disappear } = usePositioning('#trigger', dropdownRef);\n\nfunction toggleDropdown() {\n    isVisible.value ? disappear() : appear({ placement: 'bottom', align: 'start' });\n}\n</script>"
+  },
+  {
+    "name": "useScrollLock",
+    "dirName": "scroll-lock",
+    "description": "Prevents scrolling on a container element (defaults to `body`) by setting `overflow: hidden` and compensating for scrollbar width on non-touch devices.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "container",
+        "type": "string",
+        "default": "'body'",
+        "required": false,
+        "description": "CSS selector for the element to lock scrolling on."
+      }
+    ],
+    "returns": "",
+    "example": "<script setup>\nimport { useScrollLock } from '@/composables';\n\nconst { isLocked, lock, unlock } = useScrollLock('body');\n\nfunction openModal() {\n    lock();\n}\n\nfunction closeModal() {\n    unlock();\n}\n</script>"
+  },
+  {
+    "name": "useStateClass",
+    "dirName": "state-class",
+    "description": "Converts a reactive `UIState` value into the corresponding CSS class objects for component state styling.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "state",
+        "type": "Ref<UIState>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive ref holding the current UI state of the component."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <div :class=\"['vs-input', stateClasses]\">\n        <input v-model=\"value\" />\n    </div>\n    <div :class=\"['vs-input-box', stateBoxClasses]\">\n        <!-- wrapper with state box styling -->\n    </div>\n</template>\n\n<script setup>\nimport { ref } from 'vue';\nimport { useStateClass } from '@/composables';\n\nconst state = ref('error');\nconst { isStated, stateClasses, stateBoxClasses } = useStateClass(state);\n</script>"
+  },
+  {
+    "name": "useStringModifier",
+    "dirName": "string-modifier",
+    "description": "Applies reactive string transformation modifiers (`capitalize`, `lower`, `upper`) to a string value.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "modifiers",
+        "type": "Ref<StringModifiers>",
+        "default": "—",
+        "required": true,
+        "description": "Reactive object with optional boolean modifier flags."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <input v-model=\"inputValue\" @input=\"onInput\" />\n</template>\n\n<script setup>\nimport { ref } from 'vue';\nimport { useStringModifier } from '@/composables';\n\nconst modifiers = ref({ upper: true });\nconst { modifyStringValue } = useStringModifier(modifiers);\n\nconst inputValue = ref('');\nfunction onInput(e) {\n    inputValue.value = modifyStringValue(e.target.value);\n}\n</script>"
+  },
+  {
+    "name": "useStyleSet",
+    "dirName": "style-set",
+    "description": "Resolves, merges, and transforms a component's style-set into both a typed `componentStyleSet` object and a flat `styleSetVariables` CSS custom property map.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "component",
+        "type": "VsComponent \\",
+        "default": "string",
+        "required": false,
+        "description": "Yes"
+      },
+      {
+        "name": "styleSet",
+        "type": "Ref<string \\",
+        "default": "T \\",
+        "required": false,
+        "description": "—"
+      },
+      {
+        "name": "baseStyleSet",
+        "type": "Ref<Partial<T>>",
+        "default": "ref({})",
+        "required": false,
+        "description": "Default style-set applied before the user prop (lowest priority)."
+      },
+      {
+        "name": "additionalStyleSet",
+        "type": "Ref<Partial<T>>",
+        "default": "ref({})",
+        "required": false,
+        "description": "Dynamic overrides derived from other component props (highest priority)."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <button\n        :class=\"['vs-button', colorSchemeClass]\"\n        :style=\"{ ...styleSetVariables, ...componentStyleSet.component }\"\n    >\n        <vs-loading v-if=\"loading\" :style-set=\"componentStyleSet.loading\" />\n        <slot />\n    </button>\n</template>\n\n<script setup>\nimport { ref, toRefs } from 'vue';\nimport { useStyleSet } from '@/composables';\n\nconst props = defineProps({ styleSet: [String, Object] });\nconst { styleSet } = toRefs(props);\n\nconst { componentStyleSet, styleSetVariables } = useStyleSet('VsButton', styleSet);\n</script>"
+  },
+  {
+    "name": "useValueMatcher",
+    "dirName": "value-matcher",
+    "description": "Manages toggle-style value matching for checkbox and switch components, supporting both single-value and multiple-value (array) modes with configurable `trueValue` and `falseValue`.",
+    "availableVersion": "2.0.0+",
+    "isPublic": true,
+    "args": [
+      {
+        "name": "multiple",
+        "type": "Ref<boolean>",
+        "default": "—",
+        "required": true,
+        "description": "When `true`, `inputValue` is treated as an array and `trueValue` is added/removed."
+      },
+      {
+        "name": "inputValue",
+        "type": "Ref<any>",
+        "default": "—",
+        "required": true,
+        "description": "The reactive current value of the input (single value or array)."
+      },
+      {
+        "name": "trueValue",
+        "type": "Ref<any>",
+        "default": "—",
+        "required": true,
+        "description": "The value representing the \"checked\" / \"on\" state."
+      },
+      {
+        "name": "falseValue",
+        "type": "Ref<any>",
+        "default": "—",
+        "required": true,
+        "description": "The value representing the \"unchecked\" / \"off\" state."
+      }
+    ],
+    "returns": "",
+    "example": "<template>\n    <input\n        type=\"checkbox\"\n        :checked=\"isMatched\"\n        @change=\"toggle\"\n    />\n</template>\n\n<script setup>\nimport { ref } from 'vue';\nimport { useValueMatcher } from '@/composables';\n\nconst multiple = ref(false);\nconst inputValue = ref(false);\nconst trueValue = ref(true);\nconst falseValue = ref(false);\n\nconst { isMatched, getUpdatedValue, getClearedValue } = useValueMatcher(multiple, inputValue, trueValue, falseValue);\n\nfunction toggle(e) {\n    inputValue.value = getUpdatedValue(e.target.checked);\n}\n</script>"
+  }
+]

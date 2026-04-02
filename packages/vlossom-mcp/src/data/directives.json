@@ -1,0 +1,17 @@
+[
+  {
+    "name": "v-scroll-shadow",
+    "kebabName": "vs-scroll-shadow",
+    "description": "Automatically adds a scroll shadow indicator to a scrollable element. The shadow visually signals that there is more content to scroll in a given direction.",
+    "availableVersion": "2.0.0+",
+    "options": [
+      {
+        "binding": "`value`",
+        "type": "`boolean \\",
+        "default": "undefined`",
+        "description": "`undefined`"
+      }
+    ],
+    "example": "<template>\n    <div v-scroll-shadow style=\"height: 200px; overflow: auto;\">\n        <!-- scrollable content -->\n    </div>\n</template>"
+  }
+]
