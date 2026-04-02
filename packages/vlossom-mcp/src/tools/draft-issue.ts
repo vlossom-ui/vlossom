@@ -1,60 +1,178 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { textResponse } from "../utils/mcp-response.js";
+import type { IssueDraft, IssueLanguage, IssueType } from "../types/issue.js";
 
 export function registerDraftIssue(server: McpServer): void {
     server.tool(
         "draft_issue",
-        "Generate a structured Markdown template for a GitHub issue. " +
+        "Generate a structured issue template for a GitHub issue. " +
             "ALWAYS call this before report_issue. " +
+            "Detect the language from the user's request and pass it as the language parameter. " +
             "After receiving the template, go through each requiredSection with the user one by one " +
-            "to collect detailed information before submitting.",
+            "to collect detailed information before submitting. " +
+            "Pass the returned sections and type as-is to report_issue to preserve formatting.",
         {
             summary: z.string().describe("Brief one-line summary of the issue"),
             type: z
-                .enum(["bug", "enhancement", "question"])
+                .enum(["bug", "feature", "question"])
                 .default("bug")
                 .describe("Issue type"),
+            language: z
+                .enum(["ko", "en"])
+                .default("ko")
+                .describe(
+                    "Language for section headings. Detect from the user's request language. " +
+                        "Use 'en' if the user writes in English, 'ko' if in Korean."
+                ),
         },
-        ({ summary, type }) => textResponse(buildDraft(summary, type))
+        ({ summary, type, language }) => textResponse(buildDraft(summary, type, language))
     );
 }
 
-function buildDraft(
-    summary: string,
-    type: "bug" | "enhancement" | "question"
-): { suggestedTitle: string; bodyTemplate: string; requiredSections: string[] } {
+function buildDraft(summary: string, type: IssueType, language: IssueLanguage): IssueDraft {
     switch (type) {
-        case "enhancement":
-            return {
-                suggestedTitle: `feat: ${summary}`,
-                bodyTemplate:
-                    `## 요청 기능\n\n${summary}\n\n` +
-                    `## 동기 / 사용 사례\n\n<!-- 이 기능이 왜 필요한지 설명해주세요 -->\n\n` +
-                    `## 제안하는 API / 동작\n\n\`\`\`vue\n<!-- 예상 사용 예시 -->\n\`\`\`\n\n` +
-                    `## 추가 컨텍스트\n\n<!-- 참고 자료, 스크린샷 등 -->`,
-                requiredSections: ["동기 / 사용 사례", "제안하는 API / 동작"],
-            };
+        case "feature":
+            return language === "en"
+                ? {
+                      suggestedTitle: `[feat] ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          { heading: "Overview", placeholder: summary, required: false },
+                          { heading: "Requirements", placeholder: "- ", required: true },
+                          {
+                              heading: "Description",
+                              placeholder: "Provide a detailed description",
+                              required: false,
+                          },
+                          {
+                              heading: "References",
+                              placeholder: "Links, screenshots, etc.",
+                              required: false,
+                          },
+                      ],
+                  }
+                : {
+                      suggestedTitle: `[feat] ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          { heading: "개요", placeholder: summary, required: false },
+                          { heading: "요구사항", placeholder: "- ", required: true },
+                          {
+                              heading: "설명",
+                              placeholder: "상세 설명을 작성해주세요",
+                              required: false,
+                          },
+                          {
+                              heading: "참고",
+                              placeholder: "참고 자료, 스크린샷 등",
+                              required: false,
+                          },
+                      ],
+                  };
+
         case "question":
-            return {
-                suggestedTitle: `question: ${summary}`,
-                bodyTemplate:
-                    `## 질문\n\n${summary}\n\n` +
-                    `## 시도한 것\n\n<!-- 이미 시도해본 것들을 적어주세요 -->\n\n` +
-                    `## 관련 코드\n\n\`\`\`vue\n<!-- 관련 코드 -->\n\`\`\``,
-                requiredSections: ["시도한 것", "관련 코드"],
-            };
+            return language === "en"
+                ? {
+                      suggestedTitle: `question: ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          { heading: "Question", placeholder: summary, required: false },
+                          {
+                              heading: "What I've Tried",
+                              placeholder: "Describe what you have already tried",
+                              required: true,
+                          },
+                          {
+                              heading: "Related Code",
+                              placeholder: "```vue\n<!-- related code -->\n```",
+                              required: true,
+                          },
+                      ],
+                  }
+                : {
+                      suggestedTitle: `question: ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          { heading: "질문", placeholder: summary, required: false },
+                          {
+                              heading: "시도한 것",
+                              placeholder: "이미 시도해본 것들을 적어주세요",
+                              required: true,
+                          },
+                          {
+                              heading: "관련 코드",
+                              placeholder: "```vue\n<!-- 관련 코드 -->\n```",
+                              required: true,
+                          },
+                      ],
+                  };
+
         default:
-            return {
-                suggestedTitle: `fix: ${summary}`,
-                bodyTemplate:
-                    `## 버그 설명\n\n${summary}\n\n` +
-                    `## 재현 방법\n\n1. \n2. \n3. \n\n` +
-                    `## 예상 동작\n\n<!-- 어떻게 동작해야 하나요? -->\n\n` +
-                    `## 실제 동작\n\n<!-- 실제로는 어떻게 동작하나요? -->\n\n` +
-                    `## 코드 예시\n\n\`\`\`vue\n<!-- 재현 코드 -->\n\`\`\`\n\n` +
-                    `## 환경\n\n- Vlossom 버전: \n- Vue 버전: \n- 브라우저: `,
-                requiredSections: ["재현 방법", "예상 동작", "실제 동작", "코드 예시"],
-            };
+            return language === "en"
+                ? {
+                      suggestedTitle: `[bug] ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          {
+                              heading: "Bug Description",
+                              placeholder: summary,
+                              required: false,
+                          },
+                          {
+                              heading: "Steps to Reproduce",
+                              placeholder: "1. \n2. \n3. ",
+                              required: true,
+                          },
+                          {
+                              heading: "Expected Behavior",
+                              placeholder: "What should happen?",
+                              required: true,
+                          },
+                          {
+                              heading: "Screenshots",
+                              placeholder: "Attach screenshots or a video if applicable",
+                              required: false,
+                          },
+                          {
+                              heading: "Environment",
+                              placeholder: "- Device: \n- OS: \n- Browser: ",
+                              required: false,
+                          },
+                      ],
+                  }
+                : {
+                      suggestedTitle: `[bug] ${summary}`,
+                      type,
+                      language,
+                      sections: [
+                          { heading: "버그 내용", placeholder: summary, required: false },
+                          {
+                              heading: "재현 스텝",
+                              placeholder: "1. \n2. \n3. ",
+                              required: true,
+                          },
+                          {
+                              heading: "기대 동작",
+                              placeholder: "어떻게 동작해야 하나요?",
+                              required: true,
+                          },
+                          {
+                              heading: "스크린샷",
+                              placeholder: "스크린샷 또는 동영상을 첨부해주세요",
+                              required: false,
+                          },
+                          {
+                              heading: "개발 환경",
+                              placeholder: "- Device: \n- OS: \n- Browser: ",
+                              required: false,
+                          },
+                      ],
+                  };
     }
 }

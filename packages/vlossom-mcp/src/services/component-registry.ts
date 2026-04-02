@@ -1,7 +1,9 @@
 import { readdirSync, readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { join, resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { resolveComponentsPath } from "../utils/path-resolver.js";
-import { BUNDLED_COMPONENTS } from "../data/components-data.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export interface ComponentInfo {
     name: string;
@@ -11,12 +13,18 @@ export interface ComponentInfo {
 
 let cache: ComponentInfo[] | null = null;
 
+function getBundledComponents(): ComponentInfo[] {
+    const jsonPath = resolve(__dirname, "../data/components-data.json");
+    if (!existsSync(jsonPath)) return [];
+    return JSON.parse(readFileSync(jsonPath, "utf-8")) as ComponentInfo[];
+}
+
 export function getComponents(): ComponentInfo[] {
     if (cache) return cache;
 
     const componentsPath = resolveComponentsPath();
     if (!componentsPath) {
-        cache = BUNDLED_COMPONENTS;
+        cache = getBundledComponents();
         return cache;
     }
 

@@ -1,6 +1,6 @@
 {
     "name": "vlossom-mcp",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "MCP server for Vlossom UI component library",
     "type": "module",
     "bin": {
@@ -12,7 +12,10 @@
         "dev": "tsc --watch",
         "start": "node dist/index.js",
         "generate": "node scripts/generate-components.mjs",
-        "prepublishOnly": "npm run generate && npm run build"
+        "prepublishOnly": "npm run generate && npm run build",
+        "release:patch": "npm version patch && pnpm publish --no-git-checks",
+        "release:minor": "npm version minor && pnpm publish --no-git-checks",
+        "release:major": "npm version major && pnpm publish --no-git-checks"
     },
     "files": [
         "dist"
