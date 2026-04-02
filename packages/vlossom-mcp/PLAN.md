@@ -168,7 +168,8 @@ Implementation status — last updated 2026-04-02 (v0.4.0 + stepper UX):
 | `suggest_components`          | ✅      | ✅ Implemented (v0.4.0) — keyword + heuristic         |
 | `get_component_relationships` | ✅      | ✅ Implemented (v0.4.0) — relationships.json          |
 | `compare_components`          | ✅      | ✅ Implemented (v0.4.0) — diff + recommendation       |
-| Stepper UX (`_meta`)          | ✅      | ✅ Implemented (v0.5.0-pre) — all tools emit `_meta`  |
+| Stepper UX (`_meta`)          | ✅      | ✅ Implemented (v0.5.0) — all tools emit `_meta`      |
+| `clarify_intent`              | 🆕      | ✅ Implemented (v0.6.0) — disambiguation gate         |
 | `get_component_source`        | ✅      | ❌ Not implemented                                    |
 | `get_directive`               | ✅      | ❌ Not implemented                                    |
 | `get_composables`             | ✅      | ❌ Not implemented                                    |
@@ -818,8 +819,10 @@ src/utils/
 [Done] 0.3.0 — build-meta pipeline + get_component + search_components
 [Done] 0.4.0 — suggest_components + get_component_relationships + compare_components
 [Done] 0.4.x — Stepper info (_meta) + Tool Attribution in all tools (Phase 4 early apply)
+[Done] 0.5.x — Session isolation + stepper UX improvements (format, timing removal)
+[Done] 0.6.0 — clarify_intent disambiguation gate (Phase 4-3)
 
-[Next] 0.5.0 — get_component_source + get_directive + get_composables
+[Next] 0.7.0 — get_component_source + get_directive + get_composables
 [Then] 0.6.0 — get_css_tokens + get_vlossom_options + get_changelog + check_vlossom_setup
 [Then] 0.7.0 — generate_component_code + generate_style_set + adapt_type_to_component
 [Long] 1.0.0 — validate_component_usage + semantic search + MCP Prompts
