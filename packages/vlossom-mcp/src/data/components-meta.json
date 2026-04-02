@@ -1,0 +1,5383 @@
+[
+    {
+        "name": "VsAccordion",
+        "kebabName": "vs-accordion",
+        "description": "A collapsible content panel that shows or hides its content through a toggle interaction.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsAccordionStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Width of the component"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables toggle interaction"
+            },
+            {
+                "name": "open",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Initial open state"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color scheme"
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding for open state"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "arrowColor": "string",
+                "arrowSize": "string",
+                "arrowSpacing": "string",
+                "border": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsExpandableStyleSet"
+            ],
+            "raw": "export interface VsAccordionStyleSet {\n    variables?: {\n        arrowColor?: string;\n        arrowSize?: string;\n        arrowSpacing?: string;\n        border?: string;\n    };\n    component?: CSSProperties;\n    title?: CSSProperties;\n    content?: VsExpandableStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when the open state changes"
+            },
+            {
+                "name": "toggle",
+                "payload": "boolean",
+                "description": "Emitted after toggling; payload is the new open state"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main collapsible content"
+            },
+            {
+                "name": "title",
+                "description": "Content rendered inside the title bar"
+            }
+        ],
+        "methods": [
+            {
+                "name": "toggle",
+                "parameters": "—",
+                "description": "Toggles the accordion open/closed state"
+            }
+        ]
+    },
+    {
+        "name": "VsAvatar",
+        "kebabName": "vs-avatar",
+        "description": "A circular or rounded display element for showing user profile images, initials, or icons.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsAvatarStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "objectFit": "CSSProperties['objectFit'] &"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsAvatarStyleSet {\n    variables?: {\n        objectFit?: CSSProperties['objectFit'] & {};\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Avatar content — image, initials, or icon"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsBar",
+        "kebabName": "vs-bar",
+        "description": "A full-width horizontal bar component typically used as a header, footer, or toolbar container.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsBarStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "position",
+                "type": "CssPosition",
+                "default": "",
+                "required": false,
+                "description": "CSS position value (`static`, `relative`, `absolute`, `fixed`, `sticky`)"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color scheme"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'div'",
+                "required": false,
+                "description": "HTML tag to render"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsBarStyleSet {\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Bar content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsBlock",
+        "kebabName": "vs-block",
+        "description": "A content block component with an optional title area and a scrollable content region.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsBlockStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Width of the component"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "default": "",
+                "required": false,
+                "description": "Height of the block"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "border": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsBlockStyleSet {\n    variables?: {\n        border?: string;\n    };\n    component?: CSSProperties;\n    title?: CSSProperties;\n    content?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main content of the block"
+            },
+            {
+                "name": "title",
+                "description": "Content rendered in the title header area"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsButton",
+        "kebabName": "vs-button",
+        "description": "A versatile button component supporting multiple visual variants and a built-in loading state.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsButtonStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "circle",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders the button as a circle"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the button"
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies ghost (transparent background) style"
+            },
+            {
+                "name": "loading",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a loading spinner and disables interaction"
+            },
+            {
+                "name": "outline",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies outlined style"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color scheme"
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Stretches button to fill container width"
+            },
+            {
+                "name": "size",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+                "default": "'md'",
+                "required": false,
+                "description": "Button size"
+            },
+            {
+                "name": "type",
+                "type": "'button' | 'submit' | 'reset'",
+                "default": "'button'",
+                "required": false,
+                "description": "HTML button type attribute"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "padding": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsLoadingStyleSet"
+            ],
+            "raw": "export interface VsButtonStyleSet {\n    variables?: {\n        padding?: string;\n    };\n    component?: CSSProperties;\n    loading?: VsLoadingStyleSet;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Button label content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsCheckbox",
+        "kebabName": "vs-checkbox",
+        "description": "A checkbox form input component supporting single and multiple selection modes, with an optional label and validation.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsCheckboxStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Width of the component"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "beforeChange",
+                "type": "(from, to, optionValue) => Promise<boolean> | null",
+                "default": "null",
+                "required": false,
+                "description": "Async hook called before value change"
+            },
+            {
+                "name": "checked",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Initial checked state"
+            },
+            {
+                "name": "checkLabel",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label displayed next to the checkbox"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the checkbox"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML id attribute"
+            },
+            {
+                "name": "indeterminate",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows indeterminate state"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Field label"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation messages"
+            },
+            {
+                "name": "modelValue",
+                "type": "any",
+                "default": "false",
+                "required": false,
+                "description": "v-model value"
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables multiple selection mode"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML name attribute"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables default validation rules"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides validation messages"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the checkbox read-only"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks field as required"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "UIState",
+                "default": "'idle'",
+                "required": false,
+                "description": "Validation state"
+            },
+            {
+                "name": "trueValue",
+                "type": "any",
+                "default": "true",
+                "required": false,
+                "description": "Value when checked"
+            },
+            {
+                "name": "falseValue",
+                "type": "any",
+                "default": "false",
+                "required": false,
+                "description": "Value when unchecked"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "checkboxCheckedColor": "string",
+                "checkboxColor": "string",
+                "checkboxSize": "string"
+            },
+            "component": false,
+            "childRefs": [
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsCheckboxStyleSet {\n    variables?: {\n        checkboxCheckedColor?: string;\n        checkboxColor?: string;\n        checkboxSize?: string;\n    };\n    checkbox?: CSSProperties;\n    checkboxLabel?: CSSProperties;\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "any",
+                "description": "Emitted when the value changes"
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when changed state updates"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when validation state updates"
+            },
+            {
+                "name": "change",
+                "payload": "any",
+                "description": "Emitted on value change"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted when the checkbox gains focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted when the checkbox loses focus"
+            },
+            {
+                "name": "toggle",
+                "payload": "boolean, MouseEvent",
+                "description": "Emitted after toggling; payload is the new checked state and the mouse event"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "—"
+            },
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "check-label",
+                "description": "Custom content next to the checkbox"
+            },
+            {
+                "name": "messages",
+                "description": "Custom validation message content"
+            }
+        ],
+        "methods": [
+            {
+                "name": "clear",
+                "parameters": "—",
+                "description": "Clears the checkbox value"
+            },
+            {
+                "name": "validate",
+                "parameters": "—",
+                "description": "Triggers validation and returns the result"
+            },
+            {
+                "name": "focus",
+                "parameters": "—",
+                "description": "Focuses the checkbox input element"
+            },
+            {
+                "name": "blur",
+                "parameters": "—",
+                "description": "Blurs the checkbox input element"
+            },
+            {
+                "name": "toggle",
+                "parameters": "—",
+                "description": "Toggles the checked state"
+            }
+        ]
+    },
+    {
+        "name": "VsChip",
+        "kebabName": "vs-chip",
+        "description": "A compact element for displaying tags, labels, or status indicators with optional icon and close button.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsChipStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "closable",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a close button"
+            },
+            {
+                "name": "outline",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies outlined style"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color scheme"
+            },
+            {
+                "name": "size",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+                "default": "'sm'",
+                "required": false,
+                "description": "Chip size"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "height": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsChipStyleSet {\n    variables?: {\n        height?: string;\n    };\n    component?: CSSProperties;\n    icon?: CSSProperties;\n    closeButton?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "close",
+                "payload": "—",
+                "description": "Emitted when the close button is clicked"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Chip label content"
+            },
+            {
+                "name": "icon",
+                "description": "Leading icon displayed before the label"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsContainer",
+        "kebabName": "vs-container",
+        "description": "A layout container component that automatically adjusts its padding when used inside `VsLayout` to accommodate positioned headers, footers, and drawers.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'div'",
+                "required": false,
+                "description": "HTML tag to render"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main content of the container"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsDimmed",
+        "kebabName": "vs-dimmed",
+        "description": "A semi-transparent overlay component that covers its parent container with a fade transition.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsDimmedStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding for visibility"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsDimmedStyleSet {\n    component?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when visibility changes"
+            }
+        ],
+        "slots": [],
+        "methods": [
+            {
+                "name": "show",
+                "parameters": "—",
+                "description": "Shows the dimmed overlay"
+            },
+            {
+                "name": "hide",
+                "parameters": "—",
+                "description": "Hides the dimmed overlay"
+            }
+        ]
+    },
+    {
+        "name": "VsDivider",
+        "kebabName": "vs-divider",
+        "description": "A horizontal or vertical line separator used to visually divide content sections.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "ColorScheme",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsDividerStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set"
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Switches a vertical divider to horizontal at small container widths"
+            },
+            {
+                "name": "vertical",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders a vertical divider instead of horizontal"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "horizontal.width": "string",
+                "horizontal.margin": "string",
+                "vertical.height": "string",
+                "vertical.margin": "string",
+                "border": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsDividerStyleSet {\n    variables?: {\n        border?: string;\n\n        horizontal?: {\n            width?: string;\n            margin?: string;\n        };\n\n        vertical?: {\n            height?: string;\n            margin?: string;\n        };\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsDrawer",
+        "kebabName": "vs-drawer",
+        "description": "A slide-in panel component that overlays content from any edge of the screen with optional dimmed backdrop and focus trapping.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsDrawerStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "callbacks",
+                "type": "OverlayCallbacks",
+                "default": "{}",
+                "required": false,
+                "description": "Callback functions for overlay events"
+            },
+            {
+                "name": "dimClose",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Close the drawer when the dimmed backdrop is clicked"
+            },
+            {
+                "name": "dimmed",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Show a dimmed backdrop behind the drawer"
+            },
+            {
+                "name": "escClose",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Close the drawer when the Escape key is pressed"
+            },
+            {
+                "name": "focusLock",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Trap focus inside the drawer while it is open"
+            },
+            {
+                "name": "hideScroll",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hide the scrollbar inside the drawer"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML id attribute for the drawer"
+            },
+            {
+                "name": "fixed",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Use `position: fixed` instead of `absolute`"
+            },
+            {
+                "name": "open",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Open the drawer on mount"
+            },
+            {
+                "name": "layoutResponsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Adjust layout when used inside `VsLayout`"
+            },
+            {
+                "name": "placement",
+                "type": "'left' | 'right' | 'top' | 'bottom'",
+                "default": "'left'",
+                "required": false,
+                "description": "Edge from which the drawer slides in"
+            },
+            {
+                "name": "size",
+                "type": "string | number",
+                "default": "",
+                "required": false,
+                "description": "Width (left/right) or height (top/bottom) of the drawer panel. Accepts size tokens (`xs`, `sm`, `md`, `lg`, `xl`) or CSS values"
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding to control open state"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "size": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsDimmedStyleSet"
+            ],
+            "raw": "export interface VsDrawerStyleSet {\n    variables?: {\n        size?: string;\n    };\n    component?: CSSProperties;\n    dimmed?: VsDimmedStyleSet;\n    header?: CSSProperties;\n    content?: CSSProperties;\n    footer?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when the open state changes"
+            },
+            {
+                "name": "open",
+                "payload": "-",
+                "description": "Emitted when the drawer opens"
+            },
+            {
+                "name": "close",
+                "payload": "-",
+                "description": "Emitted when the drawer closes"
+            },
+            {
+                "name": "click-dimmed",
+                "payload": "-",
+                "description": "Emitted when the dimmed backdrop is clicked"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main content of the drawer"
+            },
+            {
+                "name": "header",
+                "description": "Header area of the drawer"
+            },
+            {
+                "name": "footer",
+                "description": "Footer area of the drawer"
+            }
+        ],
+        "methods": [
+            {
+                "name": "openDrawer",
+                "parameters": "-",
+                "description": "Programmatically opens the drawer"
+            },
+            {
+                "name": "closeDrawer",
+                "parameters": "-",
+                "description": "Programmatically closes the drawer"
+            }
+        ]
+    },
+    {
+        "name": "VsExpandable",
+        "kebabName": "vs-expandable",
+        "description": "A content container with animated expand and collapse transitions controlled by the `open` prop.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsExpandableStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "open",
+                "type": "boolean",
+                "default": "false",
+                "required": true,
+                "description": "Controls whether the content is expanded"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsExpandableStyleSet {\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The content to be shown or hidden"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsFileDrop",
+        "kebabName": "vs-file-drop",
+        "description": "A file input component that supports both drag-and-drop and click-to-browse file selection with validation, multiple file support, and form integration.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsFileDropStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disable the file drop area"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hide the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML id attribute"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text displayed above the file drop area"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hide the label"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hide the messages area"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Mark the field as required"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "State messages to display"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML name attribute for the input"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disable default validation rules"
+            },
+            {
+                "name": "placeholder",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Placeholder text shown in the drop area"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Make the component read-only"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "'idle' | 'info' | 'success' | 'warning' | 'error'",
+                "default": "'idle'",
+                "required": false,
+                "description": "Current validation state"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Width of the component"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "accept",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Accepted file types (e.g. `image/*`, `.pdf`)"
+            },
+            {
+                "name": "height",
+                "type": "string | number | Breakpoints",
+                "default": "'auto'",
+                "required": false,
+                "description": "Height of the drop area"
+            },
+            {
+                "name": "noClear",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hide the clear button"
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Allow multiple file selection"
+            },
+            {
+                "name": "min",
+                "type": "number | string",
+                "default": "0",
+                "required": false,
+                "description": "Minimum number of files required"
+            },
+            {
+                "name": "max",
+                "type": "number | string",
+                "default": "Number.MAX_SAFE_INTEGER",
+                "required": false,
+                "description": "Maximum number of files allowed"
+            },
+            {
+                "name": "modelValue",
+                "type": "File[]",
+                "default": "[]",
+                "required": false,
+                "description": "v-model binding for selected files"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "dragBackgroundColor": "string",
+                "iconColor": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsChipStyleSet",
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsFileDropStyleSet {\n    variables?: {\n        dragBackgroundColor?: string;\n        iconColor?: string;\n    };\n    component?: CSSProperties;\n    placeholder?: CSSProperties;\n    files?: CSSProperties;\n    closeButton?: CSSProperties;\n    chip?: VsChipStyleSet;\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "File[]",
+                "description": "Emitted when the selected files change"
+            },
+            {
+                "name": "update:changed",
+                "payload": "File[]",
+                "description": "Emitted when files are changed"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the validation state changes"
+            },
+            {
+                "name": "change",
+                "payload": "File[]",
+                "description": "Emitted on file selection change"
+            },
+            {
+                "name": "drop",
+                "payload": "File[]",
+                "description": "Emitted when files are dropped"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted when the file drop area gains focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted when the file drop area loses focus"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Custom content for the drop area. Receives `{ dragging: boolean }` as slot props"
+            },
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "messages",
+                "description": "Custom messages content"
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Set focus to the file input"
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Remove focus from the file input"
+            },
+            {
+                "name": "validate",
+                "parameters": "-",
+                "description": "Trigger validation and return the result"
+            },
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Clear the selected files"
+            }
+        ]
+    },
+    {
+        "name": "VsFloating",
+        "kebabName": "vs-floating",
+        "description": "A positioned floating element that renders in a teleport overlay and automatically positions itself relative to a target element with optional animation.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "target",
+                "type": "string",
+                "default": "''",
+                "required": true,
+                "description": "CSS selector for the target element to position against"
+            },
+            {
+                "name": "align",
+                "type": "'start' | 'center' | 'end'",
+                "default": "'start'",
+                "required": false,
+                "description": "Alignment along the cross axis"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Prevent the floating element from showing"
+            },
+            {
+                "name": "enterDelay",
+                "type": "string | number",
+                "default": "0",
+                "required": false,
+                "description": "Delay in milliseconds before showing"
+            },
+            {
+                "name": "leaveDelay",
+                "type": "string | number",
+                "default": "0",
+                "required": false,
+                "description": "Delay in milliseconds before hiding"
+            },
+            {
+                "name": "margin",
+                "type": "string | number",
+                "default": "5",
+                "required": false,
+                "description": "Gap in pixels between the target and the floating element"
+            },
+            {
+                "name": "noAnimation",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disable the fade-in/out animation"
+            },
+            {
+                "name": "placement",
+                "type": "'top' | 'bottom' | 'left' | 'right' | 'middle'",
+                "default": "'bottom'",
+                "required": false,
+                "description": "Preferred placement of the floating element"
+            },
+            {
+                "name": "followWidth",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Match the floating element width to the target element width"
+            },
+            {
+                "name": "overlayId",
+                "type": "string",
+                "default": "'#vs-floating-overlay'",
+                "required": false,
+                "description": "CSS selector for the teleport container"
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding to show/hide the floating element"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when visibility changes"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The floating content. Receives `{ placement: string }` as slot props reflecting the computed placement"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsFocusTrap",
+        "kebabName": "vs-focus-trap",
+        "description": "A utility component that traps keyboard focus within its single child element, ensuring accessible modal and overlay interactions.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disable focus trapping without unmounting"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Must contain exactly one child element that will act as the focus trap boundary"
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Move focus into the focus trap anchor"
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Return focus to the element that was focused before the trap was activated"
+            }
+        ]
+    },
+    {
+        "name": "VsFooter",
+        "kebabName": "vs-footer",
+        "description": "A page footer bar component that supports fixed, sticky, and absolute positioning with layout store integration when used inside `VsLayout`.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsFooterStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "position",
+                "type": "'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'",
+                "default": "",
+                "required": false,
+                "description": "CSS position value for the footer"
+            },
+            {
+                "name": "height",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Height of the footer. Defaults to `3rem`"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Apply the primary color scheme"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'footer'",
+                "required": false,
+                "description": "HTML tag to render as"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Footer content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsForm",
+        "kebabName": "vs-form",
+        "description": "A form container component that manages validation state and propagates `disabled`/`readonly` states to all child input components.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "gridSize",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Number of grid columns (default: 12)"
+            },
+            {
+                "name": "columnGap",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Gap between grid columns"
+            },
+            {
+                "name": "rowGap",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Gap between grid rows"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disable all child form inputs"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Make all child form inputs read-only"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [
+            {
+                "name": "error",
+                "payload": "string[]",
+                "description": "Emitted after `validate()` when the form is invalid. Payload contains the ids of invalid fields"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Form content — place Vlossom input components here"
+            }
+        ],
+        "methods": [
+            {
+                "name": "validate",
+                "parameters": "-",
+                "description": "Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid"
+            },
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Resets all child inputs to their initial state"
+            },
+            {
+                "name": "valid",
+                "parameters": "-",
+                "description": "Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid"
+            },
+            {
+                "name": "changed",
+                "parameters": "-",
+                "description": "Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed"
+            }
+        ]
+    },
+    {
+        "name": "VsGrid",
+        "kebabName": "vs-grid",
+        "description": "A responsive CSS grid container that supports a configurable number of columns, gap controls, and custom dimensions.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsGridStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "gridSize",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Number of grid columns. Default is 12"
+            },
+            {
+                "name": "columnGap",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Gap between grid columns"
+            },
+            {
+                "name": "rowGap",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Gap between grid rows"
+            },
+            {
+                "name": "width",
+                "type": "string | number",
+                "default": "",
+                "required": false,
+                "description": "Width of the grid container"
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "default": "",
+                "required": false,
+                "description": "Height of the grid container"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'div'",
+                "required": false,
+                "description": "HTML tag to render as"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "gridSize": "number"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsGridStyleSet {\n    component?: CSSProperties;\n    variables?: {\n        gridSize?: number;\n    };\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Grid items"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsGroupedList",
+        "kebabName": "vs-grouped-list",
+        "description": "A scrollable list component that renders items with optional grouping, virtual visibility rendering for performance, and full slot customization.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsGroupedListStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "items",
+                "type": "OptionItem[]",
+                "default": "[]",
+                "required": false,
+                "description": "Array of items to display"
+            },
+            {
+                "name": "groupBy",
+                "type": "(item: any, index: number) => string",
+                "default": "",
+                "required": false,
+                "description": "Function that returns the group name for each item"
+            },
+            {
+                "name": "groupOrder",
+                "type": "string[]",
+                "default": "",
+                "required": false,
+                "description": "Order in which groups should appear"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "gap": "string",
+                "height": "string"
+            },
+            "component": false,
+            "childRefs": [],
+            "raw": "export interface VsGroupedListStyleSet {\n    variables?: {\n        gap?: string;\n        height?: string;\n    };\n    header?: CSSProperties;\n    content?: CSSProperties;\n    footer?: CSSProperties;\n    group?: CSSProperties;\n    item?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "click-item",
+                "payload": "OptionItem & { groupedIndex: number; group: VsGroupedListGroup; groupIndex: number }",
+                "description": "Emitted when an item is clicked"
+            }
+        ],
+        "slots": [
+            {
+                "name": "header",
+                "description": "Content for the scrollable list header"
+            },
+            {
+                "name": "footer",
+                "description": "Content for the scrollable list footer"
+            },
+            {
+                "name": "group",
+                "description": "Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }`"
+            },
+            {
+                "name": "item",
+                "description": "Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, group, groupIndex }`"
+            }
+        ],
+        "methods": [
+            {
+                "name": "scrollToItem",
+                "parameters": "id: string",
+                "description": "Scroll the list to the item with the given id"
+            },
+            {
+                "name": "hasScroll",
+                "parameters": "-",
+                "description": "Returns `boolean` — `true` if the list has a scrollbar"
+            }
+        ]
+    },
+    {
+        "name": "VsHeader",
+        "kebabName": "vs-header",
+        "description": "A page header bar component that supports fixed, sticky, and absolute positioning with layout store integration when used inside `VsLayout`.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsHeaderStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "position",
+                "type": "'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'",
+                "default": "",
+                "required": false,
+                "description": "CSS position value for the header"
+            },
+            {
+                "name": "height",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Height of the header. Defaults to `3rem`"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Apply the primary color scheme"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'header'",
+                "required": false,
+                "description": "HTML tag to render as"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Header content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsImage",
+        "kebabName": "vs-image",
+        "description": "A component for displaying images with support for lazy loading, fallback images, and a skeleton placeholder while loading.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsImageStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "alt",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Alt text for the image element."
+            },
+            {
+                "name": "fallback",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Fallback image URL shown when the primary src fails."
+            },
+            {
+                "name": "lazy",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables lazy loading using the Intersection Observer."
+            },
+            {
+                "name": "noSkeleton",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the skeleton placeholder during loading."
+            },
+            {
+                "name": "src",
+                "type": "string",
+                "default": "''",
+                "required": true,
+                "description": "The source URL of the image."
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "width": "string",
+                "height": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsSkeletonStyleSet"
+            ],
+            "raw": "export interface VsImageStyleSet {\n    variables?: {\n        width?: string;\n        height?: string;\n    };\n    skeleton?: VsSkeletonStyleSet;\n    component?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "error",
+                "payload": "-",
+                "description": "Emitted when the image fails to load."
+            }
+        ],
+        "slots": [
+            {
+                "name": "skeleton",
+                "description": "Custom content displayed inside the skeleton state."
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsIndexView",
+        "kebabName": "vs-index-view",
+        "description": "A container component that shows only the child element at the current index, with optional keep-alive support.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "modelValue",
+                "type": "number",
+                "default": "0",
+                "required": false,
+                "description": "The index of the currently displayed child (v-model)."
+            },
+            {
+                "name": "keepAlive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Wraps children in `<KeepAlive>` to preserve their state."
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Width of the component (responsive breakpoints allowed)."
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span for layout (responsive breakpoints)."
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "number",
+                "description": "Emitted when the displayed index changes."
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Child elements to switch between by index."
+            }
+        ],
+        "methods": [
+            {
+                "name": "updateIndex",
+                "parameters": "index: number",
+                "description": "Programmatically sets the current index."
+            }
+        ]
+    },
+    {
+        "name": "VsInnerScroll",
+        "kebabName": "vs-inner-scroll",
+        "description": "A layout component that provides a scrollable content area with optional sticky header and footer sections.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsInnerScrollStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "hideScroll",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the scrollbar while keeping scrollability."
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsInnerScrollStyleSet {\n    component?: CSSProperties;\n    header?: CSSProperties;\n    content?: CSSProperties;\n    footer?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Scrollable content area."
+            },
+            {
+                "name": "header",
+                "description": "Sticky header displayed above the scroll area."
+            },
+            {
+                "name": "footer",
+                "description": "Sticky footer displayed below the scroll area."
+            }
+        ],
+        "methods": [
+            {
+                "name": "hasScroll",
+                "parameters": "-",
+                "description": "Returns `true` if the content overflows the container."
+            }
+        ]
+    },
+    {
+        "name": "VsInput",
+        "kebabName": "vs-input",
+        "description": "A feature-rich text input component with validation, clear button, prepend/append slots, and form integration.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component."
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsInputStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "modelValue",
+                "type": "string | number | null",
+                "default": "null",
+                "required": false,
+                "description": "The bound value (v-model)."
+            },
+            {
+                "name": "type",
+                "type": "'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url'",
+                "default": "'text'",
+                "required": false,
+                "description": "HTML input type."
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text displayed above the input."
+            },
+            {
+                "name": "placeholder",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Placeholder text for the input."
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the input."
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the input read-only."
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks the field as required (adds validation)."
+            },
+            {
+                "name": "noClear",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the clear button."
+            },
+            {
+                "name": "autocomplete",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables browser autocomplete."
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label area."
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the messages area."
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the entire component."
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "The `id` attribute for the input element."
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "The `name` attribute for the input element."
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "External messages (state + text) to display below the input."
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation rules applied on change."
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the built-in required/min/max rules."
+            },
+            {
+                "name": "state",
+                "type": "UIState",
+                "default": "'idle'",
+                "required": false,
+                "description": "External validation state (`idle`, `info`, `success`, `warning`, `error`)."
+            },
+            {
+                "name": "min",
+                "type": "string | number",
+                "default": "-",
+                "required": false,
+                "description": "Minimum value (number type) or minimum length (text type)."
+            },
+            {
+                "name": "max",
+                "type": "string | number",
+                "default": "-",
+                "required": false,
+                "description": "Maximum value (number type) or maximum length (text type)."
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Width of the component."
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span for layout."
+            },
+            {
+                "name": "changed",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding that reflects whether the value has changed."
+            },
+            {
+                "name": "valid",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model binding that reflects the current validation state."
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsInputStyleSet {\n    prepend?: CSSProperties;\n    append?: CSSProperties;\n    input?: CSSProperties;\n    component?: CSSProperties;\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "string | number | null",
+                "description": "Emitted when the input value changes."
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when the changed state updates."
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the validation state updates."
+            },
+            {
+                "name": "change",
+                "payload": "-",
+                "description": "Emitted after the value is committed."
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted when the input receives focus."
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted when the input loses focus."
+            }
+        ],
+        "slots": [
+            {
+                "name": "label",
+                "description": "Custom label content replacing the default label."
+            },
+            {
+                "name": "prepend",
+                "description": "Content displayed to the left inside the input box."
+            },
+            {
+                "name": "append",
+                "description": "Content displayed to the right inside the input box."
+            },
+            {
+                "name": "messages",
+                "description": "Custom messages content below the input."
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Focuses the input element."
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Blurs the input element."
+            },
+            {
+                "name": "validate",
+                "parameters": "-",
+                "description": "Triggers validation and returns the result."
+            },
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Clears the input value."
+            },
+            {
+                "name": "select",
+                "parameters": "-",
+                "description": "Selects all text in the input element."
+            }
+        ]
+    },
+    {
+        "name": "VsInputWrapper",
+        "kebabName": "vs-input-wrapper",
+        "description": "A layout wrapper for form inputs that provides a label, validation messages area, and responsive layout support.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsInputWrapperStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Width of the component."
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span for layout."
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies disabled styling to the label and messages."
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the entire component."
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "The `id` linked to the label's `for` attribute."
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text displayed above the input."
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label area."
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the messages area."
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a required star (*) indicator next to the label."
+            },
+            {
+                "name": "groupLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders the wrapper as `fieldset`/`legend` for grouped inputs."
+            },
+            {
+                "name": "messages",
+                "type": "StateMessage[]",
+                "default": "[]",
+                "required": false,
+                "description": "Array of state+text messages displayed below the input."
+            },
+            {
+                "name": "shake",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Triggers a horizontal shake animation (e.g., on validation failure)."
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [
+                "VsMessageStyleSet"
+            ],
+            "raw": "export interface VsInputWrapperStyleSet {\n    component?: CSSProperties;\n    label?: CSSProperties;\n    messages?: CSSProperties;\n    message?: VsMessageStyleSet;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The form input or content to wrap."
+            },
+            {
+                "name": "label",
+                "description": "Custom label content replacing the default label text."
+            },
+            {
+                "name": "messages",
+                "description": "Custom messages content replacing the default messages."
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsLabelValue",
+        "kebabName": "vs-label-value",
+        "description": "A two-column display component that pairs a label cell with a value cell, useful for detail views and data tables.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component."
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsLabelValueStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Width of the component."
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span for layout."
+            },
+            {
+                "name": "dense",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Reduces padding and font size for compact display."
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color scheme to the label cell."
+            },
+            {
+                "name": "vertical",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Stacks label and value cells vertically."
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Automatically switches to vertical layout in narrow containers."
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "border": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsLabelValueStyleSet {\n    variables?: {\n        border?: string;\n    };\n    component?: CSSProperties;\n    label?: CSSProperties;\n    value?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The value cell content."
+            },
+            {
+                "name": "label",
+                "description": "The label cell content."
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsLayout",
+        "kebabName": "vs-layout",
+        "description": "A root layout container that provides the layout store context required by `VsHeader`, `VsFooter`, and other layout-aware components.",
+        "availableVersion": "2.0.0+",
+        "props": [],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The content to render inside the layout."
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsLoading",
+        "kebabName": "vs-loading",
+        "description": "An animated loading indicator composed of five vertical bars with a wave animation.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the loading bars."
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsLoadingStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "width",
+                "type": "string | number",
+                "default": "-",
+                "required": false,
+                "description": "Width of the loading container."
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "default": "-",
+                "required": false,
+                "description": "Height of the loading container."
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "barWidth": "string",
+                "color": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsLoadingStyleSet {\n    variables?: {\n        barWidth?: string;\n        color?: string;\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsMessage",
+        "kebabName": "vs-message",
+        "description": "A small message display component that shows an icon and text for different UI states: idle, info, success, warning, and error.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsMessageStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component."
+            },
+            {
+                "name": "state",
+                "type": "'idle' | 'info' | 'success' | 'warning' | 'error'",
+                "default": "'idle'",
+                "required": false,
+                "description": "The UI state that determines the icon and color."
+            },
+            {
+                "name": "text",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "The message text to display."
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "size": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsMessageStyleSet {\n    variables?: {\n        size?: string;\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsModal",
+        "kebabName": "vs-modal",
+        "description": "A modal dialog component that renders content in an overlay layer via the Vlossom modal plugin.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the modal."
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsModalNodeStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the modal node."
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Controls the visibility of the modal (v-model)."
+            },
+            {
+                "name": "container",
+                "type": "string",
+                "default": "'body'",
+                "required": false,
+                "description": "CSS selector of the element to teleport the modal into."
+            },
+            {
+                "name": "escClose",
+                "type": "boolean",
+                "default": "true",
+                "required": false,
+                "description": "Closes the modal when the ESC key is pressed."
+            },
+            {
+                "name": "size",
+                "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl' | string | number | { width?: SizeProp; height?: SizeProp }",
+                "default": "-",
+                "required": false,
+                "description": "Modal size as a predefined keyword or custom width/height."
+            },
+            {
+                "name": "callbacks",
+                "type": "OverlayCallbacks",
+                "default": "{}",
+                "required": false,
+                "description": "Overlay callback handlers."
+            },
+            {
+                "name": "dimClose",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Closes the modal when clicking the dimmed area."
+            },
+            {
+                "name": "dimmed",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a dimmed overlay behind the modal."
+            },
+            {
+                "name": "focusLock",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Traps focus within the modal while it is open."
+            },
+            {
+                "name": "hideScroll",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the scroll on the container when the modal is open."
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Custom ID for the modal overlay instance."
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when the modal open state changes."
+            },
+            {
+                "name": "open",
+                "payload": "-",
+                "description": "Emitted when the modal opens."
+            },
+            {
+                "name": "close",
+                "payload": "-",
+                "description": "Emitted when the modal closes."
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "The content rendered inside the modal dialog."
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsPage",
+        "kebabName": "vs-page",
+        "description": "A layout component that provides a structured page container with title, description, and content areas.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsPageStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsPageStyleSet {\n    component?: CSSProperties;\n    title?: CSSProperties;\n    description?: CSSProperties;\n    content?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main content area"
+            },
+            {
+                "name": "title",
+                "description": "Page title area (optional)"
+            },
+            {
+                "name": "description",
+                "description": "Page description area (optional)"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsPagination",
+        "kebabName": "vs-pagination",
+        "description": "A pagination component that allows navigation through a series of pages.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsPaginationStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables all pagination buttons"
+            },
+            {
+                "name": "edgeButtons",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows first and last page navigation buttons"
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies ghost style to buttons"
+            },
+            {
+                "name": "length",
+                "type": "number",
+                "default": "1",
+                "required": true,
+                "description": "Total number of pages (must be greater than 0)"
+            },
+            {
+                "name": "outline",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies outline style to buttons"
+            },
+            {
+                "name": "showingLength",
+                "type": "number",
+                "default": "10",
+                "required": false,
+                "description": "Number of page buttons to display at once"
+            },
+            {
+                "name": "modelValue",
+                "type": "number",
+                "default": "0",
+                "required": false,
+                "description": "Current page index (0-based), used with `v-model`"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "selectedButtonBackgroundColor": "string",
+                "selectedButtonFontColor": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsButtonStyleSet"
+            ],
+            "raw": "export interface VsPaginationStyleSet {\n    variables?: {\n        selectedButtonBackgroundColor?: string;\n        selectedButtonFontColor?: string;\n    };\n    component?: CSSProperties;\n    pageButton?: Omit<VsButtonStyleSet, 'loading'>;\n    controlButton?: Omit<VsButtonStyleSet, 'loading'>;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "number",
+                "description": "Emitted when the current page changes"
+            },
+            {
+                "name": "change",
+                "payload": "number",
+                "description": "Emitted when the current page changes"
+            }
+        ],
+        "slots": [
+            {
+                "name": "first",
+                "description": "Custom icon for the \"first page\" button"
+            },
+            {
+                "name": "last",
+                "description": "Custom icon for the \"last page\" button"
+            },
+            {
+                "name": "prev",
+                "description": "Custom icon for the \"prev page\" button"
+            },
+            {
+                "name": "next",
+                "description": "Custom icon for the \"next page\" button"
+            },
+            {
+                "name": "page",
+                "description": "Custom content for each page button; receives `{ page: number }`"
+            }
+        ],
+        "methods": [
+            {
+                "name": "goFirst",
+                "parameters": "-",
+                "description": "Navigates to the first page"
+            },
+            {
+                "name": "goLast",
+                "parameters": "-",
+                "description": "Navigates to the last page"
+            },
+            {
+                "name": "goPrev",
+                "parameters": "-",
+                "description": "Navigates to the previous page"
+            },
+            {
+                "name": "goNext",
+                "parameters": "-",
+                "description": "Navigates to the next page"
+            },
+            {
+                "name": "setPage",
+                "parameters": "page: number",
+                "description": "Navigates to the specified page index"
+            }
+        ]
+    },
+    {
+        "name": "VsProgress",
+        "kebabName": "vs-progress",
+        "description": "A progress bar component that displays the completion status of a task.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsProgressStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "max",
+                "type": "number | string",
+                "default": "1",
+                "required": false,
+                "description": "Maximum value of the progress bar (must be > 0)"
+            },
+            {
+                "name": "value",
+                "type": "number | string",
+                "default": "0",
+                "required": false,
+                "description": "Current value of the progress bar (must be >= 0)"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Text label displayed over the progress bar"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "bar.backgroundColor": "string",
+                "bar.border": "string",
+                "bar.borderRadius": "string",
+                "value.backgroundColor": "string",
+                "label.textShadow": "string",
+                "label.fontColor": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsProgressStyleSet {\n    variables?: {\n        bar?: {\n            backgroundColor?: string;\n            border?: string;\n            borderRadius?: string;\n        };\n        value?: {\n            backgroundColor?: string;\n        };\n        label?: {\n            textShadow?: string;\n            fontColor?: string;\n        };\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsRadio",
+        "kebabName": "vs-radio",
+        "description": "A radio button component (`VsRadio`) and a group component (`VsRadioSet`) for selecting a single option from a list.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsRadioStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the radio input"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML id attribute"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text for the input wrapper"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides validation messages"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks the field as required"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation messages"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML name attribute for grouping radio buttons"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables built-in validation rules"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the radio read-only"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "'idle' | 'info' | 'success' | 'warning' | 'error'",
+                "default": "'idle'",
+                "required": false,
+                "description": "Validation state"
+            },
+            {
+                "name": "beforeChange",
+                "type": "(from: any, to: any, optionValue: any) => Promise<boolean> | null",
+                "default": "null",
+                "required": false,
+                "description": "Async callback called before value changes"
+            },
+            {
+                "name": "checked",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Pre-selects this radio on mount"
+            },
+            {
+                "name": "radioLabel",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label displayed next to the radio circle"
+            },
+            {
+                "name": "radioValue",
+                "type": "any",
+                "default": "-",
+                "required": true,
+                "description": "The value this radio represents"
+            },
+            {
+                "name": "modelValue",
+                "type": "any",
+                "default": "null",
+                "required": false,
+                "description": "Currently selected value (v-model)"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Width of the component"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "borderRadius": "string",
+                "radioColor": "string",
+                "radioSize": "string"
+            },
+            "component": false,
+            "childRefs": [
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsRadioStyleSet {\n    variables?: {\n        borderRadius?: string;\n        radioColor?: string;\n        radioSize?: string;\n    };\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "any",
+                "description": "Emitted when the selected value changes"
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when the changed state updates"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the validation state updates"
+            },
+            {
+                "name": "change",
+                "payload": "Event",
+                "description": "Emitted when the radio selection changes"
+            },
+            {
+                "name": "toggle",
+                "payload": "boolean",
+                "description": "Emitted when the radio is toggled"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted when the radio receives focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted when the radio loses focus"
+            }
+        ],
+        "slots": [
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "radio-label",
+                "description": "Custom label displayed next to the radio"
+            },
+            {
+                "name": "messages",
+                "description": "Custom validation messages"
+            }
+        ],
+        "methods": [
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Clears the selected value"
+            },
+            {
+                "name": "validate",
+                "parameters": "-",
+                "description": "Triggers validation"
+            },
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Focuses the radio input"
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Blurs the radio input"
+            }
+        ]
+    },
+    {
+        "name": "VsRender",
+        "kebabName": "vs-render",
+        "description": "A utility component that renders a string (HTML), a Vue component, or a render function as a virtual DOM node.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "content",
+                "type": "string | Component",
+                "default": "-",
+                "required": true,
+                "description": "Content to render: a string, HTML string, or Vue component"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsResponsive",
+        "kebabName": "vs-responsive",
+        "description": "A layout wrapper component that applies responsive width and grid column settings based on container breakpoints.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Responsive width; can be a fixed value or breakpoint object"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span; can be a fixed value or breakpoint object"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'div'",
+                "required": false,
+                "description": "HTML tag used as the root element"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Content to wrap"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsSearchInput",
+        "kebabName": "vs-search-input",
+        "description": "A search input component with optional case-sensitive and regex toggle buttons.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsSearchInputStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Responsive width"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the input"
+            },
+            {
+                "name": "placeholder",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Placeholder text"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the input read-only"
+            },
+            {
+                "name": "useCaseSensitive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows the case-sensitive toggle button"
+            },
+            {
+                "name": "useRegex",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows the regex toggle button"
+            },
+            {
+                "name": "modelValue",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Search text value (v-model)"
+            },
+            {
+                "name": "caseSensitive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Case-sensitive state (v-model:caseSensitive)"
+            },
+            {
+                "name": "regex",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Regex mode state (v-model:regex)"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "height": "string"
+            },
+            "component": false,
+            "childRefs": [
+                "VsInputStyleSet",
+                "VsToggleStyleSet"
+            ],
+            "raw": "export interface VsSearchInputStyleSet {\n    variables?: {\n        height?: string;\n    };\n    input?: VsInputStyleSet;\n    toggle?: VsToggleStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "search",
+                "payload": "string",
+                "description": "Emitted (debounced) when the search text changes"
+            },
+            {
+                "name": "update:modelValue",
+                "payload": "string",
+                "description": "Emitted when the search text changes"
+            },
+            {
+                "name": "update:caseSensitive",
+                "payload": "boolean",
+                "description": "Emitted when the case-sensitive toggle changes"
+            },
+            {
+                "name": "update:regex",
+                "payload": "boolean",
+                "description": "Emitted when the regex toggle changes"
+            }
+        ],
+        "slots": [],
+        "methods": [
+            {
+                "name": "match",
+                "parameters": "text: string",
+                "description": "Returns `true` if the text matches the current search query"
+            },
+            {
+                "name": "select",
+                "parameters": "-",
+                "description": "Selects all text in the input"
+            },
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Focuses the input"
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Blurs the input"
+            },
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Clears the search text"
+            }
+        ]
+    },
+    {
+        "name": "VsSelect",
+        "kebabName": "vs-select",
+        "description": "A dropdown select component supporting single and multiple selection with search, grouping, and validation.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsSelectStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the select"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML id attribute"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text for the select"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides validation messages"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks the field as required"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation messages"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML name attribute"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables built-in validation rules"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the select read-only"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "'idle' | 'info' | 'success' | 'warning' | 'error'",
+                "default": "'idle'",
+                "required": false,
+                "description": "Validation state"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Responsive width"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "options",
+                "type": "any[]",
+                "default": "[]",
+                "required": false,
+                "description": "Array of option values or objects"
+            },
+            {
+                "name": "optionLabel",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Key name for the label when options are objects"
+            },
+            {
+                "name": "optionValue",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Key name for the value when options are objects"
+            },
+            {
+                "name": "groupBy",
+                "type": "(option: any, index: number) => string | null",
+                "default": "null",
+                "required": false,
+                "description": "Function to group options by a string key"
+            },
+            {
+                "name": "groupOrder",
+                "type": "string[]",
+                "default": "[]",
+                "required": false,
+                "description": "Order of groups"
+            },
+            {
+                "name": "min",
+                "type": "number | string",
+                "default": "0",
+                "required": false,
+                "description": "Minimum number of selections (multiple mode)"
+            },
+            {
+                "name": "max",
+                "type": "number | string",
+                "default": "Number.MAX_SAFE_INTEGER",
+                "required": false,
+                "description": "Maximum number of selections (multiple mode)"
+            },
+            {
+                "name": "search",
+                "type": "boolean | SearchProps",
+                "default": "false",
+                "required": false,
+                "description": "Enables built-in search"
+            },
+            {
+                "name": "closableChips",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a close button on selected chips"
+            },
+            {
+                "name": "collapseChips",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Collapses selected chips into a count display"
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables multiple selection mode"
+            },
+            {
+                "name": "noClear",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the clear button"
+            },
+            {
+                "name": "optionsDisabled",
+                "type": "boolean | ((option: any, index: number, options: any[]) => boolean)",
+                "default": "false",
+                "required": false,
+                "description": "Disables individual options"
+            },
+            {
+                "name": "selectAll",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a select-all checkbox (multiple mode)"
+            },
+            {
+                "name": "modelValue",
+                "type": "any",
+                "default": "null",
+                "required": false,
+                "description": "Selected value (v-model)"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "focused.border": "string",
+                "focused.borderRadius": "string",
+                "focused.backgroundColor": "string",
+                "height": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsInputWrapperStyleSet",
+                "VsChipStyleSet",
+                "VsCheckboxStyleSet",
+                "VsGroupedListStyleSet"
+            ],
+            "raw": "export interface VsSelectStyleSet {\n    variables?: {\n        height?: string;\n        focused?: {\n            border?: string;\n            borderRadius?: string;\n            backgroundColor?: string;\n        };\n    };\n    component?: CSSProperties;\n    wrapper?: VsInputWrapperStyleSet;\n    chip?: VsChipStyleSet;\n    selectAllCheckbox?: VsCheckboxStyleSet;\n    options?: VsGroupedListStyleSet;\n    option?: CSSProperties;\n    selectedOption?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "any",
+                "description": "Emitted when the selected value changes"
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when the changed state updates"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the validation state updates"
+            },
+            {
+                "name": "change",
+                "payload": "any",
+                "description": "Emitted when the selected value changes"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted when the trigger receives focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted when the trigger loses focus"
+            },
+            {
+                "name": "click-option",
+                "payload": "OptionItem",
+                "description": "Emitted when an option is clicked"
+            },
+            {
+                "name": "open",
+                "payload": "-",
+                "description": "Emitted when the dropdown opens"
+            },
+            {
+                "name": "close",
+                "payload": "-",
+                "description": "Emitted when the dropdown closes"
+            },
+            {
+                "name": "clear",
+                "payload": "-",
+                "description": "Emitted when the selected value is cleared"
+            }
+        ],
+        "slots": [
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "options-header",
+                "description": "Custom content above the options list"
+            },
+            {
+                "name": "options-footer",
+                "description": "Custom content below the options list"
+            },
+            {
+                "name": "group",
+                "description": "Custom group header; receives group slot props"
+            },
+            {
+                "name": "option",
+                "description": "Custom option content; receives `{ ...itemSlotProps, selected: boolean }`"
+            },
+            {
+                "name": "messages",
+                "description": "Custom validation messages"
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "-",
+                "description": "Focuses the select trigger"
+            },
+            {
+                "name": "blur",
+                "parameters": "-",
+                "description": "Blurs the select trigger"
+            },
+            {
+                "name": "validate",
+                "parameters": "-",
+                "description": "Triggers validation"
+            },
+            {
+                "name": "clear",
+                "parameters": "-",
+                "description": "Clears the selected value"
+            }
+        ]
+    },
+    {
+        "name": "VsSkeleton",
+        "kebabName": "vs-skeleton",
+        "description": "A skeleton loading placeholder component that displays an animated background while content is loading.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsSkeletonStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsSkeletonStyleSet {\n    background?: CSSProperties;\n    content?: CSSProperties;\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Content displayed centered over the skeleton background"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsSteps",
+        "kebabName": "vs-steps",
+        "description": "A step indicator component that displays a sequence of steps with progress tracking.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsStepsStyleSet",
+                "default": "-",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Responsive width"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "-",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "height",
+                "type": "string",
+                "default": "-",
+                "required": false,
+                "description": "Height of the steps container (used in vertical mode)"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean | ((step: string, index: number) => boolean)",
+                "default": "false",
+                "required": false,
+                "description": "Disables steps; can be a boolean or per-step function"
+            },
+            {
+                "name": "gap",
+                "type": "string | number",
+                "default": "''",
+                "required": false,
+                "description": "Gap size between step items"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides step labels"
+            },
+            {
+                "name": "steps",
+                "type": "string[]",
+                "default": "[]",
+                "required": false,
+                "description": "Array of step label strings"
+            },
+            {
+                "name": "vertical",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Displays steps vertically"
+            },
+            {
+                "name": "modelValue",
+                "type": "number",
+                "default": "0",
+                "required": false,
+                "description": "Current step index (v-model)"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "stepSize": "string"
+            },
+            "component": false,
+            "childRefs": [],
+            "raw": "export interface VsStepsStyleSet {\n    variables?: {\n        stepSize?: string;\n    };\n    step?: CSSProperties;\n    activeStep?: CSSProperties;\n    label?: CSSProperties;\n    activeLabel?: CSSProperties;\n    progress?: CSSProperties;\n    activeProgress?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "number",
+                "description": "Emitted when the active step changes"
+            },
+            {
+                "name": "change",
+                "payload": "number",
+                "description": "Emitted when the active step changes"
+            }
+        ],
+        "slots": [
+            {
+                "name": "step",
+                "description": "Custom content for each step circle; receives `{ step, index, isSelected, isPrevious, isDisabled }`"
+            },
+            {
+                "name": "label",
+                "description": "Custom content for each step label; receives `{ step, index, isSelected, isPrevious, isDisabled }`"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsSwitch",
+        "kebabName": "vs-switch",
+        "description": "A toggle switch component that supports single and multiple value binding with label customization.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsSwitchStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "beforeChange",
+                "type": "(from: any, to: any) => Promise<boolean> | null",
+                "default": "null",
+                "required": false,
+                "description": "Async hook called before the switch changes. Return `false` to cancel"
+            },
+            {
+                "name": "checked",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Initial checked state"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the switch"
+            },
+            {
+                "name": "falseLabel",
+                "type": "string",
+                "default": "'OFF'",
+                "required": false,
+                "description": "Label displayed when the switch is OFF"
+            },
+            {
+                "name": "falseValue",
+                "type": "any",
+                "default": "false",
+                "required": false,
+                "description": "Value used when switch is OFF"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML `id` attribute"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text above the switch"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation messages"
+            },
+            {
+                "name": "modelValue",
+                "type": "any",
+                "default": "false",
+                "required": false,
+                "description": "v-model value"
+            },
+            {
+                "name": "multiple",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables multiple-value binding mode"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML `name` attribute"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables default validation rules"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the message area"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the switch read-only"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks the field as required"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "UIState",
+                "default": "'idle'",
+                "required": false,
+                "description": "UI state (`idle`, `success`, `warning`, `error`)"
+            },
+            {
+                "name": "trueLabel",
+                "type": "string",
+                "default": "'ON'",
+                "required": false,
+                "description": "Label displayed when the switch is ON"
+            },
+            {
+                "name": "trueValue",
+                "type": "any",
+                "default": "true",
+                "required": false,
+                "description": "Value used when switch is ON"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Component width"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "handleColor": "string",
+                "handleSize": "string"
+            },
+            "component": true,
+            "childRefs": [
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsSwitchStyleSet {\n    variables?: {\n        handleColor?: string;\n        handleSize?: string;\n    };\n    switchButton?: CSSProperties;\n    activeSwitchButton?: CSSProperties;\n    component?: CSSProperties;\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "any",
+                "description": "Emitted when the switch value changes"
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when the changed state updates"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the valid state updates"
+            },
+            {
+                "name": "change",
+                "payload": "any",
+                "description": "Emitted on value change"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted on focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted on blur"
+            }
+        ],
+        "slots": [
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "true-label",
+                "description": "Custom content shown when the switch is ON"
+            },
+            {
+                "name": "false-label",
+                "description": "Custom content shown when the switch is OFF"
+            },
+            {
+                "name": "messages",
+                "description": "Custom message content"
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "",
+                "description": "Focuses the switch input"
+            },
+            {
+                "name": "blur",
+                "parameters": "",
+                "description": "Blurs the switch input"
+            },
+            {
+                "name": "validate",
+                "parameters": "",
+                "description": "Triggers validation"
+            },
+            {
+                "name": "clear",
+                "parameters": "",
+                "description": "Clears the value"
+            }
+        ]
+    },
+    {
+        "name": "VsTable",
+        "kebabName": "vs-table",
+        "description": "A feature-rich data table component with sorting, searching, pagination, selection, drag-and-drop, and expandable rows.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsTableStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "columns",
+                "type": "VsTableColumnDef[] | string[]",
+                "default": "[]",
+                "required": false,
+                "description": "Column definitions"
+            },
+            {
+                "name": "items",
+                "type": "VsTableItem[]",
+                "default": "",
+                "required": true,
+                "description": "Data rows"
+            },
+            {
+                "name": "dense",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Reduces cell padding"
+            },
+            {
+                "name": "draggable",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables drag-and-drop row reordering"
+            },
+            {
+                "name": "expandable",
+                "type": "boolean | (item, index?, items?) => boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables expandable rows"
+            },
+            {
+                "name": "loading",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows loading state and disables search"
+            },
+            {
+                "name": "noVirtualScroll",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables virtual scroll optimization"
+            },
+            {
+                "name": "page",
+                "type": "number",
+                "default": "",
+                "required": false,
+                "description": "Current page index (0-based), v-model"
+            },
+            {
+                "name": "pageSize",
+                "type": "number",
+                "default": "10",
+                "required": false,
+                "description": "Number of rows per page, v-model"
+            },
+            {
+                "name": "pagedItems",
+                "type": "VsTableItem[]",
+                "default": "[]",
+                "required": false,
+                "description": "Current page items for server mode, v-model"
+            },
+            {
+                "name": "pagination",
+                "type": "boolean | VsTablePaginationOptions",
+                "default": "false",
+                "required": false,
+                "description": "Enables pagination"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color to the header"
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables responsive (stacked) layout"
+            },
+            {
+                "name": "search",
+                "type": "boolean | SearchProps",
+                "default": "false",
+                "required": false,
+                "description": "Enables built-in search"
+            },
+            {
+                "name": "selectable",
+                "type": "boolean | (item, index?, items?) => boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables row selection"
+            },
+            {
+                "name": "selectedItems",
+                "type": "VsTableItem[]",
+                "default": "[]",
+                "required": false,
+                "description": "Selected rows, v-model"
+            },
+            {
+                "name": "serverMode",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Switches to server-side pagination mode"
+            },
+            {
+                "name": "state",
+                "type": "UIState | (item, index?, items?) => UIState",
+                "default": "'idle'",
+                "required": false,
+                "description": "Row state for styling"
+            },
+            {
+                "name": "stickyHeader",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the table header sticky on scroll"
+            },
+            {
+                "name": "totalItems",
+                "type": "VsTableItem[]",
+                "default": "[]",
+                "required": false,
+                "description": "All items for server mode, v-model"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsTableStyleSet {\n    component?: CSSProperties;\n    header?: CSSProperties;\n    row?: CSSProperties;\n    selectedRow?: CSSProperties;\n    cell?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "click-cell",
+                "payload": "(cell: VsTableBodyCell, event: MouseEvent)",
+                "description": "Emitted when a cell is clicked"
+            },
+            {
+                "name": "select-row",
+                "payload": "(row: VsTableBodyCell[], event: MouseEvent)",
+                "description": "Emitted when a row is selected"
+            },
+            {
+                "name": "expand-row",
+                "payload": "(row: VsTableBodyCell[], event: MouseEvent)",
+                "description": "Emitted when a row is expanded"
+            },
+            {
+                "name": "drag",
+                "payload": "SortableEvent",
+                "description": "Emitted after a drag-and-drop reorder"
+            },
+            {
+                "name": "search",
+                "payload": "(items: VsTableItem[], searchText: string)",
+                "description": "Emitted on search"
+            },
+            {
+                "name": "paginate",
+                "payload": "(nextPage: number, pageSize: number)",
+                "description": "Emitted when page changes"
+            },
+            {
+                "name": "update:selectedItems",
+                "payload": "VsTableItem[]",
+                "description": "Emitted when selected rows change"
+            },
+            {
+                "name": "update:page",
+                "payload": "number",
+                "description": "Emitted when the current page changes"
+            },
+            {
+                "name": "update:pageSize",
+                "payload": "number",
+                "description": "Emitted when the page size changes"
+            },
+            {
+                "name": "update:pagedItems",
+                "payload": "VsTableItem[]",
+                "description": "Emitted when paged items update"
+            },
+            {
+                "name": "update:totalItems",
+                "payload": "VsTableItem[]",
+                "description": "Emitted when total items update"
+            }
+        ],
+        "slots": [
+            {
+                "name": "caption",
+                "description": "Table caption content"
+            },
+            {
+                "name": "header-[key]",
+                "description": "Custom header cell for a specific column key"
+            },
+            {
+                "name": "body-[key]",
+                "description": "Custom body cell for a specific column key"
+            },
+            {
+                "name": "select",
+                "description": "Custom content for the selection column cell"
+            },
+            {
+                "name": "expand",
+                "description": "Custom content for the expanded row panel"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsTabs",
+        "kebabName": "vs-tabs",
+        "description": "A tab navigation component with animated indicator, scroll buttons, and vertical layout support.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsTabsStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "dense",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Reduces tab height"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean | (tab: string, index: number) => boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables all or specific tabs"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "default": "'auto'",
+                "required": false,
+                "description": "Height of the tab bar"
+            },
+            {
+                "name": "modelValue",
+                "type": "number",
+                "default": "0",
+                "required": false,
+                "description": "Index of the active tab, v-model"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color styling"
+            },
+            {
+                "name": "scrollButtons",
+                "type": "'hide' | 'show' | 'auto'",
+                "default": "'auto'",
+                "required": false,
+                "description": "Controls scroll button visibility"
+            },
+            {
+                "name": "tabs",
+                "type": "string[]",
+                "default": "[]",
+                "required": false,
+                "description": "Tab labels"
+            },
+            {
+                "name": "vertical",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders tabs vertically"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Component width"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "gap": "string",
+                "divider": "CSSProperties['border'] &"
+            },
+            "component": false,
+            "childRefs": [
+                "VsButtonStyleSet"
+            ],
+            "raw": "export interface VsTabsStyleSet {\n    variables?: {\n        gap?: string;\n        divider?: CSSProperties['border'] & {};\n    };\n    tab?: CSSProperties;\n    activeTab?: CSSProperties;\n    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "number",
+                "description": "Emitted when the active tab index changes"
+            },
+            {
+                "name": "change",
+                "payload": "number",
+                "description": "Emitted when the selected tab changes"
+            }
+        ],
+        "slots": [
+            {
+                "name": "tab",
+                "description": "Custom tab item content. Receives `{ tab: string, index: number }`"
+            }
+        ],
+        "methods": [
+            {
+                "name": "goPrev",
+                "parameters": "",
+                "description": "Navigates to the previous tab"
+            },
+            {
+                "name": "goNext",
+                "parameters": "",
+                "description": "Navigates to the next tab"
+            }
+        ]
+    },
+    {
+        "name": "VsTextWrap",
+        "kebabName": "vs-text-wrap",
+        "description": "A container component that wraps text content and provides copy-to-clipboard and external link action buttons.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "styleSet",
+                "type": "string | VsTextWrapStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "copy",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows the copy-to-clipboard button"
+            },
+            {
+                "name": "link",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "URL to open in a new tab when the link button is clicked"
+            },
+            {
+                "name": "width",
+                "type": "string | number",
+                "default": "''",
+                "required": false,
+                "description": "Width of the component"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsTextWrapStyleSet {\n    component?: CSSProperties;\n    copyIcon?: CSSProperties;\n    linkIcon?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "copied",
+                "payload": "string",
+                "description": "Emitted when text is successfully copied to the clipboard"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Main text content to display"
+            },
+            {
+                "name": "actions",
+                "description": "Additional action buttons displayed before the copy/link buttons"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsTextarea",
+        "kebabName": "vs-textarea",
+        "description": "A multi-line text input component with validation, string modifiers, and min/max length constraints.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsTextareaStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "autocomplete",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Enables browser autocomplete"
+            },
+            {
+                "name": "changed",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model for changed state"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the textarea"
+            },
+            {
+                "name": "grid",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Grid column span"
+            },
+            {
+                "name": "hidden",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the component"
+            },
+            {
+                "name": "id",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML `id` attribute"
+            },
+            {
+                "name": "label",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Label text"
+            },
+            {
+                "name": "max",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Maximum character length"
+            },
+            {
+                "name": "messages",
+                "type": "Message[]",
+                "default": "[]",
+                "required": false,
+                "description": "Validation messages"
+            },
+            {
+                "name": "min",
+                "type": "number | string",
+                "default": "",
+                "required": false,
+                "description": "Minimum character length"
+            },
+            {
+                "name": "modelValue",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "v-model value"
+            },
+            {
+                "name": "modelModifiers",
+                "type": "StringModifiers",
+                "default": "{}",
+                "required": false,
+                "description": "String modifier flags"
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "HTML `name` attribute"
+            },
+            {
+                "name": "noDefaultRules",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables built-in min/max/required rules"
+            },
+            {
+                "name": "noLabel",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the label area"
+            },
+            {
+                "name": "noMessages",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Hides the message area"
+            },
+            {
+                "name": "placeholder",
+                "type": "string",
+                "default": "''",
+                "required": false,
+                "description": "Placeholder text"
+            },
+            {
+                "name": "readonly",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the textarea read-only"
+            },
+            {
+                "name": "required",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Marks the field as required"
+            },
+            {
+                "name": "rules",
+                "type": "Rule[]",
+                "default": "[]",
+                "required": false,
+                "description": "Custom validation rules"
+            },
+            {
+                "name": "state",
+                "type": "UIState",
+                "default": "'idle'",
+                "required": false,
+                "description": "UI state (`idle`, `success`, `warning`, `error`)"
+            },
+            {
+                "name": "valid",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model for valid state"
+            },
+            {
+                "name": "width",
+                "type": "string | number | Breakpoints",
+                "default": "",
+                "required": false,
+                "description": "Component width"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [
+                "VsInputWrapperStyleSet"
+            ],
+            "raw": "export interface VsTextareaStyleSet {\n    textarea?: CSSProperties;\n    wrapper?: VsInputWrapperStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "string",
+                "description": "Emitted when the value changes"
+            },
+            {
+                "name": "update:changed",
+                "payload": "boolean",
+                "description": "Emitted when the changed state updates"
+            },
+            {
+                "name": "update:valid",
+                "payload": "boolean",
+                "description": "Emitted when the valid state updates"
+            },
+            {
+                "name": "change",
+                "payload": "string",
+                "description": "Emitted on value change"
+            },
+            {
+                "name": "focus",
+                "payload": "FocusEvent",
+                "description": "Emitted on focus"
+            },
+            {
+                "name": "blur",
+                "payload": "FocusEvent",
+                "description": "Emitted on blur"
+            }
+        ],
+        "slots": [
+            {
+                "name": "label",
+                "description": "Custom label content"
+            },
+            {
+                "name": "messages",
+                "description": "Custom message content"
+            }
+        ],
+        "methods": [
+            {
+                "name": "focus",
+                "parameters": "",
+                "description": "Focuses the textarea"
+            },
+            {
+                "name": "blur",
+                "parameters": "",
+                "description": "Blurs the textarea"
+            },
+            {
+                "name": "validate",
+                "parameters": "",
+                "description": "Triggers validation"
+            },
+            {
+                "name": "clear",
+                "parameters": "",
+                "description": "Clears the value"
+            },
+            {
+                "name": "select",
+                "parameters": "",
+                "description": "Selects all text in the textarea"
+            }
+        ]
+    },
+    {
+        "name": "VsThemeButton",
+        "kebabName": "vs-theme-button",
+        "description": "A toggle button that switches the application between light and dark themes.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsThemeButtonStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "circle",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders the button as a circle"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the button"
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies ghost (transparent) style"
+            },
+            {
+                "name": "loading",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows loading indicator"
+            },
+            {
+                "name": "outline",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies outline style"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color style"
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the button responsive"
+            },
+            {
+                "name": "size",
+                "type": "Size",
+                "default": "'md'",
+                "required": false,
+                "description": "Button size (`xs`, `sm`, `md`, `lg`, `xl`)"
+            },
+            {
+                "name": "type",
+                "type": "'button' | 'submit' | 'reset'",
+                "default": "'button'",
+                "required": false,
+                "description": "HTML button type"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "width": "string",
+                "height": "string",
+                "iconColor": "string"
+            },
+            "component": false,
+            "childRefs": [
+                "VsToggleStyleSet"
+            ],
+            "raw": "export interface VsThemeButtonStyleSet {\n    variables?: {\n        width?: string;\n        height?: string;\n        iconColor?: string;\n    };\n    button?: VsToggleStyleSet;\n}"
+        },
+        "events": [
+            {
+                "name": "change",
+                "payload": "boolean",
+                "description": "Emitted when the theme changes. Payload is `true` for dark mode"
+            }
+        ],
+        "slots": [],
+        "methods": []
+    },
+    {
+        "name": "VsToast",
+        "kebabName": "vs-toast",
+        "description": "A toast notification component with auto-close, hover pause, and a close button.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsToastStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "autoClose",
+                "type": "boolean",
+                "default": "true",
+                "required": false,
+                "description": "Automatically closes after `timeout` ms"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "true",
+                "required": false,
+                "description": "Applies primary color to the toast"
+            },
+            {
+                "name": "timeout",
+                "type": "number",
+                "default": "5000",
+                "required": false,
+                "description": "Milliseconds before auto-close"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": true,
+            "childRefs": [
+                "VsButtonStyleSet"
+            ],
+            "raw": "export interface VsToastStyleSet {\n    closeButton?: Omit<VsButtonStyleSet, 'loading'>;\n    component?: CSSProperties;\n}"
+        },
+        "events": [
+            {
+                "name": "close",
+                "payload": "",
+                "description": "Emitted when the toast should be closed (auto-close or close button click)"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Toast message content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsToggle",
+        "kebabName": "vs-toggle",
+        "description": "A stateful button that toggles between active and inactive states, wrapping `VsButton`.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsToggleStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "circle",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Renders the button as a circle"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the toggle"
+            },
+            {
+                "name": "ghost",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies ghost (transparent) style"
+            },
+            {
+                "name": "loading",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Shows a loading indicator"
+            },
+            {
+                "name": "modelValue",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "v-model for toggled state"
+            },
+            {
+                "name": "outline",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies outline style"
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Applies primary color style"
+            },
+            {
+                "name": "responsive",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Makes the button responsive"
+            },
+            {
+                "name": "size",
+                "type": "Size",
+                "default": "'md'",
+                "required": false,
+                "description": "Button size (`xs`, `sm`, `md`, `lg`, `xl`)"
+            },
+            {
+                "name": "type",
+                "type": "'button' | 'submit' | 'reset'",
+                "default": "'button'",
+                "required": false,
+                "description": "HTML button type"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [
+            {
+                "name": "update:modelValue",
+                "payload": "boolean",
+                "description": "Emitted when the toggled state changes"
+            },
+            {
+                "name": "toggle",
+                "payload": "boolean",
+                "description": "Emitted on every toggle with the new state"
+            }
+        ],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Button content"
+            }
+        ],
+        "methods": [
+            {
+                "name": "toggle",
+                "parameters": "",
+                "description": "Programmatically toggles the state"
+            }
+        ]
+    },
+    {
+        "name": "VsTooltip",
+        "kebabName": "vs-tooltip",
+        "description": "A floating tooltip component that attaches to a target element and supports hover, click, and keyboard interactions.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "colorScheme",
+                "type": "string",
+                "default": "",
+                "required": false,
+                "description": "Color scheme for the component"
+            },
+            {
+                "name": "styleSet",
+                "type": "string | VsTooltipStyleSet",
+                "default": "",
+                "required": false,
+                "description": "Custom style set for the component"
+            },
+            {
+                "name": "target",
+                "type": "string",
+                "default": "''",
+                "required": true,
+                "description": "CSS selector of the trigger element"
+            },
+            {
+                "name": "align",
+                "type": "Alignment",
+                "default": "'center'",
+                "required": false,
+                "description": "Alignment of the tooltip relative to the target (`start`, `center`, `end`)"
+            },
+            {
+                "name": "clickable",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Requires a click on the target to open"
+            },
+            {
+                "name": "contentsHover",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Keeps the tooltip open while hovering its contents"
+            },
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the tooltip"
+            },
+            {
+                "name": "enterDelay",
+                "type": "string | number",
+                "default": "0",
+                "required": false,
+                "description": "Delay (ms) before the tooltip appears"
+            },
+            {
+                "name": "escClose",
+                "type": "boolean",
+                "default": "true",
+                "required": false,
+                "description": "Closes the tooltip when Escape is pressed"
+            },
+            {
+                "name": "leaveDelay",
+                "type": "string | number",
+                "default": "0",
+                "required": false,
+                "description": "Delay (ms) before the tooltip disappears"
+            },
+            {
+                "name": "margin",
+                "type": "string | number",
+                "default": "10",
+                "required": false,
+                "description": "Gap (px) between the target and the tooltip"
+            },
+            {
+                "name": "noAnimation",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables the open/close animation"
+            },
+            {
+                "name": "placement",
+                "type": "Placement",
+                "default": "'top'",
+                "required": false,
+                "description": "Placement of the tooltip (`top`, `bottom`, `left`, `right`)"
+            }
+        ],
+        "styleSet": {
+            "variables": {
+                "arrowColor": "string",
+                "arrowSize": "string"
+            },
+            "component": true,
+            "childRefs": [],
+            "raw": "export interface VsTooltipStyleSet {\n    variables?: {\n        arrowColor?: string;\n        arrowSize?: string;\n    };\n    component?: CSSProperties;\n}"
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Tooltip content"
+            }
+        ],
+        "methods": []
+    },
+    {
+        "name": "VsVisibleRender",
+        "kebabName": "vs-visible-render",
+        "description": "A container component that uses IntersectionObserver to track child element visibility and optimize rendering performance.",
+        "availableVersion": "2.0.0+",
+        "props": [
+            {
+                "name": "disabled",
+                "type": "boolean",
+                "default": "false",
+                "required": false,
+                "description": "Disables intersection observation; all children are visible"
+            },
+            {
+                "name": "height",
+                "type": "string | number",
+                "default": "",
+                "required": false,
+                "description": "Creates an internal scrollable container of the given height"
+            },
+            {
+                "name": "rootMargin",
+                "type": "string",
+                "default": "'0px'",
+                "required": false,
+                "description": "Margin around the root for intersection calculation"
+            },
+            {
+                "name": "selector",
+                "type": "string",
+                "default": "null",
+                "required": false,
+                "description": "CSS selector to find the scroll container element within the component"
+            },
+            {
+                "name": "tag",
+                "type": "string",
+                "default": "'div'",
+                "required": false,
+                "description": "HTML tag for the container element"
+            },
+            {
+                "name": "threshold",
+                "type": "number",
+                "default": "0",
+                "required": false,
+                "description": "Intersection ratio threshold (0–1)"
+            }
+        ],
+        "styleSet": {
+            "variables": {},
+            "component": false,
+            "childRefs": [],
+            "raw": ""
+        },
+        "events": [],
+        "slots": [
+            {
+                "name": "default",
+                "description": "Child elements to be observed"
+            }
+        ],
+        "methods": [
+            {
+                "name": "scrollToElement",
+                "parameters": "element: HTMLElement",
+                "description": "Scrolls the container so the given element is visible"
+            }
+        ]
+    }
+]
