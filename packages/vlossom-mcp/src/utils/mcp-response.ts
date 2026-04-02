@@ -45,6 +45,15 @@ function getSession(): StepInfo[] {
 }
 
 /**
+ * Start a fresh session. Call this at the beginning of any "initiating" tool
+ * (suggest_components, search_components, list_components) so that each new
+ * workflow produces a clean _meta rather than accumulating across invocations.
+ */
+export function resetSession(): void {
+    session = { steps: [], lastActivityMs: Date.now() };
+}
+
+/**
  * Record a completed tool call and return accumulated session metadata.
  * Call this at the END of each tool handler, after execution finishes.
  */
