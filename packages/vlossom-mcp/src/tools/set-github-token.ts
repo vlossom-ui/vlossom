@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { setGitHubToken } from "../services/github-client.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 export function registerSetGitHubToken(server: McpServer): void {
     server.tool(
@@ -17,8 +17,10 @@ export function registerSetGitHubToken(server: McpServer): void {
                 .describe("GitHub Personal Access Token with issues:write scope (e.g. ghp_xxxx or github_pat_xxxx)"),
         },
         ({ token }) => {
+            const start = Date.now();
             setGitHubToken(token);
-            return textResponse({ success: true, message: "GitHub token has been set for this session." });
+            const meta = recordStep("set_github_token", "Set GitHub token", Date.now() - start);
+            return textResponse({ success: true, message: "GitHub token has been set for this session." }, meta);
         }
     );
 }

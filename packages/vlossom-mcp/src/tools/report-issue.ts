@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { createIssue, getGitHubToken } from "../services/github-client.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { IssueLanguage, IssueType, SectionContent } from "../types/issue.js";
 
 export function registerReportIssue(server: McpServer): void {
@@ -41,15 +41,20 @@ export function registerReportIssue(server: McpServer): void {
                 .describe("Optional labels such as 'bug', 'feature', 'question'"),
         },
         async ({ title, type, language, sectionContents, labels }) => {
+            const start = Date.now();
             const token = getGitHubToken();
             if (!token) {
-                throw new Error(
-                    "VLOSSOM_GITHUB_TOKEN is not configured. " +
-                        "Set the environment variable with a GitHub PAT that has issues:write scope."
-                );
+                const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
+                return textResponse({
+                    error:
+                        "VLOSSOM_GITHUB_TOKEN is not configured. " +
+                        "Set the environment variable with a GitHub PAT that has issues:write scope.",
+                }, meta);
             }
             const body = buildBody(type, language, sectionContents);
-            return textResponse(await createIssue(token, title, body, labels));
+            const result = await createIssue(token, title, body, labels);
+            const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
+            return textResponse(result, meta);
         }
     );
 }

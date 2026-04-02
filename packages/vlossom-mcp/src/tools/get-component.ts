@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getComponentMeta } from "../services/meta-registry.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 export function registerGetComponent(server: McpServer): void {
     server.tool(
@@ -12,13 +12,15 @@ export function registerGetComponent(server: McpServer): void {
             "Then pass the component info to generate_component_code if the user wants to generate code.",
         { name: z.string().describe('Component name — accepts PascalCase ("VsButton") or kebab-case ("vs-button")') },
         async ({ name }) => {
+            const start = Date.now();
             const meta = getComponentMeta(name);
+            const meta_ = recordStep("get_component", `${name} detail`, Date.now() - start);
             if (!meta) {
                 return textResponse({
                     error: `Component '${name}' not found. Use list_components to see available components.`,
-                });
+                }, meta_);
             }
-            return textResponse(meta);
+            return textResponse(meta, meta_);
         }
     );
 }

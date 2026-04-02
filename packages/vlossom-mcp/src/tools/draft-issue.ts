@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { IssueDraft, IssueLanguage, IssueType } from "../types/issue.js";
 
 export function registerDraftIssue(server: McpServer): void {
@@ -26,7 +26,12 @@ export function registerDraftIssue(server: McpServer): void {
                         "Use 'en' if the user writes in English, 'ko' if in Korean."
                 ),
         },
-        ({ summary, type, language }) => textResponse(buildDraft(summary, type, language))
+        ({ summary, type, language }) => {
+            const start = Date.now();
+            const draft = buildDraft(summary, type, language);
+            const meta = recordStep("draft_issue", `Draft ${type} issue`, Date.now() - start);
+            return textResponse(draft, meta);
+        }
     );
 }
 

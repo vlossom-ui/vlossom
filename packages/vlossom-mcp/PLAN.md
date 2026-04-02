@@ -154,34 +154,38 @@ Tools used: suggest_components · get_component ×3 · get_component_relationshi
 
 ## Current Status
 
-Implementation status vs. original plan (2026-03-23):
+Implementation status — last updated 2026-04-02 (v0.4.0 + stepper UX):
 
-| Tool                          | Original plan | Current status                              |
-| ----------------------------- | ------------- | ------------------------------------------- |
-| `list_components`             | ✅ Planned    | ✅ Implemented                              |
-| `draft_issue`                 | ✅ Planned    | ✅ Implemented (language support, sections) |
-| `report_issue`                | ✅ Planned    | ✅ Implemented (sectionContents approach)   |
-| `set_github_token`            | ✅ Planned    | ✅ Implemented                              |
-| `check_github_token`          | ✅ Planned    | ✅ Implemented                              |
-| `search_components`           | ✅ Planned    | ❌ Not implemented                          |
-| `suggest_components`          | ✅ Planned    | ❌ Not implemented                          |
-| `get_component`               | ✅ Planned    | ❌ Not implemented                          |
-| `get_style_set`               | ✅ Planned    | ❌ Not implemented                          |
-| `get_component_relationships` | ✅ Planned    | ❌ Not implemented                          |
-| `adapt_type_to_component`     | ✅ Planned    | ❌ Not implemented                          |
-| `generate_component_code`     | ✅ Planned    | ❌ Not implemented                          |
-| `validate_component_usage`    | ✅ Planned    | ❌ Not implemented                          |
-| `get_version_info`            | ✅ Planned    | ❌ Not implemented                          |
+| Tool                          | Planned | Current status                                        |
+| ----------------------------- | ------- | ----------------------------------------------------- |
+| `list_components`             | ✅      | ✅ Implemented                                        |
+| `draft_issue`                 | ✅      | ✅ Implemented (language support, sections)           |
+| `report_issue`                | ✅      | ✅ Implemented (sectionContents approach)             |
+| `set_github_token`            | ✅      | ✅ Implemented                                        |
+| `check_github_token`          | ✅      | ✅ Implemented                                        |
+| `get_component`               | ✅      | ✅ Implemented (v0.3.0) — full ComponentMeta          |
+| `search_components`           | ✅      | ✅ Implemented (v0.3.0) — name/desc/props search      |
+| `suggest_components`          | ✅      | ✅ Implemented (v0.4.0) — keyword + heuristic         |
+| `get_component_relationships` | ✅      | ✅ Implemented (v0.4.0) — relationships.json          |
+| `compare_components`          | ✅      | ✅ Implemented (v0.4.0) — diff + recommendation       |
+| Stepper UX (`_meta`)          | ✅      | ✅ Implemented (v0.5.0-pre) — all tools emit `_meta`  |
+| `get_component_source`        | ✅      | ❌ Not implemented                                    |
+| `get_directive`               | ✅      | ❌ Not implemented                                    |
+| `get_composables`             | ✅      | ❌ Not implemented                                    |
+| `get_css_tokens`              | ✅      | ❌ Not implemented                                    |
+| `get_vlossom_options`         | ✅      | ❌ Not implemented                                    |
+| `generate_component_code`     | ✅      | ❌ Not implemented                                    |
+| `generate_style_set`          | ✅      | ❌ Not implemented                                    |
+| `adapt_type_to_component`     | ✅      | ❌ Not implemented                                    |
+| `get_form_recipe`             | ✅      | ❌ Not implemented                                    |
+| `diagnose_issue`              | ✅      | ❌ Not implemented                                    |
+| `validate_component_usage`    | ✅      | ❌ Not implemented                                    |
+| `get_version_info`            | ✅      | ❌ Not implemented                                    |
+| `get_style_set`               | ✅      | ❌ Not implemented (merged into get_component)        |
 
-### Current data structure limitations
+### Data pipeline — resolved
 
-`components-data.json` only contains name, kebab name, and description — not enough for AI to actually use components:
-
-```json
-{ "name": "VsButton", "kebabName": "vs-button", "description": "..." }
-```
-
-The original plan's `components-meta.json` must include props, StyleSet, events, slots, and relationships.
+`components-meta.json` (v0.3.0+) contains full props, StyleSet, events, slots, methods for all 50 components. `relationships.json` (v0.4.0+) contains curated parent/children/siblings for 34 components.
 
 ---
 
@@ -684,14 +688,14 @@ src/utils/
 ```
 [Done] 0.1.x — list_components, issue tools
 [Done] 0.2.0 — JSON data migration, issue harness improvements, i18n
+[Done] 0.3.0 — build-meta pipeline + get_component + search_components
+[Done] 0.4.0 — suggest_components + get_component_relationships + compare_components
+[Done] 0.4.x — Stepper info (_meta) + Tool Attribution in all tools (Phase 4 early apply)
 
-[Next] 0.3.0 — build-meta pipeline + get_component + search_components
-[Then] 0.4.0 — suggest_components + get_component_relationships + compare_components
-[Then] 0.5.0 — get_component_source + get_directive + get_composables
+[Next] 0.5.0 — get_component_source + get_directive + get_composables
 [Then] 0.6.0 — get_css_tokens + get_vlossom_options
 [Then] 0.7.0 — generate_component_code + generate_style_set + adapt_type_to_component
 [Then] 0.8.0 — get_form_recipe + diagnose_issue
-[Then] 0.9.0 — Stepper info in MCP responses + Tool Attribution
 [Long] 1.0.0 — validate_component_usage + semantic search + MCP Prompts
 ```
 

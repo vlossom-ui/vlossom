@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getComponentMeta } from "../services/meta-registry.js";
 import { getRelationships } from "../services/relationships-registry.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 export function registerGetComponentRelationships(server: McpServer): void {
     server.tool(
@@ -13,11 +13,13 @@ export function registerGetComponentRelationships(server: McpServer): void {
             "Then use this with get_component to understand the full composition structure before generate_component_code.",
         { name: z.string().describe('Component name — accepts PascalCase ("VsButton") or kebab-case ("vs-button")') },
         async ({ name }) => {
+            const start = Date.now();
             const meta = getComponentMeta(name);
+            const stepMeta = recordStep("get_component_relationships", `${name} relationships`, Date.now() - start);
             if (!meta) {
                 return textResponse({
                     error: `Component '${name}' not found.`,
-                });
+                }, stepMeta);
             }
 
             const relationships = getRelationships(name);
@@ -25,7 +27,7 @@ export function registerGetComponentRelationships(server: McpServer): void {
             return textResponse({
                 component: meta.name,
                 ...relationships,
-            });
+            }, stepMeta);
         }
     );
 }

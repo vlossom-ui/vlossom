@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getComponentMeta } from "../services/meta-registry.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { ComponentMeta } from "../types/meta.js";
 
 const RECOMMENDATIONS: Record<string, string> = {
@@ -116,35 +116,40 @@ export function registerCompareComponents(server: McpServer): void {
                 .describe('Second component name — accepts PascalCase ("VsDrawer") or kebab-case ("vs-drawer")'),
         },
         async ({ a, b }) => {
+            const start = Date.now();
             const metaA = getComponentMeta(a);
             if (!metaA) {
+                const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${a}' not found. Use list_components to see available components.`,
-                });
+                }, meta);
             }
 
             const metaB = getComponentMeta(b);
             if (!metaB) {
+                const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${b}' not found. Use list_components to see available components.`,
-                });
+                }, meta);
             }
 
             if (metaA.name === metaB.name) {
+                const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: "Cannot compare a component with itself.",
-                });
+                }, meta);
             }
 
             const differences = computeDifferences(metaA, metaB);
             const recommendation = getRecommendation(metaA.name, metaB.name);
+            const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
 
             return textResponse({
                 a: metaA,
                 b: metaB,
                 differences,
                 recommendation,
-            });
+            }, meta);
         }
     );
 }

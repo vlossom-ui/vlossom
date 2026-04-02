@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getAllComponentsMeta } from "../services/meta-registry.js";
-import { textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { ComponentMeta } from "../types/meta.js";
 
 const STOP_WORDS = new Set(["a", "an", "the", "for", "with", "and", "or", "to", "of", "in", "that", "is", "are"]);
@@ -126,6 +126,7 @@ export function registerSuggestComponents(server: McpServer): void {
             "Then call get_component for each result to check props/StyleSet, then generate_component_code.",
         { useCase: z.string().describe("Description of the use case or feature to build (e.g. 'login form', 'file upload feature', 'data table with pagination')") },
         async ({ useCase }) => {
+            const start = Date.now();
             const all = getAllComponentsMeta();
             const keywords = extractKeywords(useCase);
 
@@ -165,20 +166,21 @@ export function registerSuggestComponents(server: McpServer): void {
                 .filter((c): c is ComponentMeta => c !== undefined);
 
             const reasoning = buildReasoning(useCase, limitedNames, components);
+            const meta = recordStep("suggest_components", `Suggest: ${useCase}`, Date.now() - start);
 
             if (components.length === 0) {
                 return textResponse({
                     components: [],
                     reasoning,
                     message: `No components matched for use case: '${useCase}'. Try search_components with a more specific keyword.`,
-                });
+                }, meta);
             }
 
             return textResponse({
                 components,
                 reasoning,
                 total: components.length,
-            });
+            }, meta);
         }
     );
 }
