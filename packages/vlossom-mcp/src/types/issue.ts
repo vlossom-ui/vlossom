@@ -13,6 +13,7 @@ export interface IssueDraft {
     type: IssueType;
     language: IssueLanguage;
     sections: IssueSection[];
+    suggestedLabels: string[];
 }
 
 export interface SectionContent {

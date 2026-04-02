@@ -48,6 +48,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[feat] ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["feature"],
                       sections: [
                           { heading: "Overview", placeholder: summary, required: false },
                           { heading: "Requirements", placeholder: "- ", required: true },
@@ -67,6 +68,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[feat] ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["feature"],
                       sections: [
                           { heading: "개요", placeholder: summary, required: false },
                           { heading: "요구사항", placeholder: "- ", required: true },
@@ -89,6 +91,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `question: ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["question"],
                       sections: [
                           { heading: "Question", placeholder: summary, required: false },
                           {
@@ -107,6 +110,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `question: ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["question"],
                       sections: [
                           { heading: "질문", placeholder: summary, required: false },
                           {
@@ -128,6 +132,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[bug] ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["bug"],
                       sections: [
                           {
                               heading: "Bug Description",
@@ -160,6 +165,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[bug] ${summary}`,
                       type,
                       language,
+                      suggestedLabels: ["bug"],
                       sections: [
                           { heading: "버그 내용", placeholder: summary, required: false },
                           {

@@ -39,7 +39,10 @@ export function registerReportIssue(server: McpServer): void {
             labels: z
                 .array(z.string())
                 .optional()
-                .describe("Optional labels such as 'bug', 'feature', 'question'"),
+                .describe(
+                    "Labels to apply — pass the suggestedLabels from draft_issue (e.g. ['bug'], ['feature']). " +
+                    "Do not omit; GitHub issue templates always include a label.",
+                ),
         },
         async ({ title, type, language, sectionContents, labels }) => {
             const start = Date.now();
