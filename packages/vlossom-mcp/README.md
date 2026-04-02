@@ -87,30 +87,6 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ---
 
-## GitHub Issue Flow
-
-```
-1. check_github_token
-   → isConfigured: false  →  set_github_token(token)   (ask user for PAT)
-   → isConfigured: true   →  proceed to step 2
-
-2. draft_issue(summary, type, language?)
-   → returns suggestedTitle, sections[], type, language
-
-3. Collect each required section from the user one by one
-
-4. Show the final content and ask for user confirmation
-
-5. report_issue(title, type, language, sectionContents, labels?)
-   → returns the created issue URL and number
-```
-
-> **Note:** `set_github_token` stores the token in memory only. It is not written to disk and is cleared when the process restarts.
->
-> **i18n:** `draft_issue` automatically detects the user's language (`ko` / `en`) and returns section headings in the matching language.
-
----
-
 ## Roadmap
 
 | Version  | Tools                                                                          |

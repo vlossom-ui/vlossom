@@ -86,30 +86,6 @@ MCP 클라이언트 설정 파일에 아래 내용을 추가합니다 (Claude Co
 
 ---
 
-## GitHub 이슈 등록 흐름
-
-```
-1. check_github_token
-   → isConfigured: false  →  set_github_token(token)   (PAT를 사용자에게 요청)
-   → isConfigured: true   →  2단계로 이동
-
-2. draft_issue(summary, type, language?)
-   → suggestedTitle, sections[], type, language 반환
-
-3. 각 필수 섹션을 사용자에게 순서대로 수집
-
-4. 최종 내용을 보여주고 사용자 확인 요청
-
-5. report_issue(title, type, language, sectionContents, labels?)
-   → 생성된 이슈 URL과 번호 반환
-```
-
-> **참고:** `set_github_token`은 토큰을 메모리에만 저장합니다. 디스크에 기록되지 않으며 프로세스 재시작 시 초기화됩니다.
->
-> **다국어:** `draft_issue`는 사용자 언어(`ko` / `en`)를 자동 감지하고 해당 언어로 섹션 헤딩을 반환합니다.
-
----
-
 ## 로드맵
 
 | 버전       | 도구                                                                                           |
