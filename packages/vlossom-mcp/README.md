@@ -20,14 +20,20 @@ npx vlossom-mcp
 
 ## Setup
 
-Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude Code, or `claude_desktop_config.json` for Claude Desktop):
+**Option 1 — Claude Code CLI:**
+
+```bash
+claude mcp add vlossom -- npx -y vlossom-mcp@latest
+```
+
+**Option 2 — Config file** (`.mcp.json` for Claude Code, `claude_desktop_config.json` for Claude Desktop):
 
 ```json
 {
   "mcpServers": {
     "vlossom": {
       "command": "npx",
-      "args": ["vlossom-mcp"]
+      "args": ["-y", "vlossom-mcp@latest"]
     }
   }
 }

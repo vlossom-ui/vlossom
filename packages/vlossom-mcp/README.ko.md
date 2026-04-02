@@ -20,14 +20,20 @@ npx vlossom-mcp
 
 ## 설정
 
-MCP 클라이언트 설정 파일에 아래 내용을 추가합니다 (Claude Code의 경우 `.mcp.json`, Claude Desktop의 경우 `claude_desktop_config.json`):
+**방법 1 — Claude Code CLI:**
+
+```bash
+claude mcp add vlossom -- npx -y vlossom-mcp@latest
+```
+
+**방법 2 — 설정 파일** (Claude Code: `.mcp.json`, Claude Desktop: `claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "vlossom": {
       "command": "npx",
-      "args": ["vlossom-mcp"]
+      "args": ["-y", "vlossom-mcp@latest"]
     }
   }
 }
