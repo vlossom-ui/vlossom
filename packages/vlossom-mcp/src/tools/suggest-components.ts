@@ -87,7 +87,7 @@ function extractKeywords(useCase: string): string[] {
     return useCase
         .toLowerCase()
         .split(/[\s,./]+/)
-        .map((w) => w.replace(/[^a-z0-9]/g, ""))
+        .map((w) => w.replace(/[^a-z0-9\uAC00-\uD7A3]/g, ""))
         .filter((w) => w.length > 1 && !STOP_WORDS.has(w));
 }
 

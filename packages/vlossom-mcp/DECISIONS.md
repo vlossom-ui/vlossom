@@ -890,3 +890,32 @@ Please reply with a number (1–3).
 | H4 | 하네스 | 스테퍼 UX (steps ≥ 2) |
 | H5 | 하네스 | 이슈 등록 흐름 |
 | H6 | 하네스 | 빈 결과 사용자 고지 |
+
+---
+
+## 결정 38: suggest_components 한국어 입력 처리 — HEURISTIC_MAP 미사용
+
+**날짜**: 2026-04-03
+
+**배경**: `extractKeywords()`의 정규식 `/[^a-z0-9]/g`이 한글을 포함한 모든 비ASCII 문자를 제거했음. "로그인 폼" 입력 시 키워드가 `["", ""]`로 변환되어 아무 컴포넌트도 매칭되지 않는 버그 확인.
+
+**시도 및 거부**:
+
+| 옵션 | 검토 결과 |
+|---|---|
+| 정규식 수정 + 한국어 HEURISTIC_MAP 추가 (`로그인` → VsForm 등) | ❌ 거부 — G1 위반. "로그인 폼" → VsForm,VsInput,VsButton 매핑은 의미론적 판단으로 LLM의 책임 |
+| **정규식 수정만 적용** (`/[^a-z0-9\uAC00-\uD7A3]/g`) | ✅ 채택 — 한글 문자를 보존하되, 컴포넌트 매핑은 LLM에 위임 |
+
+**결정**: 정규식에서 한글 범위(`\uAC00-\uD7A3`)를 보존하도록 수정. HEURISTIC_MAP에 한국어 항목은 추가하지 않음. 한국어 use case를 가진 사용자에게는 LLM이 영문 키워드로 변환하거나 적절히 해석하여 도구를 호출하는 것이 올바른 흐름.
+
+**근거**: G1 — "이 판단이 자연어 이해를 필요로 하는가?" → Yes → LLM에 위임.
+
+---
+
+## 결정 39: get_usage_examples README 누락 수정
+
+**날짜**: 2026-04-03
+
+**배경**: `get_usage_examples` 도구가 server.ts에 등록되어 있으나 README.md, README.ko.md 도구 목록에서 누락되어 있었음.
+
+**결정**: 두 README 파일의 "Discovery & Lookup" / "탐색 및 조회" 테이블에 `get_usage_examples` 행 추가.

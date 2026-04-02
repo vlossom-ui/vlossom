@@ -42,14 +42,15 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 | Tool                          | Description                                                                              |
 | ----------------------------- | ---------------------------------------------------------------------------------------- |
 | `list_components`             | Returns the full list of Vlossom components with names and descriptions                  |
-| `get_component`               | Returns props, StyleSet, events, and slots for a component _(planned)_                   |
-| `search_components`           | Searches components by keyword across name, description, and props _(planned)_           |
-| `suggest_components`          | Recommends components based on a natural-language use case _(planned)_                   |
-| `compare_components`          | Compares two components side-by-side with differences and recommendations _(planned)_    |
-| `get_component_relationships` | Returns parent/child/sibling component relationships _(planned)_                         |
+| `get_component`               | Returns props, StyleSet, events, and slots for a component                               |
+| `search_components`           | Searches components by keyword across name, description, and props                       |
+| `suggest_components`          | Recommends components based on a natural-language use case                               |
+| `compare_components`          | Compares two components side-by-side with differences and recommendations                |
+| `get_component_relationships` | Returns parent/child/sibling component relationships                                     |
 | `get_component_source`        | Returns the raw Vue source file for a component                                          |
 | `get_directive`               | Returns usage and options for Vlossom directives (e.g. `v-scroll-shadow`)                |
 | `get_composables`             | Returns usage info for composables like `useColorScheme`, `useStyleSet`                  |
+| `get_usage_examples`          | Returns annotated end-to-end pipeline walkthroughs showing how to chain tools together   |
 
 ### Style System
 
