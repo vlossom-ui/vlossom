@@ -115,18 +115,18 @@ Every tool's description follows this **4-sentence** structure:
 ```ts
 // ✅ Pipeline start tool (has follow-up)
 "Call this when the user wants to file a GitHub issue. " +
-  "Generates a structured template with required sections. " +
-  "Then collect each requiredSection from the user and pass sections to report_issue.";
+    "Generates a structured template with required sections. " +
+    "Then collect each requiredSection from the user and pass sections to report_issue.";
 
 // ✅ Pipeline end tool (has prerequisite)
 "ALWAYS call draft_issue before this. " +
-  "Call this when the user has filled in all sections and is ready to submit. " +
-  "Creates a real GitHub issue from the collected sections.";
+    "Call this when the user has filled in all sections and is ready to submit. " +
+    "Creates a real GitHub issue from the collected sections.";
 
 // ✅ Standalone tool (no prerequisite or follow-up)
 "Call this when the user asks about available Vlossom components " +
-  "or needs to find which component fits a UI element. " +
-  "Returns all component names and one-line descriptions.";
+    "or needs to find which component fits a UI element. " +
+    "Returns all component names and one-line descriptions.";
 
 // ❌ Incorrect — only describes functionality, no trigger or flow
 ("List all Vlossom components with their descriptions.");
@@ -238,7 +238,7 @@ For GitHub issue / PR / sprint requests, set up an Agent Team with the following
 Set up an Agent team to work on the https://github.com/vlossom-ui/vlossom project.
 
 Sprint goal:
-Check high-priority issues at https://github.com/vlossom-ui/vlossom/issues
+Check high-priority issues at https://github.com/vlossom-ui/vlossom/issues relate with vlossom-mcp
 and process them, creating PRs.
 
 Team structure (5 roles):
