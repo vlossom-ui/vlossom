@@ -12,7 +12,11 @@ Calls vlossom-mcp tools to look up component information and file GitHub issues.
 
 ---
 
-## Guardrails
+## Harnesses
+
+Harnesses split into two sub-types by polarity.
+
+### Guardrails — negative constraints (violation = bug)
 
 **G1 — report_issue requires explicit user approval**
 `report_issue` creates a real GitHub issue. Never call it without the user saying "yes, submit" or equivalent. Confirming the draft alone is not approval.
@@ -28,9 +32,9 @@ Never mention a Vlossom component (`VsXxx` / `vs-xxx`) that did not appear in a 
 
 ---
 
-## Harnesses
+### Scaffolds — positive prescriptions (violation = quality degradation)
 
-### Stepper — render after every multi-step response
+#### Stepper — render after every multi-step response
 
 Render the stepper **after** the main response.
 
@@ -47,7 +51,7 @@ clarify_intent · suggest_components · get_component
 
 Columns (fixed): `N.` = 3 right-aligned · `tool` = 22 left-aligned · `label` = 24 left-aligned (23 + `…`). No timing.
 
-### Empty results — inform user before next_action
+#### Empty results — inform user before next_action
 
 When a tool returns an empty result set (`components: []`, `results: []`, etc.), **always tell the user** before following `next_action`. Never silently jump to the next tool.
 
@@ -56,7 +60,7 @@ When a tool returns an empty result set (`components: []`, `results: []`, etc.),
 ❌  [calls clarify_intent with no user-facing message]
 ```
 
-### clarify_intent — render presentation_format verbatim
+#### clarify_intent — render presentation_format verbatim
 
 When `clarify_intent` returns, render the `presentation_format` field from the response exactly as-is. Do not rephrase it.
 

@@ -1,7 +1,8 @@
 # vlossom-mcp Development Rules
 
-> Applied only to `packages/vlossom-mcp`. Two categories of rules govern this project:
-> **Guardrails** — things that must never happen · **Harnesses** — structures that enforce correct behavior.
+> Applied only to `packages/vlossom-mcp`. One taxonomy governs this project:
+> **Harnesses** — all behavioral constraints on the LLM, split into two sub-types:
+> **Guardrails** (G) — things that must never happen · **Scaffolds** (H) — structures that enforce correct behavior.
 
 ---
 
@@ -12,7 +13,7 @@ Print this banner when CLAUDE.md is loaded:
 ```
 ╔══════════════════════════════════════════════════════╗
 ║  📦 vlossom-mcp CLAUDE.md rules are active           ║
-║  Guardrails: 5 active  ·  Harnesses: 7 active        ║
+║  Harnesses: 12  (Guardrails: 5  ·  Scaffolds: 7)     ║
 ╚══════════════════════════════════════════════════════╝
 ```
 
@@ -21,9 +22,15 @@ Print this banner when CLAUDE.md is loaded:
 
 ---
 
-## Guardrails
+## Harnesses
 
-Guardrails are hard stops. Violating any of these is a bug, not a style choice.
+Harnesses are all behavioral constraints on the LLM. They split into two sub-types by polarity.
+
+---
+
+### Guardrails
+
+Negative constraints — hard stops. Violating any of these is a bug, not a style choice.
 
 ### G1 — No server-side LLM judgments
 
@@ -68,9 +75,9 @@ The test: *can I point to the tool response that returned this component name?* 
 
 ---
 
-## Harnesses
+### Scaffolds
 
-Harnesses are prescriptive scaffolds. They encode the correct behavior so that Claude produces consistent output without needing to reason from scratch each time.
+Positive prescriptions — encode the correct behavior so that Claude produces consistent output without needing to reason from scratch each time.
 
 ### H1 — Tool description template
 
