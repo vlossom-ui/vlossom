@@ -638,3 +638,255 @@ cp node_modules/vlossom-mcp/skill/SKILL.md .claude/skills/vlossom.md
 - `clarify-intent.ts` description: `"use your own judgment about whether clarification adds value"` 명시
 
 **근거**: MCP에서 LLM의 도구 선택 근거는 도구 description. INSTRUCTIONS의 규칙이 이를 덮어쓰는 구조는 LLM 자연 판단을 방해함. 도구 description을 신뢰하는 것이 더 유연하고 의도에 충실.
+
+---
+
+## 결정 27: next_action 필드를 tool 응답 데이터에 인코딩
+
+**질문**: tool pipeline 체인을 어떻게 보장할 것인가?
+
+**배경**
+
+사용자가 "차트 컴포넌트를 그리고 싶다"고 요청했을 때 `search_components`가 빈 결과를 반환했으나, AI가 이슈 제안 대신 서드파티 라이브러리(Chart.js 등)를 추천하는 문제가 발생. INSTRUCTIONS 텍스트만으로는 AI가 다음 단계를 신뢰성 있게 따르지 않음.
+
+**분석**
+
+두 가지 접근법을 검토:
+
+| # | 방법 | 신뢰도 | 이유 |
+|---|------|--------|------|
+| 1 | INSTRUCTIONS 텍스트 규칙만 사용 | 낮음 | AI가 문맥에 따라 무시할 수 있음 |
+| 2 | tool 응답 데이터에 `next_action` 필드 추가 | 중간 | 구체적 데이터 신호로 AI 행동을 유도 |
+| 3 | **INSTRUCTIONS + `next_action` 병행** | 높음 | 텍스트 규칙과 데이터 신호가 일치하면 AI가 따를 수밖에 없음 |
+
+**결정**: 방법 3 — INSTRUCTIONS에 Missing Component Rule 추가 + 모든 관련 tool 응답에 `next_action` 인코딩
+
+**`next_action` 추가 기준 (두 가지 패턴)**
+
+**패턴 A — 선행 조건 미충족 (실패 시)**: tool이 실행됐지만 필요한 전제가 없어 실패할 때, 무엇을 먼저 해야 하는지 알려줌
+
+| Tool | 시나리오 | next_action |
+|---|---|---|
+| `report_issue` | GitHub 토큰 없음 | `"set_github_token"` |
+| `check_github_token` | 토큰 미설정 | `"set_github_token"` |
+| `get_component` | 이름 못 찾음 | `"list_components"` |
+| `get_component_source` | 이름 못 찾음 | `"list_components"` |
+| `compare_components` | 컴포넌트 못 찾음 | `"list_components"` |
+| `search_components` | 결과 없음 | `"suggest_issue"` |
+| `suggest_components` | 결과 없음 | `"suggest_issue"` |
+
+**패턴 B — 성공 후 다음 단계 (정상 흐름)**: tool이 성공했을 때 pipeline의 다음 노드를 명시
+
+| Tool | 시나리오 | next_action |
+|---|---|---|
+| `list_components` | 목록 반환 | `"get_component"` |
+| `check_github_token` | 토큰 설정됨 | `"draft_issue"` |
+| `set_github_token` | 토큰 저장 성공 | `"draft_issue"` |
+| `draft_issue` | 템플릿 생성 완료 | `"report_issue"` |
+| `search_components` | 결과 있음 | `"get_component"` |
+| `suggest_components` | 결과 있음 | `"get_component"` |
+| `get_component_relationships` | 관계 반환 | `"get_component"` |
+
+**근거**: tool 응답 데이터는 AI가 반드시 읽는 구조화된 정보. INSTRUCTIONS 텍스트보다 무시하기 어렵다. 두 레이어가 같은 방향을 가리킬 때 AI 행동의 일관성이 높아진다. 링크드리스트처럼 각 노드(tool)가 다음 노드를 명시적으로 가리키는 구조.
+
+**3차 보완 (교차 도메인 관계)**: 같은 기능의 다른 형태, 스타일링 컨텍스트 연결 추가:
+- `get_composables` ↔ `get_directive`: 같은 기능이 composable(프로그래매틱)과 directive(선언적) 두 형태로 제공될 수 있음
+- `get_css_tokens` ↔ `get_vlossom_options`: 디자인 토큰과 전역 설정은 상호 참조 관계
+- `get_component` 성공 → `get_css_tokens`: 컴포넌트 스타일링 컨텍스트로 자연스럽게 연결
+- `get_composables`/`get_directive` 없음 → `suggest_issue`: 없는 composable/directive도 enhancement 요청 대상
+
+**4차 보완 (clarify_intent 적극 개입)**: off-topic 쿼리와 검색 실패 시 clarify_intent를 먼저 호출하도록 변경:
+- LLM 특성상 Vlossom과 무관한 질문이 들어올 수 있음 → clarify_intent로 Vlossom 관련 맥락으로 재유도
+- `search_components` 빈 결과 → 바로 `suggest_issue`가 아니라 `clarify_intent` 먼저 (쿼리 표현이 다를 수 있음)
+- `suggest_components` 빈 결과는 휴리스틱까지 적용한 결과이므로 `suggest_issue` 유지 (진짜 없는 것)
+- INSTRUCTIONS에 Proactive Clarification Rule 추가
+
+**2차 보완 (인과관계 전체 검토)**: 전체 tool 그래프를 재검토하여 누락된 연결 4개 추가:
+- `list_components` → `get_component`: 목록 조회 후 특정 컴포넌트 상세 조회는 자연스러운 흐름
+- `get_component_relationships` 성공 → `get_component`: 관계 파악 후 각 관련 컴포넌트 상세 조회
+- `get_component_relationships` 실패 → `list_components`: 다른 not-found 패턴과 일관성
+- `get_directive` 실패 → `suggest_issue`: 없는 directive는 컴포넌트와 동일하게 enhancement 요청 대상
+
+---
+
+## 결정 28: 서버 사이드 clarify 메커니즘 제거 (LLM 위임 원칙)
+
+**날짜**: 2026-04-02
+
+**배경**: `suggest_components`에 `needsClarify = heuristicCount === 0 && components.length >= 3` 로직이 있었음. 휴리스틱 매핑 없이 결과가 3개 이상이면 `_meta.clarify: true`를 반환하여 LLM이 `clarify_intent`를 호출하도록 유도.
+
+**문제**: 이 판단은 "쿼리가 모호한가?"라는 언어적 추론을 스크립트가 수행하는 것. 결과 수로 모호성을 판별하는 것은 신뢰할 수 없는 휴리스틱.
+
+| # | 옵션 | 검토 결과 |
+|---|------|-----------|
+| 1 | 휴리스틱 개선 (임계값 조정, 가중치 부여) | ❌ 근본적으로 스크립트가 언어 판단을 대행하는 구조 |
+| 2 | **서버 사이드 판단 완전 제거, LLM에 위임** | ✅ 채택 |
+
+**결정**: `needsClarify` 로직 삭제, `McpResponseMeta.clarify?: boolean` 필드 삭제, `recordStep`의 `clarify` 파라미터 삭제.
+
+**수정 파일**: `suggest-components.ts`, `mcp-response.ts`, `clarify-intent.ts` (description에서 `_meta.clarify` 참조 제거).
+
+**원칙화**: CLAUDE.md에 **G1 — No server-side LLM judgments** 가드레일로 명문화.
+
+**판단 기준**: 서버가 `next_action`을 발행하는 건 객관적 사실(조회 실패, 토큰 없음, 결과 없음)에만 한정. 언어적 판단(쿼리가 모호한가, 문장이 올바른가)은 반드시 LLM에 위임.
+
+---
+
+## 결정 29: clarify_intent presentation_format 하네스
+
+**날짜**: 2026-04-02
+
+**배경**: `clarify_intent`가 선택지를 반환해도 LLM이 사용자에게 표시하는 형식이 일관되지 않았음. 세션마다 번호 없이 나열, 마크다운 리스트, 자연어 등 다양하게 출력.
+
+**결정**: `clarify_intent` 응답에 `presentation_format` 필드를 추가. LLM은 이 필드를 재해석 없이 그대로 사용자에게 출력.
+
+**형식**:
+```
+💬 I want to make sure I understand what you need. Which of these best matches?
+
+[1] <label>
+[2] <label>
+[3] <label>
+
+Please reply with a number (1–3).
+```
+
+**근거**: `[N]` 인덱싱은 사용자가 숫자만 답해도 명확히 선택 가능. LLM이 임의로 재형식화하면 인덱스가 불분명해질 수 있음. 하네스로 응답에 포함시켜 일관성 강제.
+
+---
+
+## 결정 30: get_usage_examples 도구 추가
+
+**날짜**: 2026-04-02
+
+**배경**: "vlossom-mcp를 어떻게 쓸 수 있나요?"라는 질문에 대한 답이 없었음. 도구 목록 나열만으로는 파이프라이닝 방식의 실제 흐름이 전달되지 않음.
+
+**결정**: `get_usage_examples` 도구를 추가하여 3개의 end-to-end 파이프라인 예제를 반환.
+
+**포함된 예제**:
+
+| id | 시나리오 | 단계 수 |
+|----|---------|--------|
+| `missing-component` | 차트 컴포넌트 없음 → 이슈 제출까지 전체 흐름 | 7 |
+| `build-login-form` | 로그인 폼 제작 → 컴포넌트 조회 → 코드 생성 | 4 |
+| `lookup-specific-component` | VsDrawer 상세 조회 + CSS 토큰 연결 | 3 |
+
+**각 예제 구조**: `user_prompt` → `pipeline[]` (step마다 `tool`, `input`, `output_summary`, `why` 포함).
+
+**핵심 설계 원칙**: `input`/`output_summary`를 명시하여 파이프라인 체인의 동작을 직관적으로 이해할 수 있게 함. `why` 필드로 각 단계의 인과관계를 설명.
+
+**트리거**: INSTRUCTIONS flow guide에 "When user asks how to use vlossom-mcp: `get_usage_examples`" 추가.
+
+---
+
+## 결정 31: CLAUDE.md를 하네스/가드레일 분류 체계로 재구성
+
+**날짜**: 2026-04-02
+
+**배경**: 기존 CLAUDE.md는 도구 설계 원칙, 코드 스타일, 버전 관리, 에이전트 설정이 순서 없이 나열됨. 새 규칙이 추가될 때 어디에 넣을지 명확하지 않았고, 규칙의 성격(금지인지 안내인지)이 뒤섞여 있었음.
+
+**분류 체계**:
+
+| 개념 | 정의 | 역할 |
+|------|------|------|
+| **가드레일(Guardrail)** | 절대 해서는 안 되는 것 | 위반하면 버그 |
+| **하네스(Harness)** | 올바른 행동을 유도하는 구조적 틀 | 따르면 일관성 보장 |
+| **참고(Reference)** | 도구 추가 절차, 데이터 파일, 코드 스타일, 버전 관리 | 지원 정보 |
+
+**가드레일 4개**: G1(서버 사이드 LLM 판단 금지), G2(report_issue 명시 승인 필요), G3(단일 책임 원칙), G4(clarify_intent 재호출 금지).
+
+**하네스 5개**: H1(도구 description 4문장 구조), H2(next_action 링크드리스트), H3(clarify_intent 선택 형식), H4(Stepper UX), H5(이슈 제출 흐름).
+
+**SKILL.md도 동일 체계로 재구성**: 스킬 파일에도 가드레일/하네스 섹션을 적용하여 개발자와 LLM 모두가 동일한 분류 언어를 사용.
+
+---
+
+## 결정 32: 대화형 응답에 이모지 최소 적용
+
+**날짜**: 2026-04-02
+
+**배경**: 텍스트만으로는 중요한 대화 전환점(선택 요청, 인증 요청, 초안 준비)이 시각적으로 구분되지 않음.
+
+**결정**: 사용자와 직접 대화가 발생하는 응답 메시지에만 이모지를 적용. 5개 이모지 고정 세트로 제한.
+
+| 이모지 | 위치 | 의미 |
+|--------|------|------|
+| `💬` | `clarify_intent` presentation_format | 선택 요청 다이얼로그 |
+| `🔗` | `get_usage_examples` description | 파이프라인 체인 소개 |
+| `💡` | `suggest_components` 빈 결과 next_action_message | 없는 기능 → 이슈 제안 |
+| `🔑` | `check_github_token` / `set_github_token` message | 인증 상태 변경 |
+| `📝` | `draft_issue` next_action_message | 초안 완성, 섹션 수집 요청 |
+
+**제약**: 이 5개 이외의 이모지는 도구 응답에 추가하지 않음. LLM 내부 안내 전용 필드(`next_action_message` 대부분)에는 적용하지 않고 사용자에게 직접 보이는 텍스트에만 한정.
+
+---
+
+## 결정 33: get_usage_examples 스테퍼 파이프라인 시각화
+
+**날짜**: 2026-04-02
+
+**배경**: `get_usage_examples`는 단일 도구 호출이므로 `recordStep()`을 한 번만 호출하면 1-step 스테퍼가 렌더링됨. 이는 사용자에게 실제 파이프라인 구조를 전달하지 못하고 노이즈만 추가.
+
+**결정**: `recordStep()` 대신 `EXAMPLES[0].pipeline`(missing-component, 7단계)의 스텝 정보로 직접 `McpResponseMeta`를 생성. 스테퍼가 실제 파이프라인 흐름을 반영.
+
+| 옵션 | 검토 결과 |
+|---|---|
+| `recordStep()` 한 번 호출 | ❌ 1-step 스테퍼 → 의미 없음 |
+| 모든 예제 파이프라인 합산 | ❌ 3개 예제 합산 시 순서·맥락 불명확 |
+| **missing-component 예제 파이프라인만 사용** | ✅ 채택 — 가장 긴 7단계, 모든 주요 도구 포함 |
+
+**구현**: `PipelineStep`에 `stepperLabel` 필드 추가. `McpResponseMeta`를 `pipeline.map()`으로 직접 생성, `toolsUsed`는 중복 카운트 로직 인라인.
+
+---
+
+## 결정 34: 스테퍼 렌더링 조건 — steps ≥ 2 (H4 수정)
+
+**날짜**: 2026-04-02
+
+**배경**: 단일 도구 호출(예: `list_components`, `get_vlossom_options`)에서도 스테퍼가 렌더링되면 1줄짜리 스테퍼가 나타남. 정보 가치 없이 레이아웃만 차지.
+
+**결정**: `_meta.steps.length < 2`이면 스테퍼를 건너뜀. CLAUDE.md H4, SKILL.md, server.ts INSTRUCTIONS 세 곳에 동시 적용.
+
+---
+
+## 결정 35: H6 — 빈 결과 시 사용자 고지 하네스
+
+**날짜**: 2026-04-02
+
+**배경**: `search_components`나 `suggest_components`가 빈 배열을 반환하면 LLM이 `next_action`을 즉시 따라가면서 사용자에게 아무 설명 없이 다음 도구를 호출하는 경우가 발생.
+
+**결정**: 빈 결과(`components: []`, `results: []` 등)를 반환한 경우, LLM은 반드시 사용자에게 "매칭된 컴포넌트가 없습니다"를 먼저 고지한 뒤 `next_action`을 따름. CLAUDE.md H6, SKILL.md, server.ts INSTRUCTIONS에 적용.
+
+---
+
+## 결정 36: G5 — 컴포넌트 환각 방지 가드레일
+
+**날짜**: 2026-04-02
+
+**배경**: LLM이 도구 응답에 없는 컴포넌트 이름을 언급하거나 추천하는 경우가 발생할 수 있음. `VsChart`, `VsDataGrid` 같은 존재하지 않는 컴포넌트를 자신 있게 안내하는 것은 사용자를 혼란시킴.
+
+**결정**: 현재 대화의 도구 응답에 등장한 컴포넌트만 언급 가능. 불확실한 경우 `search_components`를 먼저 호출. CLAUDE.md G5, SKILL.md G4, server.ts INSTRUCTIONS에 적용.
+
+**G5가 G1보다 뒤에 번호가 매겨진 이유**: G1–G4는 서버 사이드 구현 원칙, G5는 LLM 런타임 행동 원칙으로 나중에 추가됨. 번호는 추가 순서를 반영.
+
+---
+
+## 결정 37: CLAUDE.md 가드레일/하네스 체계 최종 현황
+
+**날짜**: 2026-04-02
+
+**현황**: 가드레일 5개(G1–G5) · 하네스 6개(H1–H6)
+
+| ID | 분류 | 내용 |
+|---|---|---|
+| G1 | 가드레일 | 서버 사이드 LLM 판단 금지 |
+| G2 | 가드레일 | report_issue 명시적 승인 필수 |
+| G3 | 가드레일 | 도구 단일 책임 |
+| G4 | 가드레일 | clarify_intent 재호출 금지 |
+| G5 | 가드레일 | 컴포넌트 환각 방지 |
+| H1 | 하네스 | 도구 설명 4문장 구조 |
+| H2 | 하네스 | next_action 링크드리스트 |
+| H3 | 하네스 | clarify_intent 선택지 포맷 |
+| H4 | 하네스 | 스테퍼 UX (steps ≥ 2) |
+| H5 | 하네스 | 이슈 등록 흐름 |
+| H6 | 하네스 | 빈 결과 사용자 고지 |
