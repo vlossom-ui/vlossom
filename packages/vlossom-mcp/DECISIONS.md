@@ -875,7 +875,7 @@ Please reply with a number (1–3).
 
 **날짜**: 2026-04-02
 
-**현황**: 가드레일 5개(G1–G5) · 하네스 6개(H1–H6)
+**현황**: 가드레일 5개(G1–G5) · 하네스 7개(H1–H7)
 
 | ID | 분류 | 내용 |
 |---|---|---|
@@ -890,6 +890,7 @@ Please reply with a number (1–3).
 | H4 | 하네스 | 스테퍼 UX (steps ≥ 2) |
 | H5 | 하네스 | 이슈 등록 흐름 |
 | H6 | 하네스 | 빈 결과 사용자 고지 |
+| H7 | 하네스 | 자연어 쿼리 시 clarify_intent 우선 호출 |
 
 ---
 
@@ -919,3 +920,79 @@ Please reply with a number (1–3).
 **배경**: `get_usage_examples` 도구가 server.ts에 등록되어 있으나 README.md, README.ko.md 도구 목록에서 누락되어 있었음.
 
 **결정**: 두 README 파일의 "Discovery & Lookup" / "탐색 및 조회" 테이블에 `get_usage_examples` 행 추가.
+
+---
+
+## 결정 40: get_usage_examples — recordStep 패턴 통일 및 clarify_intent_candidates 추가
+
+**날짜**: 2026-04-03
+
+**배경**: `get_usage_examples`가 유일하게 `recordStep()`을 호출하지 않고 `EXAMPLES[0].pipeline`으로 수동 meta를 구성했음. 결과적으로 세션 step 번호가 동기화되지 않고 stepper도 렌더링되지 않는 문제 확인.
+
+**변경 내용**:
+- `recordStep("get_usage_examples", "Usage examples", ...)` 호출로 다른 도구와 패턴 통일
+- `clarify_intent_candidates` 필드 추가: `EXAMPLES.map()`으로 자동 생성되는 후보 목록. LLM이 `clarify_intent` 호출 시 candidates를 직접 구성하지 않아도 되도록 스캐폴딩 제공
+- 도구 설명 4번 문장 H1 규칙에 맞게 수정
+
+**거부된 옵션**: `presentation_format` 직접 포함 — EXAMPLES가 변경될 때 문자열을 별도로 동기화해야 하므로 유지보수 위험. `clarify_intent_candidates`는 `EXAMPLES.map()`으로 자동 생성되어 항상 동기화됨.
+
+---
+
+## 결정 41: H7 하네스 추가 — 자연어 쿼리 시 clarify_intent 우선 호출
+
+**날짜**: 2026-04-03
+
+**배경**: `search_components`, `suggest_components` 같이 자연어 입력을 받는 도구에서 LLM이 `clarify_intent`를 건너뛰고 바로 도구를 호출하는 현상이 반복됨.
+
+**결정**: CLAUDE.md에 H7 하네스 추가.
+- 사용자 입력이 자연어 설명(free-form)인 경우 → 어떤 도구든 호출 전에 `clarify_intent` 먼저 호출
+- 명확한 식별자(컴포넌트 이름 등)이거나 파이프라인 중간 도구인 경우 → 스킵
+
+**근거**: 기본값을 "바로 호출"에서 "의도 확인 우선"으로 뒤집음으로써 LLM의 기본 동작을 대화형으로 유도. 식별자 판단은 LLM이 하므로 G1 준수.
+
+---
+
+## 결정 42: search_components description 범위 축소 — 명확한 키워드 전용
+
+**날짜**: 2026-04-03
+
+**배경**: `search_components`의 description에 `"or use case"`, `"which component should I use for X"` 표현이 포함되어, 모호한 free-form 쿼리도 `clarify_intent`를 거치지 않고 직접 `search_components`로 유입되는 현상 발생.
+
+**예시**: `"steprecord 알려줘"` → `search_components("steprecord")` → 결과 없음 → `clarify_intent` 순으로 흘렀으나, H7 의도대로라면 `clarify_intent`가 먼저였어야 함.
+
+| # | 옵션 | 검토 결과 |
+|---|---|---|
+| 1 | description에서 use-case 관련 표현 제거, 명확한 키워드 전용으로 명시 | ✅ 채택 |
+| 2 | 별도 진입점 tool 추가 | ❌ G3 위반 가능성, 기존 clarify_intent로 충분 |
+
+**결정**: `search_components` description을 구체적 컴포넌트 이름·명확한 키워드 전용으로 제한. `"Do NOT call this for vague or free-form descriptions — call clarify_intent first instead"` 문구 추가.
+
+**근거**: tool description이 LLM의 호출 전략을 결정하므로, description을 좁히는 것이 코드 변경 없이 라우팅을 수정하는 가장 단순한 방법. `clarify_intent` description에도 `"Call this FIRST"` 우선순위를 명시하여 양방향으로 강제.
+
+---
+
+## 결정 43: resetSession() 제거 — 세션 관리를 타임아웃 전용으로 단순화
+
+**날짜**: 2026-04-03
+
+**배경**: `search_components`, `suggest_components`, `list_components`가 호출 시 `resetSession()`을 실행하여 세션을 초기화했음. `clarify_intent` → `search_components` 연속 흐름에서 두 번째 `search_components`가 세션을 리셋, `_meta.steps.length < 2`가 되어 stepper가 출력되지 않는 버그 발생.
+
+**문제 흐름**:
+```
+search_components("steprecord")   → resetSession() → step 1
+clarify_intent                    →               → step 2
+[user picks option]
+search_components("timeline...")  → resetSession() → step 1  ← 세션 리셋으로 누락
+```
+
+| # | 옵션 | 검토 결과 |
+|---|---|---|
+| 1 | `resetSession()` 전체 제거, 60초 타임아웃만 사용 | ✅ 채택 |
+| 2 | `is_continuation` 파라미터로 조건부 리셋 | ❌ LLM 판단 의존 → G1 위반 가능 |
+| 3 | clarify_intent에서 세션 보존 플래그 설정 | ❌ tool 간 숨겨진 상태 의존성 |
+
+**결정**: 3개 tool에서 `resetSession()` 호출 제거. 세션 경계는 60초 inactivity timeout으로만 관리.
+
+**트레이드오프**: 60초 내 연속 쿼리 시 이전 쿼리의 step이 stepper에 누적될 수 있음. 그러나 일반적인 대화 흐름에서 한 쿼리의 tool 호출들은 수 초 내에 완료되고, 새 쿼리 전에는 사용자 입력 대기 시간이 발생하므로 실질적인 오염 가능성은 낮음.
+
+**근거**: `"initiating tool"` 가정이 `clarify_intent` 연속 흐름에서 깨짐. 명시적 리셋보다 타임아웃 기반이 더 robust하며 코드가 단순해짐.

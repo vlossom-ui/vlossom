@@ -41,9 +41,10 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 | Tool                          | Description                                                                              |
 | ----------------------------- | ---------------------------------------------------------------------------------------- |
+| `clarify_intent`              | Disambiguates free-form or ambiguous queries; always call this before searching when the intent is unclear |
 | `list_components`             | Returns the full list of Vlossom components with names and descriptions                  |
 | `get_component`               | Returns props, StyleSet, events, and slots for a component                               |
-| `search_components`           | Searches components by keyword across name, description, and props                       |
+| `search_components`           | Searches by a specific component name or concrete keyword (e.g. `button`, `drawer`)     |
 | `suggest_components`          | Recommends components based on a natural-language use case                               |
 | `compare_components`          | Compares two components side-by-side with differences and recommendations                |
 | `get_component_relationships` | Returns parent/child/sibling component relationships                                     |
@@ -118,10 +119,11 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 | ✅ 0.3.0 | `get_component`, `search_components` + build-meta pipeline                     |
 | ✅ 0.4.0 | `suggest_components`, `get_component_relationships`, `compare_components`      |
 | ✅ 0.5.0 | Stepper UX (`_meta`), session isolation, stepper format improvements           |
-| ✅ 0.6.0 | `clarify_intent` disambiguation gate (Phase 4-3)                               |
-| ✅ 0.7.0 | `get_component_source`, `get_directive`, `get_composables`                               |
-| ✅ 0.8.0 | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup`           |
-| 0.8.0    | `generate_component_code` (StyleSet-first), `generate_style_set`, `adapt_type_to_component` |
+| ✅ 0.6.0 | `clarify_intent` disambiguation gate                                           |
+| ✅ 0.7.0 | `get_component_source`, `get_directive`, `get_composables`                     |
+| ✅ 0.8.0 | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup` |
+| ✅ 0.8.x | `get_usage_examples`, `next_action` linked-list, `presentation_format` harness, `clarify_intent`-first routing, stepper session fix |
+| 0.9.0    | `generate_component_code` (StyleSet-first), `generate_style_set`, `adapt_type_to_component` |
 | 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                       |
 
 ---
