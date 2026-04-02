@@ -24,12 +24,12 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ```json
 {
-    "mcpServers": {
-        "vlossom": {
-            "command": "npx",
-            "args": ["vlossom-mcp"]
-        }
+  "mcpServers": {
+    "vlossom": {
+      "command": "npx",
+      "args": ["vlossom-mcp"]
     }
+  }
 }
 ```
 
@@ -37,13 +37,51 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ## Tools
 
-| Tool                  | Description                                                                 |
-| --------------------- | --------------------------------------------------------------------------- |
-| `list_components`     | Returns the full list of Vlossom components with names and descriptions     |
-| `check_github_token`  | Checks whether a GitHub token is configured for submitting issues           |
-| `set_github_token`    | Stores a GitHub PAT in memory for the current session                       |
-| `draft_issue`         | Generates a structured issue template (bug / enhancement / question)        |
-| `report_issue`        | Creates a GitHub issue on the vlossom-ui/vlossom repository                 |
+### Discovery & Lookup
+
+| Tool                          | Description                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------- |
+| `list_components`             | Returns the full list of Vlossom components with names and descriptions                  |
+| `get_component`               | Returns props, StyleSet, events, and slots for a component _(planned)_                   |
+| `search_components`           | Searches components by keyword across name, description, and props _(planned)_           |
+| `suggest_components`          | Recommends components based on a natural-language use case _(planned)_                   |
+| `compare_components`          | Compares two components side-by-side with differences and recommendations _(planned)_    |
+| `get_component_relationships` | Returns parent/child/sibling component relationships _(planned)_                         |
+| `get_component_source`        | Returns the raw Vue source file for a component _(planned)_                              |
+| `get_directive`               | Returns usage and options for Vlossom directives (e.g. `v-vs-scroll-shadow`) _(planned)_ |
+| `get_composables`             | Returns usage info for public composables like `useColorScheme` _(planned)_              |
+
+### Style System
+
+| Tool                  | Description                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------ |
+| `get_css_tokens`      | Returns all `--vs-*` CSS variables with default values and light/dark variants _(planned)_ |
+| `get_vlossom_options` | Returns available `createVlossom()` plugin options with examples _(planned)_               |
+
+### Code Generation
+
+| Tool                      | Description                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `generate_component_code` | Generates a Vue SFC from a natural-language requirement _(planned)_                            |
+| `generate_style_set`      | Generates a correct StyleSet applying the variables/component/child-ref philosophy _(planned)_ |
+| `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props _(planned)_                    |
+| `get_form_recipe`         | Returns a complete form pattern (login, signup, file-upload, etc.) _(planned)_                 |
+
+### Diagnosis & Validation
+
+| Tool                       | Description                                                                         |
+| -------------------------- | ----------------------------------------------------------------------------------- |
+| `diagnose_issue`           | Matches a symptom description to known GitHub issues and suggests fixes _(planned)_ |
+| `validate_component_usage` | Validates that component usage in code follows Vlossom conventions _(planned)_      |
+
+### GitHub Issue Reporting
+
+| Tool                 | Description                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| `check_github_token` | Checks whether a GitHub token is configured for submitting issues                  |
+| `set_github_token`   | Stores a GitHub PAT in memory for the current session                              |
+| `draft_issue`        | Generates a structured issue template (bug / feature / question) with i18n support |
+| `report_issue`       | Creates a GitHub issue on the vlossom-ui/vlossom repository                        |
 
 ---
 
@@ -54,18 +92,35 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
    → isConfigured: false  →  set_github_token(token)   (ask user for PAT)
    → isConfigured: true   →  proceed to step 2
 
-2. draft_issue(summary, type)
-   → returns suggestedTitle, bodyTemplate, requiredSections
+2. draft_issue(summary, type, language?)
+   → returns suggestedTitle, sections[], type, language
 
-3. Collect each requiredSection from the user one by one
+3. Collect each required section from the user one by one
 
 4. Show the final content and ask for user confirmation
 
-5. report_issue(title, body, labels?)
+5. report_issue(title, type, language, sectionContents, labels?)
    → returns the created issue URL and number
 ```
 
 > **Note:** `set_github_token` stores the token in memory only. It is not written to disk and is cleared when the process restarts.
+>
+> **i18n:** `draft_issue` automatically detects the user's language (`ko` / `en`) and returns section headings in the matching language.
+
+---
+
+## Roadmap
+
+| Version  | Tools                                                                      |
+| -------- | -------------------------------------------------------------------------- |
+| ✅ 0.2.0 | `list_components`, issue tools (draft, report, token)                      |
+| 0.3.0    | `get_component`, `search_components` + build-meta pipeline                 |
+| 0.4.0    | `suggest_components`, `get_component_relationships`, `compare_components`  |
+| 0.5.0    | `get_component_source`, `get_directive`, `get_composables`                 |
+| 0.6.0    | `get_css_tokens`, `get_vlossom_options`                                    |
+| 0.7.0    | `generate_component_code`, `generate_style_set`, `adapt_type_to_component` |
+| 0.8.0    | `get_form_recipe`, `diagnose_issue`                                        |
+| 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                   |
 
 ---
 
@@ -76,6 +131,9 @@ cd packages/vlossom-mcp
 
 # Install dependencies
 npm install
+
+# Generate component data
+npm run generate
 
 # Build
 npm run build
@@ -88,12 +146,12 @@ Use this MCP config to connect to the local build:
 
 ```json
 {
-    "mcpServers": {
-        "vlossom": {
-            "command": "node",
-            "args": ["packages/vlossom-mcp/dist/index.js"]
-        }
+  "mcpServers": {
+    "vlossom": {
+      "command": "node",
+      "args": ["packages/vlossom-mcp/dist/index.js"]
     }
+  }
 }
 ```
 
