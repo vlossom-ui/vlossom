@@ -23,10 +23,14 @@ export function registerClarifyIntent(server: McpServer): void {
         "clarify_intent",
         "Call this when you judge the user's intent to be ambiguous — " +
             "i.e. the query could lead to meaningfully different tool pipelines. " +
+            "ALSO call this when the user asks something unrelated to Vlossom (general programming, off-topic requests, etc.) — " +
+            "use it to steer the conversation back by offering Vlossom-relevant interpretations of what they might actually need. " +
+            "ALSO call this when search_components returns no results before jumping to suggest_issue — " +
+            "the query may be poorly worded and clarification may find an existing component. " +
             "Do not apply a fixed rule; use your own judgment about whether clarification adds value. " +
-            "Also call this when a previous tool's _meta.clarify is true. " +
             "Generate exactly 3 candidate interpretations as candidates, each with a distinct pipeline. " +
-            "After the server returns choices, present them to the user as numbered options and ask them to pick. " +
+            "After the server returns choices, present them to the user using the presentation_format " +
+            "field from the response — render it verbatim so the numbered options are clear. " +
             "Once the user picks, execute the chosen prompt as the next query without calling clarify_intent again.",
         {
             query: z.string().describe("The original user query verbatim"),
@@ -56,7 +60,14 @@ export function registerClarifyIntent(server: McpServer): void {
                 Date.now() - start,
             );
 
-            return textResponse({ query, choices }, meta);
+            const presentation_format =
+                "💬 I want to make sure I understand what you need. Which of these best matches?\n\n" +
+                choices
+                    .map((c) => `[${c.index}] ${c.label}`)
+                    .join("\n") +
+                "\n\nPlease reply with a number (1–3).";
+
+            return textResponse({ query, choices, presentation_format }, meta);
         },
     );
 }
