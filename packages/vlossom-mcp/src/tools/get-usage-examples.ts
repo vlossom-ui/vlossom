@@ -1,6 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { textResponse } from "../utils/mcp-response.js";
-import type { McpResponseMeta } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 /**
  * A single step in a pipeline walkthrough.
@@ -216,30 +215,11 @@ export function registerGetUsageExamples(server: McpServer): void {
             "Call this when the user asks how to use vlossom-mcp, what it can do, or requests a demo of tool pipelines. " +
             "Returns annotated end-to-end pipeline walkthroughs showing exactly which tools run, " +
             "what inputs they receive, what they return, and why each step exists. " +
-            "Use the returned examples to explain the pipelining model to the user.",
+            "Then call clarify_intent with the clarify_intent_candidates from the response to ask which example to explore.",
         {},
         () => {
-            const pipeline = EXAMPLES[0].pipeline;
-
-            // Build a McpResponseMeta that visualises the full example pipeline
-            // in the stepper instead of showing a single "get_usage_examples" step.
-            const counts = new Map<string, number>();
-            for (const s of pipeline) {
-                counts.set(s.tool, (counts.get(s.tool) ?? 0) + 1);
-            }
-            const toolsUsed = [...counts.entries()].map(([name, n]) =>
-                n > 1 ? `${name} ×${n}` : name,
-            );
-            const meta: McpResponseMeta = {
-                steps: pipeline.map((s) => ({
-                    step: s.step,
-                    tool: s.tool,
-                    label: s.stepperLabel,
-                    durationMs: 0,
-                })),
-                toolsUsed,
-                totalDurationMs: 0,
-            };
+            const start = Date.now();
+            const meta = recordStep("get_usage_examples", "Usage examples", Date.now() - start);
 
             return textResponse(
                 {
@@ -251,6 +231,11 @@ export function registerGetUsageExamples(server: McpServer): void {
                     next_action: "clarify_intent",
                     next_action_message:
                         "Present the example list to the user and ask which pipeline they want to explore or run.",
+                    clarify_intent_candidates: EXAMPLES.map((e) => ({
+                        label: e.title.length > 50 ? e.title.slice(0, 49) + "…" : e.title,
+                        prompt: e.user_prompt,
+                        pipeline: e.pipeline.map((s) => s.tool).join(" → "),
+                    })),
                 },
                 meta,
             );

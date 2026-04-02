@@ -12,7 +12,7 @@ Print this banner when CLAUDE.md is loaded:
 ```
 ╔══════════════════════════════════════════════════════╗
 ║  📦 vlossom-mcp CLAUDE.md rules are active           ║
-║  Guardrails: 5 active  ·  Harnesses: 6 active        ║
+║  Guardrails: 5 active  ·  Harnesses: 7 active        ║
 ╚══════════════════════════════════════════════════════╝
 ```
 
@@ -175,6 +175,30 @@ check_github_token
 | `bug` | Steps to reproduce, Expected behavior, Actual behavior, Code example |
 | `enhancement` | Motivation / Use case, Proposed API / behavior |
 | `question` | What you tried, Related code |
+
+### H7 — clarify_intent for free-form queries
+
+When the user's input is a **natural language description** (not a specific component name or identifier), call `clarify_intent` first before any tool.
+
+**Skip when:**
+- User explicitly named a specific component (e.g. `"VsButton 알려줘"` → call `get_component` directly)
+- Tool is already mid-pipeline (e.g. `draft_issue`, `report_issue`, `check_github_token`)
+
+**Apply when (input is free-form):**
+- `search_components` — query is a description (e.g. `"차트 같은 거"`, `"드래그할 수 있는 거"`)
+- `suggest_components` — useCase is a description (e.g. `"로그인 폼"`, `"파일 업로드"`)
+- Any future tool that receives a free-form natural language input
+
+```
+✅  User: "차트 그리고 싶어"
+    → clarify_intent first (before search_components or suggest_components)
+
+✅  User: "VsButton 알려줘"
+    → get_component directly (name is explicit)
+
+❌  User: "드래그 되는 컴포넌트 있어?"
+    → [calls search_components immediately without clarifying intent]
+```
 
 ### H6 — Inform user on empty results
 
