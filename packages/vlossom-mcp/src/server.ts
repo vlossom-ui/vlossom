@@ -8,6 +8,7 @@ import { registerGetComponentRelationships } from "./tools/get-relationships.js"
 import { registerCompareComponents } from "./tools/compare-components.js";
 import { registerCheckGitHubToken } from "./tools/check-github-token.js";
 import { registerSetGitHubToken } from "./tools/set-github-token.js";
+import { registerClarifyIntent } from "./tools/clarify-intent.js";
 import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
 
@@ -30,6 +31,34 @@ Tool call flow guide:
 - To file a GitHub issue: check_github_token → set_github_token (if needed) → draft_issue → report_issue
 
 Always prefer search_components when the user describes a use case rather than naming a specific component.
+
+## clarify_intent — disambiguation gate
+
+Call clarify_intent BEFORE any other tool when ANY of these conditions are true:
+1. A tool response has _meta.clarify: true
+2. The query is a component name only with no action verb
+   e.g. "VsSelect", "드로어", "파일 업로드", "모달"
+3. The query mentions a UI concept that maps to 3+ components equally
+   e.g. "목록", "입력창", "팝업", "선택"
+
+Do NOT call clarify_intent when:
+- The query contains an explicit action: "props 보여줘", "코드 짜줘", "비교해줘", "이슈 등록"
+- The query names a specific prop or StyleSet property
+- The user has already answered a clarify_intent prompt in this conversation
+
+When calling clarify_intent, generate exactly 3 candidate interpretations covering:
+  1. Information lookup (get_component, compare_components)
+  2. Code generation (suggest_components → get_component → generate_component_code)
+  3. Issue / other action
+
+After the server returns choices, present them to the user as:
+  어떤 내용이 필요하신가요?
+  1. <choice.label>
+  2. <choice.label>
+  3. <choice.label>
+  번호를 입력하거나 직접 질문해 주세요.
+
+After the user picks, execute choice.prompt as the next query — do NOT call clarify_intent again.
 
 ## Stepper UX (REQUIRED)
 
@@ -67,6 +96,7 @@ Skip entirely when _meta is absent (e.g. error responses).
 export function createServer(): McpServer {
     const server = new McpServer({ name: "vlossom-mcp", version }, { instructions: INSTRUCTIONS });
 
+    registerClarifyIntent(server);
     registerListComponents(server);
     registerGetComponent(server);
     registerSearchComponents(server);
