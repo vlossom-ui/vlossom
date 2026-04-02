@@ -53,25 +53,24 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ### Style System
 
-| Tool                  | Description                                                                                |
-| --------------------- | ------------------------------------------------------------------------------------------ |
-| `get_css_tokens`      | Returns all `--vs-*` CSS variables with default values and light/dark variants _(planned)_ |
-| `get_vlossom_options` | Returns available `createVlossom()` plugin options with examples _(planned)_               |
+| Tool             | Description                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| `get_css_tokens` | Returns all `--vs-*` CSS variables with default values and light/dark variants _(planned)_ |
+| `get_plugin`         | Returns API docs for Vlossom plugins (`$vsModal`, `$vsAlert`, `$vsConfirm`, etc.) _(planned)_ |
+| `get_vlossom_options` | Returns available `createVlossom()` global configuration options _(planned)_                  |
 
 ### Code Generation
 
 | Tool                      | Description                                                                                    |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
-| `generate_component_code` | Generates a Vue SFC from a natural-language requirement _(planned)_                            |
+| `generate_component_code` | Generates a Vue SFC from a requirement; always designs StyleSet first _(planned)_              |
 | `generate_style_set`      | Generates a correct StyleSet applying the variables/component/child-ref philosophy _(planned)_ |
 | `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props _(planned)_                    |
-| `get_form_recipe`         | Returns a complete form pattern (login, signup, file-upload, etc.) _(planned)_                 |
 
-### Diagnosis & Validation
+### Validation
 
 | Tool                       | Description                                                                         |
 | -------------------------- | ----------------------------------------------------------------------------------- |
-| `diagnose_issue`           | Matches a symptom description to known GitHub issues and suggests fixes _(planned)_ |
 | `validate_component_usage` | Validates that component usage in code follows Vlossom conventions _(planned)_      |
 
 ### GitHub Issue Reporting
@@ -111,16 +110,16 @@ Add the following to your MCP client configuration (e.g. `.mcp.json` for Claude 
 
 ## Roadmap
 
-| Version  | Tools                                                                      |
-| -------- | -------------------------------------------------------------------------- |
-| ✅ 0.2.0 | `list_components`, issue tools (draft, report, token)                      |
-| 0.3.0    | `get_component`, `search_components` + build-meta pipeline                 |
-| 0.4.0    | `suggest_components`, `get_component_relationships`, `compare_components`  |
-| 0.5.0    | `get_component_source`, `get_directive`, `get_composables`                 |
-| 0.6.0    | `get_css_tokens`, `get_vlossom_options`                                    |
-| 0.7.0    | `generate_component_code`, `generate_style_set`, `adapt_type_to_component` |
-| 0.8.0    | `get_form_recipe`, `diagnose_issue`                                        |
-| 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                   |
+| Version  | Tools                                                                          |
+| -------- | ------------------------------------------------------------------------------ |
+| ✅ 0.2.0 | `list_components`, issue tools (draft, report, token)                          |
+| ✅ 0.3.0 | `get_component`, `search_components` + build-meta pipeline                     |
+| ✅ 0.4.0 | `suggest_components`, `get_component_relationships`, `compare_components`      |
+| ✅ 0.5.0 | Stepper UX (`_meta`), session isolation, stepper format improvements           |
+| 0.6.0    | `get_component_source`, `get_directive`, `get_composables`                     |
+| 0.7.0    | `get_css_tokens`, `get_plugin`                                                 |
+| 0.8.0    | `generate_component_code` (StyleSet-first), `generate_style_set`, `adapt_type_to_component` |
+| 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                       |
 
 ---
 

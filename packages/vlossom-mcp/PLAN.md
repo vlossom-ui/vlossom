@@ -173,12 +173,11 @@ Implementation status — last updated 2026-04-02 (v0.4.0 + stepper UX):
 | `get_directive`               | ✅      | ❌ Not implemented                                    |
 | `get_composables`             | ✅      | ❌ Not implemented                                    |
 | `get_css_tokens`              | ✅      | ❌ Not implemented                                    |
+| `get_plugin`                  | 🆕      | ❌ Not implemented                                    |
 | `get_vlossom_options`         | ✅      | ❌ Not implemented                                    |
 | `generate_component_code`     | ✅      | ❌ Not implemented                                    |
 | `generate_style_set`          | ✅      | ❌ Not implemented                                    |
 | `adapt_type_to_component`     | ✅      | ❌ Not implemented                                    |
-| `get_form_recipe`             | ✅      | ❌ Not implemented                                    |
-| `diagnose_issue`              | ✅      | ❌ Not implemented                                    |
 | `validate_component_usage`    | ✅      | ❌ Not implemented                                    |
 | `get_version_info`            | ✅      | ❌ Not implemented                                    |
 | `get_style_set`               | ✅      | ❌ Not implemented (merged into get_component)        |
@@ -432,6 +431,27 @@ output: Array<{
 
 > Usage: "What's the background color variable in dark mode?" / "List Vlossom color tokens"
 
+### `get_plugin`
+
+**Priority**: 🟠 High
+
+Returns API documentation for Vlossom's imperative plugin system (`$vsModal`, `$vsAlert`, `$vsConfirm`, `$vsPrompt`, `$vsToast`). Same hierarchy as `get_component` and `get_css_tokens` — a lookup tool for plugins.
+
+```typescript
+input: { name?: string }   // e.g. "modal-plugin", "alert-plugin". Omit to list all.
+output: {
+    name: string;              // "modal-plugin"
+    description: string;
+    methods: PluginMethod[];   // open(), close(), emit(), emitWithId()
+    options: PluginOption[];   // ModalOptions, AlertOptions, etc.
+    example: string;           // $vsModal.open(MyComponent, { size: 'lg' })
+}
+```
+
+> Usage: "How do I open a modal programmatically?" / "What options does $vsAlert support?" / "List all Vlossom plugins"
+
+**Available plugins**: `modal-plugin`, `alert-plugin`, `confirm-plugin`, `prompt-plugin`, `toast-plugin`
+
 ### `get_vlossom_options`
 
 **Priority**: 🟠 High
@@ -441,8 +461,8 @@ Returns available options for `createVlossom()` plugin registration (global Styl
 ```typescript
 input: {}
 output: {
-    options: VlossomOption[];     // name, type, default, description
-    example: string;              // createVlossom({ ... }) usage example
+    options: VlossomOption[];  // name, type, default, description
+    example: string;           // createVlossom({ ... }) usage example
 }
 ```
 
@@ -472,6 +492,15 @@ output: {
 ```
 
 > The server assembles context from relevant component props + StyleSet + examples and passes it to the LLM. The LLM generates the actual code.
+
+**StyleSet-first generation rule**: When style is involved, always design and generate the StyleSet structure (`variables` / `component` / child refs) **before** generating template and script code. This ensures style structure and component structure are consistent from the start.
+
+```
+Generation order:
+  1. StyleSet design  (variables vs component vs child ref classification)
+  2. StyleSet code    (Vs{Name}StyleSet object)
+  3. Component code   (template + script with :style-set prop)
+```
 
 ### `adapt_type_to_component`
 
@@ -508,24 +537,6 @@ output: {
 }
 ```
 
-### `get_form_recipe`
-
-**Priority**: 🟡 Medium
-
-Provides complete code for common form patterns. Naturally demonstrates `VsForm` + rules combination.
-
-```typescript
-input: {
-    type: "login" | "signup" | "search" | "file-upload" | "contact"
-    language?: "ko" | "en"
-}
-output: {
-    code: string;                 // complete Vue SFC code
-    components: string[];         // list of components used
-    notes: string;                // customization guide
-}
-```
-
 ### `validate_component_usage`
 
 **Priority**: 🟢 Low (Phase 3 late stage)
@@ -549,34 +560,7 @@ output: {
 
 ---
 
-## Phase 3-B: Diagnosis Tools
-
-### `diagnose_issue`
-
-**Priority**: 🟡 Medium | **Related issues**: #390, #385
-
-Matches a symptom description to known GitHub issues and suggests fixes. Bundles current open issue data as metadata.
-
-```typescript
-input: {
-    symptom: string;              // "VsTable shows no data even though loading prop is set"
-    component?: string;           // component hint (optional)
-}
-output: {
-    matchedIssues: Array<{
-        number: number;
-        title: string;
-        url: string;
-        status: "open" | "closed";
-        resolution?: string;      // resolution if closed
-    }>;
-    suggestion: string;           // AI-based fix suggestion
-}
-```
-
----
-
-## Phase 3-C: Version & Setup Tools
+## Phase 3-B: Version & Setup Tools
 
 ### `get_changelog`
 
@@ -738,7 +722,86 @@ Total time: 1.2s
 
 ---
 
-### 4-3. File Changes (Phase 4)
+### 4-3. Disambiguation (3-Choice Pipeline)
+
+사용자 질문이 **불분명할 때**만 동작한다. AI가 의도를 확신할 수 없는 경우 `clarify_intent` tool을 호출하고, 서버는 가능한 해석 3가지를 선택지로 반환한다. 사용자가 번호를 고르면 해당 파이프라인이 시작된다.
+
+**불분명 여부 판단 — 두 계층으로 결정:**
+
+AI 단독 판단에 의존하지 않는다. **서버 응답 신호**가 우선이고, **서버 instructions의 명시 규칙**이 그 다음이다.
+
+**계층 1 — 기존 tool의 `_meta` 신호 (서버 주도)**
+
+기존 tool이 결과를 반환할 때 낮은 확신도를 감지하면 `_meta.clarify: true`를 설정한다. AI는 이 신호를 받으면 무조건 `clarify_intent`를 호출한다.
+
+| 상황 | 신호 조건 |
+| ---- | --------- |
+| `search_components` 결과 ≥ 3개 & 상위 점수 차이 < 10% | `clarify: true` |
+| `suggest_components` 추천 결과 ≥ 3개 & reasoning 신뢰도 낮음 | `clarify: true` |
+| `get_component` 입력이 컴포넌트명으로 해석 불가 | `clarify: true` |
+
+**계층 2 — server instructions의 명시 규칙 (기본값으로 내장)**
+
+별도 설정 없이 **서버 시작 시 자동 활성화**된다. `server.ts`의 system prompt에 아래 규칙이 기본 포함된다:
+
+```
+Call clarify_intent BEFORE any other tool when:
+  - The query is a component name only, with no action verb
+    e.g. "VsSelect", "드로어", "파일 업로드"
+  - The query mentions a UI concept that maps to 3+ components equally
+    e.g. "목록", "입력창", "팝업"
+
+Do NOT call clarify_intent when:
+  - The query contains an explicit action: "props 보여줘", "코드 짜줘", "비교해줘"
+  - The query names a specific prop or StyleSet property
+```
+
+사용자나 호스트 설정 없이도 동작하는 것이 목표이므로 opt-in이 아닌 **기본값(default-on)**으로 설계한다.
+
+**`clarify_intent` tool:**
+
+```typescript
+input: {
+  query: string;          // 원본 사용자 질문
+  candidates: Choice[];   // AI가 직접 생성한 해석 후보 3개
+}
+
+interface Choice {
+  label: string;   // "VsSelect props와 StyleSet 보기"
+  prompt: string;  // 선택 시 AI에게 그대로 전달될 프롬프트
+  pipeline: string; // 어떤 flow가 이어질지 힌트 (선택지 설명용)
+}
+
+output: {
+  choices: Choice[];  // 서버가 정제·검증 후 반환
+}
+```
+
+**예시 — "VsSelect 알려줘" 입력 시:**
+
+```
+어떤 내용이 필요하신가요?
+
+  1. 📋 VsSelect props, StyleSet, 이벤트 상세 보기
+  2. 💻 VsSelect 사용 코드 예시 바로 생성하기
+  3. ⚖️  VsSelect vs 유사 컴포넌트 비교하기
+
+번호를 입력하거나 직접 질문해 주세요.
+```
+
+**선택 후 파이프라인:**
+
+```
+선택 1 → get_component("VsSelect")
+선택 2 → suggest_components → get_component → generate_component_code
+선택 3 → compare_components("VsSelect", ...)
+```
+
+**구현 위치:** `clarify_intent`는 외부 data 조회 없이 AI가 생성한 후보를 정제해 반환하는 경량 tool. 불분명한 질문을 막는 게이트 역할을 한다.
+
+---
+
+### 4-4. File Changes (Phase 4)
 
 ```
 src/utils/
@@ -759,7 +822,6 @@ src/utils/
 [Next] 0.5.0 — get_component_source + get_directive + get_composables
 [Then] 0.6.0 — get_css_tokens + get_vlossom_options + get_changelog + check_vlossom_setup
 [Then] 0.7.0 — generate_component_code + generate_style_set + adapt_type_to_component
-[Then] 0.8.0 — get_form_recipe + diagnose_issue
 [Long] 1.0.0 — validate_component_usage + semantic search + MCP Prompts
 ```
 
@@ -779,7 +841,6 @@ packages/vlossom-mcp/
 │   │   ├── components-data.json    ← current (simple list, kept as fallback)
 │   │   ├── components-meta.json    ← new: rich metadata
 │   │   ├── css-tokens.json         ← new: full --vs-* variable list
-│   │   └── known-issues.json       ← new: issue data for diagnose_issue
 │   ├── services/
 │   │   ├── component-registry.ts   ← current
 │   │   └── meta-registry.ts        ← new: components-meta.json loader
@@ -794,14 +855,12 @@ packages/vlossom-mcp/
 │   │   ├── get-directive.ts        ← new (Phase 2)
 │   │   ├── get-composables.ts      ← new (Phase 2)
 │   │   ├── get-css-tokens.ts       ← new (Phase 2-B)
-│   │   ├── get-vlossom-options.ts  ← new (Phase 2-B)
-│   │   ├── get-changelog.ts        ← new (Phase 3-C)
-│   │   ├── check-vlossom-setup.ts  ← new (Phase 3-C)
+│   │   ├── get-plugin.ts           ← new (Phase 2-B)
+│   │   ├── get-changelog.ts        ← new (Phase 3-B)
+│   │   ├── check-vlossom-setup.ts  ← new (Phase 3-B)
 │   │   ├── generate-code.ts        ← new (Phase 3)
 │   │   ├── generate-style-set.ts   ← new (Phase 3)
-│   │   ├── get-form-recipe.ts      ← new (Phase 3)
 │   │   ├── adapt-type.ts           ← new (Phase 3)
-│   │   ├── diagnose-issue.ts       ← new (Phase 3-B)
 │   │   ├── draft-issue.ts          ← current
 │   │   ├── report-issue.ts         ← current
 │   │   ├── set-github-token.ts     ← current

@@ -425,6 +425,120 @@ search_components (tool 인터페이스 고정)
 
 ---
 
+## 결정 18: Stepper UX 렌더링 방식 진화
+
+**날짜**: 2026-04-02 (feat/mcp 세션)
+
+**배경**: `_meta` 필드를 각 tool 응답에 포함시킨 후, Claude가 이를 화면에 어떻게 렌더링할지에 대한 방식이 여러 차례 변경됨.
+
+| # | 시도 | 결과 |
+|---|------|------|
+| 1 | 매 호출마다 전체 스텝 박스 반복 출력 | ❌ 이전 스텝이 계속 반복되어 로그 노이즈 |
+| 2 | 중간: 1줄씩 + 마지막에 요약 박스 | ❌ 박스 너비(╔══╝) Claude가 정확히 못 맞춤 |
+| 3 | Agent 서브에이전트에 위임 + 최종 박스 | ❌ 서브에이전트 컨텍스트 로딩 오버헤드 (~40-70s)로 오히려 느림 |
+| 4 | **응답 이후 1회, open-ended header** | ✅ 채택 |
+
+**최종 결정 스펙**:
+```
+vlossom-mcp ─────────────────────────────────────────────
+✔  {N. 3}  {tool 22}  {label 24}
+─────────────────────────────────────────────────────────
+{toolsUsed}
+```
+- 닫는 테두리(`╚══╝`) 없음 → 너비 맞춤 불필요
+- ms 컬럼 없음 → 서버 실행 시간(~0ms)은 round-trip 반영 안 해 오해 소지
+
+---
+
+## 결정 19: per-step 타이밍(ms) 제거
+
+**날짜**: 2026-04-02
+
+**문제**: `_meta.steps[].durationMs`는 서버 내부 JSON 조회 시간만 측정 (~0ms). 실제 Claude → MCP → Claude round-trip은 1-3초/호출이지만 서버는 측정 불가.
+
+**결정**: 스테퍼에서 ms 컬럼 완전 제거. `toolsUsed`(어떤 도구를) 만 표시.
+
+**근거**: 항상 0ms로 표시되는 수치는 정보가 아니라 혼란. 의미 없는 데이터를 보여주는 것보다 제거가 낫다.
+
+---
+
+## 결정 20: Agent 서브에이전트 위임 방식 철회
+
+**날짜**: 2026-04-02
+
+**배경**: Stepper를 메인 대화에서 보이게 하려고 "NEVER use sub-agent" 규칙을 SKILL.md와 INSTRUCTIONS에 추가했으나, 이후 "응답 이후 1회 출력"으로 방식을 바꾸면서 근거가 사라짐. 또한 서브에이전트 컨텍스트 초기화 비용이 (~40-70s) 직접 호출보다 훨씬 커서 오히려 역효과.
+
+**결정**: Agent 위임 강제 규칙 제거. Claude가 컨텍스트에 따라 자율 판단.
+
+**근거**: "어떻게 호출할지"는 Claude의 판단 영역. SKILL.md는 "무엇을 출력할지"(스테퍼 형식)에만 집중.
+
+---
+
+## 결정 21: _meta 세션 누적 문제 → 시작 도구에서 resetSession()
+
+**날짜**: 2026-04-02
+
+**문제**: MCP 서버가 단일 프로세스로 동작하므로, 서브에이전트나 여러 워크플로우가 동일 세션에서 도구를 호출하면 `_meta.steps`가 수십 개로 누적됨. 스테퍼가 이 모든 스텝을 표시하면 의미 없는 반복.
+
+| # | 옵션 | 검토 결과 |
+|---|------|-----------|
+| 1 | 세션 타임아웃 단축 (60s → 10s) | ❌ 빠른 연속 호출 시 여전히 누적 |
+| 2 | 요청별 연결 ID로 세션 분리 | ❌ stdio 전송에서 연결 ID가 `RequestHandlerExtra`에 미노출 |
+| 3 | **시작 도구 호출 시 세션 리셋** | ✅ 채택 |
+
+**결정**: `suggest_components`, `search_components`, `list_components` 핸들러 시작 시 `resetSession()` 호출.
+
+**근거**: 이 세 도구는 새 워크플로우의 시작점. 호출 시 세션을 초기화하면 각 워크플로우가 독립적인 `_meta`를 가짐. `get_component` 등 후속 도구는 세션을 이어가며 누적.
+
+---
+
+## 결정 22: get_form_recipe, diagnose_issue 계획 제거
+
+**날짜**: 2026-04-02
+
+**결정**: PLAN.md에서 `get_form_recipe`, `diagnose_issue` tool 구현 계획을 완전히 제거.
+
+**근거**: `generate_component_code`가 일반적인 코드 생성을 담당하므로 `get_form_recipe`의 역할이 중복됨. `diagnose_issue`는 known-issues.json 수동 관리 부담이 크고 실용성 불분명. 두 도구 모두 현 단계에서 ROI가 낮음.
+
+---
+
+## 결정 23: get_plugin 도구 추가
+
+**날짜**: 2026-04-02
+
+**배경**: Vlossom은 컴포넌트 외에 플러그인 시스템(`createVlossom`, `VlossomOptions`)을 가짐. 현재 MCP에는 플러그인 관련 정보를 조회하는 도구가 없음.
+
+**결정**: `get_plugin` 도구를 `get_component`, `get_css_tokens`과 동일한 위계로 Phase 2-B에 추가.
+
+```typescript
+input: { name?: string }  // 생략 시 전체 플러그인 옵션 반환
+output: {
+    options: PluginOption[];  // createVlossom() 옵션 목록
+    example: string;          // 사용 예시
+}
+```
+
+**근거**: 사용자가 전역 StyleSet이나 colorScheme 설정 방법을 물어볼 때 조회 가능. `get_vlossom_options` 계획과 합쳐 `get_plugin`으로 통합 (별도 결정 아님).
+
+---
+
+## 결정 24: generate_component_code 시 StyleSet 우선 생성 규칙
+
+**날짜**: 2026-04-02
+
+**결정**: `generate_component_code`가 스타일이 포함된 컴포넌트 코드를 생성할 때, `generate_style_set` 철학(variables/component/child 분리)을 먼저 적용하고 그 결과를 바탕으로 코드를 생성함.
+
+**생성 순서**:
+```
+1. StyleSet 설계 (variables vs component vs child ref 분류)
+2. StyleSet 코드 생성
+3. 컴포넌트 template/script에 styleSet prop으로 전달
+```
+
+**근거**: StyleSet을 나중에 추가하면 template 구조와 불일치가 생기기 쉬움. StyleSet 우선 설계로 스타일 구조와 컴포넌트 구조를 동시에 일관성 있게 생성.
+
+---
+
 ## 결정 16: CLAUDE.md 300줄 제한 규칙 제거
 
 **날짜**: 2026-04-02
