@@ -1,18 +1,18 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getAllComponentsMeta } from "../services/meta-registry.js";
-import { resetSession, recordStep, textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 export function registerSearchComponents(server: McpServer): void {
     server.tool(
         "search_components",
         "No prerequisite needed. " +
-            "Call this when the user searches for components by keyword or use case, or asks 'which component should I use for X'. " +
+            "Call this when the user provides a specific component name or a clear, concrete keyword (e.g. 'button', 'input', 'drawer'). " +
+            "Do NOT call this for vague or free-form descriptions — call clarify_intent first instead. " +
             "Searches component names, descriptions, and prop names/descriptions (case-insensitive) and returns all matching ComponentMeta objects. " +
-            "Then call get_component for each result to get full details, or pass to generate_component_code.",
+            "Then call get_component for each result to get full details.",
         { query: z.string().describe("Search term to match against component names, descriptions, and prop names/descriptions") },
         async ({ query }) => {
-            resetSession();
             const start = Date.now();
             const all = getAllComponentsMeta();
             const lowerQuery = query.toLowerCase();

@@ -21,13 +21,12 @@ const choiceSchema = z.object({
 export function registerClarifyIntent(server: McpServer): void {
     server.tool(
         "clarify_intent",
-        "Call this when you judge the user's intent to be ambiguous — " +
-            "i.e. the query could lead to meaningfully different tool pipelines. " +
+        "Call this FIRST — before search_components or suggest_components — when the user's input is a free-form description, " +
+            "a vague phrase, or a mixed/compound term that does not clearly map to a single component name. " +
             "ALSO call this when the user asks something unrelated to Vlossom (general programming, off-topic requests, etc.) — " +
             "use it to steer the conversation back by offering Vlossom-relevant interpretations of what they might actually need. " +
-            "ALSO call this when search_components returns no results before jumping to suggest_issue — " +
+            "ALSO call this when search_components returns no results — " +
             "the query may be poorly worded and clarification may find an existing component. " +
-            "Do not apply a fixed rule; use your own judgment about whether clarification adds value. " +
             "Generate exactly 3 candidate interpretations as candidates, each with a distinct pipeline. " +
             "After the server returns choices, present them to the user using the presentation_format " +
             "field from the response — render it verbatim so the numbered options are clear. " +
