@@ -585,3 +585,56 @@ output: {
 | `README.ko.md` | 한국어 | 신규 생성 |
 
 **근거**: README.md는 이미 영어로 작성되어 있어 일관성을 위해 나머지 파일도 영어를 기본으로 통일.
+
+---
+
+## 결정 25: skill/SKILL.md를 npm 패키지에 번들링
+
+**날짜**: 2026-04-02
+
+**질문**: npm으로 설치한 사용자도 Claude Code 스킬(clarify_intent 워크플로 포함)을 사용할 수 있게 하려면?
+
+**배경**: `.claude/skills/vlossom/SKILL.md`는 레포 클론 사용자에게만 적용됨. npm 설치 사용자는 MCP 서버는 갖지만 스킬 워크플로 가이드가 없어 clarify_intent 등 권장 흐름을 따르지 않을 수 있음.
+
+| # | 옵션 | 내용 | 검토 결과 |
+|---|------|------|-----------|
+| 1 | **npm 패키지에 `skill/` 디렉토리 포함** | `package.json` `files`에 `"skill"` 추가 | ✅ 채택 |
+| 2 | postinstall 스크립트로 자동 복사 | `~/.claude/skills/`에 자동 설치 | ❌ 사용자 홈 디렉토리 수정은 부작용 우려 |
+
+**결정**: 방법 1 — `packages/vlossom-mcp/skill/SKILL.md` 생성, `package.json` `files`에 `"skill"` 추가
+
+**적용 방법 (사용자)**:
+```bash
+cp node_modules/vlossom-mcp/skill/SKILL.md ~/.claude/skills/vlossom.md
+# 또는 프로젝트 로컬
+cp node_modules/vlossom-mcp/skill/SKILL.md .claude/skills/vlossom.md
+```
+
+**근거**: MCP 서버 INSTRUCTIONS가 이미 JSON 설정만으로 clarify_intent 워크플로를 자동 주입하므로, SKILL.md는 보조 수단. 강제 자동 설치보다 명시적 복사가 사용자 통제권 면에서 적절.
+
+---
+
+## 결정 26: clarify_intent 판단을 LLM에게 위임
+
+**날짜**: 2026-04-02
+
+**질문**: clarify_intent를 언제 호출할지 서버 INSTRUCTIONS에서 규칙으로 강제할 것인가, LLM의 판단에 맡길 것인가?
+
+**배경**: `server.ts` INSTRUCTIONS에 rigid rule block이 있었음:
+- "Call when: action verb 없을 때, 3개 이상 컴포넌트 매핑 시..."
+- "Do NOT call when: action verb 있을 때..."
+
+이로 인해 `"버튼 만들어주세요"` 처럼 액션 동사가 있어도 실제로는 모호한 경우에 clarify_intent가 호출되지 않는 문제 발생.
+
+| # | 옵션 | 내용 | 검토 결과 |
+|---|------|------|-----------|
+| 1 | 규칙을 더 정교하게 보완 | 예외 케이스를 추가로 열거 | ❌ 경직성 근본 해결 불가, 유지보수 비용 증가 |
+| 2 | **INSTRUCTIONS 규칙 제거, 도구 description에 위임** | LLM이 description 기반으로 자체 판단 | ✅ 채택 |
+
+**결정**: 방법 2 — INSTRUCTIONS의 clarify_intent 조건 블록 전체 삭제
+
+**변경 내용**:
+- `server.ts`: `## clarify_intent — disambiguation gate` 섹션 삭제, flow guide에 `"When intent is unclear: clarify_intent → then chosen pipeline"` 한 줄만 유지
+- `clarify-intent.ts` description: `"use your own judgment about whether clarification adds value"` 명시
+
+**근거**: MCP에서 LLM의 도구 선택 근거는 도구 description. INSTRUCTIONS의 규칙이 이를 덮어쓰는 구조는 LLM 자연 판단을 방해함. 도구 description을 신뢰하는 것이 더 유연하고 의도에 충실.
