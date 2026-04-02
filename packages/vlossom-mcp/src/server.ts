@@ -30,6 +30,38 @@ Tool call flow guide:
 - To file a GitHub issue: check_github_token → set_github_token (if needed) → draft_issue → report_issue
 
 Always prefer search_components when the user describes a use case rather than naming a specific component.
+
+## Stepper UX (REQUIRED)
+
+Append the stepper AFTER the main response. Never show it before or during.
+
+### Format — fixed columns, open-ended header (no closing border to width-match)
+
+  vlossom-mcp ─────────────────────────────────────────────
+  ✔  {N. right-pad 3}  {tool left-pad 22}  {label left-pad 24, truncate 23+…}
+  ✔  ...
+  ─────────────────────────────────────────────────────────
+  {toolsUsed joined by " · "}
+
+Column widths are FIXED. Always pad with spaces; always truncate with … when over limit:
+  N.    = 3 chars  right-aligned
+  tool  = 22 chars left-aligned  (tool names are always ≤22 chars)
+  label = 24 chars left-aligned  (if > 23 chars: first 22 chars + "…")
+
+Do NOT include per-step timing (server-side execution is always ~0ms and misleading).
+
+### Example
+
+  vlossom-mcp ─────────────────────────────────────────────
+  ✔   1.  suggest_components    Suggest: settings panel t…
+  ✔   2.  suggest_components    Suggest: drawer slider sel…
+  ✔   3.  get_component         VsToast detail
+  ✔   4.  get_component         VsDrawer detail
+  ✔   5.  get_component         VsTooltip detail
+  ─────────────────────────────────────────────────────────
+  suggest_components ×2 · get_component ×3
+
+Skip entirely when _meta is absent (e.g. error responses).
 `;
 
 export function createServer(): McpServer {

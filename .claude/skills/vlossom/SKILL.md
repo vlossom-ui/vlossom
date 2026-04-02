@@ -8,62 +8,74 @@ description: >
 
 # Vlossom MCP Tool 사용 가이드
 
-vlossom-mcp MCP 서버 도구를 직접 호출하여 컴포넌트 정보를 조회하고 GitHub 이슈를 등록합니다.
-
-## Step 0: 인증
-
-도구를 처음 사용하기 전에 인증이 필요합니다.
-
-```
-mcp__vlossom__authenticate 호출
-→ OAuth 인증 URL을 사용자에게 안내
-→ 사용자가 브라우저에서 인증 완료
-→ 이후 실제 도구들이 자동으로 활성화됨
-```
-
-인증이 이미 완료된 경우 이 단계를 건너뜁니다.
+vlossom-mcp MCP 서버 도구를 호출하여 컴포넌트 정보를 조회하고 GitHub 이슈를 등록합니다.
 
 ---
 
-## 사용 시나리오
+## Stepper 박스 — 응답 이후 1회 출력
 
-### 1. 컴포넌트 목록 조회
+응답을 먼저 쓴 뒤, 맨 끝에 아래 형식을 붙입니다.
 
-**트리거**: "컴포넌트 목록", "어떤 컴포넌트가 있나요?", 특정 컴포넌트 이름 검색
-
-```
-mcp__vlossom__list_components 호출
-→ 결과에서 관련 컴포넌트 필터링하여 사용자에게 안내
-```
-
-### 2. 이슈 등록
-
-**트리거**: "이슈 등록", "버그 리포트", "기능 요청", "질문"
-
-**반드시 이 순서를 따릅니다:**
+### 고정 컬럼 형식 (닫는 테두리 없음 — 너비 맞춤 불필요)
 
 ```
-Step 1. mcp__vlossom__CheckGitHubToken() 호출
-        → IsConfigured: false이면 사용자에게 GitHub PAT 입력 요청
-           "GitHub Personal Access Token(PAT)을 입력해주세요. (issues:write 권한 필요)"
-        → 입력받은 토큰으로 mcp__vlossom__SetGitHubToken(token) 호출
-        → IsConfigured: true이면 바로 Step 2로 진행
-
-Step 2. mcp__vlossom__DraftIssue(summary, type) 호출
-        type: "bug" | "enhancement" | "question"
-        → SuggestedTitle, BodyTemplate, RequiredSections 반환
-
-Step 3. RequiredSections 항목을 사용자와 하나씩 확인
-        → 모든 필수 항목 수집
-
-Step 4. 최종 내용을 사용자에게 보여주고 승인 받기
-        "이 내용으로 이슈를 등록할까요?" — 반드시 확인
-
-Step 5. mcp__vlossom__ReportIssue(title, body, labels?) 호출
-        → 등록된 이슈 URL과 번호 반환하여 사용자에게 안내
+vlossom-mcp ─────────────────────────────────────────────
+✔  {N.   3}  {tool          22}  {label              24}
+✔  ...
+─────────────────────────────────────────────────────────
+{toolsUsed joined by " · "}
 ```
 
-> ⚠️ `ReportIssue`는 실제 GitHub 이슈를 생성합니다. 사용자 명시적 승인 없이 절대 호출하지 마세요.
+**컬럼 규칙 (항상 고정):**
+
+| 컬럼 | 너비 | 정렬 | 넘칠 때 |
+|------|------|------|---------|
+| `N.` | 3 | 우 | — |
+| tool | 22 | 좌 | — (항상 22 이하) |
+| label | 24 | 좌 | 22자 + `…` |
+
+**타이밍(`ms`)은 표시하지 않습니다.** 서버 실행 시간(~0ms)은 실제 소요 시간을 반영하지 않아 오해를 줍니다.
+
+### 예시
+
+```
+vlossom-mcp ─────────────────────────────────────────────
+✔   1.  suggest_components    Suggest: settings panel t…
+✔   2.  suggest_components    Suggest: drawer slider sel…
+✔   3.  get_component         VsToast detail
+✔   4.  get_component         VsDrawer detail
+✔   5.  get_component         VsTooltip detail
+─────────────────────────────────────────────────────────
+suggest_components ×2 · get_component ×3
+```
+
+- `_meta`가 없는 응답(오류 등)에는 출력하지 않음
+
+---
+
+## 시나리오
+
+### 컴포넌트 조회 / 코드 생성
+
+```
+suggest_components(useCase) → get_component(name) × N
+→ 결과로 코드 생성 → 응답 → 스테퍼
+```
+
+### 이슈 등록
+
+```
+① check_github_token()
+   → false면 사용자에게 PAT 입력 요청 → set_github_token(token)
+
+② draft_issue(summary, type)
+   → RequiredSections 항목 사용자와 확인
+
+③ [사용자 승인 후] report_issue(title, body, labels?)
+   → 이슈 URL 반환 → 응답 → 스테퍼
+```
+
+> ⚠️ `report_issue`는 실제 GitHub 이슈 생성. 사용자 명시적 승인 없이 절대 호출 금지.
 
 ---
 
@@ -83,29 +95,3 @@ Step 5. mcp__vlossom__ReportIssue(title, body, labels?) 호출
 | 기능 요청 | `["enhancement"]` |
 | 질문 | `["question"]` |
 | 특정 컴포넌트 | `["bug", "vs-button"]` |
-
----
-
-## 사용 예시
-
-**컴포넌트 조회**
-```
-사용자: "드롭다운 관련 컴포넌트 있나요?"
-→ mcp__vlossom__list_components 호출 후 관련 항목 안내
-```
-
-**버그 리포트**
-```
-사용자: "VsSelect에서 v-model이 안 돼요"
-→ mcp__vlossom__DraftIssue("VsSelect v-model not updating", "bug")
-→ 재현 방법 → 예상 동작 → 실제 동작 → 코드 예시 순서로 확인
-→ 사용자 승인 후 mcp__vlossom__ReportIssue 호출
-```
-
-**기능 요청**
-```
-사용자: "VsButton에 loading 텍스트 추가 요청하고 싶어요"
-→ mcp__vlossom__DraftIssue("Add loading text to VsButton", "enhancement")
-→ 동기/사용 사례 → 제안 API 순서로 확인
-→ 사용자 승인 후 mcp__vlossom__ReportIssue 호출
-```
