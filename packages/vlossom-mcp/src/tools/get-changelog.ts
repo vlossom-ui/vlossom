@@ -2,12 +2,14 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { recordStep, textResponse } from "../utils/mcp-response.js";
 
-const NPM_REGISTRY = "https://registry.npmjs.org/vlossom";
+const GITHUB_RELEASES_API = "https://api.github.com/repos/vlossom-ui/vlossom/releases";
 
-interface NpmRelease {
-    version: string;
-    date: string;
-    description: string;
+interface GitHubRelease {
+    tag_name: string;
+    name: string;
+    published_at: string;
+    prerelease: boolean;
+    body: string;
 }
 
 interface ChangelogEntry {
@@ -19,26 +21,18 @@ interface ChangelogEntry {
     notes?: string;
 }
 
-/** Fetch release metadata from npm registry. */
-async function fetchNpmReleases(): Promise<NpmRelease[]> {
-    const res = await fetch(NPM_REGISTRY);
-    if (!res.ok) throw new Error(`npm registry error: ${res.status}`);
-    const data = (await res.json()) as {
-        time: Record<string, string>;
-        versions: Record<string, { description?: string }>;
-    };
+/** Fetch release metadata from GitHub Releases API. */
+async function fetchGitHubReleases(): Promise<GitHubRelease[]> {
+    const res = await fetch(`${GITHUB_RELEASES_API}?per_page=100`, {
+        headers: { "User-Agent": "vlossom-mcp", Accept: "application/vnd.github+json" },
+    });
+    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+    return (await res.json()) as GitHubRelease[];
+}
 
-    const time = data.time ?? {};
-    const versions = data.versions ?? {};
-
-    return Object.entries(time)
-        .filter(([v]) => v !== "created" && v !== "modified" && /^\d+\.\d+\.\d+/.test(v))
-        .map(([version, date]) => ({
-            version,
-            date: date.slice(0, 10),
-            description: versions[version]?.description ?? "",
-        }))
-        .sort((a, b) => b.version.localeCompare(a.version, undefined, { numeric: true }));
+/** Extract version string from a tag like "v1.2.3" or "1.2.3". */
+function tagToVersion(tag: string): string {
+    return tag.replace(/^v/, "");
 }
 
 /** Parse semver string into [major, minor, patch]. */
@@ -59,34 +53,55 @@ function semverLte(a: string, b: string): boolean {
     return semverGte(b, a);
 }
 
-/**
- * Build a ChangelogEntry from version metadata.
- * Without a full GitHub releases API, we derive info from the version number
- * and any description field from npm.
- */
-function buildEntry(release: NpmRelease): ChangelogEntry {
-    const [major, minor] = parseSemver(release.version);
-
+/** Parse a markdown release body into breaking/features/fixes sections. */
+function parseReleaseBody(body: string): { breaking: string[]; features: string[]; fixes: string[] } {
     const breaking: string[] = [];
     const features: string[] = [];
     const fixes: string[] = [];
 
-    // Heuristic: major bumps signal breaking changes
-    if (minor === 0 && major > 0) {
-        breaking.push(`Major release — see GitHub release notes for migration guide.`);
+    if (!body) return { breaking, features, fixes };
+
+    const lines = body.split("\n");
+    let section: "breaking" | "features" | "fixes" | null = null;
+
+    for (const raw of lines) {
+        const line = raw.trim();
+        const lower = line.toLowerCase();
+
+        if (/^#+\s/.test(line)) {
+            if (lower.includes("break") || lower.includes("migration")) section = "breaking";
+            else if (lower.includes("feat") || lower.includes("new") || lower.includes("add")) section = "features";
+            else if (lower.includes("fix") || lower.includes("bug") || lower.includes("patch")) section = "fixes";
+            else section = null;
+            continue;
+        }
+
+        const item = line.replace(/^[-*]\s*/, "").trim();
+        if (!item) continue;
+
+        if (section === "breaking") breaking.push(item);
+        else if (section === "features") features.push(item);
+        else if (section === "fixes") fixes.push(item);
     }
 
-    if (release.description) {
-        features.push(release.description);
-    }
+    // If no sections found, put the entire body as a note
+    return { breaking, features, fixes };
+}
 
-    return { version: release.version, date: release.date, breaking, features, fixes };
+/** Build a ChangelogEntry from a GitHub release. */
+function buildEntry(release: GitHubRelease): ChangelogEntry {
+    const version = tagToVersion(release.tag_name);
+    const date = release.published_at.slice(0, 10);
+    const { breaking, features, fixes } = parseReleaseBody(release.body ?? "");
+    const notes = release.body?.trim() || undefined;
+
+    return { version, date, breaking, features, fixes, notes };
 }
 
 export function registerGetChangelog(server: McpServer): void {
     server.tool(
         "get_changelog",
-        "Fetches the Vlossom version history from the npm registry. " +
+        "Fetches the Vlossom version history from the GitHub repository. " +
             "Call this when the user asks what changed in a specific version, how to migrate, " +
             "or what the latest stable release is. " +
             "Optionally filter from/to specific versions. " +
@@ -113,24 +128,27 @@ export function registerGetChangelog(server: McpServer): void {
         async ({ from, to, limit }) => {
             const start = Date.now();
 
-            let releases: NpmRelease[];
+            let releases: GitHubRelease[];
             try {
-                releases = await fetchNpmReleases();
+                releases = await fetchGitHubReleases();
             } catch (err) {
                 const meta = recordStep("get_changelog", "Fetch failed", Date.now() - start);
                 return textResponse({ error: `Failed to fetch changelog: ${(err as Error).message}` }, meta);
             }
 
-            const latestStable = releases.find((r) => !r.version.includes("-"))?.version ?? "unknown";
+            let stable = releases.filter((r) => !r.prerelease && !r.tag_name.includes("-"));
+            stable.sort((a, b) =>
+                semverGte(tagToVersion(a.tag_name), tagToVersion(b.tag_name)) ? -1 : 1
+            );
 
-            let filtered = releases.filter((r) => !r.version.includes("-")); // skip pre-releases
+            const latestStable = stable[0] ? tagToVersion(stable[0].tag_name) : "unknown";
 
-            if (to) filtered = filtered.filter((r) => semverLte(r.version, to));
-            if (from) filtered = filtered.filter((r) => semverGte(r.version, from));
+            if (to) stable = stable.filter((r) => semverLte(tagToVersion(r.tag_name), to));
+            if (from) stable = stable.filter((r) => semverGte(tagToVersion(r.tag_name), from));
 
-            filtered = filtered.slice(0, limit);
+            stable = stable.slice(0, limit);
 
-            const versions: ChangelogEntry[] = filtered.map(buildEntry);
+            const versions: ChangelogEntry[] = stable.map(buildEntry);
 
             const label = from ? `Changelog from ${from}` : `Latest ${limit} versions`;
             const meta = recordStep("get_changelog", label, Date.now() - start);
