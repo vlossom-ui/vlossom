@@ -128,7 +128,7 @@ export function registerGetVlossomOptions(server: McpServer): void {
             "or adjust border-radius ratio. " +
             "Also returns the available imperative plugin APIs ($vsModal, $vsAlert, $vsConfirm, $vsPrompt, $vsToast).",
         {},
-        async () => {
+        () => {
             const start = Date.now();
             const meta = recordStep("get_vlossom_options", "VlossomOptions", Date.now() - start);
             return textResponse(
