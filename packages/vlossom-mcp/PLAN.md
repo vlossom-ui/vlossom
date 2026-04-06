@@ -154,7 +154,7 @@ Tools used: suggest_components · get_component ×3 · get_component_relationshi
 
 ## Current Status
 
-Implementation status — last updated 2026-04-06 (v0.8.13):
+Implementation status — last updated 2026-04-06 (v0.9.9):
 
 | Tool                          | Planned | Current status                                                     |
 | ----------------------------- | ------- | ------------------------------------------------------------------ |
