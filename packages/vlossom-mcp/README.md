@@ -93,11 +93,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `generate_component_code` | Returns Vlossom coding rules, import statement, and SFC scaffold for code generation           |
 | `generate_style_set`      | Returns a correctly structured StyleSet object for a component with classification explanation  |
 | `adapt_type_to_component` | Maps a TypeScript interface to Vlossom component data (columns, options, etc.) with examples   |
-
-### Planned
-
-| Tool                      | Description                                                                                    |
-| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `validate_component_usage`| Checks a Vue SFC string for Vlossom rule violations (R01–R15) and returns issues with fixes    |
 | `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props                                |
 | `validate_component_usage`| Validates that component usage in code follows Vlossom conventions                             |
 
@@ -120,7 +116,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ✅ 0.9.0 | `generate_component_code` (StyleSet-first, coding rules)                                     |
 | ✅ 0.9.1 | `generate_style_set` (variables / component / child-ref philosophy)                          |
 | ✅ 0.9.2 | `adapt_type_to_component` (TypeScript type → Vlossom component data)                         |
-| 0.9.3    | `validate_component_usage` (rule-based SFC linter)                                           |
+| ✅ 0.9.3 | `validate_component_usage` (rule-based SFC linter)                                           |
 | 0.9.4    | `search_components` semantic enhancement (synonym map)                                       |
 
 ---

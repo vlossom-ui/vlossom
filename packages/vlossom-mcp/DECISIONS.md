@@ -41,6 +41,19 @@
 - TypeScript AST 파서(ts-morph)로 완전 자동 변환 → 기각. 복잡도 대비 효과 낮음. 단순 regex 타입명 추출 + static 변환 가이드로 충분. 실제 변환은 LLM이 수행.
 
 **Interface**: `{ userType, targetComponent }` → `{ component, userTypeName, guide, outputShape, example, rules }`
+
+---
+
+## 2026-04-06 — validate_component_usage (v0.9.3)
+
+**Added**: Vue SFC 코드 문자열을 정적 분석해 Vlossom 규칙(R01~R15) 위반을 감지하고 severity, 위반 내용, 수정 방법을 반환.
+
+**Why**: LLM이 생성한 코드에 `<style>` 블록이나 default import 같은 Vlossom 위반이 자주 포함됨. generate_component_code가 규칙을 제공하고, validate_component_usage가 실제 코드에서 위반을 검출하는 역할로 분리.
+
+**Alternatives considered**:
+- ESLint 플러그인으로 구현 → 기각. npm 패키지 의존성 증가 불필요. regex 기반 정적 분석으로 충분하며 외부 파일 시스템 접근 불필요.
+
+**Interface**: `{ code, strict? }` → `{ valid, issues: ValidationIssue[], summary }`
 > "무엇을 만들었는가"보다 "왜 그렇게 결정했는가"에 초점을 맞춥니다.
 
 ---
