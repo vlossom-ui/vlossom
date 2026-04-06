@@ -21,6 +21,7 @@ import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
 import { registerGenerateComponentCode } from "./tools/generate-component-code.js";
 import { registerGenerateStyleSet } from "./tools/generate-style-set.js";
+import { registerAdaptTypeToComponent } from "./tools/adapt-type-to-component.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -141,6 +142,7 @@ export function createServer(): McpServer {
     registerReportIssue(server);
     registerGenerateComponentCode(server);
     registerGenerateStyleSet(server);
+    registerAdaptTypeToComponent(server);
 
     return server;
 }

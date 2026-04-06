@@ -28,6 +28,19 @@
 - 스타일 코드를 완전히 자동 생성 → 기각. 요구사항이 자연어이므로 의미 해석은 LLM이 담당해야 함. 서버는 분류 기준과 구조만 제공.
 
 **Interface**: `{ component, requirements }` → `{ styleSetCode, explanation, usageExample, styleSetInterface }`
+
+---
+
+## 2026-04-06 — adapt_type_to_component (v0.9.2)
+
+**Added**: TypeScript 인터페이스를 Vlossom 컴포넌트별 데이터 구조(VsTable columns, VsSelect options 등)로 변환하는 가이드와 코드 예시 반환.
+
+**Why**: 기존 TypeScript 타입이 있는 프로젝트에서 Vlossom 컴포넌트로 마이그레이션할 때 데이터 구조 변환 방법을 모르는 경우가 많음. VsTable, VsSelect, VsCheckboxSet, VsRadio, VsPagination에 대한 구체적 매핑 패턴을 제공.
+
+**Alternatives considered**:
+- TypeScript AST 파서(ts-morph)로 완전 자동 변환 → 기각. 복잡도 대비 효과 낮음. 단순 regex 타입명 추출 + static 변환 가이드로 충분. 실제 변환은 LLM이 수행.
+
+**Interface**: `{ userType, targetComponent }` → `{ component, userTypeName, guide, outputShape, example, rules }`
 > "무엇을 만들었는가"보다 "왜 그렇게 결정했는가"에 초점을 맞춥니다.
 
 ---

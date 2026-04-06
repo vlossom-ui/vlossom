@@ -182,7 +182,7 @@ Implementation status — last updated 2026-04-06 (v0.8.13):
 | `get_style_set`               | ✅      | ✅ merged into get_component (styleSet field)                     |
 | `generate_component_code`     | ✅      | ✅ 0.9.0                                                           |
 | `generate_style_set`          | ✅      | ✅ 0.9.1                                                           |
-| `adapt_type_to_component`     | ✅      | ❌ 0.9.2                                                           |
+| `adapt_type_to_component`     | ✅      | ✅ 0.9.2                                                           |
 | `validate_component_usage`    | ✅      | ❌ 0.9.3 (merged from 1.0.0)                                      |
 | search_components semantic    | 🆕      | ❌ 0.9.4 (enhancement, merged from 1.0.0)                         |
 
