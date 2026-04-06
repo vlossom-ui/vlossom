@@ -36,9 +36,9 @@ function loadDirectives(): DirectiveMeta[] {
 export function registerGetDirective(server: McpServer): void {
     server.tool(
         "get_directive",
-        "Returns documentation for Vlossom directives (e.g. v-scroll-shadow). " +
-            "Call without a name to list all available directives. " +
-            "Call with a name to get binding options and usage example for a specific directive.",
+        "Call this when the user asks about Vlossom directives (e.g. v-scroll-shadow) or wants declarative template alternatives. " +
+            "Returns directive documentation — omit name to list all, or pass a name for binding options and usage example. " +
+            "Then call get_composables to check if a composable equivalent exists for programmatic usage.",
         { name: z.string().optional().describe('Directive name, e.g. "v-scroll-shadow". Omit to list all directives.') },
         async ({ name }) => {
             const start = Date.now();
@@ -69,8 +69,8 @@ export function registerGetDirective(server: McpServer): void {
                     {
                         error: `Directive '${name}' not found.`,
                         available: all.map((d) => d.name),
-                        next_action: "suggest_issue",
-                        next_action_message: `Directive '${name}' does not exist in Vlossom. Would you like to file an enhancement issue?`,
+                        next_action: "check_github_token",
+                        next_action_message: `Directive '${name}' does not exist in Vlossom. To file an enhancement issue, start with check_github_token.`,
                     },
                     meta,
                 );

@@ -39,10 +39,9 @@ function loadComposables(): ComposableMeta[] {
 export function registerGetComposables(server: McpServer): void {
     server.tool(
         "get_composables",
-        "Returns documentation for Vlossom composables (useColorScheme, useStyleSet, etc.). " +
-            "Call without a name to list all available composables with descriptions. " +
-            "Call with a name to get full details including args, return values, and a usage example. " +
-            'Accepts the composable function name (e.g. "useColorScheme") or kebab directory name (e.g. "color-scheme").',
+        "Call this when the user asks about Vlossom composables (useColorScheme, useStyleSet, etc.) or wants to use them programmatically. " +
+            "Returns composable documentation — omit name to list all, or pass a name for full details including args, return values, and usage example. " +
+            "Then call get_directive to check if a directive equivalent exists for declarative template usage.",
         {
             name: z
                 .string()
@@ -102,8 +101,8 @@ export function registerGetComposables(server: McpServer): void {
                     {
                         error: `Composable '${name}' not found.`,
                         available: all.map((c) => c.name),
-                        next_action: "suggest_issue",
-                        next_action_message: `Composable '${name}' does not exist in Vlossom. Would you like to file an enhancement issue?`,
+                        next_action: "check_github_token",
+                        next_action_message: `Composable '${name}' does not exist in Vlossom. To file an enhancement issue, start with check_github_token.`,
                     },
                     meta,
                 );
