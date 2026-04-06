@@ -14,6 +14,10 @@ export function registerSetGitHubToken(server: McpServer): void {
             token: z
                 .string()
                 .min(1)
+                .regex(
+                    /^(ghp_|github_pat_|gho_|ghu_|ghs_|ghr_)/,
+                    "Token must be a valid GitHub PAT (must start with ghp_, github_pat_, gho_, ghu_, ghs_, or ghr_)"
+                )
                 .describe("GitHub Personal Access Token with issues:write scope (e.g. ghp_xxxx or github_pat_xxxx)"),
         },
         ({ token }) => {
