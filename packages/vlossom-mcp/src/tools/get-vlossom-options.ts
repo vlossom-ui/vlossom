@@ -136,9 +136,10 @@ export function registerGetVlossomOptions(server: McpServer): void {
                     options: VLOSSOM_OPTIONS,
                     plugins: VLOSSOM_PLUGINS,
                     fullExample: FULL_EXAMPLE,
-                    next_action: "get_css_tokens",
-                    next_action_message:
-                        "Call get_css_tokens to find --vs-* design tokens to use as values in styleSet or colorScheme configuration.",
+                    next_actions: [
+                        { tool: "get_css_tokens", reason: "find --vs-* design tokens to use as values in styleSet or colorScheme" },
+                        { tool: "generate_component_code", reason: "generate component code applying the configured options" },
+                    ],
                 },
                 meta,
             );

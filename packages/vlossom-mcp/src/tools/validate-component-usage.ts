@@ -31,9 +31,10 @@ export function registerValidateComponentUsage(server: McpServer): void {
                         valid: true,
                         issues: [] as ValidationIssue[],
                         summary: "No code provided — nothing to validate.",
-                        next_action: "get_component",
-                        next_action_message:
-                            "Pass a Vue SFC string to validate. Call get_component to explore components or generate_component_code for a scaffold.",
+                        next_actions: [
+                            { tool: "generate_component_code", reason: "generate a Vlossom scaffold to validate" },
+                            { tool: "get_component", reason: "look up component props before writing code" },
+                        ],
                     },
                     stepMeta
                 );
@@ -49,10 +50,14 @@ export function registerValidateComponentUsage(server: McpServer): void {
                     valid: !hasErrors,
                     issues,
                     summary,
-                    next_action: hasErrors ? "generate_component_code" : "get_component",
-                    next_action_message: hasErrors
-                        ? "Critical violations found. Call generate_component_code to get a corrected scaffold following Vlossom conventions."
-                        : "Code looks good. Call get_component to explore more components or get_css_tokens for design tokens.",
+                    next_actions: hasErrors
+                        ? [
+                            { tool: "generate_component_code", reason: "get a corrected scaffold following Vlossom conventions" },
+                        ]
+                        : [
+                            { tool: "get_component", reason: "explore more Vlossom components" },
+                            { tool: "get_css_tokens", reason: "find design tokens for further styling" },
+                        ],
                 },
                 stepMeta
             );

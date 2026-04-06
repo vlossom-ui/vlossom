@@ -87,8 +87,9 @@ export function registerGetChangelog(server: McpServer): void {
                 return textResponse(
                     {
                         error: "changelog.json not found. Run `npm run generate` to build it.",
-                        next_action: "check_vlossom_setup",
-                        next_action_message: "Changelog data unavailable. Check setup instead.",
+                        next_actions: [
+                            { tool: "check_vlossom_setup", reason: "verify your installation status after reviewing the changelog" },
+                        ],
                     },
                     meta,
                 );
@@ -107,9 +108,9 @@ export function registerGetChangelog(server: McpServer): void {
                 {
                     latestStable: data.latestStable,
                     versions: entries,
-                    next_action: "check_vlossom_setup",
-                    next_action_message:
-                        "Call check_vlossom_setup with your current version to see if you are up to date.",
+                    next_actions: [
+                        { tool: "check_vlossom_setup", reason: "verify your installation status after reviewing the changelog" },
+                    ],
                 },
                 meta,
             );

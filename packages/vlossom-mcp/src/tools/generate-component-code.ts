@@ -145,9 +145,11 @@ export function registerGenerateComponentCode(server: McpServer): void {
                 imports,
                 skeleton,
                 styleSetGuidance,
-                next_action: "get_css_tokens",
-                next_action_message:
-                    "Call get_css_tokens to find --vs-* design tokens to use as values in your styleSet.",
+                next_actions: [
+                    { tool: "get_css_tokens", reason: "find --vs-* design tokens to use as StyleSet variable values" },
+                    { tool: "generate_style_set", reason: "create a StyleSet scaffold for any component in the generated code" },
+                    { tool: "validate_component_usage", reason: "check the generated code against Vlossom conventions" },
+                ],
             };
 
             if (hasBusinessLogic) {

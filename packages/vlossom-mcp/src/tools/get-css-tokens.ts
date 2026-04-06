@@ -67,18 +67,19 @@ export function registerGetCssTokens(server: McpServer): void {
                     tokens: [],
                     count: 0,
                     message: `No CSS tokens found${search ? ` matching '${search}'` : ""}${category !== "all" ? ` in category '${category}'` : ""}.`,
-                    next_action: "get_css_tokens",
-                    next_action_message: "No tokens matched. Try a different category ('color-scheme', 'palette', 'radius', 'spacing', 'z-index', 'misc') or broaden your search keyword.",
+                    next_actions: [
+                        { tool: "get_css_tokens", reason: "try a different category ('color-scheme', 'palette', 'radius', 'spacing') or broaden the search keyword" },
+                    ],
                 }, meta);
             }
 
             return textResponse({
                 tokens,
                 count: tokens.length,
-                next_action: "get_vlossom_options",
-                next_action_message:
-                    "Call get_vlossom_options to configure these tokens globally via createVlossom(), " +
-                    "or call get_component to apply them in a specific component's styleSet.",
+                next_actions: [
+                    { tool: "get_vlossom_options", reason: "configure these tokens globally via createVlossom() colorScheme or styleSet" },
+                    { tool: "generate_style_set", reason: "use these tokens as values in a component StyleSet" },
+                ],
             }, meta);
         },
     );

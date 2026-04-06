@@ -71,10 +71,10 @@ export function registerGetComposables(server: McpServer): void {
                             isPublic: c.isPublic,
                         })),
                         count: filtered.length,
-                        next_action: "get_composables",
-                        next_action_message:
-                            "Call get_composables with a name to get full details. " +
-                            "Some composables also have directive equivalents — call get_directive to explore declarative alternatives.",
+                        next_actions: [
+                            { tool: "get_composables", reason: "call with a name for full args, return values, and usage example" },
+                            { tool: "get_directive", reason: "explore directive alternatives for declarative template usage" },
+                        ],
                     },
                     meta,
                 );
@@ -101,8 +101,9 @@ export function registerGetComposables(server: McpServer): void {
                     {
                         error: `Composable '${name}' not found.`,
                         available: all.map((c) => c.name),
-                        next_action: "check_github_token",
-                        next_action_message: `Composable '${name}' does not exist in Vlossom. To file an enhancement issue, start with check_github_token.`,
+                        next_actions: [
+                            { tool: "check_github_token", reason: "file an enhancement issue for the missing composable" },
+                        ],
                     },
                     meta,
                 );
@@ -111,10 +112,9 @@ export function registerGetComposables(server: McpServer): void {
             return textResponse(
                 {
                     ...entry,
-                    next_action: "get_directive",
-                    next_action_message:
-                        "This composable may also be available as a directive for declarative template usage. " +
-                        "Call get_directive to check.",
+                    next_actions: [
+                        { tool: "get_directive", reason: "check if a directive equivalent exists for declarative template usage" },
+                    ],
                 },
                 meta,
             );

@@ -91,8 +91,10 @@ export function registerSuggestComponents(server: McpServer): void {
                     components: [],
                     reasoning,
                     message: `No components matched for use case: '${useCase}'.`,
-                    next_action: "check_github_token",
-                    next_action_message: `💡 '${useCase}' does not match any existing Vlossom component. To file an enhancement issue, start with check_github_token.`,
+                    next_actions: [
+                        { tool: "clarify_intent", reason: "rephrase the use case to match existing components" },
+                        { tool: "check_github_token", reason: "file an enhancement issue for the missing feature" },
+                    ],
                 }, meta);
             }
 
@@ -100,8 +102,10 @@ export function registerSuggestComponents(server: McpServer): void {
                 components,
                 reasoning,
                 total: components.length,
-                next_action: "get_component",
-                next_action_message: "Call get_component for each result to check props/StyleSet, then generate_component_code.",
+                next_actions: [
+                    { tool: "get_component", reason: "get full props/StyleSet for each suggested component" },
+                    { tool: "generate_component_code", reason: "generate a code scaffold using the suggested components" },
+                ],
             }, meta);
         }
     );

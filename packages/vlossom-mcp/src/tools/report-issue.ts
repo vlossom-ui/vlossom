@@ -54,8 +54,9 @@ export function registerReportIssue(server: McpServer): void {
                     error:
                         "VLOSSOM_GITHUB_TOKEN is not configured. " +
                         "Set the environment variable with a GitHub PAT that has issues:write scope.",
-                    next_action: "set_github_token",
-                    next_action_message: "GitHub token is not configured. Please set a token first, then retry report_issue.",
+                    next_actions: [
+                        { tool: "set_github_token", reason: "provide a GitHub PAT then retry report_issue" },
+                    ],
                 }, meta);
             }
             const body = buildBody(type, language, sectionContents);
@@ -66,15 +67,17 @@ export function registerReportIssue(server: McpServer): void {
                 const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
                 return textResponse({
                     error: error instanceof Error ? error.message : "Failed to create GitHub issue.",
-                    next_action: "check_github_token",
-                    next_action_message: "Issue creation failed. Verify your GitHub token and try again.",
+                    next_actions: [
+                        { tool: "check_github_token", reason: "verify token validity and permissions then retry" },
+                    ],
                 }, meta);
             }
             const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
             return textResponse({
                 ...result,
-                next_action: "get_component",
-                next_action_message: "Issue submitted. Call get_component if you want to continue exploring Vlossom components.",
+                next_actions: [
+                    { tool: "get_component", reason: "continue exploring Vlossom components" },
+                ],
             }, meta);
         }
     );

@@ -137,9 +137,10 @@ export function registerGenerateStyleSet(server: McpServer): void {
                     classificationGuide: CLASSIFICATION_GUIDE,
                     styleSetInterface: styleSet.raw,
                     usageExample,
-                    next_action: "get_css_tokens",
-                    next_action_message:
-                        "Call get_css_tokens to find --vs-* design tokens to use as variable values.",
+                    next_actions: [
+                        { tool: "get_css_tokens", reason: "find --vs-* tokens to fill in the variable values" },
+                        { tool: "generate_component_code", reason: "generate the full component using this StyleSet" },
+                    ],
                 },
                 stepMeta,
             );

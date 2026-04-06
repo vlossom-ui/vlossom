@@ -27,8 +27,9 @@ export function registerSetGitHubToken(server: McpServer): void {
             return textResponse({
                 success: true,
                 message: "🔑 GitHub token has been set for this session.",
-                next_action: "draft_issue",
-                next_action_message: "Token is now configured. Proceed to draft_issue.",
+                next_actions: [
+                    { tool: "draft_issue", reason: "token is now set, proceed to draft the issue" },
+                ],
             }, meta);
         }
     );

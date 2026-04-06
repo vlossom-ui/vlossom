@@ -109,21 +109,31 @@ Every tool description follows this **4-sentence** structure. Missing a sentence
 "List all Vlossom components with their descriptions."
 ```
 
-### H2 — next_action linked-list
+### H2 — next_actions array
 
-Every tool response must include `next_action` (tool name string) and `next_action_message` (reason).
-Two patterns:
+Every tool response must include a `next_actions` array. Each item has a `tool` name and a `reason`
+written for the LLM to match against the current conversation context.
 
-| Pattern | When | Example |
-|---|---|---|
-| **Precondition failure** | Tool cannot proceed; dependency is missing | `next_action: "set_github_token"` when token absent |
-| **Success continuation** | Tool succeeded; natural next step exists | `next_action: "get_component"` after `suggest_components` |
+```typescript
+// type: NextActionItem (src/types/next-action.ts)
+next_actions: [
+  { tool: "get_css_tokens",       reason: "find design tokens for this component's styleSet" },
+  { tool: "generate_style_set",   reason: "generate a StyleSet scaffold for this component" },
+  { tool: "generate_component_code", reason: "generate code using this component" }
+]
+```
 
-Cross-domain links are also required:
-- `get_composables` (found) → `next_action: "get_directive"` ("may also be a directive")
-- `get_directive` (found) → `next_action: "get_composables"` ("may also be a composable")
-- `get_component` (found) → `next_action: "get_css_tokens"`
-- `get_css_tokens` → `next_action: "get_vlossom_options"` (and vice versa)
+Rules:
+- **PATH tools** (single clear next step): 1 item
+- **HUB tools** (multiple meaningful branches): 2–5 items with distinct reasons
+- **Precondition failure**: 1 item pointing to the missing dependency
+- The LLM selects the item whose `reason` best matches the current conversation context
+
+Cross-domain links (always include in success path):
+- `get_composables` (found) → include `get_directive` ("check if a directive equivalent exists")
+- `get_directive` (found) → include `get_composables` ("check if a composable equivalent exists")
+- `get_component` (found) → include `get_css_tokens`, `generate_style_set`, `generate_component_code`
+- `get_css_tokens` (found) → include `get_vlossom_options` and `generate_style_set`
 
 ### H3 — clarify_intent choice format
 

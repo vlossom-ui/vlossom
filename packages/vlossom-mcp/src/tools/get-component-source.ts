@@ -53,8 +53,9 @@ export function registerGetComponentSource(server: McpServer): void {
                 return textResponse(
                     {
                         error: `Component '${name}' not found. Use list_components to see available components.`,
-                        next_action: "list_components",
-                        next_action_message: "Component not found. Call list_components to verify the exact name.",
+                        next_actions: [
+                            { tool: "list_components", reason: "verify the exact component name" },
+                        ],
                     },
                     meta,
                 );
@@ -66,8 +67,10 @@ export function registerGetComponentSource(server: McpServer): void {
                     kebabName: entry.kebabName,
                     path: entry.path,
                     source: entry.source,
-                    next_action: "get_component",
-                    next_action_message: "Call get_component for structured metadata (props, events, styleSet), or get_component_relationships for composition info.",
+                    next_actions: [
+                        { tool: "get_component", reason: "get structured metadata (props, events, styleSet)" },
+                        { tool: "get_component_relationships", reason: "see parent and child component composition" },
+                    ],
                 },
                 meta,
             );

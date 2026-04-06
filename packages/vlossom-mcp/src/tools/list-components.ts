@@ -15,8 +15,10 @@ export function registerListComponents(server: McpServer): void {
             const meta = recordStep("list_components", "List all components", Date.now() - start);
             return textResponse({
                 result,
-                next_action: "get_component",
-                next_action_message: "Pick a component from the list and call get_component for full details.",
+                next_actions: [
+                    { tool: "get_component", reason: "get full props, StyleSet, and events for a specific component" },
+                    { tool: "search_components", reason: "filter the list by keyword or use case" },
+                ],
             }, meta);
         }
     );

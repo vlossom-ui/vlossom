@@ -57,11 +57,10 @@ export function registerSearchComponents(server: McpServer): void {
                     results: [],
                     expandedTerms: expandedTerms.length > 1 ? expandedTerms : undefined,
                     message: `No components found for query '${query}'`,
-                    next_action: "clarify_intent",
-                    next_action_message:
-                        "No components matched. Before filing an issue, call clarify_intent to check if the query " +
-                        "can be rephrased — the user may be describing an existing component in different words. " +
-                        "Only proceed to suggest_issue if clarification confirms the feature genuinely does not exist.",
+                    next_actions: [
+                        { tool: "clarify_intent", reason: "rephrase the query to match existing components before giving up" },
+                        { tool: "check_github_token", reason: "file an enhancement issue if the feature genuinely does not exist" },
+                    ],
                 }, meta);
             }
 
@@ -69,8 +68,10 @@ export function registerSearchComponents(server: McpServer): void {
                 results,
                 total: results.length,
                 expandedTerms: expandedTerms.length > 1 ? expandedTerms : undefined,
-                next_action: "get_component",
-                next_action_message: "Call get_component for each result to get full props/StyleSet details.",
+                next_actions: [
+                    { tool: "get_component", reason: "get full props/StyleSet details for each matching component" },
+                    { tool: "compare_components", reason: "compare two similar components side by side" },
+                ],
             }, meta);
         }
     );

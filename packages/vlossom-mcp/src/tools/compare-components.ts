@@ -90,8 +90,9 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${a}' not found. Use list_components to see available components.`,
-                    next_action: "list_components",
-                    next_action_message: "Component not found. Call list_components to verify the exact name.",
+                    next_actions: [
+                        { tool: "list_components", reason: "verify the exact component name" },
+                    ],
                 }, meta);
             }
 
@@ -100,8 +101,9 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: `Component '${b}' not found. Use list_components to see available components.`,
-                    next_action: "list_components",
-                    next_action_message: "Component not found. Call list_components to verify the exact name.",
+                    next_actions: [
+                        { tool: "list_components", reason: "verify the exact component name" },
+                    ],
                 }, meta);
             }
 
@@ -109,8 +111,9 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: "Cannot compare a component with itself.",
-                    next_action: "list_components",
-                    next_action_message: "Pick two different components from the list to compare.",
+                    next_actions: [
+                        { tool: "list_components", reason: "verify the exact component name" },
+                    ],
                 }, meta);
             }
 
@@ -121,8 +124,10 @@ export function registerCompareComponents(server: McpServer): void {
                 a: metaA,
                 b: metaB,
                 differences,
-                next_action: "get_component",
-                next_action_message: "Call get_component for either component to see full props and StyleSet details.",
+                next_actions: [
+                    { tool: "get_component", reason: "get full props and StyleSet for either component" },
+                    { tool: "generate_component_code", reason: "generate code using the chosen component" },
+                ],
             }, meta);
         }
     );

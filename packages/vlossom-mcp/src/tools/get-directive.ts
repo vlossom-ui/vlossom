@@ -50,10 +50,10 @@ export function registerGetDirective(server: McpServer): void {
                     {
                         directives: all.map((d) => ({ name: d.name, description: d.description })),
                         count: all.length,
-                        next_action: "get_directive",
-                        next_action_message:
-                            "Call get_directive with a name to get full details. " +
-                            "Some directives also have composable equivalents — call get_composables to explore programmatic alternatives.",
+                        next_actions: [
+                            { tool: "get_directive", reason: "call with a name for binding options and usage example" },
+                            { tool: "get_composables", reason: "explore composable alternatives for programmatic usage" },
+                        ],
                     },
                     meta,
                 );
@@ -69,8 +69,9 @@ export function registerGetDirective(server: McpServer): void {
                     {
                         error: `Directive '${name}' not found.`,
                         available: all.map((d) => d.name),
-                        next_action: "check_github_token",
-                        next_action_message: `Directive '${name}' does not exist in Vlossom. To file an enhancement issue, start with check_github_token.`,
+                        next_actions: [
+                            { tool: "check_github_token", reason: "file an enhancement issue for the missing directive" },
+                        ],
                     },
                     meta,
                 );
@@ -79,10 +80,9 @@ export function registerGetDirective(server: McpServer): void {
             return textResponse(
                 {
                     ...entry,
-                    next_action: "get_composables",
-                    next_action_message:
-                        "This directive may also be available as a composable for programmatic usage. " +
-                        "Call get_composables to check.",
+                    next_actions: [
+                        { tool: "get_composables", reason: "check if a composable equivalent exists for programmatic usage" },
+                    ],
                 },
                 meta,
             );

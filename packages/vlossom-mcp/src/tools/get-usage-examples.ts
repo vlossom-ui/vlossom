@@ -39,7 +39,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "Search: chart",
                 input: { query: "chart" },
                 output_summary:
-                    '{ results: [], next_action: "clarify_intent", next_action_message: "No components matched. Try rephrasing before filing an issue." }',
+                    '{ results: [], next_actions: [{tool:"clarify_intent",reason:"rephrase query to match existing components"},{tool:"check_github_token",reason:"file issue if feature does not exist"}] }',
                 why: "First attempt: keyword search across all component names, descriptions, and prop text. Empty result means no direct match.",
             },
             {
@@ -69,7 +69,7 @@ const EXAMPLES: PipelineExample[] = [
                 },
                 output_summary:
                     '{ choices: [{index:1,...},{index:2,...},{index:3,...}], presentation_format: "[1] Look for a data-visualization component\\n[2] ..." }',
-                why: 'search_components returned next_action: "clarify_intent". Before concluding the feature is missing, offer rephrasing alternatives. One candidate always includes the issue-filing path.',
+                why: 'search_components returned next_actions with clarify_intent. Before concluding the feature is missing, offer rephrasing alternatives. One candidate always includes the issue-filing path.',
             },
             {
                 step: 3,
@@ -77,8 +77,8 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "Suggest: data visual…",
                 input: { useCase: "data visualization graph" },
                 output_summary:
-                    '{ components: [], next_action: "suggest_issue", next_action_message: "\'data visualization graph\' does not match any existing Vlossom component." }',
-                why: "User chose option 1 (rephrase). Heuristic + metadata search both return nothing → confirmed missing.",
+                    '{ components: [], next_actions: [{tool:"check_github_token",reason:"file an enhancement issue for the missing feature"}] }',
+                why: "User chose option 1 (rephrase). Metadata search returns nothing → confirmed missing.",
             },
             {
                 step: 4,
@@ -86,8 +86,8 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "Check GitHub token",
                 input: {},
                 output_summary:
-                    '{ isConfigured: false, next_action: "set_github_token" }',
-                why: 'suggest_components emitted next_action: "suggest_issue". Before drafting, verify token availability.',
+                    '{ isConfigured: false, next_actions: [{tool:"set_github_token",reason:"provide a GitHub PAT"}] }',
+                why: 'suggest_components returned next_actions with check_github_token. Before drafting, verify token availability.',
             },
             {
                 step: 5,
@@ -95,7 +95,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "Set GitHub token",
                 input: { token: "<user-provided PAT>" },
                 output_summary:
-                    '{ success: true, next_action: "draft_issue" }',
+                    '{ success: true, next_actions: [{tool:"draft_issue",reason:"token is now set, proceed to draft the issue"}] }',
                 why: "Token was missing; user provides it. Now the issue-filing pipeline can proceed.",
             },
             {
@@ -108,7 +108,7 @@ const EXAMPLES: PipelineExample[] = [
                     body: "Motivation: users need to render line/bar/pie charts. Proposed API: <VsChart :data='...' type='line' />",
                 },
                 output_summary:
-                    '{ title: "Add chart/data-visualization component", labels: ["enhancement"], requiredSections: [...], next_action: "report_issue" }',
+                    '{ title: "Add chart/data-visualization component", labels: ["enhancement"], requiredSections: [...], next_actions: [{tool:"report_issue",reason:"all sections confirmed, submit"}] }',
                 why: "Generates the structured issue draft. All required sections must be confirmed with the user before proceeding.",
             },
             {
@@ -138,7 +138,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "Suggest: login form",
                 input: { useCase: "login form" },
                 output_summary:
-                    '{ components: [VsForm, VsInput, VsButton], reasoning: "Based on \'login form\' use case: ...", next_action: "get_component" }',
+                    '{ components: [VsForm, VsInput, VsButton], reasoning: "Based on \'login form\' use case: ...", next_actions: [{tool:"get_component",...}] }',
                 why: "User described a use case, not a specific component name. suggest_components maps keywords to relevant components.",
             },
             {
@@ -147,7 +147,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "VsForm detail",
                 input: { name: "VsForm" },
                 output_summary:
-                    '{ name: "VsForm", props: [...], styleSet: {...}, events: [...], next_action: "get_css_tokens" }',
+                    '{ name: "VsForm", props: [...], styleSet: {...}, events: [...], next_actions: [{tool:"get_css_tokens",...}] }',
                 why: "Fetch full props/StyleSet detail for each suggested component before generating code.",
             },
             {
@@ -156,7 +156,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "VsInput detail",
                 input: { name: "VsInput" },
                 output_summary:
-                    '{ name: "VsInput", props: [...], styleSet: {...}, events: [...], next_action: "get_css_tokens" }',
+                    '{ name: "VsInput", props: [...], styleSet: {...}, events: [...], next_actions: [{tool:"get_css_tokens",...}] }',
                 why: "Same as step 2 for VsInput.",
             },
             {
@@ -165,7 +165,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "VsButton detail",
                 input: { name: "VsButton" },
                 output_summary:
-                    '{ name: "VsButton", props: [...], styleSet: {...}, events: [...], next_action: "get_css_tokens" }',
+                    '{ name: "VsButton", props: [...], styleSet: {...}, events: [...], next_actions: [{tool:"get_css_tokens",...}] }',
                 why: "Same as step 2 for VsButton.",
             },
         ],
@@ -183,7 +183,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "VsDrawer detail",
                 input: { name: "VsDrawer" },
                 output_summary:
-                    '{ name: "VsDrawer", description: "...", props: [...], styleSet: {...}, events: [...], slots: [...], next_action: "get_css_tokens" }',
+                    '{ name: "VsDrawer", description: "...", props: [...], styleSet: {...}, events: [...], slots: [...], next_actions: [{tool:"get_css_tokens",...}] }',
                 why: "User named a specific component. get_component is the direct lookup tool.",
             },
             {
@@ -192,8 +192,8 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "CSS tokens: drawer",
                 input: { filter: "drawer" },
                 output_summary:
-                    '{ tokens: [{ name: "--vs-drawer-size", ...), ...], next_action: "get_vlossom_options" }',
-                why: "get_component emitted next_action: get_css_tokens. Design tokens let the user know which CSS variables are available for VsDrawer customization.",
+                    '{ tokens: [{name:"--vs-drawer-size",...},...], next_actions: [{tool:"get_vlossom_options",reason:"configure tokens globally"},{tool:"generate_style_set",reason:"use tokens in StyleSet"}] }',
+                why: "get_component returned next_actions including get_css_tokens. Design tokens show which CSS variables are available for VsDrawer customization.",
             },
             {
                 step: 3,
@@ -201,7 +201,7 @@ const EXAMPLES: PipelineExample[] = [
                 stepperLabel: "VsDrawer relationships",
                 input: { name: "VsDrawer" },
                 output_summary:
-                    '{ parent: null, children: ["VsDimmed", "VsInnerScroll"], next_action: "get_component" }',
+                    '{ parent: null, children: ["VsDimmed", "VsInnerScroll"], next_actions: [{tool:"get_component",...}] }',
                 why: "Optional lateral step — understanding composition helps generate more accurate usage code.",
             },
         ],
@@ -225,12 +225,12 @@ export function registerGetUsageExamples(server: McpServer): void {
                 {
                     description:
                         "🔗 vlossom-mcp works as a chain of single-responsibility tools. " +
-                        "Each tool does one thing and emits next_action to guide the next step. " +
+                        "Each tool does one thing and emits next_actions to guide the LLM to the most relevant next step. " +
                         "The examples below show full input→output flows for common tasks.",
                     examples: EXAMPLES,
-                    next_action: "clarify_intent",
-                    next_action_message:
-                        "Present the example list to the user and ask which pipeline they want to explore or run.",
+                    next_actions: [
+                        { tool: "clarify_intent", reason: "pick a pipeline example to explore in more detail" },
+                    ],
                     clarify_intent_candidates: EXAMPLES.map((e) => ({
                         label: e.title.length > 50 ? e.title.slice(0, 49) + "…" : e.title,
                         prompt: e.user_prompt,

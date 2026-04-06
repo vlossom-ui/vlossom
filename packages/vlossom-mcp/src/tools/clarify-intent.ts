@@ -71,8 +71,9 @@ export function registerClarifyIntent(server: McpServer): void {
                 query,
                 choices,
                 presentation_format,
-                next_action: "awaiting_user_choice",
-                next_action_message: "Present the choices to the user verbatim using presentation_format, then execute the prompt of the selected choice.",
+                next_actions: [
+                    { tool: "awaiting_user_choice", reason: "present choices to user verbatim using presentation_format, then execute the selected prompt" },
+                ],
             }, meta);
         },
     );

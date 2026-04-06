@@ -56,9 +56,10 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
                         outputShape: "varies",
                         example: "",
                         rules: [],
-                        next_action: "generate_component_code",
-                        next_action_message:
-                            "Now call generate_component_code with the converted data to get the full component scaffold.",
+                        next_actions: [
+                            { tool: "generate_component_code", reason: "generate a component scaffold using the generic conversion" },
+                            { tool: "get_component", reason: "review the target component's props before generating" },
+                        ],
                     },
                     stepMeta
                 );
@@ -77,9 +78,10 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
                     outputShape: guide.outputShape,
                     example: guide.example(userTypeName),
                     rules: guide.rules,
-                    next_action: "generate_component_code",
-                    next_action_message:
-                        "Now call generate_component_code with the converted data to get the full component scaffold.",
+                    next_actions: [
+                        { tool: "generate_component_code", reason: "generate a component scaffold using the converted data" },
+                        { tool: "get_component", reason: "review the target component's props if needed" },
+                    ],
                 },
                 stepMeta
             );

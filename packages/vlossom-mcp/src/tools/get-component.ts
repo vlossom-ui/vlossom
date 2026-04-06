@@ -18,17 +18,20 @@ export function registerGetComponent(server: McpServer): void {
             if (!meta) {
                 return textResponse({
                     error: `Component '${name}' not found. Use list_components to see available components.`,
-                    next_action: "list_components",
-                    next_action_message: "Component not found. Call list_components to verify the exact name.",
+                    next_actions: [
+                        { tool: "list_components", reason: "verify the exact component name" },
+                    ],
                 }, meta_);
             }
             return textResponse({
                 ...meta,
-                next_action: "get_css_tokens",
-                next_action_message:
-                    "Call get_css_tokens for design tokens to use in this component's styleSet, " +
-                    "get_component_relationships to understand composition, " +
-                    "or get_component_source to inspect the implementation.",
+                next_actions: [
+                    { tool: "get_css_tokens", reason: "find --vs-* design tokens for this component's styleSet variables" },
+                    { tool: "generate_style_set", reason: "generate a StyleSet scaffold for this component" },
+                    { tool: "generate_component_code", reason: "generate code using this component" },
+                    { tool: "get_component_source", reason: "inspect the Vue source implementation" },
+                    { tool: "get_component_relationships", reason: "see which components compose with this one" },
+                ],
             }, meta_);
         }
     );
