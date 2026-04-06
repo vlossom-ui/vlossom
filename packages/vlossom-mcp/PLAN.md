@@ -154,36 +154,37 @@ Tools used: suggest_components · get_component ×3 · get_component_relationshi
 
 ## Current Status
 
-Implementation status — last updated 2026-04-02 (v0.4.0 + stepper UX):
+Implementation status — last updated 2026-04-06 (v0.8.13):
 
-| Tool                          | Planned | Current status                                        |
-| ----------------------------- | ------- | ----------------------------------------------------- |
-| `list_components`             | ✅      | ✅ Implemented                                        |
-| `draft_issue`                 | ✅      | ✅ Implemented (language support, sections)           |
-| `report_issue`                | ✅      | ✅ Implemented (sectionContents approach)             |
-| `set_github_token`            | ✅      | ✅ Implemented                                        |
-| `check_github_token`          | ✅      | ✅ Implemented                                        |
-| `get_component`               | ✅      | ✅ Implemented (v0.3.0) — full ComponentMeta          |
-| `search_components`           | ✅      | ✅ Implemented (v0.3.0) — name/desc/props search      |
-| `suggest_components`          | ✅      | ✅ Implemented (v0.4.0) — keyword + heuristic         |
-| `get_component_relationships` | ✅      | ✅ Implemented (v0.4.0) — relationships.json          |
-| `compare_components`          | ✅      | ✅ Implemented (v0.4.0) — diff + recommendation       |
-| Stepper UX (`_meta`)          | ✅      | ✅ Implemented (v0.5.0) — all tools emit `_meta`      |
-| `clarify_intent`              | 🆕      | ✅ Implemented (v0.6.0) — disambiguation gate         |
-| `get_component_source`        | ✅      | ❌ Not implemented                                    |
-| `get_directive`               | ✅      | ❌ Not implemented                                    |
-| `get_composables`             | ✅      | ❌ Not implemented                                    |
-| `get_css_tokens`              | ✅      | ❌ Not implemented                                    |
-| `get_plugin`                  | 🆕      | ❌ Not implemented                                    |
-| `get_vlossom_options`         | ✅      | ❌ Not implemented                                    |
-| `generate_component_code`     | ✅      | ❌ Not implemented                                    |
-| `generate_style_set`          | ✅      | ❌ Not implemented                                    |
-| `adapt_type_to_component`     | ✅      | ❌ Not implemented                                    |
-| `validate_component_usage`    | ✅      | ❌ Not implemented                                    |
-| `get_version_info`            | ✅      | ❌ Not implemented                                    |
-| `get_style_set`               | ✅      | ❌ Not implemented (merged into get_component)        |
-| `get_changelog`               | 🆕      | ❌ Not implemented                                    |
-| `check_vlossom_setup`         | 🆕      | ❌ Not implemented                                    |
+| Tool                          | Planned | Current status                                                     |
+| ----------------------------- | ------- | ------------------------------------------------------------------ |
+| `list_components`             | ✅      | ✅ 0.1.x                                                           |
+| `draft_issue`                 | ✅      | ✅ 0.1.x — language support, sections, H1/G2 compliant            |
+| `report_issue`                | ✅      | ✅ 0.1.x — input validation, labels whitelist, try/catch          |
+| `set_github_token`            | ✅      | ✅ 0.1.x — PAT regex validation                                   |
+| `check_github_token`          | ✅      | ✅ 0.1.x                                                           |
+| `get_component`               | ✅      | ✅ 0.3.0 — full ComponentMeta                                     |
+| `search_components`           | ✅      | ✅ 0.3.0 — name/desc/props search                                 |
+| `suggest_components`          | ✅      | ✅ 0.4.0 — metadata keyword search (HEURISTIC_MAP removed, G1)    |
+| `get_component_relationships` | ✅      | ✅ 0.4.0 — relationships.json                                     |
+| `compare_components`          | ✅      | ✅ 0.4.0 — structural diff (RECOMMENDATIONS removed, G1)          |
+| Stepper UX (`_meta`)          | ✅      | ✅ 0.5.0 — all tools emit `_meta`                                 |
+| `clarify_intent`              | 🆕      | ✅ 0.6.0 — disambiguation gate, min(3).max(3) candidates          |
+| `get_component_source`        | ✅      | ✅ 0.7.x                                                           |
+| `get_directive`               | ✅      | ✅ 0.7.x                                                           |
+| `get_composables`             | ✅      | ✅ 0.7.x                                                           |
+| `get_css_tokens`              | ✅      | ✅ 0.8.x — empty result handling (H6)                             |
+| `get_vlossom_options`         | ✅      | ✅ 0.8.x                                                           |
+| `get_changelog`               | 🆕      | ✅ 0.8.x                                                           |
+| `check_vlossom_setup`         | 🆕      | ✅ 0.8.x                                                           |
+| `get_plugin`                  | 🆕      | ✅ 0.8.x — merged into get_vlossom_options (plugins field)        |
+| `get_version_info`            | ✅      | ✅ merged into check_vlossom_setup                                |
+| `get_style_set`               | ✅      | ✅ merged into get_component (styleSet field)                     |
+| `generate_component_code`     | ✅      | ✅ 0.9.0                                                           |
+| `generate_style_set`          | ✅      | ❌ 0.9.1                                                           |
+| `adapt_type_to_component`     | ✅      | ❌ 0.9.2                                                           |
+| `validate_component_usage`    | ✅      | ❌ 0.9.3 (merged from 1.0.0)                                      |
+| search_components semantic    | 🆕      | ❌ 0.9.4 (enhancement, merged from 1.0.0)                         |
 
 ### Data pipeline — resolved
 
@@ -540,24 +541,62 @@ output: {
 
 ### `validate_component_usage`
 
-**Priority**: 🟢 Low (Phase 3 late stage)
+**Priority**: 🟠 High (merged from 1.0.0 into Phase 3)
 
-Validates that written code uses Vlossom components correctly.
+Validates that written Vlossom component code follows library rules and best practices.
+Checks import style, StyleSet usage, forbidden patterns (`<style>` tag, hardcoded colors),
+and component-specific prop correctness.
 
 ```typescript
 input: {
-  code: string;
+  code: string;         // raw Vue SFC string
+  strict?: boolean;     // include style/import warnings (default: false)
 }
 output: {
   valid: boolean;
   issues: {
-    component: string;
-    issue: string;
+    rule: string;         // e.g. "R03", "R05"
+    severity: "error" | "warning";
+    component?: string;   // component name if applicable
+    line?: number;
+    message: string;
     suggestion: string;
-  }
-  [];
+  }[];
+  summary: string;        // "2 errors, 1 warning"
 }
 ```
+
+**Validation rules checked:**
+
+| Rule | Check |
+|------|-------|
+| R01 | Named import from 'vlossom' only (no default import) |
+| R03 | No `<style>` block in SFC |
+| R04 | No inline `style=""` attribute on Vlossom components |
+| R05 | No hardcoded hex/rgb color values |
+| R06 | SFC line count ≤ 200 (warning if exceeded) |
+| R07 | `<script setup lang="ts">` used |
+| R13 | Plugin ($vsModal etc.) not imported — accessed via vlossom instance |
+
+---
+
+### `search_components` — Semantic Enhancement
+
+**Priority**: 🟡 Medium (merged from 1.0.0 into Phase 3)
+
+Not a new tool — an internal enhancement to the existing `search_components` tool.
+Extends keyword matching with a **synonym/alias map** so that natural language terms
+(e.g. "chart", "dropdown", "popup") resolve to the correct Vlossom component even when
+the term doesn't appear in the component's name or description.
+
+**Implementation:**
+- Static `SYNONYM_MAP` in `search-components.ts`:  
+  `{ chart: ["table","grid"], dropdown: ["select"], popup: ["modal","drawer","tooltip"], ... }`
+- Before running metadata search, expand the query keywords using the map
+- No external embedding API required — pure deterministic lookup
+- Map is bundled as a constant (no data file); updated via normal code commits
+
+**No interface changes** — same `query: string` input, same `ComponentMeta[]` output.
 
 ---
 
@@ -811,6 +850,27 @@ src/utils/
 
 ---
 
+## Versioning Strategy
+
+Phase 3 work opens as **minor version 0.9**. Each feature commit then bumps **patch** within 0.9.x.
+
+```
+patch  — one tool added, one enhancement, bug fix, doc update, message text change
+minor  — new version range starts (major feature group begins, e.g. 0.8 → 0.9)
+major  — breaking change: remove/rename tool, change required param, breaking response schema
+```
+
+| Version | What ships |
+|---------|-----------|
+| 0.8.13 | ← current (security hardening + CLAUDE.md compliance) |
+| **0.9.0** | **generate_component_code** — Phase 3 opens here (minor bump) |
+| 0.9.1 | generate_style_set |
+| 0.9.2 | adapt_type_to_component |
+| 0.9.3 | validate_component_usage |
+| 0.9.4 | search_components semantic enhancement |
+
+---
+
 ## Implementation Order Summary
 
 ```
@@ -821,12 +881,67 @@ src/utils/
 [Done] 0.4.x — Stepper info (_meta) + Tool Attribution in all tools (Phase 4 early apply)
 [Done] 0.5.x — Session isolation + stepper UX improvements (format, timing removal)
 [Done] 0.6.0 — clarify_intent disambiguation gate (Phase 4-3)
+[Done] 0.7.x — get_component_source + get_directive + get_composables
+[Done] 0.8.x — get_css_tokens + get_vlossom_options + get_changelog + check_vlossom_setup
+             + security hardening + CLAUDE.md compliance (G1/G2/H1-H7)
 
-[Next] 0.7.0 — get_component_source + get_directive + get_composables
-[Then] 0.6.0 — get_css_tokens + get_vlossom_options + get_changelog + check_vlossom_setup
-[Then] 0.7.0 — generate_component_code + generate_style_set + adapt_type_to_component
-[Long] 1.0.0 — validate_component_usage + semantic search + MCP Prompts
+[Next] 0.9.0 — generate_component_code   (Phase 3-A, minor bump)
+[Then] 0.9.1 — generate_style_set         (Phase 3-B)
+[Then] 0.9.2 — adapt_type_to_component    (Phase 3-C)
+[Then] 0.9.3 — validate_component_usage   (merged from 1.0.0)
+[Then] 0.9.4 — search_components semantic  (merged from 1.0.0)
 ```
+
+---
+
+## Documentation Requirements
+
+Every tool commit **must** include documentation updates in the same commit.
+A commit that adds a tool without updating docs is incomplete.
+
+### Per-tool checklist
+
+For each new or modified tool, the following must be updated before committing:
+
+```
+[ ] README.md (en)     — move tool from Planned table → active category table
+[ ] README.ko.md (ko)  — same update in Korean
+[ ] DECISIONS.md       — one entry: what was added, why, alternatives considered
+[ ] PLAN.md            — mark tool as ✅ in Current Status table
+```
+
+### README tool entry format
+
+When moving a tool from **Planned** to an active section, the description must follow
+the same style as existing rows: one sentence, ≤ 90 chars, starts with a verb.
+
+```markdown
+| `generate_component_code` | Generates a Vue SFC scaffold with Vlossom coding rules and StyleSet guidance |
+```
+
+### DECISIONS.md entry format
+
+```markdown
+## YYYY-MM-DD — tool_name (vX.Y.Z)
+
+**Added**: one-line summary of what was added.
+**Why**: reason (use case it enables, gap it fills).
+**Alternatives considered**: what was rejected and why.
+**Interface**: input schema, output schema (brief).
+```
+
+### README Roadmap update
+
+When a tool ships, move it from a future row to the ✅ row for its version:
+
+```markdown
+| ✅ 0.9.0 | `generate_component_code`, `generate_style_set`, `adapt_type_to_component` |
+```
+
+### Planned → Active promotion
+
+Remove the tool row from the **Planned** table in README once it ships.
+If the Planned table becomes empty, remove the entire Planned section.
 
 ---
 

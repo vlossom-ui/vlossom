@@ -86,11 +86,16 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `draft_issue`        | Generates a structured issue template (bug / feature / question) with i18n support |
 | `report_issue`       | Creates a GitHub issue on the vlossom-ui/vlossom repository                        |
 
+### Code Generation
+
+| Tool                      | Description                                                                                    |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `generate_component_code` | Returns Vlossom coding rules, import statement, and SFC scaffold for code generation           |
+
 ### Planned
 
 | Tool                      | Description                                                                                    |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
-| `generate_component_code` | Generates a Vue SFC from a requirement; always designs StyleSet first                          |
 | `generate_style_set`      | Generates a correct StyleSet applying the variables/component/child-ref philosophy             |
 | `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props                                |
 | `validate_component_usage`| Validates that component usage in code follows Vlossom conventions                             |
@@ -111,8 +116,11 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ✅ 0.7.0 | `get_component_source`, `get_directive`, `get_composables`                     |
 | ✅ 0.8.0 | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup` |
 | ✅ 0.8.x | `get_usage_examples`, `next_action` linked-list, `presentation_format` harness, `clarify_intent`-first routing, stepper session fix |
-| 0.9.0    | `generate_component_code` (StyleSet-first), `generate_style_set`, `adapt_type_to_component` |
-| 1.0.0    | `validate_component_usage`, semantic search, MCP Prompts                       |
+| ✅ 0.9.0 | `generate_component_code` (StyleSet-first, coding rules)                                     |
+| 0.9.1    | `generate_style_set` (variables / component / child-ref philosophy)                          |
+| 0.9.2    | `adapt_type_to_component` (TypeScript type → Vlossom component data)                         |
+| 0.9.3    | `validate_component_usage` (rule-based SFC linter)                                           |
+| 0.9.4    | `search_components` semantic enhancement (synonym map)                                       |
 
 ---
 

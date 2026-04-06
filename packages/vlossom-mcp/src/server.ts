@@ -19,6 +19,7 @@ import { registerClarifyIntent } from "./tools/clarify-intent.js";
 import { registerGetUsageExamples } from "./tools/get-usage-examples.js";
 import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
+import { registerGenerateComponentCode } from "./tools/generate-component-code.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -137,6 +138,7 @@ export function createServer(): McpServer {
     registerSetGitHubToken(server);
     registerDraftIssue(server);
     registerReportIssue(server);
+    registerGenerateComponentCode(server);
 
     return server;
 }

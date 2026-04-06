@@ -1,6 +1,20 @@
 # Vlossom MCP — 스펙 결정 기록
 
 > feat/mcp 브랜치 Claude Code 세션에서 검토한 옵션과 그 결정 근거를 기록합니다.
+
+---
+
+## 2026-04-06 — generate_component_code (v0.9.0)
+
+**Added**: Vlossom 코딩 규칙 15개(R01~R15), SFC 스캐폴드, import 문, StyleSet 가이드, composable 패턴을 반환하는 코드 생성 안내 도구.
+
+**Why**: LLM이 `<style>` 태그 금지, named import, 비즈니스 로직 분리 등 Vlossom 고유 규칙을 모르고 코드를 생성하는 문제를 해결. 도구 자체가 코드를 생성하는 것이 아니라, LLM이 올바른 코드를 생성할 수 있도록 규칙과 스캐폴드를 제공.
+
+**Alternatives considered**:
+- 완성된 코드를 서버에서 직접 생성 → 기각. LLM의 유연성을 제한하고 Element Plus MCP처럼 별도 LLM API 호출이 필요해짐. 현재 아키텍처(도구 = 데이터/규칙 제공, LLM = 실제 코드 작성)와 일치하지 않음.
+- MCP Prompts로 구현 → 기각. 동일한 규칙이 이미 tool response로 전달 가능하므로 중복. (→ 0.9.5 MCP Prompts 제거 결정과 동일 맥락)
+
+**Interface**: `{ description, components[], hasBusinessLogic? }` → `{ rules[], imports, skeleton, styleSetGuidance, composablePattern? }`
 > "무엇을 만들었는가"보다 "왜 그렇게 결정했는가"에 초점을 맞춥니다.
 
 ---
