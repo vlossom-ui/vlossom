@@ -127,7 +127,7 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
             const meta = getComponentMeta(targetComponent);
             const componentName = meta ? meta.name : targetComponent;
 
-            const match = userType.match(/(?:interface|type)\s+(\w+)/);
+            const match = userType.match(/(?:export\s+)?(?:interface|type)\s+(\w+)/);
             const userTypeName = match ? match[1] : "YourType";
 
             if (!meta) {

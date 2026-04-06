@@ -250,10 +250,10 @@ export function registerValidateComponentUsage(server: McpServer): void {
                     {
                         valid: true,
                         issues: [],
-                        summary: "✅ No violations found.",
+                        summary: "No code provided — nothing to validate.",
                         next_action: "get_component",
                         next_action_message:
-                            "Code looks good. Call get_component to explore more components or get_css_tokens for design tokens.",
+                            "Pass a Vue SFC string to validate. Call get_component to explore components or generate_component_code for a scaffold.",
                     },
                     meta_
                 );
