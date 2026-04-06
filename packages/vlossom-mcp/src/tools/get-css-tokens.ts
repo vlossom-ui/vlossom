@@ -62,6 +62,16 @@ export function registerGetCssTokens(server: McpServer): void {
             const label = search ? `Tokens: ${search}` : category === "all" ? "All tokens" : `Tokens: ${category}`;
             const meta = recordStep("get_css_tokens", label, Date.now() - start);
 
+            if (tokens.length === 0) {
+                return textResponse({
+                    tokens: [],
+                    count: 0,
+                    message: `No CSS tokens found${search ? ` matching '${search}'` : ""}${category !== "all" ? ` in category '${category}'` : ""}.`,
+                    next_action: "get_css_tokens",
+                    next_action_message: "No tokens matched. Try a different category ('color-scheme', 'palette', 'radius', 'spacing', 'z-index', 'misc') or broaden your search keyword.",
+                }, meta);
+            }
+
             return textResponse({
                 tokens,
                 count: tokens.length,
