@@ -4,38 +4,6 @@ import { getComponentMeta } from "../services/meta-registry.js";
 import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { ComponentMeta } from "../types/meta.js";
 
-const RECOMMENDATIONS: Record<string, string> = {
-    "VsModal vs VsDrawer":
-        "Use VsModal for centered dialogs requiring user attention. Use VsDrawer for side panels and navigation menus.",
-    "VsInput vs VsTextarea":
-        "Use VsInput for single-line text. Use VsTextarea for multi-line content.",
-    "VsInput vs VsSearchInput":
-        "Use VsInput for general text input. Use VsSearchInput when you need built-in search functionality with regex/case options.",
-    "VsSelect vs VsRadio":
-        "Use VsSelect for dropdown selection (space-efficient). Use VsRadio when all options should be visible simultaneously.",
-    "VsCheckbox vs VsSwitch":
-        "Use VsCheckbox for multi-select or form submission. Use VsSwitch for immediate binary on/off toggles.",
-    "VsLoading vs VsSkeleton":
-        "Use VsLoading for action feedback (button clicks, data fetching). Use VsSkeleton as a content placeholder while page data loads.",
-    "VsToast vs VsModal":
-        "Use VsToast for brief non-blocking notifications. Use VsModal when you need user interaction or confirmation.",
-    "VsTabs vs VsSteps":
-        "Use VsTabs for parallel content switching. Use VsSteps for sequential workflows or wizards.",
-    "VsAccordion vs VsBlock":
-        "Use VsAccordion for collapsible sections. Use VsBlock for always-visible content sections with optional title.",
-    "VsHeader vs VsBar":
-        "Use VsHeader for the main app header at the top. Use VsBar for any horizontal toolbar within a layout.",
-};
-
-function getRecommendation(nameA: string, nameB: string): string {
-    const keyAB = `${nameA} vs ${nameB}`;
-    const keyBA = `${nameB} vs ${nameA}`;
-    return (
-        RECOMMENDATIONS[keyAB] ??
-        RECOMMENDATIONS[keyBA] ??
-        "Both components serve similar purposes. Check props for your specific use case."
-    );
-}
 
 function computeDifferences(a: ComponentMeta, b: ComponentMeta): string[] {
     const differences: string[] = [];
@@ -141,18 +109,20 @@ export function registerCompareComponents(server: McpServer): void {
                 const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
                 return textResponse({
                     error: "Cannot compare a component with itself.",
+                    next_action: "list_components",
+                    next_action_message: "Pick two different components from the list to compare.",
                 }, meta);
             }
 
             const differences = computeDifferences(metaA, metaB);
-            const recommendation = getRecommendation(metaA.name, metaB.name);
             const meta = recordStep("compare_components", `${a} vs ${b}`, Date.now() - start);
 
             return textResponse({
                 a: metaA,
                 b: metaB,
                 differences,
-                recommendation,
+                next_action: "get_component",
+                next_action_message: "Call get_component for either component to see full props and StyleSet details.",
             }, meta);
         }
     );
