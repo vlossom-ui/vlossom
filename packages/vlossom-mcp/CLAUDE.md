@@ -232,11 +232,24 @@ Before implementing, answer all three:
 2. **Needed?** — Run `/insights` to confirm the usage pattern actually exists in sessions.
 3. **Fits G3?** — Does this tool have exactly one responsibility?
 
+**Read `DECISIONS.md` before suggesting architectural changes.**
+All major data format, transport, and tool design decisions are recorded there.
+Do not propose alternatives that were already evaluated and rejected.
+
 After implementing:
 ```bash
 npx prettier --write src/tools/<tool-name>.ts
 ```
 Record the decision in `DECISIONS.md` (existing tools reviewed, evidence from `/insights`, reason for adding/rejecting).
+
+### Documentation Checklist (per tool commit)
+
+```
+[ ] README.md (en)  — move from Planned → active category table
+[ ] README.ko.md    — same in Korean
+[ ] DECISIONS.md    — add one entry (what, why, alternatives)
+[ ] PLAN.md         — mark ✅ in Current Status table
+```
 
 ### Data Files
 
@@ -268,11 +281,20 @@ Fix build errors before any other work. When adding a tool, verify it is registe
 
 | Version | When |
 |---|---|
-| `patch` | Bug fixes, docs, message text changes |
-| `minor` | New tool, new optional parameter, new data source |
+| `patch` | Each new tool added, enhancement, bug fix, doc update, message text change |
+| `minor` | New version range starts — opening a new phase group (e.g. 0.8 → 0.9) |
 | `major` | Remove/rename tool, change required parameter, breaking response schema |
 
+Current phase: **0.9.x** (Phase 3 — code generation tools). Each tool commit = one patch bump.
+
+**Before releasing:**
+1. Confirm working directory is `packages/vlossom-mcp` (not repo root)
+2. Check the version is not already published: `npm view vlossom-mcp versions --json`
+3. Run build and generate to verify clean state
+
 ```bash
+cd packages/vlossom-mcp
+npm view vlossom-mcp versions --json   # verify not already published
 npm run generate && npm run build
 npm run release:patch | release:minor | release:major
 git push && git push --tags
