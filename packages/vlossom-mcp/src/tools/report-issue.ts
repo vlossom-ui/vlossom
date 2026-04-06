@@ -1,19 +1,20 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { createIssue, getGitHubToken } from "../services/github-client.js";
+import { createIssue, getGitHubToken, type CreateIssueResult } from "../services/github-client.js";
 import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { IssueLanguage, IssueType, SectionContent } from "../types/issue.js";
+
+const ALLOWED_LABELS = ["bug", "feature", "question"] as const;
 
 export function registerReportIssue(server: McpServer): void {
     server.tool(
         "report_issue",
-        "Create a GitHub issue on the Vlossom repository. " +
-            "ALWAYS call draft_issue first and fill in all required sections with the user before calling this. " +
-            "Pass the title, type, language, and sections exactly as returned by draft_issue — do NOT restructure or rename sections. " +
-            "Always confirm the final content with the user before submitting. " +
-            "Requires VLOSSOM_GITHUB_TOKEN environment variable with issues:write scope.",
+        "ALWAYS call draft_issue before this and fill in all required sections with the user. " +
+            "Call this when the user has explicitly confirmed all sections and approved submission. " +
+            "Creates a real GitHub issue on the Vlossom repository from the confirmed sections. " +
+            "Pass title, type, language, and sections exactly as returned by draft_issue — do NOT restructure or rename sections.",
         {
-            title: z.string().describe("Issue title — use the suggestedTitle from draft_issue"),
+            title: z.string().max(256).describe("Issue title — use the suggestedTitle from draft_issue"),
             type: z
                 .enum(["bug", "feature", "enhancement", "question"])
                 .transform((v) => (v === "enhancement" ? "feature" : v) as IssueType)
@@ -29,7 +30,7 @@ export function registerReportIssue(server: McpServer): void {
                             .describe(
                                 "Section heading — must match headings from draft_issue sections"
                             ),
-                        content: z.string().describe("User-provided content for this section"),
+                        content: z.string().max(65536).describe("User-provided content for this section"),
                     })
                 )
                 .describe(
@@ -37,7 +38,7 @@ export function registerReportIssue(server: McpServer): void {
                         "Headings must not be renamed or reordered."
                 ),
             labels: z
-                .array(z.string())
+                .array(z.enum(ALLOWED_LABELS))
                 .optional()
                 .describe(
                     "Labels to apply — pass the suggestedLabels from draft_issue (e.g. ['bug'], ['feature']). " +
@@ -58,9 +59,23 @@ export function registerReportIssue(server: McpServer): void {
                 }, meta);
             }
             const body = buildBody(type, language, sectionContents);
-            const result = await createIssue(token, title, body, labels);
+            let result: CreateIssueResult;
+            try {
+                result = await createIssue(token, title, body, labels);
+            } catch (error) {
+                const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
+                return textResponse({
+                    error: error instanceof Error ? error.message : "Failed to create GitHub issue.",
+                    next_action: "check_github_token",
+                    next_action_message: "Issue creation failed. Verify your GitHub token and try again.",
+                }, meta);
+            }
             const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start);
-            return textResponse(result, meta);
+            return textResponse({
+                ...result,
+                next_action: "get_component",
+                next_action_message: "Issue submitted. Call get_component if you want to continue exploring Vlossom components.",
+            }, meta);
         }
     );
 }
