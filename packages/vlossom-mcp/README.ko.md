@@ -39,6 +39,26 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 }
 ```
 
+### 옵션
+
+| 환경 변수 | 기본값 | 설명 |
+|---|---|---|
+| `VLOSSOM_MCP_STEPPER` | `on` | 각 응답 후 파이프라인 스테퍼 UX. 비활성화하려면 `off`로 설정합니다. |
+
+```json
+{
+  "mcpServers": {
+    "vlossom": {
+      "command": "npx",
+      "args": ["-y", "vlossom-mcp@latest"],
+      "env": {
+        "VLOSSOM_MCP_STEPPER": "off"
+      }
+    }
+  }
+}
+```
+
 ---
 
 ## 도구 목록

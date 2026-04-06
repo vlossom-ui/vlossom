@@ -72,36 +72,64 @@ Always prefer search_components when the user describes a use case rather than n
 
 ## Stepper UX (REQUIRED)
 
-Append the stepper AFTER the main response. Never show it before or during.
+When a tool response contains a "_stepper" field, you MUST output it verbatim
+AFTER your main response. Never before, never skip it.
 
-### Format — fixed columns, open-ended header (no closing border to width-match)
+The "_stepper" field is a pre-rendered string from the server — output it exactly as-is,
+then optionally enhance it with tree structure using the format below.
 
-  vlossom-mcp ─────────────────────────────────────────────
-  ✔  {N. right-pad 3}  {tool left-pad 22}  {label left-pad 24, truncate 23+…}
-  ✔  ...
-  ─────────────────────────────────────────────────────────
-  {toolsUsed joined by " · "}
+### Enhanced tree format (use when you can infer parent-child from context)
 
-Column widths are FIXED. Always pad with spaces; always truncate with … when over limit:
-  N.    = 3 chars  right-aligned
-  tool  = 22 chars left-aligned  (tool names are always ≤22 chars)
-  label = 24 chars left-aligned  (if > 23 chars: first 22 chars + "…")
+vlossom-mcp ─────────────────────────────────────────────
+✔ 1. [tool]    [label]
+   → [1-line output summary — what did this step return?]
 
-Do NOT include per-step timing (server-side execution is always ~0ms and misleading).
+   ├─ ✔ 2. [tool]   [label]
+   │    ↳ selected-from #1: "[the reason from next_actions that triggered this]"
+   │    ↳ [1-line output summary]
+   │
+   └─ ✔ 3. [tool]   [label]
+        ↳ selected-from #1: "[reason]"
+        ↳ [1-line output summary]
+─────────────────────────────────────────────────────────
+Resolution: [1-sentence summary of what the full pipeline accomplished]
 
-### Example
+### Tree rules
+- Use ├─ for non-last children, └─ for the last child of each parent
+- "selected-from #N" = the step number whose next_actions triggered this call
+- Output summaries must be ≤ 60 chars and describe what was returned
+- Resolution line synthesizes the full pipeline outcome
+- If the pipeline is purely linear (no branching), use a flat list — no tree connectors needed
+- Do NOT include timing
 
-  vlossom-mcp ─────────────────────────────────────────────
-  ✔   1.  suggest_components    Suggest: settings panel t…
-  ✔   2.  suggest_components    Suggest: drawer slider sel…
-  ✔   3.  get_component         VsToast detail
-  ✔   4.  get_component         VsDrawer detail
-  ✔   5.  get_component         VsTooltip detail
-  ─────────────────────────────────────────────────────────
-  suggest_components ×2 · get_component ×3
+### Example — branching pipeline
 
-Skip entirely when _meta is absent (e.g. error responses).
-Skip entirely when _meta.steps has fewer than 2 entries — a single-step trace adds no value.
+vlossom-mcp ─────────────────────────────────────────────
+✔  1. suggest_components    "login form"
+   → suggested 2 components: VsInput, VsButton
+
+   ├─ ✔  2. get_component   "VsInput"
+   │    ↳ selected-from #1: "get full props/StyleSet for each suggested component"
+   │    ↳ fetched props, styleSet, events
+   │
+   └─ ✔  3. get_component   "VsButton"
+        ↳ selected-from #1: "get full props/StyleSet for each suggested component"
+        ↳ fetched props, styleSet, events
+─────────────────────────────────────────────────────────
+Resolution: login form → [VsInput, VsButton] → full component metadata fetched
+
+### Example — linear pipeline
+
+vlossom-mcp ─────────────────────────────────────────────
+✔  1. get_component         VsDrawer detail
+   → returned props, StyleSet, slots
+
+✔  2. get_css_tokens        Tokens: drawer
+   → returned 4 --vs-drawer-* CSS tokens
+─────────────────────────────────────────────────────────
+get_component · get_css_tokens
+
+Skip entirely when _stepper is absent (e.g. single-step responses).
 
 ## Empty Result Rule (H6)
 When a tool returns an empty result set (components: [], results: [], tokens: [], etc.),

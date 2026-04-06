@@ -154,26 +154,43 @@ Rules:
 - Always include one candidate that covers the issue-filing path when the query might indicate a missing feature
 - Labels ≤ 50 chars; truncate with `…` if longer
 
-### H4 — Stepper UX (_meta)
+### H4 — Stepper UX (_stepper)
 
-Every tool response includes `_meta` (via `recordStep()`). The LLM renders the stepper **after** the main response, never before.
+Every tool response with 2+ steps includes a `_stepper` field (pre-rendered by the server via `renderStepper()`).
+The LLM **outputs it verbatim** after the main response, then optionally enhances with tree structure.
 
-**Skip the stepper when:**
-- `_meta` is absent (e.g. error responses)
-- `_meta.steps.length < 2` — a single-step trace adds no value
+**Skip when:** `_stepper` is absent (single-step responses or stepper disabled via `VLOSSOM_MCP_STEPPER=off`).
 
-Format:
-
+**Tree-enhanced format (preferred):**
 ```
 vlossom-mcp ─────────────────────────────────────────────
-✔   1.  suggest_components    Suggest: login form
-✔   2.  get_component         VsInput detail
-✔   3.  get_component         VsButton detail
+✔  1. suggest_components    "login form"
+   → suggested 2 components: VsInput, VsButton
+
+   ├─ ✔  2. get_component   "VsInput"
+   │    ↳ selected-from #1: "get full props/StyleSet for each suggested component"
+   │    ↳ fetched props, styleSet, events
+   │
+   └─ ✔  3. get_component   "VsButton"
+        ↳ selected-from #1: "get full props/StyleSet for each suggested component"
+        ↳ fetched props, styleSet, events
 ─────────────────────────────────────────────────────────
-suggest_components · get_component ×2
+Resolution: login form → [VsInput, VsButton] → full component metadata fetched
 ```
 
-Column widths are fixed: `N.` = 3 chars right-aligned · `tool` = 22 chars left-aligned · `label` = 24 chars left-aligned (truncate at 23 with `…`). No per-step timing.
+**Flat format (linear pipelines):**
+```
+vlossom-mcp ─────────────────────────────────────────────
+✔  1. get_component         VsDrawer detail
+   → returned props, StyleSet, slots
+
+✔  2. get_css_tokens        Tokens: drawer
+   → returned 4 --vs-drawer-* CSS tokens
+─────────────────────────────────────────────────────────
+get_component · get_css_tokens
+```
+
+Rules: use ├─/└─ for branching · "selected-from #N" = parent step · output summaries ≤ 60 chars · no timing · Resolution = 1-sentence pipeline outcome.
 
 ### H5 — Issue filing flow
 

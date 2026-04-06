@@ -34,6 +34,22 @@ interface SessionState {
 
 let session: SessionState = { steps: [], lastActivityMs: Date.now() };
 
+// ---------------------------------------------------------------------------
+// Stepper on/off — controlled via VLOSSOM_MCP_STEPPER env var
+// ---------------------------------------------------------------------------
+
+let stepperEnabled = true;
+
+export function setStepperEnabled(enabled: boolean): void {
+    stepperEnabled = enabled;
+}
+
+export function isStepperEnabled(): boolean {
+    return stepperEnabled;
+}
+
+// ---------------------------------------------------------------------------
+
 function getSession(): StepInfo[] {
     const now = Date.now();
     if (now - session.lastActivityMs > SESSION_TIMEOUT_MS) {
@@ -84,8 +100,37 @@ export function recordStep(
 }
 
 /**
+ * Pre-renders the stepper as a string.
+ * Server generates a flat list; LLM enriches with tree structure and summaries
+ * using conversation context (see H4 in INSTRUCTIONS).
+ */
+function renderStepper(meta: McpResponseMeta): string {
+    const BAR = "─────────────────────────────────────────────────────────";
+    const lines: string[] = [];
+
+    lines.push(`vlossom-mcp ${BAR}`);
+
+    for (const s of meta.steps) {
+        const stepNum = String(s.step).padStart(2, " ");
+        const tool    = s.tool.padEnd(22).slice(0, 22);
+        const label   = s.label.length > 23
+            ? s.label.slice(0, 22) + "…"
+            : s.label.padEnd(23);
+        lines.push(`✔ ${stepNum}. ${tool}  ${label}`);
+    }
+
+    lines.push(BAR);
+    lines.push(meta.toolsUsed.join(" · "));
+
+    return lines.join("\n");
+}
+
+/**
  * Wrap any data as an MCP text response.
- * When `meta` is provided it is appended as a `_meta` field on the payload.
+ * When `meta` is provided:
+ *  - `_meta` is appended with step data
+ *  - `_stepper` is appended at the TOP LEVEL (not nested) when steps >= 2
+ *    so the LLM outputs it verbatim after the main response.
  */
 export function textResponse(data: unknown, meta?: McpResponseMeta) {
     const payload: Record<string, unknown> =
@@ -94,17 +139,13 @@ export function textResponse(data: unknown, meta?: McpResponseMeta) {
             : { result: data };
 
     if (meta) {
-        const metaWithRender: Record<string, unknown> = { ...meta };
-        if (meta.steps.length >= 2) {
-            metaWithRender._render =
-                "After your response, render a stepper exactly like this:\n\n" +
-                "vlossom-mcp ─────────────────────────────────────────────\n" +
-                "✔   N.  [tool — 22 chars left-aligned]   [label — 24 chars left-aligned]\n" +
-                "─────────────────────────────────────────────────────────\n" +
-                "[toolsUsed joined by ' · ']\n\n" +
-                "Rules: truncate tool/label at column width with …  ·  no per-step timing  ·  render AFTER main response, never before.";
+        payload._meta = { ...meta };
+
+        if (stepperEnabled && meta.steps.length >= 2) {
+            // Pre-rendered stepper at top level — LLM outputs this verbatim
+            // then optionally enriches with tree structure per H4 in INSTRUCTIONS
+            payload._stepper = renderStepper(meta);
         }
-        payload._meta = metaWithRender;
     }
 
     return {

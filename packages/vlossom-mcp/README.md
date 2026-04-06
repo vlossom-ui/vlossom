@@ -39,6 +39,26 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 }
 ```
 
+### Options
+
+| Environment variable | Default | Description |
+|---|---|---|
+| `VLOSSOM_MCP_STEPPER` | `on` | Pipeline stepper UX after each response. Set to `off` to disable. |
+
+```json
+{
+  "mcpServers": {
+    "vlossom": {
+      "command": "npx",
+      "args": ["-y", "vlossom-mcp@latest"],
+      "env": {
+        "VLOSSOM_MCP_STEPPER": "off"
+      }
+    }
+  }
+}
+```
+
 ---
 
 ## Tools
