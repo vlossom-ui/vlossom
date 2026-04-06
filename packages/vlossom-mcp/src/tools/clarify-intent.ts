@@ -35,18 +35,14 @@ export function registerClarifyIntent(server: McpServer): void {
             query: z.string().describe("The original user query verbatim"),
             candidates: z
                 .array(choiceSchema)
-                .min(1)
-                .max(5)
-                .describe("3 candidate interpretations (1–5 accepted; server normalizes to exactly 3)"),
+                .min(3)
+                .max(3)
+                .describe("Exactly 3 candidate interpretations, each with a distinct pipeline hint"),
         },
         async ({ query, candidates }) => {
             const start = Date.now();
 
-            // Normalize to exactly 3: trim if too many, pad with last item if too few
-            const normalized = candidates.slice(0, 3);
-            while (normalized.length < 3) normalized.push(normalized[normalized.length - 1]);
-
-            const choices = normalized.map((c, i) => ({
+            const choices = candidates.map((c, i) => ({
                 index: i + 1,
                 label:
                     c.label.length > MAX_LABEL_LENGTH
@@ -71,7 +67,13 @@ export function registerClarifyIntent(server: McpServer): void {
                     .join("\n") +
                 "\n\nPlease reply with a number (1–3).";
 
-            return textResponse({ query, choices, presentation_format }, meta);
+            return textResponse({
+                query,
+                choices,
+                presentation_format,
+                next_action: "awaiting_user_choice",
+                next_action_message: "Present the choices to the user verbatim using presentation_format, then execute the prompt of the selected choice.",
+            }, meta);
         },
     );
 }
