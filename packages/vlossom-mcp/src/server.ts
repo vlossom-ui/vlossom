@@ -20,6 +20,7 @@ import { registerGetUsageExamples } from "./tools/get-usage-examples.js";
 import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
 import { registerGenerateComponentCode } from "./tools/generate-component-code.js";
+import { registerGenerateStyleSet } from "./tools/generate-style-set.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -139,6 +140,7 @@ export function createServer(): McpServer {
     registerDraftIssue(server);
     registerReportIssue(server);
     registerGenerateComponentCode(server);
+    registerGenerateStyleSet(server);
 
     return server;
 }

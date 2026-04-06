@@ -15,6 +15,19 @@
 - MCP Prompts로 구현 → 기각. 동일한 규칙이 이미 tool response로 전달 가능하므로 중복. (→ 0.9.5 MCP Prompts 제거 결정과 동일 맥락)
 
 **Interface**: `{ description, components[], hasBusinessLogic? }` → `{ rules[], imports, skeleton, styleSetGuidance, composablePattern? }`
+
+---
+
+## 2026-04-06 — generate_style_set (v0.9.1)
+
+**Added**: 컴포넌트명과 스타일 요구사항을 받아 Vlossom StyleSet 철학(variables / component CSSProperties / child refs)에 맞는 StyleSet 객체 코드와 분류 근거를 반환.
+
+**Why**: LLM이 StyleSet을 구성할 때 어떤 속성을 `variables`에, 어떤 것을 `component`에 넣어야 하는지 판단하기 어려움. ComponentMeta의 `styleSet.variables`와 `childRefs`를 기반으로 올바른 분류 기준을 제공.
+
+**Alternatives considered**:
+- 스타일 코드를 완전히 자동 생성 → 기각. 요구사항이 자연어이므로 의미 해석은 LLM이 담당해야 함. 서버는 분류 기준과 구조만 제공.
+
+**Interface**: `{ component, requirements }` → `{ styleSetCode, explanation, usageExample, styleSetInterface }`
 > "무엇을 만들었는가"보다 "왜 그렇게 결정했는가"에 초점을 맞춥니다.
 
 ---

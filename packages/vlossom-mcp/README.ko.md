@@ -91,12 +91,12 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | 도구                       | 설명                                                                                 |
 | -------------------------- | ------------------------------------------------------------------------------------ |
 | `generate_component_code`  | Vlossom 코딩 규칙, import 문, SFC 스캐폴드를 반환해 코드 생성을 안내합니다          |
+| `generate_style_set`       | 컴포넌트에 맞는 StyleSet 객체를 분류 근거와 함께 반환합니다                          |
 
 ### 예정
 
 | 도구                       | 설명                                                                                 |
 | -------------------------- | ------------------------------------------------------------------------------------ |
-| `generate_style_set`       | variables/component/child-ref 철학을 적용한 올바른 StyleSet을 생성합니다             |
 | `adapt_type_to_component`  | 기존 TypeScript 타입을 Vlossom 컴포넌트 props에 맞게 변환합니다                     |
 | `validate_component_usage` | 코드에서 컴포넌트가 Vlossom 규칙에 맞게 사용됐는지 검증합니다                       |
 
@@ -117,7 +117,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ✅ 0.8.0   | `get_css_tokens`, `get_vlossom_options`, `get_changelog`, `check_vlossom_setup`                |
 | ✅ 0.8.x   | `get_usage_examples`, `next_action` 링크드리스트, 보안 강화, CLAUDE.md 규칙 준수              |
 | ✅ 0.9.0   | `generate_component_code` (StyleSet-first, 코딩 규칙)                                         |
-| 0.9.1      | `generate_style_set` (variables / component / child-ref 철학)                                  |
+| ✅ 0.9.1   | `generate_style_set` (variables / component / child-ref 철학)                                  |
 | 0.9.2      | `adapt_type_to_component` (TypeScript 타입 → Vlossom 컴포넌트 데이터)                          |
 | 0.9.3      | `validate_component_usage` (규칙 기반 SFC 린터)                                                |
 | 0.9.4      | `search_components` 시맨틱 강화 (동의어 맵)                                                    |
