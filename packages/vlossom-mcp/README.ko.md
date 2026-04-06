@@ -117,7 +117,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ✅ 0.9.1   | `generate_style_set` (variables / component / child-ref 철학)                                  |
 | ✅ 0.9.2   | `adapt_type_to_component` (TypeScript 타입 → Vlossom 컴포넌트 데이터)                          |
 | ✅ 0.9.3   | `validate_component_usage` (규칙 기반 SFC 린터)                                                |
-| 0.9.4      | `search_components` 시맨틱 강화 (동의어 맵)                                                    |
+| ✅ 0.9.4   | `search_components` 시맨틱 강화 (동의어 맵)                                                    |
 
 ---
 

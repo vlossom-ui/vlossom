@@ -117,7 +117,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ✅ 0.9.1 | `generate_style_set` (variables / component / child-ref philosophy)                          |
 | ✅ 0.9.2 | `adapt_type_to_component` (TypeScript type → Vlossom component data)                         |
 | ✅ 0.9.3 | `validate_component_usage` (rule-based SFC linter)                                           |
-| 0.9.4    | `search_components` semantic enhancement (synonym map)                                       |
+| ✅ 0.9.4 | `search_components` semantic enhancement (synonym map)                                       |
 
 ---
 

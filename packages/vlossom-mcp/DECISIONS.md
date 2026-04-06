@@ -54,6 +54,19 @@
 - ESLint 플러그인으로 구현 → 기각. npm 패키지 의존성 증가 불필요. regex 기반 정적 분석으로 충분하며 외부 파일 시스템 접근 불필요.
 
 **Interface**: `{ code, strict? }` → `{ valid, issues: ValidationIssue[], summary }`
+
+---
+
+## 2026-04-06 — search_components semantic enhancement (v0.9.4)
+
+**Added**: `search_components`에 SYNONYM_MAP과 expandQuery 함수를 추가. "chart" → ["table","grid"], "popup" → ["modal","drawer"] 등 자연어 동의어를 메타데이터 키워드로 자동 확장.
+
+**Why**: "chart 같은 거 있어?"처럼 Vlossom 컴포넌트 명칭이 아닌 일반 UI 용어로 검색할 때 결과가 없던 문제 해소. 인터페이스 변경 없이 내부 검색 품질만 향상.
+
+**Alternatives considered**:
+- 외부 임베딩 API 사용 의미 검색 → 기각. stdio MCP 서버에서 런타임 API 호출 불필요. 46개 정적 동의어 맵으로 대부분 케이스 커버.
+
+**Interface**: 변경 없음 (`query: string` → `ComponentMeta[]`). `expandedTerms` 선택적 디버그 필드만 추가.
 > "무엇을 만들었는가"보다 "왜 그렇게 결정했는가"에 초점을 맞춥니다.
 
 ---
