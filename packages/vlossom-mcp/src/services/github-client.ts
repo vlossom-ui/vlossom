@@ -1,5 +1,15 @@
 const GITHUB_API_URL = "https://api.github.com/repos/vlossom-ui/vlossom/issues";
 
+function getSafeErrorMessage(status: number): string {
+    if (status === 401) return "GitHub token is invalid or expired. Please provide a valid PAT.";
+    if (status === 403) return "GitHub token does not have required permissions (issues:write).";
+    if (status === 404) return "Repository not found or token lacks read access.";
+    if (status === 422) return "Invalid issue data. Check that title and labels are correct.";
+    if (status === 429) return "GitHub API rate limit exceeded. Please wait and try again.";
+    if (status >= 500) return "GitHub API is temporarily unavailable. Please try again later.";
+    return "GitHub API request failed. Please try again.";
+}
+
 export interface CreateIssueResult {
     issueUrl: string;
     issueNumber: number;
@@ -35,7 +45,8 @@ export async function createIssue(
 
     if (!response.ok) {
         const text = await response.text();
-        throw new Error(`GitHub API error ${response.status}: ${text}`);
+        process.stderr.write(`GitHub API error ${response.status}: ${text}\n`);
+        throw new Error(getSafeErrorMessage(response.status));
     }
 
     const data = (await response.json()) as { html_url: string; number: number };
