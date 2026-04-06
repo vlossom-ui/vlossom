@@ -1,6 +1,6 @@
 {
   "name": "vlossom-mcp",
-  "version": "0.8.11",
+  "version": "0.8.13",
   "description": "MCP server for Vlossom UI component library",
   "type": "module",
   "bin": {
@@ -13,9 +13,9 @@
     "start": "node dist/index.js",
     "generate": "node scripts/generate-components.mjs && node scripts/build-meta.mjs && node scripts/build-sources.mjs && node scripts/build-tokens.mjs && node scripts/build-changelog.mjs",
     "prepublishOnly": "npm run generate && npm run build",
-    "release:patch": "npm version patch && pnpm publish --no-git-checks",
-    "release:minor": "npm version minor && pnpm publish --no-git-checks",
-    "release:major": "npm version major && pnpm publish --no-git-checks"
+    "release:patch": "npm version patch && pnpm publish",
+    "release:minor": "npm version minor && pnpm publish",
+    "release:major": "npm version major && pnpm publish"
   },
   "files": [
     "dist",
