@@ -94,8 +94,6 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `generate_style_set`      | Returns a correctly structured StyleSet object for a component with classification explanation  |
 | `adapt_type_to_component` | Maps a TypeScript interface to Vlossom component data (columns, options, etc.) with examples   |
 | `validate_component_usage`| Checks a Vue SFC string for Vlossom rule violations (R01–R15) and returns issues with fixes    |
-| `adapt_type_to_component` | Converts an existing TypeScript type to Vlossom component props                                |
-| `validate_component_usage`| Validates that component usage in code follows Vlossom conventions                             |
 
 > `get_usage_examples` — call this any time to see annotated end-to-end walkthroughs of how tools chain together.
 

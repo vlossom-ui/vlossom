@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { getAllComponentsMeta } from "../services/meta-registry.js";
-import { recordStep, textResponse } from "../utils/mcp-response.js";
+import { recordStep, resetSession, textResponse } from "../utils/mcp-response.js";
 
 /**
  * Natural language → Vlossom concept keyword mapping.
@@ -117,6 +117,7 @@ export function registerSearchComponents(server: McpServer): void {
             "Then call get_component for each result to get full details.",
         { query: z.string().describe("Search term to match against component names, descriptions, and prop names/descriptions") },
         async ({ query }) => {
+            resetSession();
             const start = Date.now();
             const all = getAllComponentsMeta();
             const expandedTerms = expandQuery(query);

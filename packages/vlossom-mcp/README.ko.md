@@ -94,8 +94,6 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `generate_style_set`       | 컴포넌트에 맞는 StyleSet 객체를 분류 근거와 함께 반환합니다                          |
 | `adapt_type_to_component`  | TypeScript 인터페이스를 Vlossom 컴포넌트 데이터(columns, options 등)로 변환합니다    |
 | `validate_component_usage` | Vue SFC 코드에서 Vlossom 규칙(R01~R15) 위반을 감지하고 수정 방법을 반환합니다        |
-| `adapt_type_to_component`  | 기존 TypeScript 타입을 Vlossom 컴포넌트 props에 맞게 변환합니다                     |
-| `validate_component_usage` | 코드에서 컴포넌트가 Vlossom 규칙에 맞게 사용됐는지 검증합니다                       |
 
 > `get_usage_examples` — 도구를 연결하는 방법을 보여주는 엔드투엔드 파이프라인 예제를 언제든 호출할 수 있습니다.
 

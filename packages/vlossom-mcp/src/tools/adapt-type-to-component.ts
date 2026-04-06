@@ -130,13 +130,12 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
             const match = userType.match(/(?:interface|type)\s+(\w+)/);
             const userTypeName = match ? match[1] : "YourType";
 
-            const meta_ = recordStep(
-                "adapt_type_to_component",
-                `Adapt: ${userTypeName} → ${componentName}`,
-                Date.now() - start
-            );
-
             if (!meta) {
+                const stepMeta = recordStep(
+                    "adapt_type_to_component",
+                    `Adapt: ${userTypeName} → ${componentName}`,
+                    Date.now() - start
+                );
                 return textResponse(
                     {
                         error: `Component '${targetComponent}' not found. Use list_components to see available components.`,
@@ -144,13 +143,18 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
                         next_action_message:
                             "Component not found. Call list_components to verify the exact name.",
                     },
-                    meta_
+                    stepMeta
                 );
             }
 
             const guide = COMPONENT_ADAPTATION_GUIDES[componentName];
 
             if (!guide) {
+                const stepMeta = recordStep(
+                    "adapt_type_to_component",
+                    `Adapt: ${userTypeName} → ${componentName}`,
+                    Date.now() - start
+                );
                 return textResponse(
                     {
                         component: componentName,
@@ -166,10 +170,15 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
                         next_action_message:
                             "Now call generate_component_code with the converted data to get the full component scaffold.",
                     },
-                    meta_
+                    stepMeta
                 );
             }
 
+            const stepMeta = recordStep(
+                "adapt_type_to_component",
+                `Adapt: ${userTypeName} → ${componentName}`,
+                Date.now() - start
+            );
             return textResponse(
                 {
                     component: componentName,
@@ -182,7 +191,7 @@ export function registerAdaptTypeToComponent(server: McpServer): void {
                     next_action_message:
                         "Now call generate_component_code with the converted data to get the full component scaffold.",
                 },
-                meta_
+                stepMeta
             );
         }
     );

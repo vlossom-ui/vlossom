@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { recordStep, resetSession, textResponse } from "../utils/mcp-response.js";
+import { recordStep, textResponse } from "../utils/mcp-response.js";
 
 interface CodingRule {
     id: string;
@@ -227,7 +227,6 @@ export function registerGenerateComponentCode(server: McpServer): void {
                 ),
         },
         async ({ description, components, hasBusinessLogic }) => {
-            resetSession();
             const start = Date.now();
 
             const hasForm = components.includes("VsForm");
