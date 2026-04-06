@@ -1,6 +1,6 @@
 {
   "name": "vlossom-mcp",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "description": "MCP server for Vlossom UI component library",
   "type": "module",
   "bin": {
