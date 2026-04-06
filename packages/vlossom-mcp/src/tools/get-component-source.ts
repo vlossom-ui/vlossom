@@ -61,7 +61,14 @@ export function registerGetComponentSource(server: McpServer): void {
             }
 
             return textResponse(
-                { name: entry.name, kebabName: entry.kebabName, path: entry.path, source: entry.source },
+                {
+                    name: entry.name,
+                    kebabName: entry.kebabName,
+                    path: entry.path,
+                    source: entry.source,
+                    next_action: "get_component",
+                    next_action_message: "Call get_component for structured metadata (props, events, styleSet), or get_component_relationships for composition info.",
+                },
                 meta,
             );
         },

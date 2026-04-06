@@ -145,6 +145,11 @@ export function registerCheckVlossomSetup(server: McpServer): void {
                     requiredPeerDeps: PEER_DEPS,
                     setupChecklist: checklist,
                     ...(knownIssues.length > 0 && { knownIssues }),
+                    next_action: status === "outdated" ? "get_changelog" : "get_vlossom_options",
+                    next_action_message:
+                        status === "outdated"
+                            ? `Call get_changelog(from: '${version}') to see what changed since your version.`
+                            : "Call get_vlossom_options to configure Vlossom globally, or get_component to look up a component.",
                 },
                 meta,
             );
