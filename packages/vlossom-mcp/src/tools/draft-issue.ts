@@ -6,12 +6,10 @@ import type { IssueDraft, IssueLanguage, IssueType } from "../types/issue.js";
 export function registerDraftIssue(server: McpServer): void {
     server.tool(
         "draft_issue",
-        "Generate a structured issue template for a GitHub issue. " +
-            "ALWAYS call this before report_issue. " +
-            "Detect the language from the user's request and pass it as the language parameter. " +
-            "After receiving the template, go through each requiredSection with the user one by one " +
-            "to collect detailed information before submitting. " +
-            "Pass the returned sections and type as-is to report_issue to preserve formatting.",
+        "ALWAYS call check_github_token before this to verify token availability. " +
+            "Call this when the user wants to file a GitHub issue (bug, feature request, or question). " +
+            "Generates a structured issue template with required sections for the user to fill in. " +
+            "Then go through each required section with the user one by one, and pass the result to report_issue.",
         {
             summary: z.string().describe("Brief one-line summary of the issue"),
             type: z

@@ -5,7 +5,9 @@ import { recordStep, textResponse } from "../utils/mcp-response.js";
 export function registerCheckGitHubToken(server: McpServer): void {
     server.tool(
         "check_github_token",
-        "Check whether a GitHub token is configured for submitting issues.",
+        "Call this when starting the issue filing pipeline or when the user wants to submit a GitHub issue. " +
+            "Checks whether a GitHub token is configured for submitting issues. " +
+            "Then call set_github_token if the token is missing, or draft_issue if it is already configured.",
         {},
         () => {
             const start = Date.now();
