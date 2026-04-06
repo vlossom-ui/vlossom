@@ -1,19 +1,9 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { getComponentMeta } from "../services/meta-registry.js";
 import { recordStep, textResponse } from "../utils/mcp-response.js";
+import { resolveComponent } from "../utils/component-resolution.js";
+import { childRefToKey } from "../utils/naming.js";
 
-/**
- * childRef 이름(예: "VsLoadingStyleSet")에서 prop 키를 추출합니다.
- * "VsLoadingStyleSet" → "loading"
- */
-function childRefToKey(ref: string): string {
-    const withoutVs = ref.startsWith("Vs") ? ref.slice(2) : ref;
-    const withoutStyleSet = withoutVs.endsWith("StyleSet")
-        ? withoutVs.slice(0, -8)
-        : withoutVs;
-    return withoutStyleSet.charAt(0).toLowerCase() + withoutStyleSet.slice(1);
-}
 
 /**
  * StyleSet의 빈 스캐폴드 코드를 생성합니다.
@@ -102,24 +92,12 @@ export function registerGenerateStyleSet(server: McpServer): void {
         async ({ component, requirements }) => {
             const start = Date.now();
 
-            const componentMeta = getComponentMeta(component);
-
-            if (!componentMeta) {
-                const stepMeta = recordStep(
-                    "generate_style_set",
-                    `StyleSet: ${component}`,
-                    Date.now() - start,
-                );
-                return textResponse(
-                    {
-                        error: `Component '${component}' not found. Use list_components to see available components.`,
-                        next_action: "list_components",
-                        next_action_message:
-                            "Component not found. Call list_components to verify the exact name.",
-                    },
-                    stepMeta,
-                );
-            }
+            const { meta: componentMeta, errorResponse } = resolveComponent(
+                component,
+                "generate_style_set",
+                start,
+            );
+            if (!componentMeta) return errorResponse!;
 
             const { styleSet } = componentMeta;
             const variablesKeys = Object.keys(styleSet.variables);
