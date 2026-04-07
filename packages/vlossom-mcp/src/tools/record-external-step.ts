@@ -5,10 +5,10 @@ import { recordStep, resetSession, textResponse } from "../utils/mcp-response.js
 export function registerRecordExternalStep(server: McpServer): void {
     server.tool(
         "record_external_step",
-        "Call this immediately after calling a non-vlossom tool (e.g. Figma get_design_context, get_screenshot) " +
+        "Call this immediately after calling any non-vlossom tool (e.g. Figma, Slack, GitLab) " +
             "that is part of the current vlossom workflow, so it appears in the pipeline stepper. " +
             "Records the external tool call into the vlossom-mcp session tracker. " +
-            "Pass reset: true when this is the first step of a new Figma+Vlossom workflow. " +
+            "Pass reset: true when this is the first step of a new workflow. " +
             "Then continue with vlossom tools as normal.",
         {
             tool: z.string().describe(

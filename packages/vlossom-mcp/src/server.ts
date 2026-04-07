@@ -89,14 +89,14 @@ Always prefer search_components when the user describes a use case rather than n
 Multi-step responses include a pipeline trace block after the JSON data.
 Output it verbatim after your main response — do not skip or reformat it.
 
-## Figma + Vlossom Workflow
+## External Tool Tracking
 
-When using Figma tools (get_design_context, get_screenshot, etc.) as part of a Vlossom workflow,
-call record_external_step immediately after each Figma tool call so it appears in the stepper.
+When using any non-vlossom tool (Figma, Slack, GitLab, etc.) as part of a Vlossom workflow,
+call record_external_step immediately after each external tool call so it appears in the stepper.
 
 Standard flow:
-1. get_design_context (Figma)
-2. record_external_step { tool: "get_design_context", label: "<short design label>", reset: true }
+1. <external tool call> (Figma / Slack / GitLab / etc.)
+2. record_external_step { tool: "<tool name>", label: "<short label>", reset: true }
 3. get_component / suggest_components (vlossom)
 4. generate_component_code (vlossom)
 
