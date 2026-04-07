@@ -269,13 +269,19 @@ npx prettier --write src/tools/<tool-name>.ts
 ```
 Record the decision in `DECISIONS.md` (existing tools reviewed, evidence from `/insights`, reason for adding/rejecting).
 
-### Documentation Checklist (per tool commit)
+### Documentation Checklist
+
+Run this checklist for any of the following changes:
+- **Tool added** — new tool file + registration in server.ts
+- **Tool modified** — behavior change, parameter change, description change
+- **Tool removed** — tool deleted or disabled
+- **Tool-equivalent change** — session logic, response format, INSTRUCTIONS update, env var
 
 ```
-[ ] README.md (en)  — move from Planned → active category table
+[ ] README.md (en)  — reflect the change (add/update/remove tool entry)
 [ ] README.ko.md    — same in Korean
-[ ] DECISIONS.md    — add one entry (what, why, alternatives)
-[ ] PLAN.md         — mark ✅ in Current Status table
+[ ] DECISIONS.md    — add one entry (what, why, alternatives considered)
+[ ] PLAN.md         — update status if applicable
 ```
 
 ### Data Files
