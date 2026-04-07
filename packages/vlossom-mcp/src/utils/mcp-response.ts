@@ -25,7 +25,11 @@ export interface McpResponseMeta {
 // Resets automatically after TIMEOUT ms of inactivity.
 // ---------------------------------------------------------------------------
 
-const SESSION_TIMEOUT_MS = 60_000;
+let SESSION_TIMEOUT_MS = 30 * 60_000; // 30 minutes default
+
+export function setSessionTimeoutMs(ms: number): void {
+    SESSION_TIMEOUT_MS = ms;
+}
 
 interface SessionState {
     steps: StepInfo[];
