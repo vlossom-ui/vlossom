@@ -96,4 +96,58 @@ export const CODING_RULES: CodingRule[] = [
         severity: "critical",
         rule: "Single responsibility — the component handles UI and interaction only. Data fetching, business rules, and state management belong in composables or services.",
     },
+    {
+        id: "R16",
+        category: "styling",
+        severity: "recommended",
+        rule: "Type StyleSet objects with the component's StyleSet interface. `const s: VsButtonStyleSet = { component: { padding: '1rem' } }`. Enables autocomplete and catches invalid properties at compile time.",
+    },
+    {
+        id: "R17",
+        category: "styling",
+        severity: "recommended",
+        rule: "StyleSets reused across multiple components must be defined as named presets in `createVlossom({ styleSet: { myPreset: { ... } } })` and referenced via `style-set=\"myPreset\"`. Inline objects are for one-off overrides only.",
+    },
+    {
+        id: "R18",
+        category: "vlossom",
+        severity: "critical",
+        rule: "Form input validation feedback must use the `:state` and `:state-message` props (`'idle' | 'info' | 'success' | 'warning' | 'error'`). Never render custom error message elements alongside Vlossom inputs.",
+    },
+    {
+        id: "R19",
+        category: "vlossom",
+        severity: "recommended",
+        rule: "Propagate `color-scheme` prop from parent to child Vlossom components via `:color-scheme=\"colorScheme\"`. Never hardcode a color-scheme value inside a reusable component.",
+    },
+    {
+        id: "R20",
+        category: "vlossom",
+        severity: "recommended",
+        rule: "Single-component responsive width: use `VsResponsive` or the component's own `:width` prop (e.g. `:width=\"{ xs: '100%', md: '50%' }\"`). Do not wrap a single component in a `<div>` with CSS width.",
+    },
+    {
+        id: "R21",
+        category: "vlossom",
+        severity: "recommended",
+        rule: "Plugin APIs (`$vsModal`, `$vsToast`, etc.) must be called inside composables or service functions, not directly in `<script setup>`. Access via `useVlossom()` or inject through a wrapper composable.",
+    },
+    {
+        id: "R22",
+        category: "structure",
+        severity: "recommended",
+        rule: "Define component props as a named TypeScript interface: `interface Props { label: string }` then `defineProps<Props>()`. Avoid anonymous inline type literals in `defineProps`.",
+    },
+    {
+        id: "R23",
+        category: "structure",
+        severity: "recommended",
+        rule: "Type `defineEmits` with an explicit call signature: `defineEmits<{ change: [value: string]; submit: [] }>()`. Avoid string-array form (`defineEmits(['change'])`) which loses type safety.",
+    },
+    {
+        id: "R24",
+        category: "quality",
+        severity: "recommended",
+        rule: "Use `v-model` shorthand instead of `:model-value` + `@update:modelValue` binding pair. For multiple v-model bindings use the named form: `v-model:checked=\"isChecked\"`.",
+    },
 ];
