@@ -1,5 +1,8 @@
 {
-  "latestStable": "2.0.0-alpha",
+  "latestStable": null,
+  "latestPrerelease": "2.0.0-alpha",
+  "latestVersion": "2.0.0-alpha",
+  "currentVersion": "2.0.0-beta.1",
   "entries": [
     {
       "version": "2.0.0-alpha",

@@ -4,7 +4,7 @@
 //   dist/data/changelog.json  (if dist/data exists)
 // Run before build: npm run generate
 
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { resolve, dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -93,8 +93,21 @@ async function main() {
         return { version, date, prerelease: r.prerelease, breaking, features, fixes, notes };
     });
 
-    const latestStable = entries.find((e) => !e.prerelease)?.version ?? entries[0]?.version ?? "unknown";
-    const data = { latestStable, entries };
+    const latestStable = entries.find((e) => !e.prerelease)?.version ?? null;
+    const latestPrerelease = entries.find((e) => e.prerelease)?.version ?? null;
+    const latestVersion = entries[0]?.version ?? "unknown";
+
+    // Read the current in-development version from vlossom package.json (may be ahead of published releases)
+    let currentVersion = latestVersion;
+    const vlossomPkgPath = resolve(__dirname, "../../vlossom/package.json");
+    if (existsSync(vlossomPkgPath)) {
+        try {
+            const pkg = JSON.parse(readFileSync(vlossomPkgPath, "utf-8"));
+            if (pkg.version) currentVersion = pkg.version;
+        } catch { /* ignore */ }
+    }
+
+    const data = { latestStable, latestPrerelease, latestVersion, currentVersion, entries };
     const json = JSON.stringify(data, null, 2);
 
     mkdirSync(srcDataDir, { recursive: true });

@@ -19,7 +19,10 @@ interface ChangelogEntry {
 }
 
 interface ChangelogData {
-    latestStable: string;
+    latestStable: string | null;
+    latestPrerelease: string | null;
+    latestVersion: string;
+    currentVersion: string;
     entries: ChangelogEntry[];
 }
 
@@ -53,9 +56,9 @@ export function registerGetChangelog(server: McpServer): void {
     server.tool(
         "get_changelog",
         "No prerequisite needed. " +
-            "Call this when the user asks what changed in a specific version, how to migrate, " +
-            "or what the latest stable release is. " +
-            "Returns version history from the bundled changelog snapshot (built from GitHub Releases). " +
+            "Call this when the user asks about the current Vlossom version, what changed, how to migrate, " +
+            "or whether a stable release is available. " +
+            "Returns version summary (currentVersion, latestStable, latestPrerelease) and changelog entries. " +
             "Pairs with check_vlossom_setup: when setup check reports an outdated version, " +
             "call get_changelog(from: currentVersion) to show what changed since then.",
         {
@@ -106,7 +109,10 @@ export function registerGetChangelog(server: McpServer): void {
 
             return textResponse(
                 {
+                    currentVersion: data.currentVersion,
                     latestStable: data.latestStable,
+                    latestPrerelease: data.latestPrerelease,
+                    isPrerelease: data.latestStable === null || data.currentVersion !== data.latestStable,
                     versions: entries,
                     next_actions: [
                         { tool: "check_vlossom_setup", reason: "verify your installation status after reviewing the changelog" },
