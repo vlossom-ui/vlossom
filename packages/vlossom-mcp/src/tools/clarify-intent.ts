@@ -28,8 +28,7 @@ export function registerClarifyIntent(server: McpServer): void {
             "ALSO call this when search_components returns no results — " +
             "the query may be poorly worded and clarification may find an existing component. " +
             "Generate exactly 3 candidate interpretations as candidates, each with a distinct pipeline. " +
-            "After the server returns choices, present them to the user using the presentation_format " +
-            "field from the response — render it verbatim so the numbered options are clear. " +
+            "The server renders the numbered choice menu as a separate response block — output it verbatim to the user. " +
             "Once the user picks, execute the chosen prompt as the next query without calling clarify_intent again.",
         {
             query: z.string().describe("The original user query verbatim"),
@@ -67,14 +66,17 @@ export function registerClarifyIntent(server: McpServer): void {
                     .join("\n") +
                 "\n\nPlease reply with a number (1–3).";
 
-            return textResponse({
-                query,
-                choices,
-                presentation_format,
-                next_actions: [
-                    { tool: "awaiting_user_choice", reason: "present choices to user verbatim using presentation_format, then execute the selected prompt" },
-                ],
-            }, meta);
+            return textResponse(
+                {
+                    query,
+                    choices,
+                    next_actions: [
+                        { tool: "_await_user_choice", reason: "present the numbered menu to the user, wait for their selection, then execute the chosen prompt" },
+                    ],
+                },
+                meta,
+                [presentation_format],
+            );
         },
     );
 }

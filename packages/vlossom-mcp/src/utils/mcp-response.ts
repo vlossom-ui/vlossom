@@ -127,12 +127,21 @@ function renderStepper(meta: McpResponseMeta): string {
 
 /**
  * Wrap any data as an MCP text response.
- * When `meta` is provided:
- *  - `_meta` is appended with step data
- *  - `_stepper` is appended at the TOP LEVEL (not nested) when steps >= 2
- *    so the LLM outputs it verbatim after the main response.
+ *
+ * Content block order:
+ *   1. JSON data payload (always) — LLM reads this for tool output
+ *   2. Extra blocks (optional) — human-facing content the LLM outputs verbatim
+ *      e.g. presentation_format from clarify_intent
+ *   3. Stepper block (when steps >= 2 and stepper is enabled) — pipeline trace
+ *
+ * Separating stepper and human-facing content into their own blocks means
+ * the LLM naturally includes them without needing explicit skill instructions.
  */
-export function textResponse(data: unknown, meta?: McpResponseMeta) {
+export function textResponse(
+    data: unknown,
+    meta?: McpResponseMeta,
+    extra?: string[],
+) {
     const payload: Record<string, unknown> =
         data !== null && typeof data === "object" && !Array.isArray(data)
             ? { ...(data as Record<string, unknown>) }
@@ -140,15 +149,21 @@ export function textResponse(data: unknown, meta?: McpResponseMeta) {
 
     if (meta) {
         payload._meta = { ...meta };
+    }
 
-        if (stepperEnabled && meta.steps.length >= 2) {
-            // Pre-rendered stepper at top level — LLM outputs this verbatim
-            // then optionally enriches with tree structure per H4 in INSTRUCTIONS
-            payload._stepper = renderStepper(meta);
+    const content: Array<{ type: "text"; text: string }> = [
+        { type: "text" as const, text: JSON.stringify(payload) },
+    ];
+
+    if (extra) {
+        for (const text of extra) {
+            content.push({ type: "text" as const, text });
         }
     }
 
-    return {
-        content: [{ type: "text" as const, text: JSON.stringify(payload) }],
-    };
+    if (meta && stepperEnabled && meta.steps.length >= 2) {
+        content.push({ type: "text" as const, text: renderStepper(meta) });
+    }
+
+    return { content };
 }
