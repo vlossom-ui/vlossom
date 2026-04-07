@@ -23,6 +23,7 @@ import { registerGenerateComponentCode } from "./tools/generate-component-code.j
 import { registerGenerateStyleSet } from "./tools/generate-style-set.js";
 import { registerAdaptTypeToComponent } from "./tools/adapt-type-to-component.js";
 import { registerValidateComponentUsage } from "./tools/validate-component-usage.js";
+import { registerRecordExternalStep } from "./tools/record-external-step.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -88,6 +89,20 @@ Always prefer search_components when the user describes a use case rather than n
 Multi-step responses include a pipeline trace block after the JSON data.
 Output it verbatim after your main response — do not skip or reformat it.
 
+## Figma + Vlossom Workflow
+
+When using Figma tools (get_design_context, get_screenshot, etc.) as part of a Vlossom workflow,
+call record_external_step immediately after each Figma tool call so it appears in the stepper.
+
+Standard flow:
+1. get_design_context (Figma)
+2. record_external_step { tool: "get_design_context", label: "<short design label>", reset: true }
+3. get_component / suggest_components (vlossom)
+4. generate_component_code (vlossom)
+
+- Pass reset: true only on the first record_external_step of a new workflow.
+- label must be ≤ 23 chars; truncate with … if longer.
+
 ## Empty Result Rule (H6)
 When a tool returns an empty result set (components: [], results: [], tokens: [], etc.),
 ALWAYS inform the user about the empty result BEFORE following next_actions.
@@ -135,6 +150,7 @@ export function createServer(): McpServer {
     registerGenerateStyleSet(server);
     registerAdaptTypeToComponent(server);
     registerValidateComponentUsage(server);
+    registerRecordExternalStep(server);
 
     return server;
 }
