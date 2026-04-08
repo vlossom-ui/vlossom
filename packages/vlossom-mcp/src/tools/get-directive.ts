@@ -82,6 +82,7 @@ export function registerGetDirective(server: McpServer): void {
                     ...entry,
                     next_actions: [
                         { tool: "get_composables", reason: "check if a composable equivalent exists for programmatic usage" },
+                        { tool: "report_issue", reason: "file an enhancement or bug report for this directive (draft=true)" },
                     ],
                 },
                 meta,

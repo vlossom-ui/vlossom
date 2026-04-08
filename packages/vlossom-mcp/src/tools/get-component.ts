@@ -45,6 +45,7 @@ export function registerGetComponent(server: McpServer): void {
                     { tool: "generate_style_set", reason: "generate a StyleSet scaffold for this component" },
                     { tool: "generate_component_code", reason: "generate code using this component" },
                     { tool: "get_component_source", reason: "inspect the Vue source implementation" },
+                    { tool: "report_issue", reason: "file an enhancement or bug report for this component (draft=true)" },
                 ],
             }, meta_);
         }

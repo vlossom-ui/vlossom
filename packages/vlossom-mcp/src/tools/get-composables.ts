@@ -114,6 +114,7 @@ export function registerGetComposables(server: McpServer): void {
                     ...entry,
                     next_actions: [
                         { tool: "get_directive", reason: "check if a directive equivalent exists for declarative template usage" },
+                        { tool: "report_issue", reason: "file an enhancement or bug report for this composable (draft=true)" },
                     ],
                 },
                 meta,

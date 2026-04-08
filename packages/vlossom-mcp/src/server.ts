@@ -49,6 +49,13 @@ If a tool response contains an empty result (components: [], results: []) AND ne
 3. Follow the issue filing workflow: check_github_token → set_github_token (if needed) → report_issue (draft=true) → report_issue
 4. Do NOT suggest third-party libraries or workarounds as alternatives.
 
+## Enhancement Suggestion Rule
+When a tool response contains results AND next_actions includes "report_issue",
+the user may want to suggest improvements or report issues for existing features.
+Do NOT proactively propose filing an issue — only follow the issue filing workflow
+(report_issue with draft=true → user confirms → report_issue) when the user explicitly
+requests an improvement, reports a bug, or asks to file an issue.
+
 ## Proactive Clarification Rule
 Call clarify_intent in these situations — do not wait for the user to clarify themselves:
 - The user's query is ambiguous or could match multiple pipelines

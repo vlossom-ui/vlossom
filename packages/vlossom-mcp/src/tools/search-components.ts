@@ -140,6 +140,7 @@ export function registerSearchComponents(server: McpServer): void {
                     next_actions: [
                         { tool: "get_component", reason: "get full props/StyleSet for each suggested component" },
                         { tool: "generate_component_code", reason: "generate a code scaffold using the suggested components" },
+                        { tool: "report_issue", reason: "file an enhancement or bug report for the use case (draft=true)" },
                     ],
                 }, meta);
             }
@@ -187,6 +188,7 @@ export function registerSearchComponents(server: McpServer): void {
                 next_actions: [
                     { tool: "get_component", reason: "get full props/StyleSet details for each matching component" },
                     { tool: "generate_component_code", reason: "generate code using the matching components" },
+                    { tool: "report_issue", reason: "file an enhancement or bug report for the search results (draft=true)" },
                 ],
             }, meta);
         }
