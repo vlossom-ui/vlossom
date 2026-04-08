@@ -113,6 +113,8 @@ export function registerGenerateComponentCode(server: McpServer): void {
         "ALWAYS call search_components and get_component before this to gather component metadata. " +
             "Call this when the user is ready to generate a Vlossom Vue SFC and needs coding rules and a scaffold. " +
             "Returns Vlossom-specific coding rules, an import statement, a code skeleton, and optional composable pattern. " +
+            "If the user has existing TypeScript interfaces, map them to component props using get_component metadata " +
+            "(e.g. User interface → VsTable columns, VsSelect options). " +
             "Then pass the rules and skeleton directly to code generation.",
         {
             description: z.string().describe("What to build, e.g. 'email/password login form with validation'"),
@@ -148,12 +150,21 @@ export function registerGenerateComponentCode(server: McpServer): void {
                 "Without design input, use Vlossom defaults: VsGrid 12-column layout, 1.5rem+ spacing, " +
                 "color-scheme='blue' for primary actions, VsBlock for cards, VsDivider for separation.";
 
+            const typeMappingGuidance =
+                "When the user has existing TypeScript interfaces, map fields to Vlossom component data: " +
+                "VsTable → { key: fieldName, label: displayName } columns array. " +
+                "VsSelect → { label: displayField, value: idField } options array. " +
+                "VsCheckboxSet/VsRadioSet → same options shape. " +
+                "VsPagination → use array.length for :length prop. " +
+                "Always derive mappings from get_component props metadata, not from assumptions.";
+
             const result: Record<string, unknown> = {
                 rules: CODING_RULES,
                 imports,
                 skeleton,
                 styleSetGuidance,
                 designGuidance,
+                typeMappingGuidance,
                 avoid: [
                     "Do not add a <style> block — all styles go through :style-set prop or --vs-* tokens",
                     "Do not use Options API or defineComponent — use <script setup lang=\"ts\">",
