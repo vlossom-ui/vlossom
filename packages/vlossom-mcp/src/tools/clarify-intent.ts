@@ -14,29 +14,26 @@ const choiceSchema = z.object({
     pipeline: z
         .string()
         .describe(
-            "Brief hint of which tools will run, e.g. 'get_component' or 'suggest_components → get_component → generate_component_code'",
+            "Brief hint of which tools will run, e.g. 'get_component' or 'search_components → get_component → generate_component_code'",
         ),
 });
 
 export function registerClarifyIntent(server: McpServer): void {
     server.tool(
         "clarify_intent",
-        "Call this FIRST — before search_components or suggest_components — when the user's input is a free-form description, " +
-            "a vague phrase, or a mixed/compound term that does not clearly map to a single component name. " +
-            "ALSO call this when the user asks something unrelated to Vlossom (general programming, off-topic requests, etc.) — " +
-            "use it to steer the conversation back by offering Vlossom-relevant interpretations of what they might actually need. " +
-            "ALSO call this when search_components returns no results — " +
-            "the query may be poorly worded and clarification may find an existing component. " +
-            "Generate exactly 3 candidate interpretations as candidates, each with a distinct pipeline. " +
-            "The server renders the numbered choice menu as a separate response block — output it verbatim to the user. " +
-            "Once the user picks, execute the chosen prompt as the next query without calling clarify_intent again.",
+        "Call this when the user's next step is unclear and multiple tool pipelines could apply. " +
+            "Also call this when the user's input is a free-form description that doesn't clearly map to a single tool. " +
+            "Also call this when search_components returns no results — the query may need rephrasing. " +
+            "Presents candidate tool pipelines so the user can choose their direction. " +
+            "Other tools point to this via next_actions when the user could branch in multiple directions. " +
+            "Once the user picks, execute the chosen prompt without calling clarify_intent again.",
         {
-            query: z.string().describe("The original user query verbatim"),
+            query: z.string().describe("The original user query or context description"),
             candidates: z
                 .array(choiceSchema)
-                .min(3)
-                .max(3)
-                .describe("Exactly 3 candidate interpretations, each with a distinct pipeline hint"),
+                .min(1)
+                .max(5)
+                .describe("1–5 candidate tool pipelines, each with a distinct direction"),
         },
         async ({ query, candidates }) => {
             const start = Date.now();
@@ -45,26 +42,30 @@ export function registerClarifyIntent(server: McpServer): void {
                 index: i + 1,
                 label:
                     c.label.length > MAX_LABEL_LENGTH
-                        ? c.label.slice(0, MAX_LABEL_LENGTH - 1) + "…"
+                        ? c.label.slice(0, MAX_LABEL_LENGTH - 1) + "\u2026"
                         : c.label,
                 prompt: c.prompt,
                 pipeline: c.pipeline,
             }));
 
             const shortQuery =
-                query.length > 24 ? query.slice(0, 23) + "…" : query;
+                query.length > 24 ? query.slice(0, 23) + "\u2026" : query;
             const meta = recordStep(
                 "clarify_intent",
                 `Clarify: ${shortQuery}`,
                 Date.now() - start,
+                { summary: `${choices.length} options offered` },
             );
 
+            const choiceList = choices
+                .map((c) => `[${c.index}] ${c.label}`)
+                .join("\n");
+            const rangeLabel = choices.length === 1 ? "1" : `1\u2013${choices.length}`;
+
             const presentation_format =
-                "💬 I want to make sure I understand what you need. Which of these best matches?\n\n" +
-                choices
-                    .map((c) => `[${c.index}] ${c.label}`)
-                    .join("\n") +
-                "\n\nPlease reply with a number (1–3).";
+                "\uD83D\uDCAC Which direction would you like to go?\n\n" +
+                choiceList +
+                `\n\nPlease reply with a number (${rangeLabel}).`;
 
             return textResponse(
                 {

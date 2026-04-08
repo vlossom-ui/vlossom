@@ -3,7 +3,11 @@ import { z } from "zod";
 import { getAllComponentsMeta } from "../services/meta-registry.js";
 import { recordStep, resetSession, textResponse } from "../utils/mcp-response.js";
 import { SYNONYM_MAP } from "../data/search-synonyms.js";
+import type { ComponentMeta } from "../types/meta.js";
 
+const STOP_WORDS = new Set(["a", "an", "the", "for", "with", "and", "or", "to", "of", "in", "that", "is", "are"]);
+
+const MAX_RESULTS = 8;
 
 /** Expands a query string by appending synonym keywords. */
 function expandQuery(query: string): string[] {
@@ -21,19 +25,126 @@ function expandQuery(query: string): string[] {
     return [...terms];
 }
 
+function extractKeywords(useCase: string): string[] {
+    return useCase
+        .toLowerCase()
+        .split(/[\s,./]+/)
+        .map((w) => w.replace(/[^a-z0-9\uAC00-\uD7A3]/g, ""))
+        .filter((w) => w.length > 1 && !STOP_WORDS.has(w));
+}
+
+function searchByKeyword(all: ComponentMeta[], keyword: string): ComponentMeta[] {
+    return all.filter((component) => {
+        if (component.name.toLowerCase().includes(keyword)) return true;
+        if (component.kebabName.toLowerCase().includes(keyword)) return true;
+        if (component.description.toLowerCase().includes(keyword)) return true;
+        return component.props.some(
+            (prop) => prop.name.toLowerCase().includes(keyword) || prop.description.toLowerCase().includes(keyword)
+        );
+    });
+}
+
+function buildReasoning(useCase: string, matchedNames: string[], components: ComponentMeta[]): string {
+    if (components.length === 0) {
+        return `No components matched for use case: '${useCase}'.`;
+    }
+
+    const nameToMeta = new Map(components.map((c) => [c.name, c]));
+    const descriptions = matchedNames
+        .map((name) => nameToMeta.get(name))
+        .filter((c): c is ComponentMeta => c !== undefined)
+        .map((c) => `${c.name} (${c.description})`)
+        .join(", ");
+
+    return `Based on '${useCase}' use case: ${descriptions}. Call get_component for each to check props/StyleSet, then generate_component_code.`;
+}
+
 export function registerSearchComponents(server: McpServer): void {
     server.tool(
         "search_components",
         "No prerequisite needed. " +
-            "Call this when the user provides a specific component name or a clear, concrete keyword (e.g. 'button', 'input', 'drawer'). " +
-            "Do NOT call this for vague or free-form descriptions — call clarify_intent first instead. " +
-            "Searches component names, descriptions, and prop names/descriptions (case-insensitive) and returns all matching ComponentMeta objects. " +
-            "Then call get_component for each result to get full details.",
-        { query: z.string().describe("Search term to match against component names, descriptions, and prop names/descriptions") },
-        async ({ query }) => {
+            "Call this when the user provides a component name, keyword, or describes a use case to build. " +
+            "For specific keywords (e.g. 'button', 'input'), searches component metadata directly. " +
+            "For use cases (e.g. 'login form', 'file upload'), extracts keywords and finds matching components. " +
+            "Returns matching ComponentMeta objects. Then call get_component for each result.",
+        {
+            query: z.string().describe("Search term or keyword"),
+            useCase: z.string().optional().describe(
+                "Description of the use case to build (e.g. 'login form'). When provided, uses keyword extraction instead of direct search."
+            ),
+        },
+        async ({ query, useCase }) => {
             resetSession();
             const start = Date.now();
             const all = getAllComponentsMeta();
+
+            // useCase 경로: 키워드 추출 기반 검색
+            if (useCase) {
+                const keywords = extractKeywords(useCase);
+
+                const seen = new Set<string>();
+                const orderedNames: string[] = [];
+
+                const addName = (name: string) => {
+                    if (!seen.has(name)) {
+                        seen.add(name);
+                        orderedNames.push(name);
+                    }
+                };
+
+                for (const keyword of keywords) {
+                    const searchMatches = searchByKeyword(all, keyword);
+                    for (const component of searchMatches) {
+                        addName(component.name);
+                    }
+                }
+
+                const limitedNames = orderedNames.slice(0, MAX_RESULTS);
+
+                const nameToMeta = new Map(all.map((c) => [c.name, c]));
+                const components = limitedNames
+                    .map((name) => nameToMeta.get(name))
+                    .filter((c): c is ComponentMeta => c !== undefined);
+
+                const reasoning = buildReasoning(useCase, limitedNames, components);
+                const shortUseCase = useCase.length > 28 ? useCase.slice(0, 25) + "\u2026" : useCase;
+
+                if (components.length === 0) {
+                    const meta = recordStep("search_components", `Suggest: ${shortUseCase}`, Date.now() - start, { summary: "no matches" });
+                    return textResponse({
+                        components: [],
+                        reasoning,
+                        message: `No components matched for use case: '${useCase}'.`,
+                        next_actions: [
+                            { tool: "clarify_intent", reason: "rephrase the use case to match existing components" },
+                            { tool: "check_github_token", reason: "file an enhancement issue for the missing feature" },
+                        ],
+                    }, meta);
+                }
+
+                const meta = recordStep("search_components", `Suggest: ${shortUseCase}`, Date.now() - start, {
+                    summary: `suggested ${components.length}: ${components.slice(0, 3).map((c) => c.name).join(", ")}${components.length > 3 ? "\u2026" : ""}`,
+                });
+
+                return textResponse({
+                    components,
+                    reasoning,
+                    total: components.length,
+                    tryNext: components.length > 0
+                        ? `Try: "Build a ${useCase} page using ${components.slice(0, 3).map(c => c.name).join(', ')}" to generate code`
+                        : undefined,
+                    avoid: [
+                        "Do not recommend or mention Vlossom components that were not returned in this response",
+                        "Do not suggest third-party UI libraries as alternatives without the user asking",
+                    ],
+                    next_actions: [
+                        { tool: "get_component", reason: "get full props/StyleSet for each suggested component" },
+                        { tool: "generate_component_code", reason: "generate a code scaffold using the suggested components" },
+                    ],
+                }, meta);
+            }
+
+            // query 경로: 동의어 확장 기반 검색
             const expandedTerms = expandQuery(query);
 
             const results = all.filter((component) => {
@@ -50,9 +161,8 @@ export function registerSearchComponents(server: McpServer): void {
                 });
             });
 
-            const meta = recordStep("search_components", `Search: ${query}`, Date.now() - start);
-
             if (results.length === 0) {
+                const meta = recordStep("search_components", `Search: ${query}`, Date.now() - start, { summary: "no results" });
                 return textResponse({
                     results: [],
                     expandedTerms: expandedTerms.length > 1 ? expandedTerms : undefined,
@@ -64,13 +174,19 @@ export function registerSearchComponents(server: McpServer): void {
                 }, meta);
             }
 
+            const meta = recordStep("search_components", `Search: ${query}`, Date.now() - start, { summary: `${results.length} results` });
+
             return textResponse({
                 results,
                 total: results.length,
                 expandedTerms: expandedTerms.length > 1 ? expandedTerms : undefined,
+                avoid: [
+                    "Do not recommend or mention Vlossom components that were not returned in this response",
+                    "Do not suggest third-party UI libraries as alternatives without the user asking",
+                ],
                 next_actions: [
                     { tool: "get_component", reason: "get full props/StyleSet details for each matching component" },
-                    { tool: "compare_components", reason: "compare two similar components side by side" },
+                    { tool: "generate_component_code", reason: "generate code using the matching components" },
                 ],
             }, meta);
         }

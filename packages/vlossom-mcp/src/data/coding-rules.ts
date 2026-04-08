@@ -1,153 +1,85 @@
 export interface CodingRule {
     id: string;
-    category: "import" | "styling" | "structure" | "vlossom" | "quality";
+    category: "styling" | "vlossom" | "structure" | "design";
     severity: "critical" | "recommended";
     rule: string;
 }
 
 export const CODING_RULES: CodingRule[] = [
+    // --- Styling (StyleSet & tokens) ---
     {
         id: "R01",
-        category: "import",
+        category: "styling",
         severity: "critical",
-        rule: "Named import only — `import { VsButton, VsInput } from 'vlossom'`. Never default import or VlossomComponents map.",
+        rule: "All Vlossom component customization goes through the `:style-set` prop or `--vs-*` CSS tokens. Never use inline `style=\"\"` on Vlossom components. Do not target `.vs-*` selectors in a `<style>` block — Vlossom class names are internal and may change. Custom CSS in `<style>` should only target your own selectors.",
     },
     {
         id: "R02",
-        category: "import",
-        severity: "recommended",
-        rule: "`createVlossom()` goes in main.ts only. Never import or call it inside a component file.",
+        category: "styling",
+        severity: "critical",
+        rule: "StyleSet objects have up to 3 property types: `variables` (maps to CSS custom properties), `component` or named elements like `title`/`content` (CSSProperties objects), and child component StyleSets (e.g. `loading`, `dimmed`). Example: `:style-set=\"{ variables: { padding: '1rem' }, component: { backgroundColor: 'red' }, loading: { ... } }\"`. Check the component's `Vs{Name}StyleSet` interface for available properties.",
     },
     {
         id: "R03",
         category: "styling",
-        severity: "critical",
-        rule: "No `<style>` block in the SFC. All custom styles go through the `:style-set` prop.",
+        severity: "recommended",
+        rule: "Type StyleSet objects with the component's interface (e.g. `const s: VsButtonStyleSet = { ... }`). Reusable StyleSets go in `createVlossom({ styleSet: { preset: { ... } } })` and are referenced via `style-set=\"preset\"`. Inline objects are for one-off overrides only.",
     },
     {
         id: "R04",
         category: "styling",
-        severity: "critical",
-        rule: "No inline `style=\"\"` attribute on Vlossom components. Use StyleSet or CSS tokens.",
+        severity: "recommended",
+        rule: "When referencing Vlossom design tokens in custom CSS, use `--vs-*` variables: `var(--vs-comp-bg)`, `var(--vs-comp-font)`, `var(--vs-line-color)`, `var(--vs-primary-comp-bg)`. Never hardcode colors that Vlossom already provides as tokens — this breaks dark mode and theming.",
     },
+    // --- Vlossom component patterns ---
     {
         id: "R05",
-        category: "styling",
-        severity: "recommended",
-        rule: "No hardcoded hex/rgb/hsl color values. Use `color-scheme` prop or `--vs-*` CSS tokens.",
+        category: "vlossom",
+        severity: "critical",
+        rule: "Bind Vlossom form inputs with `v-model`. Each input (VsInput, VsSelect, VsCheckbox, etc.) requires `v-model` for VsForm validation to work. Some components support named v-model bindings (e.g. `v-model:page`, `v-model:selected-items` on VsTable).",
     },
     {
         id: "R06",
-        category: "structure",
-        severity: "recommended",
-        rule: "Target ≤ 200 lines per SFC. Extract to composable or child component if exceeded.",
+        category: "vlossom",
+        severity: "critical",
+        rule: "Use `VsForm` for forms: obtain a ref via `useTemplateRef('formRef')` and call `formRef.value?.validate()` on submit. Attach validation with `:rules=\"[fn1, fn2]\"` where each function signature is `(v: unknown) => string | true`.",
     },
     {
         id: "R07",
-        category: "structure",
+        category: "vlossom",
         severity: "critical",
-        rule: "Use `<script setup lang=\"ts\">`. Avoid Options API or `defineComponent`.",
+        rule: "Form input validation feedback must use `:state` and `:state-message` props (`'idle' | 'info' | 'success' | 'warning' | 'error'`). Never render custom error `<div>` or `<span>` elements alongside Vlossom inputs.",
     },
     {
         id: "R08",
-        category: "structure",
-        severity: "critical",
-        rule: "Business logic (API calls, data fetching, complex transformations) must live in a composable (`use{Feature}.ts`) or service (`{feature}.service.ts`). Not inside the component.",
+        category: "vlossom",
+        severity: "recommended",
+        rule: "For responsive form layouts, use the `:grid` prop on Vlossom input components: `:grid=\"{ xs: 12, md: 6 }\"`. Breakpoint keys are `xs`, `sm`, `md`, `lg`, `xl` with column values 1-12.",
     },
     {
         id: "R09",
-        category: "structure",
+        category: "vlossom",
         severity: "recommended",
-        rule: "Composable filename: `use{Feature}.ts`. Service filename: `{feature}.service.ts`.",
+        rule: "Plugin APIs (`$vsModal`, `$vsToast`, `$vsAlert`, `$vsConfirm`, `$vsPrompt`) are accessed via `const { $vsModal } = useVlossom()` inside `<script setup>`. Wrap the actual trigger call in a function or composable — do not invoke plugin APIs at the top level of setup.",
     },
+    // --- Structure ---
     {
         id: "R10",
-        category: "vlossom",
-        severity: "critical",
-        rule: "Forms use `VsForm` with `ref` + `formRef.value?.validate()` pattern. Never build custom form logic inline.",
+        category: "structure",
+        severity: "recommended",
+        rule: "Keep Vlossom SFCs focused on template bindings and user interaction. Move API calls, data fetching, form submit handlers, and complex state into a composable (`use{Feature}.ts`). This keeps components under 200 lines and makes validation logic (`formRef.value?.validate()`) reusable.",
     },
+    // --- Design guidance ---
     {
         id: "R11",
-        category: "vlossom",
-        severity: "critical",
-        rule: "Validation uses `:rules=\"[fn1, fn2]\"` array. Each function signature: `(v: unknown) => string | true`. Empty string or true = pass; string message = fail.",
+        category: "design",
+        severity: "recommended",
+        rule: "When the user does not specify a design direction, proactively suggest UI references before generating code. Recommend browsing design inspiration from sites like Dribbble (dribbble.com), Behance (behance.net), or Mobbin (mobbin.com) for the specific use case (e.g. 'dashboard design', 'login form design'). If the user has a Figma file, suggest using the Figma MCP tools (get_design_context, get_screenshot) to extract the design before generating Vlossom code.",
     },
     {
         id: "R12",
-        category: "vlossom",
+        category: "design",
         severity: "recommended",
-        rule: "Responsive layout: wrap in `VsGrid` + use `:grid=\"{ xs: 12, md: 6 }\"` on each input. Do not use raw CSS grid/flex for Vlossom component layout.",
-    },
-    {
-        id: "R13",
-        category: "vlossom",
-        severity: "recommended",
-        rule: "Plugin APIs (`$vsModal`, `$vsToast`, `$vsAlert`, `$vsConfirm`, `$vsPrompt`) are accessed via the vlossom plugin instance. Do not import them.",
-    },
-    {
-        id: "R14",
-        category: "quality",
-        severity: "recommended",
-        rule: "Prefer declarative template patterns: `v-if`, `v-for`, `v-model`, `computed`. Avoid imperative DOM manipulation.",
-    },
-    {
-        id: "R15",
-        category: "quality",
-        severity: "critical",
-        rule: "Single responsibility — the component handles UI and interaction only. Data fetching, business rules, and state management belong in composables or services.",
-    },
-    {
-        id: "R16",
-        category: "styling",
-        severity: "recommended",
-        rule: "Type StyleSet objects with the component's StyleSet interface. `const s: VsButtonStyleSet = { component: { padding: '1rem' } }`. Enables autocomplete and catches invalid properties at compile time.",
-    },
-    {
-        id: "R17",
-        category: "styling",
-        severity: "recommended",
-        rule: "StyleSets reused across multiple components must be defined as named presets in `createVlossom({ styleSet: { myPreset: { ... } } })` and referenced via `style-set=\"myPreset\"`. Inline objects are for one-off overrides only.",
-    },
-    {
-        id: "R18",
-        category: "vlossom",
-        severity: "critical",
-        rule: "Form input validation feedback must use the `:state` and `:state-message` props (`'idle' | 'info' | 'success' | 'warning' | 'error'`). Never render custom error message elements alongside Vlossom inputs.",
-    },
-    {
-        id: "R19",
-        category: "vlossom",
-        severity: "recommended",
-        rule: "Propagate `color-scheme` prop from parent to child Vlossom components via `:color-scheme=\"colorScheme\"`. Never hardcode a color-scheme value inside a reusable component.",
-    },
-    {
-        id: "R20",
-        category: "vlossom",
-        severity: "recommended",
-        rule: "Single-component responsive width: use `VsResponsive` or the component's own `:width` prop (e.g. `:width=\"{ xs: '100%', md: '50%' }\"`). Do not wrap a single component in a `<div>` with CSS width.",
-    },
-    {
-        id: "R21",
-        category: "vlossom",
-        severity: "recommended",
-        rule: "Plugin APIs (`$vsModal`, `$vsToast`, etc.) must be called inside composables or service functions, not directly in `<script setup>`. Access via `useVlossom()` or inject through a wrapper composable.",
-    },
-    {
-        id: "R22",
-        category: "structure",
-        severity: "recommended",
-        rule: "Define component props as a named TypeScript interface: `interface Props { label: string }` then `defineProps<Props>()`. Avoid anonymous inline type literals in `defineProps`.",
-    },
-    {
-        id: "R23",
-        category: "structure",
-        severity: "recommended",
-        rule: "Type `defineEmits` with an explicit call signature: `defineEmits<{ change: [value: string]; submit: [] }>()`. Avoid string-array form (`defineEmits(['change'])`) which loses type safety.",
-    },
-    {
-        id: "R24",
-        category: "quality",
-        severity: "recommended",
-        rule: "Use `v-model` shorthand instead of `:model-value` + `@update:modelValue` binding pair. For multiple v-model bindings use the named form: `v-model:checked=\"isChecked\"`.",
+        rule: "For layouts without a design reference, apply these defaults: use VsGrid with 12-column system and consistent gap (1.5rem). Apply visual hierarchy through Vlossom's color-scheme prop ('blue' for primary actions, 'green' for success, 'red' for destructive). Use VsBlock for card-like containers, VsDivider for section separation, and VsPage for page-level structure with title/description slots. Keep whitespace generous (padding: 1.5rem+) and avoid cramming components.",
     },
 ];

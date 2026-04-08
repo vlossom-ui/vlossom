@@ -3,9 +3,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { registerListComponents } from "./tools/list-components.js";
 import { registerGetComponent } from "./tools/get-component.js";
 import { registerSearchComponents } from "./tools/search-components.js";
-import { registerSuggestComponents } from "./tools/suggest-components.js";
-import { registerGetComponentRelationships } from "./tools/get-relationships.js";
-import { registerCompareComponents } from "./tools/compare-components.js";
 import { registerGetComponentSource } from "./tools/get-component-source.js";
 import { registerGetDirective } from "./tools/get-directive.js";
 import { registerGetComposables } from "./tools/get-composables.js";
@@ -17,13 +14,13 @@ import { registerCheckGitHubToken } from "./tools/check-github-token.js";
 import { registerSetGitHubToken } from "./tools/set-github-token.js";
 import { registerClarifyIntent } from "./tools/clarify-intent.js";
 import { registerGetUsageExamples } from "./tools/get-usage-examples.js";
-import { registerDraftIssue } from "./tools/draft-issue.js";
 import { registerReportIssue } from "./tools/report-issue.js";
 import { registerGenerateComponentCode } from "./tools/generate-component-code.js";
 import { registerGenerateStyleSet } from "./tools/generate-style-set.js";
-import { registerAdaptTypeToComponent } from "./tools/adapt-type-to-component.js";
 import { registerValidateComponentUsage } from "./tools/validate-component-usage.js";
 import { registerRecordExternalStep } from "./tools/record-external-step.js";
+import { registerValidateProjectSetup } from "./tools/validate-project-setup.js";
+import { registerGetMigrationGuide } from "./tools/get-migration-guide.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -49,7 +46,7 @@ If a tool response contains an empty result (components: [], results: []) AND ne
 "check_github_token", you MUST:
 1. Immediately inform the user that the component does not exist in Vlossom.
 2. Proactively propose filing an enhancement issue.
-3. Follow the issue filing workflow: check_github_token → set_github_token (if needed) → draft_issue → report_issue
+3. Follow the issue filing workflow: check_github_token → set_github_token (if needed) → report_issue (draft=true) → report_issue
 4. Do NOT suggest third-party libraries or workarounds as alternatives.
 
 ## Proactive Clarification Rule
@@ -65,29 +62,32 @@ When generating candidates for off-topic queries, always include one option that
 NEVER write a freehand numbered menu yourself — always call clarify_intent so the server renders the fixed format.
 
 ## Tool call flow guide
-- When user asks how to use vlossom-mcp, what it can do, or wants a demo: get_usage_examples
+- When user asks how to get started with Vlossom, installation, setup, or what vlossom-mcp can do: get_usage_examples
 - When intent is unclear: clarify_intent → then chosen pipeline
 - To list all components: list_components
 - To look up a specific component: get_component (accepts VsButton or vs-button)
 - To search components by keyword or use case: search_components → get_component for each result
   - If results are empty: check next_actions — follow Missing Component Rule if check_github_token is listed
-- To suggest components for a use case or feature: suggest_components → get_component for each result
+- To find components for a use case: search_components (with useCase param) → get_component for each result
   - If results are empty: check next_actions — follow Missing Component Rule if check_github_token is listed
-- To get component composition/relationships: get_component_relationships
-- To compare two components: compare_components
+- To get component composition/relationships: get_component with includeRelationships: true
+
 - To generate component code:
-    1. suggest_components (recommend components for the use case)
+    1. search_components (with useCase param to recommend components for the use case)
     2. get_component (check props/StyleSet for each)
     3. generate_component_code (generate code)
-- To file a GitHub issue: check_github_token → set_github_token (if needed) → draft_issue → report_issue
+- To file a GitHub issue: check_github_token → set_github_token (if needed) → report_issue (draft=true) → report_issue
+- To validate a user's project setup: validate_project_setup (pass package.json content)
+- To get migration guidance between versions: get_migration_guide
 - To check version / what changed: get_changelog first, then check_vlossom_setup if the user has a project
 
 Always prefer search_components when the user describes a use case rather than naming a specific component.
 
 ## Stepper UX
 
-Multi-step responses include a pipeline trace block after the JSON data.
-Output it verbatim after your main response — do not skip or reformat it.
+Every tool response includes a pipeline trace block as a separate content block.
+It is pre-rendered by the server — output it verbatim after your main response.
+Do not skip, summarize, or reformat the block.
 
 ## External Tool Tracking
 
@@ -97,7 +97,7 @@ call record_external_step immediately after each external tool call so it appear
 Standard flow:
 1. <external tool call> (Figma / Slack / GitLab / etc.)
 2. record_external_step { tool: "<tool name>", label: "<short label>", reset: true }
-3. get_component / suggest_components (vlossom)
+3. get_component / search_components (vlossom)
 4. generate_component_code (vlossom)
 
 - Pass reset: true only on the first record_external_step of a new workflow.
@@ -120,7 +120,7 @@ Only call report_issue after receiving a clear affirmative answer.
 ## No Component Hallucination (G5)
 Never mention or recommend a Vlossom component (VsXxx / vs-xxx) that did not appear
 in a tool response within the current conversation.
-Only reference components returned by list_components, search_components, suggest_components,
+Only reference components returned by list_components, search_components,
 or get_component. If unsure whether a component exists, call search_components first.
 `;
 
@@ -139,18 +139,18 @@ export function createServer(): McpServer {
     registerCheckVlossomSetup(server);
     registerGetComponent(server);
     registerSearchComponents(server);
-    registerSuggestComponents(server);
-    registerGetComponentRelationships(server);
-    registerCompareComponents(server);
+
     registerCheckGitHubToken(server);
     registerSetGitHubToken(server);
-    registerDraftIssue(server);
     registerReportIssue(server);
     registerGenerateComponentCode(server);
     registerGenerateStyleSet(server);
-    registerAdaptTypeToComponent(server);
+
     registerValidateComponentUsage(server);
     registerRecordExternalStep(server);
+
+    registerValidateProjectSetup(server);
+    registerGetMigrationGuide(server);
 
     return server;
 }

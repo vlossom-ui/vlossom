@@ -25,7 +25,7 @@ export function resolveComponent(
 ): ResolveResult {
     const meta = getComponentMeta(component);
     if (!meta) {
-        const stepMeta = recordStep(toolName, `Lookup: ${component}`, Date.now() - start);
+        const stepMeta = recordStep(toolName, `Lookup: ${component}`, Date.now() - start, { summary: "component not found" });
         return {
             meta: null,
             errorResponse: textResponse(
