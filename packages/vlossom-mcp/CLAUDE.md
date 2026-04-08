@@ -137,60 +137,77 @@ Cross-domain links (always include in success path):
 
 ### H3 — clarify_intent choice format
 
-`clarify_intent` must include a `presentation_format` field in its response — a ready-to-render string the LLM outputs verbatim. This ensures the user sees consistent, indexed choices.
+`clarify_intent` is a **next-action hub** — other tools point to it via `next_actions` when the user
+could branch in multiple directions. It presents candidate tool pipelines and renders a numbered menu
+as a separate response block. The LLM outputs it verbatim.
 
 ```
-💬 I want to make sure I understand what you need. Which of these best matches?
+💬 Which direction would you like to go?
 
 [1] <label for candidate 1>
 [2] <label for candidate 2>
-[3] <label for candidate 3>
 
-Please reply with a number (1–3).
+Please reply with a number (1–2).
 ```
 
 Rules:
-- Always exactly 3 candidates, each with a distinct `pipeline` hint
-- Always include one candidate that covers the issue-filing path when the query might indicate a missing feature
+- 1–5 candidates, each with a distinct `pipeline` hint
+- Include an issue-filing candidate when the query might indicate a missing feature
 - Labels ≤ 50 chars; truncate with `…` if longer
 
-### H4 — Stepper UX (_stepper)
+### H4 — Stepper UX (server-rendered)
 
-Every tool response with 2+ steps includes a `_stepper` field (pre-rendered by the server via `renderStepper()`).
-The LLM **outputs it verbatim** after the main response, then optionally enhances with tree structure.
+The server generates a **complete** stepper block via `renderStepper()` — including tree structure,
+`→` summary lines, and Resolution. The LLM **outputs it verbatim** without modification.
 
-**Skip when:** `_stepper` is absent (single-step responses or stepper disabled via `VLOSSOM_MCP_STEPPER=off`).
+The stepper block appears as a separate content block in every tool response (threshold: 1+ steps).
+It is prefixed with a verbatim output instruction for external LLM compliance.
 
-**Tree-enhanced format (preferred):**
+**Skip when:** stepper is disabled via `VLOSSOM_MCP_STEPPER=off`.
+
+**Single step (server-generated):**
 ```
 vlossom-mcp ─────────────────────────────────────────────
-✔  1. suggest_components    "login form"
-   → suggested 2 components: VsInput, VsButton
-
-   ├─ ✔  2. get_component   "VsInput"
-   │    ↳ selected-from #1: "get full props/StyleSet for each suggested component"
-   │    ↳ fetched props, styleSet, events
-   │
-   └─ ✔  3. get_component   "VsButton"
-        ↳ selected-from #1: "get full props/StyleSet for each suggested component"
-        ↳ fetched props, styleSet, events
+✔  1. list_components       List all components
+   → 50 components
 ─────────────────────────────────────────────────────────
-Resolution: login form → [VsInput, VsButton] → full component metadata fetched
+list_components
 ```
 
-**Flat format (linear pipelines):**
+**Branching pipeline (server-generated):**
+```
+vlossom-mcp ─────────────────────────────────────────────
+✔  1. suggest_components    Suggest: login form
+   → suggested 2: VsInput, VsButton
+
+   ├─ ✔  2. get_component   VsInput detail
+   │     → props, styleSet, events
+   │
+   └─ ✔  3. get_component   VsButton detail
+         → props, styleSet, events
+─────────────────────────────────────────────────────────
+Resolution: suggested 2: VsInput, VsButton → props, styleSet, events, props, styleSet, events
+suggest_components · get_component ×2
+```
+
+**Linear pipeline (server-generated):**
 ```
 vlossom-mcp ─────────────────────────────────────────────
 ✔  1. get_component         VsDrawer detail
-   → returned props, StyleSet, slots
+   → props, styleSet, events
 
 ✔  2. get_css_tokens        Tokens: drawer
-   → returned 4 --vs-drawer-* CSS tokens
+   → 4 tokens
 ─────────────────────────────────────────────────────────
+Resolution: props, styleSet, events → 4 tokens
 get_component · get_css_tokens
 ```
 
-Rules: use ├─/└─ for branching · "selected-from #N" = parent step · output summaries ≤ 60 chars · no timing · Resolution = 1-sentence pipeline outcome.
+Rules:
+- The LLM does NOT generate or enhance the stepper — it outputs the server block as-is
+- Tree structure (`├─/└─`) is auto-detected from initiator tools (`resetSession()` callers)
+- Each tool provides a `summary` via `recordStep(tool, label, duration, { summary })` (≤ 60 chars)
+- Resolution line appears only for 2+ step pipelines
 
 ### H5 — Issue filing flow
 

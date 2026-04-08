@@ -4,6 +4,71 @@
 
 ---
 
+## 2026-04-08 — Tool consolidation round 2: 22 → 18 tools + rules refinement
+
+**Merged**:
+- `suggest_components` → `search_components` (useCase optional param 추가)
+- `draft_issue` → `report_issue` (draft: true 모드 추가)
+- `get_component_relationships` → `get_component` (includeRelationships optional param 추가)
+
+**Refined**: `generate_component_code` 코딩 규칙 24개 → 11개 (critical 6 + recommended 5)
+
+**Why — suggest + search**: 동일 메타데이터 검색. LLM 도구 선택 혼란 제거. useCase param으로 분기.
+**Why — draft + report**: 4단계 → 2단계 이슈 파이프라인. draft 모드를 report_issue에 통합.
+**Why — relationships + get_component**: 부가 정보를 별도 도구로 분리할 필요 없음. includeRelationships param으로 통합.
+**Why — 규칙 24 → 11**: 중복/유사 규칙 병합 (R03+R04, R10+R11, R13+R21, R16+R17, R22+R23, R14+R24). 너무 specific한 규칙(R19, R20) 제거. LLM 유연성 확보.
+
+**Final tool count**: 18 tools (from original 24)
+
+---
+
+## 2026-04-08 — Tool consolidation round 1: 24 → 22 tools
+
+**Removed**: `compare_components`, `adapt_type_to_component`
+**Redesigned**: `clarify_intent` (next-action hub), `get_usage_examples` (Vlossom guide + selling points)
+
+**Why — compare_components**: LLM이 `get_component`를 2회 호출한 뒤 직접 비교하는 것이 더 유연하고 맥락을 반영함. 전용 도구는 LLM의 자연스러운 판단을 제한.
+
+**Why — adapt_type_to_component**: TypeScript 인터페이스 → 컴포넌트 데이터 매핑 패턴이 5개뿐. `get_component`에서 props 타입 정보를 제공하므로 LLM이 직접 추론 가능.
+
+**Why — clarify_intent redesign**: 기존: "모호한 질문에 3개 고정 선택지를 서버가 생성하는 disambiguation gate". 이는 LLM의 고유 역할(맥락 파악, 질문)을 서버가 대신하는 안티패턴. 새 설계: "다른 도구가 next_actions로 가리킬 수 있는 도구 추천 허브". 선택지 1~5개로 유연화. vlossom-mcp 기능을 최대한 활용하도록 유도하는 본래 목적에 부합.
+
+**Why — get_usage_examples redesign**: 기존: 3개의 specific 파이프라인 워크스루 (너무 좁고 긴 데이터). 새 설계: 설치 가이드 + createVlossom 설정 + Quick Start 예제 + Vlossom 셀링포인트 5가지 + MCP 파이프라인 안내. 범용적인 온보딩 도구로 전환.
+
+**Alternatives considered**:
+- clarify_intent 이름 변경 (suggest_next_action 등) → 기각. CLAUDE.md G4, H3, H7이 모두 이 이름을 참조. 변경 시 문서 전체 수정 필요.
+- adapt_type_to_component를 generate_component_code에 파라미터로 통합 → 기각. 사용 빈도가 낮아 통합보다 제거가 적합.
+
+**next_actions 변경**: compare_components 참조를 `generate_component_code`로 교체 (get-relationships.ts, search-components.ts). get_usage_examples의 next_actions를 get_changelog, list_components, get_vlossom_options로 교체.
+
+---
+
+## 2026-04-08 — Server-side stepper enhancement (v0.9.16)
+
+**Changed**: Layer 2 stepper (tree structure, summaries, Resolution line)를 LLM 측 스킬/지침에서 MCP 서버의 `renderStepper()`로 이동. threshold를 `>= 2`에서 `>= 1`로 낮추고, verbatim 출력 지시문 프리픽스 추가.
+
+**Why**: 기존 Layer 2는 `.claude/skills/vlossom` 스킬과 CLAUDE.md H4 scaffold에 의존하여 Claude Code + 스킬 설치 환경에서만 트리 구조가 렌더링됨. 외부 MCP 클라이언트(Cursor, Windsurf 등)에서는 스킬이 없으므로 stepper가 불완전하거나 누락됨. 서버가 완성된 포맷을 생성하면 모든 클라이언트에서 동일한 출력이 보장됨.
+
+**Alternatives considered**:
+- LLM 스킬만으로 유지 → 기각. 외부 클라이언트 호환 불가.
+- `sendLoggingMessage` 활용 → 기각. 대부분의 MCP 클라이언트가 로깅 채널을 사용자에게 노출하지 않음.
+- MCP server instructions만 추가 → 기각. instructions만으로는 포맷 일관성을 보장할 수 없음. content block + verbatim 지시문 조합이 더 높은 준수율 제공.
+
+**Interface changes**:
+- `StepInfo`: `summary?: string`, `parentStep?: number` 필드 추가
+- `recordStep()`: 4번째 optional parameter `options?: { summary?, parentStep? }` 추가 (기존 호출부 100% 호환)
+- `renderStepper()`: flat → tree-enhanced 렌더링 (initiator 자동 탐지, `├─/└─` 분기, `→` summary, Resolution line)
+- `textResponse()`: threshold `>= 2` → `>= 1`, verbatim prefix 추가
+
+**Enforcement layers**:
+1. `server.instructions` — 세션 시작 시 "stepper 블록을 그대로 출력하라" 규칙 전달
+2. 별도 content block — LLM 클라이언트가 추가 블록을 자연스럽게 포함하는 특성 활용
+3. Verbatim prefix — `"[Output the block below verbatim...]"` 텍스트로 매 응답 리마인드
+
+**Files changed**: `mcp-response.ts` (core), 24 tool handlers (summary 추가), `server.ts` (instructions), `CLAUDE.md` (H4 scaffold)
+
+---
+
 ## 2026-04-06 — generate_component_code (v0.9.0)
 
 **Added**: Vlossom 코딩 규칙 15개(R01~R15), SFC 스캐폴드, import 문, StyleSet 가이드, composable 패턴을 반환하는 코드 생성 안내 도구.
