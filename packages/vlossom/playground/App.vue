@@ -26,6 +26,7 @@
                     <Inputs />
                     <DataDisplay />
                     <Overlay />
+                    <Dashboard />
                     <FormExample />
                     <ColorPalette />
                     <ColorScheme />
@@ -49,6 +50,7 @@ import Basic from './views/Basic.vue';
 import Inputs from './views/Inputs.vue';
 import DataDisplay from './views/DataDisplay.vue';
 import Overlay from './views/Overlay.vue';
+import Dashboard from './views/Dashboard.vue';
 import Sandbox from './Sandbox.vue';
 import FormExample from './components/FormExample.vue';
 import ColorPalette from './views/ColorPalette.vue';
@@ -64,6 +66,7 @@ export default defineComponent({
         Inputs,
         DataDisplay,
         Overlay,
+        Dashboard,
         Sandbox,
         FormExample,
         ColorSchemePanel,
@@ -78,6 +81,7 @@ export default defineComponent({
             'Inputs',
             'Data Display',
             'Overlay',
+            'Dashboard',
             'Form Example',
             'Color Palette',
             'Color Scheme',
