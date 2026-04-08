@@ -8,6 +8,10 @@ export interface StepInfo {
     tool: string;
     /** Execution duration in milliseconds. */
     durationMs: number;
+    /** Brief result description (≤ 60 chars), e.g. "50 components" or "props, styleSet, events". */
+    summary?: string;
+    /** Parent step number for tree structure. undefined = root node. */
+    parentStep?: number;
 }
 
 /** Response metadata returned in every tool's `_meta` field. */
@@ -18,6 +22,14 @@ export interface McpResponseMeta {
     toolsUsed: string[];
     /** Total elapsed time across all steps in the session (ms). */
     totalDurationMs: number;
+}
+
+/** Optional parameters for recordStep. */
+export interface RecordStepOptions {
+    /** Brief result description (≤ 60 chars). */
+    summary?: string;
+    /** Explicit parent step number. Overrides auto-detection. */
+    parentStep?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -34,6 +46,8 @@ export function setSessionTimeoutMs(ms: number): void {
 interface SessionState {
     steps: StepInfo[];
     lastActivityMs: number;
+    /** Step number of the most recent initiator (root) tool. */
+    initiatorStep?: number;
 }
 
 let session: SessionState = { steps: [], lastActivityMs: Date.now() };
@@ -53,20 +67,32 @@ export function isStepperEnabled(): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// Tools that start a new pipeline — their step becomes the tree root.
+// ---------------------------------------------------------------------------
 
-function getSession(): StepInfo[] {
+const INITIATING_TOOLS = new Set([
+    "search_components",
+    "list_components",
+    "clarify_intent",
+    "check_github_token",
+    "get_usage_examples",
+]);
+
+// ---------------------------------------------------------------------------
+
+function getSession(): SessionState {
     const now = Date.now();
     if (now - session.lastActivityMs > SESSION_TIMEOUT_MS) {
         session = { steps: [], lastActivityMs: now };
     } else {
         session.lastActivityMs = now;
     }
-    return session.steps;
+    return session;
 }
 
 /**
  * Start a fresh session. Call this at the beginning of any "initiating" tool
- * (suggest_components, search_components, list_components) so that each new
+ * (search_components, list_components) so that each new
  * workflow produces a clean _meta rather than accumulating across invocations.
  */
 export function resetSession(): void {
@@ -81,9 +107,37 @@ export function recordStep(
     tool: string,
     label: string,
     durationMs: number,
+    options?: RecordStepOptions,
 ): McpResponseMeta {
-    const steps = getSession();
-    steps.push({ step: steps.length + 1, label, tool, durationMs });
+    const sess = getSession();
+    const steps = sess.steps;
+
+    // Determine parent step
+    let parentStep = options?.parentStep;
+    if (parentStep === undefined) {
+        if (INITIATING_TOOLS.has(tool)) {
+            // Initiating tools are root nodes — track as current initiator
+            parentStep = undefined;
+        } else if (sess.initiatorStep !== undefined) {
+            // Auto-attach to the most recent initiator
+            parentStep = sess.initiatorStep;
+        }
+    }
+
+    const stepNum = steps.length + 1;
+
+    // Truncate summary to 60 chars
+    let summary = options?.summary;
+    if (summary && summary.length > 60) {
+        summary = summary.slice(0, 59) + "\u2026";
+    }
+
+    steps.push({ step: stepNum, label, tool, durationMs, summary, parentStep });
+
+    // Update initiator tracking
+    if (INITIATING_TOOLS.has(tool)) {
+        sess.initiatorStep = stepNum;
+    }
 
     // Build "toolsUsed" with ×N multiplier for repeated calls
     const counts = new Map<string, number>();
@@ -91,7 +145,7 @@ export function recordStep(
         counts.set(s.tool, (counts.get(s.tool) ?? 0) + 1);
     }
     const toolsUsed = [...counts.entries()].map(([name, n]) =>
-        n > 1 ? `${name} ×${n}` : name,
+        n > 1 ? `${name} \u00d7${n}` : name,
     );
 
     const totalDurationMs = steps.reduce((sum, s) => sum + s.durationMs, 0);
@@ -103,31 +157,110 @@ export function recordStep(
     };
 }
 
+// ---------------------------------------------------------------------------
+// Stepper rendering — produces complete tree-enhanced format (Layer 1 + 2)
+// ---------------------------------------------------------------------------
+
+const BAR = "\u2500".repeat(57);
+
+function formatStepLine(s: StepInfo, indent: string = ""): string {
+    const stepNum = String(s.step).padStart(2, " ");
+    const tool = s.tool.padEnd(22).slice(0, 22);
+    const label = s.label.length > 23
+        ? s.label.slice(0, 22) + "\u2026"
+        : s.label.padEnd(23);
+    return `${indent}\u2714 ${stepNum}. ${tool}  ${label}`;
+}
+
+function formatSummaryLine(summary: string, indent: string): string {
+    return `${indent}   \u2192 ${summary}`;
+}
+
 /**
- * Pre-renders the stepper as a string.
- * Server generates a flat list; LLM enriches with tree structure and summaries
- * using conversation context (see H4 in INSTRUCTIONS).
+ * Build a Resolution line from root steps and their children.
+ */
+function buildResolution(meta: McpResponseMeta): string {
+    const roots = meta.steps.filter(s => !s.parentStep);
+    const parts: string[] = [];
+
+    for (const root of roots) {
+        parts.push(root.summary || root.label);
+
+        const children = meta.steps.filter(s => s.parentStep === root.step);
+        if (children.length > 0) {
+            const childLabels = children
+                .map(c => c.summary || c.label)
+                .slice(0, 5);
+            parts.push(childLabels.join(", "));
+        }
+    }
+
+    return parts.join(" \u2192 ");
+}
+
+/**
+ * Pre-renders the complete stepper with tree structure, summaries, and resolution.
+ * Server generates the full format — LLM outputs verbatim.
  */
 function renderStepper(meta: McpResponseMeta): string {
-    const BAR = "─────────────────────────────────────────────────────────";
     const lines: string[] = [];
-
     lines.push(`vlossom-mcp ${BAR}`);
 
-    for (const s of meta.steps) {
-        const stepNum = String(s.step).padStart(2, " ");
-        const tool    = s.tool.padEnd(22).slice(0, 22);
-        const label   = s.label.length > 23
-            ? s.label.slice(0, 22) + "…"
-            : s.label.padEnd(23);
-        lines.push(`✔ ${stepNum}. ${tool}  ${label}`);
+    const roots = meta.steps.filter(s => !s.parentStep);
+
+    for (let ri = 0; ri < roots.length; ri++) {
+        const root = roots[ri];
+
+        // Render root step
+        lines.push(formatStepLine(root));
+        if (root.summary) {
+            lines.push(formatSummaryLine(root.summary, ""));
+        }
+
+        // Render children
+        const children = meta.steps.filter(s => s.parentStep === root.step);
+        if (children.length > 0) {
+            lines.push("");
+            for (let ci = 0; ci < children.length; ci++) {
+                const child = children[ci];
+                const isLast = ci === children.length - 1;
+                const branch = isLast ? "\u2514\u2500" : "\u251c\u2500";
+                const cont   = isLast ? "  " : "\u2502 ";
+
+                lines.push(`   ${branch} ${formatStepLine(child)}`);
+                if (child.summary) {
+                    lines.push(`   ${cont}    \u2192 ${child.summary}`);
+                }
+                if (!isLast) {
+                    lines.push(`   \u2502`);
+                }
+            }
+        }
+
+        // Blank line between root groups
+        if (ri < roots.length - 1) {
+            lines.push("");
+        }
     }
 
     lines.push(BAR);
-    lines.push(meta.toolsUsed.join(" · "));
+
+    // Resolution line for multi-step pipelines
+    if (meta.steps.length >= 2) {
+        lines.push(`Resolution: ${buildResolution(meta)}`);
+    }
+
+    lines.push(meta.toolsUsed.join(" \u00b7 "));
 
     return lines.join("\n");
 }
+
+// ---------------------------------------------------------------------------
+// Verbatim instruction prefix for external LLM compliance
+// ---------------------------------------------------------------------------
+
+const VERBATIM_PREFIX =
+    "[Output the block below verbatim after your main response \u2014 do not modify, summarize, or skip it.]\n\n";
 
 /**
  * Wrap any data as an MCP text response.
@@ -136,10 +269,7 @@ function renderStepper(meta: McpResponseMeta): string {
  *   1. JSON data payload (always) — LLM reads this for tool output
  *   2. Extra blocks (optional) — human-facing content the LLM outputs verbatim
  *      e.g. presentation_format from clarify_intent
- *   3. Stepper block (when steps >= 2 and stepper is enabled) — pipeline trace
- *
- * Separating stepper and human-facing content into their own blocks means
- * the LLM naturally includes them without needing explicit skill instructions.
+ *   3. Stepper block (when stepper is enabled) — pipeline trace
  */
 export function textResponse(
     data: unknown,
@@ -165,8 +295,12 @@ export function textResponse(
         }
     }
 
-    if (meta && stepperEnabled && meta.steps.length >= 2) {
-        content.push({ type: "text" as const, text: renderStepper(meta) });
+    // Stepper: threshold >= 1 (always show when enabled)
+    if (meta && stepperEnabled && meta.steps.length >= 1) {
+        content.push({
+            type: "text" as const,
+            text: VERBATIM_PREFIX + renderStepper(meta),
+        });
     }
 
     return { content };
