@@ -62,7 +62,7 @@ vlossom-mcp provides a **full development lifecycle** — from discovery to code
 
 ### Key Findings
 
-1. **vlossom-mcp has the most tools (24)** — Vuetify is second (~15), most others have 3-7
+1. **vlossom-mcp has the most tools (20)** — Vuetify is second (~15), most others have 3-7
 2. **No other UI MCP has issue filing** — vlossom-mcp is the only one with a GitHub integration pipeline
 3. **No other UI MCP has pipeline observability** — stepper UX and intent disambiguation are unique
 4. **Most competitors are read-only** — they provide docs/props lookup but no generation, validation, or write-back

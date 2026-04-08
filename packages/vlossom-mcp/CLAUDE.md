@@ -68,7 +68,7 @@ Never mention or recommend a Vlossom component (`VsXxx` / `vs-xxx`) that did not
 
 | ❌ Prohibited | ✅ Allowed |
 |---|---|
-| "You could use VsChart for that" (not in any response) | Mention VsButton if it was returned by suggest_components |
+| "You could use VsChart for that" (not in any response) | Mention VsButton if it was returned by search_components |
 | Inventing plausible-sounding component names | Call search_components first if unsure whether a component exists |
 
 The test: *can I point to the tool response that returned this component name?* If not, do not use the name.
@@ -177,7 +177,7 @@ list_components
 **Branching pipeline (server-generated):**
 ```
 vlossom-mcp ─────────────────────────────────────────────
-✔  1. suggest_components    Suggest: login form
+✔  1. search_components     Suggest: login form
    → suggested 2: VsInput, VsButton
 
    ├─ ✔  2. get_component   VsInput detail
@@ -187,7 +187,7 @@ vlossom-mcp ──────────────────────�
          → props, styleSet, events
 ─────────────────────────────────────────────────────────
 Resolution: suggested 2: VsInput, VsButton → props, styleSet, events, props, styleSet, events
-suggest_components · get_component ×2
+search_components · get_component ×2
 ```
 
 **Linear pipeline (server-generated):**
@@ -237,12 +237,12 @@ When the user's input is a **natural language description** (not a specific comp
 
 **Apply when (input is free-form):**
 - `search_components` — query is a description (e.g. `"차트 같은 거"`, `"드래그할 수 있는 거"`)
-- `suggest_components` — useCase is a description (e.g. `"로그인 폼"`, `"파일 업로드"`)
+- `search_components` — useCase is a description (e.g. `"로그인 폼"`, `"파일 업로드"`)
 - Any future tool that receives a free-form natural language input
 
 ```
 ✅  User: "차트 그리고 싶어"
-    → clarify_intent first (before search_components or suggest_components)
+    → clarify_intent first (before search_components or search_components)
 
 ✅  User: "VsButton 알려줘"
     → get_component directly (name is explicit)
@@ -262,7 +262,7 @@ When a tool returns an empty result set (`components: []`, `results: []`, `token
 ❌  [calls clarify_intent without saying anything to the user]
 ```
 
-This applies to: `search_components` (empty results), `suggest_components` (empty results), `get_css_tokens` (no matching tokens), `list_components` (edge case).
+This applies to: `search_components` (empty results), `search_components` (empty results), `get_css_tokens` (no matching tokens), `list_components` (edge case).
 
 ---
 
