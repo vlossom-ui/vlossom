@@ -134,7 +134,7 @@ export function registerCheckVlossomSetup(server: McpServer): void {
                 });
             }
 
-            const meta = recordStep("check_vlossom_setup", `Check v${version}`, Date.now() - start);
+            const meta = recordStep("check_vlossom_setup", `Check v${version}`, Date.now() - start, { summary: `v${version} ${status}` });
 
             return textResponse(
                 {

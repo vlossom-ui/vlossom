@@ -23,12 +23,12 @@ export function registerSetGitHubToken(server: McpServer): void {
         ({ token }) => {
             const start = Date.now();
             setGitHubToken(token);
-            const meta = recordStep("set_github_token", "Set GitHub token", Date.now() - start);
+            const meta = recordStep("set_github_token", "Set GitHub token", Date.now() - start, { summary: "token configured" });
             return textResponse({
                 success: true,
                 message: "🔑 GitHub token has been set for this session.",
                 next_actions: [
-                    { tool: "draft_issue", reason: "token is now set, proceed to draft the issue" },
+                    { tool: "report_issue", reason: "token is now set, proceed to draft the issue (draft=true)" },
                 ],
             }, meta);
         }

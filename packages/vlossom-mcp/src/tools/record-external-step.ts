@@ -23,14 +23,14 @@ export function registerRecordExternalStep(server: McpServer): void {
         },
         async ({ tool, label, reset }) => {
             if (reset) resetSession();
-            const meta = recordStep(tool, label, 0);
+            const meta = recordStep(tool, label, 0, { summary: label });
             return textResponse(
                 {
                     recorded: true,
                     step: meta.steps.at(-1),
                     next_actions: [
                         { tool: "get_component",          reason: "get props/StyleSet for a component identified in the design" },
-                        { tool: "suggest_components",     reason: "find matching vlossom components for the design use case" },
+                        { tool: "search_components",      reason: "find matching vlossom components for the design use case" },
                         { tool: "generate_component_code", reason: "generate vlossom code from the captured design" },
                     ],
                 },

@@ -130,7 +130,7 @@ export function registerGetVlossomOptions(server: McpServer): void {
         {},
         () => {
             const start = Date.now();
-            const meta = recordStep("get_vlossom_options", "VlossomOptions", Date.now() - start);
+            const meta = recordStep("get_vlossom_options", "VlossomOptions", Date.now() - start, { summary: "VlossomOptions returned" });
             return textResponse(
                 {
                     options: VLOSSOM_OPTIONS,

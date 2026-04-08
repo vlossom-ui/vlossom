@@ -19,51 +19,51 @@ function buildImports(components: string[]): string {
 function buildFormSkeleton(components: string[]): string {
     return `<template>
   <vs-form ref="formRef">
-    <!-- R10: VsForm ref pattern -->
-    <!-- Add VsInput, VsSelect, etc. with :rules prop (R11) -->
-    <!-- Use :grid="{ xs: 12, md: 6 }" for responsive layout (R12) -->
+    <!-- R07: VsForm + useTemplateRef + validate() pattern -->
+    <!-- Add VsInput, VsSelect, etc. with v-model (R06) and :rules prop (R07) -->
+    <!-- Use :grid="{ xs: 12, md: 6 }" for responsive layout (R09) -->
     <vs-button @click="handleSubmit">Submit</vs-button>
   </vs-form>
 </template>
 
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
-// R01: named import
+// R01: named import from 'vlossom'
 import { ${components.join(", ")} } from 'vlossom'
-// R08: business logic in composable
+// R12: business logic in composable
 // import { use{Feature} } from './use{Feature}'
 
 const formRef = useTemplateRef('formRef')
-// R11: validation rules
+// R07: validation rules — (v: unknown) => string | true
 // const requiredRule = (v: unknown) => !!v || 'This field is required'
 
 async function handleSubmit() {
   const valid = await formRef.value?.validate()
   if (!valid) return
-  // delegate to composable (R15)
+  // R12: delegate to composable
 }
 </script>
-<!-- R03: no <style> block -->`;
+<!-- R02: no <style> block targeting .vs-* selectors -->`;
 }
 
 function buildDisplaySkeleton(components: string[]): string {
     return `<template>
   <div>
     <!-- Add Vlossom components here -->
-    <!-- Use :style-set prop for styling (R03, R04) -->
-    <!-- Use color-scheme prop instead of hardcoded colors (R05) -->
+    <!-- Use :style-set prop for styling (R02, R03) -->
+    <!-- Use color-scheme prop instead of hardcoded colors (R10) -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// R01: named import
+// R01: named import from 'vlossom'
 // import { ${components.join(", ")} } from 'vlossom'
 
-// R07: script setup lang="ts"
-// R14: prefer computed/v-model over imperative DOM
+// R06: bind with v-model for form inputs
+// R12: extract business logic into composables
 </script>
-<!-- R03: no <style> block -->`;
+<!-- R02: no <style> block targeting .vs-* selectors -->`;
 }
 
 function extractFeatureName(description: string): string {
@@ -110,7 +110,7 @@ export function use${featureName}(formRef: Ref<{ validate: () => Promise<boolean
 export function registerGenerateComponentCode(server: McpServer): void {
     server.tool(
         "generate_component_code",
-        "ALWAYS call suggest_components and get_component before this to gather component metadata. " +
+        "ALWAYS call search_components and get_component before this to gather component metadata. " +
             "Call this when the user is ready to generate a Vlossom Vue SFC and needs coding rules and a scaffold. " +
             "Returns Vlossom-specific coding rules, an import statement, a code skeleton, and optional composable pattern. " +
             "Then pass the rules and skeleton directly to code generation.",
@@ -140,11 +140,28 @@ export function registerGenerateComponentCode(server: McpServer): void {
                 "Named preset: style-set=\"myPreset\" (configured in createVlossom()). " +
                 'Do NOT add a <style> block (R03) or inline style= attribute (R04).';
 
+            const designGuidance =
+                "If the user has not provided a design reference (Figma file, screenshot, or style description), " +
+                "proactively suggest: 1) Browse dribbble.com or mobbin.com for '" + description + "' design inspiration, " +
+                "2) Share a Figma file URL for precise design-to-code conversion via Figma MCP tools, " +
+                "3) Describe desired visual style (minimal, corporate, playful, etc.). " +
+                "Without design input, use Vlossom defaults: VsGrid 12-column layout, 1.5rem+ spacing, " +
+                "color-scheme='blue' for primary actions, VsBlock for cards, VsDivider for separation.";
+
             const result: Record<string, unknown> = {
                 rules: CODING_RULES,
                 imports,
                 skeleton,
                 styleSetGuidance,
+                designGuidance,
+                avoid: [
+                    "Do not add a <style> block — all styles go through :style-set prop or --vs-* tokens",
+                    "Do not use Options API or defineComponent — use <script setup lang=\"ts\">",
+                    "Do not put API calls or business logic directly in the component — use composables",
+                    "Do not build custom form validation logic — use VsForm + :rules pattern",
+                    "Do not render custom error elements alongside Vlossom inputs — use :state/:state-message",
+                    "Do not hardcode colors — use color-scheme prop for theming",
+                ],
                 next_actions: [
                     { tool: "get_css_tokens", reason: "find --vs-* design tokens to use as StyleSet variable values" },
                     { tool: "generate_style_set", reason: "create a StyleSet scaffold for any component in the generated code" },
@@ -160,7 +177,8 @@ export function registerGenerateComponentCode(server: McpServer): void {
             const meta = recordStep(
                 "generate_component_code",
                 `Generate: ${shortDescription}`,
-                Date.now() - start
+                Date.now() - start,
+                { summary: `scaffold + ${CODING_RULES.length} rules` }
             );
 
             return textResponse(result, meta);

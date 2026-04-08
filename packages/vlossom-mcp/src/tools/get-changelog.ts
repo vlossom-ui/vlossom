@@ -86,7 +86,7 @@ export function registerGetChangelog(server: McpServer): void {
             try {
                 data = loadChangelog();
             } catch {
-                const meta = recordStep("get_changelog", "Load failed", Date.now() - start);
+                const meta = recordStep("get_changelog", "Load failed", Date.now() - start, { summary: "load failed" });
                 return textResponse(
                     {
                         error: "changelog.json not found. Run `npm run generate` to build it.",
@@ -105,7 +105,7 @@ export function registerGetChangelog(server: McpServer): void {
             entries = entries.slice(0, limit);
 
             const label = from ? `Changelog from ${from}` : `Latest ${limit} versions`;
-            const meta = recordStep("get_changelog", label, Date.now() - start);
+            const meta = recordStep("get_changelog", label, Date.now() - start, { summary: `${entries.length} versions` });
 
             return textResponse(
                 {

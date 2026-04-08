@@ -60,9 +60,8 @@ export function registerGetCssTokens(server: McpServer): void {
             }
 
             const label = search ? `Tokens: ${search}` : category === "all" ? "All tokens" : `Tokens: ${category}`;
-            const meta = recordStep("get_css_tokens", label, Date.now() - start);
-
             if (tokens.length === 0) {
+                const meta = recordStep("get_css_tokens", label, Date.now() - start, { summary: "no tokens" });
                 return textResponse({
                     tokens: [],
                     count: 0,
@@ -72,6 +71,8 @@ export function registerGetCssTokens(server: McpServer): void {
                     ],
                 }, meta);
             }
+
+            const meta = recordStep("get_css_tokens", label, Date.now() - start, { summary: `${tokens.length} tokens` });
 
             return textResponse({
                 tokens,

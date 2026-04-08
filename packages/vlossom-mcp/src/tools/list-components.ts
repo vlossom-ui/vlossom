@@ -9,10 +9,11 @@ export function registerListComponents(server: McpServer): void {
             "Returns all component names and descriptions. " +
             "Then call get_component for full details on a specific component.",
         {},
-        () => {
+        async () => {
             const start = Date.now();
             const result = getComponents();
-            const meta = recordStep("list_components", "List all components", Date.now() - start);
+            const meta = recordStep("list_components", "List all components", Date.now() - start, { summary: `${result.length} components` });
+
             return textResponse({
                 result,
                 next_actions: [

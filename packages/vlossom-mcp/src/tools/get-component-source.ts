@@ -47,9 +47,8 @@ export function registerGetComponentSource(server: McpServer): void {
             const all = loadSourceData();
             const normalized = normalizeToName(name);
             const entry = all[normalized] ?? Object.values(all).find((c) => c.kebabName === name);
-            const meta = recordStep("get_component_source", `${name} source`, Date.now() - start);
-
             if (!entry) {
+                const meta = recordStep("get_component_source", `${name} source`, Date.now() - start, { summary: "not found" });
                 return textResponse(
                     {
                         error: `Component '${name}' not found. Use list_components to see available components.`,
@@ -61,6 +60,8 @@ export function registerGetComponentSource(server: McpServer): void {
                 );
             }
 
+            const meta = recordStep("get_component_source", `${name} source`, Date.now() - start, { summary: "source loaded" });
+
             return textResponse(
                 {
                     name: entry.name,
@@ -68,8 +69,7 @@ export function registerGetComponentSource(server: McpServer): void {
                     path: entry.path,
                     source: entry.source,
                     next_actions: [
-                        { tool: "get_component", reason: "get structured metadata (props, events, styleSet)" },
-                        { tool: "get_component_relationships", reason: "see parent and child component composition" },
+                        { tool: "get_component", reason: "get structured metadata (props, events, styleSet) — use includeRelationships for composition info" },
                     ],
                 },
                 meta,

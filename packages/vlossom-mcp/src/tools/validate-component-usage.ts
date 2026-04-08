@@ -25,7 +25,7 @@ export function registerValidateComponentUsage(server: McpServer): void {
             const start = Date.now();
 
             if (!code || code.trim().length === 0) {
-                const stepMeta = recordStep("validate_component_usage", "Validate SFC", Date.now() - start);
+                const stepMeta = recordStep("validate_component_usage", "Validate SFC", Date.now() - start, { summary: "valid" });
                 return textResponse(
                     {
                         valid: true,
@@ -43,7 +43,7 @@ export function registerValidateComponentUsage(server: McpServer): void {
             const issues = validateCode(code, strict);
             const hasErrors = issues.some((i) => i.severity === "error");
             const summary = buildSummary(issues);
-            const stepMeta = recordStep("validate_component_usage", "Validate SFC", Date.now() - start);
+            const stepMeta = recordStep("validate_component_usage", "Validate SFC", Date.now() - start, { summary: issues.length > 0 ? `${issues.length} issues found` : "valid" });
 
             return textResponse(
                 {

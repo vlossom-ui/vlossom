@@ -45,7 +45,7 @@ export function registerGetDirective(server: McpServer): void {
             const all = loadDirectives();
 
             if (!name) {
-                const meta = recordStep("get_directive", "List all directives", Date.now() - start);
+                const meta = recordStep("get_directive", "List all directives", Date.now() - start, { summary: `${all.length} directives` });
                 return textResponse(
                     {
                         directives: all.map((d) => ({ name: d.name, description: d.description })),
@@ -62,7 +62,7 @@ export function registerGetDirective(server: McpServer): void {
             // Normalize: accept "scroll-shadow", "v-scroll-shadow", "vs-scroll-shadow"
             const normalized = name.startsWith("v-") ? name : `v-${name.replace(/^vs-/, "")}`;
             const entry = all.find((d) => d.name === normalized || d.kebabName === name);
-            const meta = recordStep("get_directive", `${normalized} detail`, Date.now() - start);
+            const meta = recordStep("get_directive", `${normalized} detail`, Date.now() - start, { summary: "directive detail" });
 
             if (!entry) {
                 return textResponse(

@@ -121,6 +121,7 @@ export function registerGenerateStyleSet(server: McpServer): void {
                 "generate_style_set",
                 `StyleSet: ${componentMeta.name}`,
                 Date.now() - start,
+                { summary: "styleSet generated" },
             );
 
             return textResponse(
@@ -137,6 +138,11 @@ export function registerGenerateStyleSet(server: McpServer): void {
                     classificationGuide: CLASSIFICATION_GUIDE,
                     styleSetInterface: styleSet.raw,
                     usageExample,
+                    avoid: [
+                        "Do not put all properties in variables — only values that need CSS custom property runtime changes",
+                        "Do not nest variables deeper than 2 levels",
+                        "Do not duplicate properties in both variables and component — choose one",
+                    ],
                     next_actions: [
                         { tool: "get_css_tokens", reason: "find --vs-* tokens to fill in the variable values" },
                         { tool: "generate_component_code", reason: "generate the full component using this StyleSet" },

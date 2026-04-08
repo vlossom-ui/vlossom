@@ -61,7 +61,7 @@ export function registerGetComposables(server: McpServer): void {
 
             if (!name) {
                 const filtered = publicOnly ? all.filter((c) => c.isPublic) : all;
-                const meta = recordStep("get_composables", "List composables", Date.now() - start);
+                const meta = recordStep("get_composables", "List composables", Date.now() - start, { summary: `${filtered.length} composables` });
                 return textResponse(
                     {
                         composables: filtered.map((c) => ({
@@ -94,7 +94,7 @@ export function registerGetComposables(server: McpServer): void {
                 all.find((c) => c.dirName === dirName) ??
                 all.find((c) => c.name.toLowerCase() === name.toLowerCase());
 
-            const meta = recordStep("get_composables", `${name} detail`, Date.now() - start);
+            const meta = recordStep("get_composables", `${name} detail`, Date.now() - start, { summary: `${name} detail` });
 
             if (!entry) {
                 return textResponse(
