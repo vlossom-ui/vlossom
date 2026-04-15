@@ -44,13 +44,13 @@ export default defineComponent({
     setup(props) {
         const { disabled, height, rootMargin, threshold, selector } = toRefs(props);
 
-        const visibleRenderRefFallback: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
-        const visibleRenderRef = computed(() => {
-            if(!selector.value) {
-                return visibleRenderRefFallback.value;
+        const visibleRenderRef: TemplateRef<HTMLElement> = useTemplateRef('visibleRenderRef');
+        const computedVisibleRenderRef = computed(() => {
+            if (!selector.value) {
+                return visibleRenderRef.value;
             }
-            const wrapper = visibleRenderRefFallback.value?.querySelector(selector.value) as HTMLElement | null;
-            return wrapper || visibleRenderRefFallback.value;
+            const wrapper = visibleRenderRef.value?.querySelector(selector.value) as HTMLElement | null;
+            return wrapper || visibleRenderRef.value;
         });
 
         let io: IntersectionObserver | null = null;
@@ -68,7 +68,7 @@ export default defineComponent({
 
         // visibleRenderRef부터 부모로 올라가면서 스크롤 가능한 요소 찾기
         function getScrollRoot(): Element | null {
-            let el = visibleRenderRef.value;
+            let el = computedVisibleRenderRef.value;
             while (el) {
                 if (domUtil.isScrollableY(el)) {
                     return el;
@@ -88,7 +88,7 @@ export default defineComponent({
         }
 
         function setAllChildrenVisibility(visible: boolean) {
-            const el = visibleRenderRef.value;
+            const el = computedVisibleRenderRef.value;
             if (!el) {
                 return;
             }
@@ -117,7 +117,7 @@ export default defineComponent({
         }
 
         function observeChildren() {
-            const el = visibleRenderRef.value;
+            const el = computedVisibleRenderRef.value;
             if (!el || disabled.value || !io) {
                 return;
             }
@@ -139,7 +139,7 @@ export default defineComponent({
         function setupIntersectionObserver() {
             disconnectIntersectionObserver();
 
-            if (!visibleRenderRef.value || disabled.value) {
+            if (!computedVisibleRenderRef.value || disabled.value) {
                 return;
             }
 
@@ -170,7 +170,7 @@ export default defineComponent({
         function setupMutationObserver() {
             disconnectMutationObserver();
 
-            const mutationRoot = visibleRenderRef.value;
+            const mutationRoot = computedVisibleRenderRef.value;
             if (!mutationRoot) {
                 return;
             }
@@ -182,7 +182,7 @@ export default defineComponent({
         // ============= 초기화 및 바인딩 =============
 
         async function initialize() {
-            if (!visibleRenderRef.value) {
+            if (!computedVisibleRenderRef.value) {
                 return;
             }
 
@@ -216,7 +216,7 @@ export default defineComponent({
         }
 
         function scrollToElement(element: HTMLElement) {
-            if (!visibleRenderRef.value || !element) {
+            if (!computedVisibleRenderRef.value || !element) {
                 return;
             }
 
@@ -225,7 +225,7 @@ export default defineComponent({
             updateChildVisibility(element, true);
 
             waitForLayout(() => {
-                if (!visibleRenderRef.value || !element) {
+                if (!computedVisibleRenderRef.value || !element) {
                     return;
                 }
 
@@ -272,7 +272,6 @@ export default defineComponent({
         );
 
         return {
-            visibleRenderRef,
             containerStyle,
 
             // expose
