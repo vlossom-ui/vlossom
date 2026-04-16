@@ -1,117 +1,106 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsHeader
 
-웹 애플리케이션의 헤더 영역을 담당하는 컴포넌트입니다. `vs-layout`과 함께 사용하면 레이아웃 스토어를 통해 자동으로 상태가 관리됩니다.
+A page header bar component that supports fixed, sticky, and absolute positioning with layout store integration when used inside `VsLayout`.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 헤더
+- Renders as a `<header>` element by default (configurable via `tag`)
+- Supports CSS `position` values: `static`, `relative`, `absolute`, `fixed`, `sticky`
+- Default height of `3rem` — overridable via the `height` prop
+- Primary color scheme styling via the `primary` prop
+- Integrates with `VsLayout` to report header height for drawer offset calculations
+- Accepts `CSSProperties` via `styleSet.component` for full style control
+
+## Basic Usage
 
 ```html
 <template>
     <vs-header>
-        <h1>My App</h1>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </nav>
+        <h1>My Application</h1>
     </vs-header>
 </template>
 ```
 
-### vs-layout과 함께 사용
+### Fixed Header
 
 ```html
 <template>
-    <vs-layout>
-        <vs-header position="fixed" :style-set="{ component: { height: '4rem', backgroundColor: '#2196f3', color: '#ffffff' } }">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1>My App</h1>
-                <nav>
-                    <button>Home</button>
-                    <button>About</button>
-                    <button>Contact</button>
-                </nav>
-            </div>
-        </vs-header>
-        <vs-container>
-            <!-- vs-header가 fixed일 때 자동으로 패딩이 조정됩니다 -->
-            <main>Main Content</main>
-        </vs-container>
-    </vs-layout>
+    <vs-header position="fixed" height="4rem">
+        <nav>Navigation</nav>
+    </vs-header>
 </template>
 ```
 
-### Primary 헤더
+### Primary Styled Header
 
 ```html
 <template>
     <vs-header primary>
-        <h1>강조된 헤더</h1>
-    </vs-header>
-</template>
-```
-
-### 고정 헤더
-
-```html
-<template>
-    <vs-header position="fixed" :style-set="{ component: { height: '4rem', zIndex: 1000 } }">
-        <div>항상 상단에 고정된 헤더</div>
-    </vs-header>
-</template>
-```
-
-### 커스텀 태그
-
-```html
-<template>
-    <vs-header tag="div">
-        <span>div 태그로 렌더링된 헤더</span>
+        <span>Brand Name</span>
     </vs-header>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                                                          | Default      | Required | Description                            |
-| ------------- | ------------------------------------------------------------- | ------------ | -------- | -------------------------------------- |
-| `colorScheme` | `ColorScheme`                                                 | -            | -        | 컴포넌트 색상 테마                     |
-| `styleSet`    | `string \| VsHeaderStyleSet`                                  | -            | -        | 커스텀 스타일 설정 객체                |
-| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position 속성 설정                 |
-| `height`      | `string`                                                      | -            | -        | 헤더의 높이 설정                       |
-| `primary`     | `boolean`                                                     | `false`      | -        | 강조 스타일 적용                       |
-| `tag`         | `string`                                                      | `'header'`   | -        | 렌더링할 HTML 태그 지정 (기본: header) |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `string` | | | Color scheme for the component |
+| `styleSet` | `string \| VsHeaderStyleSet` | | | Custom style set for the component |
+| `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | CSS position value for the header |
+| `height` | `string` | | | Height of the header. Defaults to `3rem` |
+| `primary` | `boolean` | `false` | | Apply the primary color scheme |
+| `tag` | `string` | `'header'` | | HTML tag to render as |
 
 ## Types
 
 ```typescript
 interface VsHeaderStyleSet extends VsBarStyleSet {}
+
+// VsBarStyleSet:
+interface VsBarStyleSet {
+    component?: CSSProperties;
+}
 ```
 
 > [!NOTE]
->
-> VsBar의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsBar README](../vs-bar/README.md#types)를 참조하세요.
+> `VsHeaderStyleSet` extends [VsBarStyleSet](../vs-bar/README.md).
+
+### StyleSet Example
+
+```html
+<template>
+    <vs-header
+        :style-set="{
+            component: {
+                backgroundColor: '#2c3e50',
+                color: '#ffffff',
+                padding: '0 2rem',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            },
+        }"
+    >
+        <h1>Styled Header</h1>
+    </vs-header>
+</template>
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `default` | 헤더 내부에 표시할 콘텐츠 |
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Header content |
 
-## 특징
+## Methods
 
-- **시멘틱 HTML**: 기본적으로 `<header>` 태그를 사용하여 시멘틱 마크업 지원 (tag props로 변경 가능)
-- **레이아웃 통합**: `vs-layout`의 자식으로 사용하면 자동으로 레이아웃 스토어에 상태 등록
-- **자동 패딩 조정**: `position`이 `fixed`, `absolute`, `sticky`일 때 `vs-container`가 자동으로 패딩 조정
-- **Primary 스타일**: 강조가 필요한 헤더에 적용할 수 있는 primary 스타일
-
-## 레이아웃 스토어 연동
-
-`vs-layout`의 자식으로 사용할 때 다음과 같은 동작이 수행됩니다:
-
-1. **자동 등록**: 헤더의 `position`과 `height` 정보가 레이아웃 스토어에 자동 등록
-2. **실시간 업데이트**: props나 styleSet이 변경되면 레이아웃 스토어도 자동 업데이트
-3. **컨테이너 연동**: `vs-container`가 헤더의 position과 height를 참조하여 적절한 패딩 적용
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

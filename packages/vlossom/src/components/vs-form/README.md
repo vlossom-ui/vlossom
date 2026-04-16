@@ -1,96 +1,112 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsForm
 
-폼 요소들을 관리하고 검증하는 그리드 기반 폼 컴포넌트입니다. FormStore를 통한 상태 관리와 검증 기능을 제공하며, CSS Grid 기반의 반응형 레이아웃을 지원합니다.
+A form container component that manages validation state and propagates `disabled`/`readonly` states to all child input components.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 폼
+- Provides a form store context that all child `Vlossom` form inputs can subscribe to
+- Centralized `validate()` method to trigger validation across all child inputs
+- Centralized `clear()` method to reset all child inputs
+- `valid` and `changed` computed properties for form-level state inspection
+- Propagates `disabled` and `readonly` states to all child form components
+- Renders as a `<form>` element using `VsGrid` internally for responsive layout
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-form
-        ref="form-ref"
-    >
-        <vs-input v-model="formData.username" label="사용자명" />
-        <vs-input v-model="formData.email" type="email" label="이메일" />
-        <vs-input v-model="formData.password" type="password" label="비밀번호" />
+    <vs-form ref="formRef" @error="onError">
+        <vs-input v-model="name" label="Name" required :grid="{ sm: 12, md: 6 }" />
+        <vs-input v-model="email" label="Email" required :grid="{ sm: 12, md: 6 }" />
+        <vs-button @click="submit">Submit</vs-button>
     </vs-form>
 </template>
 
 <script setup>
-    const formRef = useTemplateRef('form-ref');
+import { ref } from 'vue';
+const formRef = ref(null);
+const name = ref('');
+const email = ref('');
 
-    function validation() {
-        console.log(formRef.value.changed);
-        console.log(formRef.value.valid);
-        return formRef.value.validate();
+async function submit() {
+    const isValid = await formRef.value.validate();
+    if (isValid) {
+        console.log('Form is valid');
     }
+}
+
+function onError(invalidIds) {
+    console.log('Invalid fields:', invalidIds);
+}
 </script>
 ```
 
-### 그리드 레이아웃 설정
+### Disabled Form
 
 ```html
 <template>
-    <vs-form :grid-size="6" :column-gap="16" :row-gap="8">
-        <vs-input v-model="userData.firstName" label="이름" grid="3" />
-        <vs-input v-model="userData.lastName" label="성" grid="3" />
-        <vs-input v-model="userData.email" label="이메일" grid="4" />
-        <vs-input v-model="userData.phone" label="전화번호" grid="2" />
+    <vs-form :disabled="isDisabled">
+        <vs-input v-model="value" label="Read-only field" />
     </vs-form>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const isDisabled = ref(true);
+const value = ref('');
+</script>
 ```
 
-### form 전체 readonly 및 disabled 설정
+### With Grid Layout
 
 ```html
 <template>
-    <vs-form readonly>
-        <vs-input v-model="userData.name" label="이름" />
-        ...
-    </vs-form>
-
-    <vs-form disabled>
-        <vs-input v-model="formData.title" label="제목" />
-        ...
+    <vs-form :grid-size="12" :column-gap="16" :row-gap="8">
+        <vs-input v-model="firstName" label="First Name" :grid="6" />
+        <vs-input v-model="lastName" label="Last Name" :grid="6" />
     </vs-form>
 </template>
 ```
 
 ## Props
 
-| Prop        | Type               | Default | Required | Description            |
-| ----------- | ------------------ | ------- | -------- | ---------------------- |
-| `gridSize`  | `string \| number` | -       | -        | 그리드 컬럼 수         |
-| `columnGap` | `string \| number` | -       | -        | 컬럼 간 간격           |
-| `rowGap`    | `string \| number` | -       | -        | 행 간 간격             |
-| `disabled`  | `boolean`          | `false` | -        | 비활성화 상태          |
-| `readonly`  | `boolean`          | `false` | -        | 폼 전체 읽기 전용 상태 |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `gridSize` | `number \| string` | | | Number of grid columns (default: 12) |
+| `columnGap` | `number \| string` | | | Gap between grid columns |
+| `rowGap` | `number \| string` | | | Gap between grid rows |
+| `disabled` | `boolean` | `false` | | Disable all child form inputs |
+| `readonly` | `boolean` | `false` | | Make all child form inputs read-only |
 
-## Slots
+## Types
 
-| Slot      | Description                |
-| --------- | -------------------------- |
-| `default` | 폼 내부에 배치할 폼 요소들 |
+VsForm has no `StyleSet` interface.
 
-## Exposed Methods
+### StyleSet Example
 
-| Method     | Parameters | Return Type | Description                                                              |
-| ---------- | ---------- | ----------- | ------------------------------------------------------------------------ |
-| `validate` | -          | `boolean`   | 폼 검증을 수행하고, 모든 필드가 유효하면 true, 아니면 false를 반환합니다 |
-| `clear`    | -          | `void`      | 폼 내 모든 입력 요소들을 초기화합니다                                    |
+VsForm does not use a `styleSet` prop. Use `VsGrid` props (`gridSize`, `columnGap`, `rowGap`) to control layout.
 
 ## Events
 
-| Event   | Payload    | Description                          |
-| ------- | ---------- | ------------------------------------ |
-| `error` | `string[]` | 검증 실패 시 유효하지 않은 필드 ID들 |
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `error` | `string[]` | Emitted after `validate()` when the form is invalid. Payload contains the ids of invalid fields |
 
-## 특징
+## Slots
 
-- **그리드 기반 레이아웃**: CSS Grid를 사용한 반응형 폼 레이아웃
-- **상태 관리**: FormStore를 provide하여 하위 컴포넌트들과 폼 상태 공유
-- **검증 시스템**: 실시간 검증과 통합 검증 기능
-- **전역 상태 제어**: 폼 전체에 disabled/readonly 상태 적용 가능
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Form content — place Vlossom input components here |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `validate` | - | Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid |
+| `clear` | - | Resets all child inputs to their initial state |
+| `valid` | - | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid |
+| `changed` | - | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed |

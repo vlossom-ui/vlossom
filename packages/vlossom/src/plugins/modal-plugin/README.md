@@ -1,132 +1,99 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # Modal Plugin
 
-Modal을 표시하기 위한 플러그인입니다.
+**Available Version**: 2.0.0+
 
-## 사용 방법
+Programmatically opens and manages modal dialogs. Supports mounting any string or Vue component as modal content, custom callbacks, keyboard handling, and multi-modal stacking.
 
-Modal 플러그인은 `useVlossom()`을 통해 접근할 수 있습니다.
+## Feature
 
-```typescript
-import { useVlossom } from '@/framework';
+- Opens modals with string or Vue component content
+- Supports custom callbacks for events (e.g. button clicks, keyboard shortcuts)
+- Multiple modals can be stacked inside the same or different containers
+- Provides imperative API to emit events, close specific modals, or clear all modals
+- Configurable overlay behavior: dim, dim-close, focus lock, scroll hiding, size
+- All Alert, Confirm, and Prompt plugins are built on top of this plugin
 
-const $vs = useVlossom();
-const modalId = $vs.modal.open('모달 내용');
+## Basic Usage
+
+Inject `$vsModal` in your component and call `open`:
+
+```html
+<template>
+    <vs-button @click="openModal">Open Modal</vs-button>
+</template>
+
+<script setup>
+import { inject } from 'vue';
+
+const $vsModal = inject('$vsModal');
+
+function openModal() {
+    const modalId = $vsModal.open('Hello from modal!', {
+        dimClose: true,
+        size: 'sm',
+    });
+}
+</script>
 ```
 
-## API
+### Using a Vue Component as Content
 
-### open(content, options?)
+```html
+<script setup>
+import { inject } from 'vue';
+import MyModalContent from './MyModalContent.vue';
 
-모달을 표시합니다.
+const $vsModal = inject('$vsModal');
 
-**파라미터:**
-
-- `content`: `string | Component` - 표시할 내용 (문자열 또는 Vue 컴포넌트)
-- `options`: `ModalOptions` - 모달 옵션 (선택)
-
-**반환값:**
-
-- `string` - 생성된 모달의 ID
-
-**예시:**
-
-```typescript
-// 문자열 모달
-const modalId = $vs.modal.open('안녕하세요');
-
-// 컴포넌트 모달
-const modalId = $vs.modal.open(MyComponent, { size: 'large' });
-
-// 컨테이너 지정
-const modalId = $vs.modal.open('메시지', { container: '#my-container' });
-
-// 옵션 설정
-const modalId = $vs.modal.open('컨텐츠', {
-    dimClose: true,
-    escClose: true,
-    size: { width: '500px', height: '300px' },
-});
+function openModal() {
+    const modalId = $vsModal.open(MyModalContent, {
+        callbacks: {
+            'modal-submit': (data) => {
+                console.log('Submitted:', data);
+                $vsModal.close();
+            },
+        },
+    });
+}
+</script>
 ```
 
-### emit(eventName, ...args)
+### Closing a Modal by ID
 
-마지막 오버레이에 이벤트를 발생시킵니다.
+```html
+<script setup>
+import { inject } from 'vue';
 
-**파라미터:**
+const $vsModal = inject('$vsModal');
+let currentModalId = null;
 
-- `eventName`: `string` - 이벤트 이름
-- `...args`: `any[]` - 이벤트 인자
+function openModal() {
+    currentModalId = $vsModal.open('Are you sure?', {
+        dimmed: true,
+        escClose: true,
+    });
+}
 
-**반환값:**
-
-- `Promise<any>` - 이벤트 핸들러의 반환값
-
-```typescript
-$vs.modal.emit('update', { data: 'value' });
+function closeModal() {
+    if (currentModalId) {
+        $vsModal.closeWithId('body', currentModalId);
+    }
+}
+</script>
 ```
 
-### emitWithId(id, eventName, ...args)
+## Methods
 
-특정 ID의 모달에 이벤트를 발생시킵니다.
-
-**파라미터:**
-
-- `id`: `string` - 모달 ID
-- `eventName`: `string` - 이벤트 이름
-- `...args`: `any[]` - 이벤트 인자
-
-**반환값:**
-
-- `Promise<any>` - 이벤트 핸들러의 반환값
-
-```typescript
-$vs.modal.emitWithId('modal-id-123', 'update', { data: 'value' });
-```
-
-### close(container?)
-
-마지막 모달을 닫습니다.
-
-**파라미터:**
-
-- `container`: `string` - 컨테이너 선택자 (기본값: `'body'`)
-
-```typescript
-// body의 마지막 모달 닫기
-$vs.modal.close();
-
-// 특정 컨테이너의 마지막 모달 닫기
-$vs.modal.close('#my-container');
-```
-
-### closeWithId(container, id)
-
-특정 ID의 모달을 닫습니다.
-
-**파라미터:**
-
-- `container`: `string` - 컨테이너 선택자
-- `id`: `string` - 모달 ID
-
-```typescript
-$vs.modal.closeWithId('body', 'modal-id-123');
-```
-
-### clear(container?)
-
-컨테이너의 모든 모달을 제거합니다.
-
-**파라미터:**
-
-- `container`: `string` - 컨테이너 선택자 (기본값: `'body'`)
-
-```typescript
-// body의 모든 모달 제거
-$vs.modal.clear();
-
-// 특정 컨테이너의 모든 모달 제거
-$vs.modal.clear('#my-container');
-```
+| Method          | Parameters                                                                 | Description                                                                                                   |
+| --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `open`          | `content: string \| Component, options?: ModalOptions`      | Opens a modal with the given content and options. Returns the modal's unique string ID.                       |
+| `emit`          | `eventName: string, ...args: any[]`                                        | Emits a named event on the most recently opened modal's callback store.                                       |
+| `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | Emits a named event on a specific modal by its ID.                                                            |
+| `close`         | `container?: string`                                                       | Closes the most recently opened modal in the given container (defaults to `'body'`).                          |
+| `closeWithId`   | `container: string, id: string`                                            | Closes a specific modal by its container and ID.                                                              |
+| `clear`         | `container?: string`                                                       | Closes all modals in the given container (defaults to `'body'`).                                              |
 
 ## Types
 
@@ -144,73 +111,22 @@ interface ModalOptions {
     id?: string;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
+
+interface ModalPlugin {
+    open(content: string | Component, options?: ModalOptions): string;
+    emit(eventName: string, ...args: any[]): void | Promise<void>;
+    emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
+    close(container?: string): void;
+    closeWithId(container: string, id: string): void;
+    clear(container?: string): void;
+}
 ```
 
-## 사용 예시
+> [!NOTE]
+> `styleSet` accepts a `VsModalNodeStyleSet` object or a pre-registered style set name (string). Refer to the [VsModal component docs](../../components/vs-modal/README.md) for style set details.
 
-```vue
-<template>
-    <div>
-        <vs-button @click="showModal">모달 표시</vs-button>
-        <vs-button @click="showComponentModal">컴포넌트 모달</vs-button>
-        <vs-button @click="closeModal">모달 닫기</vs-button>
-        <vs-button @click="clearModal">모달 모두 제거</vs-button>
-        <div id="modal-wrapper"></div>
-    </div>
-</template>
+## Caution
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useVlossom } from '@/framework';
-import type { ModalOptions } from '@/plugins';
-import MyModalComponent from './MyModalComponent.vue';
-
-export default defineComponent({
-    setup() {
-        const $vs = useVlossom();
-        let currentModalId = '';
-
-        function showModal() {
-            currentModalId = $vs.modal.open('모달 내용', {
-                dimClose: true,
-                escClose: true,
-                size: 'medium'
-            });
-        }
-
-        function showComponentModal() {
-            currentModalId = $vs.modal.open(MyModalComponent, {
-                container: '#modal-wrapper',
-                dimClose: true,
-                escClose: true,
-                size: { width: '600px', height: '400px' },
-                callbacks: {
-                    onClose: () => {
-                        console.log('모달이 닫혔습니다');
-                    }
-                }
-            });
-        }
-
-        function closeModal() {
-            if (currentModalId) {
-                $vs.modal.closeWithId('body', currentModalId);
-            } else {
-                $vs.modal.close();
-            }
-        }
-
-        function clearModal() {
-            $vs.modal.clear();
-        }
-
-        return {
-            showModal,
-            showComponentModal,
-            closeModal,
-            clearModal,
-        };
-    },
-});
-</script>
-```
+- When `container` is specified, the container element's `position` is automatically set to `relative` if it has no existing position style. This ensures the modal overlay is positioned correctly.
+- The modal ID returned by `open` can be used with `closeWithId` to close a specific modal in a multi-modal scenario.
+- `emit` targets the last opened modal. Use `emitWithId` for precise targeting when multiple modals are open.

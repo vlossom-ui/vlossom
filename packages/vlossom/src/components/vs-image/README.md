@@ -1,90 +1,75 @@
 # VsImage
 
-이미지를 표시하는 컴포넌트입니다. 지연 로딩(Lazy Loading), 폴백 이미지, 로딩 스켈레톤 등 다양한 기능을 지원합니다.
+A component for displaying images with support for lazy loading, fallback images, and a skeleton placeholder while loading.
+
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 이미지
+- Displays an image with configurable `src`, `alt`, and `fallback` props.
+- Shows a skeleton placeholder while the image is loading.
+- Supports lazy loading via the Intersection Observer API.
+- Automatically switches to the `fallback` image on load error.
+- Fires an `error` event when an image fails to load.
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Example Image"
-    />
+    <vs-image src="https://example.com/image.png" alt="Example image" />
 </template>
 ```
 
-### 지연 로딩 (Lazy Loading)
+### Lazy Loading
+
+Defer image loading until the element enters the viewport.
 
 ```html
 <template>
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Lazy Image"
-        :lazy="true"
-    />
+    <vs-image src="https://example.com/image.png" alt="Lazy image" :lazy="true" />
 </template>
 ```
 
-### 폴백 이미지
+### Fallback Image
+
+Provide a fallback image URL that is shown when the primary source fails.
 
 ```html
 <template>
     <vs-image
-        src="https://example.com/image.jpg"
-        fallback="https://example.com/fallback.jpg"
+        src="https://example.com/broken.png"
+        fallback="https://example.com/fallback.png"
         alt="Image with fallback"
     />
 </template>
 ```
 
-### 스켈레톤 로딩 상태
+### No Skeleton
+
+Disable the skeleton placeholder during loading.
 
 ```html
 <template>
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Image with skeleton"
-    >
-        <template #skeleton>
-            로딩 중...
-        </template>
-    </vs-image>
+    <vs-image src="https://example.com/image.png" alt="No skeleton" :no-skeleton="true" />
 </template>
 ```
 
 ## Props
 
-| Prop         | Type                        | Default | Required | Description                     |
-| ------------ | --------------------------- | ------- | -------- | ------------------------------- |
-| `src`        | `string`                    | -       | ✅       | 이미지 소스 URL                 |
-| `alt`        | `string`                    | `''`    | -        | 이미지 대체 텍스트              |
-| `fallback`   | `string`                    | `''`    | -        | 로딩 실패 시 사용할 폴백 이미지 |
-| `lazy`       | `boolean`                   | `false` | -        | 지연 로딩 활성화                |
-| `noSkeleton` | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 표시를 무시    |
-| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | 커스텀 스타일 설정 객체         |
-
-## Slots
-
-| Slot       | Description                                      |
-| ---------- | ------------------------------------------------ |
-| `skeleton` | 이미지 로딩 중 표시할 스켈레톤 콘텐츠 (선택사항) |
-
-## Events
-
-| Event   | Parameters | Description              |
-| ------- | ---------- | ------------------------ |
-| `error` | -          | 이미지 로딩 실패 시 발생 |
+| Prop        | Type                           | Default | Required | Description                                           |
+| ----------- | ------------------------------ | ------- | -------- | ----------------------------------------------------- |
+| `styleSet`  | `string \| VsImageStyleSet`    | -       | -        | Custom style set for the component.                   |
+| `alt`       | `string`                       | `''`    | -        | Alt text for the image element.                       |
+| `fallback`  | `string`                       | `''`    | -        | Fallback image URL shown when the primary src fails.  |
+| `lazy`      | `boolean`                      | `false` | -        | Enables lazy loading using the Intersection Observer. |
+| `noSkeleton`| `boolean`                      | `false` | -        | Disables the skeleton placeholder during loading.     |
+| `src`       | `string`                       | `''`    | `true`   | The source URL of the image.                          |
 
 ## Types
 
 ```typescript
-import type { CSSProperties } from 'vue';
-import type { VsSkeletonStyleSet } from '@/components/vs-skeleton/types';
-
 interface VsImageStyleSet {
     variables?: {
         width?: string;
@@ -96,51 +81,37 @@ interface VsImageStyleSet {
 ```
 
 > [!NOTE]
->
-> `skeleton`은 [VsSkeletonStyleSet](../vs-skeleton/README.md#types)을 사용합니다.
+> `skeleton` uses `VsSkeletonStyleSet`. See the [VsSkeleton README](../vs-skeleton/README.md) for details.
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
     <vs-image
-        src="https://example.com/image.jpg"
-        alt="Sized Image"
+        src="https://example.com/image.png"
+        alt="Styled image"
         :style-set="{
-            variables: {
-                width: '300px',
-                height: '300px',
-            },
-        }"
-    />
-
-    <!-- skeleton 커스텀 -->
-    <vs-image
-        src="https://example.com/image.jpg"
-        alt="Custom Skeleton"
-        :style-set="{
-            variables: {
-                width: '200px',
-                height: '200px',
-            },
-            skeleton: {
-                component: {
-                    width: '200px',
-                    height: '200px',
-                    borderRadius: '50%',
-                    backgroundColor: '#e0e0e0',
-                },
-            },
+            variables: { width: '200px', height: '200px' },
+            component: { borderRadius: '8px', objectFit: 'cover' },
+            skeleton: { component: { borderRadius: '8px' } },
         }"
     />
 </template>
 ```
 
-## 특징
+## Events
 
-- **지연 로딩**: IntersectionObserver를 사용한 효율적인 지연 로딩
-- **폴백 지원**: 이미지 로딩 실패 시 자동으로 폴백 이미지 표시
-- **로딩 상태**: 스켈레톤 UI로 로딩 상태 시각화
-- **접근성**: alt 텍스트를 통한 접근성 지원
-- **반응형**: 유연한 크기 조절과 object-fit을 통한 비율 유지
-- **에러 핸들링**: 이미지 로딩 실패 시 error 이벤트 emit
+| Event   | Payload | Description                              |
+| ------- | ------- | ---------------------------------------- |
+| `error` | -       | Emitted when the image fails to load.    |
+
+## Slots
+
+| Slot       | Description                                         |
+| ---------- | --------------------------------------------------- |
+| `skeleton` | Custom content displayed inside the skeleton state. |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

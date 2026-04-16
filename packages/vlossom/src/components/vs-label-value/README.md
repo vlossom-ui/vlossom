@@ -1,77 +1,92 @@
 # VsLabelValue
 
-레이블과 값을 쌍으로 표시하는 컴포넌트입니다. 폼 정보, 사용자 프로필, 데이터 표시 등에 활용할 수 있으며, 다양한 스타일과 반응형 레이아웃을 지원합니다.
+A two-column display component that pairs a label cell with a value cell, useful for detail views and data tables.
+
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 레이블-값
+- Side-by-side label and value layout with a configurable border.
+- Primary color mode highlights the label area with the primary color scheme.
+- Dense mode reduces padding and font size for compact displays.
+- Vertical mode stacks label and value cells vertically.
+- Responsive vertical mode switches to vertical layout on small containers.
+
+## Basic Usage
 
 ```html
 <template>
     <vs-label-value>
-        <template #label>이름</template>
-        홍길동
+        <template #label>Name</template>
+        John Doe
     </vs-label-value>
 </template>
 ```
 
-### Primary 스타일
+### Primary Mode
 
 ```html
 <template>
-    <vs-label-value primary>
-        <template #label>중요한 정보</template>
-        이것은 중요한 값입니다
+    <vs-label-value :primary="true">
+        <template #label>Status</template>
+        Active
     </vs-label-value>
 </template>
 ```
 
-### Dense 스타일
+### Vertical Layout
 
 ```html
 <template>
-    <vs-label-value dense>
-        <template #label>압축된 레이블</template>
-        작은 크기의 값
+    <vs-label-value :vertical="true">
+        <template #label>Description</template>
+        A long description text goes here.
     </vs-label-value>
 </template>
 ```
 
-### 반응형 레이아웃
+### Dense Mode
 
 ```html
 <template>
-    <!-- responsive 사용 시 컨테이너 768px 이하에서 세로 배치 -->
-    <div class="max-w-md">
-        <vs-label-value responsive>
-            <template #label>긴 레이블 텍스트</template>
-            이것은 반응형 동작을 테스트하기 위한 긴 값입니다.
-            화면 크기가 작아지면 세로로 배치됩니다.
-        </vs-label-value>
-    </div>
+    <vs-label-value :dense="true">
+        <template #label>ID</template>
+        12345
+    </vs-label-value>
+</template>
+```
+
+### Responsive Vertical
+
+Switch to vertical layout on small containers automatically.
+
+```html
+<template>
+    <vs-label-value :responsive="true">
+        <template #label>Address</template>
+        123 Main Street
+    </vs-label-value>
 </template>
 ```
 
 ## Props
 
-| Prop                 | Type                             | Default | Required | Description                                    |
-| -------------------- | -------------------------------- | ------- | -------- | ---------------------------------------------- |
-| `colorScheme`        | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마                             |
-| `styleSet`           | `string \| VsLabelValueStyleSet` | -       | -        | 커스텀 스타일 설정 객체                        |
-| `width`              | `string`                         | -       | -        | 컴포넌트 너비 (예: `'400px'`)                  |
-| `grid`               | `number`                         | -       | -        | 12 그리드 시스템 기반 너비 (1~12)              |
-| `dense`              | `boolean`                        | `false` | -        | 압축된 스타일 적용                             |
-| `primary`            | `boolean`                        | `false` | -        | 강조 스타일 적용                               |
-| `vertical`           | `boolean`                        | `false` | -        | 레이블-값을 항상 세로 배치                     |
-| `responsive`         | `boolean`                        | `false` | -        | 컨테이너 768px 이하에서 세로 배치로 전환       |
+| Prop          | Type                             | Default | Required | Description                                                       |
+| ------------- | -------------------------------- | ------- | -------- | ----------------------------------------------------------------- |
+| `colorScheme` | `string`                         | -       | -        | Color scheme for the component.                                   |
+| `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | Custom style set for the component.                               |
+| `width`       | `string \| number \| Breakpoints`| -       | -        | Width of the component.                                           |
+| `grid`        | `string \| number \| Breakpoints`| -       | -        | Grid column span for layout.                                      |
+| `dense`       | `boolean`                        | `false` | -        | Reduces padding and font size for compact display.                |
+| `primary`     | `boolean`                        | `false` | -        | Applies primary color scheme to the label cell.                   |
+| `vertical`    | `boolean`                        | `false` | -        | Stacks label and value cells vertically.                          |
+| `responsive`  | `boolean`                        | `false` | -        | Automatically switches to vertical layout in narrow containers.   |
 
 ## Types
 
 ```typescript
-import type { CSSProperties } from 'vue';
-
 interface VsLabelValueStyleSet {
     variables?: {
         border?: string;
@@ -82,44 +97,37 @@ interface VsLabelValueStyleSet {
 }
 ```
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
     <vs-label-value
         :style-set="{
-            variables: {
-                border: '2px solid #e91e63',
-            },
-            label: {
-                backgroundColor: '#f5f5f5',
-                color: '#333',
-                fontWeight: 600,
-            },
-            value: {
-                backgroundColor: '#fff',
-                color: '#666',
-                padding: '1rem 2rem',
-            },
+            variables: { border: '2px solid #007bff' },
+            component: { borderRadius: '8px' },
+            label: { backgroundColor: '#e7f0ff', color: '#007bff', fontWeight: '700' },
+            value: { padding: '0 1.5rem' },
         }"
     >
-        <template #label>사용자 정의 스타일</template>
-        커스터마이징된 값
+        <template #label>Project</template>
+        Vlossom UI
     </vs-label-value>
 </template>
 ```
 
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
-| Slot      | Description                 |
-| --------- | --------------------------- |
-| `label`   | 레이블 영역에 표시할 콘텐츠 |
-| `default` | 값 영역에 표시할 콘텐츠     |
+| Slot      | Description                      |
+| --------- | -------------------------------- |
+| `default` | The value cell content.          |
+| `label`   | The label cell content.          |
 
-## 특징
+## Methods
 
-- **세로/반응형 레이아웃**: `vertical`로 항상 세로 배치, `responsive`로 컨테이너 쿼리 768px 이하에서 세로 배치 전환
-- **유연한 커스터마이징**: 레이블과 값 영역을 각각 독립적으로 스타일링 가능
-- **Dense 모드**: 공간이 제한된 환경에서 사용할 수 있는 압축된 스타일
-- **Primary 강조**: 중요한 정보를 강조하기 위한 primary 스타일
-- **접근성**: 적절한 색상 대비와 시각적 계층 구조 제공
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

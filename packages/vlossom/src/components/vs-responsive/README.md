@@ -1,94 +1,93 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsResponsive
 
-반응형 디자인을 위한 유틸리티 컴포넌트입니다. CSS Container Queries를 활용하여 다양한 화면 크기에 따라 너비와 그리드 레이아웃을 자동으로 조정합니다.
+A layout wrapper component that applies responsive width and grid column settings based on container breakpoints.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 반응형 width
+- Applies responsive `width` and `grid` column spanning via container query breakpoints (xs, sm, md, lg, xl)
+- Accepts breakpoint objects for fine-grained control per screen size
+- Renders as any HTML element via the `tag` prop
+- Used internally by many Vlossom input components for layout consistency
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-grid>
-        <vs-responsive
-            :width="{ sm: '50%', md: '33.33%', lg: '25%' }"
-        >
-            <div>contents</div>
-        </vs-responsive>
-    </vs-grid>
+    <vs-responsive width="50%">
+        <p>This takes 50% width.</p>
+    </vs-responsive>
 </template>
 ```
 
-### 반응형 grid
+### With Grid Column Span
 
 ```html
 <template>
-    <vs-grid>
-        <vs-responsive :grid="{ sm: 12, md: 6, lg: 4, xl: 3 }">
-            <div>grid contents</div>
-        </vs-responsive>
-    </vs-grid>
+    <vs-responsive :grid="6">
+        <p>This spans 6 grid columns.</p>
+    </vs-responsive>
 </template>
 ```
 
-### 커스텀 태그 사용
+### With Breakpoint Object
 
 ```html
 <template>
-    <vs-grid>
-        <vs-responsive
-            tag="article"
-            :grid="{ sm: 12, md: 6 }"
-        >
-            <h2>My Article</h2>
-            <p>화면 크기에 따라 레이아웃이 자동으로 조정됩니다.</p>
-        </vs-responsive>
-    </vs-grid>
+    <vs-responsive :width="{ xs: '100%', md: '50%', lg: '33%' }">
+        <p>Responsive width per breakpoint.</p>
+    </vs-responsive>
+</template>
+```
+
+### Custom Tag
+
+```html
+<template>
+    <vs-responsive tag="section" width="80%">
+        <p>Rendered as a section element.</p>
+    </vs-responsive>
 </template>
 ```
 
 ## Props
 
-| Prop    | Type                              | Default | Required | Description                              |
-| ------- | --------------------------------- | ------- | -------- | ---------------------------------------- |
-| `width` | `string \| number \| Breakpoints` | -       | -        | 컴포넌트 너비. 단일 값 또는 반응형 객체  |
-| `grid`  | `string \| number \| Breakpoints` | -       | -        | 그리드 컬럼 수. 단일 값 또는 반응형 객체 |
-| `tag`   | `string`                          | `div`   | -        | 렌더링할 HTML 태그                       |
+| Prop    | Type                                 | Default | Required | Description                                           |
+| ------- | ------------------------------------ | ------- | -------- | ----------------------------------------------------- |
+| `width` | `string \| number \| Breakpoints`    | -       | -        | Responsive width; can be a fixed value or breakpoint object |
+| `grid`  | `string \| number \| Breakpoints`    | -       | -        | Grid column span; can be a fixed value or breakpoint object |
+| `tag`   | `string`                             | `'div'` | -        | HTML tag used as the root element                     |
 
 ## Types
 
+No custom StyleSet interface for this component.
+
 ```typescript
-interface Breakpoints {
-    xs?: string | number; // 0px 이상
-    sm?: string | number; // 640px 이상
-    md?: string | number; // 768px 이상
-    lg?: string | number; // 1024px 이상
-    xl?: string | number; // 1280px 이상
-}
+// Breakpoints type used for width and grid
+type Breakpoints = {
+    xs?: string | number;
+    sm?: string | number;
+    md?: string | number;
+    lg?: string | number;
+    xl?: string | number;
+};
 ```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description        |
-| --------- | ------------------ |
-| `default` | vs-responsive 내용 |
+| Slot      | Description      |
+| --------- | ---------------- |
+| `default` | Content to wrap  |
 
-## 브레이크포인트
+## Methods
 
-컴포넌트는 다음과 같은 브레이크포인트를 지원합니다:
-
-| 브레이크포인트 | 최소 너비 | 설명                    |
-| -------------- | --------- | ----------------------- |
-| `xs`           | 0px       | 기본 (모바일)           |
-| `sm`           | 640px     | 작은 화면 (태블릿)      |
-| `md`           | 768px     | 중간 화면 (태블릿)      |
-| `lg`           | 1024px    | 큰 화면 (데스크톱)      |
-| `xl`           | 1280px    | 매우 큰 화면 (데스크톱) |
-
-## 특징
-
-- **CSS Container Queries**: CSS Container Queries를 활용한 반응형 디자인
-- **자동 클래스 생성**: 브레이크포인트에 따라 자동으로 CSS 클래스 생성
-- **CSS 변수 지원**: 동적으로 CSS 변수를 생성하여 스타일링 유연성 제공
-- **그리드 시스템 통합**: VsGrid 컴포넌트와 연동하여 반응형 그리드 레이아웃 구성
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

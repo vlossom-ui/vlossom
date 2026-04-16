@@ -1,61 +1,138 @@
-# VsRadio & VsRadioSet
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
-라디오 입력을 위한 컴포넌트입니다. 단일 라디오와 여러 옵션 중 하나를 고르는 라디오 그룹 컴포넌트를 제공합니다.
+# VsRadio / VsRadioSet
+
+A radio button component (`VsRadio`) and a group component (`VsRadioSet`) for selecting a single option from a list.
 
 **Available Version**: 2.0.0+
 
----
+## Feature
 
-## VsRadio
+- `VsRadio`: single radio button with v-model support
+- `VsRadioSet`: renders a list of radio buttons from an `options` array
+- Supports `beforeChange` async callback to conditionally allow value change
+- Built-in validation support (required rules, custom rules)
+- Keyboard accessible with focus/blur events
+- Vertical layout option for `VsRadioSet`
 
-단일 라디오 입력 컴포넌트입니다.
+## Basic Usage
 
-### 기본 사용법
+### VsRadio
 
 ```html
 <template>
-    <vs-radio v-model="payment" radio-label="카드" :radio-value="'card'" name="payment" />
-    <vs-radio v-model="payment" radio-label="계좌이체" :radio-value="'bank'" name="payment" />
+    <vs-radio v-model="selected" :radio-value="'apple'" radio-label="Apple" />
+    <vs-radio v-model="selected" :radio-value="'banana'" radio-label="Banana" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const selected = ref(null);
+</script>
+```
+
+### VsRadioSet
+
+```html
+<template>
+    <vs-radio-set v-model="selected" :options="options" label="Choose a fruit" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const selected = ref(null);
+const options = ['Apple', 'Banana', 'Cherry'];
+</script>
+```
+
+### Vertical Layout
+
+```html
+<template>
+    <vs-radio-set v-model="selected" :options="options" vertical />
 </template>
 ```
 
-> `v-model`과 `name`을 동일하게 지정하면 브라우저가 하나의 라디오 그룹으로 인식합니다.
+### With beforeChange
 
-스타일을 조정하려면 `style-set` 속성에 `VsRadioStyleSet` 객체를 전달하거나 스타일셋 키를 지정합니다.
+```html
+<template>
+    <vs-radio-set
+        v-model="selected"
+        :options="options"
+        :before-change="confirmChange"
+    />
+</template>
 
-### Props
+<script setup>
+import { ref } from 'vue';
+const selected = ref(null);
+const options = ['Apple', 'Banana', 'Cherry'];
 
-| Prop          | Type                        | Default | Required | Description                      |
-| ------------- | --------------------------- | ------- | -------- | -------------------------------- |
-| `radioValue`  | `any`                       | -       | ✅       | 선택 시 `v-model`에 설정될 값    |
-| `radioLabel`  | `string`                    | `''`    | -        | 라디오 오른쪽에 표시할 라벨      |
-| `checked`     | `boolean`                   | `false` | -        | 초기 선택 여부                   |
-| `styleSet`    | `string \| VsRadioStyleSet` | -       | -        | 스타일셋 키 또는 인라인 스타일셋 |
-| `colorScheme` | `string`                    | -       | -        | 컴포넌트 색상 테마               |
+async function confirmChange(from, to) {
+    return confirm(`Change from ${from} to ${to}?`);
+}
+</script>
+```
 
-`id`, `label`, `messages`, `rules`, `required`, `disabled`, `readonly`, `width`, `grid`, `noMessages` 등 공통 Input Props도 그대로 사용할 수 있습니다.
+## Props
 
-### Slots
+### VsRadio
 
-| Slot          | Description                               |
-| ------------- | ----------------------------------------- |
-| `label`       | 입력 래퍼 상단 라벨 영역                  |
-| `radio-label` | 라디오 항목 라벨(슬롯 내용으로 교체 가능) |
-| `messages`    | 하단 메시지 영역                          |
+| Prop           | Type                                                              | Default  | Required | Description                                       |
+| -------------- | ----------------------------------------------------------------- | -------- | -------- | ------------------------------------------------- |
+| `colorScheme`  | `string`                                                          | -        | -        | Color scheme for the component                    |
+| `styleSet`     | `string \| VsRadioStyleSet`                                       | -        | -        | Custom style set for the component                |
+| `disabled`     | `boolean`                                                         | `false`  | -        | Disables the radio input                          |
+| `hidden`       | `boolean`                                                         | `false`  | -        | Hides the component                               |
+| `id`           | `string`                                                          | `''`     | -        | HTML id attribute                                 |
+| `label`        | `string`                                                          | `''`     | -        | Label text for the input wrapper                  |
+| `noLabel`      | `boolean`                                                         | `false`  | -        | Hides the label                                   |
+| `noMessages`   | `boolean`                                                         | `false`  | -        | Hides validation messages                         |
+| `required`     | `boolean`                                                         | `false`  | -        | Marks the field as required                       |
+| `messages`     | `Message[]`                                                       | `[]`     | -        | Validation messages                               |
+| `name`         | `string`                                                          | `''`     | -        | HTML name attribute for grouping radio buttons    |
+| `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
+| `readonly`     | `boolean`                                                         | `false`  | -        | Makes the radio read-only                         |
+| `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
+| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
+| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
+| `checked`      | `boolean`                                                         | `false`  | -        | Pre-selects this radio on mount                   |
+| `radioLabel`   | `string`                                                          | `''`     | -        | Label displayed next to the radio circle          |
+| `radioValue`   | `any`                                                             | -        | Yes      | The value this radio represents                   |
+| `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
+| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
+| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | Grid column span                                  |
 
-### Events
+### VsRadioSet
 
-| Event               | Payload      | Description                 |
-| ------------------- | ------------ | --------------------------- |
-| `update:modelValue` | `any`        | `v-model` 값 변경 시        |
-| `update:changed`    | `boolean`    | 내부 변경 여부 업데이트 시  |
-| `update:valid`      | `boolean`    | 유효성 상태가 바뀔 때       |
-| `change`            | `Event`      | 기본 라디오 `change` 이벤트 |
-| `toggle`            | `boolean`    | 토글 직후 체크 여부         |
-| `focus`             | `FocusEvent` | 라디오에 포커스가 올 때     |
-| `blur`              | `FocusEvent` | 라디오 포커스를 잃을 때     |
+| Prop           | Type                                                              | Default  | Required | Description                                       |
+| -------------- | ----------------------------------------------------------------- | -------- | -------- | ------------------------------------------------- |
+| `colorScheme`  | `string`                                                          | -        | -        | Color scheme for the component                    |
+| `styleSet`     | `string \| VsRadioSetStyleSet`                                    | -        | -        | Custom style set for the component                |
+| `disabled`     | `boolean`                                                         | `false`  | -        | Disables all radio buttons                        |
+| `hidden`       | `boolean`                                                         | `false`  | -        | Hides the component                               |
+| `id`           | `string`                                                          | `''`     | -        | HTML id attribute                                 |
+| `label`        | `string`                                                          | `''`     | -        | Label text for the group                          |
+| `noLabel`      | `boolean`                                                         | `false`  | -        | Hides the label                                   |
+| `noMessages`   | `boolean`                                                         | `false`  | -        | Hides validation messages                         |
+| `required`     | `boolean`                                                         | `false`  | -        | Marks the field as required                       |
+| `messages`     | `Message[]`                                                       | `[]`     | -        | Validation messages                               |
+| `name`         | `string`                                                          | `''`     | -        | HTML name attribute shared by all radios          |
+| `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
+| `readonly`     | `boolean`                                                         | `false`  | -        | Makes all radios read-only                        |
+| `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
+| `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
+| `options`      | `any[]`                                                           | `[]`     | -        | Array of option values or objects                 |
+| `optionLabel`  | `string`                                                          | -        | -        | Key name for the label when options are objects   |
+| `optionValue`  | `string`                                                          | -        | -        | Key name for the value when options are objects   |
+| `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
+| `vertical`     | `boolean`                                                         | `false`  | -        | Displays radio buttons in a vertical layout       |
+| `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
+| `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
+| `grid`         | `string \| number \| Breakpoints`                                 | -        | -        | Grid column span                                  |
 
-### Types
+## Types
 
 ```typescript
 interface VsRadioStyleSet {
@@ -66,97 +143,7 @@ interface VsRadioStyleSet {
     };
     wrapper?: VsInputWrapperStyleSet;
 }
-```
 
-> [!NOTE]
->
-> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
-
----
-
-## VsRadioSet
-
-여러 옵션 중 하나만 선택하도록 구성된 라디오 그룹 컴포넌트입니다. 내부에서는 `VsRadio`를 반복 렌더링합니다.
-
-### 기본 사용법
-
-```html
-<template>
-    <vs-radio-set
-        v-model="selectedOption"
-        :options="[
-            { label: '라디오 1', value: 'opt1' },
-            { label: '라디오 2', value: 'opt2' },
-        ]"
-        option-label="label"
-        option-value="value"
-        name="example"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const selectedOption = ref('opt1');
-</script>
-```
-
-### 커스텀 라벨 & 수직 레이아웃
-
-```html
-<template>
-    <vs-radio-set
-        v-model="plan"
-        :options="plans"
-        option-label="title"
-        option-value="id"
-        vertical
-    >
-        <template #radio-label="{ option }">
-            <div class="flex flex-col">
-                <span class="font-medium">{{ option.title }}</span>
-                <span class="text-sm text-gray-500">{{ option.price }}</span>
-            </div>
-        </template>
-    </vs-radio-set>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const plans = [
-    { id: 'basic', title: 'Basic', price: '₩10,000' },
-    { id: 'pro', title: 'Pro', price: '₩25,000' },
-];
-const plan = ref('basic');
-</script>
-```
-
-### 변경 전 확인 (BeforeChange)
-
-```html
-<template>
-    <vs-radio-set
-        v-model="delivery"
-        :options="['standard', 'express']"
-        :before-change="confirmBeforeChange"
-        name="delivery"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-
-const delivery = ref('standard');
-
-const confirmBeforeChange = async (from, to, optionValue) => {
-    // from: 현재 값, to: 변경될 값, optionValue: 옵션 값
-    return window.confirm(`${optionValue} 옵션으로 변경하시겠어요?`);
-};
-</script>
-```
-
-### Types
-
-```typescript
 interface VsRadioSetStyleSet {
     component?: CSSProperties;
     radio?: VsRadioStyleSet;
@@ -165,36 +152,87 @@ interface VsRadioSetStyleSet {
 ```
 
 > [!NOTE]
->
-> - `radio`는 [VsRadioStyleSet](#types)을 사용합니다.
-> - `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+> `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
 
-### Props
+### StyleSet Example
 
-| Prop           | Type                           | Default | Required | Description                                                         |
-| -------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------- |
-| `options`      | `any[]`                        | []      | ✅       | 렌더링할 옵션 목록                                                  |
-| `optionLabel`  | `string`                       | `''`    | -        | 옵션 객체에서 라벨을 읽어 올 경로                                   |
-| `optionValue`  | `string`                       | `''`    | -        | 옵션 객체에서 값을 읽어 올 경로                                     |
-| `vertical`     | `boolean`                      | `false` | -        | 라디오를 세로 방향으로 배치                                         |
-| `styleSet`     | `string \| VsRadioSetStyleSet` | -       | -        | 그룹 및 항목 스타일 커스터마이징                                    |
-| `beforeChange` | `Function`                     | -       | -        | 변경 전 호출되는 비동기 함수 (from, to, optionValue, false 시 취소) |
+```html
+<template>
+    <vs-radio-set
+        v-model="selected"
+        :options="options"
+        :style-set="{
+            component: { gap: '1rem' },
+            radio: {
+                variables: {
+                    radioColor: '#6366f1',
+                    radioSize: '1.2rem',
+                },
+            },
+        }"
+    />
+</template>
+```
 
-`VsRadio`와 동일하게 공통 Input Props (`label`, `required`, `messages`, `disabled`, `readonly`, `width`, `grid`, `noMessages` 등)를 사용할 수 있습니다.
+## Events
 
-### Slots
+### VsRadio
 
-| Slot          | Description                              |
-| ------------- | ---------------------------------------- |
-| `label`       | 그룹 상단 라벨 영역                      |
-| `radio-label` | 각 항목의 라벨 영역 (커스텀 마크업 가능) |
-| `messages`    | 그룹 하단 메시지 영역                    |
+| Event               | Payload                   | Description                              |
+| ------------------- | ------------------------- | ---------------------------------------- |
+| `update:modelValue` | `any`                     | Emitted when the selected value changes  |
+| `update:changed`    | `boolean`                 | Emitted when the changed state updates   |
+| `update:valid`      | `boolean`                 | Emitted when the validation state updates |
+| `change`            | `Event`                   | Emitted when the radio selection changes |
+| `toggle`            | `boolean`                 | Emitted when the radio is toggled        |
+| `focus`             | `FocusEvent`              | Emitted when the radio receives focus    |
+| `blur`              | `FocusEvent`              | Emitted when the radio loses focus       |
 
-### Events
+### VsRadioSet
 
-| Event               | Payload | Description                          |
-| ------------------- | ------- | ------------------------------------ |
-| `update:modelValue` | `any`   | 선택된 값이 변경될 때                |
-| `change`            | `any`   | 내부 라디오에서 change가 발생했을 때 |
-| `focus`             | `any`   | 항목 포커스 시 (옵션, 이벤트 전달)   |
-| `blur`              | `any`   | 항목 블러 시 (옵션, 이벤트 전달)     |
+| Event               | Payload                   | Description                              |
+| ------------------- | ------------------------- | ---------------------------------------- |
+| `update:modelValue` | `any`                     | Emitted when the selected value changes  |
+| `update:changed`    | `boolean`                 | Emitted when the changed state updates   |
+| `update:valid`      | `boolean`                 | Emitted when the validation state updates |
+| `change`            | `any`                     | Emitted when the selection changes       |
+| `focus`             | `(option: any, event: FocusEvent)` | Emitted when a radio receives focus |
+| `blur`              | `(option: any, event: FocusEvent)` | Emitted when a radio loses focus   |
+
+## Slots
+
+### VsRadio
+
+| Slot           | Description                                   |
+| -------------- | --------------------------------------------- |
+| `label`        | Custom label content                          |
+| `radio-label`  | Custom label displayed next to the radio      |
+| `messages`     | Custom validation messages                    |
+
+### VsRadioSet
+
+| Slot           | Description                                                          |
+| -------------- | -------------------------------------------------------------------- |
+| `label`        | Custom label content                                                 |
+| `radio-label`  | Custom label for each radio; receives `{ option, value, label }`     |
+| `messages`     | Custom validation messages                                           |
+
+## Methods
+
+### VsRadio
+
+| Method     | Parameters | Description                  |
+| ---------- | ---------- | ---------------------------- |
+| `clear`    | -          | Clears the selected value    |
+| `validate` | -          | Triggers validation          |
+| `focus`    | -          | Focuses the radio input      |
+| `blur`     | -          | Blurs the radio input        |
+
+### VsRadioSet
+
+| Method     | Parameters | Description                      |
+| ---------- | ---------- | -------------------------------- |
+| `focus`    | -          | Focuses the first radio input    |
+| `blur`     | -          | Blurs the first radio input      |
+| `validate` | -          | Triggers validation              |
+| `clear`    | -          | Clears the selected value        |

@@ -1,57 +1,58 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsDimmed
 
-오버레이나 모달 같은 컴포넌트에서 배경을 어둡게 처리하는 컴포넌트입니다. 기본적으로 절대 위치로 부모 요소를 가득 채우며, opacity를 통한 애니메이션 효과를 지원합니다.
+A semi-transparent overlay component that covers its parent container with a fade transition.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 dimmed
+- `v-model` binding to control visibility programmatically
+- Smooth fade-in/fade-out transition animation
+- Exposes `show()` and `hide()` methods for imperative control
+- Fully customizable appearance via `component` CSSProperties
+
+## Basic Usage
 
 ```html
 <template>
-    <div class="relative h-screen w-full">
+    <div class="relative">
         <vs-dimmed v-model="isVisible" />
+        <p>Content behind the dimmed overlay</p>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const isVisible = ref(false);
+</script>
 ```
 
-### v-model로 표시/숨김 제어
+### Programmatic Control
 
 ```html
 <template>
-    <div class="relative h-screen w-full">
-        <button @click="isVisible = !isVisible">Toggle</button>
-        <vs-dimmed v-model="isVisible" />
+    <div class="relative">
+        <vs-dimmed ref="dimmedRef" v-model="isVisible" />
+        <vs-button @click="dimmedRef.show()">Show Dimmed</vs-button>
+        <vs-button @click="dimmedRef.hide()">Hide Dimmed</vs-button>
     </div>
 </template>
-```
 
-### StyleSet 사용 예시
-
-```html
-<template>
-    <div class="relative h-screen w-full">
-        <vs-dimmed
-            v-model="isVisible"
-            :style-set="{
-                component: {
-                    backgroundColor: '#000000',
-                    opacity: 0.6,
-                    backdropFilter: 'blur(4px)',
-                },
-            }"
-        />
-    </div>
-</template>
+<script setup lang="ts">
+import { ref } from 'vue';
+const isVisible = ref(false);
+const dimmedRef = ref(null);
+</script>
 ```
 
 ## Props
 
-| Prop         | Type                         | Default | Required | Description                |
-| ------------ | ---------------------------- | ------- | -------- | -------------------------- |
-| `modelValue` | `boolean`                    | `false` | -        | dimmed 표시 여부 (v-model) |
-| `styleSet`   | `string \| VsDimmedStyleSet` | -       | -        | 커스텀 스타일 설정 객체    |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `styleSet` | `string \| VsDimmedStyleSet` | | | Custom style set |
+| `modelValue` | `boolean` | `false` | | v-model binding for visibility |
 
 ## Types
 
@@ -61,14 +62,41 @@ interface VsDimmedStyleSet {
 }
 ```
 
-## 특징
+### StyleSet Example
 
-- **절대 위치**: 기본적으로 `position: absolute`로 부모 요소를 가득 채움 (`top: 0, left: 0, width: 100%, height: 100%`)
-- **v-model 지원**: `v-model`을 통해 표시/숨김 제어 가능
-- **내장 애니메이션**: opacity 기반 페이드 인/아웃 효과가 내장되어 있음
-- **접근성**: `aria-hidden="true"` 속성으로 스크린 리더에서 숨김 처리
-- **커스터마이징**: CSS 변수와 styleSet을 통한 유연한 스타일 변경
+```html
+<template>
+    <vs-dimmed
+        v-model="isVisible"
+        :style-set="{
+            component: {
+                backgroundColor: '#000000',
+                opacity: 0.6,
+                backdropFilter: 'blur(4px)',
+            },
+        }"
+    />
+</template>
+```
 
-## 주의사항
+## Events
 
-- 부모 요소에 `position: relative` 또는 `position: absolute` 스타일이 필요합니다
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `update:modelValue` | `boolean` | Emitted when visibility changes |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `show` | — | Shows the dimmed overlay |
+| `hide` | — | Hides the dimmed overlay |
+
+## Caution
+
+- The parent element must have `position: relative` (or another non-static position) for the overlay to cover it correctly, since `VsDimmed` uses `position: absolute`.

@@ -1,43 +1,62 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsThemeButton
 
-Vlossom 프레임워크의 Light/Dark 테마를 전환하는 전용 버튼 컴포넌트입니다. 내부적으로 VsToggle을 사용하며, 태양과 달 아이콘으로 현재 테마 상태를 시각적으로 표시합니다.
+A toggle button that switches the application between light and dark themes.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 테마 버튼
+- Toggles the global Vlossom theme between light and dark modes
+- Animated sun/moon icon transition on theme change
+- Delegates all button behavior to `VsToggle`
+- Supports loading and disabled states
+- Customizable size and icon color through `styleSet`
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-theme-button @change="handleThemeChange" />
+    <vs-theme-button />
 </template>
+```
 
-<script setup>
-const handleThemeChange = (isDark: boolean) => {
-    console.log('테마 변경:', isDark ? 'Dark' : 'Light');
-};
-</script>
+### With Custom Size
+
+```html
+<template>
+    <vs-theme-button
+        :style-set="{
+            variables: { width: '3rem', height: '3rem', iconColor: '#ff9800' },
+        }"
+    />
+</template>
+```
+
+### Disabled State
+
+```html
+<template>
+    <vs-theme-button disabled />
+</template>
 ```
 
 ## Props
 
-| Prop          | Type                              | Default | Required | Description             |
-| ------------- | --------------------------------- | ------- | -------- | ----------------------- |
-| `colorScheme` | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마      |
-| `styleSet`    | `string \| VsThemeButtonStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
-
-**VsToggle에서 상속받은 Props:**
-
-- `circle`, `disabled`, `ghost`, `loading`, `outline`, `primary`, `size`
-
-> **Note**: VsToggle의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsToggle README](../vs-toggle/README.md)를 참조하세요.
-
-## Events
-
-| Event    | Parameters | Description                                      |
-| -------- | ---------- | ------------------------------------------------ |
-| `change` | `boolean`  | 테마 변경 시 발생 (`true`: Dark, `false`: Light) |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `string` | | | Color scheme for the component |
+| `styleSet` | `string \| VsThemeButtonStyleSet` | | | Custom style set for the component |
+| `circle` | `boolean` | `false` | | Renders the button as a circle |
+| `disabled` | `boolean` | `false` | | Disables the button |
+| `ghost` | `boolean` | `false` | | Applies ghost (transparent) style |
+| `loading` | `boolean` | `false` | | Shows loading indicator |
+| `outline` | `boolean` | `false` | | Applies outline style |
+| `primary` | `boolean` | `false` | | Applies primary color style |
+| `responsive` | `boolean` | `false` | | Makes the button responsive |
+| `size` | `Size` | `'md'` | | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type |
 
 ## Types
 
@@ -52,42 +71,37 @@ interface VsThemeButtonStyleSet {
 }
 ```
 
-## 특징
+> [!NOTE]
+> `button` uses [`VsToggleStyleSet`](../vs-toggle/README.md).
 
-- **자동 테마 감지**: Vlossom 프레임워크의 현재 테마를 자동으로 반영
-- **시각적 피드백**: 태양(☀️) 및 달(🌙) 아이콘으로 현재 테마 상태 표시
-- **애니메이션 효과**: 부드러운 아이콘 전환 애니메이션 제공
-- **VsToggle 기반**: VsToggle의 모든 기능과 스타일링 옵션 지원
-- **프레임워크 연동**: `useVlossom().toggleTheme()` 자동 호출
-- **이벤트 방출**: `change` 이벤트로 테마 변경 감지 가능
-
-### 스타일 커스터마이징
+### StyleSet Example
 
 ```html
 <template>
-    <vs-theme-button :style-set="themeButtonStyle" />
+    <vs-theme-button
+        :style-set="{
+            variables: {
+                width: '2.5rem',
+                height: '2.5rem',
+                iconColor: '#ff9800',
+            },
+        }"
+    />
 </template>
-
-<script setup>
-const themeButtonStyle = {
-    variables: {
-        width: '3.5rem',
-        height: '3.5rem',
-        iconColor: '#fcd34d',
-    },
-    button: {
-        component: {
-            backgroundColor: '#1f2937',
-            border: '2px solid #374151',
-            borderRadius: '0.5rem',
-        },
-    },
-};
-</script>
 ```
 
-## 주의사항
+## Events
 
-- 이 컴포넌트는 Vlossom 프레임워크와 긴밀히 연결되어 있습니다
-- `useVlossom()` 훅을 통해 전역 테마 상태를 관리합니다
-- 테마 변경은 전체 애플리케이션에 즉시 반영됩니다
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `change` | `boolean` | Emitted when the theme changes. Payload is `true` for dark mode |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

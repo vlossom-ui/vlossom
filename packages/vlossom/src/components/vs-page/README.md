@@ -1,66 +1,45 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsPage
 
-페이지의 메인 콘텐츠 영역을 구성하는 페이지 컴포넌트입니다. 제목과 설명을 표시하는 헤더 영역을 제공하며, 반응형 패딩을 통해 다양한 화면 크기에서 최적화된 레이아웃을 제공합니다.
+A layout component that provides a structured page container with title, description, and content areas.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 페이지
+- Provides a structured layout with title, description, and main content slots
+- Responsive padding that adjusts automatically based on container width
+- Supports direct CSS styling for each section (component, title, description, content)
+- Lightweight wrapper with no extra dependencies
+
+## Basic Usage
 
 ```html
 <template>
     <vs-page>
-        <template #title>
-            <h1>페이지 제목</h1>
-        </template>
-        <template #description>
-            <p>이 페이지는 Vlossom의 페이지 컴포넌트입니다.</p>
-        </template>
-        <section>
-            <p>페이지의 컨텐츠를 여기에 표시합니다.</p>
-        </section>
+        <template #title>Page Title</template>
+        <template #description>This is a page description.</template>
+        <p>Main content goes here.</p>
     </vs-page>
 </template>
 ```
 
-### StyleSet 사용 예시
+### Without Slots
 
 ```html
 <template>
-    <vs-page
-        :style-set="{
-            component: {
-                backgroundColor: '#f9f9f9',
-                borderRadius: '8px',
-                padding: '3rem 4rem',
-            },
-            title: {
-                padding: '0 0 1.5rem 0',
-            },
-            description: {
-                padding: '0 0 2rem 0',
-            },
-        }"
-    >
-        <template #title>
-            <h1>커스텀 스타일 페이지</h1>
-        </template>
-        <template #description>
-            <p>패딩과 배경색이 커스터마이징된 페이지입니다.</p>
-        </template>
-        <section>
-            <p>페이지 컨텐츠</p>
-        </section>
+    <vs-page>
+        <p>Only content, no title or description.</p>
     </vs-page>
 </template>
 ```
 
 ## Props
 
-| Prop       | Type                       | Default | Required | Description             |
-| ---------- | -------------------------- | ------- | -------- | ----------------------- |
-| `styleSet` | `string \| VsPageStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
+| Prop       | Type                      | Default | Required | Description                      |
+| ---------- | ------------------------- | ------- | -------- | -------------------------------- |
+| `styleSet` | `string \| VsPageStyleSet` | -       | -        | Custom style set for the component |
 
 ## Types
 
@@ -73,20 +52,39 @@ interface VsPageStyleSet {
 }
 ```
 
+### StyleSet Example
+
+```html
+<template>
+    <vs-page
+        :style-set="{
+            component: { backgroundColor: '#f9f9f9', padding: '2rem' },
+            title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
+            description: { color: '#666', fontSize: '0.9rem' },
+            content: { paddingTop: '1rem' },
+        }"
+    >
+        <template #title>Styled Page</template>
+        <template #description>With custom styling applied.</template>
+        <p>Content area</p>
+    </vs-page>
+</template>
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
-| Slot          | Description                |
-| ------------- | -------------------------- |
-| `default`     | 페이지의 메인 콘텐츠 영역  |
-| `title`       | 페이지 제목 (선택적)       |
-| `description` | 페이지 설명 (선택적)       |
+| Slot          | Description                        |
+| ------------- | ---------------------------------- |
+| `default`     | Main content area                  |
+| `title`       | Page title area (optional)         |
+| `description` | Page description area (optional)   |
 
-## 특징
+## Methods
 
-- **반응형 패딩**: TailwindCSS의 Container Query를 사용하여 화면 크기에 따라 자동으로 패딩 조정
-    - 기본: `2rem 3rem`
-    - 1024px 이하: `1.8rem 2.5rem`
-    - 768px 이하: `1.4rem 2rem`
-    - 640px 이하: `1rem 1.5rem`
-- **구조적 레이아웃**: title, description, content를 명확하게 구분한 시멘틱 구조
-- **선택적 슬롯**: title과 description은 필요에 따라 선택적으로 사용 가능
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

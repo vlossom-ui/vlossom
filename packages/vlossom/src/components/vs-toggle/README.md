@@ -1,89 +1,69 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsToggle
 
-Boolean 값을 토글하는 버튼 컴포넌트입니다. `v-model`을 지원하며, 내부적으로 VsButton을 사용하여 VsButton의 모든 스타일링 옵션을 제공합니다.
+A stateful button that toggles between active and inactive states, wrapping `VsButton`.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 토글 버튼
+- Boolean v-model binding for toggled state
+- Emits a `toggle` event on every state change
+- Inherits all `VsButton` props (size, ghost, outline, primary, circle, loading, etc.)
+- Programmatic toggle via exposed `toggle` method
+- Full color scheme support
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-toggle v-model="isToggled">
-        토글 버튼
+    <vs-toggle v-model="isActive">
+        Toggle Me
     </vs-toggle>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-const isToggled = ref(false);
+const isActive = ref(false);
 </script>
 ```
 
-### 다양한 스타일의 토글 버튼
+### Different Variants
 
 ```html
 <template>
-    <vs-toggle v-model="toggleValue" primary>Primary 토글</vs-toggle>
-    <vs-toggle v-model="toggleValue" outline>Outline 토글</vs-toggle>
-    <vs-toggle v-model="toggleValue" ghost>Ghost 토글</vs-toggle>
-    <vs-toggle v-model="toggleValue" circle>⭕</vs-toggle>
+    <vs-toggle v-model="a" primary>Primary</vs-toggle>
+    <vs-toggle v-model="b" outline>Outline</vs-toggle>
+    <vs-toggle v-model="c" ghost>Ghost</vs-toggle>
+    <vs-toggle v-model="d" circle>⭐</vs-toggle>
 </template>
 ```
 
-### 토글 이벤트 처리
+### Disabled State
 
 ```html
 <template>
-    <vs-toggle v-model="isToggled" @toggle="handleToggle">
-        상태: {{ isToggled ? 'ON' : 'OFF' }}
-    </vs-toggle>
+    <vs-toggle v-model="isActive" disabled>Disabled</vs-toggle>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-const isToggled = ref(false);
-
-const handleToggle = (value: boolean) => {
-    console.log('토글 상태 변경:', value);
-};
-</script>
 ```
 
 ## Props
 
-| Prop          | Type                         | Default | Required | Description                       |
-| ------------- | ---------------------------- | ------- | -------- | --------------------------------- |
-| `modelValue`  | `boolean`                    | `false` | -        | v-model로 바인딩되는 토글 상태 값 |
-| `colorScheme` | `ColorScheme`                | -       | -        | 컴포넌트 색상 테마                |
-| `styleSet`    | `string \| VsToggleStyleSet` | -       | -        | 커스텀 스타일 설정 객체           |
-
-**VsButton에서 상속받은 Props:**
-
-- `circle`, `disabled`, `ghost`, `large`, `loading`, `outline`, `primary`, `responsive`, `small`
-
-> **Note**: VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md)를 참조하세요.
-
-## Events
-
-| Event               | Parameters | Description             |
-| ------------------- | ---------- | ----------------------- |
-| `update:modelValue` | `boolean`  | v-model 값 변경 시 발생 |
-| `toggle`            | `boolean`  | 토글 상태 변경 시 발생  |
-
-## Slots
-
-| Slot      | Description                    |
-| --------- | ------------------------------ |
-| `default` | 토글 버튼 내부에 표시할 콘텐츠 |
-
-## Methods
-
-| Method     | Return Type | Description      |
-| ---------- | ----------- | ---------------- |
-| `toggle()` | `void`      | 토글 상태를 변경 |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `string` | | | Color scheme for the component |
+| `styleSet` | `string \| VsToggleStyleSet` | | | Custom style set for the component |
+| `circle` | `boolean` | `false` | | Renders the button as a circle |
+| `disabled` | `boolean` | `false` | | Disables the toggle |
+| `ghost` | `boolean` | `false` | | Applies ghost (transparent) style |
+| `loading` | `boolean` | `false` | | Shows a loading indicator |
+| `modelValue` | `boolean` | `false` | | v-model for toggled state |
+| `outline` | `boolean` | `false` | | Applies outline style |
+| `primary` | `boolean` | `false` | | Applies primary color style |
+| `responsive` | `boolean` | `false` | | Makes the button responsive |
+| `size` | `Size` | `'md'` | | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type |
 
 ## Types
 
@@ -92,39 +72,49 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 ```
 
 > [!NOTE]
->
-> VsButton의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsButton README](../vs-button/README.md#types)를 참조하세요.
+> `VsToggleStyleSet` extends [`VsButtonStyleSet`](../vs-button/README.md). All `VsButtonStyleSet` properties are available.
 
-### StyleSet 사용 예시
+```typescript
+interface VsButtonStyleSet {
+    variables?: {
+        padding?: string;
+    };
+    component?: CSSProperties;
+    loading?: VsLoadingStyleSet;
+}
+```
+
+### StyleSet Example
 
 ```html
 <template>
     <vs-toggle
-        v-model="isToggled"
+        v-model="isActive"
         :style-set="{
-            variables: {
-                padding: '1rem 2rem',
-            },
-            component: {
-                backgroundColor: '#4caf50',
-                borderRadius: '8px',
-            },
+            component: { borderRadius: '0.25rem', minWidth: '6rem' },
+            variables: { padding: '0.5rem 1.5rem' },
         }"
     >
-        Toggle Me
+        Toggle
     </vs-toggle>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const isToggled = ref(false);
-</script>
 ```
 
-## 특징
+## Events
 
-- **v-model 지원**: 양방향 데이터 바인딩으로 토글 상태 관리
-- **VsButton 기반**: VsButton의 모든 스타일링 옵션을 완전히 지원
-- **이벤트 처리**: `toggle` 이벤트로 상태 변화 감지
-- **접근성**: 버튼 기반으로 키보드 내비게이션 및 스크린 리더 지원
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `update:modelValue` | `boolean` | Emitted when the toggled state changes |
+| `toggle` | `boolean` | Emitted on every toggle with the new state |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Button content |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `toggle` | | Programmatically toggles the state |

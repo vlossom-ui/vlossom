@@ -1,92 +1,80 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsAccordion
 
-접을 수 있는 컨텐츠 영역을 제공하는 아코디언 컴포넌트입니다. 제목을 클릭하여 컨텐츠를 펼치거나 접을 수 있으며, 키보드 접근성과 다양한 스타일 커스터마이징을 지원합니다.
+A collapsible content panel that shows or hides its content through a toggle interaction.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 아코디언
+- Toggle open/closed state by clicking the title area or pressing Enter/Space
+- Supports `v-model` binding to control and observe the open state externally
+- Keyboard accessible — fully navigable via Enter and Space keys
+- Responsive width control via `width` and `grid` props
+- Customizable arrow indicator via CSS variables (`arrowColor`, `arrowSize`, `arrowSpacing`)
+
+## Basic Usage
 
 ```html
 <template>
     <vs-accordion>
-        <template #title>
-            <h3>아코디언 제목</h3>
-        </template>
-        <p>아코디언 내용입니다. 제목을 클릭하면 이 내용이 펼쳐지거나 접힙니다.</p>
+        <template #title>Section Title</template>
+        This is the accordion content.
     </vs-accordion>
 </template>
 ```
 
-### 열린 상태로 시작
-
-```html
-<template>
-    <vs-accordion :open="true">
-        <template #title>
-            <h3>기본적으로 열린 아코디언</h3>
-        </template>
-        <p>이 아코디언은 처음부터 열린 상태로 시작합니다.</p>
-    </vs-accordion>
-</template>
-```
-
-### v-model 사용
+### With v-model
 
 ```html
 <template>
     <vs-accordion v-model="isOpen">
-        <template #title>
-            <h3>v-model로 제어하는 아코디언</h3>
-        </template>
-        <p>외부에서 아코디언의 열림/닫힘 상태를 제어할 수 있습니다.</p>
+        <template #title>Controlled Accordion</template>
+        Content is shown when isOpen is true.
     </vs-accordion>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-
 const isOpen = ref(false);
 </script>
 ```
 
-### Primary 스타일
+### Primary Style
 
 ```html
 <template>
     <vs-accordion primary>
-        <template #title>
-            <h3>Primary 스타일 아코디언</h3>
-        </template>
-        <p>강조된 스타일의 아코디언입니다.</p>
+        <template #title>Primary Accordion</template>
+        Content with primary color scheme on the title bar.
     </vs-accordion>
 </template>
 ```
 
-### 비활성화 상태
+### Disabled
 
 ```html
 <template>
     <vs-accordion disabled>
-        <template #title>
-            <h3>비활성화된 아코디언</h3>
-        </template>
-        <p>이 아코디언은 클릭할 수 없습니다.</p>
+        <template #title>Disabled Accordion</template>
+        This accordion cannot be toggled.
     </vs-accordion>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                            | Default | Required | Description             |
-| ------------- | ------------------------------- | ------- | -------- | ----------------------- |
-| `colorScheme` | `ColorScheme`                   | -       | -        | 컴포넌트 색상 테마      |
-| `styleSet`    | `string \| VsAccordionStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
-| `disabled`    | `boolean`                       | `false` | -        | 아코디언 비활성화       |
-| `open`        | `boolean`                       | `false` | -        | 초기 열림 상태          |
-| `primary`     | `boolean`                       | `false` | -        | 강조 스타일 적용        |
-| `modelValue`  | `boolean`                       | `false` | -        | v-model 바인딩 값       |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsAccordionStyleSet` | | | Custom style set |
+| `width` | `string \| number \| Breakpoints` | | | Width of the component |
+| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
+| `disabled` | `boolean` | `false` | | Disables toggle interaction |
+| `open` | `boolean` | `false` | | Initial open state |
+| `primary` | `boolean` | `false` | | Applies primary color scheme |
+| `modelValue` | `boolean` | `false` | | v-model binding for open state |
 
 ## Types
 
@@ -105,53 +93,50 @@ interface VsAccordionStyleSet {
 ```
 
 > [!NOTE]
->
-> `content`는 [VsExpandableStyleSet](../vs-expandable/README.md#types)을 사용합니다.
+> `content` uses `VsExpandableStyleSet`. See the [VsExpandable documentation](../vs-expandable/README.md) for details.
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
     <vs-accordion
         :style-set="{
             variables: {
-                arrowColor: '#e91e63',
-                arrowSize: '12px',
-                arrowSpacing: '1.5rem',
-                border: '2px solid #333',
+                arrowColor: '#6200ea',
+                arrowSize: '0.5rem',
+                arrowSpacing: '4%',
+                border: '2px solid #6200ea',
             },
-            title: {
-                backgroundColor: '#f5f5f5',
-                padding: '1rem 1.5rem',
-            },
+            component: { borderRadius: '0.75rem' },
+            title: { fontWeight: 'bold', padding: '1rem' },
         }"
     >
-        <template #title>
-            <h3>커스텀 스타일 아코디언</h3>
-        </template>
-        <p>커스텀 스타일이 적용된 아코디언입니다.</p>
+        <template #title>Custom Styled Accordion</template>
+        Content goes here.
     </vs-accordion>
 </template>
 ```
 
-## Slots
-
-| Slot      | Description                      |
-| --------- | -------------------------------- |
-| `default` | 아코디언 내용 (펼쳐지는 영역)    |
-| `title`   | 아코디언 제목 (클릭 가능한 영역) |
-
 ## Events
 
-| Event               | Type      | Description                     |
-| ------------------- | --------- | ------------------------------- |
-| `toggle`            | `boolean` | 아코디언 열림/닫힘 상태 변경 시 |
-| `update:modelValue` | `boolean` | v-model 값 업데이트 시          |
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `update:modelValue` | `boolean` | Emitted when the open state changes |
+| `toggle` | `boolean` | Emitted after toggling; payload is the new open state |
 
-## 특징
+## Slots
 
-- **키보드 접근성**: Enter와 Space 키로 아코디언 제어 가능
-- **v-model 지원**: 양방향 데이터 바인딩으로 상태 제어
-- **유연한 스타일링**: 제목과 내용 영역을 각각 커스터마이징 가능
-- **반응형 지원**: 다양한 화면 크기에 대응
-- **접근성**: 스크린 리더와 키보드 사용자를 위한 접근성 고려
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Main collapsible content |
+| `title` | Content rendered inside the title bar |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `toggle` | — | Toggles the accordion open/closed state |
+
+## Caution
+
+- Using both `open` and `v-model` simultaneously is not recommended. `v-model` takes precedence during reactivity updates.

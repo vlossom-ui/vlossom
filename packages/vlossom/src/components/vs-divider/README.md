@@ -1,67 +1,60 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsDivider
 
-콘텐츠 영역을 시각적으로 구분하는 구분선 컴포넌트입니다. 가로형과 세로형 구분선을 지원하며, Container Query를 활용한 반응형 동작이 가능합니다.
+A horizontal or vertical line separator used to visually divide content sections.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 가로 구분선 (기본)
+- Horizontal (default) and vertical orientations
+- Responsive mode that switches a vertical divider to horizontal on small containers
+- Customizable border style, width/height, and margin via CSS variables
+- Color scheme support for themed separators
+
+## Basic Usage
 
 ```html
 <template>
-    <div>
-        <p>첫 번째 콘텐츠</p>
-        <vs-divider />
-        <p>두 번째 콘텐츠</p>
+    <p>Section A</p>
+    <vs-divider />
+    <p>Section B</p>
+</template>
+```
+
+### Vertical Divider
+
+```html
+<template>
+    <div style="display: flex; align-items: center; height: 2rem;">
+        <span>Item 1</span>
+        <vs-divider vertical />
+        <span>Item 2</span>
     </div>
 </template>
 ```
 
-### 세로 구분선
+### Responsive Vertical Divider
 
 ```html
 <template>
-    <div class="flex items-center h-20">
-        <span>메뉴 1</span>
-        <vs-divider vertical />
-        <span>메뉴 2</span>
-        <vs-divider vertical />
-        <span>메뉴 3</span>
+    <div style="display: flex; align-items: center;">
+        <span>Left</span>
+        <vs-divider vertical responsive />
+        <span>Right</span>
     </div>
 </template>
-```
-
-### 반응형 구분선
-
-데스크톱에서는 세로형, 모바일에서는 가로형으로 자동 변환됩니다. vs-divider를 포함하는 태그는 `container-type` 스타일을 포함해야 합니다. (예: vs-container)
-
-```html
-<template>
-    <div class="navigation">
-        <span>홈</span>
-        <vs-divider vertical responsive />
-        <span>소개</span>
-        <vs-divider vertical responsive />
-        <span>연락처</span>
-    </div>
-</template>
-<style>
-.navigation {
-    ...;
-    container-type: inline-size;
-}
-</style>
 ```
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                                      |
-| ------------- | ----------------------------- | ------- | -------- | ------------------------------------------------ |
-| `colorScheme` | `ColorScheme`                 | -       | -        | 컴포넌트 색상 테마                               |
-| `styleSet`    | `string \| VsDividerStyleSet` | -       | -        | 커스텀 스타일 설정 객체                          |
-| `vertical`    | `boolean`                     | `false` | -        | 세로 구분선 여부 (false: 가로, true: 세로)       |
-| `responsive`  | `boolean`                     | `false` | -        | 반응형 동작 여부 (768px 기준으로 가로/세로 전환) |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsDividerStyleSet` | | | Custom style set |
+| `responsive` | `boolean` | `false` | | Switches a vertical divider to horizontal at small container widths |
+| `vertical` | `boolean` | `false` | | Renders a vertical divider instead of horizontal |
 
 ## Types
 
@@ -69,10 +62,12 @@
 interface VsDividerStyleSet {
     variables?: {
         border?: string;
+
         horizontal?: {
             width?: string;
             margin?: string;
         };
+
         vertical?: {
             height?: string;
             margin?: string;
@@ -82,71 +77,35 @@ interface VsDividerStyleSet {
 }
 ```
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
-    <!-- variables를 사용한 CSS 변수 스타일링 -->
     <vs-divider
         :style-set="{
             variables: {
-                border: '2px solid #333',
+                border: '2px dashed #6200ea',
                 horizontal: {
                     width: '80%',
-                    margin: '1rem 0',
+                    margin: '1rem auto',
                 },
-            },
-        }"
-    />
-
-    <!-- component를 사용한 직접 스타일링 -->
-    <vs-divider
-        :style-set="{
-            component: {
-                opacity: 0.8,
-                boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-            },
-        }"
-    />
-
-    <!-- variables와 component를 함께 사용 -->
-    <vs-divider
-        vertical
-        :style-set="{
-            variables: {
-                border: '1px dashed #e91e63',
-                vertical: {
-                    height: '4rem',
-                    margin: '0 1rem',
-                },
-            },
-            component: {
-                opacity: 0.6,
             },
         }"
     />
 </template>
 ```
 
-## 특징
+## Events
 
-- **다양한 방향 지원**: 가로형과 세로형 구분선 모두 지원
-- **Container Query 반응형**: 컨테이너 크기에 따른 자동 방향 전환
-- **접근성**: 시각적 구분을 위한 의미적 역할 수행
-- **커스터마이징**: CSS 변수와 styleSet을 통한 유연한 스타일 변경
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
-## Container Query 동작
+## Slots
 
-`responsive` 속성이 `true`일 때, 다음과 같이 동작합니다:
+| Slot | Description |
+| ---- | ----------- |
 
-- **768px 초과**: 세로 구분선 유지
-- **768px 이하**: 가로 구분선으로 자동 변환
+## Methods
 
-```css
-/* 반응형 동작 CSS */
-@container (max-width: 768px) {
-    .vs-divider.vs-vertical.vs-divider-responsive {
-        /* 세로 → 가로 구분선으로 변환 */
-    }
-}
-```
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

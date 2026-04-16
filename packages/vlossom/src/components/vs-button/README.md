@@ -1,73 +1,90 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsButton
 
-다양한 스타일과 상태를 지원하는 버튼 컴포넌트입니다. 로딩 상태, 크기 변형, 색상 테마 등을 제공하여 사용자 인터페이스의 일관성을 유지할 수 있습니다.
+A versatile button component supporting multiple visual variants and a built-in loading state.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 버튼
+- Multiple style variants: `primary`, `outline`, `ghost`, `circle`
+- Built-in loading state with an inline `VsLoading` spinner
+- Five size options: `xs`, `sm`, `md` (default), `lg`, `xl`
+- Responsive mode that stretches the button to fill its container
+- Accessible focus management — removes focus automatically when `loading` is activated
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-button>기본 버튼</vs-button>
+    <vs-button @click="handleClick">Click Me</vs-button>
 </template>
 ```
 
-### 다양한 스타일의 버튼
+### Primary
 
 ```html
 <template>
-    <vs-button primary>Primary 버튼</vs-button>
-    <vs-button outline>Outline 버튼</vs-button>
-    <vs-button ghost>Ghost 버튼</vs-button>
-    <vs-button circle>⭕</vs-button>
+    <vs-button primary>Primary Button</vs-button>
 </template>
 ```
 
-### 크기 변형
+### Loading State
 
 ```html
 <template>
-    <vs-button size="xs">XS 버튼</vs-button>
-    <vs-button size="sm">SM 버튼</vs-button>
-    <vs-button>기본 버튼</vs-button>
-    <vs-button size="lg">LG 버튼</vs-button>
-    <vs-button size="xl">XL 버튼</vs-button>
+    <vs-button :loading="isLoading" @click="submit">Submit</vs-button>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const isLoading = ref(false);
+
+async function submit() {
+    isLoading.value = true;
+    await doSomething();
+    isLoading.value = false;
+}
+</script>
+```
+
+### Outline and Ghost
+
+```html
+<template>
+    <vs-button outline>Outline</vs-button>
+    <vs-button ghost>Ghost</vs-button>
 </template>
 ```
 
-### 로딩 상태
+### Sizes
 
 ```html
 <template>
-    <vs-button loading>로딩 버튼</vs-button>
-</template>
-```
-
-### 비활성화 상태
-
-```html
-<template>
-    <vs-button disabled>비활성화된 버튼</vs-button>
+    <vs-button size="xs">XS</vs-button>
+    <vs-button size="sm">SM</vs-button>
+    <vs-button>MD (default)</vs-button>
+    <vs-button size="lg">LG</vs-button>
+    <vs-button size="xl">XL</vs-button>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                                   | Default    | Required | Description                             |
-| ------------- | -------------------------------------- | ---------- | -------- | --------------------------------------- |
-| `colorScheme` | `string`                               | -          | -        | 컴포넌트 색상 테마                      |
-| `styleSet`    | `string \| VsButtonStyleSet`           | -          | -        | 커스텀 스타일 설정 객체                 |
-| `circle`      | `boolean`                              | `false`    | -        | 원형 버튼 스타일 적용                   |
-| `disabled`    | `boolean`                              | `false`    | -        | 버튼 비활성화                           |
-| `ghost`       | `boolean`                              | `false`    | -        | 투명 배경의 고스트 스타일 적용          |
-| `loading`     | `boolean`                              | `false`    | -        | 로딩 상태 표시                          |
-| `outline`     | `boolean`                              | `false`    | -        | 아웃라인 스타일 적용                    |
-| `primary`     | `boolean`                              | `false`    | -        | 주요 액션을 위한 프라이머리 스타일 적용 |
-| `responsive`  | `boolean`                              | `false`    | -        | 반응형 스타일 적용                      |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | -          | -        | 버튼 크기                               |
-| `type`        | `'button' \| 'submit' \| 'reset'`      | `'button'` | -        | HTML button 요소의 type 속성            |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsButtonStyleSet` | | | Custom style set |
+| `circle` | `boolean` | `false` | | Renders the button as a circle |
+| `disabled` | `boolean` | `false` | | Disables the button |
+| `ghost` | `boolean` | `false` | | Applies ghost (transparent background) style |
+| `loading` | `boolean` | `false` | | Shows a loading spinner and disables interaction |
+| `outline` | `boolean` | `false` | | Applies outlined style |
+| `primary` | `boolean` | `false` | | Applies primary color scheme |
+| `responsive` | `boolean` | `false` | | Stretches button to fill container width |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Button size |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type attribute |
 
 ## Types
 
@@ -82,46 +99,43 @@ interface VsButtonStyleSet {
 ```
 
 > [!NOTE]
->
-> `loading`은 [VsLoadingStyleSet](../vs-loading/README.md#types)을 사용합니다.
+> `loading` uses `VsLoadingStyleSet`. See the [VsLoading documentation](../vs-loading/README.md) for details.
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
     <vs-button
         :style-set="{
             variables: {
-                padding: '0 2rem',
+                padding: '0.5rem 2rem',
             },
             component: {
-                backgroundColor: '#e188e5',
-                border: '2px solid #e188e5',
-                borderRadius: '12px',
-                color: '#fff',
-                height: '4rem',
+                borderRadius: '2rem',
+                fontWeight: 'bold',
             },
             loading: {
-                component: {
-                    width: '50%',
-                    height: '70%',
-                },
+                component: { width: '25%', height: '50%' },
             },
         }"
     >
-        커스텀 버튼
+        Custom Button
     </vs-button>
 </template>
 ```
 
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `default` | 버튼 내부에 표시할 콘텐츠 |
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Button label content |
 
-## 특징
+## Methods
 
-- **다양한 스타일 지원**: `primary`, `outline`, `ghost`, `circle` 등 다양한 스타일 옵션 제공
-- **크기 변형**: `size` 속성을 통한 크기 조절 (`xs`, `sm`, `md`, `lg`, `xl`)
-- **로딩 상태**: `loading` 속성으로 로딩 스피너 표시
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

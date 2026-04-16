@@ -1,43 +1,54 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsSkeleton
 
-콘텐츠가 로딩 중일 때 보여주는 스켈레톤 UI 컴포넌트입니다. 부드러운 깜빡임 애니메이션으로 사용자에게 로딩 상태를 시각적으로 전달합니다.
+A skeleton loading placeholder component that displays an animated background while content is loading.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 스켈레톤
+- Animated blinking background to indicate loading state
+- Supports default slot content centered over the skeleton
+- Customizable background, content area, and root element via `CSSProperties`
+- Color scheme support for consistent theming
+
+## Basic Usage
 
 ```html
 <template>
-    <div class="w-[200px] h-[100px]">
-        <vs-skeleton />
-    </div>
+    <vs-skeleton style="width: 200px; height: 200px; border-radius: 50%;" />
 </template>
 ```
 
-### 텍스트가 있는 스켈레톤
+### With Content Slot
 
 ```html
 <template>
-    <div class="w-[200px] h-[100px]">
-        <vs-skeleton>Loading...</vs-skeleton>
-    </div>
+    <vs-skeleton style="width: 100%; height: 4rem;">
+        <span>Loading...</span>
+    </vs-skeleton>
+</template>
+```
+
+### Custom Size and Shape
+
+```html
+<template>
+    <vs-skeleton
+        :style-set="{
+            component: { width: '150px', height: '150px', borderRadius: '50%' },
+        }"
+    />
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                           | Default | Required | Description             |
-| ------------- | ------------------------------ | ------- | -------- | ----------------------- |
-| `colorScheme` | `ColorScheme`                  | -       | -        | 컴포넌트 색상 테마      |
-| `styleSet`    | `string \| VsSkeletonStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
-
-## Slots
-
-| Slot      | Description                                     |
-| --------- | ----------------------------------------------- |
-| `default` | 스켈레톤 위에 표시할 텍스트나 콘텐츠 (선택사항) |
+| Prop          | Type                           | Default | Required | Description                          |
+| ------------- | ------------------------------ | ------- | -------- | ------------------------------------ |
+| `colorScheme` | `string`                       | -       | -        | Color scheme for the component       |
+| `styleSet`    | `string \| VsSkeletonStyleSet`  | -       | -        | Custom style set for the component   |
 
 ## Types
 
@@ -49,33 +60,34 @@ interface VsSkeletonStyleSet {
 }
 ```
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
-    <div class="w-[200px] h-[100px]">
-        <vs-skeleton
-            :style-set="{
-                component: {
-                    borderRadius: '12px',
-                },
-                background: {
-                    backgroundColor: '#e0e0e0',
-                },
-                content: {
-                    color: '#999999',
-                },
-            }"
-        >
-            Loading...
-        </vs-skeleton>
-    </div>
+    <vs-skeleton
+        :style-set="{
+            component: { width: '100%', height: '2rem', borderRadius: '0.5rem' },
+            background: { backgroundColor: '#e0e0e0' },
+            content: { color: '#999' },
+        }"
+    >
+        Loading...
+    </vs-skeleton>
 </template>
 ```
 
-## 특징
+## Events
 
-- **부드러운 애니메이션**: 1초 주기의 깜빡임 애니메이션으로 로딩 상태 표현
-- **반응형 크기**: 부모 컨테이너의 크기에 맞춰 자동 조절 (기본 100%)
-- **유연한 콘텐츠**: slot을 통해 로딩 텍스트나 아이콘 표시 가능
-- **커스터마이징**: styleSet을 통한 세밀한 스타일 제어
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot      | Description                                          |
+| --------- | ---------------------------------------------------- |
+| `default` | Content displayed centered over the skeleton background |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

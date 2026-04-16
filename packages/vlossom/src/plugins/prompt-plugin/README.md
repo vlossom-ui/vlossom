@@ -1,104 +1,107 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # Prompt Plugin
 
-Prompt Plugin은 모달 기반의 입력 다이얼로그를 손쉽게 띄우고 사용자가 입력한 값을 `Promise`로 돌려받을 수 있도록 도와주는 플러그인입니다. 내부적으로 `modal-plugin`과 `VsInput` 컴포넌트를 활용하여 입력 검증까지 한 번에 처리합니다.
+**Available Version**: 2.0.0+
 
-## 사용 방법
+Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `Promise` that resolves to the entered value on confirmation, or `null` on cancellation.
 
-Prompt 플러그인은 `useVlossom()` 훅을 통해 접근할 수 있습니다.
+## Feature
 
-```ts
-import { useVlossom } from '@/framework';
+- Opens a modal overlay with custom string or Vue component content
+- Renders a `VsInput` field with configurable input props
+- Returns the input value on OK (or Enter key) and `null` on Cancel (or Escape key)
+- Validates input before resolving — if validation fails, the modal stays open
+- Supports custom button text, button order swap, gap and alignment
+- Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
-const $vs = useVlossom();
-const value = await $vs.prompt.open('이름을 입력해주세요.');
-```
+## Basic Usage
 
-## API
+Inject `$vsPrompt` in your component and call `open`:
 
-### open(content, options?)
-
-입력 다이얼로그를 표시하고 사용자가 제출한 값을 반환합니다.
-
-**파라미터**
-
-- `content`: `string | Component` – 다이얼로그 본문에 표시할 내용
-- `options`: `PromptModalOptions` – 입력 필드와 버튼, 스타일을 제어하는 옵션 (선택)
-
-**반환값**
-
-- `Promise<VsInputValueType | null>` – 확인 버튼을 누르면 입력 값, 취소 또는 닫힘 시 `null`
-
-**예시**
-
-```ts
-const result = await $vs.prompt.open('팀 이름을 입력해주세요.', {
-    inputPlaceholder: '예: Vlossom',
-    inputLabel: '팀 이름',
-    inputRules: [(value) => (value ? '' : '팀 이름은 필수입니다.')],
-    buttonOkText: '저장',
-    buttonCancelText: '나중에',
-    colorScheme: 'indigo',
-});
-
-if (result !== null) {
-    // 입력 값을 활용하는 로직
-}
-```
-
-## Types
-
-```ts
-interface PromptModalOptions extends ModalOptions {
-    styleSet?: VsPromptStyleSet;
-    colorScheme?: ColorScheme;
-
-    inputType?: VsInputType;
-    inputPlaceholder?: string;
-    inputRules?: Rule<VsInputValueType>[];
-    inputInitialValue?: VsInputValueType;
-    inputLabel?: string;
-    inputMessages?: Message<VsInputValueType>[];
-
-    buttonOkText?: string;
-    buttonCancelText?: string;
-    swapButtons?: boolean;
-}
-```
-
-`styleSet`을 활용하면 입력 필드와 버튼의 간격, 정렬, 색상 등을 세밀하게 다듬을 수 있습니다.
-
-## 사용 예시
-
-```vue
+```html
 <template>
-    <vs-button @click="handlePrompt">프로젝트 생성</vs-button>
+    <vs-button @click="askName">Ask for Name</vs-button>
 </template>
 
-<script setup lang="ts">
-import { useVlossom } from '@/framework';
+<script setup>
+import { inject } from 'vue';
 
-const $vs = useVlossom();
+const $vsPrompt = inject('$vsPrompt');
 
-async function handlePrompt() {
-    const projectName = await $vs.prompt.open('새 프로젝트 이름을 입력해주세요.', {
-        inputPlaceholder: '프로젝트 이름',
-        inputLabel: '프로젝트 이름',
-        inputRules: [
-            (value) => (value ? '' : '프로젝트 이름은 필수입니다.'),
-            (value) => {
-                if (typeof value === 'string' && value.trim().length >= 2) {
-                    return '';
-                }
-                return '두 글자 이상 입력해주세요.';
-            },
-        ],
-        buttonOkText: '생성',
-        buttonCancelText: '취소',
-    });
-
-    if (projectName) {
-        console.log('생성할 프로젝트:', projectName);
+async function askName() {
+    const name = await $vsPrompt.open('Please enter your name:');
+    if (name !== null) {
+        console.log('Name entered:', name);
     }
 }
 </script>
 ```
+
+### With Input Configuration and Initial Value
+
+```html
+<script setup>
+import { inject } from 'vue';
+
+const $vsPrompt = inject('$vsPrompt');
+
+async function askAge() {
+    const age = await $vsPrompt.open('Enter your age:', {
+        okText: 'Submit',
+        cancelText: 'Skip',
+        input: {
+            type: 'number',
+            placeholder: 'e.g. 25',
+            initialValue: 18,
+        },
+        styleSet: {
+            buttonsAlign: 'right',
+        },
+    });
+    console.log('Age:', age);
+}
+</script>
+```
+
+## Methods
+
+| Method | Parameters                                                                      | Description                                                                                                                                                 |
+| ------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open` | `content: string \| Component, options?: PromptModalOptions` | Opens a prompt modal with the given content and options. Returns `Promise<string \| number \| null>` resolving to the input value on OK or `null` on Cancel. |
+
+## Types
+
+```typescript
+interface VsPromptStyleSet extends VsModalNodeStyleSet {
+    input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
+    buttonsGap?: string | number;
+    buttonsAlign?: Alignment;
+    okButton?: Omit<VsButtonStyleSet, 'loading'>;
+    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+}
+
+interface PromptModalOptions extends ModalOptions {
+    styleSet?: VsPromptStyleSet;
+    colorScheme?: ColorScheme;
+    input?: PropsOf<VsComponent.VsInput> & { initialValue?: VsInputValueType };
+    okText?: string;
+    cancelText?: string;
+    swapButtons?: boolean;
+}
+
+interface PromptPlugin {
+    open(content: string | Component, options?: PromptModalOptions): Promise<VsInputValueType>;
+}
+```
+
+> [!NOTE]
+> `VsPromptStyleSet` extends `VsModalNodeStyleSet`. Refer to the [VsModal component docs](../../components/vs-modal/README.md) for available modal style options.
+> `PromptModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md).
+> `input` accepts any props valid for `VsInput` in addition to an `initialValue`.
+
+## Caution
+
+- The prompt plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
+- If the input fails validation on OK/Enter, the modal remains open and the promise is not yet resolved.
+- Pressing Escape or clicking outside the modal (if `dimClose` is enabled) resolves the promise with `null` and clears the input.

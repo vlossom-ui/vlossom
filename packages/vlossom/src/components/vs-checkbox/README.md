@@ -1,119 +1,147 @@
-# VsCheckbox & VsCheckboxSet
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
-체크박스 입력을 위한 컴포넌트입니다. 단일 체크박스(`VsCheckbox`)와 여러 옵션을 선택할 수 있는 체크박스 그룹(`VsCheckboxSet`)을 제공합니다.
+# VsCheckbox
+
+A checkbox form input component supporting single and multiple selection modes, with an optional label and validation.
 
 **Available Version**: 2.0.0+
 
----
+## Feature
 
-## VsCheckbox
+- Single checkbox or group selection via `VsCheckboxSet`
+- `v-model` binding with support for custom `trueValue` / `falseValue`
+- Multiple selection mode with array-based `v-model`
+- Indeterminate state support
+- Built-in validation with custom rules and required checks
+- `beforeChange` hook for async confirmation before value changes
 
-단일 체크박스 컴포넌트입니다.
-
-### 기본 사용법
-
-#### 단일 체크박스
-
-```html
-<template>
-    <vs-checkbox v-model="checked" check-label="동의합니다" />
-</template>
-```
-
-#### 커스텀 값 사용
+## Basic Usage
 
 ```html
 <template>
-    <vs-checkbox
-        v-model="agreement"
-        check-label="동의"
-        true-value="yes"
-        false-value="no"
-    />
+    <vs-checkbox v-model="checked" check-label="Accept Terms" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
-const agreement = ref('no');
-</script>
-```
-
-#### 중간 상태 (Indeterminate)
-
-```html
-<template>
-    <vs-checkbox indeterminate check-label="부분 선택됨" />
-</template>
-```
-
-#### 배열 모드로 사용
-
-```html
-<template>
-    <vs-checkbox
-        v-model="selectedTags"
-        check-label="태그 1"
-        :true-value="'tag1'"
-        multiple
-    />
-    <vs-checkbox
-        v-model="selectedTags"
-        check-label="태그 2"
-        :true-value="'tag2'"
-        multiple
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const selectedTags = ref([]);
-</script>
-```
-
-#### 변경 전 확인 (BeforeChange)
-
-```html
-<template>
-    <vs-checkbox
-        v-model="checked"
-        check-label="동의합니다"
-        :before-change="confirmBeforeChange"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-
 const checked = ref(false);
-
-const confirmBeforeChange = async (from, to, optionValue) => {
-    // from: 변경 전 값, to: 변경 후 값, optionValue: trueValue
-    return confirm('정말 동의하시나요?');
-};
 </script>
 ```
 
-### Props
+### Checkbox Group (VsCheckboxSet)
 
-| Prop            | Type                           | Default | Required | Description                                                                           |
-| --------------- | ------------------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                       | -       | -        | 컴포넌트 색상 테마                                                                    |
-| `styleSet`      | `string \| VsCheckboxStyleSet` | -       | -        | 커스텀 스타일 설정 객체                                                               |
-| `checked`       | `boolean`                      | `false` | -        | 초기 선택 상태                                                                        |
-| `checkLabel`    | `string`                       | -       | -        | 체크박스 옆 표시할 라벨                                                               |
-| `indeterminate` | `boolean`                      | `false` | -        | 중간 상태 (부분 선택) 표시                                                            |
-| `multiple`      | `boolean`                      | `false` | -        | 배열 모드 활성화 (v-model이 배열로 동작)                                              |
-| `trueValue`     | `any`                          | `true`  | -        | 체크 시 v-model에 저장될 값                                                           |
-| `falseValue`    | `any`                          | `false` | -        | 언체크 시 v-model에 저장될 값                                                         |
-| `beforeChange`  | `Function`                     | -       | -        | 상태 변경 전 실행할 비동기 함수 (from, to, optionValue 인자 전달, false 반환 시 취소) |
+```html
+<template>
+    <vs-checkbox-set
+        v-model="selectedFruits"
+        label="Fruits"
+        :options="['Apple', 'Banana', 'Cherry']"
+    />
+</template>
 
-또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
+<script setup lang="ts">
+import { ref } from 'vue';
+const selectedFruits = ref([]);
+</script>
+```
 
-### Types
+### With Validation
+
+```html
+<template>
+    <vs-checkbox v-model="agreed" check-label="I agree" required />
+</template>
+```
+
+### Before Change Hook
+
+```html
+<template>
+    <vs-checkbox
+        v-model="value"
+        check-label="Confirm"
+        :before-change="confirmChange"
+    />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const value = ref(false);
+
+async function confirmChange(from, to) {
+    return window.confirm(`Change from ${from} to ${to}?`);
+}
+</script>
+```
+
+## Props
+
+### VsCheckbox Props
+
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsCheckboxStyleSet` | | | Custom style set |
+| `width` | `string \| number \| Breakpoints` | | | Width of the component |
+| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
+| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | Async hook called before value change |
+| `checked` | `boolean` | `false` | | Initial checked state |
+| `checkLabel` | `string` | `''` | | Label displayed next to the checkbox |
+| `disabled` | `boolean` | `false` | | Disables the checkbox |
+| `hidden` | `boolean` | `false` | | Hides the component |
+| `id` | `string` | `''` | | HTML id attribute |
+| `indeterminate` | `boolean` | `false` | | Shows indeterminate state |
+| `label` | `string` | `''` | | Field label |
+| `messages` | `Message[]` | `[]` | | Validation messages |
+| `modelValue` | `any` | `false` | | v-model value |
+| `multiple` | `boolean` | `false` | | Enables multiple selection mode |
+| `name` | `string` | `''` | | HTML name attribute |
+| `noDefaultRules` | `boolean` | `false` | | Disables default validation rules |
+| `noLabel` | `boolean` | `false` | | Hides the label |
+| `noMessages` | `boolean` | `false` | | Hides validation messages |
+| `readonly` | `boolean` | `false` | | Makes the checkbox read-only |
+| `required` | `boolean` | `false` | | Marks field as required |
+| `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `state` | `UIState` | `'idle'` | | Validation state |
+| `trueValue` | `any` | `true` | | Value when checked |
+| `falseValue` | `any` | `false` | | Value when unchecked |
+
+### VsCheckboxSet Props
+
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsCheckboxSetStyleSet` | | | Custom style set |
+| `width` | `string \| number \| Breakpoints` | | | Width of the component |
+| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
+| `beforeChange` | `(from, to, optionValue) => Promise<boolean> \| null` | `null` | | Async hook called before value change |
+| `disabled` | `boolean` | `false` | | Disables all checkboxes in the set |
+| `hidden` | `boolean` | `false` | | Hides the component |
+| `id` | `string` | `''` | | HTML id attribute |
+| `label` | `string` | `''` | | Field label |
+| `max` | `number \| null` | `null` | | Maximum number of selectable items |
+| `messages` | `Message[]` | `[]` | | Validation messages |
+| `min` | `number \| null` | `null` | | Minimum number of selectable items |
+| `modelValue` | `any[]` | `[]` | | v-model binding (array of selected values) |
+| `name` | `string` | `''` | | HTML name attribute |
+| `noDefaultRules` | `boolean` | `false` | | Disables default validation rules |
+| `noLabel` | `boolean` | `false` | | Hides the label |
+| `noMessages` | `boolean` | `false` | | Hides validation messages |
+| `options` | `any[]` | `[]` | | Array of options to display as checkboxes |
+| `optionLabel` | `string` | `'label'` | | Key to use as the label for each option |
+| `optionValue` | `string` | `'value'` | | Key to use as the value for each option |
+| `readonly` | `boolean` | `false` | | Makes all checkboxes read-only |
+| `required` | `boolean` | `false` | | Marks field as required |
+| `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `state` | `UIState` | `'idle'` | | Validation state |
+| `vertical` | `boolean` | `false` | | Arranges checkboxes vertically |
+
+## Types
 
 ```typescript
 interface VsCheckboxStyleSet {
     variables?: {
+        checkboxCheckedColor?: string;
         checkboxColor?: string;
         checkboxSize?: string;
     };
@@ -121,121 +149,7 @@ interface VsCheckboxStyleSet {
     checkboxLabel?: CSSProperties;
     wrapper?: VsInputWrapperStyleSet;
 }
-```
 
-> [!NOTE]
->
-> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
-
-### Slots
-
-| Slot          | Description                        |
-| ------------- | ---------------------------------- |
-| `default`     | 체크박스 외부 래퍼에 표시할 콘텐츠 |
-| `label`       | 입력 래퍼의 라벨 영역              |
-| `check-label` | 체크박스 옆에 표시할 라벨          |
-| `messages`    | 하단 메시지 영역                   |
-
-### Events
-
-| Event               | Type                    | Description                                   |
-| ------------------- | ----------------------- | --------------------------------------------- |
-| `update:modelValue` | `any \| any[]`          | v-model 값 변경 시                            |
-| `change`            | `any`                   | 체크 상태 변경 시                             |
-| `toggle`            | `(boolean, MouseEvent)` | 체크 상태 토글 시 (토글 후 checked 상태 전달) |
-| `focus`             | `FocusEvent`            | 체크박스 포커스 시                            |
-| `blur`              | `FocusEvent`            | 체크박스 블러 시                              |
-
----
-
-## VsCheckboxSet
-
-여러 옵션을 선택할 수 있는 체크박스 그룹 컴포넌트입니다.
-
-### 기본 사용법
-
-#### 체크박스 그룹
-
-```html
-<template>
-    <vs-checkbox-set
-        v-model="selectedOptions"
-        :options="options"
-        option-label="label"
-        option-value="value"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const options = [
-    { label: '옵션 1', value: 'opt1' },
-    { label: '옵션 2', value: 'opt2' },
-];
-const selectedOptions = ref([]);
-</script>
-```
-
-#### 수직 레이아웃
-
-```html
-<template>
-    <vs-checkbox-set v-model="selected" :options="options" vertical />
-</template>
-```
-
-#### 최소/최대 선택 개수 제한
-
-```html
-<template>
-    <vs-checkbox-set v-model="selected" :options="options" :min="1" :max="3" />
-</template>
-```
-
-#### 변경 전 확인 (BeforeChange)
-
-```html
-<template>
-    <vs-checkbox-set
-        v-model="selected"
-        :options="options"
-        :before-change="confirmBeforeChange"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-
-const options = [
-    { label: '옵션 1', value: 'opt1' },
-    { label: '옵션 2', value: 'opt2' },
-];
-const selected = ref([]);
-
-const confirmBeforeChange = async (from, to, optionValue) => {
-    // from: 변경 전 배열, to: 변경 후 배열, optionValue: 선택/해제된 옵션 값
-    return confirm(`선택을 변경하시겠습니까?`);
-};
-</script>
-```
-
-### Props
-
-| Prop           | Type               | Default | Required | Description                                                                           |
-| -------------- | ------------------ | ------- | -------- | ------------------------------------------------------------------------------------- |
-| `options`      | `any[]`            | -       | ✅       | 선택 가능한 옵션 배열                                                                 |
-| `optionLabel`  | `string`           | -       | -        | 옵션 객체에서 라벨로 사용할 속성                                                      |
-| `optionValue`  | `string`           | -       | -        | 옵션 객체에서 값으로 사용할 속성                                                      |
-| `vertical`     | `boolean`          | `false` | -        | 수직 레이아웃 적용                                                                    |
-| `min`          | `number \| string` | `0`     | -        | 최소 선택 개수                                                                        |
-| `max`          | `number \| string` | -       | -        | 최대 선택 개수                                                                        |
-| `beforeChange` | `Function`         | -       | -        | 상태 변경 전 실행할 비동기 함수 (from, to, optionValue 인자 전달, false 반환 시 취소) |
-
-또한 일반적인 Input Props (`id`, `label`, `required`, `disabled`, `readonly`, `messages`, `rules` 등)도 지원합니다.
-
-### Types
-
-```typescript
 interface VsCheckboxSetStyleSet {
     component?: CSSProperties;
     checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
@@ -244,37 +158,57 @@ interface VsCheckboxSetStyleSet {
 ```
 
 > [!NOTE]
->
-> - `component`는 체크박스 세트 컨테이너 스타일입니다.
-> - `checkbox`는 [VsCheckboxStyleSet](#types)을 사용합니다.
-> - `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+> `wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper documentation](../vs-input-wrapper/README.md) for details.
 
-### Slots
+### StyleSet Example
 
-| Slot          | Description                                  |
-| ------------- | -------------------------------------------- |
-| `default`     | 체크박스 세트 외부 래퍼에 표시할 콘텐츠      |
-| `label`       | 입력 래퍼의 라벨 영역                        |
-| `check-label` | 각 체크박스 옆에 표시할 라벨 (스코프된 슬롯) |
-| `messages`    | 하단 메시지 영역                             |
+```html
+<template>
+    <vs-checkbox
+        v-model="checked"
+        check-label="Custom Checkbox"
+        :style-set="{
+            variables: {
+                checkboxSize: '1.5rem',
+                checkboxColor: '#e0e0e0',
+                checkboxCheckedColor: '#6200ea',
+            },
+            checkboxLabel: {
+                fontSize: '1rem',
+                fontWeight: '500',
+            },
+        }"
+    />
+</template>
+```
 
-### Events
+## Events
 
-| Event               | Type                   | Description                        |
-| ------------------- | ---------------------- | ---------------------------------- |
-| `update:modelValue` | `any[]`                | v-model 값 변경 시                 |
-| `change`            | `any`                  | 체크 상태 변경 시                  |
-| `focus`             | `(option, FocusEvent)` | 체크박스 포커스 시 (옵션과 이벤트) |
-| `blur`              | `(option, FocusEvent)` | 체크박스 블러 시 (옵션과 이벤트)   |
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+| `update:modelValue` | `any` | Emitted when the value changes |
+| `update:changed` | `boolean` | Emitted when changed state updates |
+| `update:valid` | `boolean` | Emitted when validation state updates |
+| `change` | `any` | Emitted on value change |
+| `focus` | `FocusEvent` | Emitted when the checkbox gains focus |
+| `blur` | `FocusEvent` | Emitted when the checkbox loses focus |
+| `toggle` | `boolean, MouseEvent` | Emitted after toggling; payload is the new checked state and the mouse event |
 
----
+## Slots
 
-## 특징
+| Slot | Description |
+| ---- | ----------- |
+| `default` | — |
+| `label` | Custom label content |
+| `check-label` | Custom content next to the checkbox |
+| `messages` | Custom validation message content |
 
-- **단일 및 그룹 지원**: 단일 체크박스와 여러 옵션 중복 선택 지원
-- **v-model 지원**: 양방향 데이터 바인딩
-- **유연한 옵션 구성**: 객체 배열에서 라벨/값을 자동으로 추출
-- **선택 개수 제한**: min/max props로 선택 가능한 항목 수 제한
-- **수직/수평 레이아웃**: vertical prop으로 세로/가로 배치 전환
-- **중간 상태**: indeterminate prop으로 부분 선택 상태 표현
-- **커스터마이징**: styleSet prop으로 세밀한 스타일 조정 가능
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `clear` | — | Clears the checkbox value |
+| `validate` | — | Triggers validation and returns the result |
+| `focus` | — | Focuses the checkbox input element |
+| `blur` | — | Blurs the checkbox input element |
+| `toggle` | — | Toggles the checked state |

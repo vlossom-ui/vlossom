@@ -1,69 +1,83 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsFocusTrap
 
-포커스를 특정 영역에 가둬두는 포커스 트랩 컴포넌트입니다. 모달, 팝업, 드롭다운 등에서 키보드 접근성을 향상시키는 데 사용됩니다.
+A utility component that traps keyboard focus within its single child element, ensuring accessible modal and overlay interactions.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 포커스 트랩
+- Traps `Tab` and `Shift+Tab` key navigation within the child element
+- Automatically focuses the trap on mount and restores the previously focused element on unmount
+- Can be disabled at runtime via the `disabled` prop
+- Exposes `focus` and `blur` methods for programmatic control
+- Requires exactly one root child element
+
+## Basic Usage
 
 ```html
 <template>
     <vs-focus-trap>
         <div>
-            <!-- tab 이벤트가 트리거 되면 접근 하는 첫번째 요소 -->
-            <input type="text" placeholder="첫 번째 입력" />
-            <!-- tab 이벤트가 트리거 되면 접근 하는 두번째 요소 -->
-            <button>버튼</button>
-            <!-- tab 이벤트가 트리거 되면 접근 하는 세번째 요소 -->
-            <input type="text" placeholder="두 번째 입력" />
+            <input type="text" placeholder="First field" />
+            <input type="text" placeholder="Second field" />
+            <button>Submit</button>
         </div>
     </vs-focus-trap>
 </template>
 ```
 
-### 포커스 잠금 비활성화
+### Conditionally Disabled
 
 ```html
 <template>
-    <vs-focus-trap disabled>
-        <div>
-            <input type="text" placeholder="내부 첫번째 포커스 요소" />
-            <!-- 내부 마지막 포커스 요소에서 tab 이벤트가 트리거 되면 내부 첫번째 포커스 요소 아니라 외부 포커스 가능한 요소에 포커스 된다 -->
-            <button>내부 마지막 포커스 요소</button>
+    <vs-focus-trap :disabled="!isModalOpen">
+        <div class="modal-content">
+            <button>Action</button>
+            <button @click="isModalOpen = false">Close</button>
         </div>
     </vs-focus-trap>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const isModalOpen = ref(true);
+</script>
 ```
 
 ## Props
 
-| Prop       | Type      | Default | Required | Description            |
-| ---------- | --------- | ------- | -------- | ---------------------- |
-| `disabled` | `boolean` | `false` | -        | 포커스 트랩 비활성화 여부 |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `disabled` | `boolean` | `false` | | Disable focus trapping without unmounting |
+
+## Types
+
+VsFocusTrap has no `StyleSet` interface.
+
+### StyleSet Example
+
+VsFocusTrap does not use a `styleSet` prop.
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description                                                                       |
-| --------- | --------------------------------------------------------------------------------- |
-| `default` | 포커스 트랩이 적용될 단일 자식 요소, _"오로지"_ 하나의 자식 요소를 가저야 합니다. |
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Must contain exactly one child element that will act as the focus trap boundary |
 
 ## Methods
 
-| Method  | Parameters | Description                                        |
-| ------- | ---------- | -------------------------------------------------- |
-| `focus` | -          | 포커스 트랩을 활성화하고 포커스 설정               |
-| `blur`  | -          | 포커스 트랩을 비활성화하고 이전 요소로 포커스 복귀 |
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+| `focus` | - | Move focus into the focus trap anchor |
+| `blur` | - | Return focus to the element that was focused before the trap was activated |
 
-## 사용 시 주의사항
+## Caution
 
-- **단일 자식 요소**: 포커스 트랩은 정확히 하나의 자식 요소만을 포함해야 합니다.
-- **포커스 가능한 요소**: 내부에 포커스 가능한 요소(`button`, `input`, `a`, `[tabindex]` 등)가 있어야 정상적으로 작동합니다.
-- **키보드 순환**: Tab과 Shift+Tab으로 포커스가 내부에서만 순환됩니다. `disabled`이 `true`인 경우 키보드 순환이 비활성화 됩니다.
-
-## 특징
-
-- **자동 포커스 관리**: 컴포넌트 마운트 시 자동으로 포커스를 설정하고, 언마운트 시 이전 포커스를 복원합니다.
-- **키보드 순환**: Tab/Shift+Tab으로 포커스가 컴포넌트 내부에서만 순환됩니다.
-- **유연한 포커스 제어**: `disabled` 속성으로 포커스 잠금을 선택적으로 비활성화할 수 있습니다.
+`VsFocusTrap` requires its default slot to contain **exactly one** root child element. Providing zero or multiple root elements will log an error and the trap will not function correctly.

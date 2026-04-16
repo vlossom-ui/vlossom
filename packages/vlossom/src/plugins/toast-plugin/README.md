@@ -1,102 +1,85 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # Toast Plugin
 
-Toast 메시지를 표시하기 위한 플러그인입니다.
+**Available Version**: 2.0.0+
 
-## 사용 방법
+Displays brief, non-blocking notification toasts. Supports multiple severity levels (info, success, warning, error), configurable placement, and auto-close behavior.
 
-Toast 플러그인은 `useVlossom()`을 통해 접근할 수 있습니다.
+## Feature
 
-```typescript
-import { useVlossom } from '@/framework';
+- Shows transient notifications with string or Vue component content
+- Built-in severity methods: `info`, `success`, `warning`, `error` — each with a preset color scheme
+- Configurable placement (top/bottom), alignment (left/center/right), and auto-close timeout
+- `warning` and `error` also emit `console.warn` / `console.error`
+- Optional custom logger callback for external logging
+- Supports removing a specific toast by ID or clearing all toasts in a container
 
-const $vs = useVlossom();
-$vs.toast.show('토스트 메시지');
+## Basic Usage
+
+Inject `$vsToast` in your component and call a method:
+
+```html
+<template>
+    <div class="flex gap-2">
+        <vs-button @click="showInfo">Info</vs-button>
+        <vs-button @click="showSuccess">Success</vs-button>
+        <vs-button @click="showWarning">Warning</vs-button>
+        <vs-button @click="showError">Error</vs-button>
+    </div>
+</template>
+
+<script setup>
+import { inject } from 'vue';
+
+const $vsToast = inject('$vsToast');
+
+function showInfo() {
+    $vsToast.info('This is an info message.');
+}
+function showSuccess() {
+    $vsToast.success('Operation completed successfully!');
+}
+function showWarning() {
+    $vsToast.warning('Please check your input.');
+}
+function showError() {
+    $vsToast.error('Something went wrong.');
+}
+</script>
 ```
 
-## API
+### Custom Options
 
-### show(content, options?)
+```html
+<script setup>
+import { inject } from 'vue';
 
-토스트를 표시합니다.
+const $vsToast = inject('$vsToast');
 
-**파라미터:**
-
-- `content`: `string | Component` - 표시할 내용 (문자열 또는 Vue 컴포넌트)
-- `options`: `ToastOptions` - 토스트 옵션 (선택)
-
-**예시:**
-
-```typescript
-// 문자열 토스트
-$vs.toast.show('안녕하세요');
-
-// 컴포넌트 토스트
-$vs.toast.show(MyComponent, { placement: 'middle', align: 'center' });
-
-// 컨테이너 지정
-$vs.toast.show('메시지', { container: '#my-container' });
+function showCustomToast() {
+    $vsToast.show('Custom toast message', {
+        placement: 'top',
+        align: 'right',
+        autoClose: true,
+        timeout: 3000,
+        primary: true,
+    });
+}
+</script>
 ```
 
-### info(content, options?)
+## Methods
 
-정보 토스트를 표시합니다 (cyan 색상).
-
-```typescript
-$vs.toast.info('정보 메시지');
-```
-
-### success(content, options?)
-
-성공 토스트를 표시합니다 (green 색상).
-
-```typescript
-$vs.toast.success('성공 메시지');
-```
-
-### warning(content, options?)
-
-경고 토스트를 표시합니다 (yellow 색상).
-
-```typescript
-$vs.toast.warning('경고 메시지');
-```
-
-### error(content, options?)
-
-에러 토스트를 표시합니다 (red 색상).
-
-```typescript
-$vs.toast.error('에러 메시지');
-```
-
-### remove(container, id)
-
-특정 토스트를 제거합니다.
-
-**파라미터:**
-
-- `container`: `string` - 컨테이너 선택자
-- `id`: `string` - 토스트 ID
-
-```typescript
-$vs.toast.remove('body', 'toast-id-123');
-```
-
-### clear(container?)
-
-컨테이너의 모든 토스트를 제거합니다.
-
-**파라미터:**
-
-- `container`: `string` - 컨테이너 선택자 (기본값: `'body'`)
-
-```typescript
-// body의 모든 토스트 제거
-$vs.toast.clear();
-
-// 특정 컨테이너의 모든 토스트 제거
-$vs.toast.clear('#my-container');
-```
+| Method    | Parameters                                                                 | Description                                                                                        |
+| --------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `show`    | `message: string \| Component, options?: ToastOptions`      | Shows a toast with the given content and options.                                                  |
+| `info`    | `message: string \| Component, options?: ToastOptions`      | Shows a toast with the `cyan` color scheme.                                                        |
+| `success` | `message: string \| Component, options?: ToastOptions`      | Shows a toast with the `green` color scheme.                                                       |
+| `warning` | `message: string \| Component, options?: ToastOptions`      | Shows a toast with the `yellow` color scheme and calls `console.warn`.                             |
+| `error`   | `message: string \| Component, options?: ToastOptions`      | Shows a toast with the `red` color scheme and calls `console.error`.                               |
+| `remove`  | `container: string, id: string`                                            | Removes the toast with the specified ID from the given container.                                  |
+| `clear`   | `container?: string`                                                       | Removes all toasts from the given container (defaults to `'body'`).                                |
 
 ## Types
 
@@ -107,61 +90,28 @@ interface ToastOptions {
     styleSet?: string | VsToastStyleSet;
     align?: Alignment;
     autoClose?: boolean;
-    placement?: 'top' | 'middle' | 'bottom';
+    placement?: Exclude<Placement, 'left' | 'right'>;
     primary?: boolean;
     timeout?: number;
     logger?: (message: string | Component) => string;
 }
+
+interface ToastPlugin {
+    show(message: string | Component, options?: ToastOptions): void;
+    info(message: string | Component, options?: ToastOptions): void;
+    success(message: string | Component, options?: ToastOptions): void;
+    warning(message: string | Component, options?: ToastOptions): void;
+    error(message: string | Component, options?: ToastOptions): void;
+    remove(container: string, id: string): void;
+    clear(container?: string): void;
+}
 ```
 
-## 사용 예시
+> [!NOTE]
+> `styleSet` accepts a `VsToastStyleSet` object or a pre-registered style set name (string). Refer to the [VsToast component docs](../../components/vs-toast/README.md) for style set details.
 
-```vue
-<template>
-    <div>
-        <vs-button @click="showToast">토스트 표시</vs-button>
-        <vs-button @click="showPrimaryToast">Primary 토스트</vs-button>
-        <vs-button @click="showErrorToast">에러 토스트</vs-button>
-        <vs-button @click="clearToast">토스트 제거</vs-button>
-        <div id="toast-wrapper"></div>
-    </div>
-</template>
+## Caution
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useVlossom } from '@/framework';
-import type { ToastOptions } from '@/plugins';
-
-export default defineComponent({
-    setup() {
-        const $vs = useVlossom();
-
-        function showToast() {
-            $vs.toast.show('토스트 메시지', {
-                placement: 'middle',
-                align: 'center'
-            });
-        }
-
-        function showPrimaryToast() {
-            $vs.toast.show('Primary Toast', { primary: true });
-        }
-
-        function showErrorToast() {
-            $vs.toast.error('에러가 발생했습니다');
-        }
-
-        function clearToast() {
-            $vs.toast.clear();
-        }
-
-        return {
-            showToast,
-            showPrimaryToast,
-            showErrorToast,
-            clearToast,
-        };
-    },
-});
-</script>
-```
+- When `container` is specified, the container element's `position` is automatically set to `relative` if it has no existing position style.
+- The `placement` option does not support `'left'` or `'right'` — only `'top'` and `'bottom'` are valid.
+- `warning` and `error` always call `console.warn` / `console.error` in addition to showing the toast, regardless of other options.
