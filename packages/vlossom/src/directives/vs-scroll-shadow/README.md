@@ -1,65 +1,55 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # v-scroll-shadow
 
-스크롤 가능한 컨테이너에 스크롤 위치에 따라 상단/하단 그림자를 표시하는 디렉티브입니다.
+Automatically adds a scroll shadow indicator to a scrollable element. The shadow visually signals that there is more content to scroll in a given direction.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Basic Usage
+
+Apply `v-scroll-shadow` to any element that has scrollable overflow:
 
 ```html
 <template>
-    <div v-scroll-shadow style="overflow: auto; height: 300px">
-        <div v-for="item in items" :key="item">{{ item }}</div>
+    <div v-scroll-shadow style="height: 200px; overflow: auto;">
+        <!-- scrollable content -->
     </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { scrollShadow } from 'vlossom';
-
-export default defineComponent({
-    directives: {
-        scrollShadow,
-    },
-});
-</script>
 ```
 
-## 조건부 사용
-
-binding value로 활성화 여부를 동적으로 제어할 수 있습니다.
+To conditionally enable or disable the directive, bind a boolean value:
 
 ```html
 <template>
-    <div v-scroll-shadow="isEnabled" style="overflow: auto; height: 300px">
-        ...
+    <div v-scroll-shadow="isEnabled" style="height: 200px; overflow: auto;">
+        <!-- scrollable content -->
     </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+
+const isEnabled = ref(true);
+</script>
 ```
 
 ## Binding
 
-| Binding | Type                   | Default     | Description                                  |
-| ------- | ---------------------- | ----------- | -------------------------------------------- |
-| `value` | `boolean \| undefined` | `undefined` | `false`이면 비활성화, `undefined`이면 활성화 |
+| Binding | Type                   | Default     | Description                                                    |
+| ------- | ---------------------- | ----------- | -------------------------------------------------------------- |
+| `value` | `boolean \| undefined` | `undefined` | When `false`, the directive is deactivated. Otherwise, active. |
 
-## 주의사항
+## Hooks
 
-디렉티브는 반드시 **스크롤이 발생하는 요소** (`overflow: auto` 또는 `overflow: scroll`)에 적용해야 합니다.
-스크롤이 발생하지 않는 요소에 적용하면 경고가 출력됩니다.
+| Hook        | Description                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------- |
+| `mounted`   | Checks if the element is scrollable; activates the scroll shadow if so.                               |
+| `updated`   | Re-evaluates the binding value; activates or deactivates the shadow when the bound value changes.     |
+| `unmounted` | Cleans up by removing the shadow class and restoring the original `container-type` CSS property.      |
 
-```html
-<!-- ✅ 올바른 사용: overflow가 있는 요소에 직접 적용 -->
-<div v-scroll-shadow style="overflow: auto; height: 300px">
-    ...
-</div>
+## Caution
 
-<!-- ❌ 잘못된 사용: 스크롤이 없는 래퍼 요소에 적용 -->
-<div v-scroll-shadow>
-    <div style="overflow: auto; height: 300px">...</div>
-</div>
-```
-
-## 브라우저 지원
-
-그림자 표시는 CSS `@container scroll-state()` 쿼리를 사용하며 **Chrome 128+** 에서 동작합니다.
+- The directive relies on the CSS `scroll-state` container query feature. Make sure the target browsers support this feature.
+- The directive only activates if the element is actually scrollable (i.e., its computed `overflow-x` or `overflow-y` allows scrolling and its content overflows). If the element has no overflow, the directive will silently skip activation.
+- If the element already has a `container-type` style set, the directive appends `scroll-state` to the existing value rather than replacing it, and restores the original value on unmount.

@@ -1,183 +1,109 @@
 # VsInput
 
-다양한 타입과 검증 기능을 지원하는 입력 컴포넌트입니다. text, email, password, number 등 여러 input 타입을 제공하며, 문자열 수정자(modifiers)를 통해 입력값을 자동으로 변환할 수 있습니다.
+A feature-rich text input component with validation, clear button, prepend/append slots, and form integration.
+
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 입력
+- Supports multiple input types: `text`, `email`, `number`, `password`, `search`, `tel`, `url`.
+- Built-in clear button that appears on hover/focus.
+- Form validation with custom rules and built-in `required`, `min`, `max` checks.
+- Prepend and append slot areas for icons or additional content.
+- Responsive layout via `width` and `grid` props.
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-input v-model="value" placeholder="텍스트를 입력하세요" />
+    <vs-input v-model="text" label="Name" placeholder="Enter your name" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const text = ref('');
+</script>
+```
+
+### Input Types
+
+```html
+<template>
+    <vs-input v-model="email" type="email" label="Email" />
+    <vs-input v-model="password" type="password" label="Password" />
+    <vs-input v-model="count" type="number" label="Count" :min="0" :max="100" />
 </template>
 ```
 
-### 라벨과 함께 사용
+### With Prepend and Append
 
 ```html
 <template>
-    <vs-input v-model="name" label="이름" placeholder="이름을 입력하세요" />
-</template>
-```
-
-### 다양한 타입
-
-```html
-<template>
-    <vs-input v-model="email" type="email" label="이메일" placeholder="email@example.com" />
-    <vs-input v-model="password" type="password" label="비밀번호" placeholder="비밀번호 입력" />
-    <vs-input v-model="age" type="number" label="나이" placeholder="나이 입력" />
-    <vs-input v-model="phone" type="tel" label="전화번호" placeholder="010-0000-0000" />
-</template>
-```
-
-### 필수 입력 필드
-
-```html
-<template>
-    <vs-input v-model="email" type="email" label="이메일" placeholder="email@example.com" required />
-</template>
-```
-
-### 문자열 수정자 (Modifiers)
-
-```html
-<template>
-    <!-- 첫 글자만 대문자로 -->
-    <vs-input v-model.capitalize="name" label="이름" />
-
-    <!-- 전체 대문자로 -->
-    <vs-input v-model.upper="code" label="코드" />
-
-    <!-- 전체 소문자로 -->
-    <vs-input v-model.lower="username" label="사용자명" />
-</template>
-```
-
-### Prepend/Append 슬롯
-
-```html
-<template>
-    <!-- 앞에 아이콘 추가 -->
-    <vs-input v-model="search" placeholder="검색어 입력">
-        <template #prepend> 🔍 </template>
-    </vs-input>
-
-    <!-- 뒤에 단위 추가 -->
-    <vs-input v-model="price" type="number" placeholder="가격 입력">
+    <vs-input v-model="value" label="Search">
+        <template #prepend>
+            <span>🔍</span>
+        </template>
         <template #append>
-            <span style="padding: 0 0.5rem">원</span>
+            <span>Go</span>
         </template>
     </vs-input>
 </template>
 ```
 
-### 숫자 입력 (min/max)
+### Validation
 
 ```html
 <template>
-    <vs-input v-model="age" type="number" label="나이" placeholder="나이 입력" :min="0" :max="120" />
+    <vs-input
+        v-model="value"
+        label="Required Field"
+        :required="true"
+        :rules="[v => !!v || 'This field is required']"
+    />
 </template>
 ```
 
-### 비활성화 및 읽기 전용
+### Disabled and Readonly
 
 ```html
 <template>
-    <vs-input v-model="value1" label="비활성화" disabled />
-    <vs-input v-model="value2" label="읽기 전용" readonly />
+    <vs-input v-model="value" label="Disabled" :disabled="true" />
+    <vs-input v-model="value" label="Readonly" :readonly="true" />
 </template>
-```
-
-### Clear 버튼 제거
-
-```html
-<template>
-    <vs-input v-model="value" label="Clear 버튼 없음" no-clear />
-</template>
-```
-
-### 메서드 사용
-
-```html
-<template>
-    <vs-input ref="inputRef" v-model="value" label="이름" />
-    <button @click="focusInput">Focus</button>
-    <button @click="selectInput">Select</button>
-    <button @click="clearInput">Clear</button>
-</template>
-
-<script setup lang="ts">
-import { ref, useTemplateRef } from 'vue';
-import type { VsInputRef } from '@/components';
-
-const inputRef = useTemplateRef('inputRef');
-const value = ref('');
-
-function focusInput() {
-    inputRef.value?.focus();
-}
-
-function selectInput() {
-    inputRef.value?.select();
-}
-
-function clearInput() {
-    inputRef.value?.clear();
-}
-</script>
 ```
 
 ## Props
 
-| Prop             | Type                                                                        | Default                   | Required | Description                                     |
-| ---------------- | --------------------------------------------------------------------------- | ------------------------- | -------- | ----------------------------------------------- |
-| `colorScheme`    | `ColorScheme`                                                               | -                         | -        | 컴포넌트 색상 테마                              |
-| `styleSet`       | `string \| VsInputStyleSet`                                                 | -                         | -        | 커스텀 스타일 설정 객체                         |
-| `autocomplete`   | `boolean`                                                                   | `false`                   | -        | 자동완성 활성화 여부                            |
-| `changed`        | `boolean`                                                                   | `false`                   | -        | 값 변경 여부 (v-model:changed)                  |
-| `disabled`       | `boolean`                                                                   | `false`                   | -        | 비활성화 상태                                   |
-| `grid`           | `string \| number \| Breakpoints`                                           | -                         | -        | 그리드 레이아웃 크기                            |
-| `hidden`         | `boolean`                                                                   | `false`                   | -        | 컴포넌트 숨김 여부                              |
-| `id`             | `string`                                                                    | -                         | -        | input 요소의 id                                 |
-| `label`          | `string`                                                                    | -                         | -        | 입력 필드 라벨                                  |
-| `max`            | `number \| string`                                                          | `Number.MAX_SAFE_INTEGER` | -        | 숫자 타입의 최대값                              |
-| `messages`       | `Message<InputValueType>[]`                                                 | `[]`                      | -        | 메시지 표시                                     |
-| `min`            | `number \| string`                                                          | `Number.MIN_SAFE_INTEGER` | -        | 숫자 타입의 최소값                              |
-| `modelValue`     | `string \| number \| null`                                                  | `null`                    | -        | v-model 바인딩 값                               |
-| `modelModifiers` | `StringModifiers`                                                           | `{}`                      | -        | 문자열 수정자 (capitalize, upper, lower)        |
-| `name`           | `string`                                                                    | -                         | -        | input 요소의 name 속성                          |
-| `noClear`        | `boolean`                                                                   | `false`                   | -        | clear 버튼 숨김                                 |
-| `noDefaultRules` | `boolean`                                                                   | `false`                   | -        | 기본 검증 규칙 비활성화                         |
-| `noLabel`        | `boolean`                                                                   | `false`                   | -        | 라벨 영역 숨김                                  |
-| `noMessages`     | `boolean`                                                                   | `false`                   | -        | 메시지 영역 숨김                                |
-| `placeholder`    | `string`                                                                    | -                         | -        | 플레이스홀더 텍스트                             |
-| `readonly`       | `boolean`                                                                   | `false`                   | -        | 읽기 전용 상태                                  |
-| `required`       | `boolean`                                                                   | `false`                   | -        | 필수 입력 여부                                  |
-| `rules`          | `Rule<InputValueType>[]`                                                    | `[]`                      | -        | 커스텀 검증 규칙                                |
-| `state`          | `UIState`                                                                   | `'idle'`                  | -        | 입력 상태 (idle, success, info, error, warning) |
-| `type`           | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'`                  | -        | input 타입                                      |
-| `valid`          | `boolean`                                                                   | `false`                   | -        | 검증 통과 여부 (v-model:valid)                  |
-| `width`          | `string \| number \| Breakpoints`                                           | -                         | -        | 컴포넌트 너비                                   |
-
-## Events
-
-| Event               | Parameters              | Description             |
-| ------------------- | ----------------------- | ----------------------- |
-| `update:modelValue` | `value: InputValueType` | v-model 값 변경 시 발생 |
-| `update:changed`    | `changed: boolean`      | 값 변경 여부 업데이트   |
-| `update:valid`      | `valid: boolean`        | 검증 상태 업데이트      |
-| `change`            | `value: InputValueType` | 입력값 변경 시 발생     |
-
-## Exposed Methods
-
-| Method   | Parameters | Return Type | Description                  |
-| -------- | ---------- | ----------- | ---------------------------- |
-| `focus`  | -          | `void`      | 입력 필드에 포커스 설정      |
-| `select` | -          | `void`      | 입력 필드의 텍스트 전체 선택 |
-| `clear`  | -          | `void`      | 입력 필드의 값 초기화        |
+| Prop              | Type                                              | Default  | Required | Description                                                      |
+| ----------------- | ------------------------------------------------- | -------- | -------- | ---------------------------------------------------------------- |
+| `colorScheme`     | `string`                                          | -        | -        | Color scheme for the component.                                  |
+| `styleSet`        | `string \| VsInputStyleSet`                       | -        | -        | Custom style set for the component.                              |
+| `modelValue`      | `string \| number \| null`                        | `null`   | -        | The bound value (v-model).                                       |
+| `type`            | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | - | HTML input type.                     |
+| `label`           | `string`                                          | `''`     | -        | Label text displayed above the input.                            |
+| `placeholder`     | `string`                                          | `''`     | -        | Placeholder text for the input.                                  |
+| `disabled`        | `boolean`                                         | `false`  | -        | Disables the input.                                              |
+| `readonly`        | `boolean`                                         | `false`  | -        | Makes the input read-only.                                       |
+| `required`        | `boolean`                                         | `false`  | -        | Marks the field as required (adds validation).                   |
+| `noClear`         | `boolean`                                         | `false`  | -        | Hides the clear button.                                          |
+| `autocomplete`    | `boolean`                                         | `false`  | -        | Enables browser autocomplete.                                    |
+| `noLabel`         | `boolean`                                         | `false`  | -        | Hides the label area.                                            |
+| `noMessages`      | `boolean`                                         | `false`  | -        | Hides the messages area.                                         |
+| `hidden`          | `boolean`                                         | `false`  | -        | Hides the entire component.                                      |
+| `id`              | `string`                                          | `''`     | -        | The `id` attribute for the input element.                        |
+| `name`            | `string`                                          | `''`     | -        | The `name` attribute for the input element.                      |
+| `messages`        | `Message[]`                                       | `[]`     | -        | External messages (state + text) to display below the input.     |
+| `rules`           | `Rule[]`                                          | `[]`     | -        | Validation rules applied on change.                              |
+| `noDefaultRules`  | `boolean`                                         | `false`  | -        | Disables the built-in required/min/max rules.                    |
+| `state`           | `UIState`                                         | `'idle'` | -        | External validation state (`idle`, `info`, `success`, `warning`, `error`). |
+| `min`             | `string \| number`                                | -        | -        | Minimum value (number type) or minimum length (text type).       |
+| `max`             | `string \| number`                                | -        | -        | Maximum value (number type) or maximum length (text type).       |
+| `width`           | `string \| number \| Breakpoints`                 | -        | -        | Width of the component.                                          |
+| `grid`            | `string \| number \| Breakpoints`                 | -        | -        | Grid column span for layout.                                     |
+| `changed`         | `boolean`                                         | `false`  | -        | v-model binding that reflects whether the value has changed.     |
+| `valid`           | `boolean`                                         | `false`  | -        | v-model binding that reflects the current validation state.      |
 
 ## Types
 
@@ -192,24 +118,52 @@ interface VsInputStyleSet {
 ```
 
 > [!NOTE]
->
-> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+> `wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper README](../vs-input-wrapper/README.md) for details.
+
+### StyleSet Example
+
+```html
+<template>
+    <vs-input
+        v-model="value"
+        label="Styled Input"
+        :style-set="{
+            component: { borderRadius: '20px', height: '3rem' },
+            input: { fontSize: '1rem' },
+            prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            append: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            wrapper: { label: { color: 'blue' } },
+        }"
+    />
+</template>
+```
+
+## Events
+
+| Event               | Payload                    | Description                                         |
+| ------------------- | -------------------------- | --------------------------------------------------- |
+| `update:modelValue` | `string \| number \| null` | Emitted when the input value changes.               |
+| `update:changed`    | `boolean`                  | Emitted when the changed state updates.             |
+| `update:valid`      | `boolean`                  | Emitted when the validation state updates.          |
+| `change`            | -                          | Emitted after the value is committed.               |
+| `focus`             | `FocusEvent`               | Emitted when the input receives focus.              |
+| `blur`              | `FocusEvent`               | Emitted when the input loses focus.                 |
 
 ## Slots
 
-| Slot       | Description                  |
-| ---------- | ---------------------------- |
-| `label`    | 커스텀 라벨 콘텐츠           |
-| `prepend`  | 입력 필드 앞에 표시할 콘텐츠 |
-| `append`   | 입력 필드 뒤에 표시할 콘텐츠 |
-| `messages` | 커스텀 메시지 콘텐츠         |
+| Slot       | Description                                          |
+| ---------- | ---------------------------------------------------- |
+| `label`    | Custom label content replacing the default label.    |
+| `prepend`  | Content displayed to the left inside the input box.  |
+| `append`   | Content displayed to the right inside the input box. |
+| `messages` | Custom messages content below the input.             |
 
-## 특징
+## Methods
 
-- **다양한 Input 타입 지원**: text, email, password, number, tel, url, search 등 다양한 타입 제공
-- **문자열 수정자**: v-model의 capitalize, upper, lower 수정자로 입력값 자동 변환
-- **숫자 입력 검증**: type="number"일 때 min/max 속성으로 범위 제한
-- **Clear 버튼**: 입력값을 빠르게 지울 수 있는 clear 버튼 제공 (비활성화 가능)
-- **Prepend/Append 슬롯**: 입력 필드 앞뒤에 아이콘이나 텍스트 추가 가능
-- **검증 규칙**: 커스텀 검증 규칙과 기본 검증(required, min, max) 지원
-- **타입 안전성**: number 타입은 숫자로, text 타입은 문자열로 자동 변환
+| Method     | Parameters | Description                                         |
+| ---------- | ---------- | --------------------------------------------------- |
+| `focus`    | -          | Focuses the input element.                          |
+| `blur`     | -          | Blurs the input element.                            |
+| `validate` | -          | Triggers validation and returns the result.         |
+| `clear`    | -          | Clears the input value.                             |
+| `select`   | -          | Selects all text in the input element.              |

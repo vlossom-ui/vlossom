@@ -1,99 +1,71 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsPagination
 
-페이지 네비게이션을 위한 페이지네이션 컴포넌트입니다. `v-model`을 지원하며, 전체 페이지 수에 따라 자동으로 페이지 버튼을 생성합니다.
+A pagination component that allows navigation through a series of pages.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 페이지네이션
+- Supports v-model binding for the current page index (0-based)
+- Configurable number of visible page buttons via `showingLength`
+- Optional edge buttons (first/last page) via `edgeButtons`
+- Ghost and outline button style options
+- Customizable button styles via `pageButton` and `controlButton` style sets
+- Programmatic navigation methods: `goFirst`, `goLast`, `goPrev`, `goNext`, `setPage`
+
+## Basic Usage
 
 ```html
 <template>
-    <vs-pagination v-model="currentPage" :length="10" @change="handlePageChange" />
+    <vs-pagination v-model="page" :length="10" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const page = ref(0);
+</script>
+```
+
+### With Edge Buttons
+
+```html
+<template>
+    <vs-pagination v-model="page" :length="20" :showing-length="5" edge-buttons />
 </template>
 ```
 
-### Edge 버튼 포함
+### With Ghost and Outline Style
 
 ```html
 <template>
-    <vs-pagination
-        v-model="currentPage"
-        :length="20"
-        edge-buttons
-    />
-</template>
-```
-
-### 표시 페이지 수 조정
-
-```html
-<template>
-    <vs-pagination
-        v-model="currentPage"
-        :length="100"
-        :showing-length="5"
-    />
-</template>
-```
-
-### 다양한 스타일
-
-```html
-<template>
-    <vs-pagination v-model="currentPage" :length="10" ghost />
-    <vs-pagination v-model="currentPage" :length="10" outline />
-</template>
-```
-
-### 커스텀 페이지 번호
-
-```html
-<template>
-    <vs-pagination v-model="currentPage" :length="10">
-        <template #page="{ page }">
-            Page {{ page }}
-        </template>
-    </vs-pagination>
+    <vs-pagination v-model="page" :length="10" ghost outline />
 </template>
 ```
 
 ## Props
 
-| Prop            | Type                             | Default | Required | Description                                |
-| --------------- | -------------------------------- | ------- | -------- | ------------------------------------------ |
-| `modelValue`    | `number`                         | `0`     | -        | v-model로 바인딩되는 현재 페이지 (0-based) |
-| `length`        | `number`                         | `1`     | ✓        | 전체 페이지 수 (1 이상이어야 함)           |
-| `showingLength` | `number`                         | `10`    | -        | 화면에 표시할 페이지 버튼 수 (1 이상)      |
-| `edgeButtons`   | `boolean`                        | `false` | -        | 첫 페이지/마지막 페이지 버튼 표시 여부     |
-| `disabled`      | `boolean`                        | `false` | -        | 전체 페이지네이션 비활성화                 |
-| `ghost`         | `boolean`                        | `false` | -        | 고스트 스타일 적용                         |
-| `outline`       | `boolean`                        | `false` | -        | 아웃라인 스타일 적용                       |
-| `colorScheme`   | `ColorScheme`                    | -       | -        | 컴포넌트 색상 테마                         |
-| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | 커스텀 스타일 설정 객체                    |
-
-## Events
-
-| Event               | Parameters | Description             |
-| ------------------- | ---------- | ----------------------- |
-| `update:modelValue` | `number`   | v-model 값 변경 시 발생 |
-| `change`            | `number`   | 페이지 변경 시 발생     |
-
-## Slots
-
-| Slot    | Props      | Description                        |
-| ------- | ---------- | ---------------------------------- |
-| `first` | -          | 첫 페이지로 이동 버튼의 콘텐츠     |
-| `prev`  | -          | 이전 페이지로 이동 버튼의 콘텐츠   |
-| `page`  | `{ page }` | 페이지 번호 버튼의 콘텐츠          |
-| `next`  | -          | 다음 페이지로 이동 버튼의 콘텐츠   |
-| `last`  | -          | 마지막 페이지로 이동 버튼의 콘텐츠 |
+| Prop            | Type                            | Default | Required | Description                                              |
+| --------------- | ------------------------------- | ------- | -------- | -------------------------------------------------------- |
+| `colorScheme`   | `string`                        | -       | -        | Color scheme for the component                           |
+| `styleSet`      | `string \| VsPaginationStyleSet` | -       | -        | Custom style set for the component                       |
+| `disabled`      | `boolean`                       | `false` | -        | Disables all pagination buttons                          |
+| `edgeButtons`   | `boolean`                       | `false` | -        | Shows first and last page navigation buttons             |
+| `ghost`         | `boolean`                       | `false` | -        | Applies ghost style to buttons                           |
+| `length`        | `number`                        | `1`     | Yes      | Total number of pages (must be greater than 0)           |
+| `outline`       | `boolean`                       | `false` | -        | Applies outline style to buttons                         |
+| `showingLength` | `number`                        | `10`    | -        | Number of page buttons to display at once                |
+| `modelValue`    | `number`                        | `0`     | -        | Current page index (0-based), used with `v-model`        |
 
 ## Types
 
 ```typescript
 interface VsPaginationStyleSet {
+    variables?: {
+        selectedButtonBackgroundColor?: string;
+        selectedButtonFontColor?: string;
+    };
     component?: CSSProperties;
     pageButton?: Omit<VsButtonStyleSet, 'loading'>;
     controlButton?: Omit<VsButtonStyleSet, 'loading'>;
@@ -101,40 +73,49 @@ interface VsPaginationStyleSet {
 ```
 
 > [!NOTE]
->
-> - `pageButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
-> - `controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)을 사용합니다.
+> `pageButton` and `controlButton` use [VsButtonStyleSet](../vs-button/README.md#types) (excluding `loading`).
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
     <vs-pagination
-        v-model="currentPage"
-        :length="20"
+        v-model="page"
+        :length="10"
         :style-set="{
-            component: {
-                gap: '1rem',
+            variables: {
+                selectedButtonBackgroundColor: '#4f46e5',
+                selectedButtonFontColor: '#ffffff',
             },
-            pageButton: {
-                component: {
-                    width: '3rem',
-                    height: '3rem',
-                    backgroundColor: '#f5f5f5',
-                },
-            },
-            controlButton: {
-                component: {
-                    borderRadius: '50%',
-                },
-            },
+            component: { gap: '0.25rem' },
         }"
     />
 </template>
 ```
 
-## 특징
+## Events
 
-- **v-model 지원**: 양방향 데이터 바인딩으로 현재 페이지 상태 관리 (0-based 인덱스 사용)
-- **자동 페이지 계산**: 현재 선택된 페이지를 중심으로 표시할 페이지 범위 자동 계산
-- **VsButton 기반**: edge 버튼과 page 버튼을 VsButton으로 구성하여 일관된 스타일링 제공
+| Event               | Payload  | Description                          |
+| ------------------- | -------- | ------------------------------------ |
+| `update:modelValue` | `number` | Emitted when the current page changes |
+| `change`            | `number` | Emitted when the current page changes |
+
+## Slots
+
+| Slot    | Description                             |
+| ------- | --------------------------------------- |
+| `first` | Custom icon for the "first page" button |
+| `last`  | Custom icon for the "last page" button  |
+| `prev`  | Custom icon for the "prev page" button  |
+| `next`  | Custom icon for the "next page" button  |
+| `page`  | Custom content for each page button; receives `{ page: number }` |
+
+## Methods
+
+| Method      | Parameters         | Description                          |
+| ----------- | ------------------ | ------------------------------------ |
+| `goFirst`   | -                  | Navigates to the first page          |
+| `goLast`    | -                  | Navigates to the last page           |
+| `goPrev`    | -                  | Navigates to the previous page       |
+| `goNext`    | -                  | Navigates to the next page           |
+| `setPage`   | `page: number`     | Navigates to the specified page index |

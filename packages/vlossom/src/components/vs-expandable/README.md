@@ -1,41 +1,55 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsExpandable
 
-콘텐츠의 확장과 축소 애니메이션을 제공하는 컴포넌트입니다. 부드러운 트랜지션 효과로 사용자 경험을 향상시키며, 아코디언, 드롭다운, 토글 메뉴 등 다양한 UI 패턴에 활용할 수 있습니다.
+A content container with animated expand and collapse transitions controlled by the `open` prop.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 확장 가능한 콘텐츠
+- Smooth height and opacity animation on expand/collapse
+- Controlled via a required `open` boolean prop
+- Lightweight wrapper — no extra DOM wrappers needed beyond the default slot
+- Supports custom content styling via `styleSet`
+
+## Basic Usage
 
 ```html
 <template>
-    <div>
-        <button @click="isOpen = !isOpen">
-            {{ isOpen ? '축소' : '확장' }}
-        </button>
-        <vs-expandable :open="isOpen">
-            <div>
-                <p>확장 가능한 콘텐츠입니다.</p>
-                <p>이 내용은 애니메이션과 함께 표시되거나 숨겨집니다.</p>
-            </div>
-        </vs-expandable>
-    </div>
+    <vs-button @click="isOpen = !isOpen">Toggle</vs-button>
+    <vs-expandable :open="isOpen">
+        <p>This content expands and collapses with animation.</p>
+    </vs-expandable>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-
 const isOpen = ref(false);
 </script>
 ```
 
+### Custom Styled Content
+
+```html
+<template>
+    <vs-expandable
+        :open="isOpen"
+        :style-set="{
+            component: { backgroundColor: '#f0f4ff', padding: '1.5rem', borderRadius: '8px' },
+        }"
+    >
+        <p>Styled expandable content.</p>
+    </vs-expandable>
+</template>
+```
+
 ## Props
 
-| Prop       | Type                             | Default | Required | Description             |
-| ---------- | -------------------------------- | ------- | -------- | ----------------------- |
-| `open`     | `boolean`                        | `false` | ✓        | 확장/축소 상태 제어     |
-| `styleSet` | `string \| VsExpandableStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `styleSet` | `string \| VsExpandableStyleSet` | | | Custom style set for the component |
+| `open` | `boolean` | `false` | ✓ | Controls whether the content is expanded |
 
 ## Types
 
@@ -45,47 +59,33 @@ interface VsExpandableStyleSet {
 }
 ```
 
-### StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
-    <div>
-        <button @click="isOpen = !isOpen">
-            {{ isOpen ? '축소' : '확장' }}
-        </button>
-        <vs-expandable
-            :open="isOpen"
-            :style-set="{
-                component: {
-                    backgroundColor: '#f0f0f0',
-                    padding: '2rem',
-                    borderRadius: '8px',
-                },
-            }"
-        >
-            <div>
-                <p>커스텀 스타일이 적용된 확장 가능한 콘텐츠입니다.</p>
-            </div>
-        </vs-expandable>
-    </div>
+    <vs-expandable
+        :open="true"
+        :style-set="{
+            component: { backgroundColor: '#fff8e1', padding: '2rem', borderLeft: '4px solid orange' },
+        }"
+    >
+        <p>Highlighted expandable content.</p>
+    </vs-expandable>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-
-const isOpen = ref(false);
-</script>
 ```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description        |
-| --------- | ------------------ |
-| `default` | 확장/축소될 콘텐츠 |
+| Slot | Description |
+| ---- | ----------- |
+| `default` | The content to be shown or hidden |
 
-## 특징
+## Methods
 
-- **부드러운 애니메이션**: height와 opacity를 이용한 자연스러운 확장/축소 효과
-- **동적 높이 계산**: 콘텐츠 크기에 따라 자동으로 높이 계산 및 애니메이션 적용
-- **성능 최적화**: 트랜지션 완료 후 `height: auto`로 설정하여 반응형 동작 보장
-- **유연한 사용법**: 아코디언, 드롭다운, 토글 메뉴 등 다양한 UI 패턴에 활용 가능
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

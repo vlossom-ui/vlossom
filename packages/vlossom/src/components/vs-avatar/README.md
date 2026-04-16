@@ -1,46 +1,65 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsAvatar
 
-사용자 프로필 이미지, 이니셜, 아이콘 등을 표시하는 아바타 컴포넌트입니다. 다양한 크기와 스타일 커스터마이징을 지원합니다.
+A circular or rounded display element for showing user profile images, initials, or icons.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 이미지 아바타
+- Accepts image elements, text initials, or icon content via the default slot
+- Supports `object-fit` customization for images via the `objectFit` CSS variable
+- Color scheme support for background and border styling
+- Fixed default size (3.6rem × 3.6rem) with full override via `component` CSSProperties
+
+## Basic Usage
 
 ```html
 <template>
     <vs-avatar>
-        <img src="/path/to/avatar.jpg" alt="User Avatar" />
+        <img src="/profile.png" alt="User Avatar" />
+    </vs-avatar>
+</template>
+```
+
+### Text Initials
+
+```html
+<template>
+    <vs-avatar>JD</vs-avatar>
+</template>
+```
+
+### With Color Scheme
+
+```html
+<template>
+    <vs-avatar color-scheme="blue">
+        <img src="/profile.png" alt="User" />
     </vs-avatar>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                         | Default | Required | Description             |
-| ------------- | ---------------------------- | ------- | -------- | ----------------------- |
-| `colorScheme` | `ColorScheme`                | -       | -        | 컴포넌트 색상 테마      |
-| `styleSet`    | `string \| VsAvatarStyleSet` | -       | -        | 커스텀 스타일 설정 객체 |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
+| `styleSet` | `string \| VsAvatarStyleSet` | | | Custom style set |
 
 ## Types
 
 ```typescript
 interface VsAvatarStyleSet {
     variables?: {
-        objectFit?: string;
+        objectFit?: CSSProperties['objectFit'] & {};
     };
     component?: CSSProperties;
 }
 ```
 
-## Slots
-
-| Slot      | Description                             |
-| --------- | --------------------------------------- |
-| `default` | 아바타 내용 (텍스트, 이미지, 아이콘 등) |
-
-## StyleSet 사용 예시
+### StyleSet Example
 
 ```html
 <template>
@@ -52,17 +71,27 @@ interface VsAvatarStyleSet {
             component: {
                 width: '5rem',
                 height: '5rem',
-                backgroundColor: '#e188e5',
                 borderRadius: '50%',
             },
         }"
     >
-        <img src="/path/to/avatar.jpg" alt="User Avatar" />
+        <img src="/profile.png" alt="User" />
     </vs-avatar>
 </template>
 ```
 
-## 특징
+## Events
 
-- **유연한 컨텐츠**: 텍스트, 이미지, 아이콘 등 다양한 컨텐츠 지원
-- **이미지 최적화**: `object-fit` 속성으로 이미지 비율 유지
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Avatar content — image, initials, or icon |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

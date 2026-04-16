@@ -1,94 +1,104 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # Confirm Plugin
 
-확인(Confirm) 다이얼로그를 간단하게 띄우고 결과를 `Promise<boolean>`으로 받을 수 있는 플러그인입니다. 내부적으로 `modal-plugin`을 사용하여 컴포넌트를 렌더링합니다.
+**Available Version**: 2.0.0+
 
-## 사용 방법
+Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Promise<boolean>` that resolves to `true` when the user confirms, and `false` when the user cancels.
 
-Confirm 플러그인은 `useVlossom()` 훅을 통해 접근합니다.
+## Feature
 
-```ts
-import { useVlossom } from '@/framework';
+- Opens a modal overlay with custom string or Vue component content
+- Provides OK and Cancel buttons with configurable labels and styles
+- Resolves `true` on OK (or Enter key) and `false` on Cancel (or Escape key)
+- Supports swapping the button order via `swapButtons`
+- Supports custom button gap and alignment
+- Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
-const $vs = useVlossom();
-const result = await $vs.confirm.open('정말로 삭제하시겠습니까?');
-```
+## Basic Usage
 
-## API
+Inject `$vsConfirm` in your component and call `open`:
 
-### open(content, options?)
-
-확인 다이얼로그를 표시하고 사용자의 응답을 반환합니다.
-
-**파라미터**
-
-- `content`: `string | Component` – 다이얼로그 본문에 표시할 내용
-- `options`: `ConfirmModalOptions` – 다이얼로그 옵션 (선택)
-
-**반환값**
-
-- `Promise<boolean>` – 확인 버튼을 누르면 `true`, 취소 버튼이나 닫힘 동작이면 `false`
-
-**예시**
-
-```ts
-const confirmed = await $vs.confirm.open('정말 진행하시겠습니까?', {
-    colorScheme: 'red',
-    okText: '진행',
-    cancelText: '취소',
-    swapButtons: true,
-});
-
-if (confirmed) {
-    // 확인 로직
-} else {
-    // 취소 로직
-}
-```
-
-## Types
-
-```ts
-interface ConfirmModalOptions {
-    container?: string;
-    callbacks?: OverlayCallbacks;
-    dimClose?: boolean;
-    dimmed?: boolean;
-    escClose?: boolean;
-    focusLock?: boolean;
-    hideScroll?: boolean;
-    id?: string;
-    size?: SizeProp | { width?: SizeProp; height?: SizeProp };
-
-    colorScheme?: ColorScheme;
-    styleSet?: string | VsConfirmStyleSet;
-    okText?: string;
-    cancelText?: string;
-    swapButtons?: boolean;
-}
-```
-
-## 사용 예시
-
-```vue
+```html
 <template>
-    <vs-button @click="handleConfirm">삭제</vs-button>
+    <vs-button @click="handleDelete">Delete Item</vs-button>
 </template>
 
-<script setup lang="ts">
-import { useVlossom } from '@/framework';
+<script setup>
+import { inject } from 'vue';
 
-const $vs = useVlossom();
+const $vsConfirm = inject('$vsConfirm');
 
-async function handleConfirm() {
-    const confirmed = await $vs.confirm.open('이 작업은 되돌릴 수 없습니다. 계속하시겠습니까?', {
-        colorScheme: 'red',
-        okText: '삭제',
-        cancelText: '취소',
-    });
-
+async function handleDelete() {
+    const confirmed = await $vsConfirm.open('Are you sure you want to delete this item?');
     if (confirmed) {
-        console.log('삭제 실행');
+        console.log('Deletion confirmed');
+    } else {
+        console.log('Deletion cancelled');
     }
 }
 </script>
 ```
+
+### Custom Button Text and Style
+
+```html
+<script setup>
+import { inject } from 'vue';
+
+const $vsConfirm = inject('$vsConfirm');
+
+function handleConfirm() {
+    $vsConfirm.open('Do you want to proceed?', {
+        okText: 'Yes, proceed',
+        cancelText: 'No, go back',
+        swapButtons: true,
+        styleSet: {
+            buttonsAlign: 'right',
+            buttonsGap: '1rem',
+            okButton: { variables: { padding: '0.5rem 2rem' } },
+            cancelButton: { variables: { padding: '0.5rem 2rem' } },
+        },
+    });
+}
+</script>
+```
+
+## Methods
+
+| Method | Parameters                                                                     | Description                                                                                                                |
+| ------ | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `open` | `content: string \| Component, options?: ConfirmModalOptions` | Opens a confirmation modal with the given content and options. Returns `Promise<boolean>` resolving to `true` on OK or `false` on Cancel. |
+
+## Types
+
+```typescript
+interface VsConfirmStyleSet extends VsModalNodeStyleSet {
+    buttonsGap?: string | number;
+    buttonsAlign?: Alignment;
+    okButton?: Omit<VsButtonStyleSet, 'loading'>;
+    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+}
+
+interface ConfirmModalOptions extends ModalOptions {
+    styleSet?: VsConfirmStyleSet;
+    colorScheme?: ColorScheme;
+    okText?: string;
+    cancelText?: string;
+    swapButtons?: boolean;
+}
+
+interface ConfirmPlugin {
+    open(content: string | Component, options?: ConfirmModalOptions): Promise<boolean>;
+}
+```
+
+> [!NOTE]
+> `VsConfirmStyleSet` extends `VsModalNodeStyleSet`. Refer to the [VsModal component docs](../../components/vs-modal/README.md) for available modal style options.
+> `ConfirmModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md).
+
+## Caution
+
+- The confirm plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
+- Pressing Enter resolves the promise with `true`; pressing Escape resolves with `false`.
+- Clicking outside the modal (if `dimClose` is enabled) resolves with `false`.

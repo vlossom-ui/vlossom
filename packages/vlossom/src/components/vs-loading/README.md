@@ -1,27 +1,51 @@
 # VsLoading
 
-로딩 상태를 나타내는 인라인 애니메이션 컴포넌트입니다.
+An animated loading indicator composed of five vertical bars with a wave animation.
+
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-```vue
+- Displays five animated bars with a sequential wave effect.
+- Customizable color via the `variables.color` style property.
+- Customizable bar width via the `variables.barWidth` style property.
+- Supports `width` and `height` props for sizing.
+- Supports color schemes for consistent theming.
+
+## Basic Usage
+
+```html
 <template>
     <vs-loading />
-    <vs-loading width="100px" height="50px" />
-    <vs-loading :width="200" :height="100" />
+</template>
+```
+
+### Custom Size
+
+```html
+<template>
+    <vs-loading width="4rem" height="5rem" />
+</template>
+```
+
+### Color Scheme
+
+```html
+<template>
+    <vs-loading color-scheme="green" />
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                          | Default | Required | Description                       |
-| ------------- | ----------------------------- | ------- | -------- | --------------------------------- |
-| `colorScheme` | `ColorScheme`                 | -       | -        | 색상 스키마 설정                  |
-| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | 스타일 커스터마이징               |
-| `width`       | `string \| number`            | -       | -        | 로딩 컴포넌트의 너비 (기본 8rem)  |
-| `height`      | `string \| number`            | -       | -        | 로딩 컴포넌트의 높이 (기본 10rem) |
+| Prop          | Type                          | Default | Required | Description                                         |
+| ------------- | ----------------------------- | ------- | -------- | --------------------------------------------------- |
+| `colorScheme` | `string`                      | -       | -        | Color scheme for the loading bars.                  |
+| `styleSet`    | `string \| VsLoadingStyleSet` | -       | -        | Custom style set for the component.                 |
+| `width`       | `string \| number`            | -       | -        | Width of the loading container.                     |
+| `height`      | `string \| number`            | -       | -        | Height of the loading container.                    |
 
 ## Types
 
@@ -35,21 +59,33 @@ interface VsLoadingStyleSet {
 }
 ```
 
-### StyleSet 사용 예시
+### StyleSet Example
 
-```vue
+```html
 <template>
     <vs-loading
         :style-set="{
             variables: {
-                barWidth: '15%',
                 color: '#ff6b6b',
+                barWidth: '15%',
             },
-            component: {
-                width: '6rem',
-                height: '8rem',
-            },
+            component: { width: '6rem', height: '8rem' },
         }"
     />
 </template>
 ```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
+
+## Slots
+
+| Slot | Description |
+| ---- | ----------- |
+
+## Methods
+
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

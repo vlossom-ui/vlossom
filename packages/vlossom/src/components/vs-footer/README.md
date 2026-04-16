@@ -1,124 +1,106 @@
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
 # VsFooter
 
-웹 애플리케이션의 푸터 영역을 담당하는 컴포넌트입니다. `vs-layout`과 함께 사용하면 레이아웃 스토어를 통해 자동으로 상태가 관리됩니다.
+A page footer bar component that supports fixed, sticky, and absolute positioning with layout store integration when used inside `VsLayout`.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 푸터
+- Renders as a `<footer>` element by default (configurable via `tag`)
+- Supports CSS `position` values: `static`, `relative`, `absolute`, `fixed`, `sticky`
+- Default height of `3rem` — overridable via the `height` prop
+- Primary color scheme styling via the `primary` prop
+- Integrates with `VsLayout` to report footer height for drawer offset calculations
+- Accepts `CSSProperties` via `styleSet.component` for full style control
+
+## Basic Usage
 
 ```html
 <template>
     <vs-footer>
-        <p>&copy; 2024 My App. All rights reserved.</p>
-        <nav>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Contact</a>
-        </nav>
+        <p>© 2024 My App</p>
     </vs-footer>
 </template>
 ```
 
-### vs-layout과 함께 사용
+### Fixed Footer
 
 ```html
 <template>
-    <vs-layout>
-        <vs-container>
-            <!-- vs-footer가 fixed일 때 자동으로 패딩이 조정됩니다 -->
-            <main>Main Content</main>
-        </vs-container>
-        <vs-footer position="fixed" :style-set="{ component: { height: '4rem', backgroundColor: '#1976d2', color: '#ffffff' } }">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p>&copy; 2024 My App</p>
-                <nav>
-                    <button>Privacy</button>
-                    <button>Terms</button>
-                    <button>Contact</button>
-                </nav>
-            </div>
-        </vs-footer>
-    </vs-layout>
+    <vs-footer position="fixed" height="4rem">
+        <nav>Navigation links</nav>
+    </vs-footer>
 </template>
 ```
 
-### Primary 푸터
+### Primary Styled Footer
 
 ```html
 <template>
     <vs-footer primary>
-        <p>강조된 푸터</p>
-    </vs-footer>
-</template>
-```
-
-### 고정 푸터
-
-```html
-<template>
-    <vs-footer position="fixed" :style-set="{ component: { height: '4rem', zIndex: 1000 } }">
-        <div>항상 하단에 고정된 푸터</div>
-    </vs-footer>
-</template>
-```
-
-### 커스텀 태그
-
-```html
-<template>
-    <vs-footer tag="div">
-        <span>div 태그로 렌더링된 푸터</span>
+        <span>App v1.0.0</span>
     </vs-footer>
 </template>
 ```
 
 ## Props
 
-| Prop          | Type                                                          | Default      | Required | Description                            |
-| ------------- | ------------------------------------------------------------- | ------------ | -------- | -------------------------------------- |
-| `colorScheme` | `ColorScheme`                                                 | -            | -        | 컴포넌트 색상 테마                     |
-| `styleSet`    | `string \| VsFooterStyleSet`                                  | -            | -        | 커스텀 스타일 설정 객체                |
-| `position`    | `'relative' \| 'absolute' \| 'fixed' \| 'sticky' \| 'static'` | `'relative'` | -        | CSS position 속성 설정                 |
-| `height`      | `string`                                                      | -            | -        | 푸터의 높이 설정                       |
-| `primary`     | `boolean`                                                     | `false`      | -        | 강조 스타일 적용                       |
-| `tag`         | `string`                                                      | `'footer'`   | -        | 렌더링할 HTML 태그 지정 (기본: footer) |
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+| `colorScheme` | `string` | | | Color scheme for the component |
+| `styleSet` | `string \| VsFooterStyleSet` | | | Custom style set for the component |
+| `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | CSS position value for the footer |
+| `height` | `string` | | | Height of the footer. Defaults to `3rem` |
+| `primary` | `boolean` | `false` | | Apply the primary color scheme |
+| `tag` | `string` | `'footer'` | | HTML tag to render as |
 
 ## Types
 
 ```typescript
 interface VsFooterStyleSet extends VsBarStyleSet {}
+
+// VsBarStyleSet:
+interface VsBarStyleSet {
+    component?: CSSProperties;
+}
 ```
 
 > [!NOTE]
->
-> VsBar의 모든 스타일링 props를 지원합니다. 자세한 내용은 [VsBar README](../vs-bar/README.md#types)를 참조하세요.
+> `VsFooterStyleSet` extends [VsBarStyleSet](../vs-bar/README.md).
+
+### StyleSet Example
+
+```html
+<template>
+    <vs-footer
+        :style-set="{
+            component: {
+                backgroundColor: '#1a1a2e',
+                color: '#ffffff',
+                padding: '0 2rem',
+                height: '4rem',
+            },
+        }"
+    >
+        <span>Custom styled footer</span>
+    </vs-footer>
+</template>
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `default` | 푸터 내부에 표시할 콘텐츠 |
+| Slot | Description |
+| ---- | ----------- |
+| `default` | Footer content |
 
-## 특징
+## Methods
 
-- **시멘틱 HTML**: 기본적으로 `<footer>` 태그를 사용하여 시멘틱 마크업 지원 (tag props로 변경 가능)
-- **레이아웃 통합**: `vs-layout`의 자식으로 사용하면 자동으로 레이아웃 스토어에 상태 등록
-- **자동 패딩 조정**: `position`이 `fixed`, `absolute`, `sticky`일 때 `vs-container`가 자동으로 패딩 조정
-- **Primary 스타일**: 강조가 필요한 푸터에 적용할 수 있는 primary 스타일
-- **Bottom 보정**: footer는 top보다는 bottom 값을 보정하는 것이 중요
-
-## 레이아웃 스토어 연동
-
-`vs-layout`의 자식으로 사용할 때 다음과 같은 동작이 수행됩니다:
-
-1. **자동 등록**: 푸터의 `position`과 `height` 정보가 레이아웃 스토어에 자동 등록
-2. **실시간 업데이트**: props나 styleSet이 변경되면 레이아웃 스토어도 자동 업데이트
-3. **컨테이너 연동**: `vs-container`가 푸터의 position과 height를 참조하여 적절한 패딩 적용
-
-## Header와의 차이점
-
-- **기본 태그**: `footer` (vs-header는 `header`)
-- **위치 보정**: `bottom` 값을 보정 (vs-header는 `top` 값을 보정)
-- **용도**: 페이지나 섹션의 하단 영역을 담당
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |

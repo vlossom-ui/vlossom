@@ -1,52 +1,59 @@
 # VsLayout
 
-애플리케이션의 전체 레이아웃을 관리하는 레이아웃 컴포넌트입니다. 각 드로어(drawer)의 `responsive` 속성에 따라 동적으로 패딩을 조정하여 반응형 레이아웃을 제공합니다.
+A root layout container that provides the layout store context required by `VsHeader`, `VsFooter`, and other layout-aware components.
+
+> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
 **Available Version**: 2.0.0+
 
-## 기본 사용법
+## Feature
 
-### 기본 레이아웃
+- Provides the layout store via `provide` for descendant layout components.
+- Acts as the top-level container that enables `VsHeader` and `VsFooter` position tracking.
+- Takes up the full width and height of its parent element.
+- Simple wrapper with no additional props or styling.
 
-```html
-<template>
-    <vs-layout>
-        <vs-header>Header Content</vs-header>
-        <vs-container>Main Content</vs-container>
-        <vs-drawer>Drawer Content</vs-drawer>
-        <vs-footer>Footer Content</vs-footer>
-    </vs-layout>
-</template>
-```
-
-### 반응형 드로어 레이아웃
+## Basic Usage
 
 ```html
 <template>
     <vs-layout>
-        <vs-drawer placement="left" size="250px" open responsive>
-            <!-- 왼쪽 드로어 내용 -->
-        </vs-drawer>
-
-        <vs-container>
-            <!-- 메인 콘텐츠 -->
-        </vs-container>
-
-        <vs-drawer placement="right" size="300px" open responsive>
-            <!-- 오른쪽 드로어 내용 -->
-        </vs-drawer>
+        <vs-header>My App Header</vs-header>
+        <main>
+            <slot />
+        </main>
+        <vs-footer>Footer</vs-footer>
     </vs-layout>
 </template>
 ```
+
+## Props
+
+| Prop | Type | Default | Required | Description |
+| ---- | ---- | ------- | -------- | ----------- |
+
+## Types
+
+```typescript
+// No StyleSet interface — this component does not accept a styleSet prop.
+```
+
+## Events
+
+| Event | Payload | Description |
+| ----- | ------- | ----------- |
 
 ## Slots
 
-| Slot      | Description                   |
-| --------- | ----------------------------- |
-| `default` | 레이아웃 내부에 배치할 콘텐츠 |
+| Slot      | Description                          |
+| --------- | ------------------------------------ |
+| `default` | The content to render inside the layout. |
 
-## 특징
+## Methods
 
-- **유기적인 레이아웃 제공**: `vs-header`, `vs-container`, `vs-drawer`, `vs-footer`와 함께 사용하면 쉽게 레이아웃 구성 가능
-- **레이아웃 스토어 제공**: `LAYOUT_STORE_KEY`를 통해 하위 컴포넌트에 레이아웃 상태를 provide를 이용해 제공
-- **동적 패딩 조정**: 각 드로어의 `responsive` 속성이 활성화되면 열린 드로어에 따라 자동으로 vs-container의 패딩 조정 가능
+| Method | Parameters | Description |
+| ------ | ---------- | ----------- |
+
+## Caution
+
+`VsLayout` must wrap any page or section that uses `VsHeader` or `VsFooter`. Without it, those components cannot register themselves in the layout store and will not function correctly.
