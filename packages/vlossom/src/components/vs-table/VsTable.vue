@@ -21,7 +21,7 @@
             class="vs-table-sticky-wrapper"
             :style="{ top: stickyHeaderTop }"
         >
-            <table>
+            <table class="vs-table-table">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
@@ -36,8 +36,8 @@
                 :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
                 root-margin="150px"
             >
-                <table>
-                    <caption v-if="$slots['caption']">
+                <table class="vs-table-table">
+                    <caption v-if="$slots['caption']" class="vs-table-caption">
                         <slot name="caption" />
                     </caption>
                     <vs-table-header
