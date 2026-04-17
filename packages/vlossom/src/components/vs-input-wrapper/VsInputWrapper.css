@@ -1,6 +1,8 @@
 @reference 'tailwindcss';
 
 .vs-input-wrapper {
+    @apply relative w-full;
+
     .vs-label {
         @apply flex items-center;
 

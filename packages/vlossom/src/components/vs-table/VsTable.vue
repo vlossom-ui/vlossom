@@ -1,13 +1,19 @@
 <template>
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
-        <vs-search-input
-            v-if="search"
-            ref="searchInputRef"
-            class="vs-table-search-input"
-            v-bind="searchOptions"
-            :disabled="loading"
-            @search="searchRows"
-        />
+        <div v-if="search || $slots['toolbar']" class="vs-table-toolbar">
+            <div class="vs-table-toolbar-start" :style="componentStyleSet.toolbar">
+                <slot name="toolbar" />
+            </div>
+            <div v-if="search" class="vs-table-search-input">
+                <vs-search-input
+                    ref="searchInputRef"
+                    v-bind="searchOptions"
+                    :style-set="componentStyleSet.search"
+                    :disabled="loading"
+                    @search="searchRows"
+                />
+            </div>
+        </div>
 
         <div
             v-if="useStickyHeader"

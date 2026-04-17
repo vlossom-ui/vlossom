@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'vue';
 import type { SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
+import type { VsSearchInputStyleSet } from '@/components/vs-search-input/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -13,6 +14,8 @@ export const TABLE_COLOR_SCHEME_TOKEN = Symbol('TABLE_COLOR_SCHEME_TOKEN');
 
 export interface VsTableStyleSet {
     component?: CSSProperties;
+    toolbar?: CSSProperties;
+    search?: VsSearchInputStyleSet;
     header?: CSSProperties;
     row?: CSSProperties;
     selectedRow?: CSSProperties;

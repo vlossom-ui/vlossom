@@ -123,8 +123,19 @@
         }
     }
 
-    .vs-table-search-input {
-        @apply mb-2 flex justify-end;
+    .vs-table-toolbar {
+        @apply mb-2 flex items-end justify-between gap-4;
+
+        .vs-table-toolbar-start {
+            @apply flex-1;
+            min-width: 0;
+        }
+
+        .vs-table-search-input {
+            @apply flex items-end justify-end;
+            flex-shrink: 0;
+            width: 18rem;
+        }
     }
 
     &.vs-responsive {

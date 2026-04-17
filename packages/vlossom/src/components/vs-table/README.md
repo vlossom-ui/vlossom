@@ -191,6 +191,7 @@ type VsTableItem = Record<string, any>;
 
 | Slot | Description |
 | ---- | ----------- |
+| `toolbar` | Area to the left of the search input; use for action buttons or custom controls |
 | `caption` | Table caption content |
 | `header-[key]` | Custom header cell for a specific column key |
 | `body-[key]` | Custom body cell for a specific column key |
