@@ -12,6 +12,7 @@ interface UseSelectKeyboardParams {
     getFocusableElements: () => HTMLElement[];
     openOptions: () => void;
     closeOptions: () => void;
+    focusTrigger: () => void;
     toggleSelectAll: () => void;
     selectOptionItem: (optionItem: OptionItem) => void;
 }
@@ -26,6 +27,7 @@ export function useSelectKeyboard({
     getFocusableElements,
     openOptions,
     closeOptions,
+    focusTrigger,
     toggleSelectAll,
     selectOptionItem,
 }: UseSelectKeyboardParams) {
@@ -137,6 +139,7 @@ export function useSelectKeyboard({
                 e.preventDefault();
                 e.stopPropagation();
                 closeOptions();
+                focusTrigger();
             },
         };
     });

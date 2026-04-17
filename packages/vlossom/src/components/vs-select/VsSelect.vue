@@ -360,6 +360,7 @@ export default defineComponent({
             getFocusableElements,
             openOptions,
             closeOptions,
+            focusTrigger: focus,
             toggleSelectAll,
             selectOptionItem,
         });
@@ -439,11 +440,14 @@ export default defineComponent({
                     addMouseMoveListener();
 
                     const selectedId = selectedOptionIds.value[0];
-                    if (selectedId) {
-                        if (optionsListRef.value?.hasScroll()) {
-                            optionsListRef.value?.scrollToItem(selectedId);
-                        }
+                    if (selectedId && optionsListRef.value?.hasScroll()) {
+                        optionsListRef.value?.scrollToItem(selectedId);
+                    }
 
+                    if (isUsingSearch.value) {
+                        searchInputRef.value?.focus();
+                        updateFocusIndex(0);
+                    } else if (selectedId) {
                         const targetFocusIndex = getFocusableElements().findIndex(
                             (element) => element.dataset['id'] === selectedId,
                         );
