@@ -1,13 +1,23 @@
 <template>
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
-        <vs-search-input
-            v-if="search"
-            ref="searchInputRef"
-            class="vs-table-search-input"
-            v-bind="searchOptions"
-            :disabled="loading"
-            @search="searchRows"
-        />
+        <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
+            <vs-responsive
+                class="vs-table-toolbar-start"
+                :grid="{ sm: 12, md: search ? 10 : 12 }"
+                :style="componentStyleSet.toolbar"
+            >
+                <slot name="toolbar" />
+            </vs-responsive>
+            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ sm: 12, md: 2 }">
+                <vs-search-input
+                    ref="searchInputRef"
+                    v-bind="searchOptions"
+                    :style-set="componentStyleSet.search"
+                    :disabled="loading"
+                    @search="searchRows"
+                />
+            </vs-responsive>
+        </vs-grid>
 
         <div
             v-if="useStickyHeader"
@@ -15,7 +25,7 @@
             class="vs-table-sticky-wrapper"
             :style="{ top: stickyHeaderTop }"
         >
-            <table>
+            <table class="vs-table-table">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
@@ -30,8 +40,8 @@
                 :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
                 root-margin="150px"
             >
-                <table>
-                    <caption v-if="$slots['caption']">
+                <table class="vs-table-table">
+                    <caption v-if="$slots['caption']" class="vs-table-caption">
                         <slot name="caption" />
                     </caption>
                     <vs-table-header
@@ -111,6 +121,8 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
+import VsGrid from '@/components/vs-grid/VsGrid.vue';
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
 import VsTablePagination from './VsTablePagination.vue';
@@ -119,7 +131,7 @@ const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
-    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination },
+    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination, VsGrid, VsResponsive },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),

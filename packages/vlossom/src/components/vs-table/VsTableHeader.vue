@@ -1,7 +1,7 @@
 <template>
-    <thead>
+    <thead class="vs-table-thead">
         <template v-if="headerCells.length">
-            <tr :style="headerStyle">
+            <tr class="vs-table-header-row" :style="headerStyle">
                 <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
                 <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
                     <template #select="slotData">
@@ -9,6 +9,7 @@
                     </template>
                 </vs-table-checkbox-cell>
                 <th
+                    class="vs-table-th"
                     v-for="(header, index) in headerCells"
                     :key="header.id"
                     :id="header.id"

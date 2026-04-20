@@ -1,6 +1,6 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td v-if="anyExpandable" class="vs-table-expand-handle" :style="cellStyle">
+        <td v-if="anyExpandable" class="vs-table-td vs-table-expand-handle" :style="cellStyle">
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 :color-scheme
@@ -27,7 +27,7 @@
         </td>
     </template>
     <template v-else>
-        <th v-if="anyExpandable" class="vs-table-expand-handle" :style="cellStyle" />
+        <th v-if="anyExpandable" class="vs-table-th vs-table-expand-handle" :style="cellStyle" />
     </template>
 </template>
 

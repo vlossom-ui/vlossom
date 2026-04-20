@@ -120,6 +120,8 @@ const selected = ref([]);
 ```typescript
 interface VsTableStyleSet {
     component?: CSSProperties;
+    toolbar?: CSSProperties;
+    search?: VsSearchInputStyleSet;
     header?: CSSProperties;
     row?: CSSProperties;
     selectedRow?: CSSProperties;
@@ -191,6 +193,7 @@ type VsTableItem = Record<string, any>;
 
 | 슬롯 | 설명 |
 | ---- | ---- |
+| `toolbar` | 검색 입력창 왼쪽 영역; 액션 버튼이나 커스텀 컨트롤 배치에 사용 |
 | `caption` | 테이블 캡션 내용 |
 | `header-[key]` | 특정 컬럼 키의 커스텀 헤더 셀 |
 | `body-[key]` | 특정 컬럼 키의 커스텀 바디 셀 |
