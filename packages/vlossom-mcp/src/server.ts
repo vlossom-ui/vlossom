@@ -9,7 +9,6 @@ import { registerGetComposables } from "./tools/get-composables.js";
 import { registerGetCssTokens } from "./tools/get-css-tokens.js";
 import { registerGetVlossomOptions } from "./tools/get-vlossom-options.js";
 import { registerGetChangelog } from "./tools/get-changelog.js";
-import { registerCheckVlossomSetup } from "./tools/check-vlossom-setup.js";
 import { registerCheckGitHubToken } from "./tools/check-github-token.js";
 import { registerSetGitHubToken } from "./tools/set-github-token.js";
 import { registerClarifyIntent } from "./tools/clarify-intent.js";
@@ -86,7 +85,7 @@ NEVER write a freehand numbered menu yourself — always call clarify_intent so 
 - To file a GitHub issue: check_github_token → set_github_token (if needed) → report_issue (draft=true) → report_issue
 - To validate a user's project setup: validate_project_setup (pass package.json content)
 - To get migration guidance between versions: get_migration_guide
-- To check version / what changed: get_changelog first, then check_vlossom_setup if the user has a project
+- To check version / what changed: get_changelog first, then validate_project_setup if the user has a project
 
 Always prefer search_components when the user describes a use case rather than naming a specific component.
 
@@ -132,32 +131,34 @@ or get_component. If unsure whether a component exists, call search_components f
 `;
 
 export function createServer(): McpServer {
-    const server = new McpServer({ name: "vlossom-mcp", version }, { instructions: INSTRUCTIONS });
+  const server = new McpServer(
+    { name: "vlossom-mcp", version },
+    { instructions: INSTRUCTIONS },
+  );
 
-    registerClarifyIntent(server);
-    registerGetUsageExamples(server);
-    registerListComponents(server);
-    registerGetComponentSource(server);
-    registerGetDirective(server);
-    registerGetComposables(server);
-    registerGetCssTokens(server);
-    registerGetVlossomOptions(server);
-    registerGetChangelog(server);
-    registerCheckVlossomSetup(server);
-    registerGetComponent(server);
-    registerSearchComponents(server);
+  registerClarifyIntent(server);
+  registerGetUsageExamples(server);
+  registerListComponents(server);
+  registerGetComponentSource(server);
+  registerGetDirective(server);
+  registerGetComposables(server);
+  registerGetCssTokens(server);
+  registerGetVlossomOptions(server);
+  registerGetChangelog(server);
+  registerGetComponent(server);
+  registerSearchComponents(server);
 
-    registerCheckGitHubToken(server);
-    registerSetGitHubToken(server);
-    registerReportIssue(server);
-    registerGenerateComponentCode(server);
-    registerGenerateStyleSet(server);
+  registerCheckGitHubToken(server);
+  registerSetGitHubToken(server);
+  registerReportIssue(server);
+  registerGenerateComponentCode(server);
+  registerGenerateStyleSet(server);
 
-    registerValidateComponentUsage(server);
-    registerRecordExternalStep(server);
+  registerValidateComponentUsage(server);
+  registerRecordExternalStep(server);
 
-    registerValidateProjectSetup(server);
-    registerGetMigrationGuide(server);
+  registerValidateProjectSetup(server);
+  registerGetMigrationGuide(server);
 
-    return server;
+  return server;
 }

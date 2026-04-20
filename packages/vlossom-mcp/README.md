@@ -92,10 +92,10 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 
 ### Setup & Versioning
 
-| Tool                  | Description                                                                              |
-| --------------------- | ---------------------------------------------------------------------------------------- |
-| `check_vlossom_setup` | Checks whether an installed version is up-to-date and returns a setup checklist          |
-| `get_changelog`       | Returns bundled Vlossom version history with breaking changes, features, and fixes        |
+| Tool                     | Description                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `validate_project_setup` | Verifies Vlossom setup via package.json or version string; detects outdated version, missing peer deps, UI library conflicts |
+| `get_changelog`          | Returns bundled Vlossom version history with breaking changes, features, and fixes        |
 
 ### GitHub Issues
 
