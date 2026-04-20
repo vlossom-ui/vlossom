@@ -27,12 +27,15 @@ const SETUP_CHECKLIST: SetupCheckItem[] = [
     docs: "https://github.com/vlossom-ui/vlossom#requirements",
   },
   {
-    step: "Register the plugin in main.ts: import { createVlossom } from 'vlossom'; app.use(createVlossom({}))",
+    step:
+      "Register the plugin in main.ts with the required `components` option: " +
+      "import { createVlossom, VlossomComponents } from 'vlossom'; " +
+      "app.use(createVlossom({ components: VlossomComponents }))",
     required: true,
     docs: "https://github.com/vlossom-ui/vlossom#setup",
   },
   {
-    step: "Import Vlossom CSS in main.ts: import 'vlossom/dist/vlossom.css'",
+    step: "Import Vlossom CSS in main.ts: import 'vlossom/styles'",
     required: true,
     docs: "https://github.com/vlossom-ui/vlossom#css",
   },

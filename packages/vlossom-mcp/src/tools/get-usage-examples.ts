@@ -9,20 +9,28 @@ const GUIDE = {
       "npm install vlossom",
       "// main.ts",
       "import { createApp } from 'vue';",
-      "import { createVlossom } from 'vlossom';",
-      "import 'vlossom/dist/style.css';",
+      "import { createVlossom, VlossomComponents } from 'vlossom';",
+      "import 'vlossom/styles';",
       "",
       "const app = createApp(App);",
-      "const vlossom = createVlossom();",
+      "const vlossom = createVlossom({",
+      "    components: VlossomComponents, // REQUIRED — register all 50+ components",
+      "});",
       "app.use(vlossom);",
       "app.mount('#app');",
     ],
-    note: "Vlossom is currently in pre-release (2.0.0-beta.1). Call get_changelog to check the latest version.",
+    note: "Vlossom is currently in pre-release (2.0.0-beta.1). `components` is a required option — passing VlossomComponents registers every component. Call get_changelog to check the latest version.",
   },
 
   configuration: {
     title: "Global Configuration (createVlossom options)",
     options: [
+      {
+        name: "components",
+        required: true,
+        description:
+          "REQUIRED. Component registry — pass VlossomComponents for all 50+ components, or a partial map for tree-shaking",
+      },
       { name: "theme", description: "Set 'light' or 'dark' theme globally" },
       {
         name: "colorScheme",
@@ -34,11 +42,12 @@ const GUIDE = {
         description: "Register named StyleSets for reuse across components",
       },
       {
-        name: "globalColorScheme",
-        description: "Apply a single color scheme to all components",
+        name: "radiusRatio",
+        description:
+          "Scales all component border radii (0 = sharp, 1 = default, 2 = very rounded)",
       },
     ],
-    note: "Call get_vlossom_options for full configuration API details.",
+    note: "Call get_vlossom_options for full configuration API details. Note: `components` must be provided — createVlossom({}) throws at install time.",
   },
 
   quickStart: {
@@ -51,7 +60,7 @@ const GUIDE = {
         <vs-button @click="submit" primary>Submit</vs-button>
     </vs-page>
 </template>`,
-    note: "All 50+ components are globally registered via createVlossom(). No individual imports needed.",
+    note: "When `components: VlossomComponents` is passed to createVlossom(), all 50+ components become globally available. No individual imports needed.",
   },
 
   sellingPoints: {

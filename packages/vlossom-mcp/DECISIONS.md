@@ -4,6 +4,52 @@
 
 ---
 
+## 2026-04-20 — createVlossom() 가이드 교정 (issue #399, v0.12.3)
+
+**Fixed**: vlossom-mcp의 `createVlossom()` 사용 가이드가 실제 `vlossom@2.0.0-beta.1`의 동작과 두 가지 지점에서 불일치했던 것을 교정.
+
+### 교정 내용
+
+1. **`components` 옵션이 필수임을 명시**
+   - `packages/vlossom/src/declaration/types.ts`의 `VlossomOptions.components: { [key: string]: Component }` (required, `?` 없음)
+   - 누락 시 plugin install 단계에서 `Object.entries(options.components)`가 `Cannot convert undefined or null to object`를 던짐
+   - 이전 가이드는 `createVlossom({ theme: 'dark' })`처럼 components 없이 호출하는 예시를 여러 도구에 걸쳐 사용했음
+
+2. **CSS import 경로 교정: `vlossom/dist/*.css` → `vlossom/styles`**
+   - `packages/vlossom/package.json` exports 실제 항목: `"./styles": "./dist/vlossom.css"`
+   - `vlossom/dist/style.css`나 `vlossom/dist/vlossom.css`는 exports 맵에 정의되지 않은 내부 경로로, subpath import 정책에 따라 실패
+
+### Files changed
+
+- `src/tools/get-vlossom-options.ts`
+  - `VLOSSOM_OPTIONS`에 `components` 항목 추가 (`required: true`, `default: "— (required)"`)
+  - 나머지 옵션들도 `required: false` 명시
+  - 모든 example에 `components: VlossomComponents` 포함
+  - `FULL_EXAMPLE`에 `VlossomComponents` import + `import 'vlossom/styles'` 추가
+- `src/tools/get-usage-examples.ts`
+  - `GUIDE.installation.steps`에서 `createVlossom({ components: VlossomComponents })` 형태로 수정
+  - `import 'vlossom/dist/style.css'` → `import 'vlossom/styles'`
+  - `GUIDE.configuration.options`에 `components` 항목(required) 추가, `globalColorScheme`(존재하지 않는 옵션) 제거
+  - `GUIDE.quickStart.note`를 VlossomComponents 맥락으로 재작성
+- `src/tools/validate-project-setup.ts`
+  - `SETUP_CHECKLIST`의 plugin 등록 step을 `createVlossom({ components: VlossomComponents })` 형태로 수정
+  - CSS step을 `import 'vlossom/styles'`로 수정
+
+### 근거
+
+- 실제 `packages/vlossom/playground/playground.ts` 사용 패턴 그대로 반영:
+  ```ts
+  import { createVlossom, VlossomComponents } from 'vlossom';
+  import 'vlossom/styles';
+  app.use(createVlossom({ components: VlossomComponents, ... }));
+  ```
+
+**호환성**: 0.12.2 → **0.12.3** patch bump. 응답 스키마 변경 없음 (field 추가 + 설명 문자열 수정), 옵션 설명만 정정.
+
+**Fixes**: https://github.com/vlossom-ui/vlossom/issues/399
+
+---
+
 ## 2026-04-20 — get_usage_examples section 파라미터 추가 (v0.12.2)
 
 **Added**: `get_usage_examples`에 `section` 선택 파라미터를 추가해 온보딩 가이드의 특정 섹션만 반환할 수 있게 함. 기본값은 `"all"`(기존과 동일), 선택 시 해당 한 섹션만 포함.
