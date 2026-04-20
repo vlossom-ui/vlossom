@@ -3,7 +3,7 @@
         tag="tbody"
         v-model="displayedBodyCells"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
-        :class="TABLE_DRAG_WRAPPER_CLASS"
+        :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
         :item-key="getRowId"
         :disabled="loading"
         @update="handleDragUpdate"

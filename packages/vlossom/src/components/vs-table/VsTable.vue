@@ -1,10 +1,14 @@
 <template>
     <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
-        <div v-if="search || $slots['toolbar']" class="vs-table-toolbar">
-            <div class="vs-table-toolbar-start" :style="componentStyleSet.toolbar">
+        <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
+            <vs-responsive
+                class="vs-table-toolbar-start"
+                :grid="{ sm: 12, md: search ? 10 : 12 }"
+                :style="componentStyleSet.toolbar"
+            >
                 <slot name="toolbar" />
-            </div>
-            <div v-if="search" class="vs-table-search-input">
+            </vs-responsive>
+            <vs-responsive v-if="search" class="vs-table-search-input" :grid="{ sm: 12, md: 2 }">
                 <vs-search-input
                     ref="searchInputRef"
                     v-bind="searchOptions"
@@ -12,8 +16,8 @@
                     :disabled="loading"
                     @search="searchRows"
                 />
-            </div>
-        </div>
+            </vs-responsive>
+        </vs-grid>
 
         <div
             v-if="useStickyHeader"
@@ -117,6 +121,8 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS 
 import type { VsSearchInputRef } from '../vs-search-input/types';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
+import VsGrid from '@/components/vs-grid/VsGrid.vue';
+import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsTableHeader from './VsTableHeader.vue';
 import VsTableBody from './VsTableBody.vue';
 import VsTablePagination from './VsTablePagination.vue';
@@ -125,7 +131,7 @@ const componentName = VsComponent.VsTable;
 
 export default defineComponent({
     name: componentName,
-    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination },
+    components: { VsTableHeader, VsTableBody, VsSearchInput, VsTablePagination, VsGrid, VsResponsive },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),

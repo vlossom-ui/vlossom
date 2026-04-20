@@ -120,6 +120,8 @@ const selected = ref([]);
 ```typescript
 interface VsTableStyleSet {
     component?: CSSProperties;
+    toolbar?: CSSProperties;
+    search?: VsSearchInputStyleSet;
     header?: CSSProperties;
     row?: CSSProperties;
     selectedRow?: CSSProperties;
