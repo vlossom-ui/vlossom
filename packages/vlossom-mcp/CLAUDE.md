@@ -366,18 +366,22 @@ Current phase: **0.12.x** (Phase 3 — code generation tools). Each tool commit 
 
 **Do NOT create git tags for vlossom-mcp releases.** The npm registry is the source of truth for this package. This monorepo only tags the root `vlossom` package (`vlossom-v*`). Creating additional `v*` tags for vlossom-mcp pollutes the shared tag namespace and confuses tooling that expects `vlossom-v*`.
 
-- Do not run `git push --tags`
-- Do not run `npm version` without `--no-git-tag-version`; `npm run release:*` currently calls `npm version` which creates a local tag — delete it (`git tag -d vX.Y.Z`) before pushing if it slipped through
+- Never run `git push --tags`
+- `npm run release:*` already passes `--no-git-tag-version` to `npm version`, so neither a git tag nor an auto-commit is created — the version bump lands in your working tree and you commit it yourself afterwards
 
 ```bash
 cd packages/vlossom-mcp
 npm view vlossom-mcp versions --json      # verify not already published
 npm run generate && npm run build
-pnpm publish --otp=<your-otp>             # publish current package.json version directly
-# or, if release:* scripts are used, delete the auto-created tag before pushing:
-#   npm run release:patch && git tag -d "v$(node -p "require('./package.json').version")"
+npm run release:patch                      # bumps package.json in-place (no git tag, no commit) and runs pnpm publish
 cd ../..
+git add packages/vlossom-mcp/package.json
+git commit -m "chore(mcp): bump to <new-version>"
 git push                                   # push commits only — NEVER --tags
+
+# Alternative — skip release:* and publish the current package.json version directly:
+#   cd packages/vlossom-mcp
+#   pnpm publish --otp=<your-otp>
 ```
 
 ### File Structure

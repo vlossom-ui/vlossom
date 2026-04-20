@@ -248,18 +248,22 @@ npm run build       # TypeScript 컴파일
 
 **vlossom-mcp 릴리즈에 git tag를 만들지 마세요.** npm 레지스트리가 이 패키지의 SoT(source of truth)입니다. 이 모노레포는 루트 `vlossom` 패키지만 `vlossom-v*` 형식으로 태깅하며, 추가로 `v*` 태그를 만들면 공유 태그 네임스페이스가 오염되고 `vlossom-v*`를 기대하는 툴링이 혼란됩니다.
 
-- `git push --tags` 금지
-- `npm version`은 기본적으로 로컬 태그를 생성함 — `npm run release:*`가 `npm version`을 호출하므로, 슬쩍 만들어진 태그가 있으면 push 전에 반드시 삭제(`git tag -d vX.Y.Z`)
+- `git push --tags` 절대 금지
+- `npm run release:*`는 이미 `npm version`에 `--no-git-tag-version`을 전달하므로 git tag도, 자동 commit도 생성되지 않음 — 버전 bump는 working tree에 그대로 남고, 이후 직접 commit해야 함
 
 ```bash
 cd packages/vlossom-mcp
 npm view vlossom-mcp versions --json      # 이미 publish되지 않았는지 확인
 npm run generate && npm run build
-pnpm publish --otp=<your-otp>             # package.json의 현재 version을 바로 publish
-# release:* 스크립트를 사용한 경우, 자동 생성된 태그를 push 전에 삭제:
-#   npm run release:patch && git tag -d "v$(node -p "require('./package.json').version")"
+npm run release:patch                      # package.json 버전만 올리고 (tag/commit 없음) pnpm publish 실행
 cd ../..
+git add packages/vlossom-mcp/package.json
+git commit -m "chore(mcp): bump to <new-version>"
 git push                                   # commit만 push — NEVER --tags
+
+# 또는 release:* 스크립트를 건너뛰고 현재 package.json 버전을 바로 publish:
+#   cd packages/vlossom-mcp
+#   pnpm publish --otp=<your-otp>
 ```
 
 ### 파일 구조

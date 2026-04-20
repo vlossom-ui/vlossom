@@ -13,9 +13,9 @@
     "start": "node dist/index.js",
     "generate": "node scripts/generate-components.mjs && node scripts/build-meta.mjs && node scripts/build-sources.mjs && node scripts/build-tokens.mjs && node scripts/build-changelog.mjs",
     "prepublishOnly": "npm run generate && npm run build",
-    "release:patch": "npm version patch && pnpm publish",
-    "release:minor": "npm version minor && pnpm publish",
-    "release:major": "npm version major && pnpm publish"
+    "release:patch": "npm version patch --no-git-tag-version && pnpm publish",
+    "release:minor": "npm version minor --no-git-tag-version && pnpm publish",
+    "release:major": "npm version major --no-git-tag-version && pnpm publish"
   },
   "files": [
     "dist",
