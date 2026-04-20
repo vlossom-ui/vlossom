@@ -45,6 +45,9 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => {
             return {
                 loading: {
+                    variables: {
+                        color: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
+                    },
                     component: {
                         width: '30%',
                         height: '60%',
