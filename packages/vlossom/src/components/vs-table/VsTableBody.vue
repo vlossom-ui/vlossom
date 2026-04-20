@@ -27,8 +27,13 @@
         <tr class="vs-table-body-row">
             <td class="vs-table-td vs-table-no-data-cell" colspan="100%">
                 <div class="vs-table-no-data">
-                    <vs-render :content="tableIcons.noData" />
-                    <p class="vs-table-no-data-text">NO DATA</p>
+                    <template v-if="loading">
+                        <vs-loading />
+                    </template>
+                    <template v-else>
+                        <vs-render :content="tableIcons.noData" />
+                        <p class="vs-table-no-data-text">NO DATA</p>
+                    </template>
                 </div>
             </td>
         </tr>
@@ -44,12 +49,10 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
 
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
-        VsRender,
         VsTableBodyRow,
         draggable,
     },
