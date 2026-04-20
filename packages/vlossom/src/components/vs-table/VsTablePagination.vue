@@ -19,6 +19,7 @@
         </div>
 
         <vs-pagination
+            v-if="totalPages"
             v-model="page"
             :color-scheme
             :disabled="loading"
