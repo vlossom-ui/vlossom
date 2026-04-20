@@ -69,7 +69,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ----------------------------- | --------------------------------------------------------------------------- |
 | `clarify_intent`              | 자유형 또는 모호한 쿼리를 명확화합니다. 의도가 불분명할 때 검색 전에 호출합니다 |
 | `list_components`             | 모든 Vlossom 컴포넌트의 이름과 설명을 반환합니다                            |
-| `search_components`           | 이름, 설명, props 전체를 대상으로 키워드 검색합니다                         |
+| `search_components`           | 키워드·유스케이스로 검색해 경량 `ComponentSummary[]`를 반환합니다 (상세는 `get_component` 호출) |
 | `suggest_components`          | 자연어 사용 사례를 기반으로 컴포넌트를 추천합니다                           |
 | `get_component`               | 컴포넌트의 props, StyleSet, 이벤트, 슬롯, 메서드를 반환합니다               |
 | `compare_components`          | 두 컴포넌트를 나란히 비교하고 차이점과 추천을 제공합니다                    |

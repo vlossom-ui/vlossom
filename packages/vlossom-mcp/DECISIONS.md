@@ -4,6 +4,41 @@
 
 ---
 
+## 2026-04-20 — search_components 응답 경량화: `ComponentMeta[]` → `ComponentSummary[]` (v0.10.0 breaking)
+
+**Changed**: `search_components`가 `components[]` / `results[]` 필드에 전체 메타(props/events/slots/methods/styleSet.raw)를 담아 반환하던 것을 **경량 `ComponentSummary`**(name, kebabName, description, availableVersion, propsCount, hasVModel, styleSetChildRefs)만 반환하도록 변경.
+
+**Why — 토큰 중복 제거 (G3 단일 책임 관점)**: `search_components`의 기존 응답이 `get_component`의 반환값 대비 ~96% 중복. 실측 벤치마크(vs shadcn MCP, 2026-04-20)에서 search 한 번 호출에 ~25KB가 소비되는데, 대부분 LLM이 실제로 쓰지 않는 5~6개 후보 컴포넌트의 풀 메타였음. 결과적으로 `get_component` 후속 호출이 무의미해지고("이미 다 받았는데?"), G3(One tool, one responsibility) 원칙에 위배.
+
+**실측 절감 (4 시나리오)**:
+
+| Scenario           | BEFORE  | AFTER | 절감율   |
+| ------------------ | ------: | ----: | -------- |
+| Login Form (7)     |  24,450 | 4,033 | **-83.5%** |
+| Profile Edit (8)   |  21,094 | 4,160 | **-80.3%** |
+| Admin Dashboard (7)|  17,830 | 3,778 | **-78.8%** |
+| Modal Dialog (8)   |  24,606 | 4,276 | **-82.6%** |
+
+평균 **-81.3%**. LLM은 실제 필요한 2~3개에 대해서만 `get_component`를 호출해 풀 메타를 받으면 됨.
+
+**Alternatives considered**:
+
+- `detail: "summary" | "full"` 파라미터로 옵트인 (양립) → 기각. 두 모드 유지 비용이 크고, LLM이 매번 파라미터 선택을 고민해야 함. G3 관점에서도 두 책임이 한 도구에 남음.
+- 전체 메타를 유지하되 `maxComponents` 상한을 두는 방식 → 기각. 근본 원인(풀 메타 덤프)을 해결하지 못함. 상한 5로 제한해도 여전히 ~15KB.
+- 서버가 `get_component`를 자동 호출해 상위 3개만 depth-2로 돌려주는 옵션 → 기각. 결정 7("compare_components 제거 — LLM이 직접 호출하는 게 더 유연") 철학과 충돌.
+
+**Interface**:
+- useCase 경로: `{ components: ComponentSummary[], reasoning, total, tryNext, avoid, next_actions, _meta }`
+- query 경로: `{ results: ComponentSummary[], total, expandedTerms?, avoid, next_actions, _meta }`
+- `avoid` 배열에 새 항목 추가: *"Do not infer props/events/StyleSet from these summaries — call get_component for the ones you will actually use"*
+- `next_actions`의 `get_component` reason을 **"REQUIRED — ..."**로 격상해 LLM이 반드시 후속 호출하도록 유도
+
+**Files changed**: `src/types/meta.ts` (ComponentSummary 추가), `src/tools/search-components.ts` (toSummary + reasoning/avoid/next_actions 조정), tool description(H1) 재작성.
+
+**호환성**: pre-1.0 (0.x) 규약에 따라 0.9.18 → **0.10.0** major bump. 외부 소비자가 `components[i].props` 등에 접근하고 있었다면 `get_component(name)`로 이주 필요.
+
+---
+
 ## 2026-04-08 — Tool consolidation round 2: 22 → 18 tools + rules refinement
 
 **Merged**:

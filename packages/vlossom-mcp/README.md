@@ -69,7 +69,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | ----------------------------- | ---------------------------------------------------------------------------------------- |
 | `clarify_intent`              | Disambiguates free-form or ambiguous queries; call this before searching when intent is unclear |
 | `list_components`             | Returns the full list of Vlossom components with names and descriptions                  |
-| `search_components`           | Searches by a specific component name or concrete keyword (e.g. `button`, `drawer`)     |
+| `search_components`           | Searches by keyword or use case; returns lightweight `ComponentSummary[]` — call `get_component` for details |
 | `suggest_components`          | Recommends components based on a natural-language use case                               |
 | `get_component`               | Returns props, StyleSet, events, slots, and methods for a component                      |
 | `compare_components`          | Compares two components side-by-side with differences and recommendations                |
