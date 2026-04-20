@@ -12,7 +12,6 @@
         &.vs-label {
             @apply wrap-break-word whitespace-nowrap;
 
-            flex-basis: 20%;
             align-items: center;
             border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             background-color: var(--vs-cs-bg);
@@ -69,7 +68,7 @@
             @apply justify-start;
 
             &.vs-label {
-                @apply basis-auto border-r-0;
+                @apply border-r-0;
                 border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             }
         }
@@ -91,7 +90,7 @@
                 @apply justify-start;
 
                 &.vs-label {
-                    @apply basis-auto border-r-0;
+                    @apply border-r-0;
                     border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
                 }
             }
