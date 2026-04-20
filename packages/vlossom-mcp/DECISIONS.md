@@ -4,6 +4,58 @@
 
 ---
 
+## 2026-04-20 — generate_component_code rules 경량화: applicable 기본값 + rulesFormat 옵션 (v0.12.1)
+
+**Changed**: `generate_component_code`가 항상 12개 CODING_RULES 전부를 덤프하던 것을 기본적으로 **컴포넌트 조합에 실제 적용되는 rule만** 반환하도록 변경.
+
+**New interface**:
+
+```ts
+generate_component_code({
+  description, components, hasBusinessLogic,
+  rulesFormat?: "applicable" | "full" // default: "applicable"
+})
+
+// 응답 추가 필드
+{ applicableRules: string[], rulesFormat: "applicable" | "full", totalRuleCount: number, ... }
+```
+
+**Why — 맥락 무관 rule 제거**: 기존 구현은 디스플레이 카드(폼 없음·비즈니스 로직 없음) 요청에도 R05~R10(폼·컴포저블 rule) 전부를 포함해 전송. 이 컴포넌트 조합에는 전혀 해당 없는 규칙으로, 토큰만 소비하고 LLM 집중을 흐트러뜨림.
+
+**판정 로직 (`determineApplicableRuleIds`)**:
+
+- `R01~R04` (styling): 항상
+- `R05~R08` (form/v-model/validation/grid): VsForm 또는 폼 입력 계열 컴포넌트(VsInput, VsSelect, VsCheckbox 등) 포함 시
+- `R09~R10` (plugin/composable): `hasBusinessLogic: true` 시
+- `R11~R12` (design): 항상
+
+**실측 절감 (payload 기준)**:
+
+| 시나리오                  |  full | applicable | 절감       |
+| ------------------------- | ----: | ---------: | ---------- |
+| Login Form (form)         | 4,439 |      3,751 | -15.5%     |
+| Profile Edit (form + biz) | 4,439 |      4,439 | 0%         |
+| Admin Dashboard (biz)     | 4,439 |      4,439 | 0%         |
+| Display Card (no form)    | 4,439 |      2,615 | **-41.1%** |
+
+복잡 시나리오(폼 + 비즈니스 로직)에서는 모든 rule이 실제 적용되어 절감이 없고, 단순 display는 최대 -41% 절감.
+
+**Alternatives considered**:
+
+- 기본값을 `"full"`로 두고 `"applicable"`을 옵트인 → 기각. 기본값이 옵트인일 때 LLM이 이 파라미터를 발견해 직접 선택하지 않아 자동 절감이 실현되지 않음. 기본값이 `"applicable"`이어도 `rules` 필드 형식(배열의 항목 스키마)은 동일하므로 하위 호환이 유지됨.
+- `rules` 응답에 `applicable: boolean` 필드를 추가하고 항상 12개 반환 → 기각. 크기 절감 없음. "LLM이 필터링하라"는 지시는 G1(서버가 결정 대신하지 않음) 관점에선 유리하나, 실제 절감이 목표임.
+- 비즈니스 로직과 폼 맥락에 기반한 정적 판정 대신 description을 자연어 분류 → 기각. G1 위반 (서버가 LLM 판단 대체).
+
+**Non-breaking 판정**: `rules[]` 배열의 스키마는 동일(`{id, category, severity, rule}`). 항목 수만 변동. `rules.length === 12`를 가정한 소비자가 아니라면 호환. 추가 필드 `applicableRules`, `rulesFormat`, `totalRuleCount`는 모두 신규 필드. 따라서 patch bump.
+
+**Files changed**:
+
+- `src/tools/generate-component-code.ts` — `determineApplicableRuleIds`, `rulesFormat` 파라미터, 응답 구조 확장
+
+**호환성**: 0.12.0 → **0.12.1** patch bump.
+
+---
+
 ## 2026-04-20 — get_migration_guide → get_changelog 병합 (v0.12.0 breaking)
 
 **Merged**: `get_migration_guide` 도구를 제거하고, 그 MIGRATION_NOTES 데이터를 `get_changelog`로 이관. `get_changelog` 응답의 각 버전 엔트리에 해당 버전의 `migrationSteps?: string[]` 필드가 자동 포함됨.
