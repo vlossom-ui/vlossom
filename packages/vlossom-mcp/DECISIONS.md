@@ -4,6 +4,52 @@
 
 ---
 
+## 2026-04-20 — get_usage_examples section 파라미터 추가 (v0.12.2)
+
+**Added**: `get_usage_examples`에 `section` 선택 파라미터를 추가해 온보딩 가이드의 특정 섹션만 반환할 수 있게 함. 기본값은 `"all"`(기존과 동일), 선택 시 해당 한 섹션만 포함.
+
+**New interface**:
+
+```ts
+get_usage_examples({
+  section?: "all" | "install" | "config" | "quickstart" | "selling-points" | "design-tips" | "mcp-capabilities"
+  // default: "all"
+})
+
+// 응답에 신규 필드 section 추가 — 호출자가 실제로 받은 섹션 식별
+```
+
+**Why — 사용자 맥락에 맞는 최소 정보**: 사용자가 "설치 어떻게 해?"라고만 물었을 때 6개 섹션(install/config/quickstart/selling-points/design-tips/mcp-capabilities) 전부를 돌려주는 건 낭비. 약 5.4KB 중 필요한 건 0.5KB뿐.
+
+**실측 절감 (섹션 단일 선택 시)**:
+
+| section            | chars | 절감 (full 5,374 기준) |
+| ------------------ | ----: | ---------------------: |
+| `install`          |   506 |                   -91% |
+| `config`           |   638 |                   -88% |
+| `quickstart`       |   397 |               **-93%** |
+| `selling-points`   | 1,546 |                   -71% |
+| `design-tips`      |   987 |                   -82% |
+| `mcp-capabilities` | 1,300 |                   -76% |
+
+평균 **-83%**. 필요한 섹션만 집중 반환.
+
+**Alternatives considered**:
+
+- 기본값을 `"install"` 또는 유사한 단일 섹션으로 → 기각. 전체 온보딩이 필요한 첫 사용자에게 원래 제공되던 경험이 깨짐. 대신 호출자(LLM)가 사용자 의도에 맞게 section을 선택하도록 설계.
+- section 값 여러 개를 배열로 받기 (`sections: string[]`) → 기각. 복잡도만 추가. 현재 섹션 총량이 크지 않아 단일값 or all 두 모드면 충분.
+- 섹션 대신 키워드 검색(`filter: string`) → 기각. 명시적 enum이 LLM 예측·문서화에 더 유리.
+
+**Non-breaking 판정**: 기본값 `"all"`이 기존 동작 보존. 응답에 추가되는 `section` 필드는 신규 키. 기존 소비자가 `guide.installation`에 접근하던 코드는 `section="all"`일 때 동일하게 동작.
+
+**Files changed**:
+
+- `src/tools/get-usage-examples.ts` — zod import 추가, `GuideSection` 타입, `pickGuide()`, `section` 파라미터, 응답 필드 확장
+
+**호환성**: 0.12.1 → **0.12.2** patch bump.
+
+---
+
 ## 2026-04-20 — generate_component_code rules 경량화: applicable 기본값 + rulesFormat 옵션 (v0.12.1)
 
 **Changed**: `generate_component_code`가 항상 12개 CODING_RULES 전부를 덤프하던 것을 기본적으로 **컴포넌트 조합에 실제 적용되는 rule만** 반환하도록 변경.
