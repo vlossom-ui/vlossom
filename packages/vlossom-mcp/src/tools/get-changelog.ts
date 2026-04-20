@@ -8,7 +8,7 @@ import { recordStep, textResponse } from "../utils/mcp-response.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
-interface ChangelogEntry {
+interface ChangelogEntryRaw {
   version: string;
   date: string;
   prerelease: boolean;
@@ -18,13 +18,32 @@ interface ChangelogEntry {
   notes?: string;
 }
 
+interface ChangelogEntry extends ChangelogEntryRaw {
+  /** Migration steps for major breaking versions (merged from the former get_migration_guide tool). */
+  migrationSteps?: string[];
+}
+
 interface ChangelogData {
   latestStable: string | null;
   latestPrerelease: string | null;
   latestVersion: string;
   currentVersion: string;
-  entries: ChangelogEntry[];
+  entries: ChangelogEntryRaw[];
 }
+
+/**
+ * Per-version migration steps. Merged here from the former get_migration_guide tool
+ * so version info, breaking changes, and migration guidance live in one place.
+ */
+const MIGRATION_STEPS: Record<string, string[]> = {
+  "2.0.0-beta.1": [
+    "Replace flat StyleSet properties with { variables: { ... }, component: CSSProperties }",
+    "Use get_component to check the new StyleSet interface for each component",
+    "Use generate_style_set to scaffold new StyleSet objects",
+    "Replace size prop usage with StyleSet variables or CSS tokens",
+    "Update <style> blocks: move styles to :style-set prop (no .vs-* selector targeting)",
+  ],
+};
 
 let cache: ChangelogData | null = null;
 
@@ -55,15 +74,18 @@ function semverLte(a: string, b: string): boolean {
   return semverGte(b, a);
 }
 
+function enrichWithMigration(entry: ChangelogEntryRaw): ChangelogEntry {
+  const steps = MIGRATION_STEPS[entry.version];
+  return steps ? { ...entry, migrationSteps: steps } : entry;
+}
+
 export function registerGetChangelog(server: McpServer): void {
   server.tool(
     "get_changelog",
     "No prerequisite needed. " +
-      "Call this when the user asks about the current Vlossom version, what changed, how to migrate, " +
-      "or whether a stable release is available. " +
-      "Returns version summary (currentVersion, latestStable, latestPrerelease) and changelog entries. " +
-      "Pairs with validate_project_setup: when setup check reports an outdated version, " +
-      "call get_changelog(from: currentVersion) to show what changed since then.",
+      "Call this when the user asks about the current Vlossom version, what changed, or how to migrate between versions. " +
+      "Returns version summary (currentVersion, latestStable, latestPrerelease) and changelog entries with breaking changes, features, fixes, and migrationSteps (when applicable). " +
+      "Pairs with validate_project_setup: when setup check reports an outdated version, call get_changelog(from: currentVersion) to show migration guidance.",
     {
       from: z
         .string()
@@ -121,11 +143,19 @@ export function registerGetChangelog(server: McpServer): void {
       if (from) entries = entries.filter((e) => semverGte(e.version, from));
       entries = entries.slice(0, limit);
 
+      const enrichedEntries: ChangelogEntry[] =
+        entries.map(enrichWithMigration);
+      const hasMigrationGuidance = enrichedEntries.some(
+        (e) => e.migrationSteps,
+      );
+
       const label = from
         ? `Changelog from ${from}`
         : `Latest ${limit} versions`;
       const meta = recordStep("get_changelog", label, Date.now() - start, {
-        summary: `${entries.length} versions`,
+        summary: hasMigrationGuidance
+          ? `${enrichedEntries.length} versions (+migration)`
+          : `${enrichedEntries.length} versions`,
       });
 
       return textResponse(
@@ -136,13 +166,27 @@ export function registerGetChangelog(server: McpServer): void {
           isPrerelease:
             data.latestStable === null ||
             data.currentVersion !== data.latestStable,
-          versions: entries,
+          versions: enrichedEntries,
           next_actions: [
             {
               tool: "validate_project_setup",
               reason:
                 "verify your installation status after reviewing the changelog",
             },
+            {
+              tool: "get_component",
+              reason:
+                "check the updated StyleSet interface for a specific component after migration",
+            },
+            {
+              tool: "generate_style_set",
+              reason:
+                "generate a new StyleSet scaffold to adopt the new system",
+            },
+          ],
+          avoid: [
+            "Do not assume old StyleSet property names still work after a major version bump — always check the current interface",
+            "Do not mix old flat StyleSet syntax with the new variables/component structure",
           ],
         },
         meta,

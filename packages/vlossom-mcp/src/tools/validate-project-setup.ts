@@ -104,7 +104,7 @@ export function registerValidateProjectSetup(server: McpServer): void {
     "Call this when the user wants to verify their Vlossom setup is correct. " +
       "Supply packageJson for full dependency/conflict analysis, or version alone for a quick up-to-date check. " +
       "Returns setup status, version freshness (vs latest npm), peer deps, checklist, and detected issues. " +
-      "Then call get_changelog if outdated, or get_migration_guide when version issues are found.",
+      "Then call get_changelog to review changes and migrationSteps if outdated.",
     {
       packageJson: z
         .string()
@@ -296,11 +296,7 @@ export function registerValidateProjectSetup(server: McpServer): void {
                   {
                     tool: "get_changelog",
                     reason:
-                      "see what changed between your version and the latest",
-                  },
-                  {
-                    tool: "get_migration_guide",
-                    reason: "get guidance on fixing version or setup issues",
+                      "see what changed between your version and the latest, including migrationSteps",
                   },
                 ]
               : [

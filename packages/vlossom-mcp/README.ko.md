@@ -95,7 +95,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | 도구                     | 설명                                                                                                     |
 | ------------------------ | -------------------------------------------------------------------------------------------------------- |
 | `validate_project_setup` | package.json 또는 버전 문자열로 Vlossom 설정을 검증합니다. 구버전·피어 의존성 누락·UI 라이브러리 충돌 탐지 |
-| `get_changelog`          | 번들된 Vlossom 버전 히스토리를 반환합니다. 브레이킹 체인지와 기능을 포함합니다                            |
+| `get_changelog`          | Vlossom 버전 히스토리를 반환합니다. 브레이킹 체인지, 기능, 수정사항, 주요 버전의 `migrationSteps`를 포함 |
 
 ### GitHub 이슈
 

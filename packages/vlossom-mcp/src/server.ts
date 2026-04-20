@@ -19,7 +19,6 @@ import { registerGenerateStyleSet } from "./tools/generate-style-set.js";
 import { registerValidateComponentUsage } from "./tools/validate-component-usage.js";
 import { registerRecordExternalStep } from "./tools/record-external-step.js";
 import { registerValidateProjectSetup } from "./tools/validate-project-setup.js";
-import { registerGetMigrationGuide } from "./tools/get-migration-guide.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json") as { version: string };
@@ -83,9 +82,8 @@ NEVER write a freehand numbered menu yourself — always call clarify_intent so 
     2. get_component (check props/StyleSet for each)
     3. generate_component_code (generate code)
 - To file a GitHub issue: check_github_token → set_github_token (if needed) → report_issue (draft=true) → report_issue
-- To validate a user's project setup: validate_project_setup (pass package.json content)
-- To get migration guidance between versions: get_migration_guide
-- To check version / what changed: get_changelog first, then validate_project_setup if the user has a project
+- To validate a user's project setup: validate_project_setup (pass package.json content, or version alone)
+- To check version / what changed / migrate between versions: get_changelog (migrationSteps included for major versions), then validate_project_setup if the user has a project
 
 Always prefer search_components when the user describes a use case rather than naming a specific component.
 
@@ -158,7 +156,6 @@ export function createServer(): McpServer {
   registerRecordExternalStep(server);
 
   registerValidateProjectSetup(server);
-  registerGetMigrationGuide(server);
 
   return server;
 }

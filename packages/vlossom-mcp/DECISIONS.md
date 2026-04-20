@@ -4,6 +4,48 @@
 
 ---
 
+## 2026-04-20 — get_migration_guide → get_changelog 병합 (v0.12.0 breaking)
+
+**Merged**: `get_migration_guide` 도구를 제거하고, 그 MIGRATION_NOTES 데이터를 `get_changelog`로 이관. `get_changelog` 응답의 각 버전 엔트리에 해당 버전의 `migrationSteps?: string[]` 필드가 자동 포함됨.
+
+**New response shape (ChangelogEntry)**:
+
+```ts
+interface ChangelogEntry {
+  version: string;
+  date: string;
+  prerelease: boolean;
+  breaking: string[];
+  features: string[];
+  fixes: string[];
+  notes?: string;
+  migrationSteps?: string[]; // ← 신규 (2.0.0-beta.1 등 주요 버전에만)
+}
+```
+
+**Why — 데이터 이중화 제거**: `MIGRATION_NOTES`(수동 관리, `get-migration-guide.ts`)와 `changelog.json`(자동 생성)이 동일한 "버전별 변경사항" 도메인을 다루고 있었음. 한 도구·한 데이터 원천으로 합쳐 동기화 부담을 제거.
+
+**Why — 실사용 가치 낮음**: `get_migration_guide`의 하드코딩된 `MIGRATION_NOTES`에는 단 한 개 버전(`2.0.0-beta.1`)만 정의되어 있었음. 별도 도구로 유지할 만큼의 독립 데이터가 없음. CLAUDE.md "Adding a New Tool Checklist"의 "Duplicate?" 기준 위반.
+
+**Why — LLM UX 단순화**: 사용자가 "2.0으로 업그레이드하려면?"이라고 물으면 LLM이 `get_changelog`와 `get_migration_guide` 중 무엇을 부를지 모호했음. 단일 진입점으로 통합하면 분기 불필요.
+
+**Alternatives considered**:
+
+- `MIGRATION_STEPS`를 `changelog.json` 데이터로 직접 병합 (build-changelog.mjs 수정) → 기각. 수동 관리 데이터와 자동 생성 데이터의 경계를 유지하는 것이 더 안전. 현재 방식(`get-changelog.ts` 안에 하드코딩 상수)은 빌드 파이프라인 변경 없이 이행 가능.
+- `get_migration_guide`를 유지하고 `get_changelog`에도 migrationSteps를 병렬 노출 → 기각. 두 도구가 같은 정보를 중복 제공, G3 위반 유지.
+
+**Files changed**:
+
+- `src/tools/get-migration-guide.ts` — 삭제
+- `src/tools/get-changelog.ts` — `MIGRATION_STEPS` 상수 + `enrichWithMigration()` 매핑 + 응답 next_actions 확장
+- `src/server.ts` — import/등록 제거, INSTRUCTIONS에서 get_migration_guide 안내 줄 제거·통합
+- `src/tools/validate-project-setup.ts` — description/next_actions에서 `get_migration_guide` 참조 제거
+- README.md / README.ko.md — `get_changelog` 설명 1행 갱신
+
+**호환성**: 0.11.0 → **0.12.0** major bump. 외부에서 `get_migration_guide({ fromVersion, toVersion })` 호출하던 소비자는 `get_changelog({ from, to })`의 `versions[i].breaking` + `versions[i].migrationSteps`를 이용하도록 이주 필요.
+
+---
+
 ## 2026-04-20 — check_vlossom_setup → validate_project_setup 병합 (v0.11.0 breaking)
 
 **Merged**: `check_vlossom_setup` 도구를 제거하고, 그 기능을 `validate_project_setup`에 통합.
