@@ -1,5 +1,5 @@
 <template>
-    <tr :class="[classObj, stateClasses]" :style="rowStyle">
+    <tr :class="['vs-table-body-row', classObj, stateClasses]" :style="rowStyle">
         <vs-table-drag-cell :cells :rowIdx />
         <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
             <template #select="slotData">
@@ -8,6 +8,7 @@
         </vs-table-checkbox-cell>
         <template v-for="(cell, index) in cells" :key="cell.id">
             <td
+                class="vs-table-td"
                 :id="cell.id"
                 :style="getCellStyle(index)"
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
@@ -30,7 +31,7 @@
             </td>
         </template>
         <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        <td v-if="anyExpandable" class="vs-table-expanded-row">
+        <td v-if="anyExpandable" class="vs-table-td vs-table-expanded-row">
             <vs-table-expanded-panel :cells :rowIdx>
                 <template #expand="slotData">
                     <slot name="expand" v-bind="slotData" />

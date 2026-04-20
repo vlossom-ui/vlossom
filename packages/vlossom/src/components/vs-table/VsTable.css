@@ -5,11 +5,21 @@
 
     @apply relative w-full;
 
-    .vs-table-content {
-        @apply min-w-full overflow-x-auto;
+    /* ── Containers ── */
+    > .vs-table-toolbar {
+        @apply mb-2 items-end;
+        height: auto;
+
+        > .vs-table-toolbar-start {
+            min-width: 0;
+        }
+
+        > .vs-table-search-input {
+            @apply mt-2 flex items-end justify-end;
+        }
     }
 
-    .vs-table-sticky-wrapper {
+    > .vs-table-sticky-wrapper {
         @apply pointer-events-none sticky w-full overflow-hidden;
         z-index: var(--vs-table-sticky-header-z-index);
         padding-bottom: 1rem;
@@ -19,35 +29,79 @@
             box-shadow: 0 0 0.8rem 0 var(--vs-cs-shadow-color);
             background-color: var(--vs-no-color);
 
-            th {
+            .vs-table-th {
                 border-bottom: 1px solid var(--vs-cs-line);
             }
         }
     }
 
-    table {
+    > .vs-table-content {
+        @apply min-w-full overflow-x-auto;
+    }
+
+    /* ── Table structure ── */
+    .vs-table-table {
         @apply mx-auto min-w-full;
         border-collapse: separate;
         border-spacing: 0;
     }
 
-    tr {
+    .vs-table-header-row,
+    .vs-table-body-row {
         @apply grid;
     }
 
-    thead tr {
+    .vs-table-thead > .vs-table-header-row {
         border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-cs-bg-colored);
+    }
 
-        th {
-            grid-row: 1;
-            color: var(--vs-cs-font-colored);
-            font-weight: var(--vs-font-weight);
+    .vs-table-th {
+        @apply flex items-center;
+        grid-row: 1;
+        border-top: 1px solid var(--vs-cs-line);
+        padding: 0.6rem 0.8rem;
+        color: var(--vs-cs-font-colored);
+        font-weight: var(--vs-font-weight);
+        text-align: left;
+
+        &:first-child {
+            border-left: 1px solid var(--vs-cs-line);
+            border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        }
+
+        &:last-child {
+            border-right: 1px solid var(--vs-cs-line);
+            border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        }
+
+        > * {
+            @apply w-full;
         }
     }
 
-    tbody tr {
+    .vs-table-td {
+        @apply flex items-center;
+        grid-row: 1;
+        border-top: 1px solid var(--vs-cs-line);
+        padding: 0.6rem 0.8rem;
+        text-align: left;
+
+        > * {
+            @apply w-full;
+        }
+    }
+
+    .vs-table-th,
+    .vs-table-td {
+        * {
+            min-height: unset;
+        }
+    }
+
+    /* ── Body rows ── */
+    .vs-table-draggable-wrapper > .vs-table-body-row {
         @apply transition-colors duration-250 ease-in-out;
 
         &.vs-stated {
@@ -63,11 +117,11 @@
             border-bottom: 1px solid var(--vs-cs-line);
         }
 
-        > td:not(.vs-table-expanded-row) {
-            grid-row: 1;
+        &:hover {
+            background-color: var(--vs-cs-bg-area-colored);
         }
 
-        > td.vs-table-expanded-row {
+        > .vs-table-td.vs-table-expanded-row {
             grid-row: 2;
             grid-column: 1 / -1;
             border: none;
@@ -79,82 +133,23 @@
                 white-space: pre-wrap;
             }
         }
-
-        &:hover {
-            background-color: var(--vs-cs-bg-area-colored);
-        }
     }
 
-    th {
-        @apply flex items-center;
-        border-top: 1px solid var(--vs-cs-line);
-        padding: 0.6rem 0.8rem;
-        text-align: left;
-
-        &:first-child {
-            border-left: 1px solid var(--vs-cs-line);
-            border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        }
-        &:last-child {
-            border-right: 1px solid var(--vs-cs-line);
-            border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        }
-
-        > * {
-            @apply w-full;
-        }
+    /* ── No data ── */
+    .vs-table-no-data-cell {
+        height: 12rem;
     }
 
-    td {
-        @apply flex items-center;
-        border-top: 1px solid var(--vs-cs-line);
-        padding: 0.6rem 0.8rem;
-        text-align: left;
-
-        > * {
-            @apply w-full;
-        }
+    .vs-table-no-data {
+        @apply flex flex-col items-center justify-center;
+        color: var(--vs-cs-font-colored);
     }
 
-    th,
-    td {
-        * {
-            min-height: unset;
-        }
+    .vs-table-no-data-text {
+        @apply text-xl font-bold;
     }
 
-    .vs-table-search-input {
-        @apply mb-2 flex justify-end;
-    }
-
-    &.vs-responsive {
-        @apply w-full;
-        container-type: inline-size;
-    }
-
-    &.vs-dense {
-        th,
-        td {
-            @apply px-[0.375rem] py-[0.5rem];
-            * {
-                font-size: var(--vs-font-size-sm);
-            }
-        }
-
-        td.vs-table-expanded-row {
-            @apply px-0 py-0;
-        }
-    }
-
-    &.vs-primary {
-        thead tr th {
-            border-color: var(--vs-cs-line);
-            background-color: var(--vs-cs-bg-primary);
-            color: var(--vs-cs-font-primary);
-            font-weight: var(--vs-font-weight-bold);
-        }
-    }
-
+    /* ── Draggable ── */
     .vs-table-draggable-wrapper {
         /* display: contents를 사용하는 이유:
            - draggable의 wrapper 엘리먼트가 DOM 구조상 table, tr, tbody 등과 섞이면서 table 레이아웃이 깨지는 문제를 막기 위해
@@ -163,106 +158,174 @@
         display: contents;
     }
 
-    th.vs-table-drag-handle {
+    /* ── Handle cells ── */
+    .vs-table-th.vs-table-drag-handle {
         @apply w-6 px-0!;
+
         svg {
             @apply hidden;
         }
     }
-    td.vs-table-drag-handle {
+
+    .vs-table-td.vs-table-drag-handle {
         @apply w-6 cursor-grab px-0!;
         color: var(--vs-cs-line);
     }
 
-    th.vs-table-expand-handle {
+    .vs-table-th.vs-table-expand-handle,
+    .vs-table-td.vs-table-expand-handle {
         width: 3.6rem;
     }
-    td.vs-table-expand-handle {
-        width: 3.6rem;
+
+    /* ── Pagination ── */
+    .vs-table-pagination {
+        @apply flex items-center justify-between py-4;
+        container-type: inline-size;
+    }
+
+    .vs-table-pagination-info {
+        @apply flex items-center gap-4;
+    }
+
+    .vs-total-items {
+        @apply text-sm whitespace-nowrap opacity-70;
+        color: var(--vs-cs-font);
+    }
+
+    .vs-table-caption {
+        @apply caption-bottom;
+    }
+
+    /* ── Modifiers ── */
+    &.vs-responsive {
+        @apply w-full;
+        container-type: inline-size;
+    }
+
+    &.vs-dense {
+        .vs-table-th,
+        .vs-table-td {
+            @apply px-[0.375rem] py-[0.5rem];
+            * {
+                font-size: var(--vs-font-size-sm);
+            }
+        }
+
+        .vs-table-td.vs-table-expanded-row {
+            @apply px-0 py-0;
+        }
+    }
+
+    &.vs-primary {
+        .vs-table-thead > .vs-table-header-row > .vs-table-th {
+            border-color: var(--vs-cs-line);
+            background-color: var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font-primary);
+            font-weight: var(--vs-font-weight-bold);
+        }
     }
 }
 
-/* Pagination */
-.vs-table-pagination {
-    @apply flex items-center justify-between py-4;
-    container-type: inline-size;
-}
-
-.vs-table-pagination-info {
-    @apply flex items-center gap-4;
-}
-
-.vs-total-items {
-    @apply text-sm whitespace-nowrap opacity-70;
-    color: var(--vs-cs-font);
-}
-
-caption {
-    @apply caption-bottom;
-}
-
+/* ── Responsive layout ── */
 @container (max-width: 1024px) {
-    .vs-table {
-        &.vs-responsive {
-            .vs-table-content {
-                @apply overflow-x-visible;
-            }
+    .vs-table.vs-responsive {
+        > .vs-table-content {
+            @apply overflow-x-visible;
+        }
 
-            table {
-                @apply min-w-full;
-            }
+        .vs-table-table {
+            @apply min-w-full;
+        }
 
-            tbody,
-            th,
-            td,
-            tr {
-                @apply block w-full border-x-0;
-            }
+        .vs-table-draggable-wrapper,
+        .vs-table-tbody,
+        .vs-table-th,
+        .vs-table-td,
+        .vs-table-body-row,
+        .vs-table-header-row {
+            @apply block w-full border-x-0;
+        }
 
-            thead {
-                @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
-            }
+        .vs-table-thead {
+            @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
+        }
 
-            tbody tr {
-                @apply mx-0 mb-3 border border-solid;
-                border: 0.0325rem solid var(--vs-cs-line);
-            }
+        .vs-table-draggable-wrapper > .vs-table-body-row {
+            @apply mx-0 mb-3 border border-solid;
+            border: 0.0325rem solid var(--vs-cs-line);
+        }
 
-            td {
-                @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
-                grid-column: minmax(6rem, 9rem) 1fr;
-            }
+        .vs-table-td {
+            @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
+            grid-column: minmax(6rem, 9rem) 1fr;
+        }
 
-            td:first-child {
-                @apply border-t-0;
-            }
+        .vs-table-td:first-child {
+            @apply border-t-0;
+        }
 
-            td:last-child {
-                @apply border-b-0;
-            }
+        .vs-table-td:last-child {
+            @apply border-b-0;
+        }
 
-            td::before {
-                @apply font-bold;
-                content: attr(data-label);
-            }
+        .vs-table-td::before {
+            @apply font-bold;
+            content: attr(data-label);
+        }
 
-            td.vs-table-drag-handle {
-                @apply w-6 px-0 py-1;
-            }
+        .vs-table-td.vs-table-drag-handle {
+            @apply w-6 px-0 py-1;
+        }
 
-            &.vs-dense {
-                td,
-                th {
-                    @apply px-[0.375rem] py-[0.5rem];
-                    * {
-                        font-size: var(--vs-font-size-sm);
-                    }
+        &.vs-dense {
+            .vs-table-td,
+            .vs-table-th {
+                @apply px-[0.375rem] py-[0.5rem];
+                * {
+                    font-size: var(--vs-font-size-sm);
                 }
             }
         }
 
-        .vs-table-pagination {
-            @apply flex-col-reverse items-center justify-center gap-2;
+        .vs-table {
+            .vs-table-draggable-wrapper,
+            .vs-table-tbody,
+            .vs-table-th,
+            .vs-table-td,
+            .vs-table-body-row,
+            .vs-table-header-row {
+                @apply grid border-x-[revert];
+            }
+
+            .vs-table-thead {
+                @apply static m-0 block h-auto w-auto overflow-visible border-0;
+            }
+
+            .vs-table-draggable-wrapper > .vs-table-body-row {
+                @apply mx-0 mb-0 border-0;
+                border: revert;
+            }
+
+            .vs-table-td {
+                @apply flex border-0 border-t border-solid p-[0.6rem_0.8rem];
+                grid-column: revert;
+            }
+
+            .vs-table-td:first-child {
+                @apply border-t;
+            }
+
+            .vs-table-td:last-child {
+                @apply border-b-0;
+            }
+
+            .vs-table-td::before {
+                content: none;
+            }
         }
+    }
+
+    .vs-table .vs-table-pagination {
+        @apply flex-col-reverse items-center justify-center gap-2;
     }
 }

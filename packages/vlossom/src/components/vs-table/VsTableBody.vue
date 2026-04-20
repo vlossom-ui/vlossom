@@ -3,7 +3,7 @@
         tag="tbody"
         v-model="displayedBodyCells"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
-        :class="TABLE_DRAG_WRAPPER_CLASS"
+        :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
         :item-key="getRowId"
         :disabled="loading"
         @update="handleDragUpdate"
@@ -23,12 +23,12 @@
         </template>
     </draggable>
 
-    <tbody v-if="displayedBodyCells.length === 0">
-        <tr>
-            <td colspan="100%" class="h-52">
-                <div class="flex flex-col items-center justify-center text-gray-700">
+    <tbody class="vs-table-tbody" v-if="displayedBodyCells.length === 0">
+        <tr class="vs-table-body-row">
+            <td class="vs-table-td vs-table-no-data-cell" colspan="100%">
+                <div class="vs-table-no-data">
                     <vs-render :content="tableIcons.noData" />
-                    <p class="text-xl font-bold">NO DATA</p>
+                    <p class="vs-table-no-data-text">NO DATA</p>
                 </div>
             </td>
         </tr>
