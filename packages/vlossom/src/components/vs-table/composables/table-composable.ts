@@ -70,7 +70,7 @@ export function useTable(
         });
     });
     const items = computed<VsTableItem[]>(() => {
-        return rawItems.value;
+        return rawItems?.value ?? ([] as VsTableItem[]);
     });
     const expandable = computed(() => {
         return functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawExpandable?.value);
