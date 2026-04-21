@@ -17,7 +17,7 @@
     height: var(--vs-tabs-height, var(--vs-comp-height-md));
 
     .vs-tabs-wrap {
-        @apply relative flex w-full overflow-auto pb-1;
+        @apply relative flex w-full overflow-auto;
 
         .vs-tab-list {
             @apply relative m-0 flex flex-1 list-none flex-nowrap items-center;
@@ -96,10 +96,10 @@
         height: var(--vs-tabs-height, auto);
 
         .vs-tabs-wrap {
-            @apply h-full flex-col pr-1 pb-0;
+            @apply h-full flex-col;
 
             .vs-tab-list {
-                @apply flex-col items-stretch;
+                @apply h-auto flex-col items-stretch;
 
                 border-right: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
                 border-bottom: 0;
