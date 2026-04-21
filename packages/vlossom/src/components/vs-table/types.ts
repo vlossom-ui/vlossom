@@ -51,7 +51,7 @@ type JoinDotField<T> = JoinField<T, '.'>;
  * NOTE: If I is `{ user: { name: { first: 'John' } } }`, then `ColumnKey<I>` is `'user' | 'user.name' | 'user.name.first'`
  */
 export type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
-export type VsTableItem = Record<string, any>;
+export type VsTableItem = any;
 export type VsTableTag = 'td' | 'th';
 
 export enum VsTableSortType {

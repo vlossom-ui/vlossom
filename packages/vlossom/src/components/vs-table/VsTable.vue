@@ -142,10 +142,10 @@ export default defineComponent({
         },
         items: {
             type: Array as PropType<VsTableItem[]>,
-            required: true,
+            default: () => [],
             validator: (value: VsTableItem[]) => {
-                if (!Array.isArray(value)) {
-                    logUtil.propError(componentName, 'items', 'items must be an array');
+                if (value.length > 0 && typeof value[0] !== 'object') {
+                    logUtil.propError(componentName, 'items', 'items must be an array of objects');
                     return false;
                 }
                 return true;
@@ -224,10 +224,25 @@ export default defineComponent({
                     const pageSizeOptions: VsTablePageSizeOptions =
                         pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS;
                     const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
-                    if (!isValidPageSize) {
-                        logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');
+                    if (isValidPageSize) {
                         return true;
                     }
+                    if (pagination.showPageSizeSelect) {
+                        logUtil.propError(
+                            componentName,
+                            'pageSize',
+                            `pageSize ${value} is not in the pageSizeOptions ` +
+                                `[${pageSizeOptions.map((option) => option.value).join(', ')}]`,
+                        );
+                        return false;
+                    }
+                    logUtil.propWarning(
+                        componentName,
+                        'pageSize',
+                        `pageSize ${value} is not in the pageSizeOptions ` +
+                            `[${pageSizeOptions.map((option) => option.value).join(', ')}]`,
+                    );
+                    return true;
                 }
                 if (pagination && typeof pagination === 'boolean') {
                     const pageSizeOptions: VsTablePageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS;
