@@ -90,30 +90,30 @@ const selected = ref([]);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsTableStyleSet` | | | Custom style set for the component |
-| `columns` | `VsTableColumnDef[] \| string[]` | `[]` | | Column definitions |
-| `items` | `VsTableItem[]` | | Yes | Data rows |
-| `dense` | `boolean` | `false` | | Reduces cell padding |
-| `draggable` | `boolean` | `false` | | Enables drag-and-drop row reordering |
-| `expandable` | `boolean \| (item, index?, items?) => boolean` | `false` | | Enables expandable rows |
-| `loading` | `boolean` | `false` | | Shows loading state and disables search |
-| `noVirtualScroll` | `boolean` | `false` | | Disables virtual scroll optimization |
-| `page` | `number` | | | Current page index (0-based), v-model |
-| `pageSize` | `number` | `10` | | Number of rows per page, v-model |
-| `pagedItems` | `VsTableItem[]` | `[]` | | Current page items for server mode, v-model |
-| `pagination` | `boolean \| VsTablePaginationOptions` | `false` | | Enables pagination |
-| `primary` | `boolean` | `false` | | Applies primary color to the header |
-| `responsive` | `boolean` | `false` | | Enables responsive (stacked) layout |
-| `search` | `boolean \| SearchProps` | `false` | | Enables built-in search |
-| `selectable` | `boolean \| (item, index?, items?) => boolean` | `false` | | Enables row selection |
-| `selectedItems` | `VsTableItem[]` | `[]` | | Selected rows, v-model |
-| `serverMode` | `boolean` | `false` | | Switches to server-side pagination mode |
-| `state` | `UIState \| (item, index?, items?) => UIState` | `'idle'` | | Row state for styling |
-| `stickyHeader` | `boolean` | `false` | | Makes the table header sticky on scroll |
-| `totalItems` | `VsTableItem[]` | `[]` | | All items for server mode, v-model |
+| Prop              | Type                                           | Default  | Description                                 |
+| ----------------- | ---------------------------------------------- | -------- | ------------------------------------------- |
+| `colorScheme`     | `string`                                       |          | Color scheme for the component              |
+| `styleSet`        | `string \| VsTableStyleSet`                    |          | Custom style set for the component          |
+| `columns`         | `VsTableColumnDef[] \| string[]`               | `[]`     | Column definitions                          |
+| `items`           | `VsTableItem[]`                                | `[]`     | Data rows                                   |
+| `dense`           | `boolean`                                      | `false`  | Reduces cell padding                        |
+| `draggable`       | `boolean`                                      | `false`  | Enables drag-and-drop row reordering        |
+| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | Enables expandable rows                     |
+| `loading`         | `boolean`                                      | `false`  | Shows loading state and disables search     |
+| `noVirtualScroll` | `boolean`                                      | `false`  | Disables virtual scroll optimization        |
+| `page`            | `number`                                       |          | Current page index (0-based), v-model       |
+| `pageSize`        | `number`                                       | `10`     | Number of rows per page, v-model            |
+| `pagedItems`      | `VsTableItem[]`                                | `[]`     | Current page items for server mode, v-model |
+| `pagination`      | `boolean \| VsTablePaginationOptions`          | `false`  | Enables pagination                          |
+| `primary`         | `boolean`                                      | `false`  | Applies primary color to the header         |
+| `responsive`      | `boolean`                                      | `false`  | Enables responsive (stacked) layout         |
+| `search`          | `boolean \| SearchProps`                       | `false`  | Enables built-in search                     |
+| `selectable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | Enables row selection                       |
+| `selectedItems`   | `VsTableItem[]`                                | `[]`     | Selected rows, v-model                      |
+| `serverMode`      | `boolean`                                      | `false`  | Switches to server-side pagination mode     |
+| `state`           | `UIState \| (item, index?, items?) => UIState` | `'idle'` | Row state for styling                       |
+| `stickyHeader`    | `boolean`                                      | `false`  | Makes the table header sticky on scroll     |
+| `totalItems`      | `VsTableItem[]`                                | `[]`     | All items for server mode, v-model          |
 
 ## Types
 
@@ -151,8 +151,6 @@ interface VsTablePaginationOptions {
     showTotal?: boolean;
     totalItemCount?: number;
 }
-
-type VsTableItem = Record<string, any>;
 ```
 
 ### StyleSet Example
@@ -175,30 +173,30 @@ type VsTableItem = Record<string, any>;
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `click-cell` | `(cell: VsTableBodyCell, event: MouseEvent)` | Emitted when a cell is clicked |
-| `select-row` | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is selected |
-| `expand-row` | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is expanded |
-| `drag` | `SortableEvent` | Emitted after a drag-and-drop reorder |
-| `search` | `(items: VsTableItem[], searchText: string)` | Emitted on search |
-| `paginate` | `(nextPage: number, pageSize: number)` | Emitted when page changes |
-| `update:selectedItems` | `VsTableItem[]` | Emitted when selected rows change |
-| `update:page` | `number` | Emitted when the current page changes |
-| `update:pageSize` | `number` | Emitted when the page size changes |
-| `update:pagedItems` | `VsTableItem[]` | Emitted when paged items update |
-| `update:totalItems` | `VsTableItem[]` | Emitted when total items update |
+| Event                  | Payload                                       | Description                           |
+| ---------------------- | --------------------------------------------- | ------------------------------------- |
+| `click-cell`           | `(cell: VsTableBodyCell, event: MouseEvent)`  | Emitted when a cell is clicked        |
+| `select-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is selected        |
+| `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is expanded        |
+| `drag`                 | `SortableEvent`                               | Emitted after a drag-and-drop reorder |
+| `search`               | `(items: VsTableItem[], searchText: string)`  | Emitted on search                     |
+| `paginate`             | `(nextPage: number, pageSize: number)`        | Emitted when page changes             |
+| `update:selectedItems` | `VsTableItem[]`                               | Emitted when selected rows change     |
+| `update:page`          | `number`                                      | Emitted when the current page changes |
+| `update:pageSize`      | `number`                                      | Emitted when the page size changes    |
+| `update:pagedItems`    | `VsTableItem[]`                               | Emitted when paged items update       |
+| `update:totalItems`    | `VsTableItem[]`                               | Emitted when total items update       |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `toolbar` | Area to the left of the search input; use for action buttons or custom controls |
-| `caption` | Table caption content |
-| `header-[key]` | Custom header cell for a specific column key |
-| `body-[key]` | Custom body cell for a specific column key |
-| `select` | Custom content for the selection column cell |
-| `expand` | Custom content for the expanded row panel |
+| Slot           | Description                                                                     |
+| -------------- | ------------------------------------------------------------------------------- |
+| `toolbar`      | Area to the left of the search input; use for action buttons or custom controls |
+| `caption`      | Table caption content                                                           |
+| `header-[key]` | Custom header cell for a specific column key                                    |
+| `body-[key]`   | Custom body cell for a specific column key                                      |
+| `select`       | Custom content for the selection column cell                                    |
+| `expand`       | Custom content for the expanded row panel                                       |
 
 ## Methods
 

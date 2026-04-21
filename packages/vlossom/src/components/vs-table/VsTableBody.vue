@@ -49,10 +49,14 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
 
+import VsLoading from '@/components/vs-loading/VsLoading.vue';
+import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
+        VsLoading,
+        VsRender,
         VsTableBodyRow,
         draggable,
     },

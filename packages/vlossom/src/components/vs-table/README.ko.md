@@ -90,30 +90,30 @@ const selected = ref([]);
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsTableStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `columns` | `VsTableColumnDef[] \| string[]` | `[]` | | 컬럼 정의 |
-| `items` | `VsTableItem[]` | | 필수 | 데이터 행 |
-| `dense` | `boolean` | `false` | | 셀 패딩 축소 |
-| `draggable` | `boolean` | `false` | | 드래그 앤 드롭 행 재정렬 활성화 |
-| `expandable` | `boolean \| (item, index?, items?) => boolean` | `false` | | 확장 행 활성화 |
-| `loading` | `boolean` | `false` | | 로딩 상태 표시 및 검색 비활성화 |
-| `noVirtualScroll` | `boolean` | `false` | | 가상 스크롤 최적화 비활성화 |
-| `page` | `number` | | | 현재 페이지 인덱스(0부터 시작), v-model |
-| `pageSize` | `number` | `10` | | 페이지당 행 수, v-model |
-| `pagedItems` | `VsTableItem[]` | `[]` | | 서버 모드 현재 페이지 아이템, v-model |
-| `pagination` | `boolean \| VsTablePaginationOptions` | `false` | | 페이지네이션 활성화 |
-| `primary` | `boolean` | `false` | | 헤더에 기본 색상 적용 |
-| `responsive` | `boolean` | `false` | | 반응형(스택) 레이아웃 활성화 |
-| `search` | `boolean \| SearchProps` | `false` | | 내장 검색 활성화 |
-| `selectable` | `boolean \| (item, index?, items?) => boolean` | `false` | | 행 선택 활성화 |
-| `selectedItems` | `VsTableItem[]` | `[]` | | 선택된 행, v-model |
-| `serverMode` | `boolean` | `false` | | 서버 측 페이지네이션 모드로 전환 |
-| `state` | `UIState \| (item, index?, items?) => UIState` | `'idle'` | | 행 스타일링을 위한 UI 상태 |
-| `stickyHeader` | `boolean` | `false` | | 스크롤 시 테이블 헤더 고정 |
-| `totalItems` | `VsTableItem[]` | `[]` | | 서버 모드 전체 아이템, v-model |
+| Prop              | 타입                                           | 기본값   | 설명                                    |
+| ----------------- | ---------------------------------------------- | -------- | --------------------------------------- |
+| `colorScheme`     | `string`                                       |          | 컴포넌트 색상 스키마                    |
+| `styleSet`        | `string \| VsTableStyleSet`                    |          | 컴포넌트 커스텀 스타일 세트             |
+| `columns`         | `VsTableColumnDef[] \| string[]`               | `[]`     | 컬럼 정의                               |
+| `items`           | `VsTableItem[]`                                | `[]`     | 데이터 행                               |
+| `dense`           | `boolean`                                      | `false`  | 셀 패딩 축소                            |
+| `draggable`       | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화         |
+| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | 확장 행 활성화                          |
+| `loading`         | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색 비활성화         |
+| `noVirtualScroll` | `boolean`                                      | `false`  | 가상 스크롤 최적화 비활성화             |
+| `page`            | `number`                                       |          | 현재 페이지 인덱스(0부터 시작), v-model |
+| `pageSize`        | `number`                                       | `10`     | 페이지당 행 수, v-model                 |
+| `pagedItems`      | `VsTableItem[]`                                | `[]`     | 서버 모드 현재 페이지 아이템, v-model   |
+| `pagination`      | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                     |
+| `primary`         | `boolean`                                      | `false`  | 헤더에 기본 색상 적용                   |
+| `responsive`      | `boolean`                                      | `false`  | 반응형(스택) 레이아웃 활성화            |
+| `search`          | `boolean \| SearchProps`                       | `false`  | 내장 검색 활성화                        |
+| `selectable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | 행 선택 활성화                          |
+| `selectedItems`   | `VsTableItem[]`                                | `[]`     | 선택된 행, v-model                      |
+| `serverMode`      | `boolean`                                      | `false`  | 서버 측 페이지네이션 모드로 전환        |
+| `state`           | `UIState \| (item, index?, items?) => UIState` | `'idle'` | 행 스타일링을 위한 UI 상태              |
+| `stickyHeader`    | `boolean`                                      | `false`  | 스크롤 시 테이블 헤더 고정              |
+| `totalItems`      | `VsTableItem[]`                                | `[]`     | 서버 모드 전체 아이템, v-model          |
 
 ## 타입
 
@@ -151,8 +151,6 @@ interface VsTablePaginationOptions {
     showTotal?: boolean;
     totalItemCount?: number;
 }
-
-type VsTableItem = Record<string, any>;
 ```
 
 ### StyleSet 예시
@@ -175,30 +173,30 @@ type VsTableItem = Record<string, any>;
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-| `click-cell` | `(cell: VsTableBodyCell, event: MouseEvent)` | 셀 클릭 시 발생 |
-| `select-row` | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 선택 시 발생 |
-| `expand-row` | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 확장 시 발생 |
-| `drag` | `SortableEvent` | 드래그 앤 드롭 재정렬 후 발생 |
-| `search` | `(items: VsTableItem[], searchText: string)` | 검색 시 발생 |
-| `paginate` | `(nextPage: number, pageSize: number)` | 페이지 변경 시 발생 |
-| `update:selectedItems` | `VsTableItem[]` | 선택된 행 변경 시 발생 |
-| `update:page` | `number` | 현재 페이지 변경 시 발생 |
-| `update:pageSize` | `number` | 페이지 크기 변경 시 발생 |
-| `update:pagedItems` | `VsTableItem[]` | 페이징된 아이템 업데이트 시 발생 |
-| `update:totalItems` | `VsTableItem[]` | 전체 아이템 업데이트 시 발생 |
+| 이벤트                 | 페이로드                                      | 설명                             |
+| ---------------------- | --------------------------------------------- | -------------------------------- |
+| `click-cell`           | `(cell: VsTableBodyCell, event: MouseEvent)`  | 셀 클릭 시 발생                  |
+| `select-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 선택 시 발생                  |
+| `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 확장 시 발생                  |
+| `drag`                 | `SortableEvent`                               | 드래그 앤 드롭 재정렬 후 발생    |
+| `search`               | `(items: VsTableItem[], searchText: string)`  | 검색 시 발생                     |
+| `paginate`             | `(nextPage: number, pageSize: number)`        | 페이지 변경 시 발생              |
+| `update:selectedItems` | `VsTableItem[]`                               | 선택된 행 변경 시 발생           |
+| `update:page`          | `number`                                      | 현재 페이지 변경 시 발생         |
+| `update:pageSize`      | `number`                                      | 페이지 크기 변경 시 발생         |
+| `update:pagedItems`    | `VsTableItem[]`                               | 페이징된 아이템 업데이트 시 발생 |
+| `update:totalItems`    | `VsTableItem[]`                               | 전체 아이템 업데이트 시 발생     |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
-| `toolbar` | 검색 입력창 왼쪽 영역; 액션 버튼이나 커스텀 컨트롤 배치에 사용 |
-| `caption` | 테이블 캡션 내용 |
-| `header-[key]` | 특정 컬럼 키의 커스텀 헤더 셀 |
-| `body-[key]` | 특정 컬럼 키의 커스텀 바디 셀 |
-| `select` | 선택 컬럼 셀의 커스텀 내용 |
-| `expand` | 확장 행 패널의 커스텀 내용 |
+| 슬롯           | 설명                                                           |
+| -------------- | -------------------------------------------------------------- |
+| `toolbar`      | 검색 입력창 왼쪽 영역; 액션 버튼이나 커스텀 컨트롤 배치에 사용 |
+| `caption`      | 테이블 캡션 내용                                               |
+| `header-[key]` | 특정 컬럼 키의 커스텀 헤더 셀                                  |
+| `body-[key]`   | 특정 컬럼 키의 커스텀 바디 셀                                  |
+| `select`       | 선택 컬럼 셀의 커스텀 내용                                     |
+| `expand`       | 확장 행 패널의 커스텀 내용                                     |
 
 ## 메서드
 

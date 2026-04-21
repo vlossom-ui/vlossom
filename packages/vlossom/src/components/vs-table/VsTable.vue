@@ -142,7 +142,7 @@ export default defineComponent({
         },
         items: {
             type: Array as PropType<VsTableItem[]>,
-            required: true,
+            default: () => [],
             validator: (value: VsTableItem[]) => {
                 if (value.length > 0 && typeof value[0] !== 'object') {
                     logUtil.propError(componentName, 'items', 'items must be an array of objects');
