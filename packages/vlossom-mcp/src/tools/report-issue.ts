@@ -4,8 +4,8 @@ import { createIssue, getGitHubToken, type CreateIssueResult } from "../services
 import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { IssueDraft, IssueLanguage, IssueType, SectionContent } from "../types/issue.js";
 
-const ALLOWED_LABELS = ["bug", "feature", "question", "area: mcp"] as const;
-const SERVER_INJECTED_LABELS = ["source: mcp"] as const;
+const ALLOWED_LABELS = ["bug", "feature", "question", "MCP"] as const;
+const SERVER_INJECTED_LABELS = ["by MCP"] as const;
 
 export function registerReportIssue(server: McpServer): void {
     server.tool(
@@ -59,9 +59,9 @@ export function registerReportIssue(server: McpServer): void {
                 .array(z.enum(ALLOWED_LABELS))
                 .optional()
                 .describe(
-                    "Labels to apply. Include 'area: mcp' when the issue is about the vlossom-mcp package itself " +
+                    "Labels to apply. Include 'MCP' when the issue is about the vlossom-mcp package itself " +
                         "(not the Vlossom component library). " +
-                        "The 'source: mcp' label is always auto-attached by the server — do not pass it here."
+                        "The 'by MCP' label is always auto-attached by the server — do not pass it here."
                 ),
         },
         async ({ draft, summary, type, language, title, sectionContents, labels }) => {

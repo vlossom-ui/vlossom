@@ -104,7 +104,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `check_github_token` | Checks whether a GitHub token is configured for submitting issues                  |
 | `set_github_token`   | Stores a GitHub PAT in memory for the current session                              |
 | `draft_issue`        | Generates a structured issue template (bug / feature / question) with i18n support |
-| `report_issue`       | Creates a GitHub issue on the vlossom-ui/vlossom repository (auto-attaches `source: mcp`; pass `area: mcp` when the issue targets the vlossom-mcp package itself) |
+| `report_issue`       | Creates a GitHub issue on the vlossom-ui/vlossom repository (auto-attaches `by MCP`; pass `MCP` when the issue targets the vlossom-mcp package itself) |
 
 ### Code Generation
 

@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-04-23 — report_issue 라벨 rename (`source: mcp` → `by MCP`, `area: mcp` → `MCP`)
+
+**Changed**: `report_issue`가 쓰는 두 라벨 이름을 저장소의 라벨 네이밍 컨벤션에 맞춰 교체.
+
+| 이전 (v0.12.4) | 이후     | 주입 주체 |
+| -------------- | -------- | --------- |
+| `source: mcp`  | `by MCP` | 서버      |
+| `area: mcp`    | `MCP`    | LLM       |
+
+정책 자체(서버 자동 주입 vs LLM 선택, G1 준수 근거)는 그대로이며, 아래 파일의 문자열만 교체:
+
+- `src/tools/report-issue.ts` — `ALLOWED_LABELS`, `SERVER_INJECTED_LABELS`, `labels` 파라미터 description
+- `README.md` / `README.ko.md` — `report_issue` 설명 한 줄
+
+**주의**: GitHub 측 라벨도 새 이름(`by MCP`, `MCP`)으로 미리 생성되어 있어야 함. 그렇지 않으면 `createIssue`가 422로 실패하고 `getSafeErrorMessage`가 "Invalid issue data" 메시지를 반환.
+
+---
+
 ## 2026-04-23 — report_issue 라벨 정책 (`source: mcp` / `area: mcp`, v0.12.4)
 
 **Added**: `report_issue` 툴이 생성하는 GitHub 이슈에 출처/영역 라벨 정책을 도입.
