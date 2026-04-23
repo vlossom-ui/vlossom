@@ -109,7 +109,7 @@ export interface InputComponentParams<T = unknown> {
 }
 
 export interface FormChildRef {
-    validate: () => void;
+    validate: () => boolean;
     clear: () => void;
 }
 
