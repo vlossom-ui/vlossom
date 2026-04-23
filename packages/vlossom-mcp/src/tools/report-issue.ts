@@ -4,7 +4,8 @@ import { createIssue, getGitHubToken, type CreateIssueResult } from "../services
 import { recordStep, textResponse } from "../utils/mcp-response.js";
 import type { IssueDraft, IssueLanguage, IssueType, SectionContent } from "../types/issue.js";
 
-const ALLOWED_LABELS = ["bug", "feature", "question"] as const;
+const ALLOWED_LABELS = ["bug", "feature", "question", "area: mcp"] as const;
+const SERVER_INJECTED_LABELS = ["source: mcp"] as const;
 
 export function registerReportIssue(server: McpServer): void {
     server.tool(
@@ -57,7 +58,11 @@ export function registerReportIssue(server: McpServer): void {
             labels: z
                 .array(z.enum(ALLOWED_LABELS))
                 .optional()
-                .describe("Labels to apply"),
+                .describe(
+                    "Labels to apply. Include 'area: mcp' when the issue is about the vlossom-mcp package itself " +
+                        "(not the Vlossom component library). " +
+                        "The 'source: mcp' label is always auto-attached by the server — do not pass it here."
+                ),
         },
         async ({ draft, summary, type, language, title, sectionContents, labels }) => {
             if (draft) {
@@ -119,7 +124,7 @@ async function handleSubmit(
     type: IssueType,
     language: IssueLanguage,
     sectionContents: SectionContent[] | undefined,
-    labels: readonly ("bug" | "feature" | "question")[] | undefined
+    labels: readonly (typeof ALLOWED_LABELS)[number][] | undefined
 ): Promise<ReturnType<typeof textResponse>> {
     const start = Date.now();
 
@@ -183,9 +188,12 @@ async function handleSubmit(
     }
 
     const body = buildBody(type, language, sectionContents);
+    const mergedLabels = Array.from(
+        new Set<string>([...(labels ?? []), ...SERVER_INJECTED_LABELS])
+    );
     let result: CreateIssueResult;
     try {
-        result = await createIssue(token, title, body, labels as string[] | undefined);
+        result = await createIssue(token, title, body, mergedLabels);
     } catch (error) {
         const meta = recordStep("report_issue", `Report issue: ${title}`, Date.now() - start, {
             summary: "submission failed",
@@ -226,7 +234,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[feat] ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["feature"],
+                      suggestedLabels: ["feature", ...SERVER_INJECTED_LABELS],
                       sections: [
                           { heading: "Overview", placeholder: summary, required: false },
                           { heading: "Requirements", placeholder: "- ", required: true },
@@ -246,7 +254,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[feat] ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["feature"],
+                      suggestedLabels: ["feature", ...SERVER_INJECTED_LABELS],
                       sections: [
                           { heading: "개요", placeholder: summary, required: false },
                           { heading: "요구사항", placeholder: "- ", required: true },
@@ -269,7 +277,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `question: ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["question"],
+                      suggestedLabels: ["question", ...SERVER_INJECTED_LABELS],
                       sections: [
                           { heading: "Question", placeholder: summary, required: false },
                           {
@@ -288,7 +296,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `question: ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["question"],
+                      suggestedLabels: ["question", ...SERVER_INJECTED_LABELS],
                       sections: [
                           { heading: "질문", placeholder: summary, required: false },
                           {
@@ -310,7 +318,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[bug] ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["bug"],
+                      suggestedLabels: ["bug", ...SERVER_INJECTED_LABELS],
                       sections: [
                           {
                               heading: "Bug Description",
@@ -343,7 +351,7 @@ function buildDraft(summary: string, type: IssueType, language: IssueLanguage): 
                       suggestedTitle: `[bug] ${summary}`,
                       type,
                       language,
-                      suggestedLabels: ["bug"],
+                      suggestedLabels: ["bug", ...SERVER_INJECTED_LABELS],
                       sections: [
                           { heading: "버그 내용", placeholder: summary, required: false },
                           {

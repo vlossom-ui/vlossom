@@ -104,7 +104,7 @@ claude mcp add vlossom -- npx -y vlossom-mcp@latest
 | `check_github_token` | 이슈 등록을 위한 GitHub 토큰이 설정됐는지 확인합니다                |
 | `set_github_token`   | 현재 세션의 메모리에 GitHub PAT를 저장합니다                        |
 | `draft_issue`        | 버그/기능/질문 유형의 구조화된 이슈 템플릿을 생성합니다 (i18n 지원) |
-| `report_issue`       | vlossom-ui/vlossom 저장소에 GitHub 이슈를 생성합니다                |
+| `report_issue`       | vlossom-ui/vlossom 저장소에 GitHub 이슈를 생성합니다 (`source: mcp` 라벨 자동 부착; 이슈 대상이 vlossom-mcp 패키지 자체라면 `area: mcp`를 함께 전달) |
 
 ### 코드 생성
 

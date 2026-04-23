@@ -4,6 +4,46 @@
 
 ---
 
+## 2026-04-23 — report_issue 라벨 정책 (`source: mcp` / `area: mcp`, v0.12.4)
+
+**Added**: `report_issue` 툴이 생성하는 GitHub 이슈에 출처/영역 라벨 정책을 도입.
+
+### 정책
+
+| 라벨           | 주입 주체 | 의미                                                              |
+| -------------- | --------- | ----------------------------------------------------------------- |
+| `source: mcp`  | 서버      | 이슈가 MCP의 `report_issue` 파이프라인을 통해 생성됨 (출처 추적)  |
+| `area: mcp`    | LLM       | 이슈 대상이 `packages/vlossom-mcp` 패키지 자체 (vlossom UI 아님)  |
+
+### 설계 근거 — G1 준수
+
+- `source: mcp`는 **결정론적 사실**(report_issue를 탔다는 것 자체)이므로 서버가 `createIssue` 호출 직전에 자동 주입.
+  자연어 판단이 개입하지 않으므로 G1(서버 측 LLM judgment 금지)과 충돌하지 않음.
+- `area: mcp`는 **이슈 내용이 vlossom-mcp에 관한 것인지**를 가르는 판단이 필요 — 이는 자연어 이해가 전제.
+  따라서 서버가 스스로 붙이지 않고 `labels` 파라미터의 enum 값으로 노출해 LLM이 선택하도록 함.
+
+### Files changed
+
+- `src/tools/report-issue.ts`
+  - `ALLOWED_LABELS`에 `"area: mcp"` 추가 (LLM 선택용)
+  - `SERVER_INJECTED_LABELS = ["source: mcp"]` 상수 신설
+  - `labels` 파라미터 description에 정책 명시 (source는 서버 자동, area는 LLM 선택)
+  - `handleSubmit`에서 `createIssue` 호출 직전 `SERVER_INJECTED_LABELS`를 dedupe 병합
+  - `handleDraft` 응답의 `suggestedLabels`에도 `source: mcp` 포함 (드래프트 프리뷰와 실제 제출 결과의 일관성)
+- `README.md` / `README.ko.md`: `report_issue` 설명에 라벨 정책 한 줄 추가
+
+### 검토한 대안과 기각 이유
+
+| 대안                                           | 기각 이유                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------ |
+| `source: mcp`도 `ALLOWED_LABELS`에 포함        | LLM이 "선택 가능한 옵션"으로 오해 → 누락 가능성. 서버가 강제하는 편이 안전 |
+| `area`를 별도 파라미터(`z.enum(["mcp", ...])`) | 파라미터 표면적이 불필요하게 늘어남. `labels`의 enum 확장으로 충분        |
+| `area: vlossom`도 같이 추가                    | 현재 요청 범위 밖이며, `packages/vlossom` 쪽 이슈 분류 컨벤션이 아직 미정 |
+
+**호환성**: 0.12.3 → **0.12.4** patch bump. 응답 스키마 추가만 있고(기존 필드 제거·타입 변경 없음), breaking change 아님.
+
+---
+
 ## 2026-04-20 — createVlossom() 가이드 교정 (issue #399, v0.12.3)
 
 **Fixed**: vlossom-mcp의 `createVlossom()` 사용 가이드가 실제 `vlossom@2.0.0-beta.1`의 동작과 두 가지 지점에서 불일치했던 것을 교정.
