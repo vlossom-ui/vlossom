@@ -70,6 +70,106 @@
         </vs-form>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsSelect</h3>
+        <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-select
+                v-model="selectValue"
+                label="Basic"
+                placeholder="Select a fruit..."
+                :options="selectOptions"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                placeholder="No label"
+                :options="selectOptions"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectSearchValue"
+                label="With Search"
+                placeholder="Select a fruit..."
+                :options="selectOptions"
+                search
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectObjectValue"
+                label="Object Options"
+                placeholder="Select a color..."
+                :options="colorOptions"
+                option-label="label"
+                option-value="value"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectMultipleValue"
+                label="Multiple"
+                placeholder="Select fruits..."
+                :options="selectOptions"
+                multiple
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectAllValue"
+                label="Multiple + Select All + Search"
+                placeholder="Select fruits..."
+                :options="selectOptions"
+                multiple
+                select-all
+                search
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectCollapseValue"
+                label="Collapse Chips"
+                placeholder="Select fruits..."
+                :options="selectOptions"
+                multiple
+                collapse-chips
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectClosableValue"
+                label="Closable Chips"
+                placeholder="Select fruits..."
+                :options="selectOptions"
+                multiple
+                closable-chips
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                label="Disabled"
+                placeholder="Disabled"
+                :options="selectOptions"
+                disabled
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                label="Readonly"
+                :model-value="selectOptions[0]"
+                :options="selectOptions"
+                readonly
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectRequiredValue"
+                label="Required"
+                placeholder="Select a fruit..."
+                :options="selectOptions"
+                required
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-select
+                v-model="selectLongValue"
+                label="Long List (Countries)"
+                placeholder="Select a country..."
+                :options="countries"
+                search
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+        </vs-form>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsRadio & VsRadioSet</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
@@ -192,6 +292,55 @@ export default defineComponent({
         const noLabelSwitchValue = ref(false);
         const files: Ref<File[]> = ref([]);
 
+        const selectOptions = [
+            'Apple',
+            'Banana',
+            'Cherry',
+            'Grape',
+            'Lemon',
+            'Mango',
+            'Orange',
+            'Peach',
+            'Strawberry',
+            'Watermelon',
+        ];
+
+        const countries = [
+            'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
+            'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Bhutan', 'Bolivia',
+            'Bosnia and Herzegovina', 'Brazil', 'Bulgaria', 'Cambodia', 'Cameroon', 'Canada', 'Chile', 'China',
+            'Colombia', 'Croatia', 'Cuba', 'Czech Republic', 'Denmark', 'Ecuador', 'Egypt', 'Estonia',
+            'Ethiopia', 'Finland', 'France', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Hungary',
+            'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan',
+            'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Latvia', 'Lebanon', 'Lithuania', 'Malaysia',
+            'Mexico', 'Moldova', 'Morocco', 'Nepal', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway',
+            'Pakistan', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia',
+            'Saudi Arabia', 'Serbia', 'Singapore', 'Slovakia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka',
+            'Sweden', 'Switzerland', 'Taiwan', 'Thailand', 'Tunisia', 'Turkey', 'Ukraine', 'United Arab Emirates',
+            'United Kingdom', 'United States', 'Uruguay', 'Venezuela', 'Vietnam', 'Yemen',
+        ];
+
+        const colorOptions = [
+            { label: 'Red', value: 'red' },
+            { label: 'Green', value: 'green' },
+            { label: 'Blue', value: 'blue' },
+            { label: 'Yellow', value: 'yellow' },
+            { label: 'Purple', value: 'purple' },
+            { label: 'Orange', value: 'orange' },
+            { label: 'Pink', value: 'pink' },
+            { label: 'Brown', value: 'brown' },
+        ];
+
+        const selectValue = ref(null);
+        const selectSearchValue = ref(null);
+        const selectObjectValue = ref(null);
+        const selectMultipleValue: Ref<string[]> = ref([]);
+        const selectAllValue: Ref<string[]> = ref([]);
+        const selectCollapseValue: Ref<string[]> = ref([]);
+        const selectClosableValue: Ref<string[]> = ref([]);
+        const selectRequiredValue = ref(null);
+        const selectLongValue = ref(null);
+
         return {
             inputText,
             inputNumber,
@@ -211,6 +360,18 @@ export default defineComponent({
             switchValue2,
             noLabelSwitchValue,
             files,
+            selectOptions,
+            countries,
+            colorOptions,
+            selectValue,
+            selectSearchValue,
+            selectObjectValue,
+            selectMultipleValue,
+            selectAllValue,
+            selectCollapseValue,
+            selectClosableValue,
+            selectRequiredValue,
+            selectLongValue,
         };
     },
 });

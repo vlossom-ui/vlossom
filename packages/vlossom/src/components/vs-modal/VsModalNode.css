@@ -10,7 +10,6 @@
 
         transform: translate(-50%, -50%);
         opacity: 1;
-        box-shadow: 0 0 1rem 0 var(--vs-cs-shadow-color);
         border: none;
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-cs-bg-area);
