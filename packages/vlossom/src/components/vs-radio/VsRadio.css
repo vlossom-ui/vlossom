@@ -34,7 +34,7 @@
                 @apply bg-transparent;
                 transition: box-shadow 0.25s ease;
                 margin-right: 0.5rem;
-                box-shadow: inset 0 0 0 0.12rem var(--vs-radio-radioColor, var(--vs-cs-bg-primary));
+                box-shadow: inset 0 0 0 0.1rem var(--vs-radio-radioColor, var(--vs-cs-line));
                 border-radius: var(--vs-radio-borderRadius, 50%);
                 width: var(--vs-radio-radioSize, 1.4rem);
                 height: var(--vs-radio-radioSize, 1.4rem);

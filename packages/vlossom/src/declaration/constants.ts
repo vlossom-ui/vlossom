@@ -37,6 +37,8 @@ export const COLORS = [
     'gray',
 ] as const;
 
+export const COLOR_SCHEMES = [...COLORS, 'none'] as const;
+
 export const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 export const PLACEMENTS = ['top', 'right', 'bottom', 'left', 'middle'] as const;

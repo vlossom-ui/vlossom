@@ -4,7 +4,7 @@ $colors:
 
 :root {
     .vs-cs-default {
-        --vs-cs-line: var(--vs-gray-700);
+        --vs-cs-line: var(--vs-gray-300);
 
         --vs-cs-font: var(--vs-gray-950);
         --vs-cs-font-colored: var(--vs-gray-800);
@@ -23,7 +23,7 @@ $colors:
 
     &.vs-dark {
         .vs-cs-default {
-            --vs-cs-line: var(--vs-gray-500);
+            --vs-cs-line: var(--vs-gray-600);
 
             --vs-cs-font: var(--vs-gray-50);
             --vs-cs-font-colored: var(--vs-gray-100);
@@ -53,7 +53,7 @@ $colors:
             --vs-cs-bg-area-colored: var(--vs-#{$color}-50);
             --vs-cs-bg: var(--vs-#{$color}-100);
             --vs-cs-bg-colored: var(--vs-#{$color}-100);
-            --vs-cs-bg-comp: var(--vs-#{$color}-200);
+            --vs-cs-bg-comp: var(--vs-#{$color}-P200);
             --vs-cs-bg-comp-colored: var(--vs-#{$color}-200);
             --vs-cs-bg-primary: var(--vs-#{$color}-600);
 

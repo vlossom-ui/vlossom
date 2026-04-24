@@ -1,9 +1,9 @@
 import type { Component, Ref } from 'vue';
 import type { VsComponentRegistry } from '@/components/component-map';
-import type { ALIGNMENTS, COLORS, PLACEMENTS, SIZES, TEXT_ALIGNMENTS, VERTICAL_ALIGNMENTS } from './constants';
+import type { ALIGNMENTS, COLOR_SCHEMES, PLACEMENTS, SIZES, TEXT_ALIGNMENTS, VERTICAL_ALIGNMENTS } from './constants';
 import type { VsComponent } from './enums';
 
-export type ColorScheme = (typeof COLORS)[number];
+export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
 export type Theme = 'light' | 'dark';
 
