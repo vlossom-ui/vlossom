@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import VsInput from '../VsInput.vue';
+import VsInput from './../VsInput.vue';
 
 describe('VsInput', () => {
     describe('v-model', () => {

@@ -1,5 +1,5 @@
 import type { Component } from 'vue';
-import type { ModalOptions } from '../modal-plugin';
+import type { ModalOptions } from './../modal-plugin';
 import type { Alignment, ColorScheme, PropsOf, VsComponent } from '@/declaration';
 import type { VsButtonStyleSet, VsInputStyleSet, VsInputValueType, VsModalNodeStyleSet } from '@/components';
 

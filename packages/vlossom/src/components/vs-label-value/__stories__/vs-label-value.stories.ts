@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsLabelValue from './../VsLabelValue.vue';
-import type { VsLabelValueStyleSet } from '../types';
+import type { VsLabelValueStyleSet } from './../types';
 import { LOREM_IPSUM } from '@/storybook';
 
 const meta: Meta<typeof VsLabelValue> = {

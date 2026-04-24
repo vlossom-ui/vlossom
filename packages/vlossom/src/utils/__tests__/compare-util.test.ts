@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { compareUtil } from '../compare-util';
+import { compareUtil } from './../compare-util';
 
 describe('compare-util', () => {
     describe('compareValues()', () => {

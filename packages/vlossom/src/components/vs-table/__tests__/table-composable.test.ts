@@ -3,7 +3,7 @@ import { nextTick, reactive, ref, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
 import type { VsSearchInputRef } from '@/components';
 
-import { useTable } from '../composables/table-composable';
+import { useTable } from './../composables/table-composable';
 import {
     VsTableSortType,
     type VsTableBodyCell,
@@ -11,8 +11,8 @@ import {
     type VsTableHeaderCell,
     type VsTableItem,
     type VsTablePaginationOptions,
-} from '../types';
-import { DEFAULT_PAGE_SIZE } from '../constants';
+} from './../types';
+import { DEFAULT_PAGE_SIZE } from './../constants';
 
 function setupUseTable(
     props: {

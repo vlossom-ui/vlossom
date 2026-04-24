@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { nextTick, defineComponent, ref } from 'vue';
 import { mount } from '@vue/test-utils';
-import { useFocusable } from '../focusable-composable';
+import { useFocusable } from './../focusable-composable';
 
 describe('useFocusable', () => {
     describe('초기 상태', () => {

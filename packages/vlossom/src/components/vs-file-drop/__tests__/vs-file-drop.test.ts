@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
-import VsFileDrop from '../VsFileDrop.vue';
+import VsFileDrop from './../VsFileDrop.vue';
 import { h } from 'vue';
 
 function createFile(name = 'test.png', type = 'image/png') {

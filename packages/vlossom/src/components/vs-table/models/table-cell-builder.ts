@@ -1,6 +1,6 @@
 import { objectUtil } from '@/utils';
-import type { VsTableBodyCell, VsTableCell, VsTableColumnDef, VsTableHeaderCell, VsTableItem } from '../types';
-import { isVsTableColumnDefArray } from '../types';
+import type { VsTableBodyCell, VsTableCell, VsTableColumnDef, VsTableHeaderCell, VsTableItem } from './../types';
+import { isVsTableColumnDefArray } from './../types';
 import {
     NoColumnDefCellStrategy,
     ObjectColumnDefCellStrategy,

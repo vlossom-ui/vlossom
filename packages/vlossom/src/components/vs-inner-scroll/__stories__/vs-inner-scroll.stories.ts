@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { useVlossom } from '@/framework';
 import VsInnerScroll from './../VsInnerScroll.vue';
-import type { VsInnerScrollStyleSet } from '../types';
+import type { VsInnerScrollStyleSet } from './../types';
 
 const meta: Meta<typeof VsInnerScroll> = {
     title: 'Components/Layout Components/VsInnerScroll',

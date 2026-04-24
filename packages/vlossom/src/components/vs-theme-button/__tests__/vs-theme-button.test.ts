@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach } from 'vitest';
-import VsThemeButton from '../VsThemeButton.vue';
+import VsThemeButton from './../VsThemeButton.vue';
 import { createVlossom } from '@/framework';
 import { nextTick } from 'vue';
 

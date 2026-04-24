@@ -3,7 +3,7 @@ import { getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsBlock from '@/components/vs-block/VsBlock.vue';
 import VsGrid from '@/components/vs-grid/VsGrid.vue';
-import type { VsBlockStyleSet } from '../types';
+import type { VsBlockStyleSet } from './../types';
 
 const meta: Meta<typeof VsBlock> = {
     title: 'Components/Base Components/VsBlock',

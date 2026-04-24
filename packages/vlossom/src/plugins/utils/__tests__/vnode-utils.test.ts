@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, h } from 'vue';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
-import { vnodeUtils } from '../vnode-utils';
+import { vnodeUtils } from './../vnode-utils';
 
 describe('vnodeUtils', () => {
     describe('createVsButton', () => {

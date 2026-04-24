@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsProgress from './../VsProgress.vue';
-import type { VsProgressStyleSet } from '../types';
+import type { VsProgressStyleSet } from './../types';
 
 const meta: Meta<typeof VsProgress> = {
     title: 'Components/Base Components/VsProgress',

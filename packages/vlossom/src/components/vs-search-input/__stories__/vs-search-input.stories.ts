@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
-import VsSearchInput from '../VsSearchInput.vue';
+import VsSearchInput from './../VsSearchInput.vue';
 
 const meta: Meta<typeof VsSearchInput> = {
     title: 'Components/Input Components/VsSearchInput',

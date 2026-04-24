@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { computed, ref } from 'vue';
 import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
-import VsInput from '../../vs-input/VsInput.vue';
-import type { VsTableItem } from '../types';
+import VsInput from './../../vs-input/VsInput.vue';
+import type { VsTableItem } from './../types';
 
 const baseColumns = [
     { key: 'name', label: 'Name' },

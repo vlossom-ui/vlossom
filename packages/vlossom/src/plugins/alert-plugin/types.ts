@@ -1,6 +1,6 @@
 import type { Component } from 'vue';
 import type { Alignment, ColorScheme } from '@/declaration';
-import type { ModalOptions } from '../modal-plugin';
+import type { ModalOptions } from './../modal-plugin';
 import type { VsButtonStyleSet, VsModalNodeStyleSet } from '@/components';
 
 export interface VsAlertStyleSet extends VsModalNodeStyleSet {

@@ -1,6 +1,6 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
-import type { VsTablePaginationOptions } from '../types';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_ALL } from '../constants';
+import type { VsTablePaginationOptions } from './../types';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_ALL } from './../constants';
 
 export function useTablePagination(
     options: ComputedRef<VsTablePaginationOptions | null>,

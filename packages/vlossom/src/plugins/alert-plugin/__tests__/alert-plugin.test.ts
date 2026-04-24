@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ALERT_OK } from '@/declaration';
-import { createAlertPlugin } from '../alert-plugin';
+import { createAlertPlugin } from './../alert-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
 
 describe('alert-plugin', () => {

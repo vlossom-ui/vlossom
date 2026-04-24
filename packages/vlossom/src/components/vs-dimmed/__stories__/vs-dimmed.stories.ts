@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsDimmed from './../VsDimmed.vue';
-import type { VsDimmedStyleSet } from '../types';
+import type { VsDimmedStyleSet } from './../types';
 
 const meta: Meta<typeof VsDimmed> = {
     title: 'Components/Base Components/VsDimmed',
@@ -66,8 +66,7 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '인라인 스타일 객체를 사용한 커스텀 dimmed입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
+                story: '인라인 스타일 객체를 사용한 커스텀 dimmed입니다. styleSet prop에 직접 스타일 객체를 전달하여 세밀한 커스터마이징이 가능합니다.',
             },
         },
     },
@@ -95,8 +94,7 @@ export const PreDefinedStyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '미리 정의된 스타일 세트를 사용한 dimmed입니다. useVlossom().styleSet에 등록된 스타일을 문자열로 참조하여 재사용할 수 있습니다.',
+                story: '미리 정의된 스타일 세트를 사용한 dimmed입니다. useVlossom().styleSet에 등록된 스타일을 문자열로 참조하여 재사용할 수 있습니다.',
             },
         },
     },
@@ -125,4 +123,3 @@ export const PreDefinedStyleSet: Story = {
         styleSet: 'myDimmedStyleSet',
     },
 };
-

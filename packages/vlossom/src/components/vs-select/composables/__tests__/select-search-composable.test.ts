@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ref } from 'vue';
 import type { SearchProps } from '@/declaration';
-import { useSelectSearch } from '../select-search-composable';
+import { useSelectSearch } from './../select-search-composable';
 
 describe('useSelectSearch', () => {
     describe('초기 상태', () => {

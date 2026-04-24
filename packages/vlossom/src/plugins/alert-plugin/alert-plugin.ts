@@ -2,8 +2,8 @@ import { h, type Component } from 'vue';
 import { ALERT_OK, OVERLAY_CLOSE } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
 import { VsRender } from '@/components';
-import { vnodeUtils } from '../utils/vnode-utils';
-import type { ModalPlugin } from '../modal-plugin';
+import { vnodeUtils } from './../utils/vnode-utils';
+import type { ModalPlugin } from './../modal-plugin';
 import type { AlertModalOptions, AlertPlugin } from './types';
 
 export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {

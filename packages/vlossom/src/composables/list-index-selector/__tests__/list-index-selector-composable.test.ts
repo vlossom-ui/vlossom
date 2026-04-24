@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ref } from 'vue';
-import { useIndexSelector } from '../list-index-selector-composable';
+import { useIndexSelector } from './../list-index-selector-composable';
 
 describe('list-index-selector-composable', () => {
     describe('isSelected', () => {

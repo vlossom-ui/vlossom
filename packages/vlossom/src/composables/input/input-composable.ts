@@ -1,8 +1,8 @@
 import { computed, nextTick, onBeforeMount, onMounted, onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
 import type { InputComponentParams } from '@/declaration';
-import { useInputForm } from './input-form-composable';
-import { useInputMessages } from './input-messages-composable';
-import { useInputRules } from './input-rules-composable';
+import { useInputForm } from '@/composables/input-form/input-form-composable';
+import { useInputMessages } from '@/composables/input-messages/input-messages-composable';
+import { useInputRules } from '@/composables/input-rules/input-rules-composable';
 import { objectUtil, stringUtil } from '@/utils';
 
 export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParams<T>) {

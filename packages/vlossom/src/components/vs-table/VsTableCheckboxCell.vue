@@ -35,7 +35,7 @@
 import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import type { VsCheckboxStyleSet } from '../vs-checkbox/types';
+import type { VsCheckboxStyleSet } from './../vs-checkbox/types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import {
     getRowItem,

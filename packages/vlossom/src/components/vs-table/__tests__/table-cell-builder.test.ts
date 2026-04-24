@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { stringUtil } from '@/utils';
-import { TableCellBuilder } from '../models/table-cell-builder';
-import type { VsTableColumnDef } from '../types';
+import { TableCellBuilder } from './../models/table-cell-builder';
+import type { VsTableColumnDef } from './../types';
 
 describe('TableCellBuilder', () => {
     beforeEach(() => {
