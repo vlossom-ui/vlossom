@@ -79,11 +79,7 @@
                 :options="selectOptions"
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
-            <vs-select
-                placeholder="No label"
-                :options="selectOptions"
-                :grid="{ xs: 12, md: 6, lg: 3 }"
-            />
+            <vs-select placeholder="No label" :options="selectOptions" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-select
                 v-model="selectSearchValue"
                 label="With Search"
@@ -157,14 +153,6 @@
                 placeholder="Select a fruit..."
                 :options="selectOptions"
                 required
-                :grid="{ xs: 12, md: 6, lg: 3 }"
-            />
-            <vs-select
-                v-model="selectLongValue"
-                label="Long List (Countries)"
-                placeholder="Select a country..."
-                :options="countries"
-                search
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
         </vs-form>
@@ -305,21 +293,6 @@ export default defineComponent({
             'Watermelon',
         ];
 
-        const countries = [
-            'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Argentina', 'Armenia', 'Australia',
-            'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Bhutan', 'Bolivia',
-            'Bosnia and Herzegovina', 'Brazil', 'Bulgaria', 'Cambodia', 'Cameroon', 'Canada', 'Chile', 'China',
-            'Colombia', 'Croatia', 'Cuba', 'Czech Republic', 'Denmark', 'Ecuador', 'Egypt', 'Estonia',
-            'Ethiopia', 'Finland', 'France', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Hungary',
-            'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan',
-            'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Latvia', 'Lebanon', 'Lithuania', 'Malaysia',
-            'Mexico', 'Moldova', 'Morocco', 'Nepal', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway',
-            'Pakistan', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia',
-            'Saudi Arabia', 'Serbia', 'Singapore', 'Slovakia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka',
-            'Sweden', 'Switzerland', 'Taiwan', 'Thailand', 'Tunisia', 'Turkey', 'Ukraine', 'United Arab Emirates',
-            'United Kingdom', 'United States', 'Uruguay', 'Venezuela', 'Vietnam', 'Yemen',
-        ];
-
         const colorOptions = [
             { label: 'Red', value: 'red' },
             { label: 'Green', value: 'green' },
@@ -361,7 +334,6 @@ export default defineComponent({
             noLabelSwitchValue,
             files,
             selectOptions,
-            countries,
             colorOptions,
             selectValue,
             selectSearchValue,
