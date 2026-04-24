@@ -29,6 +29,7 @@
         >
             <slot name="messages">
                 <vs-message
+                    class="vs-input-wrapper-message"
                     v-for="({ state, text }, index) in messages"
                     :key="`${text}-${index}`"
                     :state
@@ -41,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
 import { VsComponent, type StateMessage, type UIState } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
@@ -68,7 +69,13 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet(componentName, styleSet);
+        const { componentStyleSet } = useStyleSet(
+            componentName,
+            styleSet,
+            computed(() => ({
+                message: { variables: { size: '0.8rem' } },
+            })),
+        );
 
         const needToShake = ref(false);
         watch(shake, () => {

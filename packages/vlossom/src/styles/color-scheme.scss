@@ -43,7 +43,7 @@ $colors:
 
     @each $color in $colors {
         .vs-cs-#{$color} {
-            --vs-cs-line: var(--vs-#{$color}-600);
+            --vs-cs-line: var(--vs-#{$color}-400);
 
             --vs-cs-font: var(--vs-#{$color}-900);
             --vs-cs-font-colored: var(--vs-#{$color}-800);
@@ -64,7 +64,7 @@ $colors:
     &.vs-dark {
         @each $color in $colors {
             .vs-cs-#{$color} {
-                --vs-cs-line: var(--vs-#{$color}-600);
+                --vs-cs-line: var(--vs-#{$color}-700);
 
                 --vs-cs-font: var(--vs-#{$color}-100);
                 --vs-cs-font-colored: var(--vs-#{$color}-200);

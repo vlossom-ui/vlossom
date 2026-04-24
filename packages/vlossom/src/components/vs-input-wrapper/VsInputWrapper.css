@@ -22,6 +22,10 @@
     }
 
     .vs-messages {
-        margin-top: 0.2rem;
+        margin-top: 0.4rem;
+
+        .vs-input-wrapper-message {
+            margin-top: 0.3rem;
+        }
     }
 }
