@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ref, type Ref } from 'vue';
-import { OverlayCallbackStore } from '../overlay-callback-store';
+import { OverlayCallbackStore } from './../overlay-callback-store';
 import { OVERLAY_OPEN, OVERLAY_CLOSE } from '@/declaration';
 import type { OverlayCallbacks } from '@/declaration';
 

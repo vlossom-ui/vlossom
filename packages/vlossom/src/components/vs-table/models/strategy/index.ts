@@ -1,4 +1,4 @@
-import type { VsTableBodyCell, VsTableHeaderCell } from '../../types';
+import type { VsTableBodyCell, VsTableHeaderCell } from './../../types';
 import NoColumnDefCellStrategy from './no-column-def-cell-strategy';
 import ObjectColumnDefCellStrategy from './object-column-def-cell-strategy';
 import StringKeyColumnDefCellStrategy from './string-column-def-cell-strategy';

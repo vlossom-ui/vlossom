@@ -3,9 +3,9 @@ import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
 import { stringUtil } from '@/utils';
 import { useOverlayCallbackStore } from '@/stores';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
-import type { ModalPlugin } from '../modal-plugin';
+import type { ModalPlugin } from './../modal-plugin';
 import type { PromptModalOptions, PromptPlugin } from './types';
-import { vnodeUtils } from '../utils/vnode-utils';
+import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
     const overlayCallback = useOverlayCallbackStore();

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
-import VsAccordion from '../VsAccordion.vue';
+import VsAccordion from './../VsAccordion.vue';
 
 const meta: Meta<typeof VsAccordion> = {
     title: 'Components/Base Components/VsAccordion',

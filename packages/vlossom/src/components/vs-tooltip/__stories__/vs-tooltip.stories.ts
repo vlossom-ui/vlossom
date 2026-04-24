@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsTooltip from './../VsTooltip.vue';
-import VsButton from '../../vs-button/VsButton.vue';
+import VsButton from './../../vs-button/VsButton.vue';
 import type { VsTooltipStyleSet } from './../types';
 
 const meta: Meta<typeof VsTooltip> = {

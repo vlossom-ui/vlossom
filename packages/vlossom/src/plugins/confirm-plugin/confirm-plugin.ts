@@ -5,7 +5,7 @@ import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
 import { stringUtil } from '@/utils';
 import type { ModalPlugin } from '@/plugins';
 
-import { vnodeUtils } from '../utils/vnode-utils';
+import { vnodeUtils } from './../utils/vnode-utils';
 import type { ConfirmModalOptions, ConfirmPlugin } from './types';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {

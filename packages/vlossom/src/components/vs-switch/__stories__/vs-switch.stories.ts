@@ -4,7 +4,7 @@ import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/stor
 import { useVlossom } from '@/framework';
 import VsSwitch from './../VsSwitch.vue';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
-import type { VsSwitchStyleSet } from '../types';
+import type { VsSwitchStyleSet } from './../types';
 
 const meta: Meta<typeof VsSwitch> = {
     title: 'Components/Input Components/VsSwitch',

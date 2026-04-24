@@ -12,8 +12,8 @@ import {
     type VsTableCell,
     type VsTableItem,
     type VsTablePaginationOptions,
-} from '../types';
-import { TableCellBuilder } from '../models/table-cell-builder';
+} from './../types';
+import { TableCellBuilder } from './../models/table-cell-builder';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
@@ -25,7 +25,7 @@ import {
     DEFAULT_PAGINATION_OPTIONS,
     TABLE_SEARCH_OPTIONS,
     toDefaultPageSizeOptions,
-} from '../constants';
+} from './../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(

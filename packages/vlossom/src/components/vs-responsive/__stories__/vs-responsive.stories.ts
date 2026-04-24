@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import VsResponsive from './../VsResponsive.vue';
-import VsGrid from '../../vs-grid/VsGrid.vue';
+import VsGrid from './../../vs-grid/VsGrid.vue';
 
 const meta: Meta<typeof VsResponsive> = {
     title: 'Components/Layout Components/VsResponsive',

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsModalNode from './../VsModalNode.vue';
-import type { VsModalNodeStyleSet } from '../types';
+import type { VsModalNodeStyleSet } from './../types';
 
 const meta: Meta<typeof VsModalNode> = {
     title: 'Components/Layout Components/VsModalNode',

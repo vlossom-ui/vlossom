@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ref } from 'vue';
-import { useStringModifier } from '../string-modifier-composable';
+import { useStringModifier } from './../string-modifier-composable';
 
 describe('input-modifier-composable', () => {
     describe('string modifier', () => {

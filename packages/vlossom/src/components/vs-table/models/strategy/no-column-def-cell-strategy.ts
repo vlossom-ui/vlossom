@@ -1,5 +1,5 @@
 import { stringUtil } from '@/utils';
-import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from '../../types';
+import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from './../../types';
 import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class NoColumnDefCellStrategy implements TableCellStrategy {

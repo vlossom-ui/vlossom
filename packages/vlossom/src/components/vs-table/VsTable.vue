@@ -118,7 +118,7 @@ import {
 } from './types';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 
-import type { VsSearchInputRef } from '../vs-search-input/types';
+import type { VsSearchInputRef } from './../vs-search-input/types';
 
 import VsSearchInput from '@/components/vs-search-input/VsSearchInput.vue';
 import VsGrid from '@/components/vs-grid/VsGrid.vue';

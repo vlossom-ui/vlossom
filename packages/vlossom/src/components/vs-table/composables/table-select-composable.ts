@@ -1,6 +1,6 @@
 import { computed, ref, watch, type Ref } from 'vue';
 import { objectUtil } from '@/utils';
-import type { VsTableItem } from '../types';
+import type { VsTableItem } from './../types';
 
 export function useTableSelect(
     selectable: Ref<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>,

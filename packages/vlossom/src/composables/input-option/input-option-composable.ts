@@ -1,6 +1,6 @@
 import { watch, ref, type Ref } from 'vue';
 import { objectUtil } from '@/utils';
-import { useOptionLabelValue } from './option-label-value-composable';
+import { useOptionLabelValue } from '@/composables/option-label-value/option-label-value-composable';
 
 export function useInputOption(
     inputValue: Ref<any>,

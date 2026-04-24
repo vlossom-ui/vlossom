@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import { VsTableSortType, type VsTableColumnDef, type VsTableBodyCell } from '../types';
+import { VsTableSortType, type VsTableColumnDef, type VsTableBodyCell } from './../types';
 import { objectUtil, compareUtil } from '@/utils';
 
 const SORT_TYPE_COUNT = Object.keys(VsTableSortType).filter((value) => !isNaN(Number(value))).length;

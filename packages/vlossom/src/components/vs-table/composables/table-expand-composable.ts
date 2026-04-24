@@ -1,5 +1,5 @@
 import { computed, reactive, type Ref } from 'vue';
-import { isVsTableBodyRow, getRowId, getRowItem, type VsTableItem, type VsTableCell } from '../types';
+import { isVsTableBodyRow, getRowId, getRowItem, type VsTableItem, type VsTableCell } from './../types';
 
 export function useTableExpand(
     expandable: Ref<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>,

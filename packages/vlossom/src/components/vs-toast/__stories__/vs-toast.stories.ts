@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsToast from './../VsToast.vue';
-import type { VsToastStyleSet } from '../types';
+import type { VsToastStyleSet } from './../types';
 
 const meta: Meta<typeof VsToast> = {
     title: 'Components/Base Components/VsToast',

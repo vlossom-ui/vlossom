@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsLoading from './../VsLoading.vue';
-import type { VsLoadingStyleSet } from '../types';
+import type { VsLoadingStyleSet } from './../types';
 
 const meta: Meta<typeof VsLoading> = {
     title: 'Components/Base Components/VsLoading',

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import VsInputWrapper from '../VsInputWrapper.vue';
+import VsInputWrapper from './../VsInputWrapper.vue';
 
 describe('VsInputWrapper', () => {
     describe('기본 props', () => {

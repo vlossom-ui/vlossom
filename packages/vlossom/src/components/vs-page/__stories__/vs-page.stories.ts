@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { chromaticParameters, LOREM_IPSUM } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsPage from './../VsPage.vue';
-import type { VsPageStyleSet } from '../types';
+import type { VsPageStyleSet } from './../types';
 
 const meta: Meta<typeof VsPage> = {
     title: 'Components/Layout Components/VsPage',

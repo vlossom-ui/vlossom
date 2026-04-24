@@ -1,6 +1,6 @@
 import { computed, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
-import { useOptionLabelValue } from './option-label-value-composable';
+import { useOptionLabelValue } from '@/composables/option-label-value/option-label-value-composable';
 
 export function useOptionList(
     options: Ref<any[]>,

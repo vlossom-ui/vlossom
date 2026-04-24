@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import VsToggle from '../VsToggle.vue';
+import VsToggle from './../VsToggle.vue';
 
 describe('VsToggle', () => {
     describe('modelValue prop', () => {

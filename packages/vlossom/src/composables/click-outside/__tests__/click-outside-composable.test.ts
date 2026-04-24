@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { useClickOutside } from '../click-outside-composable';
+import { useClickOutside } from './../click-outside-composable';
 
 describe('useClickOutside', () => {
     afterEach(() => {

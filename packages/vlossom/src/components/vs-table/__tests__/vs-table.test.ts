@@ -4,7 +4,7 @@ import { h, nextTick } from 'vue';
 import { stringUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { VsTableBodyCell, VsTableItem, VsTableColumnDef } from './../types';
-import { DEFAULT_PAGE_SIZE } from '../constants';
+import { DEFAULT_PAGE_SIZE } from './../constants';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [

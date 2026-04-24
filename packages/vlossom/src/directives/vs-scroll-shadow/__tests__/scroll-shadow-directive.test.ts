@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { ObjectDirective } from 'vue';
-import { scrollShadow } from '../scroll-shadow';
+import { scrollShadow } from './../scroll-shadow-directive';
 
 const SCROLL_SHADOW_CLASS = 'vs-scroll-shadow';
 const SCROLL_STATE_VALUE = 'scroll-state';

@@ -46,7 +46,7 @@ import { defineComponent, inject, computed, type ComputedRef, type PropType, toR
 import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
-import type { VsSkeletonStyleSet } from '../vs-skeleton/types';
+import type { VsSkeletonStyleSet } from './../vs-skeleton/types';
 import {
     TABLE_STYLE_SET_TOKEN,
     type VsTableBodyCell,
