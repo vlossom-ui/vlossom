@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.1.0-beta.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.1...vlossom-v2.1.0-beta.1) (2026-04-27)
+
+
+### Features
+
+* **VsSelect:** change initial focus with search option ([#407](https://github.com/vlossom-ui/vlossom/issues/407)) ([3e9472f](https://github.com/vlossom-ui/vlossom/commit/3e9472fa1412144d380e31db7adc375a81670028))
+* **VsTable, util:** add 'crush' util and refine table search ([#383](https://github.com/vlossom-ui/vlossom/issues/383)) ([4ebf8fd](https://github.com/vlossom-ui/vlossom/commit/4ebf8fd798cd64c0314738faae13a4bd5ade4a28))
+* **VsTable:** add table toolbar slot & clean up vs-table styles with class names ([#412](https://github.com/vlossom-ui/vlossom/issues/412)) ([5c0e662](https://github.com/vlossom-ui/vlossom/commit/5c0e662158635859be7419ee1deb061b0a9ff119))
+
+
+### Bug Fixes
+
+* **colors:** refine colors & component styles ([#419](https://github.com/vlossom-ui/vlossom/issues/419)) ([6c323fa](https://github.com/vlossom-ui/vlossom/commit/6c323fa21f083f38f764379b396fab59b686c5c7))
+* **style:** update components style for beta.2 ([#384](https://github.com/vlossom-ui/vlossom/issues/384)) ([51cceab](https://github.com/vlossom-ui/vlossom/commit/51cceab0c93cd270a23ff3e97bf26a6bbd9e4485))
+* **VsButton:** fix vs-loading color on primary ([#408](https://github.com/vlossom-ui/vlossom/issues/408)) ([9801262](https://github.com/vlossom-ui/vlossom/commit/9801262dc4d8d9c6b502e7cf25fd118353f79d47))
+* **VsForm:** fix form method return type ([#418](https://github.com/vlossom-ui/vlossom/issues/418)) ([1621700](https://github.com/vlossom-ui/vlossom/commit/1621700fe46a326f564a3840e999cba99094478e))
+* **VsLabelValue:** remove flex basis ([#409](https://github.com/vlossom-ui/vlossom/issues/409)) ([8457858](https://github.com/vlossom-ui/vlossom/commit/8457858e3d118c286f3e8c294922b93e0b69b102))
+* **VsTable:** fix wrong type and prevent stale UI state rendering ([#414](https://github.com/vlossom-ui/vlossom/issues/414)) ([702665d](https://github.com/vlossom-ui/vlossom/commit/702665df83feb70c4ade4c1ba3ea86b0eeaeb358))
+* **VsTabs:** fix VsTabs divider style bug ([#417](https://github.com/vlossom-ui/vlossom/issues/417)) ([6b77621](https://github.com/vlossom-ui/vlossom/commit/6b776219ab019fd1c7b0eb557c9d3763d05ad0e6))
+* **VsVisibleRender:** remove incorrectly exposed return value ([#387](https://github.com/vlossom-ui/vlossom/issues/387)) ([f17df2b](https://github.com/vlossom-ui/vlossom/commit/f17df2bf297db3215bfe2f6f97daf6074ccd6a2f))
+
 ## [2.0.0-beta.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-beta.1) (2026-03-23)
 
 
