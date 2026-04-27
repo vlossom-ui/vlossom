@@ -1,18 +1,10 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
+import { writeFileSync } from 'node:fs';
 import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'vite-plugin-dts';
 import { commonConfig } from './vite.config.common';
-
-// https://vite.dev/config/
-import path from 'node:path';
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
-const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
-
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-const storybookPlugins =
-    process.env.NODE_ENV !== 'production' ? [storybookTest({ configDir: path.join(dirname, '.storybook') })] : [];
 
 export default defineConfig({
     ...commonConfig,
@@ -26,6 +18,12 @@ export default defineConfig({
         visualizer({
             filename: 'visualizer-vlossom.html',
         }),
+        {
+            name: 'generate-styles-dts',
+            closeBundle() {
+                writeFileSync('dist/vlossom-styles.d.ts', 'export {};\n');
+            },
+        },
     ],
     build: {
         lib: {
@@ -33,7 +31,7 @@ export default defineConfig({
             name: 'Vlossom',
             fileName: (format) => `vlossom.${format}.js`,
         },
-        rollupOptions: {
+        rolldownOptions: {
             external: ['vue'],
             output: {
                 globals: {
@@ -43,56 +41,25 @@ export default defineConfig({
         },
     },
     test: {
-        projects: [
-            {
-                extends: true,
-                test: {
-                    name: 'unit',
-                    environment: 'jsdom',
-                    root: fileURLToPath(new URL('./', import.meta.url)),
-                    setupFiles: ['src/test/test-setup.ts'],
-                    include: ['src/**/*.test.ts'],
-                    exclude: ['src/**/*.stories.ts'],
-                    alias: {
-                        /**
-                         * [NOTE]
-                         * sortablejs = legacy / iife / commonjs / umd
-                         * so, we need to replace sortablejs with a mock "globally"
-                         *
-                         * → Import from @/declaration or @/components
-                         * → src/components/index.ts
-                         * → export { default as VsTable } from './vs-table/VsTable.vue'
-                         * → In VsTable.vue, import type { SortableEvent } from 'sortablejs'
-                         * → Loads sortablejs module
-                         * → sortablejs immediately runs navigator.userAgent.match() 💥
-                         *
-                         */
-                        sortablejs: fileURLToPath(new URL('./src/test/__mocks__/sortablejs.ts', import.meta.url)),
-                    },
-                },
-            },
-            {
-                extends: true,
-                plugins: [
-                    // The plugin will run tests for the stories defined in your Storybook config
-                    // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-                    ...storybookPlugins,
-                ],
-                test: {
-                    name: 'storybook',
-                    browser: {
-                        enabled: true,
-                        headless: true,
-                        provider: 'playwright',
-                        instances: [
-                            {
-                                browser: 'chromium',
-                            },
-                        ],
-                    },
-                    setupFiles: ['.storybook/vitest.setup.ts'],
-                },
-            },
-        ],
+        environment: 'jsdom',
+        root: fileURLToPath(new URL('./', import.meta.url)),
+        setupFiles: ['src/test/test-setup.ts'],
+        include: ['src/**/*.test.ts'],
+        alias: {
+            /**
+             * [NOTE]
+             * sortablejs = legacy / iife / commonjs / umd
+             * so, we need to replace sortablejs with a mock "globally"
+             *
+             * → Import from @/declaration or @/components
+             * → src/components/index.ts
+             * → export { default as VsTable } from './vs-table/VsTable.vue'
+             * → In VsTable.vue, import type { SortableEvent } from 'sortablejs'
+             * → Loads sortablejs module
+             * → sortablejs immediately runs navigator.userAgent.match() 💥
+             *
+             */
+            sortablejs: fileURLToPath(new URL('./src/test/__mocks__/sortablejs.ts', import.meta.url)),
+        },
     },
 });
