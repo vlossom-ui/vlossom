@@ -198,12 +198,12 @@ describe('VsTextWrap', () => {
     });
 
     describe('link', () => {
-        let mockedOpen: ReturnType<typeof vi.fn>;
+        let mockedOpen: ReturnType<typeof vi.fn<typeof window.open>>;
         let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
         const originalOpen = window.open;
 
         beforeEach(() => {
-            mockedOpen = vi.fn();
+            mockedOpen = vi.fn<typeof window.open>();
             window.open = mockedOpen;
             consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         });
