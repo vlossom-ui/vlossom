@@ -9,7 +9,7 @@ const config: StorybookConfig = {
         options: {},
     },
     async viteFinal(c) {
-        c.plugins = await withoutVitePlugins(c.plugins, ['vite:dts']);
+        c.plugins = await withoutVitePlugins(c.plugins, ['vite:dts', 'generate-styles-dts', 'visualizer']);
         return c;
     },
 };
