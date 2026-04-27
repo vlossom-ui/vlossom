@@ -18,14 +18,16 @@
                 <vs-switch v-model="drawerOptions.fixed" label="fixed" :grid="1" no-messages />
             </vs-grid>
         </vs-block>
-        <vs-container class="mb-4 h-64 overflow-hidden rounded-lg border border-gray-400 dark:border-gray-500">
+        <vs-container
+            class="mb-4 overflow-hidden rounded-lg border border-gray-400 dark:border-gray-500"
+            :style="{ height: '30rem' }"
+        >
             <div class="flex h-full items-center justify-center">
                 <vs-button @click="drawerOpen = true">Open Drawer</vs-button>
             </div>
             <vs-drawer
                 v-model="drawerOpen"
                 :placement="drawerOptions.placement"
-                :size="drawerSize"
                 :dimmed="drawerOptions.dimmed"
                 :dim-close="drawerOptions.dimClose"
                 :esc-close="drawerOptions.escClose"
@@ -197,7 +199,6 @@ export default defineComponent({
             focusLock: false,
             fixed: false,
         });
-        const drawerSize = computed(() => (drawerOptions.fixed ? '300px' : '120px'));
         const drawerStyleSet = computed((): VsDrawerStyleSet => {
             if (drawerOptions.fixed && drawerOptions.placement !== 'bottom') {
                 return {
@@ -258,7 +259,6 @@ export default defineComponent({
         return {
             drawerOpen,
             drawerOptions,
-            drawerSize,
             drawerStyleSet,
             modalOpen,
             modalOptions,
