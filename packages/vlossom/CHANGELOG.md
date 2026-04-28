@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.0-beta.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.2...vlossom-v2.1.0-beta.2) (2026-04-28)
+
+
+### Features
+
+* **package:** update packages & settings ([f84e8bc](https://github.com/vlossom-ui/vlossom/commit/f84e8bcc97bf54ebdaee53d6412d005c01fff8df))
+
+
+### Bug Fixes
+
+* **storybook:** fix storybook build ([a30bc2c](https://github.com/vlossom-ui/vlossom/commit/a30bc2cb78e9a7c91568d0a3e06815c13854e12b))
+* **test:** fix test setting ([00a6fbe](https://github.com/vlossom-ui/vlossom/commit/00a6fbe541e57b7285c525d3a9b06f5054e2b0c5))
+* **vite:** downgrade vite 8 -&gt; vite 7 (for dts) ([97feb69](https://github.com/vlossom-ui/vlossom/commit/97feb69d40799194a60a280a7722ac376b9f3bf9))
+* **VsAvatar:** fix build warning(::deep) ([7de55b7](https://github.com/vlossom-ui/vlossom/commit/7de55b739f65211cedeae11c642f1e9f06feeb66))
+* **VsTable:** move type guard functions from types.ts ([34b3caf](https://github.com/vlossom-ui/vlossom/commit/34b3caf37db02f32aa71e75e7f4f9f7fd6ebd743))
+
 ## [2.0.0-beta.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.1...vlossom-v2.0.0-beta.2) (2026-04-27)
 
 
