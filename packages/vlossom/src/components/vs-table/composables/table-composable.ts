@@ -4,7 +4,6 @@ import { type UIState, type VsComponent, type PropsOf, type SearchProps } from '
 import type { VsSearchInputRef } from '@/components';
 
 import {
-    isVsTableColumnDefArray,
     type VsTableSortType,
     type VsTableBodyCell,
     type VsTableColumnDef,
@@ -14,6 +13,7 @@ import {
     type VsTablePaginationOptions,
 } from './../types';
 import { TableCellBuilder } from './../models/table-cell-builder';
+import { isVsTableColumnDefArray } from './../models/table-model';
 import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';

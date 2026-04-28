@@ -7,13 +7,8 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef, type PropType, inject } from 'vue';
 import { tableIcons } from './icons';
-import {
-    isVsTableBodyRow,
-    type VsTableTag,
-    type VsTableCell,
-    TABLE_STYLE_SET_TOKEN,
-    type VsTableStyleSet,
-} from './types';
+import { type VsTableTag, type VsTableCell, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
+import { isVsTableBodyRow } from './models/table-model';
 import { TABLE_DRAG_HANDLE_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 

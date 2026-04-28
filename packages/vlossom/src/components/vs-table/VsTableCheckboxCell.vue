@@ -37,14 +37,8 @@ import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsCheckboxStyleSet } from './../vs-checkbox/types';
 import { HEADER_ROW_INDEX } from './models/strategy';
-import {
-    getRowItem,
-    type VsTableCell,
-    isVsTableBodyRow,
-    TABLE_STYLE_SET_TOKEN,
-    TABLE_COLOR_SCHEME_TOKEN,
-    type VsTableStyleSet,
-} from './types';
+import { getRowItem, isVsTableBodyRow } from './models/table-model';
+import { type VsTableCell, TABLE_STYLE_SET_TOKEN, TABLE_COLOR_SCHEME_TOKEN, type VsTableStyleSet } from './types';
 
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
