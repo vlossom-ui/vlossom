@@ -31,7 +31,7 @@ export default defineConfig({
             name: 'Vlossom',
             fileName: (format) => `vlossom.${format}.js`,
         },
-        rolldownOptions: {
+        rollupOptions: {
             external: ['vue'],
             output: {
                 globals: {
