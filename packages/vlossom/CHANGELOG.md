@@ -1,14 +1,26 @@
 # Changelog
 
-## [2.0.0-beta.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.1...vlossom-v2.0.0-beta.2) (2026-04-27)
+## [2.0.0-beta.3](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.2...vlossom-v2.0.0-beta.3) (2026-04-28)
 
+### Features
+
+* **package:** update packages & settings ([f84e8bc](https://github.com/vlossom-ui/vlossom/commit/f84e8bcc97bf54ebdaee53d6412d005c01fff8df))
+
+### Bug Fixes
+
+* **storybook:** fix storybook build ([a30bc2c](https://github.com/vlossom-ui/vlossom/commit/a30bc2cb78e9a7c91568d0a3e06815c13854e12b))
+* **test:** fix test setting ([00a6fbe](https://github.com/vlossom-ui/vlossom/commit/00a6fbe541e57b7285c525d3a9b06f5054e2b0c5))
+* **vite:** downgrade vite 8 -&gt; vite 7 (for dts) ([97feb69](https://github.com/vlossom-ui/vlossom/commit/97feb69d40799194a60a280a7722ac376b9f3bf9))
+* **VsAvatar:** fix build warning(::deep) ([7de55b7](https://github.com/vlossom-ui/vlossom/commit/7de55b739f65211cedeae11c642f1e9f06feeb66))
+* **VsTable:** move type guard functions from types.ts ([34b3caf](https://github.com/vlossom-ui/vlossom/commit/34b3caf37db02f32aa71e75e7f4f9f7fd6ebd743))
+
+## [2.0.0-beta.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.1...vlossom-v2.0.0-beta.2) (2026-04-27)
 
 ### Features
 
 * **VsSelect:** change initial focus with search option ([#407](https://github.com/vlossom-ui/vlossom/issues/407)) ([3e9472f](https://github.com/vlossom-ui/vlossom/commit/3e9472fa1412144d380e31db7adc375a81670028))
 * **VsTable, util:** add 'crush' util and refine table search ([#383](https://github.com/vlossom-ui/vlossom/issues/383)) ([4ebf8fd](https://github.com/vlossom-ui/vlossom/commit/4ebf8fd798cd64c0314738faae13a4bd5ade4a28))
 * **VsTable:** add table toolbar slot & clean up vs-table styles with class names ([#412](https://github.com/vlossom-ui/vlossom/issues/412)) ([5c0e662](https://github.com/vlossom-ui/vlossom/commit/5c0e662158635859be7419ee1deb061b0a9ff119))
-
 
 ### Bug Fixes
 
@@ -23,11 +35,9 @@
 
 ## [2.0.0-beta.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-beta.1) (2026-03-23)
 
-
 ### Features
 
 * **directives:** add `scroll-shadow` directive ([#369](https://github.com/vlossom-ui/vlossom/issues/369)) ([34df9a0](https://github.com/vlossom-ui/vlossom/commit/34df9a0d1e870cfc0888710656cfe2be9bba9771))
-
 
 ### Bug Fixes
 
@@ -46,7 +56,6 @@
 
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
-
 ### Bug Fixes
 
 * refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
@@ -54,13 +63,11 @@
 
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
 
-
 ### Bug Fixes
 
 * refresh PR merge state ([858f6e4](https://github.com/vlossom-ui/vlossom/commit/858f6e44bd41366499dd8493a17ee6438616f86e))
 
 ## [2.0.0-alpha](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-alpha...vlossom-v2.0.0-alpha) (2026-03-11)
-
 
 ### Features
 
@@ -94,7 +101,7 @@
 * **VsChip:** create vs-chip component ([#139](https://github.com/vlossom-ui/vlossom/issues/139)) ([0c7f530](https://github.com/vlossom-ui/vlossom/commit/0c7f53040c05fc063381e4e913aac4571b5cb127))
 * **VsContainer:** create vs-container component ([#111](https://github.com/vlossom-ui/vlossom/issues/111)) ([accd867](https://github.com/vlossom-ui/vlossom/commit/accd867c493d7b41f5e0fd5abe0a889ac1cc5265))
 * **VsDimmed:** create vs-dimmed component ([#161](https://github.com/vlossom-ui/vlossom/issues/161)) ([f1e641e](https://github.com/vlossom-ui/vlossom/commit/f1e641e9a27249f744ff54a2835e25eb8a907790))
-* **VsDivider:** create vs-divider component  ([#109](https://github.com/vlossom-ui/vlossom/issues/109)) ([d0f7e0f](https://github.com/vlossom-ui/vlossom/commit/d0f7e0f1b160e44e0d5b35dcfc55a653bf93ef00))
+* **VsDivider:** create vs-divider component ([#109](https://github.com/vlossom-ui/vlossom/issues/109)) ([d0f7e0f](https://github.com/vlossom-ui/vlossom/commit/d0f7e0f1b160e44e0d5b35dcfc55a653bf93ef00))
 * **VsDrawer:** create vs-drawer component ([#124](https://github.com/vlossom-ui/vlossom/issues/124)) ([5a1aad6](https://github.com/vlossom-ui/vlossom/commit/5a1aad6a648c3ced4efa5f3fd45cd6c8eb27c97e))
 * **VsFileDrop:** create vs-file-drop component ([#169](https://github.com/vlossom-ui/vlossom/issues/169)) ([b81bf6e](https://github.com/vlossom-ui/vlossom/commit/b81bf6e53db0e39e4f49a93ed9376d83d8816d04))
 * **VsFloating:** create vs-floating component ([#254](https://github.com/vlossom-ui/vlossom/issues/254)) ([ed2d5f4](https://github.com/vlossom-ui/vlossom/commit/ed2d5f4d5f19fb0566e7e45a1c6f3255f0b24b8e))
@@ -141,7 +148,6 @@
 * **VsTooltip:** change vs-tooltip interface ([#234](https://github.com/vlossom-ui/vlossom/issues/234)) ([4e55e34](https://github.com/vlossom-ui/vlossom/commit/4e55e3450e1a5837f2013fc91550f5ccb1be1595))
 * **VsTooltip:** create vs-tooltip component ([#144](https://github.com/vlossom-ui/vlossom/issues/144)) ([91cebf3](https://github.com/vlossom-ui/vlossom/commit/91cebf36e707e59f0edeb7fe783d498b6cc0fcb5))
 
-
 ### Bug Fixes
 
 * **color-scheme:** add missing default color scheme fallback ([#233](https://github.com/vlossom-ui/vlossom/issues/233)) ([eab93e4](https://github.com/vlossom-ui/vlossom/commit/eab93e49a0520ed59e11ae0796c9b428001eb4bb))
@@ -167,7 +173,6 @@
 * **VsTabs:** add resize observer for responsive tab height adjustment ([#232](https://github.com/vlossom-ui/vlossom/issues/232)) ([afda3c0](https://github.com/vlossom-ui/vlossom/commit/afda3c00d51235b66f8ebbff73eb9ecc3ede6b34))
 * **VsTabs:** Replace CSSProperties with Record type in VsTabs to resolve build error ([#230](https://github.com/vlossom-ui/vlossom/issues/230)) ([c1b9c02](https://github.com/vlossom-ui/vlossom/commit/c1b9c02d50e378ccb4def0dfc70fdd4bddc3a21a))
 * **VsTextWrap:** move width style from contents to wrapper element ([#268](https://github.com/vlossom-ui/vlossom/issues/268)) ([dbd7512](https://github.com/vlossom-ui/vlossom/commit/dbd75125590a3ce7cfb080c8616cf3395d687bdd))
-
 
 ### Reverts
 
