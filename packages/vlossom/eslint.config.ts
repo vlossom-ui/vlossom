@@ -16,7 +16,7 @@ export default defineConfigWithVueTs(
         files: ['**/*.{ts,mts,tsx,vue}'],
     },
 
-    globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
+    globalIgnores(['**/dist/**', '**/node_modules/**', '**/dist-ssr/**', '**/coverage/**', '**/storybook-static/**']),
 
     pluginVue.configs['flat/essential'],
     vueTsConfigs.recommended,
