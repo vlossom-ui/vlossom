@@ -7,7 +7,8 @@
 <script lang="ts">
 import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { type VsTableBodyCell, getRowItem } from './types';
+import { type VsTableBodyCell } from './types';
+import { getRowItem } from './models/table-model';
 
 import type { VsExpandableStyleSet } from '@/components/vs-expandable/types';
 import VsExpandable from '@/components/vs-expandable/VsExpandable.vue';

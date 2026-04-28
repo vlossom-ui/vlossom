@@ -37,14 +37,13 @@ import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import {
     type VsTableCell,
-    getRowItem,
-    isVsTableBodyRow,
     type VsTableBodyCell,
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
     type VsTableStyleSet,
 } from './types';
 import { tableIcons } from './icons';
+import { getRowItem, isVsTableBodyRow } from './models/table-model';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';

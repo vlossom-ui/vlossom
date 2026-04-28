@@ -47,14 +47,9 @@ import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { UIState } from '@/declaration';
 import type { VsSkeletonStyleSet } from './../vs-skeleton/types';
-import {
-    TABLE_STYLE_SET_TOKEN,
-    type VsTableBodyCell,
-    type VsTableStyleSet,
-    type VsTableColumnDef,
-    getRowItem,
-} from './types';
+import { TABLE_STYLE_SET_TOKEN, type VsTableBodyCell, type VsTableStyleSet, type VsTableColumnDef } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import { getRowItem } from './models/table-model';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsTableDragCell from './VsTableDragCell.vue';

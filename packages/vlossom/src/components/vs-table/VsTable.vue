@@ -113,10 +113,10 @@ import {
     type VsTableItem,
     type VsTableStyleSet,
     type VsTablePaginationOptions,
-    getRowItem,
     type VsTablePageSizeOptions,
 } from './types';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
+import { getRowItem } from './models/table-model';
 
 import type { VsSearchInputRef } from './../vs-search-input/types';
 

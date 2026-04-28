@@ -42,12 +42,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, ref, watch } from 'vue';
-import { type VsTableBodyCell, getRowId, getRowItem } from './types';
+import { type VsTableBodyCell } from './types';
 import { tableIcons } from './icons';
 import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
+import { getRowId, getRowItem } from './models/table-model';
 
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';

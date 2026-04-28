@@ -1,7 +1,8 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components';
 import { objectUtil } from '@/utils';
-import { getRowItem, type VsTableBodyCell, type VsTableColumnDef } from './../types';
+import { type VsTableBodyCell, type VsTableColumnDef } from './../types';
+import { getRowItem } from './../models/table-model';
 
 export function useTableSearch(ref: Ref<VsSearchInputRef | null>, columns: ComputedRef<VsTableColumnDef[] | null>) {
     const skipKeyList = computed<string[]>(() => {
