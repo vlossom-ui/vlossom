@@ -72,7 +72,8 @@ const meta: Meta<typeof VsTable> = {
         },
         expandable: {
             control: { type: 'boolean' },
-            description: '행 확장을 활성화하거나 조건부 함수로 제어합니다.',
+            description:
+                '행 확장을 활성화하거나 조건부 함수로 제어합니다. 기본값은 `true`이지만, 확장 UI는 `expand` 슬롯이 제공된 경우에만 렌더링됩니다.',
         },
         colorScheme,
     },

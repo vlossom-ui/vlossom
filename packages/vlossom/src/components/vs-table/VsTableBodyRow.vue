@@ -30,8 +30,8 @@
                 </template>
             </td>
         </template>
-        <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        <td v-if="anyExpandable" class="vs-table-td vs-table-expanded-row">
+        <vs-table-expand-cell v-if="showExpand" :cells :rowIdx @expand-row="expandRow" />
+        <td v-if="showExpand" class="vs-table-td vs-table-expanded-row">
             <vs-table-expanded-panel :cells :rowIdx>
                 <template #expand="slotData">
                     <slot name="expand" v-bind="slotData" />
@@ -102,6 +102,7 @@ export default defineComponent({
             }
             return selectedItems.value.includes(getRowItem(props.cells));
         });
+        const showExpand = computed(() =>  anyExpandable.value && !!slots.expand);
 
         const classObj = computed(() => ({
             'vs-selected': isSelected.value,
@@ -233,6 +234,7 @@ export default defineComponent({
             loading,
             classObj,
             rowStyle,
+            showExpand,
             skeletonStyleSet,
             getCellStyle,
             stateClasses,

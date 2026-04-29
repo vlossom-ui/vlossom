@@ -62,9 +62,11 @@ const selected = ref([]);
 
 ### 확장 행
 
+`expandable`은 기본값이 `true`이지만, 확장 UI(토글 버튼과 확장 패널)는 `expand` 슬롯이 제공된 경우에만 렌더링됩니다. 확장 기능 자체를 끄려면 `:expandable="false"`로 명시하세요.
+
 ```html
 <template>
-    <vs-table :columns="columns" :items="items" expandable>
+    <vs-table :columns="columns" :items="items">
         <template #expand="{ item }">
             <div>{{ item.detail }}</div>
         </template>
@@ -98,7 +100,7 @@ const selected = ref([]);
 | `items`           | `VsTableItem[]`                                | `[]`     | 데이터 행                               |
 | `dense`           | `boolean`                                      | `false`  | 셀 패딩 축소                            |
 | `draggable`       | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화         |
-| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | 확장 행 활성화                          |
+| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | 확장 행 활성화. `expand` 슬롯이 제공된 경우에만 확장 UI가 렌더링됩니다 |
 | `loading`         | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색 비활성화         |
 | `noVirtualScroll` | `boolean`                                      | `false`  | 가상 스크롤 최적화 비활성화             |
 | `page`            | `number`                                       |          | 현재 페이지 인덱스(0부터 시작), v-model |
@@ -196,7 +198,7 @@ interface VsTablePaginationOptions {
 | `header-[key]` | 특정 컬럼 키의 커스텀 헤더 셀                                  |
 | `body-[key]`   | 특정 컬럼 키의 커스텀 바디 셀                                  |
 | `select`       | 선택 컬럼 셀의 커스텀 내용                                     |
-| `expand`       | 확장 행 패널의 커스텀 내용                                     |
+| `expand`       | 확장 행 패널의 커스텀 내용. `expandable`이 활성화된 경우 이 슬롯이 있어야 확장 UI가 렌더링됩니다 |
 
 ## 메서드
 

@@ -186,7 +186,7 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<
                 boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)
             >,
-            default: false,
+            default: true,
         },
         state: {
             type: [String, Function] as PropType<
