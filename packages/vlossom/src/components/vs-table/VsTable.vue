@@ -307,7 +307,7 @@ export default defineComponent({
 
         const headerSlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
-                ['header', 'select'].some((whitelist) => slotName.startsWith(whitelist)),
+                ['header', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
         const bodySlots = computed(() =>

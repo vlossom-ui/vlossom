@@ -34,7 +34,7 @@
                         </div>
                     </slot>
                 </th>
-                <vs-table-expand-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
+                <vs-table-expand-cell v-if="showExpand" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
             </tr>
         </template>
     </thead>
@@ -72,6 +72,7 @@ export default defineComponent({
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
+        const showExpand = computed(() => anyExpandable.value && !!slots.expand);
         const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
         const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
@@ -176,6 +177,7 @@ export default defineComponent({
             HEADER_ROW_INDEX,
             headerCells,
             findMatchingSlotName,
+            showExpand,
             clickCell,
             selectRow,
             getSortIcon,
