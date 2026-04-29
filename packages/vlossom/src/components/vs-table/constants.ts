@@ -37,3 +37,6 @@ export const DEFAULT_SORTABLE_OPTIONS: Partial<SortableOptions> = {
     invertSwap: true,
     invertedSwapThreshold: 0.65,
 } as const;
+
+export const VS_TABLE_HEADER_SLOT_PREFIXES = ['header', 'select', 'expand'] as const;
+export const VS_TABLE_BODY_SLOT_PREFIXES = ['body', 'select', 'expand', 'empty'] as const;

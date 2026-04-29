@@ -101,6 +101,46 @@ describe('VsTable', () => {
         });
     });
 
+    describe('empty slot', () => {
+        it('items가 비어있고 empty 슬롯이 제공되면 슬롯 내용이 렌더링된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [] },
+                slots: {
+                    empty: '<div data-testid="empty-slot">No matching results</div>',
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="empty-slot"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="empty-slot"]').text()).toBe('No matching results');
+            expect(wrapper.find('.vs-table-no-data-text').exists()).toBe(false);
+        });
+
+        it('items가 비어있고 empty 슬롯이 없으면 기본 NO DATA 자리표시자가 렌더링된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [] },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('.vs-table-no-data-text').text()).toBe('NO DATA');
+        });
+
+        it('loading이면 empty 슬롯보다 로딩 인디케이터가 우선 표시된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [], loading: true },
+                slots: {
+                    empty: '<div data-testid="empty-slot">No matching results</div>',
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="empty-slot"]').exists()).toBe(false);
+        });
+    });
+
     describe('다양한 방식의 Cell Slot과 Slot 우선순위', () => {
         it('`header-${colKey}` Slot이 기본 렌더링보다 우선한다', async () => {
             const wrapper = mountTable({
@@ -184,6 +224,9 @@ describe('VsTable', () => {
         it('expandable이 true면 확장 버튼을 클릭하면 expand-row를 발생시킨다', async () => {
             const wrapper = mountTable({
                 props: { expandable: true },
+                slots: {
+                    expand: () => h('div'),
+                },
             });
 
             await nextTick();
@@ -198,6 +241,43 @@ describe('VsTable', () => {
             expect(cells).toHaveLength(defaultColumns.length);
             expect(cells[0]).toMatchObject({ colKey: 'name', value: 'Alice', rowIdx: 0, colIdx: 0 });
             expect(cells[0].item).toStrictEqual(tableItems[0]);
+        });
+
+        it('expand 슬롯이 없으면 expandable이 true여도 확장 버튼이 렌더링되지 않는다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+            });
+
+            await nextTick();
+
+            expect(wrapper.findAll('tbody tr button')).toHaveLength(0);
+            expect(wrapper.find('.vs-table-expand-handle').exists()).toBe(false);
+        });
+
+        it('expandable이 false이면 expand 슬롯이 있어도 확장 UI가 렌더링되지 않는다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: false },
+                slots: {
+                    expand: () => h('div'),
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.findAll('tbody tr button')).toHaveLength(0);
+            expect(wrapper.find('.vs-table-expand-handle').exists()).toBe(false);
+        });
+
+        it('expandable prop을 지정하지 않아도 expand 슬롯만 있으면 확장 UI가 렌더링된다 (기본값 true)', async () => {
+            const wrapper = mountTable({
+                slots: {
+                    expand: ({ item }: { item: VsTableItem }) => h('div', {}, String(item.name)),
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.findAll('tbody tr button')).toHaveLength(tableItems.length);
         });
     });
 
@@ -415,6 +495,9 @@ describe('VsTable', () => {
         it('expand 버튼 클릭 시 expand-row 이벤트를 발생시킨다', async () => {
             const wrapper = mountTable({
                 props: { expandable: true },
+                slots: {
+                    expand: () => h('div'),
+                },
             });
 
             await nextTick();
