@@ -62,11 +62,27 @@ const selected = ref([]);
 
 ### Expandable Rows
 
+`expandable` is `true` by default, but the expand UI (toggle button and expanded panel) is rendered only when the `expand` slot is provided. Pass `:expandable="false"` to disable expansion entirely.
+
 ```html
 <template>
-    <vs-table :columns="columns" :items="items" expandable>
+    <vs-table :columns="columns" :items="items">
         <template #expand="{ item }">
             <div>{{ item.detail }}</div>
+        </template>
+    </vs-table>
+</template>
+```
+
+### Empty State
+
+Provide an `empty` slot to replace the default "NO DATA" placeholder when `items` is empty. When `loading` is true, the loading indicator takes priority over this slot.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="[]">
+        <template #empty>
+            <div>No matching results.</div>
         </template>
     </vs-table>
 </template>
@@ -98,7 +114,7 @@ const selected = ref([]);
 | `items`           | `VsTableItem[]`                                | `[]`     | Data rows                                   |
 | `dense`           | `boolean`                                      | `false`  | Reduces cell padding                        |
 | `draggable`       | `boolean`                                      | `false`  | Enables drag-and-drop row reordering        |
-| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | Enables expandable rows                     |
+| `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | Enables expandable rows. Expand UI is rendered only when an `expand` slot is provided |
 | `loading`         | `boolean`                                      | `false`  | Shows loading state and disables search     |
 | `noVirtualScroll` | `boolean`                                      | `false`  | Disables virtual scroll optimization        |
 | `page`            | `number`                                       |          | Current page index (0-based), v-model       |
@@ -196,7 +212,8 @@ interface VsTablePaginationOptions {
 | `header-[key]` | Custom header cell for a specific column key                                    |
 | `body-[key]`   | Custom body cell for a specific column key                                      |
 | `select`       | Custom content for the selection column cell                                    |
-| `expand`       | Custom content for the expanded row panel                                       |
+| `expand`       | Custom content for the expanded row panel. Required to render the expand UI when `expandable` is enabled |
+| `empty`        | Custom content shown when there are no rows. Falls back to the default "NO DATA" placeholder when omitted |
 
 ## Methods
 

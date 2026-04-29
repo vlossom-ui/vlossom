@@ -1,6 +1,6 @@
 <template>
-    <template v-if="isBodyRow(cells)">
-        <td v-if="anyExpandable" class="vs-table-td vs-table-expand-handle" :style="cellStyle">
+    <template v-if="isVsTableBodyRow(cells)">
+        <td class="vs-table-td vs-table-expand-handle" :style="cellStyle">
             <vs-button
                 v-if="isExpandable(cells, rowIdx)"
                 :color-scheme
@@ -27,7 +27,7 @@
         </td>
     </template>
     <template v-else>
-        <th v-if="anyExpandable" class="vs-table-th vs-table-expand-handle" :style="cellStyle" />
+        <th class="vs-table-th vs-table-expand-handle" :style="cellStyle" />
     </template>
 </template>
 
@@ -59,7 +59,7 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { anyExpandable, isExpanded, expandable, toggleExpand, items, loading, primary } =
+        const { isExpanded, expandable, toggleExpand, items, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
@@ -78,9 +78,8 @@ export default defineComponent({
         }
 
         return {
-            isBodyRow: isVsTableBodyRow,
+            isVsTableBodyRow,
             isExpandable,
-            anyExpandable,
             isExpanded,
             expandRow,
             tableIcons,

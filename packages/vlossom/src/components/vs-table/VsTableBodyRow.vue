@@ -14,7 +14,7 @@
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.prevent.stop="clickCell(cell, $event)"
             >
-                <vs-skeleton v-if="loading" :style-set="skeletonStyleSet" />
+                <vs-skeleton v-if="loading" :color-scheme :style-set="skeletonStyleSet" />
                 <template v-else>
                     <slot
                         :name="findMatchingSlotName(cell)"
@@ -30,8 +30,8 @@
                 </template>
             </td>
         </template>
-        <vs-table-expand-cell :cells :rowIdx @expand-row="expandRow" />
-        <td v-if="anyExpandable" class="vs-table-td vs-table-expanded-row">
+        <vs-table-expand-cell v-if="showExpand" :cells :rowIdx @expand-row="expandRow" />
+        <td v-if="showExpand" class="vs-table-td vs-table-expanded-row">
             <vs-table-expanded-panel :cells :rowIdx>
                 <template #expand="slotData">
                     <slot name="expand" v-bind="slotData" />
@@ -45,9 +45,15 @@
 import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs, type CSSProperties } from 'vue';
 import { stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
-import type { UIState } from '@/declaration';
+import type { ColorScheme, UIState } from '@/declaration';
 import type { VsSkeletonStyleSet } from './../vs-skeleton/types';
-import { TABLE_STYLE_SET_TOKEN, type VsTableBodyCell, type VsTableStyleSet, type VsTableColumnDef } from './types';
+import {
+    TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_STYLE_SET_TOKEN,
+    type VsTableBodyCell,
+    type VsTableStyleSet,
+    type VsTableColumnDef,
+} from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import { getRowItem } from './models/table-model';
 
@@ -91,6 +97,8 @@ export default defineComponent({
             dense,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
+
         const state = computed<UIState>(() => {
             return stateFn.value(getRowItem(cells.value), rowIndex.value, items?.value);
         });
@@ -102,6 +110,8 @@ export default defineComponent({
             }
             return selectedItems.value.includes(getRowItem(props.cells));
         });
+
+        const showExpand = computed(() => anyExpandable.value && !!slots.expand);
 
         const classObj = computed(() => ({
             'vs-selected': isSelected.value,
@@ -229,10 +239,12 @@ export default defineComponent({
 
         return {
             anyExpandable,
+            colorScheme,
             draggable,
             loading,
             classObj,
             rowStyle,
+            showExpand,
             skeletonStyleSet,
             getCellStyle,
             stateClasses,

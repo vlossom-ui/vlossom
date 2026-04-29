@@ -72,7 +72,8 @@ const meta: Meta<typeof VsTable> = {
         },
         expandable: {
             control: { type: 'boolean' },
-            description: '행 확장을 활성화하거나 조건부 함수로 제어합니다.',
+            description:
+                '행 확장을 활성화하거나 조건부 함수로 제어합니다. 기본값은 `true`이지만, 확장 UI는 `expand` 슬롯이 제공된 경우에만 렌더링됩니다.',
         },
         colorScheme,
     },
@@ -302,6 +303,31 @@ export const Expandable: Story = {
         docs: {
             description: {
                 story: 'expandable을 켜면 행마다 확장 버튼이 노출되며, expand 슬롯으로 확장 영역을 커스텀합니다.',
+            },
+        },
+    },
+};
+
+export const Empty: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            return { columns: baseColumns };
+        },
+        template: `
+            <vs-table :columns="columns" :items="[]">
+                <template #empty>
+                    <div class="p-4 text-center text-sm text-slate-500">
+                        일치하는 결과가 없습니다.
+                    </div>
+                </template>
+            </vs-table>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'items가 비어있을 때 기본 "NO DATA" 자리표시자 대신 empty 슬롯 내용을 표시합니다.',
             },
         },
     },

@@ -12,6 +12,7 @@
                 <vs-search-input
                     ref="searchInputRef"
                     v-bind="searchOptions"
+                    :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.search"
                     :disabled="loading"
                     @search="searchRows"
@@ -115,7 +116,13 @@ import {
     type VsTablePaginationOptions,
     type VsTablePageSizeOptions,
 } from './types';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_SIZE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
+import {
+    DEFAULT_PAGE_SIZE,
+    DEFAULT_PAGE_SIZE_OPTIONS,
+    TABLE_DRAG_WRAPPER_CLASS,
+    VS_TABLE_BODY_SLOT_PREFIXES,
+    VS_TABLE_HEADER_SLOT_PREFIXES,
+} from './constants';
 import { getRowItem } from './models/table-model';
 
 import type { VsSearchInputRef } from './../vs-search-input/types';
@@ -186,7 +193,7 @@ export default defineComponent({
             type: [Boolean, Function] as PropType<
                 boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)
             >,
-            default: false,
+            default: true,
         },
         state: {
             type: [String, Function] as PropType<
@@ -306,12 +313,12 @@ export default defineComponent({
 
         const headerSlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
-                ['header', 'select'].some((whitelist) => slotName.startsWith(whitelist)),
+                VS_TABLE_HEADER_SLOT_PREFIXES.some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
-                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+                VS_TABLE_BODY_SLOT_PREFIXES.some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
         const classObj = computed(() => ({
@@ -403,6 +410,7 @@ export default defineComponent({
         return {
             TABLE_DRAG_WRAPPER_CLASS,
             colorSchemeClass,
+            computedColorScheme,
             componentStyleSet,
             classObj,
             headerRef,
