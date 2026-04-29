@@ -74,6 +74,20 @@ const selected = ref([]);
 </template>
 ```
 
+### Empty State
+
+Provide an `empty` slot to replace the default "NO DATA" placeholder when `items` is empty. When `loading` is true, the loading indicator takes priority over this slot.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="[]">
+        <template #empty>
+            <div>No matching results.</div>
+        </template>
+    </vs-table>
+</template>
+```
+
 ### Server Mode
 
 ```html
@@ -199,6 +213,7 @@ interface VsTablePaginationOptions {
 | `body-[key]`   | Custom body cell for a specific column key                                      |
 | `select`       | Custom content for the selection column cell                                    |
 | `expand`       | Custom content for the expanded row panel. Required to render the expand UI when `expandable` is enabled |
+| `empty`        | Custom content shown when there are no rows. Falls back to the default "NO DATA" placeholder when omitted |
 
 ## Methods
 

@@ -101,6 +101,46 @@ describe('VsTable', () => {
         });
     });
 
+    describe('empty slot', () => {
+        it('items가 비어있고 empty 슬롯이 제공되면 슬롯 내용이 렌더링된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [] },
+                slots: {
+                    empty: '<div data-testid="empty-slot">No matching results</div>',
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="empty-slot"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="empty-slot"]').text()).toBe('No matching results');
+            expect(wrapper.find('.vs-table-no-data-text').exists()).toBe(false);
+        });
+
+        it('items가 비어있고 empty 슬롯이 없으면 기본 NO DATA 자리표시자가 렌더링된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [] },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('.vs-table-no-data-text').text()).toBe('NO DATA');
+        });
+
+        it('loading이면 empty 슬롯보다 로딩 인디케이터가 우선 표시된다', async () => {
+            const wrapper = mountTable({
+                props: { items: [], loading: true },
+                slots: {
+                    empty: '<div data-testid="empty-slot">No matching results</div>',
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="empty-slot"]').exists()).toBe(false);
+        });
+    });
+
     describe('다양한 방식의 Cell Slot과 Slot 우선순위', () => {
         it('`header-${colKey}` Slot이 기본 렌더링보다 우선한다', async () => {
             const wrapper = mountTable({

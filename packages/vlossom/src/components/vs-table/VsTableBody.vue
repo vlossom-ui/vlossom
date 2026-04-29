@@ -30,6 +30,9 @@
                     <template v-if="loading">
                         <vs-loading :color-scheme />
                     </template>
+                    <template v-else-if="$slots['empty']">
+                        <slot name="empty" />
+                    </template>
                     <template v-else>
                         <vs-render :content="tableIcons.noData" />
                         <p class="vs-table-no-data-text">NO DATA</p>
@@ -69,7 +72,7 @@ export default defineComponent({
 
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
-                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+                ['body', 'select', 'expand', 'empty'].some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
 

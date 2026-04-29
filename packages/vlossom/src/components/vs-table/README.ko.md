@@ -74,6 +74,20 @@ const selected = ref([]);
 </template>
 ```
 
+### 빈 상태
+
+`items`가 비어있을 때 기본 "NO DATA" 자리표시자 대신 표시할 내용을 `empty` 슬롯으로 제공합니다. `loading`이 true이면 로딩 인디케이터가 이 슬롯보다 우선 표시됩니다.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="[]">
+        <template #empty>
+            <div>일치하는 결과가 없습니다.</div>
+        </template>
+    </vs-table>
+</template>
+```
+
 ### 서버 모드
 
 ```html
@@ -199,6 +213,7 @@ interface VsTablePaginationOptions {
 | `body-[key]`   | 특정 컬럼 키의 커스텀 바디 셀                                  |
 | `select`       | 선택 컬럼 셀의 커스텀 내용                                     |
 | `expand`       | 확장 행 패널의 커스텀 내용. `expandable`이 활성화된 경우 이 슬롯이 있어야 확장 UI가 렌더링됩니다 |
+| `empty`        | 행이 없을 때 표시할 커스텀 내용. 미제공 시 기본 "NO DATA" 자리표시자가 사용됩니다 |
 
 ## 메서드
 

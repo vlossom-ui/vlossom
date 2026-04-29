@@ -308,6 +308,31 @@ export const Expandable: Story = {
     },
 };
 
+export const Empty: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            return { columns: baseColumns };
+        },
+        template: `
+            <vs-table :columns="columns" :items="[]">
+                <template #empty>
+                    <div class="p-4 text-center text-sm text-slate-500">
+                        일치하는 결과가 없습니다.
+                    </div>
+                </template>
+            </vs-table>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'items가 비어있을 때 기본 "NO DATA" 자리표시자 대신 empty 슬롯 내용을 표시합니다.',
+            },
+        },
+    },
+};
+
 export const StickyHeader: Story = {
     render: () => ({
         components: { VsTable },

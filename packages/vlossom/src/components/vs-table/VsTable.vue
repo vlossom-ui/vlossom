@@ -312,7 +312,7 @@ export default defineComponent({
         );
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
-                ['body', 'select', 'expand'].some((whitelist) => slotName.startsWith(whitelist)),
+                ['body', 'select', 'expand', 'empty'].some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
         const classObj = computed(() => ({
