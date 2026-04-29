@@ -5,8 +5,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, getCurrentInstance, inject } from 'vue';
+import { computed, defineComponent, inject, toRefs } from 'vue';
+import { useLayoutChild } from '@/composables';
 import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { getLayoutProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil } from '@/utils';
 
@@ -14,16 +16,18 @@ const componentName = VsComponent.VsContainer;
 export default defineComponent({
     name: componentName,
     props: {
+        ...getLayoutProps(),
         tag: { type: String, default: 'div' },
     },
-    setup() {
-        // only for vs-layout children
-        const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
+    setup(props) {
+        const { layout } = toRefs(props);
+
+        const { isLayoutChild } = useLayoutChild(layout);
 
         const { header, footer, drawers } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
-        function getDrawerPadding(drawerSize: string, isOpen: boolean, responsive: boolean, barPadding?: string) {
-            if (!responsive || !isOpen || !drawerSize) {
+        function getDrawerPadding(drawerSize: string, isOpen: boolean, pushContainer: boolean, barPadding?: string) {
+            if (!pushContainer || !isOpen || !drawerSize) {
                 return undefined;
             }
             return barPadding ? `calc(${barPadding} + ${drawerSize})` : drawerSize;
@@ -47,12 +51,12 @@ export default defineComponent({
 
             return objectUtil.shake({
                 paddingTop:
-                    getDrawerPadding(top.size, top.isOpen, top.responsive, headerPaddingTop) ?? headerPaddingTop,
+                    getDrawerPadding(top.size, top.isOpen, top.pushContainer, headerPaddingTop) ?? headerPaddingTop,
                 paddingBottom:
-                    getDrawerPadding(bottom.size, bottom.isOpen, bottom.responsive, footerPaddingBottom) ??
+                    getDrawerPadding(bottom.size, bottom.isOpen, bottom.pushContainer, footerPaddingBottom) ??
                     footerPaddingBottom,
-                paddingLeft: getDrawerPadding(left.size, left.isOpen, left.responsive),
-                paddingRight: getDrawerPadding(right.size, right.isOpen, right.responsive),
+                paddingLeft: getDrawerPadding(left.size, left.isOpen, left.pushContainer),
+                paddingRight: getDrawerPadding(right.size, right.isOpen, right.pushContainer),
             });
         });
 

@@ -6,10 +6,10 @@ export class LayoutStore {
     private _header: Ref<BarLayout> = ref({ position: 'relative', height: '' });
     private _footer: Ref<BarLayout> = ref({ position: 'relative', height: '' });
     private _drawers: Ref<DrawerLayouts> = ref({
-        left: { isOpen: false, responsive: false, placement: 'left', size: '' },
-        top: { isOpen: false, responsive: false, placement: 'top', size: '' },
-        right: { isOpen: false, responsive: false, placement: 'right', size: '' },
-        bottom: { isOpen: false, responsive: false, placement: 'bottom', size: '' },
+        left: { isOpen: false, pushContainer: false, placement: 'left', size: '' },
+        top: { isOpen: false, pushContainer: false, placement: 'top', size: '' },
+        right: { isOpen: false, pushContainer: false, placement: 'right', size: '' },
+        bottom: { isOpen: false, pushContainer: false, placement: 'bottom', size: '' },
     });
 
     public static getDefaultLayoutStore(): LayoutStore {

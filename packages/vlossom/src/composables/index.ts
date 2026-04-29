@@ -6,6 +6,7 @@ export * from './input-form/input-form-composable';
 export * from './input-messages/input-messages-composable';
 export * from './input-option/input-option-composable';
 export * from './input-rules/input-rules-composable';
+export * from './layout-child/layout-child-composable';
 export * from './list-index-selector/list-index-selector-composable';
 export * from './option-label-value/option-label-value-composable';
 export * from './option-list/option-list-composable';

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { provide, defineComponent, h } from 'vue';
 import { LayoutStore } from '@/stores';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_PROVIDED_KEY, LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import VsDrawer from './../VsDrawer.vue';
 
 describe('VsDrawer', () => {
@@ -342,6 +342,7 @@ describe('VsDrawer', () => {
             name: VsComponent.VsLayout,
             setup() {
                 provide(LAYOUT_STORE_KEY, layoutStore);
+                provide(LAYOUT_PROVIDED_KEY, true);
                 return {};
             },
             template: '<div><slot /></div>',
@@ -359,7 +360,7 @@ describe('VsDrawer', () => {
             Transition: { template: '<div><slot /></div>' },
         };
 
-        it('vs-layout의 자식일 때 layoutStore.setDrawer가 호출되어야 한다', () => {
+        it('layout prop이 true일 때 layoutStore.setDrawer가 호출되어야 한다', () => {
             // given
             const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
 
@@ -367,7 +368,13 @@ describe('VsDrawer', () => {
             mount(MockVsLayout, {
                 slots: {
                     default: () =>
-                        h(VsDrawer, { modelValue: true, placement: 'left', size: 'md', layoutResponsive: true }),
+                        h(VsDrawer, {
+                            layout: true,
+                            modelValue: true,
+                            placement: 'left',
+                            size: 'md',
+                            pushContainer: true,
+                        }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -377,8 +384,25 @@ describe('VsDrawer', () => {
                 isOpen: true,
                 placement: 'left',
                 size: '40%',
-                responsive: true,
+                pushContainer: true,
             });
+        });
+
+        it('layout prop이 없으면 setDrawer가 호출되지 않아야 한다', () => {
+            // given
+            const setDrawerSpy = vi.spyOn(layoutStore, 'setDrawer');
+
+            // when
+            mount(MockVsLayout, {
+                slots: {
+                    default: () =>
+                        h(VsDrawer, { modelValue: true, placement: 'left', size: 'md', pushContainer: true }),
+                },
+                global: { stubs: layoutStubs },
+            });
+
+            // then
+            expect(setDrawerSpy).not.toHaveBeenCalled();
         });
     });
 
@@ -387,6 +411,7 @@ describe('VsDrawer', () => {
             name: VsComponent.VsLayout,
             setup() {
                 provide(LAYOUT_STORE_KEY, layoutStore);
+                provide(LAYOUT_PROVIDED_KEY, true);
                 return {};
             },
             template: '<div><slot /></div>',
@@ -411,7 +436,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -428,7 +453,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'right' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'right' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -445,7 +470,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'top' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -462,7 +487,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'top' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'top' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -479,7 +504,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'bottom' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -496,7 +521,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'bottom' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'bottom' }),
                 },
                 global: { stubs: layoutStubs },
             });
@@ -513,7 +538,7 @@ describe('VsDrawer', () => {
             // when
             const wrapper = mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsDrawer, { modelValue: true, placement: 'left' }),
+                    default: () => h(VsDrawer, { layout: true, modelValue: true, placement: 'left' }),
                 },
                 global: { stubs: layoutStubs },
             });

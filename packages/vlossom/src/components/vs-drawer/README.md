@@ -11,7 +11,7 @@ A slide-in panel component that overlays content from any edge of the screen wit
 - Supports four placement directions: `left`, `right`, `top`, `bottom`
 - Optional dimmed backdrop with click-to-close support
 - Focus trapping for accessible keyboard navigation
-- Integrates with `VsLayout` to offset header/footer heights automatically
+- Opt-in `VsLayout` integration via the `layout` prop — when set, offsets header/footer heights automatically and registers itself for container padding
 - Smooth slide-in/out transition animation
 - Controllable via `v-model` or programmatic `openDrawer` / `closeDrawer` methods
 
@@ -59,6 +59,23 @@ const drawerOpen = ref(false);
 </template>
 ```
 
+### Inside VsLayout
+
+Set the `layout` prop to register the drawer with the layout store. Combine with `pushContainer` to push the sibling `VsContainer` aside instead of overlaying it. Wrapping the drawer in another component is supported.
+
+```html
+<template>
+    <vs-layout>
+        <vs-drawer v-model="open" layout push-container placement="left" size="240px">
+            <p>Sidebar</p>
+        </vs-drawer>
+        <vs-container layout>
+            <p>Content</p>
+        </vs-container>
+    </vs-layout>
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -74,7 +91,8 @@ const drawerOpen = ref(false);
 | `id` | `string` | `''` | | HTML id attribute for the drawer |
 | `fixed` | `boolean` | `false` | | Use `position: fixed` instead of `absolute` |
 | `open` | `boolean` | `false` | | Open the drawer on mount |
-| `layoutResponsive` | `boolean` | `false` | | Adjust layout when used inside `VsLayout` |
+| `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
+| `pushContainer` | `boolean` | `false` | | When used with `layout`, push the sibling `VsContainer` to make room for the drawer instead of overlaying it |
 | `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'` | | Edge from which the drawer slides in |
 | `size` | `string \| number` | | | Width (left/right) or height (top/bottom) of the drawer panel. Accepts size tokens (`xs`, `sm`, `md`, `lg`, `xl`) or CSS values |
 | `modelValue` | `boolean` | `false` | | v-model binding to control open state |
