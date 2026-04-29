@@ -12,6 +12,7 @@
                 <vs-search-input
                     ref="searchInputRef"
                     v-bind="searchOptions"
+                    :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.search"
                     :disabled="loading"
                     @search="searchRows"
@@ -403,6 +404,7 @@ export default defineComponent({
         return {
             TABLE_DRAG_WRAPPER_CLASS,
             colorSchemeClass,
+            computedColorScheme,
             componentStyleSet,
             classObj,
             headerRef,

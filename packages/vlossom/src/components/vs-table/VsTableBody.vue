@@ -28,7 +28,7 @@
             <td class="vs-table-td vs-table-no-data-cell" colspan="100%">
                 <div class="vs-table-no-data">
                     <template v-if="loading">
-                        <vs-loading />
+                        <vs-loading :color-scheme />
                     </template>
                     <template v-else>
                         <vs-render :content="tableIcons.noData" />
@@ -41,8 +41,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref, watch } from 'vue';
-import { type VsTableBodyCell } from './types';
+import { computed, defineComponent, inject, ref, watch, type ComputedRef } from 'vue';
+import type { ColorScheme } from '@/declaration';
+import { TABLE_COLOR_SCHEME_TOKEN, type VsTableBodyCell } from './types';
 import { tableIcons } from './icons';
 import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -64,6 +65,7 @@ export default defineComponent({
     emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
         const { bodyCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
@@ -118,6 +120,7 @@ export default defineComponent({
             DEFAULT_SORTABLE_OPTIONS,
             TABLE_DRAG_WRAPPER_CLASS,
             bodySlots,
+            colorScheme,
             displayedBodyCells,
             loading,
             tableIcons,
