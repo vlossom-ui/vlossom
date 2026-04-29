@@ -2,13 +2,13 @@
 
 # VsContainer
 
-A layout container component that automatically adjusts its padding when used inside `VsLayout` to accommodate positioned headers, footers, and drawers.
+A layout container component that automatically adjusts its padding when opted in with the `layout` prop inside `VsLayout` to accommodate positioned headers, footers, and drawers.
 
 **Available Version**: 2.0.0+
 
 ## Feature
 
-- Automatically calculates and applies padding based on the layout context (header, footer, drawer sizes)
+- Opt-in `VsLayout` integration via the `layout` prop — when set, calculates and applies padding based on the layout context (header, footer, drawer sizes)
 - Smooth padding transition animation when drawer open/close state changes
 - Acts as a CSS container (`container-type: inline-size`) enabling container queries in child components
 - Renders as any HTML element via the `tag` prop (defaults to `div`)
@@ -19,11 +19,11 @@ A layout container component that automatically adjusts its padding when used in
 ```html
 <template>
     <vs-layout>
-        <vs-header>Header</vs-header>
-        <vs-container>
+        <vs-header layout>Header</vs-header>
+        <vs-container layout>
             <p>Main content area</p>
         </vs-container>
-        <vs-footer>Footer</vs-footer>
+        <vs-footer layout>Footer</vs-footer>
     </vs-layout>
 </template>
 ```
@@ -33,7 +33,7 @@ A layout container component that automatically adjusts its padding when used in
 ```html
 <template>
     <vs-layout>
-        <vs-container tag="main">
+        <vs-container layout tag="main">
             <p>Semantic main content</p>
         </vs-container>
     </vs-layout>
@@ -44,6 +44,7 @@ A layout container component that automatically adjusts its padding when used in
 
 | Prop | Type | Default | Required | Description |
 | ---- | ---- | ------- | -------- | ----------- |
+| `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
 | `tag` | `string` | `'div'` | | HTML tag to render |
 
 ## Types
@@ -68,4 +69,4 @@ VsContainer does not have a StyleSet interface.
 
 ## Caution
 
-- `VsContainer` only applies automatic layout padding when it is a **direct child of `VsLayout`**. In other contexts it behaves as a plain container element.
+- `VsContainer` only applies automatic layout padding when (1) it has the `layout` prop set, and (2) a `VsLayout` ancestor is present. In other contexts it behaves as a plain container element. Wrapping `VsContainer` in another component is supported as long as no intervening layout primitive (`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`) sits between it and the `VsLayout`.

@@ -12,7 +12,7 @@
 - CSS `position` 값 지원: `static`, `relative`, `absolute`, `fixed`, `sticky`
 - 기본 높이 `3rem` — `height` prop으로 재정의 가능
 - `primary` prop을 통한 기본 색상 스킴 스타일링
-- 드로어 오프셋 계산을 위해 헤더 높이를 보고하는 `VsLayout` 통합
+- `layout` prop을 통한 `VsLayout` 통합 opt-in — 설정 시 드로어 오프셋 계산을 위해 헤더 높이를 보고
 - 완전한 스타일 제어를 위해 `styleSet.component`를 통한 `CSSProperties` 허용
 
 ## 기본 사용법
@@ -45,6 +45,21 @@
 </template>
 ```
 
+### VsLayout 내부에서 사용
+
+`layout` prop을 설정하면 헤더가 레이아웃 스토어에 등록되어 `VsContainer`와 `VsDrawer`가 헤더를 기준으로 오프셋 처리합니다. 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
+
+```html
+<template>
+    <vs-layout>
+        <vs-header layout position="fixed" height="3rem">앱 헤더</vs-header>
+        <vs-container layout>
+            <p>콘텐츠</p>
+        </vs-container>
+    </vs-layout>
+</template>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -54,6 +69,7 @@
 | `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | 헤더의 CSS position 값 |
 | `height` | `string` | | | 헤더의 높이. 기본값은 `3rem` |
 | `primary` | `boolean` | `false` | | 기본 색상 스킴 적용 |
+| `layout` | `boolean` | `false` | | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
 | `tag` | `string` | `'header'` | | 렌더링할 HTML 태그 |
 
 ## 타입
