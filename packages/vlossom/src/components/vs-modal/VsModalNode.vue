@@ -40,6 +40,10 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
+        beforeClose: {
+            type: Function as PropType<() => Promise<boolean> | boolean>,
+            default: undefined,
+        },
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: true },
         dimClose: { type: Boolean, default: true },
@@ -49,7 +53,8 @@ export default defineComponent({
     },
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } = toRefs(props);
+        const { beforeClose, colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } =
+            toRefs(props);
 
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
@@ -119,6 +124,21 @@ export default defineComponent({
             deactivate();
         }
 
+        async function runBeforeClose(): Promise<boolean> {
+            const fn = beforeClose.value;
+            if (!fn) {
+                return true;
+            }
+            const result = await fn();
+            return result !== false;
+        }
+
+        async function tryCloseModalNode() {
+            if (await runBeforeClose()) {
+                closeModalNode();
+            }
+        }
+
         const computedCallbacks = computed(() => {
             return {
                 ...callbacks.value,
@@ -128,14 +148,14 @@ export default defineComponent({
 
                     closeModalNode();
                 },
-                ['key-Escape']: (event: KeyboardEvent) => {
+                ['key-Escape']: async (event: KeyboardEvent) => {
                     event.preventDefault();
                     event.stopPropagation();
 
                     callbacks.value?.['key-Escape']?.(event);
 
                     if (escClose.value) {
-                        closeModalNode();
+                        await tryCloseModalNode();
                     }
                 },
             };
@@ -143,11 +163,11 @@ export default defineComponent({
 
         const { activate, deactivate } = useOverlayCallback(computedId, computedCallbacks);
 
-        function onClickDimmed() {
+        async function onClickDimmed() {
             emit('click-dimmed');
 
             if (dimClose.value) {
-                closeModalNode();
+                await tryCloseModalNode();
             }
         }
 
