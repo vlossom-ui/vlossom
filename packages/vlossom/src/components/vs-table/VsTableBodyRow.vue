@@ -204,7 +204,7 @@ export default defineComponent({
 
             const candidatePriority = [
                 `body-${id}`,
-                `body-${stringUtil.kebabCase(colKey)}`,
+                `body-${colKey}`,
                 `body-col${colIdx}-row${rowIdx}`,
                 `body-row${rowIdx}`,
                 `body-col${colIdx}`,
