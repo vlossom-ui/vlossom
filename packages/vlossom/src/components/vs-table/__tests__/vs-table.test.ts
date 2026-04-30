@@ -197,6 +197,50 @@ describe('VsTable', () => {
             expect(headerTextsOf(wrapper)).toEqual(['HEADER-0-name', 'HEADER-1-age']);
             expect(bodyTextsOf(wrapper)).toEqual(['BODY-1', 'BODY-1', 'BODY-2', 'BODY-2']);
         });
+
+        it('camelCase colKey가 literal 형태의 Slot 이름과 매칭된다', async () => {
+            // given
+            const camelCaseColumns = ['firstName', 'lastName'];
+            const camelCaseItems = [
+                { id: '1', firstName: 'Alice', lastName: 'Kim' },
+                { id: '2', firstName: 'Bob', lastName: 'Park' },
+            ];
+
+            // when
+            const wrapper = mountTable({
+                props: { columns: camelCaseColumns, items: camelCaseItems },
+                slots: {
+                    'header-firstName': ({ item }: { item: VsTableColumnDef }) => `HEAD-${item.key}`,
+                    'body-firstName': ({ item }: { item: VsTableBodyCell['item'] }) => `FIRST-${item.firstName}`,
+                },
+            });
+
+            await nextTick();
+
+            // then
+            expect(headerTextsOf(wrapper)).toEqual(['HEAD-firstName', 'lastName']);
+            expect(bodyTextsOf(wrapper)).toEqual(['FIRST-Alice', 'Kim', 'FIRST-Bob', 'Park']);
+        });
+
+        it('literal colKey와 kebab-case Slot이 모두 있으면 literal Slot이 우선한다', async () => {
+            // given
+            const camelCaseColumns = ['firstName'];
+            const camelCaseItems = [{ id: '1', firstName: 'Alice' }];
+
+            // when
+            const wrapper = mountTable({
+                props: { columns: camelCaseColumns, items: camelCaseItems },
+                slots: {
+                    'body-firstName': () => 'LITERAL',
+                    'body-first-name': () => 'KEBAB',
+                },
+            });
+
+            await nextTick();
+
+            // then
+            expect(bodyTextsOf(wrapper)).toEqual(['LITERAL']);
+        });
     });
 
     describe('expandable', () => {

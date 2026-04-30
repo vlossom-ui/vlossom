@@ -138,6 +138,7 @@ export default defineComponent({
             const { id, colIdx, rowIdx, colKey } = header;
             const candidatePriority = [
                 `header-${id}`,
+                `header-${colKey}`,
                 `header-${stringUtil.kebabCase(colKey)}`,
                 `header-col${colIdx}-row${rowIdx}`,
                 `header-row${rowIdx}`,
