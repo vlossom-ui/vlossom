@@ -221,26 +221,6 @@ describe('VsTable', () => {
             expect(headerTextsOf(wrapper)).toEqual(['HEAD-firstName', 'lastName']);
             expect(bodyTextsOf(wrapper)).toEqual(['FIRST-Alice', 'Kim', 'FIRST-Bob', 'Park']);
         });
-
-        it('literal colKey와 kebab-case Slot이 모두 있으면 literal Slot이 우선한다', async () => {
-            // given
-            const camelCaseColumns = ['firstName'];
-            const camelCaseItems = [{ id: '1', firstName: 'Alice' }];
-
-            // when
-            const wrapper = mountTable({
-                props: { columns: camelCaseColumns, items: camelCaseItems },
-                slots: {
-                    'body-firstName': () => 'LITERAL',
-                    'body-first-name': () => 'KEBAB',
-                },
-            });
-
-            await nextTick();
-
-            // then
-            expect(bodyTextsOf(wrapper)).toEqual(['LITERAL']);
-        });
     });
 
     describe('expandable', () => {
