@@ -82,6 +82,7 @@ const isOpen = ref(false);
 | `colorScheme` | `string`                                                    | -         | -        | 모달의 색상 스킴.                                                                 |
 | `styleSet`    | `string \| VsModalNodeStyleSet`                             | -         | -        | 모달 노드의 커스텀 스타일 셋.                                                     |
 | `modelValue`  | `boolean`                                                   | `false`   | -        | 모달의 표시 여부를 제어합니다 (v-model).                                          |
+| `beforeClose` | `() => Promise<boolean> \| boolean`                         | -         | -        | 모달이 닫히기 전에 호출되는 훅. `false`를 반환하면 닫기를 취소합니다.             |
 | `container`   | `string`                                                    | `'body'`  | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                              |
 | `escClose`    | `boolean`                                                   | `true`    | -        | ESC 키를 누르면 모달을 닫습니다.                                                  |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | - | - | 사전 정의된 키워드 또는 커스텀 width/height로 모달 크기를 설정합니다. |

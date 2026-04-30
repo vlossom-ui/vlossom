@@ -91,14 +91,15 @@ function closeModal() {
 | `open`          | `content: string \| Component, options?: ModalOptions`      | Opens a modal with the given content and options. Returns the modal's unique string ID.                       |
 | `emit`          | `eventName: string, ...args: any[]`                                        | Emits a named event on the most recently opened modal's callback store.                                       |
 | `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | Emits a named event on a specific modal by its ID.                                                            |
-| `close`         | `container?: string`                                                       | Closes the most recently opened modal in the given container (defaults to `'body'`).                          |
-| `closeWithId`   | `container: string, id: string`                                            | Closes a specific modal by its container and ID.                                                              |
-| `clear`         | `container?: string`                                                       | Closes all modals in the given container (defaults to `'body'`).                                              |
+| `close`         | `container?: string`                                                       | Closes the most recently opened modal in the given container (defaults to `'body'`). Returns `Promise<boolean>` indicating whether the modal actually closed (a `beforeClose` hook can abort by resolving `false`). |
+| `closeWithId`   | `container: string, id: string`                                            | Closes a specific modal by its container and ID. Returns `Promise<boolean>` indicating whether the modal actually closed. |
+| `clear`         | `container?: string`                                                       | Closes all modals in the given container (defaults to `'body'`). Bypasses `beforeClose`.                       |
 
 ## Types
 
 ```typescript
 interface ModalOptions {
+    beforeClose?: () => Promise<boolean> | boolean;
     container?: string;
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
@@ -116,10 +117,30 @@ interface ModalPlugin {
     open(content: string | Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
-    close(container?: string): void;
-    closeWithId(container: string, id: string): void;
+    close(container?: string): Promise<boolean>;
+    closeWithId(container: string, id: string): Promise<boolean>;
     clear(container?: string): void;
 }
+```
+
+### Aborting close with `beforeClose`
+
+Pass a `beforeClose` hook in `ModalOptions` to gate ESC, dim-click, and `close`/`closeWithId` calls. Resolve `false` to keep the modal open.
+
+```html
+<script setup>
+import { inject } from 'vue';
+
+const $vsModal = inject('$vsModal');
+
+function openModal() {
+    $vsModal.open('Unsaved changes — close anyway?', {
+        dimClose: true,
+        escClose: true,
+        beforeClose: async () => window.confirm('Discard changes?'),
+    });
+}
+</script>
 ```
 
 > [!NOTE]

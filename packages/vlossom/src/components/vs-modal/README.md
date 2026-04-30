@@ -82,6 +82,7 @@ const isOpen = ref(false);
 | `colorScheme` | `string`                                                    | -         | -        | Color scheme for the modal.                                                    |
 | `styleSet`    | `string \| VsModalNodeStyleSet`                             | -         | -        | Custom style set for the modal node.                                           |
 | `modelValue`  | `boolean`                                                   | `false`   | -        | Controls the visibility of the modal (v-model).                                |
+| `beforeClose` | `() => Promise<boolean> \| boolean`                         | -         | -        | Hook invoked before the modal closes. Resolve `false` to abort the close.       |
 | `container`   | `string`                                                    | `'body'`  | -        | CSS selector of the element to teleport the modal into.                        |
 | `escClose`    | `boolean`                                                   | `true`    | -        | Closes the modal when the ESC key is pressed.                                  |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | - | - | Modal size as a predefined keyword or custom width/height. |
@@ -91,6 +92,25 @@ const isOpen = ref(false);
 | `focusLock`   | `boolean`                                                   | `false`   | -        | Traps focus within the modal while it is open.                                 |
 | `hideScroll`  | `boolean`                                                   | `false`   | -        | Hides the scroll on the container when the modal is open.                      |
 | `id`          | `string`                                                    | `''`      | -        | Custom ID for the modal overlay instance.                                      |
+
+### Before Close Hook
+
+```html
+<template>
+    <vs-modal v-model="isOpen" :before-close="confirmClose">
+        <div>Try to close me.</div>
+    </vs-modal>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const isOpen = ref(false);
+
+async function confirmClose() {
+    return window.confirm('Are you sure you want to close?');
+}
+</script>
+```
 
 ## Types
 

@@ -11,7 +11,7 @@ export interface VsPromptStyleSet extends VsModalNodeStyleSet {
     cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
 
-export interface PromptModalOptions extends ModalOptions {
+export interface PromptModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsPromptStyleSet;
     colorScheme?: ColorScheme;
     input?: PropsOf<VsComponent.VsInput> & { initialValue?: VsInputValueType };

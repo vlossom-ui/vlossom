@@ -91,14 +91,15 @@ function closeModal() {
 | `open`          | `content: string \| Component, options?: ModalOptions`      | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다.                             |
 | `emit`          | `eventName: string, ...args: any[]`                                        | 가장 최근에 열린 모달의 콜백 스토어에 이름이 있는 이벤트를 emit합니다.                                  |
 | `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | ID로 특정 모달에 이름이 있는 이벤트를 emit합니다.                                                       |
-| `close`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)에서 가장 최근에 열린 모달을 닫습니다.                                 |
-| `closeWithId`   | `container: string, id: string`                                            | 컨테이너와 ID로 특정 모달을 닫습니다.                                                                   |
-| `clear`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)의 모든 모달을 닫습니다.                                               |
+| `close`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)에서 가장 최근에 열린 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
+| `closeWithId`   | `container: string, id: string`                                            | 컨테이너와 ID로 특정 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다.              |
+| `clear`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)의 모든 모달을 닫습니다. `beforeClose`를 무시합니다.                  |
 
 ## 타입
 
 ```typescript
 interface ModalOptions {
+    beforeClose?: () => Promise<boolean> | boolean;
     container?: string;
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
@@ -116,10 +117,30 @@ interface ModalPlugin {
     open(content: string | Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
-    close(container?: string): void;
-    closeWithId(container: string, id: string): void;
+    close(container?: string): Promise<boolean>;
+    closeWithId(container: string, id: string): Promise<boolean>;
     clear(container?: string): void;
 }
+```
+
+### `beforeClose`로 닫기 중단
+
+`ModalOptions`에 `beforeClose` 훅을 전달하면 ESC, 딤 클릭, `close`/`closeWithId` 호출 시 닫기를 가로챌 수 있습니다. `false`를 resolve하면 모달이 유지됩니다.
+
+```html
+<script setup>
+import { inject } from 'vue';
+
+const $vsModal = inject('$vsModal');
+
+function openModal() {
+    $vsModal.open('저장하지 않은 변경 사항이 있어요. 닫으시겠습니까?', {
+        dimClose: true,
+        escClose: true,
+        beforeClose: async () => window.confirm('변경 사항을 버리시겠어요?'),
+    });
+}
+</script>
 ```
 
 > [!NOTE]
