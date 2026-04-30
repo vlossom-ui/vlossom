@@ -8,7 +8,7 @@ export interface VsAlertStyleSet extends VsModalNodeStyleSet {
     button?: Omit<VsButtonStyleSet, 'loading'>;
 }
 
-export interface AlertModalOptions extends ModalOptions {
+export interface AlertModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsAlertStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;
