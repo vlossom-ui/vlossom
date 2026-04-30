@@ -2,13 +2,14 @@
 
 # VsTooltip
 
-A floating tooltip component that attaches to a target element and supports hover, click, and keyboard interactions.
+A floating tooltip component that wraps a trigger element via the default slot and renders tooltip content from the `tooltip` slot.
 
 **Available Version**: 2.0.0+
 
 ## Feature
 
-- Attaches to any target element via a CSS selector
+- Wraps any trigger element via the default slot — no selector or `id` plumbing required
+- Works on disabled trigger elements (e.g., `<vs-button disabled>`) because listeners live on the wrapper, not the trigger itself
 - Supports hover, click-to-open, and contents-hover modes
 - Configurable placement (top, bottom, left, right) and alignment (start, center, end)
 - Arrow indicator with customizable color and size
@@ -19,20 +20,22 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="my-btn">Hover me</button>
-    <vs-tooltip target="#my-btn">
-        This is a tooltip
+    <vs-tooltip>
+        <vs-button>Hover me</vs-button>
+        <template #tooltip>This is a tooltip</template>
     </vs-tooltip>
 </template>
 ```
+
+The trigger wrapper uses `display: contents`, so it does not introduce any layout box around the trigger element — the trigger keeps its original layout behavior.
 
 ### Click-to-Open Tooltip
 
 ```html
 <template>
-    <button id="click-btn">Click me</button>
-    <vs-tooltip target="#click-btn" clickable>
-        Opened by click
+    <vs-tooltip clickable>
+        <vs-button>Click me</vs-button>
+        <template #tooltip>Opened by click</template>
     </vs-tooltip>
 </template>
 ```
@@ -41,9 +44,9 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="bottom-btn">Hover me</button>
-    <vs-tooltip target="#bottom-btn" placement="bottom" align="start">
-        Bottom-start tooltip
+    <vs-tooltip placement="bottom" align="start">
+        <vs-button>Hover me</vs-button>
+        <template #tooltip>Bottom-start tooltip</template>
     </vs-tooltip>
 </template>
 ```
@@ -52,9 +55,22 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="hover-btn">Hover me</button>
-    <vs-tooltip target="#hover-btn" contents-hover>
-        <a href="#">Click this link inside the tooltip</a>
+    <vs-tooltip contents-hover>
+        <vs-button>Hover me</vs-button>
+        <template #tooltip>
+            <a href="#">Click this link inside the tooltip</a>
+        </template>
+    </vs-tooltip>
+</template>
+```
+
+### Disabled Trigger
+
+```html
+<template>
+    <vs-tooltip>
+        <vs-button disabled>Disabled</vs-button>
+        <template #tooltip>You don't have permission</template>
     </vs-tooltip>
 </template>
 ```
@@ -65,15 +81,14 @@ A floating tooltip component that attaches to a target element and supports hove
 | ---- | ---- | ------- | -------- | ----------- |
 | `colorScheme` | `string` | | | Color scheme for the component |
 | `styleSet` | `string \| VsTooltipStyleSet` | | | Custom style set for the component |
-| `target` | `string` | `''` | Yes | CSS selector of the trigger element |
-| `align` | `Alignment` | `'center'` | | Alignment of the tooltip relative to the target (`start`, `center`, `end`) |
-| `clickable` | `boolean` | `false` | | Requires a click on the target to open |
+| `align` | `Alignment` | `'center'` | | Alignment of the tooltip relative to the trigger (`start`, `center`, `end`) |
+| `clickable` | `boolean` | `false` | | Requires a click on the trigger to open |
 | `contentsHover` | `boolean` | `false` | | Keeps the tooltip open while hovering its contents |
 | `disabled` | `boolean` | `false` | | Disables the tooltip |
 | `enterDelay` | `string \| number` | `0` | | Delay (ms) before the tooltip appears |
 | `escClose` | `boolean` | `true` | | Closes the tooltip when Escape is pressed |
 | `leaveDelay` | `string \| number` | `0` | | Delay (ms) before the tooltip disappears |
-| `margin` | `string \| number` | `10` | | Gap (px) between the target and the tooltip |
+| `margin` | `string \| number` | `10` | | Gap (px) between the trigger and the tooltip |
 | `noAnimation` | `boolean` | `false` | | Disables the open/close animation |
 | `placement` | `Placement` | `'top'` | | Placement of the tooltip (`top`, `bottom`, `left`, `right`) |
 
@@ -93,9 +108,7 @@ interface VsTooltipStyleSet {
 
 ```html
 <template>
-    <button id="styled-btn">Hover me</button>
     <vs-tooltip
-        target="#styled-btn"
         :style-set="{
             variables: { arrowColor: '#323232', arrowSize: '0.5rem' },
             component: {
@@ -106,7 +119,8 @@ interface VsTooltipStyleSet {
             },
         }"
     >
-        Custom tooltip
+        <vs-button>Hover me</vs-button>
+        <template #tooltip>Custom tooltip</template>
     </vs-tooltip>
 </template>
 ```
@@ -120,7 +134,8 @@ interface VsTooltipStyleSet {
 
 | Slot | Description |
 | ---- | ----------- |
-| `default` | Tooltip content |
+| `default` | Trigger element. Listeners (hover, click, focus) attach to the wrapper around this slot. |
+| `tooltip` | Tooltip content shown in the floating layer. |
 
 ## Methods
 

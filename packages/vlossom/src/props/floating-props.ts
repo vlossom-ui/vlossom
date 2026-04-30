@@ -13,7 +13,6 @@ export function getFloatingProps(
     },
 ) {
     return {
-        target: { type: String, required: true, default: '' },
         align: {
             type: String as PropType<Alignment>,
             default: defaultValues.align,

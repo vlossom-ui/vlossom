@@ -1,7 +1,18 @@
 <template>
+    <span
+        ref="triggerRef"
+        :class="['vs-tooltip-trigger', { 'vs-tooltip-trigger-wrap': hasDisabledChild }]"
+        @mouseenter.stop="onTriggerEnter"
+        @mouseleave.stop="onTriggerLeave"
+        @click.stop="onTriggerClick"
+        @focusin.stop="onTriggerEnter"
+        @focusout.stop="onTriggerLeave"
+    >
+        <slot />
+    </span>
     <vs-floating
         v-model="computedShow"
-        :target
+        :target="positionTarget"
         :placement
         :align
         :margin
@@ -18,7 +29,7 @@
                 @mouseleave.stop="onTooltipLeave"
             >
                 <div class="vs-tooltip-contents" :style="componentStyleSet.component">
-                    <slot />
+                    <slot name="tooltip" />
                 </div>
             </div>
         </template>
@@ -33,9 +44,12 @@ import {
     computed,
     watch,
     onMounted,
+    onUpdated,
     onBeforeUnmount,
+    useTemplateRef,
     type ComputedRef,
     type WritableComputedRef,
+    type TemplateRef,
 } from 'vue';
 import { useColorScheme, useStyleSet, useOverlayCallback } from '@/composables';
 import { VsComponent, type OverlayCallbacks } from '@/declaration';
@@ -58,7 +72,40 @@ export default defineComponent({
         escClose: { type: Boolean, default: true },
     },
     setup(props) {
-        const { colorScheme, styleSet, target, clickable, contentsHover, escClose } = toRefs(props);
+        const { colorScheme, styleSet, clickable, contentsHover, escClose } = toRefs(props);
+
+        const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
+        const positionTarget = ref<HTMLElement | null>(null);
+        const hasDisabledChild = ref(false);
+        let mutationObserver: MutationObserver | null = null;
+
+        function syncTriggerState() {
+            const child = triggerRef.value?.firstElementChild as HTMLElement | null;
+            positionTarget.value = child ?? null;
+            hasDisabledChild.value =
+                !!child && (child.hasAttribute('disabled') || child.getAttribute('aria-disabled') === 'true');
+        }
+
+        onMounted(() => {
+            syncTriggerState();
+            // Watch attribute mutations on the slotted child (e.g., disabled toggling)
+            if (triggerRef.value) {
+                mutationObserver = new MutationObserver(syncTriggerState);
+                mutationObserver.observe(triggerRef.value, {
+                    attributes: true,
+                    attributeFilter: ['disabled', 'aria-disabled'],
+                    subtree: true,
+                    childList: true,
+                });
+            }
+        });
+
+        onUpdated(syncTriggerState);
+
+        onBeforeUnmount(() => {
+            mutationObserver?.disconnect();
+            mutationObserver = null;
+        });
 
         const id = ref(stringUtil.createID());
         const triggerOver = ref(false);
@@ -180,45 +227,17 @@ export default defineComponent({
             tooltipOver.value = false;
         }
 
-        function addTargetEventListeners() {
-            const targetElement = document.querySelector(target.value);
-            if (!targetElement) {
-                return;
-            }
-
-            targetElement.addEventListener('mouseenter', onTriggerEnter);
-            targetElement.addEventListener('mouseleave', onTriggerLeave);
-            targetElement.addEventListener('click', onTriggerClick);
-            targetElement.addEventListener('focusin', onTriggerEnter);
-            targetElement.addEventListener('focusout', onTriggerLeave);
-        }
-
-        function removeTargetEventListeners() {
-            const targetElement = document.querySelector(target.value);
-            if (!targetElement) {
-                return;
-            }
-
-            targetElement.removeEventListener('mouseenter', onTriggerEnter);
-            targetElement.removeEventListener('mouseleave', onTriggerLeave);
-            targetElement.removeEventListener('click', onTriggerClick);
-            targetElement.removeEventListener('focusin', onTriggerEnter);
-            targetElement.removeEventListener('focusout', onTriggerLeave);
-        }
-
-        onMounted(() => {
-            addTargetEventListeners();
-        });
-
-        onBeforeUnmount(() => {
-            removeTargetEventListeners();
-        });
-
         return {
+            triggerRef,
+            positionTarget,
+            hasDisabledChild,
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
             computedShow,
+            onTriggerEnter,
+            onTriggerLeave,
+            onTriggerClick,
             onTooltipEnter,
             onTooltipLeave,
         };

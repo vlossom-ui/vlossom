@@ -1,3 +1,13 @@
+.vs-tooltip-trigger {
+    display: contents;
+}
+
+/* When the slotted trigger is disabled, the wrapper needs a real box so that
+   pointer events (which the disabled element refuses) land on the wrapper. */
+.vs-tooltip-trigger.vs-tooltip-trigger-wrap {
+    display: inline-block;
+}
+
 .vs-tooltip {
     --vs-tooltip-arrowColor: initial;
     --vs-tooltip-arrowSize: initial;

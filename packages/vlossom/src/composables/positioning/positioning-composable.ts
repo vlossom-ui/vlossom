@@ -9,11 +9,21 @@ export interface AttachInfo {
     followWidth?: boolean;
 }
 
-export function usePositioning(target: string, attachment: TemplateRef<HTMLElement>) {
+export type FloatingTarget = string | HTMLElement | null;
+
+export function usePositioning(getTarget: () => FloatingTarget, attachment: TemplateRef<HTMLElement>) {
     const isVisible = ref(false);
     const computedPlacement: Ref<Placement | null> = ref(null);
     let throttledComputePosition: ((...args: any) => any) | null = null;
     let resizeObserver: ResizeObserver | null = null;
+
+    function resolveTarget(): HTMLElement | null {
+        const t = getTarget();
+        if (typeof t === 'string') {
+            return t ? document.querySelector<HTMLElement>(t) : null;
+        }
+        return t;
+    }
 
     function getX(align: Alignment, left: number, right: number, width: number, attachmentWidth: number) {
         switch (align) {
@@ -42,7 +52,7 @@ export function usePositioning(target: string, attachment: TemplateRef<HTMLEleme
     }
 
     function computePosition({ placement = 'top', align = 'center', margin = 0, followWidth = false }: AttachInfo) {
-        const targetElement: HTMLElement | null = document.querySelector(target);
+        const targetElement = resolveTarget();
         if (!targetElement || !attachment.value) {
             return;
         }
@@ -115,7 +125,7 @@ export function usePositioning(target: string, attachment: TemplateRef<HTMLEleme
         // for waiting the attachment to be mounted
         nextTick(() => {
             try {
-                const targetElement = document.querySelector(target);
+                const targetElement = resolveTarget();
                 if (!targetElement || !attachment.value) {
                     return;
                 }

@@ -16,9 +16,10 @@ import {
     ref,
     onBeforeMount,
     onBeforeUnmount,
+    type PropType,
     type TemplateRef,
 } from 'vue';
-import { usePositioning, useOverlayDom } from '@/composables';
+import { usePositioning, useOverlayDom, type FloatingTarget } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getFloatingProps } from '@/props';
 
@@ -27,6 +28,7 @@ export default defineComponent({
     name: componentName,
     props: {
         ...getFloatingProps(),
+        target: { type: [String, Object] as PropType<FloatingTarget>, default: null },
         followWidth: { type: Boolean, default: false },
         overlayId: { type: String, default: '#vs-floating-overlay' },
 
@@ -53,7 +55,7 @@ export default defineComponent({
 
         const { appendOverlayDom } = useOverlayDom();
 
-        const { isVisible, computedPlacement, appear, disappear } = usePositioning(target.value, floatingRef);
+        const { isVisible, computedPlacement, appear, disappear } = usePositioning(() => target.value, floatingRef);
 
         const isFloated = ref(false);
         let timer: any = null;

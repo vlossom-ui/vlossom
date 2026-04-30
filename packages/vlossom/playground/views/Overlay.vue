@@ -158,9 +158,7 @@
             </vs-grid>
         </vs-block>
         <div class="flex flex-wrap items-start gap-4">
-            <vs-button id="tooltip-demo">Hover me</vs-button>
             <vs-tooltip
-                target="#tooltip-demo"
                 :placement="tooltipOptions.placement"
                 :align="tooltipOptions.align"
                 :clickable="tooltipOptions.clickable"
@@ -170,7 +168,8 @@
                 :no-animation="tooltipOptions.noAnimation"
                 :disabled="tooltipOptions.disabled"
             >
-                Tooltip content here
+                <vs-button>Hover me</vs-button>
+                <template #tooltip>Tooltip content here</template>
             </vs-tooltip>
         </div>
     </section>
