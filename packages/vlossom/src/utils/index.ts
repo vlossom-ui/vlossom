@@ -1,3 +1,4 @@
+export * from './array-util';
 export * from './clipboard-util';
 export * from './compare-util';
 export * from './device-util';

@@ -9,7 +9,7 @@ A collection of utility modules used internally by Vlossom and available for use
 ## Basic Usage
 
 ```typescript
-import { clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
+import { arrayUtil, clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
 ```
 
 Or import individual utilities:
@@ -22,6 +22,12 @@ const size = stringUtil.toStringSize(100); // '100px'
 ```
 
 ## Methods
+
+### arrayUtil
+
+| Category  | Method   | Parameters                       | Description                                                                                  |
+| --------- | -------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| arrayUtil | `uniqBy` | `array: T[], field: keyof T`     | Returns a new array with duplicate items removed based on the value of the specified field.  |
 
 ### clipboardUtil
 
