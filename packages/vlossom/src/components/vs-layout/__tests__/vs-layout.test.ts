@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { defineComponent, inject } from 'vue';
 import VsLayout from './../VsLayout.vue';
 import { LayoutStore } from '@/stores';
-import { LAYOUT_STORE_KEY } from '@/declaration';
+import { LAYOUT_PROVIDED_KEY, LAYOUT_STORE_KEY } from '@/declaration';
 
 describe('VsLayout', () => {
     let layoutStore: LayoutStore;
@@ -39,6 +39,32 @@ describe('VsLayout', () => {
             expect(childWrapper.vm.injectedLayoutStore).toBeDefined();
             expect(childWrapper.vm.injectedLayoutStore).toBe(layoutStore);
             expect(childWrapper.vm.injectedLayoutStore).toBeInstanceOf(LayoutStore);
+        });
+    });
+
+    describe('LAYOUT_PROVIDED 마커 제공', () => {
+        it('LAYOUT_PROVIDED_KEY로 true를 provide해야 한다', () => {
+            // given
+            const ChildComponent = defineComponent({
+                name: 'TestChild',
+                setup() {
+                    const injectedFlag = inject<boolean>(LAYOUT_PROVIDED_KEY, false);
+                    return { injectedFlag };
+                },
+                template: '<div>test</div>',
+            });
+
+            // when
+            const wrapper = mount(VsLayout, {
+                slots: {
+                    default: ChildComponent,
+                },
+            });
+
+            const childWrapper = wrapper.findComponent(ChildComponent);
+
+            // then
+            expect(childWrapper.vm.injectedFlag).toBe(true);
         });
     });
 });

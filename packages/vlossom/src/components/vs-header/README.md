@@ -12,7 +12,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 - Supports CSS `position` values: `static`, `relative`, `absolute`, `fixed`, `sticky`
 - Default height of `3rem` — overridable via the `height` prop
 - Primary color scheme styling via the `primary` prop
-- Integrates with `VsLayout` to report header height for drawer offset calculations
+- Opt-in `VsLayout` integration via the `layout` prop — when set, reports header height for drawer offset calculations
 - Accepts `CSSProperties` via `styleSet.component` for full style control
 
 ## Basic Usage
@@ -45,6 +45,21 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 </template>
 ```
 
+### Inside VsLayout
+
+Set the `layout` prop to register the header with the layout store so `VsContainer` and `VsDrawer` can offset around it. Wrapping the header in another component is supported.
+
+```html
+<template>
+    <vs-layout>
+        <vs-header layout position="fixed" height="3rem">My App</vs-header>
+        <vs-container layout>
+            <p>Content</p>
+        </vs-container>
+    </vs-layout>
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -54,6 +69,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 | `position` | `'static' \| 'relative' \| 'absolute' \| 'fixed' \| 'sticky'` | | | CSS position value for the header |
 | `height` | `string` | | | Height of the header. Defaults to `3rem` |
 | `primary` | `boolean` | `false` | | Apply the primary color scheme |
+| `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
 | `tag` | `string` | `'header'` | | HTML tag to render as |
 
 ## Types

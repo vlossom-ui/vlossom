@@ -40,7 +40,6 @@
 import {
     computed,
     defineComponent,
-    getCurrentInstance,
     inject,
     onBeforeMount,
     toRefs,
@@ -63,8 +62,8 @@ import {
     SIZES,
     type Size,
 } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
-import { getColorSchemeProps, getStyleSetProps, getOverlayProps } from '@/props';
+import { useColorScheme, useLayoutChild, useOverlayCallback, useStyleSet } from '@/composables';
+import { getColorSchemeProps, getLayoutProps, getStyleSetProps, getOverlayProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsDrawerStyleSet } from './types';
@@ -81,9 +80,10 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDrawerStyleSet>(),
         ...getOverlayProps(),
+        ...getLayoutProps(),
         fixed: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
-        layoutResponsive: { type: Boolean, default: false },
+        pushContainer: { type: Boolean, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
             default: 'left',
@@ -105,7 +105,8 @@ export default defineComponent({
             escClose,
             fixed,
             open: initialOpen,
-            layoutResponsive,
+            layout,
+            pushContainer,
             modelValue,
             placement,
             size,
@@ -195,8 +196,7 @@ export default defineComponent({
             deactivate();
         }
 
-        // only for vs-layout children
-        const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
+        const { isLayoutChild } = useLayoutChild(layout);
 
         const layoutStore = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         watchEffect(() => {
@@ -207,7 +207,7 @@ export default defineComponent({
                 isOpen: isOpen.value,
                 placement: placement.value,
                 size: drawerSize.value || DRAWER_SIZE.sm,
-                responsive: layoutResponsive.value,
+                pushContainer: pushContainer.value,
             });
         });
 
