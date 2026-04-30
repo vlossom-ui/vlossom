@@ -15,6 +15,7 @@
             <template v-else-if="multiple">
                 <template v-if="collapseChips && selectedOptions.length > 1">
                     <vs-chip
+                        :color-scheme
                         :closable="closableChips"
                         :style-set="styleSet?.chip"
                         primary
@@ -29,6 +30,7 @@
                     <vs-chip
                         v-for="option in selectedOptions"
                         :key="option.id"
+                        :color-scheme
                         :closable="closableChips"
                         :style-set="styleSet?.chip"
                         primary
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
-import type { OptionItem, UIState } from '@/declaration';
+import type { ColorScheme, OptionItem, UIState } from '@/declaration';
 import { useStateClass } from '@/composables';
 import { closeIcon } from '@/icons';
 import type { VsSelectStyleSet } from './types';
@@ -77,6 +79,7 @@ export default defineComponent({
     components: { VsChip, VsRender },
     props: {
         styleSet: { type: Object as PropType<VsSelectStyleSet> },
+        colorScheme: { type: String as PropType<ColorScheme> },
         collapseChips: { type: Boolean, default: false },
         closableChips: { type: Boolean, default: false },
         disabled: { type: Boolean, default: false },

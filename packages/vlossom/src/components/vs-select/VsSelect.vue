@@ -23,6 +23,7 @@
                 ref="triggerRef"
                 :id="triggerId"
                 :style-set="componentStyleSet"
+                :color-scheme="computedColorScheme"
                 :is-empty
                 :is-open
                 :placeholder
