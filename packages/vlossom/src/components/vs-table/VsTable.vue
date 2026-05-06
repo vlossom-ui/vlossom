@@ -69,7 +69,7 @@
             </vs-visible-render>
         </div>
 
-        <vs-table-pagination v-if="pagination" @paginate="paginate" />
+        <vs-table-pagination v-if="pagination && totalPages" @paginate="paginate" />
     </div>
 </template>
 
@@ -422,6 +422,7 @@ export default defineComponent({
             stickyHeaderTop,
             searchOptions,
             table,
+            totalPages: table.totalPages,
             clickCell,
             selectRow,
             expandRow,
