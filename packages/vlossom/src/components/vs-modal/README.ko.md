@@ -75,22 +75,42 @@ const isOpen = ref(false);
 </template>
 ```
 
+### Before Close Hook
+
+```html
+<template>
+    <vs-modal v-model="isOpen" :before-close="confirmClose">
+        <div>닫기를 시도해보세요.</div>
+    </vs-modal>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const isOpen = ref(false);
+
+async function confirmClose() {
+    return window.confirm('정말 닫으시겠습니까?');
+}
+</script>
+```
+
 ## Props
 
-| Prop          | Type                                                        | Default   | Required | Description                                                                       |
-| ------------- | ----------------------------------------------------------- | --------- | -------- | --------------------------------------------------------------------------------- |
-| `colorScheme` | `string`                                                    | -         | -        | 모달의 색상 스킴.                                                                 |
-| `styleSet`    | `string \| VsModalNodeStyleSet`                             | -         | -        | 모달 노드의 커스텀 스타일 셋.                                                     |
-| `modelValue`  | `boolean`                                                   | `false`   | -        | 모달의 표시 여부를 제어합니다 (v-model).                                          |
-| `container`   | `string`                                                    | `'body'`  | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                              |
-| `escClose`    | `boolean`                                                   | `true`    | -        | ESC 키를 누르면 모달을 닫습니다.                                                  |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | - | - | 사전 정의된 키워드 또는 커스텀 width/height로 모달 크기를 설정합니다. |
-| `callbacks`   | `OverlayCallbacks`                                          | `{}`      | -        | 오버레이 콜백 핸들러.                                                             |
-| `dimClose`    | `boolean`                                                   | `false`   | -        | 딤드 영역 클릭 시 모달을 닫습니다.                                                |
-| `dimmed`      | `boolean`                                                   | `false`   | -        | 모달 뒤에 딤드 오버레이를 표시합니다.                                             |
-| `focusLock`   | `boolean`                                                   | `false`   | -        | 모달이 열려 있는 동안 포커스를 내부에 고정합니다.                                 |
-| `hideScroll`  | `boolean`                                                   | `false`   | -        | 모달이 열려 있을 때 컨테이너의 스크롤을 숨깁니다.                                 |
-| `id`          | `string`                                                    | `''`      | -        | 모달 오버레이 인스턴스의 커스텀 ID.                                               |
+| Prop          | Type                                                                                                  | Default  | Required | Description                                                                                                       |
+| ------------- | ----------------------------------------------------------------------------------------------------- | -------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                                                              | -        | -        | 모달의 색상 스킴.                                                                                                 |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                                                                       | -        | -        | 모달 노드의 커스텀 스타일 셋.                                                                                     |
+| `modelValue`  | `boolean`                                                                                             | `false`  | -        | 모달의 표시 여부를 제어합니다 (v-model).                                                                          |
+| `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | 모달이 닫히기 전에 호출되는 훅. `false`를 반환하면 닫기를 취소합니다. `$vs.modal.clear()` 호출 시에는 무시됩니다. |
+| `container`   | `string`                                                                                              | `'body'` | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                                                              |
+| `escClose`    | `boolean`                                                                                             | `true`   | -        | ESC 키를 누르면 모달을 닫습니다.                                                                                  |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 사전 정의된 키워드 또는 커스텀 width/height로 모달 크기를 설정합니다.                                             |
+| `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | 오버레이 콜백 핸들러.                                                                                             |
+| `dimClose`    | `boolean`                                                                                             | `false`  | -        | 딤드 영역 클릭 시 모달을 닫습니다.                                                                                |
+| `dimmed`      | `boolean`                                                                                             | `false`  | -        | 모달 뒤에 딤드 오버레이를 표시합니다.                                                                             |
+| `focusLock`   | `boolean`                                                                                             | `false`  | -        | 모달이 열려 있는 동안 포커스를 내부에 고정합니다.                                                                 |
+| `hideScroll`  | `boolean`                                                                                             | `false`  | -        | 모달이 열려 있을 때 컨테이너의 스크롤을 숨깁니다.                                                                 |
+| `id`          | `string`                                                                                              | `''`     | -        | 모달 오버레이 인스턴스의 커스텀 ID.                                                                               |
 
 ## Types
 
@@ -130,17 +150,17 @@ interface VsModalNodeStyleSet {
 
 ## Events
 
-| 이벤트              | 페이로드  | 설명                                    |
-| ------------------- | --------- | --------------------------------------- |
-| `update:modelValue` | `boolean` | 모달 열림 상태가 변경될 때 발생합니다.  |
-| `open`              | -         | 모달이 열릴 때 발생합니다.              |
-| `close`             | -         | 모달이 닫힐 때 발생합니다.              |
+| 이벤트              | 페이로드  | 설명                                   |
+| ------------------- | --------- | -------------------------------------- |
+| `update:modelValue` | `boolean` | 모달 열림 상태가 변경될 때 발생합니다. |
+| `open`              | -         | 모달이 열릴 때 발생합니다.             |
+| `close`             | -         | 모달이 닫힐 때 발생합니다.             |
 
 ## Slots
 
-| 슬롯      | 설명                                       |
-| --------- | ------------------------------------------ |
-| `default` | 모달 다이얼로그 내부에 렌더링할 콘텐츠.    |
+| 슬롯      | 설명                                    |
+| --------- | --------------------------------------- |
+| `default` | 모달 다이얼로그 내부에 렌더링할 콘텐츠. |
 
 ## Methods
 
