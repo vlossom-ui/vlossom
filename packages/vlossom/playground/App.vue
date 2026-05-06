@@ -1,6 +1,6 @@
 <template>
     <vs-layout class="flex min-h-screen flex-col">
-        <vs-header position="sticky" :style-set="basicBarStyleSet">
+        <vs-header layout position="sticky" :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-between px-8">
                 <div class="flex items-center gap-2">
                     <vs-image
@@ -16,7 +16,7 @@
             </div>
         </vs-header>
 
-        <vs-container class="flex-1 pb-32 lg:pr-96">
+        <vs-container layout class="flex-1 pb-32 lg:pr-96">
             <vs-page class="w-full" :style-set="{ component: { padding: '0 2rem' } }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
@@ -35,7 +35,7 @@
             <ColorSchemePanel class="fixed top-20 right-24 hidden lg:block" />
         </vs-container>
 
-        <vs-footer :style-set="basicBarStyleSet">
+        <vs-footer layout :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-center text-sm">
                 <span>© 2026 Vlossom</span>
             </div>

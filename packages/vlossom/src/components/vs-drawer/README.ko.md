@@ -11,7 +11,7 @@
 - `left`, `right`, `top`, `bottom` 네 가지 방향 지원
 - 클릭 시 닫기 기능을 포함한 선택적 딤드 배경
 - 접근성 있는 키보드 탐색을 위한 포커스 트래핑
-- `VsLayout`과 통합 시 헤더/푸터 높이 자동 오프셋
+- `layout` prop을 통한 `VsLayout` 통합 opt-in — 설정 시 헤더/푸터 높이를 자동 오프셋하고, 컨테이너 패딩 계산에도 반영
 - 부드러운 슬라이드 인/아웃 트랜지션 애니메이션
 - `v-model` 또는 `openDrawer` / `closeDrawer` 메서드로 제어 가능
 
@@ -59,6 +59,23 @@ const drawerOpen = ref(false);
 </template>
 ```
 
+### VsLayout 내부에서 사용
+
+`layout` prop을 설정하면 드로어가 레이아웃 스토어에 등록됩니다. `pushContainer`와 함께 사용하면 `VsContainer`를 옆으로 밀어 공간을 확보합니다 (overlay 대신). 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
+
+```html
+<template>
+    <vs-layout>
+        <vs-drawer v-model="open" layout push-container placement="left" size="240px">
+            <p>사이드바</p>
+        </vs-drawer>
+        <vs-container layout>
+            <p>콘텐츠</p>
+        </vs-container>
+    </vs-layout>
+</template>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -74,7 +91,8 @@ const drawerOpen = ref(false);
 | `id` | `string` | `''` | | 드로어의 HTML id 속성 |
 | `fixed` | `boolean` | `false` | | `absolute` 대신 `position: fixed` 사용 |
 | `open` | `boolean` | `false` | | 마운트 시 드로어 열기 |
-| `layoutResponsive` | `boolean` | `false` | | `VsLayout` 내에서 사용 시 레이아웃 조정 |
+| `layout` | `boolean` | `false` | | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
+| `pushContainer` | `boolean` | `false` | | `layout`과 함께 사용 시 드로어가 `VsContainer`를 옆으로 밀어 공간을 확보 (overlay 대신) |
 | `placement` | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'` | | 드로어가 슬라이드 인되는 가장자리 방향 |
 | `size` | `string \| number` | | | 드로어 패널의 너비(left/right) 또는 높이(top/bottom). 크기 토큰(`xs`, `sm`, `md`, `lg`, `xl`) 또는 CSS 값 허용 |
 | `modelValue` | `boolean` | `false` | | 열기 상태를 제어하는 v-model 바인딩 |

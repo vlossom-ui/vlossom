@@ -1,5 +1,6 @@
 export const THEME_KEY = 'vlossom:theme-mode';
 export const LAYOUT_STORE_KEY = 'vlossom:layout-store';
+export const LAYOUT_PROVIDED_KEY = 'vlossom:layout-provided';
 export const FORM_STORE_KEY = 'vlossom:form-store';
 
 export const OVERLAY_OPEN = 'vlossom:overlay-open';

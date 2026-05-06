@@ -46,7 +46,7 @@ export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[])
 
 export interface DrawerLayout {
     isOpen: boolean;
-    responsive: boolean;
+    pushContainer: boolean;
     placement: DrawerPlacement;
     size: string;
 }

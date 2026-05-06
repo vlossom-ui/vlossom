@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, provide } from 'vue';
 import { LayoutStore } from '@/stores';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_PROVIDED_KEY, LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 
 const componentName = VsComponent.VsLayout;
 export default defineComponent({
@@ -16,6 +16,7 @@ export default defineComponent({
         const layoutStore = LayoutStore.getDefaultLayoutStore();
 
         provide(LAYOUT_STORE_KEY, layoutStore);
+        provide(LAYOUT_PROVIDED_KEY, true);
 
         return {};
     },

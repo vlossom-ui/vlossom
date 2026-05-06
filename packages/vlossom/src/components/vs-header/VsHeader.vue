@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type ComputedRef, getCurrentInstance, inject, watchEffect } from 'vue';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { computed, defineComponent, toRefs, type ComputedRef, inject, watchEffect } from 'vue';
+import { useColorScheme, useLayoutChild, useStyleSet } from '@/composables';
 import { VsComponent, LAYOUT_STORE_KEY, type BarLayout } from '@/declaration';
-import { getColorSchemeProps, getPositionProps, getStyleSetProps } from '@/props';
+import { getColorSchemeProps, getLayoutProps, getPositionProps, getStyleSetProps } from '@/props';
 import { objectUtil } from '@/utils';
 import { LayoutStore } from '@/stores';
 import type { VsHeaderStyleSet } from './types';
@@ -23,12 +23,13 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsHeaderStyleSet>(),
         ...getPositionProps(),
+        ...getLayoutProps(),
         height: { type: String },
         primary: { type: Boolean, default: false },
         tag: { type: String, default: 'header' },
     },
     setup(props) {
-        const { colorScheme, styleSet, primary, position, height } = toRefs(props);
+        const { colorScheme, styleSet, primary, position, height, layout } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -62,8 +63,7 @@ export default defineComponent({
             'vs-primary': primary.value,
         }));
 
-        // only for vs-layout children
-        const isLayoutChild = computed(() => getCurrentInstance()?.parent?.type.name === VsComponent.VsLayout);
+        const { isLayoutChild } = useLayoutChild(layout);
 
         const layoutStore = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         watchEffect(() => {

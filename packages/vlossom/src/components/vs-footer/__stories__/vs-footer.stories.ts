@@ -55,6 +55,10 @@ const meta: Meta<typeof VsFooter> = {
             options: ['relative', 'absolute', 'fixed', 'sticky'],
             description: '푸터의 위치 지정',
         },
+        layout: {
+            control: 'boolean',
+            description: 'VsLayout 통합 opt-in. VsLayout 조상이 있어야 동작합니다',
+        },
         styleSet: {
             control: 'object',
             description: '커스텀 스타일 객체',
