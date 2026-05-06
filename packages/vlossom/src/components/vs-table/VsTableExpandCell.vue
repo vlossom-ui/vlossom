@@ -5,18 +5,9 @@
                 v-if="isExpandable(cells, rowIdx)"
                 :color-scheme
                 :disabled="loading"
-                :style-set="{
-                    variables: { padding: '0' },
-                    component: {
-                        border: 'none',
-                        height: '1.8rem',
-                        width: '1.8rem',
-                        backgroundColor: 'var(--vs-cs-bg-colored)',
-                        color: 'var(--vs-cs-font-colored)',
-                    },
-                }"
+                :style-set="expandButtonStyleSet"
+                :size="dense ? 'xs' : 'sm'"
                 @click.prevent.stop="expandRow(cells, $event)"
-                size="sm"
             >
                 <vs-render
                     class="transition-transform"
@@ -59,12 +50,25 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { isExpanded, expandable, toggleExpand, items, loading, primary } =
+        const { isExpanded, expandable, toggleExpand, items, loading, primary, dense } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const expandButtonStyleSet = computed(() => {
+            const size = dense?.value ? '1.4rem' : '1.8rem';
+            return {
+                variables: { padding: '0' },
+                component: {
+                    border: 'none',
+                    width: size,
+                    height: size,
+                    backgroundColor: 'var(--vs-cs-bg-colored)',
+                    color: 'var(--vs-cs-font-colored)',
+                },
+            };
+        });
 
         function isExpandable(cells: VsTableBodyCell[], rowIdx: number): boolean {
             return expandable.value(getRowItem(cells), rowIdx, items.value);
@@ -87,6 +91,8 @@ export default defineComponent({
             loading,
             primary,
             colorScheme,
+            dense,
+            expandButtonStyleSet,
         };
     },
 });
