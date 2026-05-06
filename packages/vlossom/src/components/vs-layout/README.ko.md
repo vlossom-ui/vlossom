@@ -8,21 +8,23 @@
 
 ## Feature
 
-- `provide`를 통해 하위 레이아웃 컴포넌트에 레이아웃 스토어를 제공합니다.
-- `VsHeader` 및 `VsFooter` 위치 추적을 가능하게 하는 최상위 컨테이너 역할을 합니다.
+- `provide`를 통해 하위 레이아웃 컴포넌트에 레이아웃 스토어와 레이아웃 컨텍스트 마커를 제공합니다.
+- `layout` prop을 명시적으로 켠 하위 컴포넌트(`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`)의 위치 추적을 가능하게 합니다.
 - 부모 요소의 전체 너비와 높이를 차지합니다.
 - 추가 props나 스타일링이 없는 단순한 래퍼입니다.
 
 ## Basic Usage
 
+레이아웃 스토어 연동에 참여하려면 하위 컴포넌트에 `layout` prop을 명시적으로 설정해야 합니다. 중간에 일반 wrapper 컴포넌트가 몇 단계 끼어 있어도 동작하지만, 다른 레이아웃 컴포넌트가 중간에 끼면 그 안쪽으로는 차단되어 의도치 않은 연동이 발생하지 않습니다.
+
 ```html
 <template>
     <vs-layout>
-        <vs-header>앱 헤더</vs-header>
-        <main>
+        <vs-header layout>앱 헤더</vs-header>
+        <vs-container layout>
             <slot />
-        </main>
-        <vs-footer>푸터</vs-footer>
+        </vs-container>
+        <vs-footer layout>푸터</vs-footer>
     </vs-layout>
 </template>
 ```
@@ -56,4 +58,4 @@
 
 ## Caution
 
-`VsLayout`은 `VsHeader` 또는 `VsFooter`를 사용하는 모든 페이지나 섹션을 감싸야 합니다. 이것이 없으면 해당 컴포넌트들이 레이아웃 스토어에 등록되지 않아 정상적으로 동작하지 않습니다.
+`VsHeader`, `VsFooter`, `VsDrawer`, `VsContainer`에 `layout` prop을 사용하는 모든 페이지/섹션은 `VsLayout`으로 감싸야 합니다. `VsLayout` 조상이 없으면 `layout` prop은 무시되고, 해당 컴포넌트들은 일반 컴포넌트처럼 동작합니다.

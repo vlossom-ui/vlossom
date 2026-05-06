@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { provide, defineComponent, h } from 'vue';
 import { LayoutStore } from '@/stores';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_PROVIDED_KEY, LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
 import VsHeader from './../VsHeader.vue';
 
 describe('VsHeader', () => {
@@ -159,31 +159,46 @@ describe('VsHeader', () => {
         });
     });
 
-    describe('vs-layout의 자식일 때', () => {
+    describe('vs-layout의 자식일 때 (layout prop)', () => {
         // vs-layout 컴포넌트 모킹
         const MockVsLayout = defineComponent({
             name: VsComponent.VsLayout,
             setup() {
                 provide(LAYOUT_STORE_KEY, layoutStore);
+                provide(LAYOUT_PROVIDED_KEY, true);
                 return {};
             },
             template: '<div><slot /></div>',
         });
 
-        it('header 정보가 layoutStore에 설정되어야 한다', () => {
+        it('layout prop이 true이면 header 정보가 layoutStore에 설정되어야 한다', () => {
             // given
             const setHeaderSpy = vi.spyOn(layoutStore, 'setHeader');
 
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: VsHeader,
+                    default: () => h(VsHeader, { layout: true }),
                 },
             });
 
             // then
-            // setHeader가 호출되었는지 확인
             expect(setHeaderSpy).toHaveBeenCalled();
+        });
+
+        it('layout prop이 없으면 layoutStore에 등록되지 않아야 한다', () => {
+            // given
+            const setHeaderSpy = vi.spyOn(layoutStore, 'setHeader');
+
+            // when
+            mount(MockVsLayout, {
+                slots: {
+                    default: () => h(VsHeader, { position: 'fixed', height: '4rem' }),
+                },
+            });
+
+            // then
+            expect(setHeaderSpy).not.toHaveBeenCalled();
         });
 
         it('position이 absolute일 때 header 정보가 올바르게 설정되어야 한다', () => {
@@ -193,7 +208,7 @@ describe('VsHeader', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsHeader, { position: 'absolute', height: '4rem' }),
+                    default: () => h(VsHeader, { layout: true, position: 'absolute', height: '4rem' }),
                 },
             });
 
@@ -211,7 +226,7 @@ describe('VsHeader', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsHeader, { position: 'fixed', height: '5rem' }),
+                    default: () => h(VsHeader, { layout: true, position: 'fixed', height: '5rem' }),
                 },
             });
 
@@ -229,7 +244,7 @@ describe('VsHeader', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsHeader, { position: 'sticky', height: '4rem' }),
+                    default: () => h(VsHeader, { layout: true, position: 'sticky', height: '4rem' }),
                 },
             });
 
@@ -247,7 +262,7 @@ describe('VsHeader', () => {
             // when
             mount(MockVsLayout, {
                 slots: {
-                    default: () => h(VsHeader, { position: 'relative', height: '6rem' }),
+                    default: () => h(VsHeader, { layout: true, position: 'relative', height: '6rem' }),
                 },
             });
 
@@ -256,6 +271,19 @@ describe('VsHeader', () => {
                 position: 'relative',
                 height: '6rem', // height prop이 적용됨
             });
+        });
+    });
+
+    describe('vs-layout 외부에서는 layout prop이 무시되어야 한다', () => {
+        it('VsLayout 조상이 없으면 layout prop이 true여도 layoutStore에 등록되지 않아야 한다', () => {
+            // given
+            const setHeaderSpy = vi.spyOn(layoutStore, 'setHeader');
+
+            // when
+            mount(VsHeader, { props: { layout: true } });
+
+            // then
+            expect(setHeaderSpy).not.toHaveBeenCalled();
         });
     });
 });
