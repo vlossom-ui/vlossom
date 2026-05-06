@@ -16,7 +16,7 @@
                     },
                 }"
                 @click.prevent.stop="expandRow(cells, $event)"
-                small
+                size="sm"
             >
                 <vs-render
                     class="transition-transform"

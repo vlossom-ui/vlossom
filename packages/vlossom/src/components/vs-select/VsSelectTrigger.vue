@@ -19,7 +19,7 @@
                         :closable="closableChips"
                         :style-set="styleSet?.chip"
                         primary
-                        small
+                        size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
                     >
                         {{ selectedOptions[0].label }}
@@ -34,7 +34,7 @@
                         :closable="closableChips"
                         :style-set="styleSet?.chip"
                         primary
-                        small
+                        size="xs"
                         @close="$emit('deselect', option.id)"
                     >
                         {{ option.label }}

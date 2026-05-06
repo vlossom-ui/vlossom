@@ -13,7 +13,6 @@ export const inputPropsArgTypes = {
     noLabel: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     noMessages: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     required: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
-    small: { control: 'boolean' as any, table: { category: 'Input Wrapper Props' } },
     messages: { control: 'object' as any, table: { category: 'Input Props' } },
     name: { control: 'text' as any, table: { category: 'Input Props' } },
     noDefaultRules: { control: 'boolean' as any, table: { category: 'Input Props' } },
