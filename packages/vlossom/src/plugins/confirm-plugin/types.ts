@@ -10,7 +10,7 @@ export interface VsConfirmStyleSet extends VsModalNodeStyleSet {
     cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
 }
 
-export interface ConfirmModalOptions extends ModalOptions {
+export interface ConfirmModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsConfirmStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;

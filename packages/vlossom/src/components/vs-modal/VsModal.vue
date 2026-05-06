@@ -13,6 +13,10 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsModalNodeStyleSet>(),
         ...getOverlayProps(),
+        beforeClose: {
+            type: Function as PropType<() => Promise<boolean> | boolean>,
+            default: undefined,
+        },
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: true },
         size: {
@@ -31,10 +35,6 @@ export default defineComponent({
         const isOpen = ref(modelValue.value);
         const modalId = ref('');
 
-        watch(modelValue, (o) => {
-            isOpen.value = o;
-        });
-
         const modalOptions = computed(() => {
             return {
                 ...props,
@@ -47,6 +47,20 @@ export default defineComponent({
             };
         });
 
+        watch(modelValue, async (o) => {
+            if (o === isOpen.value) {
+                return;
+            }
+            if (!o) {
+                const closed = await $vs.modal.closeWithId(container.value, modalId.value);
+                if (!closed) {
+                    emit('update:modelValue', true);
+                }
+                return;
+            }
+            isOpen.value = true;
+        });
+
         watch(isOpen, (o) => {
             emit('update:modelValue', o);
             emit(o ? 'open' : 'close');
@@ -55,8 +69,6 @@ export default defineComponent({
                 const vnode = slots.default?.();
                 const modalComponent: Component = vnode ? () => vnode : ((() => null) as Component);
                 modalId.value = $vs.modal.open(modalComponent, modalOptions.value);
-            } else {
-                $vs.modal.closeWithId(container.value, modalId.value);
             }
         });
 

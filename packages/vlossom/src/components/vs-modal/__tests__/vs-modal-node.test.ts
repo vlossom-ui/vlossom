@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsModalNode from './../VsModalNode.vue';
 
@@ -73,6 +73,52 @@ describe('VsModalNode', () => {
                 width: '45%',
                 height: '400px',
             });
+        });
+    });
+
+    describe('beforeClose hook', () => {
+        it('beforeClose가 false를 반환하면 dimmed 클릭 시 close 이벤트가 발생하지 않아야 한다', async () => {
+            // given
+            const beforeClose = vi.fn(async () => false);
+            const wrapper = mount(VsModalNode, {
+                props: {
+                    dimmed: true,
+                    dimClose: true,
+                    beforeClose,
+                },
+            });
+
+            await wrapper.vm.$nextTick();
+
+            // when
+            await wrapper.vm.onClickDimmed();
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(beforeClose).toHaveBeenCalled();
+            expect(wrapper.emitted('close')).toBeFalsy();
+        });
+
+        it('beforeClose가 true를 반환하면 dimmed 클릭 시 close 이벤트가 발생해야 한다', async () => {
+            // given
+            const beforeClose = vi.fn(async () => true);
+            const wrapper = mount(VsModalNode, {
+                props: {
+                    dimmed: true,
+                    dimClose: true,
+                    beforeClose,
+                },
+            });
+
+            await wrapper.vm.$nextTick();
+
+            // when
+            await wrapper.vm.onClickDimmed();
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(beforeClose).toHaveBeenCalled();
+            expect(wrapper.emitted('close')).toBeTruthy();
         });
     });
 

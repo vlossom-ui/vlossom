@@ -1,13 +1,22 @@
 import { type Component } from 'vue';
 import { useOverlayContainerStore, useModalContainerStore, useOverlayCallbackStore } from '@/stores';
 import { logUtil } from '@/utils';
-import type { ModalOptions, ModalPlugin } from './types';
+import type { ModalInfo, ModalOptions, ModalPlugin } from './types';
 import { createModalInfo } from './modal-model';
 
 export function createModalPlugin(): ModalPlugin {
     const overlayContainerStore = useOverlayContainerStore();
     const modalStore = useModalContainerStore();
     const overlayCallbackStore = useOverlayCallbackStore();
+
+    async function runBeforeClose(modal: ModalInfo): Promise<boolean> {
+        const fn = modal.beforeClose;
+        if (!fn) {
+            return true;
+        }
+        const result = await fn();
+        return result !== false;
+    }
 
     return {
         open(content: string | Component, options: ModalOptions = {}): string {
@@ -40,17 +49,36 @@ export function createModalPlugin(): ModalPlugin {
             return overlayCallbackStore.run(id, eventName, ...args);
         },
 
-        close(container = 'body') {
+        async close(container = 'body'): Promise<boolean> {
+            const modals = modalStore.get(container);
+            if (modals.length === 0) {
+                return false;
+            }
+            const last = modals[modals.length - 1];
+            if (!(await runBeforeClose(last))) {
+                return false;
+            }
+
             modalStore.pop(container);
 
             const lastOverlayId = overlayCallbackStore.getLastOverlayId();
             overlayCallbackStore.remove(lastOverlayId);
+            return true;
         },
 
-        closeWithId(container: string, id: string) {
+        async closeWithId(container: string, id: string): Promise<boolean> {
+            const target = modalStore.get(container).find((modal) => modal.id === id);
+            if (!target) {
+                return false;
+            }
+            if (!(await runBeforeClose(target))) {
+                return false;
+            }
+
             modalStore.remove(container, id);
 
             overlayCallbackStore.remove(id);
+            return true;
         },
 
         clear(container = 'body') {
