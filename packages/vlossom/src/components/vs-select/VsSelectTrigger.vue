@@ -50,9 +50,6 @@
             type="button"
             class="vs-select-clear-button"
             aria-label="Clear"
-            :class="{ show: !isEmpty }"
-            :disabled="isEmpty"
-            :tabindex="!isEmpty ? 0 : -1"
             @click.stop="$emit('clear')"
         >
             <vs-render :content="closeIcon" />
@@ -103,7 +100,9 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(state);
 
-        const renderClearButton = computed(() => !noClear.value && !readonly.value && !disabled.value);
+        const renderClearButton = computed(
+            () => !noClear.value && !readonly.value && !disabled.value && !isEmpty.value,
+        );
 
         const triggerClassObj = computed(() => ({
             'vs-focusable': !disabled.value && !readonly.value,
