@@ -47,7 +47,7 @@ const meta: Meta<typeof VsSelect> = {
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기</h3>
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <vs-select :options="basicOptions" label="Small" placeholder="Small select" model-value="Apple" small />
+                        <vs-select :options="basicOptions" label="Small" placeholder="Small select" model-value="Apple" />
                     </div>
                 </div>
 

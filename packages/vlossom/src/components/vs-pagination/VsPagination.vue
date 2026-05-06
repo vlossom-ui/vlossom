@@ -12,7 +12,7 @@
             :ghost
             :outline
             aria-label="go to first page"
-            small
+            size="sm"
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
@@ -27,7 +27,7 @@
             :ghost
             :outline
             aria-label="go to previous page"
-            small
+            size="sm"
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
@@ -46,7 +46,7 @@
                 :ghost
                 :outline
                 :aria-label="`go to page ${page}`"
-                small
+                size="sm"
                 @click.prevent.stop="selectIndex(page - 1)"
             >
                 <slot name="page" :page="page">
@@ -62,7 +62,7 @@
             :ghost
             :outline
             aria-label="go to next page"
-            small
+            size="sm"
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
@@ -78,7 +78,7 @@
             :ghost
             :outline
             aria-label="go to last page"
-            small
+            size="sm"
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
