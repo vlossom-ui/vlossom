@@ -7,7 +7,7 @@
             :disabled="isFirstEdge"
             :style-set="componentStyleSet.scrollButton"
             tabindex="-1"
-            small
+            size="sm"
             @click.prevent.stop="goPrev"
         >
             <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-scroll-icon" />
@@ -48,7 +48,7 @@
             :disabled="isLastEdge"
             :style-set="componentStyleSet.scrollButton"
             tabindex="-1"
-            small
+            size="sm"
             @click.prevent.stop="goNext"
         >
             <vs-render :content="vsTabsIcons.goNext" class="vs-tab-scroll-icon" />
