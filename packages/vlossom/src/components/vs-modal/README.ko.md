@@ -75,6 +75,25 @@ const isOpen = ref(false);
 </template>
 ```
 
+### Before Close Hook
+
+```html
+<template>
+    <vs-modal v-model="isOpen" :before-close="confirmClose">
+        <div>닫기를 시도해보세요.</div>
+    </vs-modal>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+const isOpen = ref(false);
+
+async function confirmClose() {
+    return window.confirm('정말 닫으시겠습니까?');
+}
+</script>
+```
+
 ## Props
 
 | Prop          | Type                                                        | Default   | Required | Description                                                                       |

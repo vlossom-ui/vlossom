@@ -75,24 +75,6 @@ const isOpen = ref(false);
 </template>
 ```
 
-## Props
-
-| Prop          | Type                                                        | Default   | Required | Description                                                                    |
-| ------------- | ----------------------------------------------------------- | --------- | -------- | ------------------------------------------------------------------------------ |
-| `colorScheme` | `string`                                                    | -         | -        | Color scheme for the modal.                                                    |
-| `styleSet`    | `string \| VsModalNodeStyleSet`                             | -         | -        | Custom style set for the modal node.                                           |
-| `modelValue`  | `boolean`                                                   | `false`   | -        | Controls the visibility of the modal (v-model).                                |
-| `beforeClose` | `() => Promise<boolean> \| boolean`                         | -         | -        | Hook invoked before the modal closes. Resolve `false` to abort the close.       |
-| `container`   | `string`                                                    | `'body'`  | -        | CSS selector of the element to teleport the modal into.                        |
-| `escClose`    | `boolean`                                                   | `true`    | -        | Closes the modal when the ESC key is pressed.                                  |
-| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | - | - | Modal size as a predefined keyword or custom width/height. |
-| `callbacks`   | `OverlayCallbacks`                                          | `{}`      | -        | Overlay callback handlers.                                                     |
-| `dimClose`    | `boolean`                                                   | `false`   | -        | Closes the modal when clicking the dimmed area.                                |
-| `dimmed`      | `boolean`                                                   | `false`   | -        | Shows a dimmed overlay behind the modal.                                       |
-| `focusLock`   | `boolean`                                                   | `false`   | -        | Traps focus within the modal while it is open.                                 |
-| `hideScroll`  | `boolean`                                                   | `false`   | -        | Hides the scroll on the container when the modal is open.                      |
-| `id`          | `string`                                                    | `''`      | -        | Custom ID for the modal overlay instance.                                      |
-
 ### Before Close Hook
 
 ```html
@@ -111,6 +93,24 @@ async function confirmClose() {
 }
 </script>
 ```
+
+## Props
+
+| Prop          | Type                                                                                                  | Default  | Required | Description                                                               |
+| ------------- | ----------------------------------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                                                              | -        | -        | Color scheme for the modal.                                               |
+| `styleSet`    | `string \| VsModalNodeStyleSet`                                                                       | -        | -        | Custom style set for the modal node.                                      |
+| `modelValue`  | `boolean`                                                                                             | `false`  | -        | Controls the visibility of the modal (v-model).                           |
+| `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | Hook invoked before the modal closes. Resolve `false` to abort the close. |
+| `container`   | `string`                                                                                              | `'body'` | -        | CSS selector of the element to teleport the modal into.                   |
+| `escClose`    | `boolean`                                                                                             | `true`   | -        | Closes the modal when the ESC key is pressed.                             |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal size as a predefined keyword or custom width/height.                |
+| `callbacks`   | `OverlayCallbacks`                                                                                    | `{}`     | -        | Overlay callback handlers.                                                |
+| `dimClose`    | `boolean`                                                                                             | `false`  | -        | Closes the modal when clicking the dimmed area.                           |
+| `dimmed`      | `boolean`                                                                                             | `false`  | -        | Shows a dimmed overlay behind the modal.                                  |
+| `focusLock`   | `boolean`                                                                                             | `false`  | -        | Traps focus within the modal while it is open.                            |
+| `hideScroll`  | `boolean`                                                                                             | `false`  | -        | Hides the scroll on the container when the modal is open.                 |
+| `id`          | `string`                                                                                              | `''`     | -        | Custom ID for the modal overlay instance.                                 |
 
 ## Types
 
@@ -150,17 +150,17 @@ interface VsModalNodeStyleSet {
 
 ## Events
 
-| Event               | Payload   | Description                              |
-| ------------------- | --------- | ---------------------------------------- |
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
 | `update:modelValue` | `boolean` | Emitted when the modal open state changes. |
-| `open`              | -         | Emitted when the modal opens.            |
-| `close`             | -         | Emitted when the modal closes.           |
+| `open`              | -         | Emitted when the modal opens.              |
+| `close`             | -         | Emitted when the modal closes.             |
 
 ## Slots
 
-| Slot      | Description                                         |
-| --------- | --------------------------------------------------- |
-| `default` | The content rendered inside the modal dialog.       |
+| Slot      | Description                                   |
+| --------- | --------------------------------------------- |
+| `default` | The content rendered inside the modal dialog. |
 
 ## Methods
 
