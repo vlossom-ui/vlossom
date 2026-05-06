@@ -39,7 +39,7 @@
         }
 
         &:hover {
-            .vs-select-clear-button.show {
+            .vs-select-clear-button {
                 @apply cursor-pointer opacity-100;
             }
         }
