@@ -1,13 +1,13 @@
 <template>
-    <div class="vs-page" :style="componentStyleSet.component">
-        <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.title">
+    <div class="vs-page" :style="componentStyleSet.$component">
+        <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.$title">
             <slot name="title" />
         </div>
-        <div v-if="$slots['description']" class="vs-page-description" :style="componentStyleSet.description">
+        <div v-if="$slots['description']" class="vs-page-description" :style="componentStyleSet.$description">
             <slot name="description" />
         </div>
 
-        <div class="vs-page-content" :style="componentStyleSet.content">
+        <div class="vs-page-content" :style="componentStyleSet.$content">
             <slot />
         </div>
     </div>

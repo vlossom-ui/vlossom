@@ -77,12 +77,10 @@
 
 ```typescript
 interface VsChipStyleSet {
-    variables?: {
-        height?: string;
-    };
-    component?: CSSProperties;
-    icon?: CSSProperties;
-    closeButton?: CSSProperties;
+    $height?: string;
+    $component?: CSSProperties;
+    $icon?: CSSProperties;
+    $closeButton?: CSSProperties;
 }
 ```
 
@@ -93,18 +91,16 @@ interface VsChipStyleSet {
     <vs-chip
         closable
         :style-set="{
-            variables: {
-                height: '2rem',
-            },
-            component: {
+            $height: '2rem',
+            $component: {
                 borderRadius: '0.25rem',
                 backgroundColor: '#e8f5e9',
                 color: '#2e7d32',
             },
-            icon: {
+            $icon: {
                 color: '#2e7d32',
             },
-            closeButton: {
+            $closeButton: {
                 opacity: '0.7',
             },
         }"

@@ -1,7 +1,7 @@
 <template>
     <progress
         :class="['vs-progress', colorSchemeClass]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
         :value="computedValue"
         :max="computedMax"
         :data-label="label"

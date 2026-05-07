@@ -117,7 +117,7 @@ export default defineComponent({
             'vs-selected': isSelected.value,
         }));
 
-        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.$cell);
         const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
@@ -139,18 +139,18 @@ export default defineComponent({
         const rowStyle = computed<CSSProperties | undefined>(() => {
             if (isSelected.value) {
                 return {
-                    ...tableStyleSet?.value?.row,
-                    ...tableStyleSet?.value?.selectedRow,
+                    ...tableStyleSet?.value?.$row,
+                    ...tableStyleSet?.value?.$selectedRow,
                     ...gridStyle.value,
                 };
             }
             return {
-                ...tableStyleSet?.value?.row,
+                ...tableStyleSet?.value?.$row,
                 ...gridStyle.value,
             };
         });
         const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
-            component: {
+            $component: {
                 height: '100%',
                 minHeight: dense?.value ? 'calc(var(--vs-comp-height-sm))' : 'calc(var(--vs-comp-height-md))',
             },

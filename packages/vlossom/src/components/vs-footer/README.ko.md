@@ -79,7 +79,7 @@ interface VsFooterStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
 interface VsBarStyleSet {
-    component?: CSSProperties;
+    $component?: CSSProperties;
 }
 ```
 
@@ -92,7 +92,7 @@ interface VsBarStyleSet {
 <template>
     <vs-footer
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#1a1a2e',
                 color: '#ffffff',
                 padding: '0 2rem',

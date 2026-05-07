@@ -140,25 +140,23 @@ async function confirmChange(from, to) {
 
 ```typescript
 interface VsCheckboxStyleSet {
-    variables?: {
-        checkboxCheckedColor?: string;
-        checkboxColor?: string;
-        checkboxSize?: string;
-    };
-    checkbox?: CSSProperties;
-    checkboxLabel?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+    $checkboxCheckedColor?: string;
+    $checkboxColor?: string;
+    $checkboxSize?: string;
+    $checkbox?: CSSProperties;
+    $checkboxLabel?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
 interface VsCheckboxSetStyleSet {
-    component?: CSSProperties;
-    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
-    wrapper?: VsInputWrapperStyleSet;
+    $component?: CSSProperties;
+    $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper documentation](../vs-input-wrapper/README.md) for details.
+> `$wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper documentation](../vs-input-wrapper/README.md) for details.
 
 ### StyleSet Example
 
@@ -168,12 +166,10 @@ interface VsCheckboxSetStyleSet {
         v-model="checked"
         check-label="Custom Checkbox"
         :style-set="{
-            variables: {
-                checkboxSize: '1.5rem',
-                checkboxColor: '#e0e0e0',
-                checkboxCheckedColor: '#6200ea',
-            },
-            checkboxLabel: {
+            $checkboxSize: '1.5rem',
+            $checkboxColor: '#e0e0e0',
+            $checkboxCheckedColor: '#6200ea',
+            $checkboxLabel: {
                 fontSize: '1rem',
                 fontWeight: '500',
             },

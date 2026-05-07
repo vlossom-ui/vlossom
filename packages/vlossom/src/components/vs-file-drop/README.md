@@ -96,21 +96,19 @@ const files = ref([]);
 
 ```typescript
 interface VsFileDropStyleSet {
-    variables?: {
-        dragBackgroundColor?: string;
-        iconColor?: string;
-    };
-    component?: CSSProperties;
-    placeholder?: CSSProperties;
-    files?: CSSProperties;
-    closeButton?: CSSProperties;
-    chip?: VsChipStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+    $dragBackgroundColor?: string;
+    $iconColor?: string;
+    $component?: CSSProperties;
+    $placeholder?: CSSProperties;
+    $files?: CSSProperties;
+    $closeButton?: CSSProperties;
+    $chip?: VsChipStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `chip` uses [VsChipStyleSet](../vs-chip/README.md) and `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md).
+> `$chip` uses [VsChipStyleSet](../vs-chip/README.md) and `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md).
 
 ### StyleSet Example
 
@@ -120,9 +118,10 @@ interface VsFileDropStyleSet {
         v-model="files"
         label="Upload"
         :style-set="{
-            variables: { dragBackgroundColor: '#e8f4fd', iconColor: '#0066cc' },
-            component: { borderRadius: '12px' },
-            placeholder: { color: '#666' },
+            $dragBackgroundColor: '#e8f4fd',
+            $iconColor: '#0066cc',
+            $component: { borderRadius: '12px' },
+            $placeholder: { color: '#666' },
         }"
     />
 </template>

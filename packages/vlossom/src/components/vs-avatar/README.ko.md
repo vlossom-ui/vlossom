@@ -52,10 +52,8 @@
 
 ```typescript
 interface VsAvatarStyleSet {
-    variables?: {
-        objectFit?: CSSProperties['objectFit'] & {};
-    };
-    component?: CSSProperties;
+    $objectFit?: CSSProperties['objectFit'] & {};
+    $component?: CSSProperties;
 }
 ```
 
@@ -65,10 +63,8 @@ interface VsAvatarStyleSet {
 <template>
     <vs-avatar
         :style-set="{
-            variables: {
-                objectFit: 'cover',
-            },
-            component: {
+            $objectFit: 'cover',
+            $component: {
                 width: '5rem',
                 height: '5rem',
                 borderRadius: '50%',

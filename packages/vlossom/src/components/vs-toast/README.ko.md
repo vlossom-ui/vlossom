@@ -70,13 +70,13 @@
 
 ```typescript
 interface VsToastStyleSet {
-    closeButton?: Omit<VsButtonStyleSet, 'loading'>;
-    component?: CSSProperties;
+    $closeButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $component?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `closeButton`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`loading` 제외).
+> `$closeButton`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외).
 
 ### StyleSet 예시
 
@@ -84,14 +84,14 @@ interface VsToastStyleSet {
 <template>
     <vs-toast
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#323232',
                 color: '#ffffff',
                 borderRadius: '0.5rem',
                 padding: '0.75rem 1rem',
             },
-            closeButton: {
-                component: { color: '#ffffff' },
+            $closeButton: {
+                $component: { color: '#ffffff' },
             },
         }"
     >

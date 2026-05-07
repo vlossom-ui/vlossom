@@ -68,16 +68,14 @@ export default defineComponent({
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
-        const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const cellStyle = computed(() => tableStyleSet?.value?.$cell);
         const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
             if (!primary?.value) {
                 return {};
             }
             return {
-                variables: {
-                    checkboxColor: 'var(--vs-cs-bg-area)',
-                    checkboxCheckedColor: 'var(--vs-cs-font-colored)',
-                },
+                $checkboxColor: 'var(--vs-cs-bg-area)',
+                $checkboxCheckedColor: 'var(--vs-cs-font-colored)',
             };
         });
 

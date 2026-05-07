@@ -64,14 +64,12 @@ export const AllVariants: Story = {
 
                         <vs-label-value
                             :style-set="{
-                                variables: {
-                                    border: '2px solid #6366f1',
-                                },
-                                label: {
+                                $border: '2px solid #6366f1',
+                                $label: {
                                     backgroundColor: '#6366f1',
                                     color: '#ffffff',
                                 },
-                                value: {
+                                $value: {
                                     backgroundColor: '#eef2ff',
                                     color: '#4338ca',
                                 },

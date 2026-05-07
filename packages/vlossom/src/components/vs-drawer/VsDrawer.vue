@@ -4,11 +4,11 @@
             v-show="isOpen"
             ref="drawerRef"
             :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
         >
             <vs-dimmed
                 v-if="dimmed"
-                :style-set="componentStyleSet.dimmed"
+                :style-set="componentStyleSet.$dimmed"
                 :model-value="isDimmed"
                 @click.prevent.stop="onClickDimmed"
             />
@@ -17,9 +17,9 @@
                     :class="['vs-drawer-content', `vs-drawer-${placement}`]"
                     :style="layoutStyles"
                     :style-set="{
-                        header: componentStyleSet.header,
-                        content: componentStyleSet.content,
-                        footer: componentStyleSet.footer,
+                        $header: componentStyleSet.$header,
+                        $content: componentStyleSet.$content,
+                        $footer: componentStyleSet.$footer,
                     }"
                     :hide-scroll
                 >
@@ -139,10 +139,8 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
-                variables: objectUtil.shake({
-                    size: drawerSize.value,
-                }),
-                component: objectUtil.shake({
+                $size: drawerSize.value,
+                $component: objectUtil.shake({
                     position: fixed.value ? 'fixed' : undefined,
                 }),
             });

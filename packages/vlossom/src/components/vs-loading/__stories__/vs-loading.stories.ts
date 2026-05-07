@@ -11,10 +11,8 @@ const meta: Meta<typeof VsLoading> = {
         components: { VsLoading },
         setup() {
             const preDefinedStyleSet: VsLoadingStyleSet = {
-                variables: {
-                    color: 'cyan',
-                },
-                component: {
+                $barColor: 'cyan',
+                $component: {
                     width: '9rem',
                     height: '12rem',
                 },
@@ -83,7 +81,7 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            component: {
+            $component: {
                 width: '4rem',
                 height: '4rem',
             },

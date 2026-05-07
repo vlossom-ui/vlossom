@@ -15,7 +15,7 @@ import ColorSchemePanel from './ColorSchemePanel.vue';
 import type { VsButtonStyleSet } from '@/components/vs-button/types';
 
 const buttonStyleSet: VsButtonStyleSet = {
-    component: {
+    $component: {
         backgroundColor: 'transparent',
     },
 };

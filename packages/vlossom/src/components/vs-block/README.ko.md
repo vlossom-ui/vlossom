@@ -60,12 +60,10 @@
 
 ```typescript
 interface VsBlockStyleSet {
-    variables?: {
-        border?: string;
-    };
-    component?: CSSProperties;
-    title?: CSSProperties;
-    content?: CSSProperties;
+    $border?: string;
+    $component?: CSSProperties;
+    $title?: CSSProperties;
+    $content?: CSSProperties;
 }
 ```
 
@@ -75,19 +73,17 @@ interface VsBlockStyleSet {
 <template>
     <vs-block
         :style-set="{
-            variables: {
-                border: '2px solid #6200ea',
-            },
-            component: {
+            $border: '2px solid #6200ea',
+            $component: {
                 borderRadius: '1rem',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
             },
-            title: {
+            $title: {
                 backgroundColor: '#6200ea',
                 color: '#ffffff',
                 padding: '1rem 1.5rem',
             },
-            content: {
+            $content: {
                 padding: '1.5rem',
             },
         }"

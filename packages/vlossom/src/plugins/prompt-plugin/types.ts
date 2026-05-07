@@ -4,7 +4,7 @@ import type { Alignment, ColorScheme, PropsOf, VsComponent } from '@/declaration
 import type { VsButtonStyleSet, VsInputStyleSet, VsInputValueType, VsModalNodeStyleSet } from '@/components';
 
 export interface VsPromptStyleSet extends VsModalNodeStyleSet {
-    input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
+    input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
     buttonsGap?: string | number;
     buttonsAlign?: Alignment;
     okButton?: Omit<VsButtonStyleSet, 'loading'>;

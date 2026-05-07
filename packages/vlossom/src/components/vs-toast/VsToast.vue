@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-toast', colorSchemeClass, { 'vs-toast-primary': primary }]"
-        :style="componentStyleSet.component"
+        :style="componentStyleSet.$component"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -10,7 +10,7 @@
             class="vs-toast-close"
             :color-scheme="computedColorScheme"
             :primary
-            :style-set="componentStyleSet.closeButton"
+            :style-set="componentStyleSet.$closeButton"
             ghost
             @click="$emit('close')"
         >
@@ -49,10 +49,8 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsToastStyleSet> = computed(() => {
             return {
-                closeButton: {
-                    variables: {
-                        padding: '0',
-                    },
+                $closeButton: {
+                    $padding: '0',
                 },
             };
         });

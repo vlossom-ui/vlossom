@@ -2,9 +2,9 @@
     <vs-input
         ref="inputRef"
         class="vs-search-input"
-        :style-set="componentStyleSet.input"
         v-model="searchText"
         :color-scheme="computedColorScheme"
+        :style-set="componentStyleSet"
         :style="styleSetVariables"
         :width
         :grid
@@ -24,7 +24,7 @@
                     class="vs-search-input-toggle"
                     :class="{ 'vs-search-input-toggle-on': isCaseSensitiveOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="componentStyleSet.toggle"
+                    :style-set="componentStyleSet.$toggle"
                     :disabled="disabled || readonly"
                     :ghost="!isCaseSensitiveOn"
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
@@ -38,7 +38,7 @@
                     class="vs-search-input-toggle"
                     :class="{ 'vs-search-input-toggle-on': isRegexOn }"
                     :color-scheme="computedColorScheme"
-                    :style-set="componentStyleSet.toggle"
+                    :style-set="componentStyleSet.$toggle"
                     :disabled="disabled || readonly"
                     :ghost="!isRegexOn"
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
@@ -104,26 +104,13 @@ export default defineComponent({
         const { computedColorScheme } = useColorScheme(componentName, colorScheme);
 
         const baseStyleSet: ComputedRef<VsSearchInputStyleSet> = computed(() => {
-            const styleSetValue = styleSet.value;
-            const height =
-                styleSetValue && typeof styleSetValue !== 'string' ? styleSetValue.variables?.height : undefined;
-
             return {
-                input: {
-                    append: {
-                        backgroundColor: 'transparent',
-                        padding: '0 0.3rem',
-                    },
-                    ...(height && {
-                        component: {
-                            height,
-                        },
-                    }),
+                $append: {
+                    backgroundColor: 'transparent',
+                    padding: '0 0.3rem',
                 },
-                toggle: {
-                    variables: {
-                        padding: '0',
-                    },
+                $toggle: {
+                    $content: { padding: '0' },
                 },
             };
         });

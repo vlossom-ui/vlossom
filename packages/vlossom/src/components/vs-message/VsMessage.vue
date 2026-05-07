@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-message', colorClass]" :style="{ ...componentStyleSet.component, ...styleSetVariables }">
+    <div :class="['vs-message', colorClass]" :style="{ ...componentStyleSet.$component, ...styleSetVariables }">
         <i class="vs-message-icon">
             <vs-render :content="icon" />
         </i>

@@ -1,6 +1,6 @@
 <template>
     <vs-responsive :width :grid>
-        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="{ ...styleSetVariables }">
+        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="rootStyle">
             <div class="vs-step-line">
                 <div class="vs-step-progress" :style="progressWidth" />
             </div>
@@ -70,7 +70,6 @@ import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/pro
 import { NOT_SELECTED, VsComponent } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
-import { objectUtil } from '@/utils';
 
 const componentName = VsComponent.VsSteps;
 export default defineComponent({
@@ -102,25 +101,15 @@ export default defineComponent({
 
         const gapCount = computed(() => steps.value.length - 1);
 
-        const baseStyleSet: ComputedRef<VsStepsStyleSet> = computed(() => ({}));
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(componentName, styleSet);
 
-        const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
-            return objectUtil.shake({
-                variables: objectUtil.shake({
-                    height: height.value || undefined,
-                    width: width.value || undefined,
-                    gap: gap.value || '0',
-                    gapCount: gapCount.value || undefined,
-                }),
-            });
-        });
-
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(
-            componentName,
-            styleSet,
-            baseStyleSet,
-            additionalStyleSet,
-        );
+        const rootStyle = computed<Record<string, string | number | undefined>>(() => ({
+            ...styleSetVariables.value,
+            '--vs-steps-height': height.value || undefined,
+            '--vs-steps-width': typeof width.value === 'object' ? undefined : width.value || undefined,
+            '--vs-steps-gap': gap.value || '0',
+            '--vs-steps-gapCount': gapCount.value || undefined,
+        }));
 
         const stepRefs: Ref<HTMLElement[]> = ref([]);
 
@@ -142,23 +131,23 @@ export default defineComponent({
 
             const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return {
-                ...componentStyleSet.value.progress,
-                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.activeProgress : {}),
+                ...componentStyleSet.value.$progress,
+                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.$activeProgress : {}),
                 [dimensionKey]: `${percentage}%`,
             };
         });
 
         function getStepStyleSet(index: number): CSSProperties {
             return {
-                ...componentStyleSet.value.step,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.activeStep : {}),
+                ...componentStyleSet.value.$step,
+                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeStep : {}),
             };
         }
 
         function getLabelStyleSet(index: number): CSSProperties {
             return {
-                ...componentStyleSet.value.label,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.activeLabel : {}),
+                ...componentStyleSet.value.$label,
+                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeLabel : {}),
             };
         }
 
@@ -182,7 +171,7 @@ export default defineComponent({
             // Style
             colorSchemeClass,
             componentStyleSet,
-            styleSetVariables,
+            rootStyle,
             progressWidth,
             getStepStyleSet,
             getLabelStyleSet,

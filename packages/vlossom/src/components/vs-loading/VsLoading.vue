@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-loading', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+    <div :class="['vs-loading', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.$component }">
         <div class="vs-loading-rect vs-loading-rect1" />
         <div class="vs-loading-rect vs-loading-rect2" />
         <div class="vs-loading-rect vs-loading-rect3" />
@@ -33,7 +33,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => {
             return {
-                component: objectUtil.shake({
+                $component: objectUtil.shake({
                     width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
                     height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
                 }),

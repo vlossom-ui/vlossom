@@ -357,11 +357,9 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            variables: {
-                arrowColor: '#e188e5',
-                arrowSize: '0.6rem',
-            },
-            component: {
+            $arrowColor: '#e188e5',
+            $arrowSize: '0.6rem',
+            $tooltip: {
                 backgroundColor: '#e188e5',
                 border: '2px solid #c566c9',
                 borderRadius: '12px',
@@ -390,11 +388,9 @@ export const PreDefinedStyleSet: Story = {
         components: { VsTooltip, VsButton },
         setup() {
             const preDefinedStyleSet: VsTooltipStyleSet = {
-                variables: {
-                    arrowColor: '#1e88e5',
-                    arrowSize: '0.5rem',
-                },
-                component: {
+                $arrowColor: '#1e88e5',
+                $arrowSize: '0.5rem',
+                $tooltip: {
                     backgroundColor: '#1e88e5',
                     border: '2px solid #1565c0',
                     borderRadius: '8px',

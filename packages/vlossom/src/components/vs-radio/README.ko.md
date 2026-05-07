@@ -136,23 +136,21 @@ async function confirmChange(from, to) {
 
 ```typescript
 interface VsRadioStyleSet {
-    variables?: {
-        borderRadius?: string;
-        radioColor?: string;
-        radioSize?: string;
-    };
-    wrapper?: VsInputWrapperStyleSet;
+    $borderRadius?: string;
+    $radioColor?: string;
+    $radioSize?: string;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
 interface VsRadioSetStyleSet {
-    component?: CSSProperties;
-    radio?: VsRadioStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+    $component?: CSSProperties;
+    $radio?: VsRadioStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
+> `$wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 
@@ -162,12 +160,10 @@ interface VsRadioSetStyleSet {
         v-model="selected"
         :options="options"
         :style-set="{
-            component: { gap: '1rem' },
-            radio: {
-                variables: {
-                    radioColor: '#6366f1',
-                    radioSize: '1.2rem',
-                },
+            $component: { gap: '1rem' },
+            $radio: {
+                $radioColor: '#6366f1',
+                $radioSize: '1.2rem',
             },
         }"
     />

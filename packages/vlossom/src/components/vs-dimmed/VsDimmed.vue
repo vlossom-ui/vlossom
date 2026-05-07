@@ -3,7 +3,7 @@
         <div
             v-if="isShow"
             class="vs-dimmed"
-            :style="componentStyleSet.component"
+            :style="componentStyleSet.$component"
             aria-hidden="true"
         />
     </Transition>

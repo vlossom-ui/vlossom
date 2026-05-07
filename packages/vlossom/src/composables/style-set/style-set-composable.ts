@@ -28,32 +28,20 @@ export function useStyleSet<T extends { [key: string]: any }>(
     });
 
     const styleSetVariables: ComputedRef<Record<string, string>> = computed(() => {
-        const variables = componentStyleSet.value.variables;
+        const componentKey = stringUtil.kebabCase(component);
+        const result: Record<string, string> = {};
 
-        if (!variables) {
-            return {};
+        for (const [key, value] of Object.entries(componentStyleSet.value)) {
+            if (!key.startsWith('$') || objectUtil.isObject(value)) {
+                continue;
+            }
+            if (value === undefined || value === null) {
+                continue;
+            }
+            result[`--${componentKey}-${key.slice(1)}`] = value as string;
         }
 
-        return Object.entries(variables).reduce(
-            (acc, [key, value]) => {
-                if (objectUtil.isObject(value)) {
-                    const nestedStyleSet = value;
-                    Object.entries(nestedStyleSet).forEach(([nestedKey, nestedValue]) => {
-                        if (objectUtil.isObject(nestedValue)) {
-                            return;
-                        }
-                        const variableName = `--${stringUtil.kebabCase(component)}-${key}-${nestedKey}`;
-                        acc[variableName] = nestedValue;
-                    });
-                } else {
-                    const variableName = `--${stringUtil.kebabCase(component)}-${key}`;
-                    acc[variableName] = value;
-                }
-
-                return acc;
-            },
-            {} as Record<string, string>,
-        );
+        return result;
     });
 
     return {

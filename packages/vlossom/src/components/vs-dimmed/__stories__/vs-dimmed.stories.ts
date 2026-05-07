@@ -73,7 +73,7 @@ export const StyleSet: Story = {
     args: {
         modelValue: true,
         styleSet: {
-            component: {
+            $component: {
                 backgroundColor: 'rgba(255, 0, 0, 1)',
                 opacity: 0.5,
             },
@@ -102,7 +102,7 @@ export const PreDefinedStyleSet: Story = {
         components: { VsDimmed },
         setup() {
             const preDefinedStyleSet: VsDimmedStyleSet = {
-                component: {
+                $component: {
                     backgroundColor: 'rgba(0, 255, 0, 1)',
                     opacity: 0.6,
                 },

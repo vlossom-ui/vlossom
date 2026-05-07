@@ -51,13 +51,13 @@ const meta: Meta<typeof VsPage> = {
         components: { VsPage },
         setup() {
             const preDefinedStyleSet: VsPageStyleSet = {
-                component: {
+                $component: {
                     padding: '4rem 5rem',
                 },
-                title: {
+                $title: {
                     padding: '0 0 1rem 0',
                 },
-                description: {
+                $description: {
                     padding: '0 0 2rem 0',
                 },
             };
@@ -194,7 +194,7 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            component: {
+            $component: {
                 padding: '1.2rem 3rem',
             },
         },
@@ -213,16 +213,16 @@ export const NestedStyleSet: Story = {
     },
     args: {
         styleSet: {
-            component: {
+            $component: {
                 padding: '2rem',
             },
-            title: {
+            $title: {
                 padding: '0 0 1.5rem 0',
             },
-            description: {
+            $description: {
                 padding: '1.5rem 0 2rem 0',
             },
-            content: {
+            $content: {
                 padding: '1rem',
                 backgroundColor: '#f5f5f5',
                 borderRadius: '8px',

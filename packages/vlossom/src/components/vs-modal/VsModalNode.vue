@@ -3,7 +3,7 @@
         <vs-dimmed
             v-if="dimmed"
             :model-value="dimmed"
-            :style-set="componentStyleSet.dimmed"
+            :style-set="componentStyleSet.$dimmed"
             @click.prevent.stop="onClickDimmed"
         />
         <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef">
@@ -12,7 +12,7 @@
                 role="dialog"
                 aria-label="Modal"
                 :aria-modal="true"
-                :style="componentStyleSet.component"
+                :style="componentStyleSet.$component"
             >
                 <slot />
             </div>
@@ -105,7 +105,7 @@ export default defineComponent({
             }
 
             return objectUtil.shake({
-                component: objectUtil.shake(result),
+                $component: objectUtil.shake(result),
             });
         });
 

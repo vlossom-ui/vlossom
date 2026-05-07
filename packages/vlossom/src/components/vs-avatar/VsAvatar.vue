@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-avatar', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.component }">
+    <div :class="['vs-avatar', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.$component }">
         <slot />
     </div>
 </template>

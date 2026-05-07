@@ -2,7 +2,7 @@
     <component
         :is="tag"
         :class="['vs-bar', colorSchemeClass, classObj]"
-        :style="componentStyleSet.component"
+        :style="componentStyleSet.$component"
     >
         <slot />
     </component>
@@ -33,7 +33,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsBarStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBarStyleSet>> = computed(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
+                $component: objectUtil.shake({
                     position: position.value || undefined,
                 }),
             });

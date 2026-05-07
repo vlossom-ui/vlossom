@@ -11,7 +11,7 @@ A full-width horizontal bar component typically used as a header, footer, or too
 - Renders as any HTML element via the `tag` prop (defaults to `div`)
 - Supports `position` prop for `absolute`, `fixed`, `sticky`, and other CSS position values
 - Primary variant for prominent toolbar/header styling
-- Full style override via `component` CSSProperties
+- Full style override via `$component` CSSProperties
 
 ## Basic Usage
 
@@ -57,7 +57,7 @@ A full-width horizontal bar component typically used as a header, footer, or too
 
 ```typescript
 interface VsBarStyleSet {
-    component?: CSSProperties;
+    $component?: CSSProperties;
 }
 ```
 
@@ -67,7 +67,7 @@ interface VsBarStyleSet {
 <template>
     <vs-bar
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#1a1a2e',
                 color: '#ffffff',
                 padding: '0 1.5rem',

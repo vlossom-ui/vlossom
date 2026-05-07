@@ -2,7 +2,7 @@
     <div
         ref="triggerRef"
         :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
-        :style="styleSet?.component"
+        :style="styleSet?.$component"
         tabindex="0"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -17,7 +17,7 @@
                     <vs-chip
                         :color-scheme
                         :closable="closableChips"
-                        :style-set="styleSet?.chip"
+                        :style-set="styleSet?.$chip"
                         primary
                         size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
@@ -32,7 +32,7 @@
                         :key="option.id"
                         :color-scheme
                         :closable="closableChips"
-                        :style-set="styleSet?.chip"
+                        :style-set="styleSet?.$chip"
                         primary
                         size="xs"
                         @close="$emit('deselect', option.id)"

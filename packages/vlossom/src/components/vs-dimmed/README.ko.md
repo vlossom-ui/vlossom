@@ -58,7 +58,7 @@ const dimmedRef = ref(null);
 
 ```typescript
 interface VsDimmedStyleSet {
-    component?: CSSProperties;
+    $component?: CSSProperties;
 }
 ```
 
@@ -69,7 +69,7 @@ interface VsDimmedStyleSet {
     <vs-dimmed
         v-model="isVisible"
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#000000',
                 opacity: 0.6,
                 backdropFilter: 'blur(4px)',

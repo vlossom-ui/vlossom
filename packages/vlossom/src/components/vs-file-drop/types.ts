@@ -17,14 +17,12 @@ export interface VsFileDropRef extends ComponentPublicInstance<typeof VsFileDrop
 export type FileDropValueType = File[];
 
 export interface VsFileDropStyleSet {
-    variables?: {
-        dragBackgroundColor?: string;
-        iconColor?: string;
-    };
-    component?: CSSProperties;
-    placeholder?: CSSProperties;
-    files?: CSSProperties;
-    closeButton?: CSSProperties;
-    chip?: VsChipStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+    $dragBackgroundColor?: string;
+    $iconColor?: string;
+    $component?: CSSProperties;
+    $placeholder?: CSSProperties;
+    $files?: CSSProperties;
+    $closeButton?: CSSProperties;
+    $chip?: VsChipStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }

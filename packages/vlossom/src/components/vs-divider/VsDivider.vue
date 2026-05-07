@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-divider', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
     />
 </template>
 

@@ -12,9 +12,7 @@ export type { VsLoading };
 export interface VsLoadingRef extends ComponentPublicInstance<typeof VsLoading> {}
 
 export interface VsLoadingStyleSet {
-    variables?: {
-        barWidth?: string;
-        color?: string;
-    };
-    component?: CSSProperties;
+    $barColor?: string;
+    $barWidth?: string;
+    $component?: CSSProperties;
 }

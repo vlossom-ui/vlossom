@@ -12,8 +12,8 @@ export type { VsPage };
 export interface VsPageRef extends ComponentPublicInstance<typeof VsPage> {}
 
 export interface VsPageStyleSet {
-    component?: CSSProperties;
-    title?: CSSProperties;
-    description?: CSSProperties;
-    content?: CSSProperties;
+    $component?: CSSProperties;
+    $title?: CSSProperties;
+    $description?: CSSProperties;
+    $content?: CSSProperties;
 }

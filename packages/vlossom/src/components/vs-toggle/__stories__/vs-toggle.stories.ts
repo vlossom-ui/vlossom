@@ -20,10 +20,8 @@ const meta: Meta<typeof VsToggle> = {
         components: { VsToggle },
         setup() {
             const preDefinedStyleSet: VsToggleStyleSet = {
-                variables: {
-                    padding: '0 1.5rem',
-                },
-                component: {
+                $padding: '0 1.5rem',
+                $component: {
                     backgroundColor: '#1e88e5',
                     height: '3rem',
                     width: 'auto',
@@ -157,7 +155,7 @@ export const ToggleExample1: Story = {
             });
 
             const menuButtonStyleSet: VsToggleStyleSet = {
-                component: {
+                $component: {
                     width: size.value,
                     height: size.value,
                     borderRadius: '8px',

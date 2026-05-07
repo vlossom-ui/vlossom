@@ -111,26 +111,24 @@ const options = [
 
 ```typescript
 interface VsSelectStyleSet {
-    variables?: {
-        height?: string;
-        focused?: {
-            border?: string;
-            borderRadius?: string;
-            backgroundColor?: string;
-        };
+    $height?: string;
+    $focused?: {
+        border?: string;
+        borderRadius?: string;
+        backgroundColor?: string;
     };
-    component?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
-    chip?: VsChipStyleSet;
-    selectAllCheckbox?: VsCheckboxStyleSet;
-    options?: VsGroupedListStyleSet;
-    option?: CSSProperties;
-    selectedOption?: CSSProperties;
+    $component?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
+    $chip?: VsChipStyleSet;
+    $selectAllCheckbox?: VsCheckboxStyleSet;
+    $options?: VsGroupedListStyleSet;
+    $option?: CSSProperties;
+    $selectedOption?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `chip` uses [VsChipStyleSet](../vs-chip/README.md#types), `selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types), and `options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types).
+> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `$chip` uses [VsChipStyleSet](../vs-chip/README.md#types), `$selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types), and `$options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types).
 
 ### StyleSet Example
 
@@ -140,12 +138,10 @@ interface VsSelectStyleSet {
         v-model="selected"
         :options="options"
         :style-set="{
-            variables: {
-                height: '2.5rem',
-                focused: { border: '2px solid #6366f1' },
-            },
-            option: { padding: '0.5rem 1rem' },
-            selectedOption: { backgroundColor: '#ede9fe', fontWeight: 'bold' },
+            $height: '2.5rem',
+            $focused: { border: '2px solid #6366f1' },
+            $option: { padding: '0.5rem 1rem' },
+            $selectedOption: { backgroundColor: '#ede9fe', fontWeight: 'bold' },
         }"
     />
 </template>

@@ -78,18 +78,17 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ```typescript
 interface VsTabsStyleSet {
-    variables?: {
-        gap?: string;
-        divider?: CSSProperties['border'] & {};
-    };
-    tab?: CSSProperties;
-    activeTab?: CSSProperties;
-    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $gap?: string;
+    $height?: string;
+    $divider?: CSSProperties['border'] & {};
+    $tab?: CSSProperties;
+    $activeTab?: CSSProperties;
+    $scrollButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `scrollButton` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `loading`).
+> `$scrollButton` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`).
 
 ### StyleSet Example
 
@@ -99,9 +98,10 @@ interface VsTabsStyleSet {
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            variables: { gap: '0.5rem', divider: '2px solid #e0e0e0' },
-            tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
-            activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
+            $gap: '0.5rem',
+            $divider: '2px solid #e0e0e0',
+            $tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
+            $activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
         }"
     />
 </template>

@@ -1,10 +1,10 @@
 <template>
-    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
+    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.$component">
         <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
             <vs-responsive
                 class="vs-table-toolbar-start"
                 :grid="{ sm: 12, md: search ? 10 : 12 }"
-                :style="componentStyleSet.toolbar"
+                :style="componentStyleSet.$toolbar"
             >
                 <slot name="toolbar" />
             </vs-responsive>
@@ -13,7 +13,7 @@
                     ref="searchInputRef"
                     v-bind="searchOptions"
                     :color-scheme="computedColorScheme"
-                    :style-set="componentStyleSet.search"
+                    :style-set="componentStyleSet.$search"
                     :disabled="loading"
                     @search="searchRows"
                 />

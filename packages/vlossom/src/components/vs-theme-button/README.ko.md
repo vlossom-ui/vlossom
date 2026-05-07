@@ -28,7 +28,9 @@
 <template>
     <vs-theme-button
         :style-set="{
-            variables: { width: '3rem', height: '3rem', iconColor: '#ff9800' },
+            $width: '3rem',
+            $height: '3rem',
+            $iconColor: '#ff9800',
         }"
     />
 </template>
@@ -62,17 +64,15 @@
 
 ```typescript
 interface VsThemeButtonStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-        iconColor?: string;
-    };
-    button?: VsToggleStyleSet;
+    $width?: string;
+    $height?: string;
+    $iconColor?: string;
+    $button?: VsToggleStyleSet;
 }
 ```
 
 > [!NOTE]
-> `button`은 [`VsToggleStyleSet`](../vs-toggle/README.ko.md)을 사용합니다.
+> `$button`은 [`VsToggleStyleSet`](../vs-toggle/README.ko.md)을 사용합니다.
 
 ### StyleSet 예시
 
@@ -80,11 +80,9 @@ interface VsThemeButtonStyleSet {
 <template>
     <vs-theme-button
         :style-set="{
-            variables: {
-                width: '2.5rem',
-                height: '2.5rem',
-                iconColor: '#ff9800',
-            },
+            $width: '2.5rem',
+            $height: '2.5rem',
+            $iconColor: '#ff9800',
         }"
     />
 </template>

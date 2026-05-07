@@ -1,13 +1,13 @@
 <template>
     <div
         :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
     >
         <vs-button
             v-if="edgeButtons"
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.controlButton"
+            :style-set="componentStyleSet.$controlButton"
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
@@ -22,7 +22,7 @@
         <vs-button
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.controlButton"
+            :style-set="componentStyleSet.$controlButton"
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
@@ -40,7 +40,7 @@
                 :key="page"
                 class="vs-page-button"
                 :color-scheme="computedColorScheme"
-                :style-set="componentStyleSet.pageButton"
+                :style-set="componentStyleSet.$pageButton"
                 :primary="page === selectedIndex + 1"
                 :disabled
                 :ghost
@@ -57,7 +57,7 @@
         <vs-button
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.controlButton"
+            :style-set="componentStyleSet.$controlButton"
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
@@ -73,7 +73,7 @@
             v-if="edgeButtons"
             class="vs-pagination-control-button"
             :color-scheme="computedColorScheme"
-            :style-set="componentStyleSet.controlButton"
+            :style-set="componentStyleSet.$controlButton"
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
@@ -144,10 +144,8 @@ export default defineComponent({
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
-            controlButton: {
-                variables: {
-                    padding: '0.4rem',
-                },
+            $controlButton: {
+                $padding: '0.4rem',
             },
         }));
 

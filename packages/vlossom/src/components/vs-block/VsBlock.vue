@@ -1,17 +1,17 @@
 <template>
     <vs-responsive
         :class="['vs-block', colorSchemeClass]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
         :grid
         :width
     >
         <vs-inner-scroll>
             <template #header v-if="$slots['title']">
-                <div class="vs-block-title" :style="componentStyleSet.title">
+                <div class="vs-block-title" :style="componentStyleSet.$title">
                     <slot name="title" />
                 </div>
             </template>
-            <div class="vs-block-content" :style="componentStyleSet.content">
+            <div class="vs-block-content" :style="componentStyleSet.$content">
                 <slot />
             </div>
         </vs-inner-scroll>
@@ -47,7 +47,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsBlockStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
+                $component: objectUtil.shake({
                     height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
                 }),
             });

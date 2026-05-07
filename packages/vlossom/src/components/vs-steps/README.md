@@ -77,15 +77,13 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 ```typescript
 interface VsStepsStyleSet {
-    variables?: {
-        stepSize?: string;
-    };
-    step?: CSSProperties;
-    activeStep?: CSSProperties;
-    label?: CSSProperties;
-    activeLabel?: CSSProperties;
-    progress?: CSSProperties;
-    activeProgress?: CSSProperties;
+    $stepSize?: string;
+    $step?: CSSProperties;
+    $activeStep?: CSSProperties;
+    $label?: CSSProperties;
+    $activeLabel?: CSSProperties;
+    $progress?: CSSProperties;
+    $activeProgress?: CSSProperties;
 }
 ```
 
@@ -97,11 +95,11 @@ interface VsStepsStyleSet {
         v-model="currentStep"
         :steps="steps"
         :style-set="{
-            variables: { stepSize: '2rem' },
-            step: { border: '2px solid #d1d5db' },
-            activeStep: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
-            progress: { backgroundColor: '#a5b4fc' },
-            activeProgress: { backgroundColor: '#6366f1' },
+            $stepSize: '2rem',
+            $step: { border: '2px solid #d1d5db' },
+            $activeStep: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
+            $progress: { backgroundColor: '#a5b4fc' },
+            $activeProgress: { backgroundColor: '#6366f1' },
         }"
     />
 </template>

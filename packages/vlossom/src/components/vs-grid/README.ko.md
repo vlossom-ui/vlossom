@@ -64,10 +64,8 @@
 
 ```typescript
 interface VsGridStyleSet {
-    component?: CSSProperties;
-    variables?: {
-        gridSize?: number;
-    };
+    $component?: CSSProperties;
+    $gridSize?: number;
 }
 ```
 
@@ -77,8 +75,8 @@ interface VsGridStyleSet {
 <template>
     <vs-grid
         :style-set="{
-            variables: { gridSize: 6 },
-            component: { backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px' },
+            $gridSize: 6,
+            $component: { backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px' },
         }"
     >
         <div>항목 1</div>

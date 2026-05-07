@@ -21,10 +21,8 @@ const meta: Meta<typeof VsSteps> = {
         components: { VsSteps },
         setup() {
             const preDefinedStyleSet: VsStepsStyleSet = {
-                variables: {
-                    stepSize: '2.5rem',
-                },
-                step: {
+                $stepSize: '2.5rem',
+                $step: {
                     backgroundColor: '#f5f5f5',
                     border: '1px solid #e0e0e0',
                     borderRadius: '50%',
@@ -32,14 +30,14 @@ const meta: Meta<typeof VsSteps> = {
                     width: '2.5rem',
                     height: '2.5rem',
                 },
-                activeStep: {
+                $activeStep: {
                     backgroundColor: '#1e88e5',
                     border: '2px solid #1565c0',
                 },
-                label: {
+                $label: {
                     color: '#666',
                 },
-                activeLabel: {
+                $activeLabel: {
                     color: '#1e88e5',
                     fontWeight: '700',
                 },
@@ -483,34 +481,32 @@ export const StyleSet: Story = {
     args: {
         steps: ['Custom 1', 'Custom 2', 'Custom 3'],
         styleSet: {
-            variables: {
-                stepSize: '3rem',
-            },
-            step: {
+            $stepSize: '3rem',
+            $step: {
                 backgroundColor: '#f0f0f0',
                 border: '2px dashed #999',
                 borderRadius: '8px',
                 width: '3rem',
                 height: '3rem',
             },
-            activeStep: {
+            $activeStep: {
                 backgroundColor: '#e91e63',
                 border: '3px solid #c2185b',
                 borderRadius: '50%',
             },
-            label: {
+            $label: {
                 fontSize: '0.875rem',
                 color: '#999',
             },
-            activeLabel: {
+            $activeLabel: {
                 fontSize: '1rem',
                 color: '#e91e63',
                 fontWeight: 'bold',
             },
-            progress: {
+            $progress: {
                 backgroundColor: '#e0e0e0',
             },
-            activeProgress: {
+            $activeProgress: {
                 backgroundColor: '#e91e63',
             },
         },

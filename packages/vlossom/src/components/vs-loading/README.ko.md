@@ -9,8 +9,8 @@
 ## Feature
 
 - 순차적인 웨이브 효과를 적용한 5개의 애니메이션 바를 표시합니다.
-- `variables.color` 스타일 속성으로 색상을 커스터마이징할 수 있습니다.
-- `variables.barWidth` 스타일 속성으로 바 너비를 커스터마이징할 수 있습니다.
+- `$color` 스타일 속성으로 색상을 커스터마이징할 수 있습니다.
+- `$barWidth` 스타일 속성으로 바 너비를 커스터마이징할 수 있습니다.
 - 크기 조정을 위한 `width` 및 `height` props를 지원합니다.
 - 일관된 테마를 위한 색상 스킴을 지원합니다.
 
@@ -51,11 +51,9 @@
 
 ```typescript
 interface VsLoadingStyleSet {
-    variables?: {
-        barWidth?: string;
-        color?: string;
-    };
-    component?: CSSProperties;
+    $barWidth?: string;
+    $color?: string;
+    $component?: CSSProperties;
 }
 ```
 
@@ -65,11 +63,9 @@ interface VsLoadingStyleSet {
 <template>
     <vs-loading
         :style-set="{
-            variables: {
-                color: '#ff6b6b',
-                barWidth: '15%',
-            },
-            component: { width: '6rem', height: '8rem' },
+            $color: '#ff6b6b',
+            $barWidth: '15%',
+            $component: { width: '6rem', height: '8rem' },
         }"
     />
 </template>

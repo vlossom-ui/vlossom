@@ -18,10 +18,8 @@ const meta: Meta<typeof VsChip> = {
         components: { VsChip },
         setup() {
             const preDefinedStyleSet: VsChipStyleSet = {
-                variables: {
-                    height: '2rem',
-                },
-                component: {
+                $height: '2rem',
+                $component: {
                     backgroundColor: '#e3f2fd',
                     border: '1px solid #2196f3',
                     borderRadius: '16px',
@@ -202,10 +200,8 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            variables: {
-                height: '2.5rem',
-            },
-            component: {
+            $height: '2.5rem',
+            $component: {
                 backgroundColor: '#f3e5f5',
                 border: '2px solid #9c27b0',
                 borderRadius: '20px',

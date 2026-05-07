@@ -71,17 +71,15 @@
 
 ```typescript
 interface VsImageStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
-    skeleton?: VsSkeletonStyleSet;
-    component?: CSSProperties;
+    $width?: string;
+    $height?: string;
+    $skeleton?: VsSkeletonStyleSet;
+    $component?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `skeleton`은 `VsSkeletonStyleSet`을 사용합니다. 자세한 내용은 [VsSkeleton README](../vs-skeleton/README.md)를 참고하세요.
+> `$skeleton`은 `VsSkeletonStyleSet`을 사용합니다. 자세한 내용은 [VsSkeleton README](../vs-skeleton/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -91,9 +89,10 @@ interface VsImageStyleSet {
         src="https://example.com/image.png"
         alt="스타일 적용 이미지"
         :style-set="{
-            variables: { width: '200px', height: '200px' },
-            component: { borderRadius: '8px', objectFit: 'cover' },
-            skeleton: { component: { borderRadius: '8px' } },
+            $width: '200px',
+            $height: '200px',
+            $component: { borderRadius: '8px', objectFit: 'cover' },
+            $skeleton: { $component: { borderRadius: '8px' } },
         }"
     />
 </template>

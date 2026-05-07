@@ -76,11 +76,9 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 
 ```typescript
 interface VsButtonStyleSet {
-    variables?: {
-        padding?: string;
-    };
-    component?: CSSProperties;
-    loading?: VsLoadingStyleSet;
+    $padding?: string;
+    $component?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }
 ```
 
@@ -91,8 +89,8 @@ interface VsButtonStyleSet {
     <vs-toggle
         v-model="isActive"
         :style-set="{
-            component: { borderRadius: '0.25rem', minWidth: '6rem' },
-            variables: { padding: '0.5rem 1.5rem' },
+            $component: { borderRadius: '0.25rem', minWidth: '6rem' },
+            $padding: '0.5rem 1.5rem',
         }"
     >
         Toggle

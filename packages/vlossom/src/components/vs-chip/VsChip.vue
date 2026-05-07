@@ -1,9 +1,9 @@
 <template>
     <div
         :class="['vs-chip', 'vs-inline-gap', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
     >
-        <span v-if="!!$slots.icon" class="vs-chip-icon" :style="componentStyleSet.icon">
+        <span v-if="!!$slots.icon" class="vs-chip-icon" :style="componentStyleSet.$icon">
             <slot name="icon" />
         </span>
 
@@ -17,7 +17,7 @@
             class="vs-chip-icon vs-chip-close-button"
             aria-label="close"
             tabindex="-1"
-            :style="componentStyleSet.closeButton"
+            :style="componentStyleSet.$closeButton"
             @click.prevent.stop="$emit('close')"
         >
             <vs-render :content="closeIcon" />

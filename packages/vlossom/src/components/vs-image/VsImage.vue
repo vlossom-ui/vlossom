@@ -1,6 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.skeleton">
+        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.$skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
@@ -9,7 +9,7 @@
             :alt="alt"
             @load.stop="onImageLoad"
             @error.stop="onImageError"
-            :style="{ ...componentStyleSet.component }"
+            :style="{ ...componentStyleSet.$component }"
         />
     </div>
 </template>

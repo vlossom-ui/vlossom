@@ -79,7 +79,7 @@ interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
 interface VsBarStyleSet {
-    component?: CSSProperties;
+    $component?: CSSProperties;
 }
 ```
 
@@ -92,7 +92,7 @@ interface VsBarStyleSet {
 <template>
     <vs-header
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#2c3e50',
                 color: '#ffffff',
                 padding: '0 2rem',

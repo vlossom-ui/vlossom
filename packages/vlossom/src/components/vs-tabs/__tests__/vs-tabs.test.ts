@@ -78,7 +78,7 @@ describe('VsTabs', () => {
             });
 
             // then
-            const style = wrapper.vm.styleSetVariables;
+            const style = wrapper.vm.rootStyle;
             expect(style['--vs-tabs-height']).toBe('60px');
         });
 
@@ -92,7 +92,7 @@ describe('VsTabs', () => {
             });
 
             // then
-            const style = wrapper.vm.styleSetVariables;
+            const style = wrapper.vm.rootStyle;
             expect(style['--vs-tabs-height']).toBe('80px');
         });
 
@@ -105,7 +105,7 @@ describe('VsTabs', () => {
             });
 
             // then
-            const style = wrapper.vm.styleSetVariables;
+            const style = wrapper.vm.rootStyle;
             expect(style['--vs-tabs-height']).toBeUndefined();
         });
     });

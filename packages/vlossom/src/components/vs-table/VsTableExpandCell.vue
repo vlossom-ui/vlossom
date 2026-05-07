@@ -55,12 +55,12 @@ export default defineComponent({
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
-        const cellStyle = computed(() => tableStyleSet?.value?.cell);
+        const cellStyle = computed(() => tableStyleSet?.value?.$cell);
         const expandButtonStyleSet = computed(() => {
             const size = dense?.value ? '1.4rem' : '1.8rem';
             return {
-                variables: { padding: '0' },
-                component: {
+                $padding: '0',
+                $component: {
                     border: 'none',
                     width: size,
                     height: size,

@@ -1,14 +1,14 @@
 <template>
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
         :width
         :grid
     >
-        <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.label">
+        <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.$label">
             <slot name="label" />
         </div>
-        <div class="vs-cell vs-value" :style="componentStyleSet.value">
+        <div class="vs-cell vs-value" :style="componentStyleSet.$value">
             <slot />
         </div>
     </vs-responsive>

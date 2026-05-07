@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-text-wrap" :style="componentStyleSet.component">
+    <div class="vs-text-wrap" :style="componentStyleSet.$component">
         <div ref="contentsRef" class="vs-text-wrap-contents">
             <slot />
         </div>
@@ -16,7 +16,7 @@
                 <vs-render
                     class="vs-icon-container"
                     :class="{ copied }"
-                    :style="componentStyleSet.copyIcon"
+                    :style="componentStyleSet.$copyIcon"
                     :content="computedCopyIcon"
                 />
             </button>
@@ -28,7 +28,7 @@
                 aria-label="link"
                 @click.prevent.stop="openLink"
             >
-                <vs-render class="vs-icon-container" :style="componentStyleSet.linkIcon" :content="linkIcon" />
+                <vs-render class="vs-icon-container" :style="componentStyleSet.$linkIcon" :content="linkIcon" />
             </button>
         </div>
     </div>
@@ -62,7 +62,7 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsTextWrapStyleSet>> = computed(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
+                $component: objectUtil.shake({
                     width:
                         !width.value || objectUtil.isObject(width.value)
                             ? undefined

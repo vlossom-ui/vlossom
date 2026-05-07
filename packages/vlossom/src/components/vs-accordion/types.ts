@@ -15,13 +15,12 @@ export interface VsAccordionRef extends ComponentPublicInstance<typeof VsAccordi
 }
 
 export interface VsAccordionStyleSet {
-    variables?: {
-        arrowColor?: string;
-        arrowSize?: string;
-        arrowSpacing?: string;
-        border?: string;
-    };
-    component?: CSSProperties;
-    title?: CSSProperties;
-    content?: VsExpandableStyleSet;
+    $accordionBorder?: string;
+    $arrowColor?: string;
+    $arrowSize?: string;
+    $arrowSpacing?: string;
+
+    $component?: CSSProperties;
+    $title?: CSSProperties;
+    $content?: VsExpandableStyleSet;
 }

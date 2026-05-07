@@ -78,18 +78,17 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ```typescript
 interface VsTabsStyleSet {
-    variables?: {
-        gap?: string;
-        divider?: CSSProperties['border'] & {};
-    };
-    tab?: CSSProperties;
-    activeTab?: CSSProperties;
-    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $gap?: string;
+    $height?: string;
+    $divider?: CSSProperties['border'] & {};
+    $tab?: CSSProperties;
+    $activeTab?: CSSProperties;
+    $scrollButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `scrollButton`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`loading` 제외).
+> `$scrollButton`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외).
 
 ### StyleSet 예시
 
@@ -99,9 +98,10 @@ interface VsTabsStyleSet {
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            variables: { gap: '0.5rem', divider: '2px solid #e0e0e0' },
-            tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
-            activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
+            $gap: '0.5rem',
+            $divider: '2px solid #e0e0e0',
+            $tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
+            $activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
         }"
     />
 </template>

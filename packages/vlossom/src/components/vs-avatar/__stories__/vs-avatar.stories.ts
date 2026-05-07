@@ -19,7 +19,7 @@ const meta: Meta<typeof VsAvatar> = {
         components: { VsAvatar },
         setup() {
             const preDefinedStyleSet: VsAvatarStyleSet = {
-                component: {
+                $component: {
                     backgroundColor: '#1e88e5',
                     borderRadius: '50%',
                     color: '#fff',
@@ -116,7 +116,7 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            component: {
+            $component: {
                 borderRadius: '0.6rem',
                 backgroundColor: '#e188e5',
                 color: '#fff',

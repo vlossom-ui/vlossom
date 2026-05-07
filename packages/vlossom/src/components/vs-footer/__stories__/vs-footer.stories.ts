@@ -19,7 +19,7 @@ const meta: Meta<typeof VsFooter> = {
         components: { VsFooter },
         setup() {
             const preDefinedStyleSet: VsFooterStyleSet = {
-                component: {
+                $component: {
                     backgroundColor: '#1976d2',
                     border: '1px solid #1976d2',
                     borderRadius: '0',
@@ -105,7 +105,7 @@ export const ColorScheme: Story = {
         components: { VsFooter },
         setup() {
             const styleSet = {
-                component: {
+                $component: {
                     padding: '0.5rem',
                 },
             };
@@ -145,7 +145,7 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            component: {
+            $component: {
                 backgroundColor: '#e188e5',
                 border: '2px solid #e188e5',
                 borderRadius: '8px',

@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :width
         :grid
         :id="computedId"
@@ -18,7 +18,7 @@
 
         <div
             :class="['vs-switch', colorSchemeClass, classObj]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
         >
             <label class="vs-switch-wrap" :for="computedId">
                 <input
@@ -227,8 +227,8 @@ export default defineComponent({
 
         function getSwitchButtonStyle(): CSSProperties {
             return {
-                ...componentStyleSet.value.switchButton,
-                ...(isChecked.value ? componentStyleSet.value.activeSwitchButton : {}),
+                ...componentStyleSet.value.$switchButton,
+                ...(isChecked.value ? componentStyleSet.value.$activeSwitchButton : {}),
             };
         }
 

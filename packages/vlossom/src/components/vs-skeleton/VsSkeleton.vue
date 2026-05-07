@@ -1,7 +1,7 @@
 <template>
-    <div :class="['vs-skeleton', colorSchemeClass]" :style="componentStyleSet.component">
-        <div class="vs-skeleton-bg" :style="componentStyleSet.background" />
-        <div class="vs-skeleton-content" :style="componentStyleSet.content">
+    <div :class="['vs-skeleton', colorSchemeClass]" :style="componentStyleSet.$component">
+        <div class="vs-skeleton-bg" :style="componentStyleSet.$background" />
+        <div class="vs-skeleton-content" :style="componentStyleSet.$content">
             <slot />
         </div>
     </div>

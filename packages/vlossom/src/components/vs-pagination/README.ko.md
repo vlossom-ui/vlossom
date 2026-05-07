@@ -62,18 +62,16 @@ const page = ref(0);
 
 ```typescript
 interface VsPaginationStyleSet {
-    variables?: {
-        selectedButtonBackgroundColor?: string;
-        selectedButtonFontColor?: string;
-    };
-    component?: CSSProperties;
-    pageButton?: Omit<VsButtonStyleSet, 'loading'>;
-    controlButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $selectedButtonBackgroundColor?: string;
+    $selectedButtonFontColor?: string;
+    $component?: CSSProperties;
+    $pageButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $controlButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `pageButton`과 `controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)(`loading` 제외)을 사용합니다.
+> `$pageButton`과 `$controlButton`은 [VsButtonStyleSet](../vs-button/README.md#types)(`$loading` 제외)을 사용합니다.
 
 ### StyleSet 사용 예시
 
@@ -83,11 +81,9 @@ interface VsPaginationStyleSet {
         v-model="page"
         :length="10"
         :style-set="{
-            variables: {
-                selectedButtonBackgroundColor: '#4f46e5',
-                selectedButtonFontColor: '#ffffff',
-            },
-            component: { gap: '0.25rem' },
+            $selectedButtonBackgroundColor: '#4f46e5',
+            $selectedButtonFontColor: '#ffffff',
+            $component: { gap: '0.25rem' },
         }"
     />
 </template>

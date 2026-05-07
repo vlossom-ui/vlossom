@@ -4,7 +4,7 @@
         :id="checkLabel ? '' : computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :grid
         :label
         :no-label
@@ -17,13 +17,16 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox', colorSchemeClass, classObj]" :style="styleSetVariables">
+        <div
+            :class="['vs-checkbox', colorSchemeClass, classObj]"
+            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        >
             <label class="vs-checkbox-wrap" :for="computedId">
                 <input
                     ref="checkboxRef"
                     type="checkbox"
                     :class="['vs-checkbox-input', stateBoxClasses]"
-                    :style="componentStyleSet.checkbox"
+                    :style="componentStyleSet.$checkbox"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
                     :value="convertToString(trueValue)"
@@ -37,7 +40,7 @@
                 <div
                     v-if="checkLabel || $slots['check-label']"
                     class="vs-checkbox-label"
-                    :style="componentStyleSet.checkboxLabel"
+                    :style="componentStyleSet.$checkboxLabel"
                 >
                     <slot name="check-label">{{ checkLabel }}</slot>
                 </div>

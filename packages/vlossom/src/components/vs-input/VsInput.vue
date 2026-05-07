@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -18,14 +18,14 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-input', colorSchemeClass, classObj, stateBoxClasses]" :style="componentStyleSet.component">
-            <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.prepend">
+        <div :class="['vs-input', colorSchemeClass, classObj, stateBoxClasses]" :style="componentStyleSet.$component">
+            <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.$prepend">
                 <slot name="prepend" />
             </div>
 
             <input
                 ref="inputRef"
-                :style="componentStyleSet.input"
+                :style="componentStyleSet.$input"
                 :id="computedId"
                 :type
                 :value="inputValue"
@@ -56,7 +56,7 @@
                 </i>
             </button>
 
-            <div v-if="$slots['append']" class="vs-append" :style="componentStyleSet.append">
+            <div v-if="$slots['append']" class="vs-append" :style="componentStyleSet.$append">
                 <slot name="append" />
             </div>
         </div>

@@ -45,10 +45,10 @@
 
 ```typescript
 interface VsPageStyleSet {
-    component?: CSSProperties;
-    title?: CSSProperties;
-    description?: CSSProperties;
-    content?: CSSProperties;
+    $component?: CSSProperties;
+    $title?: CSSProperties;
+    $description?: CSSProperties;
+    $content?: CSSProperties;
 }
 ```
 
@@ -58,10 +58,10 @@ interface VsPageStyleSet {
 <template>
     <vs-page
         :style-set="{
-            component: { backgroundColor: '#f9f9f9', padding: '2rem' },
-            title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
-            description: { color: '#666', fontSize: '0.9rem' },
-            content: { paddingTop: '1rem' },
+            $component: { backgroundColor: '#f9f9f9', padding: '2rem' },
+            $title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
+            $description: { color: '#666', fontSize: '0.9rem' },
+            $content: { paddingTop: '1rem' },
         }"
     >
         <template #title>스타일이 적용된 페이지</template>

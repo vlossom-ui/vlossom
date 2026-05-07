@@ -21,12 +21,12 @@ const meta: Meta<typeof VsToast> = {
         components: { VsToast },
         setup() {
             const preDefinedStyleSet: VsToastStyleSet = {
-                closeButton: {
-                    component: {
+                $closeButton: {
+                    $component: {
                         color: '#fff',
                     },
                 },
-                component: {
+                $component: {
                     borderRadius: '8px',
                     padding: '1rem 1.5rem',
                     height: 'auto',
@@ -168,12 +168,12 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            closeButton: {
-                component: {
+            $closeButton: {
+                $component: {
                     color: '#fff',
                 },
             },
-            component: {
+            $component: {
                 borderRadius: '12px',
                 padding: '1.5rem 2rem',
                 height: 'auto',

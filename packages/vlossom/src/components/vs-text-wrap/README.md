@@ -70,9 +70,9 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ```typescript
 interface VsTextWrapStyleSet {
-    component?: CSSProperties;
-    copyIcon?: CSSProperties;
-    linkIcon?: CSSProperties;
+    $component?: CSSProperties;
+    $copyIcon?: CSSProperties;
+    $linkIcon?: CSSProperties;
 }
 ```
 
@@ -83,9 +83,9 @@ interface VsTextWrapStyleSet {
     <vs-text-wrap
         copy
         :style-set="{
-            component: { backgroundColor: '#f5f5f5', borderRadius: '0.5rem', padding: '1rem' },
-            copyIcon: { color: '#1976d2', fontSize: '1.2rem' },
-            linkIcon: { color: '#4caf50' },
+            $component: { backgroundColor: '#f5f5f5', borderRadius: '0.5rem', padding: '1rem' },
+            $copyIcon: { color: '#1976d2', fontSize: '1.2rem' },
+            $linkIcon: { color: '#4caf50' },
         }"
     >
         <p>Styled content</p>

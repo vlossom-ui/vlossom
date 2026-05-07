@@ -74,7 +74,7 @@ async function askAge() {
 
 ```typescript
 interface VsPromptStyleSet extends VsModalNodeStyleSet {
-    input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
+    input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
     buttonsGap?: string | number;
     buttonsAlign?: Alignment;
     okButton?: Omit<VsButtonStyleSet, 'loading'>;

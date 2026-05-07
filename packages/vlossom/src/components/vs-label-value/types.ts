@@ -12,10 +12,8 @@ export type { VsLabelValue };
 export interface VsLabelValueRef extends ComponentPublicInstance<typeof VsLabelValue> {}
 
 export interface VsLabelValueStyleSet {
-    variables?: {
-        border?: string;
-    };
-    component?: CSSProperties;
-    label?: CSSProperties;
-    value?: CSSProperties;
+    $border?: string;
+    $component?: CSSProperties;
+    $label?: CSSProperties;
+    $value?: CSSProperties;
 }

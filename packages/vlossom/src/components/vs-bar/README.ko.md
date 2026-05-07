@@ -11,7 +11,7 @@
 - `tag` prop을 통해 원하는 HTML 요소로 렌더링 가능 (기본값: `div`)
 - `position` prop을 통해 `absolute`, `fixed`, `sticky` 등 CSS position 값 지원
 - 두드러진 툴바/헤더 스타일링을 위한 Primary 변형
-- `component` CSSProperties를 통한 완전한 스타일 재정의
+- `$component` CSSProperties를 통한 완전한 스타일 재정의
 
 ## Basic Usage
 
@@ -57,7 +57,7 @@
 
 ```typescript
 interface VsBarStyleSet {
-    component?: CSSProperties;
+    $component?: CSSProperties;
 }
 ```
 
@@ -67,7 +67,7 @@ interface VsBarStyleSet {
 <template>
     <vs-bar
         :style-set="{
-            component: {
+            $component: {
                 backgroundColor: '#1a1a2e',
                 color: '#ffffff',
                 padding: '0 1.5rem',

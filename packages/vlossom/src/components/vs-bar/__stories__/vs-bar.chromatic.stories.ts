@@ -29,20 +29,20 @@ export const AllVariations: Story = {
         template: `
             <div class="chromatic-wrapper">
                 <div class="chromatic-section">
-                    <vs-bar :style-set='{ component: { padding: "1rem", margin: "0.5rem 0" } }'>
+                    <vs-bar :style-set='{ $component: { padding: "1rem", margin: "0.5rem 0" } }'>
                         기본 바
                     </vs-bar>
                 </div>
 
                 <div class="chromatic-section">
-                    <vs-bar primary :style-set='{ component: { padding: "1rem", margin: "0.5rem 0" } }'>
+                    <vs-bar primary :style-set='{ $component: { padding: "1rem", margin: "0.5rem 0" } }'>
                         Primary 바
                     </vs-bar>
                 </div>
 
                 <div class="chromatic-section">
                     <vs-bar :style-set='{
-                        component: {
+                        $component: {
                             backgroundColor: "#e3f2fd",
                             border: "2px solid #2196f3",
                             borderRadius: "8px",
@@ -54,7 +54,7 @@ export const AllVariations: Story = {
                     </vs-bar>
 
                     <vs-bar :style-set='{
-                        component: {
+                        $component: {
                             backgroundColor: "#f3e5f5",
                             color: "#7b1fa2",
                             fontWeight: "600",
@@ -70,7 +70,7 @@ export const AllVariations: Story = {
                     <h3>위치 설정 (상대 위치로 시각화)</h3>
                     <div style="position: relative; height: 120px; border: 1px dashed #ccc; margin: 0.5rem 0;">
                         <vs-bar position="absolute" :style-set='{
-                            component: {
+                            $component: {
                                 backgroundColor: "#ffebee",
                                 border: "1px solid #f44336",
                                 top: "10px",
@@ -83,7 +83,7 @@ export const AllVariations: Story = {
                         </vs-bar>
 
                         <vs-bar position="absolute" :style-set='{
-                            component: {
+                            $component: {
                                 backgroundColor: "#e8f5e8",
                                 border: "1px solid #4caf50",
                                 bottom: "10px",

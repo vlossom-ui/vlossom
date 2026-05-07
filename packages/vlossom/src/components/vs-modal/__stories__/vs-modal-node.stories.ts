@@ -21,7 +21,7 @@ const meta: Meta<typeof VsModalNode> = {
         components: { VsModalNode },
         setup() {
             const preDefinedStyleSet: VsModalNodeStyleSet = {
-                component: {
+                $component: {
                     backgroundColor: '#ffffff',
                     border: '1px solid #e0e0e0',
                     borderRadius: '8px',
@@ -236,7 +236,7 @@ export const StyleSet: Story = {
     },
     args: {
         styleSet: {
-            component: {
+            $component: {
                 backgroundColor: '#f8f9fa',
                 border: '2px solid #1e88e5',
                 borderRadius: '12px',

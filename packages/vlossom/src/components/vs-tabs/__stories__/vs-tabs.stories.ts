@@ -21,10 +21,10 @@ const meta: Meta<typeof VsTabs> = {
         components: { VsTabs },
         setup() {
             const preDefinedStyleSet: VsTabsStyleSet = {
-                variables: { gap: '0.5rem' },
-                scrollButton: {
-                    variables: { padding: '0.4rem' },
-                    component: {
+                $gap: '0.5rem',
+                $scrollButton: {
+                    $padding: '0.4rem',
+                    $component: {
                         backgroundColor: '#1565c0',
                         borderRadius: '4px',
                     },
@@ -493,12 +493,13 @@ export const StyleSet: Story = {
         tabs: ['Custom 1', 'Custom 2', 'Custom 3', 'Custom 4', 'Custom 5', 'Custom 6', 'Custom 7', 'Custom 8'],
         scrollButtons: 'show',
         styleSet: {
-            variables: { gap: '1rem', divider: '2px solid #b968c7' },
-            tab: { fontWeight: '600' },
-            activeTab: { backgroundColor: '#f0e6f5' },
-            scrollButton: {
-                variables: { padding: '0.4rem' },
-                component: {
+            $gap: '1rem',
+            $divider: '2px solid #b968c7',
+            $tab: { fontWeight: '600' },
+            $activeTab: { backgroundColor: '#f0e6f5' },
+            $scrollButton: {
+                $padding: '0.4rem',
+                $component: {
                     backgroundColor: '#b968c7',
                     borderRadius: '8px',
                 },

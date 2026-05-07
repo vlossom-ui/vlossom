@@ -73,7 +73,7 @@ export default defineComponent({
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
         const showExpand = computed(() => anyExpandable.value && !!slots.expand);
-        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.cell);
+        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.$cell);
         const gridStyle = computed<CSSProperties | undefined>(() => {
             const cols: string[] = [];
             if (draggable?.value) {
@@ -93,8 +93,8 @@ export default defineComponent({
             };
         });
         const headerStyle = computed<CSSProperties | undefined>(() => ({
-            ...tableStyleSet?.value?.row,
-            ...tableStyleSet?.value?.header,
+            ...tableStyleSet?.value?.$row,
+            ...tableStyleSet?.value?.$header,
             ...gridStyle.value,
         }));
 

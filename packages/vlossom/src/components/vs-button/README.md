@@ -90,16 +90,14 @@ async function submit() {
 
 ```typescript
 interface VsButtonStyleSet {
-    variables?: {
-        padding?: string;
-    };
-    component?: CSSProperties;
-    loading?: VsLoadingStyleSet;
+    $padding?: string;
+    $component?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }
 ```
 
 > [!NOTE]
-> `loading` uses `VsLoadingStyleSet`. See the [VsLoading documentation](../vs-loading/README.md) for details.
+> `$loading` uses `VsLoadingStyleSet`. See the [VsLoading documentation](../vs-loading/README.md) for details.
 
 ### StyleSet Example
 
@@ -107,15 +105,13 @@ interface VsButtonStyleSet {
 <template>
     <vs-button
         :style-set="{
-            variables: {
-                padding: '0.5rem 2rem',
-            },
-            component: {
+            $padding: '0.5rem 2rem',
+            $component: {
                 borderRadius: '2rem',
                 fontWeight: 'bold',
             },
-            loading: {
-                component: { width: '25%', height: '50%' },
+            $loading: {
+                $component: { width: '25%', height: '50%' },
             },
         }"
     >

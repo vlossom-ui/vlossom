@@ -17,10 +17,6 @@ export interface VsSearchInputRef extends ComponentPublicInstance<typeof VsSearc
     select: () => void;
 }
 
-export interface VsSearchInputStyleSet {
-    variables?: {
-        height?: string;
-    };
-    input?: VsInputStyleSet;
-    toggle?: VsToggleStyleSet;
+export interface VsSearchInputStyleSet extends VsInputStyleSet {
+    $toggle?: VsToggleStyleSet;
 }

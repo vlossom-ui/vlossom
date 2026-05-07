@@ -47,12 +47,10 @@ export const ColorScheme: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            variables: {
-                width: '3rem',
-                iconColor: '#B95C50',
-            },
-            button: {
-                component: {
+            $width: '3rem',
+            $iconColor: '#B95C50',
+            $button: {
+                $component: {
                     backgroundColor: '#DEB3AD',
                     borderRadius: '1rem',
                 },
