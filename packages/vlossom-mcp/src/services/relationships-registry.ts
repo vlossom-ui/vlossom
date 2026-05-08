@@ -1,0 +1,107 @@
+interface RelationshipEntry {
+    children?: string[];
+    siblings?: string[];
+}
+
+type RelationshipsData = Record<string, RelationshipEntry>;
+
+const RELATIONSHIPS: RelationshipsData = {
+    VsAccordion: { children: ['VsExpandable', 'VsResponsive'], siblings: ['VsBlock', 'VsTabs'] },
+    VsBar: { children: [], siblings: ['VsHeader', 'VsFooter'] },
+    VsBlock: { children: ['VsInnerScroll', 'VsResponsive'], siblings: ['VsAccordion', 'VsPage', 'VsContainer'] },
+    VsButton: { children: ['VsLoading'], siblings: ['VsForm', 'VsInput', 'VsToast', 'VsPagination', 'VsTabs'] },
+    VsCheckbox: { children: ['VsInputWrapper'], siblings: ['VsRadio', 'VsSwitch', 'VsSelect'] },
+    VsChip: { children: [], siblings: ['VsSelect', 'VsFileDrop'] },
+    VsDrawer: { children: ['VsDimmed', 'VsFocusTrap', 'VsInnerScroll'], siblings: ['VsModal', 'VsFloating'] },
+    VsExpandable: { children: [], siblings: ['VsAccordion'] },
+    VsFileDrop: { children: ['VsChip', 'VsInputWrapper'], siblings: ['VsInput', 'VsSelect'] },
+    VsFloating: { children: [], siblings: ['VsTooltip', 'VsSelect', 'VsDrawer'] },
+    VsFooter: { children: ['VsBar'], siblings: ['VsHeader', 'VsLayout'] },
+    VsForm: {
+        children: ['VsGrid', 'VsInput', 'VsSelect', 'VsCheckbox', 'VsRadio', 'VsSwitch', 'VsTextarea'],
+        siblings: ['VsButton'],
+    },
+    VsGrid: { children: [], siblings: ['VsForm', 'VsContainer', 'VsResponsive'] },
+    VsGroupedList: { children: ['VsInnerScroll', 'VsVisibleRender'], siblings: ['VsSelect'] },
+    VsHeader: { children: ['VsBar'], siblings: ['VsFooter', 'VsLayout'] },
+    VsImage: { children: ['VsSkeleton'], siblings: ['VsAvatar'] },
+    VsInnerScroll: { children: [], siblings: ['VsBlock', 'VsDrawer', 'VsGroupedList'] },
+    VsInput: {
+        children: ['VsInputWrapper', 'VsRender'],
+        siblings: ['VsSelect', 'VsTextarea', 'VsSearchInput', 'VsForm'],
+    },
+    VsInputWrapper: {
+        children: ['VsMessage', 'VsResponsive'],
+        siblings: ['VsInput', 'VsSelect', 'VsCheckbox', 'VsRadio', 'VsSwitch', 'VsTextarea'],
+    },
+    VsLayout: { children: ['VsHeader', 'VsFooter', 'VsPage'], siblings: ['VsContainer'] },
+    VsLoading: { children: [], siblings: ['VsButton', 'VsSkeleton'] },
+    VsMessage: { children: [], siblings: ['VsInputWrapper', 'VsToast'] },
+    VsModal: { children: ['VsDimmed', 'VsFocusTrap'], siblings: ['VsDrawer', 'VsToast'] },
+    VsPage: { children: [], siblings: ['VsLayout', 'VsBlock', 'VsContainer'] },
+    VsPagination: { children: ['VsButton'], siblings: ['VsTable', 'VsSelect'] },
+    VsRadio: { children: ['VsInputWrapper'], siblings: ['VsCheckbox', 'VsSwitch'] },
+    VsSearchInput: { children: ['VsInput', 'VsToggle'], siblings: ['VsInput', 'VsTable', 'VsSelect'] },
+    VsSelect: {
+        children: ['VsCheckbox', 'VsChip', 'VsFloating', 'VsGroupedList', 'VsInputWrapper', 'VsSearchInput'],
+        siblings: ['VsInput', 'VsForm', 'VsTable'],
+    },
+    VsSkeleton: { children: [], siblings: ['VsLoading', 'VsImage'] },
+    VsSteps: { children: ['VsResponsive'], siblings: ['VsTabs', 'VsPagination', 'VsIndexView'] },
+    VsSwitch: { children: ['VsInputWrapper'], siblings: ['VsCheckbox', 'VsRadio', 'VsToggle'] },
+    VsTable: {
+        children: [
+            'VsCheckbox',
+            'VsButton',
+            'VsExpandable',
+            'VsPagination',
+            'VsSearchInput',
+            'VsSkeleton',
+            'VsSelect',
+            'VsVisibleRender',
+        ],
+        siblings: ['VsPagination', 'VsForm'],
+    },
+    VsTabs: { children: ['VsButton', 'VsResponsive'], siblings: ['VsAccordion', 'VsSteps', 'VsIndexView'] },
+    VsTextarea: { children: ['VsInputWrapper'], siblings: ['VsInput', 'VsForm'] },
+    VsThemeButton: { children: ['VsToggle'], siblings: ['VsButton'] },
+    VsToast: { children: ['VsButton'], siblings: ['VsModal', 'VsMessage'] },
+    VsToggle: { children: ['VsButton'], siblings: ['VsSwitch', 'VsThemeButton', 'VsCheckbox'] },
+    VsTooltip: { children: ['VsFloating'], siblings: ['VsFloating'] },
+    VsAvatar: { children: [], siblings: ['VsImage'] },
+    VsContainer: { children: [], siblings: ['VsGrid', 'VsLayout', 'VsPage', 'VsBlock'] },
+    VsDimmed: { children: [], siblings: [] },
+    VsDivider: { children: [], siblings: [] },
+    VsFocusTrap: { children: [], siblings: [] },
+    VsIndexView: { children: ['VsResponsive'], siblings: ['VsTabs', 'VsSteps'] },
+    VsLabelValue: { children: ['VsResponsive'], siblings: ['VsInput', 'VsTextarea'] },
+    VsProgress: { children: [], siblings: ['VsLoading', 'VsSkeleton'] },
+    VsRender: { children: [], siblings: [] },
+    VsResponsive: { children: [], siblings: ['VsGrid'] },
+    VsTextWrap: { children: ['VsRender'], siblings: ['VsInput', 'VsTextarea'] },
+    VsVisibleRender: { children: [], siblings: [] },
+};
+
+function kebabToPascalCase(kebab: string): string {
+    return kebab
+        .split('-')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('');
+}
+
+export interface ComponentRelationships {
+    parent: string[];
+    children: string[];
+    siblings: string[];
+}
+
+export function getRelationships(name: string): ComponentRelationships {
+    const normalized = name.includes('-') ? kebabToPascalCase(name) : name;
+    const entry = RELATIONSHIPS[normalized];
+    const children = entry?.children ?? [];
+    const siblings = entry?.siblings ?? [];
+    const parent = Object.entries(RELATIONSHIPS)
+        .filter(([, rel]) => rel.children?.includes(normalized))
+        .map(([key]) => key);
+    return { parent, children, siblings };
+}

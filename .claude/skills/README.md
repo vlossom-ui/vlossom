@@ -4,7 +4,32 @@
 
 ## 📚 사용 가능한 Skills
 
-### 0. `/doc-amend` - 문서 보강 및 커밋 amend
+### 0. `/vlossom` - Vlossom MCP 도구 활용
+
+**목적**: vlossom-mcp MCP 서버를 통해 컴포넌트 조회 및 GitHub 이슈 등록
+
+**사용 시기**:
+
+- Vlossom 컴포넌트 목록/설명 조회
+- 버그 리포트, 기능 요청, 질문 이슈 등록
+
+**예제**:
+
+```
+/vlossom
+→ "VsSelect에서 v-model이 동작 안 해요" — 버그 이슈 등록
+→ "드롭다운 컴포넌트 있나요?" — 컴포넌트 목록 조회
+```
+
+**제공하는 것**:
+
+- 📋 컴포넌트 전체 목록 조회 (`list_components`)
+- 📝 이슈 초안 생성 (`DraftIssue`)
+- 🚀 GitHub 이슈 실제 등록 (`ReportIssue`)
+
+---
+
+### 1. `/doc-amend` - 문서 보강 및 커밋 amend
 
 **목적**: 작업 완료 후 커밋별로 누락된 문서(테스트, README, stories 등)를 작성하고 해당 커밋에 amend
 

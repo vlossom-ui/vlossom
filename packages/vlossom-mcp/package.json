@@ -1,0 +1,61 @@
+{
+    "name": "vlossom-mcp",
+    "version": "0.13.1",
+    "description": "MCP server for Vlossom UI component library",
+    "type": "commonjs",
+    "bin": {
+        "vlossom-mcp": "dist/index.js"
+    },
+    "main": "./dist/index.js",
+    "scripts": {
+        "clean": "tsx scripts/clean-dist.ts",
+        "build": "npm run clean && tsc",
+        "dev": "tsc --watch",
+        "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\" \"test/**/*.ts\" \"*.md\" \"skill/**/*.md\" \"package.json\" \"tsconfig*.json\" \".prettierrc.json\"",
+        "test": "npm run build && tsc -p tsconfig.scripts.json && node --import tsx --test --experimental-test-isolation=none test/*.test.ts",
+        "verify": "npm test",
+        "start": "node dist/index.js",
+        "prepublishOnly": "npm run verify",
+        "release:patch": "npm version patch --no-git-tag-version && pnpm publish",
+        "release:minor": "npm version minor --no-git-tag-version && pnpm publish",
+        "release:major": "npm version major --no-git-tag-version && pnpm publish"
+    },
+    "files": [
+        "dist",
+        "skill",
+        "README.ko.md",
+        "PHILOSOPHY.md",
+        "ARCHITECTURE.md",
+        "FEATURES.md"
+    ],
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.12.1",
+        "zod": "^3.24.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "prettier": "3.5.3",
+        "prettier-plugin-classnames": "^0.8.2",
+        "prettier-plugin-css-order": "^2.1.0",
+        "prettier-plugin-merge": "^0.8.0",
+        "prettier-plugin-tailwindcss": "^0.6.14",
+        "tsx": "^4.21.0",
+        "typescript": "~5.8.3"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vlossom-ui/vlossom.git",
+        "directory": "packages/vlossom-mcp"
+    },
+    "license": "MIT",
+    "keywords": [
+        "mcp",
+        "vlossom",
+        "vue",
+        "ui-components",
+        "claude"
+    ]
+}

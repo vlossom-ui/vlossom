@@ -2,3 +2,6 @@
 **/.claude/*.local.md
 **/.claude/*.local.json
 **/.claude/settings.local.json
+
+# vlossom-mcp
+**/vlossom-mcp/.env
