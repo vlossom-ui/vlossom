@@ -192,6 +192,7 @@ interface VsTablePaginationOptions {
 | 이벤트                 | 페이로드                                      | 설명                             |
 | ---------------------- | --------------------------------------------- | -------------------------------- |
 | `click-cell`           | `(cell: VsTableBodyCell, event: MouseEvent)`  | 셀 클릭 시 발생                  |
+| `click-row`            | `(item: VsTableItem, index: number, event: MouseEvent)` | 바디 행 클릭 시 발생             |
 | `select-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 선택 시 발생                  |
 | `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 확장 시 발생                  |
 | `drag`                 | `SortableEvent`                               | 드래그 앤 드롭 재정렬 후 발생    |
