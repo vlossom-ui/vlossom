@@ -245,46 +245,46 @@ describe('VsTabs', () => {
             expect(tabItems[3].classes()).toContain('vs-disabled');
         });
 
-        it('scrollButtons prop이 show이면 스크롤 버튼이 렌더링되어야 한다', () => {
+        it('controls prop이 show이면 컨트롤 버튼이 렌더링되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    scrollButtons: 'show',
+                    controls: 'show',
                 },
             });
 
             // then
-            const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
-            expect(scrollButtons).toHaveLength(2);
+            const controls = wrapper.findAll('.vs-tab-control');
+            expect(controls).toHaveLength(2);
         });
 
-        it('scrollButtons prop이 hide이면 스크롤 버튼이 렌더링되지 않아야 한다', () => {
+        it('controls prop이 hide이면 컨트롤 버튼이 렌더링되지 않아야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    scrollButtons: 'hide',
+                    controls: 'hide',
                 },
             });
 
             // then
-            const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
-            expect(scrollButtons).toHaveLength(0);
+            const controls = wrapper.findAll('.vs-tab-control');
+            expect(controls).toHaveLength(0);
         });
 
-        it('scrollButtons prop이 auto이면 필요시에만 스크롤 버튼이 렌더링되어야 한다', () => {
+        it('controls prop이 auto이면 필요시에만 컨트롤 버튼이 렌더링되어야 한다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    scrollButtons: 'auto',
+                    controls: 'auto',
                 },
             });
 
             // then
-            const scrollButtons = wrapper.findAll('.vs-tab-scroll-button');
-            expect([0, 2]).toContain(scrollButtons.length);
+            const controls = wrapper.findAll('.vs-tab-control');
+            expect([0, 2]).toContain(controls.length);
         });
     });
 

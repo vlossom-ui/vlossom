@@ -20,5 +20,5 @@ export interface VsTabsStyleSet {
     $divider?: CSSProperties['border'] & {};
     $tab?: CSSProperties;
     $activeTab?: CSSProperties;
-    $scrollButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $control?: Omit<VsButtonStyleSet, '$loading'>;
 }

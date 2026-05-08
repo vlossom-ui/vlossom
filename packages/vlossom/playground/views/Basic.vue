@@ -193,15 +193,15 @@
                 <vs-tabs v-model="selectedTabVertical" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" vertical width="120px" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (auto)</h4>
-                <vs-tabs v-model="selectedTabScrollAuto" :tabs="scrollTabs" width="100%" />
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Controls (auto)</h4>
+                <vs-tabs v-model="selectedTabControlsAuto" :tabs="scrollTabs" width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (show)</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Controls (show)</h4>
                 <vs-tabs
-                    v-model="selectedTabScrollShow"
+                    v-model="selectedTabControlsShow"
                     :tabs="['Tab 1', 'Tab 2', 'Tab 3']"
-                    scroll-buttons="show"
+                    controls="show"
                     width="100%"
                 />
             </vs-responsive>
@@ -268,8 +268,8 @@ export default defineComponent({
         const selectedTabPrimary = ref(0);
         const selectedTabDense = ref(0);
         const selectedTabVertical = ref(0);
-        const selectedTabScrollAuto = ref(0);
-        const selectedTabScrollShow = ref(0);
+        const selectedTabControlsAuto = ref(0);
+        const selectedTabControlsShow = ref(0);
         const scrollTabs = ['Overview', 'Features', 'Pricing', 'Documentation', 'Support', 'Blog', 'Contact'];
 
         const toggleValue = ref(false);
@@ -286,8 +286,8 @@ export default defineComponent({
             selectedTabPrimary,
             selectedTabDense,
             selectedTabVertical,
-            selectedTabScrollAuto,
-            selectedTabScrollShow,
+            selectedTabControlsAuto,
+            selectedTabControlsShow,
             scrollTabs,
             toggleValue,
             onChipClose,

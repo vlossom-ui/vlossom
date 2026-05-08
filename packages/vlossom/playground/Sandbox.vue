@@ -15,9 +15,50 @@
                 <h2 class="text-lg font-semibold">VsTabs — Vertical</h2>
                 <div class="flex items-stretch gap-4" style="height: 240px">
                     <vs-tabs v-model="verticalTab" :tabs="tabs" vertical />
-                    <div class="flex flex-1 items-center justify-center rounded border border-gray-300 p-4 text-sm dark:border-gray-600">
+                    <div
+                        class="flex flex-1 items-center justify-center rounded border border-gray-300 p-4 text-sm
+                            dark:border-gray-600"
+                    >
                         Selected: {{ tabs[verticalTab] }} (index {{ verticalTab }})
                     </div>
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-3">
+                <h2 class="text-lg font-semibold">VsTabs — Horizontal</h2>
+                <vs-tabs v-model="horizontalTab" :tabs="tabs" controls="show" />
+                <div class="rounded border border-gray-300 p-4 text-sm dark:border-gray-600">
+                    Selected: {{ tabs[horizontalTab] }} (index {{ horizontalTab }})
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-3">
+                <h2 class="text-lg font-semibold">VsTabs — Vertical</h2>
+                <vs-tabs v-model="verticalTab" :tabs="tabs" vertical controls="show" />
+                <div
+                    class="flex flex-1 items-center justify-center rounded border border-gray-300 p-4 text-sm
+                        dark:border-gray-600"
+                >
+                    Selected: {{ tabs[verticalTab] }} (index {{ verticalTab }})
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-3">
+                <h2 class="text-lg font-semibold">VsTabs — Horizontal</h2>
+                <vs-tabs v-model="horizontalTab" :tabs="tabs" controls="show" dense />
+                <div class="rounded border border-gray-300 p-4 text-sm dark:border-gray-600">
+                    Selected: {{ tabs[horizontalTab] }} (index {{ horizontalTab }})
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-3">
+                <h2 class="text-lg font-semibold">VsTabs — Vertical</h2>
+                <vs-tabs v-model="verticalTab" :tabs="tabs" vertical controls="show" dense />
+                <div
+                    class="flex flex-1 items-center justify-center rounded border border-gray-300 p-4 text-sm
+                        dark:border-gray-600"
+                >
+                    Selected: {{ tabs[verticalTab] }} (index {{ verticalTab }})
                 </div>
             </section>
         </div>

@@ -2,14 +2,14 @@
 
 # VsTabs
 
-A tab navigation component with animated indicator, scroll buttons, and vertical layout support.
+A tab navigation component with animated indicator, prev/next control buttons, and vertical layout support.
 
 **Available Version**: 2.0.0+
 
 ## Feature
 
 - Animated active tab indicator that tracks the selected tab
-- Automatic or manual scroll buttons for overflow tab lists
+- Automatic or manual control buttons for navigating overflow tab lists
 - Vertical tab layout support
 - Keyboard navigation between tabs
 - Dense and primary visual variants
@@ -69,7 +69,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 | `height` | `string \| number` | `'auto'` | | Height of the tab bar |
 | `modelValue` | `number` | `0` | | Index of the active tab, v-model |
 | `primary` | `boolean` | `false` | | Applies primary color styling |
-| `scrollButtons` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | Controls scroll button visibility |
+| `controls` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | Visibility of prev/next control buttons |
 | `tabs` | `string[]` | `[]` | | Tab labels |
 | `vertical` | `boolean` | `false` | | Renders tabs vertically |
 | `width` | `string \| number \| Breakpoints` | | | Component width |
@@ -83,12 +83,12 @@ interface VsTabsStyleSet {
     $divider?: CSSProperties['border'] & {};
     $tab?: CSSProperties;
     $activeTab?: CSSProperties;
-    $scrollButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$scrollButton` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`).
+> `$control` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`).
 
 ### StyleSet Example
 
