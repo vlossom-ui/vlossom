@@ -129,7 +129,6 @@ node dist/index.js
 
 - [PHILOSOPHY.md](./PHILOSOPHY.md): mission, non-goals, Vlossom-first harness policy, validation policy, side-effect policy를 설명합니다.
 - [ARCHITECTURE.md](./ARCHITECTURE.md): 현재 구현 surface와 internal module을 설명합니다.
-- [FEATURES.md](./FEATURES.md): active feature를 한 문장 단위로 요약합니다.
 - [DECISIONS.md](./DECISIONS.md): chronological decision log이며 historical tool name이 등장할 수 있습니다.
 
 ## 요구사항

@@ -34,7 +34,6 @@ When changing behavior, update only the documents that directly own that behavio
 - User-facing install or usage: `README.md` and `README.ko.md`
 - Runtime/module map: `ARCHITECTURE.md`
 - Mission or policy: `PHILOSOPHY.md`
-- Feature inventory: `FEATURES.md`
 - Historical rationale: `DECISIONS.md`
 - Agent editing rules: this file and `CLAUDE.ko.md`
 

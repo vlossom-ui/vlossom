@@ -1,7 +1,33 @@
 # Vlossom MCP — 스펙 결정 기록
 
 > feat/mcp 브랜치 Claude Code 세션에서 검토한 옵션과 그 결정 근거를 기록합니다.
-> 이 파일은 chronological decision log입니다. 과거 항목에는 legacy tool 이름이 남아 있을 수 있으며, 현재 public contract는 최근 결정과 `README.md` / `PHILOSOPHY.md` / `ARCHITECTURE.md` / `FEATURES.md`를 기준으로 합니다.
+> 이 파일은 chronological decision log입니다. 과거 항목에는 legacy tool 이름이 남아 있을 수 있으며, 현재 public contract는 최근 결정과 `README.md` / `PHILOSOPHY.md` / `ARCHITECTURE.md`를 기준으로 합니다.
+
+---
+
+## 결정 77: `skill/SKILL.md`와 `FEATURES.md` 제거
+
+**날짜**: 2026-05-08
+
+**배경**: 결정 25(skill/SKILL.md npm 번들링)와 결정 64(FEATURES.md 분리)는 server INSTRUCTIONS 자동 주입과 README/PHILOSOPHY/ARCHITECTURE 역할 분리가 굳어지기 전 시점의 결정. 현재 시점에서는 두 파일 모두 동일 정보를 권위 있는 문서가 이미 owner로 다루고 있어 잉여가 됨.
+
+- `skill/SKILL.md`: MCP server INSTRUCTIONS가 워크플로 가이드를 자동 주입하므로, 사용자가 수동 복사해야 의미가 생기는 별도 skill 파일은 보조 수단에 머무름. README/ARCHITECTURE와도 내용이 겹침.
+- `FEATURES.md`: core contract는 README, policy/enforcement는 PHILOSOPHY, internal module map은 ARCHITECTURE가 owner. 한 문장 브리프 형태로 동일 내용을 다시 두는 가치가 약함.
+
+**변경 내용**:
+
+- `packages/vlossom-mcp/skill/SKILL.md`와 `packages/vlossom-mcp/skill/` 디렉토리 제거
+- `packages/vlossom-mcp/FEATURES.md` 제거
+- `package.json` `files`에서 `"skill"`, `"FEATURES.md"` 제거, `format` 스크립트에서 `"skill/**/*.md"` 제거
+- `test/docs-consistency.test.ts`에서 `docs.skill`, `docs.features`, 관련 contract docs 항목 제거
+- `CLAUDE.md` / `CLAUDE.ko.md`의 문서 분담 표에서 FEATURES.md 항목 제거
+- `README.md` / `README.ko.md`의 Document Map에서 FEATURES.md 링크 제거
+- `DECISIONS.md` 머리말에서 FEATURES.md 참조 제거
+- 같은 정리 흐름에서 repo root의 stale `.claude/skills/vlossom/SKILL.md`(legacy tool 이름 사용)와 `.mcp.json`(외부 소비자가 자기 환경에 등록할 항목)도 제거
+
+**결정**: 결정 25와 결정 64를 폐기한다. 공식 contract 문서는 README, PHILOSOPHY, ARCHITECTURE, DECISIONS 4종으로 좁히고, agent 규칙은 `CLAUDE.md` / `CLAUDE.ko.md`가 담당한다.
+
+**근거**: deletion-first 원칙. INSTRUCTIONS 자동 주입과 README/PHILOSOPHY/ARCHITECTURE 분리가 이미 동일 정보를 권위 있는 위치에 두고 있으므로, 추가 사본은 stale 위험만 키운다.
 
 ---
 

@@ -34,10 +34,8 @@ const docs = {
     readmeKo: readDoc('README.ko.md'),
     philosophy: readDoc('PHILOSOPHY.md'),
     architecture: readDoc('ARCHITECTURE.md'),
-    features: readDoc('FEATURES.md'),
     claude: readDoc('CLAUDE.md'),
     claudeKo: readDoc('CLAUDE.ko.md'),
-    skill: readDoc('skill/SKILL.md'),
     decisions: readDoc('DECISIONS.md'),
 };
 
@@ -45,7 +43,7 @@ const packageJson = JSON.parse(readDoc('package.json'));
 
 const coreTools = ['search_vlossom', 'get_vlossom_reference', 'scaffold_vlossom_code', 'validate_vlossom_usage'];
 
-const contractDocs = ['readme', 'readmeKo', 'philosophy', 'architecture', 'features', 'skill'];
+const contractDocs = ['readme', 'readmeKo', 'philosophy', 'architecture'];
 const agentDocs = ['claude', 'claudeKo'];
 
 test('contract docs describe the four core tools', () => {
@@ -88,9 +86,7 @@ test('resources are documented outside the minimal README', () => {
     ];
 
     for (const resource of resources) {
-        for (const docKey of ['architecture', 'skill']) {
-            assert.ok(docs[docKey].includes(resource), `${docKey} should mention ${resource}`);
-        }
+        assert.ok(docs.architecture.includes(resource), `architecture should mention ${resource}`);
     }
 
     assert.equal(docs.readme.includes('## Resources And Prompts'), false);
@@ -115,7 +111,7 @@ test('current docs do not document removed core prompts', () => {
 });
 
 test('current docs describe harness-first scope', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture', 'features', 'skill']) {
+    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
         assert.match(
             docs[docKey],
             /harness|하네스|source-of-truth|사실/,
@@ -125,18 +121,18 @@ test('current docs describe harness-first scope', () => {
 });
 
 test('current docs describe default Vlossom-first guard', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture', 'features', 'skill']) {
+    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
         assert.match(docs[docKey], /Vlossom-first|vlossomFirst/, `${docKey} should describe Vlossom-first behavior`);
         assert.match(docs[docKey], /default|기본/, `${docKey} should describe Vlossom-first as the default`);
     }
 });
 
 test('current docs describe installed-version guidance', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture', 'features', 'skill']) {
+    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
         assert.ok(docs[docKey].includes('versionContext'), `${docKey} should mention versionContext`);
     }
 
-    for (const docKey of ['readme', 'readmeKo', 'features', 'claude', 'claudeKo', 'skill']) {
+    for (const docKey of ['readme', 'readmeKo', 'claude', 'claudeKo']) {
         assert.ok(docs[docKey].includes('versionSupport'), `${docKey} should mention versionSupport`);
     }
 });
@@ -248,7 +244,7 @@ test('authored TypeScript uses extensionless relative import paths', () => {
 });
 
 test('published package includes docs linked from README', () => {
-    for (const file of ['README.ko.md', 'PHILOSOPHY.md', 'ARCHITECTURE.md', 'FEATURES.md']) {
+    for (const file of ['README.ko.md', 'PHILOSOPHY.md', 'ARCHITECTURE.md']) {
         assert.ok(packageJson.files.includes(file), `package files should include ${file}`);
     }
 });

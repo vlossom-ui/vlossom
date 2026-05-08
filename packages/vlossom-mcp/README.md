@@ -142,7 +142,6 @@ Local MCP config:
 
 - [PHILOSOPHY.md](./PHILOSOPHY.md) explains the mission, non-goals, Vlossom-first harness policy, validation policy, and side-effect policy.
 - [ARCHITECTURE.md](./ARCHITECTURE.md) maps the current implementation surface and internal modules.
-- [FEATURES.md](./FEATURES.md) gives one-sentence briefs for active features.
 - [DECISIONS.md](./DECISIONS.md) is a chronological decision log and may mention historical tool names.
 
 ## Requirements

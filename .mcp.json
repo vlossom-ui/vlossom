@@ -1,8 +1,0 @@
-{
-    "mcpServers": {
-        "vlossom": {
-            "command": "npx",
-            "args": ["vlossom-mcp"]
-        }
-    }
-}
