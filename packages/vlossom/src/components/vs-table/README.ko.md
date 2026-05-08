@@ -156,7 +156,7 @@ interface VsTableColumnDef<I = VsTableItem> {
     sortable?: boolean;
     sortBy?: VsTableColumnKey<I>;
     skipSearch?: boolean;
-    transform?: (value: unknown, item: I) => unknown;
+    transform?: (value: any, item: I) => unknown;
 }
 
 interface VsTablePaginationOptions {
