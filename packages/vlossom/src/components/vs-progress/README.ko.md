@@ -52,18 +52,13 @@
 
 ```typescript
 interface VsProgressStyleSet {
-    $bar?: {
-        backgroundColor?: string;
-        border?: string;
-        borderRadius?: string;
-    };
-    $value?: {
-        backgroundColor?: string;
-    };
-    $label?: {
-        textShadow?: string;
-        fontColor?: string;
-    };
+    $barBackgroundColor?: string;
+    $barBorder?: string;
+    $barBorderRadius?: string;
+    $valueBackgroundColor?: string;
+    $labelTextShadow?: string;
+    $labelFontColor?: string;
+
     $component?: CSSProperties;
 }
 ```
@@ -77,9 +72,10 @@ interface VsProgressStyleSet {
         :max="100"
         label="60%"
         :style-set="{
-            $bar: { backgroundColor: '#e5e7eb', borderRadius: '0.5rem' },
-            $value: { backgroundColor: '#6366f1' },
-            $label: { fontColor: '#ffffff' },
+            $barBackgroundColor: '#e5e7eb',
+            $barBorderRadius: '0.5rem',
+            $valueBackgroundColor: '#6366f1',
+            $labelFontColor: '#ffffff',
             $component: { height: '1.5rem' },
         }"
     />

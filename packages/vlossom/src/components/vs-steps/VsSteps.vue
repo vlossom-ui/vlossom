@@ -1,54 +1,61 @@
 <template>
-    <vs-responsive :width :grid>
-        <div :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]" :style="rootStyle">
-            <div class="vs-step-line">
-                <div class="vs-step-progress" :style="progressWidth" />
-            </div>
-            <ul role="tablist" :class="['vs-steps-list', { 'vs-steps-no-label': noLabel }]">
-                <li
-                    v-for="(step, index) in steps"
-                    ref="stepRefs"
-                    class="vs-step-item"
-                    :key="step"
-                    :class="[
-                        {
-                            'vs-previous': isPrevious(index),
-                            'vs-disabled': isDisabled(index),
-                            'vs-selected': isSelected(index),
-                        },
-                    ]"
-                    role="tab"
-                    :tabindex="isSelected(index) ? 0 : -1"
-                    @click.prevent.stop="selectStep(index)"
-                    @keydown.stop="(e) => handleKeydown(e, vertical)"
-                >
-                    <div class="vs-step-num" :style="getStepStyleSet(index)">
-                        <slot
-                            name="step"
-                            :step
-                            :index
-                            :is-selected="isSelected(index)"
-                            :is-previous="isPrevious(index)"
-                            :is-disabled="isDisabled(index)"
-                        >
-                            {{ index + 1 }}
-                        </slot>
-                    </div>
-                    <div v-if="!noLabel" class="vs-step-label" :style="getLabelStyleSet(index)">
-                        <slot
-                            name="label"
-                            :step
-                            :index
-                            :is-selected="isSelected(index)"
-                            :is-previous="isPrevious(index)"
-                            :is-disabled="isDisabled(index)"
-                        >
-                            {{ step }}
-                        </slot>
-                    </div>
-                </li>
-            </ul>
+    <vs-responsive
+        :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :width
+        :grid
+    >
+        <div class="vs-step-line">
+            <div class="vs-step-progress" :style="progressStyleSet" />
         </div>
+        <ul
+            role="tablist"
+            :class="['vs-steps-list', { 'vs-steps-no-label': noLabel }]"
+            :style="componentStyleSet.$steps"
+        >
+            <li
+                v-for="(step, index) in steps"
+                ref="stepRefs"
+                class="vs-step-item"
+                :key="step"
+                :class="[
+                    {
+                        'vs-previous': isPrevious(index),
+                        'vs-disabled': isDisabled(index),
+                        'vs-selected': isSelected(index),
+                    },
+                ]"
+                role="tab"
+                :tabindex="isSelected(index) ? 0 : -1"
+                @click.prevent.stop="selectStep(index)"
+                @keydown.stop="(e) => handleKeydown(e, vertical)"
+            >
+                <div class="vs-step-num" :style="getStepStyleSet(index)">
+                    <slot
+                        name="step"
+                        :step
+                        :index
+                        :is-selected="isSelected(index)"
+                        :is-previous="isPrevious(index)"
+                        :is-disabled="isDisabled(index)"
+                    >
+                        {{ index + 1 }}
+                    </slot>
+                </div>
+                <div v-if="!noLabel" class="vs-step-label" :style="getLabelStyleSet(index)">
+                    <slot
+                        name="label"
+                        :step
+                        :index
+                        :is-selected="isSelected(index)"
+                        :is-previous="isPrevious(index)"
+                        :is-disabled="isDisabled(index)"
+                    >
+                        {{ step }}
+                    </slot>
+                </div>
+            </li>
+        </ul>
     </vs-responsive>
 </template>
 
@@ -70,6 +77,7 @@ import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/pro
 import { NOT_SELECTED, VsComponent } from '@/declaration';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
+import { objectUtil, stringUtil } from '@/utils';
 
 const componentName = VsComponent.VsSteps;
 export default defineComponent({
@@ -79,39 +87,45 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsStepsStyleSet>(),
-        height: { type: String },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((step: string, index: number) => boolean)>,
             default: false,
         },
-        gap: { type: [String, Number], default: '' },
+        height: { type: [String, Number] },
         noLabel: { type: Boolean, default: false },
         steps: {
             type: Array as PropType<string[]>,
             default: () => [],
         },
         vertical: { type: Boolean, default: false },
+
         // v-model
         modelValue: { type: Number, default: 0 },
     },
     emits: ['update:modelValue', 'change'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, width, height, disabled, gap, steps, modelValue, vertical } = toRefs(props);
+        const { colorScheme, styleSet, height, disabled, steps, modelValue, vertical } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const gapCount = computed(() => steps.value.length - 1);
+        const baseStyleSet: ComputedRef<VsStepsStyleSet> = computed(() => ({}));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(componentName, styleSet);
+        const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                $component: {
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                },
+            });
+        });
 
-        const rootStyle = computed<Record<string, string | number | undefined>>(() => ({
-            ...styleSetVariables.value,
-            '--vs-steps-height': height.value || undefined,
-            '--vs-steps-width': typeof width.value === 'object' ? undefined : width.value || undefined,
-            '--vs-steps-gap': gap.value || '0',
-            '--vs-steps-gapCount': gapCount.value || undefined,
-        }));
+        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+            additionalStyleSet,
+        );
 
         const stepRefs: Ref<HTMLElement[]> = ref([]);
+        const gapCount = computed(() => steps.value.length - 1);
 
         const {
             selectedIndex,
@@ -123,7 +137,7 @@ export default defineComponent({
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
-        const progressWidth: ComputedRef<CSSProperties> = computed(() => {
+        const progressStyleSet: ComputedRef<CSSProperties> = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
             if (gapCount.value === 0) {
                 return { [dimensionKey]: '0%' };
@@ -171,8 +185,8 @@ export default defineComponent({
             // Style
             colorSchemeClass,
             componentStyleSet,
-            rootStyle,
-            progressWidth,
+            styleSetVariables,
+            progressStyleSet,
             getStepStyleSet,
             getLabelStyleSet,
 

@@ -136,7 +136,7 @@ async function confirmChange(from, to) {
 
 ```typescript
 interface VsRadioStyleSet {
-    $borderRadius?: string;
+    $radioBorderRadius?: string;
     $radioColor?: string;
     $radioSize?: string;
     $wrapper?: VsInputWrapperStyleSet;

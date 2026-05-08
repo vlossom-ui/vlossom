@@ -51,8 +51,8 @@ An animated loading indicator composed of five vertical bars with a wave animati
 
 ```typescript
 interface VsLoadingStyleSet {
+    $barColor?: string;
     $barWidth?: string;
-    $color?: string;
     $component?: CSSProperties;
 }
 ```
@@ -63,7 +63,7 @@ interface VsLoadingStyleSet {
 <template>
     <vs-loading
         :style-set="{
-            $color: '#ff6b6b',
+            $barColor: '#ff6b6b',
             $barWidth: '15%',
             $component: { width: '6rem', height: '8rem' },
         }"

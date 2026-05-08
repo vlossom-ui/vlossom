@@ -50,20 +50,20 @@ const isActive = ref(false);
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsToggleStyleSet` | | | Custom style set for the component |
-| `circle` | `boolean` | `false` | | Renders the button as a circle |
-| `disabled` | `boolean` | `false` | | Disables the toggle |
-| `ghost` | `boolean` | `false` | | Applies ghost (transparent) style |
-| `loading` | `boolean` | `false` | | Shows a loading indicator |
-| `modelValue` | `boolean` | `false` | | v-model for toggled state |
-| `outline` | `boolean` | `false` | | Applies outline style |
-| `primary` | `boolean` | `false` | | Applies primary color style |
-| `responsive` | `boolean` | `false` | | Makes the button responsive |
-| `size` | `Size` | `'md'` | | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type |
+| Prop          | Type                              | Default    | Required | Description                                |
+| ------------- | --------------------------------- | ---------- | -------- | ------------------------------------------ |
+| `colorScheme` | `string`                          |            |          | Color scheme for the component             |
+| `styleSet`    | `string \| VsToggleStyleSet`      |            |          | Custom style set for the component         |
+| `circle`      | `boolean`                         | `false`    |          | Renders the button as a circle             |
+| `disabled`    | `boolean`                         | `false`    |          | Disables the toggle                        |
+| `ghost`       | `boolean`                         | `false`    |          | Applies ghost (transparent) style          |
+| `loading`     | `boolean`                         | `false`    |          | Shows a loading indicator                  |
+| `modelValue`  | `boolean`                         | `false`    |          | v-model for toggled state                  |
+| `outline`     | `boolean`                         | `false`    |          | Applies outline style                      |
+| `primary`     | `boolean`                         | `false`    |          | Applies primary color style                |
+| `responsive`  | `boolean`                         | `false`    |          | Makes the button responsive                |
+| `size`        | `Size`                            | `'md'`     |          | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
+| `type`        | `'button' \| 'submit' \| 'reset'` | `'button'` |          | HTML button type                           |
 
 ## Types
 
@@ -74,14 +74,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 > [!NOTE]
 > `VsToggleStyleSet` extends [`VsButtonStyleSet`](../vs-button/README.md). All `VsButtonStyleSet` properties are available.
 
-```typescript
-interface VsButtonStyleSet {
-    $padding?: string;
-    $component?: CSSProperties;
-    $loading?: VsLoadingStyleSet;
-}
-```
-
 ### StyleSet Example
 
 ```html
@@ -89,8 +81,11 @@ interface VsButtonStyleSet {
     <vs-toggle
         v-model="isActive"
         :style-set="{
-            $component: { borderRadius: '0.25rem', minWidth: '6rem' },
-            $padding: '0.5rem 1.5rem',
+            $component: {
+                borderRadius: '0.25rem',
+                minWidth: '6rem',
+                padding: '0.5rem 1.5rem',
+            },
         }"
     >
         Toggle
@@ -100,19 +95,19 @@ interface VsButtonStyleSet {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `update:modelValue` | `boolean` | Emitted when the toggled state changes |
-| `toggle` | `boolean` | Emitted on every toggle with the new state |
+| Event               | Payload   | Description                                |
+| ------------------- | --------- | ------------------------------------------ |
+| `update:modelValue` | `boolean` | Emitted when the toggled state changes     |
+| `toggle`            | `boolean` | Emitted on every toggle with the new state |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description    |
+| --------- | -------------- |
 | `default` | Button content |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `toggle` | | Programmatically toggles the state |
+| Method   | Parameters | Description                        |
+| -------- | ---------- | ---------------------------------- |
+| `toggle` |            | Programmatically toggles the state |

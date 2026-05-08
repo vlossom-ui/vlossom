@@ -255,9 +255,9 @@ export const StyleSet: Story = {
                 },
             },
             $controlButton: {
-                $padding: '0.6rem',
                 $component: {
                     borderRadius: '8px',
+                    padding: '0.6rem',
                 },
             },
         },

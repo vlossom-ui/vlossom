@@ -239,20 +239,16 @@ export const StyleSet: Story = {
         useRegex: true,
         useCaseSensitive: true,
         styleSet: {
-            $height: '3.5rem',
+            $component: {
+                backgroundColor: '#f0f8ff',
+                border: '2px solid #1e88e5',
+                borderRadius: '12px',
+                height: '3.5rem',
+            },
             $input: {
-                $component: {
-                    color: '#1565c0',
-                    fontSize: '1.1rem',
-                    padding: '0 1.5rem',
-                },
-                $wrapper: {
-                    $component: {
-                        backgroundColor: '#f0f8ff',
-                        border: '2px solid #1e88e5',
-                        borderRadius: '12px',
-                    },
-                },
+                color: '#1565c0',
+                fontSize: '1.1rem',
+                padding: '0 1.5rem',
             },
         },
     },

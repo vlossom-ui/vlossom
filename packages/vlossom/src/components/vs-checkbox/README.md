@@ -143,6 +143,7 @@ interface VsCheckboxStyleSet {
     $checkboxCheckedColor?: string;
     $checkboxColor?: string;
     $checkboxSize?: string;
+    $component?: CSSProperties;
     $checkbox?: CSSProperties;
     $checkboxLabel?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;

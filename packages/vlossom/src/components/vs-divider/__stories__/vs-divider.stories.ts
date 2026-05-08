@@ -68,9 +68,7 @@ export const Vertical: Story = {
 export const VerticalWithMobileFull: Story = {
     args: {
         styleSet: {
-            $vertical: {
-                height: '40px',
-            },
+            $verticalHeight: '40px',
         },
         vertical: true,
         responsive: true,
@@ -97,9 +95,7 @@ export const VerticalWithStyleSet: Story = {
     args: {
         styleSet: {
             $border: '1px dashed red',
-            $vertical: {
-                height: '4rem',
-            },
+            $verticalHeight: '4rem',
         },
         vertical: true,
     },

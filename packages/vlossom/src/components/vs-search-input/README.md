@@ -85,15 +85,13 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 ## Types
 
 ```typescript
-interface VsSearchInputStyleSet {
-    $height?: string;
-    $input?: VsInputStyleSet;
+interface VsSearchInputStyleSet extends VsInputStyleSet {
     $toggle?: VsToggleStyleSet;
 }
 ```
 
 > [!NOTE]
-> `$input` uses [VsInputStyleSet](../vs-input/README.md#types) and `$toggle` uses [VsToggleStyleSet](../vs-toggle/README.md#types).
+> Inherits all properties from [VsInputStyleSet](../vs-input/README.md#types) (`$prepend`, `$append`, `$input`, `$component`, `$wrapper`). `$toggle` uses [VsToggleStyleSet](../vs-toggle/README.md#types).
 
 ### StyleSet Example
 
@@ -102,8 +100,8 @@ interface VsSearchInputStyleSet {
     <vs-search-input
         v-model="query"
         :style-set="{
-            $height: '2.5rem',
-            $input: { $component: { borderRadius: '1rem' } },
+            $component: { borderRadius: '1rem' },
+            $input: { height: '2.5rem' },
         }"
     />
 </template>

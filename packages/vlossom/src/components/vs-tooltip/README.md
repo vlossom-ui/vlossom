@@ -83,7 +83,8 @@ A floating tooltip component that attaches to a target element and supports hove
 interface VsTooltipStyleSet {
     $arrowColor?: string;
     $arrowSize?: string;
-    $component?: CSSProperties;
+
+    $tooltip?: CSSProperties;
 }
 ```
 
@@ -97,7 +98,7 @@ interface VsTooltipStyleSet {
         :style-set="{
             $arrowColor: '#323232',
             $arrowSize: '0.5rem',
-            $component: {
+            $tooltip: {
                 backgroundColor: '#323232',
                 color: '#ffffff',
                 borderRadius: '0.25rem',

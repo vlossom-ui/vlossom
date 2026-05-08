@@ -25,8 +25,8 @@ const meta: Meta<typeof VsButton> = {
                     color: '#fff',
                     height: '3rem',
                     width: 'auto',
+                    padding: '0 1.5rem',
                 },
-                $padding: '0 1.5rem',
             } as const;
 
             useVlossom().styleSet = {
@@ -252,8 +252,8 @@ export const StyleSet: Story = {
                 color: '#fff',
                 width: 'auto',
                 height: '4rem',
+                padding: '0 2rem',
             },
-            $padding: '0 2rem',
         },
     },
 };

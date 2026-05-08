@@ -23,10 +23,10 @@ const meta: Meta<typeof VsTabs> = {
             const preDefinedStyleSet: VsTabsStyleSet = {
                 $gap: '0.5rem',
                 $control: {
-                    $padding: '0.4rem',
                     $component: {
                         backgroundColor: '#1565c0',
                         borderRadius: '4px',
+                        padding: '0.4rem',
                     },
                 },
             } as const;
@@ -498,10 +498,10 @@ export const StyleSet: Story = {
             $tab: { fontWeight: '600' },
             $activeTab: { backgroundColor: '#f0e6f5' },
             $control: {
-                $padding: '0.4rem',
                 $component: {
                     backgroundColor: '#b968c7',
                     borderRadius: '8px',
+                    padding: '0.4rem',
                 },
             },
         },

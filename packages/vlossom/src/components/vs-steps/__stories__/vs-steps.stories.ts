@@ -84,10 +84,6 @@ const meta: Meta<typeof VsSteps> = {
             control: 'text',
             description: '스텝 높이',
         },
-        gap: {
-            control: 'text',
-            description: '스텝 간격',
-        },
         noLabel: {
             control: 'boolean',
             description: '레이블 숨김',

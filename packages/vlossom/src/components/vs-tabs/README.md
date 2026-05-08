@@ -79,8 +79,10 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 ```typescript
 interface VsTabsStyleSet {
     $gap?: string;
-    $height?: string;
     $divider?: CSSProperties['border'] & {};
+
+    $component?: CSSProperties;
+    $tabs?: CSSProperties;
     $tab?: CSSProperties;
     $activeTab?: CSSProperties;
     $control?: Omit<VsButtonStyleSet, '$loading'>;

@@ -61,16 +61,10 @@
 ```typescript
 interface VsDividerStyleSet {
     $border?: string;
-
-    $horizontal?: {
-        width?: string;
-        margin?: string;
-    };
-
-    $vertical?: {
-        height?: string;
-        margin?: string;
-    };
+    $horizontalWidth?: string;
+    $horizontalMargin?: string;
+    $verticalHeight?: string;
+    $verticalMargin?: string;
 
     $component?: CSSProperties;
 }
@@ -83,10 +77,8 @@ interface VsDividerStyleSet {
     <vs-divider
         :style-set="{
             $border: '2px dashed #6200ea',
-            $horizontal: {
-                width: '80%',
-                margin: '1rem auto',
-            },
+            $horizontalWidth: '80%',
+            $horizontalMargin: '1rem auto',
         }"
     />
 </template>

@@ -67,7 +67,6 @@ const steps = ['1단계', '2단계', '3단계', '4단계'];
 | `grid`        | `string \| number \| Breakpoints`                             | -        | -        | 그리드 컬럼 스팬                                        |
 | `height`      | `string`                                                      | -        | -        | 스텝 컨테이너의 높이 (수직 모드에서 사용)               |
 | `disabled`    | `boolean \| ((step: string, index: number) => boolean)`       | `false`  | -        | 단계 비활성화; 불리언 또는 단계별 함수 사용 가능        |
-| `gap`         | `string \| number`                                            | `''`     | -        | 단계 항목 사이의 간격 크기                              |
 | `noLabel`     | `boolean`                                                     | `false`  | -        | 단계 레이블 숨김                                        |
 | `steps`       | `string[]`                                                    | `[]`     | -        | 단계 레이블 문자열 배열                                 |
 | `vertical`    | `boolean`                                                     | `false`  | -        | 단계를 수직으로 표시                                    |
@@ -78,6 +77,9 @@ const steps = ['1단계', '2단계', '3단계', '4단계'];
 ```typescript
 interface VsStepsStyleSet {
     $stepSize?: string;
+
+    $component?: CSSProperties;
+    $steps?: CSSProperties;
     $step?: CSSProperties;
     $activeStep?: CSSProperties;
     $label?: CSSProperties;

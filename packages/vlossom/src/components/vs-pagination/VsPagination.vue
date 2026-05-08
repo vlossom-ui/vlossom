@@ -145,7 +145,9 @@ export default defineComponent({
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
             $controlButton: {
-                $padding: '0.4rem',
+                $component: {
+                    padding: '0.4rem',
+                },
             },
         }));
 

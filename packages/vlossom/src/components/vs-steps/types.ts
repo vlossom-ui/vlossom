@@ -13,6 +13,9 @@ export interface VsStepsRef extends ComponentPublicInstance<typeof VsSteps> {}
 
 export interface VsStepsStyleSet {
     $stepSize?: string;
+
+    $component?: CSSProperties;
+    $steps?: CSSProperties;
     $step?: CSSProperties;
     $activeStep?: CSSProperties;
     $label?: CSSProperties;

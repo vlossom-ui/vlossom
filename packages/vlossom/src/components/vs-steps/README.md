@@ -67,7 +67,6 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 | `grid`        | `string \| number \| Breakpoints`                             | -        | -        | Grid column span                                      |
 | `height`      | `string`                                                      | -        | -        | Height of the steps container (used in vertical mode) |
 | `disabled`    | `boolean \| ((step: string, index: number) => boolean)`       | `false`  | -        | Disables steps; can be a boolean or per-step function |
-| `gap`         | `string \| number`                                            | `''`     | -        | Gap size between step items                           |
 | `noLabel`     | `boolean`                                                     | `false`  | -        | Hides step labels                                     |
 | `steps`       | `string[]`                                                    | `[]`     | -        | Array of step label strings                           |
 | `vertical`    | `boolean`                                                     | `false`  | -        | Displays steps vertically                             |
@@ -78,6 +77,9 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 ```typescript
 interface VsStepsStyleSet {
     $stepSize?: string;
+
+    $component?: CSSProperties;
+    $steps?: CSSProperties;
     $step?: CSSProperties;
     $activeStep?: CSSProperties;
     $label?: CSSProperties;

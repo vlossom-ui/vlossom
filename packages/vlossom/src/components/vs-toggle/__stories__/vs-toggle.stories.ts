@@ -20,11 +20,11 @@ const meta: Meta<typeof VsToggle> = {
         components: { VsToggle },
         setup() {
             const preDefinedStyleSet: VsToggleStyleSet = {
-                $padding: '0 1.5rem',
                 $component: {
                     backgroundColor: '#1e88e5',
                     height: '3rem',
                     width: 'auto',
+                    padding: '0 1.5rem',
                 },
             } as const;
 
