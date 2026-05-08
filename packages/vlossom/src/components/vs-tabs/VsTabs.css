@@ -11,6 +11,18 @@
 
     @apply relative flex w-full items-start gap-2 select-none;
 
+    .vs-tab-control {
+        @apply shrink-0;
+
+        width: 1.6rem;
+        height: var(--vs-comp-height-md);
+        color: var(--vs-cs-font-colored);
+
+        .vs-tab-control-icon {
+            @apply size-5 shrink-0;
+        }
+    }
+
     .vs-tabs-wrap {
         @apply relative flex w-full overflow-auto pb-1;
 
@@ -57,14 +69,6 @@
     }
 
     &.vs-dense {
-        .vs-tab-list {
-            .vs-tab-item {
-                padding: 0 0.8rem;
-                height: var(--vs-comp-height-xs);
-                font-size: var(--vs-font-size-sm);
-            }
-        }
-
         .vs-tab-control {
             height: var(--vs-comp-height-xs);
 
@@ -72,22 +76,28 @@
                 @apply size-4;
             }
         }
-    }
 
-    .vs-tab-control {
-        @apply shrink-0;
-
-        width: 1.6rem;
-        height: var(--vs-comp-height-md);
-        color: var(--vs-cs-font-colored);
-
-        .vs-tab-control-icon {
-            @apply size-5 shrink-0;
+        .vs-tabs-wrap {
+            .vs-tab-list {
+                .vs-tab-item {
+                    padding: 0 0.8rem;
+                    height: var(--vs-comp-height-xs);
+                    font-size: var(--vs-font-size-sm);
+                }
+            }
         }
     }
 
     &.vs-vertical {
         @apply flex-col;
+
+        .vs-tab-control {
+            @apply w-full;
+
+            .vs-tab-control-icon {
+                @apply rotate-90;
+            }
+        }
 
         .vs-tabs-wrap {
             @apply pr-1 pb-0;
@@ -124,31 +134,27 @@
                 }
             }
         }
+    }
 
-        .vs-tab-control {
-            @apply w-full;
+    &.vs-primary {
+        .vs-tabs-wrap {
+            .vs-tab-list {
+                border-bottom-color: var(--tab-border-color);
 
-            .vs-tab-control-icon {
-                @apply rotate-90;
+                .vs-tab-item.vs-selected {
+                    color: var(--vs-cs-font-primary);
+                }
+
+                .vs-tab-indicator {
+                    border-color: var(--vs-cs-bg-primary);
+                    background-color: var(--vs-cs-bg-primary);
+                }
             }
         }
     }
 
-    &.vs-primary {
-        .vs-tab-list {
-            border-bottom-color: var(--tab-border-color);
-
-            .vs-tab-indicator {
-                border-color: var(--vs-cs-bg-primary);
-                background-color: var(--vs-cs-bg-primary);
-            }
-
-            .vs-tab-item.vs-selected {
-                color: var(--vs-cs-font-primary);
-            }
-        }
-
-        &.vs-vertical {
+    &.vs-primary.vs-vertical {
+        .vs-tabs-wrap {
             .vs-tab-list {
                 border-right-color: var(--tab-border-color);
             }
