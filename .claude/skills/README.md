@@ -4,7 +4,7 @@
 
 ## 📚 사용 가능한 Skills
 
-### 1. `/doc-amend` - 문서 보강 및 커밋 amend
+### 0. `/doc-amend` - 문서 보강 및 커밋 amend
 
 **목적**: 작업 완료 후 커밋별로 누락된 문서(테스트, README, stories 등)를 작성하고 해당 커밋에 amend
 
