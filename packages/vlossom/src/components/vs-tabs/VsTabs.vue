@@ -4,7 +4,7 @@
             v-if="showControls"
             class="vs-tab-control"
             :aria-label="vertical ? 'previous tab (up)' : 'previous tab (left)'"
-            :disabled="isFirstEdge"
+            :disabled="isFirstEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
             size="sm"
@@ -45,7 +45,7 @@
             v-if="showControls"
             class="vs-tab-control"
             :aria-label="vertical ? 'next tab (down)' : 'next tab (right)'"
-            :disabled="isLastEdge"
+            :disabled="isLastEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
             size="sm"
@@ -136,6 +136,7 @@ export default defineComponent({
             selectedIndex,
             isSelected,
             isDisabled,
+            isAllDisabled,
             findActiveIndexForwardFrom,
             findActiveIndexBackwardFrom,
             selectIndex: selectTab,
@@ -283,6 +284,7 @@ export default defineComponent({
             // Selection
             isSelected,
             isDisabled,
+            isAllDisabled,
             selectedIndex,
             selectTab,
             isFirstEdge,

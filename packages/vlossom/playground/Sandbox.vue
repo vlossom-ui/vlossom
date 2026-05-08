@@ -13,7 +13,7 @@
 
             <section class="flex flex-col gap-3">
                 <h2 class="text-lg font-semibold">VsTabs — Vertical</h2>
-                <div class="flex items-stretch gap-4" style="height: 240px">
+                <div class="flex items-stretch gap-4">
                     <vs-tabs v-model="verticalTab" :tabs="tabs" vertical />
                     <div
                         class="flex flex-1 items-center justify-center rounded border border-gray-300 p-4 text-sm
@@ -26,7 +26,7 @@
 
             <section class="flex flex-col gap-3">
                 <h2 class="text-lg font-semibold">VsTabs — Horizontal</h2>
-                <vs-tabs v-model="horizontalTab" :tabs="tabs" controls="show" />
+                <vs-tabs v-model="horizontalTab" :tabs="tabs" controls="show" disabled />
                 <div class="rounded border border-gray-300 p-4 text-sm dark:border-gray-600">
                     Selected: {{ tabs[horizontalTab] }} (index {{ horizontalTab }})
                 </div>
