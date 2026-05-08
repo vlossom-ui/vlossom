@@ -18,6 +18,9 @@ export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
 export interface VsTabsStyleSet {
     $gap?: string;
     $divider?: CSSProperties['border'] & {};
+
+    $component?: CSSProperties;
+    $tabs?: CSSProperties;
     $tab?: CSSProperties;
     $activeTab?: CSSProperties;
     $control?: Omit<VsButtonStyleSet, '$loading'>;

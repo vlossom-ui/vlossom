@@ -27,7 +27,7 @@
         @apply relative flex w-full overflow-auto pb-1;
 
         .vs-tab-list {
-            @apply relative m-0 flex flex-1 flex-nowrap items-center;
+            @apply relative m-0 flex flex-1 flex-nowrap items-center gap-1;
 
             border-bottom: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
 

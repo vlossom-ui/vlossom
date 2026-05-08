@@ -1,5 +1,10 @@
 <template>
-    <vs-responsive :class="['vs-tabs', colorSchemeClass, classObj]" :style="{ ...styleSetVariables }" :width :grid>
+    <vs-responsive
+        :class="['vs-tabs', colorSchemeClass, classObj]"
+        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :width
+        :grid
+    >
         <vs-button
             v-if="showControls"
             class="vs-tab-control"
@@ -14,7 +19,7 @@
         </vs-button>
 
         <div ref="tabsRef" class="vs-tabs-wrap">
-            <ul role="tablist" class="vs-tab-list">
+            <ul role="tablist" class="vs-tab-list" :style="componentStyleSet.$tabs">
                 <li
                     v-if="indicatorStyle"
                     class="vs-tab-indicator"
@@ -74,6 +79,7 @@ import {
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { objectUtil, stringUtil } from '@/utils';
 import { vsTabsIcons } from './icons';
 import type { VsTabsStyleSet } from './types';
 
@@ -89,28 +95,31 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTabsStyleSet>(),
+        controls: {
+            type: String as PropType<'hide' | 'show' | 'auto'>,
+            default: 'auto',
+        },
         dense: { type: Boolean, default: false },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((tab: string, index: number) => boolean)>,
             default: false,
         },
+        height: { type: [String, Number] },
         primary: { type: Boolean, default: false },
-        controls: {
-            type: String as PropType<'hide' | 'show' | 'auto'>,
-            default: 'auto',
-        },
         tabs: {
             type: Array as PropType<string[]>,
             default: () => [],
         },
         vertical: { type: Boolean, default: false },
+
         // v-model
         modelValue: { type: Number, default: 0 },
     },
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dense, disabled, primary, controls, tabs, modelValue, vertical } = toRefs(props);
+        const { colorScheme, styleSet, dense, disabled, primary, height, controls, tabs, modelValue, vertical } =
+            toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const tabsRef: Ref<HTMLElement | null> = ref(null);
@@ -126,10 +135,19 @@ export default defineComponent({
             },
         }));
 
+        const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                $component: {
+                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                },
+            });
+        });
+
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
+            additionalStyleSet,
         );
 
         const {
