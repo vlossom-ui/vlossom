@@ -31,11 +31,9 @@ function listPackageFiles(dir = packageRoot) {
 
 const docs = {
     readme: readDoc('README.md'),
-    readmeKo: readDoc('README.ko.md'),
     philosophy: readDoc('PHILOSOPHY.md'),
     architecture: readDoc('ARCHITECTURE.md'),
     claude: readDoc('CLAUDE.md'),
-    claudeKo: readDoc('CLAUDE.ko.md'),
     decisions: readDoc('DECISIONS.md'),
 };
 
@@ -43,8 +41,8 @@ const packageJson = JSON.parse(readDoc('package.json'));
 
 const coreTools = ['search_vlossom', 'get_vlossom_reference', 'scaffold_vlossom_code', 'validate_vlossom_usage'];
 
-const contractDocs = ['readme', 'readmeKo', 'philosophy', 'architecture'];
-const agentDocs = ['claude', 'claudeKo'];
+const contractDocs = ['readme', 'philosophy', 'architecture'];
+const agentDocs = ['claude'];
 
 test('contract docs describe the four core tools', () => {
     for (const docKey of contractDocs) {
@@ -53,10 +51,7 @@ test('contract docs describe the four core tools', () => {
         }
     }
 
-    assert.match(
-        `${docs.philosophy}\n${docs.readme}\n${docs.readmeKo}\n${docs.architecture}`,
-        /four tools|4개 도구|4개 facade/,
-    );
+    assert.match(`${docs.philosophy}\n${docs.readme}\n${docs.architecture}`, /four tools|4개 도구|4개 facade/);
     assert.ok(docs.readme.includes('Search'));
     assert.ok(docs.readme.includes('Reference'));
     assert.ok(docs.readme.includes('Scaffold'));
@@ -90,7 +85,6 @@ test('resources are documented outside the minimal README', () => {
     }
 
     assert.equal(docs.readme.includes('## Resources And Prompts'), false);
-    assert.equal(docs.readmeKo.includes('## Resources와 Prompts'), false);
 });
 
 test('current docs do not document removed core prompts', () => {
@@ -111,7 +105,7 @@ test('current docs do not document removed core prompts', () => {
 });
 
 test('current docs describe harness-first scope', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
+    for (const docKey of ['readme', 'philosophy', 'architecture']) {
         assert.match(
             docs[docKey],
             /harness|하네스|source-of-truth|사실/,
@@ -121,18 +115,18 @@ test('current docs describe harness-first scope', () => {
 });
 
 test('current docs describe default Vlossom-first guard', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
+    for (const docKey of ['readme', 'philosophy', 'architecture']) {
         assert.match(docs[docKey], /Vlossom-first|vlossomFirst/, `${docKey} should describe Vlossom-first behavior`);
         assert.match(docs[docKey], /default|기본/, `${docKey} should describe Vlossom-first as the default`);
     }
 });
 
 test('current docs describe installed-version guidance', () => {
-    for (const docKey of ['readme', 'readmeKo', 'philosophy', 'architecture']) {
+    for (const docKey of ['readme', 'philosophy', 'architecture']) {
         assert.ok(docs[docKey].includes('versionContext'), `${docKey} should mention versionContext`);
     }
 
-    for (const docKey of ['readme', 'readmeKo', 'claude', 'claudeKo']) {
+    for (const docKey of ['readme', 'claude']) {
         assert.ok(docs[docKey].includes('versionSupport'), `${docKey} should mention versionSupport`);
     }
 });
@@ -214,7 +208,6 @@ test('current docs do not present legacy tools as the default contract', () => {
 test('decision log is historical while README keeps current positioning', () => {
     assert.ok(docs.decisions.includes('chronological decision log'));
     assert.ok(docs.readme.includes('not a GitHub issue bot'));
-    assert.ok(docs.readmeKo.includes('GitHub 이슈 봇이 아닙니다'));
 });
 
 test('historical plan files are removed from the current documentation set', () => {
@@ -225,6 +218,13 @@ test('historical plan files are removed from the current documentation set', () 
         assert.equal(docs[docKey].includes('PLAN.md'), false, `${docKey} should not link PLAN.md`);
         assert.equal(docs[docKey].includes('PLAN.ko.md'), false, `${docKey} should not link PLAN.ko.md`);
     }
+});
+
+test('localized doc variants are not part of the current package surface', () => {
+    for (const file of ['README.ko.md', 'CLAUDE.ko.md']) {
+        assert.equal(existsSync(path.join(packageRoot, file)), false, `${file} should be removed`);
+    }
+    assert.equal(packageJson.files.includes('README.ko.md'), false, 'package files should not include README.ko.md');
 });
 
 test('package source, scripts, and tests do not use authored JS files', () => {
@@ -244,7 +244,7 @@ test('authored TypeScript uses extensionless relative import paths', () => {
 });
 
 test('published package includes docs linked from README', () => {
-    for (const file of ['README.ko.md', 'PHILOSOPHY.md', 'ARCHITECTURE.md']) {
+    for (const file of ['PHILOSOPHY.md', 'ARCHITECTURE.md']) {
         assert.ok(packageJson.files.includes(file), `package files should include ${file}`);
     }
 });

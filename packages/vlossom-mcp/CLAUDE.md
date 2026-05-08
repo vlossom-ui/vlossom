@@ -31,11 +31,11 @@ Before relying on a component API, call `get_vlossom_reference`. Before treating
 
 When changing behavior, update only the documents that directly own that behavior:
 
-- User-facing install or usage: `README.md` and `README.ko.md`
+- User-facing install or usage: `README.md`
 - Runtime/module map: `ARCHITECTURE.md`
 - Mission or policy: `PHILOSOPHY.md`
 - Historical rationale: `DECISIONS.md`
-- Agent editing rules: this file and `CLAUDE.ko.md`
+- Agent editing rules: this file
 
 Do not update every document by default. `DECISIONS.md` is historical and may mention removed tools.
 
