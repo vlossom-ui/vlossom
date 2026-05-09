@@ -57,6 +57,7 @@
                     </vs-table-header>
                     <vs-table-body
                         @click-cell="clickCell"
+                        @click-row="clickRow"
                         @select-row="selectRow"
                         @expand-row="expandRow"
                         @drag="dragRow"
@@ -277,6 +278,7 @@ export default defineComponent({
     },
     emits: [
         'click-cell',
+        'click-row',
         'select-row',
         'expand-row',
         'drag',
@@ -356,6 +358,9 @@ export default defineComponent({
         function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', cell, event);
         }
+        function clickRow(item: VsTableItem, index: number, event: MouseEvent): void {
+            emit('click-row', item, index, event);
+        }
         function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
         }
@@ -424,6 +429,7 @@ export default defineComponent({
             table,
             totalPages: table.totalPages,
             clickCell,
+            clickRow,
             selectRow,
             expandRow,
             searchRows,

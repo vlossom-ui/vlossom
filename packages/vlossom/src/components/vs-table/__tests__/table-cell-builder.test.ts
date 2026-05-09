@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, expectTypeOf, beforeEach, afterEach, vi } from 'vitest';
 import { stringUtil } from '@/utils';
 import { TableCellBuilder } from './../models/table-cell-builder';
 import type { VsTableColumnDef } from './../types';
@@ -71,5 +71,29 @@ describe('TableCellBuilder', () => {
 
         expect(nextHeader.map((h) => h.colKey)).toEqual(['title']);
         expect(nextBody[0][0]).toMatchObject({ value: 'Hello', colKey: 'title', rowIdx: 0, colIdx: 0 });
+    });
+
+    it('transform value 타입은 any이고 item 타입은 유지한다', () => {
+        type User = {
+            id: string;
+            profile: {
+                name: string;
+                age: number;
+            };
+        };
+
+        const columns: VsTableColumnDef<User>[] = [
+            {
+                key: 'profile.age',
+                label: '나이',
+                transform: (value, item) => {
+                    expectTypeOf(value).toBeAny();
+                    expectTypeOf(item).toEqualTypeOf<User>();
+                    return value.toLocaleString();
+                },
+            },
+        ];
+
+        expect(columns).toHaveLength(1);
     });
 });
