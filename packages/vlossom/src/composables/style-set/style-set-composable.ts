@@ -3,26 +3,6 @@ import type { VsComponent } from '@/declaration';
 import { useOptionsStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
 
-export function extractInlineStyle(styleSet: { [key: string]: any } | undefined | null): CSSProperties {
-    const result: CSSProperties = {};
-
-    if (!styleSet) {
-        return result;
-    }
-
-    for (const [key, value] of Object.entries(styleSet)) {
-        if (key.startsWith('$')) {
-            continue;
-        }
-        if (value === undefined || value === null) {
-            continue;
-        }
-        (result as Record<string, unknown>)[key] = value;
-    }
-
-    return result;
-}
-
 export function useStyleSet<T extends { [key: string]: any }>(
     component: VsComponent | string,
     styleSet: Ref<string | T | undefined>,
@@ -64,9 +44,21 @@ export function useStyleSet<T extends { [key: string]: any }>(
         return result;
     });
 
-    const componentInlineStyle: ComputedRef<CSSProperties> = computed(() =>
-        extractInlineStyle(componentStyleSet.value),
-    );
+    const componentInlineStyle: ComputedRef<CSSProperties> = computed(() => {
+        const result: CSSProperties = {};
+
+        for (const [key, value] of Object.entries(componentStyleSet.value)) {
+            if (key.startsWith('$')) {
+                continue;
+            }
+            if (value === undefined || value === null) {
+                continue;
+            }
+            (result as Record<string, unknown>)[key] = value;
+        }
+
+        return result;
+    });
 
     return {
         componentStyleSet,
