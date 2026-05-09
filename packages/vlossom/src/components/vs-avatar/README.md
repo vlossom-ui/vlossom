@@ -51,9 +51,8 @@ A circular or rounded display element for showing user profile images, initials,
 ## Types
 
 ```typescript
-interface VsAvatarStyleSet {
+interface VsAvatarStyleSet extends CSSProperties {
     $objectFit?: CSSProperties['objectFit'] & {};
-    $component?: CSSProperties;
 }
 ```
 
@@ -64,11 +63,9 @@ interface VsAvatarStyleSet {
     <vs-avatar
         :style-set="{
             $objectFit: 'cover',
-            $component: {
-                width: '5rem',
-                height: '5rem',
-                borderRadius: '50%',
-            },
+            width: '5rem',
+            height: '5rem',
+            borderRadius: '50%',
         }"
     >
         <img src="/profile.png" alt="User" />

@@ -61,10 +61,9 @@ const page = ref(0);
 ## Types
 
 ```typescript
-interface VsPaginationStyleSet {
+interface VsPaginationStyleSet extends CSSProperties {
     $selectedButtonBackgroundColor?: string;
     $selectedButtonFontColor?: string;
-    $component?: CSSProperties;
     $pageButton?: Omit<VsButtonStyleSet, '$loading'>;
     $controlButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
@@ -83,7 +82,7 @@ interface VsPaginationStyleSet {
         :style-set="{
             $selectedButtonBackgroundColor: '#4f46e5',
             $selectedButtonFontColor: '#ffffff',
-            $component: { gap: '0.25rem' },
+            gap: '0.25rem',
         }"
     />
 </template>

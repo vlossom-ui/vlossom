@@ -11,9 +11,8 @@ export type { VsBlock };
 
 export interface VsBlockRef extends ComponentPublicInstance<typeof VsBlock> {}
 
-export interface VsBlockStyleSet {
+export interface VsBlockStyleSet extends CSSProperties {
     $blockBorder?: string;
-    $component?: CSSProperties;
     $title?: CSSProperties;
     $content?: CSSProperties;
 }

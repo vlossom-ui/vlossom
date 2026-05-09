@@ -2,7 +2,7 @@
     <div
         ref="triggerRef"
         :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
-        :style="styleSet?.$component"
+        :style="inlineStyle"
         tabindex="0"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -63,7 +63,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import type { ColorScheme, OptionItem, UIState } from '@/declaration';
-import { useStateClass } from '@/composables';
+import { extractInlineStyle, useStateClass } from '@/composables';
 import { closeIcon } from '@/icons';
 import type { VsSelectStyleSet } from './types';
 import { selectIcons } from './icons';
@@ -94,11 +94,13 @@ export default defineComponent({
     },
     emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
-        const { isEmpty, selectedOptions, state, noClear, disabled, readonly } = toRefs(props);
+        const { isEmpty, selectedOptions, state, noClear, disabled, readonly, styleSet } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
 
         const { stateBoxClasses } = useStateClass(state);
+
+        const inlineStyle = computed(() => extractInlineStyle(styleSet.value));
 
         const renderClearButton = computed(
             () => !noClear.value && !readonly.value && !disabled.value && !isEmpty.value,
@@ -133,6 +135,7 @@ export default defineComponent({
             renderClearButton,
             displayLabel,
             triggerClassObj,
+            inlineStyle,
             focus,
             blur,
         };

@@ -11,6 +11,4 @@ export type { VsBar };
 
 export interface VsBarRef extends ComponentPublicInstance<typeof VsBar> {}
 
-export interface VsBarStyleSet {
-    $component?: CSSProperties;
-}
+export interface VsBarStyleSet extends CSSProperties {}

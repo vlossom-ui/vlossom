@@ -30,7 +30,7 @@ A toggle button that switches the application between light and dark themes.
         :style-set="{
             $iconSize: '1.5rem',
             $iconColor: '#ff9800',
-            $component: { width: '3rem', height: '3rem' },
+            width: '3rem', height: '3rem',
         }"
     />
 </template>
@@ -70,7 +70,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 ```
 
 > [!NOTE]
-> Inherits all properties from [`VsToggleStyleSet`](../vs-toggle/README.md) (`$component`, `$content`, `$loading`).
+> Inherits all properties from [`VsToggleStyleSet`](../vs-toggle/README.md) (`$content`, `$loading`) and `CSSProperties`.
 
 ### StyleSet Example
 
@@ -80,7 +80,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
         :style-set="{
             $iconSize: '1.25rem',
             $iconColor: '#ff9800',
-            $component: { width: '2.5rem', height: '2.5rem' },
+            width: '2.5rem', height: '2.5rem',
         }"
     />
 </template>

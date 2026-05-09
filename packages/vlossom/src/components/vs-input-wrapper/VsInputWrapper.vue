@@ -3,7 +3,7 @@
         :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
-        :style="componentStyleSet.$component"
+        :style="componentInlineStyle"
     >
         <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
@@ -69,7 +69,7 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet(
+        const { componentStyleSet, componentInlineStyle } = useStyleSet(
             componentName,
             styleSet,
             computed(() => ({
@@ -85,7 +85,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, componentStyleSet };
+        return { needToShake, componentStyleSet, componentInlineStyle };
     },
 });
 </script>

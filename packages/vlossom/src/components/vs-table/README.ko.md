@@ -134,8 +134,7 @@ const selected = ref([]);
 ## 타입
 
 ```typescript
-interface VsTableStyleSet {
-    $component?: CSSProperties;
+interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
     $header?: CSSProperties;
@@ -177,7 +176,7 @@ interface VsTablePaginationOptions {
         :columns="columns"
         :items="items"
         :style-set="{
-            $component: { borderRadius: '0.5rem', overflow: 'hidden' },
+            borderRadius: '0.5rem', overflow: 'hidden',
             $header: { fontSize: '0.875rem', fontWeight: 700 },
             $row: { height: '3rem' },
             $selectedRow: { backgroundColor: '#e3f2fd' },

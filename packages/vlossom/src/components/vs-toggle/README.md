@@ -81,11 +81,9 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
     <vs-toggle
         v-model="isActive"
         :style-set="{
-            $component: {
-                borderRadius: '0.25rem',
-                minWidth: '6rem',
-                padding: '0.5rem 1.5rem',
-            },
+            borderRadius: '0.25rem',
+            minWidth: '6rem',
+            padding: '0.5rem 1.5rem',
         }"
     >
         Toggle

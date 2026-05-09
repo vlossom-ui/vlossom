@@ -20,7 +20,7 @@
 
         <div
             :class="['vs-file-drop', colorSchemeClass, classObj, stateBoxClasses]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
             @drop.prevent.stop="handleFileDrop"
             @dragenter.prevent.stop="setDragging(true)"
             @dragover.prevent.stop="setDragging(true)"
@@ -164,22 +164,18 @@ export default defineComponent({
 
         const baseStyleSet: Ref<VsFileDropStyleSet> = ref({
             $chip: {
-                $component: {
-                    width: '100%',
-                },
+                width: '100%',
             },
         });
 
         const additionalStyleSet = computed<Partial<VsFileDropStyleSet>>(() => {
             return objectUtil.shake({
-                $component: objectUtil.shake({
-                    width: width.value,
-                    height: height.value,
-                }),
+                width: width.value,
+                height: height.value,
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsFileDropStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -375,6 +371,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             stateBoxClasses,
             dragging,

@@ -103,12 +103,10 @@ export const SkeletonStyleSet: Story = {
             $width: '200px',
             $height: '200px',
             $skeleton: {
-                $component: {
-                    width: '200px',
-                    height: '200px',
-                    borderRadius: '50%',
-                    backgroundColor: '#e0e0e0',
-                },
+                width: '200px',
+                height: '200px',
+                borderRadius: '50%',
+                backgroundColor: '#e0e0e0',
             },
         },
     },

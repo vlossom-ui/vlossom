@@ -14,6 +14,4 @@ export interface VsDimmedRef extends ComponentPublicInstance<typeof VsDimmed> {
     hide: () => void;
 }
 
-export interface VsDimmedStyleSet {
-    $component?: CSSProperties;
-}
+export interface VsDimmedStyleSet extends CSSProperties {}

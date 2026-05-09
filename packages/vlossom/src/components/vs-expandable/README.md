@@ -36,7 +36,7 @@ const isOpen = ref(false);
     <vs-expandable
         :open="isOpen"
         :style-set="{
-            $component: { backgroundColor: '#f0f4ff', padding: '1.5rem', borderRadius: '8px' },
+            backgroundColor: '#f0f4ff', padding: '1.5rem', borderRadius: '8px',
         }"
     >
         <p>Styled expandable content.</p>
@@ -54,9 +54,7 @@ const isOpen = ref(false);
 ## Types
 
 ```typescript
-interface VsExpandableStyleSet {
-    $component?: CSSProperties;
-}
+interface VsExpandableStyleSet extends CSSProperties {}
 ```
 
 ### StyleSet Example
@@ -66,7 +64,7 @@ interface VsExpandableStyleSet {
     <vs-expandable
         :open="true"
         :style-set="{
-            $component: { backgroundColor: '#fff8e1', padding: '2rem', borderLeft: '4px solid orange' },
+            backgroundColor: '#fff8e1', padding: '2rem', borderLeft: '4px solid orange',
         }"
     >
         <p>Highlighted expandable content.</p>

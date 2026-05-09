@@ -108,11 +108,10 @@ const text = ref('');
 ## Types
 
 ```typescript
-interface VsInputStyleSet {
+interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;
     $append?: CSSProperties;
     $input?: CSSProperties;
-    $component?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
@@ -128,7 +127,7 @@ interface VsInputStyleSet {
         v-model="value"
         label="스타일 적용 입력"
         :style-set="{
-            $component: { borderRadius: '20px', height: '3rem' },
+            borderRadius: '20px', height: '3rem',
             $input: { fontSize: '1rem' },
             $prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
             $append: { backgroundColor: '#eee', padding: '0 0.5rem' },

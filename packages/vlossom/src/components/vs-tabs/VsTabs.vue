@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-tabs', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :width
         :grid
     >
@@ -137,13 +137,11 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                $component: {
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                },
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsTabsStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -296,6 +294,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             getTabStyleSet,
 

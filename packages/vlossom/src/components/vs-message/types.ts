@@ -11,7 +11,6 @@ export type { VsMessage };
 
 export interface VsMessageRef extends ComponentPublicInstance<typeof VsMessage> {}
 
-export interface VsMessageStyleSet {
+export interface VsMessageStyleSet extends CSSProperties {
     $size?: string;
-    $component?: CSSProperties;
 }

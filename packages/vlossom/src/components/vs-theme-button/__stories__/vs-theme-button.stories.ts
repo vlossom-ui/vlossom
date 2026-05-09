@@ -48,11 +48,9 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             $iconColor: '#B95C50',
-            $component: {
-                width: '3rem',
-                backgroundColor: '#DEB3AD',
-                borderRadius: '1rem',
-            },
+            width: '3rem',
+            backgroundColor: '#DEB3AD',
+            borderRadius: '1rem',
         },
     },
 };

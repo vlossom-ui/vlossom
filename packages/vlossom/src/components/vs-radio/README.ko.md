@@ -142,8 +142,7 @@ interface VsRadioStyleSet {
     $wrapper?: VsInputWrapperStyleSet;
 }
 
-interface VsRadioSetStyleSet {
-    $component?: CSSProperties;
+interface VsRadioSetStyleSet extends CSSProperties {
     $radio?: VsRadioStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }
@@ -160,7 +159,7 @@ interface VsRadioSetStyleSet {
         v-model="selected"
         :options="options"
         :style-set="{
-            $component: { gap: '1rem' },
+            gap: '1rem',
             $radio: {
                 $radioColor: '#6366f1',
                 $radioSize: '1.2rem',

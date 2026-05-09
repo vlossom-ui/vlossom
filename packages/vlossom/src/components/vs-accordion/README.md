@@ -79,12 +79,11 @@ const isOpen = ref(false);
 ## Types
 
 ```typescript
-interface VsAccordionStyleSet {
+interface VsAccordionStyleSet extends CSSProperties {
     $arrowColor?: string;
     $arrowSize?: string;
     $arrowSpacing?: string;
     $border?: string;
-    $component?: CSSProperties;
     $title?: CSSProperties;
     $content?: VsExpandableStyleSet;
 }
@@ -103,7 +102,7 @@ interface VsAccordionStyleSet {
             $arrowSize: '0.5rem',
             $arrowSpacing: '4%',
             $border: '2px solid #6200ea',
-            $component: { borderRadius: '0.75rem' },
+            borderRadius: '0.75rem',
             $title: { fontWeight: 'bold', padding: '1rem' },
         }"
     >

@@ -75,10 +75,9 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 ## Types
 
 ```typescript
-interface VsStepsStyleSet {
+interface VsStepsStyleSet extends CSSProperties {
     $stepSize?: string;
 
-    $component?: CSSProperties;
     $steps?: CSSProperties;
     $step?: CSSProperties;
     $activeStep?: CSSProperties;

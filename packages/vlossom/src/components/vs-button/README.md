@@ -89,8 +89,7 @@ async function submit() {
 ## Types
 
 ```typescript
-interface VsButtonStyleSet {
-    $component?: CSSProperties;
+interface VsButtonStyleSet extends CSSProperties {
     $content?: CSSProperties;
     $loading?: VsLoadingStyleSet;
 }
@@ -105,16 +104,14 @@ interface VsButtonStyleSet {
 <template>
     <vs-button
         :style-set="{
-            $component: {
-                borderRadius: '2rem',
-                fontWeight: 'bold',
-                padding: '0.5rem 2rem',
-            },
+            borderRadius: '2rem',
+            fontWeight: 'bold',
+            padding: '0.5rem 2rem',
             $content: {
                 letterSpacing: '0.05em',
             },
             $loading: {
-                $component: { width: '25%', height: '50%' },
+                width: '25%', height: '50%',
             },
         }"
     >

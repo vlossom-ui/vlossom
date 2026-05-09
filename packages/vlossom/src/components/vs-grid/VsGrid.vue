@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="[componentStyleSet.$component, styleSetVariables]">
+    <component :is="tag" class="vs-grid" :style="[componentInlineStyle, styleSetVariables]">
         <slot />
     </component>
 </template>
@@ -28,17 +28,15 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsGridStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsGridStyleSet>> = computed(() => {
             return objectUtil.shake({
-                $component: objectUtil.shake({
-                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                    columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
-                    rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
-                }),
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+                columnGap: columnGap.value === undefined ? undefined : stringUtil.toStringSize(columnGap.value),
+                rowGap: rowGap.value === undefined ? undefined : stringUtil.toStringSize(rowGap.value),
                 $gridSize: gridSize.value === undefined ? undefined : Number(gridSize.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGridStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsGridStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -48,6 +46,7 @@ export default defineComponent({
         return {
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
         };
     },
 });

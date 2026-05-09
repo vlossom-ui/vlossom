@@ -12,8 +12,7 @@ export type { VsInputWrapper };
 
 export interface VsInputWrapperRef extends ComponentPublicInstance<typeof VsInputWrapper> {}
 
-export interface VsInputWrapperStyleSet {
-    $component?: CSSProperties;
+export interface VsInputWrapperStyleSet extends CSSProperties {
     $label?: CSSProperties;
     $messages?: CSSProperties;
     $message?: VsMessageStyleSet;

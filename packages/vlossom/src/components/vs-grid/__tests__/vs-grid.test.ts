@@ -27,7 +27,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.$component).toMatchObject({
+            expect(wrapper.vm.componentStyleSet).toMatchObject({
                 width: '600px',
                 height: '500px',
             });
@@ -57,7 +57,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.$component).toMatchObject({
+            expect(wrapper.vm.componentStyleSet).toMatchObject({
                 columnGap: '20px',
                 rowGap: '25px',
             });

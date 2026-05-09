@@ -18,7 +18,7 @@
 
         <div
             :class="['vs-switch', colorSchemeClass, classObj]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <label class="vs-switch-wrap" :for="computedId">
                 <input
@@ -120,7 +120,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsSwitchStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const inputValue = ref(modelValue.value);
 
@@ -236,6 +239,7 @@ export default defineComponent({
             switchRef,
             colorSchemeClass,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             stateBoxClasses,
             computedId,

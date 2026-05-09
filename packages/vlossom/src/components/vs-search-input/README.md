@@ -91,7 +91,7 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 ```
 
 > [!NOTE]
-> Inherits all properties from [VsInputStyleSet](../vs-input/README.md#types) (`$prepend`, `$append`, `$input`, `$component`, `$wrapper`). `$toggle` uses [VsToggleStyleSet](../vs-toggle/README.md#types).
+> Inherits all properties from [VsInputStyleSet](../vs-input/README.md#types) (`$prepend`, `$append`, `$input`, `$wrapper`) and `CSSProperties`. `$toggle` uses [VsToggleStyleSet](../vs-toggle/README.md#types).
 
 ### StyleSet Example
 
@@ -100,7 +100,7 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
     <vs-search-input
         v-model="query"
         :style-set="{
-            $component: { borderRadius: '1rem' },
+            borderRadius: '1rem',
             $input: { height: '2.5rem' },
         }"
     />

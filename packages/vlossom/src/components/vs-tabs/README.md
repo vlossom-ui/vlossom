@@ -77,11 +77,10 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 ## Types
 
 ```typescript
-interface VsTabsStyleSet {
+interface VsTabsStyleSet extends CSSProperties {
     $gap?: string;
     $divider?: CSSProperties['border'] & {};
 
-    $component?: CSSProperties;
     $tabs?: CSSProperties;
     $tab?: CSSProperties;
     $activeTab?: CSSProperties;

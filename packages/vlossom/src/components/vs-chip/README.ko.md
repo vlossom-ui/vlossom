@@ -76,9 +76,8 @@
 ## Types
 
 ```typescript
-interface VsChipStyleSet {
+interface VsChipStyleSet extends CSSProperties {
     $height?: string;
-    $component?: CSSProperties;
     $icon?: CSSProperties;
     $closeButton?: CSSProperties;
 }
@@ -92,11 +91,9 @@ interface VsChipStyleSet {
         closable
         :style-set="{
             $height: '2rem',
-            $component: {
-                borderRadius: '0.25rem',
-                backgroundColor: '#e8f5e9',
-                color: '#2e7d32',
-            },
+            borderRadius: '0.25rem',
+            backgroundColor: '#e8f5e9',
+            color: '#2e7d32',
             $icon: {
                 color: '#2e7d32',
             },

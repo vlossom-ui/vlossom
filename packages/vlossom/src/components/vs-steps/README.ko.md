@@ -75,10 +75,9 @@ const steps = ['1단계', '2단계', '3단계', '4단계'];
 ## Types
 
 ```typescript
-interface VsStepsStyleSet {
+interface VsStepsStyleSet extends CSSProperties {
     $stepSize?: string;
 
-    $component?: CSSProperties;
     $steps?: CSSProperties;
     $step?: CSSProperties;
     $activeStep?: CSSProperties;

@@ -91,12 +91,11 @@ async function confirmChange(from, to) {
 ## 타입
 
 ```typescript
-interface VsSwitchStyleSet {
+interface VsSwitchStyleSet extends CSSProperties {
     $handleColor?: string;
     $handleSize?: string;
     $switchButton?: CSSProperties;
     $activeSwitchButton?: CSSProperties;
-    $component?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
@@ -115,7 +114,7 @@ interface VsSwitchStyleSet {
             $handleSize: '1.4rem',
             $switchButton: { borderRadius: '0.25rem' },
             $activeSwitchButton: { backgroundColor: '#4caf50' },
-            $component: { minHeight: '2.5rem' },
+            minHeight: '2.5rem',
         }"
     />
 </template>

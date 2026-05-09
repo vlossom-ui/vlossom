@@ -100,9 +100,8 @@ Set the `layout` prop to register the drawer with the layout store. Combine with
 ## Types
 
 ```typescript
-interface VsDrawerStyleSet {
+interface VsDrawerStyleSet extends CSSProperties {
     $size?: string;
-    $component?: CSSProperties;
     $dimmed?: VsDimmedStyleSet;
     $header?: CSSProperties;
     $content?: CSSProperties;
@@ -121,7 +120,7 @@ interface VsDrawerStyleSet {
         v-model="open"
         :style-set="{
             $size: '400px',
-            $component: { backgroundColor: '#1a1a2e' },
+            backgroundColor: '#1a1a2e',
             $header: { padding: '1.5rem', borderBottom: '1px solid #eee' },
             $content: { padding: '1.5rem' },
             $footer: { padding: '1rem', borderTop: '1px solid #eee' },

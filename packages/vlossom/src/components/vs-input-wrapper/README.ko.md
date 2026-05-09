@@ -79,8 +79,7 @@
 ## Types
 
 ```typescript
-interface VsInputWrapperStyleSet {
-    $component?: CSSProperties;
+interface VsInputWrapperStyleSet extends CSSProperties {
     $label?: CSSProperties;
     $messages?: CSSProperties;
     $message?: VsMessageStyleSet;
@@ -97,10 +96,10 @@ interface VsInputWrapperStyleSet {
     <vs-input-wrapper
         label="스타일 적용 래퍼"
         :style-set="{
-            $component: { padding: '1rem', backgroundColor: '#f9f9f9' },
+            padding: '1rem', backgroundColor: '#f9f9f9',
             $label: { color: '#333', fontWeight: '600' },
             $messages: { marginTop: '0.5rem' },
-            $message: { $component: { fontSize: '0.75rem' } },
+            $message: { fontSize: '0.75rem' },
         }"
     >
         <input type="text" />

@@ -95,10 +95,9 @@ const files = ref([]);
 ## 타입
 
 ```typescript
-interface VsFileDropStyleSet {
+interface VsFileDropStyleSet extends CSSProperties {
     $dragBackgroundColor?: string;
     $iconColor?: string;
-    $component?: CSSProperties;
     $placeholder?: CSSProperties;
     $files?: CSSProperties;
     $closeButton?: CSSProperties;
@@ -120,7 +119,7 @@ interface VsFileDropStyleSet {
         :style-set="{
             $dragBackgroundColor: '#e8f4fd',
             $iconColor: '#0066cc',
-            $component: { borderRadius: '12px' },
+            borderRadius: '12px',
             $placeholder: { color: '#666' },
         }"
     />

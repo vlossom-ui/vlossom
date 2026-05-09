@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
     >
         <vs-button
             v-if="edgeButtons"
@@ -145,13 +145,11 @@ export default defineComponent({
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
             $controlButton: {
-                $component: {
-                    padding: '0.4rem',
-                },
+                padding: '0.4rem',
             },
         }));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsPaginationStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -237,6 +235,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             paginationIcons,
             selectedIndex,
             pages,

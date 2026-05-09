@@ -41,7 +41,7 @@ describe('VsLoading', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.$component).toEqual({
+            expect(wrapper.vm.componentStyleSet).toMatchObject({
                 width: '200px',
                 height: '150px',
             });
@@ -61,7 +61,7 @@ describe('VsLoading', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.$component).toEqual({
+            expect(wrapper.vm.componentStyleSet).toMatchObject({
                 width: '300px',
                 height: '250px',
             });

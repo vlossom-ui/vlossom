@@ -87,9 +87,8 @@ Switch to vertical layout on small containers automatically.
 ## Types
 
 ```typescript
-interface VsLabelValueStyleSet {
+interface VsLabelValueStyleSet extends CSSProperties {
     $border?: string;
-    $component?: CSSProperties;
     $label?: CSSProperties;
     $value?: CSSProperties;
 }
@@ -102,7 +101,7 @@ interface VsLabelValueStyleSet {
     <vs-label-value
         :style-set="{
             $border: '2px solid #007bff',
-            $component: { borderRadius: '8px' },
+            borderRadius: '8px',
             $label: { backgroundColor: '#e7f0ff', color: '#007bff', fontWeight: '700' },
             $value: { padding: '0 1.5rem' },
         }"

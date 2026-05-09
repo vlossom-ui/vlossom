@@ -232,9 +232,7 @@ export const StyleSet: Story = {
                 borderRadius: '12px',
                 backgroundColor: '#f5f5f5',
             },
-            $component: {
-                fontSize: '1rem',
-            },
+            fontSize: '1rem',
         },
         modelValue: null,
     },

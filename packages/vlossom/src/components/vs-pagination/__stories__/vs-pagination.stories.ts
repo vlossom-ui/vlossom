@@ -244,21 +244,15 @@ export const StyleSet: Story = {
     args: {
         length: 10,
         styleSet: {
-            $component: {
-                gap: '2rem',
-            },
+            gap: '2rem',
             $pageButton: {
-                $component: {
-                    borderRadius: '50%',
-                    width: '3rem',
-                    height: '3rem',
-                },
+                borderRadius: '50%',
+                width: '3rem',
+                height: '3rem',
             },
             $controlButton: {
-                $component: {
-                    borderRadius: '8px',
-                    padding: '0.6rem',
-                },
+                borderRadius: '8px',
+                padding: '0.6rem',
             },
         },
     },

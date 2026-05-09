@@ -110,14 +110,13 @@ const options = [
 ## Types
 
 ```typescript
-interface VsSelectStyleSet {
+interface VsSelectStyleSet extends CSSProperties {
     $height?: string;
     $focused?: {
         border?: string;
         borderRadius?: string;
         backgroundColor?: string;
     };
-    $component?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
     $chip?: VsChipStyleSet;
     $selectAllCheckbox?: VsCheckboxStyleSet;

@@ -70,11 +70,10 @@ Disable the skeleton placeholder during loading.
 ## Types
 
 ```typescript
-interface VsImageStyleSet {
+interface VsImageStyleSet extends CSSProperties {
     $width?: string;
     $height?: string;
     $skeleton?: VsSkeletonStyleSet;
-    $component?: CSSProperties;
 }
 ```
 
@@ -91,8 +90,8 @@ interface VsImageStyleSet {
         :style-set="{
             $width: '200px',
             $height: '200px',
-            $component: { borderRadius: '8px', objectFit: 'cover' },
-            $skeleton: { $component: { borderRadius: '8px' } },
+            borderRadius: '8px', objectFit: 'cover',
+            $skeleton: { borderRadius: '8px' },
         }"
     />
 </template>

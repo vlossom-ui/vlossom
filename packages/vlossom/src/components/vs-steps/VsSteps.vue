@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-steps', colorSchemeClass, { 'vs-vertical': vertical }]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :width
         :grid
     >
@@ -111,13 +111,11 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsStepsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                $component: {
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                },
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsStepsStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsStepsStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -186,6 +184,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             progressStyleSet,
             getStepStyleSet,
             getLabelStyleSet,

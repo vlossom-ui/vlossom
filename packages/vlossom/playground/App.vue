@@ -17,7 +17,7 @@
         </vs-header>
 
         <vs-container layout class="flex-1 pb-32 lg:pr-96">
-            <vs-page class="w-full" :style-set="{ $component: { padding: '0 2rem' } }">
+            <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
                 <vs-index-view v-model="activeTab" keep-alive>
@@ -85,13 +85,11 @@ export default defineComponent({
         const activeTab = ref(0);
 
         const basicBarStyleSet: VsBarStyleSet = {
-            $component: {
-                backgroundColor: 'black',
-                color: 'white',
-                border: 'none',
-                height: '60px',
-                borderBottom: '1px solid gray',
-            },
+            backgroundColor: 'black',
+            color: 'white',
+            border: 'none',
+            height: '60px',
+            borderBottom: '1px solid gray',
         };
 
         return {

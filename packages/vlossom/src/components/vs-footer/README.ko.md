@@ -78,9 +78,7 @@
 interface VsFooterStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
-interface VsBarStyleSet {
-    $component?: CSSProperties;
-}
+interface VsBarStyleSet extends CSSProperties {}
 ```
 
 > [!NOTE]
@@ -92,12 +90,10 @@ interface VsBarStyleSet {
 <template>
     <vs-footer
         :style-set="{
-            $component: {
-                backgroundColor: '#1a1a2e',
-                color: '#ffffff',
-                padding: '0 2rem',
-                height: '4rem',
-            },
+            backgroundColor: '#1a1a2e',
+            color: '#ffffff',
+            padding: '0 2rem',
+            height: '4rem',
         }"
     >
         <span>사용자 정의 스타일 푸터</span>

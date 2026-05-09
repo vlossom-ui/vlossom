@@ -3,7 +3,7 @@
         ref="buttonRef"
         :type="type"
         :class="['vs-button', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :disabled
         :tabindex="disabled || loading ? -1 : 0"
     >
@@ -46,14 +46,12 @@ export default defineComponent({
             return {
                 $loading: {
                     $color: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
-                    $component: {
-                        width: '30%',
-                        height: '60%',
-                    },
+                    width: '30%',
+                    height: '60%',
                 },
             };
         });
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsButtonStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -80,7 +78,7 @@ export default defineComponent({
             }
         });
 
-        return { colorSchemeClass, styleSetVariables, classObj, buttonRef, componentStyleSet };
+        return { colorSchemeClass, styleSetVariables, componentInlineStyle, classObj, buttonRef, componentStyleSet };
     },
 });
 </script>

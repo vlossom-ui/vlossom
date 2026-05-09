@@ -69,9 +69,8 @@
 ## 타입
 
 ```typescript
-interface VsToastStyleSet {
+interface VsToastStyleSet extends CSSProperties {
     $closeButton?: Omit<VsButtonStyleSet, '$loading'>;
-    $component?: CSSProperties;
 }
 ```
 
@@ -84,14 +83,12 @@ interface VsToastStyleSet {
 <template>
     <vs-toast
         :style-set="{
-            $component: {
-                backgroundColor: '#323232',
-                color: '#ffffff',
-                borderRadius: '0.5rem',
-                padding: '0.75rem 1rem',
-            },
+            backgroundColor: '#323232',
+            color: '#ffffff',
+            borderRadius: '0.5rem',
+            padding: '0.75rem 1rem',
             $closeButton: {
-                $component: { color: '#ffffff' },
+                color: '#ffffff',
             },
         }"
     >

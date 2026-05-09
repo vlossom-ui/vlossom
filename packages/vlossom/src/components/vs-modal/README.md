@@ -115,8 +115,7 @@ async function confirmClose() {
 ## Types
 
 ```typescript
-interface VsModalNodeStyleSet {
-    $component?: CSSProperties;
+interface VsModalNodeStyleSet extends CSSProperties {
     $dimmed?: VsDimmedStyleSet;
 }
 ```
@@ -132,14 +131,12 @@ interface VsModalNodeStyleSet {
         v-model="isOpen"
         :dimmed="true"
         :style-set="{
-            $component: {
-                borderRadius: '16px',
-                padding: '2rem',
-                backgroundColor: '#fff',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-            },
+            borderRadius: '16px',
+            padding: '2rem',
+            backgroundColor: '#fff',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
             $dimmed: {
-                $component: { backgroundColor: 'rgba(0,0,0,0.6)' },
+                backgroundColor: 'rgba(0,0,0,0.6)',
             },
         }"
     >

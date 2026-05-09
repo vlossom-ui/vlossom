@@ -1,7 +1,27 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type CSSProperties, type Ref } from 'vue';
 import type { VsComponent } from '@/declaration';
 import { useOptionsStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
+
+export function extractInlineStyle(styleSet: { [key: string]: any } | undefined | null): CSSProperties {
+    const result: CSSProperties = {};
+
+    if (!styleSet) {
+        return result;
+    }
+
+    for (const [key, value] of Object.entries(styleSet)) {
+        if (key.startsWith('$')) {
+            continue;
+        }
+        if (value === undefined || value === null) {
+            continue;
+        }
+        (result as Record<string, unknown>)[key] = value;
+    }
+
+    return result;
+}
 
 export function useStyleSet<T extends { [key: string]: any }>(
     component: VsComponent | string,
@@ -44,8 +64,13 @@ export function useStyleSet<T extends { [key: string]: any }>(
         return result;
     });
 
+    const componentInlineStyle: ComputedRef<CSSProperties> = computed(() =>
+        extractInlineStyle(componentStyleSet.value),
+    );
+
     return {
         componentStyleSet,
         styleSetVariables,
+        componentInlineStyle,
     };
 }
