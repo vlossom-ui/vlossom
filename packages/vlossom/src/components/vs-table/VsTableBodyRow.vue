@@ -81,7 +81,7 @@ export default defineComponent({
             required: true,
         },
     },
-    emits: ['click-cell', 'select-row', 'expand-row'],
+    emits: ['click-cell', 'click-row', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
         const { cells, rowIdx: rowIndex } = toRefs(props);
         const {
@@ -216,6 +216,7 @@ export default defineComponent({
 
         function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
+            emit('click-row', cell.item, rowIndex.value, event);
         }
 
         function getHeaderLabel(colIdx: number, fallback: string): string {

@@ -13,6 +13,7 @@
                 :cells="element"
                 :rowIdx="index"
                 @click-cell="clickCell"
+                @click-row="clickRow"
                 @select-row="selectRow"
                 @expand-row="expandRow"
             >
@@ -65,7 +66,7 @@ export default defineComponent({
         VsTableBodyRow,
         draggable,
     },
-    emits: ['click-cell', 'select-row', 'expand-row', 'drag'],
+    emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
         const { bodyCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
@@ -98,6 +99,10 @@ export default defineComponent({
             emit('click-cell', { ...cell }, event);
         }
 
+        function clickRow(item: VsTableBodyCell['item'], index: number, event: MouseEvent): void {
+            emit('click-row', item, index, event);
+        }
+
         function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
             emit('select-row', row, event);
             emit('click-cell', { ...row[0] }, event);
@@ -128,6 +133,7 @@ export default defineComponent({
             loading,
             tableIcons,
             clickCell,
+            clickRow,
             getRowItem: getRowItem,
             getRowId,
             selectRow,

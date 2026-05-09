@@ -156,7 +156,7 @@ interface VsTableColumnDef<I = VsTableItem> {
     sortable?: boolean;
     sortBy?: VsTableColumnKey<I>;
     skipSearch?: boolean;
-    transform?: (value: unknown, item: I) => unknown;
+    transform?: (value: any, item: I) => unknown;
 }
 
 interface VsTablePaginationOptions {
@@ -192,6 +192,7 @@ interface VsTablePaginationOptions {
 | Event                  | Payload                                       | Description                           |
 | ---------------------- | --------------------------------------------- | ------------------------------------- |
 | `click-cell`           | `(cell: VsTableBodyCell, event: MouseEvent)`  | Emitted when a cell is clicked        |
+| `click-row`            | `(item: VsTableItem, index: number, event: MouseEvent)` | Emitted when a body row is clicked    |
 | `select-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is selected        |
 | `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is expanded        |
 | `drag`                 | `SortableEvent`                               | Emitted after a drag-and-drop reorder |

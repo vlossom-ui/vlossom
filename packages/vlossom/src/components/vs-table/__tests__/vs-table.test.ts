@@ -458,6 +458,24 @@ describe('VsTable', () => {
             expect(cell.item).toStrictEqual(tableItems[0]);
         });
 
+        it('셀 클릭 시 click-row 이벤트를 item과 index와 함께 발생시킨다', async () => {
+            const wrapper = mountTable();
+
+            await nextTick();
+            const firstCell = wrapper.get('tbody td');
+
+            await firstCell.trigger('click');
+
+            const emitted = wrapper.emitted('click-row');
+            expect(emitted).toHaveLength(1);
+
+            const [item, index, event] = emitted![0] as [VsTableItem, number, Event];
+            expect(item).toStrictEqual(tableItems[0]);
+            expect(index).toBe(0);
+            expect(event).toBeInstanceOf(Event);
+            expect((event as Event).type).toBe('click');
+        });
+
         it('선택 셀 클릭 시 select-row 이벤트를 발생시킨다', async () => {
             const wrapper = mountTable({
                 props: { selectable: true },
