@@ -17,7 +17,10 @@ export interface VlossomValidationIssue {
 
 type VlossomFirstMode = 'strict' | 'prefer' | 'off';
 
-const NATIVE_TAGS = ['button', 'input', 'textarea', 'select', 'form', 'table', 'dialog', 'progress'];
+// Native HTML controls and semantic elements that have a Vlossom counterpart
+// listed in coverage-resolver. Adding an entry here is only useful when the
+// pattern map carries a matching `alternatives` keyword.
+const NATIVE_TAGS = ['button', 'input', 'textarea', 'select', 'form', 'table', 'dialog', 'progress', 'details'];
 
 const THIRD_PARTY_IMPORTS = [
     'element-plus',
@@ -27,15 +30,26 @@ const THIRD_PARTY_IMPORTS = [
     'quasar',
     'primevue',
     'bootstrap-vue',
+    '@headlessui/vue',
+    'radix-vue',
+    '@oruga-ui/oruga-next',
+    'flowbite-vue-3',
+    'varlet-ui',
+    'vant',
+    'view-ui-plus',
 ];
 
 const THIRD_PARTY_TAG_PATTERNS = [
-    /^el-/,
-    /^v-(btn|text-field|select|checkbox|radio|switch|dialog|data-table|tabs)/,
-    /^n-/,
-    /^a-/,
-    /^q-/,
-    /^p-/,
+    /^el-/, // Element Plus
+    /^v-[a-z]/, // Vuetify (v-card, v-row, v-btn, ...) — Vue directives are attributes, not tags, so this is safe
+    /^n-/, // Naive UI
+    /^a-/, // Ant Design Vue
+    /^q-/, // Quasar
+    /^p-/, // PrimeVue
+    /^o-/, // Oruga
+    /^var-/, // Varlet
+    /^van-/, // Vant
+    /^iv-/, // View UI Plus
 ];
 
 function lineNumber(code: string, index: number): number {
@@ -86,6 +100,34 @@ async function issueForAlternative(
     };
 }
 
+function detectVlossomInlineStyles(code: string, mode: VlossomFirstMode): VlossomValidationIssue[] {
+    // Inline `style="..."` on a Vlossom component bypasses the StyleSet contract,
+    // so it is a Vlossom-first violation even though the component itself is
+    // a Vlossom component. We only flag inline strings; `:style` bindings can be
+    // legitimate (e.g. computed CSS variable maps), so they are left alone.
+    const issues: VlossomValidationIssue[] = [];
+    const inlineStylePattern = /<\s*(vs-[a-z0-9-]+|Vs[A-Z][A-Za-z0-9]*)\b[^>]*\sstyle\s*=\s*["'][^"']*["']/g;
+    for (const match of code.matchAll(inlineStylePattern)) {
+        const component = match[1] ?? '';
+        issues.push({
+            ruleId: 'PREFER_STYLE_SET',
+            severity: severityFor(mode),
+            message: `Vlossom component <${component}> uses inline style="..." instead of :style-set.`,
+            suggestion: 'Move customization into :style-set or --vs-* CSS tokens; inline style bypasses StyleSet.',
+            line: lineNumber(code, match.index ?? 0),
+            component,
+            actions: [
+                {
+                    tool: 'get_vlossom_reference',
+                    input: { type: 'component', id: component.replace(/^vs-/, 'Vs'), include: ['styleSet'] },
+                    reason: 'retrieve the StyleSet interface for this component',
+                },
+            ],
+        });
+    }
+    return issues;
+}
+
 export async function validateVlossomFirst(
     code: string,
     mode: VlossomFirstMode,
@@ -126,9 +168,14 @@ export async function validateVlossomFirst(
     }
 
     const tagPattern = /<\s*([a-z][a-z0-9-]*)\b/gi;
+    const seenThirdPartyTags = new Set<string>();
     for (const match of code.matchAll(tagPattern)) {
         const tag = match[1] ?? '';
+        if (tag.startsWith('vs-')) continue; // Vlossom components themselves
         if (!THIRD_PARTY_TAG_PATTERNS.some((pattern) => pattern.test(tag))) continue;
+        const dedupeKey = `${tag}@${match.index}`;
+        if (seenThirdPartyTags.has(dedupeKey)) continue;
+        seenThirdPartyTags.add(dedupeKey);
         const issue = await issueForAlternative(tag, lineNumber(code, match.index ?? 0), mode, versionContext);
         issues.push(
             issue ?? {
@@ -147,6 +194,8 @@ export async function validateVlossomFirst(
             },
         );
     }
+
+    issues.push(...detectVlossomInlineStyles(code, mode));
 
     return issues;
 }

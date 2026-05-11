@@ -242,6 +242,30 @@ import { ElButton } from 'element-plus'
     assert.ok(result.issues.some((issue) => issue.message.includes('element-plus')));
 });
 
+test('validate detects extended third-party UI imports and tag patterns', async () => {
+    const result = await validateVlossomUsage({
+        kind: 'sfc',
+        code: `<script setup lang="ts">
+import { Dialog } from '@headlessui/vue'
+</script>
+<template><v-card><v-btn>Save</v-btn></v-card></template>`,
+    });
+
+    assert.equal(result.valid, false);
+    assert.ok(result.issues.some((issue) => issue.message.includes('@headlessui/vue')));
+    assert.ok(result.issues.some((issue) => issue.message.includes('v-card') || issue.message.includes('v-btn')));
+});
+
+test('validate flags inline style on Vlossom components as a Vlossom-first violation', async () => {
+    const result = await validateVlossomUsage({
+        kind: 'snippet',
+        code: '<template><vs-button style="background: red">Save</vs-button></template>',
+    });
+
+    assert.equal(result.valid, false);
+    assert.ok(result.issues.some((issue) => issue.ruleId === 'PREFER_STYLE_SET'));
+});
+
 test('validate allows explicit Vlossom-first opt-out', async () => {
     const result = await validateVlossomUsage({
         kind: 'snippet',
