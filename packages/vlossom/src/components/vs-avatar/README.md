@@ -9,7 +9,6 @@ A circular or rounded display element for showing user profile images, initials,
 ## Feature
 
 - Accepts image elements, text initials, or icon content via the default slot
-- Supports `object-fit` customization for images via the `objectFit` CSS variable
 - Color scheme support for background and border styling
 - Fixed default size (3.6rem × 3.6rem) with full override via `component` CSSProperties
 
@@ -43,16 +42,16 @@ A circular or rounded display element for showing user profile images, initials,
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsAvatarStyleSet` | | | Custom style set |
+| Prop          | Type                         | Default | Required | Description                    |
+| ------------- | ---------------------------- | ------- | -------- | ------------------------------ |
+| `colorScheme` | `ColorScheme`                |         |          | Color scheme for the component |
+| `styleSet`    | `string \| VsAvatarStyleSet` |         |          | Custom style set               |
 
 ## Types
 
 ```typescript
 interface VsAvatarStyleSet extends CSSProperties {
-    $objectFit?: CSSProperties['objectFit'] & {};
+    $imageObjectFit?: CSSProperties['objectFit'] & {};
 }
 ```
 
@@ -62,7 +61,7 @@ interface VsAvatarStyleSet extends CSSProperties {
 <template>
     <vs-avatar
         :style-set="{
-            $objectFit: 'cover',
+            $imageObjectFit: 'cover',
             width: '5rem',
             height: '5rem',
             borderRadius: '50%',
@@ -80,8 +79,8 @@ interface VsAvatarStyleSet extends CSSProperties {
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot      | Description                               |
+| --------- | ----------------------------------------- |
 | `default` | Avatar content — image, initials, or icon |
 
 ## Methods

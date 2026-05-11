@@ -1,9 +1,5 @@
 <template>
-    <component
-        :is="tag"
-        :class="['vs-bar', colorSchemeClass, classObj]"
-        :style="componentInlineStyle"
-    >
+    <component :is="tag" :class="['vs-bar', colorSchemeClass, classObj]" :style="componentInlineStyle">
         <slot />
     </component>
 </template>
@@ -36,7 +32,7 @@ export default defineComponent({
                 position: position.value || undefined,
             });
         });
-        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsBarStyleSet>(
+        const { componentInlineStyle } = useStyleSet<VsBarStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -47,7 +43,7 @@ export default defineComponent({
             'vs-primary': primary.value,
         }));
 
-        return { colorSchemeClass, componentStyleSet, componentInlineStyle, classObj };
+        return { colorSchemeClass, componentInlineStyle, classObj };
     },
 });
 </script>
