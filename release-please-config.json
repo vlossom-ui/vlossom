@@ -5,6 +5,11 @@
         "packages/vlossom": {
             "release-type": "node",
             "package-name": "vlossom"
+        },
+        "packages/vlossom-mcp": {
+            "release-type": "node",
+            "package-name": "vlossom-mcp",
+            "prerelease": false
         }
     },
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"

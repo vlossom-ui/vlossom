@@ -87,3 +87,20 @@ jobs:
             - name: Run tests
               working-directory: ./packages/vlossom
               run: pnpm test
+
+    vlossom-mcp-test:
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+                  cache-dependency-path: ./packages/vlossom-mcp/package-lock.json
+            - name: Install dependencies
+              working-directory: ./packages/vlossom-mcp
+              run: npm ci
+            - name: Run tests
+              working-directory: ./packages/vlossom-mcp
+              run: npm test
