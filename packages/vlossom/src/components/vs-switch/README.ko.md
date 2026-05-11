@@ -94,14 +94,15 @@ async function confirmChange(from, to) {
 interface VsSwitchStyleSet extends CSSProperties {
     $handleColor?: string;
     $handleSize?: string;
-    $switchButton?: CSSProperties;
-    $activeSwitchButton?: CSSProperties;
+    $switchButton?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `$wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다.
+> `$wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다. `$switchButton.$active`는 스위치가 ON 상태일 때 적용됩니다.
 
 ### StyleSet 예시
 
@@ -112,8 +113,10 @@ interface VsSwitchStyleSet extends CSSProperties {
         :style-set="{
             $handleColor: '#ffffff',
             $handleSize: '1.4rem',
-            $switchButton: { borderRadius: '0.25rem' },
-            $activeSwitchButton: { backgroundColor: '#4caf50' },
+            $switchButton: {
+                borderRadius: '0.25rem',
+                $active: { backgroundColor: '#4caf50' },
+            },
             minHeight: '2.5rem',
         }"
     />

@@ -20,12 +20,7 @@
 
         <div ref="tabsRef" class="vs-tabs-wrap">
             <ul role="tablist" class="vs-tab-list" :style="componentStyleSet.$tabs">
-                <li
-                    v-if="indicatorStyle"
-                    class="vs-tab-indicator"
-                    :style="{ ...indicatorStyle, ...componentStyleSet.$activeTab }"
-                    aria-hidden="true"
-                />
+                <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
@@ -248,9 +243,10 @@ export default defineComponent({
         let resizeObserver: ResizeObserver | null = null;
 
         function getTabStyleSet(index: number): CSSProperties {
+            const { $active, ...base } = componentStyleSet.value.$tab ?? {};
             return {
-                ...componentStyleSet.value.$tab,
-                ...(isSelected(index) ? componentStyleSet.value.$activeTab : {}),
+                ...base,
+                ...(isSelected(index) ? $active : {}),
             };
         }
 

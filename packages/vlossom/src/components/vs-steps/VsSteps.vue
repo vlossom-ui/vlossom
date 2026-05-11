@@ -5,7 +5,7 @@
         :width
         :grid
     >
-        <div class="vs-step-line">
+        <div class="vs-step-line" :style="trackStyleSet">
             <div class="vs-step-progress" :style="progressStyleSet" />
         </div>
         <ul
@@ -135,6 +135,11 @@ export default defineComponent({
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
+        const trackStyleSet: ComputedRef<CSSProperties> = computed(() => {
+            const { $active, ...base } = componentStyleSet.value.$progress ?? {};
+            return base;
+        });
+
         const progressStyleSet: ComputedRef<CSSProperties> = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
             if (gapCount.value === 0) {
@@ -143,23 +148,26 @@ export default defineComponent({
 
             const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return {
-                ...componentStyleSet.value.$progress,
-                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.$activeProgress : {}),
+                ...componentStyleSet.value.$progress?.$active,
                 [dimensionKey]: `${percentage}%`,
             };
         });
 
         function getStepStyleSet(index: number): CSSProperties {
+            const { $completed, $active, ...base } = componentStyleSet.value.$step ?? {};
             return {
-                ...componentStyleSet.value.$step,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeStep : {}),
+                ...base,
+                ...(isPrevious(index) ? $completed : {}),
+                ...(isSelected(index) ? $active : {}),
             };
         }
 
         function getLabelStyleSet(index: number): CSSProperties {
+            const { $completed, $active, ...base } = componentStyleSet.value.$label ?? {};
             return {
-                ...componentStyleSet.value.$label,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeLabel : {}),
+                ...base,
+                ...(isPrevious(index) ? $completed : {}),
+                ...(isSelected(index) ? $active : {}),
             };
         }
 
@@ -185,6 +193,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
+            trackStyleSet,
             progressStyleSet,
             getStepStyleSet,
             getLabelStyleSet,

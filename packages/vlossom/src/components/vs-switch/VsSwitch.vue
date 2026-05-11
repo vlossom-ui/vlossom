@@ -229,9 +229,10 @@ export default defineComponent({
         }
 
         function getSwitchButtonStyle(): CSSProperties {
+            const { $active, ...base } = componentStyleSet.value.$switchButton ?? {};
             return {
-                ...componentStyleSet.value.$switchButton,
-                ...(isChecked.value ? componentStyleSet.value.$activeSwitchButton : {}),
+                ...base,
+                ...(isChecked.value ? $active : {}),
             };
         }
 

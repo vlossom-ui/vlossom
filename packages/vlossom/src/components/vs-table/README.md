@@ -138,8 +138,9 @@ interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
     $header?: CSSProperties;
-    $row?: CSSProperties;
-    $selectedRow?: CSSProperties;
+    $row?: CSSProperties & {
+        $selected?: CSSProperties;
+    };
     $cell?: CSSProperties;
 }
 
@@ -178,8 +179,10 @@ interface VsTablePaginationOptions {
         :style-set="{
             borderRadius: '0.5rem', overflow: 'hidden',
             $header: { fontSize: '0.875rem', fontWeight: 700 },
-            $row: { height: '3rem' },
-            $selectedRow: { backgroundColor: '#e3f2fd' },
+            $row: {
+                height: '3rem',
+                $selected: { backgroundColor: '#e3f2fd' },
+            },
             $cell: { padding: '0.5rem 1rem' },
         }"
     />

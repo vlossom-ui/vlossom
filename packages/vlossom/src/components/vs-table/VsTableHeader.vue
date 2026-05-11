@@ -92,11 +92,14 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
-        const headerStyle = computed<CSSProperties | undefined>(() => ({
-            ...tableStyleSet?.value?.$row,
-            ...tableStyleSet?.value?.$header,
-            ...gridStyle.value,
-        }));
+        const headerStyle = computed<CSSProperties | undefined>(() => {
+            const { $selected, ...baseRow } = tableStyleSet?.value?.$row ?? {};
+            return {
+                ...baseRow,
+                ...tableStyleSet?.value?.$header,
+                ...gridStyle.value,
+            };
+        });
 
         function getGridColumnWidth(column?: VsTableColumnDef): string {
             if (!column) {

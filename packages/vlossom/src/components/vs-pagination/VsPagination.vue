@@ -40,7 +40,7 @@
                 :key="page"
                 class="vs-page-button"
                 :color-scheme="computedColorScheme"
-                :style-set="componentStyleSet.$pageButton"
+                :style-set="getPageButtonStyleSet(page)"
                 :primary="page === selectedIndex + 1"
                 :disabled
                 :ghost
@@ -192,6 +192,14 @@ export default defineComponent({
             return pageArr;
         });
 
+        function getPageButtonStyleSet(page: number) {
+            const { $selected, ...base } = componentStyleSet.value.$pageButton ?? {};
+            if (page === selectedIndex.value + 1) {
+                return { ...base, ...$selected };
+            }
+            return base;
+        }
+
         function setPage(page: number) {
             selectIndex(page);
         }
@@ -239,6 +247,7 @@ export default defineComponent({
             paginationIcons,
             selectedIndex,
             pages,
+            getPageButtonStyleSet,
             goFirst,
             goLast,
             goPrev,

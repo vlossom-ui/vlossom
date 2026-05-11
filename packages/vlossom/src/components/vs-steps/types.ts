@@ -15,10 +15,15 @@ export interface VsStepsStyleSet extends CSSProperties {
     $stepSize?: string;
 
     $steps?: CSSProperties;
-    $step?: CSSProperties;
-    $activeStep?: CSSProperties;
-    $label?: CSSProperties;
-    $activeLabel?: CSSProperties;
-    $progress?: CSSProperties;
-    $activeProgress?: CSSProperties;
+    $step?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
+    };
+    $label?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
+    };
+    $progress?: CSSProperties & {
+        $active?: CSSProperties;
+    };
 }

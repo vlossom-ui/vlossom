@@ -62,15 +62,15 @@ const page = ref(0);
 
 ```typescript
 interface VsPaginationStyleSet extends CSSProperties {
-    $selectedButtonBackgroundColor?: string;
-    $selectedButtonFontColor?: string;
-    $pageButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $pageButton?: Omit<VsButtonStyleSet, '$loading'> & {
+        $selected?: Omit<VsButtonStyleSet, '$loading'>;
+    };
     $controlButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$pageButton` and `$controlButton` use [VsButtonStyleSet](../vs-button/README.md#types) (excluding `$loading`).
+> `$pageButton` and `$controlButton` use [VsButtonStyleSet](../vs-button/README.md#types) (excluding `$loading`). The `$pageButton.$selected` style is applied to the currently selected page button.
 
 ### StyleSet Example
 
@@ -80,9 +80,13 @@ interface VsPaginationStyleSet extends CSSProperties {
         v-model="page"
         :length="10"
         :style-set="{
-            $selectedButtonBackgroundColor: '#4f46e5',
-            $selectedButtonFontColor: '#ffffff',
             gap: '0.25rem',
+            $pageButton: {
+                $selected: {
+                    backgroundColor: '#4f46e5',
+                    color: '#ffffff',
+                },
+            },
         }"
     />
 </template>

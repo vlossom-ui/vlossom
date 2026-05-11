@@ -16,7 +16,8 @@ export interface VsSwitchRef extends ComponentPublicInstance<typeof VsSwitch>, F
 export interface VsSwitchStyleSet extends CSSProperties {
     $handleColor?: string;
     $handleSize?: string;
-    $switchButton?: CSSProperties;
-    $activeSwitchButton?: CSSProperties;
+    $switchButton?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $wrapper?: VsInputWrapperStyleSet;
 }

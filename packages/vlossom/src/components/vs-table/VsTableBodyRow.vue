@@ -137,15 +137,16 @@ export default defineComponent({
             };
         });
         const rowStyle = computed<CSSProperties | undefined>(() => {
+            const { $selected, ...baseRow } = tableStyleSet?.value?.$row ?? {};
             if (isSelected.value) {
                 return {
-                    ...tableStyleSet?.value?.$row,
-                    ...tableStyleSet?.value?.$selectedRow,
+                    ...baseRow,
+                    ...$selected,
                     ...gridStyle.value,
                 };
             }
             return {
-                ...tableStyleSet?.value?.$row,
+                ...baseRow,
                 ...gridStyle.value,
             };
         });
