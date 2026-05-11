@@ -5,6 +5,36 @@
 
 ---
 
+## 결정 79: vlossom-mcp를 release-please publish 파이프라인에 합류
+
+**날짜**: 2026-05-08
+
+**배경**: `packages/vlossom`은 release-please-action(@v4) + Release PR + dist-tag-aware `pnpm publish` 흐름으로 자동 배포되는 반면, `packages/vlossom-mcp`는 `package.json`의 `release:patch / release:minor / release:major` 수동 스크립트로만 배포 가능했다. 두 패키지가 동일 monorepo 안에 있으면서 한쪽만 수동 release인 상태는 일관성·실수 위험 양쪽에서 문제가 된다.
+
+| #  | 옵션                                                                | 검토 결과                                                                                                          |
+| -- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 1  | 수동 `release:*` 스크립트 유지                                       | ❌ release-please의 changelog 자동 생성·버전 bump PR 흐름과 단절. 두 패키지에 두 다른 멘탈 모델.                    |
+| 2  | release-please-config에 `packages/vlossom-mcp` 추가, publish job 신설| ✅ 채택 — 두 패키지가 동일한 PR-driven release 흐름을 공유. 수동 스크립트 폐기.                                     |
+| 3  | 별도 manifest로 분리                                                 | ❌ release-please는 단일 manifest로 multi-package 지원이 표준 — 분리하면 도구 친화도 떨어짐.                       |
+
+**변경 내용**:
+
+- `release-please-config.json`: `packages/vlossom-mcp` 항목 추가, `prerelease: false` 명시(vlossom의 beta 채널과 구분).
+- `release-please-manifest.json`: 현재 published 버전 `0.13.1` seed.
+- `.github/workflows/release-please.yml`:
+  - 단일 `ok-to-deploy` boolean을 패키지별 `vlossom-released` / `vlossom-mcp-released` outputs로 분리.
+  - 머리 commit prefix 필터를 `refactor` / `revert`까지 확장(본 PR이 두 prefix 모두 사용).
+  - `publish-vlossom-mcp` job 신설 — `npm ci` → `npm run build` → dist-tag-aware `npm publish` (prerelease 시 `--tag <token>`).
+- `.github/workflows/ci.yml`: `vlossom-mcp-test` job 신설로 publish 전 보호.
+- `packages/vlossom-mcp/package.json`: 수동 `release:patch / minor / major` 스크립트 제거. `prepublishOnly: npm run verify`는 유지.
+- NPM token은 기존 `VLOSSOM_NPM_TOKEN` secret 재사용.
+
+**결정**: vlossom-mcp는 release-please 단일 manifest를 통해 vlossom과 동일 흐름으로 배포한다.
+
+**근거**: 동일 monorepo, 동일 publishing 정책. 수동 npm version + publish는 정상 흐름이 아닌 emergency-only 영역이며, 그런 경우는 PR-driven cycle을 우회해야 하므로 어차피 별도 권한이 필요하다. release-please의 multi-package 지원이 이미 존재하므로 두 흐름을 통합하는 비용은 30줄 미만.
+
+---
+
 ## 결정 78: PR #413 인라인 review follow-up — 12개 코멘트를 commit별로 분리 반영
 
 **날짜**: 2026-05-08
