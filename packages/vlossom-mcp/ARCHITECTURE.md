@@ -81,13 +81,18 @@ If no version-specific ref exists, the registry falls back to `main` and adds a 
 | `packages/vlossom/src/styles/*.css`                                   | Vlossom CSS token list.                                                                            |
 | `api.github.com/repos/vlossom-ui/vlossom/releases?per_page=100`       | Changelog entries surfaced by `get_vlossom_reference({type:'changelog'})`.                         |
 
-### Curated under `src/data/`
+### Curated, manually maintained
 
-| Source                                  | Purpose                                                                                                   |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `src/data/component-relationships.ts`   | Curated component parent / children / siblings map — children also help validators and scaffolders.      |
-| `src/data/coding-rules.ts`              | Vlossom-first scaffolding rule data exposed via `get_vlossom_reference({type:'rule'})`.                   |
-| `src/data/search-synonyms.ts`           | Natural-language to Vlossom-concept keyword expansion used by `search_vlossom`.                            |
+These are the only data points that don't follow the GitHub source-of-truth pattern. Each entry needs a hand-edit when its listed trigger occurs.
+
+| Source | Purpose | Update trigger |
+| ------ | ------- | -------------- |
+| `src/data/component-relationships.ts` | Curated component parent / children / siblings map — children also help validators and scaffolders. | A component is added to the vlossom registry. |
+| `src/data/coding-rules.ts` | Vlossom-first scaffolding rule data exposed via `get_vlossom_reference({type:'rule'})`. | Vlossom-first scaffolding philosophy changes. |
+| `src/data/search-synonyms.ts` | Natural-language to Vlossom-concept keyword expansion used by `search_vlossom`. | New UI concept appears or a query misses the registry. |
+| `src/internal/validation/vlossom-first-validator.ts` `NATIVE_TAGS` | Native HTML controls Vlossom can replace; surfaced as `PREFER_VLOSSOM_COMPONENT`. | HTML adds a new native interactive control. |
+| `src/internal/validation/vlossom-first-validator.ts` `THIRD_PARTY_IMPORTS` / `THIRD_PARTY_TAG_PATTERNS` | Third-party Vue UI imports and tag prefixes detected as Vlossom-first violations. | A Vue UI library reaches notable adoption. |
+| `src/internal/validation/project-setup-validator.ts` `THIRD_PARTY_UI_DEPS` | Third-party Vue UI dependencies surfaced during project-setup validation. | Same trigger as `THIRD_PARTY_IMPORTS`. |
 
 The registry uses process memory cache only. There is no persistent generated cache.
 

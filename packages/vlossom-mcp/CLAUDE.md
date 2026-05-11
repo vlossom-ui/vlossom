@@ -41,6 +41,18 @@ Do not update every document by default. `DECISIONS.md` is historical and may me
 
 Before adding a tool, verify the behavior cannot be expressed through the four facade tools, a resource, or an internal service. Before adding a rule, verify the simpler fix is not deleting stale code or data.
 
+## Manual data to maintain
+
+Most reference data is GitHub-sourced at runtime. The following are hand-curated and need a hand-edit when the conditions in `ARCHITECTURE.md` (`Curated, manually maintained` section) are met:
+
+- `src/data/search-synonyms.ts`
+- `src/data/component-relationships.ts`
+- `src/data/coding-rules.ts`
+- `src/internal/validation/vlossom-first-validator.ts` — `NATIVE_TAGS`, `THIRD_PARTY_IMPORTS`, `THIRD_PARTY_TAG_PATTERNS`
+- `src/internal/validation/project-setup-validator.ts` — `THIRD_PARTY_UI_DEPS`
+
+Before adding another hand-curated entry, verify the vlossom repo cannot provide it as source-of-truth at the resolved ref.
+
 ## Validation
 
 Run the narrowest useful checks for the change, and run the full package test before release-sensitive edits:
