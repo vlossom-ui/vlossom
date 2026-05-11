@@ -1,4 +1,4 @@
-import type { VersionContext } from '../internal/types';
+import type { VersionContext, VlossomPluginMeta } from '../internal/types';
 import type { ComponentMeta, EventMeta, MethodMeta, PropMeta, SlotMeta, StyleSetMeta } from '../types/meta';
 import type { ComposableMeta, CssToken, DirectiveMeta } from '../internal/types';
 import { getCandidateRefs } from '../internal/version/version-service';
@@ -7,6 +7,7 @@ import { fetchGitHubDirectory, fetchGitHubRawText, type GitHubContentEntry } fro
 const COMPONENTS_PATH = 'packages/vlossom/src/components';
 const DIRECTIVES_PATH = 'packages/vlossom/src/directives';
 const COMPOSABLES_PATH = 'packages/vlossom/src/composables';
+const PLUGINS_PATH = 'packages/vlossom/src/plugins';
 const STYLES_PATH = 'packages/vlossom/src/styles';
 
 const componentCache = new Map<string, ComponentMeta[]>();
@@ -14,6 +15,8 @@ const componentIndexCache = new Map<string, Promise<ComponentIndexEntry[]>>();
 const componentLookupCache = new Map<string, Promise<ComponentMeta | undefined>>();
 const directiveCache = new Map<string, DirectiveMeta[]>();
 const composableCache = new Map<string, ComposableMeta[]>();
+const pluginCache = new Map<string, VlossomPluginMeta[]>();
+const publicComposableDirsCache = new Map<string, Promise<Set<string>>>();
 const tokenCache = new Map<string, CssToken[]>();
 const refCache = new Map<string, VersionContext>();
 const rawCache = new Map<string, Promise<string>>();
@@ -24,28 +27,6 @@ export interface ComponentIndexEntry {
     name: string;
     kebabName: string;
 }
-
-const PUBLIC_COMPOSABLES = new Set([
-    'click-outside',
-    'color-scheme',
-    'focusable',
-    'input',
-    'input-form',
-    'input-messages',
-    'input-option',
-    'input-rules',
-    'list-index-selector',
-    'option-label-value',
-    'option-list',
-    'overlay-callback',
-    'overlay-dom',
-    'positioning',
-    'scroll-lock',
-    'state-class',
-    'string-modifier',
-    'style-set',
-    'value-matcher',
-]);
 
 function kebabToPascalCase(kebab: string): string {
     return kebab
@@ -562,7 +543,7 @@ export async function loadDirectives(versionContext: VersionContext): Promise<Di
     return directives;
 }
 
-function parseComposableReadme(readme: string, dirName: string): ComposableMeta {
+function parseComposableReadme(readme: string, dirName: string, isPublic: boolean): ComposableMeta {
     const lines = readme.split('\n');
     const name =
         lines
@@ -601,11 +582,31 @@ function parseComposableReadme(readme: string, dirName: string): ComposableMeta 
         dirName,
         description,
         availableVersion,
-        isPublic: PUBLIC_COMPOSABLES.has(dirName),
+        isPublic,
         args,
         returns,
         example,
     };
+}
+
+// Derive the public composable directory list from composables/index.ts so the
+// surface follows whatever vlossom exports for the resolved version, instead of
+// going stale against a hand-maintained allowlist.
+async function loadPublicComposableDirs(ref: string): Promise<Set<string>> {
+    const cached = publicComposableDirsCache.get(ref);
+    if (cached) return cached;
+
+    const promise = fetchRawCached(`${COMPOSABLES_PATH}/index.ts`, ref)
+        .then((content) => {
+            const dirs = new Set<string>();
+            for (const match of content.matchAll(/from\s+['"]\.\/([^/'"]+)\/[^'"]+['"]/g)) {
+                if (match[1]) dirs.add(match[1]);
+            }
+            return dirs;
+        })
+        .catch(() => new Set<string>());
+    publicComposableDirsCache.set(ref, promise);
+    return promise;
 }
 
 export async function loadComposables(versionContext: VersionContext): Promise<ComposableMeta[]> {
@@ -614,17 +615,92 @@ export async function loadComposables(versionContext: VersionContext): Promise<C
     const cached = composableCache.get(ref);
     if (cached) return cached;
 
-    const entries = await fetchGitHubDirectory(COMPOSABLES_PATH, ref).catch(() => []);
+    const [publicDirs, entries] = await Promise.all([
+        loadPublicComposableDirs(ref),
+        fetchGitHubDirectory(COMPOSABLES_PATH, ref).catch(() => []),
+    ]);
     const composables = await mapWithConcurrency(
         entries.filter((entry) => entry.type === 'dir' && !entry.name.includes('.') && entry.name !== '__tests__'),
         GITHUB_FETCH_CONCURRENCY,
         async (entry) => {
             const readme = await fetchRawOptional(`${COMPOSABLES_PATH}/${entry.name}/README.md`, ref);
-            return parseComposableReadme(readme, entry.name);
+            return parseComposableReadme(readme, entry.name, publicDirs.has(entry.name));
         },
     );
     composableCache.set(ref, composables);
     return composables;
+}
+
+// Plugin README contract (same as components): `# {Name} Plugin`, then a
+// description paragraph, `## Methods` table (Method / Parameters /
+// Description), and a fenced `## Basic Usage` example. We parse these into
+// VlossomPluginMeta so reference-service stops needing a hand-curated copy
+// that drifts as Vlossom plugin APIs evolve.
+function simplifyPluginParameters(parameters: string): string {
+    const cleaned = parameters.trim();
+    if (!cleaned || cleaned === '-') return '';
+    return cleaned
+        .split(',')
+        .map((part) => {
+            const trimmed = part.trim();
+            const colonIndex = trimmed.indexOf(':');
+            return colonIndex === -1 ? trimmed : trimmed.slice(0, colonIndex).trim();
+        })
+        .filter(Boolean)
+        .join(', ');
+}
+
+function parsePluginReadme(readme: string, property: string): VlossomPluginMeta {
+    const lines = readme.split('\n');
+    const h1Index = lines.findIndex((line) => /^# /.test(line));
+    const description =
+        lines
+            .slice(h1Index === -1 ? 0 : h1Index + 1)
+            .map((line) => line.trim())
+            .find(
+                (line) => line && !line.startsWith('#') && !line.startsWith('**') && !line.startsWith('>'),
+            ) ?? '';
+    const methods = parseSection(lines, 'Methods', 'method', (row) => {
+        const methodName = stripBackticks(row['method'] ?? '');
+        const params = simplifyPluginParameters(stripBackticks(row['parameters'] ?? ''));
+        return {
+            name: methodName ? `${methodName}(${params})` : '',
+            description: (row['description'] ?? '').trim(),
+        };
+    }).filter((method) => method.name);
+    const example = extractFenceAfter(
+        lines,
+        lines.findIndex((line) => /^## Basic Usage/.test(line)),
+    );
+
+    return {
+        name: `$vs.${property}`,
+        property,
+        description,
+        methods,
+        example,
+    };
+}
+
+export async function loadPlugins(versionContext: VersionContext): Promise<VlossomPluginMeta[]> {
+    const resolved = await resolveGitHubVersionContext(versionContext);
+    const ref = resolved.resolvedRef ?? 'main';
+    const cached = pluginCache.get(ref);
+    if (cached) return cached;
+
+    const entries = await fetchGitHubDirectory(PLUGINS_PATH, ref).catch(() => []);
+    const plugins = await mapWithConcurrency(
+        entries.filter((entry) => entry.type === 'dir' && entry.name.endsWith('-plugin')),
+        GITHUB_FETCH_CONCURRENCY,
+        async (entry) => {
+            const readme = await fetchRawOptional(`${PLUGINS_PATH}/${entry.name}/README.md`, ref);
+            const property = entry.name.replace(/-plugin$/, '');
+            return parsePluginReadme(readme, property);
+        },
+    );
+    const sorted = plugins.sort((a, b) => a.property.localeCompare(b.property));
+    pluginCache.set(ref, sorted);
+    return sorted;
 }
 
 function categorizeToken(name: string): string {

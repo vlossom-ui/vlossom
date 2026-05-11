@@ -3,7 +3,12 @@ import test from 'node:test';
 import { resolveVersionContext } from '../dist/internal/version/version-service';
 import { resolveGitHubVersionContext } from '../dist/services/github-registry-service';
 import { getAllComponentsMeta, getComponentMeta } from '../dist/services/meta-registry';
-import { loadComposables, loadCssTokens, loadDirectives } from '../dist/internal/reference/reference-data';
+import {
+    loadComposables,
+    loadCssTokens,
+    loadDirectives,
+    loadPlugins,
+} from '../dist/internal/reference/reference-data';
 
 const fixtureVersion = '9.9.9-fixture';
 const fixtureRef = `vlossom-v${fixtureVersion}`;
@@ -219,6 +224,110 @@ Direct lookup component.
                 .length,
             1,
         );
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('plugin loader parses plugin READMEs into VlossomPluginMeta', async () => {
+    const version = '9.9.6-plugin';
+    const ref = `vlossom-v${version}`;
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async (url: string | URL) => {
+        const href = String(url);
+        if (href.includes(`${ref}/packages/vlossom/package.json`)) {
+            return textResponse(JSON.stringify({ version }));
+        }
+        if (href.includes(`/contents/packages/vlossom/src/plugins?ref=${ref}`)) {
+            return jsonResponse([
+                { name: 'toast-plugin', path: 'packages/vlossom/src/plugins/toast-plugin', type: 'dir' },
+                { name: 'utils', path: 'packages/vlossom/src/plugins/utils', type: 'dir' },
+            ]);
+        }
+        if (href.includes(`${ref}/packages/vlossom/src/plugins/toast-plugin/README.md`)) {
+            return textResponse(`> 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
+
+# Toast Plugin
+
+**Available Version**: 9.9.6+
+
+Displays brief, non-blocking notification toasts.
+
+## Basic Usage
+
+\`\`\`html
+<script setup>
+const $vsToast = inject('$vsToast');
+$vsToast.info('hi');
+</script>
+\`\`\`
+
+## Methods
+
+| Method | Parameters | Description |
+| --- | --- | --- |
+| \`show\` | \`message: string \\| Component, options?: ToastOptions\` | Shows a toast. |
+| \`info\` | \`message: string\` | Cyan toast. |
+| \`clear\` | \`container?: string\` | Clears all toasts. |
+`);
+        }
+        return notFoundResponse();
+    }) as typeof fetch;
+
+    try {
+        const versionContext = await resolveGitHubVersionContext(resolveVersionContext({ version }));
+        const plugins = await loadPlugins(versionContext);
+
+        assert.equal(plugins.length, 1, 'should filter to *-plugin dirs only');
+        assert.equal(plugins[0]?.name, '$vs.toast');
+        assert.equal(plugins[0]?.property, 'toast');
+        assert.ok(plugins[0]?.description.startsWith('Displays brief'));
+        assert.deepEqual(
+            plugins[0]?.methods.map((m) => m.name),
+            ['show(message, options?)', 'info(message)', 'clear(container?)'],
+        );
+        assert.equal(plugins[0]?.methods[0]?.description, 'Shows a toast.');
+        assert.ok(plugins[0]?.example.includes("$vsToast.info('hi')"));
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('composables loader derives isPublic from composables/index.ts exports', async () => {
+    const version = '9.9.5-composables';
+    const ref = `vlossom-v${version}`;
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async (url: string | URL) => {
+        const href = String(url);
+        if (href.includes(`${ref}/packages/vlossom/package.json`)) {
+            return textResponse(JSON.stringify({ version }));
+        }
+        if (href.includes(`/contents/packages/vlossom/src/composables?ref=${ref}`)) {
+            return jsonResponse([
+                { name: 'public-one', path: 'packages/vlossom/src/composables/public-one', type: 'dir' },
+                { name: 'private-one', path: 'packages/vlossom/src/composables/private-one', type: 'dir' },
+            ]);
+        }
+        if (href.includes(`${ref}/packages/vlossom/src/composables/index.ts`)) {
+            return textResponse(`export * from './public-one/public-one-composable';\n`);
+        }
+        if (href.includes(`${ref}/packages/vlossom/src/composables/public-one/README.md`)) {
+            return textResponse(`# usePublicOne\n\nPublic composable.\n\n**Available Version**: 9.9.5+\n`);
+        }
+        if (href.includes(`${ref}/packages/vlossom/src/composables/private-one/README.md`)) {
+            return textResponse(`# usePrivateOne\n\nPrivate composable.\n\n**Available Version**: 9.9.5+\n`);
+        }
+        return notFoundResponse();
+    }) as typeof fetch;
+
+    try {
+        const versionContext = await resolveGitHubVersionContext(resolveVersionContext({ version }));
+        const composables = await loadComposables(versionContext);
+
+        const publicEntry = composables.find((c) => c.dirName === 'public-one');
+        const privateEntry = composables.find((c) => c.dirName === 'private-one');
+        assert.equal(publicEntry?.isPublic, true, 'public-one is exported from index.ts');
+        assert.equal(privateEntry?.isPublic, false, 'private-one is not exported from index.ts');
     } finally {
         globalThis.fetch = originalFetch;
     }

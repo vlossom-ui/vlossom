@@ -15,8 +15,8 @@ import {
     loadComposables,
     loadCssTokens,
     loadDirectives,
+    loadPlugins,
     VLOSSOM_OPTIONS,
-    VLOSSOM_PLUGINS,
     VLOSSOM_SETUP_EXAMPLE,
 } from './reference-data';
 
@@ -330,11 +330,16 @@ async function tokenReference(
     };
 }
 
-function optionReference(input: GetVlossomReferenceInput): GetVlossomReferenceResult {
+async function optionReference(
+    input: GetVlossomReferenceInput,
+    versionContext: VersionContext,
+): Promise<GetVlossomReferenceResult> {
     const option = input.id ? VLOSSOM_OPTIONS.find((entry) => entry.name === input.id) : undefined;
     if (input.id && !option) {
         return notFound('option', input.id, `createVlossom option '${input.id}' was not found.`);
     }
+
+    const plugins = await loadPlugins(versionContext);
 
     return {
         status: 'ok',
@@ -343,7 +348,7 @@ function optionReference(input: GetVlossomReferenceInput): GetVlossomReferenceRe
         id: input.id,
         reference: {
             options: option ? [option] : VLOSSOM_OPTIONS,
-            plugins: VLOSSOM_PLUGINS,
+            plugins,
             fullExample: VLOSSOM_SETUP_EXAMPLE,
         },
         resourceUris: [
@@ -455,7 +460,7 @@ export async function getVlossomReference(input: GetVlossomReferenceInput): Prom
                 case 'token':
                     return tokenReference(input, versionContext);
                 case 'option':
-                    return optionReference(input);
+                    return optionReference(input, versionContext);
                 case 'changelog':
                     return changelogReference(input);
                 case 'rule':
