@@ -58,7 +58,7 @@ Supporting services live under `src/services`, shared response/types under `src/
 
 ## Data Sources
 
-Runtime Vlossom API data is GitHub-backed and resolved for the project version. The MCP no longer bundles generated `src/data/*.json` or `dist/data/*.json` metadata.
+Runtime Vlossom API data is GitHub-backed and resolved for the project version. The MCP no longer bundles generated `src/data/*.json` or `dist/data/*.json` metadata. Curated MCP-policy data (relationships, rules, synonyms) still lives under `src/data/` as TypeScript constants.
 
 The runtime registry checks GitHub refs in this order:
 
@@ -68,15 +68,26 @@ vlossom-v{version} -> v{version} -> {version} -> main
 
 If no version-specific ref exists, the registry falls back to `main` and adds a warning to `versionContext.warnings`.
 
-| Source                                                              | Purpose                                                                  |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| GitHub `packages/vlossom/src/components/*/README.md` and `types.ts` | Component props, slots, events, v-model, methods, and StyleSet metadata. |
-| GitHub `packages/vlossom/src/directives`                            | Directive reference data.                                                |
-| GitHub `packages/vlossom/src/composables`                           | Composable reference data.                                               |
-| GitHub `packages/vlossom/src/styles/*.css`                          | Vlossom CSS token list.                                                  |
-| `relationships-registry.ts`                                         | Curated component relationship map.                                      |
-| `coding-rules.ts`                                                   | Coding, StyleSet, setup, and Vlossom-first rule data.                    |
-| `search-synonyms.ts`                                                | Search synonym expansion data.                                           |
+### GitHub-derived (per resolved ref)
+
+| Source                                                                | Purpose                                                                                            |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `packages/vlossom/src/components/*/README.md` and `types.ts`          | Component props, slots, events, v-model, methods, and StyleSet metadata.                           |
+| `packages/vlossom/src/directives/*/README.md`                         | Directive reference data.                                                                          |
+| `packages/vlossom/src/composables/*/README.md`                        | Composable reference data.                                                                         |
+| `packages/vlossom/src/composables/index.ts`                           | Public-composable allowlist — derived from the `export * from './<dir>/...'` lines.                |
+| `packages/vlossom/src/plugins/*-plugin/README.md`                     | Plugin (toast / modal / alert / confirm / prompt) name, methods, availableVersion, and example.    |
+| `packages/vlossom/README.md` (`## Setup` fenced block)                | Install/setup snippet returned as `get_vlossom_reference({type:'option'}).reference.fullExample`. |
+| `packages/vlossom/src/styles/*.css`                                   | Vlossom CSS token list.                                                                            |
+| `api.github.com/repos/vlossom-ui/vlossom/releases?per_page=100`       | Changelog entries surfaced by `get_vlossom_reference({type:'changelog'})`.                         |
+
+### Curated under `src/data/`
+
+| Source                                  | Purpose                                                                                                   |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `src/data/component-relationships.ts`   | Curated component parent / children / siblings map — children also help validators and scaffolders.      |
+| `src/data/coding-rules.ts`              | Vlossom-first scaffolding rule data exposed via `get_vlossom_reference({type:'rule'})`.                   |
+| `src/data/search-synonyms.ts`           | Natural-language to Vlossom-concept keyword expansion used by `search_vlossom`.                            |
 
 The registry uses process memory cache only. There is no persistent generated cache.
 
