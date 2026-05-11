@@ -1,20 +1,5 @@
-import type { ChangelogEntry, VlossomOptionMeta, VlossomPluginMeta } from '../types';
+import type { VlossomOptionMeta, VlossomPluginMeta } from '../types';
 export { loadComposables, loadCssTokens, loadDirectives } from '../../services/github-registry-service';
-
-export const MIGRATION_STEPS: Record<string, string[]> = {
-    '2.0.0-beta.1': [
-        'Replace flat StyleSet properties with { variables: { ... }, component: CSSProperties }',
-        'Use get_vlossom_reference to check the current StyleSet interface for each component',
-        "Use scaffold_vlossom_code(kind: 'style-set') to scaffold new StyleSet objects",
-        'Replace size prop styling workarounds with StyleSet variables or CSS tokens',
-        'Move .vs-* selector overrides into :style-set props',
-    ],
-};
-
-export function enrichChangelogEntry(entry: ChangelogEntry): ChangelogEntry {
-    const steps = MIGRATION_STEPS[entry.version];
-    return steps ? { ...entry, migrationSteps: steps } : entry;
-}
 
 export const VLOSSOM_OPTIONS: VlossomOptionMeta[] = [
     {

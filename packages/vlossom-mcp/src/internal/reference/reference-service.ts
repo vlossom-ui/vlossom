@@ -12,7 +12,6 @@ import type { FacadeResultBase, ReferenceInclude, ReferenceType, ResourceLink, V
 import { getVersionSupport, resolveVersionContext } from '../version/version-service';
 import { getRule } from '../validation/rule-registry';
 import {
-    enrichChangelogEntry,
     loadComposables,
     loadCssTokens,
     loadDirectives,
@@ -378,7 +377,7 @@ async function changelogReference(input: GetVlossomReferenceInput): Promise<GetV
             currentVersion: data.currentVersion,
             latestStable: data.latestStable,
             latestPrerelease: data.latestPrerelease,
-            versions: entries.map(enrichChangelogEntry),
+            versions: entries,
         },
         resourceUris: [{ uri: 'vlossom://changelog', description: 'Vlossom changelog' }],
         next_actions: [

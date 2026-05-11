@@ -133,10 +133,6 @@ export interface ChangelogEntryRaw {
     notes?: string;
 }
 
-export interface ChangelogEntry extends ChangelogEntryRaw {
-    migrationSteps?: string[];
-}
-
 export interface ChangelogData {
     latestStable: string | null;
     latestPrerelease: string | null;
