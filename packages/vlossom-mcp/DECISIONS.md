@@ -5,6 +5,39 @@
 
 ---
 
+## 결정 80: Plugin / 공개 composable 데이터를 runtime GitHub fetch로 전환
+
+**날짜**: 2026-05-08
+
+**배경**: 결정 77 이후 `reference-data.ts`에 남아 있던 정적 데이터 두 묶음이 drift 위험의 주요 원인이었다.
+
+1. `VLOSSOM_PLUGINS`(약 100줄): toast / modal / alert / confirm / prompt 다섯 플러그인의 `name` / `property` / `methods` / `example`을 손으로 유지. PR #413 review에서 실제로 method 시그니처가 invented되어 있었음(`open(component)` 등 vlossom 본체에 없는 API). hand-curated copy가 그대로 LLM에 노출되어 잘못된 코드를 유도할 수 있음.
+2. `github-registry-service.PUBLIC_COMPOSABLES`(19개 set): 어떤 composable이 public surface인지 결정하는 화이트리스트. 실제 source of truth는 `composables/index.ts`의 `export * from './<dir>/...'` 라인. 새 composable이 public이 되면 두 곳을 모두 손봐야 함.
+
+| #  | 옵션                                                       | 검토 결과                                                                                                       |
+| -- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 1  | hand-curated 데이터 유지, 검토 cadence로 drift 관리        | ❌ PR #413에서 이미 drift 발생. 정기 검토만으로는 또 발생.                                                       |
+| 2  | vlossom 본체에 별도 metadata API 추가 후 fetch             | ❌ vlossom 본체에 새 책임을 강제. over-engineering.                                                             |
+| 3  | runtime GitHub fetch로 source-of-truth에서 직접 도출       | ✅ 채택 — 컴포넌트/디렉티브와 동일 패턴. drift 영구 차단.                                                        |
+
+**변경 내용**:
+
+- `services/github-registry-service.ts`:
+  - `PLUGINS_PATH` / `pluginCache` 신설.
+  - `parsePluginReadme(readme, property)` — `## Methods` 표(Method / Parameters / Description)와 `## Basic Usage` fenced block을 파싱. Parameters는 타입 신호를 제거한 이름 리스트로 단순화(`message: string | Component` → `message`).
+  - `loadPlugins(versionContext)` — `packages/vlossom/src/plugins/*-plugin/README.md`를 fetch, 캐시는 ref 단위.
+  - `loadPublicComposableDirs(ref)` — `composables/index.ts`의 export 라인을 정규식으로 파싱해 dir set 생성.
+  - `parseComposableReadme`의 `PUBLIC_COMPOSABLES.has(dirName)` 호출을 파라미터로 받은 `isPublic`로 교체.
+- `reference-data.ts`: 정적 `VLOSSOM_PLUGINS` 제거. `loadPlugins`를 re-export.
+- `reference-service.ts`: `optionReference`를 async화하고 `loadPlugins(versionContext)` 호출로 변경.
+- `test/github-registry-service.test.ts`: 두 fixture 테스트 추가(plugin parser, 동적 public-composables 필터).
+
+**결정**: `VLOSSOM_PLUGINS`와 `PUBLIC_COMPOSABLES`는 hand-curated 데이터에서 GitHub source-of-truth fetch로 전환한다. drift는 정기 검토가 아닌 구조적 차단으로 해결한다.
+
+**근거**: 컴포넌트/디렉티브/composable 메타데이터가 이미 동일한 GitHub fetch 패턴(`raw.githubusercontent.com` 위주, 디렉토리 listing만 `api.github.com`)으로 동작하고 있어 추가 의존성이 없다. 캐시(`pluginCache`, `publicComposableDirsCache`)는 기존 ref-단위 캐시 위에 자연스럽게 얹힌다. 실측 5개 plugin이 정확히 본체 README와 1:1로 추출됨을 live smoke test로 확인.
+
+---
+
 ## 결정 79: vlossom-mcp를 release-please publish 파이프라인에 합류
 
 **날짜**: 2026-05-08
