@@ -4,6 +4,7 @@ export {
     loadCssTokens,
     loadDirectives,
     loadPlugins,
+    loadSetupExample,
 } from '../../services/github-registry-service';
 
 export const VLOSSOM_OPTIONS: VlossomOptionMeta[] = [
@@ -53,14 +54,3 @@ export const VLOSSOM_OPTIONS: VlossomOptionMeta[] = [
     },
 ];
 
-export const VLOSSOM_SETUP_EXAMPLE = `import { createApp } from 'vue'
-import { createVlossom, VlossomComponents } from 'vlossom'
-import 'vlossom/styles'
-import App from './App.vue'
-
-const vlossom = createVlossom({
-  components: VlossomComponents,
-  colorScheme: { default: 'blue' },
-})
-
-createApp(App).use(vlossom).mount('#app')`;

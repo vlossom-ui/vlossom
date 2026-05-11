@@ -16,8 +16,8 @@ import {
     loadCssTokens,
     loadDirectives,
     loadPlugins,
+    loadSetupExample,
     VLOSSOM_OPTIONS,
-    VLOSSOM_SETUP_EXAMPLE,
 } from './reference-data';
 
 export interface GetVlossomReferenceInput {
@@ -339,7 +339,11 @@ async function optionReference(
         return notFound('option', input.id, `createVlossom option '${input.id}' was not found.`);
     }
 
-    const plugins = (await loadPlugins(versionContext)).map((plugin) => ({
+    const [pluginsRaw, fullExample] = await Promise.all([
+        loadPlugins(versionContext),
+        loadSetupExample(versionContext),
+    ]);
+    const plugins = pluginsRaw.map((plugin) => ({
         ...plugin,
         versionSupport: getVersionSupport(plugin.availableVersion, versionContext),
     }));
@@ -352,7 +356,7 @@ async function optionReference(
         reference: {
             options: option ? [option] : VLOSSOM_OPTIONS,
             plugins,
-            fullExample: VLOSSOM_SETUP_EXAMPLE,
+            fullExample,
         },
         resourceUris: [
             {

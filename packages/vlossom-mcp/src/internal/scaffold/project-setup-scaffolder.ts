@@ -1,5 +1,20 @@
-import { VLOSSOM_SETUP_EXAMPLE } from '../reference/reference-data';
 import type { ScaffoldContext } from './component-usage-scaffolder';
+
+// Inline starter template for scaffolded vite projects. The reference path
+// (`get_vlossom_reference({type:'option'})`) sources its example from the
+// resolved Vlossom version's README — scaffolding only needs a stable
+// starting shape that does not vary with the user's installed version.
+const VITE_SETUP_TEMPLATE = `import { createApp } from 'vue'
+import { createVlossom, VlossomComponents } from 'vlossom'
+import 'vlossom/styles'
+import App from './App.vue'
+
+const vlossom = createVlossom({
+  components: VlossomComponents,
+  colorScheme: { default: 'blue' },
+})
+
+createApp(App).use(vlossom).mount('#app')`;
 
 export interface ProjectSetupScaffoldInput {
     description: string;
@@ -48,7 +63,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   nuxtApp.vueApp.use(vlossom)
 })`
-            : VLOSSOM_SETUP_EXAMPLE;
+            : VITE_SETUP_TEMPLATE;
 
     return {
         status: 'ok',

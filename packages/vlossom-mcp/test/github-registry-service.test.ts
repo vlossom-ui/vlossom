@@ -8,6 +8,7 @@ import {
     loadCssTokens,
     loadDirectives,
     loadPlugins,
+    loadSetupExample,
 } from '../dist/internal/reference/reference-data';
 
 const fixtureVersion = '9.9.9-fixture';
@@ -289,6 +290,79 @@ $vsToast.info('hi');
         );
         assert.equal(plugins[0]?.methods[0]?.description, 'Shows a toast.');
         assert.ok(plugins[0]?.example.includes("$vsToast.info('hi')"));
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('setup-example loader extracts the ## Setup fenced block from vlossom README', async () => {
+    const version = '9.9.4-setup';
+    const ref = `vlossom-v${version}`;
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async (url: string | URL) => {
+        const href = String(url);
+        if (href.includes(`${ref}/packages/vlossom/package.json`)) {
+            return textResponse(JSON.stringify({ version }));
+        }
+        if (href.includes(`${ref}/packages/vlossom/README.md`)) {
+            return textResponse(`# Vlossom
+
+Some description.
+
+## Installation
+
+\`\`\`bash
+npm install vlossom
+\`\`\`
+
+## Setup
+
+\`\`\`typescript
+import { createApp } from 'vue';
+import { createVlossom, VlossomComponents } from 'vlossom';
+const app = createApp(App);
+app.use(createVlossom({ components: VlossomComponents }));
+\`\`\`
+
+## Usage
+`);
+        }
+        return notFoundResponse();
+    }) as typeof fetch;
+
+    try {
+        const versionContext = await resolveGitHubVersionContext(resolveVersionContext({ version }));
+        const example = await loadSetupExample(versionContext);
+
+        assert.ok(example.includes("import { createApp } from 'vue'"));
+        assert.ok(example.includes('createVlossom({ components: VlossomComponents })'));
+        assert.equal(example.includes('npm install vlossom'), false, 'should pick the Setup block, not Installation');
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('setup-example loader falls back when the README has no Setup section', async () => {
+    const version = '9.9.3-no-setup';
+    const ref = `vlossom-v${version}`;
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async (url: string | URL) => {
+        const href = String(url);
+        if (href.includes(`${ref}/packages/vlossom/package.json`)) {
+            return textResponse(JSON.stringify({ version }));
+        }
+        if (href.includes(`${ref}/packages/vlossom/README.md`)) {
+            return textResponse(`# Vlossom\n\nNo setup section here.\n`);
+        }
+        return notFoundResponse();
+    }) as typeof fetch;
+
+    try {
+        const versionContext = await resolveGitHubVersionContext(resolveVersionContext({ version }));
+        const example = await loadSetupExample(versionContext);
+
+        assert.ok(example.includes("import { createApp } from 'vue'"));
+        assert.ok(example.includes('createVlossom({ components: VlossomComponents })'));
     } finally {
         globalThis.fetch = originalFetch;
     }

@@ -705,6 +705,40 @@ export async function loadPlugins(versionContext: VersionContext): Promise<Vloss
     return sorted;
 }
 
+const setupExampleCache = new Map<string, Promise<string>>();
+
+const SETUP_EXAMPLE_FALLBACK = `import { createApp } from 'vue'
+import { createVlossom, VlossomComponents } from 'vlossom'
+import 'vlossom/styles'
+import App from './App.vue'
+
+const app = createApp(App)
+app.use(createVlossom({ components: VlossomComponents }))
+app.mount('#app')`;
+
+// Pull the install snippet from vlossom's main package README so the
+// example shown by get_vlossom_reference({type:'option'}) tracks whatever
+// setup pattern the resolved Vlossom version documents. Falls back to a
+// minimal createVlossom call when the README is unreachable or the
+// `## Setup` section is missing.
+export async function loadSetupExample(versionContext: VersionContext): Promise<string> {
+    const resolved = await resolveGitHubVersionContext(versionContext);
+    const ref = resolved.resolvedRef ?? 'main';
+    const cached = setupExampleCache.get(ref);
+    if (cached) return cached;
+
+    const promise = fetchRawCached('packages/vlossom/README.md', ref)
+        .then((readme) => {
+            const lines = readme.split('\n');
+            const setupIndex = lines.findIndex((line) => /^##\s+Setup\b/i.test(line));
+            const fenced = extractFenceAfter(lines, setupIndex);
+            return fenced || SETUP_EXAMPLE_FALLBACK;
+        })
+        .catch(() => SETUP_EXAMPLE_FALLBACK);
+    setupExampleCache.set(ref, promise);
+    return promise;
+}
+
 function categorizeToken(name: string): string {
     if (
         /--vs-(white|black|gray|red|brown|orange|amber|yellow|lime|green|teal|cyan|blue|indigo|violet|purple|pink)-/.test(
