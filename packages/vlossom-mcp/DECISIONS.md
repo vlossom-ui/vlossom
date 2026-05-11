@@ -5,6 +5,37 @@
 
 ---
 
+## 결정 78: PR #413 인라인 review follow-up — 12개 코멘트를 commit별로 분리 반영
+
+**날짜**: 2026-05-08
+
+**배경**: PR #413 초기 두 commit(`6f45e06`, `24fc091`) 위에 작성자 self-review가 12개의 인라인 코멘트(P1 5개 / P2 2개 / P3 2개 / P4 1개 / P5 2개)를 남겼다. 각 코멘트는 별도의 관심사(`.ko.md` 제거, plugin API alignment, 코딩 규칙 재작성, sfc-validator의 Vue-owned 키워드 enumeration 제거 등)를 다루기 때문에 한꺼번에 처리하면 review 단위가 흐려지고, "어느 코멘트가 어느 변경으로 반영됐는지" 추적이 어려워진다.
+
+**변경 내용**:
+
+코멘트당 1 commit으로 분리해 다음 순서로 반영했다 (P1 → P2 → P3 → P4 → P5):
+
+| #  | Commit                                                                | 대응 코멘트                                                              |
+| -- | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 1  | revert(skills): restore /doc-amend numbering                          | P1 — `.claude/skills/README.md`의 의미 없는 numbering 변경 되돌림        |
+| 2  | docs(vlossom-mcp): drop unused .ko.md doc variants                    | P1 — `README.ko.md` / `CLAUDE.ko.md` 제거 + 의존 참조 정리               |
+| 3  | chore(vlossom-mcp): inline dist cleanup                               | P3 — `scripts/clean-dist.ts` 제거, `package.json` 인라인 처리            |
+| 4  | refactor(vlossom-mcp): drop hand-curated MIGRATION_STEPS              | P2 — 버전별 migration steps 정적 데이터 제거, 에이전트 추론에 위임       |
+| 5  | fix(vlossom-mcp): align VLOSSOM_PLUGINS with real plugin APIs         | P1 — Toast/Modal/Alert/Confirm/Prompt 실제 API와 정렬                    |
+| 6  | refactor(vlossom-mcp): replace concrete coding rules                  | P1 — 12개의 콘크리트 규칙을 5개의 scaffolding 명제로 단순화              |
+| 7  | feat(vlossom-mcp): broaden search synonyms                            | P4 — breadcrumb/fab/snack/searchbar/data-table 등 도메인 어휘 추가       |
+| 8  | refactor(vlossom-mcp): move synonym-expander into utils/              | P3 — domain-agnostic helper를 `internal/utils/`로 이동                   |
+| 9  | refactor(vlossom-mcp): split component-relationships data             | P5 — `src/data/component-relationships.ts`로 데이터 분리                 |
+| 10 | refactor(vlossom-mcp): drop Vue-owned keyword enumerations            | P2 — `VUE_DIRECTIVES` / `COMMON_DOM_EVENTS` 제거, prefix 기반 필터로 대체|
+| 11 | feat(vlossom-mcp): broaden Vlossom-first detection                    | P1 — 3rd-party 라이브러리/태그 확장, `PREFER_STYLE_SET` 검출 추가        |
+| 12 | refactor(vlossom-mcp): metadata-driven component-usage scaffolder     | P5 — 하드코딩 템플릿 제거, registry meta 기반 생성                       |
+
+**결정**: 리뷰 follow-up은 코멘트당 1 commit으로 분리하고, 본 PR scope 안에서 처리한다.
+
+**근거**: 12개 변경이 서로 결합도가 낮고 review 흐름이 코멘트 단위로 진행되므로, 분리 commit이 추적성·revert 단위·향후 bisect 비용 면에서 모두 유리하다. 합쳐서 단일 commit으로 묶으면 작성자 self-review의 의도가 git history에서 사라진다.
+
+---
+
 ## 결정 77: `skill/SKILL.md`와 `FEATURES.md` 제거
 
 **날짜**: 2026-05-08
