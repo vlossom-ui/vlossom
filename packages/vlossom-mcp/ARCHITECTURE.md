@@ -31,7 +31,6 @@ All four facade tools return structured output and `next_actions` for agent rout
 src/internal/
   search/
     component-search-service.ts
-    synonym-expander.ts
     coverage-resolver.ts
   reference/
     reference-data.ts
@@ -41,6 +40,8 @@ src/internal/
     project-setup-scaffolder.ts
     scaffold-service.ts
     style-set-scaffolder.ts
+  utils/
+    synonym-expander.ts
   validation/
     project-setup-validator.ts
     rule-registry.ts

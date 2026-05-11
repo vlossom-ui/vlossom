@@ -13,7 +13,7 @@ import type {
 } from '../types';
 import { getVersionSupport, resolveVersionContext } from '../version/version-service';
 import { resolveCoverage } from './coverage-resolver';
-import { expandQuery, extractKeywords } from './synonym-expander';
+import { expandQuery, extractKeywords } from '../utils/synonym-expander';
 import { getRuleRegistry } from '../validation/rule-registry';
 
 export interface SearchVlossomInput {
