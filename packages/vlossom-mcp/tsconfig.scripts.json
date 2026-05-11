@@ -8,6 +8,6 @@
         "sourceMap": false,
         "strict": false
     },
-    "include": ["scripts/**/*.ts", "test/**/*.ts"],
+    "include": ["test/**/*.ts"],
     "exclude": ["node_modules", "dist"]
 }
