@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <vs-render :content="paginationIcons.goFirst" />
+                <vs-render class="size-4" :content="paginationIcons.goFirst" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <vs-render :content="paginationIcons.goPrev" />
+                <vs-render class="size-4" :content="paginationIcons.goPrev" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <vs-render :content="paginationIcons.goNext" />
+                <vs-render class="size-4" :content="paginationIcons.goNext" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <vs-render :content="paginationIcons.goLast" />
+                <vs-render class="size-4" :content="paginationIcons.goLast" />
             </slot>
         </vs-button>
     </div>
@@ -144,9 +144,7 @@ export default defineComponent({
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
-            $controlButton: {
-                padding: '0.4rem',
-            },
+            $controlButton: { $content: { padding: '0' } },
         }));
 
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsPaginationStyleSet>(
