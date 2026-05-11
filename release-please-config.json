@@ -1,11 +1,16 @@
 {
     "draft": false,
-    "prerelease": false,
+    "prerelease": true,
     "separate-pull-requests": true,
     "packages": {
+        "packages/vlossom": {
+            "release-type": "node",
+            "package-name": "vlossom"
+        },
         "packages/vlossom-mcp": {
             "release-type": "node",
-            "package-name": "vlossom-mcp"
+            "package-name": "vlossom-mcp",
+            "prerelease": false
         }
     },
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"

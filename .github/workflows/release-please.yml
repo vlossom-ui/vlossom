@@ -10,43 +10,28 @@ permissions:
     pull-requests: write
 
 jobs:
-    release-vlossom:
+    release-please:
         if: startsWith(github.event.head_commit.message, 'feat') || startsWith(github.event.head_commit.message, 'fix') || startsWith(github.event.head_commit.message, 'chore') || startsWith(github.event.head_commit.message, 'refactor') || startsWith(github.event.head_commit.message, 'revert')
         runs-on: ubuntu-latest
         outputs:
-            released: ${{ steps.release.outputs['packages/vlossom--release_created'] }}
+            vlossom-released: ${{ steps.release.outputs['packages/vlossom--release_created'] }}
+            vlossom-mcp-released: ${{ steps.release.outputs['packages/vlossom-mcp--release_created'] }}
         steps:
             - uses: googleapis/release-please-action@v5
               id: release
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  config-file: release-please-config.vlossom.json
-                  manifest-file: release-please-manifest.vlossom.json
+                  config-file: release-please-config.json
+                  manifest-file: release-please-manifest.json
 
-            - name: Print release-vlossom outputs
+            - name: Print release-please outputs
               run: |
                   echo "vlossom released: ${{ steps.release.outputs['packages/vlossom--release_created'] }}"
-
-    release-vlossom-mcp:
-        if: startsWith(github.event.head_commit.message, 'feat') || startsWith(github.event.head_commit.message, 'fix') || startsWith(github.event.head_commit.message, 'chore') || startsWith(github.event.head_commit.message, 'refactor') || startsWith(github.event.head_commit.message, 'revert')
-        runs-on: ubuntu-latest
-        outputs:
-            released: ${{ steps.release.outputs['packages/vlossom-mcp--release_created'] }}
-        steps:
-            - uses: googleapis/release-please-action@v4
-              id: release
-              with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  config-file: release-please-config.vlossom-mcp.json
-                  manifest-file: release-please-manifest.vlossom-mcp.json
-
-            - name: Print release-vlossom-mcp outputs
-              run: |
                   echo "vlossom-mcp released: ${{ steps.release.outputs['packages/vlossom-mcp--release_created'] }}"
 
     publish-vlossom:
-        needs: release-vlossom
-        if: ${{ needs.release-vlossom.outputs.released == 'true' }}
+        needs: release-please
+        if: ${{ needs.release-please.outputs.vlossom-released == 'true' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v5
@@ -80,8 +65,8 @@ jobs:
                   fi
 
     publish-vlossom-mcp:
-        needs: release-vlossom-mcp
-        if: ${{ needs.release-vlossom-mcp.outputs.released == 'true' }}
+        needs: release-please
+        if: ${{ needs.release-please.outputs.vlossom-mcp-released == 'true' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
