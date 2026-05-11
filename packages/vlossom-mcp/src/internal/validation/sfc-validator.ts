@@ -10,36 +10,12 @@ interface SfcValidationOptions {
     versionContext?: VersionContext;
 }
 
-const VUE_DIRECTIVES = new Set([
-    'v-if',
-    'v-else',
-    'v-else-if',
-    'v-for',
-    'v-show',
-    'v-bind',
-    'v-on',
-    'v-slot',
-    'v-pre',
-    'v-cloak',
-    'v-once',
-    'v-memo',
-    'key',
-    'ref',
-    'class',
-]);
-
-const COMMON_DOM_EVENTS = new Set([
-    'click',
-    'input',
-    'change',
-    'submit',
-    'focus',
-    'blur',
-    'keydown',
-    'keyup',
-    'mouseenter',
-    'mouseleave',
-]);
+// Universal template-context attributes the validator must ignore: anything
+// any tag can accept (HTML special attributes and Vue's tag-level specials).
+// We do not enumerate Vue directives here — they are caught by the `v-*`
+// prefix check at the call site, which keeps Vue-owned knowledge out of this
+// package.
+const UNIVERSAL_TEMPLATE_ATTRIBUTES = new Set(['id', 'key', 'ref', 'class', 'style', 'slot']);
 
 function kebabToPascalCase(value: string): string {
     return value
@@ -215,7 +191,11 @@ function validatePropsAndEvents(meta: ComponentMeta, body: string, line: number)
         if (!raw || raw.startsWith('#')) continue;
         if (raw.startsWith('@')) {
             const event = kebabToCamelCase(raw.slice(1));
-            if (COMMON_DOM_EVENTS.has(event)) continue;
+            // Skip events that look like single-word lowercase listeners.
+            // Vue passes those through to the underlying element, so we
+            // can't tell from Vlossom metadata alone whether they are valid;
+            // flagging them would create constant false positives.
+            if (/^[a-z]+$/.test(event)) continue;
             if (!eventNames.has(event)) {
                 issues.push(
                     issue(
@@ -230,10 +210,13 @@ function validatePropsAndEvents(meta: ComponentMeta, body: string, line: number)
         }
 
         const prop = raw.startsWith(':') ? raw.slice(1) : raw;
-        if (prop === 'style') continue;
-        if (prop.startsWith('v-model')) continue;
-        if (VUE_DIRECTIVES.has(prop)) continue;
+        // Skip Vue directive bindings (any `v-*`) and the small set of
+        // tag-level attributes accepted by every Vue/HTML element. Those
+        // surfaces are not owned by Vlossom and should not flow through
+        // Vlossom prop validation.
         if (prop.startsWith('v-')) continue;
+        if (prop.startsWith('data-') || prop.startsWith('aria-')) continue;
+        if (UNIVERSAL_TEMPLATE_ATTRIBUTES.has(prop)) continue;
         const camelProp = kebabToCamelCase(prop);
         providedProps.add(camelProp);
         if (!propNames.has(camelProp)) {
