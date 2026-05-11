@@ -5,6 +5,32 @@
 
 ---
 
+## 결정 81: Plugin `availableVersion` 추출과 setup example의 runtime 도출
+
+**날짜**: 2026-05-08
+
+**배경**: 결정 80으로 `VLOSSOM_PLUGINS`와 `PUBLIC_COMPOSABLES`가 GitHub fetch 기반으로 옮겨졌으나, source-of-truth 커버리지에 두 빈틈이 남아 있었다.
+
+1. Plugin README는 `**Available Version**: 2.0.0+` 라인을 컴포넌트/디렉티브/composable과 동일 포맷으로 이미 갖고 있는데, `parsePluginReadme`가 이를 추출하지 않아 `VlossomPluginMeta`에 `availableVersion` 필드가 없었다. 결과적으로 `get_vlossom_reference({type:'option'})` 응답이 다른 entry들과 달리 `versionSupport`를 노출하지 않았고, 사용자가 vlossom@1.x 프로젝트에서 2.0.0+ 전용 플러그인을 쓰려 해도 MCP가 경고를 못 함.
+2. `VLOSSOM_SETUP_EXAMPLE`은 hand-curated `createApp(App).use(vlossom).mount('#app')` 스니펫이 정적 상수로 남아 있었다. vlossom 본체 README의 `## Setup` 섹션이 install 코드의 source-of-truth이지만, MCP는 이 README를 fetch하지 않고 자체 사본을 노출하던 상태. plugin과 같은 drift 위험.
+
+**변경 내용**:
+
+- `internal/types.ts`: `VlossomPluginMeta`에 `availableVersion: string` 필드 추가.
+- `services/github-registry-service.ts`:
+  - `parsePluginReadme`가 `**Available Version**` 라인을 컴포넌트 파서와 같은 regex로 추출.
+  - `loadSetupExample(versionContext)` 신설 — `packages/vlossom/README.md`를 fetch, `## Setup` 헤더 뒤의 첫 fenced block을 `extractFenceAfter`로 추출. ref 단위 캐시(`setupExampleCache`)와 README가 도달 불가 / 섹션 누락 시 fallback 문자열(`SETUP_EXAMPLE_FALLBACK`) 제공.
+- `reference-data.ts`: 정적 `VLOSSOM_SETUP_EXAMPLE` 제거. `loadSetupExample`을 re-export.
+- `reference-service.optionReference`: `loadPlugins` + `loadSetupExample`을 `Promise.all`로 동시 호출. 각 plugin에 `versionSupport: getVersionSupport(plugin.availableVersion, versionContext)`를 주입. `fullExample`은 동적 문자열로 반환.
+- `internal/scaffold/project-setup-scaffolder.ts`: 이전에 `VLOSSOM_SETUP_EXAMPLE`을 참조하던 vite 케이스에 inline `VITE_SETUP_TEMPLATE`을 둠. scaffold는 user version에 맞춰 변동될 필요가 없는 starter 템플릿이라 reference 경로와 분리.
+- 테스트: plugin parser의 `availableVersion` 단언 추가, `loadSetupExample` happy-path / fallback 두 fixture 테스트 신설.
+
+**결정**: 플러그인은 다른 registry entry와 동일하게 `availableVersion` + `versionSupport`를 노출하고, install/setup 예제는 vlossom main README의 `## Setup` 섹션에서 매 호출 도출한다. 단, project-setup scaffolder의 starter 템플릿은 reference 경로와 분리해 inline 유지한다.
+
+**근거**: drift 차단의 일관성. 플러그인에만 `versionSupport`가 없는 것은 LLM이 plugin / component를 다른 멘탈 모델로 추론하게 만든다. setup example도 README의 권위적 사본을 두는 것보다 fetch가 단순하다. 반면 scaffolding은 "지금 이 시점에서 새 프로젝트를 만들 때 동작하는 starter"가 필요하므로 ref-tied가 아니라 inline-static이 옳다(scaffolder는 사용자 버전에 맞춰 fetch할 이유가 없음).
+
+---
+
 ## 결정 80: Plugin / 공개 composable 데이터를 runtime GitHub fetch로 전환
 
 **날짜**: 2026-05-08
