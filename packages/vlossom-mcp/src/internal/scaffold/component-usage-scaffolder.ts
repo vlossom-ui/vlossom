@@ -53,18 +53,6 @@ export interface ComponentUsageScaffold {
     unsupportedComponents?: Array<{ name: string; versionSupport: VersionSupport }>;
 }
 
-const FORM_INPUTS = new Set([
-    'VsInput',
-    'VsTextarea',
-    'VsSelect',
-    'VsCheckbox',
-    'VsRadio',
-    'VsSwitch',
-    'VsToggle',
-    'VsFileDrop',
-    'VsSearchInput',
-]);
-
 function resolvePolicy(policy: ScaffoldPolicy | undefined): Required<ScaffoldPolicy> {
     return {
         vlossomFirst: policy?.vlossomFirst ?? 'strict',
@@ -102,75 +90,47 @@ function summarizeComponents(components: ComponentMeta[], versionContext: Versio
     }));
 }
 
-function componentTag(meta: ComponentMeta): string {
-    if (meta.name === 'VsForm') {
-        return `<vs-form ref="formRef">
-      <vs-input v-model="form.name" label="Name" :rules="[requiredRule]" />
-      <vs-button type="submit" primary @click="handleSubmit">Submit</vs-button>
-    </vs-form>`;
-    }
-    if (meta.name === 'VsInput') {
-        return `<vs-input v-model="form.name" label="Name" />`;
-    }
-    if (meta.name === 'VsTextarea') {
-        return `<vs-textarea v-model="form.description" label="Description" />`;
-    }
-    if (meta.name === 'VsSelect') {
-        return `<vs-select v-model="form.option" :options="options" label="Option" />`;
-    }
-    if (meta.name === 'VsCheckbox') {
-        return `<vs-checkbox v-model="form.accepted" label="Accept" />`;
-    }
-    if (meta.name === 'VsRadio') {
-        return `<vs-radio v-model="form.choice" label="Choice" value="choice" />`;
-    }
-    if (meta.name === 'VsSwitch' || meta.name === 'VsToggle') {
-        return `<${meta.kebabName} v-model="form.enabled" label="Enabled" />`;
-    }
-    if (meta.name === 'VsTable') {
-        return `<vs-table :items="items" :columns="columns" />`;
-    }
-    if (meta.name === 'VsPagination') {
-        return `<vs-pagination v-model:page="page" :length="totalPages" />`;
-    }
-    if (meta.name === 'VsModal') {
-        return `<vs-modal v-model="isModalOpen">
-      <template #title>Title</template>
-      Modal content
-    </vs-modal>`;
-    }
-    if (meta.name === 'VsButton') {
-        return `<vs-button primary @click="handleAction">Action</vs-button>`;
-    }
-    if (meta.slots.some((slot) => slot.name === 'default')) {
-        return `<${meta.kebabName}>Content</${meta.kebabName}>`;
-    }
-    return `<${meta.kebabName} />`;
+function camelToKebab(value: string): string {
+    return value.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
 
-function buildTemplate(description: string, components: ComponentMeta[], context: ScaffoldContext | undefined): string {
-    const hasPage = components.some((component) => component.name === 'VsPage');
-    const hasGrid = context?.responsive || components.some((component) => component.name === 'VsGrid');
-    const bodyComponents = components.filter((component) => !['VsPage', 'VsGrid'].includes(component.name));
-    const body = bodyComponents.map(componentTag).join('\n      ');
+/**
+ * Build a tag snippet from registry metadata only.
+ *
+ * The scaffolder intentionally avoids inventing feature-specific bindings
+ * (form field names, column shapes, validation rule names, ...). Those are
+ * the agent's domain. We derive only what the metadata can prove:
+ *   - v-model support comes from `modelValue` prop / `update:modelValue` event
+ *   - required props are surfaced as placeholders the agent has to fill
+ *   - default slot tells us whether the tag carries children
+ */
+function componentTag(meta: ComponentMeta): string {
+    const hasVModel =
+        meta.props.some((prop) => prop.name === 'modelValue') ||
+        meta.events.some((event) => event.name === 'update:modelValue');
+    const hasDefaultSlot = meta.slots.some((slot) => slot.name === 'default');
+    const requiredProps = meta.props.filter((prop) => prop.required && prop.name !== 'modelValue');
 
-    if (hasPage || hasGrid) {
-        const gridBody = hasGrid
-            ? `<vs-grid :columns="12" gap="1.5rem">
-      ${body || '<vs-block>Content</vs-block>'}
-    </vs-grid>`
-            : body;
-        return `<template>
-  <vs-page>
-    <template #title>${titleFromDescription(description, 32)}</template>
-    ${gridBody}
-  </vs-page>
-</template>`;
+    const attrs: string[] = [];
+    if (hasVModel) attrs.push('v-model="modelValue"');
+    for (const prop of requiredProps) {
+        attrs.push(`:${camelToKebab(prop.name)}="${prop.name}"`);
     }
 
+    const attrString = attrs.length ? ` ${attrs.join(' ')}` : '';
+
+    if (hasDefaultSlot) {
+        return `<${meta.kebabName}${attrString}><!-- content --></${meta.kebabName}>`;
+    }
+    return `<${meta.kebabName}${attrString} />`;
+}
+
+function buildTemplate(description: string, components: ComponentMeta[]): string {
+    const body = components.length ? components.map(componentTag).join('\n      ') : '<!-- compose Vlossom UI here -->';
     return `<template>
+  <!-- ${titleFromDescription(description, 80)} -->
   <div>
-    ${body || '<vs-block>Content</vs-block>'}
+    ${body}
   </div>
 </template>`;
 }
@@ -183,57 +143,25 @@ function titleFromDescription(description: string, maxLength: number): string {
 
 function buildScript(components: ComponentMeta[], context: ScaffoldContext | undefined): string {
     const names = [...new Set(components.map((component) => component.name))].sort();
-    const hasForm =
-        components.some((component) => component.name === 'VsForm') ||
-        components.some((component) => FORM_INPUTS.has(component.name));
-    const hasTable = components.some((component) => component.name === 'VsTable');
-    const hasPagination = components.some((component) => component.name === 'VsPagination');
-    const hasModal = components.some((component) => component.name === 'VsModal');
-    const vueImports = new Set(['ref']);
-    if (hasForm) vueImports.add('reactive');
-    if (components.some((component) => component.name === 'VsForm')) vueImports.add('useTemplateRef');
+    const vModelComponents = components.filter(
+        (component) =>
+            component.props.some((prop) => prop.name === 'modelValue') ||
+            component.events.some((event) => event.name === 'update:modelValue'),
+    );
+    const vueImports = new Set<string>();
+    if (vModelComponents.length > 0) vueImports.add('ref');
 
-    const lines = [
-        `<script setup${context?.typescript === false ? '' : ' lang="ts"'}>`,
-        `import { ${[...vueImports].sort().join(', ')} } from 'vue'`,
-        `import { ${names.join(', ')} } from 'vlossom'`,
-        '',
-    ];
-
-    if (hasForm) {
-        if (components.some((component) => component.name === 'VsForm')) {
-            lines.push("const formRef = useTemplateRef('formRef')");
-        }
-        lines.push(
-            "const form = reactive({ name: '', description: '', option: null, accepted: false, choice: '', enabled: false })",
-        );
-        lines.push("const requiredRule = (value: unknown) => Boolean(value) || 'Required'");
+    const lines = [`<script setup${context?.typescript === false ? '' : ' lang="ts"'}>`];
+    if (vueImports.size > 0) {
+        lines.push(`import { ${[...vueImports].sort().join(', ')} } from 'vue'`);
     }
-    if (components.some((component) => component.name === 'VsSelect')) {
-        lines.push("const options = [{ label: 'Option A', value: 'a' }]");
+    if (names.length > 0) {
+        lines.push(`import { ${names.join(', ')} } from 'vlossom'`);
     }
-    if (hasTable) {
-        lines.push('const items = ref([])');
-        lines.push("const columns = [{ key: 'name', label: 'Name' }]");
-    }
-    if (hasPagination) {
-        lines.push('const page = ref(1)');
-        lines.push('const totalPages = ref(1)');
-    }
-    if (hasModal) {
-        lines.push('const isModalOpen = ref(false)');
-    }
-
     lines.push('');
-    if (components.some((component) => component.name === 'VsForm')) {
-        lines.push('async function handleSubmit() {');
-        lines.push('  const valid = await formRef.value?.validate()');
-        lines.push('  if (!valid) return');
-        lines.push('}');
-    } else {
-        lines.push('function handleAction() {');
-        lines.push('  // Add interaction logic or delegate to a composable.');
-        lines.push('}');
+    if (vModelComponents.length > 0) {
+        lines.push('// Replace the placeholder ref(s) with the agent-chosen state shape.');
+        lines.push('const modelValue = ref(null)');
     }
     lines.push('</script>');
 
@@ -305,6 +233,8 @@ export async function scaffoldComponentUsage(input: ComponentUsageScaffoldInput)
     const assumptions = [
         'This is a Vlossom-native starting point, not a final feature implementation.',
         'Component ids and APIs were resolved from the Vlossom registry for the requested version.',
+        'Required props appear as placeholder bindings (e.g. `:itemKey="itemKey"`); choose names and shapes that match the feature.',
+        'Replace the `modelValue` ref(s) and `<!-- content -->` slots with the agent-chosen state and content.',
         `Vlossom-first guard is ${policy.vlossomFirst}.`,
     ];
     if (policy.vlossomFirst === 'strict') {
@@ -314,7 +244,7 @@ export async function scaffoldComponentUsage(input: ComponentUsageScaffoldInput)
         assumptions.push('Move API calls and durable business logic into a composable or service.');
     }
 
-    const template = buildTemplate(input.description, components, input.context);
+    const template = buildTemplate(input.description, components);
     const script = buildScript(components, input.context);
     const code = `${template}\n\n${script}`;
 
