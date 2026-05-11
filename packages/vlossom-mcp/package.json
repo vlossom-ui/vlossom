@@ -8,10 +8,10 @@
     },
     "main": "./dist/index.js",
     "scripts": {
-        "clean": "tsx scripts/clean-dist.ts",
+        "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
         "build": "npm run clean && tsc",
         "dev": "tsc --watch",
-        "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\" \"test/**/*.ts\" \"*.md\" \"package.json\" \"tsconfig*.json\" \".prettierrc.json\"",
+        "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"*.md\" \"package.json\" \"tsconfig*.json\" \".prettierrc.json\"",
         "test": "npm run build && tsc -p tsconfig.scripts.json && node --import tsx --test --experimental-test-isolation=none test/*.test.ts",
         "verify": "npm test",
         "start": "node dist/index.js",
