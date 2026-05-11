@@ -660,6 +660,7 @@ function parsePluginReadme(readme: string, property: string): VlossomPluginMeta 
             .find(
                 (line) => line && !line.startsWith('#') && !line.startsWith('**') && !line.startsWith('>'),
             ) ?? '';
+    const availableVersion = readme.match(/\*\*Available Version\*\*[:\s]+([^\n]+)/)?.[1]?.trim() ?? '2.0.0+';
     const methods = parseSection(lines, 'Methods', 'method', (row) => {
         const methodName = stripBackticks(row['method'] ?? '');
         const params = simplifyPluginParameters(stripBackticks(row['parameters'] ?? ''));
@@ -677,6 +678,7 @@ function parsePluginReadme(readme: string, property: string): VlossomPluginMeta 
         name: `$vs.${property}`,
         property,
         description,
+        availableVersion,
         methods,
         example,
     };

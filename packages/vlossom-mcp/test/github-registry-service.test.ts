@@ -281,6 +281,7 @@ $vsToast.info('hi');
         assert.equal(plugins.length, 1, 'should filter to *-plugin dirs only');
         assert.equal(plugins[0]?.name, '$vs.toast');
         assert.equal(plugins[0]?.property, 'toast');
+        assert.equal(plugins[0]?.availableVersion, '9.9.6+');
         assert.ok(plugins[0]?.description.startsWith('Displays brief'));
         assert.deepEqual(
             plugins[0]?.methods.map((m) => m.name),

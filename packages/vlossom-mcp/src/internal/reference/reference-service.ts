@@ -339,7 +339,10 @@ async function optionReference(
         return notFound('option', input.id, `createVlossom option '${input.id}' was not found.`);
     }
 
-    const plugins = await loadPlugins(versionContext);
+    const plugins = (await loadPlugins(versionContext)).map((plugin) => ({
+        ...plugin,
+        versionSupport: getVersionSupport(plugin.availableVersion, versionContext),
+    }));
 
     return {
         status: 'ok',

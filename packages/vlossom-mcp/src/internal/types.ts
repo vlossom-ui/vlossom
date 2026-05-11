@@ -154,6 +154,7 @@ export interface VlossomPluginMeta {
     name: string;
     property: string;
     description: string;
+    availableVersion: string;
     methods: Array<{ name: string; description: string }>;
     example: string;
 }
