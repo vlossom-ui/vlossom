@@ -227,10 +227,10 @@ export const StyleSet: Story = {
         placeholder: 'Select an option',
         styleSet: {
             $height: '3rem',
-            $focused: {
-                border: '2px solid #2196f3',
-                borderRadius: '12px',
-                backgroundColor: '#f5f5f5',
+            $option: {
+                $focused: {
+                    backgroundColor: '#f5f5f5',
+                },
             },
             fontSize: '1rem',
         },

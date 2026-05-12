@@ -16,8 +16,9 @@ export interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
     $header?: CSSProperties;
-    $row?: CSSProperties;
-    $selectedRow?: CSSProperties;
+    $row?: CSSProperties & {
+        $selected?: CSSProperties;
+    };
     $cell?: CSSProperties;
 }
 

@@ -5,7 +5,7 @@
         :width
         :grid
     >
-        <div class="vs-step-line">
+        <div class="vs-step-line" :style="trackStyleSet">
             <div class="vs-step-progress" :style="progressStyleSet" />
         </div>
         <ul
@@ -75,9 +75,9 @@ import {
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { objectUtil, stringUtil } from '@/utils';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
-import { objectUtil, stringUtil } from '@/utils';
 
 const componentName = VsComponent.VsSteps;
 export default defineComponent({
@@ -135,6 +135,11 @@ export default defineComponent({
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
+        const trackStyleSet: ComputedRef<CSSProperties> = computed(() => {
+            const { $active, ...base } = componentStyleSet.value.$progress ?? {};
+            return base;
+        });
+
         const progressStyleSet: ComputedRef<CSSProperties> = computed(() => {
             const dimensionKey = vertical.value ? 'height' : 'width';
             if (gapCount.value === 0) {
@@ -143,24 +148,31 @@ export default defineComponent({
 
             const percentage = selectedIndex.value === NOT_SELECTED ? 0 : (selectedIndex.value / gapCount.value) * 100;
             return {
-                ...componentStyleSet.value.$progress,
-                ...(isSelected(selectedIndex.value) ? componentStyleSet.value.$activeProgress : {}),
+                ...componentStyleSet.value.$progress?.$active,
                 [dimensionKey]: `${percentage}%`,
             };
         });
 
         function getStepStyleSet(index: number): CSSProperties {
-            return {
-                ...componentStyleSet.value.$step,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeStep : {}),
-            };
+            const { $completed = {}, $active = {}, ...base } = componentStyleSet.value.$step ?? {};
+            if (isPrevious(index)) {
+                return objectUtil.assign(base, $completed);
+            }
+            if (isSelected(index)) {
+                return objectUtil.assign(base, $active);
+            }
+            return base;
         }
 
         function getLabelStyleSet(index: number): CSSProperties {
-            return {
-                ...componentStyleSet.value.$label,
-                ...(isPrevious(index) || isSelected(index) ? componentStyleSet.value.$activeLabel : {}),
-            };
+            const { $completed = {}, $active = {}, ...base } = componentStyleSet.value.$label ?? {};
+            if (isPrevious(index)) {
+                return objectUtil.assign(base, $completed);
+            }
+            if (isSelected(index)) {
+                return objectUtil.assign(base, $active);
+            }
+            return base;
         }
 
         onMounted(() => {
@@ -185,6 +197,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
+            trackStyleSet,
             progressStyleSet,
             getStepStyleSet,
             getLabelStyleSet,

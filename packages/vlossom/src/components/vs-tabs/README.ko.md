@@ -82,14 +82,15 @@ interface VsTabsStyleSet extends CSSProperties {
     $divider?: CSSProperties['border'] & {};
 
     $tabs?: CSSProperties;
-    $tab?: CSSProperties;
-    $activeTab?: CSSProperties;
+    $tab?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$control`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외).
+> `$control`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외). `$tab.$active`는 현재 선택된 탭에 적용됩니다.
 
 ### StyleSet 예시
 
@@ -101,8 +102,11 @@ interface VsTabsStyleSet extends CSSProperties {
         :style-set="{
             $gap: '0.5rem',
             $divider: '2px solid #e0e0e0',
-            $tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
-            $activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
+            $tab: {
+                borderRadius: '0.25rem',
+                padding: '0.5rem 1.25rem',
+                $active: { backgroundColor: '#1976d2', color: '#ffffff' },
+            },
         }"
     />
 </template>

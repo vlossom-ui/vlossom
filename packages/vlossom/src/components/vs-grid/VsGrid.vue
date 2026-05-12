@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" class="vs-grid" :style="[componentInlineStyle, styleSetVariables]">
+    <component :is="tag" class="vs-grid" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <slot />
     </component>
 </template>
@@ -36,7 +36,7 @@ export default defineComponent({
             });
         });
 
-        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsGridStyleSet>(
+        const { styleSetVariables, componentInlineStyle } = useStyleSet<VsGridStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -44,7 +44,6 @@ export default defineComponent({
         );
 
         return {
-            componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
         };

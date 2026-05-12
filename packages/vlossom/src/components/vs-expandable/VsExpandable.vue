@@ -26,7 +26,7 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
+        const { componentInlineStyle } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;
@@ -84,7 +84,6 @@ export default defineComponent({
         }
 
         return {
-            componentStyleSet,
             componentInlineStyle,
             beforeEnter,
             enter,

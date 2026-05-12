@@ -23,14 +23,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsAvatarStyleSet>(
-            componentName,
-            styleSet,
-        );
+        const { styleSetVariables, componentInlineStyle } = useStyleSet<VsAvatarStyleSet>(componentName, styleSet);
 
         return {
             colorSchemeClass,
-            componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
         };

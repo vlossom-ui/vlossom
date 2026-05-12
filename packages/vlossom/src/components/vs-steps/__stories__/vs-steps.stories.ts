@@ -29,17 +29,24 @@ const meta: Meta<typeof VsSteps> = {
                     padding: '0.5rem',
                     width: '2.5rem',
                     height: '2.5rem',
-                },
-                $activeStep: {
-                    backgroundColor: '#1e88e5',
-                    border: '2px solid #1565c0',
+                    $completed: {
+                        backgroundColor: '#90caf9',
+                        border: '2px solid #64b5f6',
+                    },
+                    $active: {
+                        backgroundColor: '#1e88e5',
+                        border: '2px solid #1565c0',
+                    },
                 },
                 $label: {
                     color: '#666',
-                },
-                $activeLabel: {
-                    color: '#1e88e5',
-                    fontWeight: '700',
+                    $completed: {
+                        color: '#64b5f6',
+                    },
+                    $active: {
+                        color: '#1e88e5',
+                        fontWeight: '700',
+                    },
                 },
             } as const;
 
@@ -484,26 +491,32 @@ export const StyleSet: Story = {
                 borderRadius: '8px',
                 width: '3rem',
                 height: '3rem',
-            },
-            $activeStep: {
-                backgroundColor: '#e91e63',
-                border: '3px solid #c2185b',
-                borderRadius: '50%',
+                $completed: {
+                    backgroundColor: '#f48fb1',
+                    border: '3px solid #f06292',
+                    borderRadius: '50%',
+                },
+                $active: {
+                    backgroundColor: '#e91e63',
+                    border: '3px solid #c2185b',
+                    borderRadius: '50%',
+                },
             },
             $label: {
                 fontSize: '0.875rem',
                 color: '#999',
-            },
-            $activeLabel: {
-                fontSize: '1rem',
-                color: '#e91e63',
-                fontWeight: 'bold',
+                $completed: {
+                    color: '#f06292',
+                },
+                $active: {
+                    fontSize: '1rem',
+                    color: '#e91e63',
+                    fontWeight: 'bold',
+                },
             },
             $progress: {
                 backgroundColor: '#e0e0e0',
-            },
-            $activeProgress: {
-                backgroundColor: '#e91e63',
+                $active: { backgroundColor: '#e91e63' },
             },
         },
         modelValue: 1,

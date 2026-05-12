@@ -57,10 +57,6 @@
 }
 
 .vs-select-options {
-    --vs-select-focused-border: initial;
-    --vs-select-focused-borderRadius: initial;
-    --vs-select-focused-backgroundColor: initial;
-
     @apply overflow-hidden;
 
     border: 1px solid var(--vs-cs-line);
@@ -72,7 +68,7 @@
 
         &.vs-focusable-active {
             @apply box-content;
-            background-color: var(--vs-select-focused-backgroundColor, var(--vs-cs-bg-colored)) !important;
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 

@@ -82,14 +82,15 @@ interface VsTabsStyleSet extends CSSProperties {
     $divider?: CSSProperties['border'] & {};
 
     $tabs?: CSSProperties;
-    $tab?: CSSProperties;
-    $activeTab?: CSSProperties;
+    $tab?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$control` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`).
+> `$control` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`). The `$tab.$active` style is applied to the currently selected tab.
 
 ### StyleSet Example
 
@@ -101,8 +102,11 @@ interface VsTabsStyleSet extends CSSProperties {
         :style-set="{
             $gap: '0.5rem',
             $divider: '2px solid #e0e0e0',
-            $tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
-            $activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
+            $tab: {
+                borderRadius: '0.25rem',
+                padding: '0.5rem 1.25rem',
+                $active: { backgroundColor: '#1976d2', color: '#ffffff' },
+            },
         }"
     />
 </template>

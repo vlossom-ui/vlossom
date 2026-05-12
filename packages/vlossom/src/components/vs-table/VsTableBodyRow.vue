@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs, type CSSProperties } from 'vue';
-import { stringUtil } from '@/utils';
+import { objectUtil, stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { ColorScheme, UIState } from '@/declaration';
 import type { VsSkeletonStyleSet } from './../vs-skeleton/types';
@@ -137,17 +137,9 @@ export default defineComponent({
             };
         });
         const rowStyle = computed<CSSProperties | undefined>(() => {
-            if (isSelected.value) {
-                return {
-                    ...tableStyleSet?.value?.$row,
-                    ...tableStyleSet?.value?.$selectedRow,
-                    ...gridStyle.value,
-                };
-            }
-            return {
-                ...tableStyleSet?.value?.$row,
-                ...gridStyle.value,
-            };
+            const { $selected = {}, ...baseRow } = tableStyleSet?.value?.$row ?? {};
+            const statedRowStyle = isSelected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
+            return objectUtil.assign(statedRowStyle, gridStyle.value ?? {});
         });
         const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
             height: '100%',

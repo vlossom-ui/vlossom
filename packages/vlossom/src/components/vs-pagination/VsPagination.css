@@ -1,9 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-pagination {
-    --vs-pagination-selectedButtonBackgroundColor: initial;
-    --vs-pagination-selectedButtonFontColor: initial;
-
     @apply relative flex items-center justify-center;
 
     gap: 0.5rem;
@@ -18,13 +15,6 @@
         .vs-page-button {
             min-width: 2rem;
             min-height: 2rem;
-        }
-
-        .vs-page-button {
-            &.vs-primary {
-                background-color: var(--vs-pagination-selectedButtonBackgroundColor, var(--vs-cs-bg-primary));
-                color: var(--vs-pagination-selectedButtonFontColor, var(--vs-cs-font-primary));
-            }
         }
     }
 

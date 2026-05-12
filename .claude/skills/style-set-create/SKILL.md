@@ -258,7 +258,7 @@ export default defineComponent({
 - [ ] 타입 안전한 CSS 속성 타입을 사용했는가? (`CSSProperties['objectFit'] & {}` 등)
 
 #### 네이밍
-- [ ] 상태 수식어가 prefix 패턴인가? (`$activeStep` ✅, `$stepActive` ❌)
+- [ ] 상태 수식어가 nested-state 패턴인가? (`$step.$active` ✅, `$activeStep` ❌)
 - [ ] 속성명이 내용을 반영하는가? (`$content` ✅, `$expand` ❌ — 동작이 아닌 내용 기반)
 - [ ] import가 같은 모듈에서 통합되었는가?
 
@@ -405,10 +405,21 @@ export interface VsCardStyleSet extends CSSProperties {
 
 ### 네이밍 규칙
 
-**상태 수식어는 prefix 패턴 사용:**
+**상태 수식어는 nested-state 패턴 사용:**
+
+상태(`$active`, `$selected`, `$focused` 등)는 별도의 top-level 키로 분리하지 말고, 해당 요소의 styleset 안에 중첩한다.
+컴포넌트의 .vue 파일에서 상태에 따라 `computed`로 base 스타일과 상태 스타일을 머지해 적용한다.
 
 ```typescript
-// ✅ CORRECT: prefix 패턴
+// ✅ CORRECT: nested-state 패턴
+$step?: CSSProperties & {
+    $active?: CSSProperties;
+};
+$label?: CSSProperties & {
+    $active?: CSSProperties;
+};
+
+// ❌ WRONG: prefix 패턴 (별도 top-level 키)
 $step?: CSSProperties;
 $activeStep?: CSSProperties;
 $label?: CSSProperties;

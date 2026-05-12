@@ -20,7 +20,8 @@ export interface VsTabsStyleSet extends CSSProperties {
     $divider?: CSSProperties['border'] & {};
 
     $tabs?: CSSProperties;
-    $tab?: CSSProperties;
-    $activeTab?: CSSProperties;
+    $tab?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
