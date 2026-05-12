@@ -38,14 +38,14 @@ export default defineComponent({
             });
         });
 
-        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsLoadingStyleSet>(
+        const { styleSetVariables, componentInlineStyle } = useStyleSet<VsLoadingStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
             additionalStyleSet,
         );
 
-        return { colorSchemeClass, componentStyleSet, styleSetVariables, componentInlineStyle };
+        return { colorSchemeClass, styleSetVariables, componentInlineStyle };
     },
 });
 </script>

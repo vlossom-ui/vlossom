@@ -27,10 +27,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsDividerStyleSet>(
-            componentName,
-            styleSet,
-        );
+        const { styleSetVariables, componentInlineStyle } = useStyleSet<VsDividerStyleSet>(componentName, styleSet);
 
         const classObj = computed(() => ({
             'vs-vertical': vertical.value,
@@ -39,7 +36,6 @@ export default defineComponent({
 
         return {
             colorSchemeClass,
-            componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
             classObj,

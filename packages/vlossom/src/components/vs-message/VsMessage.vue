@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-message', colorClass]" :style="{ ...componentInlineStyle, ...styleSetVariables }">
+    <div :class="['vs-message', colorClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <i class="vs-message-icon">
             <vs-render :content="icon" />
         </i>
@@ -47,13 +47,13 @@ export default defineComponent({
             }
         });
 
-        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet(componentName, styleSet);
+        const { styleSetVariables, componentInlineStyle } = useStyleSet(componentName, styleSet);
 
         const icon = computed(() => {
             return messageIcons[state.value];
         });
 
-        return { colorClass, icon, componentStyleSet, styleSetVariables, componentInlineStyle };
+        return { colorClass, icon, styleSetVariables, componentInlineStyle };
     },
 });
 </script>
