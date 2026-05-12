@@ -37,11 +37,11 @@
                 />
 
                 <div :class="['vs-switch-button', stateBoxClasses]" :style="getSwitchButtonStyle()">
-                    <span class="vs-status-label" data-value="true" v-show="isChecked">
+                    <span class="vs-status-label" data-value="true">
                         <slot name="true-label"> {{ trueLabel }} </slot>
                     </span>
 
-                    <span class="vs-status-label" data-value="false" v-show="!isChecked">
+                    <span class="vs-status-label" data-value="false">
                         <slot name="false-label"> {{ falseLabel }} </slot>
                     </span>
                 </div>
