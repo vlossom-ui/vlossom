@@ -8,7 +8,7 @@
     min-height: var(--vs-comp-height-md);
 
     .vs-switch-button {
-        @apply relative inline-grid cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
+        @apply relative inline-grid min-w-14 cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
         border: 1px solid var(--vs-cs-line);
         border-radius: 1.5rem;
         background-color: var(--vs-cs-bg-area);
