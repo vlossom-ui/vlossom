@@ -243,11 +243,8 @@ export default defineComponent({
         let resizeObserver: ResizeObserver | null = null;
 
         function getTabStyleSet(index: number): CSSProperties {
-            const { $active, ...base } = componentStyleSet.value.$tab ?? {};
-            return {
-                ...base,
-                ...(isSelected(index) ? $active : {}),
-            };
+            const { $active = {}, ...base } = componentStyleSet.value.$tab ?? {};
+            return isSelected(index) ? objectUtil.assign(base, $active) : base;
         }
 
         onMounted(() => {

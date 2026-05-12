@@ -455,13 +455,15 @@ export default defineComponent({
         }
 
         function getOptionStyleSet(optionId: string): CSSProperties {
-            const { $focused, $selected, ...base } = componentStyleSet.value.$option ?? {};
+            const { $focused = {}, $selected = {}, ...base } = componentStyleSet.value.$option ?? {};
             const isOptionFocused = currentFocusableElement.value?.dataset?.['id'] === optionId;
-            return {
-                ...base,
-                ...(isSelected(optionId) ? $selected : {}),
-                ...(isOptionFocused ? $focused : {}),
-            };
+            if (isSelected(optionId)) {
+                return objectUtil.assign(base, $selected);
+            }
+            if (isOptionFocused) {
+                return objectUtil.assign(base, $focused);
+            }
+            return base;
         }
 
         function closeOptions() {

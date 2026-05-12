@@ -93,7 +93,7 @@ import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue'
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { logUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
 import { paginationIcons } from './icons';
 
@@ -191,9 +191,9 @@ export default defineComponent({
         });
 
         function getPageButtonStyleSet(page: number) {
-            const { $selected, ...base } = componentStyleSet.value.$pageButton ?? {};
+            const { $selected = {}, ...base } = componentStyleSet.value.$pageButton ?? {};
             if (page === selectedIndex.value + 1) {
-                return { ...base, ...$selected };
+                return objectUtil.assign(base, $selected);
             }
             return base;
         }

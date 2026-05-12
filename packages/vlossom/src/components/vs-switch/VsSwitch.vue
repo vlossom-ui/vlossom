@@ -65,6 +65,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent } from '@/declaration';
+import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
 import type { VsSwitchStyleSet } from './types';
@@ -229,11 +230,8 @@ export default defineComponent({
         }
 
         function getSwitchButtonStyle(): CSSProperties {
-            const { $active, ...base } = componentStyleSet.value.$switchButton ?? {};
-            return {
-                ...base,
-                ...(isChecked.value ? $active : {}),
-            };
+            const { $active = {}, ...base } = componentStyleSet.value.$switchButton ?? {};
+            return objectUtil.assign(base, isChecked.value ? $active : {});
         }
 
         return {

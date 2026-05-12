@@ -75,9 +75,9 @@ import {
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { objectUtil, stringUtil } from '@/utils';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import type { VsStepsStyleSet } from './types';
-import { objectUtil, stringUtil } from '@/utils';
 
 const componentName = VsComponent.VsSteps;
 export default defineComponent({
@@ -154,21 +154,25 @@ export default defineComponent({
         });
 
         function getStepStyleSet(index: number): CSSProperties {
-            const { $completed, $active, ...base } = componentStyleSet.value.$step ?? {};
-            return {
-                ...base,
-                ...(isPrevious(index) ? $completed : {}),
-                ...(isSelected(index) ? $active : {}),
-            };
+            const { $completed = {}, $active = {}, ...base } = componentStyleSet.value.$step ?? {};
+            if (isPrevious(index)) {
+                return objectUtil.assign(base, $completed);
+            }
+            if (isSelected(index)) {
+                return objectUtil.assign(base, $active);
+            }
+            return base;
         }
 
         function getLabelStyleSet(index: number): CSSProperties {
-            const { $completed, $active, ...base } = componentStyleSet.value.$label ?? {};
-            return {
-                ...base,
-                ...(isPrevious(index) ? $completed : {}),
-                ...(isSelected(index) ? $active : {}),
-            };
+            const { $completed = {}, $active = {}, ...base } = componentStyleSet.value.$label ?? {};
+            if (isPrevious(index)) {
+                return objectUtil.assign(base, $completed);
+            }
+            if (isSelected(index)) {
+                return objectUtil.assign(base, $active);
+            }
+            return base;
         }
 
         onMounted(() => {
