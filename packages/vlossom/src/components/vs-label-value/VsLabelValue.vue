@@ -1,14 +1,14 @@
 <template>
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :width
         :grid
     >
-        <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.label">
+        <div v-if="$slots['label']" class="vs-cell vs-label" :style="componentStyleSet.$label">
             <slot name="label" />
         </div>
-        <div class="vs-cell vs-value" :style="componentStyleSet.value">
+        <div class="vs-cell vs-value" :style="componentStyleSet.$value">
             <slot />
         </div>
     </vs-responsive>
@@ -40,7 +40,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet);
+        const { styleSetVariables, componentStyleSet, componentInlineStyle } = useStyleSet<VsLabelValueStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,
@@ -54,6 +57,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
+            componentInlineStyle,
         };
     },
 });

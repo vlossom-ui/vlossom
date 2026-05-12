@@ -69,14 +69,13 @@ Toasts are typically triggered via the `$vs.toast` plugin API.
 ## Types
 
 ```typescript
-interface VsToastStyleSet {
-    closeButton?: Omit<VsButtonStyleSet, 'loading'>;
-    component?: CSSProperties;
+interface VsToastStyleSet extends CSSProperties {
+    $closeButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `closeButton` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `loading`).
+> `$closeButton` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`).
 
 ### StyleSet Example
 
@@ -84,14 +83,12 @@ interface VsToastStyleSet {
 <template>
     <vs-toast
         :style-set="{
-            component: {
-                backgroundColor: '#323232',
+            backgroundColor: '#323232',
+            color: '#ffffff',
+            borderRadius: '0.5rem',
+            padding: '0.75rem 1rem',
+            $closeButton: {
                 color: '#ffffff',
-                borderRadius: '0.5rem',
-                padding: '0.75rem 1rem',
-            },
-            closeButton: {
-                component: { color: '#ffffff' },
             },
         }"
     >

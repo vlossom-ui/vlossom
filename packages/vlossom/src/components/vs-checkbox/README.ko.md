@@ -139,26 +139,23 @@ async function confirmChange(from, to) {
 ## Types
 
 ```typescript
-interface VsCheckboxStyleSet {
-    variables?: {
-        checkboxCheckedColor?: string;
-        checkboxColor?: string;
-        checkboxSize?: string;
-    };
-    checkbox?: CSSProperties;
-    checkboxLabel?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsCheckboxStyleSet extends CSSProperties {
+    $checkboxCheckedColor?: string;
+    $checkboxColor?: string;
+    $checkboxSize?: string;
+    $checkbox?: CSSProperties;
+    $checkboxLabel?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
-interface VsCheckboxSetStyleSet {
-    component?: CSSProperties;
-    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsCheckboxSetStyleSet extends CSSProperties {
+    $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 `VsInputWrapperStyleSet`을 사용합니다. 자세한 내용은 [VsInputWrapper 문서](../vs-input-wrapper/README.md)를 참고하세요.
+> `$wrapper`는 `VsInputWrapperStyleSet`을 사용합니다. 자세한 내용은 [VsInputWrapper 문서](../vs-input-wrapper/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -168,12 +165,10 @@ interface VsCheckboxSetStyleSet {
         v-model="checked"
         check-label="커스텀 체크박스"
         :style-set="{
-            variables: {
-                checkboxSize: '1.5rem',
-                checkboxColor: '#e0e0e0',
-                checkboxCheckedColor: '#6200ea',
-            },
-            checkboxLabel: {
+            $checkboxSize: '1.5rem',
+            $checkboxColor: '#e0e0e0',
+            $checkboxCheckedColor: '#6200ea',
+            $checkboxLabel: {
                 fontSize: '1rem',
                 fontWeight: '500',
             },

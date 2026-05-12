@@ -20,10 +20,8 @@ app.use(
         styleSet: {
             playground: {
                 VsDivider: {
-                    variables: {
-                        horizontal: {
-                            margin: '1.5rem 0',
-                        },
+                    $horizontal: {
+                        margin: '1.5rem 0',
                     },
                 },
             },

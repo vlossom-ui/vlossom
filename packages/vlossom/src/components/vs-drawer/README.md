@@ -100,20 +100,17 @@ Set the `layout` prop to register the drawer with the layout store. Combine with
 ## Types
 
 ```typescript
-interface VsDrawerStyleSet {
-    variables?: {
-        size?: string;
-    };
-    component?: CSSProperties;
-    dimmed?: VsDimmedStyleSet;
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
+interface VsDrawerStyleSet extends CSSProperties {
+    $size?: string;
+    $dimmed?: VsDimmedStyleSet;
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `dimmed` uses [VsDimmedStyleSet](../vs-dimmed/README.md).
+> `$dimmed` uses [VsDimmedStyleSet](../vs-dimmed/README.md).
 
 ### StyleSet Example
 
@@ -122,11 +119,11 @@ interface VsDrawerStyleSet {
     <vs-drawer
         v-model="open"
         :style-set="{
-            variables: { size: '400px' },
-            component: { backgroundColor: '#1a1a2e' },
-            header: { padding: '1.5rem', borderBottom: '1px solid #eee' },
-            content: { padding: '1.5rem' },
-            footer: { padding: '1rem', borderTop: '1px solid #eee' },
+            $size: '400px',
+            backgroundColor: '#1a1a2e',
+            $header: { padding: '1.5rem', borderBottom: '1px solid #eee' },
+            $content: { padding: '1.5rem' },
+            $footer: { padding: '1rem', borderTop: '1px solid #eee' },
         }"
     >
         <template #header>My Header</template>

@@ -78,9 +78,7 @@
 interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
-interface VsBarStyleSet {
-    component?: CSSProperties;
-}
+interface VsBarStyleSet extends CSSProperties {}
 ```
 
 > [!NOTE]
@@ -92,12 +90,10 @@ interface VsBarStyleSet {
 <template>
     <vs-header
         :style-set="{
-            component: {
-                backgroundColor: '#2c3e50',
-                color: '#ffffff',
-                padding: '0 2rem',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            },
+            backgroundColor: '#2c3e50',
+            color: '#ffffff',
+            padding: '0 2rem',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         }"
     >
         <h1>스타일이 적용된 헤더</h1>

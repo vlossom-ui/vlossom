@@ -12,7 +12,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 - Renders a `VsInput` field with configurable input props
 - Returns the input value on OK (or Enter key) and `null` on Cancel (or Escape key)
 - Validates input before resolving — if validation fails, the modal stays open
-- Supports custom button text, button order swap, gap and alignment
+- Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
 ## Basic Usage
@@ -56,7 +56,7 @@ async function askAge() {
             initialValue: 18,
         },
         styleSet: {
-            buttonsAlign: 'right',
+            $buttons: { justifyContent: 'end' },
         },
     });
     console.log('Age:', age);
@@ -74,11 +74,10 @@ async function askAge() {
 
 ```typescript
 interface VsPromptStyleSet extends VsModalNodeStyleSet {
-    input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface PromptModalOptions extends ModalOptions {

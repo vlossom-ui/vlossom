@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -47,7 +47,7 @@
                     :id="optionsId"
                     :class="['vs-select-options', colorSchemeClass]"
                     :style="styleSetVariables"
-                    :style-set="componentStyleSet.options"
+                    :style-set="componentStyleSet.$options"
                     :items="filteredOptions"
                     :group-by
                     :group-order
@@ -67,7 +67,7 @@
                             <vs-checkbox
                                 :model-value="isSelectedAll"
                                 :color-scheme="computedColorScheme"
-                                :style-set="componentStyleSet.selectAllCheckbox"
+                                :style-set="componentStyleSet.$selectAllCheckbox"
                                 check-label="Select All"
                                 readonly
                                 no-label
@@ -86,12 +86,12 @@
                                 'vs-select-focusable',
                                 { selected: isSelected(itemSlotProps.id) },
                             ]"
-                            :style="componentStyleSet.option"
+                            :style="getOptionStyleSet(itemSlotProps.id)"
                             :data-id="itemSlotProps.id"
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
                             <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
-                                <div class="vs-select-option" :style="getOptionStyleSet(itemSlotProps.id)">
+                                <div class="vs-select-option">
                                     {{ itemSlotProps.label }}
                                 </div>
                             </slot>
@@ -237,14 +237,10 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
             return {
-                options: {
-                    variables: {
-                        height: '30rem',
-                    },
-                    layout: {
-                        content: {
-                            padding: '0.6rem 0.4rem',
-                        },
+                $options: {
+                    $height: '30rem',
+                    $content: {
+                        padding: '0.6rem 0.4rem',
                     },
                 },
             };
@@ -459,10 +455,15 @@ export default defineComponent({
         }
 
         function getOptionStyleSet(optionId: string): CSSProperties {
-            return {
-                ...componentStyleSet.value.option,
-                ...(isSelected(optionId) ? componentStyleSet.value.selectedOption : {}),
-            };
+            const { $focused = {}, $selected = {}, ...base } = componentStyleSet.value.$option ?? {};
+            const isOptionFocused = currentFocusableElement.value?.dataset?.['id'] === optionId;
+            if (isSelected(optionId)) {
+                return objectUtil.assign(base, $selected);
+            }
+            if (isOptionFocused) {
+                return objectUtil.assign(base, $focused);
+            }
+            return base;
         }
 
         function closeOptions() {

@@ -11,8 +11,7 @@ export type { VsSkeleton };
 
 export interface VsSkeletonRef extends ComponentPublicInstance<typeof VsSkeleton> {}
 
-export interface VsSkeletonStyleSet {
-    background?: CSSProperties;
-    content?: CSSProperties;
-    component?: CSSProperties;
+export interface VsSkeletonStyleSet extends CSSProperties {
+    $background?: CSSProperties;
+    $content?: CSSProperties;
 }

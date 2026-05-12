@@ -12,9 +12,8 @@ export type { VsTooltip };
 export interface VsTooltipRef extends ComponentPublicInstance<typeof VsTooltip> {}
 
 export interface VsTooltipStyleSet {
-    variables?: {
-        arrowColor?: string;
-        arrowSize?: string;
-    };
-    component?: CSSProperties;
+    $arrowColor?: string;
+    $arrowSize?: string;
+
+    $tooltip?: CSSProperties;
 }

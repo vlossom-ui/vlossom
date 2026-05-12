@@ -226,17 +226,13 @@ export const StyleSet: Story = {
         options: basicOptions,
         placeholder: 'Select an option',
         styleSet: {
-            variables: {
-                height: '3rem',
-                focused: {
-                    border: '2px solid #2196f3',
-                    borderRadius: '12px',
+            $height: '3rem',
+            $option: {
+                $focused: {
                     backgroundColor: '#f5f5f5',
                 },
             },
-            component: {
-                fontSize: '1rem',
-            },
+            fontSize: '1rem',
         },
         modelValue: null,
     },

@@ -108,17 +108,16 @@ const text = ref('');
 ## Types
 
 ```typescript
-interface VsInputStyleSet {
-    prepend?: CSSProperties;
-    append?: CSSProperties;
-    input?: CSSProperties;
-    component?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsInputStyleSet extends CSSProperties {
+    $prepend?: CSSProperties;
+    $append?: CSSProperties;
+    $input?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 `VsInputWrapperStyleSet`을 사용합니다. 자세한 내용은 [VsInputWrapper README](../vs-input-wrapper/README.md)를 참고하세요.
+> `$wrapper`는 `VsInputWrapperStyleSet`을 사용합니다. 자세한 내용은 [VsInputWrapper README](../vs-input-wrapper/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -128,11 +127,11 @@ interface VsInputStyleSet {
         v-model="value"
         label="스타일 적용 입력"
         :style-set="{
-            component: { borderRadius: '20px', height: '3rem' },
-            input: { fontSize: '1rem' },
-            prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            append: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            wrapper: { label: { color: 'blue' } },
+            borderRadius: '20px', height: '3rem',
+            $input: { fontSize: '1rem' },
+            $prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            $append: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            $wrapper: { $label: { color: 'blue' } },
         }"
     />
 </template>

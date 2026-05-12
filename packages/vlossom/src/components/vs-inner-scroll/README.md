@@ -62,11 +62,10 @@ A layout component that provides a scrollable content area with optional sticky 
 ## Types
 
 ```typescript
-interface VsInnerScrollStyleSet {
-    component?: CSSProperties;
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
+interface VsInnerScrollStyleSet extends CSSProperties {
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
 }
 ```
 
@@ -77,10 +76,10 @@ interface VsInnerScrollStyleSet {
     <vs-inner-scroll
         style="height: 400px;"
         :style-set="{
-            component: { backgroundColor: '#f5f5f5' },
-            header: { padding: '1rem', borderBottom: '1px solid #ddd' },
-            content: { padding: '1rem' },
-            footer: { padding: '0.5rem', borderTop: '1px solid #ddd' },
+            backgroundColor: '#f5f5f5',
+            $header: { padding: '1rem', borderBottom: '1px solid #ddd' },
+            $content: { padding: '1rem' },
+            $footer: { padding: '0.5rem', borderTop: '1px solid #ddd' },
         }"
     >
         <template #header>

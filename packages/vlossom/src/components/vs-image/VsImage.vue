@@ -1,6 +1,6 @@
 <template>
     <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
-        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.skeleton">
+        <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.$skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
         <img
@@ -9,7 +9,7 @@
             :alt="alt"
             @load.stop="onImageLoad"
             @error.stop="onImageError"
-            :style="{ ...componentStyleSet.component }"
+            :style="componentInlineStyle"
         />
     </div>
 </template>
@@ -43,7 +43,7 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsImageStyleSet> = computed(() => ({}));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsImageStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsImageStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -103,6 +103,7 @@ export default defineComponent({
         return {
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             computedSrc,
             vsImageRef,
             isLoading,

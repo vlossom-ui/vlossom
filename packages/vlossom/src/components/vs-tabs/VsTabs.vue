@@ -1,26 +1,26 @@
 <template>
-    <vs-responsive :class="['vs-tabs', colorSchemeClass, classObj]" :style="styleSetVariables" :width :grid>
+    <vs-responsive
+        :class="['vs-tabs', colorSchemeClass, classObj]"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
+        :width
+        :grid
+    >
         <vs-button
-            v-if="showScrollButtons"
-            class="vs-tab-scroll-button"
-            :aria-label="vertical ? 'scroll up' : 'scroll left'"
-            :disabled="isFirstEdge"
-            :style-set="componentStyleSet.scrollButton"
+            v-if="showControls"
+            class="vs-tab-control"
+            :aria-label="vertical ? 'previous tab (up)' : 'previous tab (left)'"
+            :disabled="isFirstEdge || isAllDisabled()"
+            :style-set="componentStyleSet.$control"
             tabindex="-1"
             size="sm"
             @click.prevent.stop="goPrev"
         >
-            <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-scroll-icon" />
+            <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-control-icon" />
         </vs-button>
 
-        <div ref="tabsWrapRef" class="vs-tabs-wrap">
-            <ul role="tablist" class="vs-tab-list">
-                <li
-                    v-if="indicatorStyle"
-                    class="vs-tab-indicator"
-                    :style="{ ...indicatorStyle, ...componentStyleSet.activeTab }"
-                    aria-hidden="true"
-                />
+        <div ref="tabsRef" class="vs-tabs-wrap">
+            <ul role="tablist" class="vs-tab-list" :style="componentStyleSet.$tabs">
+                <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
@@ -42,16 +42,16 @@
         </div>
 
         <vs-button
-            v-if="showScrollButtons"
-            class="vs-tab-scroll-button"
-            :aria-label="vertical ? 'scroll down' : 'scroll right'"
-            :disabled="isLastEdge"
-            :style-set="componentStyleSet.scrollButton"
+            v-if="showControls"
+            class="vs-tab-control"
+            :aria-label="vertical ? 'next tab (down)' : 'next tab (right)'"
+            :disabled="isLastEdge || isAllDisabled()"
+            :style-set="componentStyleSet.$control"
             tabindex="-1"
             size="sm"
             @click.prevent.stop="goNext"
         >
-            <vs-render :content="vsTabsIcons.goNext" class="vs-tab-scroll-icon" />
+            <vs-render :content="vsTabsIcons.goNext" class="vs-tab-control-icon" />
         </vs-button>
     </vs-responsive>
 </template>
@@ -90,40 +90,41 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTabsStyleSet>(),
-        height: { type: [String, Number] as PropType<string | number>, default: 'auto' },
+        controls: {
+            type: String as PropType<'hide' | 'show' | 'auto'>,
+            default: 'auto',
+        },
         dense: { type: Boolean, default: false },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((tab: string, index: number) => boolean)>,
             default: false,
         },
+        height: { type: [String, Number] },
         primary: { type: Boolean, default: false },
-        scrollButtons: {
-            type: String as PropType<'hide' | 'show' | 'auto'>,
-            default: 'auto',
-        },
         tabs: {
             type: Array as PropType<string[]>,
             default: () => [],
         },
         vertical: { type: Boolean, default: false },
+
         // v-model
         modelValue: { type: Number, default: 0 },
     },
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, height, dense, disabled, primary, scrollButtons, tabs, modelValue, vertical } =
+        const { colorScheme, styleSet, dense, disabled, primary, height, controls, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const tabsWrapRef: Ref<HTMLElement | null> = ref(null);
+        const tabsRef: Ref<HTMLElement | null> = ref(null);
         const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<Record<string, string> | null>(null);
 
         const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
-            scrollButton: {
-                variables: {
+            $control: {
+                $content: {
                     padding: '0.4rem',
                 },
             },
@@ -131,13 +132,11 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                variables: objectUtil.shake({
-                    height: height.value === 'auto' ? undefined : stringUtil.toStringSize(height.value),
-                }),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsTabsStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -148,6 +147,7 @@ export default defineComponent({
             selectedIndex,
             isSelected,
             isDisabled,
+            isAllDisabled,
             findActiveIndexForwardFrom,
             findActiveIndexBackwardFrom,
             selectIndex: selectTab,
@@ -162,11 +162,11 @@ export default defineComponent({
             'vs-vertical': vertical.value,
         }));
 
-        const showScrollButtons = computed(() => {
-            if (scrollButtons.value === 'auto') {
+        const showControls = computed(() => {
+            if (controls.value === 'auto') {
                 return visibleTabCount.value < tabs.value.length;
             }
-            return scrollButtons.value === 'show';
+            return controls.value === 'show';
         });
 
         function scrollTo(index: number) {
@@ -189,9 +189,9 @@ export default defineComponent({
         }
 
         function calculateVisibleTabCount() {
-            const tabsWrapSize = vertical.value ? tabsWrapRef.value?.clientHeight : tabsWrapRef.value?.clientWidth;
+            const tabListSize = vertical.value ? tabsRef.value?.clientHeight : tabsRef.value?.clientWidth;
 
-            if (!tabsWrapSize) {
+            if (!tabListSize) {
                 visibleTabCount.value = 0;
                 return;
             }
@@ -201,7 +201,7 @@ export default defineComponent({
 
             tabRefs.value.some((tabRef) => {
                 const tabSize = vertical.value ? tabRef.offsetHeight : tabRef.offsetWidth;
-                const canFit = accumulatedSize + tabSize <= tabsWrapSize;
+                const canFit = accumulatedSize + tabSize <= tabListSize;
 
                 if (canFit) {
                     accumulatedSize += tabSize;
@@ -243,18 +243,16 @@ export default defineComponent({
         let resizeObserver: ResizeObserver | null = null;
 
         function getTabStyleSet(index: number): CSSProperties {
-            return {
-                ...componentStyleSet.value.tab,
-                ...(isSelected(index) ? componentStyleSet.value.activeTab : {}),
-            };
+            const { $active = {}, ...base } = componentStyleSet.value.$tab ?? {};
+            return isSelected(index) ? objectUtil.assign(base, $active) : base;
         }
 
         onMounted(() => {
             selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
 
-            if (tabsWrapRef.value) {
+            if (tabsRef.value) {
                 resizeObserver = new ResizeObserver(handleResize);
-                resizeObserver.observe(tabsWrapRef.value);
+                resizeObserver.observe(tabsRef.value);
             }
         });
 
@@ -289,26 +287,28 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             getTabStyleSet,
 
             // Selection
             isSelected,
             isDisabled,
+            isAllDisabled,
             selectedIndex,
             selectTab,
             isFirstEdge,
             isLastEdge,
 
             // DOM Refs
-            tabsWrapRef,
+            tabsRef,
             tabRefs,
 
             // Event Handlers
             handleKeydown,
 
-            // Scroll
-            showScrollButtons,
+            // Controls
+            showControls,
             goPrev,
             goNext,
 

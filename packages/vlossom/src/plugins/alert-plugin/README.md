@@ -48,10 +48,8 @@ function showAlert() {
         okText: 'Got it',
         colorScheme: 'green',
         styleSet: {
-            buttonsAlign: 'right',
-            button: {
-                variables: { padding: '0.5rem 2rem' },
-            },
+            $buttons: { justifyContent: 'end' },
+            $okButton: { padding: '0.5rem 2rem' },
         },
     });
 }
@@ -68,8 +66,8 @@ function showAlert() {
 
 ```typescript
 interface VsAlertStyleSet extends VsModalNodeStyleSet {
-    buttonsAlign?: Alignment;
-    button?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface AlertModalOptions extends ModalOptions {

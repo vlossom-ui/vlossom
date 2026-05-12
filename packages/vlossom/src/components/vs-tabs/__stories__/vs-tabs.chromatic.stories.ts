@@ -66,13 +66,13 @@ const meta: Meta<typeof VsTabs> = {
                     </div>
                 </div>
 
-                <!-- 스크롤 버튼 -->
+                <!-- 컨트롤 버튼 -->
                 <div>
-                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">스크롤 버튼</h3>
-                    <vs-tabs 
-                        v-bind="args" 
-                        :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8']" 
-                        scroll-buttons="show" 
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">컨트롤 버튼</h3>
+                    <vs-tabs
+                        v-bind="args"
+                        :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8']"
+                        controls="show"
                     />
                 </div>
 
@@ -177,16 +177,16 @@ const meta: Meta<typeof VsTabs> = {
                              </div>
                          </div>
                          <div>
-                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Scroll Buttons + Dense</p>
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Controls + Dense</p>
                              <div style="width: 200px; height: 200px;">
-                                <vs-tabs 
-                                    v-bind="args" 
+                                <vs-tabs
+                                    v-bind="args"
                                     :tabs="[
-                                        'Dashboard', 'Profile', 'Settings', 
+                                        'Dashboard', 'Profile', 'Settings',
                                         'Messages', 'Notifications', 'Calendar'
-                                    ]" 
-                                    vertical 
-                                    scroll-buttons="show"
+                                    ]"
+                                    vertical
+                                    controls="show"
                                     dense
                                 />
                             </div>

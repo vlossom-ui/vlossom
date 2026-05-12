@@ -36,20 +36,16 @@ export default defineComponent({
         const isPositioned = computed(() => position.value && ['absolute', 'fixed', 'sticky'].includes(position.value));
 
         const baseStyleSet: ComputedRef<VsFooterStyleSet> = computed(() => ({
-            component: {
-                height: '3rem',
-                zIndex: 'var(--vs-bar-z-index)',
-                bottom: 0,
-                left: 0,
-            },
+            height: '3rem',
+            zIndex: 'var(--vs-bar-z-index)',
+            bottom: 0,
+            left: 0,
         }));
         const additionalStyleSet: ComputedRef<Partial<VsFooterStyleSet>> = computed(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
-                    height: height.value || undefined,
-                    position: position.value || undefined,
-                    ...(isPositioned.value ? {} : { bottom: 0, left: 0 }),
-                }),
+                height: height.value || undefined,
+                position: position.value || undefined,
+                ...(isPositioned.value ? {} : { bottom: 0, left: 0 }),
             });
         });
         const { componentStyleSet } = useStyleSet<VsFooterStyleSet>(
@@ -72,7 +68,7 @@ export default defineComponent({
             }
             const footerLayout: BarLayout = {
                 position: position.value || 'relative',
-                height: (componentStyleSet.value.component?.height as string) || '3rem',
+                height: (componentStyleSet.value.height as string) || '3rem',
             };
             layoutStore.setFooter(footerLayout);
         });

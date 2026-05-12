@@ -79,21 +79,18 @@ const isOpen = ref(false);
 ## Types
 
 ```typescript
-interface VsAccordionStyleSet {
-    variables?: {
-        arrowColor?: string;
-        arrowSize?: string;
-        arrowSpacing?: string;
-        border?: string;
-    };
-    component?: CSSProperties;
-    title?: CSSProperties;
-    content?: VsExpandableStyleSet;
+interface VsAccordionStyleSet extends CSSProperties {
+    $arrowColor?: string;
+    $arrowSize?: string;
+    $arrowSpacing?: string;
+    $border?: string;
+    $title?: CSSProperties;
+    $content?: VsExpandableStyleSet;
 }
 ```
 
 > [!NOTE]
-> `content`는 `VsExpandableStyleSet`을 사용합니다. 자세한 내용은 [VsExpandable 문서](../vs-expandable/README.md)를 참고하세요.
+> `$content`는 `VsExpandableStyleSet`을 사용합니다. 자세한 내용은 [VsExpandable 문서](../vs-expandable/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -101,14 +98,12 @@ interface VsAccordionStyleSet {
 <template>
     <vs-accordion
         :style-set="{
-            variables: {
-                arrowColor: '#6200ea',
-                arrowSize: '0.5rem',
-                arrowSpacing: '4%',
-                border: '2px solid #6200ea',
-            },
-            component: { borderRadius: '0.75rem' },
-            title: { fontWeight: 'bold', padding: '1rem' },
+            $arrowColor: '#6200ea',
+            $arrowSize: '0.5rem',
+            $arrowSpacing: '4%',
+            $border: '2px solid #6200ea',
+            borderRadius: '0.75rem',
+            $title: { fontWeight: 'bold', padding: '1rem' },
         }"
     >
         <template #title>커스텀 스타일 아코디언</template>

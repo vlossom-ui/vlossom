@@ -16,15 +16,13 @@ export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroup
 }
 
 export interface VsGroupedListStyleSet {
-    variables?: {
-        gap?: string;
-        height?: string;
-    };
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
-    group?: CSSProperties;
-    item?: CSSProperties;
+    $gap?: string;
+    $height?: string;
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
+    $group?: CSSProperties;
+    $item?: CSSProperties;
 }
 
 export interface VsGroupedListGroup {

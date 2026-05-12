@@ -1,13 +1,13 @@
 <template>
-    <div class="vs-page" :style="componentStyleSet.component">
-        <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.title">
+    <div class="vs-page" :style="componentInlineStyle">
+        <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.$title">
             <slot name="title" />
         </div>
-        <div v-if="$slots['description']" class="vs-page-description" :style="componentStyleSet.description">
+        <div v-if="$slots['description']" class="vs-page-description" :style="componentStyleSet.$description">
             <slot name="description" />
         </div>
 
-        <div class="vs-page-content" :style="componentStyleSet.content">
+        <div class="vs-page-content" :style="componentStyleSet.$content">
             <slot />
         </div>
     </div>
@@ -29,10 +29,11 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
 
         return {
             componentStyleSet,
+            componentInlineStyle,
         };
     },
 });

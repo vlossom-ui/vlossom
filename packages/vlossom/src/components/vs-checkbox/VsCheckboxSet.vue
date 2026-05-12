@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="componentStyleSet.component">
+        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="componentInlineStyle">
             <vs-checkbox
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -124,7 +124,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
 
@@ -185,7 +185,7 @@ export default defineComponent({
         }));
 
         const checkboxStyleSet = computed(() => {
-            return componentStyleSet.value?.checkbox || {};
+            return componentStyleSet.value?.$checkbox || {};
         });
 
         function onCheckboxUpdate(value: any[]) {
@@ -215,6 +215,7 @@ export default defineComponent({
             checkboxRefs,
             colorSchemeClass,
             componentStyleSet,
+            componentInlineStyle,
             classObj,
             computedId,
             computedMessages,

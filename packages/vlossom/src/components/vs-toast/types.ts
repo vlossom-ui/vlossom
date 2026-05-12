@@ -16,7 +16,6 @@ export interface VsToastRef extends ComponentPublicInstance<typeof VsToast> {}
 
 export interface VsToastViewRef extends ComponentPublicInstance<typeof VsToastView> {}
 
-export interface VsToastStyleSet {
-    closeButton?: Omit<VsButtonStyleSet, 'loading'>;
-    component?: CSSProperties;
+export interface VsToastStyleSet extends CSSProperties {
+    $closeButton?: Omit<VsButtonStyleSet, '$loading'>;
 }

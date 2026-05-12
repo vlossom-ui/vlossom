@@ -136,23 +136,20 @@ async function confirmChange(from, to) {
 
 ```typescript
 interface VsRadioStyleSet {
-    variables?: {
-        borderRadius?: string;
-        radioColor?: string;
-        radioSize?: string;
-    };
-    wrapper?: VsInputWrapperStyleSet;
+    $radioBorderRadius?: string;
+    $radioColor?: string;
+    $radioSize?: string;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
-interface VsRadioSetStyleSet {
-    component?: CSSProperties;
-    radio?: VsRadioStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsRadioSetStyleSet extends CSSProperties {
+    $radio?: VsRadioStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
+> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
 
 ### StyleSet Example
 
@@ -162,12 +159,10 @@ interface VsRadioSetStyleSet {
         v-model="selected"
         :options="options"
         :style-set="{
-            component: { gap: '1rem' },
-            radio: {
-                variables: {
-                    radioColor: '#6366f1',
-                    radioSize: '1.2rem',
-                },
+            gap: '1rem',
+            $radio: {
+                $radioColor: '#6366f1',
+                $radioSize: '1.2rem',
             },
         }"
     />

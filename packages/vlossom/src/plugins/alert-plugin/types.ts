@@ -1,11 +1,11 @@
-import type { Component } from 'vue';
-import type { Alignment, ColorScheme } from '@/declaration';
+import type { Component, CSSProperties } from 'vue';
+import type { ColorScheme } from '@/declaration';
 import type { ModalOptions } from './../modal-plugin';
 import type { VsButtonStyleSet, VsModalNodeStyleSet } from '@/components';
 
 export interface VsAlertStyleSet extends VsModalNodeStyleSet {
-    buttonsAlign?: Alignment;
-    button?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 export interface AlertModalOptions extends Omit<ModalOptions, 'beforeClose'> {

@@ -525,22 +525,20 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 입력 필드',
         styleSet: {
-            component: {
-                backgroundColor: '#f0f8ff',
-                border: '2px solid #1e88e5',
-                borderRadius: '12px',
-                height: '3.5rem',
-            },
-            input: {
+            backgroundColor: '#f0f8ff',
+            border: '2px solid #1e88e5',
+            borderRadius: '12px',
+            height: '3.5rem',
+            $input: {
                 fontSize: '1.1rem',
                 fontWeight: '600',
                 color: '#0d47a1',
             },
-            prepend: {
+            $prepend: {
                 backgroundColor: '#e3f2fd',
                 padding: '0 1rem',
             },
-            append: {
+            $append: {
                 backgroundColor: '#e3f2fd',
                 padding: '0 1rem',
             },

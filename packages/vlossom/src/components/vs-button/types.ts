@@ -12,10 +12,7 @@ export type { VsButton };
 
 export interface VsButtonRef extends ComponentPublicInstance<typeof VsButton> {}
 
-export interface VsButtonStyleSet {
-    variables?: {
-        padding?: string;
-    };
-    component?: CSSProperties;
-    loading?: VsLoadingStyleSet;
+export interface VsButtonStyleSet extends CSSProperties {
+    $content?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }

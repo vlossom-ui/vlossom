@@ -108,17 +108,16 @@ const text = ref('');
 ## Types
 
 ```typescript
-interface VsInputStyleSet {
-    prepend?: CSSProperties;
-    append?: CSSProperties;
-    input?: CSSProperties;
-    component?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsInputStyleSet extends CSSProperties {
+    $prepend?: CSSProperties;
+    $append?: CSSProperties;
+    $input?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper README](../vs-input-wrapper/README.md) for details.
+> `$wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper README](../vs-input-wrapper/README.md) for details.
 
 ### StyleSet Example
 
@@ -128,11 +127,11 @@ interface VsInputStyleSet {
         v-model="value"
         label="Styled Input"
         :style-set="{
-            component: { borderRadius: '20px', height: '3rem' },
-            input: { fontSize: '1rem' },
-            prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            append: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            wrapper: { label: { color: 'blue' } },
+            borderRadius: '20px', height: '3rem',
+            $input: { fontSize: '1rem' },
+            $prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            $append: { backgroundColor: '#eee', padding: '0 0.5rem' },
+            $wrapper: { $label: { color: 'blue' } },
         }"
     />
 </template>

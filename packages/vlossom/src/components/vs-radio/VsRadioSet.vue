@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio-set', colorSchemeClass, classObj]" :style="componentStyleSet.component">
+        <div :class="['vs-radio-set', colorSchemeClass, classObj]" :style="componentInlineStyle">
             <vs-radio
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -28,7 +28,7 @@
                 :model-value="inputValue"
                 :radio-value="getOptionValue(option)"
                 :radio-label="getOptionLabel(option)"
-                :style-set="componentStyleSet.radio"
+                :style-set="componentStyleSet.$radio"
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :state="computedState"
@@ -116,7 +116,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
 
         const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
 
@@ -199,6 +199,7 @@ export default defineComponent({
             radioRefs,
             colorSchemeClass,
             componentStyleSet,
+            componentInlineStyle,
             classObj,
             computedId,
             computedMessages,

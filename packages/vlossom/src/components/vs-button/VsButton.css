@@ -1,9 +1,8 @@
 @reference 'tailwindcss';
 
 .vs-button {
-    --vs-button-padding: initial;
-
-    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none hover:brightness-96 active:brightness-92;
+    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none
+        hover:brightness-96 active:brightness-92;
 
     border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
@@ -21,7 +20,7 @@
     .vs-button-content {
         @apply relative flex h-full w-full items-center justify-center whitespace-nowrap;
 
-        padding: var(--vs-button-padding, 0 var(--vs-size-padding));
+        padding: 0 var(--vs-size-padding);
     }
 
     &.vs-loading-state {

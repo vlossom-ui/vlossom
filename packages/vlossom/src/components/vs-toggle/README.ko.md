@@ -50,20 +50,20 @@ const isActive = ref(false);
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsToggleStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `circle` | `boolean` | `false` | | 버튼을 원형으로 렌더링 |
-| `disabled` | `boolean` | `false` | | 토글 비활성화 |
-| `ghost` | `boolean` | `false` | | 고스트(투명) 스타일 적용 |
-| `loading` | `boolean` | `false` | | 로딩 인디케이터 표시 |
-| `modelValue` | `boolean` | `false` | | 토글 상태의 v-model |
-| `outline` | `boolean` | `false` | | 아웃라인 스타일 적용 |
-| `primary` | `boolean` | `false` | | Primary 색상 스타일 적용 |
-| `responsive` | `boolean` | `false` | | 버튼을 반응형으로 설정 |
-| `size` | `Size` | `'md'` | | 버튼 크기 (`xs`, `sm`, `md`, `lg`, `xl`) |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML 버튼 타입 |
+| Prop          | 타입                              | 기본값     | 필수 | 설명                                     |
+| ------------- | --------------------------------- | ---------- | ---- | ---------------------------------------- |
+| `colorScheme` | `string`                          |            |      | 컴포넌트 색상 스키마                     |
+| `styleSet`    | `string \| VsToggleStyleSet`      |            |      | 컴포넌트 커스텀 스타일 세트              |
+| `circle`      | `boolean`                         | `false`    |      | 버튼을 원형으로 렌더링                   |
+| `disabled`    | `boolean`                         | `false`    |      | 토글 비활성화                            |
+| `ghost`       | `boolean`                         | `false`    |      | 고스트(투명) 스타일 적용                 |
+| `loading`     | `boolean`                         | `false`    |      | 로딩 인디케이터 표시                     |
+| `modelValue`  | `boolean`                         | `false`    |      | 토글 상태의 v-model                      |
+| `outline`     | `boolean`                         | `false`    |      | 아웃라인 스타일 적용                     |
+| `primary`     | `boolean`                         | `false`    |      | Primary 색상 스타일 적용                 |
+| `responsive`  | `boolean`                         | `false`    |      | 버튼을 반응형으로 설정                   |
+| `size`        | `Size`                            | `'md'`     |      | 버튼 크기 (`xs`, `sm`, `md`, `lg`, `xl`) |
+| `type`        | `'button' \| 'submit' \| 'reset'` | `'button'` |      | HTML 버튼 타입                           |
 
 ## 타입
 
@@ -74,16 +74,6 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 > [!NOTE]
 > `VsToggleStyleSet`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 상속합니다. `VsButtonStyleSet`의 모든 속성을 사용할 수 있습니다.
 
-```typescript
-interface VsButtonStyleSet {
-    variables?: {
-        padding?: string;
-    };
-    component?: CSSProperties;
-    loading?: VsLoadingStyleSet;
-}
-```
-
 ### StyleSet 예시
 
 ```html
@@ -91,8 +81,9 @@ interface VsButtonStyleSet {
     <vs-toggle
         v-model="isActive"
         :style-set="{
-            component: { borderRadius: '0.25rem', minWidth: '6rem' },
-            variables: { padding: '0.5rem 1.5rem' },
+            borderRadius: '0.25rem',
+            minWidth: '6rem',
+            padding: '0.5rem 1.5rem',
         }"
     >
         토글
@@ -102,19 +93,19 @@ interface VsButtonStyleSet {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
-| `update:modelValue` | `boolean` | 토글 상태 변경 시 발생 |
-| `toggle` | `boolean` | 모든 토글 시 새로운 상태와 함께 발생 |
+| 이벤트              | 페이로드  | 설명                                 |
+| ------------------- | --------- | ------------------------------------ |
+| `update:modelValue` | `boolean` | 토글 상태 변경 시 발생               |
+| `toggle`            | `boolean` | 모든 토글 시 새로운 상태와 함께 발생 |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯      | 설명      |
+| --------- | --------- |
 | `default` | 버튼 내용 |
 
 ## 메서드
 
-| 메서드 | 매개변수 | 설명 |
-| ------ | -------- | ---- |
-| `toggle` | | 상태를 프로그래밍 방식으로 토글 |
+| 메서드   | 매개변수 | 설명                            |
+| -------- | -------- | ------------------------------- |
+| `toggle` |          | 상태를 프로그래밍 방식으로 토글 |

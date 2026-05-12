@@ -9,8 +9,8 @@ An animated loading indicator composed of five vertical bars with a wave animati
 ## Feature
 
 - Displays five animated bars with a sequential wave effect.
-- Customizable color via the `variables.color` style property.
-- Customizable bar width via the `variables.barWidth` style property.
+- Customizable color via the `$color` style property.
+- Customizable bar width via the `$barWidth` style property.
 - Supports `width` and `height` props for sizing.
 - Supports color schemes for consistent theming.
 
@@ -50,12 +50,9 @@ An animated loading indicator composed of five vertical bars with a wave animati
 ## Types
 
 ```typescript
-interface VsLoadingStyleSet {
-    variables?: {
-        barWidth?: string;
-        color?: string;
-    };
-    component?: CSSProperties;
+interface VsLoadingStyleSet extends CSSProperties {
+    $barColor?: string;
+    $barWidth?: string;
 }
 ```
 
@@ -65,11 +62,9 @@ interface VsLoadingStyleSet {
 <template>
     <vs-loading
         :style-set="{
-            variables: {
-                color: '#ff6b6b',
-                barWidth: '15%',
-            },
-            component: { width: '6rem', height: '8rem' },
+            $barColor: '#ff6b6b',
+            $barWidth: '15%',
+            width: '6rem', height: '8rem',
         }"
     />
 </template>

@@ -3,14 +3,14 @@
         ref="buttonRef"
         :type="type"
         :class="['vs-button', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :disabled
         :tabindex="disabled || loading ? -1 : 0"
     >
         <div v-if="loading" class="vs-button-loading">
-            <vs-loading :color-scheme :style-set="componentStyleSet.loading" />
+            <vs-loading :color-scheme :style-set="componentStyleSet.$loading" />
         </div>
-        <div class="vs-button-content">
+        <div class="vs-button-content" :style="componentStyleSet.$content">
             <slot />
         </div>
     </button>
@@ -44,18 +44,14 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => {
             return {
-                loading: {
-                    variables: {
-                        color: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
-                    },
-                    component: {
-                        width: '30%',
-                        height: '60%',
-                    },
+                $loading: {
+                    $color: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
+                    width: '30%',
+                    height: '60%',
                 },
             };
         });
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsButtonStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsButtonStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -82,7 +78,7 @@ export default defineComponent({
             }
         });
 
-        return { colorSchemeClass, styleSetVariables, classObj, buttonRef, componentStyleSet };
+        return { colorSchemeClass, styleSetVariables, componentInlineStyle, classObj, buttonRef, componentStyleSet };
     },
 });
 </script>

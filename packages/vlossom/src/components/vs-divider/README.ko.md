@@ -59,21 +59,13 @@
 ## Types
 
 ```typescript
-interface VsDividerStyleSet {
-    variables?: {
-        border?: string;
+interface VsDividerStyleSet extends CSSProperties {
+    $border?: string;
+    $horizontalWidth?: string;
+    $horizontalMargin?: string;
+    $verticalHeight?: string;
+    $verticalMargin?: string;
 
-        horizontal?: {
-            width?: string;
-            margin?: string;
-        };
-
-        vertical?: {
-            height?: string;
-            margin?: string;
-        };
-    };
-    component?: CSSProperties;
 }
 ```
 
@@ -83,13 +75,9 @@ interface VsDividerStyleSet {
 <template>
     <vs-divider
         :style-set="{
-            variables: {
-                border: '2px dashed #6200ea',
-                horizontal: {
-                    width: '80%',
-                    margin: '1rem auto',
-                },
-            },
+            $border: '2px dashed #6200ea',
+            $horizontalWidth: '80%',
+            $horizontalMargin: '1rem auto',
         }"
     />
 </template>

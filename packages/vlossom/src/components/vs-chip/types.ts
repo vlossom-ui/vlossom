@@ -11,11 +11,8 @@ export type { VsChip };
 
 export interface VsChipRef extends ComponentPublicInstance<typeof VsChip> {}
 
-export interface VsChipStyleSet {
-    variables?: {
-        height?: string;
-    };
-    component?: CSSProperties;
-    icon?: CSSProperties;
-    closeButton?: CSSProperties;
+export interface VsChipStyleSet extends CSSProperties {
+    $height?: string;
+    $icon?: CSSProperties;
+    $closeButton?: CSSProperties;
 }

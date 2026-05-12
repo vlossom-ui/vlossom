@@ -15,13 +15,10 @@ export interface VsDrawerRef extends ComponentPublicInstance<typeof VsDrawer> {
     closeDrawer: () => void;
 }
 
-export interface VsDrawerStyleSet {
-    variables?: {
-        size?: string;
-    };
-    component?: CSSProperties;
-    dimmed?: VsDimmedStyleSet;
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
+export interface VsDrawerStyleSet extends CSSProperties {
+    $size?: string;
+    $dimmed?: VsDimmedStyleSet;
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
 }

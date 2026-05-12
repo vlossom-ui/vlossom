@@ -4,9 +4,9 @@
         class="vs-grouped-list"
         :style="styleSetVariables"
         :style-set="{
-            header: componentStyleSet.header,
-            content: componentStyleSet.content,
-            footer: componentStyleSet.footer,
+            $header: componentStyleSet.$header,
+            $content: componentStyleSet.$content,
+            $footer: componentStyleSet.$footer,
         }"
     >
         <template #header v-if="$slots.header">
@@ -15,7 +15,7 @@
 
         <vs-visible-render class="vs-grouped-list-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
             <template v-for="(group, groupIndex) in groupedItems" :key="`group-${groupIndex}`">
-                <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.group">
+                <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.$group">
                     <slot name="group" :group="group.name" :groupIndex :items="group.items">
                         <div class="vs-grouped-list-group-content">
                             <span>{{ group.name || 'Ungrouped' }}</span>
@@ -27,7 +27,7 @@
                     :key="`${item.id}-${groupedIndex}`"
                     :id="item.id"
                     :class="['vs-grouped-list-item', { 'vs-disabled': item.disabled }]"
-                    :style="componentStyleSet.item"
+                    :style="componentStyleSet.$item"
                     @click.prevent.stop="emitClickItem(item, groupedIndex, group, groupIndex)"
                 >
                     <slot name="item" v-bind="item" :groupedIndex :group :groupIndex>

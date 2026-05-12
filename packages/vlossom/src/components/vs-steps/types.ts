@@ -11,14 +11,19 @@ export type { VsSteps };
 
 export interface VsStepsRef extends ComponentPublicInstance<typeof VsSteps> {}
 
-export interface VsStepsStyleSet {
-    variables?: {
-        stepSize?: string;
+export interface VsStepsStyleSet extends CSSProperties {
+    $stepSize?: string;
+
+    $steps?: CSSProperties;
+    $step?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
     };
-    step?: CSSProperties;
-    activeStep?: CSSProperties;
-    label?: CSSProperties;
-    activeLabel?: CSSProperties;
-    progress?: CSSProperties;
-    activeProgress?: CSSProperties;
+    $label?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
+    };
+    $progress?: CSSProperties & {
+        $active?: CSSProperties;
+    };
 }

@@ -1,6 +1,6 @@
 <template>
-    <div class="vs-inner-scroll" :style="componentStyleSet.component">
-        <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.header">
+    <div class="vs-inner-scroll" :style="componentInlineStyle">
+        <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.$header">
             <slot name="header" />
         </div>
 
@@ -8,12 +8,12 @@
             ref="bodyRef"
             v-scroll-shadow
             :class="['vs-inner-scroll-body', { 'vs-hide-scroll': hideScroll }]"
-            :style="componentStyleSet.content"
+            :style="componentStyleSet.$content"
         >
             <slot />
         </div>
 
-        <div v-if="$slots['footer']" class="vs-inner-scroll-footer" :style="componentStyleSet.footer">
+        <div v-if="$slots['footer']" class="vs-inner-scroll-footer" :style="componentStyleSet.$footer">
             <slot name="footer" />
         </div>
     </div>
@@ -40,7 +40,7 @@ export default defineComponent({
         const { styleSet } = toRefs(props);
         const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
-        const { componentStyleSet } = useStyleSet<VsInnerScrollStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsInnerScrollStyleSet>(componentName, styleSet);
 
         function hasScroll() {
             if (!bodyRef.value) {
@@ -50,7 +50,7 @@ export default defineComponent({
             return bodyRef.value.scrollHeight > bodyRef.value.clientHeight;
         }
 
-        return { componentStyleSet, hasScroll, bodyRef };
+        return { componentStyleSet, componentInlineStyle, hasScroll, bodyRef };
     },
 });
 </script>

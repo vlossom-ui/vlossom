@@ -12,11 +12,8 @@ export type { VsImage };
 
 export interface VsImageRef extends ComponentPublicInstance<typeof VsImage> {}
 
-export interface VsImageStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
-    skeleton?: VsSkeletonStyleSet;
-    component?: CSSProperties;
+export interface VsImageStyleSet extends CSSProperties {
+    $width?: string;
+    $height?: string;
+    $skeleton?: VsSkeletonStyleSet;
 }

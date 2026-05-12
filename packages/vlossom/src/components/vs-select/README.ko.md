@@ -110,27 +110,21 @@ const options = [
 ## Types
 
 ```typescript
-interface VsSelectStyleSet {
-    variables?: {
-        height?: string;
-        focused?: {
-            border?: string;
-            borderRadius?: string;
-            backgroundColor?: string;
-        };
+interface VsSelectStyleSet extends CSSProperties {
+    $height?: string;
+    $wrapper?: VsInputWrapperStyleSet;
+    $chip?: VsChipStyleSet;
+    $selectAllCheckbox?: VsCheckboxStyleSet;
+    $options?: VsGroupedListStyleSet;
+    $option?: CSSProperties & {
+        $focused?: CSSProperties;
+        $selected?: CSSProperties;
     };
-    component?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
-    chip?: VsChipStyleSet;
-    selectAllCheckbox?: VsCheckboxStyleSet;
-    options?: VsGroupedListStyleSet;
-    option?: CSSProperties;
-    selectedOption?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `chip`은 [VsChipStyleSet](../vs-chip/README.md#types), `selectAllCheckbox`는 [VsCheckboxStyleSet](../vs-checkbox/README.md#types), `options`는 [VsGroupedListStyleSet](../vs-grouped-list/README.md#types)을 사용합니다.
+> `$wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `$chip`은 [VsChipStyleSet](../vs-chip/README.md#types), `$selectAllCheckbox`는 [VsCheckboxStyleSet](../vs-checkbox/README.md#types), `$options`는 [VsGroupedListStyleSet](../vs-grouped-list/README.md#types)을 사용합니다. `$option.$focused`는 키보드로 포커스된 옵션에 적용되고, `$option.$selected`는 선택된 옵션에 적용됩니다.
 
 ### StyleSet 사용 예시
 
@@ -140,12 +134,12 @@ interface VsSelectStyleSet {
         v-model="selected"
         :options="options"
         :style-set="{
-            variables: {
-                height: '2.5rem',
-                focused: { border: '2px solid #6366f1' },
+            $height: '2.5rem',
+            $option: {
+                padding: '0.5rem 1rem',
+                $focused: { backgroundColor: '#eef2ff' },
+                $selected: { backgroundColor: '#ede9fe', fontWeight: 'bold' },
             },
-            option: { padding: '0.5rem 1rem' },
-            selectedOption: { backgroundColor: '#ede9fe', fontWeight: 'bold' },
         }"
     />
 </template>

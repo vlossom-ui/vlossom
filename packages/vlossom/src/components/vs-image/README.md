@@ -70,18 +70,15 @@ Disable the skeleton placeholder during loading.
 ## Types
 
 ```typescript
-interface VsImageStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
-    skeleton?: VsSkeletonStyleSet;
-    component?: CSSProperties;
+interface VsImageStyleSet extends CSSProperties {
+    $width?: string;
+    $height?: string;
+    $skeleton?: VsSkeletonStyleSet;
 }
 ```
 
 > [!NOTE]
-> `skeleton` uses `VsSkeletonStyleSet`. See the [VsSkeleton README](../vs-skeleton/README.md) for details.
+> `$skeleton` uses `VsSkeletonStyleSet`. See the [VsSkeleton README](../vs-skeleton/README.md) for details.
 
 ### StyleSet Example
 
@@ -91,9 +88,10 @@ interface VsImageStyleSet {
         src="https://example.com/image.png"
         alt="Styled image"
         :style-set="{
-            variables: { width: '200px', height: '200px' },
-            component: { borderRadius: '8px', objectFit: 'cover' },
-            skeleton: { component: { borderRadius: '8px' } },
+            $width: '200px',
+            $height: '200px',
+            borderRadius: '8px', objectFit: 'cover',
+            $skeleton: { borderRadius: '8px' },
         }"
     />
 </template>

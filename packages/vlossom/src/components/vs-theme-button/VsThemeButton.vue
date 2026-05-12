@@ -3,7 +3,7 @@
         :model-value="isDarkTheme"
         class="vs-theme-button"
         :color-scheme
-        :style-set="componentStyleSet.button"
+        :style-set="componentStyleSet"
         :style="styleSetVariables"
         :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
         :disabled="disabled"

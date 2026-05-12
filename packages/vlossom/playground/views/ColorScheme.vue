@@ -1,5 +1,5 @@
 <template>
-    <vs-page :style-set="{ component: { padding: '0' } }">
+    <vs-page :style-set="{ padding: '0' }">
         <template #title>
             <h1 class="text-2xl font-bold">Color Scheme</h1>
         </template>

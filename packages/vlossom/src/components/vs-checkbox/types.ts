@@ -19,19 +19,17 @@ export interface VsCheckboxRef extends ComponentPublicInstance<typeof VsCheckbox
 
 export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheckboxSet>, FocusableRef, FormChildRef {}
 
-export interface VsCheckboxStyleSet {
-    variables?: {
-        checkboxCheckedColor?: string;
-        checkboxColor?: string;
-        checkboxSize?: string;
-    };
-    checkbox?: CSSProperties;
-    checkboxLabel?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+export interface VsCheckboxStyleSet extends CSSProperties {
+    $checkboxCheckedColor?: string;
+    $checkboxColor?: string;
+    $checkboxSize?: string;
+
+    $checkbox?: CSSProperties;
+    $checkboxLabel?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
-export interface VsCheckboxSetStyleSet {
-    component?: CSSProperties;
-    checkbox?: Omit<VsCheckboxStyleSet, 'wrapper'>;
-    wrapper?: VsInputWrapperStyleSet;
+export interface VsCheckboxSetStyleSet extends CSSProperties {
+    $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
+    $wrapper?: VsInputWrapperStyleSet;
 }

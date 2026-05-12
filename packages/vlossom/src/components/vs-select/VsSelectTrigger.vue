@@ -2,7 +2,7 @@
     <div
         ref="triggerRef"
         :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
-        :style="styleSet?.component"
+        :style="componentInlineStyle"
         tabindex="0"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -17,7 +17,7 @@
                     <vs-chip
                         :color-scheme
                         :closable="closableChips"
-                        :style-set="styleSet?.chip"
+                        :style-set="componentStyleSet.$chip"
                         primary
                         size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
@@ -32,7 +32,7 @@
                         :key="option.id"
                         :color-scheme
                         :closable="closableChips"
-                        :style-set="styleSet?.chip"
+                        :style-set="componentStyleSet.$chip"
                         primary
                         size="xs"
                         @close="$emit('deselect', option.id)"
@@ -62,8 +62,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
-import type { ColorScheme, OptionItem, UIState } from '@/declaration';
-import { useStateClass } from '@/composables';
+import { VsComponent, type ColorScheme, type OptionItem, type UIState } from '@/declaration';
+import { useStateClass, useStyleSet } from '@/composables';
 import { closeIcon } from '@/icons';
 import type { VsSelectStyleSet } from './types';
 import { selectIcons } from './icons';
@@ -94,11 +94,16 @@ export default defineComponent({
     },
     emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
-        const { isEmpty, selectedOptions, state, noClear, disabled, readonly } = toRefs(props);
+        const { isEmpty, selectedOptions, state, noClear, disabled, readonly, styleSet } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
 
         const { stateBoxClasses } = useStateClass(state);
+
+        const { componentInlineStyle, componentStyleSet } = useStyleSet<VsSelectStyleSet>(
+            VsComponent.VsSelect,
+            styleSet,
+        );
 
         const renderClearButton = computed(
             () => !noClear.value && !readonly.value && !disabled.value && !isEmpty.value,
@@ -133,6 +138,8 @@ export default defineComponent({
             renderClearButton,
             displayLabel,
             triggerClassObj,
+            componentStyleSet,
+            componentInlineStyle,
             focus,
             blur,
         };

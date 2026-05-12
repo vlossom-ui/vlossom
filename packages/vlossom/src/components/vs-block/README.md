@@ -59,13 +59,10 @@ A content block component with an optional title area and a scrollable content r
 ## Types
 
 ```typescript
-interface VsBlockStyleSet {
-    variables?: {
-        border?: string;
-    };
-    component?: CSSProperties;
-    title?: CSSProperties;
-    content?: CSSProperties;
+interface VsBlockStyleSet extends CSSProperties {
+    $blockBorder?: string;
+    $title?: CSSProperties;
+    $content?: CSSProperties;
 }
 ```
 
@@ -75,19 +72,15 @@ interface VsBlockStyleSet {
 <template>
     <vs-block
         :style-set="{
-            variables: {
-                border: '2px solid #6200ea',
-            },
-            component: {
-                borderRadius: '1rem',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-            },
-            title: {
+            $blockBorder: '2px solid #6200ea',
+            borderRadius: '1rem',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+            $title: {
                 backgroundColor: '#6200ea',
                 color: '#ffffff',
                 padding: '1rem 1.5rem',
             },
-            content: {
+            $content: {
                 padding: '1.5rem',
             },
         }"

@@ -211,22 +211,7 @@ describe('VsSteps', () => {
             expect(stepItems[3].classes()).toContain('vs-disabled');
         });
 
-        it('gap prop이 주어지면 CSS 변수로 설정되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsSteps, {
-                props: {
-                    steps: ['Step 1', 'Step 2', 'Step 3'],
-                    gap: '2rem',
-                },
-            });
-
-            // then
-            const steps = wrapper.find('.vs-steps');
-            expect(steps.attributes('style')).toContain('--vs-steps-gap: 2rem');
-            expect(steps.attributes('style')).toContain('--vs-steps-gapCount: 2');
-        });
-
-        it('height prop이 주어지면 styleSet에 height가 적용되어야 한다', () => {
+        it('height prop이 주어지면 component 스타일에 height가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsSteps, {
                 props: {
@@ -237,7 +222,7 @@ describe('VsSteps', () => {
 
             // then
             const steps = wrapper.find('.vs-steps');
-            expect(steps.attributes('style')).toContain('--vs-steps-height: 300px');
+            expect(steps.attributes('style')).toContain('height: 300px');
         });
     });
 
