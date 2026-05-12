@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-loading', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentStyleSet.$component }">
+    <div :class="['vs-loading', colorSchemeClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <div class="vs-loading-rect vs-loading-rect1" />
         <div class="vs-loading-rect vs-loading-rect2" />
         <div class="vs-loading-rect vs-loading-rect3" />
@@ -32,22 +32,20 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<VsLoadingStyleSet> = computed(() => {
-            return {
-                $component: objectUtil.shake({
-                    width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                }),
-            };
+            return objectUtil.shake({
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+            });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsLoadingStyleSet>(
+        const { styleSetVariables, componentInlineStyle } = useStyleSet<VsLoadingStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
             additionalStyleSet,
         );
 
-        return { colorSchemeClass, componentStyleSet, styleSetVariables };
+        return { colorSchemeClass, styleSetVariables, componentInlineStyle };
     },
 });
 </script>

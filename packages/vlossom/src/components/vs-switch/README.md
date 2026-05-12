@@ -91,18 +91,18 @@ async function confirmChange(from, to) {
 ## Types
 
 ```typescript
-interface VsSwitchStyleSet {
+interface VsSwitchStyleSet extends CSSProperties {
     $handleColor?: string;
     $handleSize?: string;
-    $switchButton?: CSSProperties;
-    $activeSwitchButton?: CSSProperties;
-    $component?: CSSProperties;
+    $switchButton?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `$wrapper` uses [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.md).
+> `$wrapper` uses [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.md). The `$switchButton.$active` style is applied when the switch is ON.
 
 ### StyleSet Example
 
@@ -113,9 +113,11 @@ interface VsSwitchStyleSet {
         :style-set="{
             $handleColor: '#ffffff',
             $handleSize: '1.4rem',
-            $switchButton: { borderRadius: '0.25rem' },
-            $activeSwitchButton: { backgroundColor: '#4caf50' },
-            $component: { minHeight: '2.5rem' },
+            $switchButton: {
+                borderRadius: '0.25rem',
+                $active: { backgroundColor: '#4caf50' },
+            },
+            minHeight: '2.5rem',
         }"
     />
 </template>

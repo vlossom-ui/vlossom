@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type CSSProperties, type Ref } from 'vue';
 import type { VsComponent } from '@/declaration';
 import { useOptionsStore } from '@/stores';
 import { objectUtil, stringUtil } from '@/utils';
@@ -44,8 +44,25 @@ export function useStyleSet<T extends { [key: string]: any }>(
         return result;
     });
 
+    const componentInlineStyle: ComputedRef<CSSProperties> = computed(() => {
+        const result: CSSProperties = {};
+
+        for (const [key, value] of Object.entries(componentStyleSet.value)) {
+            if (key.startsWith('$')) {
+                continue;
+            }
+            if (value === undefined || value === null) {
+                continue;
+            }
+            (result as Record<string, unknown>)[key] = value;
+        }
+
+        return result;
+    });
+
     return {
         componentStyleSet,
         styleSetVariables,
+        componentInlineStyle,
     };
 }

@@ -212,7 +212,7 @@ describe('VsDrawer', () => {
             expect(wrapper.vm.styleSetVariables).toEqual({
                 '--vs-drawer-size': '20%',
             });
-            expect(wrapper.vm.componentStyleSet.$component?.position).toBe('fixed');
+            expect(wrapper.vm.componentStyleSet.position).toBe('fixed');
         });
     });
 

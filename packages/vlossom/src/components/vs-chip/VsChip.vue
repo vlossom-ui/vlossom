@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-chip', 'vs-inline-gap', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
     >
         <span v-if="!!$slots.icon" class="vs-chip-icon" :style="componentStyleSet.$icon">
             <slot name="icon" />
@@ -53,7 +53,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsChipStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsChipStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
 
@@ -67,6 +70,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             closeIcon,
         };

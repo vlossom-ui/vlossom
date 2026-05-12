@@ -11,7 +11,6 @@ export type { VsGrid };
 
 export interface VsGridRef extends ComponentPublicInstance<typeof VsGrid> {}
 
-export interface VsGridStyleSet {
+export interface VsGridStyleSet extends CSSProperties {
     $gridSize?: number;
-    $component?: CSSProperties;
 }

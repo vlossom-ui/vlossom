@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-block', colorSchemeClass]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :grid
         :width
     >
@@ -47,13 +47,11 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsBlockStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => {
             return objectUtil.shake({
-                $component: objectUtil.shake({
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                }),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsBlockStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsBlockStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -64,6 +62,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
         };
     },
 });

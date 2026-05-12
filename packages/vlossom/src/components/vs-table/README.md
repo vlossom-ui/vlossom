@@ -134,13 +134,13 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 ## Types
 
 ```typescript
-interface VsTableStyleSet {
-    $component?: CSSProperties;
+interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
     $header?: CSSProperties;
-    $row?: CSSProperties;
-    $selectedRow?: CSSProperties;
+    $row?: CSSProperties & {
+        $selected?: CSSProperties;
+    };
     $cell?: CSSProperties;
 }
 
@@ -177,10 +177,12 @@ interface VsTablePaginationOptions {
         :columns="columns"
         :items="items"
         :style-set="{
-            $component: { borderRadius: '0.5rem', overflow: 'hidden' },
+            borderRadius: '0.5rem', overflow: 'hidden',
             $header: { fontSize: '0.875rem', fontWeight: 700 },
-            $row: { height: '3rem' },
-            $selectedRow: { backgroundColor: '#e3f2fd' },
+            $row: {
+                height: '3rem',
+                $selected: { backgroundColor: '#e3f2fd' },
+            },
             $cell: { padding: '0.5rem 1rem' },
         }"
     />

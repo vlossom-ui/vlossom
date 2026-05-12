@@ -30,7 +30,7 @@
         :style-set="{
             $iconSize: '1.5rem',
             $iconColor: '#ff9800',
-            $component: { width: '3rem', height: '3rem' },
+            width: '3rem', height: '3rem',
         }"
     />
 </template>
@@ -70,7 +70,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 ```
 
 > [!NOTE]
-> [`VsToggleStyleSet`](../vs-toggle/README.ko.md)의 모든 속성(`$component`, `$content`, `$loading`)을 상속합니다.
+> [`VsToggleStyleSet`](../vs-toggle/README.ko.md)의 모든 속성(`$content`, `$loading`)과 `CSSProperties`를 상속합니다.
 
 ### StyleSet 예시
 
@@ -80,7 +80,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
         :style-set="{
             $iconSize: '1.25rem',
             $iconColor: '#ff9800',
-            $component: { width: '2.5rem', height: '2.5rem' },
+            width: '2.5rem', height: '2.5rem',
         }"
     />
 </template>

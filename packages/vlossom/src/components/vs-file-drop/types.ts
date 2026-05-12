@@ -16,10 +16,9 @@ export interface VsFileDropRef extends ComponentPublicInstance<typeof VsFileDrop
 
 export type FileDropValueType = File[];
 
-export interface VsFileDropStyleSet {
+export interface VsFileDropStyleSet extends CSSProperties {
     $dragBackgroundColor?: string;
     $iconColor?: string;
-    $component?: CSSProperties;
     $placeholder?: CSSProperties;
     $files?: CSSProperties;
     $closeButton?: CSSProperties;

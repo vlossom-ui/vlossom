@@ -18,7 +18,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-input', colorSchemeClass, classObj, stateBoxClasses]" :style="componentStyleSet.$component">
+        <div :class="['vs-input', colorSchemeClass, classObj, stateBoxClasses]" :style="componentInlineStyle">
             <div v-if="$slots['prepend']" class="vs-prepend" :style="componentStyleSet.$prepend">
                 <slot name="prepend" />
             </div>
@@ -132,7 +132,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsInputStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsInputStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
@@ -238,6 +241,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             inputValue,
             computedMessages,
             computedDisabled,

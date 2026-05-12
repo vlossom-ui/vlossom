@@ -19,10 +19,9 @@ export type VsInputValueType = string | number | null;
 
 export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
-export interface VsInputStyleSet {
+export interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;
     $append?: CSSProperties;
     $input?: CSSProperties;
-    $component?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }

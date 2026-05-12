@@ -15,13 +15,13 @@ export interface VsTabsRef extends ComponentPublicInstance<typeof VsTabs> {
     goNext: () => void;
 }
 
-export interface VsTabsStyleSet {
+export interface VsTabsStyleSet extends CSSProperties {
     $gap?: string;
     $divider?: CSSProperties['border'] & {};
 
-    $component?: CSSProperties;
     $tabs?: CSSProperties;
-    $tab?: CSSProperties;
-    $activeTab?: CSSProperties;
+    $tab?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }

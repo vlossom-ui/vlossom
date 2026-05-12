@@ -33,10 +33,8 @@ const meta: Meta<typeof VsFileDrop> = {
 
             const preDefinedStyleSet: VsFileDropStyleSet = {
                 $dragBackgroundColor: '#e3f2fd',
-                $component: {
-                    border: '2px dashed #1e88e5',
-                    borderRadius: '12px',
-                },
+                border: '2px dashed #1e88e5',
+                borderRadius: '12px',
                 $files: {
                     padding: '2rem',
                 },
@@ -434,11 +432,9 @@ export const StyleSet: Story = {
         placeholder: '커스텀 파일 드롭',
         styleSet: {
             $dragBackgroundColor: '#ffccbc',
-            $component: {
-                border: '2px dashed #ff5722',
-                borderRadius: '16px',
-                backgroundColor: '#ffebee',
-            },
+            border: '2px dashed #ff5722',
+            borderRadius: '16px',
+            backgroundColor: '#ffebee',
             $files: {
                 padding: '2rem',
             },

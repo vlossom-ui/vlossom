@@ -86,12 +86,12 @@
                                 'vs-select-focusable',
                                 { selected: isSelected(itemSlotProps.id) },
                             ]"
-                            :style="componentStyleSet.$option"
+                            :style="getOptionStyleSet(itemSlotProps.id)"
                             :data-id="itemSlotProps.id"
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
                             <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
-                                <div class="vs-select-option" :style="getOptionStyleSet(itemSlotProps.id)">
+                                <div class="vs-select-option">
                                     {{ itemSlotProps.label }}
                                 </div>
                             </slot>
@@ -455,10 +455,15 @@ export default defineComponent({
         }
 
         function getOptionStyleSet(optionId: string): CSSProperties {
-            return {
-                ...componentStyleSet.value.$option,
-                ...(isSelected(optionId) ? componentStyleSet.value.$selectedOption : {}),
-            };
+            const { $focused = {}, $selected = {}, ...base } = componentStyleSet.value.$option ?? {};
+            const isOptionFocused = currentFocusableElement.value?.dataset?.['id'] === optionId;
+            if (isSelected(optionId)) {
+                return objectUtil.assign(base, $selected);
+            }
+            if (isOptionFocused) {
+                return objectUtil.assign(base, $focused);
+            }
+            return base;
         }
 
         function closeOptions() {

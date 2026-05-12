@@ -18,7 +18,7 @@
 
         <div
             :class="['vs-switch', colorSchemeClass, classObj]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <label class="vs-switch-wrap" :for="computedId">
                 <input
@@ -65,6 +65,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent } from '@/declaration';
+import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
 import type { VsSwitchStyleSet } from './types';
@@ -120,7 +121,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsSwitchStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsSwitchStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const inputValue = ref(modelValue.value);
 
@@ -226,16 +230,15 @@ export default defineComponent({
         }
 
         function getSwitchButtonStyle(): CSSProperties {
-            return {
-                ...componentStyleSet.value.$switchButton,
-                ...(isChecked.value ? componentStyleSet.value.$activeSwitchButton : {}),
-            };
+            const { $active = {}, ...base } = componentStyleSet.value.$switchButton ?? {};
+            return objectUtil.assign(base, isChecked.value ? $active : {});
         }
 
         return {
             switchRef,
             colorSchemeClass,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             stateBoxClasses,
             computedId,

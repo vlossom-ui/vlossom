@@ -12,13 +12,13 @@ declare module 'vue' {
 export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
 export const TABLE_COLOR_SCHEME_TOKEN = Symbol('TABLE_COLOR_SCHEME_TOKEN');
 
-export interface VsTableStyleSet {
-    $component?: CSSProperties;
+export interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
     $header?: CSSProperties;
-    $row?: CSSProperties;
-    $selectedRow?: CSSProperties;
+    $row?: CSSProperties & {
+        $selected?: CSSProperties;
+    };
     $cell?: CSSProperties;
 }
 

@@ -59,9 +59,8 @@
 ## Types
 
 ```typescript
-interface VsBlockStyleSet {
+interface VsBlockStyleSet extends CSSProperties {
     $blockBorder?: string;
-    $component?: CSSProperties;
     $title?: CSSProperties;
     $content?: CSSProperties;
 }
@@ -74,10 +73,8 @@ interface VsBlockStyleSet {
     <vs-block
         :style-set="{
             $blockBorder: '2px solid #6200ea',
-            $component: {
-                borderRadius: '1rem',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-            },
+            borderRadius: '1rem',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
             $title: {
                 backgroundColor: '#6200ea',
                 color: '#ffffff',

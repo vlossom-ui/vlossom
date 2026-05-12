@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed, type ComputedRef, type CSSProperties } from 'vue';
-import { stringUtil } from '@/utils';
+import { objectUtil, stringUtil } from '@/utils';
 import {
     VsTableSortType,
     TABLE_STYLE_SET_TOKEN,
@@ -92,11 +92,11 @@ export default defineComponent({
                 gridTemplateColumns: cols.join(' '),
             };
         });
-        const headerStyle = computed<CSSProperties | undefined>(() => ({
-            ...tableStyleSet?.value?.$row,
-            ...tableStyleSet?.value?.$header,
-            ...gridStyle.value,
-        }));
+        const headerStyle = computed<CSSProperties | undefined>(() => {
+            const { $selected, ...baseRow } = tableStyleSet?.value?.$row ?? {};
+            const baseRowStyle = objectUtil.assign(baseRow, tableStyleSet?.value?.$header ?? {});
+            return objectUtil.assign(baseRowStyle, gridStyle.value ?? {});
+        });
 
         function getGridColumnWidth(column?: VsTableColumnDef): string {
             if (!column) {

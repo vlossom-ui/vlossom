@@ -62,8 +62,7 @@
 ## Types
 
 ```typescript
-interface VsInnerScrollStyleSet {
-    $component?: CSSProperties;
+interface VsInnerScrollStyleSet extends CSSProperties {
     $header?: CSSProperties;
     $content?: CSSProperties;
     $footer?: CSSProperties;
@@ -77,7 +76,7 @@ interface VsInnerScrollStyleSet {
     <vs-inner-scroll
         style="height: 400px;"
         :style-set="{
-            $component: { backgroundColor: '#f5f5f5' },
+            backgroundColor: '#f5f5f5',
             $header: { padding: '1rem', borderBottom: '1px solid #ddd' },
             $content: { padding: '1rem' },
             $footer: { padding: '0.5rem', borderTop: '1px solid #ddd' },

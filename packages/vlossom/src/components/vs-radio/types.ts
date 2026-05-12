@@ -25,8 +25,7 @@ export interface VsRadioStyleSet {
     $wrapper?: VsInputWrapperStyleSet;
 }
 
-export interface VsRadioSetStyleSet {
-    $component?: CSSProperties;
+export interface VsRadioSetStyleSet extends CSSProperties {
     $radio?: VsRadioStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }

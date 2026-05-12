@@ -75,19 +75,26 @@ const steps = ['1단계', '2단계', '3단계', '4단계'];
 ## Types
 
 ```typescript
-interface VsStepsStyleSet {
+interface VsStepsStyleSet extends CSSProperties {
     $stepSize?: string;
 
-    $component?: CSSProperties;
     $steps?: CSSProperties;
-    $step?: CSSProperties;
-    $activeStep?: CSSProperties;
-    $label?: CSSProperties;
-    $activeLabel?: CSSProperties;
-    $progress?: CSSProperties;
-    $activeProgress?: CSSProperties;
+    $step?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
+    };
+    $label?: CSSProperties & {
+        $completed?: CSSProperties;
+        $active?: CSSProperties;
+    };
+    $progress?: CSSProperties & {
+        $active?: CSSProperties;
+    };
 }
 ```
+
+> [!NOTE]
+> `$completed`는 이미 완료된 단계에, `$active`는 현재 단계에 적용됩니다. `$progress`는 progress 트랙(빈 경로), `$progress.$active`는 채워진 부분 스타일입니다.
 
 ### StyleSet 사용 예시
 
@@ -98,10 +105,15 @@ interface VsStepsStyleSet {
         :steps="steps"
         :style-set="{
             $stepSize: '2rem',
-            $step: { border: '2px solid #d1d5db' },
-            $activeStep: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
-            $progress: { backgroundColor: '#a5b4fc' },
-            $activeProgress: { backgroundColor: '#6366f1' },
+            $step: {
+                border: '2px solid #d1d5db',
+                $completed: { backgroundColor: '#a5b4fc', borderColor: '#a5b4fc', color: '#fff' },
+                $active: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
+            },
+            $progress: {
+                backgroundColor: '#e5e7eb',
+                $active: { backgroundColor: '#6366f1' },
+            },
         }"
     />
 </template>

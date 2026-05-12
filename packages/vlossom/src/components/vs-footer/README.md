@@ -78,9 +78,7 @@ Set the `layout` prop to register the footer with the layout store so `VsContain
 interface VsFooterStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
-interface VsBarStyleSet {
-    $component?: CSSProperties;
-}
+interface VsBarStyleSet extends CSSProperties {}
 ```
 
 > [!NOTE]
@@ -92,12 +90,10 @@ interface VsBarStyleSet {
 <template>
     <vs-footer
         :style-set="{
-            $component: {
-                backgroundColor: '#1a1a2e',
-                color: '#ffffff',
-                padding: '0 2rem',
-                height: '4rem',
-            },
+            backgroundColor: '#1a1a2e',
+            color: '#ffffff',
+            padding: '0 2rem',
+            height: '4rem',
         }"
     >
         <span>Custom styled footer</span>

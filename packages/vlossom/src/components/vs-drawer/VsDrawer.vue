@@ -4,7 +4,7 @@
             v-show="isOpen"
             ref="drawerRef"
             :class="['vs-drawer', colorSchemeClass, { 'vs-drawer-dimmed': dimmed }]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <vs-dimmed
                 v-if="dimmed"
@@ -140,13 +140,11 @@ export default defineComponent({
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
                 $size: drawerSize.value,
-                $component: objectUtil.shake({
-                    position: fixed.value ? 'fixed' : undefined,
-                }),
+                position: fixed.value ? 'fixed' : undefined,
             });
         });
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsDrawerStyleSet>(
+        const { styleSetVariables, componentStyleSet, componentInlineStyle } = useStyleSet<VsDrawerStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -264,6 +262,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             isOpen,
             ANIMATION_DURATION,
             onClickDimmed,

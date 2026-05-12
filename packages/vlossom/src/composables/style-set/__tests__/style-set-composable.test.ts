@@ -294,7 +294,6 @@ describe('useStyleSet', () => {
             const styles = {
                 $height: '2.5rem',
                 $focused: { border: '1px solid red', backgroundColor: 'gray' },
-                $component: { fontSize: '1rem' },
                 $wrapper: { variables: { width: '100%' } },
             };
             const styleSet = ref(styles);
@@ -319,6 +318,87 @@ describe('useStyleSet', () => {
 
             // then
             expect(styleSetVariables.value).toEqual({});
+        });
+    });
+
+    describe('componentInlineStyle', () => {
+        it('빈 스타일셋에 대해 빈 객체를 반환해야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styleSet = ref(undefined);
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({});
+        });
+
+        it('$ prefix가 없는 CSSProperties를 inline style로 반환해야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styles = { color: 'red', fontSize: '14px', padding: '0.5rem' };
+            const styleSet = ref(styles);
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({
+                color: 'red',
+                fontSize: '14px',
+                padding: '0.5rem',
+            });
+        });
+
+        it('$ prefix가 붙은 키는 inline style에서 제외되어야 한다', () => {
+            // given
+            const component = VsComponent.VsSelect;
+            const styles = {
+                color: 'red',
+                $height: '2.5rem',
+                $focused: { border: '1px solid red' },
+                $wrapper: { $label: { fontSize: '14px' } },
+            };
+            const styleSet = ref(styles);
+
+            // when
+            const { componentInlineStyle } = useStyleSet<any>(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({ color: 'red' });
+        });
+
+        it('baseStyleSet, styleSet, additionalStyleSet의 CSSProperties가 모두 병합되어야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const baseStyleSet = ref({ color: 'blue', padding: '5px' });
+            const styleSet = ref({ color: 'red', fontSize: '14px' });
+            const additionalStyleSet = ref({ color: 'green', fontWeight: 'bold' });
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet, baseStyleSet, additionalStyleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({
+                color: 'green',
+                padding: '5px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+            });
+        });
+
+        it('값이 undefined나 null이면 inline style에서 제외되어야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styles = { color: 'red', padding: undefined, margin: null };
+            const styleSet: any = ref(styles);
+
+            // when
+            const { componentInlineStyle } = useStyleSet<any>(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({ color: 'red' });
         });
     });
 });

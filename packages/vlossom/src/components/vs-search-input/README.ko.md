@@ -91,7 +91,7 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 ```
 
 > [!NOTE]
-> [VsInputStyleSet](../vs-input/README.md#types)의 모든 속성(`$prepend`, `$append`, `$input`, `$component`, `$wrapper`)을 상속합니다. `$toggle`은 [VsToggleStyleSet](../vs-toggle/README.md#types)을 사용합니다.
+> [VsInputStyleSet](../vs-input/README.md#types)의 모든 속성(`$prepend`, `$append`, `$input`, `$wrapper`)과 `CSSProperties`를 상속합니다. `$toggle`은 [VsToggleStyleSet](../vs-toggle/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 
@@ -100,7 +100,7 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
     <vs-search-input
         v-model="query"
         :style-set="{
-            $component: { borderRadius: '1rem' },
+            borderRadius: '1rem',
             $input: { height: '2.5rem' },
         }"
     />

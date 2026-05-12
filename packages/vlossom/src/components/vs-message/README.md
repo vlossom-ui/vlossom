@@ -45,9 +45,8 @@ When no state is specified, the `idle` state is used (default color).
 ## Types
 
 ```typescript
-interface VsMessageStyleSet {
+interface VsMessageStyleSet extends CSSProperties {
     $size?: string;
-    $component?: CSSProperties;
 }
 ```
 
@@ -60,7 +59,7 @@ interface VsMessageStyleSet {
         state="info"
         :style-set="{
             $size: '1rem',
-            $component: { padding: '0.25rem 0' },
+            padding: '0.25rem 0',
         }"
     />
 </template>

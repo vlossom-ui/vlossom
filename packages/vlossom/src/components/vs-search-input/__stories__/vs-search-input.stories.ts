@@ -239,12 +239,10 @@ export const StyleSet: Story = {
         useRegex: true,
         useCaseSensitive: true,
         styleSet: {
-            $component: {
-                backgroundColor: '#f0f8ff',
-                border: '2px solid #1e88e5',
-                borderRadius: '12px',
-                height: '3.5rem',
-            },
+            backgroundColor: '#f0f8ff',
+            border: '2px solid #1e88e5',
+            borderRadius: '12px',
+            height: '3.5rem',
             $input: {
                 color: '#1565c0',
                 fontSize: '1.1rem',

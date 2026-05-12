@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-tabs', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :width
         :grid
     >
@@ -20,12 +20,7 @@
 
         <div ref="tabsRef" class="vs-tabs-wrap">
             <ul role="tablist" class="vs-tab-list" :style="componentStyleSet.$tabs">
-                <li
-                    v-if="indicatorStyle"
-                    class="vs-tab-indicator"
-                    :style="{ ...indicatorStyle, ...componentStyleSet.$activeTab }"
-                    aria-hidden="true"
-                />
+                <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
@@ -137,13 +132,11 @@ export default defineComponent({
 
         const additionalStyleSet: ComputedRef<Partial<VsTabsStyleSet>> = computed(() => {
             return objectUtil.shake({
-                $component: {
-                    height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
-                },
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsTabsStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsTabsStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -250,10 +243,8 @@ export default defineComponent({
         let resizeObserver: ResizeObserver | null = null;
 
         function getTabStyleSet(index: number): CSSProperties {
-            return {
-                ...componentStyleSet.value.$tab,
-                ...(isSelected(index) ? componentStyleSet.value.$activeTab : {}),
-            };
+            const { $active = {}, ...base } = componentStyleSet.value.$tab ?? {};
+            return isSelected(index) ? objectUtil.assign(base, $active) : base;
         }
 
         onMounted(() => {
@@ -296,6 +287,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             getTabStyleSet,
 

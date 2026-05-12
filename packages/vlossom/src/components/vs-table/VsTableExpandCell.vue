@@ -60,13 +60,11 @@ export default defineComponent({
             const size = dense?.value ? '1.4rem' : '1.8rem';
             return {
                 $padding: '0',
-                $component: {
-                    border: 'none',
-                    width: size,
-                    height: size,
-                    backgroundColor: 'var(--vs-cs-bg-colored)',
-                    color: 'var(--vs-cs-font-colored)',
-                },
+                border: 'none',
+                width: size,
+                height: size,
+                backgroundColor: 'var(--vs-cs-bg-colored)',
+                color: 'var(--vs-cs-font-colored)',
             };
         });
 

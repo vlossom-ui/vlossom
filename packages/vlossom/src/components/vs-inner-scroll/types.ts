@@ -13,8 +13,7 @@ export interface VsInnerScrollRef extends ComponentPublicInstance<typeof VsInner
     hasScroll: () => boolean;
 }
 
-export interface VsInnerScrollStyleSet {
-    $component?: CSSProperties;
+export interface VsInnerScrollStyleSet extends CSSProperties {
     $header?: CSSProperties;
     $content?: CSSProperties;
     $footer?: CSSProperties;

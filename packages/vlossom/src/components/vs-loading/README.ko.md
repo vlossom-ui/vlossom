@@ -50,10 +50,9 @@
 ## Types
 
 ```typescript
-interface VsLoadingStyleSet {
+interface VsLoadingStyleSet extends CSSProperties {
     $barColor?: string;
     $barWidth?: string;
-    $component?: CSSProperties;
 }
 ```
 
@@ -65,7 +64,7 @@ interface VsLoadingStyleSet {
         :style-set="{
             $barColor: '#ff6b6b',
             $barWidth: '15%',
-            $component: { width: '6rem', height: '8rem' },
+            width: '6rem', height: '8rem',
         }"
     />
 </template>

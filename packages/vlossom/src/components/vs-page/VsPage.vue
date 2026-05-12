@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-page" :style="componentStyleSet.$component">
+    <div class="vs-page" :style="componentInlineStyle">
         <div v-if="$slots['title']" class="vs-page-title" :style="componentStyleSet.$title">
             <slot name="title" />
         </div>
@@ -29,10 +29,11 @@ export default defineComponent({
     setup(props) {
         const { styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsPageStyleSet>(componentName, styleSet);
 
         return {
             componentStyleSet,
+            componentInlineStyle,
         };
     },
 });

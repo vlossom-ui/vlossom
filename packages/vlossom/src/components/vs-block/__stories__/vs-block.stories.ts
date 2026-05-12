@@ -45,11 +45,9 @@ const meta: Meta<typeof VsBlock> = {
         setup() {
             const preDefinedStyleSet: VsBlockStyleSet = {
                 $blockBorder: '1px solid #e9ecef',
-                $component: {
-                    backgroundColor: '#f8f9fa',
-                    borderRadius: '8px',
-                    color: '#495057',
-                },
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                color: '#495057',
                 $title: {
                     backgroundColor: '#f8f9fa',
                     color: '#212529',
@@ -192,12 +190,10 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             $blockBorder: '2px solid #2196f3',
-            $component: {
-                backgroundColor: '#e3f2fd',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
-                color: '#1565c0',
-            },
+            backgroundColor: '#e3f2fd',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(33, 150, 243, 0.15)',
+            color: '#1565c0',
             $title: {
                 backgroundColor: '#e3f2fd',
                 color: '#1976d2',
@@ -269,7 +265,7 @@ export const StyleCustomization: Story = {
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1rem;">
-                <vs-block :style-set="{ $blockBorder: '3px dashed #9c27b0', $component: { borderRadius: '16px' } }">
+                <vs-block :style-set="{ $blockBorder: '3px dashed #9c27b0', borderRadius: '16px' }">
                     <template #title>Border 커스텀</template>
                     border 변수로 테두리 스타일을 변경할 수 있습니다.
                 </vs-block>
@@ -284,7 +280,7 @@ export const StyleCustomization: Story = {
                     content 영역의 배경색, 패딩, 폰트 크기 등을 변경할 수 있습니다.
                 </vs-block>
 
-                <vs-block :style-set="{ $blockBorder: '2px solid #ff5722', $component: { backgroundColor: '#ffebee', borderRadius: '20px', boxShadow: '0 8px 16px rgba(244, 67, 54, 0.2)' }, $title: { backgroundColor: '#ff5722', color: '#fff', padding: '1rem 2rem' }, $content: { padding: '2rem', lineHeight: '1.8' } }">
+                <vs-block :style-set="{ $blockBorder: '2px solid #ff5722', backgroundColor: '#ffebee', borderRadius: '20px', boxShadow: '0 8px 16px rgba(244, 67, 54, 0.2)', $title: { backgroundColor: '#ff5722', color: '#fff', padding: '1rem 2rem' }, $content: { padding: '2rem', lineHeight: '1.8' } }">
                     <template #title>종합 커스텀</template>
                     모든 영역을 동시에 커스터마이징하여 완전히 새로운 디자인을 만들 수 있습니다.
                 </vs-block>

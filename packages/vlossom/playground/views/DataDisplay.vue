@@ -11,7 +11,7 @@
                 :options="tablePropsOptions"
                 option-label="label"
                 option-value="value"
-                :style-set="{ $wrapper: { $component: { width: '100%' } } }"
+                :style-set="{ $wrapper: { width: '100%' } }"
             />
         </div>
         <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
@@ -181,12 +181,12 @@
                     class="flex w-40 flex-col items-center justify-center gap-2 rounded border border-dashed
                         border-gray-300 p-3 dark:border-gray-600"
                 >
-                    <vs-chip :style-set="{ $component: { width: '80px' } }">{{ progressValue }}%</vs-chip>
+                    <vs-chip :style-set="{ width: '80px' }">{{ progressValue }}%</vs-chip>
                     <div class="flex gap-2">
-                        <vs-button size="sm" :style-set="{ $component: { width: '2.5rem' } }" @click="decreaseProgress"
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="decreaseProgress"
                             >-</vs-button
                         >
-                        <vs-button size="sm" :style-set="{ $component: { width: '2.5rem' } }" @click="increaseProgress"
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="increaseProgress"
                             >+</vs-button
                         >
                     </div>

@@ -22,18 +22,14 @@ const meta: Meta<typeof VsToast> = {
         setup() {
             const preDefinedStyleSet: VsToastStyleSet = {
                 $closeButton: {
-                    $component: {
-                        color: '#fff',
-                    },
-                },
-                $component: {
-                    borderRadius: '8px',
-                    padding: '1rem 1.5rem',
-                    height: 'auto',
-                    backgroundColor: '#1e88e5',
-                    border: '2px solid #1e88e5',
                     color: '#fff',
                 },
+                borderRadius: '8px',
+                padding: '1rem 1.5rem',
+                height: 'auto',
+                backgroundColor: '#1e88e5',
+                border: '2px solid #1e88e5',
+                color: '#fff',
             } as const;
 
             useVlossom().styleSet = {
@@ -169,18 +165,14 @@ export const StyleSet: Story = {
     args: {
         styleSet: {
             $closeButton: {
-                $component: {
-                    color: '#fff',
-                },
-            },
-            $component: {
-                borderRadius: '12px',
-                padding: '1.5rem 2rem',
-                height: 'auto',
-                backgroundColor: '#e188e5',
-                border: '2px solid #e188e5',
                 color: '#fff',
             },
+            borderRadius: '12px',
+            padding: '1.5rem 2rem',
+            height: 'auto',
+            backgroundColor: '#e188e5',
+            border: '2px solid #e188e5',
+            color: '#fff',
         },
     },
     render: (args: any) => ({

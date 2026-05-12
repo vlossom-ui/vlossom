@@ -13,11 +13,11 @@ export type { VsSwitch };
 
 export interface VsSwitchRef extends ComponentPublicInstance<typeof VsSwitch>, FocusableRef, FormChildRef {}
 
-export interface VsSwitchStyleSet {
+export interface VsSwitchStyleSet extends CSSProperties {
     $handleColor?: string;
     $handleSize?: string;
-    $switchButton?: CSSProperties;
-    $activeSwitchButton?: CSSProperties;
-    $component?: CSSProperties;
+    $switchButton?: CSSProperties & {
+        $active?: CSSProperties;
+    };
     $wrapper?: VsInputWrapperStyleSet;
 }

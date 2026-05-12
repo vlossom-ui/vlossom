@@ -51,7 +51,7 @@ A progress bar component that displays the completion status of a task.
 ## Types
 
 ```typescript
-interface VsProgressStyleSet {
+interface VsProgressStyleSet extends CSSProperties {
     $barBackgroundColor?: string;
     $barBorder?: string;
     $barBorderRadius?: string;
@@ -59,7 +59,6 @@ interface VsProgressStyleSet {
     $labelTextShadow?: string;
     $labelFontColor?: string;
 
-    $component?: CSSProperties;
 }
 ```
 
@@ -76,7 +75,7 @@ interface VsProgressStyleSet {
             $barBorderRadius: '0.5rem',
             $valueBackgroundColor: '#6366f1',
             $labelFontColor: '#ffffff',
-            $component: { height: '1.5rem' },
+            height: '1.5rem',
         }"
     />
 </template>

@@ -44,8 +44,7 @@ A layout component that provides a structured page container with title, descrip
 ## Types
 
 ```typescript
-interface VsPageStyleSet {
-    $component?: CSSProperties;
+interface VsPageStyleSet extends CSSProperties {
     $title?: CSSProperties;
     $description?: CSSProperties;
     $content?: CSSProperties;
@@ -58,7 +57,7 @@ interface VsPageStyleSet {
 <template>
     <vs-page
         :style-set="{
-            $component: { backgroundColor: '#f9f9f9', padding: '2rem' },
+            backgroundColor: '#f9f9f9', padding: '2rem',
             $title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
             $description: { color: '#666', fontSize: '0.9rem' },
             $content: { paddingTop: '1rem' },

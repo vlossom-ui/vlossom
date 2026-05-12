@@ -19,16 +19,14 @@ const meta: Meta<typeof VsFooter> = {
         components: { VsFooter },
         setup() {
             const preDefinedStyleSet: VsFooterStyleSet = {
-                $component: {
-                    backgroundColor: '#1976d2',
-                    border: '1px solid #1976d2',
-                    borderRadius: '0',
-                    color: '#fff',
-                    height: '4rem',
-                    padding: '0 1.5rem',
-                    width: '100%',
-                    zIndex: 'var(--vs-bar-z-index)',
-                },
+                backgroundColor: '#1976d2',
+                border: '1px solid #1976d2',
+                borderRadius: '0',
+                color: '#fff',
+                height: '4rem',
+                padding: '0 1.5rem',
+                width: '100%',
+                zIndex: 'var(--vs-bar-z-index)',
             };
 
             useVlossom().styleSet = {
@@ -105,9 +103,7 @@ export const ColorScheme: Story = {
         components: { VsFooter },
         setup() {
             const styleSet = {
-                $component: {
-                    padding: '0.5rem',
-                },
+                padding: '0.5rem',
             };
             return { args, styleSet };
         },
@@ -145,16 +141,14 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            $component: {
-                backgroundColor: '#e188e5',
-                border: '2px solid #e188e5',
-                borderRadius: '8px',
-                color: '#fff',
-                height: '5rem',
-                padding: '0 2rem',
-                width: '100%',
-                zIndex: 'var(--vs-bar-z-index)',
-            },
+            backgroundColor: '#e188e5',
+            border: '2px solid #e188e5',
+            borderRadius: '8px',
+            color: '#fff',
+            height: '5rem',
+            padding: '0 2rem',
+            width: '100%',
+            zIndex: 'var(--vs-bar-z-index)',
         },
     },
 };

@@ -1,7 +1,7 @@
 <template>
     <vs-responsive
         :class="['vs-label-value', colorSchemeClass, classObj]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :width
         :grid
     >
@@ -40,7 +40,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { styleSetVariables, componentStyleSet } = useStyleSet<VsLabelValueStyleSet>(componentName, styleSet);
+        const { styleSetVariables, componentStyleSet, componentInlineStyle } = useStyleSet<VsLabelValueStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const classObj = computed(() => ({
             'vs-dense': dense.value,
@@ -54,6 +57,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
+            componentInlineStyle,
         };
     },
 });

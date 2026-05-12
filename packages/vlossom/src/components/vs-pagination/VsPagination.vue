@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]"
-        :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
     >
         <vs-button
             v-if="edgeButtons"
@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <vs-render :content="paginationIcons.goFirst" />
+                <vs-render class="size-4" :content="paginationIcons.goFirst" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <vs-render :content="paginationIcons.goPrev" />
+                <vs-render class="size-4" :content="paginationIcons.goPrev" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -40,7 +40,7 @@
                 :key="page"
                 class="vs-page-button"
                 :color-scheme="computedColorScheme"
-                :style-set="componentStyleSet.$pageButton"
+                :style-set="getPageButtonStyleSet(page)"
                 :primary="page === selectedIndex + 1"
                 :disabled
                 :ghost
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <vs-render :content="paginationIcons.goNext" />
+                <vs-render class="size-4" :content="paginationIcons.goNext" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <vs-render :content="paginationIcons.goLast" />
+                <vs-render class="size-4" :content="paginationIcons.goLast" />
             </slot>
         </vs-button>
     </div>
@@ -93,7 +93,7 @@ import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue'
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { logUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
 import { paginationIcons } from './icons';
 
@@ -144,14 +144,10 @@ export default defineComponent({
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
-            $controlButton: {
-                $component: {
-                    padding: '0.4rem',
-                },
-            },
+            $controlButton: { $content: { padding: '0' } },
         }));
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsPaginationStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsPaginationStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -193,6 +189,14 @@ export default defineComponent({
             }
             return pageArr;
         });
+
+        function getPageButtonStyleSet(page: number) {
+            const { $selected = {}, ...base } = componentStyleSet.value.$pageButton ?? {};
+            if (page === selectedIndex.value + 1) {
+                return objectUtil.assign(base, $selected);
+            }
+            return base;
+        }
 
         function setPage(page: number) {
             selectIndex(page);
@@ -237,9 +241,11 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             paginationIcons,
             selectedIndex,
             pages,
+            getPageButtonStyleSet,
             goFirst,
             goLast,
             goPrev,

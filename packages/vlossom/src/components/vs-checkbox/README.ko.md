@@ -139,18 +139,16 @@ async function confirmChange(from, to) {
 ## Types
 
 ```typescript
-interface VsCheckboxStyleSet {
+interface VsCheckboxStyleSet extends CSSProperties {
     $checkboxCheckedColor?: string;
     $checkboxColor?: string;
     $checkboxSize?: string;
-    $component?: CSSProperties;
     $checkbox?: CSSProperties;
     $checkboxLabel?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }
 
-interface VsCheckboxSetStyleSet {
-    $component?: CSSProperties;
+interface VsCheckboxSetStyleSet extends CSSProperties {
     $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
     $wrapper?: VsInputWrapperStyleSet;
 }

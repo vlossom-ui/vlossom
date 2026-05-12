@@ -19,7 +19,7 @@
 
         <div
             :class="['vs-checkbox', colorSchemeClass, classObj]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.$component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <label class="vs-checkbox-wrap" :for="computedId">
                 <input
@@ -123,7 +123,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsCheckboxStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsCheckboxStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const inputValue = ref(modelValue.value);
 
@@ -248,6 +251,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             stateBoxClasses,
             computedId,
