@@ -1,6 +1,5 @@
 import { h, type Component, ref } from 'vue';
 import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
-import { stringUtil } from '@/utils';
 import { useOverlayCallbackStore } from '@/stores';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from './../modal-plugin';
@@ -37,23 +36,21 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-8'];
             const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-4', 'pt-8'];
 
-            const additionalButtonsClass = [
-                swapButtons && 'flex-row-reverse',
-                styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
-                styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
-            ].filter(Boolean);
-
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
+                props: { colorScheme, styleSet: styleSet?.$okButton, primary: true },
                 content: okText,
                 onClickEvent: () => handleButton(PROMPT_OK),
             });
             const cancelButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.cancelButton },
+                props: { colorScheme, styleSet: styleSet?.$cancelButton },
                 content: cancelText,
                 onClickEvent: () => handleButton(PROMPT_CANCEL),
             });
-            const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton, cancelButton]);
+            const buttons = h(
+                'div',
+                { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
+                [okButton, cancelButton],
+            );
             const contents = h(VsRender, { content });
 
             // NOTE. 함수형 VNode를 사용하여 컴포넌트 인스턴스(`inputRef`)를 가져올 수 있도록 하기 위함
@@ -61,7 +58,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 const input = h(VsInput, {
                     ...inputOptions,
                     colorScheme,
-                    styleSet: styleSet?.input,
+                    styleSet: styleSet?.$input,
 
                     ref: inputRef,
                     modelValue: inputValue.value,

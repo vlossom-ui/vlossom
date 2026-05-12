@@ -12,7 +12,7 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 - Provides OK and Cancel buttons with configurable labels and styles
 - Resolves `true` on OK (or Enter key) and `false` on Cancel (or Escape key)
 - Supports swapping the button order via `swapButtons`
-- Supports custom button gap and alignment
+- Supports custom button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
 ## Basic Usage
@@ -54,10 +54,9 @@ function handleConfirm() {
         cancelText: 'No, go back',
         swapButtons: true,
         styleSet: {
-            buttonsAlign: 'right',
-            buttonsGap: '1rem',
-            okButton: { variables: { padding: '0.5rem 2rem' } },
-            cancelButton: { variables: { padding: '0.5rem 2rem' } },
+            $buttons: { justifyContent: 'end', gap: '1rem' },
+            $okButton: { padding: '0.5rem 2rem' },
+            $cancelButton: { padding: '0.5rem 2rem' },
         },
     });
 }
@@ -74,10 +73,9 @@ function handleConfirm() {
 
 ```typescript
 interface VsConfirmStyleSet extends VsModalNodeStyleSet {
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface ConfirmModalOptions extends ModalOptions {

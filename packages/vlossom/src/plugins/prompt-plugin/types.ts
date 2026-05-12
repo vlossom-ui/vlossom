@@ -1,14 +1,13 @@
-import type { Component } from 'vue';
+import type { Component, CSSProperties } from 'vue';
 import type { ModalOptions } from './../modal-plugin';
-import type { Alignment, ColorScheme, PropsOf, VsComponent } from '@/declaration';
+import type { ColorScheme, PropsOf, VsComponent } from '@/declaration';
 import type { VsButtonStyleSet, VsInputStyleSet, VsInputValueType, VsModalNodeStyleSet } from '@/components';
 
 export interface VsPromptStyleSet extends VsModalNodeStyleSet {
-    input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 export interface PromptModalOptions extends Omit<ModalOptions, 'beforeClose'> {
