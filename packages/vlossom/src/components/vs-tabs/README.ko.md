@@ -78,7 +78,6 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ```typescript
 interface VsTabsStyleSet extends CSSProperties {
-    $gap?: string;
     $divider?: CSSProperties['border'] & {};
 
     $tabs?: CSSProperties;
@@ -100,8 +99,8 @@ interface VsTabsStyleSet extends CSSProperties {
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            $gap: '0.5rem',
             $divider: '2px solid #e0e0e0',
+            $tabs: { gap: '0.5rem' },
             $tab: {
                 borderRadius: '0.25rem',
                 padding: '0.5rem 1.25rem',

@@ -59,7 +59,7 @@ export default defineComponent({
         const expandButtonStyleSet = computed(() => {
             const size = dense?.value ? '1.4rem' : '1.8rem';
             return {
-                $padding: '0',
+                $content: { padding: '0' },
                 border: 'none',
                 width: size,
                 height: size,

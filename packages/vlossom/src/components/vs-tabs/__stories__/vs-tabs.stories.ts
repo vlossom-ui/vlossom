@@ -21,7 +21,7 @@ const meta: Meta<typeof VsTabs> = {
         components: { VsTabs },
         setup() {
             const preDefinedStyleSet: VsTabsStyleSet = {
-                $gap: '0.5rem',
+                $tabs: { gap: '0.5rem' },
                 $control: {
                     backgroundColor: '#1565c0',
                     borderRadius: '4px',
@@ -483,7 +483,7 @@ export const StyleSet: Story = {
             description: {
                 story:
                     '인라인 스타일 객체를 사용한 커스텀 탭입니다.' +
-                    'styleSet prop에 $gap, $divider, $tab($active 포함), $control을 전달하여 세밀한 커스터마이징이 가능합니다.',
+                    'styleSet prop에 $divider, $tabs, $tab($active 포함), $control을 전달하여 세밀한 커스터마이징이 가능합니다.',
             },
         },
     },
@@ -491,8 +491,8 @@ export const StyleSet: Story = {
         tabs: ['Custom 1', 'Custom 2', 'Custom 3', 'Custom 4', 'Custom 5', 'Custom 6', 'Custom 7', 'Custom 8'],
         controls: 'show',
         styleSet: {
-            $gap: '1rem',
             $divider: '2px solid #b968c7',
+            $tabs: { gap: '1rem' },
             $tab: {
                 fontWeight: '600',
                 $active: { backgroundColor: '#f0e6f5' },

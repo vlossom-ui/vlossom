@@ -1,7 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-tabs {
-    --vs-tabs-gap: initial;
     --vs-tabs-divider: initial;
 
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));

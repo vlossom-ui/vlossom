@@ -1,8 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-search-input {
-    --vs-search-input-height: initial;
-
     @apply relative;
 
     .vs-search-input-toggles {
