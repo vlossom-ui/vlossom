@@ -31,7 +31,8 @@
     }
 
     .vs-clear-button {
-        @apply mr-2.5 flex items-center justify-center rounded border-none opacity-0 focus-visible:outline-1;
+        @apply mr-2.5 flex items-center justify-center rounded border-none opacity-0;
+
         transition: opacity 0.4s;
 
         background: none;
@@ -39,6 +40,10 @@
 
         &:focus {
             @apply cursor-pointer opacity-100;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--vs-cs-font);
         }
     }
 
