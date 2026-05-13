@@ -17,7 +17,7 @@ Programmatically opens and manages modal dialogs. Supports mounting any string o
 
 ## Basic Usage
 
-Inject `$vsModal` in your component and call `open`:
+Get the Vlossom instance via `useVlossom()` and call `modal.open`:
 
 ```html
 <template>
@@ -25,12 +25,12 @@ Inject `$vsModal` in your component and call `open`:
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    const modalId = $vsModal.open('Hello from modal!', {
+    const modalId = $vs.modal.open('Hello from modal!', {
         dimClose: true,
         size: 'sm',
     });
@@ -42,17 +42,17 @@ function openModal() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 import MyModalContent from './MyModalContent.vue';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    const modalId = $vsModal.open(MyModalContent, {
+    const modalId = $vs.modal.open(MyModalContent, {
         callbacks: {
             'modal-submit': (data) => {
                 console.log('Submitted:', data);
-                $vsModal.close();
+                $vs.modal.close();
             },
         },
     });
@@ -64,13 +64,13 @@ function openModal() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 let currentModalId = null;
 
 function openModal() {
-    currentModalId = $vsModal.open('Are you sure?', {
+    currentModalId = $vs.modal.open('Are you sure?', {
         dimmed: true,
         escClose: true,
     });
@@ -78,7 +78,7 @@ function openModal() {
 
 function closeModal() {
     if (currentModalId) {
-        $vsModal.closeWithId('body', currentModalId);
+        $vs.modal.closeWithId('body', currentModalId);
     }
 }
 </script>
@@ -129,12 +129,12 @@ Pass a `beforeClose` hook in `ModalOptions` to gate ESC, dim-click, and `close`/
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    $vsModal.open('Unsaved changes — close anyway?', {
+    $vs.modal.open('Unsaved changes — close anyway?', {
         dimClose: true,
         escClose: true,
         beforeClose: async () => window.confirm('Discard changes?'),

@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsToast`를 inject하고 메서드를 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `toast` 메서드를 호출합니다:
 
 ```html
 <template>
@@ -30,21 +30,21 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsToast = inject('$vsToast');
+const $vs = useVlossom();
 
 function showInfo() {
-    $vsToast.info('정보 메시지입니다.');
+    $vs.toast.info('정보 메시지입니다.');
 }
 function showSuccess() {
-    $vsToast.success('작업이 성공적으로 완료되었습니다!');
+    $vs.toast.success('작업이 성공적으로 완료되었습니다!');
 }
 function showWarning() {
-    $vsToast.warning('입력을 확인해주세요.');
+    $vs.toast.warning('입력을 확인해주세요.');
 }
 function showError() {
-    $vsToast.error('문제가 발생했습니다.');
+    $vs.toast.error('문제가 발생했습니다.');
 }
 </script>
 ```
@@ -53,12 +53,12 @@ function showError() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsToast = inject('$vsToast');
+const $vs = useVlossom();
 
 function showCustomToast() {
-    $vsToast.show('커스텀 토스트 메시지', {
+    $vs.toast.show('커스텀 토스트 메시지', {
         placement: 'top',
         align: 'right',
         autoClose: true,

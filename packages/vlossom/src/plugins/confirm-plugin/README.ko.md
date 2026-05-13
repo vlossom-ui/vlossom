@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsConfirm`을 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `confirm.open`을 호출합니다:
 
 ```html
 <template>
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 async function handleDelete() {
-    const confirmed = await $vsConfirm.open('이 항목을 삭제하시겠습니까?');
+    const confirmed = await $vs.confirm.open('이 항목을 삭제하시겠습니까?');
     if (confirmed) {
         console.log('삭제가 확인되었습니다');
     } else {
@@ -44,12 +44,12 @@ async function handleDelete() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 function handleConfirm() {
-    $vsConfirm.open('계속 진행하시겠습니까?', {
+    $vs.confirm.open('계속 진행하시겠습니까?', {
         okText: '네, 진행합니다',
         cancelText: '아니오, 돌아갑니다',
         swapButtons: true,

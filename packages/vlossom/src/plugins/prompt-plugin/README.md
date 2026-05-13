@@ -17,7 +17,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 
 ## Basic Usage
 
-Inject `$vsPrompt` in your component and call `open`:
+Get the Vlossom instance via `useVlossom()` and call `prompt.open`:
 
 ```html
 <template>
@@ -25,12 +25,12 @@ Inject `$vsPrompt` in your component and call `open`:
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askName() {
-    const name = await $vsPrompt.open('Please enter your name:');
+    const name = await $vs.prompt.open('Please enter your name:');
     if (name !== null) {
         console.log('Name entered:', name);
     }
@@ -42,12 +42,12 @@ async function askName() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askAge() {
-    const age = await $vsPrompt.open('Enter your age:', {
+    const age = await $vs.prompt.open('Enter your age:', {
         okText: 'Submit',
         cancelText: 'Skip',
         input: {

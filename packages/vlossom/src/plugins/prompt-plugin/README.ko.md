@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsPrompt`를 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `prompt.open`을 호출합니다:
 
 ```html
 <template>
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askName() {
-    const name = await $vsPrompt.open('이름을 입력해주세요:');
+    const name = await $vs.prompt.open('이름을 입력해주세요:');
     if (name !== null) {
         console.log('입력된 이름:', name);
     }
@@ -42,12 +42,12 @@ async function askName() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askAge() {
-    const age = await $vsPrompt.open('나이를 입력해주세요:', {
+    const age = await $vs.prompt.open('나이를 입력해주세요:', {
         okText: '제출',
         cancelText: '건너뛰기',
         input: {

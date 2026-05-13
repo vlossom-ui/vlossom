@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsAlert`를 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `alert.open`을 호출합니다:
 
 ```html
 <template>
@@ -24,12 +24,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsAlert = inject('$vsAlert');
+const $vs = useVlossom();
 
 async function showAlert() {
-    await $vsAlert.open('알림 메시지입니다.');
+    await $vs.alert.open('알림 메시지입니다.');
     console.log('알림이 닫혔습니다');
 }
 </script>
@@ -39,12 +39,12 @@ async function showAlert() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsAlert = inject('$vsAlert');
+const $vs = useVlossom();
 
 function showAlert() {
-    $vsAlert.open('작업이 성공적으로 완료되었습니다!', {
+    $vs.alert.open('작업이 성공적으로 완료되었습니다!', {
         okText: '확인했습니다',
         colorScheme: 'green',
         styleSet: {
