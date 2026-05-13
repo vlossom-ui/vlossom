@@ -226,7 +226,6 @@ export const StyleSet: Story = {
         options: basicOptions,
         placeholder: 'Select an option',
         styleSet: {
-            $height: '3rem',
             $option: {
                 $focused: {
                     backgroundColor: '#f5f5f5',

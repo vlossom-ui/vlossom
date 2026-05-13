@@ -13,7 +13,6 @@ A page footer bar component that supports fixed, sticky, and absolute positionin
 - Default height of `3rem` — overridable via the `height` prop
 - Primary color scheme styling via the `primary` prop
 - Opt-in `VsLayout` integration via the `layout` prop — when set, reports footer height for drawer offset calculations
-- Accepts `CSSProperties` via `styleSet.component` for full style control
 
 ## Basic Usage
 

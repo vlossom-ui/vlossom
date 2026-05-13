@@ -20,7 +20,6 @@ export interface VsSelectRef extends ComponentPublicInstance<typeof VsSelect> {}
 export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSelectTrigger>, FocusableRef {}
 
 export interface VsSelectStyleSet extends CSSProperties {
-    $height?: string;
     $wrapper?: VsInputWrapperStyleSet;
     $chip?: VsChipStyleSet;
     $selectAllCheckbox?: VsCheckboxStyleSet;

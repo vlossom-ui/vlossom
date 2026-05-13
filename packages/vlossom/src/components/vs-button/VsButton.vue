@@ -45,7 +45,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => {
             return {
                 $loading: {
-                    $color: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
+                    $barColor: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
                     width: '30%',
                     height: '60%',
                 },

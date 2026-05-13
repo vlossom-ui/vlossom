@@ -11,7 +11,6 @@ A semi-transparent overlay component that covers its parent container with a fad
 - `v-model` binding to control visibility programmatically
 - Smooth fade-in/fade-out transition animation
 - Exposes `show()` and `hide()` methods for imperative control
-- Fully customizable appearance via `component` CSSProperties
 
 ## Basic Usage
 

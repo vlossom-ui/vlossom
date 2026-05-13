@@ -10,7 +10,7 @@ A circular or rounded display element for showing user profile images, initials,
 
 - Accepts image elements, text initials, or icon content via the default slot
 - Color scheme support for background and border styling
-- Fixed default size (3.6rem × 3.6rem) with full override via `component` CSSProperties
+- Fixed default size (3.6rem × 3.6rem) with full override via `$component` CSSProperties
 
 ## Basic Usage
 

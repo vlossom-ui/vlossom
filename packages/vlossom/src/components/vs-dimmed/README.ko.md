@@ -11,7 +11,6 @@
 - 프로그래밍 방식으로 가시성을 제어하는 `v-model` 바인딩
 - 부드러운 페이드 인/아웃 전환 애니메이션
 - 명령형 제어를 위한 `show()` 및 `hide()` 메서드 노출
-- `component` CSSProperties를 통한 완전한 외관 커스터마이징
 
 ## Basic Usage
 

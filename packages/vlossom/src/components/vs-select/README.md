@@ -111,7 +111,6 @@ const options = [
 
 ```typescript
 interface VsSelectStyleSet extends CSSProperties {
-    $height?: string;
     $wrapper?: VsInputWrapperStyleSet;
     $chip?: VsChipStyleSet;
     $selectAllCheckbox?: VsCheckboxStyleSet;
@@ -134,7 +133,6 @@ interface VsSelectStyleSet extends CSSProperties {
         v-model="selected"
         :options="options"
         :style-set="{
-            $height: '2.5rem',
             $option: {
                 padding: '0.5rem 1rem',
                 $focused: { backgroundColor: '#eef2ff' },

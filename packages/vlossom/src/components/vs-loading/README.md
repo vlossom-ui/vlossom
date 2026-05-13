@@ -9,7 +9,7 @@ An animated loading indicator composed of five vertical bars with a wave animati
 ## Feature
 
 - Displays five animated bars with a sequential wave effect.
-- Customizable color via the `$color` style property.
+- Customizable color via the `$barColor` style property.
 - Customizable bar width via the `$barWidth` style property.
 - Supports `width` and `height` props for sizing.
 - Supports color schemes for consistent theming.

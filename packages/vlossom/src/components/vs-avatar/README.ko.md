@@ -10,7 +10,7 @@
 
 - 기본 슬롯을 통해 이미지, 텍스트 이니셜, 아이콘 콘텐츠 수용
 - 배경 및 테두리 스타일링을 위한 색상 테마 지원
-- 기본 크기(3.6rem × 3.6rem) 고정이며 `component` CSSProperties로 완전 재정의 가능
+- 기본 크기(3.6rem × 3.6rem) 고정이며 `$component` CSSProperties로 완전 재정의 가능
 
 ## Basic Usage
 
