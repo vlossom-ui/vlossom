@@ -1,12 +1,9 @@
 .vs-image {
-    --vs-image-width: initial;
-    --vs-image-height: initial;
-
     @apply relative inline-block;
 
     background-color: transparent;
-    width: var(--vs-image-width, 100%);
-    height: var(--vs-image-height, 100%);
+    width: 100%;
+    height: 100%;
 
     .vs-image-tag {
         @apply relative h-full w-full;

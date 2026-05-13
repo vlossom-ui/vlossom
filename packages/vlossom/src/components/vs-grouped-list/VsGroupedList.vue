@@ -2,7 +2,7 @@
     <vs-inner-scroll
         ref="innerScrollRef"
         class="vs-grouped-list"
-        :style="styleSetVariables"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :style-set="{
             $header: componentStyleSet.$header,
             $content: componentStyleSet.$content,
@@ -86,7 +86,10 @@ export default defineComponent({
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsGroupedListStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsGroupedListStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const groupedItems: ComputedRef<VsGroupedListGroup[]> = computed(() => {
             // groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환
@@ -192,6 +195,7 @@ export default defineComponent({
             innerScrollRef,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             groupedItems,
             emitClickItem,
             scrollToItem,

@@ -82,10 +82,8 @@ export const Lazy: Story = {
 
 export const StyleSet: Story = {
     args: {
-        styleSet: {
-            $width: '300px',
-            $height: '300px',
-        },
+        width: '300px',
+        height: '300px',
     },
 };
 
@@ -99,9 +97,9 @@ export const SkeletonStyleSet: Story = {
     }),
     args: {
         src: lazySrc,
+        width: '200px',
+        height: '200px',
         styleSet: {
-            $width: '200px',
-            $height: '200px',
             $skeleton: {
                 width: '200px',
                 height: '200px',

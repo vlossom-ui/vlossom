@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-image" ref="vsImageRef" :style="styleSetVariables">
+    <div class="vs-image" ref="vsImageRef" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.$skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
@@ -7,9 +7,9 @@
             :class="['vs-image-tag', { 'vs-hidden': isLoading }]"
             :src="computedSrc"
             :alt="alt"
+            :style="componentStyleSet.$image"
             @load.stop="onImageLoad"
             @error.stop="onImageError"
-            :style="componentInlineStyle"
         />
     </div>
 </template>
@@ -20,6 +20,7 @@ import { useIntersectionObserver } from '@vueuse/core';
 import { useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
+import { objectUtil, stringUtil } from '@/utils';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
@@ -33,20 +34,29 @@ export default defineComponent({
         ...getStyleSetProps<VsImageStyleSet>(),
         alt: { type: String, default: '' },
         fallback: { type: String, default: '' },
+        height: { type: [String, Number] },
         lazy: { type: Boolean, default: false },
         noSkeleton: { type: Boolean, default: false },
         src: { type: String, required: true, default: '' },
+        width: { type: [String, Number] },
     },
     emits: ['error'],
     setup(props, { emit }) {
-        const { styleSet, src, fallback, lazy } = toRefs(props);
+        const { styleSet, src, fallback, lazy, width, height } = toRefs(props);
 
         const baseStyleSet: ComputedRef<VsImageStyleSet> = computed(() => ({}));
+        const additionalStyleSet: ComputedRef<Partial<VsImageStyleSet>> = computed(() => {
+            return objectUtil.shake({
+                width: width.value === undefined ? undefined : stringUtil.toStringSize(width.value),
+                height: height.value === undefined ? undefined : stringUtil.toStringSize(height.value),
+            });
+        });
 
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsImageStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
+            additionalStyleSet,
         );
 
         const vsImageRef = ref(null);

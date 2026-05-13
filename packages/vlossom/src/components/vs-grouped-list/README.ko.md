@@ -60,7 +60,7 @@ function onClickItem(item) {
 <template>
     <vs-grouped-list
         :items="longList"
-        :style-set="{ $height: '300px' }"
+        :style-set="{ maxHeight: '300px' }"
         @click-item="handleClick"
     />
 </template>
@@ -78,9 +78,7 @@ function onClickItem(item) {
 ## 타입
 
 ```typescript
-interface VsGroupedListStyleSet {
-    $gap?: string;
-    $height?: string;
+interface VsGroupedListStyleSet extends CSSProperties {
     $header?: CSSProperties;
     $content?: CSSProperties;
     $footer?: CSSProperties;
@@ -96,8 +94,7 @@ interface VsGroupedListStyleSet {
     <vs-grouped-list
         :items="items"
         :style-set="{
-            $height: '400px',
-            $gap: '4px',
+            maxHeight: '400px',
             $group: { backgroundColor: '#f0f0f0', fontWeight: 'bold', padding: '0.5rem 1rem' },
             $item: { padding: '0.4rem 1.2rem' },
         }"

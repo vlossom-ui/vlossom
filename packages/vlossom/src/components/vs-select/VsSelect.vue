@@ -238,7 +238,7 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
             return {
                 $options: {
-                    $height: '30rem',
+                    height: '30rem',
                     $content: {
                         padding: '0.6rem 0.4rem',
                     },

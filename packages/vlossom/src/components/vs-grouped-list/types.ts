@@ -15,9 +15,7 @@ export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroup
     hasScroll: () => boolean;
 }
 
-export interface VsGroupedListStyleSet {
-    $gap?: string;
-    $height?: string;
+export interface VsGroupedListStyleSet extends CSSProperties {
     $header?: CSSProperties;
     $content?: CSSProperties;
     $footer?: CSSProperties;

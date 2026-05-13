@@ -80,10 +80,10 @@ const isOpen = ref(false);
 
 ```typescript
 interface VsAccordionStyleSet extends CSSProperties {
+    $accordionBorder?: string;
     $arrowColor?: string;
     $arrowSize?: string;
     $arrowSpacing?: string;
-    $border?: string;
     $title?: CSSProperties;
     $content?: VsExpandableStyleSet;
 }
@@ -98,10 +98,10 @@ interface VsAccordionStyleSet extends CSSProperties {
 <template>
     <vs-accordion
         :style-set="{
+            $accordionBorder: '2px solid #6200ea',
             $arrowColor: '#6200ea',
             $arrowSize: '0.5rem',
             $arrowSpacing: '4%',
-            $border: '2px solid #6200ea',
             borderRadius: '0.75rem',
             $title: { fontWeight: 'bold', padding: '1rem' },
         }"

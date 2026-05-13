@@ -68,20 +68,11 @@
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-image
-                    src="https://picsum.photos/200/200"
-                    alt="Sample Image"
-                    :style-set="{ $width: '120px', $height: '120px' }"
-                />
+                <vs-image src="https://picsum.photos/200/200" alt="Sample Image" width="120px" height="120px" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Lazy Loading</h4>
-                <vs-image
-                    src="https://picsum.photos/201/201"
-                    alt="Lazy Image"
-                    lazy
-                    :style-set="{ $width: '120px', $height: '120px' }"
-                />
+                <vs-image src="https://picsum.photos/201/201" alt="Lazy Image" lazy width="120px" height="120px" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Fallback</h4>
@@ -89,7 +80,8 @@
                     src="https://invalid-url-example.com/image.jpg"
                     fallback="/assets/vlossom-logo.png"
                     alt="Fallback Image"
-                    :style-set="{ $width: '120px', $height: '120px' }"
+                    width="120px"
+                    height="120px"
                 />
             </vs-responsive>
         </vs-grid>
