@@ -8,7 +8,7 @@
     min-height: var(--vs-comp-height-md);
 
     .vs-switch-button {
-        @apply relative flex cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
+        @apply relative inline-grid min-w-14 cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
         border: 1px solid var(--vs-cs-line);
         border-radius: 1.5rem;
         background-color: var(--vs-cs-bg-area);
@@ -19,8 +19,16 @@
         font-size: var(--vs-font-size-sm);
 
         .vs-status-label {
-            @apply ml-1.5 block w-full pr-0 text-center break-all whitespace-nowrap select-none;
-            padding-left: calc(var(--vs-switch-handleSize, 1.2rem));
+            @apply block w-full pr-0 text-center break-all whitespace-nowrap select-none;
+            grid-row: 1;
+            grid-column: 1;
+            padding-left: calc(var(--vs-switch-handleSize, 1.5rem));
+        }
+        .vs-status-label[data-value='true'] {
+            @apply invisible;
+        }
+        .vs-status-label[data-value='false'] {
+            @apply visible;
         }
 
         &::before {
@@ -49,7 +57,13 @@
 
             .vs-status-label {
                 @apply pl-0;
-                padding-right: calc(var(--vs-switch-handleSize, 1.3rem));
+                padding-right: calc(var(--vs-switch-handleSize, 1.5rem));
+            }
+            .vs-status-label[data-value='false'] {
+                @apply invisible;
+            }
+            .vs-status-label[data-value='true'] {
+                @apply visible;
             }
         }
     }
