@@ -87,9 +87,9 @@ export default defineComponent({
         },
         checked: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
-        falseLabel: { type: String, default: 'OFF' },
+        falseLabel: { type: String, default: '' },
         falseValue: { type: null, default: false },
-        trueLabel: { type: String, default: 'ON' },
+        trueLabel: { type: String, default: '' },
         trueValue: { type: null, default: true },
         // v-model
         modelValue: { type: null, default: false },
