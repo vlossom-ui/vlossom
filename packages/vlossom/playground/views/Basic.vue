@@ -38,9 +38,9 @@
         <h3 class="mb-4 font-semibold">VsBar</h3>
         <div class="flex flex-col gap-4">
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Default</h4>
-            <vs-bar :style-set="{ component: { padding: '1rem' } }">Default Bar</vs-bar>
+            <vs-bar :style-set="{ padding: '1rem' }">Default Bar</vs-bar>
             <h4 class="text-sm text-gray-500 dark:text-gray-400">Primary</h4>
-            <vs-bar primary :style-set="{ component: { padding: '1rem' } }">Primary Bar</vs-bar>
+            <vs-bar primary :style-set="{ padding: '1rem' }">Primary Bar</vs-bar>
         </div>
         <vs-divider style-set="playground" />
 
@@ -166,10 +166,10 @@
 
         <h3 class="mb-4 font-semibold">VsSkeleton</h3>
         <div class="flex flex-wrap items-center gap-4">
-            <vs-skeleton :style-set="{ component: { width: '50px', height: '50px', borderRadius: '50%' } }" />
+            <vs-skeleton :style-set="{ width: '50px', height: '50px', borderRadius: '50%' }" />
             <div class="flex flex-col gap-2">
-                <vs-skeleton :style-set="{ component: { width: '150px', height: '20px' } }" />
-                <vs-skeleton :style-set="{ component: { width: '100px', height: '20px' } }" />
+                <vs-skeleton :style-set="{ width: '150px', height: '20px' }" />
+                <vs-skeleton :style-set="{ width: '100px', height: '20px' }" />
             </div>
         </div>
         <vs-divider style-set="playground" />
@@ -193,15 +193,15 @@
                 <vs-tabs v-model="selectedTabVertical" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" vertical width="120px" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (auto)</h4>
-                <vs-tabs v-model="selectedTabScrollAuto" :tabs="scrollTabs" width="100%" />
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Controls (auto)</h4>
+                <vs-tabs v-model="selectedTabControlsAuto" :tabs="scrollTabs" width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Scroll Buttons (show)</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Controls (show)</h4>
                 <vs-tabs
-                    v-model="selectedTabScrollShow"
+                    v-model="selectedTabControlsShow"
                     :tabs="['Tab 1', 'Tab 2', 'Tab 3']"
-                    scroll-buttons="show"
+                    controls="show"
                     width="100%"
                 />
             </vs-responsive>
@@ -223,7 +223,7 @@
                     class="flex w-40 flex-col items-center justify-center gap-2 rounded border border-dashed
                         border-gray-300 p-3 dark:border-gray-600"
                 >
-                    <vs-chip :primary="toggleValue" :style-set="{ component: { width: '120px' } }">{{
+                    <vs-chip :primary="toggleValue" :style-set="{ width: '120px' }">{{
                         toggleValue
                     }}</vs-chip>
                 </div>
@@ -268,8 +268,8 @@ export default defineComponent({
         const selectedTabPrimary = ref(0);
         const selectedTabDense = ref(0);
         const selectedTabVertical = ref(0);
-        const selectedTabScrollAuto = ref(0);
-        const selectedTabScrollShow = ref(0);
+        const selectedTabControlsAuto = ref(0);
+        const selectedTabControlsShow = ref(0);
         const scrollTabs = ['Overview', 'Features', 'Pricing', 'Documentation', 'Support', 'Blog', 'Contact'];
 
         const toggleValue = ref(false);
@@ -286,8 +286,8 @@ export default defineComponent({
             selectedTabPrimary,
             selectedTabDense,
             selectedTabVertical,
-            selectedTabScrollAuto,
-            selectedTabScrollShow,
+            selectedTabControlsAuto,
+            selectedTabControlsShow,
             scrollTabs,
             toggleValue,
             onChipClose,

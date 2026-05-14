@@ -1,7 +1,7 @@
 <template>
     <div
         :class="['vs-toast', colorSchemeClass, { 'vs-toast-primary': primary }]"
-        :style="componentStyleSet.component"
+        :style="componentInlineStyle"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
     >
@@ -10,7 +10,7 @@
             class="vs-toast-close"
             :color-scheme="computedColorScheme"
             :primary
-            :style-set="componentStyleSet.closeButton"
+            :style-set="componentStyleSet.$closeButton"
             ghost
             @click="$emit('close')"
         >
@@ -49,15 +49,17 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsToastStyleSet> = computed(() => {
             return {
-                closeButton: {
-                    variables: {
-                        padding: '0',
-                    },
+                $closeButton: {
+                    padding: '0',
                 },
             };
         });
 
-        const { componentStyleSet } = useStyleSet<VsToastStyleSet>(componentName, styleSet, baseStyleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsToastStyleSet>(
+            componentName,
+            styleSet,
+            baseStyleSet,
+        );
 
         const holdToClose = ref(false);
         let timer: any = null;
@@ -96,6 +98,7 @@ export default defineComponent({
             computedColorScheme,
             colorSchemeClass,
             componentStyleSet,
+            componentInlineStyle,
             onMouseEnter,
             onMouseLeave,
             holdToClose,

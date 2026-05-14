@@ -2,7 +2,6 @@ import { h, type Component } from 'vue';
 import { VsRender } from '@/components';
 import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
-import { stringUtil } from '@/utils';
 import type { ModalPlugin } from '@/plugins';
 
 import { vnodeUtils } from './../utils/vnode-utils';
@@ -31,28 +30,27 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             } = options;
 
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.okButton, primary: true },
+                props: { colorScheme, styleSet: styleSet?.$okButton, primary: true },
                 content: okText,
                 onClickEvent: () => handleButton(CONFIRM_OK),
             });
 
             const cancelButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.cancelButton },
+                props: { colorScheme, styleSet: styleSet?.$cancelButton },
                 content: cancelText,
                 onClickEvent: () => handleButton(CONFIRM_CANCEL),
             });
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
-            const additionalButtonsClass = [
-                swapButtons && 'flex-row-reverse',
-                styleSet?.buttonsGap && `gap-[${stringUtil.toStringSize(styleSet.buttonsGap)}]`,
-                styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`,
-            ].filter(Boolean);
 
             const contents = h(VsRender, { content });
-            const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton, cancelButton]);
-            const confirm = h('div', { class: [...contentClass] }, [contents, buttons]);
+            const buttons = h(
+                'div',
+                { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
+                [okButton, cancelButton],
+            );
+            const confirm = h('div', { class: contentClass }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {

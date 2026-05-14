@@ -13,7 +13,7 @@ const meta: Meta<typeof VsTabs> = {
         docs: {
             description: {
                 component:
-                    'VsTabs는 탭 네비게이션 컴포넌트입니다. 수평/수직 레이아웃, 스크롤 버튼, 키보드 네비게이션을 지원합니다.',
+                    'VsTabs는 탭 네비게이션 컴포넌트입니다. 수평/수직 레이아웃, 컨트롤 버튼, 키보드 네비게이션을 지원합니다.',
             },
         },
     },
@@ -21,13 +21,11 @@ const meta: Meta<typeof VsTabs> = {
         components: { VsTabs },
         setup() {
             const preDefinedStyleSet: VsTabsStyleSet = {
-                variables: { gap: '0.5rem' },
-                scrollButton: {
-                    variables: { padding: '0.4rem' },
-                    component: {
-                        backgroundColor: '#1565c0',
-                        borderRadius: '4px',
-                    },
+                $tabs: { gap: '0.5rem' },
+                $control: {
+                    backgroundColor: '#1565c0',
+                    borderRadius: '4px',
+                    padding: '0.4rem',
                 },
             } as const;
 
@@ -85,10 +83,10 @@ const meta: Meta<typeof VsTabs> = {
             control: 'boolean',
             description: 'primary 색상 테마',
         },
-        scrollButtons: {
+        controls: {
             control: 'select',
             options: ['hide', 'show', 'auto'],
-            description: '스크롤 버튼 표시 방식',
+            description: '컨트롤 버튼 표시 방식',
         },
         vertical: {
             control: 'boolean',
@@ -203,31 +201,31 @@ export const Vertical: Story = {
     },
 };
 
-export const WithScrollButtons: Story = {
+export const WithControls: Story = {
     parameters: {
         docs: {
             description: {
-                story: '스크롤 버튼이 항상 표시되는 탭입니다. 많은 탭 항목을 탐색할 때 유용합니다.',
+                story: '컨트롤 버튼이 항상 표시되는 탭입니다. 많은 탭 항목을 탐색할 때 유용합니다.',
             },
         },
     },
     args: {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6', 'Tab 7', 'Tab 8', 'Tab 9', 'Tab 10'],
-        scrollButtons: 'show',
+        controls: 'show',
     },
 };
 
-export const AutoScrollButtons: Story = {
+export const AutoControls: Story = {
     parameters: {
         docs: {
             description: {
-                story: '스크롤이 필요한 경우에만 버튼이 표시되는 탭입니다. 화면 크기를 조절하면 버튼이 자동으로 표시/숨김됩니다.',
+                story: '필요한 경우에만 컨트롤 버튼이 표시되는 탭입니다. 화면 크기를 조절하면 버튼이 자동으로 표시/숨김됩니다.',
             },
         },
     },
     args: {
         tabs: ['Dashboard', 'Analytics', 'Reports', 'Settings', 'Profile', 'Messages', 'Notifications', 'Calendar'],
-        scrollButtons: 'auto',
+        controls: 'auto',
     },
 };
 
@@ -485,23 +483,24 @@ export const StyleSet: Story = {
             description: {
                 story:
                     '인라인 스타일 객체를 사용한 커스텀 탭입니다.' +
-                    'styleSet prop에 variables(gap, divider), tab, activeTab, scrollButton을 전달하여 세밀한 커스터마이징이 가능합니다.',
+                    'styleSet prop에 $divider, $tabs, $tab($active 포함), $control을 전달하여 세밀한 커스터마이징이 가능합니다.',
             },
         },
     },
     args: {
         tabs: ['Custom 1', 'Custom 2', 'Custom 3', 'Custom 4', 'Custom 5', 'Custom 6', 'Custom 7', 'Custom 8'],
-        scrollButtons: 'show',
+        controls: 'show',
         styleSet: {
-            variables: { gap: '1rem', divider: '2px solid #b968c7' },
-            tab: { fontWeight: '600' },
-            activeTab: { backgroundColor: '#f0e6f5' },
-            scrollButton: {
-                variables: { padding: '0.4rem' },
-                component: {
-                    backgroundColor: '#b968c7',
-                    borderRadius: '8px',
-                },
+            $divider: '2px solid #b968c7',
+            $tabs: { gap: '1rem' },
+            $tab: {
+                fontWeight: '600',
+                $active: { backgroundColor: '#f0e6f5' },
+            },
+            $control: {
+                backgroundColor: '#b968c7',
+                borderRadius: '8px',
+                padding: '0.4rem',
             },
         },
     },
@@ -517,7 +516,7 @@ export const PreDefinedStyleSet: Story = {
     },
     args: {
         tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5', 'Tab 6'],
-        scrollButtons: 'show',
+        controls: 'show',
         styleSet: 'myStyleSet',
     },
 };

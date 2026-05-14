@@ -1,8 +1,6 @@
 @reference 'tailwindcss';
 
 .vs-select {
-    --vs-select-height: initial;
-
     .vs-select-trigger {
         @apply relative box-border flex cursor-pointer items-center gap-1;
 
@@ -10,7 +8,7 @@
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-no-color);
         padding: 0.2rem 0.8rem;
-        min-height: var(--vs-select-height, var(--vs-comp-height-md));
+        min-height: var(--vs-comp-height-md);
 
         .vs-select-value {
             @apply flex flex-1 flex-wrap items-center gap-1;
@@ -57,10 +55,6 @@
 }
 
 .vs-select-options {
-    --vs-select-focused-border: initial;
-    --vs-select-focused-borderRadius: initial;
-    --vs-select-focused-backgroundColor: initial;
-
     @apply overflow-hidden;
 
     border: 1px solid var(--vs-cs-line);
@@ -72,7 +66,7 @@
 
         &.vs-focusable-active {
             @apply box-content;
-            background-color: var(--vs-select-focused-backgroundColor, var(--vs-cs-bg-colored)) !important;
+            background-color: var(--vs-cs-bg-colored);
         }
     }
 

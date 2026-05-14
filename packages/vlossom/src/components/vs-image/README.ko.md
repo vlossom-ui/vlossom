@@ -66,22 +66,21 @@
 | `lazy`      | `boolean`                      | `false` | -        | Intersection Observer를 사용한 지연 로딩 활성화. |
 | `noSkeleton`| `boolean`                      | `false` | -        | 로딩 중 스켈레톤 플레이스홀더 비활성화.          |
 | `src`       | `string`                       | `''`    | `true`   | 이미지의 소스 URL.                               |
+| `width`     | `string \| number`             | -       | -        | 이미지 컴포넌트의 너비.                          |
+| `height`    | `string \| number`             | -       | -        | 이미지 컴포넌트의 높이.                          |
 
 ## Types
 
 ```typescript
-interface VsImageStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
-    skeleton?: VsSkeletonStyleSet;
-    component?: CSSProperties;
+interface VsImageStyleSet extends CSSProperties {
+    $image?: CSSProperties;
+    $skeleton?: VsSkeletonStyleSet;
 }
 ```
 
 > [!NOTE]
-> `skeleton`은 `VsSkeletonStyleSet`을 사용합니다. 자세한 내용은 [VsSkeleton README](../vs-skeleton/README.md)를 참고하세요.
+> `$image`는 내부 `<img>` 요소에 적용되는 스타일입니다.
+> `$skeleton`은 `VsSkeletonStyleSet`을 사용합니다. 자세한 내용은 [VsSkeleton README](../vs-skeleton/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -90,10 +89,12 @@ interface VsImageStyleSet {
     <vs-image
         src="https://example.com/image.png"
         alt="스타일 적용 이미지"
+        width="200px"
+        height="200px"
         :style-set="{
-            variables: { width: '200px', height: '200px' },
-            component: { borderRadius: '8px', objectFit: 'cover' },
-            skeleton: { component: { borderRadius: '8px' } },
+            borderRadius: '8px',
+            $image: { objectFit: 'cover', borderRadius: '8px' },
+            $skeleton: { borderRadius: '8px' },
         }"
     />
 </template>

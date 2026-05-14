@@ -17,7 +17,7 @@
                 @mouseenter.stop="onTooltipEnter"
                 @mouseleave.stop="onTooltipLeave"
             >
-                <div class="vs-tooltip-contents" :style="componentStyleSet.component">
+                <div class="vs-tooltip-contents" :style="componentStyleSet.$tooltip">
                     <slot />
                 </div>
             </div>

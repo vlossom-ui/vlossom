@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsModal`을 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `modal.open`을 호출합니다:
 
 ```html
 <template>
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    const modalId = $vsModal.open('모달에서 안녕하세요!', {
+    const modalId = $vs.modal.open('모달에서 안녕하세요!', {
         dimClose: true,
         size: 'sm',
     });
@@ -42,17 +42,17 @@ function openModal() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 import MyModalContent from './MyModalContent.vue';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    const modalId = $vsModal.open(MyModalContent, {
+    const modalId = $vs.modal.open(MyModalContent, {
         callbacks: {
             'modal-submit': (data) => {
                 console.log('제출됨:', data);
-                $vsModal.close();
+                $vs.modal.close();
             },
         },
     });
@@ -64,13 +64,13 @@ function openModal() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 let currentModalId = null;
 
 function openModal() {
-    currentModalId = $vsModal.open('확실합니까?', {
+    currentModalId = $vs.modal.open('확실합니까?', {
         dimmed: true,
         escClose: true,
     });
@@ -78,7 +78,7 @@ function openModal() {
 
 function closeModal() {
     if (currentModalId) {
-        $vsModal.closeWithId('body', currentModalId);
+        $vs.modal.closeWithId('body', currentModalId);
     }
 }
 </script>
@@ -129,12 +129,12 @@ interface ModalPlugin {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsModal = inject('$vsModal');
+const $vs = useVlossom();
 
 function openModal() {
-    $vsModal.open('저장하지 않은 변경 사항이 있어요. 닫으시겠습니까?', {
+    $vs.modal.open('저장하지 않은 변경 사항이 있어요. 닫으시겠습니까?', {
         dimClose: true,
         escClose: true,
         beforeClose: async () => window.confirm('변경 사항을 버리시겠어요?'),

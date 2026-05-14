@@ -37,7 +37,7 @@ A skeleton loading placeholder component that displays an animated background wh
 <template>
     <vs-skeleton
         :style-set="{
-            component: { width: '150px', height: '150px', borderRadius: '50%' },
+            width: '150px', height: '150px', borderRadius: '50%',
         }"
     />
 </template>
@@ -53,10 +53,9 @@ A skeleton loading placeholder component that displays an animated background wh
 ## Types
 
 ```typescript
-interface VsSkeletonStyleSet {
-    background?: CSSProperties;
-    content?: CSSProperties;
-    component?: CSSProperties;
+interface VsSkeletonStyleSet extends CSSProperties {
+    $background?: CSSProperties;
+    $content?: CSSProperties;
 }
 ```
 
@@ -66,9 +65,9 @@ interface VsSkeletonStyleSet {
 <template>
     <vs-skeleton
         :style-set="{
-            component: { width: '100%', height: '2rem', borderRadius: '0.5rem' },
-            background: { backgroundColor: '#e0e0e0' },
-            content: { color: '#999' },
+            width: '100%', height: '2rem', borderRadius: '0.5rem',
+            $background: { backgroundColor: '#e0e0e0' },
+            $content: { color: '#999' },
         }"
     >
         Loading...

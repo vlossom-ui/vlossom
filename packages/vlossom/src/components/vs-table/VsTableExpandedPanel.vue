@@ -28,11 +28,9 @@ export default defineComponent({
         const { isExpanded } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const expandableStyleSet: ComputedRef<VsExpandableStyleSet> = computed(() => ({
-            component: {
-                borderTop: '1px dashed var(--vs-cs-line)',
-                backgroundColor: 'var(--vs-no-color)',
-                boxShadow: 'inset 0 0 0.6rem 0 var(--vs-cs-shadow-color)',
-            },
+            borderTop: '1px dashed var(--vs-cs-line)',
+            backgroundColor: 'var(--vs-no-color)',
+            boxShadow: 'inset 0 0 0.6rem 0 var(--vs-cs-shadow-color)',
         }));
 
         return {

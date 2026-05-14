@@ -91,20 +91,18 @@ async function confirmChange(from, to) {
 ## 타입
 
 ```typescript
-interface VsSwitchStyleSet {
-    variables?: {
-        handleColor?: string;
-        handleSize?: string;
+interface VsSwitchStyleSet extends CSSProperties {
+    $handleColor?: string;
+    $handleSize?: string;
+    $switchButton?: CSSProperties & {
+        $active?: CSSProperties;
     };
-    switchButton?: CSSProperties;
-    activeSwitchButton?: CSSProperties;
-    component?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다.
+> `$wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다. `$switchButton.$active`는 스위치가 ON 상태일 때 적용됩니다.
 
 ### StyleSet 예시
 
@@ -113,10 +111,13 @@ interface VsSwitchStyleSet {
     <vs-switch
         v-model="isOn"
         :style-set="{
-            variables: { handleColor: '#ffffff', handleSize: '1.4rem' },
-            switchButton: { borderRadius: '0.25rem' },
-            activeSwitchButton: { backgroundColor: '#4caf50' },
-            component: { minHeight: '2.5rem' },
+            $handleColor: '#ffffff',
+            $handleSize: '1.4rem',
+            $switchButton: {
+                borderRadius: '0.25rem',
+                $active: { backgroundColor: '#4caf50' },
+            },
+            minHeight: '2.5rem',
         }"
     />
 </template>

@@ -11,19 +11,10 @@ export type { VsDivider };
 
 export interface VsDividerRef extends ComponentPublicInstance<typeof VsDivider> {}
 
-export interface VsDividerStyleSet {
-    variables?: {
-        border?: string;
-
-        horizontal?: {
-            width?: string;
-            margin?: string;
-        };
-
-        vertical?: {
-            height?: string;
-            margin?: string;
-        };
-    };
-    component?: CSSProperties;
+export interface VsDividerStyleSet extends CSSProperties {
+    $border?: string;
+    $horizontalWidth?: string;
+    $horizontalMargin?: string;
+    $verticalHeight?: string;
+    $verticalMargin?: string;
 }

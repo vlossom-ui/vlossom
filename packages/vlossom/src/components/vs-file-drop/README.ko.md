@@ -95,22 +95,19 @@ const files = ref([]);
 ## 타입
 
 ```typescript
-interface VsFileDropStyleSet {
-    variables?: {
-        dragBackgroundColor?: string;
-        iconColor?: string;
-    };
-    component?: CSSProperties;
-    placeholder?: CSSProperties;
-    files?: CSSProperties;
-    closeButton?: CSSProperties;
-    chip?: VsChipStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+interface VsFileDropStyleSet extends CSSProperties {
+    $dragBackgroundColor?: string;
+    $iconColor?: string;
+    $placeholder?: CSSProperties;
+    $files?: CSSProperties;
+    $closeButton?: CSSProperties;
+    $chip?: VsChipStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `chip`은 [VsChipStyleSet](../vs-chip/README.md)을, `wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md)을 사용합니다.
+> `$chip`은 [VsChipStyleSet](../vs-chip/README.md)을, `$wrapper`는 [VsInputWrapperStyleSet](../vs-input-wrapper/README.md)을 사용합니다.
 
 ### StyleSet 예시
 
@@ -120,9 +117,10 @@ interface VsFileDropStyleSet {
         v-model="files"
         label="업로드"
         :style-set="{
-            variables: { dragBackgroundColor: '#e8f4fd', iconColor: '#0066cc' },
-            component: { borderRadius: '12px' },
-            placeholder: { color: '#666' },
+            $dragBackgroundColor: '#e8f4fd',
+            $iconColor: '#0066cc',
+            borderRadius: '12px',
+            $placeholder: { color: '#666' },
         }"
     />
 </template>

@@ -81,11 +81,10 @@
 
 ```typescript
 interface VsTooltipStyleSet {
-    variables?: {
-        arrowColor?: string;
-        arrowSize?: string;
-    };
-    component?: CSSProperties;
+    $arrowColor?: string;
+    $arrowSize?: string;
+
+    $tooltip?: CSSProperties;
 }
 ```
 
@@ -97,8 +96,9 @@ interface VsTooltipStyleSet {
     <vs-tooltip
         target="#styled-btn"
         :style-set="{
-            variables: { arrowColor: '#323232', arrowSize: '0.5rem' },
-            component: {
+            $arrowColor: '#323232',
+            $arrowSize: '0.5rem',
+            $tooltip: {
                 backgroundColor: '#323232',
                 color: '#ffffff',
                 borderRadius: '0.25rem',

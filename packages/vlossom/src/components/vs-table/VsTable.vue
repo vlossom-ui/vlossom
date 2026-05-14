@@ -1,10 +1,10 @@
 <template>
-    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentStyleSet.component">
+    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentInlineStyle">
         <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
             <vs-responsive
                 class="vs-table-toolbar-start"
                 :grid="{ sm: 12, md: search ? 10 : 12 }"
-                :style="componentStyleSet.toolbar"
+                :style="componentStyleSet.$toolbar"
             >
                 <slot name="toolbar" />
             </vs-responsive>
@@ -13,7 +13,7 @@
                     ref="searchInputRef"
                     v-bind="searchOptions"
                     :color-scheme="computedColorScheme"
-                    :style-set="componentStyleSet.search"
+                    :style-set="componentStyleSet.$search"
                     :disabled="loading"
                     @search="searchRows"
                 />
@@ -302,7 +302,7 @@ export default defineComponent({
         const stickyHeaderTop = ref<string>('0px');
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
         const table: TableComposable = useTable(
             props,
             { searchInputRef },
@@ -417,6 +417,7 @@ export default defineComponent({
             colorSchemeClass,
             computedColorScheme,
             componentStyleSet,
+            componentInlineStyle,
             classObj,
             headerRef,
             scrollWrapperRef,

@@ -87,13 +87,10 @@
 ## Types
 
 ```typescript
-interface VsLabelValueStyleSet {
-    variables?: {
-        border?: string;
-    };
-    component?: CSSProperties;
-    label?: CSSProperties;
-    value?: CSSProperties;
+interface VsLabelValueStyleSet extends CSSProperties {
+    $border?: string;
+    $label?: CSSProperties;
+    $value?: CSSProperties;
 }
 ```
 
@@ -103,10 +100,10 @@ interface VsLabelValueStyleSet {
 <template>
     <vs-label-value
         :style-set="{
-            variables: { border: '2px solid #007bff' },
-            component: { borderRadius: '8px' },
-            label: { backgroundColor: '#e7f0ff', color: '#007bff', fontWeight: '700' },
-            value: { padding: '0 1.5rem' },
+            $border: '2px solid #007bff',
+            borderRadius: '8px',
+            $label: { backgroundColor: '#e7f0ff', color: '#007bff', fontWeight: '700' },
+            $value: { padding: '0 1.5rem' },
         }"
     >
         <template #label>프로젝트</template>

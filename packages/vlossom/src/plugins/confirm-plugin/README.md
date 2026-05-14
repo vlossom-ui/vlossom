@@ -12,12 +12,12 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 - Provides OK and Cancel buttons with configurable labels and styles
 - Resolves `true` on OK (or Enter key) and `false` on Cancel (or Escape key)
 - Supports swapping the button order via `swapButtons`
-- Supports custom button gap and alignment
+- Supports custom button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
 ## Basic Usage
 
-Inject `$vsConfirm` in your component and call `open`:
+Get the Vlossom instance via `useVlossom()` and call `confirm.open`:
 
 ```html
 <template>
@@ -25,12 +25,12 @@ Inject `$vsConfirm` in your component and call `open`:
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 async function handleDelete() {
-    const confirmed = await $vsConfirm.open('Are you sure you want to delete this item?');
+    const confirmed = await $vs.confirm.open('Are you sure you want to delete this item?');
     if (confirmed) {
         console.log('Deletion confirmed');
     } else {
@@ -44,20 +44,19 @@ async function handleDelete() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 function handleConfirm() {
-    $vsConfirm.open('Do you want to proceed?', {
+    $vs.confirm.open('Do you want to proceed?', {
         okText: 'Yes, proceed',
         cancelText: 'No, go back',
         swapButtons: true,
         styleSet: {
-            buttonsAlign: 'right',
-            buttonsGap: '1rem',
-            okButton: { variables: { padding: '0.5rem 2rem' } },
-            cancelButton: { variables: { padding: '0.5rem 2rem' } },
+            $buttons: { justifyContent: 'end', gap: '1rem' },
+            $okButton: { padding: '0.5rem 2rem' },
+            $cancelButton: { padding: '0.5rem 2rem' },
         },
     });
 }
@@ -74,10 +73,9 @@ function handleConfirm() {
 
 ```typescript
 interface VsConfirmStyleSet extends VsModalNodeStyleSet {
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface ConfirmModalOptions extends ModalOptions {

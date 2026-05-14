@@ -16,7 +16,7 @@ Displays a modal alert dialog with a single OK button. Returns a `Promise<void>`
 
 ## Basic Usage
 
-Inject `$vsAlert` in your component and call `open`:
+Get the Vlossom instance via `useVlossom()` and call `alert.open`:
 
 ```html
 <template>
@@ -24,12 +24,12 @@ Inject `$vsAlert` in your component and call `open`:
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsAlert = inject('$vsAlert');
+const $vs = useVlossom();
 
 async function showAlert() {
-    await $vsAlert.open('This is an alert message.');
+    await $vs.alert.open('This is an alert message.');
     console.log('Alert closed');
 }
 </script>
@@ -39,19 +39,17 @@ async function showAlert() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsAlert = inject('$vsAlert');
+const $vs = useVlossom();
 
 function showAlert() {
-    $vsAlert.open('Operation completed successfully!', {
+    $vs.alert.open('Operation completed successfully!', {
         okText: 'Got it',
         colorScheme: 'green',
         styleSet: {
-            buttonsAlign: 'right',
-            button: {
-                variables: { padding: '0.5rem 2rem' },
-            },
+            $buttons: { justifyContent: 'end' },
+            $okButton: { padding: '0.5rem 2rem' },
         },
     });
 }
@@ -68,8 +66,8 @@ function showAlert() {
 
 ```typescript
 interface VsAlertStyleSet extends VsModalNodeStyleSet {
-    buttonsAlign?: Alignment;
-    button?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface AlertModalOptions extends ModalOptions {

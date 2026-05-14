@@ -84,13 +84,13 @@ const text = ref('');
 
 ```typescript
 interface VsTextareaStyleSet {
-    textarea?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+    $textarea?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다.
+> `$wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다.
 
 ### StyleSet 예시
 
@@ -100,7 +100,7 @@ interface VsTextareaStyleSet {
         v-model="text"
         label="설명"
         :style-set="{
-            textarea: {
+            $textarea: {
                 minHeight: '6rem',
                 fontFamily: 'monospace',
                 fontSize: '0.875rem',

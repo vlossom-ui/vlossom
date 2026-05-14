@@ -12,12 +12,12 @@
 - 레이블과 스타일을 구성할 수 있는 확인 및 취소 버튼을 제공합니다
 - 확인(또는 Enter 키) 시 `true`, 취소(또는 Escape 키) 시 `false`로 resolve됩니다
 - `swapButtons`를 통해 버튼 순서를 교체할 수 있습니다
-- 커스텀 버튼 간격 및 정렬을 지원합니다
+- `$buttons` CSSProperties로 버튼 컨테이너 스타일을 커스터마이징할 수 있습니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsConfirm`을 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `confirm.open`을 호출합니다:
 
 ```html
 <template>
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 async function handleDelete() {
-    const confirmed = await $vsConfirm.open('이 항목을 삭제하시겠습니까?');
+    const confirmed = await $vs.confirm.open('이 항목을 삭제하시겠습니까?');
     if (confirmed) {
         console.log('삭제가 확인되었습니다');
     } else {
@@ -44,20 +44,19 @@ async function handleDelete() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsConfirm = inject('$vsConfirm');
+const $vs = useVlossom();
 
 function handleConfirm() {
-    $vsConfirm.open('계속 진행하시겠습니까?', {
+    $vs.confirm.open('계속 진행하시겠습니까?', {
         okText: '네, 진행합니다',
         cancelText: '아니오, 돌아갑니다',
         swapButtons: true,
         styleSet: {
-            buttonsAlign: 'right',
-            buttonsGap: '1rem',
-            okButton: { variables: { padding: '0.5rem 2rem' } },
-            cancelButton: { variables: { padding: '0.5rem 2rem' } },
+            $buttons: { justifyContent: 'end', gap: '1rem' },
+            $okButton: { padding: '0.5rem 2rem' },
+            $cancelButton: { padding: '0.5rem 2rem' },
         },
     });
 }
@@ -74,10 +73,9 @@ function handleConfirm() {
 
 ```typescript
 interface VsConfirmStyleSet extends VsModalNodeStyleSet {
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface ConfirmModalOptions extends ModalOptions {

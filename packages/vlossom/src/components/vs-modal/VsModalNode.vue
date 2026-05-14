@@ -3,7 +3,7 @@
         <vs-dimmed
             v-if="dimmed"
             :model-value="dimmed"
-            :style-set="componentStyleSet.dimmed"
+            :style-set="componentStyleSet.$dimmed"
             @click.prevent.stop="onClickDimmed"
         />
         <vs-focus-trap :disabled="!focusLock" ref="focusTrapRef">
@@ -12,7 +12,7 @@
                 role="dialog"
                 aria-label="Modal"
                 :aria-modal="true"
-                :style="componentStyleSet.component"
+                :style="componentInlineStyle"
             >
                 <slot />
             </div>
@@ -104,12 +104,10 @@ export default defineComponent({
                 result['height'] = stringUtil.toStringSize(height);
             }
 
-            return objectUtil.shake({
-                component: objectUtil.shake(result),
-            });
+            return objectUtil.shake(result);
         });
 
-        const { componentStyleSet } = useStyleSet<VsModalNodeStyleSet>(
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsModalNodeStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -176,6 +174,7 @@ export default defineComponent({
         return {
             colorSchemeClass,
             componentStyleSet,
+            componentInlineStyle,
             focusLock,
             onClickDimmed,
         };

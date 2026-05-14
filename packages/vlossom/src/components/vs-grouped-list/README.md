@@ -60,7 +60,7 @@ function onClickItem(item) {
 <template>
     <vs-grouped-list
         :items="longList"
-        :style-set="{ variables: { height: '300px' } }"
+        :style-set="{ maxHeight: '300px' }"
         @click-item="handleClick"
     />
 </template>
@@ -78,16 +78,12 @@ function onClickItem(item) {
 ## Types
 
 ```typescript
-interface VsGroupedListStyleSet {
-    variables?: {
-        gap?: string;
-        height?: string;
-    };
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
-    group?: CSSProperties;
-    item?: CSSProperties;
+interface VsGroupedListStyleSet extends CSSProperties {
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
+    $group?: CSSProperties;
+    $item?: CSSProperties;
 }
 ```
 
@@ -98,9 +94,9 @@ interface VsGroupedListStyleSet {
     <vs-grouped-list
         :items="items"
         :style-set="{
-            variables: { height: '400px', gap: '4px' },
-            group: { backgroundColor: '#f0f0f0', fontWeight: 'bold', padding: '0.5rem 1rem' },
-            item: { padding: '0.4rem 1.2rem' },
+            maxHeight: '400px',
+            $group: { backgroundColor: '#f0f0f0', fontWeight: 'bold', padding: '0.5rem 1rem' },
+            $item: { padding: '0.4rem 1.2rem' },
         }"
     />
 </template>

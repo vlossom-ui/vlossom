@@ -187,6 +187,61 @@ describe('useStyleSet', () => {
                 },
             });
         });
+
+        it('$ prefix가 붙은 primitive 값도 우선순위대로 병합되어야 한다', () => {
+            // given
+            const component = VsComponent.VsSelect;
+            const baseStyleSet = ref({ $height: '2rem', $padding: '0.5rem' });
+            const styleSet = ref({ $height: '3rem', $margin: '1rem' });
+            const additionalStyleSet = ref({ $height: '4rem', $fontSize: '14px' });
+
+            // when
+            const { componentStyleSet, styleSetVariables } = useStyleSet<any>(
+                component,
+                styleSet,
+                baseStyleSet,
+                additionalStyleSet,
+            );
+
+            // then
+            expect(componentStyleSet.value).toEqual({
+                $height: '4rem',
+                $padding: '0.5rem',
+                $margin: '1rem',
+                $fontSize: '14px',
+            });
+            expect(styleSetVariables.value).toEqual({
+                '--vs-select-height': '4rem',
+                '--vs-select-padding': '0.5rem',
+                '--vs-select-margin': '1rem',
+                '--vs-select-fontSize': '14px',
+            });
+        });
+
+        it('$ prefix가 붙은 object 슬롯 값도 깊은 병합이 되어야 한다', () => {
+            // given
+            const component = VsComponent.VsSelect;
+            const baseStyleSet = ref({
+                $option: { padding: '0.5rem', color: 'black' },
+                $wrapper: { label: { fontSize: '14px' } },
+            });
+            const styleSet = ref({
+                $option: { color: 'red', fontWeight: 'bold' },
+                $wrapper: { label: { fontWeight: 'bold' } },
+            });
+            const additionalStyleSet = ref({
+                $option: { padding: '1rem' },
+            });
+
+            // when
+            const { componentStyleSet } = useStyleSet<any>(component, styleSet, baseStyleSet, additionalStyleSet);
+
+            // then
+            expect(componentStyleSet.value).toEqual({
+                $option: { padding: '1rem', color: 'red', fontWeight: 'bold' },
+                $wrapper: { label: { fontSize: '14px', fontWeight: 'bold' } },
+            });
+        });
     });
 
     describe('styleSetVariables', () => {
@@ -202,23 +257,26 @@ describe('useStyleSet', () => {
             expect(styleSetVariables.value).toEqual({});
         });
 
-        it('variables 프로퍼티가 없으면 빈 객체를 반환해야 한다', () => {
+        it('$ prefix가 붙은 root level primitive 값을 CSS 변수로 emit해야 한다', () => {
             // given
-            const component = VsComponent.VsButton;
-            const styles = { color: 'red', fontSize: '14px' };
+            const component = VsComponent.VsSelect;
+            const styles = { $height: '2.5rem', $padding: '1rem' };
             const styleSet = ref(styles);
 
             // when
             const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(styleSetVariables.value).toEqual({});
+            expect(styleSetVariables.value).toEqual({
+                '--vs-select-height': '2.5rem',
+                '--vs-select-padding': '1rem',
+            });
         });
 
         it('컴포넌트명을 kebab-case로 변환해야 한다', () => {
             // given
             const component = 'VsComplexComponent';
-            const styles = { variables: { backgroundColor: 'white' } };
+            const styles = { $backgroundColor: 'white' };
             const styleSet = ref(styles);
 
             // when
@@ -230,77 +288,117 @@ describe('useStyleSet', () => {
             });
         });
 
-        it('variables 객체를 CSS 변수로 변환해야 한다', () => {
+        it('$ prefix가 붙어도 값이 객체이면 emit하지 않아야 한다', () => {
+            // given
+            const component = VsComponent.VsSelect;
+            const styles = {
+                $height: '2.5rem',
+                $focused: { border: '1px solid red', backgroundColor: 'gray' },
+                $wrapper: { variables: { width: '100%' } },
+            };
+            const styleSet = ref(styles);
+
+            // when
+            const { styleSetVariables } = useStyleSet(component, styleSet);
+
+            // then
+            expect(styleSetVariables.value).toEqual({
+                '--vs-select-height': '2.5rem',
+            });
+        });
+
+        it('$ prefix가 없는 root level 키는 emit하지 않아야 한다', () => {
             // given
             const component = VsComponent.VsButton;
-            const styles = { variables: { color: 'red', fontSize: '14px' } };
+            const styles = { color: 'red', fontSize: '14px' };
             const styleSet = ref(styles);
 
             // when
             const { styleSetVariables } = useStyleSet(component, styleSet);
 
             // then
-            expect(styleSetVariables.value).toEqual({
-                '--vs-button-color': 'red',
-                '--vs-button-fontSize': '14px',
+            expect(styleSetVariables.value).toEqual({});
+        });
+    });
+
+    describe('componentInlineStyle', () => {
+        it('빈 스타일셋에 대해 빈 객체를 반환해야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styleSet = ref(undefined);
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({});
+        });
+
+        it('$ prefix가 없는 CSSProperties를 inline style로 반환해야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const styles = { color: 'red', fontSize: '14px', padding: '0.5rem' };
+            const styleSet = ref(styles);
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({
+                color: 'red',
+                fontSize: '14px',
+                padding: '0.5rem',
             });
         });
 
-        it('variables의 중첩된 객체를 플랫한 CSS 변수로 변환해야 한다', () => {
+        it('$ prefix가 붙은 키는 inline style에서 제외되어야 한다', () => {
             // given
-            const component = 'vs-input';
+            const component = VsComponent.VsSelect;
             const styles = {
-                variables: {
-                    color: 'blue',
-                    append: {
-                        width: '2px',
-                        padding: '3px',
-                        backgroundColor: 'gray',
-                    },
-                },
+                color: 'red',
+                $height: '2.5rem',
+                $focused: { border: '1px solid red' },
+                $wrapper: { $label: { fontSize: '14px' } },
             };
             const styleSet = ref(styles);
 
             // when
-            const { styleSetVariables } = useStyleSet(component, styleSet);
+            const { componentInlineStyle } = useStyleSet<any>(component, styleSet);
 
             // then
-            expect(styleSetVariables.value).toEqual({
-                '--vs-input-color': 'blue',
-                '--vs-input-append-width': '2px',
-                '--vs-input-append-padding': '3px',
-                '--vs-input-append-backgroundColor': 'gray',
+            expect(componentInlineStyle.value).toEqual({ color: 'red' });
+        });
+
+        it('baseStyleSet, styleSet, additionalStyleSet의 CSSProperties가 모두 병합되어야 한다', () => {
+            // given
+            const component = VsComponent.VsButton;
+            const baseStyleSet = ref({ color: 'blue', padding: '5px' });
+            const styleSet = ref({ color: 'red', fontSize: '14px' });
+            const additionalStyleSet = ref({ color: 'green', fontWeight: 'bold' });
+
+            // when
+            const { componentInlineStyle } = useStyleSet(component, styleSet, baseStyleSet, additionalStyleSet);
+
+            // then
+            expect(componentInlineStyle.value).toEqual({
+                color: 'green',
+                padding: '5px',
+                fontSize: '14px',
+                fontWeight: 'bold',
             });
         });
 
-        it('중첩된 객체가 중첩된 객체를 포함하고 있으면 중첩된 객체의 값을 무시해야 한다', () => {
+        it('값이 undefined나 null이면 inline style에서 제외되어야 한다', () => {
             // given
-            const component = 'vs-input';
-            const styles = {
-                variables: {
-                    color: 'blue',
-                    append: {
-                        width: '2px',
-                        padding: '3px',
-                        backgroundColor: 'gray',
-                        nested: {
-                            color: 'red',
-                        },
-                    },
-                },
-            };
-            const styleSet = ref(styles);
+            const component = VsComponent.VsButton;
+            const styles = { color: 'red', padding: undefined, margin: null };
+            const styleSet: any = ref(styles);
 
             // when
-            const { styleSetVariables } = useStyleSet(component, styleSet);
+            const { componentInlineStyle } = useStyleSet<any>(component, styleSet);
 
             // then
-            expect(styleSetVariables.value).toEqual({
-                '--vs-input-color': 'blue',
-                '--vs-input-append-width': '2px',
-                '--vs-input-append-padding': '3px',
-                '--vs-input-append-backgroundColor': 'gray',
-            });
+            expect(componentInlineStyle.value).toEqual({ color: 'red' });
         });
     });
 });

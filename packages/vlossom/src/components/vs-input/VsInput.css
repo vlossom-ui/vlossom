@@ -35,7 +35,6 @@
         transition: opacity 0.4s;
 
         background: none;
-        color: var(--vs-input-fontColor, var(--vs-cs-font));
 
         &:focus {
             @apply cursor-pointer opacity-100;
