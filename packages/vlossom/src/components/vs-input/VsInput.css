@@ -68,9 +68,9 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--vs-cs-bg-area) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
     -webkit-text-fill-color: var(--vs-cs-font);
-    box-shadow: 0 0 0 1000px var(--vs-cs-bg-area) inset;
+    box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
     caret-color: var(--vs-cs-font);
 }
 
@@ -78,8 +78,8 @@ input:autofill,
 input:autofill:hover,
 input:autofill:focus,
 input:autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--vs-cs-bg-area) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
     -webkit-text-fill-color: var(--vs-cs-font);
-    box-shadow: 0 0 0 1000px var(--vs-cs-bg-area) inset;
+    box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
     caret-color: var(--vs-cs-font);
 }
