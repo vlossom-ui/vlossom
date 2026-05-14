@@ -18,16 +18,14 @@ export interface VsRadioRef extends ComponentPublicInstance<typeof VsRadio>, Foc
 export interface VsRadioSetRef extends ComponentPublicInstance<typeof VsRadioSet>, FocusableRef, FormChildRef {}
 
 export interface VsRadioStyleSet {
-    variables?: {
-        borderRadius?: string;
-        radioColor?: string;
-        radioSize?: string;
-    };
-    wrapper?: VsInputWrapperStyleSet;
+    $radioBorderRadius?: string;
+    $radioColor?: string;
+    $radioSize?: string;
+
+    $wrapper?: VsInputWrapperStyleSet;
 }
 
-export interface VsRadioSetStyleSet {
-    component?: CSSProperties;
-    radio?: VsRadioStyleSet;
-    wrapper?: VsInputWrapperStyleSet;
+export interface VsRadioSetStyleSet extends CSSProperties {
+    $radio?: VsRadioStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }

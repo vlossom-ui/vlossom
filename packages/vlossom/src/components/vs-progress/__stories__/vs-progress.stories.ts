@@ -20,23 +20,13 @@ const meta: Meta<typeof VsProgress> = {
         components: { VsProgress },
         setup() {
             const preDefinedStyleSet: VsProgressStyleSet = {
-                variables: {
-                    bar: {
-                        borderRadius: '8px',
-                        backgroundColor: '#f0f0f0',
-                    },
-                    value: {
-                        backgroundColor: '#1e88e5',
-                    },
-                    label: {
-                        fontColor: '#fff',
-                        textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-                    },
-                },
-                component: {
-                    width: '20rem',
-                    height: '1.5rem',
-                },
+                $barBorderRadius: '8px',
+                $barBackgroundColor: '#f0f0f0',
+                $valueBackgroundColor: '#1e88e5',
+                $labelFontColor: '#fff',
+                $labelTextShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                width: '20rem',
+                height: '1.5rem',
             } as const;
 
             useVlossom().styleSet = {
@@ -188,23 +178,13 @@ export const StyleSet: Story = {
         max: 100,
         label: '80%',
         styleSet: {
-            variables: {
-                bar: {
-                    borderRadius: '12px',
-                    backgroundColor: '#e0e0e0',
-                },
-                value: {
-                    backgroundColor: '#e188e5',
-                },
-                label: {
-                    fontColor: '#fff',
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.4)',
-                },
-            },
-            component: {
-                width: '25rem',
-                height: '2rem',
-            },
+            $barBorderRadius: '12px',
+            $barBackgroundColor: '#e0e0e0',
+            $valueBackgroundColor: '#e188e5',
+            $labelFontColor: '#fff',
+            $labelTextShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+            width: '25rem',
+            height: '2rem',
         },
     },
 };

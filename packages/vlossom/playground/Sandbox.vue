@@ -1,5 +1,5 @@
 <template>
-    <vs-page class="mb-8" :style-set="{ component: { padding: '0' } }">
+    <vs-page class="mb-8" :style-set="{ padding: '0' }">
         <div class="sandbox">
             <h1>Sandbox</h1>
         </div>

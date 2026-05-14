@@ -79,16 +79,15 @@
 ## Types
 
 ```typescript
-interface VsInputWrapperStyleSet {
-    component?: CSSProperties;
-    label?: CSSProperties;
-    messages?: CSSProperties;
-    message?: VsMessageStyleSet;
+interface VsInputWrapperStyleSet extends CSSProperties {
+    $label?: CSSProperties;
+    $messages?: CSSProperties;
+    $message?: VsMessageStyleSet;
 }
 ```
 
 > [!NOTE]
-> `message`는 `VsMessageStyleSet`을 사용합니다. 자세한 내용은 [VsMessage README](../vs-message/README.md)를 참고하세요.
+> `$message`는 `VsMessageStyleSet`을 사용합니다. 자세한 내용은 [VsMessage README](../vs-message/README.md)를 참고하세요.
 
 ### StyleSet 사용 예시
 
@@ -97,10 +96,10 @@ interface VsInputWrapperStyleSet {
     <vs-input-wrapper
         label="스타일 적용 래퍼"
         :style-set="{
-            component: { padding: '1rem', backgroundColor: '#f9f9f9' },
-            label: { color: '#333', fontWeight: '600' },
-            messages: { marginTop: '0.5rem' },
-            message: { component: { fontSize: '0.75rem' } },
+            padding: '1rem', backgroundColor: '#f9f9f9',
+            $label: { color: '#333', fontWeight: '600' },
+            $messages: { marginTop: '0.5rem' },
+            $message: { fontSize: '0.75rem' },
         }"
     >
         <input type="text" />

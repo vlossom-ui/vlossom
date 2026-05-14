@@ -46,8 +46,8 @@ const meta: Meta<typeof VsTextWrap> = {
                             copy
                             link="https://example.com"
                             :style-set="{
-                                copyIcon: { color: '#ff5722', width: '2rem', height: '2rem' },
-                                linkIcon: { color: '#2196f3', width: '2rem', height: '2rem' }
+                                $copyIcon: { color: '#ff5722', width: '2rem', height: '2rem' },
+                                $linkIcon: { color: '#2196f3', width: '2rem', height: '2rem' }
                             }"
                         >
                             Custom Icon Size and Color
@@ -56,7 +56,7 @@ const meta: Meta<typeof VsTextWrap> = {
                             v-bind="args"
                             copy
                             :style-set="{
-                                copyIcon: { color: '#9c27b0', width: '1rem', height: '1rem' }
+                                $copyIcon: { color: '#9c27b0', width: '1rem', height: '1rem' }
                             }"
                         >
                             Small Purple Copy Icon
@@ -94,8 +94,8 @@ const meta: Meta<typeof VsTextWrap> = {
                             link="https://example.com"
                             width="250px"
                             :style-set="{
-                                copyIcon: { color: '#4caf50' },
-                                linkIcon: { color: '#03a9f4' }
+                                $copyIcon: { color: '#4caf50' },
+                                $linkIcon: { color: '#03a9f4' }
                             }"
                         >
                             https://example.com/very/long/url/path/to/resource

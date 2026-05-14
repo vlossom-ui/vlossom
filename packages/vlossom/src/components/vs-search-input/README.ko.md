@@ -85,17 +85,13 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 ## Types
 
 ```typescript
-interface VsSearchInputStyleSet {
-    variables?: {
-        height?: string;
-    };
-    input?: VsInputStyleSet;
-    toggle?: VsToggleStyleSet;
+interface VsSearchInputStyleSet extends VsInputStyleSet {
+    $toggle?: VsToggleStyleSet;
 }
 ```
 
 > [!NOTE]
-> `input`은 [VsInputStyleSet](../vs-input/README.md#types)을, `toggle`은 [VsToggleStyleSet](../vs-toggle/README.md#types)을 사용합니다.
+> [VsInputStyleSet](../vs-input/README.md#types)의 모든 속성(`$prepend`, `$append`, `$input`, `$wrapper`)과 `CSSProperties`를 상속합니다. `$toggle`은 [VsToggleStyleSet](../vs-toggle/README.md#types)을 사용합니다.
 
 ### StyleSet 사용 예시
 
@@ -104,8 +100,8 @@ interface VsSearchInputStyleSet {
     <vs-search-input
         v-model="query"
         :style-set="{
-            variables: { height: '2.5rem' },
-            input: { component: { borderRadius: '1rem' } },
+            borderRadius: '1rem',
+            $input: { height: '2.5rem' },
         }"
     />
 </template>

@@ -27,7 +27,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.component).toMatchObject({
+            expect(wrapper.vm.componentInlineStyle).toMatchObject({
                 width: '600px',
                 height: '500px',
             });
@@ -47,7 +47,7 @@ describe('VsGrid', () => {
             });
         });
 
-        it('columnGap, rowGap이 주어지면 componentStyleSet에 적용되어야 한다', () => {
+        it('columnGap, rowGap이 주어지면 componentInlineStyle에 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsGrid, {
                 props: {
@@ -57,7 +57,7 @@ describe('VsGrid', () => {
             });
 
             // then
-            expect(wrapper.vm.componentStyleSet.component).toMatchObject({
+            expect(wrapper.vm.componentInlineStyle).toMatchObject({
                 columnGap: '20px',
                 rowGap: '25px',
             });

@@ -13,7 +13,6 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 - Default height of `3rem` — overridable via the `height` prop
 - Primary color scheme styling via the `primary` prop
 - Opt-in `VsLayout` integration via the `layout` prop — when set, reports header height for drawer offset calculations
-- Accepts `CSSProperties` via `styleSet.component` for full style control
 
 ## Basic Usage
 
@@ -78,9 +77,7 @@ Set the `layout` prop to register the header with the layout store so `VsContain
 interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
-interface VsBarStyleSet {
-    component?: CSSProperties;
-}
+interface VsBarStyleSet extends CSSProperties {}
 ```
 
 > [!NOTE]
@@ -92,12 +89,10 @@ interface VsBarStyleSet {
 <template>
     <vs-header
         :style-set="{
-            component: {
-                backgroundColor: '#2c3e50',
-                color: '#ffffff',
-                padding: '0 2rem',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            },
+            backgroundColor: '#2c3e50',
+            color: '#ffffff',
+            padding: '0 2rem',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         }"
     >
         <h1>Styled Header</h1>

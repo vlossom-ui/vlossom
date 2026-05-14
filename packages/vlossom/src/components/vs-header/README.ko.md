@@ -13,7 +13,6 @@
 - 기본 높이 `3rem` — `height` prop으로 재정의 가능
 - `primary` prop을 통한 기본 색상 스킴 스타일링
 - `layout` prop을 통한 `VsLayout` 통합 opt-in — 설정 시 드로어 오프셋 계산을 위해 헤더 높이를 보고
-- 완전한 스타일 제어를 위해 `styleSet.component`를 통한 `CSSProperties` 허용
 
 ## 기본 사용법
 
@@ -78,9 +77,7 @@
 interface VsHeaderStyleSet extends VsBarStyleSet {}
 
 // VsBarStyleSet:
-interface VsBarStyleSet {
-    component?: CSSProperties;
-}
+interface VsBarStyleSet extends CSSProperties {}
 ```
 
 > [!NOTE]
@@ -92,12 +89,10 @@ interface VsBarStyleSet {
 <template>
     <vs-header
         :style-set="{
-            component: {
-                backgroundColor: '#2c3e50',
-                color: '#ffffff',
-                padding: '0 2rem',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            },
+            backgroundColor: '#2c3e50',
+            color: '#ffffff',
+            padding: '0 2rem',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         }"
     >
         <h1>스타일이 적용된 헤더</h1>

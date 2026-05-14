@@ -1,9 +1,5 @@
 <template>
-    <component
-        :is="tag"
-        :class="['vs-bar', colorSchemeClass, classObj]"
-        :style="componentStyleSet.component"
-    >
+    <component :is="tag" :class="['vs-bar', colorSchemeClass, classObj]" :style="componentInlineStyle">
         <slot />
     </component>
 </template>
@@ -33,12 +29,10 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsBarStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBarStyleSet>> = computed(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
-                    position: position.value || undefined,
-                }),
+                position: position.value || undefined,
             });
         });
-        const { componentStyleSet } = useStyleSet<VsBarStyleSet>(
+        const { componentInlineStyle } = useStyleSet<VsBarStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -49,7 +43,7 @@ export default defineComponent({
             'vs-primary': primary.value,
         }));
 
-        return { colorSchemeClass, componentStyleSet, classObj };
+        return { colorSchemeClass, componentInlineStyle, classObj };
     },
 });
 </script>

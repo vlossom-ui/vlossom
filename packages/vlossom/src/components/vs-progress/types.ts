@@ -11,20 +11,11 @@ export type { VsProgress };
 
 export interface VsProgressRef extends ComponentPublicInstance<typeof VsProgress> {}
 
-export interface VsProgressStyleSet {
-    variables?: {
-        bar?: {
-            backgroundColor?: string;
-            border?: string;
-            borderRadius?: string;
-        };
-        value?: {
-            backgroundColor?: string;
-        };
-        label?: {
-            textShadow?: string;
-            fontColor?: string;
-        };
-    };
-    component?: CSSProperties;
+export interface VsProgressStyleSet extends CSSProperties {
+    $barBackgroundColor?: string;
+    $barBorder?: string;
+    $barBorderRadius?: string;
+    $valueBackgroundColor?: string;
+    $labelTextShadow?: string;
+    $labelFontColor?: string;
 }

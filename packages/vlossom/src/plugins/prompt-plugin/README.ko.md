@@ -12,12 +12,12 @@
 - 구성 가능한 입력 props가 있는 `VsInput` 필드를 렌더링합니다
 - 확인(또는 Enter 키) 시 입력 값을 반환하고, 취소(또는 Escape 키) 시 `null`을 반환합니다
 - resolve 전에 입력의 유효성을 검사합니다 — 유효성 검사 실패 시 모달이 열린 상태로 유지됩니다
-- 커스텀 버튼 텍스트, 버튼 순서 교체, 간격 및 정렬을 지원합니다
+- 커스텀 버튼 텍스트, 버튼 순서 교체, `$buttons` CSSProperties로 버튼 컨테이너 스타일링을 지원합니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
 
 ## 기본 사용법
 
-컴포넌트에서 `$vsPrompt`를 inject하고 `open`을 호출합니다:
+`useVlossom()`으로 Vlossom 인스턴스를 가져와 `prompt.open`을 호출합니다:
 
 ```html
 <template>
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askName() {
-    const name = await $vsPrompt.open('이름을 입력해주세요:');
+    const name = await $vs.prompt.open('이름을 입력해주세요:');
     if (name !== null) {
         console.log('입력된 이름:', name);
     }
@@ -42,12 +42,12 @@ async function askName() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsPrompt = inject('$vsPrompt');
+const $vs = useVlossom();
 
 async function askAge() {
-    const age = await $vsPrompt.open('나이를 입력해주세요:', {
+    const age = await $vs.prompt.open('나이를 입력해주세요:', {
         okText: '제출',
         cancelText: '건너뛰기',
         input: {
@@ -56,7 +56,7 @@ async function askAge() {
             initialValue: 18,
         },
         styleSet: {
-            buttonsAlign: 'right',
+            $buttons: { justifyContent: 'end' },
         },
     });
     console.log('나이:', age);
@@ -74,11 +74,10 @@ async function askAge() {
 
 ```typescript
 interface VsPromptStyleSet extends VsModalNodeStyleSet {
-    input?: Omit<VsInputStyleSet, 'append' | 'prepend'>;
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $input?: Omit<VsInputStyleSet, '$append' | '$prepend'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 interface PromptModalOptions extends ModalOptions {

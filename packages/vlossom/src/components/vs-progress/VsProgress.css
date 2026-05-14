@@ -1,12 +1,12 @@
 @reference 'tailwindcss';
 
 .vs-progress {
-    --vs-progress-bar-backgroundColor: initial;
-    --vs-progress-bar-border: initial;
-    --vs-progress-bar-borderRadius: initial;
-    --vs-progress-value-backgroundColor: initial;
-    --vs-progress-label-textShadow: initial;
-    --vs-progress-label-fontColor: initial;
+    --vs-progress-barBackgroundColor: initial;
+    --vs-progress-barBorder: initial;
+    --vs-progress-barBorderRadius: initial;
+    --vs-progress-valueBackgroundColor: initial;
+    --vs-progress-labelTextShadow: initial;
+    --vs-progress-labelFontColor: initial;
 
     @apply relative h-4 w-full appearance-none text-center;
 }
@@ -14,16 +14,16 @@
 .vs-progress[value]::-webkit-progress-bar {
     @apply overflow-hidden;
 
-    border: var(--vs-progress-bar-border, 1px solid var(--vs-cs-line));
-    border-radius: var(--vs-progress-bar-borderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
-    background-color: var(--vs-progress-bar-backgroundColor, var(--vs-cs-bg-area));
+    border: var(--vs-progress-barBorder, 1px solid var(--vs-cs-line));
+    border-radius: var(--vs-progress-barBorderRadius, calc(var(--vs-radius-ratio) * var(--vs-radius-md)));
+    background-color: var(--vs-progress-barBackgroundColor, var(--vs-cs-bg-area));
 }
 
 .vs-progress[value]::-webkit-progress-value {
     @apply relative;
 
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background-color: var(--vs-progress-value-backgroundColor, var(--vs-cs-bg-primary));
+    background-color: var(--vs-progress-valueBackgroundColor, var(--vs-cs-bg-primary));
 }
 
 .vs-progress:before {
@@ -31,10 +31,10 @@
 
     vertical-align: 0;
     content: attr(data-label);
-    color: var(--vs-progress-label-fontColor, var(--vs-no-color-inverse));
+    color: var(--vs-progress-labelFontColor, var(--vs-no-color-inverse));
     font-size: var(--vs-font-size-xs);
     text-shadow: var(
-        --vs-progress-label-textShadow,
+        --vs-progress-labelTextShadow,
         0 0 2px var(--vs-no-color),
         0 0 4px var(--vs-no-color),
         0 0 6px var(--vs-no-color),

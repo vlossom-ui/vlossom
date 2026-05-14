@@ -13,18 +13,21 @@
 3. [Implementation](#implementation)
 4. [Design Rules](#design-rules)
 5. [FAQ](#faq)
+6. [Anti-patterns](#anti-patterns)
 
 ---
 
 ## Overview
 
-All components can be customized via the `styleSet` prop.
+All components can be customized via the `styleSet` prop. `VsXxxStyleSet` interfaces **extend `CSSProperties`** and use the `$` prefix to distinguish CSS variables, slot/element styles, and nested child style-sets from standard root CSS.
 
 ```vue
 <vs-button
   :style-set="{
-    variables: { padding: '2rem' },
-    component: { backgroundColor: 'red' },
+    padding: '1rem 2rem',          // root CSS → inline style on the button
+    backgroundColor: 'tomato',
+    $content: { fontWeight: 600 }, // slot style
+    $loading: { $barColor: '#fff' } // nested child style-set
   }"
 >
   Click
@@ -35,48 +38,55 @@ All components can be customized via the `styleSet` prop.
 
 ## Core Concepts
 
-### 1. Merge System
+### 1. Key Convention
 
-```
-baseStyleSet < styleSet < additionalStyleSet
-```
+`VsXxxStyleSet extends CSSProperties` — keys are split by `$` prefix.
 
-| Stage                        | Role               | Set By    |
-| ---------------------------- | ------------------ | --------- |
-| baseStyleSet (optional)      | Internal defaults  | Component |
-| styleSet                     | User customization | User      |
-| additionalStyleSet (optional) | Runtime override   | Component |
+| Key form | Meaning | Where it is applied |
+|----------|---------|---------------------|
+| `width`, `padding`, ... (non-`$`) | Standard CSS — applied as inline style on the component's root | `componentInlineStyle` |
+| `$X` (primitive: string/number) | Exposed as a CSS variable `--vs-{kebab-component}-X` | `styleSetVariables` |
+| `$X` (object) | Slot/element CSSProperties **or** nested child StyleSet | `componentStyleSet.$X` |
 
 ```typescript
-const { componentStyleSet, styleSetVariables } = useStyleSet(
-  'vs-button',
-  styleSet,
-  baseStyleSet,
-  additionalStyleSet
-);
-```
+import type { CSSProperties } from 'vue';
 
-### 2. Style Control Methods
-
-#### variables (CSS Variables)
-
-```typescript
-variables?: {
-  padding?: string;  // --vs-button-padding
-  focused?: { border?: string; };  // --vs-button-focused-border
+export interface VsButtonStyleSet extends CSSProperties {
+    $padding?: string;            // CSS variable: --vs-button-padding
+    $content?: CSSProperties;     // slot/element style
+    $loading?: VsLoadingStyleSet; // nested child style-set
 }
 ```
 
-**Use for**: pseudo-elements, calc calculations, state changes, animations
+> 💡 Because root CSS lives on `extends CSSProperties` and customization points live under `$X`, there are no key collisions and no need for a wrapper key like `component?: CSSProperties`.
 
-#### CSSProperties (Direct Styles)
+### 2. Merge System
 
-```typescript
-component?: CSSProperties;
-elementName?: CSSProperties;
+```
+baseStyleSet < styleSet (prop) < additionalStyleSet
 ```
 
-**Use for**: one-time settings, theme tokens, independent element control
+| Stage                  | Role                                | Set By    |
+| ---------------------- | ----------------------------------- | --------- |
+| `baseStyleSet`         | Internal defaults                   | Component |
+| `styleSet`             | User customization                  | User      |
+| `additionalStyleSet`   | Runtime override (from other props) | Component |
+
+```typescript
+const { componentStyleSet, styleSetVariables, componentInlineStyle } =
+    useStyleSet<VsButtonStyleSet>(
+        VsComponent.VsButton,
+        styleSet,
+        baseStyleSet,        // optional, lowest priority
+        additionalStyleSet,  // optional, highest priority
+    );
+```
+
+`useStyleSet` returns three views:
+
+- `componentStyleSet` — fully merged object. Access `$X` slots / child style-sets here.
+- `styleSetVariables` — flat map of CSS custom properties derived from root-level `$X` primitives.
+- `componentInlineStyle` — `CSSProperties` derived from root-level non-`$` keys. Spread into the root element's `:style`.
 
 ### 3. Global StyleSet (VlossomOptions)
 
@@ -84,13 +94,10 @@ elementName?: CSSProperties;
 // main.ts
 app.use(
   createVlossom({
-    components: {
-      /* ... */
-    },
     styleSet: {
       primary: {
-        'vs-button': { variables: { padding: '1rem 2rem' } },
-        'vs-input': { variables: { height: '3rem' } },
+        'vs-button': { $padding: '1rem 2rem', backgroundColor: 'tomato' },
+        'vs-input': { $height: '3rem' },
       },
     },
   })
@@ -99,9 +106,8 @@ app.use(
 
 ```vue
 <vs-button style-set="primary">Click</vs-button>
-<vs-button style-set="primary" :style-set="{ component: { color: 'red' } }">
-Click
-</vs-button>
+<!-- Named global style-set + per-instance override -->
+<vs-button style-set="primary" :style-set="{ color: 'red' }">Click</vs-button>
 ```
 
 ---
@@ -111,139 +117,268 @@ Click
 ### 1. Type Definition
 
 ```typescript
-// types.ts
-export interface VsButtonStyleSet {
-  variables?: { padding?: string };
-  component?: CSSProperties;
-  loading?: VsLoadingStyleSet;
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { VsLoadingStyleSet } from '@/components/vs-loading/types';
+import type VsButton from './VsButton.vue';
+
+declare module 'vue' {
+    interface GlobalComponents {
+        VsButton: typeof VsButton;
+    }
+}
+
+export type { VsButton };
+
+export interface VsButtonRef extends ComponentPublicInstance<typeof VsButton> {}
+
+export interface VsButtonStyleSet extends CSSProperties {
+    $content?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }
 ```
+
+> No wrapper key like `component?: CSSProperties` — root standard CSS is already exposed through `extends CSSProperties`.
 
 ### 2. Component Setup
 
 ```typescript
+import { computed, defineComponent, ref, toRefs, type ComputedRef, type Ref } from 'vue';
+import { VsComponent } from '@/declaration';
+import { useColorScheme, useStyleSet } from '@/composables';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { objectUtil } from '@/utils';
+import type { VsButtonStyleSet } from './types';
+
+const componentName = VsComponent.VsButton;
+
 export default defineComponent({
-  props: {
-    ...getColorSchemeProps(),
-    ...getStyleSetProps<VsButtonStyleSet>(),
-  },
-  setup(props) {
-    const { styleSet } = toRefs(props);
-    const baseStyleSet = computed(() => ({
-      loading: { component: { width: '30%' } },
-    }));
+    name: componentName,
+    props: {
+        ...getColorSchemeProps(),
+        ...getStyleSetProps<VsButtonStyleSet>(),
+        // ... other props
+    },
+    setup(props) {
+        const { colorScheme, styleSet, primary } = toRefs(props);
 
-    const { componentStyleSet, styleSetVariables } = useStyleSet(
-      'vs-button',
-      styleSet,
-      baseStyleSet
-    );
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-    return { styleSetVariables, componentStyleSet };
-  },
+        // Internal defaults (low priority). `ref` is preferred when truly constant;
+        // `computed` is fine when defaults depend on other props.
+        const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => ({
+            $loading: {
+                $barColor: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
+                width: '30%',
+                height: '60%',
+            },
+        }));
+
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } =
+            useStyleSet<VsButtonStyleSet>(componentName, styleSet, baseStyleSet);
+
+        return {
+            colorSchemeClass,
+            styleSetVariables,
+            componentInlineStyle,
+            componentStyleSet,
+        };
+    },
 });
 ```
 
 ### 3. Template Application
 
 ```vue
-<button :style="{ ...styleSetVariables, ...componentStyleSet.component }">
-  <vs-loading :style-set="componentStyleSet.loading" />
-  <div :style="componentStyleSet.content"><slot /></div>
-</button>
+<template>
+    <button
+        :class="['vs-button', colorSchemeClass]"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
+    >
+        <vs-loading v-if="loading" :style-set="componentStyleSet.$loading" />
+        <div class="vs-button-content" :style="componentStyleSet.$content">
+            <slot />
+        </div>
+    </button>
+</template>
 ```
+
+Three rules:
+1. **Root element**: spread `{ ...styleSetVariables, ...componentInlineStyle }`.
+2. **Slot/element**: bind `componentStyleSet.$X` to `:style` (CSSProperties).
+3. **Child component**: forward `componentStyleSet.$X` to `:style-set` (nested StyleSet).
 
 ### 4. CSS Implementation
 
+Only declare CSS variables for `$X` primitives that the `.css` actually consumes — typically because they feed into `calc()`, pseudo-elements, or state-based selectors. Provide a sensible fallback so the component still looks right when the variable is not set.
+
 ```css
 .vs-button {
-  --vs-button-padding: initial;
-  padding: var(--vs-button-padding, 0.75rem 1.5rem);
+    --vs-button-padding: initial;
+
+    background-color: var(--vs-comp-bg);
+    border: 1px solid var(--vs-line-color);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    padding: var(--vs-button-padding, 0.75rem 1.5rem);
+    color: var(--vs-comp-font);
 }
 ```
 
-**Naming**: `--[component]-[property]`, `--[component]-[group]-[property]`
+**Naming**: `--vs-{component-kebab}-{property}`. Property name keeps the camelCase form from TypeScript (e.g. `--vs-accordion-arrowColor`).
+
+### 5. Forwarding a merged StyleSet to a child
+
+When the parent already merged its style-set and the child re-uses the same generic (e.g. `VsSelectTrigger` inside `VsSelect`), call `useStyleSet` again in the child to re-derive `componentInlineStyle` for its root:
+
+```typescript
+// VsSelectTrigger.vue
+const { componentInlineStyle } = useStyleSet<VsSelectStyleSet>(VsComponent.VsSelect, styleSet);
+```
 
 ---
 
 ## Design Rules
 
-### Variables Exposure Criteria
+### When to expose a `$X` CSS variable (all four must apply)
 
-#### ✅ Expose as Variables
+- [ ] **Frequency** — users will actually customize it often.
+- [ ] **CSS-driven** — the `.css` uses the variable in `calc()`, pseudo-elements, or state selectors.
+- [ ] **Reuse** — the value participates in more than one declaration or element.
+- [ ] **Clear meaning** — the name maps to one well-defined property.
 
-- Inaccessible by CSS pseudo-elements (::before, ::after)
-- Required for dynamic calculations (calc, etc.)
-- Frequently changes with state (hover, focus, checked)
-- Linked to animations
+If even one criterion fails, **don't** expose it as `$X`. Common cases that should stay as root CSS (non-`$`):
 
-#### ❌ Control via CSSProperties
+- `width`, `height`, `padding`, `margin`, `boxShadow`, `backgroundColor`
+- Any one-off override the user might set ad-hoc
 
-- Values that are set once and don't change
-- Properties sufficiently handled by global theme tokens
-- Independent control per element
+These are already covered by `extends CSSProperties`, so the user can pass them directly without us defining a key.
 
-### Nesting Depth
+### ColorScheme owns base theme colors
 
-Maximum 2 levels allowed
+`var(--vs-comp-bg)`, `var(--vs-comp-font)` etc. are driven by ColorScheme. Don't expose `$backgroundColor` / `$fontColor`. If a user wants to override on a single instance, they can still pass `backgroundColor` / `color` via root CSSProperties.
 
-### Naming Convention
+### Naming
 
-| Type           | Rule                | Example                       |
-| -------------- | ------------------- | ----------------------------- |
-| Basic element  | camelCase           | `component`, `content`        |
-| State element  | state + ElementName | `activeTab`, `selectedOption` |
-| Nested element | camelCase           | `loading`, `chip`             |
+| Concept | Rule | Example |
+|---------|------|---------|
+| Slot/element | content-based, camelCase | `$content`, `$title`, `$label` |
+| State modifier | nested under the element it modifies | `$step.$active`, `$option.$selected` |
+| Child style-set | name matches the conceptual role | `$loading`, `$chip`, `$wrapper` |
+
+Don't write `$activeStep` / `$stepActive` at the top level. Place state under the element:
+
+```typescript
+// ✅ nested-state
+$step?: CSSProperties & {
+    $active?: CSSProperties;
+};
+
+// ❌ flattened with prefix/suffix
+$step?: CSSProperties;
+$activeStep?: CSSProperties;
+```
+
+Apply states in the component with a merge:
+
+```ts
+const stepStyle = computed(() => ({
+    ...componentStyleSet.value.$step,
+    ...(isActive.value ? componentStyleSet.value.$step?.$active : {}),
+}));
+```
+
+### Type-safe CSS values
+
+For constrained CSS properties, index `CSSProperties` instead of `string`:
+
+```typescript
+$objectFit?: CSSProperties['objectFit'] & {}; // & {} keeps autocomplete
+```
+
+### Nesting depth
+
+Two levels are the practical limit: `$X` → `$state` or `$X` → child `StyleSet`. Anything deeper is a smell.
+
+### Form components
+
+Form components that compose `VsInputWrapper` should include `$wrapper?: VsInputWrapperStyleSet` so users can style label/messages through the same prop.
 
 ---
 
 ## FAQ
 
-**Q. When to use variables vs component?**
-A. Use variables for frequent changes, component for one-time settings
+**Q. When should I use root CSSProperties vs `$X` primitive?**
+A. Default to root CSSProperties — it's free via `extends CSSProperties`. Promote a property to `$X` only when the `.css` truly needs the value (pseudo-elements, calc, state selectors).
 
-**Q. baseStyleSet vs additionalStyleSet?**
-A. baseStyleSet for internal defaults, additionalStyleSet for prop-based overrides
+**Q. `baseStyleSet` vs `additionalStyleSet`?**
+A. `baseStyleSet` carries fixed internal defaults (lowest priority). `additionalStyleSet` carries values derived from *other* props at runtime (highest priority — overrides the user's `styleSet`). Use `additionalStyleSet` sparingly; usually props should not silently override user styling.
 
-**Q. Why only 2 levels of nesting?**
-A. CSS variable name length, useStyleSet support scope, practical sufficiency
+**Q. Why is there no wrapper `component?: CSSProperties` key anymore?**
+A. Because `VsXxxStyleSet extends CSSProperties` already exposes the root surface. Adding a wrapper would duplicate it and create two ways to say the same thing.
 
-**Q. Global styleSet priority?**
-A. Individual styleSet takes priority over global, deep merge supported
+**Q. `ref` vs `computed` for `baseStyleSet`?**
+A. `ref({...})` if the defaults are constant, `computed(() => ({...}))` if they react to other props. Both work; `ref` skips the reactivity overhead.
 
-**Q. Can variables be omitted?**
-A. When CSSProperties is sufficient or customization points are unclear
-
-**Q. When to use global styleSet?**
-A. When reusing design system presets across multiple components
+**Q. Where do I document the StyleSet for users?**
+A. In the component's `README.md` under the **Types** section — copy the interface verbatim from `types.ts`.
 
 ---
 
 ## Anti-patterns
 
 ```typescript
-// ❌ Overusing Variables
-variables?: { width?: string; height?: string; backgroundColor?: string; }
+// ❌ Wrapper key — root CSSProperties is already inherited
+export interface VsButtonStyleSet extends CSSProperties {
+    component?: CSSProperties;
+}
 
-// ✅ Only what's dynamically needed
-variables?: { padding?: string; };
-component?: CSSProperties;
+// ❌ Old `variables?: {}` / `component?: CSSProperties` shape
+export interface VsButtonStyleSet {
+    variables?: { padding?: string };
+    component?: CSSProperties;
+}
 
-// ❌ 3-level nesting
-variables?: { container?: { inner?: { padding?: string; }; }; }
+// ❌ Exposing theme colors that ColorScheme already owns
+$backgroundColor?: string;
+$fontColor?: string;
 
-// ✅ Maximum 2 levels
-variables?: { focused?: { border?: string; }; }
+// ❌ Flattened state modifier
+$step?: CSSProperties;
+$activeStep?: CSSProperties;
+
+// ❌ Three-level nesting
+$X?: { $Y?: { $Z?: CSSProperties } };
+
+// ❌ Vague group name
+$styles?: CSSProperties;
+$config?: CSSProperties;
+```
+
+```css
+/* ❌ Every property as a variable */
+.vs-button {
+    --vs-button-backgroundColor: initial;
+    --vs-button-border: initial;
+    --vs-button-borderRadius: initial;
+    background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
+    border: var(--vs-button-border, 1px solid var(--vs-line-color));
+}
+
+/* ✅ Only what the CSS truly needs */
+.vs-button {
+    --vs-button-padding: initial;
+    background-color: var(--vs-comp-bg);
+    border: 1px solid var(--vs-line-color);
+    padding: var(--vs-button-padding, 0.75rem 1.5rem);
+}
 ```
 
 ---
 
 ## Reference
 
-**Core**: [useStyleSet](../packages/vlossom/src/composables/style-set-composable.ts), [VlossomOptions](../packages/vlossom/src/declaration/types.ts)
-
-**Examples**: [VsButton](../packages/vlossom/src/components/vs-button/), [VsSwitch](../packages/vlossom/src/components/vs-switch/), [VsSelect](../packages/vlossom/src/components/vs-select/)
+- [`useStyleSet`](../packages/vlossom/src/composables/style-set/README.md)
+- Examples: [`VsButton`](../packages/vlossom/src/components/vs-button/), [`VsSelect`](../packages/vlossom/src/components/vs-select/), [`VsAccordion`](../packages/vlossom/src/components/vs-accordion/)
 
 ---
 
-**Questions?** Create an issue or contact the team
+**Questions?** Create an issue or contact the team.

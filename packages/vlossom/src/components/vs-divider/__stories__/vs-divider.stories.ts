@@ -68,11 +68,7 @@ export const Vertical: Story = {
 export const VerticalWithMobileFull: Story = {
     args: {
         styleSet: {
-            variables: {
-                vertical: {
-                    height: '40px',
-                },
-            },
+            $verticalHeight: '40px',
         },
         vertical: true,
         responsive: true,
@@ -98,12 +94,8 @@ export const VerticalWithMobileFull: Story = {
 export const VerticalWithStyleSet: Story = {
     args: {
         styleSet: {
-            variables: {
-                border: '1px dashed red',
-                vertical: {
-                    height: '4rem',
-                },
-            },
+            $border: '1px dashed red',
+            $verticalHeight: '4rem',
         },
         vertical: true,
     },
@@ -112,9 +104,7 @@ export const VerticalWithStyleSet: Story = {
 export const StyleSet: Story = {
     args: {
         styleSet: {
-            variables: {
-                border: '3px dashed #2d9596',
-            },
+            $border: '3px dashed #2d9596',
         },
     },
 };

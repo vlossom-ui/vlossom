@@ -1,5 +1,5 @@
 .vs-avatar {
-    --vs-avatar-objectFit: initial;
+    --vs-avatar-imageObjectFit: initial;
 
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
@@ -12,6 +12,6 @@
 
     img {
         @apply block h-full w-full;
-        object-fit: var(--vs-avatar-objectFit, contain);
+        object-fit: var(--vs-avatar-imageObjectFit, contain);
     }
 }

@@ -3,15 +3,15 @@
         :class="['vs-accordion', colorSchemeClass, classObj, { 'vs-accordion-open': isOpen }]"
         :width
         :grid
-        :style="[styleSetVariables, componentStyleSet.component]"
+        :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :tabindex="disabled ? -1 : 0"
         @keydown.enter.prevent.stop="toggle"
         @keydown.space.prevent.stop="toggle"
     >
-        <div class="vs-accordion-title" :style="componentStyleSet.title" @click.prevent.stop="toggle">
+        <div class="vs-accordion-title" :style="componentStyleSet.$title" @click.prevent.stop="toggle">
             <slot name="title" />
         </div>
-        <vs-expandable :open="isOpen" :style-set="componentStyleSet.content">
+        <vs-expandable :open="isOpen" :style-set="componentStyleSet.$content">
             <slot />
         </vs-expandable>
     </vs-responsive>
@@ -49,7 +49,10 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsAccordionStyleSet>(componentName, styleSet);
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsAccordionStyleSet>(
+            componentName,
+            styleSet,
+        );
 
         const isOpen = ref(open.value || modelValue.value);
 
@@ -79,6 +82,7 @@ export default defineComponent({
             colorSchemeClass,
             styleSetVariables,
             componentStyleSet,
+            componentInlineStyle,
             isOpen,
             classObj,
             toggle,

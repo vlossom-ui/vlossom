@@ -2,11 +2,11 @@
     --vs-accordion-arrowColor: initial;
     --vs-accordion-arrowSize: initial;
     --vs-accordion-arrowSpacing: initial;
-    --vs-accordion-border: initial;
+    --vs-accordion-accordionBorder: initial;
 
     @apply relative w-full overflow-hidden;
 
-    border: var(--vs-accordion-border, 1px solid var(--vs-cs-line));
+    border: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-line));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
 
     .vs-accordion-title {
@@ -44,7 +44,7 @@
 
     &.vs-accordion-open {
         .vs-accordion-title {
-            border-bottom: var(--vs-accordion-border, 1px solid var(--vs-cs-line));
+            border-bottom: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-line));
         }
         .vs-accordion-title::after {
             transform: translateY(-50%) rotate(180deg);
@@ -52,12 +52,12 @@
     }
 
     &.vs-primary {
-        border: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
+        border: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-bg-primary));
 
         .vs-accordion-title {
             @apply hover:brightness-104 active:brightness-108;
 
-            border: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
+            border: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-bg-primary));
             background-color: var(--vs-cs-bg-primary);
             color: var(--vs-cs-font-primary);
 
@@ -68,7 +68,7 @@
 
         &.vs-accordion-open {
             .vs-accordion-title {
-                border-bottom: var(--vs-accordion-border, 1px solid var(--vs-cs-bg-primary));
+                border-bottom: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-bg-primary));
             }
         }
     }

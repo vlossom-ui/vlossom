@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :id="computedId"
         :disabled="computedDisabled"
         :messages="computedMessages"
@@ -20,7 +20,7 @@
 
         <div
             :class="['vs-file-drop', colorSchemeClass, classObj, stateBoxClasses]"
-            :style="{ ...styleSetVariables, ...componentStyleSet.component }"
+            :style="{ ...styleSetVariables, ...componentInlineStyle }"
             @drop.prevent.stop="handleFileDrop"
             @dragenter.prevent.stop="setDragging(true)"
             @dragover.prevent.stop="setDragging(true)"
@@ -46,14 +46,14 @@
 
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
-                    <div class="vs-file-drop-placeholder" :style="componentStyleSet.placeholder">
+                    <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <i class="placeholder-icon size-6">
                             <vs-render :content="attachFileIcon" />
                         </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
 
-                    <div v-if="hasValue" class="vs-file-drop-files" :style="componentStyleSet.files">
+                    <div v-if="hasValue" class="vs-file-drop-files" :style="componentStyleSet.$files">
                         <vs-chip
                             v-for="(file, index) in inputValue as File[]"
                             :key="`${file.name}-${index}`"
@@ -61,7 +61,7 @@
                             :id="`${file.name}-${index}`"
                             :color-scheme
                             :closable="!computedReadonly && !computedDisabled"
-                            :style-set="componentStyleSet.chip"
+                            :style-set="componentStyleSet.$chip"
                             @close="handleFileRemove(file)"
                         >
                             <div class="vs-file-drop-file-wrapper">
@@ -81,7 +81,7 @@
                 v-if="!noClear && hasValue && !computedReadonly && !computedDisabled"
                 type="button"
                 class="vs-file-drop-close-button"
-                :style="componentStyleSet.closeButton"
+                :style="componentStyleSet.$closeButton"
                 aria-label="Clear"
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
@@ -163,23 +163,19 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const baseStyleSet: Ref<VsFileDropStyleSet> = ref({
-            chip: {
-                component: {
-                    width: '100%',
-                },
+            $chip: {
+                width: '100%',
             },
         });
 
         const additionalStyleSet = computed<Partial<VsFileDropStyleSet>>(() => {
             return objectUtil.shake({
-                component: objectUtil.shake({
-                    width: width.value,
-                    height: height.value,
-                }),
+                width: width.value,
+                height: height.value,
             });
         });
 
-        const { componentStyleSet, styleSetVariables } = useStyleSet<VsFileDropStyleSet>(
+        const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsFileDropStyleSet>(
             componentName,
             styleSet,
             baseStyleSet,
@@ -375,6 +371,7 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
+            componentInlineStyle,
             classObj,
             stateBoxClasses,
             dragging,

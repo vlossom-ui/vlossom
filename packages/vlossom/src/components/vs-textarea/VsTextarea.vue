@@ -1,7 +1,7 @@
 <template>
     <vs-input-wrapper
         v-show="!hidden"
-        :style-set="componentStyleSet.wrapper"
+        :style-set="componentStyleSet.$wrapper"
         :width
         :grid
         :disabled="computedDisabled"
@@ -22,7 +22,7 @@
             ref="textareaRef"
             :id="computedId"
             :class="['vs-textarea', colorSchemeClass, classObj, stateBoxClasses]"
-            :style="componentStyleSet.textarea"
+            :style="componentStyleSet.$textarea"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
             :name

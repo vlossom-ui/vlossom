@@ -79,16 +79,15 @@ A layout wrapper for form inputs that provides a label, validation messages area
 ## Types
 
 ```typescript
-interface VsInputWrapperStyleSet {
-    component?: CSSProperties;
-    label?: CSSProperties;
-    messages?: CSSProperties;
-    message?: VsMessageStyleSet;
+interface VsInputWrapperStyleSet extends CSSProperties {
+    $label?: CSSProperties;
+    $messages?: CSSProperties;
+    $message?: VsMessageStyleSet;
 }
 ```
 
 > [!NOTE]
-> `message` uses `VsMessageStyleSet`. See the [VsMessage README](../vs-message/README.md) for details.
+> `$message` uses `VsMessageStyleSet`. See the [VsMessage README](../vs-message/README.md) for details.
 
 ### StyleSet Example
 
@@ -97,10 +96,10 @@ interface VsInputWrapperStyleSet {
     <vs-input-wrapper
         label="Styled Wrapper"
         :style-set="{
-            component: { padding: '1rem', backgroundColor: '#f9f9f9' },
-            label: { color: '#333', fontWeight: '600' },
-            messages: { marginTop: '0.5rem' },
-            message: { component: { fontSize: '0.75rem' } },
+            padding: '1rem', backgroundColor: '#f9f9f9',
+            $label: { color: '#333', fontWeight: '600' },
+            $messages: { marginTop: '0.5rem' },
+            $message: { fontSize: '0.75rem' },
         }"
     >
         <input type="text" />

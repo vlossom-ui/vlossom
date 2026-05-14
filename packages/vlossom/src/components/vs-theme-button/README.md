@@ -28,7 +28,9 @@ A toggle button that switches the application between light and dark themes.
 <template>
     <vs-theme-button
         :style-set="{
-            variables: { width: '3rem', height: '3rem', iconColor: '#ff9800' },
+            $iconSize: '1.5rem',
+            $iconColor: '#ff9800',
+            width: '3rem', height: '3rem',
         }"
     />
 </template>
@@ -61,18 +63,14 @@ A toggle button that switches the application between light and dark themes.
 ## Types
 
 ```typescript
-interface VsThemeButtonStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-        iconColor?: string;
-    };
-    button?: VsToggleStyleSet;
+interface VsThemeButtonStyleSet extends VsToggleStyleSet {
+    $iconSize?: string;
+    $iconColor?: string;
 }
 ```
 
 > [!NOTE]
-> `button` uses [`VsToggleStyleSet`](../vs-toggle/README.md).
+> Inherits all properties from [`VsToggleStyleSet`](../vs-toggle/README.md) (`$content`, `$loading`) and `CSSProperties`.
 
 ### StyleSet Example
 
@@ -80,11 +78,9 @@ interface VsThemeButtonStyleSet {
 <template>
     <vs-theme-button
         :style-set="{
-            variables: {
-                width: '2.5rem',
-                height: '2.5rem',
-                iconColor: '#ff9800',
-            },
+            $iconSize: '1.25rem',
+            $iconColor: '#ff9800',
+            width: '2.5rem', height: '2.5rem',
         }"
     />
 </template>

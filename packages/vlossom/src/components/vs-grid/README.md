@@ -63,11 +63,8 @@ A responsive CSS grid container that supports a configurable number of columns, 
 ## Types
 
 ```typescript
-interface VsGridStyleSet {
-    component?: CSSProperties;
-    variables?: {
-        gridSize?: number;
-    };
+interface VsGridStyleSet extends CSSProperties {
+    $gridSize?: number;
 }
 ```
 
@@ -77,8 +74,8 @@ interface VsGridStyleSet {
 <template>
     <vs-grid
         :style-set="{
-            variables: { gridSize: 6 },
-            component: { backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px' },
+            $gridSize: 6,
+            backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px',
         }"
     >
         <div>Item 1</div>

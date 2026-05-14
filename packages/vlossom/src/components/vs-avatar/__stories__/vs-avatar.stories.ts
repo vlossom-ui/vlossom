@@ -19,13 +19,11 @@ const meta: Meta<typeof VsAvatar> = {
         components: { VsAvatar },
         setup() {
             const preDefinedStyleSet: VsAvatarStyleSet = {
-                component: {
-                    backgroundColor: '#1e88e5',
-                    borderRadius: '50%',
-                    color: '#fff',
-                    width: '5rem',
-                    height: '5rem',
-                },
+                backgroundColor: '#1e88e5',
+                borderRadius: '50%',
+                color: '#fff',
+                width: '5rem',
+                height: '5rem',
             } as const;
 
             useVlossom().styleSet = {
@@ -116,13 +114,11 @@ export const StyleSet: Story = {
     }),
     args: {
         styleSet: {
-            component: {
-                borderRadius: '0.6rem',
-                backgroundColor: '#e188e5',
-                color: '#fff',
-                height: '5rem',
-                width: '5rem',
-            },
+            borderRadius: '0.6rem',
+            backgroundColor: '#e188e5',
+            color: '#fff',
+            height: '5rem',
+            width: '5rem',
         },
     },
 };

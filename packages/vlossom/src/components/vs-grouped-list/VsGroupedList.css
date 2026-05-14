@@ -1,20 +1,17 @@
 @reference 'tailwindcss';
 
 .vs-grouped-list {
-    --vs-grouped-list-height: initial;
-    --vs-grouped-list-gap: initial;
-
     @apply pointer-events-auto;
 
     border: none;
     border-radius: 0;
     width: auto;
-    max-height: var(--vs-grouped-list-height, auto);
+    max-height: auto;
 
     .vs-grouped-list-list {
         @apply flex flex-col;
 
-        gap: var(--vs-grouped-list-gap, 0);
+        gap: 0;
 
         .vs-grouped-list-group-content {
             @apply cursor-default;

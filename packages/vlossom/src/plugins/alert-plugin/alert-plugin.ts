@@ -23,19 +23,16 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
-            const additionalButtonsClass = [styleSet?.buttonsAlign && `justify-[${styleSet.buttonsAlign}]`].filter(
-                Boolean,
-            );
 
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.button },
+                props: { colorScheme, styleSet: styleSet?.$okButton },
                 content: okText,
                 onClickEvent: handleOk,
             });
 
             const contents = h(VsRender, { content });
-            const buttons = h('div', { class: [...buttonsClass, additionalButtonsClass] }, [okButton]);
-            const alert = h('div', { class: [...contentClass] }, [contents, buttons]);
+            const buttons = h('div', { class: buttonsClass, style: styleSet?.$buttons }, [okButton]);
+            const alert = h('div', { class: contentClass }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(alert, {

@@ -45,11 +45,8 @@ idle, info, success, warning, error 등 다양한 UI 상태에 맞는 아이콘�
 ## Types
 
 ```typescript
-interface VsMessageStyleSet {
-    variables?: {
-        size?: string;
-    };
-    component?: CSSProperties;
+interface VsMessageStyleSet extends CSSProperties {
+    $size?: string;
 }
 ```
 
@@ -61,8 +58,8 @@ interface VsMessageStyleSet {
         text="커스텀 크기 메시지"
         state="info"
         :style-set="{
-            variables: { size: '1rem' },
-            component: { padding: '0.25rem 0' },
+            $size: '1rem',
+            padding: '0.25rem 0',
         }"
     />
 </template>

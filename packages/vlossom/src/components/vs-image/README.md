@@ -66,22 +66,21 @@ Disable the skeleton placeholder during loading.
 | `lazy`      | `boolean`                      | `false` | -        | Enables lazy loading using the Intersection Observer. |
 | `noSkeleton`| `boolean`                      | `false` | -        | Disables the skeleton placeholder during loading.     |
 | `src`       | `string`                       | `''`    | `true`   | The source URL of the image.                          |
+| `width`     | `string \| number`             | -       | -        | Width of the image component.                         |
+| `height`    | `string \| number`             | -       | -        | Height of the image component.                        |
 
 ## Types
 
 ```typescript
-interface VsImageStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-    };
-    skeleton?: VsSkeletonStyleSet;
-    component?: CSSProperties;
+interface VsImageStyleSet extends CSSProperties {
+    $image?: CSSProperties;
+    $skeleton?: VsSkeletonStyleSet;
 }
 ```
 
 > [!NOTE]
-> `skeleton` uses `VsSkeletonStyleSet`. See the [VsSkeleton README](../vs-skeleton/README.md) for details.
+> `$image` applies styles to the inner `<img>` element.
+> `$skeleton` uses `VsSkeletonStyleSet`. See the [VsSkeleton README](../vs-skeleton/README.md) for details.
 
 ### StyleSet Example
 
@@ -90,10 +89,12 @@ interface VsImageStyleSet {
     <vs-image
         src="https://example.com/image.png"
         alt="Styled image"
+        width="200px"
+        height="200px"
         :style-set="{
-            variables: { width: '200px', height: '200px' },
-            component: { borderRadius: '8px', objectFit: 'cover' },
-            skeleton: { component: { borderRadius: '8px' } },
+            borderRadius: '8px',
+            $image: { objectFit: 'cover', borderRadius: '8px' },
+            $skeleton: { borderRadius: '8px' },
         }"
     />
 </template>

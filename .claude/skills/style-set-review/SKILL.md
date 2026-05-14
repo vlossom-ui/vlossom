@@ -1,158 +1,227 @@
 ---
 name: style-set-review
-description: Style-Set 코드를 철학에 맞게 리뷰하고 개선 제안
+description: Style-Set 코드를 v2.0.0+ 컨벤션에 맞게 리뷰하고 개선 제안
 ---
 
 # Style-Set 코드 리뷰
 
-기존 컴포넌트의 StyleSet 구현을 새로운 철학에 맞게 검증하고 개선 방안을 제시합니다.
+기존 컴포넌트의 StyleSet 구현이 **v2.0.0+ 컨벤션** ( `extends CSSProperties` + `$` prefix) 을 따르는지 검증하고 개선 방안을 제시합니다.
 
 ## 사용 시기
 
-- 새로운 StyleSet을 작성한 후 검증이 필요할 때
-- PR 리뷰 시 StyleSet 코드 품질 확인
-- 기존 컴포넌트의 개선 포인트 파악
-- Style-Set 철학 준수 여부 확인
+- StyleSet 코드 PR 리뷰 시
+- 새 StyleSet 작성 후 검증
+- 레거시 컴포넌트의 개선 포인트 파악
+
+## 컨벤션 요약 (반드시 숙지)
+
+`VsXxxStyleSet`은 `CSSProperties`를 상속하며 키는 `$` prefix 유무로 구분됩니다.
+
+| 키 형태 | 처리 |
+|---------|------|
+| `width`, `padding`, ... (non-`$`) | 루트에 inline style → `componentInlineStyle` |
+| `$X` (string/number) | CSS 변수 `--vs-{kebab-component}-X` → `styleSetVariables` |
+| `$X` (object) | 슬롯/요소 또는 하위 StyleSet → `componentStyleSet.$X` |
+
+```typescript
+export interface VsButtonStyleSet extends CSSProperties {
+    $padding?: string;
+    $content?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
+}
+```
+
+> 자세한 규칙: [STYLE_SET_GUIDELINES.md](../../../guidelines/STYLE_SET_GUIDELINES.md)
 
 ## 리뷰 프로세스
 
 ### 1단계: 파일 수집
 
-다음 파일들을 확인합니다:
-- `types.ts`: StyleSet 인터페이스 정의
-- `[Component].vue`: 컴포넌트 구현
-- `[Component].css`: CSS 스타일 정의
+- `types.ts` — StyleSet 인터페이스
+- `[Component].vue` — `useStyleSet` 사용, template 바인딩
+- `[Component].css` — CSS 변수 및 fallback
+- `README.md` / `README.ko.md` — Types 섹션이 최신 인터페이스를 반영하는지
 
-### 2단계: 철학 준수 검증
+### 2단계: 체크리스트
 
-#### ✅ 체크리스트 1: 타입 정의 (types.ts)
+#### ✅ 타입 정의 (`types.ts`)
 
-**"Only What Needs to Vary" 원칙**
-- [ ] `variables`에 실제로 자주 변경되는 속성만 포함되었는가?
-- [ ] 불필요한 CSS 변수가 노출되지 않았는가?
-- [ ] 중첩은 최대 2단계까지만 사용되었는가?
-- [ ] 각 변수가 명확한 용도를 가지는가?
+**기본 구조**
+- [ ] 인터페이스명이 `Vs[ComponentName]StyleSet`인가?
+- [ ] `extends CSSProperties`로 선언되어 있는가?
+- [ ] `component?: CSSProperties` 같은 **래퍼 키가 없는가**? (root는 `extends`로 이미 노출됨)
+- [ ] 옛 `variables?: { ... }` 구조가 남아있지 않은가?
+- [ ] 모든 슬롯/변수 키가 `$` prefix를 갖는가?
 
-**명확한 관심사 분리**
-- [ ] `variables`는 CSS 변수로 노출할 것만 포함하는가?
-- [ ] `component` / 요소별 CSSProperties가 적절히 분리되었는가?
-- [ ] 하위 컴포넌트 StyleSet이 올바르게 참조되는가?
+**`$X` 노출 기준 (4가지 모두 충족해야 함)**
+- [ ] `.css`에서 실제로 사용되는가? (calc, 의사 요소, 상태 셀렉터)
+- [ ] 사용자가 자주 커스터마이징하는가?
+- [ ] 여러 곳에서 재사용되는 값인가?
+- [ ] 명확한 의미와 용도가 있는가?
 
-**API 품질**
-- [ ] 타입명이 `Vs[ComponentName]StyleSet` 규칙을 따르는가?
-- [ ] 모든 속성이 optional(`?`)로 정의되었는가?
-- [ ] 타입 안전한 CSS 속성을 사용했는가? (`CSSProperties['objectFit'] & {}` 등)
-- [ ] props로 받는 값이 StyleSet 인터페이스에 포함되지 않았는가? (additionalStyleSet 내부 구현으로 처리)
-- [ ] form 컴포넌트에서 `wrapper?: VsInputWrapperStyleSet`이 포함되었는가?
+> 위 조건을 만족 못 하는 속성은 `$X`로 노출하지 말 것. 사용자는 root CSSProperties로 임의 스타일을 자유롭게 줄 수 있다.
 
-**네이밍 규칙**
-- [ ] 상태 수식어가 prefix 패턴인가? (`activeStep` ✅, `stepActive` ❌)
-- [ ] 속성명이 내용을 반영하는가? (`content` ✅, `expand` ❌)
+**ColorScheme 충돌**
+- [ ] 기본 테마 색상(`$backgroundColor`, `$fontColor`)을 `$X`로 노출하지 않았는가? (ColorScheme이 담당)
 
-**관심사 분리**
-- [ ] 기본 테마 색상(backgroundColor, fontColor)이 variables에 노출되지 않았는가?
-- [ ] 상태별 색상(selected, focused 등)은 variables에 적절히 포함되었는가?
+**네이밍**
+- [ ] 상태 수식어가 **nested-state 패턴**인가? (`$step.$active` ✅, `$activeStep` ❌)
+- [ ] 속성명이 **내용 기반**인가? (`$content` ✅, `$expand` ❌)
+- [ ] 그룹명이 의미 있는가? (`$styles`, `$config` ❌)
 
-#### ✅ 체크리스트 2: 컴포넌트 구현 (.vue)
+**중첩 깊이**
+- [ ] 2단계 이상 중첩이 없는가? (예외: `$X` (object) → 자식 StyleSet은 허용)
 
-**useStyleSet 사용**
-- [ ] `useStyleSet` 호출이 올바른가?
-- [ ] `baseStyleSet`이 필요한 경우 적절히 사용되었는가?
-- [ ] 고정값 baseStyleSet에 `ref` 사용을 검토했는가? (`computed`도 허용)
-- [ ] 같은 모듈에서 여러 import가 하나로 통합되었는가?
-- [ ] 실제 코드 파일에 불필요한 주석이 없는가? (types.ts, Vue, CSS)
-- [ ] README.md의 Types 섹션이 새 StyleSet 구조를 반영하는가?
+**하위 컴포넌트**
+- [ ] 하위 Vlossom 컴포넌트 StyleSet 타입을 올바르게 import/참조하는가?
+- [ ] form 계열이면 `$wrapper?: VsInputWrapperStyleSet`가 포함되었는가?
 
-**Template 적용**
-- [ ] 루트 요소에 `styleSetVariables` + `componentStyleSet.component` 적용?
-- [ ] 하위 컴포넌트에 `:style-set` prop으로 전파?
-- [ ] 특정 요소에 `:style` 바인딩 사용?
-- [ ] 스타일 객체 병합 순서가 올바른가? (`{ ...styleSetVariables, ...componentStyleSet.component }`)
+**타입 안전성**
+- [ ] 제한된 CSS 값은 `CSSProperties['property'] & {}` 패턴인가?
 
-#### ✅ 체크리스트 3: CSS 스타일 (.css)
+#### ✅ 컴포넌트 구현 (`.vue`)
 
-**CSS 변수 정의**
-- [ ] 변수명이 `--vs-[component]-[property]` 규칙을 따르는가?
-- [ ] 중첩된 변수가 `--vs-[component]-[group]-[property]` 형식인가?
-- [ ] 불필요한 CSS 변수가 제거되었는가?
+**`useStyleSet` 사용**
+- [ ] 세 가지 반환값을 모두 destructure했는가? — `componentStyleSet`, `styleSetVariables`, `componentInlineStyle`
+- [ ] `baseStyleSet`이 고정값이면 `ref({...})`를, 다른 props에 반응해야 하면 `computed(() => ({...}))`를 사용했는가?
+- [ ] `additionalStyleSet`은 props에서 파생된 동적 값에만 사용했는가? (불필요하게 사용자 styleSet을 덮어쓰지 않는가)
 
-**값 사용 방식**
-- [ ] 자주 변경되지 않는 값은 직접 하드코딩되었는가?
-- [ ] CSS 변수는 적절한 fallback 값을 가지는가?
-- [ ] 디자인 토큰(예: `var(--vs-comp-bg)`)을 우선 사용하는가?
+**Template 바인딩**
+- [ ] 루트 요소 `:style="{ ...styleSetVariables, ...componentInlineStyle }"` 패턴인가?
+- [ ] 슬롯/요소에 `componentStyleSet.$X`를 `:style`로 바인딩했는가?
+- [ ] 하위 컴포넌트에 `componentStyleSet.$X`를 `:style-set`로 전달했는가?
+- [ ] 상태 스타일은 `computed`로 base + 상태 스타일을 머지해 적용하는가?
 
-**코드 품질**
-- [ ] 중복된 스타일이 제거되었는가?
-- [ ] 불필요한 `initial` 값이 정리되었는가?
-- [ ] rem 단위를 우선 사용했는가? (px 대신)
-- [ ] 하위 컴포넌트에서 참조하는 CSS 변수가 보존되었는가?
-- [ ] default 값 설정이 불필요한 속성은 제거했는가? (`opacity: 1`, `height: auto` 등)
+**기타**
+- [ ] 같은 모듈 import가 한 줄로 통합되어 있는가?
+- [ ] 불필요한 주석이 없는가?
+
+#### ✅ CSS (`.css`)
+
+**변수 정의**
+- [ ] 변수명이 `--vs-{component-kebab}-{property}` 형식인가?
+- [ ] 인터페이스의 모든 `$X` primitive에 대응하는 변수가 선언되고 *실제로 사용*되는가?
+- [ ] 인터페이스에 없는 잉여 CSS 변수가 남아있지 않은가?
+
+**값 사용**
+- [ ] 자주 변경되지 않는 값은 변수 없이 직접 사용했는가?
+- [ ] CSS 변수에 적절한 fallback이 있는가?
+- [ ] 디자인 토큰(`var(--vs-comp-bg)` 등)을 우선 사용하는가?
+- [ ] rem 단위를 우선 사용했는가? (px 지양)
+
+#### ✅ 문서
+
+- [ ] `README.md`의 **Types** 섹션이 최신 인터페이스를 그대로 반영하는가?
+- [ ] 예시가 새 컨벤션(`$X`, root CSSProperties)을 따르는가?
 
 ### 3단계: 안티패턴 탐지
 
-다음 안티패턴이 있는지 확인:
-
-**❌ 안티패턴 1: 과도한 변수 노출**
+**❌ 1. 옛 `variables?: {} / component?:` 구조**
 ```typescript
 // BAD
-interface VsButtonStyleSet {
-    variables?: {
-        width?: string;
-        height?: string;
-        padding?: string;
-        margin?: string;
-        backgroundColor?: string;
-        // ... 너무 많음
-    };
+export interface VsButtonStyleSet {
+    variables?: { padding?: string };
+    component?: CSSProperties;
+    loading?: VsLoadingStyleSet;
+}
+
+// GOOD
+export interface VsButtonStyleSet extends CSSProperties {
+    $padding?: string;
+    $content?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }
 ```
 
-**❌ 안티패턴 2: 깊은 중첩 (3단계 이상)**
+**❌ 2. 래퍼 키 (root CSSProperties 중복 노출)**
 ```typescript
-// BAD
-interface VsInputStyleSet {
-    variables?: {
-        container?: {
-            inner?: {
-                wrapper?: { /* 너무 깊음! */ }
-            }
-        }
-    }
+// BAD — extends CSSProperties와 중복
+export interface VsBoxStyleSet extends CSSProperties {
+    component?: CSSProperties;
 }
 ```
 
-**❌ 안티패턴 3: 의미 없는 그룹핑**
+**❌ 3. 과도한 `$X` 노출**
 ```typescript
-// BAD
-interface VsCardStyleSet {
-    variables?: {
-        styles?: { /* 의미 없는 이름 */ }
-    }
+// BAD — .css에서 변수로 쓰이지 않는데 노출
+export interface VsButtonStyleSet extends CSSProperties {
+    $width?: string;
+    $height?: string;
+    $margin?: string;
+    $backgroundColor?: string;
+    $boxShadow?: string;
+}
+
+// GOOD — root CSSProperties로 충분; 진짜 필요한 것만 $X
+export interface VsButtonStyleSet extends CSSProperties {
+    $content?: CSSProperties;
+    $loading?: VsLoadingStyleSet;
 }
 ```
 
-**❌ 안티패턴 4: CSS에서 모든 것을 변수로**
+**❌ 4. ColorScheme 영역 침범**
+```typescript
+// BAD — 테마 색상은 ColorScheme이 담당
+$backgroundColor?: string;
+$fontColor?: string;
+```
+
+**❌ 5. State 수식어 flatten**
+```typescript
+// BAD
+$step?: CSSProperties;
+$activeStep?: CSSProperties;
+$stepActive?: CSSProperties;
+
+// GOOD — nested-state
+$step?: CSSProperties & {
+    $active?: CSSProperties;
+};
+```
+
+**❌ 6. 동작 기반 네이밍**
+```typescript
+// BAD — 무엇을 '하는지'
+$expand?: CSSProperties;
+
+// GOOD — 무엇'인지'
+$content?: CSSProperties;
+```
+
+**❌ 7. CSS에서 모든 것을 변수로**
 ```css
 /* BAD */
 .vs-button {
+    --vs-button-backgroundColor: initial;
+    --vs-button-border: initial;
+    --vs-button-borderRadius: initial;
+    --vs-button-padding: initial;
     background-color: var(--vs-button-backgroundColor, var(--vs-comp-bg));
     border: var(--vs-button-border, 1px solid var(--vs-line-color));
-    /* 모든 것이 변수... */
+}
+
+/* GOOD */
+.vs-button {
+    --vs-button-padding: initial;
+    background-color: var(--vs-comp-bg);
+    border: 1px solid var(--vs-line-color);
+    padding: var(--vs-button-padding, 0.75rem 1.5rem);
 }
 ```
 
-**❌ 안티패턴 5: 상태 수식어 suffix 패턴**
-```typescript
-// BAD - suffix 패턴 (코드베이스 비표준)
-stepActive?: CSSProperties;
-labelActive?: CSSProperties;
+**❌ 8. 인터페이스와 CSS 변수 불일치**
+- 인터페이스에 `$arrowSize` 있지만 CSS에 `--vs-x-arrowSize`가 없거나, 반대로 CSS에는 있지만 인터페이스에 없는 경우.
 
-// GOOD - prefix 패턴 (코드베이스 표준)
-activeStep?: CSSProperties;
-activeLabel?: CSSProperties;
+**❌ 9. 루트 inline style spread 누락**
+```vue
+<!-- BAD — componentInlineStyle 누락 → 사용자가 root CSS를 넣어도 안 먹음 -->
+<div :style="styleSetVariables">
+
+<!-- GOOD -->
+<div :style="{ ...styleSetVariables, ...componentInlineStyle }">
 ```
 
-**❌ 안티패턴 6: px 단위 사용**
+**❌ 10. px 단위 남용**
 ```css
 /* BAD */
 padding: 12px 16px;
@@ -163,54 +232,15 @@ padding: 0.75rem 1rem;
 font-size: var(--vs-size-font);
 ```
 
-**❌ 안티패턴 7: 기본 테마 색상을 variables에 노출**
-```typescript
-// BAD - 기본 테마 색상 (ColorScheme이 자동 관리)
-variables?: {
-    backgroundColor?: string;  // var(--vs-comp-bg)로 자동 적용됨
-    fontColor?: string;        // var(--vs-comp-font)으로 자동 적용됨
-};
+### 4단계: 개선 제안 작성
 
-// GOOD - 컴포넌트 고유 속성만
-variables?: {
-    padding?: string;
-    arrowSize?: string;
-};
+각 문제마다:
+1. **현재 문제** — 어디가 컨벤션에 어긋나는지 (file:line)
+2. **이유** — 어떤 규칙/원칙 위반인지
+3. **개선안** — 구체적 수정 코드
+4. **효과** — 개선 후 이점
 
-// OK - 상태별 색상은 variables에 포함 가능
-variables?: {
-    selected?: {
-        backgroundColor?: string;  // 선택 상태의 특수 색상
-    };
-};
-```
-
-**❌ 안티패턴 8: props로 받는 값을 StyleSet 인터페이스에 포함**
-```typescript
-// BAD - height는 props로 받아서 additionalStyleSet으로 처리됨
-export interface VsBarStyleSet {
-    variables?: {
-        height?: string;  // props.height로 이미 받고 있음
-    };
-}
-
-// GOOD - props 값은 additionalStyleSet 내부 구현으로만 처리
-export interface VsBarStyleSet {
-    component?: CSSProperties;
-}
-```
-
-### 4단계: 개선 제안 생성
-
-각 문제점에 대해:
-1. **현재 문제**: 무엇이 철학에 어긋나는가?
-2. **왜 문제인가**: 어떤 원칙을 위반했는가?
-3. **개선 방안**: 구체적인 코드 수정 제안
-4. **예상 효과**: 개선 후 얻을 이점
-
-### 5단계: 리뷰 리포트 작성
-
-다음 형식으로 리포트 작성:
+### 5단계: 리포트 형식
 
 ```markdown
 # Style-Set 리뷰: [ComponentName]
@@ -221,127 +251,77 @@ export interface VsBarStyleSet {
 - ⚠️ 개선 필요: Z개
 
 ## ✅ 잘된 점
-- [구체적인 칭찬]
+- ...
 
 ## ⚠️ 개선이 필요한 부분
 
 ### 1. [문제 제목]
 **파일**: `path/to/file.ts:line`
-**문제**:
-[현재 코드]
-
-**이유**:
-[어떤 원칙을 위반했는지]
-
-**개선안**:
-[수정된 코드]
-
-**효과**:
-[개선 후 이점]
+**문제**: [현재 코드]
+**이유**: [어떤 원칙 위반]
+**개선안**: [수정된 코드]
+**효과**: [이점]
 
 ## 📈 개선 후 기대 효과
-- API 표면적 X% 감소
-- CSS 변수 Y개 감소
-- 코드 가독성 향상
+- API 표면적 X% 감소 등
 ```
 
 ## 예제
 
-### 입력
+### 입력 (옛 컨벤션)
 ```typescript
-// types.ts
-interface VsCardStyleSet {
-    width?: string;
-    height?: string;
-    backgroundColor?: string;
-    border?: string;
-    borderRadius?: string;
-    padding?: string;
-    title?: {
+export interface VsCardStyleSet {
+    variables?: {
+        width?: string;
         backgroundColor?: string;
-        fontColor?: string;
-        height?: string;
         padding?: string;
     };
+    component?: CSSProperties;
+    title?: { backgroundColor?: string; padding?: string };
 }
 ```
 
-### 출력 리포트
+### 출력 (요약)
 
 ```markdown
-# Style-Set 리뷰: VsCard
-
-## 📊 요약
-- 검증 항목: 12개
-- ✅ 통과: 4개
-- ⚠️ 개선 필요: 8개
-
 ## ⚠️ 개선이 필요한 부분
 
-### 1. variables 섹션 누락
-**파일**: `types.ts:1-12`
-**문제**:
-모든 속성이 루트 레벨에 정의되어 있어 CSS 변수와 직접 스타일의 구분이 없습니다.
-
-**이유**:
-"명확한 관심사 분리" 원칙 위반. CSS 변수로 노출할 것과 CSSProperties로 제공할 것을 구분해야 합니다.
-
+### 1. 옛 `variables / component` 구조 사용
+**파일**: `types.ts:1-9`
+**문제**: v2.0.0+ 컨벤션은 `extends CSSProperties` + `$` prefix.
 **개선안**:
 \`\`\`typescript
-interface VsCardStyleSet {
-    variables?: {
-        width?: string;
-        border?: string;
-    };
-    component?: CSSProperties;
-    title?: CSSProperties;
+export interface VsCardStyleSet extends CSSProperties {
+    $title?: CSSProperties;
 }
 \`\`\`
+- `width`, `padding` 등은 root CSSProperties로 자동 노출됨.
+- `backgroundColor`는 ColorScheme이 담당 (제거).
+- `$title.backgroundColor`도 사용자가 직접 줄 수 있으니 `$title: CSSProperties`로 단순화.
 
 **효과**:
-- 명확한 커스터마이징 포인트
-- 불필요한 변수 노출 방지 (10개 → 2개)
-- API 표면적 80% 감소
-
-### 2. 과도한 속성 노출
-**파일**: `types.ts:2-7`
-**문제**:
-`width`, `height`, `backgroundColor`, `border`, `borderRadius`, `padding` 모두 개별 속성으로 노출
-
-**이유**:
-"Only What Needs to Vary" 원칙 위반. 실제로 자주 커스터마이징되는 속성만 노출해야 합니다.
-
-**개선안**:
-대부분의 속성은 `component?: CSSProperties`로 제공하고, 자주 변경되는 `width`, `border`만 variables로 노출
-
-**효과**:
-- 인지 부하 감소
-- 타입 안정성 향상
-- 유연성은 유지 (CSSProperties로 모든 스타일 가능)
+- API 표면적 70% 감소
+- ColorScheme과 일관성
+- 사용자가 root CSS를 자유롭게 전달 가능
 ```
 
 ## 리뷰 원칙
 
-1. **건설적 비판**: 문제점만이 아니라 개선 방안까지 제시
-2. **구체적 예시**: 추상적 조언이 아닌 실제 코드 제공
-3. **우선순위**: 중요한 문제부터 다룸
-4. **칭찬도 포함**: 잘된 부분도 언급하여 동기부여
-5. **교육적**: 왜 그것이 문제인지 철학과 연결하여 설명
+1. **건설적**: 문제만이 아니라 구체적 개선 코드를 제공
+2. **근거 기반**: 어떤 규칙·원칙을 위반했는지 명시
+3. **우선순위**: 컨벤션 위반 > 안티패턴 > 사소한 개선
+4. **칭찬도 포함**: 잘된 부분도 짚어주기
+5. **교육적**: 왜 이게 문제인지 철학과 연결해 설명
 
 ## 참고 문서
 
-- [STYLE_SET_GUIDELINES.md](../../../packages/vlossom/STYLE_SET_GUIDELINES.md)
-- [useStyleSet Composable](../../../packages/vlossom/src/composables/style-set-composable.ts)
-- [VsButton 예제](../../../packages/vlossom/src/components/vs-button/)
+- [STYLE_SET_GUIDELINES.md](../../../guidelines/STYLE_SET_GUIDELINES.md)
+- [useStyleSet](../../../packages/vlossom/src/composables/style-set/README.md)
+- 모범 예: [VsButton](../../../packages/vlossom/src/components/vs-button/), [VsSelect](../../../packages/vlossom/src/components/vs-select/), [VsAccordion](../../../packages/vlossom/src/components/vs-accordion/)
 
 ## 사용 방법
 
 ```
-/style-set-review path/to/component
-```
-
-또는 컴포넌트 이름만:
-
-```
 /style-set-review VsButton
+/style-set-review packages/vlossom/src/components/vs-card
 ```

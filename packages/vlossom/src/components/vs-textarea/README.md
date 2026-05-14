@@ -84,13 +84,13 @@ const text = ref('');
 
 ```typescript
 interface VsTextareaStyleSet {
-    textarea?: CSSProperties;
-    wrapper?: VsInputWrapperStyleSet;
+    $textarea?: CSSProperties;
+    $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `wrapper` uses [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.md).
+> `$wrapper` uses [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.md).
 
 ### StyleSet Example
 
@@ -100,7 +100,7 @@ interface VsTextareaStyleSet {
         v-model="text"
         label="Description"
         :style-set="{
-            textarea: {
+            $textarea: {
                 minHeight: '6rem',
                 fontFamily: 'monospace',
                 fontSize: '0.875rem',

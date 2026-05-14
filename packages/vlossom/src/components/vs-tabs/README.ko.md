@@ -2,14 +2,14 @@
 
 # VsTabs
 
-애니메이션 인디케이터, 스크롤 버튼, 세로 레이아웃을 지원하는 탭 내비게이션 컴포넌트입니다.
+애니메이션 인디케이터, 이전/다음 컨트롤 버튼, 세로 레이아웃을 지원하는 탭 내비게이션 컴포넌트입니다.
 
 **사용 가능 버전**: 2.0.0+
 
 ## 기능
 
 - 선택된 탭을 추적하는 애니메이션 활성 탭 인디케이터
-- 탭 목록 오버플로우 시 자동 또는 수동 스크롤 버튼
+- 탭 목록 오버플로우 시 자동 또는 수동 컨트롤 버튼
 - 세로 탭 레이아웃 지원
 - 탭 간 키보드 내비게이션
 - Dense 및 Primary 시각적 변형
@@ -69,7 +69,7 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 | `height` | `string \| number` | `'auto'` | | 탭 바의 높이 |
 | `modelValue` | `number` | `0` | | 활성 탭의 인덱스, v-model |
 | `primary` | `boolean` | `false` | | Primary 색상 스타일 적용 |
-| `scrollButtons` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | 스크롤 버튼 표시 여부 |
+| `controls` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | 이전/다음 탭 컨트롤 버튼 표시 여부 |
 | `tabs` | `string[]` | `[]` | | 탭 레이블 목록 |
 | `vertical` | `boolean` | `false` | | 세로 방향으로 탭 렌더링 |
 | `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
@@ -77,19 +77,19 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 ## 타입
 
 ```typescript
-interface VsTabsStyleSet {
-    variables?: {
-        gap?: string;
-        divider?: CSSProperties['border'] & {};
+interface VsTabsStyleSet extends CSSProperties {
+    $divider?: CSSProperties['border'] & {};
+
+    $tabs?: CSSProperties;
+    $tab?: CSSProperties & {
+        $active?: CSSProperties;
     };
-    tab?: CSSProperties;
-    activeTab?: CSSProperties;
-    scrollButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `scrollButton`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`loading` 제외).
+> `$control`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외). `$tab.$active`는 현재 선택된 탭에 적용됩니다.
 
 ### StyleSet 예시
 
@@ -99,9 +99,13 @@ interface VsTabsStyleSet {
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            variables: { gap: '0.5rem', divider: '2px solid #e0e0e0' },
-            tab: { borderRadius: '0.25rem', padding: '0.5rem 1.25rem' },
-            activeTab: { backgroundColor: '#1976d2', color: '#ffffff' },
+            $divider: '2px solid #e0e0e0',
+            $tabs: { gap: '0.5rem' },
+            $tab: {
+                borderRadius: '0.25rem',
+                padding: '0.5rem 1.25rem',
+                $active: { backgroundColor: '#1976d2', color: '#ffffff' },
+            },
         }"
     />
 </template>

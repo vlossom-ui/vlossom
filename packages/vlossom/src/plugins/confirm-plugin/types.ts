@@ -1,13 +1,12 @@
-import type { Component } from 'vue';
-import type { Alignment, ColorScheme } from '@/declaration';
+import type { Component, CSSProperties } from 'vue';
+import type { ColorScheme } from '@/declaration';
 import type { ModalOptions } from '@/plugins/modal-plugin';
 import type { VsButtonStyleSet, VsModalNodeStyleSet } from '@/components';
 
 export interface VsConfirmStyleSet extends VsModalNodeStyleSet {
-    buttonsGap?: string | number;
-    buttonsAlign?: Alignment;
-    okButton?: Omit<VsButtonStyleSet, 'loading'>;
-    cancelButton?: Omit<VsButtonStyleSet, 'loading'>;
+    $buttons?: CSSProperties;
+    $okButton?: Omit<VsButtonStyleSet, '$loading'>;
+    $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
 export interface ConfirmModalOptions extends Omit<ModalOptions, 'beforeClose'> {

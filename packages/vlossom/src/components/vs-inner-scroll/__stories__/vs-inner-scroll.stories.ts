@@ -169,13 +169,13 @@ export const CustomStyle: Story = {
     },
     args: {
         styleSet: {
-            header: {
+            $header: {
                 padding: '24px',
             },
-            content: {
+            $content: {
                 padding: '24px',
             },
-            footer: {
+            $footer: {
                 padding: '16px',
             },
         },
@@ -232,13 +232,13 @@ export const PreDefinedStyleSet: Story = {
         components: { VsInnerScroll },
         setup() {
             const preDefinedStyleSet: VsInnerScrollStyleSet = {
-                header: {
+                $header: {
                     padding: '20px',
                 },
-                content: {
+                $content: {
                     padding: '28px',
                 },
-                footer: {
+                $footer: {
                     padding: '20px',
                 },
             };

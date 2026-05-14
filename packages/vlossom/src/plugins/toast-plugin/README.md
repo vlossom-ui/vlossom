@@ -17,7 +17,7 @@ Displays brief, non-blocking notification toasts. Supports multiple severity lev
 
 ## Basic Usage
 
-Inject `$vsToast` in your component and call a method:
+Get the Vlossom instance via `useVlossom()` and call a `toast` method:
 
 ```html
 <template>
@@ -30,21 +30,21 @@ Inject `$vsToast` in your component and call a method:
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsToast = inject('$vsToast');
+const $vs = useVlossom();
 
 function showInfo() {
-    $vsToast.info('This is an info message.');
+    $vs.toast.info('This is an info message.');
 }
 function showSuccess() {
-    $vsToast.success('Operation completed successfully!');
+    $vs.toast.success('Operation completed successfully!');
 }
 function showWarning() {
-    $vsToast.warning('Please check your input.');
+    $vs.toast.warning('Please check your input.');
 }
 function showError() {
-    $vsToast.error('Something went wrong.');
+    $vs.toast.error('Something went wrong.');
 }
 </script>
 ```
@@ -53,12 +53,12 @@ function showError() {
 
 ```html
 <script setup>
-import { inject } from 'vue';
+import { useVlossom } from 'vlossom';
 
-const $vsToast = inject('$vsToast');
+const $vs = useVlossom();
 
 function showCustomToast() {
-    $vsToast.show('Custom toast message', {
+    $vs.toast.show('Custom toast message', {
         placement: 'top',
         align: 'right',
         autoClose: true,

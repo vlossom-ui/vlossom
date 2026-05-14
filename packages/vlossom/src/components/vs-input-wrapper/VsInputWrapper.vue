@@ -3,7 +3,7 @@
         :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
         :width
         :grid
-        :style="componentStyleSet.component"
+        :style="componentInlineStyle"
     >
         <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
@@ -11,7 +11,7 @@
                 v-if="!noLabel && (!!label || !!$slots.label)"
                 class="vs-label"
                 :class="{ 'vs-disabled': disabled }"
-                :style="componentStyleSet.label"
+                :style="componentStyleSet.$label"
             >
                 <slot name="label">
                     <span>{{ label }}</span>
@@ -25,7 +25,7 @@
         <div
             v-if="!noMessages && messages.length > 0"
             :class="['vs-messages', { 'vs-disabled': disabled }]"
-            :style="componentStyleSet.messages"
+            :style="componentStyleSet.$messages"
         >
             <slot name="messages">
                 <vs-message
@@ -34,7 +34,7 @@
                     :key="`${text}-${index}`"
                     :state
                     :text
-                    :style-set="componentStyleSet.message"
+                    :style-set="componentStyleSet.$message"
                 />
             </slot>
         </div>
@@ -69,11 +69,11 @@ export default defineComponent({
     setup(props) {
         const { shake, styleSet } = toRefs(props);
 
-        const { componentStyleSet } = useStyleSet(
+        const { componentStyleSet, componentInlineStyle } = useStyleSet(
             componentName,
             styleSet,
             computed(() => ({
-                message: { variables: { size: '0.8rem' } },
+                $message: { $size: '0.8rem' },
             })),
         );
 
@@ -85,7 +85,7 @@ export default defineComponent({
             }, 600);
         });
 
-        return { needToShake, componentStyleSet };
+        return { needToShake, componentStyleSet, componentInlineStyle };
     },
 });
 </script>

@@ -128,6 +128,7 @@ export function useIndexSelector(
         selectedIndex,
         isSelected,
         isDisabled,
+        isAllDisabled,
         isPrevious,
         findActiveIndexForwardFrom,
         findActiveIndexBackwardFrom,

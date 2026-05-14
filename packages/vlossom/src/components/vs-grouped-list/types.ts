@@ -15,16 +15,12 @@ export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroup
     hasScroll: () => boolean;
 }
 
-export interface VsGroupedListStyleSet {
-    variables?: {
-        gap?: string;
-        height?: string;
-    };
-    header?: CSSProperties;
-    content?: CSSProperties;
-    footer?: CSSProperties;
-    group?: CSSProperties;
-    item?: CSSProperties;
+export interface VsGroupedListStyleSet extends CSSProperties {
+    $header?: CSSProperties;
+    $content?: CSSProperties;
+    $footer?: CSSProperties;
+    $group?: CSSProperties;
+    $item?: CSSProperties;
 }
 
 export interface VsGroupedListGroup {
