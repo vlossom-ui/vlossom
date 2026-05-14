@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.0.0-beta.4](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.3...vlossom-v2.0.0-beta.4) (2026-05-14)
+
+
+### Features
+
+* **style-set:** restructure component style-sets to new convention ([#446](https://github.com/vlossom-ui/vlossom/issues/446)) ([#455](https://github.com/vlossom-ui/vlossom/issues/455)) ([11a47f2](https://github.com/vlossom-ui/vlossom/commit/11a47f2eaf34d2b4e629ea83ad41c8007a7db17a))
+* **vite.config:** add Prettier formatting for .d.ts files ([#451](https://github.com/vlossom-ui/vlossom/issues/451)) ([fa7a879](https://github.com/vlossom-ui/vlossom/commit/fa7a8799ce6d4579c788f482935c81c865b70fc0))
+* **VsLayout:** add layout prop on vs-layout children ([#434](https://github.com/vlossom-ui/vlossom/issues/434)) ([0c469e2](https://github.com/vlossom-ui/vlossom/commit/0c469e2f021f460b956831eb74c51028fe7a1fe7))
+* **VsModal:** add beforeClose hook to abort modal close ([#435](https://github.com/vlossom-ui/vlossom/issues/435)) ([6b85415](https://github.com/vlossom-ui/vlossom/commit/6b85415ce1e5392426e764eb808e688ada475e7d))
+* **VsSwitch:** update switch button layout and visibility ([#454](https://github.com/vlossom-ui/vlossom/issues/454)) ([2a45e7d](https://github.com/vlossom-ui/vlossom/commit/2a45e7d4a7d23cc438bf4d02c723aef62189be8f))
+* **VsTable:** add click-row event and transform typing ([#447](https://github.com/vlossom-ui/vlossom/issues/447)) ([ffc4afc](https://github.com/vlossom-ui/vlossom/commit/ffc4afc14c053605fdb410bc90f8ef9cba498cf1))
+* **VsTable:** modify 'slots' and color-scheme propagation ([#428](https://github.com/vlossom-ui/vlossom/issues/428)) ([d7c1e4c](https://github.com/vlossom-ui/vlossom/commit/d7c1e4c3bd63e3a60b7faaf1670a980be70b999f))
+
+
+### Bug Fixes
+
+* replace deprecated small prop with size on VsButton/VsChip usages ([#438](https://github.com/vlossom-ui/vlossom/issues/438)) ([d011174](https://github.com/vlossom-ui/vlossom/commit/d01117427e2043c7fdaf5679f9d1596019e67293))
+* **vs-input:** improve autofill and clear button focus styles ([#457](https://github.com/vlossom-ui/vlossom/issues/457)) ([8eaaef2](https://github.com/vlossom-ui/vlossom/commit/8eaaef226fa1fd67b4853a15493be95144e0b4a3))
+* **VsSelect:** fix vs-select clear button v-if condition ([#436](https://github.com/vlossom-ui/vlossom/issues/436)) ([4078af3](https://github.com/vlossom-ui/vlossom/commit/4078af304149f3b12dba98c66df43aa087d1b519))
+* **VsSelect:** forward color-scheme to chips in multiple mode ([#433](https://github.com/vlossom-ui/vlossom/issues/433)) ([5bdabda](https://github.com/vlossom-ui/vlossom/commit/5bdabda87f41fa993c446ec2eaadd1f967937c77))
+* **VsTable:** hide pagination block entirely when there are no items ([#439](https://github.com/vlossom-ui/vlossom/issues/439)) ([69ffe2d](https://github.com/vlossom-ui/vlossom/commit/69ffe2d7a77de8778d34a7865b5d796839f6e56d))
+* **VsTable:** shrink expand button when dense ([3207bfc](https://github.com/vlossom-ui/vlossom/commit/3207bfc21e9fa78d5fd9973cfa437e443390ccbc))
+* **VsTable:** support literal column key values in slot names ([#432](https://github.com/vlossom-ui/vlossom/issues/432)) ([7c5f022](https://github.com/vlossom-ui/vlossom/commit/7c5f02201d16a29d07cfb31ae7a8ca1168cd986a))
+
 ## [2.0.0-beta.3](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.2...vlossom-v2.0.0-beta.3) (2026-04-28)
 
 ### Features
