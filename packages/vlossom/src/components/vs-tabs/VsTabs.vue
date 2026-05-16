@@ -248,8 +248,6 @@ export default defineComponent({
         }
 
         onMounted(() => {
-            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
-
             if (tabsRef.value) {
                 resizeObserver = new ResizeObserver(handleResize);
                 resizeObserver.observe(tabsRef.value);
@@ -265,9 +263,11 @@ export default defineComponent({
 
         watch(
             () => tabs.value.length,
-            () => {
+            (newLength) => {
                 const currentIndex = selectedIndex.value;
-                selectTab(findActiveIndexForwardFrom(currentIndex));
+                if (currentIndex < 0 || currentIndex >= newLength) {
+                    selectedIndex.value = NOT_SELECTED;
+                }
             },
         );
 
@@ -280,7 +280,17 @@ export default defineComponent({
             });
         });
 
-        watch(modelValue, selectTab);
+        watch(
+            modelValue,
+            (value) => {
+                if (value < 0 || value >= tabs.value.length) {
+                    selectedIndex.value = NOT_SELECTED;
+                } else {
+                    selectedIndex.value = value;
+                }
+            },
+            { immediate: true },
+        );
 
         return {
             // Style

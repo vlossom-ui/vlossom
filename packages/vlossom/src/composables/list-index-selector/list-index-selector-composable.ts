@@ -79,11 +79,13 @@ export function useIndexSelector(
     }
 
     function selectIndex(index: number) {
-        if (isOutOfRange(index) || isAllDisabled() || isDisabled(index)) {
+        if (isOutOfRange(index)) {
             selectedIndex.value = NOT_SELECTED;
             return;
         }
-
+        if (isAllDisabled() || isDisabled(index)) {
+            return;
+        }
         selectedIndex.value = index;
     }
 

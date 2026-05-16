@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue';
-import { VsComponent } from '@/declaration';
+import { NOT_SELECTED, VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
@@ -221,7 +221,11 @@ export default defineComponent({
         watch(
             modelValue,
             (value) => {
-                selectIndex(value);
+                if (value < 0 || value >= length.value) {
+                    selectedIndex.value = NOT_SELECTED;
+                } else {
+                    selectedIndex.value = value;
+                }
             },
             { immediate: true },
         );

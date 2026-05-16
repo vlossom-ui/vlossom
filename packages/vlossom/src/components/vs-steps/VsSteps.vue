@@ -66,7 +66,6 @@ import {
     toRefs,
     ref,
     watch,
-    onMounted,
     type Ref,
     type PropType,
     type ComputedRef,
@@ -175,12 +174,8 @@ export default defineComponent({
             return base;
         }
 
-        onMounted(() => {
-            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
-        });
-
         watch(steps, () => {
-            selectStep(findActiveIndexForwardFrom(0));
+            selectedIndex.value = steps.value.length > 0 ? 0 : NOT_SELECTED;
         });
 
         watch(selectedIndex, (index: number) => {
@@ -189,7 +184,17 @@ export default defineComponent({
             emit('change', index);
         });
 
-        watch(modelValue, selectStep);
+        watch(
+            modelValue,
+            (value) => {
+                if (value < 0 || value >= steps.value.length) {
+                    selectedIndex.value = NOT_SELECTED;
+                } else {
+                    selectedIndex.value = value;
+                }
+            },
+            { immediate: true },
+        );
 
         return {
             // Style

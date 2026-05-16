@@ -261,7 +261,7 @@ describe('VsSteps', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('함수를 통해 비활성화된 스텝을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('함수를 통해 비활성화된 스텝을 클릭하면 이벤트가 발생하지 않고 현재 선택이 유지되어야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -275,30 +275,32 @@ describe('VsSteps', () => {
             await stepItems[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화된 스텝을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지되고 클릭으로 변경되지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
                     steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
                     disabled: true,
                 },
             });
+            await nextTick();
+
+            // then: 마운트 시 modelValue(=1)가 보존되어 -1로 자동 변경되지 않는다
+            const initialEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
+            expect(initialEmits).not.toContain(-1);
 
             // when
             const stepItems = wrapper.findAll('.vs-step-item');
             await stepItems[0].trigger('click');
 
-            // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            // then: 클릭으로 인한 추가 emit이 없어야 한다
+            const finalEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
+            expect(finalEmits.length).toBe(initialEmits.length);
         });
     });
 
