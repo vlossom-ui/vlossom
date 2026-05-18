@@ -176,7 +176,7 @@ describe('VsPagination', () => {
             });
         });
 
-        it('페이지 변경 직후 disabled가 true로 토글돼도 modelValue를 NOT_SELECTED로 재emit하지 않아야 한다', async () => {
+        it('페이지 변경 직후 disabled 상태가 되더라도 modelValue를 NOT_SELECTED로 재emit하지 않아야 한다 (index 유지)', async () => {
             // given
             const wrapper = mount(VsPagination, {
                 props: {
@@ -195,6 +195,8 @@ describe('VsPagination', () => {
             expect(changeEvents).toBeTruthy();
             expect(changeEvents!.every(([index]) => index >= 0)).toBe(true);
             expect(changeEvents![changeEvents!.length - 1]).toEqual([2]);
+
+            expect(wrapper.vm.selectedIndex).toBe(2);
         });
     });
 

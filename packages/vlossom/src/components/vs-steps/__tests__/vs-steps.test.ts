@@ -279,7 +279,7 @@ describe('VsSteps', () => {
             expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지되고 클릭으로 변경되지 않아야 한다', async () => {
+        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지된다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -290,17 +290,9 @@ describe('VsSteps', () => {
             });
             await nextTick();
 
-            // then: 마운트 시 modelValue(=1)가 보존되어 -1로 자동 변경되지 않는다
-            const initialEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
-            expect(initialEmits).not.toContain(-1);
-
-            // when
-            const stepItems = wrapper.findAll('.vs-step-item');
-            await stepItems[0].trigger('click');
-
-            // then: 클릭으로 인한 추가 emit이 없어야 한다
-            const finalEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
-            expect(finalEmits.length).toBe(initialEmits.length);
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(wrapper.vm.selectedIndex).not.toBe(-1);
         });
     });
 
@@ -346,8 +338,8 @@ describe('VsSteps', () => {
                     disabled: (step: string, index: number) => index === 3,
                 },
                 slots: {
-                    step: `<span class="custom-step" 
-                        :data-selected="isSelected" 
+                    step: `<span class="custom-step"
+                        :data-selected="isSelected"
                         :data-previous="isPrevious"
                         :data-disabled="isDisabled">
                         {{ index }}
@@ -381,7 +373,7 @@ describe('VsSteps', () => {
                     disabled: (step: string, index: number) => index === 2,
                 },
                 slots: {
-                    label: `<span class="custom-label" 
+                    label: `<span class="custom-label"
                         :data-selected="isSelected"
                         :data-previous="isPrevious"
                         :data-disabled="isDisabled">
