@@ -14,6 +14,7 @@ import VsCheckbox from './vs-checkbox/VsCheckbox.vue';
 import VsCheckboxSet from './vs-checkbox/VsCheckboxSet.vue';
 import VsChip from './vs-chip/VsChip.vue';
 import VsContainer from './vs-container/VsContainer.vue';
+import VsDatePicker from './vs-date-picker/VsDatePicker.vue';
 import VsDimmed from './vs-dimmed/VsDimmed.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
 import VsDrawer from './vs-drawer/VsDrawer.vue';
@@ -71,6 +72,7 @@ export const VlossomComponents = {
     VsCheckboxSet,
     VsChip,
     VsContainer,
+    VsDatePicker,
     VsDimmed,
     VsDivider,
     VsDrawer,
