@@ -150,6 +150,10 @@
                     color: var(--vs-cs-font-primary);
                 }
 
+                .vs-tab-item.vs-selected:focus-visible:not(.vs-disabled) {
+                    outline-color: var(--vs-cs-font-primary);
+                }
+
                 .vs-tab-indicator {
                     border-color: var(--vs-cs-bg-primary);
                     background-color: var(--vs-cs-bg-primary);
