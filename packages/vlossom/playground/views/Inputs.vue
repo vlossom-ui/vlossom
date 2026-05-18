@@ -70,6 +70,43 @@
         </vs-form>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsDatePicker</h3>
+        <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-date-picker v-model="dpDate" type="date" label="Date" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker
+                v-model="dpDatetime"
+                type="datetime-local"
+                label="Datetime"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-date-picker v-model="dpTime" type="time" label="Time" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker v-model="dpMonth" type="month" label="Month" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker
+                v-model="dpRange"
+                type="date"
+                label="2026년 내"
+                :min="dpMin"
+                :max="dpMax"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-date-picker
+                v-model="dpRequired"
+                type="date"
+                label="Required"
+                required
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-date-picker
+                v-model="dpTz"
+                type="datetime-local"
+                label="Datetime + Timezone"
+                timezone
+                @timezone-change="onTzChange"
+                :grid="{ xs: 12, md: 6, lg: 6 }"
+            />
+        </vs-form>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsSelect</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-select
@@ -314,6 +351,21 @@ export default defineComponent({
         const selectRequiredValue = ref(null);
         const selectLongValue = ref(null);
 
+        // VsDatePicker state
+        const dpDate: Ref<Date | null> = ref(null);
+        const dpDatetime: Ref<Date | null> = ref(null);
+        const dpTime: Ref<Date | null> = ref(null);
+        const dpMonth: Ref<Date | null> = ref(null);
+        const dpRange: Ref<Date | null> = ref(null);
+        const dpRequired: Ref<Date | null> = ref(null);
+        const dpTz: Ref<Date | null> = ref(new Date('2026-05-18T15:30:00Z'));
+        const dpMin = new Date('2026-01-01T00:00:00Z');
+        const dpMax = new Date('2026-12-31T00:00:00Z');
+        function onTzChange(payload: { from: string; to: string }) {
+            // eslint-disable-next-line no-console
+            console.info(`[VsDatePicker] timezone: ${payload.from} → ${payload.to}`);
+        }
+
         return {
             inputText,
             inputNumber,
@@ -344,6 +396,16 @@ export default defineComponent({
             selectClosableValue,
             selectRequiredValue,
             selectLongValue,
+            dpDate,
+            dpDatetime,
+            dpTime,
+            dpMonth,
+            dpRange,
+            dpRequired,
+            dpTz,
+            dpMin,
+            dpMax,
+            onTzChange,
         };
     },
 });
