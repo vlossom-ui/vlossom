@@ -8,20 +8,38 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ## Feature
 
-- Attaches to any target element via a CSS selector
+- Two usage modes: wrap the trigger via the default slot, or attach to an external element via a CSS selector
 - Supports hover, click-to-open, and contents-hover modes
 - Configurable placement (top, bottom, left, right) and alignment (start, center, end)
+- Configurable wrapper tag (`span` by default) for slot mode
 - Arrow indicator with customizable color and size
 - Escape key closes the tooltip (configurable)
 - Configurable enter and leave delays
 
 ## Basic Usage
 
+### Slot Mode (default)
+
+When `target` is omitted, the default slot is wrapped by an element that becomes the trigger.
+
+```html
+<template>
+    <vs-tooltip>
+        <button>Hover me</button>
+        <template #tooltip>This is a tooltip</template>
+    </vs-tooltip>
+</template>
+```
+
+### Target Mode
+
+Pass `target` as a CSS selector to attach the tooltip to an external element.
+
 ```html
 <template>
     <button id="my-btn">Hover me</button>
     <vs-tooltip target="#my-btn">
-        This is a tooltip
+        <template #tooltip>This is a tooltip</template>
     </vs-tooltip>
 </template>
 ```
@@ -30,9 +48,9 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="click-btn">Click me</button>
-    <vs-tooltip target="#click-btn" clickable>
-        Opened by click
+    <vs-tooltip clickable>
+        <button>Click me</button>
+        <template #tooltip>Opened by click</template>
     </vs-tooltip>
 </template>
 ```
@@ -41,9 +59,9 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="bottom-btn">Hover me</button>
-    <vs-tooltip target="#bottom-btn" placement="bottom" align="start">
-        Bottom-start tooltip
+    <vs-tooltip placement="bottom" align="start">
+        <button>Hover me</button>
+        <template #tooltip>Bottom-start tooltip</template>
     </vs-tooltip>
 </template>
 ```
@@ -52,9 +70,22 @@ A floating tooltip component that attaches to a target element and supports hove
 
 ```html
 <template>
-    <button id="hover-btn">Hover me</button>
-    <vs-tooltip target="#hover-btn" contents-hover>
-        <a href="#">Click this link inside the tooltip</a>
+    <vs-tooltip contents-hover>
+        <button>Hover me</button>
+        <template #tooltip>
+            <a href="#">Click this link inside the tooltip</a>
+        </template>
+    </vs-tooltip>
+</template>
+```
+
+### Custom Wrapper Tag
+
+```html
+<template>
+    <vs-tooltip tag="div">
+        <div class="trigger-area">Block-level trigger</div>
+        <template #tooltip>Wrapped by a div</template>
     </vs-tooltip>
 </template>
 ```
@@ -65,7 +96,8 @@ A floating tooltip component that attaches to a target element and supports hove
 | ---- | ---- | ------- | -------- | ----------- |
 | `colorScheme` | `string` | | | Color scheme for the component |
 | `styleSet` | `string \| VsTooltipStyleSet` | | | Custom style set for the component |
-| `target` | `string` | `''` | Yes | CSS selector of the trigger element |
+| `target` | `string` | `''` | | CSS selector of the trigger element. If omitted, the default slot is wrapped and used as the trigger |
+| `tag` | `string` | `'span'` | | Tag name of the wrapper element rendered around the default slot (slot mode only) |
 | `align` | `Alignment` | `'center'` | | Alignment of the tooltip relative to the target (`start`, `center`, `end`) |
 | `clickable` | `boolean` | `false` | | Requires a click on the target to open |
 | `contentsHover` | `boolean` | `false` | | Keeps the tooltip open while hovering its contents |
@@ -92,9 +124,7 @@ interface VsTooltipStyleSet {
 
 ```html
 <template>
-    <button id="styled-btn">Hover me</button>
     <vs-tooltip
-        target="#styled-btn"
         :style-set="{
             $arrowColor: '#323232',
             $arrowSize: '0.5rem',
@@ -106,7 +136,8 @@ interface VsTooltipStyleSet {
             },
         }"
     >
-        Custom tooltip
+        <button>Hover me</button>
+        <template #tooltip>Custom tooltip</template>
     </vs-tooltip>
 </template>
 ```
@@ -120,7 +151,8 @@ interface VsTooltipStyleSet {
 
 | Slot | Description |
 | ---- | ----------- |
-| `default` | Tooltip content |
+| `default` | Trigger content (rendered only when `target` is not provided; wrapped by the `tag` element) |
+| `tooltip` | Tooltip content shown in the floating panel |
 
 ## Methods
 
