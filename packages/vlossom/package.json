@@ -57,6 +57,7 @@
         }
     },
     "dependencies": {
+        "@lucide/vue": "^1.14.0",
         "@vueuse/core": "^14.2.1",
         "change-case": "^5.4.4",
         "nanoid": "^5.1.9",
