@@ -432,7 +432,7 @@ describe('VsSteps', () => {
             expect(stepItems[3].classes()).not.toContain('vs-selected');
         });
 
-        it('steps 배열이 변경되면 첫 번째 활성 스텝으로 이동해야 한다', async () => {
+        it('steps 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -448,10 +448,31 @@ describe('VsSteps', () => {
             await nextTick();
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             const stepItems = wrapper.findAll('.vs-step-item');
             expect(stepItems).toHaveLength(2);
-            expect(stepItems[0].classes()).toContain('vs-selected');
+            expect(stepItems[0].classes()).not.toContain('vs-selected');
+            expect(stepItems[1].classes()).not.toContain('vs-selected');
+        });
+
+        it('steps 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ steps: ['New Step 1', 'New Step 2', 'New Step 3', 'New Step 4'] });
+            await nextTick();
+
+            // then
+            const stepItems = wrapper.findAll('.vs-step-item');
+            expect(stepItems).toHaveLength(4);
+            expect(stepItems[1].classes()).toContain('vs-selected');
         });
     });
 

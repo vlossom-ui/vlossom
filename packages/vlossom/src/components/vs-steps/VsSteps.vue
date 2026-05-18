@@ -129,8 +129,8 @@ export default defineComponent({
             isSelected,
             isDisabled,
             isPrevious,
-            findActiveIndexForwardFrom,
             selectIndex: selectStep,
+            syncIndex,
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
@@ -174,27 +174,13 @@ export default defineComponent({
             return base;
         }
 
-        watch(steps, () => {
-            selectedIndex.value = steps.value.length > 0 ? 0 : NOT_SELECTED;
-        });
-
         watch(selectedIndex, (index: number) => {
             stepRefs.value[index]?.focus();
             emit('update:modelValue', index);
             emit('change', index);
         });
 
-        watch(
-            modelValue,
-            (value) => {
-                if (value < 0 || value >= steps.value.length) {
-                    selectedIndex.value = NOT_SELECTED;
-                } else {
-                    selectedIndex.value = value;
-                }
-            },
-            { immediate: true },
-        );
+        watch(modelValue, syncIndex, { immediate: true });
 
         return {
             // Style

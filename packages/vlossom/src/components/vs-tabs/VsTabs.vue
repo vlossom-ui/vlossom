@@ -151,6 +151,7 @@ export default defineComponent({
             findActiveIndexForwardFrom,
             findActiveIndexBackwardFrom,
             selectIndex: selectTab,
+            syncIndex,
             handleKeydown,
             isFirstEdge,
             isLastEdge,
@@ -261,16 +262,6 @@ export default defineComponent({
             }
         });
 
-        watch(
-            () => tabs.value.length,
-            (newLength) => {
-                const currentIndex = selectedIndex.value;
-                if (currentIndex < 0 || currentIndex >= newLength) {
-                    selectedIndex.value = NOT_SELECTED;
-                }
-            },
-        );
-
         watch(selectedIndex, (index: number) => {
             scrollTo(index);
             emit('update:modelValue', index);
@@ -280,17 +271,7 @@ export default defineComponent({
             });
         });
 
-        watch(
-            modelValue,
-            (value) => {
-                if (value < 0 || value >= tabs.value.length) {
-                    selectedIndex.value = NOT_SELECTED;
-                } else {
-                    selectedIndex.value = value;
-                }
-            },
-            { immediate: true },
-        );
+        watch(modelValue, syncIndex, { immediate: true });
 
         return {
             // Style

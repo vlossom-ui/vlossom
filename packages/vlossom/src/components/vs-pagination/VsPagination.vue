@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue';
-import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
@@ -155,7 +155,10 @@ export default defineComponent({
 
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
 
-        const { selectedIndex, selectIndex, isFirstEdge, isLastEdge } = useIndexSelector(pageIndexList, disabled);
+        const { selectedIndex, selectIndex, syncIndex, isFirstEdge, isLastEdge } = useIndexSelector(
+            pageIndexList,
+            disabled,
+        );
 
         const pages: ComputedRef<number[]> = computed(() => {
             const pageArr: number[] = [];
@@ -218,26 +221,11 @@ export default defineComponent({
             selectIndex(selectedIndex.value + 1);
         }
 
-        watch(
-            modelValue,
-            (value) => {
-                if (value < 0 || value >= length.value) {
-                    selectedIndex.value = NOT_SELECTED;
-                } else {
-                    selectedIndex.value = value;
-                }
-            },
-            { immediate: true },
-        );
+        watch(modelValue, syncIndex, { immediate: true });
 
         watch(selectedIndex, (index: number) => {
             emit('update:modelValue', index);
             emit('change', index);
-        });
-
-        watch(length, () => {
-            const currentIndex = selectedIndex.value;
-            selectIndex(currentIndex);
         });
 
         return {
