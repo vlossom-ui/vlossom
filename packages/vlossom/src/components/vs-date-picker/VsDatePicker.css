@@ -1,0 +1,86 @@
+@reference 'tailwindcss';
+
+.vs-date-picker-row {
+    @apply box-border flex items-stretch gap-2;
+}
+
+.vs-date-picker-timezone {
+    flex: 0 0 auto;
+    min-width: 12rem;
+}
+
+.vs-date-picker {
+    @apply relative box-border flex flex-1 items-center overflow-hidden;
+
+    border: solid 1px var(--vs-cs-line);
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    background-color: var(--vs-no-color);
+    height: var(--vs-comp-height-md);
+    color: var(--vs-cs-font);
+    font-size: var(--vs-font-size-md);
+
+    color-scheme: light dark;
+
+    input {
+        @apply h-full w-full border-none bg-transparent outline-none;
+
+        padding: 0 0.8rem;
+        color: var(--vs-cs-font);
+        font-size: var(--vs-font-size-md);
+    }
+
+    /* native picker indicator는 별도 버튼으로 대체 */
+    input::-webkit-calendar-picker-indicator {
+        @apply hidden;
+    }
+
+    input::-webkit-inner-spin-button {
+        @apply hidden;
+    }
+
+    .vs-prepend,
+    .vs-append {
+        @apply relative flex h-full flex-nowrap items-center justify-center border-none whitespace-nowrap;
+
+        opacity: 1;
+        background-color: var(--vs-cs-bg-primary);
+        padding: 0 1rem;
+    }
+
+    .vs-clear-button {
+        @apply mr-1 flex items-center justify-center rounded border-none opacity-0;
+
+        transition: opacity 0.4s;
+
+        background: none;
+
+        &:focus {
+            @apply cursor-pointer opacity-100;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--vs-cs-font);
+        }
+    }
+
+    &:hover {
+        .vs-clear-button.show {
+            @apply cursor-pointer opacity-100;
+        }
+    }
+
+    .vs-date-picker-icon-button {
+        @apply mr-2 flex cursor-pointer items-center justify-center rounded border-none;
+
+        background: none;
+        color: var(--vs-cs-font);
+
+        &:disabled {
+            @apply cursor-not-allowed opacity-50;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--vs-cs-font);
+        }
+    }
+}

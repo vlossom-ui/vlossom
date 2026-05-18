@@ -9,6 +9,7 @@ export enum VsComponent {
     VsChip = 'VsChip',
     VsConfirm = 'VsConfirm',
     VsContainer = 'VsContainer',
+    VsDatePicker = 'VsDatePicker',
     VsDimmed = 'VsDimmed',
     VsDivider = 'VsDivider',
     VsDrawer = 'VsDrawer',
