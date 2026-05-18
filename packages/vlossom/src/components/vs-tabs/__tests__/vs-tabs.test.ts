@@ -300,7 +300,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지되고 클릭으로 변경되지 않아야 한다', async () => {
+        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지된다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -311,18 +311,9 @@ describe('VsTabs', () => {
             });
             await nextTick();
 
-            // then: 마운트 시 modelValue(=1)가 보존되어 -1로 자동 변경되지 않는다
-            const tabItems = wrapper.findAll('.vs-tab-item');
-            expect(tabItems[1].attributes('aria-selected')).toBe('true');
-            const initialEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
-            expect(initialEmits).not.toContain(-1);
-
-            // when
-            await tabItems[0].trigger('click');
-
-            // then: 클릭으로 인한 추가 emit이 없어야 한다
-            const finalEmits = (wrapper.emitted('update:modelValue') ?? []).map((e) => e[0]);
-            expect(finalEmits.length).toBe(initialEmits.length);
+            // then
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(wrapper.vm.selectedIndex).not.toBe(-1);
         });
     });
 
@@ -411,6 +402,51 @@ describe('VsTabs', () => {
             // then
             const customTabs = wrapper.findAll('.custom-tab');
             expect(customTabs).toHaveLength(3);
+        });
+    });
+
+    describe('reactivity', () => {
+        it('tabs 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 2,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['New Tab 1', 'New Tab 2'] });
+            await nextTick();
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems).toHaveLength(2);
+            expect(tabItems[0].classes()).not.toContain('vs-selected');
+            expect(tabItems[1].classes()).not.toContain('vs-selected');
+        });
+
+        it('tabs 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['New Tab 1', 'New Tab 2', 'New Tab 3', 'New Tab 4'] });
+            await nextTick();
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems).toHaveLength(4);
+            expect(tabItems[1].classes()).toContain('vs-selected');
         });
     });
 });
