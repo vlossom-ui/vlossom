@@ -1,5 +1,6 @@
 export * from './clipboard-util';
 export * from './compare-util';
+export * from './date-util';
 export * from './device-util';
 export * from './dom-util';
 export * from './function-util';
