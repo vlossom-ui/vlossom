@@ -117,6 +117,7 @@ interface VsTooltipStyleSet {
     $arrowSize?: string;
 
     $tooltip?: CSSProperties;
+    $trigger?: CSSProperties; // styles for the wrapper element in slot mode
 }
 ```
 

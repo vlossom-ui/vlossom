@@ -1,5 +1,10 @@
 <template>
-    <component :is="tag" v-if="!target" :class="['vs-tooltip-trigger', triggerClass]">
+    <component
+        :is="tag"
+        v-if="!target"
+        :class="['vs-tooltip-trigger', triggerClass]"
+        :style="componentStyleSet.$trigger"
+    >
         <slot />
     </component>
     <vs-floating
