@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance, CSSProperties, Ref } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type { VsSelectStyleSet } from '@/components/vs-select/types';
@@ -43,7 +43,11 @@ export interface VsDatePickerRef
         FocusableRef,
         FormChildRef {
     open: () => void;
-    currentTimezone: Readonly<Ref<string>>;
+    /**
+     * Current timezone (read-only). Auto-unwrapped from a readonly Ref in setup.
+     * To change it, use the timezone select UI or update timezoneOptions.
+     */
+    currentTimezone: string;
 }
 
 export interface VsDatePickerStyleSet extends CSSProperties {
