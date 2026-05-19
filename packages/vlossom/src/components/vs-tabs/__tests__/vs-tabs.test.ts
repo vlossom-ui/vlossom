@@ -282,7 +282,7 @@ describe('VsTabs', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('함수를 통해 비활성화된 탭을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('함수를 통해 비활성화된 탭을 클릭하면 이벤트가 발생하지 않고 현재 선택이 유지되어야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
@@ -296,30 +296,24 @@ describe('VsTabs', () => {
             await tabItems[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화된 탭을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지된다', async () => {
             // given
             const wrapper = mount(VsTabs, {
                 props: {
                     tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 1,
                     disabled: true,
                 },
             });
-
-            // when
-            const tabItems = wrapper.findAll('.vs-tab-item');
-            await tabItems[0].trigger('click');
+            await nextTick();
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(wrapper.vm.selectedIndex).not.toBe(-1);
         });
     });
 
@@ -408,6 +402,51 @@ describe('VsTabs', () => {
             // then
             const customTabs = wrapper.findAll('.custom-tab');
             expect(customTabs).toHaveLength(3);
+        });
+    });
+
+    describe('reactivity', () => {
+        it('tabs 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 2,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['New Tab 1', 'New Tab 2'] });
+            await nextTick();
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems).toHaveLength(2);
+            expect(tabItems[0].classes()).not.toContain('vs-selected');
+            expect(tabItems[1].classes()).not.toContain('vs-selected');
+        });
+
+        it('tabs 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTabs, {
+                props: {
+                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ tabs: ['New Tab 1', 'New Tab 2', 'New Tab 3', 'New Tab 4'] });
+            await nextTick();
+
+            // then
+            const tabItems = wrapper.findAll('.vs-tab-item');
+            expect(tabItems).toHaveLength(4);
+            expect(tabItems[1].classes()).toContain('vs-selected');
         });
     });
 });

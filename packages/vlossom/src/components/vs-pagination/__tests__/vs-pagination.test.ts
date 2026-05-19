@@ -175,6 +175,29 @@ describe('VsPagination', () => {
                 expect(btn.attributes('disabled')).toBeDefined();
             });
         });
+
+        it('페이지 변경 직후 disabled 상태가 되더라도 modelValue를 NOT_SELECTED로 재emit하지 않아야 한다 (index 유지)', async () => {
+            // given
+            const wrapper = mount(VsPagination, {
+                props: {
+                    length: 5,
+                    modelValue: 0,
+                    disabled: false,
+                },
+            });
+
+            // when: 페이지 변경 → 부모가 modelValue=2 반영, 동시에 disabled=true로 토글 (로딩 시작 시나리오)
+            await wrapper.findAll('.vs-page-button')[2].trigger('click');
+            await wrapper.setProps({ modelValue: 2, disabled: true });
+
+            // then: change 이벤트는 정상 paginate(2) 한 번만 발생해야 한다 (NOT_SELECTED=-1 재emit 없음)
+            const changeEvents = wrapper.emitted('change') as number[][] | undefined;
+            expect(changeEvents).toBeTruthy();
+            expect(changeEvents!.every(([index]) => index >= 0)).toBe(true);
+            expect(changeEvents![changeEvents!.length - 1]).toEqual([2]);
+
+            expect(wrapper.vm.selectedIndex).toBe(2);
+        });
     });
 
     describe('페이지 변경', () => {
