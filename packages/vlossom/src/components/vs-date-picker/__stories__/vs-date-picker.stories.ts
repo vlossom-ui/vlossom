@@ -218,9 +218,11 @@ export const WithStyleSet: Story = {
     args: {
         label: '커스텀 스타일',
         styleSet: {
-            borderRadius: '12px',
-            $datePicker: { borderColor: '#1e88e5' },
-            $input: { fontSize: '1rem', fontWeight: '600' },
+            $input: {
+                borderRadius: '12px',
+                borderColor: '#1e88e5',
+                $input: { fontSize: '1rem', fontWeight: '600' },
+            },
         },
     },
 };

@@ -1,118 +1,103 @@
 @reference 'tailwindcss';
 
-.vs-date-picker-row {
-    @apply box-border flex items-stretch gap-2;
-}
-
-.vs-date-picker-timezone {
-    flex: 0 0 auto;
-    min-width: 12rem;
-}
-
+/*
+ * VsDatePicker 의 outer 컨테이너.
+ *   - container-type: inline-size 를 설정해 자식인 .vs-date-picker-row 의 @container 쿼리가
+ *     이 .vs-date-picker 의 width (= grid 셀 width) 를 기준으로 동작하게 한다.
+ *   - .vs-date-picker 자체는 layout 책임 없음 (flex 는 .vs-date-picker-row 가 담당).
+ */
 .vs-date-picker {
-    @apply relative box-border flex flex-1 cursor-pointer items-center overflow-hidden;
-
-    border: solid 1px var(--vs-cs-line);
-    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-no-color);
-    height: var(--vs-comp-height-md);
-    color: var(--vs-cs-font);
-    font-size: var(--vs-font-size-md);
-
-    color-scheme: light dark;
-
-    input {
-        @apply h-full w-full cursor-pointer border-none bg-transparent outline-none;
-
-        padding: 0 0.8rem;
-        color: var(--vs-cs-font);
-        font-size: var(--vs-font-size-md);
-    }
-
-    input:disabled,
-    input[readonly] {
-        @apply cursor-not-allowed;
-    }
-
-    /* native picker indicator는 별도 아이콘 버튼으로 대체하되,
-       input 영역 클릭 시 open()이 호출되어 native picker를 띄움 */
-    input::-webkit-calendar-picker-indicator {
-        @apply hidden;
-    }
-
-    input::-webkit-inner-spin-button {
-        @apply hidden;
-    }
-
-    .vs-prepend,
-    .vs-append {
-        @apply relative flex h-full flex-nowrap items-center justify-center border-none whitespace-nowrap;
-
-        opacity: 1;
-        background-color: var(--vs-cs-bg-primary);
-        padding: 0 1rem;
-    }
-
-    .vs-clear-button {
-        @apply mr-1 flex items-center justify-center rounded border-none opacity-0;
-
-        transition: opacity 0.4s;
-
-        background: none;
-
-        &:focus {
-            @apply cursor-pointer opacity-100;
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--vs-cs-font);
-        }
-    }
-
-    &:hover {
-        .vs-clear-button.show {
-            @apply cursor-pointer opacity-100;
-        }
-    }
-
-    .vs-date-picker-icon-button {
-        @apply mr-2 flex cursor-pointer items-center justify-center rounded border-none;
-
-        background: none;
-        color: var(--vs-cs-font);
-
-        &:disabled {
-            @apply cursor-not-allowed opacity-50;
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--vs-cs-font);
-        }
-    }
+    container-type: inline-size;
 }
 
-/* ============================================================
-   has-timezone: timezone select와 date picker를 단일 input-group으로
-   통합 (gap 제거, 인접 경계 합치기, 좌우 border-radius 분배)
-   ============================================================ */
-
-.vs-date-picker-row.has-timezone {
-    @apply gap-0;
+/*
+ * Date input field 와 timezone select 를 side-by-side 로 배치하는 flex row.
+ * @container 쿼리 (max-width: 768px) 에서 column 으로 flip.
+ */
+.vs-date-picker .vs-date-picker-row {
+    @apply box-border flex items-stretch;
 }
 
-.vs-date-picker-row.has-timezone .vs-date-picker-timezone :deep(.vs-select) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+.vs-date-picker .vs-date-picker-timezone {
+    flex: 0 0 auto;
+    min-width: 16rem;
+    width: auto;
 }
 
-/* timezone select의 우측 border를 제거해 date input의 좌측 border와 겹치지 않게 */
-.vs-date-picker-row.has-timezone .vs-date-picker-timezone :deep(.vs-select-trigger) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+/*
+ * divider 자체 margin 으로 input ↔ select 간격을 일원화 (row 의 gap 은 사용하지 않음).
+ * row mode → 좌우 0.25rem, column(responsive) mode → 상하 0.2rem 으로 최소화.
+ */
+.vs-date-picker .vs-date-picker-divider {
+    flex: 0 0 auto;
+    --vs-divider-verticalMargin: 0 0.25rem;
+    --vs-divider-horizontalMargin: 0.2rem 0;
 }
 
-.vs-date-picker-row.has-timezone .vs-date-picker {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: none;
+/*
+ * VsDivider vertical 의 height: 100% 가 auto-height flex 부모(.vs-date-picker-row)에서 0 으로 계산되어
+ * divider 가 보이지 않는 문제 회피 — height: auto 로 override 해서 items-stretch 가 정상 동작하게 한다.
+ */
+.vs-date-picker .vs-date-picker-divider.vs-vertical {
+    height: auto;
+}
+
+/*
+ * Date input field 영역. 시각적 표시는 readonly VsInput 이 담당하고, 실제 picker 트리거는
+ * 1×1 크기로 숨겨진 native <input type="date|datetime-local|time|month"> 이 담당.
+ * wrapper 의 @click 으로 openPicker() 를 호출하므로 input 영역 어디든 클릭하면 picker 가 열린다.
+ */
+.vs-date-picker .vs-date-picker-input-wrapper {
+    @apply relative cursor-pointer;
+    flex: 1 1 0%;
+}
+
+.vs-date-picker .vs-date-picker-input-wrapper.vs-disabled,
+.vs-date-picker .vs-date-picker-input-wrapper.vs-readonly {
+    @apply cursor-not-allowed;
+}
+
+/*
+ * Hidden native input — visible UI 가 아니라 picker 트리거 / 값 갱신 용도.
+ */
+.vs-date-picker .vs-date-picker-native {
+    @apply pointer-events-none absolute opacity-0;
+    width: 1px;
+    height: 1px;
+    left: 0;
+    bottom: 0;
+}
+
+/*
+ * Calendar icon prepend 영역 — vs-button(ghost) 와 동일한 인터랙션 톤 (vlossom 디자인 토큰만 사용).
+ */
+.vs-date-picker .vs-date-picker-display .vs-prepend {
+    background-color: transparent;
+    transition: background-color 0.2s;
+}
+
+.vs-date-picker .vs-date-picker-input-wrapper:hover:not(.vs-readonly):not(.vs-disabled) .vs-prepend {
+    background-color: var(--vs-cs-bg-colored);
+}
+
+.vs-date-picker .vs-date-picker-icon {
+    @apply inline-flex items-center justify-center;
+    color: var(--vs-cs-font-colored);
+}
+
+/*
+ * responsive prop 활성 시: .vs-date-picker 자신의 width 가 768px 이하가 되면
+ * (container query) date input 과 timezone select 를 세로(flex column) 로 stack.
+ *   - timezone select 는 min-width 12rem 해제, 풀폭 사용
+ *   - vs-divider 는 vs-divider-responsive 가 horizontal 모양으로 자동 전환 (VsDivider.css)
+ */
+@container (max-width: 768px) {
+    .vs-date-picker.vs-responsive .vs-date-picker-row {
+        @apply flex-col;
+    }
+
+    .vs-date-picker.vs-responsive .vs-date-picker-timezone {
+        min-width: 0;
+        width: 100%;
+    }
 }

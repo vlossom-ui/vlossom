@@ -1,5 +1,6 @@
-import type { ComponentPublicInstance, CSSProperties } from 'vue';
+import type { ComponentPublicInstance } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
+import type { VsInputStyleSet } from '@/components/vs-input/types';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type { VsSelectStyleSet } from '@/components/vs-select/types';
 import type VsDatePicker from './VsDatePicker.vue';
@@ -50,14 +51,11 @@ export interface VsDatePickerRef
     currentTimezone: string;
 }
 
-export interface VsDatePickerStyleSet extends CSSProperties {
+export interface VsDatePickerStyleSet {
+    /** label / messages 를 담는 outer VsInputWrapper 의 styleSet. */
     $wrapper?: VsInputWrapperStyleSet;
-    $input?: CSSProperties;
-    $prepend?: CSSProperties;
-    $append?: CSSProperties;
-    $clearButton?: CSSProperties;
-    $iconButton?: CSSProperties;
+    /** 내부 VsInput (date input field) 에 forward 되는 styleSet. */
+    $input?: VsInputStyleSet;
+    /** Timezone select 의 styleSet. timezone prop 이 true 일 때만 적용. */
     $timezoneSelect?: VsSelectStyleSet;
-    $datePicker?: CSSProperties;
-    $row?: CSSProperties;
 }
