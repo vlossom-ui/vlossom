@@ -66,7 +66,6 @@ import {
     toRefs,
     ref,
     watch,
-    onMounted,
     type Ref,
     type PropType,
     type ComputedRef,
@@ -130,8 +129,8 @@ export default defineComponent({
             isSelected,
             isDisabled,
             isPrevious,
-            findActiveIndexForwardFrom,
             selectIndex: selectStep,
+            syncIndex,
             handleKeydown,
         } = useIndexSelector(steps, disabled);
 
@@ -175,21 +174,13 @@ export default defineComponent({
             return base;
         }
 
-        onMounted(() => {
-            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
-        });
-
-        watch(steps, () => {
-            selectStep(findActiveIndexForwardFrom(0));
-        });
-
         watch(selectedIndex, (index: number) => {
             stepRefs.value[index]?.focus();
             emit('update:modelValue', index);
             emit('change', index);
         });
 
-        watch(modelValue, selectStep);
+        watch(modelValue, syncIndex, { immediate: true });
 
         return {
             // Style

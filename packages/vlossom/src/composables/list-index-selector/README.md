@@ -69,7 +69,7 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
 | `isPrevious`                   | `index: number`                           | Returns `true` if `index` is before `selectedIndex`.                             |
 | `findActiveIndexForwardFrom`   | `targetIndex: number`                     | Finds the first non-disabled index at or after `targetIndex`.                    |
 | `findActiveIndexBackwardFrom`  | `targetIndex: number`                     | Finds the first non-disabled index at or before `targetIndex`.                   |
-| `selectIndex`                  | `index: number`                           | Sets `selectedIndex` to `index` if valid and not disabled; otherwise sets `NOT_SELECTED`. |
+| `selectIndex`                  | `index: number`                           | Sets `selectedIndex` to `index` if valid and not disabled. Out-of-range clears to `NOT_SELECTED`; disabled is a no-op (current selection is preserved). |
 | `handleKeydown`                | `e: KeyboardEvent, isVertical: boolean`   | Handles Arrow, Home, and End keys. Uses vertical/horizontal key mapping based on `isVertical`. |
 
 ## Hooks
@@ -80,4 +80,4 @@ No additional exported types. Uses `NOT_SELECTED` constant (`-1`) for the unsele
 ## Cautions
 
 - `selectedIndex` starts at `0` (the first item), not `NOT_SELECTED`. Ensure the first item is selectable on mount, or reset manually if needed.
-- If all items are disabled, `selectIndex` always sets `NOT_SELECTED`.
+- If all items are disabled (or the target index is disabled), `selectIndex` is a no-op: the current `selectedIndex` is preserved rather than cleared.
