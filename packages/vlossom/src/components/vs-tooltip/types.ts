@@ -16,4 +16,5 @@ export interface VsTooltipStyleSet {
     $arrowSize?: string;
 
     $tooltip?: CSSProperties;
+    $trigger?: CSSProperties;
 }
