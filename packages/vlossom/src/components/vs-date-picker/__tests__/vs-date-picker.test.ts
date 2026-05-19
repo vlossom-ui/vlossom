@@ -1,6 +1,6 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { nextTick, defineComponent, h } from 'vue';
+import { nextTick, defineComponent } from 'vue';
 import VsDatePicker from '../VsDatePicker.vue';
 import VsForm from '@/components/vs-form/VsForm.vue';
 import { DEFAULT_TIMEZONE_OPTIONS, type TimezoneOption } from '../types';

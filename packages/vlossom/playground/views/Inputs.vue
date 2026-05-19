@@ -362,7 +362,6 @@ export default defineComponent({
         const dpMin = new Date('2026-01-01T00:00:00Z');
         const dpMax = new Date('2026-12-31T00:00:00Z');
         function onTzChange(payload: { from: string; to: string }) {
-            // eslint-disable-next-line no-console
             console.info(`[VsDatePicker] timezone: ${payload.from} → ${payload.to}`);
         }
 

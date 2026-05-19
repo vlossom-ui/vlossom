@@ -140,7 +140,6 @@ import {
     type VsDatePickerType,
     type VsDatePickerValueType,
 } from './types';
-import { TYPE_TO_FORMAT } from './format-map';
 import { useVsDatePickerRules } from './vs-date-picker-rules';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -230,12 +229,7 @@ export default defineComponent({
         const { requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck } =
             useVsDatePickerRules(required, min, max, disabledDates);
 
-        const isoFormat = computed(() => TYPE_TO_FORMAT[type.value]);
-
-        const displayValue = computed(() => {
-            if (!inputValue.value) return '';
-            const wall = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
-            // 'date' → 'YYYY-MM-DD', 'time' → 'HH:mm', 'month' → 'YYYY-MM' 자르기
+        function sliceWall(wall: string): string {
             switch (type.value) {
                 case 'date':
                     return wall.slice(0, 10);
@@ -245,22 +239,24 @@ export default defineComponent({
                     return wall.slice(11, 16);
                 case 'month':
                     return wall.slice(0, 7);
+                default:
+                    return wall;
             }
+        }
+
+        const displayValue = computed(() => {
+            if (!inputValue.value) {
+                return '';
+            }
+            const wall = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
+            return sliceWall(wall);
         });
 
         function toDisplayBound(d: Date | undefined): string | undefined {
-            if (!d) return undefined;
-            const wall = dateUtil.toZonedIso(d, currentTimezone.value);
-            switch (type.value) {
-                case 'date':
-                    return wall.slice(0, 10);
-                case 'datetime-local':
-                    return wall;
-                case 'time':
-                    return wall.slice(11, 16);
-                case 'month':
-                    return wall.slice(0, 7);
+            if (!d) {
+                return undefined;
             }
+            return sliceWall(dateUtil.toZonedIso(d, currentTimezone.value));
         }
 
         const minDisplay = computed(() => toDisplayBound(min.value));
@@ -268,14 +264,19 @@ export default defineComponent({
 
         const normalizedStep = computed(() => {
             const s = step.value;
-            if (s === undefined) return undefined;
-            if (noStepNormalize.value) return s;
-            if (s >= 60) return s;
+            if (s === undefined) {
+                return undefined;
+            }
+            if (noStepNormalize.value) {
+                return s;
+            }
+            if (s >= 60) {
+                return s;
+            }
             const rounded = Math.ceil(s / 60) * 60;
-            // eslint-disable-next-line no-console
             console.warn(
                 `[VsDatePicker] step=${s}s is sub-minute; rounded to ${rounded}s. ` +
-                    `Pass noStepNormalize=true to disable.`,
+                    'Pass noStepNormalize=true to disable.',
             );
             return rounded;
         });
@@ -413,7 +414,9 @@ export default defineComponent({
 
         function openPicker() {
             const el = inputRef.value;
-            if (!el) return;
+            if (!el) {
+                return;
+            }
             const showPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;
             if (typeof showPicker === 'function') {
                 try {

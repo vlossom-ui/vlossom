@@ -23,7 +23,9 @@ function pad2(n: number): string {
 
 function parseZoned(iso: string): ZonedParts | null {
     const match = iso.match(ZONED_PATTERN);
-    if (!match) return null;
+    if (!match) {
+        return null;
+    }
     return {
         yyyy: Number(match[1]),
         mm: Number(match[2]),
@@ -50,8 +52,12 @@ function formatZoned(d: Date, tz: string): string | null {
     const dd = get('day');
     let HH = get('hour');
     const MM = get('minute');
-    if (!yyyy || !mm || !dd || !HH || !MM) return null;
-    if (HH === '24') HH = '00';
+    if (!yyyy || !mm || !dd || !HH || !MM) {
+        return null;
+    }
+    if (HH === '24') {
+        HH = '00';
+    }
     return `${yyyy}-${mm}-${dd}T${HH}:${MM}`;
 }
 
@@ -86,7 +92,9 @@ export const dateUtil = {
     fromIso(str: string, format: IsoFormat): Date | null {
         const pattern = ISO_PATTERNS[format];
         const match = str.match(pattern);
-        if (!match) return null;
+        if (!match) {
+            return null;
+        }
 
         let yyyy = 1970;
         let mm = 1;
@@ -117,7 +125,9 @@ export const dateUtil = {
         }
 
         const ms = Date.UTC(yyyy, mm - 1, dd, HH, MM);
-        if (Number.isNaN(ms)) return null;
+        if (Number.isNaN(ms)) {
+            return null;
+        }
         return new Date(ms);
     },
 
@@ -132,18 +142,26 @@ export const dateUtil = {
     },
 
     fromZonedIso(iso: string, tz: string): Date | null {
-        if (!dateUtil.isValidTimezone(tz)) return null;
+        if (!dateUtil.isValidTimezone(tz)) {
+            return null;
+        }
 
         const target = parseZoned(iso);
-        if (!target) return null;
+        if (!target) {
+            return null;
+        }
 
         let candidate = Date.UTC(target.yyyy, target.mm - 1, target.dd, target.HH, target.MM);
 
         for (let i = 0; i < 2; i++) {
             const formatted = formatZoned(new Date(candidate), tz);
-            if (!formatted) return null;
+            if (!formatted) {
+                return null;
+            }
             const back = parseZoned(formatted);
-            if (!back) return null;
+            if (!back) {
+                return null;
+            }
 
             const guessMs = Date.UTC(back.yyyy, back.mm - 1, back.dd, back.HH, back.MM);
             const targetMs = Date.UTC(
@@ -154,7 +172,9 @@ export const dateUtil = {
                 target.MM,
             );
             const diff = targetMs - guessMs;
-            if (diff === 0) return new Date(candidate);
+            if (diff === 0) {
+                return new Date(candidate);
+            }
             candidate += diff;
         }
 
@@ -162,7 +182,9 @@ export const dateUtil = {
     },
 
     isValidTimezone(tz: string): boolean {
-        if (!tz) return false;
+        if (!tz) {
+            return false;
+        }
         try {
             new Intl.DateTimeFormat('en-US', { timeZone: tz });
             return true;
