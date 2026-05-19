@@ -19,7 +19,7 @@
         </template>
 
         <div
-            :class="['vs-date-picker-row', colorSchemeClass, classObj]"
+            :class="['vs-date-picker-row', colorSchemeClass, classObj, { 'has-timezone': timezone }]"
             :style="{ ...componentInlineStyle, ...componentStyleSet.$row }"
         >
             <vs-select
@@ -68,6 +68,7 @@
                     :aria-required="required"
                     :aria-invalid="computedState === 'error' ? true : undefined"
                     :placeholder
+                    @click.stop="open"
                     @input.stop="onInput"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
@@ -414,7 +415,7 @@ export default defineComponent({
 
         function openPicker() {
             const el = inputRef.value;
-            if (!el) {
+            if (!el || computedDisabled.value || computedReadonly.value) {
                 return;
             }
             const showPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;

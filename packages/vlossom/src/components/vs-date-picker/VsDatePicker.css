@@ -10,7 +10,7 @@
 }
 
 .vs-date-picker {
-    @apply relative box-border flex flex-1 items-center overflow-hidden;
+    @apply relative box-border flex flex-1 cursor-pointer items-center overflow-hidden;
 
     border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
@@ -22,14 +22,20 @@
     color-scheme: light dark;
 
     input {
-        @apply h-full w-full border-none bg-transparent outline-none;
+        @apply h-full w-full cursor-pointer border-none bg-transparent outline-none;
 
         padding: 0 0.8rem;
         color: var(--vs-cs-font);
         font-size: var(--vs-font-size-md);
     }
 
-    /* native picker indicator는 별도 버튼으로 대체 */
+    input:disabled,
+    input[readonly] {
+        @apply cursor-not-allowed;
+    }
+
+    /* native picker indicator는 별도 아이콘 버튼으로 대체하되,
+       input 영역 클릭 시 open()이 호출되어 native picker를 띄움 */
     input::-webkit-calendar-picker-indicator {
         @apply hidden;
     }
@@ -83,4 +89,30 @@
             outline: 2px solid var(--vs-cs-font);
         }
     }
+}
+
+/* ============================================================
+   has-timezone: timezone select와 date picker를 단일 input-group으로
+   통합 (gap 제거, 인접 경계 합치기, 좌우 border-radius 분배)
+   ============================================================ */
+
+.vs-date-picker-row.has-timezone {
+    @apply gap-0;
+}
+
+.vs-date-picker-row.has-timezone .vs-date-picker-timezone :deep(.vs-select) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* timezone select의 우측 border를 제거해 date input의 좌측 border와 겹치지 않게 */
+.vs-date-picker-row.has-timezone .vs-date-picker-timezone :deep(.vs-select-trigger) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.vs-date-picker-row.has-timezone .vs-date-picker {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
 }

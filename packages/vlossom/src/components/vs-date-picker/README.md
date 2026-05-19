@@ -121,9 +121,18 @@ Default options: 12 IANA zones (`Etc/UTC`, Los Angeles, New York, London, Paris,
 ## Limitations
 
 - **`format` prop is not supported.** Native pickers respect the browser/OS locale; the library cannot override this. Use a custom rendering layer if you need a specific visual format.
-- **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically may silently fall back to `focus()`.
+- **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically (outside an event handler) may silently fall back to `focus()`.
 - **Per-date disabled cells in the native calendar** are not visually marked. `disabledDates` validates on selection (rule-based) but does not gray out cells in the native picker UI.
 - **`step` below 60 seconds** is rounded up to the nearest minute with a `console.warn`. Pass `noStepNormalize` to disable this safeguard.
+
+### Picker Trigger
+
+The native calendar opens when:
+- the input area is clicked, or
+- the trailing calendar icon button is pressed, or
+- `dpRef.value.open()` is invoked inside a user-gesture handler.
+
+When `disabled` or `readonly` is set, all three triggers are no-ops.
 
 ## Custom Rules
 

@@ -105,16 +105,9 @@
                 :grid="{ xs: 12, md: 6, lg: 6 }"
             />
             <vs-date-picker
-                v-model="dpStyled"
-                type="date"
-                label="Custom StyleSet"
-                :style-set="dpCustomStyleSet"
-                :grid="{ xs: 12, md: 6, lg: 3 }"
-            />
-            <vs-date-picker
                 v-model="dpInvalid"
                 type="date"
-                label="Invalid handler"
+                label="DisabledDates + @invalid"
                 :disabled-dates="dpHolidays"
                 @invalid="onDpInvalid"
                 :grid="{ xs: 12, md: 6, lg: 3 }"
@@ -128,7 +121,7 @@
                 @timezone-change="onTzChange"
                 :grid="{ xs: 12, md: 6, lg: 6 }"
             />
-            <div v-if="dpLastInvalid" :grid="{ xs: 12 }" class="text-sm text-red-500">
+            <div v-if="dpLastInvalid" class="text-sm text-red-500">
                 Last invalid: {{ dpLastInvalid.reason }} (input: {{ dpLastInvalid.input }})
             </div>
         </vs-form>
@@ -386,7 +379,6 @@ export default defineComponent({
         const dpRange: Ref<Date | null> = ref(null);
         const dpRequired: Ref<Date | null> = ref(null);
         const dpTz: Ref<Date | null> = ref(new Date('2026-05-18T15:30:00Z'));
-        const dpStyled: Ref<Date | null> = ref(null);
         const dpInvalid: Ref<Date | null> = ref(null);
         const dpTzCustom: Ref<Date | null> = ref(null);
         const dpMin = new Date('2026-01-01T00:00:00Z');
@@ -395,11 +387,6 @@ export default defineComponent({
             new Date('2026-05-05T00:00:00Z'),
             new Date('2026-12-25T00:00:00Z'),
         ];
-        const dpCustomStyleSet = {
-            borderRadius: '12px',
-            $datePicker: { borderColor: '#1e88e5' },
-            $input: { fontSize: '1rem', fontWeight: '600' },
-        };
         const dpAsiaTz = [
             { value: 'Asia/Seoul', label: '서울 (UTC+09:00)' },
             { value: 'Asia/Tokyo', label: '도쿄 (UTC+09:00)' },
@@ -452,13 +439,11 @@ export default defineComponent({
             dpRange,
             dpRequired,
             dpTz,
-            dpStyled,
             dpInvalid,
             dpTzCustom,
             dpMin,
             dpMax,
             dpHolidays,
-            dpCustomStyleSet,
             dpAsiaTz,
             dpLastInvalid,
             onTzChange,

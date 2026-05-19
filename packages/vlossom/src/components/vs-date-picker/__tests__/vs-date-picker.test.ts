@@ -113,6 +113,34 @@ describe('VsDatePicker', () => {
             expect(showPicker).toHaveBeenCalled();
         });
 
+        it('input 클릭 시 native picker가 열린다 (open 호출)', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: null, type: 'date' },
+            });
+            const inputWrapper = findDateInput(wrapper);
+            const input = inputWrapper.element as HTMLInputElement & { showPicker?: () => void };
+            const showPicker = vi.fn();
+            input.showPicker = showPicker;
+            await inputWrapper.trigger('click');
+            expect(showPicker).toHaveBeenCalled();
+        });
+
+        it('readonly/disabled 상태에서는 input 클릭으로 picker가 열리지 않는다', async () => {
+            for (const propKey of ['readonly', 'disabled'] as const) {
+                const wrapper = mount(VsDatePicker, {
+                    props: { modelValue: null, type: 'date', [propKey]: true },
+                });
+                const inputWrapper = findDateInput(wrapper);
+                const input = inputWrapper.element as HTMLInputElement & {
+                    showPicker?: () => void;
+                };
+                const showPicker = vi.fn();
+                input.showPicker = showPicker;
+                await inputWrapper.trigger('click');
+                expect(showPicker).not.toHaveBeenCalled();
+            }
+        });
+
         it('aria-required와 aria-invalid가 정상 forward된다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date', required: true },
