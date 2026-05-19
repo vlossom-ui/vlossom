@@ -22,7 +22,11 @@
             <div class="vs-date-picker-row">
                 <div
                     class="vs-date-picker-input-wrapper"
-                    :class="{ 'vs-disabled': computedDisabled, 'vs-readonly': computedReadonly }"
+                    :class="{
+                        'vs-disabled': computedDisabled,
+                        'vs-readonly': computedReadonly,
+                        'vs-focus-within': !computedDisabled && !computedReadonly,
+                    }"
                     @click="open"
                 >
                     <vs-input
@@ -439,15 +443,18 @@ export default defineComponent({
             if (!el || computedDisabled.value || computedReadonly.value) {
                 return;
             }
+            /*
+             * focus 를 먼저 부여해서 wrapper 의 :focus-within outline 이 표시되게 한다.
+             * (showPicker() 자체는 focus 를 자동으로 부여하지 않음)
+             */
+            el.focus();
             const showPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;
             if (typeof showPicker === 'function') {
                 try {
                     showPicker.call(el);
                 } catch {
-                    el.focus();
+                    /* picker open 이 거부되어도 focus 는 유지 */
                 }
-            } else {
-                el.focus();
             }
         }
 

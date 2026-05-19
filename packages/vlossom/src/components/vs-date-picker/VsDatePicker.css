@@ -59,6 +59,8 @@
 
 /*
  * Hidden native input — visible UI 가 아니라 picker 트리거 / 값 갱신 용도.
+ * focus 시 outline 은 wrapper (.vs-focus-within) 에서 표시하므로 input 자체의
+ * 브라우저 기본 outline 은 제거한다.
  */
 .vs-date-picker .vs-date-picker-native {
     @apply pointer-events-none absolute opacity-0;
@@ -66,6 +68,7 @@
     height: 1px;
     left: 0;
     bottom: 0;
+    outline: none;
 }
 
 /*
