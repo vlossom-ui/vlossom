@@ -73,6 +73,7 @@
         <h3 class="mb-4 font-semibold">VsDatePicker</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-date-picker v-model="dpDate" type="date" label="Date" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-date-picker
                 v-model="dpDatetime"
                 type="datetime-local"
@@ -81,34 +82,36 @@
             />
             <vs-date-picker v-model="dpTime" type="time" label="Time" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-date-picker v-model="dpMonth" type="month" label="Month" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker label="Disabled" type="date" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-date-picker
-                v-model="dpRange"
+                :model-value="dpReadonlyValue"
+                label="Readonly"
                 type="date"
-                label="2026년 내"
-                :min="dpMin"
-                :max="dpMax"
+                readonly
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
             <vs-date-picker
                 v-model="dpRequired"
-                type="date"
                 label="Required"
+                type="date"
                 required
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
             <vs-date-picker
                 v-model="dpTz"
                 type="datetime-local"
-                label="Datetime + Timezone"
+                label="Datetime + Timezone (responsive)"
                 timezone
+                responsive
                 @timezone-change="onTzChange"
                 :grid="{ xs: 12, md: 6, lg: 6 }"
             />
             <vs-date-picker
                 v-model="dpTzCustom"
                 type="datetime-local"
-                label="Custom Timezones (Asia)"
+                label="Custom Timezones (Asia, responsive)"
                 timezone
+                responsive
                 :timezone-options="dpAsiaTz"
                 @timezone-change="onTzChange"
                 :grid="{ xs: 12, md: 6, lg: 6 }"
@@ -365,12 +368,10 @@ export default defineComponent({
         const dpDatetime: Ref<Date | null> = ref(null);
         const dpTime: Ref<Date | null> = ref(null);
         const dpMonth: Ref<Date | null> = ref(null);
-        const dpRange: Ref<Date | null> = ref(null);
         const dpRequired: Ref<Date | null> = ref(null);
+        const dpReadonlyValue: Ref<Date | null> = ref(new Date('2026-05-18T00:00:00Z'));
         const dpTz: Ref<Date | null> = ref(new Date('2026-05-18T15:30:00Z'));
         const dpTzCustom: Ref<Date | null> = ref(null);
-        const dpMin = new Date('2026-01-01T00:00:00Z');
-        const dpMax = new Date('2026-12-31T00:00:00Z');
         const dpAsiaTz = [
             { value: 'Asia/Seoul', label: '서울 (UTC+09:00)' },
             { value: 'Asia/Tokyo', label: '도쿄 (UTC+09:00)' },
@@ -416,12 +417,10 @@ export default defineComponent({
             dpDatetime,
             dpTime,
             dpMonth,
-            dpRange,
             dpRequired,
+            dpReadonlyValue,
             dpTz,
             dpTzCustom,
-            dpMin,
-            dpMax,
             dpAsiaTz,
             onTzChange,
         };
