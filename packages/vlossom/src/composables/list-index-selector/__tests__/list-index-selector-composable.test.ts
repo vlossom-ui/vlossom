@@ -187,7 +187,7 @@ describe('list-index-selector-composable', () => {
             expect(selectedIndex.value).toBe(1);
         });
 
-        it('비활성화된 인덱스를 선택하면 NOT_SELECTED가 설정되어야 한다', () => {
+        it('비활성화된 인덱스를 선택하면 현재 선택이 유지되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref((item: string, index: number) => index === 1);
@@ -198,7 +198,7 @@ describe('list-index-selector-composable', () => {
             selectIndex(1);
 
             // then
-            expect(selectedIndex.value).toBe(-1);
+            expect(selectedIndex.value).toBe(0);
         });
 
         it('범위를 벗어난 인덱스를 선택하면 NOT_SELECTED가 설정되어야 한다', () => {
@@ -221,7 +221,7 @@ describe('list-index-selector-composable', () => {
             expect(selectedIndex.value).toBe(-1);
         });
 
-        it('모든 항목이 비활성화된 경우 NOT_SELECTED가 설정되어야 한다', () => {
+        it('모든 항목이 비활성화된 경우 현재 선택이 유지되어야 한다', () => {
             // given
             const list = ref(['item1', 'item2', 'item3']);
             const disabled = ref(true);
@@ -232,7 +232,7 @@ describe('list-index-selector-composable', () => {
             selectIndex(1);
 
             // then
-            expect(selectedIndex.value).toBe(-1);
+            expect(selectedIndex.value).toBe(0);
         });
     });
 

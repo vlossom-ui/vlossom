@@ -261,7 +261,7 @@ describe('VsSteps', () => {
             expect(wrapper.emitted('change')?.[0]).toEqual([2]);
         });
 
-        it('함수를 통해 비활성화된 스텝을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('함수를 통해 비활성화된 스텝을 클릭하면 이벤트가 발생하지 않고 현재 선택이 유지되어야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -275,30 +275,24 @@ describe('VsSteps', () => {
             await stepItems[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.emitted('change')).toBeFalsy();
         });
 
-        it('전체 비활성화된 스텝을 클릭하면 NOT_SELECTED(-1)로 이벤트가 발생해야 한다', async () => {
+        it('전체 비활성화된 상태로 마운트되어도 modelValue가 유지된다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
                     steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
                     disabled: true,
                 },
             });
-
-            // when
-            const stepItems = wrapper.findAll('.vs-step-item');
-            await stepItems[0].trigger('click');
+            await nextTick();
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
-            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([-1]);
-            expect(wrapper.emitted('change')).toBeTruthy();
-            expect(wrapper.emitted('change')?.[0]).toEqual([-1]);
+            expect(wrapper.vm.selectedIndex).toBe(1);
+            expect(wrapper.vm.selectedIndex).not.toBe(-1);
         });
     });
 
@@ -344,8 +338,8 @@ describe('VsSteps', () => {
                     disabled: (step: string, index: number) => index === 3,
                 },
                 slots: {
-                    step: `<span class="custom-step" 
-                        :data-selected="isSelected" 
+                    step: `<span class="custom-step"
+                        :data-selected="isSelected"
                         :data-previous="isPrevious"
                         :data-disabled="isDisabled">
                         {{ index }}
@@ -379,7 +373,7 @@ describe('VsSteps', () => {
                     disabled: (step: string, index: number) => index === 2,
                 },
                 slots: {
-                    label: `<span class="custom-label" 
+                    label: `<span class="custom-label"
                         :data-selected="isSelected"
                         :data-previous="isPrevious"
                         :data-disabled="isDisabled">
@@ -430,7 +424,7 @@ describe('VsSteps', () => {
             expect(stepItems[3].classes()).not.toContain('vs-selected');
         });
 
-        it('steps 배열이 변경되면 첫 번째 활성 스텝으로 이동해야 한다', async () => {
+        it('steps 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
             // given
             const wrapper = mount(VsSteps, {
                 props: {
@@ -446,10 +440,31 @@ describe('VsSteps', () => {
             await nextTick();
 
             // then
-            expect(wrapper.emitted('update:modelValue')).toBeTruthy();
             const stepItems = wrapper.findAll('.vs-step-item');
             expect(stepItems).toHaveLength(2);
-            expect(stepItems[0].classes()).toContain('vs-selected');
+            expect(stepItems[0].classes()).not.toContain('vs-selected');
+            expect(stepItems[1].classes()).not.toContain('vs-selected');
+        });
+
+        it('steps 길이가 변해도 현재 선택이 여전히 유효 범위에 있으면 유지되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSteps, {
+                props: {
+                    steps: ['Step 1', 'Step 2', 'Step 3'],
+                    modelValue: 1,
+                },
+            });
+
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ steps: ['New Step 1', 'New Step 2', 'New Step 3', 'New Step 4'] });
+            await nextTick();
+
+            // then
+            const stepItems = wrapper.findAll('.vs-step-item');
+            expect(stepItems).toHaveLength(4);
+            expect(stepItems[1].classes()).toContain('vs-selected');
         });
     });
 
