@@ -1,4 +1,4 @@
-import { computed, ref, type Ref } from 'vue';
+import { computed, ref, watch, type Ref } from 'vue';
 import { NOT_SELECTED } from '@/declaration';
 
 export function useIndexSelector(
@@ -79,12 +79,22 @@ export function useIndexSelector(
     }
 
     function selectIndex(index: number) {
-        if (isOutOfRange(index) || isAllDisabled() || isDisabled(index)) {
+        if (isOutOfRange(index)) {
             selectedIndex.value = NOT_SELECTED;
             return;
         }
-
+        if (isAllDisabled() || isDisabled(index)) {
+            return;
+        }
         selectedIndex.value = index;
+    }
+
+    function syncIndex(index: number) {
+        if (isOutOfRange(index)) {
+            selectedIndex.value = NOT_SELECTED;
+        } else {
+            selectedIndex.value = index;
+        }
     }
 
     const isFirstEdge = computed(() => {
@@ -124,6 +134,15 @@ export function useIndexSelector(
         }
     }
 
+    watch(
+        () => list.value.length,
+        () => {
+            if (isOutOfRange(selectedIndex.value)) {
+                selectedIndex.value = NOT_SELECTED;
+            }
+        },
+    );
+
     return {
         selectedIndex,
         isSelected,
@@ -133,6 +152,7 @@ export function useIndexSelector(
         findActiveIndexForwardFrom,
         findActiveIndexBackwardFrom,
         selectIndex,
+        syncIndex,
         handleKeydown,
         isFirstEdge,
         isLastEdge,

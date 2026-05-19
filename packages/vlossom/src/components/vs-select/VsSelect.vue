@@ -149,9 +149,7 @@ import {
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
-import { useSelectValue } from './composables/select-value-composable';
-import { useSelectSearch } from './composables/select-search-composable';
-import { useSelectKeyboard } from './composables/select-keyboard-composable';
+import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
 
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
