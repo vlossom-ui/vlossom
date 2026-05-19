@@ -69,6 +69,23 @@
 }
 
 /*
+ * VsInput 이 readonly 라서 .vs-input 에 .vs-readonly (pointer-events:none) 가 붙으면
+ * .vs-input:hover .vs-clear-button.show 의 hover 가 작동하지 않는다.
+ * VsDatePicker 의 display input 은 picker 트리거를 위한 readonly 라 input 입력 자체는
+ * readonly attr 로 이미 차단되므로, .vs-input 의 pointer-events 만 다시 살려 hover/click 을
+ * 회복시킨다 → 일반 VsInput 과 동일한 hover-to-show clear UX 가 유지된다.
+ * (cursor 도 pointer 로 통일해서 "클릭하면 picker 가 열린다" 시각 단서 제공)
+ */
+.vs-date-picker .vs-date-picker-display .vs-input.vs-readonly {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.vs-date-picker .vs-date-picker-display .vs-input.vs-readonly input {
+    cursor: pointer;
+}
+
+/*
  * Calendar icon prepend 영역 — vs-button(ghost) 와 동일한 인터랙션 톤 (vlossom 디자인 토큰만 사용).
  */
 .vs-date-picker .vs-date-picker-display .vs-prepend {
