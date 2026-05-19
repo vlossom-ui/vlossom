@@ -59,6 +59,8 @@ export { default as VsCheckboxSet } from './vs-checkbox/VsCheckboxSet.vue';
 export { default as VsChip } from './vs-chip/VsChip.vue';
 export { default as VsContainer } from './vs-container/VsContainer.vue';
 export { default as VsDatePicker } from './vs-date-picker/VsDatePicker.vue';
+export { DEFAULT_TIMEZONE_OPTIONS } from './vs-date-picker/types';
+export { TYPE_TO_FORMAT as VS_DATE_PICKER_FORMAT_MAP } from './vs-date-picker/format-map';
 export { default as VsDimmed } from './vs-dimmed/VsDimmed.vue';
 export { default as VsDivider } from './vs-divider/VsDivider.vue';
 export { default as VsDrawer } from './vs-drawer/VsDrawer.vue';
