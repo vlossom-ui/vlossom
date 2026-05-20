@@ -197,62 +197,20 @@ export default defineComponent({
             canSelectDate,
         );
 
-        /*
-         * placeholder 가 명시되지 않은 경우 type 별 기본 hint 를 자동 제공해 readonly display
-         * 가 비어있는 상태에서도 사용자가 입력 포맷을 알 수 있게 한다.
-         */
         const computedPlaceholder = computed(() => {
             if (placeholder.value) {
                 return placeholder.value;
             }
-            switch (type.value) {
-                case 'date':
-                    return 'YYYY-MM-DD';
-                case 'datetime-local':
-                    return 'YYYY-MM-DD HH:MM';
-                case 'time':
-                    return 'HH:MM';
-                case 'month':
-                    return 'YYYY-MM';
-                default:
-                    return '';
-            }
+            return TYPE_TO_ISO_FORMAT[type.value] ?? '';
         });
-
-        function toDisplayIso(zonedIso: string): string {
-            const parsed = dateUtil.fromIso(zonedIso, 'YYYY-MM-DDTHH:mm');
-            if (!parsed) {
-                return zonedIso;
-            }
-            return dateUtil.toIso(parsed, TYPE_TO_ISO_FORMAT[type.value]);
-        }
 
         const displayValue = computed(() => {
             if (!inputValue.value) {
                 return '';
             }
             const zonedIso = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
-            return toDisplayIso(zonedIso);
+            return dateUtil.formatIso(zonedIso, TYPE_TO_ISO_FORMAT[type.value]);
         });
-
-        function toTypedIso(value: string): string {
-            switch (type.value) {
-                case 'datetime-local':
-                    return value.slice(0, 16);
-                case 'time':
-                    return value.slice(0, 5);
-                default:
-                    return value;
-            }
-        }
-
-        function expandToFullIso(value: string): string | null {
-            const parsed = dateUtil.fromIso(toTypedIso(value), TYPE_TO_ISO_FORMAT[type.value]);
-            if (!parsed) {
-                return null;
-            }
-            return dateUtil.toIso(parsed, 'YYYY-MM-DDTHH:mm');
-        }
 
         function onDateInput(value: string | number | null) {
             const raw = value?.toString() ?? '';
@@ -261,12 +219,7 @@ export default defineComponent({
                 return;
             }
 
-            const fullIso = expandToFullIso(raw);
-            if (!fullIso) {
-                emit('invalid', { reason: 'parse', input: raw });
-                return;
-            }
-
+            const fullIso = dateUtil.toDateTimeIso(raw, TYPE_TO_ISO_FORMAT[type.value]);
             const tz = type.value === 'time' ? 'Etc/UTC' : currentTimezone.value;
             const utc = dateUtil.fromZonedIso(fullIso, tz);
             if (!utc) {
