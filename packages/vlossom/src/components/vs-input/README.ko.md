@@ -166,4 +166,3 @@ interface VsInputStyleSet extends CSSProperties {
 | `validate` | -        | 유효성 검사를 실행하고 결과를 반환합니다.   |
 | `clear`    | -        | 입력 값을 초기화합니다.                     |
 | `select`   | -        | 입력 요소의 모든 텍스트를 선택합니다.       |
-| `showPicker` | -     | 입력 요소에 포커스를 주고 가능한 경우 네이티브 picker를 엽니다. |

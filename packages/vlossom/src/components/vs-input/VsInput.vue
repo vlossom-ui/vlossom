@@ -37,7 +37,6 @@
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
-                :aria-invalid="computedState === 'error' ? true : undefined"
                 :placeholder
                 @input.stop="onInput"
                 @focus.stop="onFocus"
@@ -289,7 +288,6 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
-            computedState,
             renderClearButton,
             shake,
             stateBoxClasses,

@@ -166,4 +166,3 @@ interface VsInputStyleSet extends CSSProperties {
 | `validate` | -          | Triggers validation and returns the result.         |
 | `clear`    | -          | Clears the input value.                             |
 | `select`   | -          | Selects all text in the input element.              |
-| `showPicker` | -       | Focuses the input and opens its native picker when available. |
