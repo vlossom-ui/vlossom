@@ -13,6 +13,7 @@ export type { VsInput };
 
 export interface VsInputRef extends ComponentPublicInstance<typeof VsInput>, FocusableRef, FormChildRef {
     select: () => void;
+    showPicker: () => void;
 }
 
 export type VsInputValueType = string | number | null;

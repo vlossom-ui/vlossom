@@ -37,6 +37,7 @@
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
+                :aria-invalid="computedState === 'error' ? true : undefined"
                 :placeholder
                 @input.stop="onInput"
                 @focus.stop="onFocus"
@@ -110,7 +111,7 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    // expose: ['focus', 'blur', 'validate', 'clear', 'select'],
+    // expose: ['focus', 'blur', 'validate', 'clear', 'select', 'showPicker'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -248,6 +249,25 @@ export default defineComponent({
             inputRef.value?.select();
         }
 
+        function showPicker() {
+            const el = inputRef.value;
+            if (!el || computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            el.focus();
+            const nativeShowPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;
+            if (typeof nativeShowPicker !== 'function') {
+                return;
+            }
+
+            try {
+                nativeShowPicker.call(el);
+            } catch {
+                /* unsupported picker states still keep the focus fallback */
+            }
+        }
+
         function clearWithFocus() {
             onClear();
             focus();
@@ -269,6 +289,7 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
+            computedState,
             renderClearButton,
             shake,
             stateBoxClasses,
@@ -279,6 +300,7 @@ export default defineComponent({
             focus,
             blur,
             select,
+            showPicker,
             clear,
             onFocus,
             onBlur,

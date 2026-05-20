@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsInput from './../VsInput.vue';
 
@@ -159,6 +159,7 @@ describe('VsInput', () => {
             // then
             const vsInput = wrapper.find('.vs-input');
             expect(vsInput.classes()).toContain('vs-state-error');
+            expect(wrapper.find('input').attributes('aria-invalid')).toBe('true');
         });
 
         it('state를 warning으로 설정하면 vs-state-warning 클래스가 추가되어야 한다', () => {
@@ -557,6 +558,58 @@ describe('VsInput', () => {
 
             // cleanup
             wrapper.unmount();
+        });
+
+        it('showPicker() 메서드 호출 시 input에 focus 후 native showPicker를 호출해야 한다', () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    type: 'date',
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input').element as HTMLInputElement & {
+                showPicker?: () => void;
+            };
+            const showPicker = vi.fn();
+            input.showPicker = showPicker;
+
+            // when
+            wrapper.vm.showPicker();
+
+            // then
+            expect(document.activeElement).toBe(input);
+            expect(showPicker).toHaveBeenCalled();
+
+            // cleanup
+            wrapper.unmount();
+        });
+
+        it('showPicker() 메서드는 readonly/disabled 상태에서 native showPicker를 호출하지 않아야 한다', () => {
+            for (const propKey of ['readonly', 'disabled'] as const) {
+                // given
+                const wrapper = mount(VsInput, {
+                    props: {
+                        type: 'date',
+                        [propKey]: true,
+                    },
+                    attachTo: document.body,
+                });
+                const input = wrapper.find('input').element as HTMLInputElement & {
+                    showPicker?: () => void;
+                };
+                const showPicker = vi.fn();
+                input.showPicker = showPicker;
+
+                // when
+                wrapper.vm.showPicker();
+
+                // then
+                expect(showPicker).not.toHaveBeenCalled();
+
+                // cleanup
+                wrapper.unmount();
+            }
         });
     });
 
