@@ -60,6 +60,44 @@ describe('date-util', () => {
         });
     });
 
+    describe('formatIso (YYYY-MM-DDTHH:mm 기반 포맷 추출)', () => {
+        const dateTimeIso = '2026-05-18T15:30';
+
+        it('YYYY-MM-DD 포맷을 추출한다', () => {
+            expect(dateUtil.formatIso(dateTimeIso, 'YYYY-MM-DD')).toBe('2026-05-18');
+        });
+
+        it('YYYY-MM-DDTHH:mm 포맷을 유지한다', () => {
+            expect(dateUtil.formatIso(dateTimeIso, 'YYYY-MM-DDTHH:mm')).toBe('2026-05-18T15:30');
+        });
+
+        it('HH:mm 포맷을 추출한다', () => {
+            expect(dateUtil.formatIso(dateTimeIso, 'HH:mm')).toBe('15:30');
+        });
+
+        it('YYYY-MM 포맷을 추출한다', () => {
+            expect(dateUtil.formatIso(dateTimeIso, 'YYYY-MM')).toBe('2026-05');
+        });
+    });
+
+    describe('toDateTimeIso (입력 포맷을 YYYY-MM-DDTHH:mm로 확장)', () => {
+        it('YYYY-MM-DD 값을 date-time ISO로 확장한다', () => {
+            expect(dateUtil.toDateTimeIso('2026-05-18', 'YYYY-MM-DD')).toBe('2026-05-18T00:00');
+        });
+
+        it('YYYY-MM-DDTHH:mm 값은 date-time ISO로 유지한다', () => {
+            expect(dateUtil.toDateTimeIso('2026-05-18T15:30', 'YYYY-MM-DDTHH:mm')).toBe('2026-05-18T15:30');
+        });
+
+        it('HH:mm 값을 1970-01-01 기준 date-time ISO로 확장한다', () => {
+            expect(dateUtil.toDateTimeIso('15:30', 'HH:mm')).toBe('1970-01-01T15:30');
+        });
+
+        it('YYYY-MM 값을 1일 00:00 기준 date-time ISO로 확장한다', () => {
+            expect(dateUtil.toDateTimeIso('2026-05', 'YYYY-MM')).toBe('2026-05-01T00:00');
+        });
+    });
+
     describe('toZonedIso (UTC → 지정 timezone의 화면 표시값)', () => {
         const sample = new Date('2026-05-18T15:30:00Z');
 

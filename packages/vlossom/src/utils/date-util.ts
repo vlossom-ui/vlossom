@@ -157,6 +157,32 @@ export const dateUtil = {
         return new Date(timestamp);
     },
 
+    formatIso(dateTimeIso: string, format: IsoFormat): string {
+        switch (format) {
+            case 'YYYY-MM-DD':
+                return dateTimeIso.slice(0, 10);
+            case 'YYYY-MM-DDTHH:mm':
+                return dateTimeIso.slice(0, 16);
+            case 'HH:mm':
+                return dateTimeIso.slice(11, 16);
+            case 'YYYY-MM':
+                return dateTimeIso.slice(0, 7);
+        }
+    },
+
+    toDateTimeIso(value: string, format: IsoFormat): string {
+        switch (format) {
+            case 'YYYY-MM-DD':
+                return `${value.slice(0, 10)}T00:00`;
+            case 'YYYY-MM-DDTHH:mm':
+                return value.slice(0, 16);
+            case 'HH:mm':
+                return `1970-01-01T${value.slice(0, 5)}`;
+            case 'YYYY-MM':
+                return `${value.slice(0, 7)}-01T00:00`;
+        }
+    },
+
     toZonedIso(date: Date, timezone: string): string {
         if (!dateUtil.isValidTimezone(timezone)) {
             return '';
