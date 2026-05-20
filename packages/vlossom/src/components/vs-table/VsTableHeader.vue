@@ -54,8 +54,8 @@ import {
 } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@lucide/vue';
 
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';

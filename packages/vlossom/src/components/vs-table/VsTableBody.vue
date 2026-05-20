@@ -59,8 +59,8 @@ import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/tabl
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
 import { getRowId, getRowItem } from './models/table-model';
-import { BanIcon } from '@lucide/vue';
 
+import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';

@@ -13,8 +13,8 @@ import { VsComponent, type UIState } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsMessageStyleSet } from './types';
-import { CircleAlertIcon, CircleCheckIcon, InfoIcon, MessageSquareIcon, TriangleAlertIcon } from '@lucide/vue';
 
+import { CircleAlertIcon, CircleCheckIcon, InfoIcon, MessageSquareIcon, TriangleAlertIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsMessage;

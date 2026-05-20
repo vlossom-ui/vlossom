@@ -31,8 +31,8 @@ import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
-import { XIcon } from '@lucide/vue';
 
+import { XIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsChip;

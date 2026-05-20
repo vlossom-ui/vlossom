@@ -95,8 +95,8 @@ import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
-import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 
+import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 

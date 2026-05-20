@@ -10,8 +10,8 @@ import { type VsTableTag, type VsTableCell, TABLE_STYLE_SET_TOKEN, type VsTableS
 import { isVsTableBodyRow } from './models/table-model';
 import { TABLE_DRAG_HANDLE_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { GripVerticalIcon } from '@lucide/vue';
 
+import { GripVerticalIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 
 export default defineComponent({

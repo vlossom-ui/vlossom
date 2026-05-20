@@ -47,6 +47,7 @@ import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import { clipboardUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import type { VsTextWrapStyleSet } from './types';
+
 import { CheckIcon, CopyIcon, LinkIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 

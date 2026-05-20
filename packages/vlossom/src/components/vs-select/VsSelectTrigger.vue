@@ -65,8 +65,8 @@ import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type 
 import { VsComponent, type ColorScheme, type OptionItem, type UIState } from '@/declaration';
 import { useStateClass, useStyleSet } from '@/composables';
 import type { VsSelectStyleSet } from './types';
-import { ChevronDownIcon, XIcon } from '@lucide/vue';
 
+import { ChevronDownIcon, XIcon } from '@lucide/vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 

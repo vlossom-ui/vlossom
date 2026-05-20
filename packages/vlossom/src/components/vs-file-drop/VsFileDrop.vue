@@ -108,11 +108,11 @@ import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration'
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
-import { PaperclipIcon, XIcon } from '@lucide/vue';
 
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
 
+import { PaperclipIcon, XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';

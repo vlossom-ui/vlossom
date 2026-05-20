@@ -72,11 +72,11 @@ import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type 
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
-import { XIcon } from '@lucide/vue';
 
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
 
+import { XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 

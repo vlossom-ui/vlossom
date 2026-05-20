@@ -36,8 +36,8 @@ import {
     type VsTableStyleSet,
 } from './types';
 import { getRowItem, isVsTableBodyRow } from './models/table-model';
-import { ChevronDownIcon } from '@lucide/vue';
 
+import { ChevronDownIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 

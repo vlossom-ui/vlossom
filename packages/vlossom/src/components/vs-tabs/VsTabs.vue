@@ -76,8 +76,8 @@ import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/pro
 import { NOT_SELECTED, VsComponent } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTabsStyleSet } from './types';
-import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 
+import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';

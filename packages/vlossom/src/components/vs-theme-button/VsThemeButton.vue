@@ -26,8 +26,8 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsThemeButtonStyleSet } from './types';
-import { MoonIcon, SunIcon } from '@lucide/vue';
 
+import { MoonIcon, SunIcon } from '@lucide/vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
 
