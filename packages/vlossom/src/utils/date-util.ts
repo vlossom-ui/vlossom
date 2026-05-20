@@ -83,22 +83,6 @@ function getTimezoneOffsetInMs(date: Date, timezone: string): number | null {
     return displayedTimestamp === null ? null : displayedTimestamp - date.getTime();
 }
 
-function getUtcTimestampForDisplayedTime(displayedTimestamp: number, timezone: string): number | null {
-    const firstOffset = getTimezoneOffsetInMs(new Date(displayedTimestamp), timezone);
-    if (firstOffset === null) {
-        return null;
-    }
-
-    const roughUtcTimestamp = displayedTimestamp - firstOffset;
-    // DST 경계에서는 처음 계산한 offset과 실제 UTC 시점의 offset이 다를 수 있다.
-    const correctedOffset = getTimezoneOffsetInMs(new Date(roughUtcTimestamp), timezone);
-    if (correctedOffset === null) {
-        return null;
-    }
-
-    return displayedTimestamp - correctedOffset;
-}
-
 export const dateUtil = {
     isValidTimezone(timezone: string): boolean {
         if (!timezone) {
@@ -180,6 +164,10 @@ export const dateUtil = {
         return formatDateInTimezone(date, timezone) ?? '';
     },
 
+    /*
+     * DST(e.g. 서머타임)가 고려되지 않았다.
+     * 엄격하게 처리해야 한다면, Temporal같은 timezone-aware library 사용을 검토한다.
+     */
     fromZonedIso(displayedIso: string, timezone: string): Date | null {
         if (!dateUtil.isValidTimezone(timezone)) {
             return null;
@@ -191,8 +179,11 @@ export const dateUtil = {
         }
 
         const displayedTimestamp = toUtcTimestamp(inputDateTime);
-        const utcTimestamp = getUtcTimestampForDisplayedTime(displayedTimestamp, timezone);
+        const timezoneOffset = getTimezoneOffsetInMs(new Date(displayedTimestamp), timezone);
+        if (timezoneOffset === null) {
+            return null;
+        }
 
-        return utcTimestamp === null ? null : new Date(utcTimestamp);
+        return new Date(displayedTimestamp - timezoneOffset);
     },
 };

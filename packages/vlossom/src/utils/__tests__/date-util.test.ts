@@ -141,18 +141,4 @@ describe('date-util', () => {
         });
     });
 
-    describe('DST 경계 처리', () => {
-        it('America/New_York Spring Forward (2026-03-08 02:30 → skipped)', () => {
-            // 2026-03-08 02:30 EST는 존재하지 않음 (02:00 EST → 03:00 EDT로 점프)
-            // Intl이 자동으로 03:30 EDT로 처리하거나 그대로 UTC 변환
-            const parsedDate = dateUtil.fromZonedIso('2026-03-08T02:30', 'America/New_York');
-            // Intl은 존재하지 않는 화면 표시값을 인접한 valid time으로 매핑하거나 그대로 처리
-            // 핵심: 라운드 트립이 가능해야 함 (정확한 값보다 일관성이 중요)
-            expect(parsedDate).not.toBeNull();
-            // 라운드트립 후 다시 New_York 화면 표시값 추출 시 Intl이 정한 값과 일치해야 함
-            const displayedIso = dateUtil.toZonedIso(parsedDate!, 'America/New_York');
-            const utcAgain = dateUtil.fromZonedIso(displayedIso, 'America/New_York');
-            expect(utcAgain?.toISOString()).toBe(parsedDate!.toISOString());
-        });
-    });
 });
