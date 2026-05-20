@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
-import type { FocusableRef, FormChildRef } from '@/declaration';
+import type { FocusableRef, FormChildRef, OptionItem } from '@/declaration';
 import type { VsInputStyleSet } from '@/components/vs-input/types';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
 import type { VsSelectStyleSet } from '@/components/vs-select/types';
@@ -17,14 +17,7 @@ export type VsDatePickerValueType = Date | null;
 
 export type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
-export type VsDatePickerCanSelectDate = (date: Date) => boolean | undefined;
-
-export interface TimezoneOption {
-    value: string;
-    label: string;
-    group?: string;
-    disabled?: boolean;
-}
+export interface TimezoneOption extends Partial<OptionItem> {}
 
 export interface VsDatePickerRef extends ComponentPublicInstance<typeof VsDatePicker>, FocusableRef, FormChildRef {
     open: () => void;

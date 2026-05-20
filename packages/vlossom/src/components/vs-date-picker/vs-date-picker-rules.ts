@@ -1,11 +1,12 @@
 import type { Ref } from 'vue';
-import type { VsDatePickerCanSelectDate } from './types';
+
+type CanSelectDate = (date: Date) => boolean | undefined;
 
 export function useVsDatePickerRules(
     required: Ref<boolean>,
     min: Ref<Date | undefined>,
     max: Ref<Date | undefined>,
-    canSelectDate: Ref<VsDatePickerCanSelectDate | undefined>,
+    canSelectDate: Ref<CanSelectDate | undefined>,
 ) {
     function requiredCheck(v: Date | null): string {
         if (required.value && v === null) {

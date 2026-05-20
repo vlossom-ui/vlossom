@@ -98,20 +98,13 @@ import {
 import { VsComponent, FORM_STORE_KEY } from '@/declaration';
 import { FormStore } from '@/stores';
 import { useStyleSet, useInput } from '@/composables';
-import {
-    getInputProps,
-    getResponsiveProps,
-    getColorSchemeProps,
-    getStyleSetProps,
-    getDateMinMaxProps,
-} from '@/props';
+import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getDateMinMaxProps } from '@/props';
 import { dateUtil } from '@/utils';
 
 import { datePickerIcons } from './icons';
 import { DEFAULT_TIMEZONE_OPTIONS, TYPE_TO_ISO_FORMAT } from './constants';
 import {
     type TimezoneOption,
-    type VsDatePickerCanSelectDate,
     type VsDatePickerStyleSet,
     type VsDatePickerType,
     type VsDatePickerValueType,
@@ -139,7 +132,7 @@ export default defineComponent({
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         noClear: { type: Boolean, default: false },
         canSelectDate: {
-            type: Function as PropType<VsDatePickerCanSelectDate>,
+            type: Function as PropType<(date: Date) => boolean | undefined>,
             default: undefined,
         },
         timezone: { type: Boolean, default: false },
