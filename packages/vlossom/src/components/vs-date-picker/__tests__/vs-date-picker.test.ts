@@ -7,7 +7,7 @@ import { DEFAULT_TIMEZONE_OPTIONS } from '../constants';
 import { type TimezoneOption } from '../types';
 
 function findDateInput(wrapper: ReturnType<typeof mount>) {
-    return wrapper.find('.vs-date-picker-display input');
+    return wrapper.find('.vs-date-picker-input input');
 }
 
 describe('VsDatePicker', () => {
@@ -127,7 +127,7 @@ describe('VsDatePicker', () => {
             expect(showPicker).toHaveBeenCalled();
         });
 
-        it('display input 영역 클릭 시 picker 가 열린다', async () => {
+        it('date input 영역 클릭 시 picker 가 열린다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
@@ -136,7 +136,7 @@ describe('VsDatePicker', () => {
             };
             const showPicker = vi.fn();
             input.showPicker = showPicker;
-            await wrapper.find('.vs-date-picker-display').trigger('click');
+            await wrapper.find('.vs-date-picker-input').trigger('click');
             expect(showPicker).toHaveBeenCalled();
         });
 
@@ -238,9 +238,8 @@ describe('VsDatePicker', () => {
             });
             const root = wrapper.find('.vs-date-picker');
             expect(root.exists()).toBe(true);
-            expect(root.classes()).toContain('has-timezone');
             expect(root.find('.vs-date-picker-timezone').exists()).toBe(true);
-            expect(root.find('.vs-date-picker-display input').exists()).toBe(true);
+            expect(root.find('.vs-date-picker-input input').exists()).toBe(true);
             expect(root.find('.vs-date-picker-native').exists()).toBe(false);
         });
 
@@ -273,8 +272,6 @@ describe('VsDatePicker', () => {
                     timezone: true,
                 },
             });
-            const root = wrapper.find('.vs-date-picker');
-            expect(root.classes()).toContain('vs-responsive');
             const divider = wrapper.find('.vs-date-picker-divider');
             // VsDivider 가 responsive prop 을 받아 vs-divider-responsive 클래스를 부여
             expect(divider.classes()).toContain('vs-divider-responsive');

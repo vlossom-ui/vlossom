@@ -18,11 +18,11 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-date-picker', 'vs-responsive', { 'has-timezone': timezone }]">
-            <div class="vs-date-picker-row">
+        <div class="vs-date-picker">
+            <div class="vs-date-picker-fields">
                 <vs-input
                     ref="dateInputRef"
-                    class="vs-date-picker-display"
+                    class="vs-date-picker-input"
                     :model-value="displayValue"
                     :style-set="componentStyleSet.$input"
                     :placeholder="computedPlaceholder"

@@ -3,11 +3,11 @@
 .vs-date-picker {
     container-type: inline-size;
 
-    .vs-date-picker-row {
+    .vs-date-picker-fields {
         @apply box-border flex items-stretch;
     }
 
-    .vs-date-picker-display {
+    .vs-date-picker-input {
         flex: 1 1 0%;
 
         input::-webkit-calendar-picker-indicator {
@@ -49,15 +49,13 @@
     }
 
     @container (max-width: 768px) {
-        &.vs-responsive {
-            .vs-date-picker-row {
-                @apply flex-col;
-            }
+        .vs-date-picker-fields {
+            @apply flex-col;
+        }
 
-            .vs-date-picker-timezone {
-                min-width: 0;
-                width: 100%;
-            }
+        .vs-date-picker-timezone {
+            min-width: 0;
+            width: 100%;
         }
     }
 }
