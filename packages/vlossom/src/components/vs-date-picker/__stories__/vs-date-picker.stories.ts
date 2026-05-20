@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { ref } from 'vue';
 import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { ref } from 'vue';
+
+import { VsForm, VsButton } from '@/components';
 import VsDatePicker from './../VsDatePicker.vue';
-import VsForm from '@/components/vs-form/VsForm.vue';
-import VsButton from '@/components/vs-button/VsButton.vue';
 
 const meta: Meta<typeof VsDatePicker> = {
     title: 'Components/Input Components/VsDatePicker',
@@ -282,8 +282,7 @@ export const WithCustomTimezoneOptions: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '사용자 정의 timezoneOptions를 전달하면 첫번째 옵션이 초기 timezone이 됩니다.',
+                story: '사용자 정의 timezoneOptions를 전달하면 첫번째 옵션이 초기 timezone이 됩니다.',
             },
         },
     },

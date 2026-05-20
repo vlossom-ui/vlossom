@@ -1,5 +1,5 @@
 /**
- * @deprecated if we got use Lucide Icons, we can remove this constant and use Lucide Icons instead.
+ * @deprecated Remove these constants if we start using Lucide Icons
  * {@link https://github.com/vlossom-ui/vlossom/issues/456}
  */
 export const datePickerIcons = {
