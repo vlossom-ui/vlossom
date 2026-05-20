@@ -27,7 +27,10 @@
                         'vs-readonly': computedReadonly,
                         'vs-focus-within': !computedDisabled && !computedReadonly,
                     }"
+                    :tabindex="computedDisabled || computedReadonly ? -1 : 0"
                     @click="open"
+                    @keydown.enter.prevent="open"
+                    @keydown.space.prevent="open"
                 >
                     <vs-input
                         class="vs-date-picker-display"

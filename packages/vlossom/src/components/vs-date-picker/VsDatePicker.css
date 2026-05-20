@@ -58,6 +58,19 @@
 }
 
 /*
+ * Active 상태에서 outline 을 wrapper 가 아니라 내부 .vs-input 박스에 그린다
+ * → VsInput 의 focus outline 과 동일한 위치/모양 (mixin.css 룰과 같은 토큰).
+ *   - wrapper :focus → wrapper 가 keyboard/click 으로 focus 받은 케이스
+ *   - wrapper :focus-within → hidden native input 이 picker 트리거를 위해 focus 받은 케이스
+ * 어느 경우든 시각 단서는 .vs-input 박스 외곽에 통일.
+ */
+.vs-date-picker .vs-date-picker-input-wrapper.vs-focus-within:focus .vs-input,
+.vs-date-picker .vs-date-picker-input-wrapper.vs-focus-within:focus-within .vs-input {
+    outline: 1px solid var(--vs-cs-line);
+    outline-offset: 2px;
+}
+
+/*
  * Hidden native input — visible UI 가 아니라 picker 트리거 / 값 갱신 용도.
  * focus 시 outline 은 wrapper (.vs-focus-within) 에서 표시하므로 input 자체의
  * 브라우저 기본 outline 은 제거한다.
@@ -89,20 +102,13 @@
 }
 
 /*
- * Calendar icon prepend 영역 — vs-button(ghost) 와 동일한 인터랙션 톤 (vlossom 디자인 토큰만 사용).
+ * Calendar icon prepend 영역 — VsInput 의 기본 .vs-prepend 스타일을 그대로 사용
+ * (background-color: var(--vs-cs-bg-primary)). 아이콘 색은 prepend 배경 위에서 잘 보이도록
+ * font-colored 가 아닌 font-primary 토큰으로 통일.
  */
-.vs-date-picker .vs-date-picker-display .vs-prepend {
-    background-color: transparent;
-    transition: background-color 0.2s;
-}
-
-.vs-date-picker .vs-date-picker-input-wrapper:hover:not(.vs-readonly):not(.vs-disabled) .vs-prepend {
-    background-color: var(--vs-cs-bg-colored);
-}
-
 .vs-date-picker .vs-date-picker-icon {
     @apply inline-flex items-center justify-center;
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-font-primary);
 }
 
 /*
