@@ -1,4 +1,4 @@
-import type { ComponentPublicInstance } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputStyleSet } from '@/components/vs-input/types';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
@@ -13,9 +13,9 @@ declare module 'vue' {
 
 export type { VsDatePicker };
 
-export type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
-
 export type VsDatePickerValueType = Date | null;
+
+export type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
 export interface TimezoneOption {
     value: string;
@@ -26,18 +26,10 @@ export interface TimezoneOption {
 
 export interface VsDatePickerRef extends ComponentPublicInstance<typeof VsDatePicker>, FocusableRef, FormChildRef {
     open: () => void;
-    /**
-     * Current timezone (read-only). Auto-unwrapped from a readonly Ref in setup.
-     * To change it, use the timezone select UI or update timezoneOptions.
-     */
-    currentTimezone: string;
 }
 
-export interface VsDatePickerStyleSet {
-    /** label / messages 를 담는 outer VsInputWrapper 의 styleSet. */
-    $wrapper?: VsInputWrapperStyleSet;
-    /** 내부 VsInput (date input field) 에 forward 되는 styleSet. */
-    $input?: VsInputStyleSet;
-    /** Timezone select 의 styleSet. timezone prop 이 true 일 때만 적용. */
+export interface VsDatePickerStyleSet extends CSSProperties {
     $timezoneSelect?: VsSelectStyleSet;
+    $input?: VsInputStyleSet;
+    $wrapper?: VsInputWrapperStyleSet;
 }
