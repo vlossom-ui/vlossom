@@ -117,7 +117,7 @@ import { useStyleSet, useInput } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { dateUtil } from '@/utils';
 
-import { DEFAULT_TIMEZONE_OPTIONS } from './constants';
+import { DEFAULT_TIMEZONE_OPTIONS, TYPE_TO_FORMAT } from './constants';
 import {
     type TimezoneOption,
     type VsDatePickerStyleSet,
@@ -134,9 +134,6 @@ import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
 
 const componentName = VsComponent.VsDatePicker;
-
-type NativeDateInputElement = HTMLInputElement & { showPicker?: () => void };
-type VsInputNativeRef = VsInputRef & { inputRef?: NativeDateInputElement | null };
 
 const FALLBACK_CALENDAR_ICON =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
@@ -203,7 +200,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
-        const dateInputRef: TemplateRef<VsInputNativeRef> = useTemplateRef('dateInputRef');
+        const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const currentTimezone = ref(
             timezone.value && timezoneOptions.value.length > 0 ? timezoneOptions.value[0].value : 'Etc/UTC',
@@ -240,19 +237,12 @@ export default defineComponent({
             }
         });
 
-        function sliceWall(wall: string): string {
-            switch (type.value) {
-                case 'date':
-                    return wall.slice(0, 10);
-                case 'datetime-local':
-                    return wall;
-                case 'time':
-                    return wall.slice(11, 16);
-                case 'month':
-                    return wall.slice(0, 7);
-                default:
-                    return wall;
+        function toDisplayIso(wall: string): string {
+            const parsed = dateUtil.fromIso(wall, 'YYYY-MM-DDTHH:mm');
+            if (!parsed) {
+                return wall;
             }
+            return dateUtil.toIso(parsed, TYPE_TO_FORMAT[type.value]);
         }
 
         const displayValue = computed(() => {
@@ -260,20 +250,26 @@ export default defineComponent({
                 return '';
             }
             const wall = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
-            return sliceWall(wall);
+            return toDisplayIso(wall);
         });
 
-        function expandToFullIso(value: string): string | null {
+        function toTypedIso(value: string): string {
             switch (type.value) {
-                case 'date':
-                    return /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00` : null;
                 case 'datetime-local':
-                    return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value) ? value.slice(0, 16) : null;
+                    return value.slice(0, 16);
                 case 'time':
-                    return /^\d{2}:\d{2}/.test(value) ? `1970-01-01T${value.slice(0, 5)}` : null;
-                case 'month':
-                    return /^\d{4}-\d{2}$/.test(value) ? `${value}-01T00:00` : null;
+                    return value.slice(0, 5);
+                default:
+                    return value;
             }
+        }
+
+        function expandToFullIso(value: string): string | null {
+            const parsed = dateUtil.fromIso(toTypedIso(value), TYPE_TO_FORMAT[type.value]);
+            if (!parsed) {
+                return null;
+            }
+            return dateUtil.toIso(parsed, 'YYYY-MM-DDTHH:mm');
         }
 
         function onDateInput(value: string | number | null) {

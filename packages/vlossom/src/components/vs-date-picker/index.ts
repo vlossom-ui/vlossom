@@ -6,4 +6,3 @@ export type {
     VsDatePickerValueType,
     TimezoneOption,
 } from './types';
-export { TYPE_TO_FORMAT } from './format-map';

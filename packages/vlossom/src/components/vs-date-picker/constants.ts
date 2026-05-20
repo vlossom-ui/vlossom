@@ -1,4 +1,12 @@
-import type { TimezoneOption } from './types';
+import type { IsoFormat } from '@/utils';
+import type { TimezoneOption, VsDatePickerType } from './types';
+
+export const TYPE_TO_FORMAT: Record<VsDatePickerType, IsoFormat> = {
+    date: 'YYYY-MM-DD',
+    'datetime-local': 'YYYY-MM-DDTHH:mm',
+    time: 'HH:mm',
+    month: 'YYYY-MM',
+};
 
 export const DEFAULT_TIMEZONE_OPTIONS: TimezoneOption[] = [
     { value: 'Etc/UTC', label: 'Etc/UTC (UTC+00:00)' },
