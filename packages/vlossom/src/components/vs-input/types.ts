@@ -13,7 +13,6 @@ export type { VsInput };
 
 export interface VsInputRef extends ComponentPublicInstance<typeof VsInput>, FocusableRef, FormChildRef {
     select: () => void;
-    showPicker: () => void;
 }
 
 export type VsInputValueType = string | number | null;
@@ -25,11 +24,7 @@ export type VsInputType =
     | 'search'
     | 'tel'
     | 'text'
-    | 'url'
-    | 'date'
-    | 'datetime-local'
-    | 'time'
-    | 'month';
+    | 'url';
 
 export interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;

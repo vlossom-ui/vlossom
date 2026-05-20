@@ -1,11 +1,13 @@
 import type { Ref } from 'vue';
 import type { VsInputType, VsInputValueType } from './types';
 
+type VsInputRuleType = VsInputType | 'date' | 'datetime-local' | 'time' | 'month';
+
 export function useVsInputRules(
     required: Ref<boolean>,
     max: Ref<number | string>,
     min: Ref<number | string>,
-    type: Ref<VsInputType>,
+    type: Ref<VsInputRuleType>,
 ) {
     function requiredCheck(v: VsInputValueType) {
         if (required.value && v === '') {

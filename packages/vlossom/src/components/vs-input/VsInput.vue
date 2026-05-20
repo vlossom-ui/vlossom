@@ -82,6 +82,8 @@ import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
 
+type VsInputNativeType = VsInputType | 'date' | 'datetime-local' | 'time' | 'month';
+
 export default defineComponent({
     name: componentName,
     components: { VsInputWrapper, XIcon },
@@ -98,7 +100,7 @@ export default defineComponent({
             type: [Number, String] as PropType<number | string | undefined>,
             default: undefined,
         },
-        type: { type: String as PropType<VsInputType>, default: 'text' },
+        type: { type: String as PropType<VsInputNativeType>, default: 'text' },
         // v-model
         modelValue: {
             type: [String, Number] as PropType<VsInputValueType>,
@@ -110,7 +112,7 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
-    // expose: ['focus', 'blur', 'validate', 'clear', 'select', 'showPicker'],
+    // expose: ['focus', 'blur', 'validate', 'clear', 'select'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -248,25 +250,6 @@ export default defineComponent({
             inputRef.value?.select();
         }
 
-        function showPicker() {
-            const el = inputRef.value;
-            if (!el || computedDisabled.value || computedReadonly.value) {
-                return;
-            }
-
-            el.focus();
-            const nativeShowPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;
-            if (typeof nativeShowPicker !== 'function') {
-                return;
-            }
-
-            try {
-                nativeShowPicker.call(el);
-            } catch {
-                /* unsupported picker states still keep the focus fallback */
-            }
-        }
-
         function clearWithFocus() {
             onClear();
             focus();
@@ -298,7 +281,6 @@ export default defineComponent({
             focus,
             blur,
             select,
-            showPicker,
             clear,
             onFocus,
             onBlur,
