@@ -558,7 +558,6 @@ describe('VsInput', () => {
             // cleanup
             wrapper.unmount();
         });
-
     });
 
     describe('이벤트 emit', () => {

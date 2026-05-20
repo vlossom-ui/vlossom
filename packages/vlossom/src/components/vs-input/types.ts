@@ -17,14 +17,7 @@ export interface VsInputRef extends ComponentPublicInstance<typeof VsInput>, Foc
 
 export type VsInputValueType = string | number | null;
 
-export type VsInputType =
-    | 'email'
-    | 'number'
-    | 'password'
-    | 'search'
-    | 'tel'
-    | 'text'
-    | 'url';
+export type VsInputType = 'email' | 'number' | 'password' | 'search' | 'tel' | 'text' | 'url';
 
 export interface VsInputStyleSet extends CSSProperties {
     $prepend?: CSSProperties;

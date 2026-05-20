@@ -79,7 +79,7 @@ import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
 
-type VsInputNativeType = VsInputType | 'date' | 'datetime-local' | 'time' | 'month';
+type VsInternalInputType = VsInputType | 'date' | 'datetime-local' | 'time' | 'month';
 
 export default defineComponent({
     name: componentName,
@@ -92,7 +92,7 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
-        type: { type: String as PropType<VsInputNativeType>, default: 'text' },
+        type: { type: String as PropType<VsInternalInputType>, default: 'text' },
         // v-model
         modelValue: {
             type: [String, Number] as PropType<VsInputValueType>,
@@ -198,7 +198,7 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
-        const renderClearButton = computed(() => !noClear.value && !computedDisabled.value && !computedReadonly.value);
+        const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
 
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
