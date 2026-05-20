@@ -1,94 +1,63 @@
 @reference 'tailwindcss';
 
-/*
- * VsDatePicker 의 outer 컨테이너.
- *   - container-type: inline-size 를 설정해 자식인 .vs-date-picker-row 의 @container 쿼리가
- *     이 .vs-date-picker 의 width (= grid 셀 width) 를 기준으로 동작하게 한다.
- *   - .vs-date-picker 자체는 layout 책임 없음 (flex 는 .vs-date-picker-row 가 담당).
- */
 .vs-date-picker {
     container-type: inline-size;
-}
 
-/*
- * Date input field 와 timezone select 를 side-by-side 로 배치하는 flex row.
- * @container 쿼리 (max-width: 768px) 에서 column 으로 flip.
- */
-.vs-date-picker .vs-date-picker-row {
-    @apply box-border flex items-stretch;
-}
-
-.vs-date-picker .vs-date-picker-timezone {
-    flex: 0 0 auto;
-    min-width: 16rem;
-    width: auto;
-}
-
-/*
- * divider 자체 margin 으로 input ↔ select 간격을 일원화 (row 의 gap 은 사용하지 않음).
- * row mode → 좌우 0.25rem, column(responsive) mode → 상하 0.2rem 으로 최소화.
- */
-.vs-date-picker .vs-date-picker-divider {
-    flex: 0 0 auto;
-    --vs-divider-verticalMargin: 0 0.25rem;
-    --vs-divider-horizontalMargin: 0.2rem 0;
-}
-
-/*
- * VsDivider vertical 의 height: 100% 가 auto-height flex 부모(.vs-date-picker-row)에서 0 으로 계산되어
- * divider 가 보이지 않는 문제 회피 — height: auto 로 override 해서 items-stretch 가 정상 동작하게 한다.
- */
-.vs-date-picker .vs-date-picker-divider.vs-vertical {
-    height: auto;
-}
-
-/* Date input field 영역. */
-.vs-date-picker .vs-date-picker-display {
-    flex: 1 1 0%;
-}
-
-.vs-date-picker .vs-date-picker-display input::-webkit-calendar-picker-indicator {
-    display: none;
-    -webkit-appearance: none;
-}
-
-/*
- * VsButton / VsChip / VsAccordion 등과 동일한 brightness hover/active 효과.
- * Date input box 가 picker trigger 역할이라 button-like 한 시각 피드백을 부여한다.
- * disabled / readonly 일 때는 적용하지 않음.
- */
-.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly) {
-    @apply hover:brightness-96 active:brightness-92;
-}
-
-.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly),
-.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly) input {
-    cursor: pointer;
-}
-
-/*
- * Calendar icon prepend 영역 — VsInput 의 기본 .vs-prepend 스타일을 그대로 사용
- * (background-color: var(--vs-cs-bg-primary)). 아이콘 색은 prepend 배경 위에서 잘 보이도록
- * font-colored 가 아닌 font-primary 토큰으로 통일.
- */
-.vs-date-picker .vs-date-picker-icon {
-    @apply inline-flex items-center justify-center;
-    color: var(--vs-cs-font-primary);
-}
-
-/*
- * .vs-date-picker 자신의 width 가 768px 이하가 되면 (container query)
- * date input 과 timezone select 를 세로(flex column) 로 stack.
- *   - timezone select 는 min-width 12rem 해제, 풀폭 사용
- *   - vs-divider 는 vs-divider-responsive 가 horizontal 모양으로 자동 전환 (VsDivider.css)
- */
-@container (max-width: 768px) {
-    .vs-date-picker.vs-responsive .vs-date-picker-row {
-        @apply flex-col;
+    .vs-date-picker-row {
+        @apply box-border flex items-stretch;
     }
 
-    .vs-date-picker.vs-responsive .vs-date-picker-timezone {
-        min-width: 0;
-        width: 100%;
+    .vs-date-picker-display {
+        flex: 1 1 0%;
+
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        .vs-input:not(.vs-disabled):not(.vs-readonly) {
+            @apply hover:brightness-96 active:brightness-92;
+
+            cursor: pointer;
+
+            input {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .vs-date-picker-timezone {
+        flex: 0 0 auto;
+        min-width: 16rem;
+        width: auto;
+    }
+
+    .vs-date-picker-divider {
+        flex: 0 0 auto;
+        --vs-divider-verticalMargin: 0 0.25rem;
+        --vs-divider-horizontalMargin: 0.2rem 0;
+
+        &.vs-vertical {
+            height: auto;
+        }
+    }
+
+    .vs-date-picker-icon {
+        @apply inline-flex items-center justify-center;
+
+        color: var(--vs-cs-font-primary);
+    }
+
+    @container (max-width: 768px) {
+        &.vs-responsive {
+            .vs-date-picker-row {
+                @apply flex-col;
+            }
+
+            .vs-date-picker-timezone {
+                min-width: 0;
+                width: 100%;
+            }
+        }
     }
 }
