@@ -157,7 +157,8 @@ export const dateUtil = {
         return new Date(timestamp);
     },
 
-    formatIso(dateTimeIso: string, format: IsoFormat): string {
+    // e.g. '2026-05-18T15:30' + 'HH:mm' -> '15:30'
+    formatDateTimeIso(dateTimeIso: string, format: IsoFormat): string {
         switch (format) {
             case 'YYYY-MM-DD':
                 return dateTimeIso.slice(0, 10);
@@ -170,7 +171,8 @@ export const dateUtil = {
         }
     },
 
-    toDateTimeIso(value: string, format: IsoFormat): string {
+    // e.g. '2026-05' + 'YYYY-MM' -> '2026-05-01T00:00'
+    expandToDateTimeIso(value: string, format: IsoFormat): string {
         switch (format) {
             case 'YYYY-MM-DD':
                 return `${value.slice(0, 10)}T00:00`;

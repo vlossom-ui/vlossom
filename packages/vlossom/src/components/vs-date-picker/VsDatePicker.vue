@@ -238,7 +238,7 @@ export default defineComponent({
                 return '';
             }
             const zonedIso = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
-            return dateUtil.formatIso(zonedIso, TYPE_TO_ISO_FORMAT[type.value]);
+            return dateUtil.formatDateTimeIso(zonedIso, TYPE_TO_ISO_FORMAT[type.value]);
         });
 
         function onDateInput(value: string | number | null) {
@@ -248,7 +248,7 @@ export default defineComponent({
                 return;
             }
 
-            const fullIso = dateUtil.toDateTimeIso(raw, TYPE_TO_ISO_FORMAT[type.value]);
+            const fullIso = dateUtil.expandToDateTimeIso(raw, TYPE_TO_ISO_FORMAT[type.value]);
             const tz = type.value === 'time' ? 'Etc/UTC' : currentTimezone.value;
             const utc = dateUtil.fromZonedIso(fullIso, tz);
             if (!utc) {
