@@ -33,21 +33,29 @@
                     @keydown.space.prevent="open"
                 >
                     <vs-input
+                        ref="dateInputRef"
                         class="vs-date-picker-display"
-                        readonly
+                        :type
                         :no-clear="noClear"
-                        :clear-on-readonly="!computedReadonly"
                         no-label
                         no-messages
                         :model-value="displayValue"
+                        :min="minDisplay"
+                        :max="maxDisplay"
+                        :step="normalizedStep"
+                        :name
+                        :required="required"
                         :placeholder="computedPlaceholder"
                         :disabled="computedDisabled"
+                        :readonly="computedReadonly"
                         :state="computedState"
                         :rules="[]"
                         no-default-rules
                         :color-scheme="colorScheme"
                         :style-set="componentStyleSet.$input"
-                        @update:model-value="onDisplayClear"
+                        @update:model-value="onDateInput"
+                        @focus="onFocus"
+                        @blur="onBlur"
                     >
                         <template #prepend>
                             <i class="vs-date-picker-icon size-5">
@@ -59,25 +67,6 @@
                             <slot name="append" />
                         </template>
                     </vs-input>
-
-                    <input
-                        ref="nativeDateRef"
-                        class="vs-date-picker-native"
-                        :type
-                        :value="displayValue"
-                        :min="minDisplay"
-                        :max="maxDisplay"
-                        :step="normalizedStep"
-                        :name
-                        :disabled="computedDisabled"
-                        :readonly="computedReadonly"
-                        :aria-required="required"
-                        :aria-invalid="computedState === 'error' ? true : undefined"
-                        tabindex="-1"
-                        aria-hidden="true"
-                        @input.stop="onNativeInput"
-                        @change.stop
-                    />
                 </div>
 
                 <vs-divider
@@ -148,6 +137,7 @@ import { useVsDatePickerRules } from './vs-date-picker-rules';
 
 import VsDivider from '@/components/vs-divider/VsDivider.vue';
 import VsInput from '@/components/vs-input/VsInput.vue';
+import type { VsInputRef } from '@/components/vs-input/types';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
@@ -223,7 +213,7 @@ export default defineComponent({
         } = toRefs(props);
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
-        const nativeDateRef: TemplateRef<HTMLInputElement> = useTemplateRef('nativeDateRef');
+        const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const currentTimezone = ref(
             timezone.value && timezoneOptions.value.length > 0
@@ -323,10 +313,10 @@ export default defineComponent({
             }
         }
 
-        function onNativeInput(event: Event) {
-            const raw = (event.target as HTMLInputElement).value;
+        function onDateInput(value: string | number | null) {
+            const raw = value?.toString() ?? '';
             if (!raw) {
-                inputValue.value = null;
+                onClear();
                 return;
             }
 
@@ -415,11 +405,11 @@ export default defineComponent({
         provide(FORM_STORE_KEY, FormStore.getDefaultFormStore());
 
         function focus() {
-            nativeDateRef.value?.focus();
+            dateInputRef.value?.focus();
         }
 
         function blur() {
-            nativeDateRef.value?.blur();
+            dateInputRef.value?.blur();
         }
 
         function onFocus(e: FocusEvent) {
@@ -430,40 +420,13 @@ export default defineComponent({
             emit('blur', e);
         }
 
-        /*
-         * VsInput 내장 clear 버튼이 클릭되면 @update:model-value 로 빈 문자열을 emit 한다.
-         * 그것을 받아 우리 modelValue 를 null 로 reset 하고 picker 트리거에 focus.
-         */
-        function onDisplayClear(value: string) {
-            if (!value) {
-                onClear();
-                focus();
-            }
-        }
-
         function openPicker() {
-            const el = nativeDateRef.value;
-            if (!el || computedDisabled.value || computedReadonly.value) {
-                return;
-            }
-            /*
-             * focus 를 먼저 부여해서 wrapper 의 :focus-within outline 이 표시되게 한다.
-             * (showPicker() 자체는 focus 를 자동으로 부여하지 않음)
-             */
-            el.focus();
-            const showPicker = (el as HTMLInputElement & { showPicker?: () => void }).showPicker;
-            if (typeof showPicker === 'function') {
-                try {
-                    showPicker.call(el);
-                } catch {
-                    /* picker open 이 거부되어도 focus 는 유지 */
-                }
-            }
+            dateInputRef.value?.showPicker();
         }
 
         return {
             // refs
-            nativeDateRef,
+            dateInputRef,
 
             // state
             componentStyleSet,
@@ -482,11 +445,10 @@ export default defineComponent({
             timezoneSearchable,
 
             // methods
-            onNativeInput,
+            onDateInput,
             onFocus,
             onBlur,
             onTimezoneChange,
-            onDisplayClear,
             focus,
             blur,
             clear,

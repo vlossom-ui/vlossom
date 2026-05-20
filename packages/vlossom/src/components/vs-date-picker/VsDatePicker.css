@@ -43,8 +43,7 @@
 }
 
 /*
- * Date input field 영역. 시각적 표시는 readonly VsInput 이 담당하고, 실제 picker 트리거는
- * 1×1 크기로 숨겨진 native <input type="date|datetime-local|time|month"> 이 담당.
+ * Date input field 영역. VsInput 내부 native input 이 값 입력과 picker 트리거를 함께 담당한다.
  * wrapper 의 @click 으로 openPicker() 를 호출하므로 input 영역 어디든 클릭하면 picker 가 열린다.
  */
 .vs-date-picker .vs-date-picker-input-wrapper {
@@ -58,10 +57,19 @@
 }
 
 /*
+ * VsButton / VsChip / VsAccordion 등과 동일한 brightness hover/active 효과.
+ * Input wrapper 가 picker 트리거 역할이라 button-like 한 시각 피드백을 부여한다.
+ * disabled / readonly 일 때는 적용하지 않음.
+ */
+.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) {
+    @apply hover:brightness-96 active:brightness-92;
+}
+
+/*
  * Active 상태에서 outline 을 wrapper 가 아니라 내부 .vs-input 박스에 그린다
  * → VsInput 의 focus outline 과 동일한 위치/모양 (mixin.css 룰과 같은 토큰).
  *   - wrapper :focus → wrapper 가 keyboard/click 으로 focus 받은 케이스
- *   - wrapper :focus-within → hidden native input 이 picker 트리거를 위해 focus 받은 케이스
+ *   - wrapper :focus-within → VsInput 내부 input 이 focus 받은 케이스
  * 어느 경우든 시각 단서는 .vs-input 박스 외곽에 통일.
  */
 .vs-date-picker .vs-date-picker-input-wrapper.vs-focus-within:focus .vs-input,
@@ -70,34 +78,8 @@
     outline-offset: 2px;
 }
 
-/*
- * Hidden native input — visible UI 가 아니라 picker 트리거 / 값 갱신 용도.
- * focus 시 outline 은 wrapper (.vs-focus-within) 에서 표시하므로 input 자체의
- * 브라우저 기본 outline 은 제거한다.
- */
-.vs-date-picker .vs-date-picker-native {
-    @apply pointer-events-none absolute opacity-0;
-    width: 1px;
-    height: 1px;
-    left: 0;
-    bottom: 0;
-    outline: none;
-}
-
-/*
- * VsInput 이 readonly 라서 .vs-input 에 .vs-readonly (pointer-events:none) 가 붙으면
- * .vs-input:hover .vs-clear-button.show 의 hover 가 작동하지 않는다.
- * VsDatePicker 의 display input 은 picker 트리거를 위한 readonly 라 input 입력 자체는
- * readonly attr 로 이미 차단되므로, .vs-input 의 pointer-events 만 다시 살려 hover/click 을
- * 회복시킨다 → 일반 VsInput 과 동일한 hover-to-show clear UX 가 유지된다.
- * (cursor 도 pointer 로 통일해서 "클릭하면 picker 가 열린다" 시각 단서 제공)
- */
-.vs-date-picker .vs-date-picker-display .vs-input.vs-readonly {
-    cursor: pointer;
-    pointer-events: auto;
-}
-
-.vs-date-picker .vs-date-picker-display .vs-input.vs-readonly input {
+.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) .vs-input,
+.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) input {
     cursor: pointer;
 }
 

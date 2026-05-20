@@ -5,29 +5,17 @@ import VsDatePicker from '../VsDatePicker.vue';
 import VsForm from '@/components/vs-form/VsForm.vue';
 import { DEFAULT_TIMEZONE_OPTIONS, type TimezoneOption } from '../types';
 
-/**
- * VsDatePicker 는 두 개의 input 을 가진다:
- *   - .vs-date-picker-display input  : readonly 로 표시만 하는 VsInput 내부 input (type="text")
- *   - .vs-date-picker-native         : 화면 밖으로 숨겨진 native <input type="date|datetime-local|..."> — picker 트리거 / 값 갱신용
- *
- * type / min / max / aria-required / showPicker / 값 입력 simulation 은 native input 기준,
- * 시각/포커스 관련 검증은 display input 기준으로 분리한다.
- */
-function findNativeInput(wrapper: ReturnType<typeof mount>) {
-    return wrapper.find('.vs-date-picker-native');
-}
-
-function findDisplayInput(wrapper: ReturnType<typeof mount>) {
+function findDateInput(wrapper: ReturnType<typeof mount>) {
     return wrapper.find('.vs-date-picker-display input');
 }
 
 describe('VsDatePicker', () => {
     describe('datetime 기본 동작', () => {
-        it('type=date에서 native input의 type 속성이 date여야 한다', () => {
+        it('type=date에서 VsInput 내부 input의 type 속성이 date여야 한다', () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
-            expect(findNativeInput(wrapper).attributes('type')).toBe('date');
+            expect(findDateInput(wrapper).attributes('type')).toBe('date');
         });
 
         it('type 4종 (date/datetime-local/time/month) 전환', () => {
@@ -41,7 +29,7 @@ describe('VsDatePicker', () => {
                 const wrapper = mount(VsDatePicker, {
                     props: { modelValue: null, type: t },
                 });
-                expect(findNativeInput(wrapper).attributes('type')).toBe(t);
+                expect(findDateInput(wrapper).attributes('type')).toBe(t);
             }
         });
 
@@ -53,12 +41,12 @@ describe('VsDatePicker', () => {
                 },
             });
             // timezone=false → 'Etc/UTC' 고정 → wall-clock = '2026-05-18T15:30'
-            expect((findDisplayInput(wrapper).element as HTMLInputElement).value).toBe(
+            expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe(
                 '2026-05-18T15:30',
             );
         });
 
-        it('min/max를 UTC wall-clock으로 native input attribute에 forward한다', () => {
+        it('min/max를 UTC wall-clock으로 VsInput 내부 input attribute에 forward한다', () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: null,
@@ -67,9 +55,9 @@ describe('VsDatePicker', () => {
                     max: new Date('2026-12-31T00:00:00Z'),
                 },
             });
-            const native = findNativeInput(wrapper);
-            expect(native.attributes('min')).toBe('2026-01-01');
-            expect(native.attributes('max')).toBe('2026-12-31');
+            const input = findDateInput(wrapper);
+            expect(input.attributes('min')).toBe('2026-01-01');
+            expect(input.attributes('max')).toBe('2026-12-31');
         });
 
         it('disabledDates와 같은 날짜 입력 시 invalid 이벤트가 emit되고 modelValue는 그대로다', async () => {
@@ -81,7 +69,7 @@ describe('VsDatePicker', () => {
                     disabledDates: [holiday],
                 },
             });
-            await findNativeInput(wrapper).setValue('2026-05-18');
+            await findDateInput(wrapper).setValue('2026-05-18');
             expect(wrapper.emitted('invalid')).toBeTruthy();
             const events = wrapper.emitted('invalid') as Array<[{ reason: string }]>;
             expect(events[0][0].reason).toBe('disabled');
@@ -116,11 +104,11 @@ describe('VsDatePicker', () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
-            const native = findNativeInput(wrapper).element as HTMLInputElement & {
+            const input = findDateInput(wrapper).element as HTMLInputElement & {
                 showPicker?: () => void;
             };
             const showPicker = vi.fn();
-            native.showPicker = showPicker;
+            input.showPicker = showPicker;
             (wrapper.vm as unknown as { open: () => void }).open();
             expect(showPicker).toHaveBeenCalled();
         });
@@ -129,11 +117,11 @@ describe('VsDatePicker', () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
-            const native = findNativeInput(wrapper).element as HTMLInputElement & {
+            const input = findDateInput(wrapper).element as HTMLInputElement & {
                 showPicker?: () => void;
             };
             const showPicker = vi.fn();
-            native.showPicker = showPicker;
+            input.showPicker = showPicker;
             await wrapper.find('.vs-date-picker-input-wrapper').trigger('click');
             expect(showPicker).toHaveBeenCalled();
         });
@@ -142,11 +130,11 @@ describe('VsDatePicker', () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
-            const native = findNativeInput(wrapper).element as HTMLInputElement & {
+            const input = findDateInput(wrapper).element as HTMLInputElement & {
                 showPicker?: () => void;
             };
             const showPicker = vi.fn();
-            native.showPicker = showPicker;
+            input.showPicker = showPicker;
             await wrapper.find('.vs-date-picker-icon').trigger('click');
             expect(showPicker).toHaveBeenCalled();
         });
@@ -156,35 +144,34 @@ describe('VsDatePicker', () => {
                 const wrapper = mount(VsDatePicker, {
                     props: { modelValue: null, type: 'date', [propKey]: true },
                 });
-                const native = findNativeInput(wrapper).element as HTMLInputElement & {
+                const input = findDateInput(wrapper).element as HTMLInputElement & {
                     showPicker?: () => void;
                 };
                 const showPicker = vi.fn();
-                native.showPicker = showPicker;
+                input.showPicker = showPicker;
                 (wrapper.vm as unknown as { open: () => void }).open();
                 expect(showPicker).not.toHaveBeenCalled();
             }
         });
 
-        it('aria-required는 native input에 forward된다', async () => {
+        it('aria-required는 VsInput 내부 input에 forward된다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date', required: true },
             });
             await nextTick();
-            expect(findNativeInput(wrapper).attributes('aria-required')).toBe('true');
+            expect(findDateInput(wrapper).attributes('aria-required')).toBe('true');
         });
 
-        it('invalid raw input 시 invalid 이벤트가 emit된다 (onNativeInput 직접 호출)', async () => {
+        it('invalid raw input 시 invalid 이벤트가 emit된다 (onDateInput 직접 호출)', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
             // jsdom의 input[type=date]는 invalid string을 element.value로 보관하지 않으므로
             // 핸들러를 직접 호출해 parse 실패 분기를 검증.
             const fn = (
-                wrapper.vm as unknown as { onNativeInput: (e: Event) => void }
-            ).onNativeInput;
-            const fakeEvent = { target: { value: 'not-a-date' } } as unknown as Event;
-            fn(fakeEvent);
+                wrapper.vm as unknown as { onDateInput: (value: string) => void }
+            ).onDateInput;
+            fn('not-a-date');
             await nextTick();
             const events = wrapper.emitted('invalid') as Array<[{ reason: string }]>;
             expect(events).toBeTruthy();
@@ -264,7 +251,8 @@ describe('VsDatePicker', () => {
             expect(root.classes()).toContain('has-timezone');
             expect(root.find('.vs-date-picker-timezone').exists()).toBe(true);
             expect(root.find('.vs-date-picker-input-wrapper').exists()).toBe(true);
-            expect(root.find('.vs-date-picker-native').exists()).toBe(true);
+            expect(root.find('.vs-date-picker-display input').exists()).toBe(true);
+            expect(root.find('.vs-date-picker-native').exists()).toBe(false);
         });
 
         it('timezone=true에서 select와 date input 사이에 vertical vs-divider가 들어간다', () => {
@@ -408,7 +396,7 @@ describe('VsDatePicker', () => {
             expect(typeof exposed.currentTimezone).toBe('string');
         });
 
-        it('native input 입력 시 currentTimezone 기준으로 UTC가 재계산된다', async () => {
+        it('VsInput 입력 시 currentTimezone 기준으로 UTC가 재계산된다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: null,
@@ -418,7 +406,7 @@ describe('VsDatePicker', () => {
                 },
             });
             await nextTick();
-            await findNativeInput(wrapper).setValue('2026-05-18T15:30');
+            await findDateInput(wrapper).setValue('2026-05-18T15:30');
             const updates = wrapper.emitted('update:modelValue') as Array<[Date]>;
             const utc = updates[updates.length - 1][0];
             // Seoul 15:30 → UTC 06:30
