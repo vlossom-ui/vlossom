@@ -34,14 +34,26 @@ describe('VsDatePicker', () => {
             }
         });
 
-        it('modelValue가 Date면 display input value에 wall-clock ISO가 반영된다 (UTC tz)', () => {
+        it('type=time에서는 기본 시계 아이콘을 사용하고 그 외 타입은 캘린더 아이콘을 사용한다', () => {
+            const timeWrapper = mount(VsDatePicker, {
+                props: { modelValue: null, type: 'time' },
+            });
+            expect(timeWrapper.find('.vs-date-picker-icon circle').exists()).toBe(true);
+
+            const dateWrapper = mount(VsDatePicker, {
+                props: { modelValue: null, type: 'date' },
+            });
+            expect(dateWrapper.find('.vs-date-picker-icon rect').exists()).toBe(true);
+        });
+
+        it('modelValue가 Date면 display input value에 화면 표시용 ISO가 반영된다 (UTC tz)', () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: new Date('2026-05-18T15:30:00Z'),
                     type: 'datetime-local',
                 },
             });
-            // timezone=false → 'Etc/UTC' 고정 → wall-clock = '2026-05-18T15:30'
+            // timezone=false → 'Etc/UTC' 고정 → 화면 표시값 = '2026-05-18T15:30'
             expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe('2026-05-18T15:30');
         });
 
@@ -63,13 +75,12 @@ describe('VsDatePicker', () => {
             expect(wrapper.text()).toContain('Must be on or after 2026-01-01T00:00:00.000Z');
         });
 
-        it('disabledDates와 같은 날짜 입력 시 invalid 이벤트가 emit되고 modelValue는 그대로다', async () => {
-            const holiday = new Date('2026-05-18T00:00:00Z');
+        it('canSelectDate가 false를 반환하는 날짜 입력 시 invalid 이벤트가 emit되고 modelValue는 그대로다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: null,
                     type: 'date',
-                    disabledDates: [holiday],
+                    canSelectDate: (date: Date) => !date.toISOString().startsWith('2026-05-18'),
                 },
             });
             await findDateInput(wrapper).setValue('2026-05-18');
@@ -116,7 +127,7 @@ describe('VsDatePicker', () => {
             expect(showPicker).toHaveBeenCalled();
         });
 
-        it('input wrapper 영역 클릭 시 picker 가 열린다 (input 전체가 click affordance)', async () => {
+        it('display input 영역 클릭 시 picker 가 열린다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
@@ -125,11 +136,11 @@ describe('VsDatePicker', () => {
             };
             const showPicker = vi.fn();
             input.showPicker = showPicker;
-            await wrapper.find('.vs-date-picker-input-wrapper').trigger('click');
+            await wrapper.find('.vs-date-picker-display').trigger('click');
             expect(showPicker).toHaveBeenCalled();
         });
 
-        it('calendar icon 클릭(=wrapper bubble) 시에도 picker 가 열린다', async () => {
+        it('calendar icon 클릭 시에도 picker 가 열린다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: null, type: 'date' },
             });
@@ -229,7 +240,6 @@ describe('VsDatePicker', () => {
             expect(root.exists()).toBe(true);
             expect(root.classes()).toContain('has-timezone');
             expect(root.find('.vs-date-picker-timezone').exists()).toBe(true);
-            expect(root.find('.vs-date-picker-input-wrapper').exists()).toBe(true);
             expect(root.find('.vs-date-picker-display input').exists()).toBe(true);
             expect(root.find('.vs-date-picker-native').exists()).toBe(false);
         });
@@ -255,13 +265,12 @@ describe('VsDatePicker', () => {
             expect(wrapper.find('.vs-date-picker-divider').exists()).toBe(false);
         });
 
-        it('responsive=true면 .vs-date-picker 에 vs-responsive 클래스가 부여되고 vs-divider 도 responsive 로 전환된다', () => {
+        it('responsive layout은 기본 적용되고 vs-divider 도 responsive 로 전환된다', () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: null,
                     type: 'datetime-local',
                     timezone: true,
-                    responsive: true,
                 },
             });
             const root = wrapper.find('.vs-date-picker');
@@ -271,19 +280,7 @@ describe('VsDatePicker', () => {
             expect(divider.classes()).toContain('vs-divider-responsive');
         });
 
-        it('responsive=false(default)에서는 vs-responsive 클래스가 없다', () => {
-            const wrapper = mount(VsDatePicker, {
-                props: {
-                    modelValue: null,
-                    type: 'datetime-local',
-                    timezone: true,
-                },
-            });
-            const root = wrapper.find('.vs-date-picker');
-            expect(root.classes()).not.toContain('vs-responsive');
-        });
-
-        it('timezone select 변경 시 wall-clock이 유지되고 UTC가 재계산된다', async () => {
+        it('timezone select 변경 시 화면에 보이는 날짜/시간이 유지되고 UTC가 재계산된다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
                     modelValue: new Date('2026-05-18T15:30:00Z'),
@@ -292,8 +289,8 @@ describe('VsDatePicker', () => {
                 },
             });
             await nextTick();
-            // UTC 모드에서 wall-clock = '2026-05-18T15:30'
-            // Asia/Seoul로 바꾸면 wall-clock 15:30을 KST로 해석 → UTC 06:30
+            // UTC 모드에서 화면 표시값 = '2026-05-18T15:30'
+            // Asia/Seoul로 바꾸면 화면 표시값 15:30을 KST로 해석 → UTC 06:30
             const selectComp = wrapper.findComponent({ name: 'VsSelect' });
             selectComp.vm.$emit('update:model-value', 'Asia/Seoul');
             await nextTick();
@@ -328,23 +325,6 @@ describe('VsDatePicker', () => {
             expect(invalidEvents[0][0].reason).toBe('timezone');
             const after = (wrapper.vm as unknown as { currentTimezone: string }).currentTimezone;
             expect(after).toBe(before);
-        });
-
-        it('timezoneOptions.length >= 20이면 search가 활성된다', () => {
-            const many: TimezoneOption[] = Array.from({ length: 20 }, (_, i) => ({
-                value: `Etc/GMT-${i}`,
-                label: `GMT-${i}`,
-            }));
-            const wrapper = mount(VsDatePicker, {
-                props: {
-                    modelValue: null,
-                    type: 'datetime-local',
-                    timezone: true,
-                    timezoneOptions: many,
-                },
-            });
-            const selectComp = wrapper.findComponent({ name: 'VsSelect' });
-            expect(selectComp.props('search')).toBe(true);
         });
 
         it('사용자 정의 timezoneOptions의 첫번째가 초기값으로 사용된다', () => {

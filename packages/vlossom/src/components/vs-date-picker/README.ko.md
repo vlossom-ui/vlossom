@@ -9,9 +9,9 @@
 ## Feature
 
 - 네이티브 `<input type>` 기반 4종 타입 지원: `date`, `datetime-local`, `time`, `month`.
-- `<vs-select>` 기반 타임존 선택을 인라인으로 통합 (옵션). 타임존 변경 시 wall-clock 유지.
+- `<vs-select>` 기반 타임존 선택을 인라인으로 통합 (옵션). 타임존 변경 시 화면에 보이는 날짜/시간 유지.
 - `modelValue`는 항상 UTC `Date` instant — `.toISOString()`으로 서버 전송에 안전.
-- `required`, `min`/`max` (`Date`), `disabledDates`, parse-failure 감지를 포함한 폼 유효성 검사.
+- `required`, `min`/`max` (`Date`), `canSelectDate`, parse-failure 감지를 포함한 폼 유효성 검사.
 - 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
 
 ## Basic Usage
@@ -76,7 +76,7 @@ function onTimezoneChange({ from, to }) {
 </template>
 ```
 
-### Min / Max + DisabledDates
+### Min / Max + CanSelectDate
 
 ```html
 <template>
@@ -85,7 +85,7 @@ function onTimezoneChange({ from, to }) {
         type="date"
         :min="minDate"
         :max="maxDate"
-        :disabled-dates="holidays"
+        :can-select-date="canSelectDate"
     />
 </template>
 
@@ -94,14 +94,15 @@ import { ref } from 'vue';
 const minDate = new Date('2026-01-01T00:00:00Z');
 const maxDate = new Date('2026-12-31T00:00:00Z');
 const holidays = [new Date('2026-05-05T00:00:00Z')];
+const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString().slice(0, 10) === date.toISOString().slice(0, 10));
 </script>
 ```
 
 ## 데이터 모델
 
 - **`modelValue`는 항상 UTC `Date` instant** (`Date | null`).
-- `timezone={false}` (default)일 때 모든 입력은 UTC wall-clock으로 해석됩니다 (입력창에 UTC 시각이 그대로 표시).
-- `timezone={true}`이면 입력창에 현재 선택된 타임존의 wall-clock이 표시되지만, modelValue는 UTC로 유지됩니다.
+- `timezone={false}` (default)일 때 모든 입력은 UTC 날짜/시간으로 해석됩니다 (입력창에 UTC 시각이 그대로 표시).
+- `timezone={true}`이면 입력창에 현재 선택된 타임존의 날짜/시간이 표시되지만, modelValue는 UTC로 유지됩니다.
 - 서버 전송: `date.toISOString()`이 항상 일관된 UTC ISO 8601 문자열을 만들어 줍니다.
 
 ## 타임존
@@ -110,8 +111,7 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 | --- | --- |
 | 기본 | `timezone={false}` — select UI 없음, 내부 tz는 `'Etc/UTC'` 고정. |
 | 초기값 | 활성 시 `currentTimezone === timezoneOptions[0].value`. |
-| 변경 시 | wall-clock은 **유지**되고 UTC가 **재계산**됩니다. (예: "서울 오후 3시 회의를 뉴욕으로 옮긴다"). |
-| 검색 | `timezoneOptions.length >= 20`일 때 자동 활성. |
+| 변경 시 | 화면에 보이는 날짜/시간은 **유지**되고 UTC가 **재계산**됩니다. (예: "서울 오후 3시 회의를 뉴욕으로 옮긴다"). |
 | 잘못된 tz | `invalid` 이벤트 (reason: `'timezone'`) emit, `currentTimezone`은 유지. |
 | 현재 tz 조회 | `dpRef.value.currentTimezone` (string). |
 
@@ -121,7 +121,7 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 
 - **`format` prop은 지원하지 않습니다.** 네이티브 picker는 브라우저/OS 로케일을 따르며 라이브러리가 이를 덮어쓸 수 없습니다. 특정 시각 포맷이 필요하면 별도 렌더링 레이어를 사용하세요.
 - **`open()` (showPicker)** 는 일부 브라우저에서 사용자 제스처를 요구합니다. 이벤트 핸들러 바깥에서 프로그래밍적으로 호출하면 조용히 `focus()`로 fallback될 수 있습니다.
-- **제약은 rule 기반으로만 적용됩니다.** `min`, `max`, `disabledDates`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
+- **제약은 rule 기반으로만 적용됩니다.** `min`, `max`, `canSelectDate`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
 
 ### Picker 열기 동작
 
@@ -157,8 +157,7 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 | `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | 네이티브 input 타입.                                                                         |
 | `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 빠른 유효 instant (rule 기반).                                                         |
 | `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 늦은 유효 instant (rule 기반).                                                         |
-| `disabledDates`     | `Date[]`                                                              | `[]`                          | -        | 선택할 수 없는 날짜 목록. 선택 시 `invalid` 이벤트 emit.                                    |
-| `calendarIcon`      | `string`                                                              | inline SVG                    | -        | 아이콘 버튼의 HTML 문자열. 기본 캘린더 SVG로 fallback.                                       |
+| `canSelectDate`     | `(date: Date) => boolean \| undefined`                                | `undefined`                   | -        | 선택할 수 있는 날짜면 `true`, 선택할 수 없으면 `false`를 반환하는 콜백. 선택 불가 시 `invalid` 이벤트 emit. |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | 지우기 버튼 숨김.                                                                            |
 | `timezone`          | `boolean`                                                             | `false`                       | -        | 인라인 타임존 select 렌더링 여부.                                                            |
 | `timezoneOptions`   | `TimezoneOption[]`                                                    | `DEFAULT_TIMEZONE_OPTIONS`    | -        | 타임존 select 옵션. 첫 번째 항목이 초기값.                                                  |

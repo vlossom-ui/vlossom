@@ -2,93 +2,77 @@
     <vs-input-wrapper
         v-show="!hidden"
         :style-set="componentStyleSet.$wrapper"
+        :id="computedId"
+        :disabled="computedDisabled"
+        :messages="computedMessages"
         :width
         :grid
-        :disabled="computedDisabled"
         :hidden
-        :id="computedId"
         :label
         :no-label
         :no-messages
         :required
-        :messages="computedMessages"
         :shake
     >
         <template #label v-if="!noLabel && (!!label || !!$slots.label)">
             <slot name="label" />
         </template>
 
-        <div :class="['vs-date-picker', { 'has-timezone': timezone, 'vs-responsive': responsive }]">
+        <div :class="['vs-date-picker', 'vs-responsive', { 'has-timezone': timezone }]">
             <div class="vs-date-picker-row">
-                <div
-                    class="vs-date-picker-input-wrapper"
-                    :class="{
-                        'vs-disabled': computedDisabled,
-                        'vs-readonly': computedReadonly,
-                        'vs-focus-within': !computedDisabled && !computedReadonly,
-                    }"
-                    :tabindex="computedDisabled || computedReadonly ? -1 : 0"
-                    @click="open"
-                    @keydown.enter.prevent="open"
-                    @keydown.space.prevent="open"
-                >
-                    <vs-input
-                        ref="dateInputRef"
-                        class="vs-date-picker-display"
-                        :type
-                        :no-clear="noClear"
-                        no-label
-                        no-messages
-                        :model-value="displayValue"
-                        :name
-                        :required="required"
-                        :placeholder="computedPlaceholder"
-                        :disabled="computedDisabled"
-                        :readonly="computedReadonly"
-                        :state="computedState"
-                        :rules="[]"
-                        no-default-rules
-                        :color-scheme="colorScheme"
-                        :style-set="componentStyleSet.$input"
-                        @update:model-value="onDateInput"
-                        @focus="onFocus"
-                        @blur="onBlur"
-                    >
-                        <template #prepend>
-                            <i class="vs-date-picker-icon size-5">
-                                <vs-render :content="calendarIcon" />
-                            </i>
-                            <slot v-if="$slots['prepend']" name="prepend" />
-                        </template>
-                        <template v-if="$slots['append']" #append>
-                            <slot name="append" />
-                        </template>
-                    </vs-input>
-                </div>
-
-                <vs-divider v-if="timezone" vertical :responsive class="vs-date-picker-divider" aria-hidden="true" />
-
-                <vs-select
-                    v-if="timezone"
-                    :model-value="currentTimezone"
-                    class="vs-date-picker-timezone"
-                    :options="timezoneOptions"
-                    option-label="label"
-                    option-value="value"
-                    :search="timezoneSearchable"
-                    :style-set="componentStyleSet.$timezoneSelect"
+                <vs-input
+                    ref="dateInputRef"
+                    class="vs-date-picker-display"
+                    :model-value="displayValue"
+                    :style-set="componentStyleSet.$input"
+                    :placeholder="computedPlaceholder"
                     :disabled="computedDisabled"
                     :readonly="computedReadonly"
-                    no-clear
+                    :state="computedState"
+                    :color-scheme
+                    :type
+                    :no-clear
+                    :name
+                    :required
                     no-label
                     no-messages
-                    aria-label="Timezone"
-                    @update:model-value="onTimezoneChange"
+                    no-default-rules
+                    @update:model-value="onDateInput"
+                    @focus="onFocus"
+                    @blur="onBlur"
+                    @click="open"
                 >
-                    <template v-if="$slots['timezone-option']" #option="ctx">
-                        <slot name="timezone-option" v-bind="ctx" />
+                    <template #prepend>
+                        <slot v-if="$slots['prepend']" name="prepend" />
+                        <i v-else class="vs-date-picker-icon size-5">
+                            <vs-render :content="computedIcon" />
+                        </i>
                     </template>
-                </vs-select>
+                    <template v-if="$slots['append']" #append>
+                        <slot name="append" />
+                    </template>
+                </vs-input>
+
+                <template v-if="timezone">
+                    <vs-divider class="vs-date-picker-divider" vertical responsive />
+
+                    <vs-select
+                        class="vs-date-picker-timezone"
+                        :style-set="componentStyleSet.$timezoneSelect"
+                        :model-value="currentTimezone"
+                        :options="timezoneOptions"
+                        option-label="label"
+                        option-value="value"
+                        :disabled="computedDisabled"
+                        :readonly="computedReadonly"
+                        :color-scheme
+                        no-clear
+                        no-label
+                        no-messages
+                        aria-label="Timezone"
+                        @update:model-value="onTimezoneChange"
+                    />
+                </template>
             </div>
         </div>
 
@@ -117,26 +101,25 @@ import { useStyleSet, useInput } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { dateUtil } from '@/utils';
 
-import { DEFAULT_TIMEZONE_OPTIONS, TYPE_TO_FORMAT } from './constants';
+import { datePickerIcons } from './icons';
+import { DEFAULT_TIMEZONE_OPTIONS, TYPE_TO_ISO_FORMAT } from './constants';
 import {
     type TimezoneOption,
+    type VsDatePickerCanSelectDate,
     type VsDatePickerStyleSet,
     type VsDatePickerType,
     type VsDatePickerValueType,
 } from './types';
 import { useVsDatePickerRules } from './vs-date-picker-rules';
 
-import VsDivider from '@/components/vs-divider/VsDivider.vue';
-import VsInput from '@/components/vs-input/VsInput.vue';
 import type { VsInputRef } from '@/components/vs-input/types';
+import VsInput from '@/components/vs-input/VsInput.vue';
+import VsDivider from '@/components/vs-divider/VsDivider.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
 
 const componentName = VsComponent.VsDatePicker;
-
-const FALLBACK_CALENDAR_ICON =
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="100%" height="100%"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
 
 export default defineComponent({
     name: componentName,
@@ -149,19 +132,18 @@ export default defineComponent({
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         min: { type: Date as PropType<Date | undefined>, default: undefined },
         max: { type: Date as PropType<Date | undefined>, default: undefined },
-        disabledDates: { type: Array as PropType<Date[]>, default: () => [] },
         noClear: { type: Boolean, default: false },
-        calendarIcon: { type: String, default: FALLBACK_CALENDAR_ICON },
-        /**
-         * container width 가 좁아지면 (@container max-width 768px) date input 과
-         * timezone select 를 세로(column) 로 stack. timezone 사용 케이스에서만 의미 있음.
-         */
-        responsive: { type: Boolean, default: false },
+        canSelectDate: {
+            type: Function as PropType<VsDatePickerCanSelectDate>,
+            default: undefined,
+        },
         timezone: { type: Boolean, default: false },
         timezoneOptions: {
             type: Array as PropType<TimezoneOption[]>,
             default: () => DEFAULT_TIMEZONE_OPTIONS,
         },
+
+        // v-model
         modelValue: {
             type: Date as PropType<VsDatePickerValueType>,
             default: null,
@@ -186,7 +168,7 @@ export default defineComponent({
             required,
             min,
             max,
-            disabledDates,
+            canSelectDate,
             id,
             disabled,
             readonly: readonlyProp,
@@ -203,7 +185,9 @@ export default defineComponent({
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const currentTimezone = ref(
-            timezone.value && timezoneOptions.value.length > 0 ? timezoneOptions.value[0].value : 'Etc/UTC',
+            timezone.value && timezoneOptions.value.length > 0
+                ? timezoneOptions.value[0].value
+                : DEFAULT_TIMEZONE_OPTIONS[0].value,
         );
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
@@ -212,7 +196,7 @@ export default defineComponent({
             required,
             min,
             max,
-            disabledDates,
+            canSelectDate,
         );
 
         /*
@@ -237,20 +221,20 @@ export default defineComponent({
             }
         });
 
-        function toDisplayIso(wall: string): string {
-            const parsed = dateUtil.fromIso(wall, 'YYYY-MM-DDTHH:mm');
+        function toDisplayIso(zonedIso: string): string {
+            const parsed = dateUtil.fromIso(zonedIso, 'YYYY-MM-DDTHH:mm');
             if (!parsed) {
-                return wall;
+                return zonedIso;
             }
-            return dateUtil.toIso(parsed, TYPE_TO_FORMAT[type.value]);
+            return dateUtil.toIso(parsed, TYPE_TO_ISO_FORMAT[type.value]);
         }
 
         const displayValue = computed(() => {
             if (!inputValue.value) {
                 return '';
             }
-            const wall = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
-            return toDisplayIso(wall);
+            const zonedIso = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
+            return toDisplayIso(zonedIso);
         });
 
         function toTypedIso(value: string): string {
@@ -265,7 +249,7 @@ export default defineComponent({
         }
 
         function expandToFullIso(value: string): string | null {
-            const parsed = dateUtil.fromIso(toTypedIso(value), TYPE_TO_FORMAT[type.value]);
+            const parsed = dateUtil.fromIso(toTypedIso(value), TYPE_TO_ISO_FORMAT[type.value]);
             if (!parsed) {
                 return null;
             }
@@ -292,7 +276,7 @@ export default defineComponent({
                 return;
             }
 
-            if (disabledDates.value.some((d) => dateUtil.sameDay(d, utc))) {
+            if (canSelectDate.value?.(utc) === false) {
                 emit('invalid', { reason: 'disabled', input: raw });
                 return;
             }
@@ -312,15 +296,20 @@ export default defineComponent({
             }
             const fromTz = currentTimezone.value;
             if (inputValue.value) {
-                const wall = dateUtil.toZonedIso(inputValue.value, fromTz);
-                const newUtc = dateUtil.fromZonedIso(wall, newTz);
+                const zonedIso = dateUtil.toZonedIso(inputValue.value, fromTz);
+                const newUtc = dateUtil.fromZonedIso(zonedIso, newTz);
                 inputValue.value = newUtc;
             }
             currentTimezone.value = newTz;
             emit('timezone-change', { from: fromTz, to: newTz });
         }
 
-        const timezoneSearchable = computed(() => timezoneOptions.value.length >= 20);
+        const computedIcon = computed(() => {
+            if (type.value === 'time') {
+                return datePickerIcons.CLOCK_ICON;
+            }
+            return datePickerIcons.CALENDAR_ICON;
+        });
 
         const {
             computedId,
@@ -393,10 +382,10 @@ export default defineComponent({
         }
 
         return {
-            // refs
+            // Refs
             dateInputRef,
 
-            // state
+            // Computed
             componentStyleSet,
             displayValue,
             computedPlaceholder,
@@ -404,12 +393,12 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedState,
+            computedIcon,
             shake,
             computedId,
             currentTimezone: readonly(currentTimezone),
-            timezoneSearchable,
 
-            // methods
+            // Methods
             onDateInput,
             onFocus,
             onBlur,

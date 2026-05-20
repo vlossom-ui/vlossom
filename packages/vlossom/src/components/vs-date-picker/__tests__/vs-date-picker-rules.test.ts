@@ -7,13 +7,13 @@ describe('useVsDatePickerRules', () => {
         required?: boolean;
         min?: Date;
         max?: Date;
-        disabledDates?: Date[];
+        canSelectDate?: (date: Date) => boolean;
     } = {}) {
         return useVsDatePickerRules(
             ref(opts.required ?? false),
             ref(opts.min),
             ref(opts.max),
-            ref(opts.disabledDates ?? []),
+            ref(opts.canSelectDate),
         );
     }
 
@@ -72,23 +72,23 @@ describe('useVsDatePickerRules', () => {
     });
 
     describe('notDisabledCheck', () => {
-        it('disabledDates에 포함된 날짜면 메시지를 반환한다', () => {
-            const holiday = new Date('2026-05-18T00:00:00Z');
-            const { notDisabledCheck } = setup({ disabledDates: [holiday] });
-            const sameDay = new Date('2026-05-18T15:30:00Z');
-            expect(notDisabledCheck(sameDay)).toContain('not selectable');
+        it('canSelectDate가 false를 반환하면 메시지를 반환한다', () => {
+            const canSelectDate = (date: Date) => !date.toISOString().startsWith('2026-05-18');
+            const { notDisabledCheck } = setup({ canSelectDate });
+            const disabled = new Date('2026-05-18T15:30:00Z');
+            expect(notDisabledCheck(disabled)).toContain('not selectable');
         });
 
-        it('disabledDates에 없는 날짜면 빈 문자열을 반환한다', () => {
-            const holiday = new Date('2026-05-18T00:00:00Z');
-            const { notDisabledCheck } = setup({ disabledDates: [holiday] });
+        it('canSelectDate가 true를 반환하면 빈 문자열을 반환한다', () => {
+            const canSelectDate = (date: Date) => !date.toISOString().startsWith('2026-05-18');
+            const { notDisabledCheck } = setup({ canSelectDate });
             const normal = new Date('2026-05-19T00:00:00Z');
             expect(notDisabledCheck(normal)).toBe('');
         });
 
         it('value가 null이면 빈 문자열을 반환한다', () => {
-            const holiday = new Date('2026-05-18T00:00:00Z');
-            const { notDisabledCheck } = setup({ disabledDates: [holiday] });
+            const canSelectDate = () => false;
+            const { notDisabledCheck } = setup({ canSelectDate });
             expect(notDisabledCheck(null)).toBe('');
         });
     });

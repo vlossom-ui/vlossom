@@ -1,11 +1,11 @@
 import type { Ref } from 'vue';
-import { dateUtil } from '@/utils';
+import type { VsDatePickerCanSelectDate } from './types';
 
 export function useVsDatePickerRules(
     required: Ref<boolean>,
     min: Ref<Date | undefined>,
     max: Ref<Date | undefined>,
-    disabledDates: Ref<Date[]>,
+    canSelectDate: Ref<VsDatePickerCanSelectDate | undefined>,
 ) {
     function requiredCheck(v: Date | null): string {
         if (required.value && v === null) {
@@ -36,9 +36,7 @@ export function useVsDatePickerRules(
         if (v === null) {
             return '';
         }
-        return disabledDates.value.some((d) => dateUtil.sameDay(d, v))
-            ? 'This date is not selectable'
-            : '';
+        return canSelectDate.value?.(v) === false ? 'This date is not selectable' : '';
     }
 
     function invalidValueCheck(v: Date | null): string {

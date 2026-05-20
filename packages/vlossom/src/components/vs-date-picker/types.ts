@@ -17,6 +17,8 @@ export type VsDatePickerValueType = Date | null;
 
 export type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
+export type VsDatePickerCanSelectDate = (date: Date) => boolean | undefined;
+
 export interface TimezoneOption {
     value: string;
     label: string;

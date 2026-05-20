@@ -9,9 +9,9 @@ A native-first date picker component with timezone select integration, form vali
 ## Feature
 
 - Four input types: `date`, `datetime-local`, `time`, `month` — backed by native `<input type>`.
-- Optional timezone select (`<vs-select>`) integrated inline; wall-clock preserved on timezone change.
+- Optional timezone select (`<vs-select>`) integrated inline; displayed date/time is preserved on timezone change.
 - `modelValue` is always a UTC `Date` instant — safe to `.toISOString()` for server transport.
-- Form validation with `required`, `min`/`max` (`Date`), `disabledDates`, and parse-failure detection.
+- Form validation with `required`, `min`/`max` (`Date`), `canSelectDate`, and parse-failure detection.
 - Built-in clear button and calendar icon button; `showPicker()` feature detection on `open()`.
 
 ## Basic Usage
@@ -76,7 +76,7 @@ function onTimezoneChange({ from, to }) {
 </template>
 ```
 
-### Min / Max + DisabledDates
+### Min / Max + CanSelectDate
 
 ```html
 <template>
@@ -85,7 +85,7 @@ function onTimezoneChange({ from, to }) {
         type="date"
         :min="minDate"
         :max="maxDate"
-        :disabled-dates="holidays"
+        :can-select-date="canSelectDate"
     />
 </template>
 
@@ -94,14 +94,15 @@ import { ref } from 'vue';
 const minDate = new Date('2026-01-01T00:00:00Z');
 const maxDate = new Date('2026-12-31T00:00:00Z');
 const holidays = [new Date('2026-05-05T00:00:00Z')];
+const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString().slice(0, 10) === date.toISOString().slice(0, 10));
 </script>
 ```
 
 ## Data Model
 
 - **`modelValue` is always a UTC `Date` instant** (`Date | null`).
-- When `timezone={false}` (default), all input is interpreted as UTC wall-clock — the rendered input shows the UTC time literally.
-- When `timezone={true}`, the input shows wall-clock in the currently selected timezone. The modelValue stays in UTC.
+- When `timezone={false}` (default), all input is interpreted as UTC date/time — the rendered input shows the UTC time literally.
+- When `timezone={true}`, the input shows date/time in the currently selected timezone. The modelValue stays in UTC.
 - Server payload: `date.toISOString()` always produces a consistent UTC ISO 8601 string.
 
 ## Timezone
@@ -110,8 +111,7 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 | --- | --- |
 | Default | `timezone={false}` — no select UI, internal tz fixed to `'Etc/UTC'`. |
 | Initial value | When enabled, `currentTimezone === timezoneOptions[0].value`. |
-| On change | Wall-clock is **preserved**; UTC is **recalculated**. (Use case: "Move this 3 PM meeting from Seoul to NY.") |
-| Search | Auto-enabled when `timezoneOptions.length >= 20`. |
+| On change | Displayed date/time is **preserved**; UTC is **recalculated**. (Use case: "Move this 3 PM meeting from Seoul to NY.") |
 | Invalid tz | Emits `invalid` (reason: `'timezone'`); `currentTimezone` stays put. |
 | Read current tz | `dpRef.value.currentTimezone` (string). |
 
@@ -121,7 +121,7 @@ Default options: 12 IANA zones (`Etc/UTC`, Los Angeles, New York, London, Paris,
 
 - **`format` prop is not supported.** Native pickers respect the browser/OS locale; the library cannot override this. Use a custom rendering layer if you need a specific visual format.
 - **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically (outside an event handler) may silently fall back to `focus()`.
-- **Validation constraints are rule-based.** `min`, `max`, and `disabledDates` validate the selected value but are not forwarded to the native picker UI.
+- **Validation constraints are rule-based.** `min`, `max`, and `canSelectDate` validate the selected value but are not forwarded to the native picker UI.
 
 ### Picker Trigger
 
@@ -157,8 +157,7 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 | `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | Native input type.                                                                           |
 | `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | Earliest valid instant (rule-based).                                                         |
 | `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | Latest valid instant (rule-based).                                                           |
-| `disabledDates`     | `Date[]`                                                              | `[]`                          | -        | Dates to reject; emits `invalid` on selection.                                               |
-| `calendarIcon`      | `string`                                                              | inline SVG                    | -        | HTML string for the icon button. Falls back to a default calendar SVG.                       |
+| `canSelectDate`     | `(date: Date) => boolean \| undefined`                                | `undefined`                   | -        | Callback that returns `true` for selectable dates and `false` for dates to reject; emits `invalid` when rejected. |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | Hides the clear button.                                                                      |
 | `timezone`          | `boolean`                                                             | `false`                       | -        | Render an inline timezone select.                                                            |
 | `timezoneOptions`   | `TimezoneOption[]`                                                    | `DEFAULT_TIMEZONE_OPTIONS`    | -        | Options for the timezone select. The first entry is the initial value.                       |

@@ -102,17 +102,6 @@
                 type="datetime-local"
                 label="Datetime + Timezone (responsive)"
                 timezone
-                responsive
-                @timezone-change="onTzChange"
-                :grid="{ xs: 12, md: 6, lg: 6 }"
-            />
-            <vs-date-picker
-                v-model="dpTzCustom"
-                type="datetime-local"
-                label="Custom Timezones (Asia, responsive)"
-                timezone
-                responsive
-                :timezone-options="dpAsiaTz"
                 @timezone-change="onTzChange"
                 :grid="{ xs: 12, md: 6, lg: 6 }"
             />
@@ -371,14 +360,6 @@ export default defineComponent({
         const dpRequired: Ref<Date | null> = ref(null);
         const dpReadonlyValue: Ref<Date | null> = ref(new Date('2026-05-18T00:00:00Z'));
         const dpTz: Ref<Date | null> = ref(new Date('2026-05-18T15:30:00Z'));
-        const dpTzCustom: Ref<Date | null> = ref(null);
-        const dpAsiaTz = [
-            { value: 'Asia/Seoul', label: '서울 (UTC+09:00)' },
-            { value: 'Asia/Tokyo', label: '도쿄 (UTC+09:00)' },
-            { value: 'Asia/Shanghai', label: '상하이 (UTC+08:00)' },
-            { value: 'Asia/Kolkata', label: '콜카타 (UTC+05:30)' },
-            { value: 'Asia/Dubai', label: '두바이 (UTC+04:00)' },
-        ];
         function onTzChange(payload: { from: string; to: string }) {
             console.info(`[VsDatePicker] timezone: ${payload.from} → ${payload.to}`);
         }
@@ -420,8 +401,6 @@ export default defineComponent({
             dpRequired,
             dpReadonlyValue,
             dpTz,
-            dpTzCustom,
-            dpAsiaTz,
             onTzChange,
         };
     },

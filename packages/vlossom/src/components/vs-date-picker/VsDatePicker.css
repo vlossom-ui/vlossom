@@ -42,44 +42,27 @@
     height: auto;
 }
 
-/*
- * Date input field 영역. VsInput 내부 native input 이 값 입력과 picker 트리거를 함께 담당한다.
- * wrapper 의 @click 으로 openPicker() 를 호출하므로 input 영역 어디든 클릭하면 picker 가 열린다.
- */
-.vs-date-picker .vs-date-picker-input-wrapper {
-    @apply relative cursor-pointer;
+/* Date input field 영역. */
+.vs-date-picker .vs-date-picker-display {
     flex: 1 1 0%;
 }
 
-.vs-date-picker .vs-date-picker-input-wrapper.vs-disabled,
-.vs-date-picker .vs-date-picker-input-wrapper.vs-readonly {
-    @apply cursor-not-allowed;
+.vs-date-picker .vs-date-picker-display input::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
 
 /*
  * VsButton / VsChip / VsAccordion 등과 동일한 brightness hover/active 효과.
- * Input wrapper 가 picker 트리거 역할이라 button-like 한 시각 피드백을 부여한다.
+ * Date input box 가 picker trigger 역할이라 button-like 한 시각 피드백을 부여한다.
  * disabled / readonly 일 때는 적용하지 않음.
  */
-.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) {
+.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly) {
     @apply hover:brightness-96 active:brightness-92;
 }
 
-/*
- * Active 상태에서 outline 을 wrapper 가 아니라 내부 .vs-input 박스에 그린다
- * → VsInput 의 focus outline 과 동일한 위치/모양 (mixin.css 룰과 같은 토큰).
- *   - wrapper :focus → wrapper 가 keyboard/click 으로 focus 받은 케이스
- *   - wrapper :focus-within → VsInput 내부 input 이 focus 받은 케이스
- * 어느 경우든 시각 단서는 .vs-input 박스 외곽에 통일.
- */
-.vs-date-picker .vs-date-picker-input-wrapper.vs-focus-within:focus .vs-input,
-.vs-date-picker .vs-date-picker-input-wrapper.vs-focus-within:focus-within .vs-input {
-    outline: 1px solid var(--vs-cs-line);
-    outline-offset: 2px;
-}
-
-.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) .vs-input,
-.vs-date-picker .vs-date-picker-input-wrapper:not(.vs-disabled):not(.vs-readonly) input {
+.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly),
+.vs-date-picker .vs-date-picker-display .vs-input:not(.vs-disabled):not(.vs-readonly) input {
     cursor: pointer;
 }
 
@@ -94,8 +77,8 @@
 }
 
 /*
- * responsive prop 활성 시: .vs-date-picker 자신의 width 가 768px 이하가 되면
- * (container query) date input 과 timezone select 를 세로(flex column) 로 stack.
+ * .vs-date-picker 자신의 width 가 768px 이하가 되면 (container query)
+ * date input 과 timezone select 를 세로(flex column) 로 stack.
  *   - timezone select 는 min-width 12rem 해제, 풀폭 사용
  *   - vs-divider 는 vs-divider-responsive 가 horizontal 모양으로 자동 전환 (VsDivider.css)
  */

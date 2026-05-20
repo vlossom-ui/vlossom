@@ -84,9 +84,9 @@ const meta: Meta<typeof VsDatePicker> = {
             description: '최대 선택 가능 Date',
             table: { category: 'Validation' },
         },
-        disabledDates: {
-            control: 'object',
-            description: '선택 차단 Date 배열',
+        canSelectDate: {
+            control: false,
+            description: '날짜 선택 가능 여부를 반환하는 콜백',
             table: { category: 'Validation' },
         },
         rules: { control: 'object', table: { category: 'Validation' } },
@@ -306,8 +306,8 @@ export const TimezoneChangeBehavior: Story = {
         docs: {
             description: {
                 story:
-                    'timezone 변경 시 wall-clock(화면에 보이는 시각)은 유지되고 UTC가 재계산됩니다. ' +
-                    '예: Seoul 15:30 → Tokyo 변경 시 wall-clock은 15:30 유지, UTC는 06:30으로 유지(둘 다 동일 offset)되지만, ' +
+                    'timezone 변경 시 화면에 보이는 날짜/시간은 유지되고 UTC가 재계산됩니다. ' +
+                    '예: Seoul 15:30 → Tokyo 변경 시 화면 값은 15:30 유지, UTC는 06:30으로 유지(둘 다 동일 offset)되지만, ' +
                     'New York로 변경하면 UTC가 19:30 (전일)로 재계산됩니다.',
             },
         },
