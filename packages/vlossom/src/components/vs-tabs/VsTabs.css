@@ -35,6 +35,7 @@
                     whitespace-nowrap;
 
                 transition: var(--tab-transition);
+                transition-property: border-color, background-color, color;
                 border: var(--tab-border);
                 border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
@@ -50,6 +51,11 @@
 
                 &:focus {
                     @apply outline-none;
+                }
+
+                &:focus-visible:not(.vs-disabled) {
+                    outline: 1px solid var(--vs-cs-line);
+                    outline-offset: -3px;
                 }
             }
 
@@ -142,6 +148,10 @@
 
                 .vs-tab-item.vs-selected {
                     color: var(--vs-cs-font-primary);
+                }
+
+                .vs-tab-item.vs-selected:focus-visible:not(.vs-disabled) {
+                    outline-color: var(--vs-cs-font-primary);
                 }
 
                 .vs-tab-indicator {

@@ -42,6 +42,13 @@
                 @apply outline-none;
             }
 
+            &:focus-visible:not(.vs-disabled) {
+                .vs-step-num {
+                    outline-offset: 6px;
+                    box-shadow: 0 0 0 3px var(--vs-cs-bg-primary);
+                }
+            }
+
             .vs-step-num {
                 @apply flex items-center justify-center font-semibold;
 
