@@ -98,7 +98,13 @@ import {
 import { VsComponent, FORM_STORE_KEY } from '@/declaration';
 import { FormStore } from '@/stores';
 import { useStyleSet, useInput } from '@/composables';
-import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
+import {
+    getInputProps,
+    getResponsiveProps,
+    getColorSchemeProps,
+    getStyleSetProps,
+    getDateMinMaxProps,
+} from '@/props';
 import { dateUtil } from '@/utils';
 
 import { datePickerIcons } from './icons';
@@ -129,9 +135,8 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDatePickerStyleSet>(),
+        ...getDateMinMaxProps(),
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
-        min: { type: Date as PropType<Date | undefined>, default: undefined },
-        max: { type: Date as PropType<Date | undefined>, default: undefined },
         noClear: { type: Boolean, default: false },
         canSelectDate: {
             type: Function as PropType<VsDatePickerCanSelectDate>,
