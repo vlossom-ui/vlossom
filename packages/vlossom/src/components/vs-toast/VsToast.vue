@@ -50,7 +50,9 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsToastStyleSet> = computed(() => {
             return {
                 $closeButton: {
-                    padding: '0',
+                    $content: {
+                        padding: '0',
+                    },
                 },
             };
         });
