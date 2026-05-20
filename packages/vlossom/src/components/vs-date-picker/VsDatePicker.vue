@@ -40,9 +40,6 @@
                         no-label
                         no-messages
                         :model-value="displayValue"
-                        :min="minDisplay"
-                        :max="maxDisplay"
-                        :step="normalizedStep"
                         :name
                         :required="required"
                         :placeholder="computedPlaceholder"
@@ -155,8 +152,6 @@ export default defineComponent({
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         min: { type: Date as PropType<Date | undefined>, default: undefined },
         max: { type: Date as PropType<Date | undefined>, default: undefined },
-        step: { type: Number as PropType<number | undefined>, default: undefined },
-        noStepNormalize: { type: Boolean, default: false },
         disabledDates: { type: Array as PropType<Date[]>, default: () => [] },
         noClear: { type: Boolean, default: false },
         calendarIcon: { type: String, default: FALLBACK_CALENDAR_ICON },
@@ -194,8 +189,6 @@ export default defineComponent({
             required,
             min,
             max,
-            step,
-            noStepNormalize,
             disabledDates,
             id,
             disabled,
@@ -268,35 +261,6 @@ export default defineComponent({
             }
             const wall = dateUtil.toZonedIso(inputValue.value, currentTimezone.value);
             return sliceWall(wall);
-        });
-
-        function toDisplayBound(d: Date | undefined): string | undefined {
-            if (!d) {
-                return undefined;
-            }
-            return sliceWall(dateUtil.toZonedIso(d, currentTimezone.value));
-        }
-
-        const minDisplay = computed(() => toDisplayBound(min.value));
-        const maxDisplay = computed(() => toDisplayBound(max.value));
-
-        const normalizedStep = computed(() => {
-            const s = step.value;
-            if (s === undefined) {
-                return undefined;
-            }
-            if (noStepNormalize.value) {
-                return s;
-            }
-            if (s >= 60) {
-                return s;
-            }
-            const rounded = Math.ceil(s / 60) * 60;
-            console.warn(
-                `[VsDatePicker] step=${s}s is sub-minute; rounded to ${rounded}s. ` +
-                    'Pass noStepNormalize=true to disable.',
-            );
-            return rounded;
         });
 
         function expandToFullIso(value: string): string | null {
@@ -439,9 +403,6 @@ export default defineComponent({
             // state
             componentStyleSet,
             displayValue,
-            minDisplay,
-            maxDisplay,
-            normalizedStep,
             computedPlaceholder,
             computedMessages,
             computedDisabled,

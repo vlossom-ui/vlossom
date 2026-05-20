@@ -12,7 +12,6 @@
 - `<vs-select>` 기반 타임존 선택을 인라인으로 통합 (옵션). 타임존 변경 시 wall-clock 유지.
 - `modelValue`는 항상 UTC `Date` instant — `.toISOString()`으로 서버 전송에 안전.
 - `required`, `min`/`max` (`Date`), `disabledDates`, parse-failure 감지를 포함한 폼 유효성 검사.
-- 60초 미만 `step`은 `console.warn`과 함께 분 단위로 반올림 (`noStepNormalize`로 비활성화 가능).
 - 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
 
 ## Basic Usage
@@ -122,8 +121,7 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 
 - **`format` prop은 지원하지 않습니다.** 네이티브 picker는 브라우저/OS 로케일을 따르며 라이브러리가 이를 덮어쓸 수 없습니다. 특정 시각 포맷이 필요하면 별도 렌더링 레이어를 사용하세요.
 - **`open()` (showPicker)** 는 일부 브라우저에서 사용자 제스처를 요구합니다. 이벤트 핸들러 바깥에서 프로그래밍적으로 호출하면 조용히 `focus()`로 fallback될 수 있습니다.
-- **네이티브 캘린더의 비활성 셀 표시는 불가**합니다. `disabledDates`는 선택 시점에 룰 검증을 수행하지만, 네이티브 picker UI에서 회색 처리는 되지 않습니다.
-- **60초 미만 `step`** 은 `console.warn`과 함께 분 단위로 반올림됩니다. 이 safeguard를 끄려면 `noStepNormalize`를 전달하세요.
+- **제약은 rule 기반으로만 적용됩니다.** `min`, `max`, `disabledDates`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
 
 ### Picker 열기 동작
 
@@ -157,10 +155,8 @@ const holidays = [new Date('2026-05-05T00:00:00Z')];
 | `styleSet`          | `string \| VsDatePickerStyleSet`                                      | -                             | -        | 커스텀 스타일 셋.                                                                            |
 | `modelValue`        | `Date \| null`                                                        | `null`                        | -        | v-model — UTC instant.                                                                       |
 | `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | 네이티브 input 타입.                                                                         |
-| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | 선택 가능한 가장 빠른 instant.                                                              |
-| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | 선택 가능한 가장 늦은 instant.                                                              |
-| `step`              | `number \| undefined`                                                 | `undefined`                   | -        | 초 단위 step (`time` / `datetime-local`). 60초 미만은 `console.warn`과 함께 반올림.         |
-| `noStepNormalize`   | `boolean`                                                             | `false`                       | -        | 60초 미만 step 반올림 비활성화.                                                              |
+| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 빠른 유효 instant (rule 기반).                                                         |
+| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 늦은 유효 instant (rule 기반).                                                         |
 | `disabledDates`     | `Date[]`                                                              | `[]`                          | -        | 선택할 수 없는 날짜 목록. 선택 시 `invalid` 이벤트 emit.                                    |
 | `calendarIcon`      | `string`                                                              | inline SVG                    | -        | 아이콘 버튼의 HTML 문자열. 기본 캘린더 SVG로 fallback.                                       |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | 지우기 버튼 숨김.                                                                            |

@@ -84,16 +84,6 @@ const meta: Meta<typeof VsDatePicker> = {
             description: '최대 선택 가능 Date',
             table: { category: 'Validation' },
         },
-        step: {
-            control: 'number',
-            description: 'time/datetime-local step (초). 60 미만 시 분 단위로 round',
-            table: { category: 'Validation' },
-        },
-        noStepNormalize: {
-            control: 'boolean',
-            description: 'step 정규화 비활성화',
-            table: { category: 'Validation' },
-        },
         disabledDates: {
             control: 'object',
             description: '선택 차단 Date 배열',
@@ -166,7 +156,7 @@ export const MinMax: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'min/max는 Date 객체이며 input attribute로 forward됩니다.',
+                story: 'min/max는 Date 객체이며 native input attribute가 아닌 Vlossom validation rule로 검증됩니다.',
             },
         },
     },

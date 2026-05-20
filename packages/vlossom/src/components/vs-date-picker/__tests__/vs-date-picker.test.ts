@@ -45,18 +45,22 @@ describe('VsDatePicker', () => {
             expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe('2026-05-18T15:30');
         });
 
-        it('min/max를 UTC wall-clock으로 VsInput 내부 input attribute에 forward한다', () => {
+        it('min/max는 input attribute로 forward하지 않고 rule로 검증한다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: {
-                    modelValue: null,
+                    modelValue: new Date('2025-12-31T00:00:00Z'),
                     type: 'date',
                     min: new Date('2026-01-01T00:00:00Z'),
                     max: new Date('2026-12-31T00:00:00Z'),
                 },
             });
             const input = findDateInput(wrapper);
-            expect(input.attributes('min')).toBe('2026-01-01');
-            expect(input.attributes('max')).toBe('2026-12-31');
+            expect(input.attributes('min')).toBeUndefined();
+            expect(input.attributes('max')).toBeUndefined();
+
+            expect((wrapper.vm as unknown as { validate: () => boolean }).validate()).toBe(false);
+            await nextTick();
+            expect(wrapper.text()).toContain('Must be on or after 2026-01-01T00:00:00.000Z');
         });
 
         it('disabledDates와 같은 날짜 입력 시 invalid 이벤트가 emit되고 modelValue는 그대로다', async () => {
@@ -173,29 +177,6 @@ describe('VsDatePicker', () => {
             const events = wrapper.emitted('invalid') as Array<[{ reason: string }]>;
             expect(events).toBeTruthy();
             expect(events[0][0].reason).toBe('parse');
-        });
-
-        it('step이 60 미만이면 console.warn 후 정규화된다', () => {
-            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-            mount(VsDatePicker, {
-                props: { modelValue: null, type: 'time', step: 30 },
-            });
-            expect(warnSpy).toHaveBeenCalled();
-            warnSpy.mockRestore();
-        });
-
-        it('noStepNormalize=true면 step warn이 발생하지 않는다', () => {
-            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-            mount(VsDatePicker, {
-                props: {
-                    modelValue: null,
-                    type: 'time',
-                    step: 30,
-                    noStepNormalize: true,
-                },
-            });
-            expect(warnSpy).not.toHaveBeenCalled();
-            warnSpy.mockRestore();
         });
 
         it('VsForm 내부에서 validate()가 동작한다 (required 미충족)', async () => {

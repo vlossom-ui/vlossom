@@ -12,7 +12,6 @@ A native-first date picker component with timezone select integration, form vali
 - Optional timezone select (`<vs-select>`) integrated inline; wall-clock preserved on timezone change.
 - `modelValue` is always a UTC `Date` instant — safe to `.toISOString()` for server transport.
 - Form validation with `required`, `min`/`max` (`Date`), `disabledDates`, and parse-failure detection.
-- Sub-minute `step` is normalized with `console.warn` (opt-out via `noStepNormalize`).
 - Built-in clear button and calendar icon button; `showPicker()` feature detection on `open()`.
 
 ## Basic Usage
@@ -122,8 +121,7 @@ Default options: 12 IANA zones (`Etc/UTC`, Los Angeles, New York, London, Paris,
 
 - **`format` prop is not supported.** Native pickers respect the browser/OS locale; the library cannot override this. Use a custom rendering layer if you need a specific visual format.
 - **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically (outside an event handler) may silently fall back to `focus()`.
-- **Per-date disabled cells in the native calendar** are not visually marked. `disabledDates` validates on selection (rule-based) but does not gray out cells in the native picker UI.
-- **`step` below 60 seconds** is rounded up to the nearest minute with a `console.warn`. Pass `noStepNormalize` to disable this safeguard.
+- **Validation constraints are rule-based.** `min`, `max`, and `disabledDates` validate the selected value but are not forwarded to the native picker UI.
 
 ### Picker Trigger
 
@@ -157,10 +155,8 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 | `styleSet`          | `string \| VsDatePickerStyleSet`                                      | -                             | -        | Custom style set.                                                                            |
 | `modelValue`        | `Date \| null`                                                        | `null`                        | -        | v-model — UTC instant.                                                                       |
 | `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | Native input type.                                                                           |
-| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | Earliest selectable instant.                                                                 |
-| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | Latest selectable instant.                                                                   |
-| `step`              | `number \| undefined`                                                 | `undefined`                   | -        | Step in seconds (for `time` / `datetime-local`). Sub-minute values are rounded with `console.warn`. |
-| `noStepNormalize`   | `boolean`                                                             | `false`                       | -        | Disable sub-minute step rounding.                                                            |
+| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | Earliest valid instant (rule-based).                                                         |
+| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | Latest valid instant (rule-based).                                                           |
 | `disabledDates`     | `Date[]`                                                              | `[]`                          | -        | Dates to reject; emits `invalid` on selection.                                               |
 | `calendarIcon`      | `string`                                                              | inline SVG                    | -        | HTML string for the icon button. Falls back to a default calendar SVG.                       |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | Hides the clear button.                                                                      |

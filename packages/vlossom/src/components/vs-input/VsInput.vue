@@ -29,9 +29,6 @@
                 :id="computedId"
                 :type
                 :value="inputValue"
-                :min="forwardMinAttr"
-                :max="forwardMaxAttr"
-                :step
                 :autocomplete="autocomplete ? 'on' : 'off'"
                 :name
                 :disabled="computedDisabled"
@@ -95,11 +92,6 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
-        clearOnReadonly: { type: Boolean, default: false },
-        step: {
-            type: [Number, String] as PropType<number | string | undefined>,
-            default: undefined,
-        },
         type: { type: String as PropType<VsInputNativeType>, default: 'text' },
         // v-model
         modelValue: {
@@ -125,7 +117,6 @@ export default defineComponent({
             min,
             id,
             noClear,
-            clearOnReadonly,
             disabled,
             readonly,
             messages,
@@ -137,19 +128,6 @@ export default defineComponent({
         const inputValue: Ref<VsInputValueType> = ref(modelValue.value);
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
         const isNumberInput = computed(() => type.value === 'number');
-
-        /*
-         * min/max prop 의 기본값(0, MAX_SAFE_INTEGER)은 number 타입에서 내부 minCheck/maxCheck
-         * 룰이 사용하는 sentinel 이다. 그러나 html attribute 로 그대로 노출되면 type='date' 등
-         * number 가 아닌 타입에서 <input type='date' min='0' max='9007199254740991'> 같이
-         * 의미 없는 마크업이 된다. number 타입이 아닐 때만 sentinel 을 제거해서 forward 한다.
-         */
-        const forwardMinAttr = computed(() =>
-            isNumberInput.value || min.value !== 0 ? min.value : undefined,
-        );
-        const forwardMaxAttr = computed(() =>
-            isNumberInput.value || max.value !== Number.MAX_SAFE_INTEGER ? max.value : undefined,
-        );
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -220,9 +198,7 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
-        const renderClearButton = computed(
-            () => !noClear.value && !computedDisabled.value && (clearOnReadonly.value || !computedReadonly.value),
-        );
+        const renderClearButton = computed(() => !noClear.value && !computedDisabled.value && !computedReadonly.value);
 
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
@@ -266,8 +242,6 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             inputValue,
-            forwardMinAttr,
-            forwardMaxAttr,
             computedMessages,
             computedDisabled,
             computedReadonly,
