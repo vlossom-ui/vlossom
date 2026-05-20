@@ -3,7 +3,7 @@
 .vs-message {
     --vs-message-size: initial;
 
-    @apply flex items-start;
+    @apply flex items-center;
     fill: var(--vs-cs-bg-primary);
     stroke: var(--vs-cs-bg-primary);
     color: var(--vs-cs-bg-primary);
