@@ -110,10 +110,9 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 | 동작 | 상세 |
 | --- | --- |
 | 기본 | `timezone={false}` — select UI 없음, 내부 tz는 `'Etc/UTC'` 고정. |
-| 초기값 | 활성 시 `currentTimezone === timezoneOptions[0].value`. |
+| 초기값 | 활성 시 현재 타임존은 `timezoneOptions[0].value`. |
 | 변경 시 | 화면에 보이는 날짜/시간은 **유지**되고 UTC가 **재계산**됩니다. (예: "서울 오후 3시 회의를 뉴욕으로 옮긴다"). |
-| 잘못된 tz | `invalid` 이벤트 (reason: `'timezone'`) emit, `currentTimezone`은 유지. |
-| 현재 tz 조회 | `dpRef.value.currentTimezone` (string). |
+| 잘못된 tz | `invalid` 이벤트 (reason: `'timezone'`) emit, 현재 타임존은 유지. |
 
 기본 옵션 12개 IANA 타임존: `Etc/UTC`, Los Angeles, New York, London, Paris, Dubai, Kolkata, Shanghai, Tokyo, Seoul, Sydney, Auckland.
 
@@ -184,6 +183,8 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 
 ```typescript
 import type { CSSProperties } from 'vue';
+import type { OptionItem } from 'vlossom';
+import type { VsInputStyleSet } from 'vlossom';
 import type { VsInputWrapperStyleSet } from 'vlossom';
 import type { VsSelectStyleSet } from 'vlossom';
 
@@ -191,23 +192,13 @@ type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
 type VsDatePickerValueType = Date | null;
 
-interface TimezoneOption {
-    value: string;          // IANA 타임존 식별자 (예: 'Asia/Seoul')
-    label: string;          // 표시 라벨
-    group?: string;         // (선택) 옵션 그룹핑
-    disabled?: boolean;     // (선택) 옵션 비활성화
-}
+// Partial<OptionItem>을 extend하며, 주로 `value`(IANA tz id)와 `label`을 사용합니다.
+interface TimezoneOption extends Partial<OptionItem> {}
 
 interface VsDatePickerStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
-    $input?: CSSProperties;
-    $prepend?: CSSProperties;
-    $append?: CSSProperties;
-    $clearButton?: CSSProperties;
-    $iconButton?: CSSProperties;
+    $input?: VsInputStyleSet;
     $timezoneSelect?: VsSelectStyleSet;
-    $datePicker?: CSSProperties;
-    $row?: CSSProperties;
 }
 ```
 
@@ -246,4 +237,3 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `validate`        | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                                  |
 | `clear`           | -          | 값을 비웁니다 (modelValue → null). 타임존은 유지됩니다.                      |
 | `open`            | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback).    |
-| `currentTimezone` | -          | (속성) 현재 선택된 IANA 타임존을 반환하는 읽기 전용 문자열.                  |

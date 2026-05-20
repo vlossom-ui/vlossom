@@ -110,10 +110,9 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 | Behavior | Detail |
 | --- | --- |
 | Default | `timezone={false}` — no select UI, internal tz fixed to `'Etc/UTC'`. |
-| Initial value | When enabled, `currentTimezone === timezoneOptions[0].value`. |
+| Initial value | When enabled, the active timezone is `timezoneOptions[0].value`. |
 | On change | Displayed date/time is **preserved**; UTC is **recalculated**. (Use case: "Move this 3 PM meeting from Seoul to NY.") |
-| Invalid tz | Emits `invalid` (reason: `'timezone'`); `currentTimezone` stays put. |
-| Read current tz | `dpRef.value.currentTimezone` (string). |
+| Invalid tz | Emits `invalid` (reason: `'timezone'`); the active timezone stays put. |
 
 Default options: 12 IANA zones (`Etc/UTC`, Los Angeles, New York, London, Paris, Dubai, Kolkata, Shanghai, Tokyo, Seoul, Sydney, Auckland).
 
@@ -184,6 +183,8 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 
 ```typescript
 import type { CSSProperties } from 'vue';
+import type { OptionItem } from 'vlossom';
+import type { VsInputStyleSet } from 'vlossom';
 import type { VsInputWrapperStyleSet } from 'vlossom';
 import type { VsSelectStyleSet } from 'vlossom';
 
@@ -191,23 +192,13 @@ type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
 type VsDatePickerValueType = Date | null;
 
-interface TimezoneOption {
-    value: string;          // IANA tz identifier (e.g. 'Asia/Seoul')
-    label: string;          // Display label
-    group?: string;         // Optional grouping for the select
-    disabled?: boolean;     // Disable this option in the select
-}
+// Extends Partial<OptionItem>; typically used with `value` (IANA tz id) and `label`.
+interface TimezoneOption extends Partial<OptionItem> {}
 
 interface VsDatePickerStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
-    $input?: CSSProperties;
-    $prepend?: CSSProperties;
-    $append?: CSSProperties;
-    $clearButton?: CSSProperties;
-    $iconButton?: CSSProperties;
+    $input?: VsInputStyleSet;
     $timezoneSelect?: VsSelectStyleSet;
-    $datePicker?: CSSProperties;
-    $row?: CSSProperties;
 }
 ```
 
@@ -246,4 +237,3 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `validate`        | -          | Triggers validation and returns the result.                                  |
 | `clear`           | -          | Clears the value (modelValue → null). Timezone is preserved.                 |
 | `open`            | -          | Opens the native picker via `showPicker()` (falls back to `focus()`).        |
-| `currentTimezone` | -          | (Property) Read-only string of the currently selected IANA timezone.         |
