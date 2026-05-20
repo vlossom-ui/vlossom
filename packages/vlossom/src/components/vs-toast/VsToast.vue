@@ -14,7 +14,7 @@
             ghost
             @click="$emit('close')"
         >
-            <vs-render :content="closeIcon" class="size-5" />
+            <vs-render :content="XIcon" :size="20" color="currentColor" />
         </vs-button>
     </div>
 </template>
@@ -24,8 +24,8 @@ import { computed, defineComponent, onMounted, ref, toRefs, type ComputedRef } f
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { closeIcon } from '@/icons';
 import type { VsToastStyleSet } from './types';
+import { XIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
@@ -102,7 +102,7 @@ export default defineComponent({
             onMouseEnter,
             onMouseLeave,
             holdToClose,
-            closeIcon,
+            XIcon,
         };
     },
 });
