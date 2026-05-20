@@ -205,6 +205,26 @@ describe('VsDatePicker', () => {
             const valid = await formRef.validate();
             expect(valid).toBe(false);
         });
+
+        it('VsForm 내부에서 빈 DatePicker의 timezone만 변경해도 form changed가 true가 되지 않는다', async () => {
+            const Form = defineComponent({
+                components: { VsForm, VsDatePicker },
+                template: '<vs-form ref="formRef"><vs-date-picker :modelValue="null" type="datetime-local" timezone /></vs-form>',
+            });
+            const wrapper = mount(Form);
+            await nextTick();
+
+            const selectComp = wrapper.findComponent({ name: 'VsSelect' });
+            selectComp.vm.$emit('update:model-value', 'Asia/Seoul');
+            await nextTick();
+
+            const formRef = (
+                wrapper.vm as unknown as {
+                    $refs: { formRef: { changed: boolean } };
+                }
+            ).$refs.formRef;
+            expect(formRef.changed).toBe(false);
+        });
     });
 
     describe('timezone 통합', () => {

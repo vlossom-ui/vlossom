@@ -87,7 +87,6 @@ import {
     computed,
     defineComponent,
     provide,
-    readonly,
     ref,
     toRefs,
     useTemplateRef,
@@ -159,6 +158,9 @@ export default defineComponent({
         'timezone-change',
     ],
     setup(props, { emit }) {
+        // 내부 VsInput/VsSelect가 부모 VsForm에 별도 필드로 등록되지 않도록 격리한다.
+        provide(FORM_STORE_KEY, FormStore.getDefaultFormStore());
+
         const {
             styleSet,
             type,
@@ -181,7 +183,6 @@ export default defineComponent({
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
-
         const currentTimezone = ref(
             timezone.value && timezoneOptions.value.length > 0
                 ? timezoneOptions.value[0].value
@@ -195,6 +196,34 @@ export default defineComponent({
             min,
             max,
             canSelectDate,
+        );
+
+        const {
+            computedId,
+            computedMessages,
+            computedState,
+            computedDisabled,
+            computedReadonly,
+            shake,
+            validate,
+            clear,
+        } = useInput<VsDatePickerValueType>(
+            { emit },
+            {
+                inputValue,
+                modelValue,
+                id,
+                disabled,
+                readonly: readonlyProp,
+                messages,
+                rules,
+                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck]),
+                noDefaultRules,
+                state,
+                callbacks: {
+                    onClear,
+                },
+            },
         );
 
         const computedPlaceholder = computed(() => {
@@ -262,41 +291,6 @@ export default defineComponent({
             return datePickerIcons.CALENDAR_ICON;
         });
 
-        const {
-            computedId,
-            computedMessages,
-            computedState,
-            computedDisabled,
-            computedReadonly,
-            shake,
-            validate,
-            clear,
-        } = useInput<VsDatePickerValueType>(
-            { emit },
-            {
-                inputValue,
-                modelValue,
-                id,
-                disabled,
-                readonly: readonlyProp,
-                messages,
-                rules,
-                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck]),
-                noDefaultRules,
-                state,
-                callbacks: {
-                    onClear,
-                },
-            },
-        );
-
-        /*
-         * descendant VsInput / VsSelect 가 outer VsForm 의 FormStore 에 등록되지 않도록 격리.
-         * VsDatePicker 자신은 위 useInput 호출 시점에 outer FormStore 를 inject 받아 이미
-         * 등록을 마쳤으므로, 이 시점 이후의 provide 는 descendants 에만 영향.
-         */
-        provide(FORM_STORE_KEY, FormStore.getDefaultFormStore());
-
         function focus() {
             dateInputRef.value?.focus();
         }
@@ -318,18 +312,13 @@ export default defineComponent({
             if (!input || computedDisabled.value || computedReadonly.value) {
                 return;
             }
-
-            input.focus();
             const showPicker = input.showPicker;
             if (typeof showPicker !== 'function') {
                 return;
             }
 
-            try {
-                showPicker.call(input);
-            } catch {
-                /* picker open 이 거부되어도 focus 는 유지 */
-            }
+            input.focus();
+            showPicker.call(input);
         }
 
         return {
@@ -347,7 +336,7 @@ export default defineComponent({
             computedIcon,
             shake,
             computedId,
-            currentTimezone: readonly(currentTimezone),
+            currentTimezone,
 
             // Methods
             onDateInput,
