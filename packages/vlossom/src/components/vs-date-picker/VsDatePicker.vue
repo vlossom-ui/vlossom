@@ -69,13 +69,7 @@
                     </vs-input>
                 </div>
 
-                <vs-divider
-                    v-if="timezone"
-                    vertical
-                    :responsive
-                    class="vs-date-picker-divider"
-                    aria-hidden="true"
-                />
+                <vs-divider v-if="timezone" vertical :responsive class="vs-date-picker-divider" aria-hidden="true" />
 
                 <vs-select
                     v-if="timezone"
@@ -126,8 +120,8 @@ import { useStyleSet, useInput } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import { dateUtil } from '@/utils';
 
+import { DEFAULT_TIMEZONE_OPTIONS } from './constants';
 import {
-    DEFAULT_TIMEZONE_OPTIONS,
     type TimezoneOption,
     type VsDatePickerStyleSet,
     type VsDatePickerType,
@@ -216,15 +210,17 @@ export default defineComponent({
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const currentTimezone = ref(
-            timezone.value && timezoneOptions.value.length > 0
-                ? timezoneOptions.value[0].value
-                : 'Etc/UTC',
+            timezone.value && timezoneOptions.value.length > 0 ? timezoneOptions.value[0].value : 'Etc/UTC',
         );
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
-        const { requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck } =
-            useVsDatePickerRules(required, min, max, disabledDates);
+        const { requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck } = useVsDatePickerRules(
+            required,
+            min,
+            max,
+            disabledDates,
+        );
 
         /*
          * placeholder 가 명시되지 않은 경우 type 별 기본 hint 를 자동 제공해 readonly display
@@ -382,13 +378,7 @@ export default defineComponent({
                 readonly: readonlyProp,
                 messages,
                 rules,
-                defaultRules: computed(() => [
-                    requiredCheck,
-                    minCheck,
-                    maxCheck,
-                    notDisabledCheck,
-                    invalidValueCheck,
-                ]),
+                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck, notDisabledCheck, invalidValueCheck]),
                 noDefaultRules,
                 state,
                 callbacks: {

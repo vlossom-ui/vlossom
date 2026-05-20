@@ -3,7 +3,8 @@ import { mount } from '@vue/test-utils';
 import { nextTick, defineComponent } from 'vue';
 import VsDatePicker from '../VsDatePicker.vue';
 import VsForm from '@/components/vs-form/VsForm.vue';
-import { DEFAULT_TIMEZONE_OPTIONS, type TimezoneOption } from '../types';
+import { DEFAULT_TIMEZONE_OPTIONS } from '../constants';
+import { type TimezoneOption } from '../types';
 
 function findDateInput(wrapper: ReturnType<typeof mount>) {
     return wrapper.find('.vs-date-picker-display input');
@@ -41,9 +42,7 @@ describe('VsDatePicker', () => {
                 },
             });
             // timezone=false → 'Etc/UTC' 고정 → wall-clock = '2026-05-18T15:30'
-            expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe(
-                '2026-05-18T15:30',
-            );
+            expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe('2026-05-18T15:30');
         });
 
         it('min/max를 UTC wall-clock으로 VsInput 내부 input attribute에 forward한다', () => {
@@ -168,9 +167,7 @@ describe('VsDatePicker', () => {
             });
             // jsdom의 input[type=date]는 invalid string을 element.value로 보관하지 않으므로
             // 핸들러를 직접 호출해 parse 실패 분기를 검증.
-            const fn = (
-                wrapper.vm as unknown as { onDateInput: (value: string) => void }
-            ).onDateInput;
+            const fn = (wrapper.vm as unknown as { onDateInput: (value: string) => void }).onDateInput;
             fn('not-a-date');
             await nextTick();
             const events = wrapper.emitted('invalid') as Array<[{ reason: string }]>;
@@ -204,14 +201,15 @@ describe('VsDatePicker', () => {
         it('VsForm 내부에서 validate()가 동작한다 (required 미충족)', async () => {
             const Form = defineComponent({
                 components: { VsForm, VsDatePicker },
-                template:
-                    '<vs-form ref="formRef"><vs-date-picker :modelValue="null" required type="date" /></vs-form>',
+                template: '<vs-form ref="formRef"><vs-date-picker :modelValue="null" required type="date" /></vs-form>',
             });
             const wrapper = mount(Form);
             await nextTick();
-            const formRef = (wrapper.vm as unknown as {
-                $refs: { formRef: { validate: () => boolean | Promise<boolean> } };
-            }).$refs.formRef;
+            const formRef = (
+                wrapper.vm as unknown as {
+                    $refs: { formRef: { validate: () => boolean | Promise<boolean> } };
+                }
+            ).$refs.formRef;
             const valid = await formRef.validate();
             expect(valid).toBe(false);
         });
@@ -319,9 +317,7 @@ describe('VsDatePicker', () => {
             selectComp.vm.$emit('update:model-value', 'Asia/Seoul');
             await nextTick();
 
-            const tzChangeEvents = wrapper.emitted('timezone-change') as Array<
-                [{ from: string; to: string }]
-            >;
+            const tzChangeEvents = wrapper.emitted('timezone-change') as Array<[{ from: string; to: string }]>;
             expect(tzChangeEvents).toBeTruthy();
             expect(tzChangeEvents[0][0]).toEqual({
                 from: 'Etc/UTC',
