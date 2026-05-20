@@ -52,7 +52,7 @@
                 @click.stop="clearWithFocus"
             >
                 <i class="size-5">
-                    <vs-render :content="closeIcon" />
+                    <vs-render :content="XIcon" :size="20" color="currentColor" />
                 </i>
             </button>
 
@@ -72,7 +72,7 @@ import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type 
 import { VsComponent, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
-import { closeIcon } from '@/icons';
+import { XIcon } from '@lucide/vue';
 
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
@@ -261,9 +261,7 @@ export default defineComponent({
             onBlur,
             validate,
             clearWithFocus,
-
-            // Icons
-            closeIcon,
+            XIcon,
         };
     },
 });

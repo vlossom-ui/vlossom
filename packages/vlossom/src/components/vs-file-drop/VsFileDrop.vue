@@ -48,7 +48,13 @@
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <i class="placeholder-icon size-6">
-                            <vs-render :content="attachFileIcon" />
+                            <vs-render
+                                class="-rotate-45"
+                                :content="PaperclipIcon"
+                                :size="20"
+                                color="currentColor"
+                                :stroke-width="2.5"
+                            />
                         </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
@@ -86,7 +92,7 @@
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
             >
-                <vs-render :content="closeIcon" />
+                <vs-render :content="XIcon" :size="16" color="currentColor" />
             </button>
         </div>
 
@@ -102,8 +108,7 @@ import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration'
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
-import { closeIcon } from '@/icons';
-import { attachFileIcon } from './icons';
+import { PaperclipIcon, XIcon } from '@lucide/vue';
 
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
@@ -378,7 +383,6 @@ export default defineComponent({
             inputValue,
             hasValue,
             stringUtil,
-            attachFileIcon,
 
             // Methods
             setDragging,
@@ -393,9 +397,8 @@ export default defineComponent({
             blur,
             validate,
             clear,
-
-            // Icons
-            closeIcon,
+            PaperclipIcon,
+            XIcon,
         };
     },
 });

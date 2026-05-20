@@ -20,7 +20,7 @@
             :style="componentStyleSet.$closeButton"
             @click.prevent.stop="$emit('close')"
         >
-            <vs-render :content="closeIcon" />
+            <vs-render :content="XIcon" :size="20" color="currentColor" />
         </button>
     </div>
 </template>
@@ -31,7 +31,7 @@ import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
-import { closeIcon } from '@/icons';
+import { XIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
@@ -72,7 +72,7 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             classObj,
-            closeIcon,
+            XIcon,
         };
     },
 });

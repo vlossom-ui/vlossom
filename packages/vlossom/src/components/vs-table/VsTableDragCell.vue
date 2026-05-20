@@ -1,16 +1,16 @@
 <template>
     <component v-if="draggable" :is="tag" :class="[cellTypeClass, TABLE_DRAG_HANDLE_CLASS]" :style="cellStyle">
-        <vs-render :content="tableIcons.dragHandle" />
+        <vs-render :content="GripVerticalIcon" :size="18" color="currentColor" />
     </component>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef, type PropType, inject } from 'vue';
-import { tableIcons } from './icons';
 import { type VsTableTag, type VsTableCell, TABLE_STYLE_SET_TOKEN, type VsTableStyleSet } from './types';
 import { isVsTableBodyRow } from './models/table-model';
 import { TABLE_DRAG_HANDLE_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+import { GripVerticalIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
@@ -35,11 +35,11 @@ export default defineComponent({
 
         return {
             TABLE_DRAG_HANDLE_CLASS,
-            tableIcons,
             tag,
             cellTypeClass,
             cellStyle,
             draggable,
+            GripVerticalIcon,
         };
     },
 });

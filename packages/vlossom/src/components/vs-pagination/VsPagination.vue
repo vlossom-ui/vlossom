@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <vs-render class="size-4" :content="paginationIcons.goFirst" />
+                <vs-render :content="ChevronFirstIcon" :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <vs-render class="size-4" :content="paginationIcons.goPrev" />
+                <vs-render :content="ChevronLeftIcon" :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <vs-render class="size-4" :content="paginationIcons.goNext" />
+                <vs-render :content="ChevronRightIcon" :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <vs-render class="size-4" :content="paginationIcons.goLast" />
+                <vs-render :content="ChevronLastIcon" :size="16" color="currentColor" />
             </slot>
         </vs-button>
     </div>
@@ -95,7 +95,7 @@ import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
-import { paginationIcons } from './icons';
+import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
@@ -242,8 +242,11 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
-            paginationIcons,
             selectedIndex,
+            ChevronFirstIcon,
+            ChevronLastIcon,
+            ChevronLeftIcon,
+            ChevronRightIcon,
             pages,
             getPageButtonStyleSet,
             goFirst,

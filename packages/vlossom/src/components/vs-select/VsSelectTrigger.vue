@@ -52,10 +52,10 @@
             aria-label="Clear"
             @click.stop="$emit('clear')"
         >
-            <vs-render :content="closeIcon" />
+            <vs-render :content="XIcon" :size="20" color="currentColor" />
         </button>
         <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
-            <vs-render :content="selectIcons.arrowDown" />
+            <vs-render :content="ChevronDownIcon" :size="16" color="gray" />
         </div>
     </div>
 </template>
@@ -64,9 +64,8 @@
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent, type ColorScheme, type OptionItem, type UIState } from '@/declaration';
 import { useStateClass, useStyleSet } from '@/composables';
-import { closeIcon } from '@/icons';
 import type { VsSelectStyleSet } from './types';
-import { selectIcons } from './icons';
+import { ChevronDownIcon, XIcon } from '@lucide/vue';
 
 import VsChip from '@/components/vs-chip/VsChip.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -132,8 +131,6 @@ export default defineComponent({
 
         return {
             triggerRef,
-            selectIcons,
-            closeIcon,
             stateBoxClasses,
             renderClearButton,
             displayLabel,
@@ -142,6 +139,8 @@ export default defineComponent({
             componentInlineStyle,
             focus,
             blur,
+            ChevronDownIcon,
+            XIcon,
         };
     },
 });

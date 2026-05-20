@@ -1,19 +1,19 @@
 <template>
     <div :class="['vs-message', colorClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <i class="vs-message-icon">
-            <vs-render :content="icon" />
+            <vs-render :content="icon" :size="16" color="currentColor" fill="currentColor" :fill-opacity="0" />
         </i>
         <span class="vs-message-text">{{ text }}</span>
     </div>
 </template>
 
 <script lang="ts">
-import { type PropType, computed, defineComponent, toRefs } from 'vue';
+import { type Component, type PropType, computed, defineComponent, toRefs } from 'vue';
 import { VsComponent, type UIState } from '@/declaration';
-import { messageIcons } from './icons';
 import { getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsMessageStyleSet } from './types';
+import { CircleAlertIcon, CircleCheckIcon, InfoIcon, MessageSquareIcon, TriangleAlertIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 
@@ -49,8 +49,16 @@ export default defineComponent({
 
         const { styleSetVariables, componentInlineStyle } = useStyleSet(componentName, styleSet);
 
-        const icon = computed(() => {
-            return messageIcons[state.value];
+        const icon = computed<Component>(() => {
+            const iconMap: Record<UIState, Component> = {
+                idle: MessageSquareIcon,
+                info: InfoIcon,
+                success: CircleCheckIcon,
+                warning: TriangleAlertIcon,
+                error: CircleAlertIcon,
+            };
+
+            return iconMap[state.value];
         });
 
         return { colorClass, icon, styleSetVariables, componentInlineStyle };

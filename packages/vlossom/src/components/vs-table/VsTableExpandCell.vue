@@ -12,7 +12,9 @@
                 <vs-render
                     class="transition-transform"
                     :class="{ 'rotate-180': isExpanded(cells) }"
-                    :content="tableIcons.expandArrow"
+                    :content="ChevronDownIcon"
+                    :size="20"
+                    color="currentColor"
                 />
             </vs-button>
         </td>
@@ -33,8 +35,8 @@ import {
     TABLE_COLOR_SCHEME_TOKEN,
     type VsTableStyleSet,
 } from './types';
-import { tableIcons } from './icons';
 import { getRowItem, isVsTableBodyRow } from './models/table-model';
+import { ChevronDownIcon } from '@lucide/vue';
 
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsRender from '@/components/vs-render/VsRender.vue';
@@ -84,13 +86,13 @@ export default defineComponent({
             isExpandable,
             isExpanded,
             expandRow,
-            tableIcons,
             cellStyle,
             loading,
             primary,
             colorScheme,
             dense,
             expandButtonStyleSet,
+            ChevronDownIcon,
         };
     },
 });

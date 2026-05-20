@@ -11,10 +11,10 @@
         @toggle="changeTheme"
     >
         <i class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }">
-            <vs-render :content="themeLightIcon" />
+            <vs-render :content="SunIcon" :size="20" fill="currentColor" />
         </i>
         <i class="vs-theme-icon vs-theme-dark" :class="{ 'vs-on': isDarkTheme }">
-            <vs-render :content="themeDarkIcon" />
+            <vs-render :content="MoonIcon" :size="20" fill="currentColor" />
         </i>
     </vs-toggle>
 </template>
@@ -26,7 +26,7 @@ import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
 import { useColorScheme, useStyleSet } from '@/composables';
 import type { VsThemeButtonStyleSet } from './types';
-import { themeDarkIcon, themeLightIcon } from './icons';
+import { MoonIcon, SunIcon } from '@lucide/vue';
 
 import VsRender from '@/components/vs-render/VsRender.vue';
 import VsToggle from '@/components/vs-toggle/VsToggle.vue';
@@ -66,8 +66,8 @@ export default defineComponent({
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
-            themeDarkIcon,
-            themeLightIcon,
+            SunIcon,
+            MoonIcon,
         };
     },
 });
