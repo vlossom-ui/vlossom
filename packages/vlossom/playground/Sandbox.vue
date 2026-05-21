@@ -39,6 +39,15 @@
                     Lorem ipsum dolor sit amet
                 </vs-label-value>
             </section>
+
+            <h1 class="mt-8 text-2xl font-bold">VsAccordion sizes</h1>
+            <section v-for="size in sizes" :key="`accordion-${size}`" class="flex flex-col gap-2">
+                <h2 class="text-lg font-semibold">size = "{{ size }}"</h2>
+                <vs-accordion :size="size">
+                    <template #title>size = "{{ size }}"</template>
+                    <p>아코디언 내용입니다.</p>
+                </vs-accordion>
+            </section>
         </div>
     </vs-page>
 </template>
