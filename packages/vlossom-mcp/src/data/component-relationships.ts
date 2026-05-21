@@ -1,0 +1,94 @@
+/**
+ * Curated map of Vlossom component relationships.
+ *
+ * Each entry lists the children a component nests by default and the
+ * siblings it typically appears alongside. `parent` is derived at lookup
+ * time from `children`, so it does not appear here.
+ *
+ * This data is version-sensitive: keep it in `src/data/` so it shows up
+ * alongside the other registry-shaped constants and the bump touchpoints
+ * stay obvious when the Vlossom catalog changes.
+ */
+export interface RelationshipEntry {
+    children?: string[];
+    siblings?: string[];
+}
+
+export type RelationshipsData = Record<string, RelationshipEntry>;
+
+export const COMPONENT_RELATIONSHIPS: RelationshipsData = {
+    VsAccordion: { children: ['VsExpandable', 'VsResponsive'], siblings: ['VsBlock', 'VsTabs'] },
+    VsBar: { children: [], siblings: ['VsHeader', 'VsFooter'] },
+    VsBlock: { children: ['VsInnerScroll', 'VsResponsive'], siblings: ['VsAccordion', 'VsPage', 'VsContainer'] },
+    VsButton: { children: ['VsLoading'], siblings: ['VsForm', 'VsInput', 'VsToast', 'VsPagination', 'VsTabs'] },
+    VsCheckbox: { children: ['VsInputWrapper'], siblings: ['VsRadio', 'VsSwitch', 'VsSelect'] },
+    VsChip: { children: [], siblings: ['VsSelect', 'VsFileDrop'] },
+    VsDrawer: { children: ['VsDimmed', 'VsFocusTrap', 'VsInnerScroll'], siblings: ['VsModal', 'VsFloating'] },
+    VsExpandable: { children: [], siblings: ['VsAccordion'] },
+    VsFileDrop: { children: ['VsChip', 'VsInputWrapper'], siblings: ['VsInput', 'VsSelect'] },
+    VsFloating: { children: [], siblings: ['VsTooltip', 'VsSelect', 'VsDrawer'] },
+    VsFooter: { children: ['VsBar'], siblings: ['VsHeader', 'VsLayout'] },
+    VsForm: {
+        children: ['VsGrid', 'VsInput', 'VsSelect', 'VsCheckbox', 'VsRadio', 'VsSwitch', 'VsTextarea'],
+        siblings: ['VsButton'],
+    },
+    VsGrid: { children: [], siblings: ['VsForm', 'VsContainer', 'VsResponsive'] },
+    VsGroupedList: { children: ['VsInnerScroll', 'VsVisibleRender'], siblings: ['VsSelect'] },
+    VsHeader: { children: ['VsBar'], siblings: ['VsFooter', 'VsLayout'] },
+    VsImage: { children: ['VsSkeleton'], siblings: ['VsAvatar'] },
+    VsInnerScroll: { children: [], siblings: ['VsBlock', 'VsDrawer', 'VsGroupedList'] },
+    VsInput: {
+        children: ['VsInputWrapper', 'VsRender'],
+        siblings: ['VsSelect', 'VsTextarea', 'VsSearchInput', 'VsForm'],
+    },
+    VsInputWrapper: {
+        children: ['VsMessage', 'VsResponsive'],
+        siblings: ['VsInput', 'VsSelect', 'VsCheckbox', 'VsRadio', 'VsSwitch', 'VsTextarea'],
+    },
+    VsLayout: { children: ['VsHeader', 'VsFooter', 'VsPage'], siblings: ['VsContainer'] },
+    VsLoading: { children: [], siblings: ['VsButton', 'VsSkeleton'] },
+    VsMessage: { children: [], siblings: ['VsInputWrapper', 'VsToast'] },
+    VsModal: { children: ['VsDimmed', 'VsFocusTrap'], siblings: ['VsDrawer', 'VsToast'] },
+    VsPage: { children: [], siblings: ['VsLayout', 'VsBlock', 'VsContainer'] },
+    VsPagination: { children: ['VsButton'], siblings: ['VsTable', 'VsSelect'] },
+    VsRadio: { children: ['VsInputWrapper'], siblings: ['VsCheckbox', 'VsSwitch'] },
+    VsSearchInput: { children: ['VsInput', 'VsToggle'], siblings: ['VsInput', 'VsTable', 'VsSelect'] },
+    VsSelect: {
+        children: ['VsCheckbox', 'VsChip', 'VsFloating', 'VsGroupedList', 'VsInputWrapper', 'VsSearchInput'],
+        siblings: ['VsInput', 'VsForm', 'VsTable'],
+    },
+    VsSkeleton: { children: [], siblings: ['VsLoading', 'VsImage'] },
+    VsSteps: { children: ['VsResponsive'], siblings: ['VsTabs', 'VsPagination', 'VsIndexView'] },
+    VsSwitch: { children: ['VsInputWrapper'], siblings: ['VsCheckbox', 'VsRadio', 'VsToggle'] },
+    VsTable: {
+        children: [
+            'VsCheckbox',
+            'VsButton',
+            'VsExpandable',
+            'VsPagination',
+            'VsSearchInput',
+            'VsSkeleton',
+            'VsSelect',
+            'VsVisibleRender',
+        ],
+        siblings: ['VsPagination', 'VsForm'],
+    },
+    VsTabs: { children: ['VsButton', 'VsResponsive'], siblings: ['VsAccordion', 'VsSteps', 'VsIndexView'] },
+    VsTextarea: { children: ['VsInputWrapper'], siblings: ['VsInput', 'VsForm'] },
+    VsThemeButton: { children: ['VsToggle'], siblings: ['VsButton'] },
+    VsToast: { children: ['VsButton'], siblings: ['VsModal', 'VsMessage'] },
+    VsToggle: { children: ['VsButton'], siblings: ['VsSwitch', 'VsThemeButton', 'VsCheckbox'] },
+    VsTooltip: { children: ['VsFloating'], siblings: ['VsFloating'] },
+    VsAvatar: { children: [], siblings: ['VsImage'] },
+    VsContainer: { children: [], siblings: ['VsGrid', 'VsLayout', 'VsPage', 'VsBlock'] },
+    VsDimmed: { children: [], siblings: [] },
+    VsDivider: { children: [], siblings: [] },
+    VsFocusTrap: { children: [], siblings: [] },
+    VsIndexView: { children: ['VsResponsive'], siblings: ['VsTabs', 'VsSteps'] },
+    VsLabelValue: { children: ['VsResponsive'], siblings: ['VsInput', 'VsTextarea'] },
+    VsProgress: { children: [], siblings: ['VsLoading', 'VsSkeleton'] },
+    VsRender: { children: [], siblings: [] },
+    VsResponsive: { children: [], siblings: ['VsGrid'] },
+    VsTextWrap: { children: ['VsRender'], siblings: ['VsInput', 'VsTextarea'] },
+    VsVisibleRender: { children: [], siblings: [] },
+};
