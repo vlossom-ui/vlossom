@@ -26,7 +26,13 @@ const meta: Meta<typeof VsTabs> = {
                 <!-- 크기 변형 -->
                 <div>
                     <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
-                    <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense />
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="xs" />
+                        <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="sm" />
+                        <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="md" />
+                        <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="lg" />
+                        <vs-tabs v-bind="args" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="xl" />
+                    </div>
                 </div>
 
                 <!-- 비활성화 -->
@@ -148,21 +154,21 @@ const meta: Meta<typeof VsTabs> = {
                      <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">조합</h3>
                      <div style="display:flex; flex-direction: column; gap: 1rem;">
                          <div>
-                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Dense + Disabled</p>
-                             <vs-tabs 
-                                v-bind="args" 
-                                :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
-                                dense 
-                                :disabled="(tab, index) => index === 2" 
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">size="xs" + Disabled</p>
+                             <vs-tabs
+                                v-bind="args"
+                                :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']"
+                                size="xs"
+                                :disabled="(tab, index) => index === 2"
                             />
                          </div>
                          <div>
-                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Primary + Dense</p>
-                             <vs-tabs 
-                                 v-bind="args" 
-                                 :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" 
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Primary + size="xs"</p>
+                             <vs-tabs
+                                 v-bind="args"
+                                 :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']"
                                  primary
-                                 dense 
+                                 size="xs"
                              />
                          </div>
                          <div>
@@ -177,7 +183,7 @@ const meta: Meta<typeof VsTabs> = {
                              </div>
                          </div>
                          <div>
-                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Controls + Dense</p>
+                             <p style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #666;">Vertical + Controls + size="xs"</p>
                              <div style="width: 200px; height: 200px;">
                                 <vs-tabs
                                     v-bind="args"
@@ -187,7 +193,7 @@ const meta: Meta<typeof VsTabs> = {
                                     ]"
                                     vertical
                                     controls="show"
-                                    dense
+                                    size="xs"
                                 />
                             </div>
                          </div>

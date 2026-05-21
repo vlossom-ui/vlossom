@@ -63,7 +63,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 | ---- | ---- | ------- | -------- | ----------- |
 | `colorScheme` | `string` | | | Color scheme for the component |
 | `styleSet` | `string \| VsTabsStyleSet` | | | Custom style set for the component |
-| `dense` | `boolean` | `false` | | Reduces tab height |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Tab size (controls height, padding, font, and control button) |
 | `disabled` | `boolean \| (tab: string, index: number) => boolean` | `false` | | Disables all or specific tabs |
 | `grid` | `string \| number \| Breakpoints` | | | Grid column span |
 | `height` | `string \| number` | `'auto'` | | Height of the tab bar |

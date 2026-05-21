@@ -63,7 +63,7 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 | ---- | ---- | ------ | ---- | ---- |
 | `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
 | `styleSet` | `string \| VsTabsStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `dense` | `boolean` | `false` | | 탭 높이 축소 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 탭 크기 (높이 · 패딩 · 폰트 · 컨트롤 버튼 제어) |
 | `disabled` | `boolean \| (tab: string, index: number) => boolean` | `false` | | 전체 또는 특정 탭 비활성화 |
 | `grid` | `string \| number \| Breakpoints` | | | 그리드 열 스팬 |
 | `height` | `string \| number` | `'auto'` | | 탭 바의 높이 |

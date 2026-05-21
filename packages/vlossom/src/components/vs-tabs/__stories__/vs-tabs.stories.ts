@@ -70,9 +70,10 @@ const meta: Meta<typeof VsTabs> = {
             control: 'text',
             description: '탭 높이',
         },
-        dense: {
-            control: 'boolean',
-            description: '작은 크기',
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '탭 크기 (탭 높이 · 폰트 · 컨트롤 버튼에 반영)',
         },
         disabled: {
             control: false,
@@ -112,18 +113,29 @@ export const Default: Story = {
     },
 };
 
-export const Dense: Story = {
+export const Sizes: Story = {
     parameters: {
         docs: {
             description: {
-                story: '작은 크기의 탭입니다. 좁은 공간에 적합합니다.',
+                story: 'size prop으로 탭 높이 · 폰트 · 컨트롤 버튼 크기를 한꺼번에 조절합니다.',
             },
         },
     },
-    args: {
-        tabs: ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4'],
-        dense: true,
-    },
+    render: () => ({
+        components: { VsTabs },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-tabs :tabs="['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4']" :size="size" />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const Primary: Story = {

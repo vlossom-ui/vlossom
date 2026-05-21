@@ -24,6 +24,12 @@
                     <vs-button :size="size" disabled>Disabled</vs-button>
                 </div>
             </section>
+
+            <h1 class="mt-8 text-2xl font-bold">VsTabs sizes</h1>
+            <section v-for="size in sizes" :key="`tabs-${size}`" class="flex flex-col gap-2">
+                <h2 class="text-lg font-semibold">size = "{{ size }}"</h2>
+                <vs-tabs :tabs="tabs" :size="size" controls="show" />
+            </section>
         </div>
     </vs-page>
 </template>
@@ -51,7 +57,9 @@ export default defineComponent({
             { name: 'Charlie', role: 'Viewer', status: 'Active', score: 88 },
         ];
 
-        return { sizes, columns, items };
+        const tabs = ['Home', 'Profile', 'Settings', 'Messages'];
+
+        return { sizes, columns, items, tabs };
     },
 });
 </script>
