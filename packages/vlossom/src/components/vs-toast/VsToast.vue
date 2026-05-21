@@ -14,7 +14,7 @@
             ghost
             @click="$emit('close')"
         >
-            <XIcon :size="20" color="currentColor" />
+            <XIcon :size="20" />
         </vs-button>
     </div>
 </template>

@@ -48,12 +48,7 @@
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <i class="placeholder-icon size-6">
-                            <PaperclipIcon
-                                class="-rotate-45"
-                                :size="20"
-                                color="currentColor"
-                                :stroke-width="2.5"
-                            />
+                            <PaperclipIcon class="-rotate-45" :size="20" :stroke-width="2.5" />
                         </i>
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
@@ -91,7 +86,7 @@
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
             >
-                <XIcon :size="16" color="currentColor" />
+                <XIcon :size="16" />
             </button>
         </div>
 

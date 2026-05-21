@@ -35,12 +35,7 @@
                         <slot name="empty" />
                     </template>
                     <template v-else>
-                        <BanIcon
-                            :size="64"
-                            color="currentColor"
-                            fill="currentColor"
-                            :fill-opacity="0"
-                        />
+                        <BanIcon :size="64" />
                         <p class="vs-table-no-data-text">NO DATA</p>
                     </template>
                 </div>

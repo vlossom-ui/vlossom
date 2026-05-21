@@ -1,7 +1,7 @@
 <template>
     <div :class="['vs-message', colorClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <i class="vs-message-icon">
-            <component :is="icon" :size="16" color="currentColor" fill="currentColor" :fill-opacity="0" />
+            <component :is="icon" :size="16" />
         </i>
         <span class="vs-message-text">{{ text }}</span>
     </div>

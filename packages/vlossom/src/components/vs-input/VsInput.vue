@@ -52,7 +52,7 @@
                 @click.stop="clearWithFocus"
             >
                 <i class="size-5">
-                    <XIcon :size="20" color="currentColor" />
+                    <XIcon :size="20" />
                 </i>
             </button>
 

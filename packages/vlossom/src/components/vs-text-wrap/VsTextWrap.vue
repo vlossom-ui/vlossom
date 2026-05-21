@@ -18,7 +18,6 @@
                     class="vs-icon-container"
                     :class="{ copied }"
                     :style="componentStyleSet.$copyIcon"
-                    color="currentColor"
                 />
             </button>
 
@@ -29,11 +28,7 @@
                 aria-label="link"
                 @click.prevent.stop="openLink"
             >
-                <LinkIcon
-                    class="vs-icon-container"
-                    :style="componentStyleSet.$linkIcon"
-                    color="currentColor"
-                />
+                <LinkIcon class="vs-icon-container" :style="componentStyleSet.$linkIcon" />
             </button>
         </div>
     </div>

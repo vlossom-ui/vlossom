@@ -20,7 +20,7 @@
             :style="componentStyleSet.$closeButton"
             @click.prevent.stop="$emit('close')"
         >
-            <XIcon :size="20" color="currentColor" />
+            <XIcon :size="20" />
         </button>
     </div>
 </template>

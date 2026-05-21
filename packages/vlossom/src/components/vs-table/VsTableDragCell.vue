@@ -1,6 +1,6 @@
 <template>
     <component v-if="draggable" :is="tag" :class="[cellTypeClass, TABLE_DRAG_HANDLE_CLASS]" :style="cellStyle">
-        <GripVerticalIcon :size="18" color="currentColor" />
+        <GripVerticalIcon :size="18" />
     </component>
 </template>
 

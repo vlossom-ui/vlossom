@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <ChevronFirstIcon :size="16" color="currentColor" />
+                <ChevronFirstIcon :size="16" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <ChevronLeftIcon :size="16" color="currentColor" />
+                <ChevronLeftIcon :size="16" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <ChevronRightIcon :size="16" color="currentColor" />
+                <ChevronRightIcon :size="16" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <ChevronLastIcon :size="16" color="currentColor" />
+                <ChevronLastIcon :size="16" />
             </slot>
         </vs-button>
     </div>
