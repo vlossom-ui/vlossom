@@ -854,6 +854,24 @@ describe('VsTable', () => {
         });
     });
 
+    describe('size', () => {
+        it('size prop의 기본값은 "md"이며 vs-md 클래스가 적용된다', async () => {
+            const wrapper = mountTable();
+
+            await nextTick();
+
+            expect(wrapper.find('.vs-table').classes()).toContain('vs-md');
+        });
+
+        it.each(['xs', 'sm', 'md', 'lg', 'xl'] as const)('size="%s"이면 vs-%s 클래스가 적용된다', async (size) => {
+            const wrapper = mountTable({ props: { size } });
+
+            await nextTick();
+
+            expect(wrapper.find('.vs-table').classes()).toContain(`vs-${size}`);
+        });
+    });
+
     describe('draggable', () => {
         it('draggable prop이 true이면 draggable wrapper가 렌더링된다', async () => {
             const wrapper = mountTable({

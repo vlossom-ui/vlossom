@@ -244,6 +244,17 @@ export const VisualRegressionMatrix: Story = {
                     <h3>로딩 상태</h3>
                     <vs-table :columns="baseColumns" :items="baseItems" pagination loading search />
                 </section>
+
+                <section class="chromatic-section">
+                    <h3>사이즈 변형 (xs / sm / md / lg / xl)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <vs-table :columns="sortableColumns" :items="baseItems" size="xs" />
+                        <vs-table :columns="sortableColumns" :items="baseItems" size="sm" />
+                        <vs-table :columns="sortableColumns" :items="baseItems" size="md" />
+                        <vs-table :columns="sortableColumns" :items="baseItems" size="lg" />
+                        <vs-table :columns="sortableColumns" :items="baseItems" size="xl" />
+                    </div>
+                </section>
             </div>
         `,
     }),

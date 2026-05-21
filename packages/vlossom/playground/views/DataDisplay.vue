@@ -13,12 +13,19 @@
                 option-value="value"
                 :style-set="{ $wrapper: { width: '100%' } }"
             />
+            <vs-radio-set
+                v-model="tableSize"
+                :options="tableSizeOptions"
+                option-label="label"
+                option-value="value"
+                class="mt-2"
+            />
         </div>
         <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
             <vs-table
                 :columns="tableColumns"
                 :items="tableItems"
-                :dense="tablePropsSelected.includes('dense')"
+                :size="tableSize"
                 :primary="tablePropsSelected.includes('primary')"
                 :selectable="tablePropsSelected.includes('selectable')"
                 :responsive="tablePropsSelected.includes('responsive')"
@@ -261,7 +268,6 @@ export default defineComponent({
 
         // VsTable
         const tablePropsOptions = [
-            { value: 'dense', label: 'Dense' },
             { value: 'primary', label: 'Primary' },
             { value: 'selectable', label: 'Selectable' },
             { value: 'responsive', label: 'Responsive' },
@@ -275,6 +281,14 @@ export default defineComponent({
             { value: 'customSlot', label: 'Custom Slot' },
         ];
         const tablePropsSelected = ref<string[]>([]);
+        const tableSize = ref<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('md');
+        const tableSizeOptions = [
+            { value: 'xs', label: 'xs' },
+            { value: 'sm', label: 'sm' },
+            { value: 'md', label: 'md' },
+            { value: 'lg', label: 'lg' },
+            { value: 'xl', label: 'xl' },
+        ];
         const tableSelectedItems = ref<VsTableItem[]>([]);
         const tableColumns = computed<VsTableColumnDef[]>(() => {
             return [
@@ -335,6 +349,8 @@ export default defineComponent({
             tableSelectedItems,
             tablePropsOptions,
             tablePropsSelected,
+            tableSize,
+            tableSizeOptions,
             tableColumns,
             tableItems,
             getRowState,

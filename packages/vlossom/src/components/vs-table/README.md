@@ -112,7 +112,7 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 | `styleSet`        | `string \| VsTableStyleSet`                    |          | Custom style set for the component          |
 | `columns`         | `VsTableColumnDef[] \| string[]`               | `[]`     | Column definitions                          |
 | `items`           | `VsTableItem[]`                                | `[]`     | Data rows                                   |
-| `dense`           | `boolean`                                      | `false`  | Reduces cell padding                        |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | Table size (controls cell padding and font) |
 | `draggable`       | `boolean`                                      | `false`  | Enables drag-and-drop row reordering        |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | Enables expandable rows. Expand UI is rendered only when an `expand` slot is provided |
 | `loading`         | `boolean`                                      | `false`  | Shows loading state and disables search     |
