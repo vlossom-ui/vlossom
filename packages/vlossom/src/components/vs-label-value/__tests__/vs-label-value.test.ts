@@ -24,4 +24,18 @@ describe('vs-label-value', () => {
         expect(wrapper.find('.vs-value').exists()).toBe(true);
         expect(wrapper.html()).toContain('MyValue');
     });
+
+    describe('size', () => {
+        it('size prop의 기본값은 "md"이며 vs-md 클래스가 적용된다', () => {
+            const wrapper = mount(VsLabelValue);
+
+            expect(wrapper.find('.vs-label-value').classes()).toContain('vs-md');
+        });
+
+        it.each(['xs', 'sm', 'md', 'lg', 'xl'] as const)('size="%s"이면 vs-%s 클래스가 적용된다', (size) => {
+            const wrapper = mount(VsLabelValue, { props: { size } });
+
+            expect(wrapper.find('.vs-label-value').classes()).toContain(`vs-${size}`);
+        });
+    });
 });

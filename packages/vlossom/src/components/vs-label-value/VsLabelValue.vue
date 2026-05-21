@@ -14,10 +14,10 @@
     </vs-responsive>
 </template>
 <script lang="ts">
-import { computed, defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type PropType } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import type { VsLabelValueStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -30,13 +30,13 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsLabelValueStyleSet>(),
         ...getResponsiveProps(),
-        dense: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         primary: { type: Boolean, default: false },
         vertical: { type: Boolean, default: false },
         responsive: { type: Boolean, default: false },
     },
     setup(props) {
-        const { colorScheme, styleSet, dense, primary, vertical, responsive } = toRefs(props);
+        const { colorScheme, styleSet, size, primary, vertical, responsive } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -45,11 +45,12 @@ export default defineComponent({
             styleSet,
         );
 
+        const sizeClass = computed(() => `vs-${size.value}`);
         const classObj = computed(() => ({
-            'vs-dense': dense.value,
             'vs-primary': primary.value,
             'vs-vertical': vertical.value,
             'vs-responsive-vertical': responsive.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         return {

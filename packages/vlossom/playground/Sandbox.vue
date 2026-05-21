@@ -30,6 +30,15 @@
                 <h2 class="text-lg font-semibold">size = "{{ size }}"</h2>
                 <vs-tabs :tabs="tabs" :size="size" controls="show" />
             </section>
+
+            <h1 class="mt-8 text-2xl font-bold">VsLabelValue sizes</h1>
+            <section v-for="size in sizes" :key="`label-value-${size}`" class="flex flex-col gap-2">
+                <h2 class="text-lg font-semibold">size = "{{ size }}"</h2>
+                <vs-label-value :size="size">
+                    <template #label>Label</template>
+                    Lorem ipsum dolor sit amet
+                </vs-label-value>
+            </section>
         </div>
     </vs-page>
 </template>

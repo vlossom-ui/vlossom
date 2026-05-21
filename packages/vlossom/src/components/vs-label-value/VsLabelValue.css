@@ -15,11 +15,11 @@
             align-items: center;
             border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             background-color: var(--vs-cs-bg);
-            padding: 0 1rem;
-            min-height: var(--vs-comp-height-md);
+            padding: 0 var(--vs-size-padding, 0.8rem);
+            min-height: var(--vs-size-height);
             color: var(--vs-cs-font-colored);
             font-weight: 500;
-            font-size: var(--vs-font-size-md);
+            font-size: var(--vs-size-font);
         }
 
         &.vs-value {
@@ -27,11 +27,11 @@
 
             align-items: center;
             background-color: var(--vs-no-color);
-            padding: 0 1rem;
-            min-height: var(--vs-comp-height-md);
+            padding: 0 var(--vs-size-padding, 0.8rem);
+            min-height: var(--vs-size-height);
             color: var(--vs-cs-font-colored);
             font-weight: 500;
-            font-size: var(--vs-font-size-md);
+            font-size: var(--vs-size-font);
         }
     }
 
@@ -42,22 +42,6 @@
             border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
             background-color: var(--vs-cs-bg-primary);
             color: var(--vs-cs-font-primary);
-        }
-    }
-
-    &.vs-dense {
-        > .vs-cell {
-            &.vs-label {
-                padding: 0 0.8rem;
-                min-height: var(--vs-comp-height-xs);
-                font-size: var(--vs-font-size-xs);
-            }
-
-            &.vs-value {
-                padding: 0 0.8rem;
-                min-height: var(--vs-comp-height-xs);
-                font-size: var(--vs-font-size-xs);
-            }
         }
     }
 
