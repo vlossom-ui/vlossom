@@ -75,10 +75,6 @@
             border-right: 1px solid var(--vs-cs-line);
             border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
-
-        > * {
-            @apply w-full;
-        }
     }
 
     .vs-table-td {
@@ -87,17 +83,6 @@
         border-top: 1px solid var(--vs-cs-line);
         padding: 0.6rem 0.8rem;
         text-align: left;
-
-        > * {
-            @apply w-full;
-        }
-    }
-
-    .vs-table-th,
-    .vs-table-td {
-        * {
-            min-height: unset;
-        }
     }
 
     /* ── Body rows ── */
@@ -206,9 +191,7 @@
         .vs-table-th,
         .vs-table-td {
             @apply px-[0.375rem] py-[0.5rem];
-            * {
-                font-size: var(--vs-font-size-sm);
-            }
+            font-size: var(--vs-font-size-sm);
         }
 
         .vs-table-td.vs-table-expanded-row {
@@ -281,9 +264,7 @@
             .vs-table-td,
             .vs-table-th {
                 @apply px-[0.375rem] py-[0.5rem];
-                * {
-                    font-size: var(--vs-font-size-sm);
-                }
+                font-size: var(--vs-font-size-sm);
             }
         }
 
