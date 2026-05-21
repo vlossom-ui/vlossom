@@ -11,12 +11,13 @@ permissions:
 
 jobs:
     release-please:
-        if: startsWith(github.event.head_commit.message, 'feat') || startsWith(github.event.head_commit.message, 'fix') || startsWith(github.event.head_commit.message, 'chore')
+        if: startsWith(github.event.head_commit.message, 'feat') || startsWith(github.event.head_commit.message, 'fix') || startsWith(github.event.head_commit.message, 'chore') || startsWith(github.event.head_commit.message, 'refactor') || startsWith(github.event.head_commit.message, 'revert')
         runs-on: ubuntu-latest
         outputs:
-            ok-to-deploy: ${{ steps.release.outputs.releases_created }}
+            vlossom-released: ${{ steps.release.outputs['packages/vlossom--release_created'] }}
+            vlossom-mcp-released: ${{ steps.release.outputs['packages/vlossom-mcp--release_created'] }}
         steps:
-            - uses: googleapis/release-please-action@v4
+            - uses: googleapis/release-please-action@v5
               id: release
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
@@ -25,11 +26,12 @@ jobs:
 
             - name: Print release-please outputs
               run: |
-                  echo "Release created: ${{ steps.release.outputs.releases_created }}"
+                  echo "vlossom released: ${{ steps.release.outputs['packages/vlossom--release_created'] }}"
+                  echo "vlossom-mcp released: ${{ steps.release.outputs['packages/vlossom-mcp--release_created'] }}"
 
     publish-vlossom:
         needs: release-please
-        if: ${{ needs.release-please.outputs.ok-to-deploy == 'true' }}
+        if: ${{ needs.release-please.outputs.vlossom-released == 'true' }}
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -60,4 +62,35 @@ jobs:
                     pnpm publish --access public --no-git-checks --tag $TAG
                   else
                     pnpm publish --access public --no-git-checks
+                  fi
+
+    publish-vlossom-mcp:
+        needs: release-please
+        if: ${{ needs.release-please.outputs.vlossom-mcp-released == 'true' }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - uses: actions/setup-node@v5
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'npm'
+                  cache-dependency-path: ./packages/vlossom-mcp/package-lock.json
+                  registry-url: 'https://registry.npmjs.org'
+            - name: Install dependencies
+              working-directory: ./packages/vlossom-mcp
+              run: npm ci
+            - name: Build vlossom-mcp
+              working-directory: ./packages/vlossom-mcp
+              run: npm run build
+            - name: Publish vlossom-mcp
+              working-directory: ./packages/vlossom-mcp
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.VLOSSOM_NPM_TOKEN }}
+              run: |
+                  VERSION=$(node -p "require('./package.json').version")
+                  if [[ "$VERSION" == *"-"* ]]; then
+                    TAG=$(echo "$VERSION" | sed 's/.*-\([a-zA-Z]*\).*/\1/')
+                    npm publish --access public --tag $TAG
+                  else
+                    npm publish --access public
                   fi
