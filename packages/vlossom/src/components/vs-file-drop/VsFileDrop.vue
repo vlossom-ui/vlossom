@@ -47,9 +47,7 @@
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
-                        <i class="placeholder-icon size-6">
-                            <vs-render :content="attachFileIcon" />
-                        </i>
+                        <PaperclipIcon class="placeholder-icon" :stroke-width="2.5" />
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
 
@@ -86,7 +84,7 @@
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
             >
-                <vs-render :content="closeIcon" />
+                <XIcon class="vs-file-drop-close-icon" />
             </button>
         </div>
 
@@ -102,20 +100,18 @@ import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration'
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
-import { closeIcon } from '@/icons';
-import { attachFileIcon } from './icons';
 
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
 
+import { PaperclipIcon, XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsFileDrop;
 export default defineComponent({
     name: componentName,
-    components: { VsInputWrapper, VsChip, VsRender },
+    components: { VsInputWrapper, VsChip, PaperclipIcon, XIcon },
     props: {
         ...getInputProps<FileDropValueType>(),
         ...getResponsiveProps(),
@@ -378,7 +374,6 @@ export default defineComponent({
             inputValue,
             hasValue,
             stringUtil,
-            attachFileIcon,
 
             // Methods
             setDragging,
@@ -393,9 +388,6 @@ export default defineComponent({
             blur,
             validate,
             clear,
-
-            // Icons
-            closeIcon,
         };
     },
 });

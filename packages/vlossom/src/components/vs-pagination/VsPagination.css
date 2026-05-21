@@ -21,5 +21,9 @@
     .vs-pagination-control-button {
         min-width: 2rem;
         min-height: 2rem;
+
+        .vs-pagination-control-icon {
+            @apply size-4;
+        }
     }
 }

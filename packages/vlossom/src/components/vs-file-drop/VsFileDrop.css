@@ -58,6 +58,8 @@
             @apply flex flex-col items-center justify-center pb-3;
 
             .placeholder-icon {
+                @apply flex size-5 -rotate-45 items-center justify-center;
+
                 color: var(--vs-file-drop-iconColor, var(--vs-cs-font));
             }
 

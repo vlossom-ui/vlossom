@@ -31,6 +31,10 @@
             background: none;
             color: var(--vs-cs-font);
 
+            .vs-select-clear-icon {
+                @apply size-5;
+            }
+
             &:focus {
                 @apply cursor-pointer opacity-100;
             }
@@ -43,7 +47,7 @@
         }
 
         .vs-select-icon {
-            @apply flex size-5 shrink-0 items-center justify-center;
+            @apply flex size-4 shrink-0 items-center justify-center;
 
             transition: transform 0.3s ease;
 

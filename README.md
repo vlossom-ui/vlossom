@@ -39,10 +39,10 @@ pnpm add vlossom
 
 ```typescript
 // main.ts
-import { createApp } from "vue";
-import App from "./App.vue";
-import { createVlossom, VlossomComponents } from "vlossom";
-import "vlossom/styles";
+import { createApp } from 'vue';
+import App from './App.vue';
+import { createVlossom, VlossomComponents } from 'vlossom';
+import 'vlossom/styles';
 
 const app = createApp(App);
 app.use(
@@ -50,7 +50,7 @@ app.use(
     components: VlossomComponents,
   }),
 );
-app.mount("#app");
+app.mount('#app');
 ```
 
 ```vue
@@ -203,6 +203,7 @@ Releases are automated via [release-please](https://github.com/googleapis/releas
 
 ## Credits
 
+- **[Lucide](https://lucide.dev/)** - Default Icon set ([ISC License](https://github.com/lucide-icons/lucide/blob/main/LICENSE))
 - **[Pretendard](https://github.com/orioncactus/pretendard)** - Default font ([SIL Open Font License 1.1](https://github.com/orioncactus/pretendard/blob/main/LICENSE))
 
 ## License

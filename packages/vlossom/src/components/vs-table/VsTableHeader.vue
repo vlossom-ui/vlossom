@@ -25,10 +25,10 @@
                     >
                         <div>
                             {{ header.value }}
-                            <vs-render
+                            <component
+                                :is="getSortIcon(header)"
                                 v-if="header.sortable"
-                                class="inline-block shrink-0 cursor-pointer align-middle"
-                                :content="getSortIcon(header)"
+                                class="vs-table-sort-icon"
                                 @click="updateSortType(header.colKey)"
                             />
                         </div>
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type ComputedRef, type CSSProperties } from 'vue';
+import { defineComponent, inject, computed, type Component, type ComputedRef, type CSSProperties } from 'vue';
 import { objectUtil, stringUtil } from '@/utils';
 import {
     VsTableSortType,
@@ -51,17 +51,15 @@ import {
     type VsTableColumnDef,
 } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
-import { tableIcons } from './icons';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
-import VsRender from '@/components/vs-render/VsRender.vue';
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@lucide/vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
 
 export default defineComponent({
     components: {
-        VsRender,
         VsTableDragCell,
         VsTableExpandCell,
         VsTableCheckboxCell,
@@ -148,20 +146,20 @@ export default defineComponent({
             return candidatePriority[0] || '';
         }
 
-        function getSortIcon(header: VsTableHeaderCell) {
+        function getSortIcon(header: VsTableHeaderCell): Component {
             if (!header.sortable) {
-                return '';
+                return ArrowUpDownIcon;
             }
             if (header.colKey !== sortColumn.value?.key) {
-                return tableIcons.sortNone;
+                return ArrowUpDownIcon;
             }
             if (sortType.value === VsTableSortType.ASCEND) {
-                return tableIcons.sortAsc;
+                return ArrowUpIcon;
             }
             if (sortType.value === VsTableSortType.DESCEND) {
-                return tableIcons.sortDesc;
+                return ArrowDownIcon;
             }
-            return tableIcons.sortNone;
+            return ArrowUpDownIcon;
         }
 
         function clickCell(cell: VsTableHeaderCell, event: MouseEvent): void {
