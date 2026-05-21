@@ -18,7 +18,7 @@
         color: var(--vs-cs-font-colored);
 
         .vs-tab-control-icon {
-            @apply size-4 shrink-0;
+            @apply shrink-0;
         }
     }
 
@@ -70,10 +70,6 @@
     &.vs-dense {
         .vs-tab-control {
             height: var(--vs-comp-height-xs);
-
-            .vs-tab-control-icon {
-                @apply size-3;
-            }
         }
 
         .vs-tabs-wrap {
