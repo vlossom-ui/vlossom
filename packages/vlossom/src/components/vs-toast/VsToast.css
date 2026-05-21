@@ -17,6 +17,10 @@
         width: 1.2rem;
         height: 1.2rem;
         color: var(--vs-cs-font-colored);
+
+        .vs-toast-close-icon {
+            @apply size-5;
+        }
     }
 
     &:hover .vs-toast-close {

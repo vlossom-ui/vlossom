@@ -14,7 +14,7 @@
             ghost
             @click="$emit('close')"
         >
-            <vs-render :content="closeIcon" class="size-5" />
+            <XIcon class="vs-toast-close-icon" />
         </vs-button>
     </div>
 </template>
@@ -24,16 +24,15 @@ import { computed, defineComponent, onMounted, ref, toRefs, type ComputedRef } f
 import { VsComponent } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { closeIcon } from '@/icons';
 import type { VsToastStyleSet } from './types';
+import { XIcon } from '@lucide/vue';
 
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsToast;
 export default defineComponent({
     name: componentName,
-    components: { VsRender, VsButton },
+    components: { VsButton, XIcon },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsToastStyleSet>(),
@@ -50,7 +49,9 @@ export default defineComponent({
         const baseStyleSet: ComputedRef<VsToastStyleSet> = computed(() => {
             return {
                 $closeButton: {
-                    padding: '0',
+                    $content: {
+                        padding: '0',
+                    },
                 },
             };
         });
@@ -102,7 +103,6 @@ export default defineComponent({
             onMouseEnter,
             onMouseLeave,
             holdToClose,
-            closeIcon,
         };
     },
 });

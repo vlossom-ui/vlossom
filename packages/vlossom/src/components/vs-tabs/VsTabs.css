@@ -18,7 +18,7 @@
         color: var(--vs-cs-font-colored);
 
         .vs-tab-control-icon {
-            @apply size-5 shrink-0;
+            @apply size-4 shrink-0;
         }
     }
 
@@ -78,7 +78,7 @@
             height: var(--vs-comp-height-xs);
 
             .vs-tab-control-icon {
-                @apply size-4;
+                @apply size-3;
             }
         }
 

@@ -15,7 +15,7 @@
             size="sm"
             @click.prevent.stop="goPrev"
         >
-            <vs-render :content="vsTabsIcons.goPrev" class="vs-tab-control-icon" />
+            <ChevronLeftIcon class="vs-tab-control-icon" />
         </vs-button>
 
         <div ref="tabsRef" class="vs-tabs-wrap">
@@ -51,7 +51,7 @@
             size="sm"
             @click.prevent.stop="goNext"
         >
-            <vs-render :content="vsTabsIcons.goNext" class="vs-tab-control-icon" />
+            <ChevronRightIcon class="vs-tab-control-icon" />
         </vs-button>
     </vs-responsive>
 </template>
@@ -75,17 +75,16 @@ import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
-import { vsTabsIcons } from './icons';
 import type { VsTabsStyleSet } from './types';
 
+import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsTabs;
 export default defineComponent({
     name: componentName,
-    components: { VsButton, VsResponsive, VsRender },
+    components: { VsButton, VsResponsive, ChevronLeftIcon, ChevronRightIcon },
     props: {
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
@@ -305,9 +304,6 @@ export default defineComponent({
 
             // Indicator
             indicatorStyle,
-
-            // Icons
-            vsTabsIcons,
         };
     },
 });

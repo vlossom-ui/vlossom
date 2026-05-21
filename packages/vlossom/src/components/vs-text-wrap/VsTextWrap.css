@@ -8,15 +8,15 @@
     }
 
     .vs-text-wrap-buttons {
-        @apply ml-1 flex items-center gap-0.5;
+        @apply ml-1 flex items-center gap-2;
 
         .vs-text-wrap-button {
             @apply cursor-pointer;
 
             &.vs-copy-button {
                 .vs-icon-container {
-                    width: 1.2rem;
-                    height: 1.2rem;
+                    width: 1rem;
+                    height: 1rem;
 
                     &.copied {
                         color: var(--vs-green-600);
@@ -26,8 +26,8 @@
 
             &.vs-link-button {
                 .vs-icon-container {
-                    width: 1.2rem;
-                    height: 1.2rem;
+                    width: 1rem;
+                    height: 1rem;
                     color: var(--vs-blue-600);
                 }
             }

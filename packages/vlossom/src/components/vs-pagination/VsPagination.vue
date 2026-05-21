@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <vs-render class="size-4" :content="paginationIcons.goFirst" />
+                <ChevronFirstIcon class="vs-pagination-control-icon" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <vs-render class="size-4" :content="paginationIcons.goPrev" />
+                <ChevronLeftIcon class="vs-pagination-control-icon" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <vs-render class="size-4" :content="paginationIcons.goNext" />
+                <ChevronRightIcon class="vs-pagination-control-icon" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <vs-render class="size-4" :content="paginationIcons.goLast" />
+                <ChevronLastIcon class="vs-pagination-control-icon" />
             </slot>
         </vs-button>
     </div>
@@ -95,15 +95,14 @@ import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
-import { paginationIcons } from './icons';
 
-import VsRender from '@/components/vs-render/VsRender.vue';
+import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsPagination;
 export default defineComponent({
     name: componentName,
-    components: { VsRender, VsButton },
+    components: { VsButton, ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsPaginationStyleSet>(),
@@ -234,7 +233,6 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
-            paginationIcons,
             selectedIndex,
             pages,
             getPageButtonStyleSet,
