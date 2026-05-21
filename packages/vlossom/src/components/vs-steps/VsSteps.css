@@ -42,8 +42,24 @@
                 @apply outline-none;
             }
 
+            &:focus-visible:not(.vs-disabled) {
+                .vs-step-num::after {
+                    position: absolute;
+                    inset: 2px;
+                    border: 1px solid var(--vs-cs-line);
+                    border-radius: 100%;
+                    pointer-events: none;
+                    content: '';
+                }
+
+                &.vs-selected .vs-step-num::after {
+                    border-color: var(--vs-cs-font-primary);
+                }
+            }
+
             .vs-step-num {
-                @apply flex items-center justify-center font-semibold;
+                @apply relative flex items-center justify-center font-semibold;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
                 border: 1px solid var(--vs-cs-line);
                 border-radius: 100%;

@@ -69,7 +69,7 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 | `isPrevious`                  | `index: number`                           | `index`가 `selectedIndex`보다 앞에 있으면 `true`를 반환합니다.                         |
 | `findActiveIndexForwardFrom`  | `targetIndex: number`                     | `targetIndex`부터 앞쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                       |
 | `findActiveIndexBackwardFrom` | `targetIndex: number`                     | `targetIndex`부터 뒤쪽으로 첫 번째 비비활성화 인덱스를 찾습니다.                       |
-| `selectIndex`                 | `index: number`                           | `index`가 유효하고 비활성화되지 않은 경우 `selectedIndex`를 설정합니다; 아니면 `NOT_SELECTED`. |
+| `selectIndex`                 | `index: number`                           | `index`가 유효하고 비활성화되지 않은 경우 `selectedIndex`를 설정합니다. 범위를 벗어나면 `NOT_SELECTED`로 초기화하고, 비활성화된 경우에는 현재 선택을 유지(no-op)합니다. |
 | `handleKeydown`               | `e: KeyboardEvent, isVertical: boolean`   | 화살표, Home, End 키를 처리합니다. `isVertical`에 따라 수직/수평 키 매핑을 사용합니다. |
 
 ## Hooks
@@ -80,4 +80,4 @@ const { selectedIndex, isSelected, isDisabled, selectIndex, handleKeydown } = us
 ## Cautions
 
 - `selectedIndex`는 `NOT_SELECTED`가 아닌 `0`(첫 번째 항목)에서 시작합니다. 마운트 시 첫 번째 항목이 선택 가능한지 확인하거나, 필요한 경우 수동으로 초기화하세요.
-- 모든 항목이 비활성화된 경우 `selectIndex`는 항상 `NOT_SELECTED`를 설정합니다.
+- 모든 항목이 비활성화되었거나 대상 인덱스가 비활성화된 경우 `selectIndex`는 no-op으로, 현재 `selectedIndex`를 그대로 유지합니다.

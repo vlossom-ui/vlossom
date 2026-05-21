@@ -155,7 +155,10 @@ export default defineComponent({
 
         const pageIndexList = computed(() => Array.from({ length: length.value }, (_, i) => i));
 
-        const { selectedIndex, selectIndex, isFirstEdge, isLastEdge } = useIndexSelector(pageIndexList, disabled);
+        const { selectedIndex, selectIndex, syncIndex, isFirstEdge, isLastEdge } = useIndexSelector(
+            pageIndexList,
+            disabled,
+        );
 
         const pages: ComputedRef<number[]> = computed(() => {
             const pageArr: number[] = [];
@@ -218,22 +221,11 @@ export default defineComponent({
             selectIndex(selectedIndex.value + 1);
         }
 
-        watch(
-            modelValue,
-            (value) => {
-                selectIndex(value);
-            },
-            { immediate: true },
-        );
+        watch(modelValue, syncIndex, { immediate: true });
 
         watch(selectedIndex, (index: number) => {
             emit('update:modelValue', index);
             emit('change', index);
-        });
-
-        watch(length, () => {
-            const currentIndex = selectedIndex.value;
-            selectIndex(currentIndex);
         });
 
         return {

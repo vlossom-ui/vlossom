@@ -1,7 +1,15 @@
 <template>
+    <component
+        :is="tag"
+        v-if="!target"
+        :class="['vs-tooltip-trigger', triggerClass]"
+        :style="componentStyleSet.$trigger"
+    >
+        <slot />
+    </component>
     <vs-floating
         v-model="computedShow"
-        :target
+        :target="effectiveTarget"
         :placement
         :align
         :margin
@@ -18,7 +26,7 @@
                 @mouseleave.stop="onTooltipLeave"
             >
                 <div class="vs-tooltip-contents" :style="componentStyleSet.$tooltip">
-                    <slot />
+                    <slot name="tooltip" />
                 </div>
             </div>
         </template>
@@ -53,6 +61,8 @@ export default defineComponent({
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTooltipStyleSet>(),
         ...getFloatingProps({ placement: 'top', align: 'center', margin: 10 }),
+        target: { type: String, default: '' },
+        tag: { type: String, default: 'span' },
         clickable: { type: Boolean, default: false },
         contentsHover: { type: Boolean, default: false },
         escClose: { type: Boolean, default: true },
@@ -61,6 +71,8 @@ export default defineComponent({
         const { colorScheme, styleSet, target, clickable, contentsHover, escClose } = toRefs(props);
 
         const id = ref(stringUtil.createID());
+        const triggerClass = computed(() => `vs-tooltip-trigger-${id.value}`);
+        const effectiveTarget = computed(() => target.value || `.${triggerClass.value}`);
         const triggerOver = ref(false);
         const tooltipOver = ref(false);
         const isMovingOut = ref(false);
@@ -181,7 +193,7 @@ export default defineComponent({
         }
 
         function addTargetEventListeners() {
-            const targetElement = document.querySelector(target.value);
+            const targetElement = document.querySelector(effectiveTarget.value);
             if (!targetElement) {
                 return;
             }
@@ -194,7 +206,7 @@ export default defineComponent({
         }
 
         function removeTargetEventListeners() {
-            const targetElement = document.querySelector(target.value);
+            const targetElement = document.querySelector(effectiveTarget.value);
             if (!targetElement) {
                 return;
             }
@@ -219,6 +231,8 @@ export default defineComponent({
             styleSetVariables,
             componentStyleSet,
             computedShow,
+            triggerClass,
+            effectiveTarget,
             onTooltipEnter,
             onTooltipLeave,
         };

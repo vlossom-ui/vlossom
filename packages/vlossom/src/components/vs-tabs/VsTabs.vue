@@ -151,6 +151,7 @@ export default defineComponent({
             findActiveIndexForwardFrom,
             findActiveIndexBackwardFrom,
             selectIndex: selectTab,
+            syncIndex,
             handleKeydown,
             isFirstEdge,
             isLastEdge,
@@ -248,8 +249,6 @@ export default defineComponent({
         }
 
         onMounted(() => {
-            selectedIndex.value = findActiveIndexForwardFrom(modelValue.value);
-
             if (tabsRef.value) {
                 resizeObserver = new ResizeObserver(handleResize);
                 resizeObserver.observe(tabsRef.value);
@@ -263,14 +262,6 @@ export default defineComponent({
             }
         });
 
-        watch(
-            () => tabs.value.length,
-            () => {
-                const currentIndex = selectedIndex.value;
-                selectTab(findActiveIndexForwardFrom(currentIndex));
-            },
-        );
-
         watch(selectedIndex, (index: number) => {
             scrollTo(index);
             emit('update:modelValue', index);
@@ -280,7 +271,7 @@ export default defineComponent({
             });
         });
 
-        watch(modelValue, selectTab);
+        watch(modelValue, syncIndex, { immediate: true });
 
         return {
             // Style
