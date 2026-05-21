@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-chip {
     --vs-chip-height: initial;
 
@@ -5,7 +7,8 @@
     --vs-chip-icon-size: calc(var(--vs-chip-computed-height) * 0.75);
     --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.13);
 
-    @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96 active:brightness-92;
+    @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96
+        active:brightness-92;
 
     border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-chip-computed-height) / 2);
@@ -32,6 +35,10 @@
 
     .vs-chip-close-button {
         @apply shrink-0 cursor-pointer;
+
+        .vs-chip-close-icon {
+            @apply size-5;
+        }
     }
 
     &:has(.vs-chip-icon) {

@@ -143,6 +143,10 @@
     .vs-table-no-data {
         @apply flex flex-col items-center justify-center;
         color: var(--vs-cs-font-colored);
+
+        .vs-table-no-data-icon {
+            @apply size-16;
+        }
     }
 
     .vs-table-no-data-text {
@@ -168,13 +172,21 @@
     }
 
     .vs-table-td.vs-table-drag-handle {
-        @apply w-6 cursor-grab px-0!;
+        @apply w-4 cursor-grab px-0!;
         color: var(--vs-cs-line);
     }
 
     .vs-table-th.vs-table-expand-handle,
     .vs-table-td.vs-table-expand-handle {
         width: 3.6rem;
+
+        .vs-table-expand-icon {
+            @apply size-5 transition-transform;
+        }
+    }
+
+    .vs-table-sort-icon {
+        @apply inline-block size-4 shrink-0 cursor-pointer align-middle;
     }
 
     /* ── Pagination ── */

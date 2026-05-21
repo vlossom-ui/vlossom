@@ -9,7 +9,7 @@
                 :size="dense ? 'xs' : 'sm'"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
-                <ChevronDownIcon class="transition-transform" :class="{ 'rotate-180': isExpanded(cells) }" :size="20" />
+                <ChevronDownIcon class="vs-table-expand-icon" :class="{ 'rotate-180': isExpanded(cells) }" />
             </vs-button>
         </td>
     </template>

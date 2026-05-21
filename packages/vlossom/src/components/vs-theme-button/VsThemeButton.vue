@@ -10,12 +10,8 @@
         :loading="loading"
         @toggle="changeTheme"
     >
-        <i class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }">
-            <SunIcon fill="currentColor" />
-        </i>
-        <i class="vs-theme-icon vs-theme-dark" :class="{ 'vs-on': isDarkTheme }">
-            <MoonIcon fill="currentColor" />
-        </i>
+        <SunIcon class="vs-theme-icon vs-theme-light" :class="{ 'vs-on': !isDarkTheme }" fill="currentColor" />
+        <MoonIcon class="vs-theme-icon vs-theme-dark" :class="{ 'vs-on': isDarkTheme }" fill="currentColor" />
     </vs-toggle>
 </template>
 

@@ -28,8 +28,7 @@
                             <component
                                 :is="getSortIcon(header)"
                                 v-if="header.sortable"
-                                class="inline-block shrink-0 cursor-pointer align-middle"
-                                :size="16"
+                                class="vs-table-sort-icon"
                                 @click="updateSortType(header.colKey)"
                             />
                         </div>

@@ -51,9 +51,7 @@
                 :tabindex="!!inputValue ? 0 : -1"
                 @click.stop="clearWithFocus"
             >
-                <i class="size-5">
-                    <XIcon :size="20" />
-                </i>
+                <XIcon class="vs-clear-icon" />
             </button>
 
             <div v-if="$slots['append']" class="vs-append" :style="componentStyleSet.$append">

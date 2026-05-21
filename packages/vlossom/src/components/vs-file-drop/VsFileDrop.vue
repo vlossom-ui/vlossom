@@ -47,9 +47,7 @@
             <div class="vs-file-drop-content">
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
-                        <i class="placeholder-icon size-6">
-                            <PaperclipIcon class="-rotate-45" :size="20" :stroke-width="2.5" />
-                        </i>
+                        <PaperclipIcon class="placeholder-icon" :stroke-width="2.5" />
                         <span class="placeholder-text">{{ placeholder }}</span>
                     </div>
 
@@ -86,7 +84,7 @@
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
             >
-                <XIcon :size="16" />
+                <XIcon class="vs-file-drop-close-icon" />
             </button>
         </div>
 

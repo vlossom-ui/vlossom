@@ -15,7 +15,7 @@
             size="sm"
             @click.prevent.stop="goPrev"
         >
-            <ChevronLeftIcon class="vs-tab-control-icon" :size="dense ? 12 : 16" />
+            <ChevronLeftIcon class="vs-tab-control-icon" />
         </vs-button>
 
         <div ref="tabsRef" class="vs-tabs-wrap">
@@ -51,7 +51,7 @@
             size="sm"
             @click.prevent.stop="goNext"
         >
-            <ChevronRightIcon class="vs-tab-control-icon" :size="dense ? 12 : 16" />
+            <ChevronRightIcon class="vs-tab-control-icon" />
         </vs-button>
     </vs-responsive>
 </template>

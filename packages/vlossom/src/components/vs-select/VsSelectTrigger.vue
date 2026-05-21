@@ -52,10 +52,10 @@
             aria-label="Clear"
             @click.stop="$emit('clear')"
         >
-            <XIcon :size="20" />
+            <XIcon class="vs-select-clear-icon" />
         </button>
         <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
-            <ChevronDownIcon :size="16" color="gray" />
+            <ChevronDownIcon color="gray" />
         </div>
     </div>
 </template>
