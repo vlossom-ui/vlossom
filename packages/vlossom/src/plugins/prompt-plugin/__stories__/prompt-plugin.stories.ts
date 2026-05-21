@@ -1,7 +1,22 @@
-import { ref } from 'vue';
+import { defineComponent, h, ref } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useVlossom } from '@/framework';
 import { type VsInputValueType, VsButton } from '@/components';
+
+const PromptHeader = defineComponent({
+    name: 'PromptHeader',
+    props: {
+        label: { type: String, default: '' },
+        hint: { type: String, default: '' },
+    },
+    setup(props) {
+        return () =>
+            h('div', { style: { textAlign: 'center' } }, [
+                h('h3', { style: { marginBottom: '0.25rem', fontWeight: 600 } }, props.label),
+                h('p', { style: { fontSize: '0.875rem', color: '#6b7280' } }, props.hint),
+            ]);
+    },
+});
 
 const meta: Meta = {
     title: 'Plugins/Prompt Plugin',
@@ -93,6 +108,45 @@ export const Default: Story = {
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <vs-button @click="handleOpenBasic">Open Prompt</vs-button>
                     <vs-button color-scheme="indigo" @click="handleOpenCustom">Open Prompt (Custom)</vs-button>
+                </div>
+                <div style="font-size: 0.875rem; color: var(--vs-gray-700, #4b5563);">
+                    {{ resultText }}
+                </div>
+            </div>
+        `,
+    }),
+};
+
+export const WithComponentProps: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'componentProps로 프롬프트 헤더 컴포넌트에 props를 전달하는 예시입니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsButton },
+        setup() {
+            const $vs = useVlossom();
+            const resultText = ref('아직 입력 없음');
+
+            async function handleOpen() {
+                const value = await $vs.prompt.open(PromptHeader, {
+                    componentProps: { label: '사용자명 입력', hint: '소문자만 허용됩니다' },
+                    input: { placeholder: 'username' },
+                    okText: '확인',
+                    cancelText: '취소',
+                });
+                resultText.value = value === null || value === '' ? '취소됨' : `입력 값: ${value}`;
+            }
+
+            return { handleOpen, resultText };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 360px;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <vs-button @click="handleOpen">Open Prompt (with componentProps)</vs-button>
                 </div>
                 <div style="font-size: 0.875rem; color: var(--vs-gray-700, #4b5563);">
                     {{ resultText }}

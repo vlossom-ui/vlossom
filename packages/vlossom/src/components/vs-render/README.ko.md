@@ -11,6 +11,7 @@
 - 일반 텍스트, HTML 문자열, Vue 컴포넌트, 렌더 함수 렌더링 지원
 - `DOMParser`를 사용하여 HTML 문자열을 파싱하고 Vue 가상 DOM으로 변환
 - `attrs`를 통해 루트 렌더링 요소에 HTML 속성 전달
+- `componentProps`로 컴포넌트 콘텐츠에 명시적 props 전달
 - 일반 텍스트 또는 파싱 실패 시 `<span>` 래퍼로 폴백
 
 ## 기본 사용법
@@ -43,11 +44,26 @@ import MyIcon from './MyIcon.vue';
 </script>
 ```
 
+### 컴포넌트에 Props 전달
+
+```html
+<template>
+    <vs-render :content="Greeting" :component-props="{ name: 'world', count: 3 }" />
+</template>
+
+<script setup>
+import Greeting from './Greeting.vue';
+</script>
+```
+
+`componentProps`는 `content`가 컴포넌트일 때만 적용되며, 문자열 콘텐츠에서는 무시됩니다.
+
 ## Props
 
-| Prop      | Type                        | Default | Required | 설명                                                    |
-| --------- | --------------------------- | ------- | -------- | ------------------------------------------------------- |
-| `content` | `string \| Component`       | -       | Yes      | 렌더링할 콘텐츠: 문자열, HTML 문자열, 또는 Vue 컴포넌트 |
+| Prop             | Type                        | Default | Required | 설명                                                    |
+| ---------------- | --------------------------- | ------- | -------- | ------------------------------------------------------- |
+| `content`        | `string \| Component`       | -       | Yes      | 렌더링할 콘텐츠: 문자열, HTML 문자열, 또는 Vue 컴포넌트 |
+| `componentProps` | `Record<string, any>`       | `{}`    | -        | 렌더링되는 컴포넌트에 전달할 props. `content`가 문자열인 경우 무시됩니다. |
 
 ## Types
 

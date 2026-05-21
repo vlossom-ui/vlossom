@@ -53,4 +53,17 @@ describe('alert-plugin', () => {
         await expect(promise).resolves.toBeUndefined();
         expect(closeWithId).toHaveBeenCalledWith('body', 'modal-id');
     });
+
+    it('componentProps는 modalPlugin.open에 전달되지 않아야 한다', () => {
+        const alertPlugin = createAlertPlugin(modalPlugin);
+        const { defineComponent } = require('vue');
+        const SomeComp = defineComponent({ template: '<div />' });
+
+        alertPlugin.open(SomeComp, { componentProps: { foo: 'bar' }, okText: '확인' });
+
+        const callArgs = (modalPlugin.open as any).mock.calls[0];
+        const passedOptions = callArgs[1];
+        expect(passedOptions.componentProps).toBeUndefined();
+        expect(passedOptions.okText).toBe('확인');
+    });
 });

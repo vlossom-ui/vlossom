@@ -38,6 +38,24 @@ async function askName() {
 </script>
 ```
 
+### Vue 컴포넌트와 Props 전달
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import PromptHeader from './PromptHeader.vue';
+
+const $vs = useVlossom();
+
+async function askWithCustomHeader() {
+    const value = await $vs.prompt.open(PromptHeader, {
+        componentProps: { label: '사용자명', hint: '소문자만 허용' },
+        input: { placeholder: 'username' },
+    });
+}
+</script>
+```
+
 ### 입력 구성 및 초기값 사용
 
 ```html
@@ -90,7 +108,8 @@ interface PromptModalOptions extends ModalOptions {
 }
 
 interface PromptPlugin {
-    open(content: string | Component, options?: PromptModalOptions): Promise<VsInputValueType>;
+    open(content: string, options?: Omit<PromptModalOptions, 'componentProps'>): Promise<VsInputValueType>;
+    open(content: Component, options?: PromptModalOptions): Promise<VsInputValueType>;
 }
 ```
 

@@ -10,22 +10,21 @@ export default defineComponent({
             type: [String, Object, Function] as PropType<string | Component>,
             required: true,
         },
+        componentProps: {
+            type: Object as PropType<Record<string, any>>,
+            default: () => ({}),
+        },
     },
-    setup(props, { attrs }) {
-        const { content } = toRefs(props);
+    setup(props) {
+        const { content, componentProps } = toRefs(props);
 
         // 요소를 재귀적으로 렌더링하는 함수 (최상위부터)
-        function renderElement(element: Element, isRoot: boolean = false) {
+        function renderElement(element: Element) {
             // 요소의 속성들을 객체로 변환
             const attributes: Record<string, any> = {};
             Array.from(element.attributes).forEach((attr) => {
                 attributes[attr.name] = attr.value;
             });
-
-            // 최상위 엘리먼트인 경우 attrs를 병합
-            if (isRoot) {
-                Object.assign(attributes, attrs);
-            }
 
             // 하위 노드들을 처리
             const children: any[] = [];
@@ -46,7 +45,7 @@ export default defineComponent({
         function renderStringAsComponent(htmlString: string) {
             // HTML 태그가 없는 경우 텍스트만 렌더링
             if (!htmlString || !/<[^>]*>/.test(htmlString)) {
-                return () => h('span', attrs, htmlString);
+                return () => h('span', null, htmlString);
             }
             // HTML이 있는 경우 파싱하여 적절한 태그로 렌더링
             try {
@@ -59,13 +58,13 @@ export default defineComponent({
                 const element = doc.body.firstElementChild;
 
                 if (!element) {
-                    return () => h('span', attrs, htmlString);
+                    return () => h('span', null, htmlString);
                 }
 
-                return () => renderElement(element, true);
+                return () => renderElement(element);
             } catch {
                 // 파싱 실패 시 텍스트 렌더링
-                return () => h('span', attrs, htmlString);
+                return () => h('span', null, htmlString);
             }
         }
 
@@ -74,7 +73,7 @@ export default defineComponent({
                 const componentFn = renderStringAsComponent(content.value);
                 return componentFn();
             }
-            return h(content.value, attrs);
+            return h(content.value, componentProps.value);
         };
     },
 });

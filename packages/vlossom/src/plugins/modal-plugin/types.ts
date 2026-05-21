@@ -14,6 +14,7 @@ export interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
 
@@ -24,7 +25,8 @@ export interface ModalInfo extends ModalOptions {
 }
 
 export interface ModalPlugin {
-    open(content: string | Component, options?: ModalOptions): string;
+    open(content: string, options?: Omit<ModalOptions, 'componentProps'>): string;
+    open(content: Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): Promise<boolean>;

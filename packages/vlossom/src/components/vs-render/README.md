@@ -11,6 +11,7 @@ A utility component that renders a string (HTML), a Vue component, or a render f
 - Renders plain text, HTML strings, Vue components, and render functions
 - Parses HTML strings using `DOMParser` and converts them to Vue virtual DOM
 - Passes through HTML attributes via `attrs` to the root rendered element
+- Forwards explicit props to component content via `componentProps`
 - Falls back to a `<span>` wrapper for plain text or parse failures
 
 ## Basic Usage
@@ -43,11 +44,26 @@ import MyIcon from './MyIcon.vue';
 </script>
 ```
 
+### Render a Component with Props
+
+```html
+<template>
+    <vs-render :content="Greeting" :component-props="{ name: 'world', count: 3 }" />
+</template>
+
+<script setup>
+import Greeting from './Greeting.vue';
+</script>
+```
+
+`componentProps` only applies when `content` is a component. For string content it is ignored.
+
 ## Props
 
-| Prop      | Type                        | Default | Required | Description                                           |
-| --------- | --------------------------- | ------- | -------- | ----------------------------------------------------- |
-| `content` | `string \| Component`       | -       | Yes      | Content to render: a string, HTML string, or Vue component |
+| Prop             | Type                        | Default | Required | Description                                           |
+| ---------------- | --------------------------- | ------- | -------- | ----------------------------------------------------- |
+| `content`        | `string \| Component`       | -       | Yes      | Content to render: a string, HTML string, or Vue component |
+| `componentProps` | `Record<string, any>`       | `{}`    | -        | Props forwarded to the rendered component. Ignored when `content` is a string. |
 
 ## Types
 
