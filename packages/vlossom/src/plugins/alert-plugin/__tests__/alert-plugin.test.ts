@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { defineComponent } from 'vue';
 import { ALERT_OK } from '@/declaration';
 import { createAlertPlugin } from './../alert-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
@@ -56,7 +57,6 @@ describe('alert-plugin', () => {
 
     it('componentProps는 modalPlugin.open에 전달되지 않아야 한다', () => {
         const alertPlugin = createAlertPlugin(modalPlugin);
-        const { defineComponent } = require('vue');
         const SomeComp = defineComponent({ template: '<div />' });
 
         alertPlugin.open(SomeComp, { componentProps: { foo: 'bar' }, okText: '확인' });
