@@ -16,7 +16,7 @@
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
-                <vs-render :content="ChevronFirstIcon" :size="16" color="currentColor" />
+                <ChevronFirstIcon :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <vs-button
@@ -31,7 +31,7 @@
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
-                <vs-render :content="ChevronLeftIcon" :size="16" color="currentColor" />
+                <ChevronLeftIcon :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <div class="vs-page-buttons">
@@ -66,7 +66,7 @@
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
-                <vs-render :content="ChevronRightIcon" :size="16" color="currentColor" />
+                <ChevronRightIcon :size="16" color="currentColor" />
             </slot>
         </vs-button>
         <vs-button
@@ -82,7 +82,7 @@
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
-                <vs-render :content="ChevronLastIcon" :size="16" color="currentColor" />
+                <ChevronLastIcon :size="16" color="currentColor" />
             </slot>
         </vs-button>
     </div>
@@ -97,13 +97,12 @@ import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
 
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsPagination;
 export default defineComponent({
     name: componentName,
-    components: { VsRender, VsButton },
+    components: { VsButton, ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsPaginationStyleSet>(),
@@ -243,10 +242,6 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             selectedIndex,
-            ChevronFirstIcon,
-            ChevronLastIcon,
-            ChevronLeftIcon,
-            ChevronRightIcon,
             pages,
             getPageButtonStyleSet,
             goFirst,

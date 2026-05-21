@@ -48,9 +48,8 @@
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <i class="placeholder-icon size-6">
-                            <vs-render
+                            <PaperclipIcon
                                 class="-rotate-45"
-                                :content="PaperclipIcon"
                                 :size="20"
                                 color="currentColor"
                                 :stroke-width="2.5"
@@ -92,7 +91,7 @@
                 tabindex="-1"
                 @click.prevent.stop="onClear()"
             >
-                <vs-render :content="XIcon" :size="16" color="currentColor" />
+                <XIcon :size="16" color="currentColor" />
             </button>
         </div>
 
@@ -115,12 +114,11 @@ import { useVsFileDropRules } from './vs-file-drop-rules';
 import { PaperclipIcon, XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsFileDrop;
 export default defineComponent({
     name: componentName,
-    components: { VsInputWrapper, VsChip, VsRender },
+    components: { VsInputWrapper, VsChip, PaperclipIcon, XIcon },
     props: {
         ...getInputProps<FileDropValueType>(),
         ...getResponsiveProps(),
@@ -397,8 +395,6 @@ export default defineComponent({
             blur,
             validate,
             clear,
-            PaperclipIcon,
-            XIcon,
         };
     },
 });

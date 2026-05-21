@@ -52,10 +52,10 @@
             aria-label="Clear"
             @click.stop="$emit('clear')"
         >
-            <vs-render :content="XIcon" :size="20" color="currentColor" />
+            <XIcon :size="20" color="currentColor" />
         </button>
         <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
-            <vs-render :content="ChevronDownIcon" :size="16" color="gray" />
+            <ChevronDownIcon :size="16" color="gray" />
         </div>
     </div>
 </template>
@@ -68,11 +68,10 @@ import type { VsSelectStyleSet } from './types';
 
 import { ChevronDownIcon, XIcon } from '@lucide/vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 export default defineComponent({
     name: 'VsSelectTrigger',
-    components: { VsChip, VsRender },
+    components: { VsChip, ChevronDownIcon, XIcon },
     props: {
         styleSet: { type: Object as PropType<VsSelectStyleSet> },
         colorScheme: { type: String as PropType<ColorScheme> },
@@ -139,8 +138,6 @@ export default defineComponent({
             componentInlineStyle,
             focus,
             blur,
-            ChevronDownIcon,
-            XIcon,
         };
     },
 });

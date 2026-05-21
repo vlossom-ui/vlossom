@@ -1,7 +1,7 @@
 <template>
     <div :class="['vs-message', colorClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
         <i class="vs-message-icon">
-            <vs-render :content="icon" :size="16" color="currentColor" fill="currentColor" :fill-opacity="0" />
+            <component :is="icon" :size="16" color="currentColor" fill="currentColor" :fill-opacity="0" />
         </i>
         <span class="vs-message-text">{{ text }}</span>
     </div>
@@ -15,12 +15,10 @@ import { useStyleSet } from '@/composables';
 import type { VsMessageStyleSet } from './types';
 
 import { CircleAlertIcon, CircleCheckIcon, InfoIcon, MessageSquareIcon, TriangleAlertIcon } from '@lucide/vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsMessage;
 export default defineComponent({
     name: componentName,
-    components: { VsRender },
     props: {
         ...getStyleSetProps<VsMessageStyleSet>(),
         state: {

@@ -15,7 +15,7 @@
             size="sm"
             @click.prevent.stop="goPrev"
         >
-            <vs-render class="vs-tab-control-icon" :content="ChevronLeftIcon" color="currentColor" />
+            <ChevronLeftIcon class="vs-tab-control-icon" color="currentColor" />
         </vs-button>
 
         <div ref="tabsRef" class="vs-tabs-wrap">
@@ -51,7 +51,7 @@
             size="sm"
             @click.prevent.stop="goNext"
         >
-            <vs-render class="vs-tab-control-icon" :content="ChevronRightIcon" color="currentColor" />
+            <ChevronRightIcon class="vs-tab-control-icon" color="currentColor" />
         </vs-button>
     </vs-responsive>
 </template>
@@ -80,12 +80,11 @@ import type { VsTabsStyleSet } from './types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsTabs;
 export default defineComponent({
     name: componentName,
-    components: { VsButton, VsResponsive, VsRender },
+    components: { VsButton, VsResponsive, ChevronLeftIcon, ChevronRightIcon },
     props: {
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
@@ -314,8 +313,6 @@ export default defineComponent({
 
             // Indicator
             indicatorStyle,
-            ChevronLeftIcon,
-            ChevronRightIcon,
         };
     },
 });

@@ -52,7 +52,7 @@
                 @click.stop="clearWithFocus"
             >
                 <i class="size-5">
-                    <vs-render :content="XIcon" :size="20" color="currentColor" />
+                    <XIcon :size="20" color="currentColor" />
                 </i>
             </button>
 
@@ -78,13 +78,12 @@ import { useVsInputRules } from './vs-input-rules';
 
 import { XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsInput;
 
 export default defineComponent({
     name: componentName,
-    components: { VsInputWrapper, VsRender },
+    components: { VsInputWrapper, XIcon },
     props: {
         ...getInputProps<VsInputValueType>(),
         ...getResponsiveProps(),
@@ -261,7 +260,6 @@ export default defineComponent({
             onBlur,
             validate,
             clearWithFocus,
-            XIcon,
         };
     },
 });

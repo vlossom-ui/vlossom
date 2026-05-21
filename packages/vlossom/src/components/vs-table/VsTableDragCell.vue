@@ -1,6 +1,6 @@
 <template>
     <component v-if="draggable" :is="tag" :class="[cellTypeClass, TABLE_DRAG_HANDLE_CLASS]" :style="cellStyle">
-        <vs-render :content="GripVerticalIcon" :size="18" color="currentColor" />
+        <GripVerticalIcon :size="18" color="currentColor" />
     </component>
 </template>
 
@@ -12,11 +12,10 @@ import { TABLE_DRAG_HANDLE_CLASS } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import { GripVerticalIcon } from '@lucide/vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 export default defineComponent({
     components: {
-        VsRender,
+        GripVerticalIcon,
     },
     props: {
         cells: {
@@ -39,7 +38,6 @@ export default defineComponent({
             cellTypeClass,
             cellStyle,
             draggable,
-            GripVerticalIcon,
         };
     },
 });

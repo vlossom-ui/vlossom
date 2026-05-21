@@ -35,8 +35,7 @@
                         <slot name="empty" />
                     </template>
                     <template v-else>
-                        <vs-render
-                            :content="BanIcon"
+                        <BanIcon
                             :size="64"
                             color="currentColor"
                             fill="currentColor"
@@ -62,14 +61,13 @@ import { getRowId, getRowItem } from './models/table-model';
 
 import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
         VsLoading,
-        VsRender,
         VsTableBodyRow,
+        BanIcon,
         draggable,
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
@@ -144,7 +142,6 @@ export default defineComponent({
             selectRow,
             expandRow,
             handleDragUpdate,
-            BanIcon,
         };
     },
 });

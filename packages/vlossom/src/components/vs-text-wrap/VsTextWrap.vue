@@ -13,11 +13,11 @@
                 aria-label="copy"
                 @click.prevent.stop="copyInnerText"
             >
-                <vs-render
+                <component
+                    :is="copied ? CheckIcon : CopyIcon"
                     class="vs-icon-container"
                     :class="{ copied }"
                     :style="componentStyleSet.$copyIcon"
-                    :content="copied ? CheckIcon : CopyIcon"
                     color="currentColor"
                 />
             </button>
@@ -29,10 +29,9 @@
                 aria-label="link"
                 @click.prevent.stop="openLink"
             >
-                <vs-render
+                <LinkIcon
                     class="vs-icon-container"
                     :style="componentStyleSet.$linkIcon"
-                    :content="LinkIcon"
                     color="currentColor"
                 />
             </button>
@@ -49,12 +48,11 @@ import { clipboardUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import type { VsTextWrapStyleSet } from './types';
 
 import { CheckIcon, CopyIcon, LinkIcon } from '@lucide/vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 const componentName = VsComponent.VsTextWrap;
 export default defineComponent({
     name: componentName,
-    components: { VsRender },
+    components: { LinkIcon },
     props: {
         ...getStyleSetProps<VsTextWrapStyleSet>(),
         copy: { type: Boolean, default: false },

@@ -9,10 +9,9 @@
                 :size="dense ? 'xs' : 'sm'"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
-                <vs-render
+                <ChevronDownIcon
                     class="transition-transform"
                     :class="{ 'rotate-180': isExpanded(cells) }"
-                    :content="ChevronDownIcon"
                     :size="20"
                     color="currentColor"
                 />
@@ -39,10 +38,9 @@ import { getRowItem, isVsTableBodyRow } from './models/table-model';
 
 import { ChevronDownIcon } from '@lucide/vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 
 export default defineComponent({
-    components: { VsButton, VsRender },
+    components: { VsButton, ChevronDownIcon },
     props: {
         cells: {
             type: Array as PropType<VsTableCell[]>,
@@ -92,7 +90,6 @@ export default defineComponent({
             colorScheme,
             dense,
             expandButtonStyleSet,
-            ChevronDownIcon,
         };
     },
 });

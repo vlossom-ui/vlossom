@@ -14,7 +14,7 @@
             ghost
             @click="$emit('close')"
         >
-            <vs-render :content="XIcon" :size="20" color="currentColor" />
+            <XIcon :size="20" color="currentColor" />
         </vs-button>
     </div>
 </template>
@@ -27,13 +27,12 @@ import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { VsToastStyleSet } from './types';
 import { XIcon } from '@lucide/vue';
 
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsToast;
 export default defineComponent({
     name: componentName,
-    components: { VsRender, VsButton },
+    components: { VsButton, XIcon },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsToastStyleSet>(),
@@ -104,7 +103,6 @@ export default defineComponent({
             onMouseEnter,
             onMouseLeave,
             holdToClose,
-            XIcon,
         };
     },
 });

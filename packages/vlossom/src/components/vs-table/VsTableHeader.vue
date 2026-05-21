@@ -25,10 +25,10 @@
                     >
                         <div>
                             {{ header.value }}
-                            <vs-render
+                            <component
+                                :is="getSortIcon(header)"
                                 v-if="header.sortable"
                                 class="inline-block shrink-0 cursor-pointer align-middle"
-                                :content="getSortIcon(header)"
                                 :size="16"
                                 color="currentColor"
                                 @click="updateSortType(header.colKey)"
@@ -56,14 +56,12 @@ import { HEADER_ROW_INDEX } from './models/strategy';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@lucide/vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
 import VsTableExpandCell from './VsTableExpandCell.vue';
 import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
 
 export default defineComponent({
     components: {
-        VsRender,
         VsTableDragCell,
         VsTableExpandCell,
         VsTableCheckboxCell,
