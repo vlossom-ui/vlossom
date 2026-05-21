@@ -3,14 +3,13 @@ import { createApp, h } from 'vue';
 import OverlayWrapper from './OverlayWrapper.vue';
 
 let overlayApp: App | null = null;
-let overlayContainer: HTMLElement | null = null;
 
 export function mountOverlayApp(parentApp: App) {
     if (overlayApp) {
         return;
     }
 
-    overlayContainer = document.createElement('div');
+    const overlayContainer = document.createElement('div');
     overlayContainer.id = 'vs-overlay-container';
     overlayContainer.style.position = 'absolute';
     overlayContainer.style.top = '0';
@@ -32,15 +31,6 @@ export function mountOverlayApp(parentApp: App) {
     overlayApp.mount(overlayContainer);
 }
 
-export function unmountOverlayApp() {
-    if (overlayApp && overlayContainer) {
-        overlayApp.unmount();
-        overlayContainer.remove();
-        overlayContainer = null;
-        overlayApp = null;
-    }
-}
-
 export function inheritAppContext(parent: App, overlay: App) {
     const pctx = (parent as any)?._context;
     const octx = (overlay as any)?._context;
@@ -56,11 +46,51 @@ export function inheritAppContext(parent: App, overlay: App) {
     // 2) provide/inject 체이닝
     octx.provides = Object.create(pctx.provides);
 
-    // 3) 글로벌 프로퍼티 체이닝 ($t, $http 등)
-    //    setPrototypeOf로 parent의 글로벌을 상속받게 함
-    Object.setPrototypeOf(overlay.config.globalProperties, parent.config.globalProperties);
+    // 3) 글로벌 프로퍼티 live 위임 ($vs, $t, $http 등)
+    //    Vue의 PublicInstanceProxy가 globalProperties를 hasOwn으로 조회하므로
+    //    own property로 보이게 하면서, parent에 나중에 추가되는 프로퍼티도 따라가도록 Proxy로 위임
+    const overlayOwn = octx.config.globalProperties;
+    octx.config.globalProperties = new Proxy(overlayOwn, {
+        get(target, key, receiver) {
+            if (Reflect.has(target, key)) {
+                return Reflect.get(target, key, receiver);
+            }
+            return Reflect.get(pctx.config.globalProperties, key);
+        },
+        has(target, key) {
+            return Reflect.has(target, key) || Reflect.has(pctx.config.globalProperties, key);
+        },
+        set(target, key, value, receiver) {
+            return Reflect.set(target, key, value, receiver);
+        },
+        getOwnPropertyDescriptor(target, key) {
+            return (
+                Object.getOwnPropertyDescriptor(target, key) ??
+                Object.getOwnPropertyDescriptor(pctx.config.globalProperties, key)
+            );
+        },
+        ownKeys(target) {
+            return Array.from(
+                new Set([...Reflect.ownKeys(target), ...Reflect.ownKeys(pctx.config.globalProperties)]),
+            );
+        },
+    });
 
-    // 4) 컴파일러 옵션/핸들러 등 필요한 것만 복사 (선택)
-    overlay.config.errorHandler = parent.config.errorHandler;
-    overlay.config.warnHandler = parent.config.warnHandler;
+    // 4) 에러/경고 핸들러 live 위임 (parent가 나중에 교체해도 따라감)
+    Object.defineProperty(overlay.config, 'errorHandler', {
+        configurable: true,
+        enumerable: true,
+        get: () => parent.config.errorHandler,
+        set: () => {
+            /* parent 위임이므로 overlay 자체 설정은 무시 */
+        },
+    });
+    Object.defineProperty(overlay.config, 'warnHandler', {
+        configurable: true,
+        enumerable: true,
+        get: () => parent.config.warnHandler,
+        set: () => {
+            /* parent 위임이므로 overlay 자체 설정은 무시 */
+        },
+    });
 }
