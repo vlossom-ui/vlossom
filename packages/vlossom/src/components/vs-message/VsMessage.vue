@@ -1,8 +1,6 @@
 <template>
     <div :class="['vs-message', colorClass]" :style="{ ...styleSetVariables, ...componentInlineStyle }">
-        <i class="vs-message-icon">
-            <component :is="icon" :size="16" />
-        </i>
+        <component :is="icon" class="vs-message-icon" />
         <span class="vs-message-text">{{ text }}</span>
     </div>
 </template>

@@ -9,14 +9,15 @@
     color: var(--vs-cs-bg-primary);
 
     .vs-message-icon {
-        @apply mt-1 shrink-0;
-        width: var(--vs-message-size);
-        height: var(--vs-message-size);
+        @apply shrink-0;
+
+        width: var(--vs-message-size, 1rem);
+        height: var(--vs-message-size, 1rem);
     }
 
     .vs-message-text {
         @apply ml-1 wrap-break-word;
-        font-size: var(--vs-message-size);
-        line-height: var(--vs-message-size);
+        font-size: var(--vs-message-size, 1rem);
+        line-height: var(--vs-message-size, 1rem);
     }
 }
