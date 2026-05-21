@@ -35,7 +35,7 @@
                         <slot name="empty" />
                     </template>
                     <template v-else>
-                        <vs-render :content="tableIcons.noData" />
+                        <BanIcon class="vs-table-no-data-icon" />
                         <p class="vs-table-no-data-text">NO DATA</p>
                     </template>
                 </div>
@@ -48,22 +48,21 @@
 import { computed, defineComponent, inject, ref, watch, type ComputedRef } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COLOR_SCHEME_TOKEN, type VsTableBodyCell } from './types';
-import { tableIcons } from './icons';
 import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS, VS_TABLE_BODY_SLOT_PREFIXES } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
 import { getRowId, getRowItem } from './models/table-model';
 
+import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
-import VsRender from '@/components/vs-render/VsRender.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
 
 export default defineComponent({
     components: {
         VsLoading,
-        VsRender,
         VsTableBodyRow,
+        BanIcon,
         draggable,
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
@@ -131,7 +130,6 @@ export default defineComponent({
             colorScheme,
             displayedBodyCells,
             loading,
-            tableIcons,
             clickCell,
             clickRow,
             getRowItem: getRowItem,
