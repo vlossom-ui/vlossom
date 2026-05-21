@@ -9,14 +9,14 @@ jobs:
         if: ${{ contains(github.event.review.body, 'chromatic-build') }}
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             - name: Install pnpm
               uses: pnpm/action-setup@v4
               with:
                   version: 10
-            - uses: actions/setup-node@v5
+            - uses: actions/setup-node@v4
               with:
                   node-version-file: '.nvmrc'
                   cache: 'pnpm'
