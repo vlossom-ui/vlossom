@@ -59,6 +59,48 @@ describe('vs-image', () => {
             expect(wrapper.html()).not.toContain(imagePath);
             expect(wrapper.vm.computedSrc).toBe(fallbackPath);
         });
+
+        it('<img /> error 발생 시, fallback이 설정되어 있지 않으면 기본 fallback을 보여줘야 한다', async () => {
+            // given
+            const imagePath = '/images/test.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                },
+            });
+
+            // when
+            await wrapper.find('img').trigger('error');
+
+            // then
+            expect(wrapper.vm.showDefaultFallback).toBe(true);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
+            expect(wrapper.emitted('error')).toHaveLength(1);
+        });
+
+        it('fallback 이미지에서도 error가 발생하면 기본 fallback을 보여줘야 한다', async () => {
+            // given
+            const imagePath = '/images/test.png';
+            const fallbackPath = '/images/fallback.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                    fallback: fallbackPath,
+                },
+            });
+
+            // when
+            await wrapper.find('img').trigger('error');
+            await wrapper.find('img').trigger('error');
+
+            // then
+            expect(wrapper.vm.computedSrc).toBe(fallbackPath);
+            expect(wrapper.vm.showDefaultFallback).toBe(true);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
+            expect(wrapper.emitted('error')).toHaveLength(2);
+        });
     });
 
     describe('lazy', () => {

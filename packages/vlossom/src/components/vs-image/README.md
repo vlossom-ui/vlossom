@@ -12,6 +12,7 @@ A component for displaying images with support for lazy loading, fallback images
 - Shows a skeleton placeholder while the image is loading.
 - Supports lazy loading via the Intersection Observer API.
 - Automatically switches to the `fallback` image on load error.
+- Displays the default fallback UI when no `fallback` is provided or the fallback image also fails.
 - Fires an `error` event when an image fails to load.
 
 ## Basic Usage
@@ -34,7 +35,7 @@ Defer image loading until the element enters the viewport.
 
 ### Fallback Image
 
-Provide a fallback image URL that is shown when the primary source fails.
+Provide a fallback image URL that is shown when the primary source fails. If no fallback is provided, or if the fallback image also fails to load, the default fallback UI is shown.
 
 ```html
 <template>
@@ -62,7 +63,7 @@ Disable the skeleton placeholder during loading.
 | ----------- | ------------------------------ | ------- | -------- | ----------------------------------------------------- |
 | `styleSet`  | `string \| VsImageStyleSet`    | -       | -        | Custom style set for the component.                   |
 | `alt`       | `string`                       | `''`    | -        | Alt text for the image element.                       |
-| `fallback`  | `string`                       | `''`    | -        | Fallback image URL shown when the primary src fails.  |
+| `fallback`  | `string`                       | `''`    | -        | Fallback image URL shown when the primary src fails. If omitted or failed, the default fallback UI is shown. |
 | `lazy`      | `boolean`                      | `false` | -        | Enables lazy loading using the Intersection Observer. |
 | `noSkeleton`| `boolean`                      | `false` | -        | Disables the skeleton placeholder during loading.     |
 | `src`       | `string`                       | `''`    | `true`   | The source URL of the image.                          |

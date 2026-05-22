@@ -3,8 +3,11 @@
         <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.$skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
+        <div v-if="showDefaultFallback" class="vs-image-fallback">
+            <ImageIcon class="vs-image-fallback-icon" />
+        </div>
         <img
-            :class="['vs-image-tag', { 'vs-hidden': isLoading }]"
+            :class="['vs-image-tag', { 'vs-hidden': isLoading || showDefaultFallback }]"
             :src="computedSrc"
             :alt="alt"
             :style="componentStyleSet.$image"
@@ -22,6 +25,7 @@ import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
 import { objectUtil, stringUtil } from '@/utils';
 
+import { ImageIcon } from '@lucide/vue';
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 import type { VsImageStyleSet } from './types';
@@ -29,7 +33,7 @@ import type { VsImageStyleSet } from './types';
 const componentName = VsComponent.VsImage;
 export default defineComponent({
     name: componentName,
-    components: { VsSkeleton },
+    components: { VsSkeleton, ImageIcon },
     props: {
         ...getStyleSetProps<VsImageStyleSet>(),
         alt: { type: String, default: '' },
@@ -66,6 +70,7 @@ export default defineComponent({
         const isLoading = ref(true); // check if img tag src is loaded
         const isLoaded = ref(hasIntersectionObserver && lazy.value ? false : true);
         const isFallback = ref(false);
+        const showDefaultFallback = ref(false);
 
         const computedSrc: ComputedRef<string> = computed(() => {
             if (!isLoaded.value) {
@@ -80,6 +85,7 @@ export default defineComponent({
 
         watch([src, fallback], () => {
             isFallback.value = false;
+            showDefaultFallback.value = false;
         });
 
         function onImageLoad() {
@@ -98,6 +104,8 @@ export default defineComponent({
                 isFallback.value = true;
                 return;
             }
+
+            showDefaultFallback.value = true;
         }
 
         if (hasIntersectionObserver && lazy.value) {
@@ -117,6 +125,7 @@ export default defineComponent({
             computedSrc,
             vsImageRef,
             isLoading,
+            showDefaultFallback,
             onImageLoad,
             onImageError,
         };
