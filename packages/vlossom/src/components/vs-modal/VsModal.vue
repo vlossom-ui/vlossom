@@ -66,8 +66,7 @@ export default defineComponent({
             emit(o ? 'open' : 'close');
 
             if (o) {
-                const vnode = slots.default?.();
-                const modalComponent: Component = vnode ? () => vnode : ((() => null) as Component);
+                const modalComponent: Component = () => slots.default?.() ?? null;
                 modalId.value = $vs.modal.open(modalComponent, modalOptions.value);
             }
         });
