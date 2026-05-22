@@ -8,7 +8,7 @@
     height: 100%;
 
     .vs-image-fallback {
-        @apply flex h-full min-h-full w-full items-center justify-center bg-gray-100 text-gray-500;
+        @apply flex h-full w-full items-center justify-center bg-gray-100 text-gray-500;
     }
 
     .vs-image-fallback-icon {
