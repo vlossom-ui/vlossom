@@ -6,6 +6,7 @@
                 v-model="pageSize"
                 :options="pageSizeOptions"
                 :color-scheme
+                :style-set="tableStyleSet?.$pageSizeSelect"
                 :disabled="loading"
                 option-label="label"
                 option-value="value"
@@ -21,6 +22,7 @@
         <vs-pagination
             v-model="page"
             :color-scheme
+            :style-set="tableStyleSet?.$pagination"
             :disabled="loading"
             :length="totalPages"
             :showing-length="pagination.showingLength"
@@ -34,7 +36,12 @@
 import { computed, defineComponent, inject, type ComputedRef } from 'vue';
 import type { ColorScheme } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { TABLE_COLOR_SCHEME_TOKEN, type VsTablePageSizeOptions } from './types';
+import {
+    TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_STYLE_SET_TOKEN,
+    type VsTablePageSizeOptions,
+    type VsTableStyleSet,
+} from './types';
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
@@ -46,6 +53,7 @@ export default defineComponent({
         const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading, primary } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
+        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
         const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
             return pagination.value.pageSizeOptions ?? [];
@@ -68,6 +76,7 @@ export default defineComponent({
             loading,
             primary,
             colorScheme,
+            tableStyleSet,
         };
     },
 });
