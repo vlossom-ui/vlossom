@@ -40,6 +40,25 @@ async function handleDelete() {
 </script>
 ```
 
+### Using a Vue Component with Props
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import ConfirmBody from './ConfirmBody.vue';
+
+const $vs = useVlossom();
+
+async function confirmDelete(item) {
+    const ok = await $vs.confirm.open(ConfirmBody, {
+        componentProps: { item, severity: 'high' },
+        okText: 'Delete',
+        cancelText: 'Cancel',
+    });
+}
+</script>
+```
+
 ### Custom Button Text and Style
 
 ```html
@@ -87,7 +106,8 @@ interface ConfirmModalOptions extends ModalOptions {
 }
 
 interface ConfirmPlugin {
-    open(content: string | Component, options?: ConfirmModalOptions): Promise<boolean>;
+    open(content: string, options?: Omit<ConfirmModalOptions, 'componentProps'>): Promise<boolean>;
+    open(content: Component, options?: ConfirmModalOptions): Promise<boolean>;
 }
 ```
 

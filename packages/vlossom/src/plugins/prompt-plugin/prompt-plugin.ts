@@ -19,6 +19,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
 
     return {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
+            const { componentProps, ...modalOptions } = options;
             const {
                 container = 'body',
                 colorScheme,
@@ -27,7 +28,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 cancelText = 'Cancel',
                 swapButtons,
                 input: inputOptions,
-            } = options;
+            } = modalOptions;
 
             const inputRef = ref<VsInputRef | null>(null);
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
@@ -51,7 +52,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
                 [okButton, cancelButton],
             );
-            const contents = h(VsRender, { content });
+            const contents = h(VsRender, { content, componentProps });
 
             // NOTE. 함수형 VNode를 사용하여 컴포넌트 인스턴스(`inputRef`)를 가져올 수 있도록 하기 위함
             const prompt = () => {
@@ -73,9 +74,9 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(prompt, {
-                    ...options,
+                    ...modalOptions,
                     callbacks: {
-                        ...options?.callbacks,
+                        ...modalOptions.callbacks,
                         [PROMPT_OK]: () => {
                             if (!inputRef.value?.validate()) {
                                 return;

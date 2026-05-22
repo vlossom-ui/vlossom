@@ -20,5 +20,6 @@ export interface PromptModalOptions extends Omit<ModalOptions, 'beforeClose'> {
 }
 
 export interface PromptPlugin {
-    open(content: string | Component, options?: PromptModalOptions): Promise<VsInputValueType>;
+    open(content: string, options?: Omit<PromptModalOptions, 'componentProps'>): Promise<VsInputValueType>;
+    open(content: Component, options?: PromptModalOptions): Promise<VsInputValueType>;
 }

@@ -35,6 +35,24 @@ async function showAlert() {
 </script>
 ```
 
+### Using a Vue Component with Props
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import AlertBody from './AlertBody.vue';
+
+const $vs = useVlossom();
+
+function showCustomAlert() {
+    $vs.alert.open(AlertBody, {
+        componentProps: { title: 'Notice', icon: 'info' },
+        okText: 'OK',
+    });
+}
+</script>
+```
+
 ### Custom OK Text and Style
 
 ```html
@@ -77,7 +95,8 @@ interface AlertModalOptions extends ModalOptions {
 }
 
 interface AlertPlugin {
-    open(content: string | Component, options?: AlertModalOptions): Promise<void>;
+    open(content: string, options?: Omit<AlertModalOptions, 'componentProps'>): Promise<void>;
+    open(content: Component, options?: AlertModalOptions): Promise<void>;
 }
 ```
 

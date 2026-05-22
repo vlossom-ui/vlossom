@@ -15,5 +15,6 @@ export interface AlertModalOptions extends Omit<ModalOptions, 'beforeClose'> {
 }
 
 export interface AlertPlugin {
-    open(content: string | Component, options?: AlertModalOptions): Promise<void>;
+    open(content: string, options?: Omit<AlertModalOptions, 'componentProps'>): Promise<void>;
+    open(content: Component, options?: AlertModalOptions): Promise<void>;
 }
