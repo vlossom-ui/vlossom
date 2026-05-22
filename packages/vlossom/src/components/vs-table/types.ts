@@ -2,6 +2,8 @@ import type { CSSProperties } from 'vue';
 import type { SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 import type { VsSearchInputStyleSet } from '@/components/vs-search-input/types';
+import type { VsPaginationStyleSet } from '@/components/vs-pagination/types';
+import type { VsSelectStyleSet } from '@/components/vs-select/types';
 
 declare module 'vue' {
     interface GlobalComponents {
@@ -20,6 +22,8 @@ export interface VsTableStyleSet extends CSSProperties {
         $selected?: CSSProperties;
     };
     $cell?: CSSProperties;
+    $pagination?: VsPaginationStyleSet;
+    $pageSizeSelect?: VsSelectStyleSet;
 }
 
 export type VsTablePageSizeOption = { label: string; value: number };

@@ -142,6 +142,8 @@ interface VsTableStyleSet extends CSSProperties {
         $selected?: CSSProperties;
     };
     $cell?: CSSProperties;
+    $pagination?: VsPaginationStyleSet;
+    $pageSizeSelect?: VsSelectStyleSet;
 }
 
 interface VsTableColumnDef<I = VsTableItem> {
