@@ -1,6 +1,22 @@
+import { defineComponent, h } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useVlossom } from '@/framework';
 import VsButton from '@/components/vs-button/VsButton.vue';
+
+const Greeting = defineComponent({
+    name: 'Greeting',
+    props: {
+        name: { type: String, default: 'unknown' },
+        count: { type: Number, default: 0 },
+    },
+    setup(props) {
+        return () =>
+            h('div', { style: { padding: '1rem', textAlign: 'center' } }, [
+                h('p', `Hello, ${props.name}!`),
+                h('p', `count = ${props.count}`),
+            ]);
+    },
+});
 
 const meta: Meta = {
     title: 'Plugins/Modal Plugin',
@@ -80,6 +96,36 @@ export const Default: Story = {
                 <vs-button outline @click="handleClose">Close</vs-button>
                 <vs-button outline @click="handleCloseWithId">Close (With ID)</vs-button>
                 <vs-button outline @click="handleClear">Clear</vs-button>
+            </div>
+        `,
+    }),
+};
+
+export const WithComponentProps: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'componentProps로 컴포넌트에 props를 전달하는 예시입니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsButton },
+        setup() {
+            const $vs = useVlossom();
+
+            function openWithProps() {
+                $vs.modal.open(Greeting, {
+                    componentProps: { name: 'Modal', count: 42 },
+                    size: 'sm',
+                });
+            }
+
+            return { openWithProps };
+        },
+        template: `
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <vs-button @click="openWithProps">Open (with componentProps)</vs-button>
             </div>
         `,
     }),

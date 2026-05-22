@@ -1,7 +1,27 @@
-import { ref } from 'vue';
+import { defineComponent, h, ref } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useVlossom } from '@/framework';
 import VsButton from '@/components/vs-button/VsButton.vue';
+
+const ConfirmBody = defineComponent({
+    name: 'ConfirmBody',
+    props: {
+        itemName: { type: String, default: '' },
+        severity: { type: String as () => 'low' | 'high', default: 'low' },
+    },
+    setup(props) {
+        return () =>
+            h('div', { style: { textAlign: 'center' } }, [
+                h('h3', { style: { marginBottom: '0.5rem', fontWeight: 600 } }, '항목 삭제 확인'),
+                h('p', `대상: ${props.itemName}`),
+                h(
+                    'p',
+                    { style: { color: props.severity === 'high' ? '#dc2626' : '#4b5563' } },
+                    props.severity === 'high' ? '이 작업은 되돌릴 수 없습니다.' : '계속 진행할까요?',
+                ),
+            ]);
+    },
+});
 
 const meta: Meta = {
     title: 'Plugins/Confirm Plugin',
@@ -61,6 +81,45 @@ export const Default: Story = {
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <vs-button @click="handleOpenDefault">Open Confirm</vs-button>
                     <vs-button color-scheme="red" @click="handleOpenCustom">Open Confirm (Danger)</vs-button>
+                </div>
+                <div style="font-size: 0.875rem; color: var(--vs-gray-700, #4b5563);">
+                    {{ resultText }}
+                </div>
+            </div>
+        `,
+    }),
+};
+
+export const WithComponentProps: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'componentProps로 확인 다이얼로그 컴포넌트에 props를 전달하는 예시입니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsButton },
+        setup() {
+            const $vs = useVlossom();
+            const resultText = ref('아직 응답 없음');
+
+            async function handleOpen() {
+                const ok = await $vs.confirm.open(ConfirmBody, {
+                    componentProps: { itemName: 'report-2025.pdf', severity: 'high' },
+                    colorScheme: 'red',
+                    okText: '삭제',
+                    cancelText: '취소',
+                });
+                resultText.value = ok ? '삭제 진행' : '삭제 취소';
+            }
+
+            return { handleOpen, resultText };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; max-width: 320px;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <vs-button color-scheme="red" @click="handleOpen">Open Confirm (with componentProps)</vs-button>
                 </div>
                 <div style="font-size: 0.875rem; color: var(--vs-gray-700, #4b5563);">
                     {{ resultText }}

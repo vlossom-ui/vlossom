@@ -19,7 +19,8 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
 
     return {
         open(content: string | Component, options: AlertModalOptions = {}): Promise<void> {
-            const { container = 'body', colorScheme, styleSet, okText = 'OK' } = options;
+            const { componentProps, ...modalOptions } = options;
+            const { container = 'body', colorScheme, styleSet, okText = 'OK' } = modalOptions;
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
@@ -30,15 +31,15 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
                 onClickEvent: handleOk,
             });
 
-            const contents = h(VsRender, { content });
+            const contents = h(VsRender, { content, componentProps });
             const buttons = h('div', { class: buttonsClass, style: styleSet?.$buttons }, [okButton]);
             const alert = h('div', { class: contentClass }, [contents, buttons]);
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(alert, {
-                    ...options,
+                    ...modalOptions,
                     callbacks: {
-                        ...options?.callbacks,
+                        ...modalOptions.callbacks,
                         [ALERT_OK]: () => {
                             resolve();
                             modalPlugin.closeWithId(container, modalId);

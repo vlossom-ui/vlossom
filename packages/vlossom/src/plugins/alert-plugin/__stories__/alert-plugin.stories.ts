@@ -1,6 +1,22 @@
+import { defineComponent, h } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useVlossom } from '@/framework';
 import VsButton from '@/components/vs-button/VsButton.vue';
+
+const AlertBody = defineComponent({
+    name: 'AlertBody',
+    props: {
+        title: { type: String, default: 'Notice' },
+        message: { type: String, default: '' },
+    },
+    setup(props) {
+        return () =>
+            h('div', { style: { textAlign: 'center' } }, [
+                h('h3', { style: { marginBottom: '0.5rem', fontWeight: 600 } }, props.title),
+                h('p', props.message),
+            ]);
+    },
+});
 
 const meta: Meta = {
     title: 'Plugins/Alert Plugin',
@@ -53,6 +69,36 @@ export const Default: Story = {
                     <vs-button @click="handleOpenBasic">Open Alert</vs-button>
                     <vs-button color-scheme="emerald" @click="handleOpenCustom">Open Alert (Custom)</vs-button>
                 </div>
+            </div>
+        `,
+    }),
+};
+
+export const WithComponentProps: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'componentProps로 알림 컴포넌트에 props를 전달하는 예시입니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsButton },
+        setup() {
+            const $vs = useVlossom();
+
+            async function handleOpen() {
+                await $vs.alert.open(AlertBody, {
+                    componentProps: { title: '저장 완료', message: '변경 내용이 안전하게 저장되었습니다.' },
+                    okText: '확인',
+                });
+            }
+
+            return { handleOpen };
+        },
+        template: `
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <vs-button @click="handleOpen">Open Alert (with componentProps)</vs-button>
             </div>
         `,
     }),

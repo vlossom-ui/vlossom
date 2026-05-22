@@ -20,6 +20,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
+            const { componentProps, ...modalOptions } = options;
             const {
                 container = 'body',
                 colorScheme,
@@ -27,7 +28,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 okText = 'OK',
                 cancelText = 'Cancel',
                 swapButtons,
-            } = options;
+            } = modalOptions;
 
             const okButton = vnodeUtils.createVsButton({
                 props: { colorScheme, styleSet: styleSet?.$okButton, primary: true },
@@ -44,7 +45,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
 
-            const contents = h(VsRender, { content });
+            const contents = h(VsRender, { content, componentProps });
             const buttons = h(
                 'div',
                 { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
@@ -54,9 +55,9 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {
-                    ...options,
+                    ...modalOptions,
                     callbacks: {
-                        ...options?.callbacks,
+                        ...modalOptions.callbacks,
                         [CONFIRM_OK]: () => {
                             resolve(true);
                             modalPlugin.closeWithId(container, modalId);

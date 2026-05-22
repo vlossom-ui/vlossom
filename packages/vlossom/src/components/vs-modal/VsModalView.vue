@@ -17,7 +17,7 @@
                 :size="modal.size"
                 @close="onClose(modal.id)"
             >
-                <vs-render :content="modal.content" />
+                <vs-render :content="modal.content" :component-props="modal.componentProps" />
             </vs-modal-node>
         </TransitionGroup>
     </div>
