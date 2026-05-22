@@ -3,9 +3,6 @@
         <vs-skeleton v-if="isLoading && !noSkeleton" :style-set="componentStyleSet.$skeleton">
             <slot name="skeleton" />
         </vs-skeleton>
-        <div v-if="showDefaultFallback" class="vs-image-fallback">
-            <ImageIcon class="vs-image-fallback-icon" />
-        </div>
         <img
             :class="['vs-image-tag', { 'vs-hidden': isLoading || showDefaultFallback }]"
             :src="computedSrc"
@@ -14,6 +11,9 @@
             @load.stop="onImageLoad"
             @error.stop="onImageError"
         />
+        <div v-if="showDefaultFallback" class="vs-image-fallback">
+            <ImageIcon class="vs-image-fallback-icon" />
+        </div>
     </div>
 </template>
 
@@ -69,14 +69,14 @@ export default defineComponent({
 
         const isLoading = ref(true); // check if img tag src is loaded
         const isLoaded = ref(hasIntersectionObserver && lazy.value ? false : true);
-        const isFallback = ref(false);
+        const showCustomFallback = ref(false);
         const showDefaultFallback = ref(false);
 
         const computedSrc: ComputedRef<string> = computed(() => {
             if (!isLoaded.value) {
                 return '';
             }
-            if (isFallback.value) {
+            if (showCustomFallback.value) {
                 return fallback.value;
             }
 
@@ -84,7 +84,7 @@ export default defineComponent({
         });
 
         watch([src, fallback], () => {
-            isFallback.value = false;
+            showCustomFallback.value = false;
             showDefaultFallback.value = false;
         });
 
@@ -100,8 +100,8 @@ export default defineComponent({
             emit('error');
             isLoading.value = false;
 
-            if (fallback.value && !isFallback.value) {
-                isFallback.value = true;
+            if (fallback.value && !showCustomFallback.value) {
+                showCustomFallback.value = true;
                 return;
             }
 
