@@ -1,6 +1,6 @@
 # VsDatePicker
 
-A native-first date picker component with timezone select integration, form validation, and UTC-based modelValue.
+A native-first date picker component with form validation and format-validated string `modelValue`.
 
 > 한국어 문서는 [README.ko.md](./README.ko.md)를 참고하세요.
 
@@ -9,10 +9,10 @@ A native-first date picker component with timezone select integration, form vali
 ## Feature
 
 - Four input types: `date`, `datetime-local`, `time`, `month` — backed by native `<input type>`.
-- Optional timezone select (`<vs-select>`) integrated inline; displayed date/time is preserved on timezone change.
-- `modelValue` is always a UTC `Date` instant — safe to `.toISOString()` for server transport.
-- Form validation with `required`, `min`/`max` (`Date`), `canSelectDate`, and parse-failure detection.
+- `modelValue` is always a format-validated string. The format is derived from `type`.
+- Form validation with `required`, `min`/`max` (string), `canSelectDate`, and format-mismatch detection.
 - Built-in clear button and calendar icon button; `showPicker()` feature detection on `open()`.
+- When `type` changes, `modelValue` is auto-padded/trimmed to the new format where possible; otherwise cleared.
 
 ## Basic Usage
 
@@ -23,7 +23,7 @@ A native-first date picker component with timezone select integration, form vali
 
 <script setup>
 import { ref } from 'vue';
-const date = ref(null);
+const date = ref('');
 </script>
 ```
 
@@ -38,44 +38,6 @@ const date = ref(null);
 </template>
 ```
 
-### With Timezone Select
-
-```html
-<template>
-    <vs-date-picker
-        v-model="datetime"
-        type="datetime-local"
-        timezone
-        @timezone-change="onTimezoneChange"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const datetime = ref(null);
-function onTimezoneChange({ from, to }) {
-    console.log(`tz changed: ${from} → ${to}`);
-}
-</script>
-```
-
-### Custom Timezone Options
-
-```html
-<template>
-    <vs-date-picker
-        v-model="datetime"
-        type="datetime-local"
-        timezone
-        :timezone-options="[
-            { value: 'Asia/Seoul', label: 'Seoul (UTC+09:00)' },
-            { value: 'Asia/Tokyo', label: 'Tokyo (UTC+09:00)' },
-            { value: 'America/New_York', label: 'New York' },
-        ]"
-    />
-</template>
-```
-
 ### Min / Max + CanSelectDate
 
 ```html
@@ -83,38 +45,50 @@ function onTimezoneChange({ from, to }) {
     <vs-date-picker
         v-model="date"
         type="date"
-        :min="minDate"
-        :max="maxDate"
+        min="2026-01-01"
+        max="2026-12-31"
         :can-select-date="canSelectDate"
     />
 </template>
 
 <script setup>
-import { ref } from 'vue';
-const minDate = new Date('2026-01-01T00:00:00Z');
-const maxDate = new Date('2026-12-31T00:00:00Z');
-const holidays = [new Date('2026-05-05T00:00:00Z')];
-const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString().slice(0, 10) === date.toISOString().slice(0, 10));
+const holidays = ['2026-05-05'];
+const canSelectDate = (value) => !holidays.includes(value);
 </script>
 ```
 
 ## Data Model
 
-- **`modelValue` is always a UTC `Date` instant** (`Date | null`).
-- When `timezone={false}` (default), all input is interpreted as UTC date/time — the rendered input shows the UTC time literally.
-- When `timezone={true}`, the input shows date/time in the currently selected timezone. The modelValue stays in UTC.
-- Server payload: `date.toISOString()` always produces a consistent UTC ISO 8601 string.
+- **`modelValue` is always a string** matching the format derived from `type`:
+  - `type='date'` → `'YYYY-MM-DD'` (e.g. `'2026-05-18'`)
+  - `type='datetime-local'` → `'YYYY-MM-DDTHH:mm'` (e.g. `'2026-05-18T15:30'`)
+  - `type='time'` → `'HH:mm'` (e.g. `'15:30'`)
+  - `type='month'` → `'YYYY-MM'` (e.g. `'2026-05'`)
+- The default value is `''`.
+- Time-zone interpretation is intentionally delegated to the consumer. Use dayjs / Temporal / a custom adapter when you need to convert to/from an instant.
 
-## Timezone
+## Format Validation
 
-| Behavior | Detail |
+- When the user types or programmatically sets `modelValue`, the string is checked against the regex for the current `type`.
+- A mismatched format emits `invalid` (`{ input }`) and the displayed input is blanked out; `modelValue` itself is **not** auto-rewritten.
+- `canSelectDate` is also checked before committing user input; rejection emits `invalid` and the value is not committed.
+
+## Type Switching
+
+When the consumer changes the `type` prop while `modelValue` is non-empty, the value is auto-converted where possible:
+
+| from → to | result |
 | --- | --- |
-| Default | `timezone={false}` — no select UI, internal tz fixed to `'Etc/UTC'`. |
-| Initial value | When enabled, the active timezone is `timezoneOptions[0].value`. |
-| On change | Displayed date/time is **preserved**; UTC is **recalculated**. (Use case: "Move this 3 PM meeting from Seoul to NY.") |
-| Invalid tz | Emits `invalid` (reason: `'timezone'`); the active timezone stays put. |
-
-Default options: 12 IANA zones (`Etc/UTC`, Los Angeles, New York, London, Paris, Dubai, Kolkata, Shanghai, Tokyo, Seoul, Sydney, Auckland).
+| `date` → `datetime-local` | `${v}T00:00` |
+| `date` → `month` | `v.slice(0, 7)` |
+| `datetime-local` → `date` | `v.slice(0, 10)` |
+| `datetime-local` → `time` | `v.slice(11, 16)` |
+| `datetime-local` → `month` | `v.slice(0, 7)` |
+| `month` → `date` | `${v}-01` |
+| `month` → `datetime-local` | `${v}-01T00:00` |
+| `time` → anything else | `''` (no date info) |
+| `date` → `time` | `''` (no time info) |
+| `month` → `time` | `''` (no time info) |
 
 ## Limitations
 
@@ -139,12 +113,12 @@ When `disabled` or `readonly` is set, all three triggers are no-ops.
         v-model="date"
         type="date"
         required
-        :rules="[v => !!v && v.getUTCDay() !== 0 || 'Sunday is not allowed']"
+        :rules="[v => (!!v && new Date(v).getUTCDay() !== 0) || 'Sunday is not allowed']"
     />
 </template>
 ```
 
-Default rules can be turned off via `noDefaultRules`. To replace the built-in `invalidValueCheck` message, override with your own rule.
+Default rules can be turned off via `noDefaultRules`.
 
 ## Props
 
@@ -152,14 +126,12 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 | ------------------- | --------------------------------------------------------------------- | ----------------------------- | -------- | -------------------------------------------------------------------------------------------- |
 | `colorScheme`       | `string`                                                              | -                             | -        | Color scheme.                                                                                |
 | `styleSet`          | `string \| VsDatePickerStyleSet`                                      | -                             | -        | Custom style set.                                                                            |
-| `modelValue`        | `Date \| null`                                                        | `null`                        | -        | v-model — UTC instant.                                                                       |
-| `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | Native input type.                                                                           |
-| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | Earliest valid instant (rule-based).                                                         |
-| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | Latest valid instant (rule-based).                                                           |
-| `canSelectDate`     | `(date: Date) => boolean \| undefined`                                | `undefined`                   | -        | Callback that returns `true` for selectable dates and `false` for dates to reject; emits `invalid` when rejected. |
+| `modelValue`        | `string`                                                              | `''`                          | -        | v-model — format-validated string.                                                           |
+| `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | Native input type; also determines the `modelValue` format.                                  |
+| `min`               | `string \| undefined`                                                 | `undefined`                   | -        | Earliest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).  |
+| `max`               | `string \| undefined`                                                 | `undefined`                   | -        | Latest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).    |
+| `canSelectDate`     | `(value: string) => boolean \| undefined`                             | `undefined`                   | -        | Callback that returns `true` for selectable values and `false` for values to reject; emits `invalid` when rejected. |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | Hides the clear button.                                                                      |
-| `timezone`          | `boolean`                                                             | `false`                       | -        | Render an inline timezone select.                                                            |
-| `timezoneOptions`   | `TimezoneOption[]`                                                    | `DEFAULT_TIMEZONE_OPTIONS`    | -        | Options for the timezone select. The first entry is the initial value.                       |
 | `label`             | `string`                                                              | `''`                          | -        | Label text.                                                                                  |
 | `placeholder`       | `string`                                                              | `''`                          | -        | Placeholder.                                                                                 |
 | `disabled`          | `boolean`                                                             | `false`                       | -        | Disables the component.                                                                      |
@@ -172,7 +144,7 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 | `name`              | `string`                                                              | `''`                          | -        | `name` attribute for the input.                                                              |
 | `messages`          | `Message[]`                                                           | `[]`                          | -        | External messages.                                                                           |
 | `rules`             | `Rule[]`                                                              | `[]`                          | -        | Custom validation rules.                                                                     |
-| `noDefaultRules`    | `boolean`                                                             | `false`                       | -        | Disable built-in rules (required, min, max, notDisabled, invalidValue).                      |
+| `noDefaultRules`    | `boolean`                                                             | `false`                       | -        | Disable built-in rules (required, min, max, notDisabled).                                    |
 | `state`             | `UIState`                                                             | `'idle'`                      | -        | External validation state.                                                                   |
 | `width`             | `string \| number \| Breakpoints`                                     | -                             | -        | Width.                                                                                       |
 | `grid`              | `string \| number \| Breakpoints`                                     | -                             | -        | Grid column span.                                                                            |
@@ -183,40 +155,33 @@ Default rules can be turned off via `noDefaultRules`. To replace the built-in `i
 
 ```typescript
 import type { CSSProperties } from 'vue';
-import type { OptionItem } from 'vlossom';
 import type { VsInputStyleSet } from 'vlossom';
 import type { VsInputWrapperStyleSet } from 'vlossom';
-import type { VsSelectStyleSet } from 'vlossom';
 
 type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
-type VsDatePickerValueType = Date | null;
+type VsDatePickerFormat = 'YYYY-MM-DD' | 'YYYY-MM-DDTHH:mm' | 'HH:mm' | 'YYYY-MM';
 
-// Extends Partial<OptionItem>; typically used with `value` (IANA tz id) and `label`.
-interface TimezoneOption extends Partial<OptionItem> {}
+type VsDatePickerValueType = string;
 
 interface VsDatePickerStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
     $input?: VsInputStyleSet;
-    $timezoneSelect?: VsSelectStyleSet;
 }
 ```
 
-`DEFAULT_TIMEZONE_OPTIONS` is exported for convenience and contains 12 IANA timezones.
-
 ## Events
 
-| Event               | Payload                                  | Description                                                              |
-| ------------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
-| `update:modelValue` | `Date \| null`                           | Emitted when modelValue changes.                                         |
-| `update:changed`    | `boolean`                                | Emitted when the changed flag updates.                                   |
-| `update:valid`      | `boolean`                                | Emitted when the valid flag updates.                                     |
-| `change`            | `Date \| null`                           | Emitted after the value is committed.                                    |
-| `focus`             | `FocusEvent`                             | Emitted when the input receives focus.                                   |
-| `blur`              | `FocusEvent`                             | Emitted when the input loses focus.                                      |
-| `clear`             | -                                        | Emitted when the clear button is pressed.                                |
-| `invalid`           | `{ reason: 'parse' \| 'disabled' \| 'timezone'; input: string }` | Emitted on parse failure, disabled date selection, or invalid timezone. |
-| `timezone-change`   | `{ from: string; to: string }`           | Emitted when the timezone select value changes (valid only).             |
+| Event               | Payload              | Description                                                              |
+| ------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `update:modelValue` | `string`             | Emitted when modelValue changes.                                         |
+| `update:changed`    | `boolean`            | Emitted when the changed flag updates.                                   |
+| `update:valid`      | `boolean`            | Emitted when the valid flag updates.                                     |
+| `change`            | `string`             | Emitted after the value is committed.                                    |
+| `focus`             | `FocusEvent`         | Emitted when the input receives focus.                                   |
+| `blur`              | `FocusEvent`         | Emitted when the input loses focus.                                      |
+| `clear`             | -                    | Emitted when the clear button is pressed.                                |
+| `invalid`           | `{ input: string }`  | Emitted on format mismatch or when `canSelectDate` rejects the value.    |
 
 ## Slots
 
@@ -226,7 +191,6 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `prepend`            | Content displayed to the left inside the date input box.                          |
 | `append`             | Content displayed to the right inside the date input box.                         |
 | `messages`           | Custom messages content below the input.                                          |
-| `timezone-option`    | Custom rendering for a single option inside the timezone `<vs-select>`.           |
 
 ## Methods
 
@@ -235,5 +199,5 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `focus`           | -          | Focuses the date input element.                                              |
 | `blur`            | -          | Blurs the date input element.                                                |
 | `validate`        | -          | Triggers validation and returns the result.                                  |
-| `clear`           | -          | Clears the value (modelValue → null). Timezone is preserved.                 |
+| `clear`           | -          | Clears the value (modelValue → `''`).                                        |
 | `open`            | -          | Opens the native picker via `showPicker()` (falls back to `focus()`).        |

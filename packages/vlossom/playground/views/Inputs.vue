@@ -97,14 +97,6 @@
                 required
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
-            <vs-date-picker
-                v-model="dpTz"
-                type="datetime-local"
-                label="Datetime + Timezone (responsive)"
-                timezone
-                @timezone-change="onTzChange"
-                :grid="{ xs: 12, md: 6, lg: 6 }"
-            />
         </vs-form>
         <vs-divider style-set="playground" />
 
@@ -353,16 +345,12 @@ export default defineComponent({
         const selectLongValue = ref(null);
 
         // VsDatePicker state
-        const dpDate: Ref<Date | null> = ref(null);
-        const dpDatetime: Ref<Date | null> = ref(null);
-        const dpTime: Ref<Date | null> = ref(null);
-        const dpMonth: Ref<Date | null> = ref(null);
-        const dpRequired: Ref<Date | null> = ref(null);
-        const dpReadonlyValue: Ref<Date | null> = ref(new Date('2026-05-18T00:00:00Z'));
-        const dpTz: Ref<Date | null> = ref(new Date('2026-05-18T15:30:00Z'));
-        function onTzChange(payload: { from: string; to: string }) {
-            console.info(`[VsDatePicker] timezone: ${payload.from} → ${payload.to}`);
-        }
+        const dpDate: Ref<string> = ref('');
+        const dpDatetime: Ref<string> = ref('');
+        const dpTime: Ref<string> = ref('');
+        const dpMonth: Ref<string> = ref('');
+        const dpRequired: Ref<string> = ref('');
+        const dpReadonlyValue: Ref<string> = ref('2026-05-18');
 
         return {
             inputText,
@@ -400,8 +388,6 @@ export default defineComponent({
             dpMonth,
             dpRequired,
             dpReadonlyValue,
-            dpTz,
-            onTzChange,
         };
     },
 });

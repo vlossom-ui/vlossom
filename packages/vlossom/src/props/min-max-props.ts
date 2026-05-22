@@ -27,11 +27,11 @@ export function getMinMaxProps(
 export function getDateMinMaxProps() {
     return {
         min: {
-            type: Date as PropType<Date | undefined>,
+            type: String as PropType<string | undefined>,
             default: undefined,
         },
         max: {
-            type: Date as PropType<Date | undefined>,
+            type: String as PropType<string | undefined>,
             default: undefined,
         },
     };

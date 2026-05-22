@@ -54,7 +54,7 @@
                 required
                 :rules="[rules.required]"
                 :max="today"
-                :disabled-dates="disabledHolidays"
+                :can-select-date="canSelectBirthDate"
                 @invalid="onBirthDateInvalid"
                 :grid="{ xs: 12, md: 6 }"
             />
@@ -119,8 +119,7 @@
         </div>
 
         <div v-if="lastInvalid" class="my-4 rounded bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-            Birth date invalid → reason: <strong>{{ lastInvalid.reason }}</strong>, input:
-            <code>{{ lastInvalid.input }}</code>
+            Birth date invalid → input: <code>{{ lastInvalid.input }}</code>
         </div>
 
         <div class="my-6 h-px bg-gray-200 dark:bg-gray-700" />
@@ -144,7 +143,7 @@ interface SignUpForm {
     hobby: string | null;
     age: number | null;
     gender: string | null;
-    birthDate: Date | null;
+    birthDate: string;
     bio: string;
     interests: string[];
     newsletter: boolean;
@@ -166,7 +165,7 @@ export default defineComponent({
             hobby: null,
             age: null,
             gender: null,
-            birthDate: null,
+            birthDate: '',
             bio: '',
             interests: [],
             newsletter: false,
@@ -174,13 +173,11 @@ export default defineComponent({
             agreeTerms: false,
         });
 
-        const today = new Date();
-        const disabledHolidays = [
-            new Date('2026-05-05T00:00:00Z'),
-            new Date('2026-12-25T00:00:00Z'),
-        ];
-        const lastInvalid: Ref<{ reason: string; input: string } | null> = ref(null);
-        function onBirthDateInvalid(payload: { reason: string; input: string }) {
+        const today = new Date().toISOString().slice(0, 10);
+        const disabledHolidays = ['2026-05-05', '2026-12-25'];
+        const canSelectBirthDate = (value: string) => !disabledHolidays.includes(value);
+        const lastInvalid: Ref<{ input: string } | null> = ref(null);
+        function onBirthDateInvalid(payload: { input: string }) {
             lastInvalid.value = payload;
         }
 
@@ -263,7 +260,7 @@ export default defineComponent({
             regionOptions,
             hobbyOptions,
             today,
-            disabledHolidays,
+            canSelectBirthDate,
             lastInvalid,
             onBirthDateInvalid,
         };

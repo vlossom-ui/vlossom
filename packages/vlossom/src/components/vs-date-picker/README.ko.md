@@ -1,6 +1,6 @@
 # VsDatePicker
 
-타임존 select 통합, 폼 유효성 검사, UTC 기반 modelValue를 제공하는 네이티브 우선 날짜 선택 컴포넌트입니다.
+폼 유효성 검사와 format-validated 문자열 `modelValue`를 제공하는 네이티브 우선 날짜 선택 컴포넌트입니다.
 
 > For English documentation, see [README.md](./README.md).
 
@@ -9,10 +9,10 @@
 ## Feature
 
 - 네이티브 `<input type>` 기반 4종 타입 지원: `date`, `datetime-local`, `time`, `month`.
-- `<vs-select>` 기반 타임존 선택을 인라인으로 통합 (옵션). 타임존 변경 시 화면에 보이는 날짜/시간 유지.
-- `modelValue`는 항상 UTC `Date` instant — `.toISOString()`으로 서버 전송에 안전.
-- `required`, `min`/`max` (`Date`), `canSelectDate`, parse-failure 감지를 포함한 폼 유효성 검사.
+- `modelValue`는 항상 format-validated 문자열입니다. format은 `type` 으로부터 결정됩니다.
+- `required`, `min`/`max` (string), `canSelectDate`, format 불일치 감지를 포함한 폼 유효성 검사.
 - 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
+- `type` 이 바뀌면 `modelValue` 가 새 format 으로 자동 패딩/트림 되며, 변환이 불가능한 경우 `''` 로 clear 됩니다.
 
 ## Basic Usage
 
@@ -23,7 +23,7 @@
 
 <script setup>
 import { ref } from 'vue';
-const date = ref(null);
+const date = ref('');
 </script>
 ```
 
@@ -38,44 +38,6 @@ const date = ref(null);
 </template>
 ```
 
-### 타임존 Select 사용
-
-```html
-<template>
-    <vs-date-picker
-        v-model="datetime"
-        type="datetime-local"
-        timezone
-        @timezone-change="onTimezoneChange"
-    />
-</template>
-
-<script setup>
-import { ref } from 'vue';
-const datetime = ref(null);
-function onTimezoneChange({ from, to }) {
-    console.log(`타임존 변경: ${from} → ${to}`);
-}
-</script>
-```
-
-### 사용자 정의 타임존 옵션
-
-```html
-<template>
-    <vs-date-picker
-        v-model="datetime"
-        type="datetime-local"
-        timezone
-        :timezone-options="[
-            { value: 'Asia/Seoul', label: '서울 (UTC+09:00)' },
-            { value: 'Asia/Tokyo', label: '도쿄 (UTC+09:00)' },
-            { value: 'America/New_York', label: '뉴욕' },
-        ]"
-    />
-</template>
-```
-
 ### Min / Max + CanSelectDate
 
 ```html
@@ -83,38 +45,50 @@ function onTimezoneChange({ from, to }) {
     <vs-date-picker
         v-model="date"
         type="date"
-        :min="minDate"
-        :max="maxDate"
+        min="2026-01-01"
+        max="2026-12-31"
         :can-select-date="canSelectDate"
     />
 </template>
 
 <script setup>
-import { ref } from 'vue';
-const minDate = new Date('2026-01-01T00:00:00Z');
-const maxDate = new Date('2026-12-31T00:00:00Z');
-const holidays = [new Date('2026-05-05T00:00:00Z')];
-const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString().slice(0, 10) === date.toISOString().slice(0, 10));
+const holidays = ['2026-05-05'];
+const canSelectDate = (value) => !holidays.includes(value);
 </script>
 ```
 
 ## 데이터 모델
 
-- **`modelValue`는 항상 UTC `Date` instant** (`Date | null`).
-- `timezone={false}` (default)일 때 모든 입력은 UTC 날짜/시간으로 해석됩니다 (입력창에 UTC 시각이 그대로 표시).
-- `timezone={true}`이면 입력창에 현재 선택된 타임존의 날짜/시간이 표시되지만, modelValue는 UTC로 유지됩니다.
-- 서버 전송: `date.toISOString()`이 항상 일관된 UTC ISO 8601 문자열을 만들어 줍니다.
+- **`modelValue`는 `type` 으로부터 결정되는 format 의 문자열**입니다.
+  - `type='date'` → `'YYYY-MM-DD'` (예: `'2026-05-18'`)
+  - `type='datetime-local'` → `'YYYY-MM-DDTHH:mm'` (예: `'2026-05-18T15:30'`)
+  - `type='time'` → `'HH:mm'` (예: `'15:30'`)
+  - `type='month'` → `'YYYY-MM'` (예: `'2026-05'`)
+- 기본값은 `''` 입니다.
+- 타임존 해석은 의도적으로 소비 측에 위임합니다. instant 변환이 필요하면 dayjs / Temporal / 자체 어댑터를 사용하세요.
 
-## 타임존
+## Format 검증
 
-| 동작 | 상세 |
+- 사용자 입력 또는 외부 `modelValue` 주입 시, 현재 `type` 에 해당하는 정규식으로 검증됩니다.
+- format 불일치 시 `invalid` (`{ input }`) 이벤트가 emit 되며 입력창 표시값은 비워집니다. `modelValue` 자체는 자동으로 덮어쓰지 **않습니다**.
+- `canSelectDate` 도 사용자 입력 커밋 전에 검사되며, 거절 시 `invalid` 가 emit 되고 값은 커밋되지 않습니다.
+
+## Type 전환
+
+`modelValue` 가 비어 있지 않은 상태에서 `type` prop 이 바뀌면 가능한 한 자동 변환됩니다.
+
+| from → to | 결과 |
 | --- | --- |
-| 기본 | `timezone={false}` — select UI 없음, 내부 tz는 `'Etc/UTC'` 고정. |
-| 초기값 | 활성 시 현재 타임존은 `timezoneOptions[0].value`. |
-| 변경 시 | 화면에 보이는 날짜/시간은 **유지**되고 UTC가 **재계산**됩니다. (예: "서울 오후 3시 회의를 뉴욕으로 옮긴다"). |
-| 잘못된 tz | `invalid` 이벤트 (reason: `'timezone'`) emit, 현재 타임존은 유지. |
-
-기본 옵션 12개 IANA 타임존: `Etc/UTC`, Los Angeles, New York, London, Paris, Dubai, Kolkata, Shanghai, Tokyo, Seoul, Sydney, Auckland.
+| `date` → `datetime-local` | `${v}T00:00` |
+| `date` → `month` | `v.slice(0, 7)` |
+| `datetime-local` → `date` | `v.slice(0, 10)` |
+| `datetime-local` → `time` | `v.slice(11, 16)` |
+| `datetime-local` → `month` | `v.slice(0, 7)` |
+| `month` → `date` | `${v}-01` |
+| `month` → `datetime-local` | `${v}-01T00:00` |
+| `time` → 그 외 | `''` (날짜 정보 없음) |
+| `date` → `time` | `''` (시간 정보 없음) |
+| `month` → `time` | `''` (시간 정보 없음) |
 
 ## 제한 사항
 
@@ -139,12 +113,12 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
         v-model="date"
         type="date"
         required
-        :rules="[v => !!v && v.getUTCDay() !== 0 || '일요일은 선택할 수 없습니다']"
+        :rules="[v => (!!v && new Date(v).getUTCDay() !== 0) || '일요일은 선택할 수 없습니다']"
     />
 </template>
 ```
 
-기본 룰은 `noDefaultRules`로 비활성화할 수 있습니다. 기본 `invalidValueCheck` 메시지를 바꾸려면 별도 룰로 덮어쓰세요.
+기본 룰은 `noDefaultRules`로 비활성화할 수 있습니다.
 
 ## Props
 
@@ -152,14 +126,12 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 | ------------------- | --------------------------------------------------------------------- | ----------------------------- | -------- | -------------------------------------------------------------------------------------------- |
 | `colorScheme`       | `string`                                                              | -                             | -        | 컴포넌트의 색상 스킴.                                                                       |
 | `styleSet`          | `string \| VsDatePickerStyleSet`                                      | -                             | -        | 커스텀 스타일 셋.                                                                            |
-| `modelValue`        | `Date \| null`                                                        | `null`                        | -        | v-model — UTC instant.                                                                       |
-| `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | 네이티브 input 타입.                                                                         |
-| `min`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 빠른 유효 instant (rule 기반).                                                         |
-| `max`               | `Date \| undefined`                                                   | `undefined`                   | -        | 가장 늦은 유효 instant (rule 기반).                                                         |
-| `canSelectDate`     | `(date: Date) => boolean \| undefined`                                | `undefined`                   | -        | 선택할 수 있는 날짜면 `true`, 선택할 수 없으면 `false`를 반환하는 콜백. 선택 불가 시 `invalid` 이벤트 emit. |
+| `modelValue`        | `string`                                                              | `''`                          | -        | v-model — format-validated 문자열.                                                          |
+| `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | 네이티브 input 타입. `modelValue` format 도 함께 결정.                                       |
+| `min`               | `string \| undefined`                                                 | `undefined`                   | -        | 가장 빠른 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`).      |
+| `max`               | `string \| undefined`                                                 | `undefined`                   | -        | 가장 늦은 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`).      |
+| `canSelectDate`     | `(value: string) => boolean \| undefined`                             | `undefined`                   | -        | 선택 가능 여부 콜백. 선택 불가 시 `invalid` 이벤트 emit.                                    |
 | `noClear`           | `boolean`                                                             | `false`                       | -        | 지우기 버튼 숨김.                                                                            |
-| `timezone`          | `boolean`                                                             | `false`                       | -        | 인라인 타임존 select 렌더링 여부.                                                            |
-| `timezoneOptions`   | `TimezoneOption[]`                                                    | `DEFAULT_TIMEZONE_OPTIONS`    | -        | 타임존 select 옵션. 첫 번째 항목이 초기값.                                                  |
 | `label`             | `string`                                                              | `''`                          | -        | 라벨 텍스트.                                                                                 |
 | `placeholder`       | `string`                                                              | `''`                          | -        | 플레이스홀더.                                                                                |
 | `disabled`          | `boolean`                                                             | `false`                       | -        | 컴포넌트 비활성화.                                                                           |
@@ -172,7 +144,7 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 | `name`              | `string`                                                              | `''`                          | -        | input의 `name` 속성.                                                                         |
 | `messages`          | `Message[]`                                                           | `[]`                          | -        | 외부 메시지.                                                                                 |
 | `rules`             | `Rule[]`                                                              | `[]`                          | -        | 사용자 정의 유효성 룰.                                                                       |
-| `noDefaultRules`    | `boolean`                                                             | `false`                       | -        | 기본 룰 (required, min, max, notDisabled, invalidValue) 비활성화.                            |
+| `noDefaultRules`    | `boolean`                                                             | `false`                       | -        | 기본 룰 (required, min, max, notDisabled) 비활성화.                                          |
 | `state`             | `UIState`                                                             | `'idle'`                      | -        | 외부 유효성 상태.                                                                            |
 | `width`             | `string \| number \| Breakpoints`                                     | -                             | -        | 너비.                                                                                        |
 | `grid`              | `string \| number \| Breakpoints`                                     | -                             | -        | 그리드 컬럼 span.                                                                            |
@@ -183,40 +155,33 @@ const canSelectDate = (date) => !holidays.some((holiday) => holiday.toISOString(
 
 ```typescript
 import type { CSSProperties } from 'vue';
-import type { OptionItem } from 'vlossom';
 import type { VsInputStyleSet } from 'vlossom';
 import type { VsInputWrapperStyleSet } from 'vlossom';
-import type { VsSelectStyleSet } from 'vlossom';
 
 type VsDatePickerType = 'date' | 'datetime-local' | 'time' | 'month';
 
-type VsDatePickerValueType = Date | null;
+type VsDatePickerFormat = 'YYYY-MM-DD' | 'YYYY-MM-DDTHH:mm' | 'HH:mm' | 'YYYY-MM';
 
-// Partial<OptionItem>을 extend하며, 주로 `value`(IANA tz id)와 `label`을 사용합니다.
-interface TimezoneOption extends Partial<OptionItem> {}
+type VsDatePickerValueType = string;
 
 interface VsDatePickerStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
     $input?: VsInputStyleSet;
-    $timezoneSelect?: VsSelectStyleSet;
 }
 ```
 
-`DEFAULT_TIMEZONE_OPTIONS` 상수는 편의를 위해 export되며 12개 IANA 타임존을 포함합니다.
-
 ## Events
 
-| Event               | Payload                                  | Description                                                              |
-| ------------------- | ---------------------------------------- | ------------------------------------------------------------------------ |
-| `update:modelValue` | `Date \| null`                           | modelValue 변경 시 emit.                                                 |
-| `update:changed`    | `boolean`                                | changed 플래그 변경 시 emit.                                             |
-| `update:valid`      | `boolean`                                | valid 플래그 변경 시 emit.                                               |
-| `change`            | `Date \| null`                           | 값이 commit된 후 emit.                                                   |
-| `focus`             | `FocusEvent`                             | 포커스 시 emit.                                                          |
-| `blur`              | `FocusEvent`                             | 블러 시 emit.                                                            |
-| `clear`             | -                                        | 지우기 버튼 클릭 시 emit.                                                |
-| `invalid`           | `{ reason: 'parse' \| 'disabled' \| 'timezone'; input: string }` | parse 실패, disabled 날짜 선택, 잘못된 timezone 선택 시 emit. |
-| `timezone-change`   | `{ from: string; to: string }`           | 타임존 select 값이 유효하게 변경되었을 때 emit.                          |
+| Event               | Payload              | Description                                                              |
+| ------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `update:modelValue` | `string`             | modelValue 변경 시 emit.                                                 |
+| `update:changed`    | `boolean`            | changed 플래그 변경 시 emit.                                             |
+| `update:valid`      | `boolean`            | valid 플래그 변경 시 emit.                                               |
+| `change`            | `string`             | 값이 commit된 후 emit.                                                   |
+| `focus`             | `FocusEvent`         | 포커스 시 emit.                                                          |
+| `blur`              | `FocusEvent`         | 블러 시 emit.                                                            |
+| `clear`             | -                    | 지우기 버튼 클릭 시 emit.                                                |
+| `invalid`           | `{ input: string }`  | format 불일치 또는 `canSelectDate` 거절 시 emit.                         |
 
 ## Slots
 
@@ -226,7 +191,6 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `prepend`            | 날짜 input 박스 좌측에 표시될 콘텐츠.                                |
 | `append`             | 날짜 input 박스 우측에 표시될 콘텐츠.                                |
 | `messages`           | input 아래의 사용자 정의 메시지 콘텐츠.                              |
-| `timezone-option`    | 타임존 `<vs-select>` 내부의 개별 옵션 렌더링.                        |
 
 ## Methods
 
@@ -235,5 +199,5 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `focus`           | -          | 입력 요소에 포커스를 둡니다.                                                 |
 | `blur`            | -          | 입력 요소의 포커스를 해제합니다.                                             |
 | `validate`        | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                                  |
-| `clear`           | -          | 값을 비웁니다 (modelValue → null). 타임존은 유지됩니다.                      |
+| `clear`           | -          | 값을 비웁니다 (modelValue → `''`).                                           |
 | `open`            | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback).    |

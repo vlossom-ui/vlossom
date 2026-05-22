@@ -1,50 +1,39 @@
 import type { Ref } from 'vue';
 
-type CanSelectDate = (date: Date) => boolean | undefined;
+type CanSelectDate = (value: string) => boolean | undefined;
 
 export function useVsDatePickerRules(
     required: Ref<boolean>,
-    min: Ref<Date | undefined>,
-    max: Ref<Date | undefined>,
+    min: Ref<string | undefined>,
+    max: Ref<string | undefined>,
     canSelectDate: Ref<CanSelectDate | undefined>,
 ) {
-    function requiredCheck(v: Date | null): string {
-        if (required.value && v === null) {
+    function requiredCheck(v: string): string {
+        if (required.value && !v) {
             return 'Required';
         }
         return '';
     }
 
-    function minCheck(v: Date | null): string {
-        if (v === null || !min.value) {
+    function minCheck(v: string): string {
+        if (!v || !min.value) {
             return '';
         }
-        return v.getTime() >= min.value.getTime()
-            ? ''
-            : `Must be on or after ${min.value.toISOString()}`;
+        return v >= min.value ? '' : `Must be on or after ${min.value}`;
     }
 
-    function maxCheck(v: Date | null): string {
-        if (v === null || !max.value) {
+    function maxCheck(v: string): string {
+        if (!v || !max.value) {
             return '';
         }
-        return v.getTime() <= max.value.getTime()
-            ? ''
-            : `Must be on or before ${max.value.toISOString()}`;
+        return v <= max.value ? '' : `Must be on or before ${max.value}`;
     }
 
-    function notDisabledCheck(v: Date | null): string {
-        if (v === null) {
+    function notDisabledCheck(v: string): string {
+        if (!v) {
             return '';
         }
         return canSelectDate.value?.(v) === false ? 'This date is not selectable' : '';
-    }
-
-    function invalidValueCheck(v: Date | null): string {
-        if (v === undefined) {
-            return 'Invalid date';
-        }
-        return '';
     }
 
     return {
@@ -52,6 +41,5 @@ export function useVsDatePickerRules(
         minCheck,
         maxCheck,
         notDisabledCheck,
-        invalidValueCheck,
     };
 }
