@@ -221,59 +221,25 @@ describe('VsDatePicker', () => {
         });
     });
 
-    describe('type prop 변경 시 자동 패딩/트림', () => {
-        it('date → datetime-local: T00:00 으로 패딩', async () => {
+    describe('type prop 변경', () => {
+        it('type 변경 시 modelValue를 자동 변환하지 않고 형식이 맞지 않으면 display를 비운다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: '2026-05-18', type: 'date' },
             });
             await wrapper.setProps({ type: 'datetime-local' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('2026-05-18T00:00');
+
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+            expect(wrapper.props('modelValue')).toBe('2026-05-18');
+            expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe('');
         });
 
-        it('date → month: YYYY-MM 으로 트림', async () => {
+        it('type과 modelValue를 함께 변경하면 새 형식의 값을 표시한다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: '2026-05-18', type: 'date' },
             });
-            await wrapper.setProps({ type: 'month' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('2026-05');
-        });
+            await wrapper.setProps({ type: 'month', modelValue: '2026-05' });
 
-        it('datetime-local → date: 날짜 부분만 추출', async () => {
-            const wrapper = mount(VsDatePicker, {
-                props: { modelValue: '2026-05-18T15:30', type: 'datetime-local' },
-            });
-            await wrapper.setProps({ type: 'date' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('2026-05-18');
-        });
-
-        it('datetime-local → time: 시간 부분만 추출', async () => {
-            const wrapper = mount(VsDatePicker, {
-                props: { modelValue: '2026-05-18T15:30', type: 'datetime-local' },
-            });
-            await wrapper.setProps({ type: 'time' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('15:30');
-        });
-
-        it('time → date: 정보 손실로 빈 문자열로 clear', async () => {
-            const wrapper = mount(VsDatePicker, {
-                props: { modelValue: '15:30', type: 'time' },
-            });
-            await wrapper.setProps({ type: 'date' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('');
-        });
-
-        it('month → date: 1일로 패딩', async () => {
-            const wrapper = mount(VsDatePicker, {
-                props: { modelValue: '2026-05', type: 'month' },
-            });
-            await wrapper.setProps({ type: 'date' });
-            const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
-            expect(updates[updates.length - 1][0]).toBe('2026-05-01');
+            expect((findDateInput(wrapper).element as HTMLInputElement).value).toBe('2026-05');
         });
 
         it('modelValue 가 비어 있으면 type 변경 시 emit 이 발생하지 않는다', async () => {

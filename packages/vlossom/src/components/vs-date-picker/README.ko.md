@@ -12,7 +12,6 @@
 - `modelValue`는 항상 format-validated 문자열입니다. format은 `type` 으로부터 결정됩니다.
 - `required`, `min`/`max` (string), `canSelectDate`, format 불일치 감지를 포함한 폼 유효성 검사.
 - 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
-- `type` 이 바뀌면 `modelValue` 가 새 format 으로 자동 패딩/트림 되며, 변환이 불가능한 경우 `''` 로 clear 됩니다.
 
 ## Basic Usage
 
@@ -60,10 +59,10 @@ const canSelectDate = (value) => !holidays.includes(value);
 ## 데이터 모델
 
 - **`modelValue`는 `type` 으로부터 결정되는 format 의 문자열**입니다.
-  - `type='date'` → `'YYYY-MM-DD'` (예: `'2026-05-18'`)
-  - `type='datetime-local'` → `'YYYY-MM-DDTHH:mm'` (예: `'2026-05-18T15:30'`)
-  - `type='time'` → `'HH:mm'` (예: `'15:30'`)
-  - `type='month'` → `'YYYY-MM'` (예: `'2026-05'`)
+    - `type='date'` → `'YYYY-MM-DD'` (예: `'2026-05-18'`)
+    - `type='datetime-local'` → `'YYYY-MM-DDTHH:mm'` (예: `'2026-05-18T15:30'`)
+    - `type='time'` → `'HH:mm'` (예: `'15:30'`)
+    - `type='month'` → `'YYYY-MM'` (예: `'2026-05'`)
 - 기본값은 `''` 입니다.
 - 타임존 해석은 의도적으로 소비 측에 위임합니다. instant 변환이 필요하면 dayjs / Temporal / 자체 어댑터를 사용하세요.
 
@@ -75,20 +74,18 @@ const canSelectDate = (value) => !holidays.includes(value);
 
 ## Type 전환
 
-`modelValue` 가 비어 있지 않은 상태에서 `type` prop 이 바뀌면 가능한 한 자동 변환됩니다.
+`VsDatePicker`는 런타임에 `type`이 변경되어도 `modelValue`를 자동 변환하지 않습니다.
 
-| from → to | 결과 |
-| --- | --- |
-| `date` → `datetime-local` | `${v}T00:00` |
-| `date` → `month` | `v.slice(0, 7)` |
-| `datetime-local` → `date` | `v.slice(0, 10)` |
-| `datetime-local` → `time` | `v.slice(11, 16)` |
-| `datetime-local` → `month` | `v.slice(0, 7)` |
-| `month` → `date` | `${v}-01` |
-| `month` → `datetime-local` | `${v}-01T00:00` |
-| `time` → 그 외 | `''` (날짜 정보 없음) |
-| `date` → `time` | `''` (시간 정보 없음) |
-| `month` → `time` | `''` (시간 정보 없음) |
+현재 `modelValue`가 새 `type` 형식과 맞지 않으면 입력창 표시값은 비워지고, 기존 `modelValue` 자체는 유지됩니다. `type`을 동적으로 변경하는 경우 사용하는 쪽에서 새 타입에 맞는 `modelValue`를 같은 흐름에서 함께 갱신하세요.
+
+```html
+<vs-date-picker v-model="value" :type="type" />
+```
+
+```typescript
+type = 'month';
+value = '2026-05';
+```
 
 ## 제한 사항
 
@@ -99,6 +96,7 @@ const canSelectDate = (value) => !holidays.includes(value);
 ### Picker 열기 동작
 
 네이티브 캘린더는 다음 중 하나로 열립니다:
+
 - input 영역을 클릭하거나,
 - 오른쪽 끝의 캘린더 아이콘 버튼을 누르거나,
 - 사용자 제스처 안에서 `dpRef.value.open()`을 호출.
@@ -122,34 +120,34 @@ const canSelectDate = (value) => !holidays.includes(value);
 
 ## Props
 
-| Prop                | Type                                                                  | Default                       | Required | Description                                                                                  |
-| ------------------- | --------------------------------------------------------------------- | ----------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `colorScheme`       | `string`                                                              | -                             | -        | 컴포넌트의 색상 스킴.                                                                       |
-| `styleSet`          | `string \| VsDatePickerStyleSet`                                      | -                             | -        | 커스텀 스타일 셋.                                                                            |
-| `modelValue`        | `string`                                                              | `''`                          | -        | v-model — format-validated 문자열.                                                          |
-| `type`              | `'date' \| 'datetime-local' \| 'time' \| 'month'`                     | `'date'`                      | -        | 네이티브 input 타입. `modelValue` format 도 함께 결정.                                       |
-| `min`               | `string \| undefined`                                                 | `undefined`                   | -        | 가장 빠른 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`).      |
-| `max`               | `string \| undefined`                                                 | `undefined`                   | -        | 가장 늦은 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`).      |
-| `canSelectDate`     | `(value: string) => boolean \| undefined`                             | `undefined`                   | -        | 선택 가능 여부 콜백. 선택 불가 시 `invalid` 이벤트 emit.                                    |
-| `noClear`           | `boolean`                                                             | `false`                       | -        | 지우기 버튼 숨김.                                                                            |
-| `label`             | `string`                                                              | `''`                          | -        | 라벨 텍스트.                                                                                 |
-| `placeholder`       | `string`                                                              | `''`                          | -        | 플레이스홀더.                                                                                |
-| `disabled`          | `boolean`                                                             | `false`                       | -        | 컴포넌트 비활성화.                                                                           |
-| `readonly`          | `boolean`                                                             | `false`                       | -        | 읽기 전용.                                                                                   |
-| `required`          | `boolean`                                                             | `false`                       | -        | `required` 룰 추가.                                                                          |
-| `noLabel`           | `boolean`                                                             | `false`                       | -        | 라벨 슬롯 숨김.                                                                              |
-| `noMessages`        | `boolean`                                                             | `false`                       | -        | 메시지 슬롯 숨김.                                                                            |
-| `hidden`            | `boolean`                                                             | `false`                       | -        | 전체 컴포넌트 숨김.                                                                          |
-| `id`                | `string`                                                              | `''`                          | -        | input의 `id` 속성.                                                                           |
-| `name`              | `string`                                                              | `''`                          | -        | input의 `name` 속성.                                                                         |
-| `messages`          | `Message[]`                                                           | `[]`                          | -        | 외부 메시지.                                                                                 |
-| `rules`             | `Rule[]`                                                              | `[]`                          | -        | 사용자 정의 유효성 룰.                                                                       |
-| `noDefaultRules`    | `boolean`                                                             | `false`                       | -        | 기본 룰 (required, min, max, notDisabled) 비활성화.                                          |
-| `state`             | `UIState`                                                             | `'idle'`                      | -        | 외부 유효성 상태.                                                                            |
-| `width`             | `string \| number \| Breakpoints`                                     | -                             | -        | 너비.                                                                                        |
-| `grid`              | `string \| number \| Breakpoints`                                     | -                             | -        | 그리드 컬럼 span.                                                                            |
-| `changed`           | `boolean`                                                             | `false`                       | -        | v-model — changed 플래그.                                                                    |
-| `valid`             | `boolean`                                                             | `false`                       | -        | v-model — valid 플래그.                                                                      |
+| Prop             | Type                                              | Default     | Required | Description                                                                            |
+| ---------------- | ------------------------------------------------- | ----------- | -------- | -------------------------------------------------------------------------------------- |
+| `colorScheme`    | `string`                                          | -           | -        | 컴포넌트의 색상 스킴.                                                                  |
+| `styleSet`       | `string \| VsDatePickerStyleSet`                  | -           | -        | 커스텀 스타일 셋.                                                                      |
+| `modelValue`     | `string`                                          | `''`        | -        | v-model — format-validated 문자열.                                                     |
+| `type`           | `'date' \| 'datetime-local' \| 'time' \| 'month'` | `'date'`    | -        | 네이티브 input 타입. `modelValue` format 도 함께 결정.                                 |
+| `min`            | `string \| undefined`                             | `undefined` | -        | 가장 빠른 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
+| `max`            | `string \| undefined`                             | `undefined` | -        | 가장 늦은 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
+| `canSelectDate`  | `(value: string) => boolean \| undefined`         | `undefined` | -        | 선택 가능 여부 콜백. 선택 불가 시 `invalid` 이벤트 emit.                               |
+| `noClear`        | `boolean`                                         | `false`     | -        | 지우기 버튼 숨김.                                                                      |
+| `label`          | `string`                                          | `''`        | -        | 라벨 텍스트.                                                                           |
+| `placeholder`    | `string`                                          | `''`        | -        | 플레이스홀더.                                                                          |
+| `disabled`       | `boolean`                                         | `false`     | -        | 컴포넌트 비활성화.                                                                     |
+| `readonly`       | `boolean`                                         | `false`     | -        | 읽기 전용.                                                                             |
+| `required`       | `boolean`                                         | `false`     | -        | `required` 룰 추가.                                                                    |
+| `noLabel`        | `boolean`                                         | `false`     | -        | 라벨 슬롯 숨김.                                                                        |
+| `noMessages`     | `boolean`                                         | `false`     | -        | 메시지 슬롯 숨김.                                                                      |
+| `hidden`         | `boolean`                                         | `false`     | -        | 전체 컴포넌트 숨김.                                                                    |
+| `id`             | `string`                                          | `''`        | -        | input의 `id` 속성.                                                                     |
+| `name`           | `string`                                          | `''`        | -        | input의 `name` 속성.                                                                   |
+| `messages`       | `Message[]`                                       | `[]`        | -        | 외부 메시지.                                                                           |
+| `rules`          | `Rule[]`                                          | `[]`        | -        | 사용자 정의 유효성 룰.                                                                 |
+| `noDefaultRules` | `boolean`                                         | `false`     | -        | 기본 룰 (required, min, max, notDisabled) 비활성화.                                    |
+| `state`          | `UIState`                                         | `'idle'`    | -        | 외부 유효성 상태.                                                                      |
+| `width`          | `string \| number \| Breakpoints`                 | -           | -        | 너비.                                                                                  |
+| `grid`           | `string \| number \| Breakpoints`                 | -           | -        | 그리드 컬럼 span.                                                                      |
+| `changed`        | `boolean`                                         | `false`     | -        | v-model — changed 플래그.                                                              |
+| `valid`          | `boolean`                                         | `false`     | -        | v-model — valid 플래그.                                                                |
 
 ## Types
 
@@ -172,32 +170,32 @@ interface VsDatePickerStyleSet extends CSSProperties {
 
 ## Events
 
-| Event               | Payload              | Description                                                              |
-| ------------------- | -------------------- | ------------------------------------------------------------------------ |
-| `update:modelValue` | `string`             | modelValue 변경 시 emit.                                                 |
-| `update:changed`    | `boolean`            | changed 플래그 변경 시 emit.                                             |
-| `update:valid`      | `boolean`            | valid 플래그 변경 시 emit.                                               |
-| `change`            | `string`             | 값이 commit된 후 emit.                                                   |
-| `focus`             | `FocusEvent`         | 포커스 시 emit.                                                          |
-| `blur`              | `FocusEvent`         | 블러 시 emit.                                                            |
-| `clear`             | -                    | 지우기 버튼 클릭 시 emit.                                                |
-| `invalid`           | `{ input: string }`  | format 불일치 또는 `canSelectDate` 거절 시 emit.                         |
+| Event               | Payload             | Description                                      |
+| ------------------- | ------------------- | ------------------------------------------------ |
+| `update:modelValue` | `string`            | modelValue 변경 시 emit.                         |
+| `update:changed`    | `boolean`           | changed 플래그 변경 시 emit.                     |
+| `update:valid`      | `boolean`           | valid 플래그 변경 시 emit.                       |
+| `change`            | `string`            | 값이 commit된 후 emit.                           |
+| `focus`             | `FocusEvent`        | 포커스 시 emit.                                  |
+| `blur`              | `FocusEvent`        | 블러 시 emit.                                    |
+| `clear`             | -                   | 지우기 버튼 클릭 시 emit.                        |
+| `invalid`           | `{ input: string }` | format 불일치 또는 `canSelectDate` 거절 시 emit. |
 
 ## Slots
 
-| Slot                 | Description                                                          |
-| -------------------- | -------------------------------------------------------------------- |
-| `label`              | 기본 라벨을 대체할 사용자 정의 라벨 콘텐츠.                          |
-| `prepend`            | 날짜 input 박스 좌측에 표시될 콘텐츠.                                |
-| `append`             | 날짜 input 박스 우측에 표시될 콘텐츠.                                |
-| `messages`           | input 아래의 사용자 정의 메시지 콘텐츠.                              |
+| Slot       | Description                                 |
+| ---------- | ------------------------------------------- |
+| `label`    | 기본 라벨을 대체할 사용자 정의 라벨 콘텐츠. |
+| `prepend`  | 날짜 input 박스 좌측에 표시될 콘텐츠.       |
+| `append`   | 날짜 input 박스 우측에 표시될 콘텐츠.       |
+| `messages` | input 아래의 사용자 정의 메시지 콘텐츠.     |
 
 ## Methods
 
-| Method            | Parameters | Description                                                                  |
-| ----------------- | ---------- | ---------------------------------------------------------------------------- |
-| `focus`           | -          | 입력 요소에 포커스를 둡니다.                                                 |
-| `blur`            | -          | 입력 요소의 포커스를 해제합니다.                                             |
-| `validate`        | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                                  |
-| `clear`           | -          | 값을 비웁니다 (modelValue → `''`).                                           |
-| `open`            | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback).    |
+| Method     | Parameters | Description                                                               |
+| ---------- | ---------- | ------------------------------------------------------------------------- |
+| `focus`    | -          | 입력 요소에 포커스를 둡니다.                                              |
+| `blur`     | -          | 입력 요소의 포커스를 해제합니다.                                          |
+| `validate` | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                               |
+| `clear`    | -          | 값을 비웁니다 (modelValue → `''`).                                        |
+| `open`     | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback). |

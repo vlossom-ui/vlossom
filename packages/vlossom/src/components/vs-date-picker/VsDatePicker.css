@@ -1,44 +1,18 @@
 @reference 'tailwindcss';
 
 .vs-date-picker {
-    container-type: inline-size;
-
-    .vs-date-picker-fields {
-        @apply box-border flex items-stretch;
+    input::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
     }
 
-    .vs-date-picker-input {
-        flex: 1 1 0%;
+    .vs-input:not(.vs-disabled):not(.vs-readonly) {
+        @apply hover:brightness-96 active:brightness-92;
 
-        input::-webkit-calendar-picker-indicator {
-            display: none;
-            -webkit-appearance: none;
-        }
+        cursor: pointer;
 
-        .vs-input:not(.vs-disabled):not(.vs-readonly) {
-            @apply hover:brightness-96 active:brightness-92;
-
+        input {
             cursor: pointer;
-
-            input {
-                cursor: pointer;
-            }
-        }
-    }
-
-    .vs-date-picker-timezone {
-        flex: 0 0 auto;
-        min-width: 16rem;
-        width: auto;
-    }
-
-    .vs-date-picker-divider {
-        flex: 0 0 auto;
-        --vs-divider-verticalMargin: 0 0.25rem;
-        --vs-divider-horizontalMargin: 0.2rem 0;
-
-        &.vs-vertical {
-            height: auto;
         }
     }
 
@@ -46,16 +20,5 @@
         @apply inline-flex items-center justify-center;
 
         color: var(--vs-cs-font-primary);
-    }
-
-    @container (max-width: 768px) {
-        .vs-date-picker-fields {
-            @apply flex-col;
-        }
-
-        .vs-date-picker-timezone {
-            min-width: 0;
-            width: 100%;
-        }
     }
 }

@@ -59,7 +59,6 @@
 import {
     computed,
     defineComponent,
-    provide,
     ref,
     toRefs,
     useTemplateRef,
@@ -69,9 +68,8 @@ import {
     type Ref,
     type TemplateRef,
 } from 'vue';
-import { CalendarIcon, ClockIcon } from '@lucide/vue';
-import { VsComponent, FORM_STORE_KEY } from '@/declaration';
-import { FormStore } from '@/stores';
+import { VsComponent } from '@/declaration';
+import { logUtil } from '@/utils';
 import { useStyleSet, useInput } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getDateMinMaxProps } from '@/props';
 
@@ -79,6 +77,7 @@ import { FORMAT_PATTERNS, TYPE_TO_FORMAT } from './constants';
 import { type VsDatePickerStyleSet, type VsDatePickerType, type VsDatePickerValueType } from './types';
 import { useVsDatePickerRules } from './vs-date-picker-rules';
 
+import { CalendarIcon, ClockIcon } from '@lucide/vue';
 import type { VsInputRef } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -89,54 +88,9 @@ function isValidFormat(value: string, type: VsDatePickerType): boolean {
     return !value || FORMAT_PATTERNS[type].test(value);
 }
 
-function convertFormat(value: string, from: VsDatePickerType, to: VsDatePickerType): string {
-    if (!value || from === to) {
-        return value;
-    }
-    if (!FORMAT_PATTERNS[from].test(value)) {
-        return '';
-    }
-
-    // date 'YYYY-MM-DD'
-    if (from === 'date') {
-        if (to === 'datetime-local') {
-            return `${value}T00:00`;
-        }
-        if (to === 'month') {
-            return value.slice(0, 7);
-        }
-        return '';
-    }
-    // datetime-local 'YYYY-MM-DDTHH:mm'
-    if (from === 'datetime-local') {
-        if (to === 'date') {
-            return value.slice(0, 10);
-        }
-        if (to === 'time') {
-            return value.slice(11, 16);
-        }
-        if (to === 'month') {
-            return value.slice(0, 7);
-        }
-        return '';
-    }
-    // month 'YYYY-MM'
-    if (from === 'month') {
-        if (to === 'date') {
-            return `${value}-01`;
-        }
-        if (to === 'datetime-local') {
-            return `${value}-01T00:00`;
-        }
-        return '';
-    }
-    // time 'HH:mm' — no date info, cannot convert upward
-    return '';
-}
-
 export default defineComponent({
     name: componentName,
-    components: { VsInput, VsInputWrapper },
+    components: { CalendarIcon, ClockIcon, VsInput, VsInputWrapper },
     props: {
         ...getInputProps<VsDatePickerValueType>(),
         ...getResponsiveProps(),
@@ -154,13 +108,25 @@ export default defineComponent({
         modelValue: {
             type: String as PropType<VsDatePickerValueType>,
             default: '',
+            validator: (value: string, props: any) => {
+                if (!value) {
+                    return true;
+                }
+                if (isValidFormat(value, props.type)) {
+                    return true;
+                }
+                logUtil.propWarning(
+                    componentName,
+                    'modelValue',
+                    `Invalid format for type "${props.type}".` +
+                        ` Expected format: ${TYPE_TO_FORMAT[props.type as VsDatePickerType]}.`,
+                );
+                return false;
+            },
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear', 'invalid'],
     setup(props, { emit }) {
-        // 내부 VsInput 이 부모 VsForm 에 별도 필드로 등록되지 않도록 격리한다.
-        provide(FORM_STORE_KEY, FormStore.getDefaultFormStore());
-
         const {
             styleSet,
             type,
@@ -171,7 +137,7 @@ export default defineComponent({
             canSelectDate,
             id,
             disabled,
-            readonly: readonlyProp,
+            readonly,
             messages,
             placeholder,
             rules,
@@ -179,8 +145,9 @@ export default defineComponent({
             state,
         } = toRefs(props);
 
-        const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
+
+        const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
@@ -207,7 +174,7 @@ export default defineComponent({
                 modelValue,
                 id,
                 disabled,
-                readonly: readonlyProp,
+                readonly,
                 messages,
                 rules,
                 defaultRules: computed(() => [requiredCheck, minCheck, maxCheck, notDisabledCheck]),
@@ -219,13 +186,33 @@ export default defineComponent({
             },
         );
 
-        const computedPlaceholder = computed(() => placeholder.value || TYPE_TO_FORMAT[type.value]);
+        const computedPlaceholder = computed<string>(() => {
+            if (!placeholder.value) {
+                return TYPE_TO_FORMAT[type.value];
+            }
+            return placeholder.value;
+        });
 
-        const displayValue = computed(() => (isValidFormat(inputValue.value, type.value) ? inputValue.value : ''));
+        const displayValue = computed<string>(() => {
+            if (!isValidFormat(inputValue.value, type.value)) {
+                return '';
+            }
+            return inputValue.value;
+        });
 
-        function onDateInput(value: string | number | null) {
+        const computedIcon = computed<Component>(() => {
+            if (type.value === 'time') {
+                return ClockIcon;
+            }
+            return CalendarIcon;
+        });
+
+        function onDateInput(value: string | number | null): void {
             const raw = value?.toString() ?? '';
             if (!raw) {
+                if (inputValue.value && !isValidFormat(inputValue.value, type.value)) {
+                    return;
+                }
                 onClear();
                 return;
             }
@@ -243,56 +230,28 @@ export default defineComponent({
             inputValue.value = raw;
         }
 
-        function onClear() {
+        function focus(): void {
+            dateInputRef.value?.focus();
+        }
+
+        function blur(): void {
+            dateInputRef.value?.blur();
+        }
+
+        function onClear(): void {
             inputValue.value = '';
             emit('clear');
         }
 
-        // type prop 변경 시 modelValue 를 새 format 에 맞춰 자동 패딩 변환, 실패 시 clear
-        watch(type, (newType, oldType) => {
-            if (!oldType || newType === oldType) {
-                return;
-            }
-            const current = inputValue.value;
-            if (!current) {
-                return;
-            }
-            const converted = convertFormat(current, oldType, newType);
-            if (converted !== current) {
-                inputValue.value = converted;
-            }
-        });
-
-        // 외부에서 invalid format 의 modelValue 가 주입된 경우 invalid emit (modelValue 는 유지)
-        watch(
-            modelValue,
-            (v) => {
-                if (v && !isValidFormat(v, type.value)) {
-                    emit('invalid', { input: v });
-                }
-            },
-            { immediate: true },
-        );
-
-        const computedIcon = computed<Component>(() => (type.value === 'time' ? ClockIcon : CalendarIcon));
-
-        function focus() {
-            dateInputRef.value?.focus();
-        }
-
-        function blur() {
-            dateInputRef.value?.blur();
-        }
-
-        function onFocus(e: FocusEvent) {
+        function onFocus(e: FocusEvent): void {
             emit('focus', e);
         }
 
-        function onBlur(e: FocusEvent) {
+        function onBlur(e: FocusEvent): void {
             emit('blur', e);
         }
 
-        function openPicker() {
+        function openPicker(): void {
             const input = dateInputRef.value?.inputRef;
             if (!input || computedDisabled.value || computedReadonly.value) {
                 return;
@@ -305,6 +264,16 @@ export default defineComponent({
             input.focus();
             showPicker.call(input);
         }
+
+        watch(
+            modelValue,
+            (v) => {
+                if (v && !isValidFormat(v, type.value)) {
+                    emit('invalid', { input: v });
+                }
+            },
+            { immediate: true },
+        );
 
         return {
             // Refs
