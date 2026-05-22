@@ -12,7 +12,7 @@
     }
 
     .vs-image-fallback-icon {
-        @apply h-1/2 max-h-10 w-1/2 max-w-10;
+        @apply h-1/2 w-1/2;
     }
 
     .vs-image-tag {
