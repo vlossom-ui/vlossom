@@ -40,6 +40,25 @@ async function handleDelete() {
 </script>
 ```
 
+### Vue 컴포넌트와 Props 전달
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import ConfirmBody from './ConfirmBody.vue';
+
+const $vs = useVlossom();
+
+async function confirmDelete(item) {
+    const ok = await $vs.confirm.open(ConfirmBody, {
+        componentProps: { item, severity: 'high' },
+        okText: '삭제',
+        cancelText: '취소',
+    });
+}
+</script>
+```
+
 ### 커스텀 버튼 텍스트 및 스타일
 
 ```html
@@ -87,7 +106,8 @@ interface ConfirmModalOptions extends ModalOptions {
 }
 
 interface ConfirmPlugin {
-    open(content: string | Component, options?: ConfirmModalOptions): Promise<boolean>;
+    open(content: string, options?: Omit<ConfirmModalOptions, 'componentProps'>): Promise<boolean>;
+    open(content: Component, options?: ConfirmModalOptions): Promise<boolean>;
 }
 ```
 

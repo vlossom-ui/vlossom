@@ -18,5 +18,6 @@ export interface ConfirmModalOptions extends Omit<ModalOptions, 'beforeClose'> {
 }
 
 export interface ConfirmPlugin {
-    open(content: string | Component, options?: ConfirmModalOptions): Promise<boolean>;
+    open(content: string, options?: Omit<ConfirmModalOptions, 'componentProps'>): Promise<boolean>;
+    open(content: Component, options?: ConfirmModalOptions): Promise<boolean>;
 }

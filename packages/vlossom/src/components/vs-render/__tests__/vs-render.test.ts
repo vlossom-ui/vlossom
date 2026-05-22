@@ -137,6 +137,102 @@ describe('VsRender', () => {
         });
     });
 
+    describe('componentProps 바인딩', () => {
+        it('컴포넌트 content에 componentProps가 전달되어야 한다', () => {
+            //given
+            const TestComponent = markRaw({
+                props: ['message', 'count'],
+                template: '<div class="test-component">{{ message }} - {{ count }}</div>',
+            });
+
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: TestComponent,
+                    componentProps: { message: '안녕', count: 3 },
+                },
+            });
+
+            expect(wrapper.find('.test-component').text()).toBe('안녕 - 3');
+        });
+
+        it('componentProps와 attrs가 동시에 주어지면 둘 다 컴포넌트에 전달되어야 한다', () => {
+            //given
+            const TestComponent = markRaw({
+                props: ['message'],
+                template: '<div class="test-component">{{ message }}</div>',
+            });
+
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: TestComponent,
+                    componentProps: { message: 'from props' },
+                },
+                attrs: {
+                    id: 'attr-id',
+                },
+            });
+
+            expect(wrapper.find('.test-component').text()).toBe('from props');
+            expect(wrapper.find('.test-component').attributes('id')).toBe('attr-id');
+        });
+
+        it('동일한 키가 attrs와 componentProps 모두에 있으면 attrs가 우선되어야 한다 (Vue 기본 동작)', () => {
+            //given
+            const TestComponent = markRaw({
+                props: ['message'],
+                template: '<div class="test-component">{{ message }}</div>',
+            });
+
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: TestComponent,
+                    componentProps: { message: 'from componentProps' },
+                },
+                attrs: {
+                    message: 'from attrs',
+                },
+            });
+
+            expect(wrapper.find('.test-component').text()).toBe('from attrs');
+        });
+
+        it('문자열 content가 주어지면 componentProps가 무시되고 attrs만 적용되어야 한다', () => {
+            //given
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: '<div class="text">텍스트</div>',
+                    componentProps: { id: 'ignored', message: 'ignored' },
+                },
+                attrs: {
+                    'data-test': 'value',
+                },
+            });
+
+            // componentProps는 DOM에 새지 않음
+            expect(wrapper.find('.text').attributes('id')).toBeUndefined();
+            expect(wrapper.find('.text').attributes('message')).toBeUndefined();
+            // attrs는 정상 적용 (자동 상속)
+            expect(wrapper.find('.text').attributes('data-test')).toBe('value');
+        });
+
+        it('HTML 문자열의 class와 부모 attrs의 class가 자동 머지되어야 한다', () => {
+            //given
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: '<button class="btn-primary">Click</button>',
+                },
+                attrs: {
+                    class: 'size-4',
+                },
+            });
+
+            // 자동 상속이 class를 머지: btn-primary + size-4
+            const classes = wrapper.find('button').classes();
+            expect(classes).toContain('btn-primary');
+            expect(classes).toContain('size-4');
+        });
+    });
+
     describe('attrs 바인딩', () => {
         it('문자열 content와 attrs가 주어지고, attrs가 최상위 엘리먼트에 바인딩되어야 한다', () => {
             //given

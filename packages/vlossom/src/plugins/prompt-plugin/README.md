@@ -38,6 +38,24 @@ async function askName() {
 </script>
 ```
 
+### Using a Vue Component with Props
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import PromptHeader from './PromptHeader.vue';
+
+const $vs = useVlossom();
+
+async function askWithCustomHeader() {
+    const value = await $vs.prompt.open(PromptHeader, {
+        componentProps: { label: 'Username', hint: 'lowercase only' },
+        input: { placeholder: 'username' },
+    });
+}
+</script>
+```
+
 ### With Input Configuration and Initial Value
 
 ```html
@@ -90,7 +108,8 @@ interface PromptModalOptions extends ModalOptions {
 }
 
 interface PromptPlugin {
-    open(content: string | Component, options?: PromptModalOptions): Promise<VsInputValueType>;
+    open(content: string, options?: Omit<PromptModalOptions, 'componentProps'>): Promise<VsInputValueType>;
+    open(content: Component, options?: PromptModalOptions): Promise<VsInputValueType>;
 }
 ```
 

@@ -60,6 +60,26 @@ function openModal() {
 </script>
 ```
 
+### 컴포넌트에 Props 전달
+
+`componentProps`로 렌더링되는 컴포넌트에 props를 전달할 수 있습니다. `content`가 컴포넌트일 때만 적용되며, 문자열인 경우 무시됩니다.
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import UserProfile from './UserProfile.vue';
+
+const $vs = useVlossom();
+
+function openProfile(userId) {
+    $vs.modal.open(UserProfile, {
+        componentProps: { userId, editable: true },
+        size: 'md',
+    });
+}
+</script>
+```
+
 ### ID로 모달 닫기
 
 ```html
@@ -88,7 +108,7 @@ function closeModal() {
 
 | 메서드          | 파라미터                                                                   | 설명                                                                                                     |
 | --------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `open`          | `content: string \| Component, options?: ModalOptions`      | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다.                             |
+| `open`          | `content: string \| Component, options?: ModalOptions`      | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다. `content`가 컴포넌트인 경우 옵션의 `componentProps`로 props를 전달할 수 있습니다. |
 | `emit`          | `eventName: string, ...args: any[]`                                        | 가장 최근에 열린 모달의 콜백 스토어에 이름이 있는 이벤트를 emit합니다.                                  |
 | `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | ID로 특정 모달에 이름이 있는 이벤트를 emit합니다.                                                       |
 | `close`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)에서 가장 최근에 열린 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
@@ -110,11 +130,13 @@ interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
 
 interface ModalPlugin {
-    open(content: string | Component, options?: ModalOptions): string;
+    open(content: string, options?: Omit<ModalOptions, 'componentProps'>): string;
+    open(content: Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): Promise<boolean>;

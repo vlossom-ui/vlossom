@@ -35,6 +35,24 @@ async function showAlert() {
 </script>
 ```
 
+### Vue 컴포넌트와 Props 전달
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import AlertBody from './AlertBody.vue';
+
+const $vs = useVlossom();
+
+function showCustomAlert() {
+    $vs.alert.open(AlertBody, {
+        componentProps: { title: '알림', icon: 'info' },
+        okText: '확인',
+    });
+}
+</script>
+```
+
 ### 커스텀 확인 텍스트 및 스타일
 
 ```html
@@ -77,7 +95,8 @@ interface AlertModalOptions extends ModalOptions {
 }
 
 interface AlertPlugin {
-    open(content: string | Component, options?: AlertModalOptions): Promise<void>;
+    open(content: string, options?: Omit<AlertModalOptions, 'componentProps'>): Promise<void>;
+    open(content: Component, options?: AlertModalOptions): Promise<void>;
 }
 ```
 

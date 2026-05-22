@@ -60,6 +60,26 @@ function openModal() {
 </script>
 ```
 
+### Passing Props to the Component
+
+Use `componentProps` to forward props to the rendered component. Only applies when `content` is a component — ignored for string content.
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+import UserProfile from './UserProfile.vue';
+
+const $vs = useVlossom();
+
+function openProfile(userId) {
+    $vs.modal.open(UserProfile, {
+        componentProps: { userId, editable: true },
+        size: 'md',
+    });
+}
+</script>
+```
+
 ### Closing a Modal by ID
 
 ```html
@@ -88,7 +108,7 @@ function closeModal() {
 
 | Method          | Parameters                                                                 | Description                                                                                                   |
 | --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `open`          | `content: string \| Component, options?: ModalOptions`      | Opens a modal with the given content and options. Returns the modal's unique string ID.                       |
+| `open`          | `content: string \| Component, options?: ModalOptions`      | Opens a modal with the given content and options. Returns the modal's unique string ID. When `content` is a component, pass `componentProps` in options to forward props. |
 | `emit`          | `eventName: string, ...args: any[]`                                        | Emits a named event on the most recently opened modal's callback store.                                       |
 | `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | Emits a named event on a specific modal by its ID.                                                            |
 | `close`         | `container?: string`                                                       | Closes the most recently opened modal in the given container (defaults to `'body'`). Returns `Promise<boolean>` indicating whether the modal actually closed (a `beforeClose` hook can abort by resolving `false`). |
@@ -110,11 +130,13 @@ interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
 
 interface ModalPlugin {
-    open(content: string | Component, options?: ModalOptions): string;
+    open(content: string, options?: Omit<ModalOptions, 'componentProps'>): string;
+    open(content: Component, options?: ModalOptions): string;
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): Promise<boolean>;
