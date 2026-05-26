@@ -79,8 +79,6 @@ import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
 
-type VsInternalInputType = VsInputType | 'date' | 'datetime-local' | 'time' | 'month';
-
 export default defineComponent({
     name: componentName,
     components: { VsInputWrapper, XIcon },
@@ -92,7 +90,7 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
-        type: { type: String as PropType<VsInternalInputType>, default: 'text' },
+        type: { type: String as PropType<VsInputType>, default: 'text' },
         // v-model
         modelValue: {
             type: [String, Number] as PropType<VsInputValueType>,

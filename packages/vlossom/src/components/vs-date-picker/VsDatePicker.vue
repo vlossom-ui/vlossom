@@ -28,7 +28,7 @@
             :readonly="computedReadonly"
             :state="computedState"
             :color-scheme
-            :type
+            :type="deceiveType"
             :no-clear
             :name
             :required
@@ -78,7 +78,7 @@ import { type VsDatePickerStyleSet, type VsDatePickerType, type VsDatePickerValu
 import { useVsDatePickerRules } from './vs-date-picker-rules';
 
 import { CalendarIcon, ClockIcon } from '@lucide/vue';
-import type { VsInputRef } from '@/components/vs-input/types';
+import type { VsInputRef, VsInputType } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
@@ -232,6 +232,15 @@ export default defineComponent({
             return CalendarIcon;
         });
 
+        /** What is THIS?!?
+         * VsInputType is intentionally narrower for the public VsInput API.
+         * VsDatePicker still needs to pass native date/time input types to reuse VsInput's UI shell.
+         * Runtime validation stays in VsDatePicker, so this cast only bridges the internal prop type.
+         */
+        const deceiveType = computed<VsInputType>(() => {
+            return type.value as unknown as VsInputType;
+        });
+
         function onDateInput(value: string | number | null): void {
             const raw = value?.toString() ?? '';
             if (!raw) {
@@ -300,6 +309,7 @@ export default defineComponent({
             dateInputRef,
 
             // Computed
+            deceiveType,
             componentStyleSet,
             displayValue,
             computedPlaceholder,
