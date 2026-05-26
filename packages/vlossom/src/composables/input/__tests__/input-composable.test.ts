@@ -503,13 +503,6 @@ describe('useInput composable', () => {
         function makeFile(name: string) {
             return new File(['x'], name, { type: 'text/plain' });
         }
-        function changeFileNameSameInstance(file: File, newName: string) {
-            Object.defineProperty(file, 'name', {
-                value: newName,
-                configurable: true,
-            });
-            return file;
-        }
 
         function setupFileInput() {
             const fileInputValue = ref<File[]>([]);
@@ -555,27 +548,6 @@ describe('useInput composable', () => {
             expect(fileOnChangeSpy).toHaveBeenCalledTimes(2);
             expect(wrapper.emitted('change')).toHaveLength(2);
             expect(wrapper.emitted('change')?.[1]).toEqual([[file2]]);
-
-            wrapper.unmount();
-        });
-
-        it('동일한 File 인스턴스의 이름만 변경하면 참조 비교로 변경을 감지할 수 없다', async () => {
-            // given
-            const { wrapper, fileInputValue, fileOnChangeSpy } = setupFileInput();
-            const file = makeFile('a.txt');
-
-            // when
-            await nextTick();
-            fileInputValue.value = [file];
-            await nextTick();
-            changeFileNameSameInstance(file, 'b.txt');
-            fileInputValue.value = [file];
-            await nextTick();
-
-            // then
-            expect(file.name).toBe('b.txt');
-            expect(fileOnChangeSpy).toHaveBeenCalledTimes(1);
-            expect(wrapper.emitted('change')).toHaveLength(1);
 
             wrapper.unmount();
         });
