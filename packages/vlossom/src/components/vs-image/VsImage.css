@@ -1,9 +1,19 @@
+@reference 'tailwindcss';
+
 .vs-image {
     @apply relative inline-block;
 
     background-color: transparent;
     width: 100%;
     height: 100%;
+
+    .vs-image-fallback {
+        @apply flex h-full w-full items-center justify-center bg-gray-100 text-gray-500;
+    }
+
+    .vs-image-fallback-icon {
+        @apply h-1/2 w-1/2 text-red-400;
+    }
 
     .vs-image-tag {
         @apply relative h-full w-full;
