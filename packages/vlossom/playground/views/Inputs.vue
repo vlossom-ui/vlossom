@@ -70,6 +70,36 @@
         </vs-form>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsDatePicker</h3>
+        <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-date-picker v-model="dpDate" type="date" label="Date" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker
+                v-model="dpDatetime"
+                type="datetime-local"
+                label="Datetime"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-date-picker v-model="dpTime" type="time" label="Time" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker v-model="dpMonth" type="month" label="Month" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker label="Disabled" type="date" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker
+                :model-value="dpReadonlyValue"
+                label="Readonly"
+                type="date"
+                readonly
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-date-picker
+                v-model="dpRequired"
+                label="Required"
+                type="date"
+                required
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+        </vs-form>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsSelect</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-select
@@ -314,6 +344,14 @@ export default defineComponent({
         const selectRequiredValue = ref(null);
         const selectLongValue = ref(null);
 
+        // VsDatePicker state
+        const dpDate: Ref<string> = ref('');
+        const dpDatetime: Ref<string> = ref('');
+        const dpTime: Ref<string> = ref('');
+        const dpMonth: Ref<string> = ref('');
+        const dpRequired: Ref<string> = ref('');
+        const dpReadonlyValue: Ref<string> = ref('2026-05-18');
+
         return {
             inputText,
             inputNumber,
@@ -344,6 +382,12 @@ export default defineComponent({
             selectClosableValue,
             selectRequiredValue,
             selectLongValue,
+            dpDate,
+            dpDatetime,
+            dpTime,
+            dpMonth,
+            dpRequired,
+            dpReadonlyValue,
         };
     },
 });

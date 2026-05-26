@@ -47,6 +47,17 @@
                 :grid="{ xs: 12, md: 6 }"
             />
 
+            <vs-date-picker
+                v-model="form.birthDate"
+                type="date"
+                label="Birth Date"
+                required
+                :rules="[rules.required]"
+                :max="today"
+                @invalid="onBirthDateInvalid"
+                :grid="{ xs: 12, md: 6 }"
+            />
+
             <vs-radio-set v-model="form.gender" label="Gender" :options="genderOptions" :grid="{ xs: 12, md: 6 }" />
 
             <vs-select
@@ -106,6 +117,10 @@
             <vs-button @click="handleClear">Clear</vs-button>
         </div>
 
+        <div v-if="lastInvalid" class="my-4 rounded bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+            Birth date invalid → input: <code>{{ lastInvalid.input }}</code>
+        </div>
+
         <div class="my-6 h-px bg-gray-200 dark:bg-gray-700" />
 
         <div class="rounded bg-gray-100 p-4 dark:bg-gray-800">
@@ -116,7 +131,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, useTemplateRef } from 'vue';
+import { defineComponent, reactive, ref, useTemplateRef, type Ref } from 'vue';
 
 interface SignUpForm {
     email: string;
@@ -127,6 +142,7 @@ interface SignUpForm {
     hobby: string | null;
     age: number | null;
     gender: string | null;
+    birthDate: string;
     bio: string;
     interests: string[];
     newsletter: boolean;
@@ -148,12 +164,19 @@ export default defineComponent({
             hobby: null,
             age: null,
             gender: null,
+            birthDate: '',
             bio: '',
             interests: [],
             newsletter: false,
             avatar: [],
             agreeTerms: false,
         });
+
+        const today = new Date().toISOString().slice(0, 10);
+        const lastInvalid: Ref<{ input: string } | null> = ref(null);
+        function onBirthDateInvalid(payload: { input: string }) {
+            lastInvalid.value = payload;
+        }
 
         const genderOptions = ['Male', 'Female', 'Other', 'Prefer not to say'];
         const interestOptions = ['Technology', 'Sports', 'Music', 'Art', 'Travel', 'Food'];
@@ -233,6 +256,9 @@ export default defineComponent({
             handleClear,
             regionOptions,
             hobbyOptions,
+            today,
+            lastInvalid,
+            onBirthDateInvalid,
         };
     },
 });

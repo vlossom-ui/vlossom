@@ -1,3 +1,4 @@
+import type { PropType } from 'vue';
 import { propsUtil } from '@/utils';
 
 export function getMinMaxProps(
@@ -11,12 +12,12 @@ export function getMinMaxProps(
 
     return {
         min: {
-            type: [Number, String],
+            type: [Number, String] as PropType<number | string>,
             default: minDefault,
             validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'min', value),
         },
         max: {
-            type: [Number, String],
+            type: [Number, String] as PropType<number | string>,
             default: maxDefault,
             validator: (value: number | string) => propsUtil.checkValidNumber(componentName, 'max', value),
         },
