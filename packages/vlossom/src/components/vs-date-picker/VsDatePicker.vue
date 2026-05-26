@@ -71,7 +71,7 @@ import {
 import { VsComponent } from '@/declaration';
 import { logUtil } from '@/utils';
 import { useStyleSet, useInput } from '@/composables';
-import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getDateMinMaxProps } from '@/props';
+import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 
 import { FORMAT_PATTERNS, TYPE_TO_FORMAT } from './constants';
 import { type VsDatePickerStyleSet, type VsDatePickerType, type VsDatePickerValueType } from './types';
@@ -96,7 +96,42 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsDatePickerStyleSet>(),
-        ...getDateMinMaxProps(),
+        min: {
+            type: String,
+            validator: (value: string, props: any) => {
+                if (!value) {
+                    return true;
+                }
+                if (isValidFormat(value, props.type)) {
+                    return true;
+                }
+                logUtil.propWarning(
+                    componentName,
+                    'min',
+                    `Invalid format for type "${props.type}".` +
+                        ` Expected format: ${TYPE_TO_FORMAT[props.type as VsDatePickerType]}.`,
+                );
+                return false;
+            },
+        },
+        max: {
+            type: String,
+            validator: (value: string, props: any) => {
+                if (!value) {
+                    return true;
+                }
+                if (isValidFormat(value, props.type)) {
+                    return true;
+                }
+                logUtil.propWarning(
+                    componentName,
+                    'max',
+                    `Invalid format for type "${props.type}".` +
+                        ` Expected format: ${TYPE_TO_FORMAT[props.type as VsDatePickerType]}.`,
+                );
+                return false;
+            },
+        },
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         noClear: { type: Boolean, default: false },
 

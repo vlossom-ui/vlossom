@@ -23,10 +23,3 @@ export function getMinMaxProps(
         },
     };
 }
-
-export function getDateMinMaxProps() {
-    return {
-        min: { type: String, default: undefined },
-        max: { type: String, default: undefined },
-    };
-}
