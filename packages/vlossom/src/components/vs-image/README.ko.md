@@ -12,6 +12,7 @@
 - 이미지 로딩 중 스켈레톤 플레이스홀더를 보여줍니다.
 - Intersection Observer API를 통한 지연 로딩을 지원합니다.
 - 로드 오류 시 `fallback` 이미지로 자동 전환됩니다.
+- `fallback`이 없거나 fallback 이미지도 실패하면 no image icon을 표시합니다.
 - 이미지 로드 실패 시 `error` 이벤트를 발생시킵니다.
 
 ## Basic Usage
@@ -34,7 +35,7 @@
 
 ### 대체 이미지
 
-기본 소스 로드 실패 시 표시할 대체 이미지 URL을 제공합니다.
+기본 소스 로드 실패 시 표시할 대체 이미지 URL을 제공합니다. fallback이 없거나 fallback 이미지도 로드에 실패하면 기본 fallback UI를 표시합니다.
 
 ```html
 <template>
@@ -58,16 +59,16 @@
 
 ## Props
 
-| Prop        | Type                           | Default | Required | Description                                      |
-| ----------- | ------------------------------ | ------- | -------- | ------------------------------------------------ |
-| `styleSet`  | `string \| VsImageStyleSet`    | -       | -        | 컴포넌트의 커스텀 스타일 셋.                     |
-| `alt`       | `string`                       | `''`    | -        | 이미지 요소의 alt 텍스트.                        |
-| `fallback`  | `string`                       | `''`    | -        | 기본 src 실패 시 표시할 대체 이미지 URL.         |
-| `lazy`      | `boolean`                      | `false` | -        | Intersection Observer를 사용한 지연 로딩 활성화. |
-| `noSkeleton`| `boolean`                      | `false` | -        | 로딩 중 스켈레톤 플레이스홀더 비활성화.          |
-| `src`       | `string`                       | `''`    | `true`   | 이미지의 소스 URL.                               |
-| `width`     | `string \| number`             | -       | -        | 이미지 컴포넌트의 너비.                          |
-| `height`    | `string \| number`             | -       | -        | 이미지 컴포넌트의 높이.                          |
+| Prop         | Type                        | Default | Required | Description                                                                                |
+| ------------ | --------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------ |
+| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                                                               |
+| `alt`        | `string`                    | `''`    | -        | 이미지 요소의 alt 텍스트.                                                                  |
+| `fallback`   | `string`                    | `''`    | -        | 기본 src 실패 시 표시할 대체 이미지 URL. 생략되었거나 실패하면 no image icon을 표시합니다. |
+| `lazy`       | `boolean`                   | `false` | -        | Intersection Observer를 사용한 지연 로딩 활성화.                                           |
+| `noSkeleton` | `boolean`                   | `false` | -        | 로딩 중 스켈레톤 플레이스홀더 비활성화.                                                    |
+| `src`        | `string`                    | `''`    | `true`   | 이미지의 소스 URL.                                                                         |
+| `width`      | `string \| number`          | -       | -        | 이미지 컴포넌트의 너비.                                                                    |
+| `height`     | `string \| number`          | -       | -        | 이미지 컴포넌트의 높이.                                                                    |
 
 ## Types
 
@@ -102,15 +103,15 @@ interface VsImageStyleSet extends CSSProperties {
 
 ## Events
 
-| 이벤트  | 페이로드 | 설명                              |
-| ------- | -------- | --------------------------------- |
-| `error` | -        | 이미지 로드 실패 시 발생합니다.   |
+| 이벤트  | 페이로드 | 설명                            |
+| ------- | -------- | ------------------------------- |
+| `error` | -        | 이미지 로드 실패 시 발생합니다. |
 
 ## Slots
 
-| 슬롯       | 설명                                         |
-| ---------- | -------------------------------------------- |
-| `skeleton` | 스켈레톤 상태에서 표시할 커스텀 콘텐츠.      |
+| 슬롯       | 설명                                    |
+| ---------- | --------------------------------------- |
+| `skeleton` | 스켈레톤 상태에서 표시할 커스텀 콘텐츠. |
 
 ## Methods
 
