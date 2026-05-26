@@ -31,10 +31,24 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
 
     const { computedMessages, checkMessages, showRuleMessages } = useInputMessages(inputValue, messages, ruleMessages);
 
+    // File은 own key가 없어서 radash isEqual이 서로 다른 인스턴스끼리도 동등 판정함 → reference 비교.
+    function isInputValueEqual(a: unknown, b: unknown): boolean {
+        if (a instanceof File && b instanceof File) {
+            return a === b;
+        }
+        if (Array.isArray(a) && Array.isArray(b) && a.some((v) => v instanceof File)) {
+            if (a.length !== b.length) {
+                return false;
+            }
+            return a.every((v, i) => v === b[i]);
+        }
+        return objectUtil.isEqual(a, b);
+    }
+
     watch(
         inputValue,
         (value, oldValue) => {
-            if (objectUtil.isEqual(value, oldValue)) {
+            if (isInputValueEqual(value, oldValue)) {
                 return;
             }
 
@@ -59,7 +73,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     watch(
         modelValue,
         (value) => {
-            if (objectUtil.isEqual(value, inputValue.value)) {
+            if (isInputValueEqual(value, inputValue.value)) {
                 return;
             }
             inputValue.value = value;

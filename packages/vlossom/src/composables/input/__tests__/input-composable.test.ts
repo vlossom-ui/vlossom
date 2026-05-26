@@ -497,6 +497,103 @@ describe('useInput composable', () => {
         });
     });
 
+    describe('File[] inputValue', () => {
+        // radash isEqual은 own key가 없는 File을 서로 다른 인스턴스끼리도 동등 판정하므로,
+        // File을 담은 inputValue가 reference 비교 기반으로 동작하는지 회귀를 가드한다.
+        function makeFile(name: string) {
+            return new File(['x'], name, { type: 'text/plain' });
+        }
+
+        function setupFileInput() {
+            const fileInputValue = ref<File[]>([]);
+            const fileOnChangeSpy = vi.fn();
+
+            const FileInputComponent = defineComponent({
+                render: () => null,
+                props: {
+                    ...getInputProps<File[]>(),
+                    modelValue: { type: Array, default: () => [] },
+                },
+                setup(props, ctx) {
+                    const { modelValue, id } = toRefs(props);
+                    return {
+                        ...useInput(ctx, {
+                            inputValue: fileInputValue,
+                            modelValue: modelValue,
+                            id,
+                            callbacks: { onChange: fileOnChangeSpy },
+                        }),
+                    };
+                },
+            });
+
+            const wrapper = mount(FileInputComponent);
+            return { wrapper, fileInputValue, fileOnChangeSpy };
+        }
+
+        it('같은 길이의 다른 File 배열로 교체하면 change/update:modelValue가 emit된다', async () => {
+            // given
+            const { wrapper, fileInputValue, fileOnChangeSpy } = setupFileInput();
+            const file1 = makeFile('a.txt');
+            const file2 = makeFile('b.txt');
+
+            // when
+            await nextTick();
+            fileInputValue.value = [file1];
+            await nextTick();
+            fileInputValue.value = [file2];
+            await nextTick();
+
+            // then
+            expect(fileOnChangeSpy).toHaveBeenCalledTimes(2);
+            expect(wrapper.emitted('change')).toHaveLength(2);
+            expect(wrapper.emitted('change')?.[1]).toEqual([[file2]]);
+
+            wrapper.unmount();
+        });
+
+        it('multiple: 같은 길이의 다른 File 배열로 교체해도 emit된다', async () => {
+            // given
+            const { wrapper, fileInputValue, fileOnChangeSpy } = setupFileInput();
+            const a = makeFile('a.txt');
+            const b = makeFile('b.txt');
+            const c = makeFile('c.txt');
+            const d = makeFile('d.txt');
+
+            // when
+            await nextTick();
+            fileInputValue.value = [a, b];
+            await nextTick();
+            fileInputValue.value = [c, d];
+            await nextTick();
+
+            // then
+            expect(fileOnChangeSpy).toHaveBeenCalledTimes(2);
+            expect(wrapper.emitted('change')?.[1]).toEqual([[c, d]]);
+
+            wrapper.unmount();
+        });
+
+        it('동일한 File 인스턴스 배열을 재할당하면 emit되지 않는다', async () => {
+            // given
+            const { wrapper, fileInputValue, fileOnChangeSpy } = setupFileInput();
+            const file1 = makeFile('a.txt');
+
+            // when
+            await nextTick();
+            fileInputValue.value = [file1];
+            await nextTick();
+            fileInputValue.value = [file1];
+            await nextTick();
+
+            // then
+            expect(fileOnChangeSpy).toHaveBeenCalledTimes(1);
+            expect(wrapper.emitted('change')).toHaveLength(1);
+
+            wrapper.unmount();
+        });
+    });
+
     describe('clear', () => {
         it('clear 함수를 호출하면 onClear callback이 실행된다', async () => {
             // given
