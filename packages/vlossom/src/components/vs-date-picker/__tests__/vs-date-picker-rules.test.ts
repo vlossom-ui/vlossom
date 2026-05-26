@@ -8,15 +8,9 @@ describe('useVsDatePickerRules', () => {
             required?: boolean;
             min?: string;
             max?: string;
-            canSelectDate?: (value: string) => boolean;
         } = {},
     ) {
-        return useVsDatePickerRules(
-            ref(opts.required ?? false),
-            ref(opts.min),
-            ref(opts.max),
-            ref(opts.canSelectDate),
-        );
+        return useVsDatePickerRules(ref(opts.required ?? false), ref(opts.min), ref(opts.max));
     }
 
     describe('requiredCheck', () => {
@@ -76,26 +70,6 @@ describe('useVsDatePickerRules', () => {
             const { maxCheck } = setup({ max: '15:30' });
             expect(maxCheck('15:31')).toContain('on or before');
             expect(maxCheck('15:29')).toBe('');
-        });
-    });
-
-    describe('notDisabledCheck', () => {
-        it('canSelectDate가 false를 반환하면 메시지를 반환한다', () => {
-            const canSelectDate = (v: string) => !v.startsWith('2026-05-18');
-            const { notDisabledCheck } = setup({ canSelectDate });
-            expect(notDisabledCheck('2026-05-18')).toContain('not selectable');
-        });
-
-        it('canSelectDate가 true를 반환하면 빈 문자열을 반환한다', () => {
-            const canSelectDate = (v: string) => !v.startsWith('2026-05-18');
-            const { notDisabledCheck } = setup({ canSelectDate });
-            expect(notDisabledCheck('2026-05-19')).toBe('');
-        });
-
-        it('value가 빈 문자열이면 빈 문자열을 반환한다', () => {
-            const canSelectDate = () => false;
-            const { notDisabledCheck } = setup({ canSelectDate });
-            expect(notDisabledCheck('')).toBe('');
         });
     });
 });

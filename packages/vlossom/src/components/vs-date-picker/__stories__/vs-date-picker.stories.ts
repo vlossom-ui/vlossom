@@ -74,11 +74,6 @@ const meta: Meta<typeof VsDatePicker> = {
             description: '최대 유효 값 (string)',
             table: { category: 'Validation' },
         },
-        canSelectDate: {
-            control: false,
-            description: '값 선택 가능 여부를 반환하는 콜백 (value: string) => boolean',
-            table: { category: 'Validation' },
-        },
         rules: { control: 'object', table: { category: 'Validation' } },
         noDefaultRules: { control: 'boolean', table: { category: 'Validation' } },
         messages: { control: 'object', table: { category: 'Message' } },

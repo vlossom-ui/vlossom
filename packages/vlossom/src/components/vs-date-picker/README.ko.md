@@ -10,7 +10,7 @@
 
 - 네이티브 `<input type>` 기반 4종 타입 지원: `date`, `datetime-local`, `time`, `month`.
 - `modelValue`는 항상 format-validated 문자열입니다. format은 `type` 으로부터 결정됩니다.
-- `required`, `min`/`max` (string), `canSelectDate`, format 불일치 감지를 포함한 폼 유효성 검사.
+- `required`, `min`/`max` (string), format 불일치 감지를 포함한 폼 유효성 검사.
 - 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
 
 ## Basic Usage
@@ -37,7 +37,7 @@ const date = ref('');
 </template>
 ```
 
-### Min / Max + CanSelectDate
+### Min / Max
 
 ```html
 <template>
@@ -46,14 +46,8 @@ const date = ref('');
         type="date"
         min="2026-01-01"
         max="2026-12-31"
-        :can-select-date="canSelectDate"
     />
 </template>
-
-<script setup>
-const holidays = ['2026-05-05'];
-const canSelectDate = (value) => !holidays.includes(value);
-</script>
 ```
 
 ## 데이터 모델
@@ -70,7 +64,6 @@ const canSelectDate = (value) => !holidays.includes(value);
 
 - 사용자 입력 또는 외부 `modelValue` 주입 시, 현재 `type` 에 해당하는 정규식으로 검증됩니다.
 - format 불일치 시 `invalid` (`{ input }`) 이벤트가 emit 되며 입력창 표시값은 비워집니다. `modelValue` 자체는 자동으로 덮어쓰지 **않습니다**.
-- `canSelectDate` 도 사용자 입력 커밋 전에 검사되며, 거절 시 `invalid` 가 emit 되고 값은 커밋되지 않습니다.
 
 ## Type 전환
 
@@ -91,7 +84,7 @@ value = '2026-05';
 
 - **`format` prop은 지원하지 않습니다.** 네이티브 picker는 브라우저/OS 로케일을 따르며 라이브러리가 이를 덮어쓸 수 없습니다. 특정 시각 포맷이 필요하면 별도 렌더링 레이어를 사용하세요.
 - **`open()` (showPicker)** 는 일부 브라우저에서 사용자 제스처를 요구합니다. 이벤트 핸들러 바깥에서 프로그래밍적으로 호출하면 조용히 `focus()`로 fallback될 수 있습니다.
-- **제약은 rule 기반으로만 적용됩니다.** `min`, `max`, `canSelectDate`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
+- **제약은 rule 기반으로만 적용됩니다.** `min`, `max`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
 
 ### Picker 열기 동작
 
@@ -128,7 +121,6 @@ value = '2026-05';
 | `type`           | `'date' \| 'datetime-local' \| 'time' \| 'month'` | `'date'`    | -        | 네이티브 input 타입. `modelValue` format 도 함께 결정.                                 |
 | `min`            | `string \| undefined`                             | `undefined` | -        | 가장 빠른 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
 | `max`            | `string \| undefined`                             | `undefined` | -        | 가장 늦은 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
-| `canSelectDate`  | `(value: string) => boolean \| undefined`         | `undefined` | -        | 선택 가능 여부 콜백. 선택 불가 시 `invalid` 이벤트 emit.                               |
 | `noClear`        | `boolean`                                         | `false`     | -        | 지우기 버튼 숨김.                                                                      |
 | `label`          | `string`                                          | `''`        | -        | 라벨 텍스트.                                                                           |
 | `placeholder`    | `string`                                          | `''`        | -        | 플레이스홀더.                                                                          |
@@ -142,7 +134,7 @@ value = '2026-05';
 | `name`           | `string`                                          | `''`        | -        | input의 `name` 속성.                                                                   |
 | `messages`       | `Message[]`                                       | `[]`        | -        | 외부 메시지.                                                                           |
 | `rules`          | `Rule[]`                                          | `[]`        | -        | 사용자 정의 유효성 룰.                                                                 |
-| `noDefaultRules` | `boolean`                                         | `false`     | -        | 기본 룰 (required, min, max, notDisabled) 비활성화.                                    |
+| `noDefaultRules` | `boolean`                                         | `false`     | -        | 기본 룰 (required, min, max) 비활성화.                                                 |
 | `state`          | `UIState`                                         | `'idle'`    | -        | 외부 유효성 상태.                                                                      |
 | `width`          | `string \| number \| Breakpoints`                 | -           | -        | 너비.                                                                                  |
 | `grid`           | `string \| number \| Breakpoints`                 | -           | -        | 그리드 컬럼 span.                                                                      |
@@ -179,7 +171,7 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `focus`             | `FocusEvent`        | 포커스 시 emit.                                  |
 | `blur`              | `FocusEvent`        | 블러 시 emit.                                    |
 | `clear`             | -                   | 지우기 버튼 클릭 시 emit.                        |
-| `invalid`           | `{ input: string }` | format 불일치 또는 `canSelectDate` 거절 시 emit. |
+| `invalid`           | `{ input: string }` | format 불일치 시 emit.                           |
 
 ## Slots
 

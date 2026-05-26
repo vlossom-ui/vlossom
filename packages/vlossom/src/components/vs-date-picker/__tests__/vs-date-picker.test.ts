@@ -72,21 +72,6 @@ describe('VsDatePicker', () => {
             expect(wrapper.text()).toContain('Must be on or after 2026-01-01');
         });
 
-        it('canSelectDate가 false를 반환하는 값 입력 시 invalid 이벤트가 emit되고 modelValue는 그대로다', async () => {
-            const wrapper = mount(VsDatePicker, {
-                props: {
-                    modelValue: '',
-                    type: 'date',
-                    canSelectDate: (v: string) => v !== '2026-05-18',
-                },
-            });
-            await findDateInput(wrapper).setValue('2026-05-18');
-            const events = wrapper.emitted('invalid') as Array<[{ input: string }]>;
-            expect(events).toBeTruthy();
-            expect(events[0][0].input).toBe('2026-05-18');
-            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
-        });
-
         it('clear 버튼 클릭 시 clear 이벤트 emit + modelValue가 빈 문자열이 된다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: {

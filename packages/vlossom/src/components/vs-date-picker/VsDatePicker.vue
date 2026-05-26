@@ -99,10 +99,6 @@ export default defineComponent({
         ...getDateMinMaxProps(),
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         noClear: { type: Boolean, default: false },
-        canSelectDate: {
-            type: Function as PropType<(value: string) => boolean | undefined>,
-            default: undefined,
-        },
 
         // v-model
         modelValue: {
@@ -134,7 +130,6 @@ export default defineComponent({
             required,
             min,
             max,
-            canSelectDate,
             id,
             disabled,
             readonly,
@@ -151,12 +146,7 @@ export default defineComponent({
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
-        const { requiredCheck, minCheck, maxCheck, notDisabledCheck } = useVsDatePickerRules(
-            required,
-            min,
-            max,
-            canSelectDate,
-        );
+        const { requiredCheck, minCheck, maxCheck } = useVsDatePickerRules(required, min, max);
 
         const {
             computedId,
@@ -177,7 +167,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck, notDisabledCheck]),
+                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck]),
                 noDefaultRules,
                 state,
                 callbacks: {
@@ -218,11 +208,6 @@ export default defineComponent({
             }
 
             if (!isValidFormat(raw, type.value)) {
-                emit('invalid', { input: raw });
-                return;
-            }
-
-            if (canSelectDate.value?.(raw) === false) {
                 emit('invalid', { input: raw });
                 return;
             }

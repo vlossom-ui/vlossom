@@ -10,7 +10,7 @@ A native-first date picker component with form validation and format-validated s
 
 - Four input types: `date`, `datetime-local`, `time`, `month` — backed by native `<input type>`.
 - `modelValue` is always a format-validated string. The format is derived from `type`.
-- Form validation with `required`, `min`/`max` (string), `canSelectDate`, and format-mismatch detection.
+- Form validation with `required`, `min`/`max` (string), and format-mismatch detection.
 - Built-in clear button and calendar icon button; `showPicker()` feature detection on `open()`.
 
 ## Basic Usage
@@ -37,7 +37,7 @@ const date = ref('');
 </template>
 ```
 
-### Min / Max + CanSelectDate
+### Min / Max
 
 ```html
 <template>
@@ -46,14 +46,8 @@ const date = ref('');
         type="date"
         min="2026-01-01"
         max="2026-12-31"
-        :can-select-date="canSelectDate"
     />
 </template>
-
-<script setup>
-const holidays = ['2026-05-05'];
-const canSelectDate = (value) => !holidays.includes(value);
-</script>
 ```
 
 ## Data Model
@@ -70,7 +64,6 @@ const canSelectDate = (value) => !holidays.includes(value);
 
 - When the user types or programmatically sets `modelValue`, the string is checked against the regex for the current `type`.
 - A mismatched format emits `invalid` (`{ input }`) and the displayed input is blanked out; `modelValue` itself is **not** auto-rewritten.
-- `canSelectDate` is also checked before committing user input; rejection emits `invalid` and the value is not committed.
 
 ## Type Switching
 
@@ -91,7 +84,7 @@ value = '2026-05';
 
 - **`format` prop is not supported.** Native pickers respect the browser/OS locale; the library cannot override this. Use a custom rendering layer if you need a specific visual format.
 - **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically (outside an event handler) may silently fall back to `focus()`.
-- **Validation constraints are rule-based.** `min`, `max`, and `canSelectDate` validate the selected value but are not forwarded to the native picker UI.
+- **Validation constraints are rule-based.** `min` and `max` validate the selected value but are not forwarded to the native picker UI.
 
 ### Picker Trigger
 
@@ -128,7 +121,6 @@ Default rules can be turned off via `noDefaultRules`.
 | `type`           | `'date' \| 'datetime-local' \| 'time' \| 'month'` | `'date'`    | -        | Native input type; also determines the `modelValue` format.                                                         |
 | `min`            | `string \| undefined`                             | `undefined` | -        | Earliest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                         |
 | `max`            | `string \| undefined`                             | `undefined` | -        | Latest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                           |
-| `canSelectDate`  | `(value: string) => boolean \| undefined`         | `undefined` | -        | Callback that returns `true` for selectable values and `false` for values to reject; emits `invalid` when rejected. |
 | `noClear`        | `boolean`                                         | `false`     | -        | Hides the clear button.                                                                                             |
 | `label`          | `string`                                          | `''`        | -        | Label text.                                                                                                         |
 | `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                                        |
@@ -142,7 +134,7 @@ Default rules can be turned off via `noDefaultRules`.
 | `name`           | `string`                                          | `''`        | -        | `name` attribute for the input.                                                                                     |
 | `messages`       | `Message[]`                                       | `[]`        | -        | External messages.                                                                                                  |
 | `rules`          | `Rule[]`                                          | `[]`        | -        | Custom validation rules.                                                                                            |
-| `noDefaultRules` | `boolean`                                         | `false`     | -        | Disable built-in rules (required, min, max, notDisabled).                                                           |
+| `noDefaultRules` | `boolean`                                         | `false`     | -        | Disable built-in rules (required, min, max).                                                                        |
 | `state`          | `UIState`                                         | `'idle'`    | -        | External validation state.                                                                                          |
 | `width`          | `string \| number \| Breakpoints`                 | -           | -        | Width.                                                                                                              |
 | `grid`           | `string \| number \| Breakpoints`                 | -           | -        | Grid column span.                                                                                                   |
@@ -179,7 +171,7 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `focus`             | `FocusEvent`        | Emitted when the input receives focus.                                |
 | `blur`              | `FocusEvent`        | Emitted when the input loses focus.                                   |
 | `clear`             | -                   | Emitted when the clear button is pressed.                             |
-| `invalid`           | `{ input: string }` | Emitted on format mismatch or when `canSelectDate` rejects the value. |
+| `invalid`           | `{ input: string }` | Emitted on format mismatch.                                           |
 
 ## Slots
 

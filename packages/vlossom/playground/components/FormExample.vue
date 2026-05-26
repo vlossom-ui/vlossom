@@ -54,7 +54,6 @@
                 required
                 :rules="[rules.required]"
                 :max="today"
-                :can-select-date="canSelectBirthDate"
                 @invalid="onBirthDateInvalid"
                 :grid="{ xs: 12, md: 6 }"
             />
@@ -174,8 +173,6 @@ export default defineComponent({
         });
 
         const today = new Date().toISOString().slice(0, 10);
-        const disabledHolidays = ['2026-05-05', '2026-12-25'];
-        const canSelectBirthDate = (value: string) => !disabledHolidays.includes(value);
         const lastInvalid: Ref<{ input: string } | null> = ref(null);
         function onBirthDateInvalid(payload: { input: string }) {
             lastInvalid.value = payload;
@@ -260,7 +257,6 @@ export default defineComponent({
             regionOptions,
             hobbyOptions,
             today,
-            canSelectBirthDate,
             lastInvalid,
             onBirthDateInvalid,
         };
