@@ -229,7 +229,8 @@ export default defineComponent({
                 return;
             }
 
-            const selectedTab = getTabItems()[selectedIndex.value];
+            const tabItems = getTabItems();
+            const selectedTab = tabItems[selectedIndex.value];
 
             if (!selectedTab) {
                 indicatorStyle.value = null;
