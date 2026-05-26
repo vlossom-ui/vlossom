@@ -12,7 +12,7 @@ A component for displaying images with support for lazy loading, fallback images
 - Shows a skeleton placeholder while the image is loading.
 - Supports lazy loading via the Intersection Observer API.
 - Automatically switches to the `fallback` image on load error.
-- Displays the default fallback UI when no `fallback` is provided or the fallback image also fails.
+- Displays the no image icon when no `fallback` is provided or the fallback image also fails.
 - Fires an `error` event when an image fails to load.
 
 ## Basic Usage
@@ -59,16 +59,16 @@ Disable the skeleton placeholder during loading.
 
 ## Props
 
-| Prop        | Type                           | Default | Required | Description                                           |
-| ----------- | ------------------------------ | ------- | -------- | ----------------------------------------------------- |
-| `styleSet`  | `string \| VsImageStyleSet`    | -       | -        | Custom style set for the component.                   |
-| `alt`       | `string`                       | `''`    | -        | Alt text for the image element.                       |
-| `fallback`  | `string`                       | `''`    | -        | Fallback image URL shown when the primary src fails. If omitted or failed, the default fallback UI is shown. |
-| `lazy`      | `boolean`                      | `false` | -        | Enables lazy loading using the Intersection Observer. |
-| `noSkeleton`| `boolean`                      | `false` | -        | Disables the skeleton placeholder during loading.     |
-| `src`       | `string`                       | `''`    | `true`   | The source URL of the image.                          |
-| `width`     | `string \| number`             | -       | -        | Width of the image component.                         |
-| `height`    | `string \| number`             | -       | -        | Height of the image component.                        |
+| Prop         | Type                        | Default | Required | Description                                                                                            |
+| ------------ | --------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `styleSet`   | `string \| VsImageStyleSet` | -       | -        | Custom style set for the component.                                                                    |
+| `alt`        | `string`                    | `''`    | -        | Alt text for the image element.                                                                        |
+| `fallback`   | `string`                    | `''`    | -        | Fallback image URL shown when the primary src fails. If omitted or failed, the no image icon is shown. |
+| `lazy`       | `boolean`                   | `false` | -        | Enables lazy loading using the Intersection Observer.                                                  |
+| `noSkeleton` | `boolean`                   | `false` | -        | Disables the skeleton placeholder during loading.                                                      |
+| `src`        | `string`                    | `''`    | `true`   | The source URL of the image.                                                                           |
+| `width`      | `string \| number`          | -       | -        | Width of the image component.                                                                          |
+| `height`     | `string \| number`          | -       | -        | Height of the image component.                                                                         |
 
 ## Types
 
@@ -103,9 +103,9 @@ interface VsImageStyleSet extends CSSProperties {
 
 ## Events
 
-| Event   | Payload | Description                              |
-| ------- | ------- | ---------------------------------------- |
-| `error` | -       | Emitted when the image fails to load.    |
+| Event   | Payload | Description                           |
+| ------- | ------- | ------------------------------------- |
+| `error` | -       | Emitted when the image fails to load. |
 
 ## Slots
 
