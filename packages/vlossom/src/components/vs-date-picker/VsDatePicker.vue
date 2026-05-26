@@ -42,7 +42,7 @@
         >
             <template #prepend>
                 <slot v-if="$slots['prepend']" name="prepend" />
-                <component :is="computedIcon" v-else class="vs-date-picker-icon size-5" />
+                <component v-else :is="computedIcon" class="vs-date-picker-icon" />
             </template>
             <template v-if="$slots['append']" #append>
                 <slot name="append" />
