@@ -73,7 +73,7 @@ describe('vs-image', () => {
             await wrapper.find('img').trigger('error');
 
             // then
-            expect(wrapper.vm.showDefaultFallback).toBe(true);
+            expect(wrapper.vm.isNoImage).toBe(true);
             expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
             expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
             expect(wrapper.emitted('error')).toHaveLength(1);
@@ -96,7 +96,7 @@ describe('vs-image', () => {
 
             // then
             expect(wrapper.vm.computedSrc).toBe(fallbackPath);
-            expect(wrapper.vm.showDefaultFallback).toBe(true);
+            expect(wrapper.vm.isNoImage).toBe(true);
             expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
             expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
             expect(wrapper.emitted('error')).toHaveLength(2);
