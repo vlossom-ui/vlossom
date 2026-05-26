@@ -1,0 +1,24 @@
+@reference 'tailwindcss';
+
+.vs-date-picker {
+    input::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
+
+    .vs-input:not(.vs-disabled):not(.vs-readonly) {
+        @apply hover:brightness-96 active:brightness-92;
+
+        cursor: pointer;
+
+        input {
+            cursor: pointer;
+        }
+    }
+
+    .vs-date-picker-icon {
+        @apply inline-flex size-5 items-center justify-center;
+
+        color: var(--vs-cs-font-primary);
+    }
+}
