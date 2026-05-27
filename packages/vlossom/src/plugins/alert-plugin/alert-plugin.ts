@@ -32,7 +32,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];
 
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: componentStyleSet.value.$okButton },
+                props: { colorScheme, styleSet: componentStyleSet.value.$okButton, primary: true },
                 content: okText,
                 onClickEvent: handleOk,
             });
