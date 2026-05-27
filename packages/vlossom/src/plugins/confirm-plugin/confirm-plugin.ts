@@ -1,11 +1,12 @@
-import { h, type Component } from 'vue';
+import { h, ref, type Component, type Ref } from 'vue';
 import { VsRender } from '@/components';
+import { useStyleSet } from '@/composables';
 import { useOverlayCallbackStore } from '@/stores';
-import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE } from '@/declaration';
+import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import type { ModalPlugin } from '@/plugins';
 
 import { vnodeUtils } from './../utils/vnode-utils';
-import type { ConfirmModalOptions, ConfirmPlugin } from './types';
+import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -30,14 +31,24 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                 swapButtons,
             } = modalOptions;
 
+            const baseStyleSet: Ref<Partial<VsConfirmStyleSet>> = ref({
+                $okButton: { minWidth: '8rem' },
+                $cancelButton: { minWidth: '8rem' },
+            });
+            const { componentStyleSet } = useStyleSet<VsConfirmStyleSet>(
+                VsComponent.VsConfirm,
+                ref(styleSet),
+                baseStyleSet,
+            );
+
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.$okButton, primary: true },
+                props: { colorScheme, styleSet: componentStyleSet.value.$okButton, primary: true },
                 content: okText,
                 onClickEvent: () => handleButton(CONFIRM_OK),
             });
 
             const cancelButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.$cancelButton },
+                props: { colorScheme, styleSet: componentStyleSet.value.$cancelButton },
                 content: cancelText,
                 onClickEvent: () => handleButton(CONFIRM_CANCEL),
             });
@@ -48,7 +59,10 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             const contents = h(VsRender, { content, componentProps });
             const buttons = h(
                 'div',
-                { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
+                {
+                    class: [...buttonsClass, swapButtons && 'flex-row-reverse'],
+                    style: componentStyleSet.value.$buttons,
+                },
                 [okButton, cancelButton],
             );
             const confirm = h('div', { class: contentClass }, [contents, buttons]);
