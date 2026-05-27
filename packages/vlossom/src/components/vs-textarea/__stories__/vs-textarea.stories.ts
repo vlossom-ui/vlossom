@@ -134,6 +134,12 @@ const meta: Meta<typeof VsTextarea> = {
         },
 
         // Layout
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: 'Textarea 크기 (폰트 · 패딩)',
+            table: { category: 'Layout', defaultValue: { summary: 'md' } },
+        },
         width: {
             control: 'text',
             description: 'Textarea 너비 (string | number | Breakpoints)',
@@ -180,6 +186,31 @@ export const Default: Story = {
     args: {
         placeholder: '내용을 입력하세요...',
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 textarea의 폰트 · 패딩을 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsTextarea },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-textarea :size="size" :placeholder="'placeholder ' + size" />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const WithLabel: Story = {

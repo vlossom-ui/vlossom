@@ -46,6 +46,12 @@ const meta: Meta<typeof VsSearchInput> = {
             table: { category: 'Common Props' },
         },
         // Layout
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: 'Input 크기 (높이 · 패딩 · 폰트 · 토글 버튼 크기)',
+            table: { category: 'Layout', defaultValue: { summary: 'md' } },
+        },
         width: {
             control: 'text',
             description: 'Input 너비 (string | number | Breakpoints)',
@@ -92,6 +98,31 @@ export const Default: Story = {
     args: {
         placeholder: '검색어를 입력하세요',
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 입력 높이 · 패딩 · 폰트 · 토글 버튼 크기를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsSearchInput },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-search-input :size="size" placeholder="검색어 입력" use-case-sensitive use-regex />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const WithToggleOptions: Story = {

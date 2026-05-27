@@ -44,6 +44,12 @@ const meta: Meta<typeof VsCheckbox> = {
             control: 'boolean',
             description: '불확정 상태 표시',
         },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '체크박스 크기 (체크박스 크기 · 라벨 폰트)',
+            table: { defaultValue: { summary: 'md' } },
+        },
     },
     args: {
         checkLabel: 'Checkbox',
@@ -54,6 +60,36 @@ export default meta;
 type Story = StoryObj<typeof VsCheckbox>;
 
 export const Default: Story = {};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 체크박스 크기와 라벨 폰트를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsCheckbox },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <vs-checkbox :size="size" check-label="Default" />
+                        <vs-checkbox :size="size" check-label="Checked" checked />
+                        <vs-checkbox :size="size" check-label="Indeterminate" indeterminate />
+                        <vs-checkbox :size="size" check-label="Disabled" disabled />
+                    </div>
+                </div>
+            </div>
+        `,
+    }),
+};
 
 export const ColorScheme: Story = {
     render: () => ({

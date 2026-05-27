@@ -53,6 +53,12 @@ const meta: Meta<typeof VsPagination> = {
             control: 'boolean',
             description: '아웃라인 스타일 적용',
         },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '페이지네이션 크기 (버튼 높이 · 폰트 · 아이콘 크기)',
+            table: { defaultValue: { summary: 'md' } },
+        },
         modelValue: {
             control: 'number',
             description: '현재 페이지 (0-based)',
@@ -74,6 +80,31 @@ export const Default: Story = {
     args: {
         length: 10,
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 페이지 버튼 높이 · 폰트 · 컨트롤 아이콘 크기를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsPagination },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-pagination :size="size" :length="10" edge-buttons />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const WithEdgeButtons: Story = {
