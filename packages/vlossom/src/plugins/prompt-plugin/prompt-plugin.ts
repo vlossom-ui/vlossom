@@ -1,9 +1,10 @@
-import { h, type Component, ref } from 'vue';
-import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
+import { h, type Component, ref, type Ref } from 'vue';
+import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
+import { useStyleSet } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from './../modal-plugin';
-import type { PromptModalOptions, PromptPlugin } from './types';
+import type { PromptModalOptions, PromptPlugin, VsPromptStyleSet } from './types';
 import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
@@ -33,23 +34,36 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             const inputRef = ref<VsInputRef | null>(null);
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
 
+            const baseStyleSet: Ref<Partial<VsPromptStyleSet>> = ref({
+                $okButton: { minWidth: '8rem' },
+                $cancelButton: { minWidth: '8rem' },
+            });
+            const { componentStyleSet } = useStyleSet<VsPromptStyleSet>(
+                VsComponent.VsPrompt,
+                ref(styleSet),
+                baseStyleSet,
+            );
+
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-8'];
             const wrapperClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-4', 'pt-8'];
 
             const okButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.$okButton, primary: true },
+                props: { colorScheme, styleSet: componentStyleSet.value.$okButton, primary: true },
                 content: okText,
                 onClickEvent: () => handleButton(PROMPT_OK),
             });
             const cancelButton = vnodeUtils.createVsButton({
-                props: { colorScheme, styleSet: styleSet?.$cancelButton },
+                props: { colorScheme, styleSet: componentStyleSet.value.$cancelButton },
                 content: cancelText,
                 onClickEvent: () => handleButton(PROMPT_CANCEL),
             });
             const buttons = h(
                 'div',
-                { class: [...buttonsClass, swapButtons && 'flex-row-reverse'], style: styleSet?.$buttons },
+                {
+                    class: [...buttonsClass, swapButtons && 'flex-row-reverse'],
+                    style: componentStyleSet.value.$buttons,
+                },
                 [okButton, cancelButton],
             );
             const contents = h(VsRender, { content, componentProps });
@@ -59,7 +73,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 const input = h(VsInput, {
                     ...inputOptions,
                     colorScheme,
-                    styleSet: styleSet?.$input,
+                    styleSet: componentStyleSet.value.$input,
 
                     ref: inputRef,
                     modelValue: inputValue.value,
