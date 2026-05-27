@@ -45,11 +45,6 @@
         }
     }
 
-    .vs-expandable-content {
-        padding: calc(var(--vs-size-padding, 0.8rem) * 0.75) calc(var(--vs-size-padding, 0.8rem) * 1.25);
-        font-size: var(--vs-size-font);
-    }
-
     &.vs-accordion-open {
         .vs-accordion-title {
             border-bottom: var(--vs-accordion-accordionBorder, 1px solid var(--vs-cs-line));

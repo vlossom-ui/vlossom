@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type PropType, type ComputedRef } from 'vue';
 import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
@@ -50,9 +50,19 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
+        const baseStyleSet: ComputedRef<VsAccordionStyleSet> = computed(() => {
+            return {
+                $content: {
+                    padding: 'calc(var(--vs-size-padding, 0.8rem) * 0.75) calc(var(--vs-size-padding, 0.8rem) * 1.25)',
+                    fontSize: 'var(--vs-size-font, 1rem)',
+                },
+            };
+        });
+
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsAccordionStyleSet>(
             componentName,
             styleSet,
+            baseStyleSet,
         );
 
         const isOpen = ref(open.value || modelValue.value);
