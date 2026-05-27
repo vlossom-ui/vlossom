@@ -13,7 +13,7 @@
             </div>
         </vs-header>
 
-        <vs-container layout class="flex-1 pb-32 lg:pr-96">
+        <vs-container layout>
             <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
