@@ -1,5 +1,5 @@
 import { h, type Component, ref, type Ref } from 'vue';
-import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK } from '@/declaration';
+import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
 import { useStyleSet } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
@@ -38,7 +38,11 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 $okButton: { minWidth: '8rem' },
                 $cancelButton: { minWidth: '8rem' },
             });
-            const { componentStyleSet } = useStyleSet<VsPromptStyleSet>('VsPrompt', ref(styleSet), baseStyleSet);
+            const { componentStyleSet } = useStyleSet<VsPromptStyleSet>(
+                VsComponent.VsPrompt,
+                ref(styleSet),
+                baseStyleSet,
+            );
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const interactsClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-8'];

@@ -1,5 +1,5 @@
 import { h, ref, type Component, type Ref } from 'vue';
-import { ALERT_OK, OVERLAY_CLOSE } from '@/declaration';
+import { ALERT_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
 import { useStyleSet } from '@/composables';
 import { VsRender } from '@/components';
@@ -26,7 +26,11 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
             const baseStyleSet: Ref<Partial<VsAlertStyleSet>> = ref({
                 $okButton: { minWidth: '8rem' },
             });
-            const { componentStyleSet } = useStyleSet<VsAlertStyleSet>('VsAlert', ref(styleSet), baseStyleSet);
+            const { componentStyleSet } = useStyleSet<VsAlertStyleSet>(
+                VsComponent.VsAlert,
+                ref(styleSet),
+                baseStyleSet,
+            );
 
             const buttonsClass = ['flex', 'w-full', 'items-center', 'justify-center', 'gap-2'];
             const contentClass = ['flex', 'h-full', 'flex-col', 'items-center', 'justify-center', 'gap-12', 'pt-6'];

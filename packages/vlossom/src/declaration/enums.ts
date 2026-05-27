@@ -1,5 +1,6 @@
 export enum VsComponent {
     VsAccordion = 'VsAccordion',
+    VsAlert = 'VsAlert',
     VsAvatar = 'VsAvatar',
     VsBar = 'VsBar',
     VsBlock = 'VsBlock',
@@ -37,6 +38,7 @@ export enum VsComponent {
     VsPage = 'VsPage',
     VsPagination = 'VsPagination',
     VsProgress = 'VsProgress',
+    VsPrompt = 'VsPrompt',
     VsRadio = 'VsRadio',
     VsRadioSet = 'VsRadioSet',
     VsRender = 'VsRender',
