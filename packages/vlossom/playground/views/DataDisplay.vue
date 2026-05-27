@@ -123,13 +123,13 @@
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Dense</h4>
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Small</h4>
                 <div class="flex flex-col gap-0.5">
-                    <vs-label-value dense>
+                    <vs-label-value size="sm">
                         <template #label>Item 1</template>
                         Value 1
                     </vs-label-value>
-                    <vs-label-value dense>
+                    <vs-label-value size="sm">
                         <template #label>Item 2</template>
                         Value 2
                     </vs-label-value>

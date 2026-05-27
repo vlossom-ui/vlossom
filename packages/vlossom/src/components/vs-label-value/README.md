@@ -10,7 +10,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 - Side-by-side label and value layout with a configurable border.
 - Primary color mode highlights the label area with the primary color scheme.
-- Dense mode reduces padding and font size for compact displays.
+- Configurable size (`xs`, `sm`, `md`, `lg`, `xl`) controls padding and font size.
 - Vertical mode stacks label and value cells vertically.
 - Responsive vertical mode switches to vertical layout on small containers.
 

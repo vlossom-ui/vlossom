@@ -12,7 +12,7 @@ A tab navigation component with animated indicator, prev/next control buttons, a
 - Automatic or manual control buttons for navigating overflow tab lists
 - Vertical tab layout support
 - Keyboard navigation between tabs
-- Dense and primary visual variants
+- Configurable size (`xs`, `sm`, `md`, `lg`, `xl`) and primary visual variants
 - Responsive width and grid layout support
 
 ## Basic Usage
