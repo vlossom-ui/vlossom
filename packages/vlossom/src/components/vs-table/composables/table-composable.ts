@@ -100,9 +100,12 @@ export function useTable(
         if (typeof rawPagination?.value === 'boolean') {
             return DEFAULT_PAGINATION_OPTIONS;
         }
+        if (rawPagination.value.pageSizeOptions) {
+            return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+        }
         if (typeof rawPageSize?.value === 'number') {
             const isValidPageSize = DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value);
-            if (!isValidPageSize) {
+            if (isValidPageSize) {
                 return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
             }
             const addedOption = toDefaultPageSizeOptions(rawPageSize.value as number);

@@ -419,6 +419,83 @@ describe('useTable', () => {
                 expect(table.totalPages.value).toBe(1);
             });
         });
+
+        describe('사용자 정의 pageSizeOptions', () => {
+            it('pageSize가 default 값(50)이어도 사용자가 지정한 pageSizeOptions를 그대로 사용한다', async () => {
+                const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const customOptions = [
+                    { label: '5 items', value: 5 },
+                    { label: '8 items', value: 8 },
+                    { label: '10 items', value: 10 },
+                    { label: 'All', value: Infinity },
+                ];
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        pageSizeOptions: customOptions,
+                        showPageSizeSelect: true,
+                    },
+                    pageSize: DEFAULT_PAGE_SIZE,
+                });
+
+                await nextTick();
+                expect(table.pagination.value.pageSizeOptions).toEqual(customOptions);
+            });
+
+            it('pageSize를 Infinity로 변경해도 사용자가 지정한 pageSizeOptions와 라벨이 유지된다', async () => {
+                const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const customOptions = [
+                    { label: '5 items', value: 5 },
+                    { label: '8 items', value: 8 },
+                    { label: '10 items', value: 10 },
+                    { label: 'All', value: Infinity },
+                ];
+                const { table, reactiveProps } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        pageSizeOptions: customOptions,
+                        showPageSizeSelect: true,
+                    },
+                    pageSize: 5,
+                });
+
+                await nextTick();
+                expect(table.pagination.value.pageSizeOptions).toEqual(customOptions);
+
+                reactiveProps.pageSize = Infinity;
+                await nextTick();
+
+                expect(table.pagination.value.pageSizeOptions).toEqual(customOptions);
+                expect(table.pageSize.value).toBe(Infinity);
+            });
+
+            it('pageSize를 옵션 내 다른 값으로 변경해도 pageSizeOptions가 유지된다', async () => {
+                const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const customOptions = [
+                    { label: '5 items', value: 5 },
+                    { label: '8 items', value: 8 },
+                    { label: '10 items', value: 10 },
+                ];
+                const { table, reactiveProps } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        pageSizeOptions: customOptions,
+                        showPageSizeSelect: true,
+                    },
+                    pageSize: 5,
+                });
+
+                await nextTick();
+
+                reactiveProps.pageSize = 8;
+                await nextTick();
+
+                expect(table.pagination.value.pageSizeOptions).toEqual(customOptions);
+            });
+        });
     });
 
     describe('expandable', () => {
