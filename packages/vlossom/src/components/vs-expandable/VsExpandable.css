@@ -6,8 +6,9 @@
         @apply w-full;
 
         background-color: var(--vs-cs-bg-area);
-        padding: 0.75rem 1rem;
+        padding: calc(var(--vs-size-padding, 0.8rem) * 0.75) calc(var(--vs-size-padding, 0.8rem) * 1.25);
         color: var(--vs-cs-font-colored);
+        font-size: var(--vs-size-font, 1rem);
     }
 }
 

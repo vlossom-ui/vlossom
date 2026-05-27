@@ -1,6 +1,6 @@
 <template>
     <Transition name="vs-expand" @before-enter="beforeEnter" @enter="enter" @before-leave="beforeLeave" @leave="leave">
-        <div v-if="open" class="vs-expandable-wrapper">
+        <div v-if="open" :class="['vs-expandable-wrapper', sizeClass]">
             <div class="vs-expandable-content" :style="componentInlineStyle">
                 <slot />
             </div>
@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue';
+import { computed, defineComponent, toRefs, type PropType } from 'vue';
 import { getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { useStyleSet } from '@/composables';
 import { logUtil } from '@/utils';
 import type { VsExpandableStyleSet } from './types';
@@ -22,11 +22,14 @@ export default defineComponent({
     props: {
         ...getStyleSetProps<VsExpandableStyleSet>(),
         open: { type: Boolean, required: true, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
     },
     setup(props) {
-        const { styleSet } = toRefs(props);
+        const { styleSet, size } = toRefs(props);
 
         const { componentInlineStyle } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
+
+        const sizeClass = computed(() => `vs-${size.value}`);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;
@@ -84,6 +87,7 @@ export default defineComponent({
         }
 
         return {
+            sizeClass,
             componentInlineStyle,
             beforeEnter,
             enter,

@@ -1,5 +1,5 @@
 <template>
-    <vs-expandable :open="isExpanded(cells)" :style-set="expandableStyleSet">
+    <vs-expandable :open="isExpanded(cells)" :size="size ?? 'md'" :style-set="expandableStyleSet">
         <slot name="expand" :item="getRowItem(cells)" :value="isExpanded(cells)" :rowIdx />
     </vs-expandable>
 </template>
@@ -25,7 +25,7 @@ export default defineComponent({
         rowIdx: { type: Number, required: true },
     },
     setup() {
-        const { isExpanded } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { isExpanded, size } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
 
         const expandableStyleSet: ComputedRef<VsExpandableStyleSet> = computed(() => ({
             borderTop: '1px dashed var(--vs-cs-line)',
@@ -35,6 +35,7 @@ export default defineComponent({
 
         return {
             isExpanded,
+            size,
             getRowItem,
             expandableStyleSet,
         };
