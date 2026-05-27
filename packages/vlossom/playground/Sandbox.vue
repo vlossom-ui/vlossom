@@ -7,7 +7,7 @@
                 <h2 class="text-lg font-semibold">VsTable size = "{{ size }}"</h2>
                 <vs-table :columns="columns" :items :size="size">
                     <template #expand="{ item }">
-                        <div class="p-3">{{ item.name }} — score {{ item.score }}</div>
+                        <div>{{ item.name }} — score {{ item.score }}</div>
                     </template>
                 </vs-table>
             </section>
@@ -22,6 +22,15 @@
                     <vs-button :size="size" ghost>Ghost</vs-button>
                     <vs-button :size="size" loading>Loading</vs-button>
                     <vs-button :size="size" disabled>Disabled</vs-button>
+                </div>
+            </section>
+
+            <h1 class="mt-8 text-2xl font-bold">VsChip sizes</h1>
+            <section v-for="size in sizes" :key="`chip-${size}`" class="flex flex-col gap-2">
+                <h2 class="text-lg font-semibold">size = "{{ size }}"</h2>
+                <div class="flex flex-wrap items-center gap-2">
+                    <vs-chip :size="size">Default</vs-chip>
+                    <vs-chip :size="size" primary>Primary</vs-chip>
                 </div>
             </section>
 

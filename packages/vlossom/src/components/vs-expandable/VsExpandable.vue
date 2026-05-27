@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type PropType } from 'vue';
+import { defineComponent, toRefs, type PropType } from 'vue';
 import { getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
-import { useStyleSet } from '@/composables';
+import { useSizeClass, useStyleSet } from '@/composables';
 import { logUtil } from '@/utils';
 import type { VsExpandableStyleSet } from './types';
 
@@ -29,7 +29,7 @@ export default defineComponent({
 
         const { componentInlineStyle } = useStyleSet<VsExpandableStyleSet>(componentName, styleSet);
 
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
 
         function beforeEnter(el: Element) {
             const element = el as HTMLElement;

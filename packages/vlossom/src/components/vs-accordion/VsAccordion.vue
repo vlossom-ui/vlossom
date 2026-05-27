@@ -21,7 +21,7 @@
 import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
 import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import type { VsAccordionStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -57,7 +57,7 @@ export default defineComponent({
 
         const isOpen = ref(open.value || modelValue.value);
 
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-focus-visible': !disabled.value,
             'vs-disabled': disabled.value,

@@ -70,7 +70,7 @@ import {
     type ComputedRef,
     type CSSProperties,
 } from 'vue';
-import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
@@ -156,7 +156,7 @@ export default defineComponent({
             isLastEdge,
         } = useIndexSelector(tabs, disabled);
 
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-primary': primary.value,
             'vs-vertical': vertical.value,

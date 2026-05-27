@@ -104,7 +104,7 @@ import {
 } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
@@ -324,7 +324,7 @@ export default defineComponent({
                 VS_TABLE_BODY_SLOT_PREFIXES.some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-responsive': responsive.value,
             'vs-primary': primary.value,

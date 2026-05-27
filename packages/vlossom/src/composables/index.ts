@@ -14,6 +14,7 @@ export * from './overlay-callback/overlay-callback-composable';
 export * from './overlay-dom/overlay-dom-composable';
 export * from './positioning/positioning-composable';
 export * from './scroll-lock/scroll-lock-composable';
+export * from './size-class/size-class-composable';
 export * from './state-class/state-class-composable';
 export * from './string-modifier/string-modifier-composable';
 export * from './style-set/style-set-composable';

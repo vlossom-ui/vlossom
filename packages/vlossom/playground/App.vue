@@ -32,7 +32,7 @@
             <ColorSchemePanel class="fixed top-20 right-24 hidden lg:block" />
         </vs-container>
 
-        <vs-footer layout :style-set="basicBarStyleSet">
+        <vs-footer layout position="fixed" :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-center text-sm">
                 <span>© 2026 Vlossom</span>
             </div>

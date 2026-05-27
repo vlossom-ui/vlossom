@@ -15,7 +15,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, toRefs, type PropType } from 'vue';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
 import type { VsLabelValueStyleSet } from './types';
@@ -45,7 +45,7 @@ export default defineComponent({
             styleSet,
         );
 
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-primary': primary.value,
             'vs-vertical': vertical.value,
