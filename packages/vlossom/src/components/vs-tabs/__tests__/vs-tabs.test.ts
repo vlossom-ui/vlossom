@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsTabs from './../VsTabs.vue';
@@ -406,6 +406,41 @@ describe('VsTabs', () => {
     });
 
     describe('reactivity', () => {
+        it('tabs가 교체되어 선택 인덱스가 유지되어도 indicator 위치가 갱신되어야 한다', async () => {
+            // given
+            const offsetLeftMock = vi
+                .spyOn(HTMLElement.prototype, 'offsetLeft', 'get')
+                .mockImplementation(function (this: HTMLElement) {
+                    return this.textContent?.includes('First Tab') ? 24 : 8;
+                });
+            const offsetWidthMock = vi
+                .spyOn(HTMLElement.prototype, 'offsetWidth', 'get')
+                .mockImplementation(function (this: HTMLElement) {
+                    return this.textContent?.includes('First Tab') ? 120 : 80;
+                });
+
+            try {
+                const wrapper = mount(VsTabs, {
+                    props: {
+                        tabs: ['Initial Tab'],
+                        modelValue: 0,
+                    },
+                });
+
+                await nextTick();
+
+                // when
+                await wrapper.setProps({ tabs: ['First Tab', 'Second Tab', 'Third Tab'] });
+                await nextTick();
+
+                // then
+                expect(wrapper.vm.indicatorStyle).toEqual({ left: '24px', width: '120px' });
+            } finally {
+                offsetLeftMock.mockRestore();
+                offsetWidthMock.mockRestore();
+            }
+        });
+
         it('tabs 길이가 줄어서 현재 선택이 범위를 벗어나면 선택이 해제되어야 한다', async () => {
             // given
             const wrapper = mount(VsTabs, {
