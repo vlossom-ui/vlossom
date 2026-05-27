@@ -24,7 +24,6 @@
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
-                    ref="tabRefs"
                     :style="getTabStyleSet(index)"
                     :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
                     role="tab"
@@ -82,6 +81,8 @@ import VsButton from '@/components/vs-button/VsButton.vue';
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
 
 const componentName = VsComponent.VsTabs;
+const TAB_ITEM_SELECTOR = '.vs-tab-item';
+
 export default defineComponent({
     name: componentName,
     components: { VsButton, VsResponsive, ChevronLeftIcon, ChevronRightIcon },
@@ -117,7 +118,6 @@ export default defineComponent({
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const tabsRef: Ref<HTMLElement | null> = ref(null);
-        const tabRefs: Ref<HTMLElement[]> = ref([]);
         const visibleTabCount = ref(0);
         const indicatorStyle = ref<Record<string, string> | null>(null);
 
@@ -169,13 +169,20 @@ export default defineComponent({
             return controls.value === 'show';
         });
 
+        function getTabItems(): HTMLElement[] {
+            return Array.from(tabsRef.value?.querySelectorAll<HTMLElement>(TAB_ITEM_SELECTOR) ?? []);
+        }
+
         function scrollTo(index: number) {
-            if (!tabRefs.value[index]) {
+            const tabItems = getTabItems();
+            const targetTab = tabItems[index];
+
+            if (!targetTab) {
                 return;
             }
 
-            tabRefs.value[index].focus();
-            tabRefs.value[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            targetTab.focus();
+            targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
         }
 
         function goPrev() {
@@ -199,8 +206,10 @@ export default defineComponent({
             let visibleTabsCount = 0;
             let accumulatedSize = 0;
 
-            tabRefs.value.some((tabRef) => {
-                const tabSize = vertical.value ? tabRef.offsetHeight : tabRef.offsetWidth;
+            const tabItems = getTabItems();
+
+            tabItems.some((tabItem) => {
+                const tabSize = vertical.value ? tabItem.offsetHeight : tabItem.offsetWidth;
                 const canFit = accumulatedSize + tabSize <= tabListSize;
 
                 if (canFit) {
@@ -220,7 +229,13 @@ export default defineComponent({
                 return;
             }
 
-            const selectedTab = tabRefs.value[selectedIndex.value];
+            const tabItems = getTabItems();
+            const selectedTab = tabItems[selectedIndex.value];
+
+            if (!selectedTab) {
+                indicatorStyle.value = null;
+                return;
+            }
 
             if (vertical.value) {
                 indicatorStyle.value = {
@@ -245,6 +260,11 @@ export default defineComponent({
         function getTabStyleSet(index: number): CSSProperties {
             const { $active = {}, ...base } = componentStyleSet.value.$tab ?? {};
             return isSelected(index) ? objectUtil.assign(base, $active) : base;
+        }
+
+        function updateTabsLayout() {
+            calculateVisibleTabCount();
+            updateIndicatorPosition();
         }
 
         onMounted(() => {
@@ -272,6 +292,8 @@ export default defineComponent({
 
         watch(modelValue, syncIndex, { immediate: true });
 
+        watch(tabs, updateTabsLayout, { deep: true, flush: 'post' });
+
         return {
             // Style
             colorSchemeClass,
@@ -292,7 +314,6 @@ export default defineComponent({
 
             // DOM Refs
             tabsRef,
-            tabRefs,
 
             // Event Handlers
             handleKeydown,
