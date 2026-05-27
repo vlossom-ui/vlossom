@@ -102,6 +102,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | 읽기 전용으로 설정 |
 | `required` | `boolean` | `false` | | 필수 항목으로 표시 |
 | `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 체크박스 박스 크기 및 라벨 폰트 크기 |
 | `state` | `UIState` | `'idle'` | | 유효성 검사 상태 |
 | `trueValue` | `any` | `true` | | 체크 시 값 |
 | `falseValue` | `any` | `false` | | 미체크 시 값 |
@@ -133,6 +134,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | 모든 체크박스를 읽기 전용으로 설정 |
 | `required` | `boolean` | `false` | | 필수 항목으로 표시 |
 | `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 각 `VsCheckbox`로 전달되는 사이즈 |
 | `state` | `UIState` | `'idle'` | | 유효성 검사 상태 |
 | `vertical` | `boolean` | `false` | | 체크박스를 수직으로 배치 |
 

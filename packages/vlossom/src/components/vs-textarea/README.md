@@ -76,6 +76,7 @@ const text = ref('');
 | `readonly` | `boolean` | `false` | | Makes the textarea read-only |
 | `required` | `boolean` | `false` | | Marks the field as required |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Font size and padding |
 | `state` | `UIState` | `'idle'` | | UI state (`idle`, `success`, `warning`, `error`) |
 | `valid` | `boolean` | `false` | | v-model for valid state |
 | `width` | `string \| number \| Breakpoints` | | | Component width |

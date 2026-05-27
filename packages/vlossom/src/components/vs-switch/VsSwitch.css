@@ -3,26 +3,30 @@
 .vs-switch {
     --vs-switch-handleSize: initial;
     --vs-switch-handleColor: initial;
+    --vs-switch-button-height: var(--vs-size-height, var(--vs-comp-height-md));
+    --vs-switch-computed-handle: var(--vs-switch-handleSize, calc(var(--vs-switch-button-height) * 0.7));
 
     @apply relative flex items-center;
-    min-height: var(--vs-comp-height-md);
+    min-height: var(--vs-switch-button-height);
 
     .vs-switch-button {
-        @apply relative inline-grid min-w-14 cursor-pointer items-center px-2.5 transition-all duration-300 select-none;
+        @apply relative inline-grid cursor-pointer items-center transition-all duration-300 select-none;
         border: 1px solid var(--vs-cs-line);
-        border-radius: 1.5rem;
+        border-radius: var(--vs-switch-button-height);
         background-color: var(--vs-cs-bg-area);
 
         width: auto;
-        height: 2rem;
+        min-width: calc(var(--vs-switch-button-height) * 1.75);
+        height: var(--vs-switch-button-height);
+        padding: 0 calc(var(--vs-switch-button-height) * 0.3);
         color: var(--vs-cs-font);
-        font-size: var(--vs-font-size-sm);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         .vs-status-label {
             @apply block w-full pr-0 text-center break-all whitespace-nowrap select-none;
             grid-row: 1;
             grid-column: 1;
-            padding-left: calc(var(--vs-switch-handleSize, 1.5rem));
+            padding-left: var(--vs-switch-computed-handle);
         }
         .vs-status-label[data-value='true'] {
             @apply invisible;
@@ -32,10 +36,11 @@
         }
 
         &::before {
-            @apply absolute left-1.5 rounded-full transition-all duration-300;
+            @apply absolute rounded-full transition-all duration-300;
             background-color: var(--vs-cs-bg-primary);
-            width: 1.4rem;
-            height: 1.4rem;
+            left: calc(var(--vs-switch-button-height) * 0.15);
+            width: var(--vs-switch-computed-handle);
+            height: var(--vs-switch-computed-handle);
             content: '';
         }
     }
@@ -51,13 +56,13 @@
             color: var(--vs-cs-font-primary);
 
             &::before {
-                left: calc(100% - (var(--vs-switch-handleSize, 1.3rem) + 0.3rem));
+                left: calc(100% - (var(--vs-switch-computed-handle) + var(--vs-switch-button-height) * 0.15));
                 background-color: var(--vs-switch-handleColor, var(--vs-cs-font-primary));
             }
 
             .vs-status-label {
                 @apply pl-0;
-                padding-right: calc(var(--vs-switch-handleSize, 1.5rem));
+                padding-right: var(--vs-switch-computed-handle);
             }
             .vs-status-label[data-value='false'] {
                 @apply invisible;

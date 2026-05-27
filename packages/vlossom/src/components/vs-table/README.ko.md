@@ -112,7 +112,7 @@ const selected = ref([]);
 | `styleSet`        | `string \| VsTableStyleSet`                    |          | 컴포넌트 커스텀 스타일 세트             |
 | `columns`         | `VsTableColumnDef[] \| string[]`               | `[]`     | 컬럼 정의                               |
 | `items`           | `VsTableItem[]`                                | `[]`     | 데이터 행                               |
-| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | 테이블 크기 (셀 패딩과 폰트 크기 제어)  |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | 테이블 크기 — 셀 패딩/폰트 제어 및 검색 입력 · 페이지네이션(페이지 사이즈 셀렉트 포함) · 선택 체크박스로 전파 |
 | `draggable`       | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화         |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | 확장 행 활성화. `expand` 슬롯이 제공된 경우에만 확장 UI가 렌더링됩니다 |
 | `loading`         | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색 비활성화         |

@@ -18,7 +18,7 @@
         </template>
 
         <div
-            :class="['vs-checkbox', colorSchemeClass, classObj]"
+            :class="['vs-checkbox', colorSchemeClass, sizeClass, classObj]"
             :style="{ ...styleSetVariables, ...componentInlineStyle }"
         >
             <label class="vs-checkbox-wrap" :for="computedId">
@@ -65,9 +65,9 @@ import {
     type PropType,
     type TemplateRef,
 } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
+import { useColorScheme, useInput, useSizeClass, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
 import { stringUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
@@ -90,6 +90,7 @@ export default defineComponent({
         checkLabel: { type: String, default: '' },
         indeterminate: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         trueValue: { type: null, default: true },
         falseValue: { type: null, default: false },
 
@@ -111,6 +112,7 @@ export default defineComponent({
             messages,
             required,
             rules,
+            size,
             state,
             trueValue,
             falseValue,
@@ -191,6 +193,8 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
             'vs-checked': isChecked.value,
             'vs-disabled': computedDisabled.value,
@@ -253,6 +257,7 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             classObj,
+            sizeClass,
             stateBoxClasses,
             computedId,
             computedDisabled,

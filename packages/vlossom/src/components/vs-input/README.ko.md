@@ -89,6 +89,7 @@ const text = ref('');
 | `required`        | `boolean`                                         | `false`  | -        | 필드를 필수로 표시합니다 (유효성 검사 추가).                         |
 | `noClear`         | `boolean`                                         | `false`  | -        | 지우기 버튼을 숨깁니다.                                              |
 | `autocomplete`    | `boolean`                                         | `false`  | -        | 브라우저 자동완성을 활성화합니다.                                    |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`   | -        | 입력 영역 높이 · 패딩 · 폰트 · 모서리 반경 제어.                     |
 | `noLabel`         | `boolean`                                         | `false`  | -        | 라벨 영역을 숨깁니다.                                                |
 | `noMessages`      | `boolean`                                         | `false`  | -        | 메시지 영역을 숨깁니다.                                              |
 | `hidden`          | `boolean`                                         | `false`  | -        | 전체 컴포넌트를 숨깁니다.                                            |

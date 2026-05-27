@@ -105,6 +105,7 @@ const options = [
 | `noClear`         | `boolean`                                                        | `false`               | -        | 초기화 버튼 숨김                                        |
 | `optionsDisabled` | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`       | -        | 개별 옵션 비활성화                                      |
 | `selectAll`       | `boolean`                                                        | `false`               | -        | 전체 선택 체크박스 표시 (다중 선택 모드)                |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                           | `'md'`                | -        | 트리거 높이 · 패딩 · 폰트 · 모서리 반경 및 옵션 드롭다운(패딩 · 폰트 · 모서리 반경) 제어 |
 | `modelValue`      | `any`                                                            | `null`                | -        | 선택된 값 (v-model)                                     |
 
 ## Types

@@ -15,6 +15,7 @@
                     :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.$search"
                     :disabled="loading"
+                    :size
                     @search="searchRows"
                 />
             </vs-responsive>
@@ -90,6 +91,7 @@ import {
     nextTick,
     inject,
     type ComputedRef,
+    type Ref,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
@@ -111,6 +113,7 @@ import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './compos
 import {
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_SIZE_TOKEN,
     type VsTableBodyCell,
     type VsTableColumnDef,
     type VsTableItem,
@@ -312,6 +315,7 @@ export default defineComponent({
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
         provide<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN, computedColorScheme);
+        provide<Ref<Size>>(TABLE_SIZE_TOKEN, size);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>

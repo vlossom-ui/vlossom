@@ -11,6 +11,7 @@
         :disabled
         :readonly
         :placeholder
+        :size
         no-clear
         no-messages
         no-label
@@ -27,6 +28,7 @@
                     :style-set="componentStyleSet.$toggle"
                     :disabled="disabled || readonly"
                     :ghost="!isCaseSensitiveOn"
+                    :size
                     :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
                     @toggle="$emit('update:caseSensitive', $event)"
                 >
@@ -41,6 +43,7 @@
                     :style-set="componentStyleSet.$toggle"
                     :disabled="disabled || readonly"
                     :ghost="!isRegexOn"
+                    :size
                     :aria-label="isRegexOn ? 'regex' : 'no regex'"
                     @toggle="$emit('update:regex', $event)"
                 >
@@ -59,11 +62,12 @@ import {
     ref,
     useTemplateRef,
     watch,
+    type PropType,
     type Ref,
     type TemplateRef,
     type ComputedRef,
 } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { functionUtil } from '@/utils';
@@ -84,6 +88,7 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
         readonly: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         useCaseSensitive: { type: Boolean, default: false },
         useRegex: { type: Boolean, default: false },
 

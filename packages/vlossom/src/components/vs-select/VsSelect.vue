@@ -45,7 +45,7 @@
                 <vs-grouped-list
                     ref="optionsListRef"
                     :id="optionsId"
-                    :class="['vs-select-options', colorSchemeClass]"
+                    :class="['vs-select-options', colorSchemeClass, sizeClass]"
                     :style="styleSetVariables"
                     :style-set="componentStyleSet.$options"
                     :items="filteredOptions"
@@ -55,7 +55,7 @@
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
                         <div class="vs-select-search vs-select-focusable" data-focusable data-role="search">
-                            <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" />
+                            <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" :size />
                         </div>
                         <div
                             v-if="multiple && selectAll"
@@ -125,7 +125,7 @@ import {
     type TemplateRef,
     type CSSProperties,
 } from 'vue';
-import { VsComponent, type OptionItem } from '@/declaration';
+import { VsComponent, type OptionItem, type Size } from '@/declaration';
 import {
     getColorSchemeProps,
     getStyleSetProps,
@@ -145,6 +145,7 @@ import {
     useFocusable,
     useOverlayCallback,
     useClickOutside,
+    useSizeClass,
 } from '@/composables';
 import { objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
@@ -182,6 +183,7 @@ export default defineComponent({
             default: false,
         },
         selectAll: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
 
         // v-model
         modelValue: { type: null, default: null },
@@ -219,6 +221,7 @@ export default defineComponent({
             multiple,
             min,
             max,
+            size,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -235,12 +238,7 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
             return {
-                $options: {
-                    maxHeight: '20rem',
-                    $content: {
-                        padding: '0.6rem 0.4rem',
-                    },
-                },
+                $options: { maxHeight: '20rem' },
             };
         });
         const { componentStyleSet, styleSetVariables } = useStyleSet<VsSelectStyleSet>(
@@ -372,9 +370,12 @@ export default defineComponent({
             closeOptions,
         );
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         function toggleOpen() {
@@ -555,6 +556,7 @@ export default defineComponent({
             isOpen,
             inputValue,
             colorSchemeClass,
+            sizeClass,
             styleSetVariables,
             componentStyleSet,
             classObj,

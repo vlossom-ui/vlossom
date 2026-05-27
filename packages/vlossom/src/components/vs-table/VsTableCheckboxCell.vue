@@ -7,6 +7,7 @@
                     multiple
                     :color-scheme
                     :disabled="loading"
+                    :size
                     v-model="selectedItems"
                     :true-value="getRowItem(cells)"
                     @toggle="selectRow(cells, $event)"
@@ -21,6 +22,7 @@
                 <vs-checkbox
                     :style-set="headerCheckboxStyle"
                     :color-scheme
+                    :size
                     :model-value="selectedAll"
                     :disabled="loading"
                     :indeterminate="selectedPartial"
@@ -32,13 +34,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
-import type { ColorScheme } from '@/declaration';
+import { computed, defineComponent, inject, type ComputedRef, type PropType, type Ref } from 'vue';
+import type { ColorScheme, Size } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import type { VsCheckboxStyleSet } from './../vs-checkbox/types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { getRowItem, isVsTableBodyRow } from './models/table-model';
-import { type VsTableCell, TABLE_STYLE_SET_TOKEN, TABLE_COLOR_SCHEME_TOKEN, type VsTableStyleSet } from './types';
+import {
+    type VsTableCell,
+    TABLE_STYLE_SET_TOKEN,
+    TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_SIZE_TOKEN,
+    type VsTableStyleSet,
+} from './types';
 
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
@@ -67,6 +75,7 @@ export default defineComponent({
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
+        const size = inject<Ref<Size>>(TABLE_SIZE_TOKEN);
 
         const cellStyle = computed(() => tableStyleSet?.value?.$cell);
         const headerCheckboxStyle = computed<VsCheckboxStyleSet>(() => {
@@ -124,6 +133,7 @@ export default defineComponent({
             primary,
             headerCheckboxStyle,
             colorScheme,
+            size,
             columns,
         };
     },
