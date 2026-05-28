@@ -47,13 +47,28 @@ export const AllVariants: Story = {
                             ${LOREM_IPSUM}
                         </vs-label-value>
 
-                        <vs-label-value dense>
-                            <template #label>Dense</template>
+                        <vs-label-value size="xs">
+                            <template #label>size="xs"</template>
                             ${LOREM_IPSUM}
                         </vs-label-value>
 
-                        <vs-label-value primary dense>
-                            <template #label>Primary + Dense</template>
+                        <vs-label-value size="sm">
+                            <template #label>size="sm"</template>
+                            ${LOREM_IPSUM}
+                        </vs-label-value>
+
+                        <vs-label-value size="lg">
+                            <template #label>size="lg"</template>
+                            ${LOREM_IPSUM}
+                        </vs-label-value>
+
+                        <vs-label-value size="xl">
+                            <template #label>size="xl"</template>
+                            ${LOREM_IPSUM}
+                        </vs-label-value>
+
+                        <vs-label-value primary size="xs">
+                            <template #label>Primary + xs</template>
                             ${LOREM_IPSUM}
                         </vs-label-value>
 

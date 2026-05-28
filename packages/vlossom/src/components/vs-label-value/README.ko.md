@@ -10,7 +10,7 @@
 
 - 설정 가능한 테두리를 갖춘 나란한 라벨과 값 레이아웃을 제공합니다.
 - Primary 색상 모드는 라벨 영역을 기본 색상 스킴으로 강조합니다.
-- Dense 모드는 컴팩트한 표시를 위해 패딩과 폰트 크기를 줄입니다.
+- size (`xs`, `sm`, `md`, `lg`, `xl`) 설정으로 패딩과 폰트 크기를 조정할 수 있습니다.
 - 수직 모드는 라벨과 값 셀을 세로로 쌓습니다.
 - 반응형 수직 모드는 좁은 컨테이너에서 자동으로 세로 레이아웃으로 전환됩니다.
 
@@ -47,11 +47,11 @@
 </template>
 ```
 
-### Dense 모드
+### 사이즈
 
 ```html
 <template>
-    <vs-label-value :dense="true">
+    <vs-label-value size="xs">
         <template #label>ID</template>
         12345
     </vs-label-value>
@@ -79,7 +79,7 @@
 | `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                         |
 | `width`       | `string \| number \| Breakpoints`| -       | -        | 컴포넌트 너비.                                       |
 | `grid`        | `string \| number \| Breakpoints`| -       | -        | 레이아웃의 그리드 열 span.                           |
-| `dense`       | `boolean`                        | `false` | -        | 컴팩트 표시를 위해 패딩 및 폰트 크기를 줄입니다.     |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | 컴포넌트 크기 (min-height · padding · font 제어).    |
 | `primary`     | `boolean`                        | `false` | -        | 라벨 셀에 기본 색상 스킴을 적용합니다.               |
 | `vertical`    | `boolean`                        | `false` | -        | 라벨과 값 셀을 세로로 쌓습니다.                      |
 | `responsive`  | `boolean`                        | `false` | -        | 좁은 컨테이너에서 자동으로 세로 레이아웃으로 전환.   |

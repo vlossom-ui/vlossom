@@ -11,17 +11,17 @@
         <div class="vs-accordion-title" :style="componentStyleSet.$title" @click.prevent.stop="toggle">
             <slot name="title" />
         </div>
-        <vs-expandable :open="isOpen" :style-set="componentStyleSet.$content">
+        <vs-expandable :open="isOpen" :size :style-set="componentStyleSet.$content">
             <slot />
         </vs-expandable>
     </vs-responsive>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
 import { getColorSchemeProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { VsComponent, type Size } from '@/declaration';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import type { VsAccordionStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -38,6 +38,7 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
         primary: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
 
         // v-model
         modelValue: { type: Boolean, default: false },
@@ -45,7 +46,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'toggle'],
     // expose: ['toggle'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, open, modelValue, disabled, primary } = toRefs(props);
+        const { colorScheme, styleSet, open, modelValue, disabled, primary, size } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -56,10 +57,12 @@ export default defineComponent({
 
         const isOpen = ref(open.value || modelValue.value);
 
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-focus-visible': !disabled.value,
             'vs-disabled': disabled.value,
             'vs-primary': primary.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         function toggle() {

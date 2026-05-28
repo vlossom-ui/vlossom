@@ -145,6 +145,12 @@ const meta: Meta<typeof VsInput> = {
         },
 
         // Layout
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: 'Input 크기 (높이 · 패딩 · 폰트 · 모서리 반경)',
+            table: { category: 'Layout', defaultValue: { summary: 'md' } },
+        },
         width: {
             control: 'text',
             description: 'Input 너비 (string | number | Breakpoints)',
@@ -205,6 +211,31 @@ export const WithLabel: Story = {
         label: '이름',
         placeholder: '이름을 입력하세요',
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 Input의 높이 · 패딩 · 폰트 · 모서리 반경을 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsInput },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-input :size="size" :placeholder="'placeholder ' + size" />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const InputTypes: Story = {

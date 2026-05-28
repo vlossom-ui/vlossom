@@ -29,7 +29,7 @@
 import { computed, defineComponent, toRefs, type PropType } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
 
 import { XIcon } from '@lucide/vue';
@@ -57,7 +57,7 @@ export default defineComponent({
             styleSet,
         );
 
-        const sizeClass = computed(() => (size.value ? `vs-${size.value}` : ''));
+        const { sizeClass } = useSizeClass(size);
 
         const classObj = computed(() => ({
             'vs-outline': outline.value,

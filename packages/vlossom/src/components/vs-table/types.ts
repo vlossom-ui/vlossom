@@ -13,6 +13,7 @@ declare module 'vue' {
 
 export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
 export const TABLE_COLOR_SCHEME_TOKEN = Symbol('TABLE_COLOR_SCHEME_TOKEN');
+export const TABLE_SIZE_TOKEN = Symbol('TABLE_SIZE_TOKEN');
 
 export interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;

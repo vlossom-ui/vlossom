@@ -18,6 +18,12 @@ const meta: Meta<typeof VsRadio> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '라디오 크기 (크기 · 라벨 폰트)',
+            table: { defaultValue: { summary: 'md' } },
+        },
     },
     args: {
         radioLabel: 'Radio Input',
@@ -31,6 +37,35 @@ export default meta;
 type Story = StoryObj<typeof VsRadio>;
 
 export const Default: Story = {};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 라디오 크기와 라벨 폰트를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsRadio },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <vs-radio :size="size" :name="'radio-' + size" radio-value="a" radio-label="Option A" checked />
+                        <vs-radio :size="size" :name="'radio-' + size" radio-value="b" radio-label="Option B" />
+                        <vs-radio :size="size" :name="'radio-' + size" radio-value="c" radio-label="Disabled" disabled />
+                    </div>
+                </div>
+            </div>
+        `,
+    }),
+};
 
 export const ColorScheme: Story = {
     render: (args: any) => ({

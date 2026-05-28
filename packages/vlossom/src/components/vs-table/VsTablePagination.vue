@@ -8,6 +8,7 @@
                 :color-scheme
                 :style-set="tableStyleSet?.$pageSizeSelect"
                 :disabled="loading"
+                :size
                 option-label="label"
                 option-value="value"
                 no-clear
@@ -27,6 +28,7 @@
             :length="totalPages"
             :showing-length="pagination.showingLength"
             :edge-buttons="pagination.edgeButtons"
+            :size
             @change="paginate"
         />
     </div>
@@ -50,8 +52,18 @@ export default defineComponent({
     components: { VsPagination, VsSelect },
     emits: ['paginate'],
     setup(_, { emit }) {
-        const { pagination, totalPages, totalItems, page, pageSize, pageStartIndex, pageEndIndex, loading, primary } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const {
+            pagination,
+            totalPages,
+            totalItems,
+            page,
+            pageSize,
+            pageStartIndex,
+            pageEndIndex,
+            loading,
+            primary,
+            size,
+        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
@@ -75,6 +87,7 @@ export default defineComponent({
             paginate,
             loading,
             primary,
+            size,
             colorScheme,
             tableStyleSet,
         };

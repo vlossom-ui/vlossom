@@ -12,7 +12,7 @@
             :disabled="isFirstEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
-            size="sm"
+            :size
             @click.prevent.stop="goPrev"
         >
             <ChevronLeftIcon class="vs-tab-control-icon" />
@@ -47,7 +47,7 @@
             :disabled="isLastEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
-            size="sm"
+            :size
             @click.prevent.stop="goNext"
         >
             <ChevronRightIcon class="vs-tab-control-icon" />
@@ -70,9 +70,9 @@ import {
     type ComputedRef,
     type CSSProperties,
 } from 'vue';
-import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
-import { NOT_SELECTED, VsComponent } from '@/declaration';
+import { NOT_SELECTED, VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTabsStyleSet } from './types';
 
@@ -94,7 +94,7 @@ export default defineComponent({
             type: String as PropType<'hide' | 'show' | 'auto'>,
             default: 'auto',
         },
-        dense: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         disabled: {
             type: [Boolean, Function] as PropType<boolean | ((tab: string, index: number) => boolean)>,
             default: false,
@@ -113,7 +113,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, dense, disabled, primary, height, controls, tabs, modelValue, vertical } =
+        const { colorScheme, styleSet, size, disabled, primary, height, controls, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -156,10 +156,11 @@ export default defineComponent({
             isLastEdge,
         } = useIndexSelector(tabs, disabled);
 
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
-            'vs-dense': dense.value,
             'vs-primary': primary.value,
             'vs-vertical': vertical.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         const showControls = computed(() => {

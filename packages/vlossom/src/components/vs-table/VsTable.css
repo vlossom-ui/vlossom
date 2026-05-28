@@ -61,9 +61,11 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        padding: 0.6rem 0.8rem;
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
         color: var(--vs-cs-font-colored);
         font-weight: var(--vs-font-weight);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
 
         &:first-child {
@@ -81,7 +83,9 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        padding: 0.6rem 0.8rem;
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
     }
 
@@ -122,6 +126,8 @@
 
     /* ── No data ── */
     .vs-table-no-data-cell {
+        @apply justify-center;
+        grid-column: 1 / -1;
         height: 12rem;
     }
 
@@ -130,12 +136,14 @@
         color: var(--vs-cs-font-colored);
 
         .vs-table-no-data-icon {
-            @apply size-16;
+            width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 2.5);
+            height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 2.5);
         }
     }
 
     .vs-table-no-data-text {
-        @apply text-xl font-bold;
+        @apply font-bold;
+        font-size: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
     }
 
     /* ── Draggable ── */
@@ -163,15 +171,20 @@
 
     .vs-table-th.vs-table-expand-handle,
     .vs-table-td.vs-table-expand-handle {
-        width: 3.6rem;
+        @apply justify-end;
+        width: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 1.7);
 
         .vs-table-expand-icon {
-            @apply size-5 transition-transform;
+            @apply shrink-0 transition-transform;
+            width: var(--vs-size-font, var(--vs-font-size-md));
+            height: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 
     .vs-table-sort-icon {
-        @apply inline-block size-4 shrink-0 cursor-pointer align-middle;
+        @apply inline-block shrink-0 cursor-pointer align-middle;
+        width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.75);
+        height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.75);
     }
 
     /* ── Pagination ── */
@@ -197,18 +210,6 @@
     &.vs-responsive {
         @apply w-full;
         container-type: inline-size;
-    }
-
-    &.vs-dense {
-        .vs-table-th,
-        .vs-table-td {
-            @apply px-[0.375rem] py-[0.5rem];
-            font-size: var(--vs-font-size-sm);
-        }
-
-        .vs-table-td.vs-table-expanded-row {
-            @apply px-0 py-0;
-        }
     }
 
     &.vs-primary {
@@ -270,14 +271,6 @@
 
         .vs-table-td.vs-table-drag-handle {
             @apply w-6 px-0 py-1;
-        }
-
-        &.vs-dense {
-            .vs-table-td,
-            .vs-table-th {
-                @apply px-[0.375rem] py-[0.5rem];
-                font-size: var(--vs-font-size-sm);
-            }
         }
 
         .vs-table {

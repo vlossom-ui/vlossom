@@ -5,10 +5,11 @@
         @apply relative box-border flex cursor-pointer items-center gap-1;
 
         border: 1px solid var(--vs-cs-line);
-        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
         background-color: var(--vs-no-color);
-        padding: 0.2rem 0.8rem;
-        min-height: var(--vs-comp-height-md);
+        padding: 0.2rem var(--vs-size-padding, var(--vs-padding-md));
+        min-height: var(--vs-size-height, var(--vs-comp-height-md));
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         .vs-select-value {
             @apply flex flex-1 flex-wrap items-center gap-1;
@@ -62,8 +63,9 @@
     @apply overflow-hidden;
 
     border: 1px solid var(--vs-cs-line);
-    border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-no-color);
+    font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     .vs-select-focusable {
         border: 1px solid transparent;
@@ -75,20 +77,23 @@
     }
 
     .vs-select-search {
-        padding: 0.4rem 1rem;
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
     }
 
     .vs-select-all {
         @apply cursor-pointer;
 
-        padding: 0.4rem 1.2rem;
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
     }
 
     .vs-select-option-wrap {
         .vs-select-option {
             @apply cursor-pointer;
 
-            padding: 0.2rem 1.2rem;
+            padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.25)
+                calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
         }
 
         &.selected {

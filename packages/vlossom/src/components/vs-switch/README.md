@@ -83,6 +83,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | Makes the switch read-only |
 | `required` | `boolean` | `false` | | Marks the field as required |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Switch height, handle size, and font |
 | `state` | `UIState` | `'idle'` | | UI state (`idle`, `success`, `warning`, `error`) |
 | `trueLabel` | `string` | `'ON'` | | Label displayed when the switch is ON |
 | `trueValue` | `any` | `true` | | Value used when switch is ON |

@@ -6,8 +6,9 @@
     border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
-    padding: 0.3rem 0.6rem;
+    padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+        calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75);
     min-height: 6rem;
     color: var(--vs-cs-font);
-    font-size: var(--vs-font-size-md);
+    font-size: var(--vs-size-font, var(--vs-font-size-md));
 }

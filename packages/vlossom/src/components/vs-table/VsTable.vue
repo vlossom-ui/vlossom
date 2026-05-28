@@ -15,6 +15,7 @@
                     :color-scheme="computedColorScheme"
                     :style-set="componentStyleSet.$search"
                     :disabled="loading"
+                    :size
                     @search="searchRows"
                 />
             </vs-responsive>
@@ -90,6 +91,7 @@ import {
     nextTick,
     inject,
     type ComputedRef,
+    type Ref,
 } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
@@ -100,16 +102,18 @@ import {
     VsComponent,
     type PropsOf,
     type ColorScheme,
+    type Size,
 } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_SIZE_TOKEN,
     type VsTableBodyCell,
     type VsTableColumnDef,
     type VsTableItem,
@@ -159,7 +163,7 @@ export default defineComponent({
                 return true;
             },
         },
-        dense: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         primary: { type: Boolean, default: false },
         responsive: { type: Boolean, default: false },
         noVirtualScroll: { type: Boolean, default: false },
@@ -291,7 +295,7 @@ export default defineComponent({
         'update:totalItems',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, stickyHeader, dense, primary } = toRefs(props);
+        const { colorScheme, styleSet, responsive, stickyHeader, size, primary } = toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
@@ -311,6 +315,7 @@ export default defineComponent({
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
         provide<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN, computedColorScheme);
+        provide<Ref<Size>>(TABLE_SIZE_TOKEN, size);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
 
         const headerSlots = computed(() =>
@@ -323,10 +328,11 @@ export default defineComponent({
                 VS_TABLE_BODY_SLOT_PREFIXES.some((whitelist) => slotName.startsWith(whitelist)),
             ),
         );
+        const { sizeClass } = useSizeClass(size);
         const classObj = computed(() => ({
             'vs-responsive': responsive.value,
-            'vs-dense': dense.value,
             'vs-primary': primary.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);

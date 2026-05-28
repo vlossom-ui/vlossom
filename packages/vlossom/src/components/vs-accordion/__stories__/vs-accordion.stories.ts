@@ -45,6 +45,11 @@ const meta: Meta<typeof VsAccordion> = {
             control: 'boolean',
             description: 'primary 스타일 적용',
         },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '타이틀 영역 높이 · 패딩 · 폰트 · 화살표 크기 제어',
+        },
     },
 };
 
@@ -83,6 +88,31 @@ export const Primary: Story = {
             },
         },
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 타이틀 영역 높이 · 패딩 · 폰트 · 화살표 크기를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsAccordion },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <vs-accordion v-for="size in sizes" :key="size" :size="size">
+                    <template #title>size = "{{ size }}"</template>
+                    <p>아코디언 내용입니다. 사이즈에 따라 타이틀 영역 높이/폰트/화살표가 함께 변합니다.</p>
+                </vs-accordion>
+            </div>
+        `,
+    }),
 };
 
 export const ColorScheme: Story = {

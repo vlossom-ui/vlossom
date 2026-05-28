@@ -58,6 +58,33 @@ const meta: Meta<typeof VsAccordion> = {
                         </vs-accordion>
                     </div>
                 </div>
+
+                <!-- 크기 변형 -->
+                <div>
+                    <h3 style="margin: 0 0 1rem 0; font-size: 1.2rem; font-weight: 600;">크기 변형</h3>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <vs-accordion v-bind="args" size="xs">
+                            <template #title>size = "xs"</template>
+                            <p>xs 사이즈입니다.</p>
+                        </vs-accordion>
+                        <vs-accordion v-bind="args" size="sm">
+                            <template #title>size = "sm"</template>
+                            <p>sm 사이즈입니다.</p>
+                        </vs-accordion>
+                        <vs-accordion v-bind="args" size="md">
+                            <template #title>size = "md"</template>
+                            <p>md 사이즈입니다.</p>
+                        </vs-accordion>
+                        <vs-accordion v-bind="args" size="lg">
+                            <template #title>size = "lg"</template>
+                            <p>lg 사이즈입니다.</p>
+                        </vs-accordion>
+                        <vs-accordion v-bind="args" size="xl">
+                            <template #title>size = "xl"</template>
+                            <p>xl 사이즈입니다.</p>
+                        </vs-accordion>
+                    </div>
+                </div>
             </div>
         `,
     }),

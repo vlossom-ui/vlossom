@@ -2,7 +2,7 @@
     @apply flex flex-wrap items-center;
 
     flex-wrap: wrap;
-    gap: 1.4rem;
+    gap: calc(var(--vs-size-padding, var(--vs-padding-md)) * 2);
 
     &.vs-vertical {
         @apply flex-col items-start;

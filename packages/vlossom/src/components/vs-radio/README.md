@@ -95,6 +95,7 @@ async function confirmChange(from, to) {
 | `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
 | `readonly`     | `boolean`                                                         | `false`  | -        | Makes the radio read-only                         |
 | `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | Radio size and label font size                    |
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
 | `checked`      | `boolean`                                                         | `false`  | -        | Pre-selects this radio on mount                   |
@@ -122,6 +123,7 @@ async function confirmChange(from, to) {
 | `noDefaultRules` | `boolean`                                                       | `false`  | -        | Disables built-in validation rules                |
 | `readonly`     | `boolean`                                                         | `false`  | -        | Makes all radios read-only                        |
 | `rules`        | `Rule[]`                                                          | `[]`     | -        | Custom validation rules                           |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | Size propagated to each `VsRadio`                 |
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
 | `options`      | `any[]`                                                           | `[]`     | -        | Array of option values or objects                 |
 | `optionLabel`  | `string`                                                          | -        | -        | Key name for the label when options are objects   |

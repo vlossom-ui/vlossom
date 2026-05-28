@@ -74,6 +74,7 @@ const isOpen = ref(false);
 | `disabled` | `boolean` | `false` | | Disables toggle interaction |
 | `open` | `boolean` | `false` | | Initial open state |
 | `primary` | `boolean` | `false` | | Applies primary color scheme |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Title height, padding, font, and arrow size |
 | `modelValue` | `boolean` | `false` | | v-model binding for open state |
 
 ## Types

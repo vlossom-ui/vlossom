@@ -3,7 +3,7 @@
 .vs-chip {
     --vs-chip-height: initial;
 
-    --vs-chip-computed-height: var(--vs-chip-height, var(--vs-size-height));
+    --vs-chip-computed-height: var(--vs-chip-height, var(--vs-size-height, var(--vs-comp-height-md)));
     --vs-chip-icon-size: calc(var(--vs-chip-computed-height) * 0.75);
     --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.13);
 
@@ -17,7 +17,7 @@
     height: var(--vs-chip-computed-height);
     min-height: var(--vs-chip-computed-height);
     color: var(--vs-cs-font-colored);
-    font-size: var(--vs-size-font);
+    font-size: var(--vs-size-font, var(--vs-font-size-md));
     line-height: 2;
     user-select: none;
 
@@ -51,7 +51,7 @@
 
     .vs-chip-content {
         @apply w-full truncate text-center;
-        padding: 0 var(--vs-size-padding);
+        padding: 0 var(--vs-size-padding, var(--vs-padding-md));
     }
 
     &.vs-outline {

@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio-set', colorSchemeClass, classObj]" :style="componentInlineStyle">
+        <div :class="['vs-radio-set', colorSchemeClass, sizeClass, classObj]" :style="componentInlineStyle">
             <vs-radio
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -38,6 +38,7 @@
                 :before-change
                 :color-scheme
                 :required
+                :size
                 @update:modelValue="onRadioUpdate"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
@@ -56,9 +57,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
-import { useColorScheme, useInput, useInputOption, useStyleSet } from '@/composables';
+import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
 
@@ -79,6 +80,7 @@ export default defineComponent({
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
+        size: { type: String as PropType<Size>, default: 'md' },
         vertical: { type: Boolean, default: false },
         // v-model
         modelValue: { type: null, default: null },
@@ -105,6 +107,7 @@ export default defineComponent({
             readonly,
             required,
             rules,
+            size,
             state,
             vertical,
             width,
@@ -115,6 +118,8 @@ export default defineComponent({
         const inputValue = ref(modelValue.value);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+
+        const { sizeClass } = useSizeClass(size);
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
 
@@ -201,6 +206,7 @@ export default defineComponent({
             componentStyleSet,
             componentInlineStyle,
             classObj,
+            sizeClass,
             computedId,
             computedMessages,
             computedState,

@@ -67,8 +67,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
-import { VsComponent, type StringModifiers } from '@/declaration';
-import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass } from '@/composables';
+import { VsComponent, type Size, type StringModifiers } from '@/declaration';
+import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass, useSizeClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
@@ -90,6 +90,7 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         type: { type: String as PropType<VsInputType>, default: 'text' },
         // v-model
         modelValue: {
@@ -120,6 +121,7 @@ export default defineComponent({
             messages,
             rules,
             noDefaultRules,
+            size,
             state,
         } = toRefs(props);
 
@@ -187,11 +189,14 @@ export default defineComponent({
             },
         );
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
             'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         const { stateBoxClasses } = useStateClass(computedState);

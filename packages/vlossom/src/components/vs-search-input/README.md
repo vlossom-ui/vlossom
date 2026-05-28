@@ -76,6 +76,7 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 | `disabled`         | `boolean`                       | `false` | -        | Disables the input                                   |
 | `placeholder`      | `string`                        | `''`    | -        | Placeholder text                                     |
 | `readonly`         | `boolean`                       | `false` | -        | Makes the input read-only                            |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -    | Input height, padding, font, and toggle button size  |
 | `useCaseSensitive` | `boolean`                       | `false` | -        | Shows the case-sensitive toggle button               |
 | `useRegex`         | `boolean`                       | `false` | -        | Shows the regex toggle button                        |
 | `modelValue`       | `string`                        | `''`    | -        | Search text value (v-model)                          |

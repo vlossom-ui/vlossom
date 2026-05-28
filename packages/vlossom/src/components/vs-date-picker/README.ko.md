@@ -122,6 +122,7 @@ value = '2026-05';
 | `min`            | `string \| undefined`                             | `undefined` | -        | 가장 빠른 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
 | `max`            | `string \| undefined`                             | `undefined` | -        | 가장 늦은 유효 값 (rule 기반, 문자열 사전식 비교 — 예: `'2026-05-18' < '2026-12-31'`). |
 | `noClear`        | `boolean`                                         | `false`     | -        | 지우기 버튼 숨김.                                                                      |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | 입력 영역 높이 · 패딩 · 폰트 · 아이콘 크기 제어.                                       |
 | `label`          | `string`                                          | `''`        | -        | 라벨 텍스트.                                                                           |
 | `placeholder`    | `string`                                          | `''`        | -        | 플레이스홀더.                                                                          |
 | `disabled`       | `boolean`                                         | `false`     | -        | 컴포넌트 비활성화.                                                                     |

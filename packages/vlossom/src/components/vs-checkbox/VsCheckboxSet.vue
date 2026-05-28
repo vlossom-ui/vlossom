@@ -17,7 +17,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', colorSchemeClass, classObj]" :style="componentInlineStyle">
+        <div :class="['vs-checkbox-set', colorSchemeClass, sizeClass, classObj]" :style="componentInlineStyle">
             <vs-checkbox
                 v-for="(option, index) in options"
                 :key="getOptionValue(option)"
@@ -38,6 +38,7 @@
                 no-messages
                 :color-scheme
                 :name
+                :size
                 @update:modelValue="onCheckboxUpdate"
                 @focus="onFocus(option, $event)"
                 @blur="onBlur(option, $event)"
@@ -56,7 +57,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import {
     getColorSchemeProps,
     getOptionsProps,
@@ -65,7 +66,7 @@ import {
     getStyleSetProps,
     getMinMaxProps,
 } from '@/props';
-import { useColorScheme, useInput, useStyleSet, useInputOption } from '@/composables';
+import { useColorScheme, useInput, useSizeClass, useStyleSet, useInputOption } from '@/composables';
 import { objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
@@ -90,6 +91,7 @@ export default defineComponent({
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
+        size: { type: String as PropType<Size>, default: 'md' },
         vertical: { type: Boolean, default: false },
         // v-model
         modelValue: {
@@ -113,6 +115,7 @@ export default defineComponent({
             readonly,
             required,
             rules,
+            size,
             state,
             max,
             min,
@@ -123,6 +126,8 @@ export default defineComponent({
         const checkboxRefs: TemplateRef<InstanceType<typeof VsCheckbox>[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+
+        const { sizeClass } = useSizeClass(size);
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
@@ -217,6 +222,7 @@ export default defineComponent({
             componentStyleSet,
             componentInlineStyle,
             classObj,
+            sizeClass,
             computedId,
             computedMessages,
             computedState,

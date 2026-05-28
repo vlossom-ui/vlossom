@@ -55,6 +55,7 @@ const page = ref(0);
 | `ghost`         | `boolean`                       | `false` | -        | Applies ghost style to buttons                           |
 | `length`        | `number`                        | `1`     | Yes      | Total number of pages (must be greater than 0)           |
 | `outline`       | `boolean`                       | `false` | -        | Applies outline style to buttons                         |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -      | Button height, font, and icon size                       |
 | `showingLength` | `number`                        | `10`    | -        | Number of page buttons to display at once                |
 | `modelValue`    | `number`                        | `0`     | -        | Current page index (0-based), used with `v-model`        |
 

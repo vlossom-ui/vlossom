@@ -37,6 +37,23 @@ describe('VsAccordion', () => {
         });
     });
 
+    describe('size', () => {
+        it('size prop의 기본값은 "md"이며 vs-md 클래스가 적용된다', () => {
+            wrapper = mount(VsAccordion, defaultOptions);
+
+            expect(wrapper.find('.vs-accordion').classes()).toContain('vs-md');
+        });
+
+        it.each(['xs', 'sm', 'md', 'lg', 'xl'] as const)('size="%s"이면 vs-%s 클래스가 적용된다', (size) => {
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { size },
+            });
+
+            expect(wrapper.find('.vs-accordion').classes()).toContain(`vs-${size}`);
+        });
+    });
+
     describe('disabled prop', () => {
         function mountWithDisabled(disabled: boolean) {
             wrapper = mount(VsAccordion, {

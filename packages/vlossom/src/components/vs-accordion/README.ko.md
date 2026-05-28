@@ -74,6 +74,7 @@ const isOpen = ref(false);
 | `disabled` | `boolean` | `false` | | 토글 비활성화 |
 | `open` | `boolean` | `false` | | 초기 열림 상태 |
 | `primary` | `boolean` | `false` | | Primary 색상 테마 적용 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 타이틀 영역 높이 · 패딩 · 폰트 · 화살표 크기 제어 |
 | `modelValue` | `boolean` | `false` | | 열림 상태에 대한 v-model 바인딩 |
 
 ## Types

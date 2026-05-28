@@ -19,7 +19,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, watch, type ComputedRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import { getButtonProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 import type { VsButtonStyleSet } from './types';
 
@@ -57,7 +57,7 @@ export default defineComponent({
             baseStyleSet,
         );
 
-        const sizeClass = computed(() => `vs-${size.value}`);
+        const { sizeClass } = useSizeClass(size);
 
         const classObj = computed(() => ({
             'vs-focus-visible': !disabled.value && !loading.value,

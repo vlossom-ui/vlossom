@@ -6,7 +6,7 @@
                 :color-scheme
                 :disabled="loading"
                 :style-set="expandButtonStyleSet"
-                :size="dense ? 'xs' : 'sm'"
+                :size="buttonSize"
                 @click.prevent.stop="expandRow(cells, $event)"
             >
                 <ChevronDownIcon class="vs-table-expand-icon" :class="{ 'rotate-180': isExpanded(cells) }" />
@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject, type ComputedRef, type PropType } from 'vue';
-import type { ColorScheme } from '@/declaration';
+import type { ColorScheme, Size } from '@/declaration';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import {
     type VsTableCell,
@@ -45,23 +45,24 @@ export default defineComponent({
     },
     emits: ['expand-row'],
     setup(_props, { emit }) {
-        const { isExpanded, expandable, toggleExpand, items, loading, primary, dense } =
+        const { isExpanded, expandable, toggleExpand, items, loading, primary, size } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
-        const cellStyle = computed(() => tableStyleSet?.value?.$cell);
-        const expandButtonStyleSet = computed(() => {
-            const size = dense?.value ? '1.4rem' : '1.8rem';
-            return {
-                $content: { padding: '0' },
-                border: 'none',
-                width: size,
-                height: size,
-                backgroundColor: 'var(--vs-cs-bg-colored)',
-                color: 'var(--vs-cs-font-colored)',
-            };
+        const buttonSize = computed<Size>(() => {
+            const map: Record<Size, Size> = { xs: 'xs', sm: 'xs', md: 'sm', lg: 'md', xl: 'lg' };
+            return map[size?.value ?? 'md'];
         });
+        const cellStyle = computed(() => tableStyleSet?.value?.$cell);
+        const expandButtonStyleSet = computed(() => ({
+            $content: { padding: '0' },
+            border: 'none',
+            width: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
+            height: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
+            backgroundColor: 'var(--vs-cs-bg-colored)',
+            color: 'var(--vs-cs-font-colored)',
+        }));
 
         function isExpandable(cells: VsTableBodyCell[], rowIdx: number): boolean {
             return expandable.value(getRowItem(cells), rowIdx, items.value);
@@ -83,7 +84,7 @@ export default defineComponent({
             loading,
             primary,
             colorScheme,
-            dense,
+            buttonSize,
             expandButtonStyleSet,
         };
     },

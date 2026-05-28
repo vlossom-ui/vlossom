@@ -1,6 +1,6 @@
 <template>
     <div class="lg:hidden">
-        <vs-button id="color-panel-btn" dense circle :style-set="buttonStyleSet" @click="togglePanel">
+        <vs-button id="color-panel-btn" size="sm" circle :style-set="buttonStyleSet" @click="togglePanel">
             <span class="text-lg">🎨</span>
         </vs-button>
         <vs-floating target="#color-panel-btn" v-model="isPanelOpen" placement="bottom" align="end">

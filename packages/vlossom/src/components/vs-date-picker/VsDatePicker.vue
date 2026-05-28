@@ -32,6 +32,7 @@
             :no-clear
             :name
             :required
+            :size
             no-label
             no-messages
             no-default-rules
@@ -68,7 +69,7 @@ import {
     type Ref,
     type TemplateRef,
 } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { logUtil } from '@/utils';
 import { useStyleSet, useInput } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
@@ -134,6 +135,7 @@ export default defineComponent({
         },
         type: { type: String as PropType<VsDatePickerType>, default: 'date' },
         noClear: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
 
         // v-model
         modelValue: {
