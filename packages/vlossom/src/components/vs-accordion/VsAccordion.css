@@ -13,24 +13,28 @@
         @apply relative flex w-full cursor-pointer items-center outline-none hover:brightness-96 active:brightness-92;
 
         background-color: var(--vs-cs-bg);
-        padding: 0 calc(var(--vs-size-padding, 0.8rem) * 1.25);
-        min-height: var(--vs-size-height);
+        padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
+        min-height: var(--vs-size-height, var(--vs-comp-height-md));
         color: var(--vs-cs-font-colored);
-        font-size: var(--vs-size-font);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         /* 화살표 아이콘 추가 */
         &::after {
             position: absolute;
             top: 50%;
-            right: var(--vs-accordion-arrowSpacing, calc(var(--vs-size-padding, 0.8rem) * 1.25));
+            right: var(--vs-accordion-arrowSpacing, calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25));
             transform: translateY(-50%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-top: var(--vs-accordion-arrowSize, calc(var(--vs-size-font, 1rem) * 0.45)) solid
+            border-top: var(--vs-accordion-arrowSize, calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.45)) solid
                 var(--vs-accordion-arrowColor, var(--vs-cs-bg-primary));
-            border-right: calc(var(--vs-accordion-arrowSize, calc(var(--vs-size-font, 1rem) * 0.45)) * 0.8) solid
-                transparent;
-            border-left: calc(var(--vs-accordion-arrowSize, calc(var(--vs-size-font, 1rem) * 0.45)) * 0.8) solid
-                transparent;
+            border-right: calc(
+                    var(--vs-accordion-arrowSize, calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.45)) * 0.8
+                )
+                solid transparent;
+            border-left: calc(
+                    var(--vs-accordion-arrowSize, calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.45)) * 0.8
+                )
+                solid transparent;
             width: 0;
             height: 0;
             content: '';

@@ -58,8 +58,8 @@ export default defineComponent({
         const expandButtonStyleSet = computed(() => ({
             $content: { padding: '0' },
             border: 'none',
-            width: 'calc(var(--vs-size-height) * 0.75)',
-            height: 'calc(var(--vs-size-height) * 0.75)',
+            width: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
+            height: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
             backgroundColor: 'var(--vs-cs-bg-colored)',
             color: 'var(--vs-cs-font-colored)',
         }));

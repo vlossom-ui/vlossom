@@ -13,13 +13,13 @@
     .vs-tab-control {
         @apply shrink-0;
 
-        width: calc(var(--vs-size-height, 2rem) * 0.8);
+        width: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.8);
         color: var(--vs-cs-font-colored);
 
         .vs-tab-control-icon {
             @apply shrink-0;
-            width: var(--vs-size-font, 1rem);
-            height: var(--vs-size-font, 1rem);
+            width: var(--vs-size-font, var(--vs-font-size-md));
+            height: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 
@@ -41,10 +41,10 @@
                 border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
-                padding: 0 calc(var(--vs-size-padding, 0.8rem) * 1.5);
-                height: var(--vs-size-height);
+                padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
+                height: var(--vs-size-height, var(--vs-comp-height-md));
                 color: var(--vs-cs-font);
-                font-size: var(--vs-size-font);
+                font-size: var(--vs-size-font, var(--vs-font-size-md));
 
                 &:hover:not(.vs-disabled):not(.vs-selected) {
                     border-color: var(--tab-border-color);

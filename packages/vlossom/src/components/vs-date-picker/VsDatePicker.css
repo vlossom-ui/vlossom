@@ -19,8 +19,8 @@
     .vs-date-picker-icon {
         @apply inline-flex items-center justify-center;
 
-        width: calc(var(--vs-size-font, 1rem) * 1.25);
-        height: calc(var(--vs-size-font, 1rem) * 1.25);
+        width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
+        height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
         color: var(--vs-cs-font-primary);
     }
 }

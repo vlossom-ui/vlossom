@@ -3,7 +3,7 @@
 .vs-radio-set {
     @apply flex flex-wrap items-center;
 
-    gap: calc(var(--vs-size-padding, 0.8rem) * 2);
+    gap: calc(var(--vs-size-padding, var(--vs-padding-md)) * 2);
 
     &.vs-vertical {
         @apply flex-col items-start;

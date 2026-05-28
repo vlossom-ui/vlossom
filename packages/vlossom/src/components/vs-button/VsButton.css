@@ -5,11 +5,11 @@
         hover:brightness-96 active:brightness-92;
 
     border: 1px solid var(--vs-cs-line);
-    border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius));
+    border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-cs-bg);
-    height: var(--vs-size-height);
+    height: var(--vs-size-height, var(--vs-comp-height-md));
     color: var(--vs-cs-font-colored);
-    font-size: var(--vs-size-font, inherit);
+    font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     .vs-button-loading {
         @apply absolute flex h-full w-full items-center justify-center;
@@ -20,7 +20,7 @@
     .vs-button-content {
         @apply relative flex h-full w-full items-center justify-center whitespace-nowrap;
 
-        padding: 0 var(--vs-size-padding);
+        padding: 0 var(--vs-size-padding, var(--vs-padding-md));
     }
 
     &.vs-loading-state {
@@ -67,8 +67,8 @@
     &.vs-circle {
         @apply rounded-full;
 
-        width: var(--vs-size-height);
-        height: var(--vs-size-height);
+        width: var(--vs-size-height, var(--vs-comp-height-md));
+        height: var(--vs-size-height, var(--vs-comp-height-md));
     }
 
     @container (max-width: 768px) {

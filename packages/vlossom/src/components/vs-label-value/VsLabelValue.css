@@ -15,11 +15,11 @@
             align-items: center;
             border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             background-color: var(--vs-cs-bg);
-            padding: 0 var(--vs-size-padding, 0.8rem);
-            min-height: var(--vs-size-height);
+            padding: 0 var(--vs-size-padding, var(--vs-padding-md));
+            min-height: var(--vs-size-height, var(--vs-comp-height-md));
             color: var(--vs-cs-font-colored);
             font-weight: 500;
-            font-size: var(--vs-size-font);
+            font-size: var(--vs-size-font, var(--vs-font-size-md));
         }
 
         &.vs-value {
@@ -27,11 +27,11 @@
 
             align-items: center;
             background-color: var(--vs-no-color);
-            padding: 0 var(--vs-size-padding, 0.8rem);
-            min-height: var(--vs-size-height);
+            padding: 0 var(--vs-size-padding, var(--vs-padding-md));
+            min-height: var(--vs-size-height, var(--vs-comp-height-md));
             color: var(--vs-cs-font-colored);
             font-weight: 500;
-            font-size: var(--vs-size-font);
+            font-size: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 

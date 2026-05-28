@@ -61,10 +61,11 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        padding: calc(var(--vs-size-padding) * 0.5) calc(var(--vs-size-padding) * 0.8);
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
         color: var(--vs-cs-font-colored);
         font-weight: var(--vs-font-weight);
-        font-size: var(--vs-size-font);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
 
         &:first-child {
@@ -82,8 +83,9 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        padding: calc(var(--vs-size-padding) * 0.5) calc(var(--vs-size-padding) * 0.8);
-        font-size: var(--vs-size-font);
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
     }
 
@@ -134,14 +136,14 @@
         color: var(--vs-cs-font-colored);
 
         .vs-table-no-data-icon {
-            width: calc(var(--vs-size-font, 1rem) * 2.5);
-            height: calc(var(--vs-size-font, 1rem) * 2.5);
+            width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 2.5);
+            height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 2.5);
         }
     }
 
     .vs-table-no-data-text {
         @apply font-bold;
-        font-size: calc(var(--vs-size-font, 1rem) * 1.25);
+        font-size: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
     }
 
     /* ── Draggable ── */
@@ -170,19 +172,19 @@
     .vs-table-th.vs-table-expand-handle,
     .vs-table-td.vs-table-expand-handle {
         @apply justify-end;
-        width: calc(var(--vs-size-height, 2rem) * 1.7);
+        width: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 1.7);
 
         .vs-table-expand-icon {
             @apply shrink-0 transition-transform;
-            width: var(--vs-size-font, 1rem);
-            height: var(--vs-size-font, 1rem);
+            width: var(--vs-size-font, var(--vs-font-size-md));
+            height: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 
     .vs-table-sort-icon {
         @apply inline-block shrink-0 cursor-pointer align-middle;
-        width: calc(var(--vs-size-font, 1rem) * 0.75);
-        height: calc(var(--vs-size-font, 1rem) * 0.75);
+        width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.75);
+        height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.75);
     }
 
     /* ── Pagination ── */

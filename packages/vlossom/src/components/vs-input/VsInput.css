@@ -13,7 +13,7 @@
     input {
         @apply h-full w-full border-none bg-transparent outline-none;
 
-        padding: 0 var(--vs-size-padding, 0.8rem);
+        padding: 0 var(--vs-size-padding, var(--vs-padding-md));
         color: var(--vs-cs-font);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
     }
@@ -27,7 +27,7 @@
     .vs-append {
         opacity: 1;
         background-color: var(--vs-cs-bg-primary);
-        padding: 0 calc(var(--vs-size-padding, 0.8rem) * 1.25);
+        padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
     }
 
     .vs-clear-button {

@@ -6,9 +6,10 @@
         @apply w-full;
 
         background-color: var(--vs-cs-bg-area);
-        padding: calc(var(--vs-size-padding, 0.8rem) * 0.75) calc(var(--vs-size-padding, 0.8rem) * 1.25);
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
         color: var(--vs-cs-font-colored);
-        font-size: var(--vs-size-font, 1rem);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
     }
 }
 
