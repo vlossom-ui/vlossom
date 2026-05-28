@@ -75,6 +75,11 @@ const meta: Meta<typeof VsTable> = {
             description:
                 '행 확장을 활성화하거나 조건부 함수로 제어합니다. 기본값은 `true`이지만, 확장 UI는 `expand` 슬롯이 제공된 경우에만 렌더링됩니다.',
         },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '테이블 크기 (셀 패딩 · 폰트 · expand handle · sort icon에 반영)',
+        },
         colorScheme,
     },
 };
@@ -355,6 +360,31 @@ export const StickyHeader: Story = {
         docs: {
             description: {
                 story: 'stickyHeader를 켜고 스크롤 시 헤더가 상단에 고정되는 동작을 확인합니다',
+            },
+        },
+    },
+};
+
+export const Sizes: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes, columns: sortableColumns, items: baseItems };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-table :columns="columns" :items="items" :size="size" />
+                </div>
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 셀 패딩 · 폰트 · expand handle · sort icon 크기를 한꺼번에 조절합니다.',
             },
         },
     },

@@ -102,6 +102,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | Makes the checkbox read-only |
 | `required` | `boolean` | `false` | | Marks field as required |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Checkbox box size and label font size |
 | `state` | `UIState` | `'idle'` | | Validation state |
 | `trueValue` | `any` | `true` | | Value when checked |
 | `falseValue` | `any` | `false` | | Value when unchecked |
@@ -133,6 +134,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | Makes all checkboxes read-only |
 | `required` | `boolean` | `false` | | Marks field as required |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Size propagated to each `VsCheckbox` |
 | `state` | `UIState` | `'idle'` | | Validation state |
 | `vertical` | `boolean` | `false` | | Arranges checkboxes vertically |
 

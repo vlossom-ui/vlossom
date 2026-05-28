@@ -16,7 +16,7 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio', colorSchemeClass, classObj, stateBoxClasses]" :style="styleSetVariables">
+        <div :class="['vs-radio', colorSchemeClass, sizeClass, classObj, stateBoxClasses]" :style="styleSetVariables">
             <label class="vs-radio-wrap" :for="computedId">
                 <input
                     ref="radioRef"
@@ -47,9 +47,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
-import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { stringUtil, objectUtil } from '@/utils';
 import type { VsRadioStyleSet } from './types';
 
@@ -71,6 +71,7 @@ export default defineComponent({
         checked: { type: Boolean, default: false },
         radioLabel: { type: String, default: '' },
         radioValue: { type: null, required: true },
+        size: { type: String as PropType<Size>, default: 'md' },
         // v-model
         modelValue: { type: null, default: null },
     },
@@ -89,6 +90,7 @@ export default defineComponent({
             radioValue,
             required,
             rules,
+            size,
             state,
             styleSet,
             noDefaultRules,
@@ -154,6 +156,8 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
             'vs-disabled': computedDisabled.value,
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
@@ -203,6 +207,7 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             classObj,
+            sizeClass,
             stateBoxClasses,
             computedDisabled,
             computedReadonly,

@@ -83,6 +83,7 @@ async function confirmChange(from, to) {
 | `readonly` | `boolean` | `false` | | 읽기 전용 모드 |
 | `required` | `boolean` | `false` | | 필수 입력 필드로 표시 |
 | `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 스위치 높이 · 핸들 크기 · 폰트 제어 |
 | `state` | `UIState` | `'idle'` | | UI 상태 (`idle`, `success`, `warning`, `error`) |
 | `trueLabel` | `string` | `'ON'` | | 스위치가 ON일 때 표시되는 레이블 |
 | `trueValue` | `any` | `true` | | 스위치가 ON일 때 사용되는 값 |

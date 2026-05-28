@@ -185,8 +185,8 @@
                 <vs-tabs v-model="selectedTabPrimary" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" primary width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Dense</h4>
-                <vs-tabs v-model="selectedTabDense" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" dense width="100%" />
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Small</h4>
+                <vs-tabs v-model="selectedTabSmall" :tabs="['Tab 1', 'Tab 2', 'Tab 3']" size="sm" width="100%" />
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 3 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Vertical</h4>
@@ -266,7 +266,7 @@ export default defineComponent({
 
         const selectedTabDefault = ref(0);
         const selectedTabPrimary = ref(0);
-        const selectedTabDense = ref(0);
+        const selectedTabSmall = ref(0);
         const selectedTabVertical = ref(0);
         const selectedTabControlsAuto = ref(0);
         const selectedTabControlsShow = ref(0);
@@ -284,7 +284,7 @@ export default defineComponent({
             accordion3,
             selectedTabDefault,
             selectedTabPrimary,
-            selectedTabDense,
+            selectedTabSmall,
             selectedTabVertical,
             selectedTabControlsAuto,
             selectedTabControlsShow,

@@ -64,10 +64,10 @@ import {
     type PropType,
     type TemplateRef,
 } from 'vue';
-import { VsComponent } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
+import { useColorScheme, useInput, useSizeClass, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
 import type { VsSwitchStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -90,6 +90,7 @@ export default defineComponent({
         multiple: { type: Boolean, default: false },
         falseLabel: { type: String, default: '' },
         falseValue: { type: null, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         trueLabel: { type: String, default: '' },
         trueValue: { type: null, default: true },
         // v-model
@@ -112,6 +113,7 @@ export default defineComponent({
             readonly,
             required,
             rules,
+            size,
             state,
             styleSet,
             trueValue,
@@ -128,10 +130,13 @@ export default defineComponent({
 
         const inputValue = ref(modelValue.value);
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
             'vs-checked': isChecked.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         const {

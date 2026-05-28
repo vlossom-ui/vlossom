@@ -19,6 +19,12 @@ const meta: Meta<VsCheckboxSetArgs> = {
         colorScheme,
         modelValue: { control: false },
         options: { control: false },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '각 체크박스로 전파되는 사이즈',
+            table: { defaultValue: { summary: 'md' } },
+        },
     },
 };
 
@@ -31,6 +37,31 @@ export const Default: Story = {
         options: ['Option 1', 'Option 2', 'Option 3'],
         modelValue: [],
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop이 각 체크박스로 전파되어 크기와 라벨 폰트를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsCheckboxSet },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-checkbox-set :size="size" :options="['Option 1', 'Option 2', 'Option 3']" />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const WithObjects: Story = {

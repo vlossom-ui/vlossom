@@ -41,9 +41,10 @@ const meta: Meta<typeof VsLabelValue> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
-        dense: {
-            control: 'boolean',
-            description: '압축된 스타일 적용',
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '컴포넌트 크기 (min-height · padding · font 제어)',
         },
         primary: {
             control: 'boolean',
@@ -112,20 +113,20 @@ export const Primary: Story = {
     }),
 };
 
-export const Dense: Story = {
-    args: {
-        dense: true,
-    },
-    render: (args: any) => ({
+export const Sizes: Story = {
+    render: () => ({
         components: { VsLabelValue },
         setup() {
-            return { args };
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
         },
         template: `
-            <vs-label-value v-bind="args">
-                <template #label>Dense</template>
-                ${LOREM_IPSUM}
-            </vs-label-value>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-label-value v-for="size in sizes" :key="size" :size="size">
+                    <template #label>size = "{{ size }}"</template>
+                    ${LOREM_IPSUM}
+                </vs-label-value>
+            </div>
         `,
     }),
 };

@@ -105,6 +105,7 @@ const options = [
 | `noClear`         | `boolean`                                                        | `false`               | -        | Hides the clear button                                  |
 | `optionsDisabled` | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`       | -        | Disables individual options                             |
 | `selectAll`       | `boolean`                                                        | `false`               | -        | Shows a select-all checkbox (multiple mode)             |
+| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                           | `'md'`                | -        | Trigger height, padding, font, border-radius, and the options dropdown (padding/font/border-radius) |
 | `modelValue`      | `any`                                                            | `null`                | -        | Selected value (v-model)                                |
 
 ## Types

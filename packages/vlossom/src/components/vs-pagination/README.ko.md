@@ -55,6 +55,7 @@ const page = ref(0);
 | `ghost`         | `boolean`                       | `false` | -        | 버튼에 ghost 스타일 적용                               |
 | `length`        | `number`                        | `1`     | Yes      | 전체 페이지 수 (0보다 커야 함)                         |
 | `outline`       | `boolean`                       | `false` | -        | 버튼에 outline 스타일 적용                             |
+| `size`          | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -      | 버튼 높이 · 폰트 · 아이콘 크기 제어                    |
 | `showingLength` | `number`                        | `10`    | -        | 한 번에 표시할 페이지 버튼 수                          |
 | `modelValue`    | `number`                        | `0`     | -        | 현재 페이지 인덱스 (0-based), `v-model`과 함께 사용   |
 

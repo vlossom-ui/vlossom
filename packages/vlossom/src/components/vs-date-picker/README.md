@@ -122,6 +122,7 @@ Default rules can be turned off via `noDefaultRules`.
 | `min`            | `string \| undefined`                             | `undefined` | -        | Earliest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                         |
 | `max`            | `string \| undefined`                             | `undefined` | -        | Latest valid value (rule-based, string comparison — e.g., `'2026-05-18' < '2026-12-31'`).                           |
 | `noClear`        | `boolean`                                         | `false`     | -        | Hides the clear button.                                                                                             |
+| `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | Input height, padding, font, and icon size.                                                                         |
 | `label`          | `string`                                          | `''`        | -        | Label text.                                                                                                         |
 | `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                                        |
 | `disabled`       | `boolean`                                         | `false`     | -        | Disables the component.                                                                                             |

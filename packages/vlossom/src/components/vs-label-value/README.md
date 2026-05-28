@@ -10,7 +10,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 - Side-by-side label and value layout with a configurable border.
 - Primary color mode highlights the label area with the primary color scheme.
-- Dense mode reduces padding and font size for compact displays.
+- Configurable size (`xs`, `sm`, `md`, `lg`, `xl`) controls padding and font size.
 - Vertical mode stacks label and value cells vertically.
 - Responsive vertical mode switches to vertical layout on small containers.
 
@@ -47,11 +47,11 @@ A two-column display component that pairs a label cell with a value cell, useful
 </template>
 ```
 
-### Dense Mode
+### Sizes
 
 ```html
 <template>
-    <vs-label-value :dense="true">
+    <vs-label-value size="xs">
         <template #label>ID</template>
         12345
     </vs-label-value>
@@ -79,7 +79,7 @@ Switch to vertical layout on small containers automatically.
 | `styleSet`    | `string \| VsLabelValueStyleSet` | -       | -        | Custom style set for the component.                               |
 | `width`       | `string \| number \| Breakpoints`| -       | -        | Width of the component.                                           |
 | `grid`        | `string \| number \| Breakpoints`| -       | -        | Grid column span for layout.                                      |
-| `dense`       | `boolean`                        | `false` | -        | Reduces padding and font size for compact display.                |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  | -        | Component size (controls min-height, padding, and font size).     |
 | `primary`     | `boolean`                        | `false` | -        | Applies primary color scheme to the label cell.                   |
 | `vertical`    | `boolean`                        | `false` | -        | Stacks label and value cells vertically.                          |
 | `responsive`  | `boolean`                        | `false` | -        | Automatically switches to vertical layout in narrow containers.   |

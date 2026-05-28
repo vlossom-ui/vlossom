@@ -1,6 +1,6 @@
 import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import { functionUtil, objectUtil } from '@/utils';
-import { type UIState, type VsComponent, type PropsOf, type SearchProps } from '@/declaration';
+import { type UIState, type VsComponent, type PropsOf, type SearchProps, type Size } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -54,7 +54,7 @@ export function useTable(
         loading,
         draggable,
         primary,
-        dense,
+        size,
     } = toRefs(props);
 
     // normalize
@@ -255,7 +255,7 @@ export function useTable(
         pageStartIndex,
         pageEndIndex,
         primary,
-        dense,
+        size,
     };
 }
 
@@ -278,7 +278,7 @@ export type TableComposable = {
     loading: Ref<boolean | undefined> | undefined;
     draggable: Ref<boolean | undefined> | undefined;
     primary: Ref<boolean | undefined> | undefined;
-    dense: Ref<boolean | undefined> | undefined;
+    size: Ref<Size | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
     page: ComputedRef<number>;

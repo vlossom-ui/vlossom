@@ -12,7 +12,7 @@ A tab navigation component with animated indicator, prev/next control buttons, a
 - Automatic or manual control buttons for navigating overflow tab lists
 - Vertical tab layout support
 - Keyboard navigation between tabs
-- Dense and primary visual variants
+- Configurable size (`xs`, `sm`, `md`, `lg`, `xl`) and primary visual variants
 - Responsive width and grid layout support
 
 ## Basic Usage
@@ -63,7 +63,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 | ---- | ---- | ------- | -------- | ----------- |
 | `colorScheme` | `string` | | | Color scheme for the component |
 | `styleSet` | `string \| VsTabsStyleSet` | | | Custom style set for the component |
-| `dense` | `boolean` | `false` | | Reduces tab height |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Tab size (controls height, padding, font, and control button) |
 | `disabled` | `boolean \| (tab: string, index: number) => boolean` | `false` | | Disables all or specific tabs |
 | `grid` | `string \| number \| Breakpoints` | | | Grid column span |
 | `height` | `string \| number` | `'auto'` | | Height of the tab bar |

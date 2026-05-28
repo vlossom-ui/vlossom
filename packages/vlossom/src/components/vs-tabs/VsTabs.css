@@ -13,12 +13,13 @@
     .vs-tab-control {
         @apply shrink-0;
 
-        width: 1.6rem;
-        height: var(--vs-comp-height-md);
+        width: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.8);
         color: var(--vs-cs-font-colored);
 
         .vs-tab-control-icon {
-            @apply size-4 shrink-0;
+            @apply shrink-0;
+            width: var(--vs-size-font, var(--vs-font-size-md));
+            height: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 
@@ -40,10 +41,10 @@
                 border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
-                padding: 0 1.2rem;
-                height: var(--vs-comp-height-md);
+                padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
+                height: var(--vs-size-height, var(--vs-comp-height-md));
                 color: var(--vs-cs-font);
-                font-size: var(--vs-font-size-md);
+                font-size: var(--vs-size-font, var(--vs-font-size-md));
 
                 &:hover:not(.vs-disabled):not(.vs-selected) {
                     border-color: var(--tab-border-color);
@@ -69,26 +70,6 @@
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
                 background-color: var(--vs-cs-bg-area-colored);
-            }
-        }
-    }
-
-    &.vs-dense {
-        .vs-tab-control {
-            height: var(--vs-comp-height-xs);
-
-            .vs-tab-control-icon {
-                @apply size-3;
-            }
-        }
-
-        .vs-tabs-wrap {
-            .vs-tab-list {
-                .vs-tab-item {
-                    padding: 0 0.8rem;
-                    height: var(--vs-comp-height-xs);
-                    font-size: var(--vs-font-size-sm);
-                }
             }
         }
     }

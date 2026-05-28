@@ -127,17 +127,24 @@ describe('VsTabs', () => {
             expect(wrapper.find('.vs-tabs').classes()).toContain('vs-vertical');
         });
 
-        it('dense prop이 true이면 vs-dense 클래스가 적용되어야 한다', () => {
+        it('size prop의 기본값은 "md"이며 vs-md 클래스가 적용된다', () => {
             // given, when
             const wrapper = mount(VsTabs, {
-                props: {
-                    tabs: ['Tab 1', 'Tab 2', 'Tab 3'],
-                    dense: true,
-                },
+                props: { tabs: ['Tab 1', 'Tab 2', 'Tab 3'] },
             });
 
             // then
-            expect(wrapper.find('.vs-tabs').classes()).toContain('vs-dense');
+            expect(wrapper.find('.vs-tabs').classes()).toContain('vs-md');
+        });
+
+        it.each(['xs', 'sm', 'md', 'lg', 'xl'] as const)('size="%s"이면 vs-%s 클래스가 적용된다', (size) => {
+            // given, when
+            const wrapper = mount(VsTabs, {
+                props: { tabs: ['Tab 1', 'Tab 2', 'Tab 3'], size },
+            });
+
+            // then
+            expect(wrapper.find('.vs-tabs').classes()).toContain(`vs-${size}`);
         });
 
         it('primary prop이 true이면 vs-primary 클래스가 적용되어야 한다', () => {

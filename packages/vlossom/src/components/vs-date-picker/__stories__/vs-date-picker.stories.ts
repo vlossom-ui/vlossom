@@ -78,6 +78,12 @@ const meta: Meta<typeof VsDatePicker> = {
         noDefaultRules: { control: 'boolean', table: { category: 'Validation' } },
         messages: { control: 'object', table: { category: 'Message' } },
         noMessages: { control: 'boolean', table: { category: 'Message' } },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: 'Input 크기 (높이 · 패딩 · 폰트 · 아이콘 크기)',
+            table: { category: 'Layout', defaultValue: { summary: 'md' } },
+        },
         width: { control: 'text', table: { category: 'Layout' } },
         grid: { control: 'text', table: { category: 'Layout' } },
         styleSet: { control: 'object', table: { category: 'Style' } },
@@ -100,6 +106,31 @@ export const Default: Story = {
     args: {
         label: '날짜',
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 입력 영역 높이 · 패딩 · 폰트 · 아이콘 크기를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsDatePicker },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-date-picker :size="size" />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const Types: Story = {

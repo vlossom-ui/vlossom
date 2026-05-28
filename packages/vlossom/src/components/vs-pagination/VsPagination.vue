@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="['vs-pagination', colorSchemeClass, { 'vs-disabled': disabled }]"
+        :class="['vs-pagination', colorSchemeClass, sizeClass, { 'vs-disabled': disabled }]"
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
     >
         <vs-button
@@ -12,7 +12,7 @@
             :ghost
             :outline
             aria-label="go to first page"
-            size="sm"
+            :size
             @click.prevent.stop="goFirst()"
         >
             <slot name="first">
@@ -27,7 +27,7 @@
             :ghost
             :outline
             aria-label="go to previous page"
-            size="sm"
+            :size
             @click.prevent.stop="goPrev()"
         >
             <slot name="prev">
@@ -46,7 +46,7 @@
                 :ghost
                 :outline
                 :aria-label="`go to page ${page}`"
-                size="sm"
+                :size
                 @click.prevent.stop="selectIndex(page - 1)"
             >
                 <slot name="page" :page="page">
@@ -62,7 +62,7 @@
             :ghost
             :outline
             aria-label="go to next page"
-            size="sm"
+            :size
             @click.prevent.stop="goNext()"
         >
             <slot name="next">
@@ -78,7 +78,7 @@
             :ghost
             :outline
             aria-label="go to last page"
-            size="sm"
+            :size
             @click.prevent.stop="goLast()"
         >
             <slot name="last">
@@ -89,9 +89,9 @@
 </template>
 
 <script lang="ts">
-import { type ComputedRef, computed, defineComponent, toRefs, watch } from 'vue';
-import { VsComponent } from '@/declaration';
-import { useColorScheme, useStyleSet, useIndexSelector } from '@/composables';
+import { type ComputedRef, type PropType, computed, defineComponent, toRefs, watch } from 'vue';
+import { VsComponent, type Size } from '@/declaration';
+import { useColorScheme, useStyleSet, useIndexSelector, useSizeClass } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
@@ -122,6 +122,7 @@ export default defineComponent({
             },
         },
         outline: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         showingLength: {
             type: Number,
             default: 10,
@@ -140,7 +141,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goFirst', 'goLast', 'goPrev', 'goNext', 'setPage'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, disabled, modelValue, length, showingLength } = toRefs(props);
+        const { colorScheme, styleSet, disabled, modelValue, length, showingLength, size } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
             $controlButton: { $content: { padding: '0' } },
@@ -158,6 +159,8 @@ export default defineComponent({
             pageIndexList,
             disabled,
         );
+
+        const { sizeClass } = useSizeClass(size);
 
         const pages: ComputedRef<number[]> = computed(() => {
             const pageArr: number[] = [];
@@ -230,6 +233,7 @@ export default defineComponent({
         return {
             computedColorScheme,
             colorSchemeClass,
+            sizeClass,
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,

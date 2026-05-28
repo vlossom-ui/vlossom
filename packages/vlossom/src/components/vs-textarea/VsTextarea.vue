@@ -21,7 +21,7 @@
         <textarea
             ref="textareaRef"
             :id="computedId"
-            :class="['vs-textarea', colorSchemeClass, classObj, stateBoxClasses]"
+            :class="['vs-textarea', colorSchemeClass, sizeClass, classObj, stateBoxClasses]"
             :style="componentStyleSet.$textarea"
             :disabled="computedDisabled"
             :readonly="computedReadonly"
@@ -44,9 +44,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, useTemplateRef, type TemplateRef, type PropType, type Ref } from 'vue';
-import { VsComponent, type StringModifiers } from '@/declaration';
+import { VsComponent, type Size, type StringModifiers } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getMinMaxProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useStateClass, useStyleSet, useStringModifier } from '@/composables';
+import { useColorScheme, useInput, useSizeClass, useStateClass, useStyleSet, useStringModifier } from '@/composables';
 
 import type { VsTextareaStyleSet, VsTextareaValueType } from './types';
 import { useVsTextareaRules } from './vs-textarea-rules';
@@ -65,6 +65,7 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
+        size: { type: String as PropType<Size>, default: 'md' },
         // v-model
         modelValue: { type: String, default: '' },
         modelModifiers: {
@@ -87,6 +88,7 @@ export default defineComponent({
             rules,
             max,
             min,
+            size,
             state,
             styleSet,
             modelModifiers,
@@ -151,6 +153,8 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
+        const { sizeClass } = useSizeClass(size);
+
         function updateValue(event: Event) {
             const target = event.target as HTMLTextAreaElement;
             const value = target.value || '';
@@ -185,6 +189,7 @@ export default defineComponent({
             classObj,
             colorSchemeClass,
             componentStyleSet,
+            sizeClass,
             stateBoxClasses,
             computedId,
             computedDisabled,

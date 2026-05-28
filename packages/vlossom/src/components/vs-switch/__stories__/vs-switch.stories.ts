@@ -35,6 +35,12 @@ const meta: Meta<typeof VsSwitch> = {
     tags: ['autodocs'],
     argTypes: {
         colorScheme,
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: '스위치 크기 (높이 · 핸들 크기 · 폰트)',
+            table: { defaultValue: { summary: 'md' } },
+        },
     },
 };
 
@@ -42,6 +48,35 @@ export default meta;
 type Story = StoryObj<typeof VsSwitch>;
 
 export const Default: Story = {};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 스위치 높이 · 핸들 크기 · 폰트를 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsSwitch },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <vs-switch :size="size" true-label="ON" false-label="OFF" />
+                        <vs-switch :size="size" true-label="ON" false-label="OFF" checked />
+                        <vs-switch :size="size" true-label="ON" false-label="OFF" disabled />
+                    </div>
+                </div>
+            </div>
+        `,
+    }),
+};
 
 export const ColorScheme: Story = {
     render: (args: any) => ({

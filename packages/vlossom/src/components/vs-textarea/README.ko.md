@@ -76,6 +76,7 @@ const text = ref('');
 | `readonly` | `boolean` | `false` | | 읽기 전용 모드 |
 | `required` | `boolean` | `false` | | 필수 입력 필드로 표시 |
 | `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 폰트 크기 및 패딩 |
 | `state` | `UIState` | `'idle'` | | UI 상태 (`idle`, `success`, `warning`, `error`) |
 | `valid` | `boolean` | `false` | | valid 상태의 v-model |
 | `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |

@@ -94,7 +94,6 @@ export default defineComponent({
             state: stateFn,
             items,
             columns,
-            dense,
         } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
@@ -141,10 +140,7 @@ export default defineComponent({
             const statedRowStyle = isSelected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
             return objectUtil.assign(statedRowStyle, gridStyle.value ?? {});
         });
-        const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({
-            height: '100%',
-            minHeight: dense?.value ? 'calc(var(--vs-comp-height-sm))' : 'calc(var(--vs-comp-height-md))',
-        }));
+        const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({ height: '100%' }));
 
         function getGridColumnWidth(column?: VsTableColumnDef): string {
             if (!column) {

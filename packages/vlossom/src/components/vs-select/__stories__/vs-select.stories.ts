@@ -19,6 +19,12 @@ const meta: Meta<VsSelectArgs> = {
         colorScheme,
         modelValue: { control: false },
         options: { control: false },
+        size: {
+            control: 'select',
+            options: ['xs', 'sm', 'md', 'lg', 'xl'],
+            description: 'Select 크기 (트리거 높이 · 패딩 · 폰트 · 옵션 드롭다운)',
+            table: { defaultValue: { summary: 'md' } },
+        },
     },
 };
 
@@ -43,6 +49,31 @@ export const Default: Story = {
         placeholder: 'Select an option',
         modelValue: null,
     },
+};
+
+export const Sizes: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'size prop으로 트리거 높이 · 패딩 · 폰트 · 모서리 반경 · 옵션 드롭다운을 한꺼번에 조절합니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsSelect },
+        setup() {
+            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+            return { sizes, basicOptions };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div v-for="size in sizes" :key="size">
+                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <vs-select :size="size" :options="basicOptions" placeholder="Select an option" search />
+                </div>
+            </div>
+        `,
+    }),
 };
 
 export const Multiple: Story = {

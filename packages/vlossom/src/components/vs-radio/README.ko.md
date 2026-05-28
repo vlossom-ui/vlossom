@@ -95,6 +95,7 @@ async function confirmChange(from, to) {
 | `noDefaultRules` | `boolean`                                                       | `false`  | -        | 내장 유효성 검사 규칙 비활성화                     |
 | `readonly`     | `boolean`                                                         | `false`  | -        | 읽기 전용으로 설정                                 |
 | `rules`        | `Rule[]`                                                          | `[]`     | -        | 커스텀 유효성 검사 규칙                            |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | 라디오 크기 및 라벨 폰트 크기                      |
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | 유효성 검사 상태                                   |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | 값 변경 전 호출되는 비동기 콜백                    |
 | `checked`      | `boolean`                                                         | `false`  | -        | 마운트 시 이 라디오를 미리 선택                    |
@@ -122,6 +123,7 @@ async function confirmChange(from, to) {
 | `noDefaultRules` | `boolean`                                                       | `false`  | -        | 내장 유효성 검사 규칙 비활성화                     |
 | `readonly`     | `boolean`                                                         | `false`  | -        | 모든 라디오를 읽기 전용으로 설정                   |
 | `rules`        | `Rule[]`                                                          | `[]`     | -        | 커스텀 유효성 검사 규칙                            |
+| `size`         | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                            | `'md'`   | -        | 각 `VsRadio`로 전달되는 사이즈                     |
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | 유효성 검사 상태                                   |
 | `options`      | `any[]`                                                           | `[]`     | -        | 옵션 값 또는 객체의 배열                           |
 | `optionLabel`  | `string`                                                          | -        | -        | 옵션이 객체일 때 레이블에 사용할 키 이름           |

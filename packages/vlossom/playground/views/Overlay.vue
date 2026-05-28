@@ -44,7 +44,7 @@
                 </div>
                 <template #footer>
                     <div class="p-2">
-                        <vs-button dense @click="drawerOpen = false">Close</vs-button>
+                        <vs-button size="sm" @click="drawerOpen = false">Close</vs-button>
                     </div>
                 </template>
             </vs-drawer>
