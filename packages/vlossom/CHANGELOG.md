@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.1.0-beta.4](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.4...vlossom-v2.1.0-beta.4) (2026-05-28)
+
+
+### Features
+
+* **Icons:** apply Lucide Icons ([#475](https://github.com/vlossom-ui/vlossom/issues/475)) ([36348e5](https://github.com/vlossom-ui/vlossom/commit/36348e597aa51d25c6fa8abf620d4de42bfd0576))
+* **list-index-selector:** change index select spec ([#462](https://github.com/vlossom-ui/vlossom/issues/462)) ([226ec5b](https://github.com/vlossom-ui/vlossom/commit/226ec5bec455fdcaf3a92d9fafb73e06078fae3a))
+* **modal-plugin:** support componentProps for rendered components ([#478](https://github.com/vlossom-ui/vlossom/issues/478)) ([017e89c](https://github.com/vlossom-ui/vlossom/commit/017e89c7bfe4093381699465dc77bb2aa47937f6))
+* **size:** add size prop on components ([#497](https://github.com/vlossom-ui/vlossom/issues/497)) ([7d8e8c8](https://github.com/vlossom-ui/vlossom/commit/7d8e8c896c6a37e3d00380e09f2a537b5811173f))
+* **VsDatePicker:** create vs-date-picker component ([#465](https://github.com/vlossom-ui/vlossom/issues/465)) ([2d34b5a](https://github.com/vlossom-ui/vlossom/commit/2d34b5a3128708b1176c6f639ca4aedfe1eeb3ad))
+* **VsImage, package:** add default fallback UI and update version in package.json ([#491](https://github.com/vlossom-ui/vlossom/issues/491)) ([94566da](https://github.com/vlossom-ui/vlossom/commit/94566da540ca8a1c2f5c76a98b516f9e6df86730))
+* **VsSteps:** update vs-steps focused style ([91b4ef2](https://github.com/vlossom-ui/vlossom/commit/91b4ef291e4aa94d420554690bfae773588cc460))
+* **VsTable:** add pagination style-set ([#485](https://github.com/vlossom-ui/vlossom/issues/485)) ([6c4882d](https://github.com/vlossom-ui/vlossom/commit/6c4882d5fed14c44b38a9e7d84f3910479f3f478))
+* **VsTabs, VsSteps:** add visible keyboard focus indicators ([#464](https://github.com/vlossom-ui/vlossom/issues/464)) ([d517847](https://github.com/vlossom-ui/vlossom/commit/d51784755c7df2dc4cac13ac3e81214fe05fbe3f))
+* **VsTooltip:** support slot-based tooltip trigger ([#463](https://github.com/vlossom-ui/vlossom/issues/463)) ([4c180cd](https://github.com/vlossom-ui/vlossom/commit/4c180cd87d6a01ca01f1c56774f91edc3437553e))
+
+
+### Bug Fixes
+
+* add min-width on buttons of plugins (confirm, alert, prompt) ([#498](https://github.com/vlossom-ui/vlossom/issues/498)) ([b6a7e01](https://github.com/vlossom-ui/vlossom/commit/b6a7e01b5047f90576481255b7fca3f3a0bd7d1f))
+* **OverlayApp:** fix overlay app context injection ([#477](https://github.com/vlossom-ui/vlossom/issues/477)) ([f20b090](https://github.com/vlossom-ui/vlossom/commit/f20b0900d09d39f9f9f7ff703825a19c3c1c7be7))
+* **VsFileDrop:** add file equal check ([#492](https://github.com/vlossom-ui/vlossom/issues/492)) ([7a1820a](https://github.com/vlossom-ui/vlossom/commit/7a1820a01bb5015296d79f0926813bcf18f27c4e))
+* **VsModal:** fix modal component reactivity ([#486](https://github.com/vlossom-ui/vlossom/issues/486)) ([db283d4](https://github.com/vlossom-ui/vlossom/commit/db283d425a30f665a1dab0f3b5fd896bb5dca822))
+* **VsSelect:** remove default options height ([#488](https://github.com/vlossom-ui/vlossom/issues/488)) ([21edeea](https://github.com/vlossom-ui/vlossom/commit/21edeea68a22ece49d0a18d5734a953da21d97ef))
+* **VsTable:** preserve custom pageSizeOptions with infinity value ([#499](https://github.com/vlossom-ui/vlossom/issues/499)) ([007f25e](https://github.com/vlossom-ui/vlossom/commit/007f25edc06fe5bf8056a3105bbb53e6d5c4d5f5))
+* **VsTable:** remove asterisk style in vs-table ([#476](https://github.com/vlossom-ui/vlossom/issues/476)) ([268d612](https://github.com/vlossom-ui/vlossom/commit/268d6126b62db9ef03fd9500f9e41c28f173bb83))
+* **VsTabs:** sync indicator after tabs update ([#495](https://github.com/vlossom-ui/vlossom/issues/495)) ([9d4f36d](https://github.com/vlossom-ui/vlossom/commit/9d4f36da76e026f211a38b5c3f5bdfba0e59866a))
+
 ## [2.0.0-beta.4](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.3...vlossom-v2.0.0-beta.4) (2026-05-14)
 
 
