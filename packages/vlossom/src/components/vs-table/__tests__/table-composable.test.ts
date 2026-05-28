@@ -421,6 +421,29 @@ describe('useTable', () => {
         });
 
         describe('사용자 정의 pageSizeOptions', () => {
+            it('pageSize가 없으면 pageSizeOptions의 첫 번째 값을 초기 pageSize로 사용한다', async () => {
+                const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const customOptions = [
+                    { label: '5 items', value: 5 },
+                    { label: '10 items', value: 10 },
+                    { label: '20 items', value: 20 },
+                ];
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: {
+                        pageSizeOptions: customOptions,
+                        showPageSizeSelect: true,
+                    },
+                });
+
+                await nextTick();
+
+                expect(table.pageSize.value).toBe(5);
+                expect(table.bodyCells.value).toHaveLength(5);
+                expect(table.totalPages.value).toBe(6);
+            });
+
             it('pageSize가 default 값(50)이어도 사용자가 지정한 pageSizeOptions를 그대로 사용한다', async () => {
                 const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const customOptions = [

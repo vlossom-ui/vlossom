@@ -138,10 +138,10 @@ export function useTable(
                 return internalPageSize.value;
             }
             const currentPageSize = rawPageSize?.value;
-            if (!currentPageSize) {
-                return DEFAULT_PAGE_SIZE;
+            if (typeof currentPageSize === 'number') {
+                return currentPageSize;
             }
-            return currentPageSize;
+            return pagination.value.pageSizeOptions?.[0]?.value ?? DEFAULT_PAGE_SIZE;
         },
         set: (value: number) => {
             internalPageSize.value = value;

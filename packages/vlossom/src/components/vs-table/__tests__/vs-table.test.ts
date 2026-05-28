@@ -332,6 +332,33 @@ describe('VsTable', () => {
             expect(pageSize).toBe(DEFAULT_PAGE_SIZE);
         });
 
+        it('초기 pageSize가 없으면 pageSizeOptions의 첫 번째 값을 사용한다', async () => {
+            const items = Array.from({ length: 30 }, (_, i) => ({ id: `${i}`, name: `User ${i}`, age: i }));
+            const wrapper = mountTable({
+                props: {
+                    items,
+                    pagination: {
+                        pageSizeOptions: [
+                            { label: '5 items', value: 5 },
+                            { label: '10 items', value: 10 },
+                            { label: '20 items', value: 20 },
+                        ],
+                    },
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.findAll('tbody tr')).toHaveLength(5);
+
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+
+            const emitted = wrapper.emitted('paginate');
+            expect(emitted).toHaveLength(1);
+            const [, pageSize] = emitted![0] as [number, number];
+            expect(pageSize).toBe(5);
+        });
+
         describe('server mode', () => {
             it('서버 모드를 활성화하면 totalItemCount 기반으로 pagination을 렌더링한다', async () => {
                 const serverItems = Array.from({ length: 10 }, (_, i) => ({
