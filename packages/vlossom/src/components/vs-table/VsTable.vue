@@ -122,7 +122,6 @@ import {
     type VsTablePageSizeOptions,
 } from './types';
 import {
-    DEFAULT_PAGE_SIZE,
     DEFAULT_PAGE_SIZE_OPTIONS,
     TABLE_DRAG_WRAPPER_CLASS,
     VS_TABLE_BODY_SLOT_PREFIXES,
@@ -225,7 +224,6 @@ export default defineComponent({
         page: { type: Number as PropType<number> }, // 0-based page index
         pageSize: {
             type: Number as PropType<number>,
-            default: DEFAULT_PAGE_SIZE,
             validator: (value: number, props: unknown) => {
                 const { pagination } = props as PropsOf<VsComponent.VsTable>;
                 if (value <= 0) {
@@ -235,10 +233,7 @@ export default defineComponent({
                 if (pagination && typeof pagination === 'object') {
                     const pageSizeOptions: VsTablePageSizeOptions =
                         pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS;
-                    const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
-                    if (isValidPageSize) {
-                        return true;
-                    }
+
                     if (pagination.showPageSizeSelect) {
                         logUtil.propError(
                             componentName,
@@ -248,12 +243,6 @@ export default defineComponent({
                         );
                         return false;
                     }
-                    logUtil.propWarning(
-                        componentName,
-                        'pageSize',
-                        `pageSize ${value} is not in the pageSizeOptions ` +
-                            `[${pageSizeOptions.map((option) => option.value).join(', ')}]`,
-                    );
                     return true;
                 }
                 if (pagination && typeof pagination === 'boolean') {

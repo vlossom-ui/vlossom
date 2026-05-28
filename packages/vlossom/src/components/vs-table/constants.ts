@@ -11,11 +11,13 @@ export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
 export const DEFAULT_PAGE_SIZE_ALL = Infinity;
 export const DEFAULT_PAGE_SIZE = 50;
 export function toDefaultPageSizeOptions(pageSize: number): VsTablePageSizeOption {
+    if (pageSize === DEFAULT_PAGE_SIZE_ALL) {
+        return { label: 'All', value: DEFAULT_PAGE_SIZE_ALL };
+    }
     return { label: `${pageSize} items`, value: pageSize };
 }
 export const DEFAULT_PAGE_SIZE_OPTIONS: VsTablePageSizeOptions = [
-    ...[50, 100].map(toDefaultPageSizeOptions),
-    { label: 'All', value: DEFAULT_PAGE_SIZE_ALL },
+    ...[50, 100, DEFAULT_PAGE_SIZE_ALL].map(toDefaultPageSizeOptions),
 ];
 export const DEFAULT_PAGINATION_OPTIONS: VsTablePaginationOptions = {
     pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
