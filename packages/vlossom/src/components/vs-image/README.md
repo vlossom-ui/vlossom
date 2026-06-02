@@ -13,7 +13,7 @@ A component for displaying images with support for lazy loading, fallback images
 - Supports lazy loading via the Intersection Observer API.
 - Automatically switches to the `fallback` image on load error.
 - Supports custom fallback UI with the `fallback` prop or `fallback` slot. If both are provided, the prop takes priority.
-- Displays the no image icon when neither the `fallback` prop nor slot is provided, or when the fallback image fails to load.
+- Displays the no image icon when neither the `fallback` prop nor slot is provided.
 - Fires an `error` event when an image fails to load.
 
 ## Basic Usage

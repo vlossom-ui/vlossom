@@ -13,7 +13,7 @@
 - Intersection Observer API를 통한 지연 로딩을 지원합니다.
 - 로드 오류 시 `fallback` 이미지로 자동 전환됩니다.
 - `fallback` prop 또는 `fallback` slot으로 커스텀 fallback UI를 표시할 수 있습니다. 둘 다 제공되면 prop이 우선합니다.
-- `fallback` prop과 slot이 모두 없거나 fallback 이미지 로딩이 실패할 경우 no image icon을 표시합니다.
+- `fallback` prop과 slot이 모두 없을 경우 no image icon을 표시합니다.
 - 이미지 로드 실패 시 `error` 이벤트를 발생시킵니다.
 
 ## Basic Usage
