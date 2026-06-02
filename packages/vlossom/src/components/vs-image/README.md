@@ -12,7 +12,8 @@ A component for displaying images with support for lazy loading, fallback images
 - Shows a skeleton placeholder while the image is loading.
 - Supports lazy loading via the Intersection Observer API.
 - Automatically switches to the `fallback` image on load error.
-- Displays the no image icon when no `fallback` is provided or the fallback image also fails.
+- Supports custom fallback UI with the `fallback` prop or `fallback` slot. If both are provided, the prop takes priority.
+- Displays the no image icon when neither the `fallback` prop nor slot is provided.
 - Fires an `error` event when an image fails to load.
 
 ## Basic Usage
@@ -35,7 +36,9 @@ Defer image loading until the element enters the viewport.
 
 ### Fallback Image
 
-Provide a fallback image URL that is shown when the primary source fails. If no fallback is provided, or if the fallback image also fails to load, the default fallback UI is shown.
+Provide fallback UI shown when the primary source fails, using either the `fallback` prop or the `fallback` slot. If both are provided, the prop takes priority.
+
+**Prop usage example**
 
 ```html
 <template>
@@ -44,6 +47,18 @@ Provide a fallback image URL that is shown when the primary source fails. If no 
         fallback="https://example.com/fallback.png"
         alt="Image with fallback"
     />
+</template>
+```
+
+**Slot usage example**
+
+```html
+<template>
+    <vs-image src="https://example.com/broken.png" alt="Custom fallback">
+        <template #fallback>
+            <div>Image could not be loaded.</div>
+        </template>
+    </vs-image>
 </template>
 ```
 
@@ -109,9 +124,10 @@ interface VsImageStyleSet extends CSSProperties {
 
 ## Slots
 
-| Slot       | Description                                         |
-| ---------- | --------------------------------------------------- |
-| `skeleton` | Custom content displayed inside the skeleton state. |
+| Slot       | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| `skeleton` | Custom content displayed inside the skeleton state.          |
+| `fallback` | Custom fallback UI used when no `fallback` prop is provided. |
 
 ## Methods
 
