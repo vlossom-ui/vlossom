@@ -60,6 +60,53 @@ describe('vs-image', () => {
             expect(wrapper.vm.computedSrc).toBe(fallbackPath);
         });
 
+        it('fallback prop과 fallback slot이 모두 있으면 fallback prop을 우선해야 한다', async () => {
+            // given
+            const imagePath = '/images/test.png';
+            const fallbackPath = '/images/fallback.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                    fallback: fallbackPath,
+                },
+                slots: {
+                    fallback: '<div class="custom-fallback">custom fallback</div>',
+                },
+            });
+
+            // when
+            await wrapper.find('img').trigger('error');
+
+            // then
+            expect(wrapper.vm.computedSrc).toBe(fallbackPath);
+            expect(wrapper.find('.custom-fallback').exists()).toBe(false);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(false);
+        });
+
+        it('fallback prop이 없고 fallback slot이 있으면 fallback slot을 보여줘야 한다', async () => {
+            // given
+            const imagePath = '/images/test.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                },
+                slots: {
+                    fallback: '<div class="custom-fallback">custom fallback</div>',
+                },
+            });
+
+            expect(wrapper.find('.custom-fallback').exists()).toBe(false);
+
+            // when
+            await wrapper.find('img').trigger('error');
+
+            // then
+            expect(wrapper.vm.isNoImage).toBe(true);
+            expect(wrapper.find('.custom-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(false);
+            expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
+        });
+
         it('<img /> error 발생 시, fallback이 설정되어 있지 않으면 기본 fallback을 보여줘야 한다', async () => {
             // given
             const imagePath = '/images/test.png';

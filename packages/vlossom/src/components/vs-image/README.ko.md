@@ -12,7 +12,8 @@
 - 이미지 로딩 중 스켈레톤 플레이스홀더를 보여줍니다.
 - Intersection Observer API를 통한 지연 로딩을 지원합니다.
 - 로드 오류 시 `fallback` 이미지로 자동 전환됩니다.
-- `fallback`이 없거나 fallback 이미지도 실패하면 no image icon을 표시합니다.
+- `fallback` prop 또는 `fallback` slot으로 커스텀 fallback UI를 표시할 수 있습니다. 둘 다 제공되면 prop이 우선합니다.
+- `fallback` prop과 slot이 모두 없거나 fallback 이미지 로딩이 실패할 경우 no image icon을 표시합니다.
 - 이미지 로드 실패 시 `error` 이벤트를 발생시킵니다.
 
 ## Basic Usage
@@ -35,7 +36,9 @@
 
 ### 대체 이미지
 
-기본 소스 로드 실패 시 표시할 대체 이미지 URL을 제공합니다. fallback이 없거나 fallback 이미지도 로드에 실패하면 기본 fallback UI를 표시합니다.
+기본 소스 로드 실패 시 표시할 대체 이미지 URL을 prop 또는 slot으로 제공합니다. 둘 다 사용할 경우 prop이 우선합니다.
+
+**prop 사용 예시**
 
 ```html
 <template>
@@ -44,6 +47,18 @@
         fallback="https://example.com/fallback.png"
         alt="대체 이미지 포함"
     />
+</template>
+```
+
+**slot 사용 예시**
+
+```html
+<template>
+    <vs-image src="https://example.com/broken.png" alt="커스텀 대체 UI">
+        <template #fallback>
+            <div>이미지를 불러올 수 없습니다.</div>
+        </template>
+    </vs-image>
 </template>
 ```
 
@@ -109,9 +124,10 @@ interface VsImageStyleSet extends CSSProperties {
 
 ## Slots
 
-| 슬롯       | 설명                                    |
-| ---------- | --------------------------------------- |
-| `skeleton` | 스켈레톤 상태에서 표시할 커스텀 콘텐츠. |
+| 슬롯       | 설명                                                   |
+| ---------- | ------------------------------------------------------ |
+| `skeleton` | 스켈레톤 상태에서 표시할 커스텀 콘텐츠.                |
+| `fallback` | `fallback` prop이 없을 때 사용하는 커스텀 fallback UI. |
 
 ## Methods
 
