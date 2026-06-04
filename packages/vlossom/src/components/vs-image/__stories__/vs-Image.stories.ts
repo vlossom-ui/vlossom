@@ -56,7 +56,17 @@ export const FallbackSlot: Story = {
             <vs-image v-bind="args">
                 <template #fallback>
                     <div
-                        style="display:flex; width:100%; height:100%; align-items:center; justify-content:center; border:1px solid #93c5fd; border-radius:4px; background-color:#eff6ff; color:#2563eb;"
+                        style="
+                            display: flex;
+                            width: 100%;
+                            height: 100%;
+                            align-items: center;
+                            justify-content: center;
+                            border: 1px solid #93c5fd;
+                            border-radius: 4px;
+                            background-color: #eff6ff;
+                            color: #2563eb;
+                        "
                     >
                         fallback slot
                     </div>
@@ -84,7 +94,17 @@ export const FallbackPriority: Story = {
             <vs-image v-bind="args">
                 <template #fallback>
                     <div
-                        style="display:flex; width:100%; height:100%; align-items:center; justify-content:center; border:1px solid #fca5a5; border-radius:4px; background-color:#fef2f2; color:#dc2626;"
+                        style="
+                            display: flex;
+                            width: 100%;
+                            height: 100%;
+                            align-items: center;
+                            justify-content: center;
+                            border: 1px solid #fca5a5;
+                            border-radius: 4px;
+                            background-color: #fef2f2;
+                            color: #dc2626;
+                        "
                     >
                         This slot should not be displayed
                     </div>
