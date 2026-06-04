@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { src, fallbackSrc, lazySrc, brokenSrc } from './constants';
+import { src, fallbackSrc, lazySrc, brokenSrc } from './constants.ts';
 import VsImage from './../VsImage.vue';
 
 const meta: Meta<typeof VsImage> = {
