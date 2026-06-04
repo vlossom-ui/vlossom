@@ -103,7 +103,8 @@ describe('vs-image', () => {
             // then
             expect(wrapper.vm.isNoImage).toBe(true);
             expect(wrapper.find('.custom-fallback').exists()).toBe(true);
-            expect(wrapper.find('.vs-image-fallback').exists()).toBe(false);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-fallback-icon').exists()).toBe(false);
             expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
         });
 
@@ -122,6 +123,7 @@ describe('vs-image', () => {
             // then
             expect(wrapper.vm.isNoImage).toBe(true);
             expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-fallback-icon').exists()).toBe(true);
             expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
             expect(wrapper.emitted('error')).toHaveLength(1);
         });
@@ -145,6 +147,34 @@ describe('vs-image', () => {
             expect(wrapper.vm.computedSrc).toBe(fallbackPath);
             expect(wrapper.vm.isNoImage).toBe(true);
             expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
+            expect(wrapper.emitted('error')).toHaveLength(2);
+        });
+
+        it('fallback prop과 fallback slot이 모두 있으면 fallback 이미지 실패 후 fallback slot을 보여줘야 한다', async () => {
+            // given
+            const imagePath = '/images/test.png';
+            const fallbackPath = '/images/fallback.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                    fallback: fallbackPath,
+                },
+                slots: {
+                    fallback: '<div class="custom-fallback">custom fallback</div>',
+                },
+            });
+
+            // when
+            await wrapper.find('img').trigger('error');
+            await wrapper.find('img').trigger('error');
+
+            // then
+            expect(wrapper.vm.computedSrc).toBe(fallbackPath);
+            expect(wrapper.vm.isNoImage).toBe(true);
+            expect(wrapper.find('.vs-image-fallback').exists()).toBe(true);
+            expect(wrapper.find('.custom-fallback').exists()).toBe(true);
+            expect(wrapper.find('.vs-image-fallback-icon').exists()).toBe(false);
             expect(wrapper.find('.vs-image-tag').classes()).toContain('vs-hidden');
             expect(wrapper.emitted('error')).toHaveLength(2);
         });
