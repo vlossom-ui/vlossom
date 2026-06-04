@@ -13,7 +13,7 @@
             </div>
         </vs-header>
 
-        <vs-container layout class="flex-1 pb-32 lg:pr-96">
+        <vs-container layout>
             <vs-page class="w-full" :style-set="{ padding: '0 2rem' }">
                 <vs-tabs v-model="activeTab" :tabs="tabs" primary class="mb-8" />
 
@@ -32,7 +32,7 @@
             <ColorSchemePanel class="fixed top-20 right-24 hidden lg:block" />
         </vs-container>
 
-        <vs-footer layout :style-set="basicBarStyleSet">
+        <vs-footer layout position="fixed" :style-set="basicBarStyleSet">
             <div class="flex h-full items-center justify-center text-sm">
                 <span>© 2026 Vlossom</span>
             </div>
