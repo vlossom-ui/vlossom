@@ -70,18 +70,22 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v5
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
             - uses: actions/setup-node@v5
               with:
                   node-version-file: '.nvmrc'
-                  cache: 'npm'
-                  cache-dependency-path: ./packages/vlossom-mcp/package-lock.json
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom-mcp/pnpm-lock.yaml
                   registry-url: 'https://registry.npmjs.org'
             - name: Install dependencies
               working-directory: ./packages/vlossom-mcp
-              run: npm ci
+              run: pnpm install --frozen-lockfile
             - name: Build vlossom-mcp
               working-directory: ./packages/vlossom-mcp
-              run: npm run build
+              run: pnpm build
             - name: Publish vlossom-mcp
               working-directory: ./packages/vlossom-mcp
               env:
@@ -90,7 +94,7 @@ jobs:
                   VERSION=$(node -p "require('./package.json').version")
                   if [[ "$VERSION" == *"-"* ]]; then
                     TAG=$(echo "$VERSION" | sed 's/.*-\([a-zA-Z]*\).*/\1/')
-                    npm publish --access public --tag $TAG
+                    pnpm publish --access public --no-git-checks --tag $TAG
                   else
-                    npm publish --access public
+                    pnpm publish --access public --no-git-checks
                   fi

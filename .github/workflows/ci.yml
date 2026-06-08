@@ -93,14 +93,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v5
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
             - uses: actions/setup-node@v5
               with:
                   node-version-file: '.nvmrc'
-                  cache: 'npm'
-                  cache-dependency-path: ./packages/vlossom-mcp/package-lock.json
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom-mcp/pnpm-lock.yaml
             - name: Install dependencies
               working-directory: ./packages/vlossom-mcp
-              run: npm ci
+              run: pnpm install --frozen-lockfile
             - name: Run tests
               working-directory: ./packages/vlossom-mcp
-              run: npm test
+              run: pnpm test
