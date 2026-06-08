@@ -12,7 +12,9 @@
             @error.stop="onImageError"
         />
         <div v-if="isNoImage" class="vs-image-fallback">
-            <ImageOffIcon class="vs-image-fallback-icon" />
+            <slot name="fallback">
+                <ImageOffIcon class="vs-image-fallback-icon" />
+            </slot>
         </div>
     </div>
 </template>
