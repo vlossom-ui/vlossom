@@ -58,8 +58,8 @@ Before adding another hand-curated entry, verify the vlossom repo cannot provide
 Run the narrowest useful checks for the change, and run the full package test before release-sensitive edits:
 
 ```bash
-npm run build
-npm run verify
-npm test
+pnpm build
+pnpm verify
+pnpm test
 npx tsc -p tsconfig.scripts.json
 ```

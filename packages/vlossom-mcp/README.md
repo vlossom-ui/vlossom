@@ -118,10 +118,10 @@ Component, directive, composable, token, source, and release references are fetc
 
 ```bash
 cd packages/vlossom-mcp
-npm install
-npm run build
-npm test
-npm run verify
+pnpm install
+pnpm build
+pnpm test
+pnpm verify
 node dist/index.js
 ```
 
