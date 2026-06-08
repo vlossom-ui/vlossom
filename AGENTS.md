@@ -57,6 +57,7 @@ Run MCP commands from `packages/vlossom-mcp`.
 - Follow the relevant documentation template for components, composables, plugins, directives, and utilities.
 - Put practical usage examples before advanced details.
 - Remove stale history and planned behavior from user-facing docs.
+- Keep repository-level package metadata and indexes synchronized with package additions, removals, renames, and published version changes.
 
 ## Testing
 
