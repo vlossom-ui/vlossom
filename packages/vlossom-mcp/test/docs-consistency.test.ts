@@ -157,7 +157,7 @@ test('generated JSON data and scripts are not active runtime dependencies', () =
 
     assert.equal(Object.hasOwn(packageJson.scripts, 'generate'), false);
     assert.equal(packageJson.scripts.build.includes('copy-data'), false);
-    assert.equal(packageJson.scripts.build, 'npm run clean && tsc');
+    assert.equal(packageJson.scripts.build, 'pnpm clean && tsc');
     if (existsSync(path.join(packageRoot, 'dist/data'))) {
         assert.deepEqual(
             readdirSync(path.join(packageRoot, 'dist/data')).filter((file) => file.endsWith('.json')),

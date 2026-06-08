@@ -28,9 +28,9 @@ Run Vlossom commands from `packages/vlossom`.
 
 Run MCP commands from `packages/vlossom-mcp`.
 
-- `npm run build` builds the server.
-- `npm test` runs its test suite.
-- `npm run verify` runs the publish verification path.
+- `pnpm build` builds the server.
+- `pnpm test` runs its test suite.
+- `pnpm verify` runs the publish verification path.
 
 ## Source Contracts
 

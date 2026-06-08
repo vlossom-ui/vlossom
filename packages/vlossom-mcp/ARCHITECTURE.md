@@ -70,29 +70,29 @@ If no version-specific ref exists, the registry falls back to `main` and adds a 
 
 ### GitHub-derived (per resolved ref)
 
-| Source                                                                | Purpose                                                                                            |
-| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `packages/vlossom/src/components/*/README.md` and `types.ts`          | Component props, slots, events, v-model, methods, and StyleSet metadata.                           |
-| `packages/vlossom/src/directives/*/README.md`                         | Directive reference data.                                                                          |
-| `packages/vlossom/src/composables/*/README.md`                        | Composable reference data.                                                                         |
-| `packages/vlossom/src/composables/index.ts`                           | Public-composable allowlist — derived from the `export * from './<dir>/...'` lines.                |
-| `packages/vlossom/src/plugins/*-plugin/README.md`                     | Plugin (toast / modal / alert / confirm / prompt) name, methods, availableVersion, and example.    |
-| `packages/vlossom/README.md` (`## Setup` fenced block)                | Install/setup snippet returned as `get_vlossom_reference({type:'option'}).reference.fullExample`. |
-| `packages/vlossom/src/styles/*.css`                                   | Vlossom CSS token list.                                                                            |
-| `api.github.com/repos/vlossom-ui/vlossom/releases?per_page=100`       | Changelog entries surfaced by `get_vlossom_reference({type:'changelog'})`.                         |
+| Source                                                          | Purpose                                                                                           |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `packages/vlossom/src/components/*/README.md` and `types.ts`    | Component props, slots, events, v-model, methods, and StyleSet metadata.                          |
+| `packages/vlossom/src/directives/*/README.md`                   | Directive reference data.                                                                         |
+| `packages/vlossom/src/composables/*/README.md`                  | Composable reference data.                                                                        |
+| `packages/vlossom/src/composables/index.ts`                     | Public-composable allowlist — derived from the `export * from './<dir>/...'` lines.               |
+| `packages/vlossom/src/plugins/*-plugin/README.md`               | Plugin (toast / modal / alert / confirm / prompt) name, methods, availableVersion, and example.   |
+| `packages/vlossom/README.md` (`## Setup` fenced block)          | Install/setup snippet returned as `get_vlossom_reference({type:'option'}).reference.fullExample`. |
+| `packages/vlossom/src/styles/*.css`                             | Vlossom CSS token list.                                                                           |
+| `api.github.com/repos/vlossom-ui/vlossom/releases?per_page=100` | Changelog entries surfaced by `get_vlossom_reference({type:'changelog'})`.                        |
 
 ### Curated, manually maintained
 
 These are the only data points that don't follow the GitHub source-of-truth pattern. Each entry needs a hand-edit when its listed trigger occurs.
 
-| Source | Purpose | Update trigger |
-| ------ | ------- | -------------- |
-| `src/data/component-relationships.ts` | Curated component parent / children / siblings map — children also help validators and scaffolders. | A component is added to the vlossom registry. |
-| `src/data/coding-rules.ts` | Vlossom-first scaffolding rule data exposed via `get_vlossom_reference({type:'rule'})`. | Vlossom-first scaffolding philosophy changes. |
-| `src/data/search-synonyms.ts` | Natural-language to Vlossom-concept keyword expansion used by `search_vlossom`. | New UI concept appears or a query misses the registry. |
-| `src/internal/validation/vlossom-first-validator.ts` `NATIVE_TAGS` | Native HTML controls Vlossom can replace; surfaced as `PREFER_VLOSSOM_COMPONENT`. | HTML adds a new native interactive control. |
-| `src/internal/validation/vlossom-first-validator.ts` `THIRD_PARTY_IMPORTS` / `THIRD_PARTY_TAG_PATTERNS` | Third-party Vue UI imports and tag prefixes detected as Vlossom-first violations. | A Vue UI library reaches notable adoption. |
-| `src/internal/validation/project-setup-validator.ts` `THIRD_PARTY_UI_DEPS` | Third-party Vue UI dependencies surfaced during project-setup validation. | Same trigger as `THIRD_PARTY_IMPORTS`. |
+| Source                                                                                                  | Purpose                                                                                             | Update trigger                                         |
+| ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `src/data/component-relationships.ts`                                                                   | Curated component parent / children / siblings map — children also help validators and scaffolders. | A component is added to the vlossom registry.          |
+| `src/data/coding-rules.ts`                                                                              | Vlossom-first scaffolding rule data exposed via `get_vlossom_reference({type:'rule'})`.             | Vlossom-first scaffolding philosophy changes.          |
+| `src/data/search-synonyms.ts`                                                                           | Natural-language to Vlossom-concept keyword expansion used by `search_vlossom`.                     | New UI concept appears or a query misses the registry. |
+| `src/internal/validation/vlossom-first-validator.ts` `NATIVE_TAGS`                                      | Native HTML controls Vlossom can replace; surfaced as `PREFER_VLOSSOM_COMPONENT`.                   | HTML adds a new native interactive control.            |
+| `src/internal/validation/vlossom-first-validator.ts` `THIRD_PARTY_IMPORTS` / `THIRD_PARTY_TAG_PATTERNS` | Third-party Vue UI imports and tag prefixes detected as Vlossom-first violations.                   | A Vue UI library reaches notable adoption.             |
+| `src/internal/validation/project-setup-validator.ts` `THIRD_PARTY_UI_DEPS`                              | Third-party Vue UI dependencies surfaced during project-setup validation.                           | Same trigger as `THIRD_PARTY_IMPORTS`.                 |
 
 The registry uses process memory cache only. There is no persistent generated cache.
 
@@ -101,12 +101,12 @@ Version-sensitive behavior is centralized in `internal/version/version-service.t
 The build pipeline is intentionally minimal:
 
 ```txt
-npm run build     # clean dist, compile TypeScript
-npm test          # build, type-check scripts, run contract tests
-npm run verify    # same verification path as npm test
+pnpm build     # clean dist, compile TypeScript
+pnpm test      # build, type-check scripts, run contract tests
+pnpm verify    # same verification path as pnpm test
 ```
 
-`prepublishOnly` runs `npm run verify` so the published package contains a compiled MCP server and no generated JSON data baseline.
+`prepublishOnly` runs `pnpm verify` so the published package contains a compiled MCP server and no generated JSON data baseline.
 
 ## Resources
 
