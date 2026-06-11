@@ -12,7 +12,7 @@
                 :id="cell.id"
                 :style="getCellStyle(index)"
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
-                @click.prevent.stop="clickCell(cell, $event)"
+                @click.stop="clickCell(cell, $event)"
             >
                 <vs-skeleton v-if="loading" :color-scheme :style-set="skeletonStyleSet" />
                 <template v-else>

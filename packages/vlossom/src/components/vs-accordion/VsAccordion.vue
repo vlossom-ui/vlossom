@@ -8,7 +8,7 @@
         @keydown.enter.prevent.stop="toggle"
         @keydown.space.prevent.stop="toggle"
     >
-        <div class="vs-accordion-title" :style="componentStyleSet.$title" @click.prevent.stop="toggle">
+        <div class="vs-accordion-title" :style="componentStyleSet.$title" @click.stop="toggle">
             <slot name="title" />
         </div>
         <vs-expandable :open="isOpen" :size :style-set="componentStyleSet.$content">

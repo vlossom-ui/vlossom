@@ -1,6 +1,6 @@
 <template>
     <template v-if="isBodyRow(cells)">
-        <td class="vs-table-td" v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
+        <td class="vs-table-td" v-if="anySelectable" :style="cellStyle" @click.stop="selectRow(cells, $event)">
             <slot name="select" :item="getRowItem(cells)" :value="isSelected(cells)" :rowIdx>
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
@@ -17,7 +17,7 @@
     </template>
 
     <template v-else>
-        <th class="vs-table-th" v-if="anySelectable" :style="cellStyle" @click.prevent.stop="selectRow(cells, $event)">
+        <th class="vs-table-th" v-if="anySelectable" :style="cellStyle" @click.stop="selectRow(cells, $event)">
             <slot name="select" :item="null" :value="isSelected(cells)" :rowIdx="HEADER_ROW_INDEX">
                 <vs-checkbox
                     :style-set="headerCheckboxStyle"

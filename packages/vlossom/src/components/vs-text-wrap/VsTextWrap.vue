@@ -11,7 +11,7 @@
                 type="button"
                 class="vs-text-wrap-button vs-copy-button"
                 aria-label="copy"
-                @click.prevent.stop="copyInnerText"
+                @click.stop="copyInnerText"
             >
                 <component
                     :is="copied ? CheckIcon : CopyIcon"
@@ -26,7 +26,7 @@
                 type="button"
                 class="vs-text-wrap-button vs-link-button"
                 aria-label="link"
-                @click.prevent.stop="openLink"
+                @click.stop="openLink"
             >
                 <LinkIcon class="vs-icon-container" :style="componentStyleSet.$linkIcon" />
             </button>
