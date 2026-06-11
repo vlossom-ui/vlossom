@@ -5,7 +5,7 @@
     .vs-expandable-content {
         @apply w-full;
 
-        background-color: var(--vs-cs-bg-area);
+        background-color: var(--vs-no-color);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
         color: var(--vs-cs-font-colored);
