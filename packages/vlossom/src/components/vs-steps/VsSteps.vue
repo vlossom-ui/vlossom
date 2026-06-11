@@ -27,7 +27,7 @@
                 ]"
                 role="tab"
                 :tabindex="isSelected(index) ? 0 : -1"
-                @click.prevent.stop="selectStep(index)"
+                @click.stop="selectStep(index)"
                 @keydown.stop="(e) => handleKeydown(e, vertical)"
             >
                 <div class="vs-step-num" :style="getStepStyleSet(index)">
