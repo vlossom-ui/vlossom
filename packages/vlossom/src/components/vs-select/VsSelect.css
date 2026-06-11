@@ -12,11 +12,11 @@
         font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         .vs-select-value {
-            @apply flex flex-1 flex-wrap items-center gap-1;
+            @apply flex min-w-0 flex-1 flex-wrap items-center gap-1;
         }
 
         .vs-select-placeholder {
-            @apply opacity-50 select-none;
+            @apply truncate opacity-50 select-none;
         }
 
         .vs-select-collapsed-count {
