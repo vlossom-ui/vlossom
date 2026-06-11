@@ -28,6 +28,7 @@
         opacity: 1;
         background-color: var(--vs-cs-bg-primary);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
+        color: var(--vs-cs-font-primary);
     }
 
     .vs-clear-button {
