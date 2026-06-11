@@ -30,7 +30,7 @@
                     :aria-selected="isSelected(index)"
                     :aria-disabled="isDisabled(index)"
                     :tabindex="isSelected(index) ? 0 : -1"
-                    @click.prevent.stop="selectTab(index)"
+                    @click.stop="selectTab(index)"
                     @keydown.stop="(e) => handleKeydown(e, vertical)"
                 >
                     <slot name="tab" :tab :index>

@@ -28,7 +28,7 @@
                     :id="item.id"
                     :class="['vs-grouped-list-item', { 'vs-disabled': item.disabled }]"
                     :style="componentStyleSet.$item"
-                    @click.prevent.stop="emitClickItem(item, groupedIndex, group, groupIndex)"
+                    @click.stop="emitClickItem(item, groupedIndex, group, groupIndex)"
                 >
                     <slot name="item" v-bind="item" :groupedIndex :group :groupIndex>
                         <div class="vs-grouped-list-item-content">
