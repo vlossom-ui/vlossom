@@ -167,7 +167,7 @@ interface VsSelectStyleSet extends CSSProperties {
 | `options-header`   | 옵션 목록 위의 커스텀 콘텐츠                                      |
 | `options-footer`   | 옵션 목록 아래의 커스텀 콘텐츠                                    |
 | `group`            | 커스텀 그룹 헤더; 그룹 슬롯 props 수신                            |
-| `option`           | 커스텀 옵션 콘텐츠; `{ ...itemSlotProps, selected: boolean }` 수신 |
+| `option`           | 커스텀 옵션 콘텐츠; `{ id, option, label, value, index, disabled, group, groupIndex, groupedIndex, selected }` 수신 |
 | `messages`         | 커스텀 유효성 검사 메시지                                         |
 
 ## Methods

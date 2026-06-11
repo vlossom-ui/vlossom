@@ -79,7 +79,7 @@
                     <template #group="groupSlotProps" v-if="$slots.group">
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
-                    <template #item="itemSlotProps">
+                    <template #item="{ item, ...itemSlotProps }">
                         <div
                             :class="[
                                 'vs-select-option-wrap',
@@ -90,7 +90,10 @@
                             :data-id="itemSlotProps.id"
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
-                            <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
+                            <slot
+                                name="option"
+                                v-bind="{ ...itemSlotProps, option: item, selected: isSelected(itemSlotProps.id) }"
+                            >
                                 <div class="vs-select-option">
                                     {{ itemSlotProps.label }}
                                 </div>
