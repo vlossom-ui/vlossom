@@ -167,7 +167,7 @@ interface VsSelectStyleSet extends CSSProperties {
 | `options-header`   | Custom content above the options list                                |
 | `options-footer`   | Custom content below the options list                                |
 | `group`            | Custom group header; receives group slot props                       |
-| `option`           | Custom option content; receives `{ ...itemSlotProps, selected: boolean }` |
+| `option`           | Custom option content; receives `{ id, option, label, value, index, disabled, group, groupIndex, groupedIndex, selected }` |
 | `messages`         | Custom validation messages                                           |
 
 ## Methods

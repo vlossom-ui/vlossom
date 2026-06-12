@@ -1,0 +1,9 @@
+/* for focusable-composable.ts */
+[data-focusable] {
+    box-sizing: border-box;
+    border: 1px solid transparent;
+}
+
+[data-focusable].vs-focusable-active {
+    border-color: var(--vs-cs-line);
+}

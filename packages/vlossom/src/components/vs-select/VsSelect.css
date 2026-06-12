@@ -12,11 +12,11 @@
         font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         .vs-select-value {
-            @apply flex flex-1 flex-wrap items-center gap-1;
+            @apply flex min-w-0 flex-1 flex-wrap items-center gap-1;
         }
 
         .vs-select-placeholder {
-            @apply opacity-50 select-none;
+            @apply truncate opacity-50 select-none;
         }
 
         .vs-select-collapsed-count {
@@ -67,15 +67,6 @@
     background-color: var(--vs-no-color);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
-    .vs-select-focusable {
-        border: 1px solid transparent;
-
-        &.vs-focusable-active {
-            @apply box-content;
-            background-color: var(--vs-cs-bg-colored);
-        }
-    }
-
     .vs-select-search {
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
@@ -97,7 +88,7 @@
         }
 
         &.selected {
-            background-color: var(--vs-cs-bg-comp-colored);
+            background-color: var(--vs-cs-bg-colored);
 
             .vs-select-option {
                 font-weight: var(--vs-font-weight-bold);
