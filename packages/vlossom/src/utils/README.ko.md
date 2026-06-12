@@ -9,7 +9,7 @@ Vlossom 내부에서 사용되며 애플리케이션 코드에서도 사용할 �
 ## 기본 사용법
 
 ```typescript
-import { clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
+import { clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, numberUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
 ```
 
 또는 개별 유틸리티를 가져옵니다:
@@ -66,6 +66,12 @@ const size = stringUtil.toStringSize(100); // '100px'
 | logUtil  | `warning`     | `target: string, message: string`                              | `[Vlossom] {target}:` 접두사가 붙은 경고 메시지를 기록합니다.         |
 | logUtil  | `propError`   | `componentName: string, property: string, message: string`     | `error`를 사용하여 컴포넌트 속성에 대한 오류를 기록합니다.            |
 | logUtil  | `propWarning` | `componentName: string, property: string, message: string`     | `warning`을 사용하여 컴포넌트 속성에 대한 경고를 기록합니다.          |
+
+### numberUtil
+
+| 카테고리   | 메서드  | 파라미터                                  | 설명                                      |
+| ---------- | ------- | ----------------------------------------- | ----------------------------------------- |
+| numberUtil | `clamp` | `value: number, min: number, max: number` | `value`를 `min` 이상 `max` 이하 범위로 제한합니다. |
 
 ### objectUtil
 

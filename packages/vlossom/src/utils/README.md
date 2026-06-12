@@ -9,7 +9,7 @@ A collection of utility modules used internally by Vlossom and available for use
 ## Basic Usage
 
 ```typescript
-import { clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
+import { clipboardUtil, compareUtil, deviceUtil, domUtil, functionUtil, logUtil, numberUtil, objectUtil, propsUtil, stringUtil } from 'vlossom';
 ```
 
 Or import individual utilities:
@@ -66,6 +66,12 @@ const size = stringUtil.toStringSize(100); // '100px'
 | logUtil  | `warning`     | `target: string, message: string`                       | Logs a warning message prefixed with `[Vlossom] {target}:`.                     |
 | logUtil  | `propError`   | `componentName: string, property: string, message: string` | Logs an error for a component property using `error`.                           |
 | logUtil  | `propWarning` | `componentName: string, property: string, message: string` | Logs a warning for a component property using `warning`.                        |
+
+### numberUtil
+
+| Category   | Method  | Parameters                                  | Description                                      |
+| ---------- | ------- | ------------------------------------------- | ------------------------------------------------ |
+| numberUtil | `clamp` | `value: number, min: number, max: number`   | Restricts `value` to the inclusive `min`-`max` range. |
 
 ### objectUtil
 
