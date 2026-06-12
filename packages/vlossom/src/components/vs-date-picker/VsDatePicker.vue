@@ -39,7 +39,9 @@
             @update:model-value="onDateInput"
             @focus="onFocus"
             @blur="onBlur"
-            @click="open"
+            @pointerdown="onPointerDown"
+            @click="onClick"
+            @keydown.enter.stop="onKeydownEnter"
         >
             <template #prepend>
                 <slot v-if="$slots['prepend']" name="prepend" />
@@ -180,6 +182,11 @@ export default defineComponent({
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
+        const isFocused = ref(false);
+        const pointerInitiated = ref(false);
+        // 네이티브 picker는 열기/닫기 API가 없어 상태를 직접 추적
+        const pickerOpen = ref(false);
+        const suppressFocusEvents = ref(false);
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
@@ -234,16 +241,17 @@ export default defineComponent({
             return CalendarIcon;
         });
 
-        /** What is THIS?!?
-         * VsInputType is intentionally narrower for the public VsInput API.
-         * VsDatePicker still needs to pass native date/time input types to reuse VsInput's UI shell.
-         * Runtime validation stays in VsDatePicker, so this cast only bridges the internal prop type.
-         */
+        // date/time input은 placeholder를 무시 → 비어있고 비포커스면 text로 노출 후 네이티브 타입으로 캐스팅
         const deceiveType = computed<VsInputType>(() => {
+            if (!isFocused.value && !displayValue.value) {
+                return 'text';
+            }
             return type.value as unknown as VsInputType;
         });
 
         function onDateInput(value: string | number | null): void {
+            pickerOpen.value = false;
+
             const raw = value?.toString() ?? '';
             if (!raw) {
                 if (inputValue.value && !isValidFormat(inputValue.value, type.value)) {
@@ -274,26 +282,99 @@ export default defineComponent({
             emit('clear');
         }
 
+        function onPointerDown(): void {
+            pointerInitiated.value = true;
+        }
+
         function onFocus(e: FocusEvent): void {
+            // 포인터 focus는 click까지 text 유지(타입 변경 시 click 무시), 키보드 focus는 즉시 전환
+            if (!pointerInitiated.value) {
+                isFocused.value = true;
+            }
+            if (suppressFocusEvents.value) {
+                return;
+            }
             emit('focus', e);
         }
 
         function onBlur(e: FocusEvent): void {
+            isFocused.value = false;
+            pointerInitiated.value = false;
+            pickerOpen.value = false;
+            if (suppressFocusEvents.value) {
+                return;
+            }
             emit('blur', e);
         }
 
+        // text→네이티브 타입 전환 후 picker 열기. click 핸들러 안에서 해야 제스처가 유지돼 첫 click에 열림
         function openPicker(): void {
-            const input = dateInputRef.value?.inputRef;
-            if (!input || computedDisabled.value || computedReadonly.value) {
-                return;
-            }
-            const showPicker = input.showPicker;
-            if (typeof showPicker !== 'function') {
+            if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
+            const input = dateInputRef.value?.inputRef;
+            if (!input) {
+                return;
+            }
+
+            isFocused.value = true;
+            if (input.type !== type.value) {
+                input.type = type.value;
+            }
+
             input.focus();
-            showPicker.call(input);
+
+            const showPicker = input.showPicker;
+            if (typeof showPicker === 'function') {
+                showPicker.call(input);
+            }
+            pickerOpen.value = true;
+        }
+
+        // 포커스 유지하며 닫는 API가 없어 blur로 닫고 재포커스
+        function closePicker(input: HTMLInputElement): void {
+            pickerOpen.value = false;
+            suppressFocusEvents.value = true;
+            input.blur();
+            input.focus();
+            suppressFocusEvents.value = false;
+        }
+
+        // 토글: 열린 picker는 mousedown에서 브라우저가 닫으므로 재오픈만 안 하면 됨
+        function onClick(): void {
+            pointerInitiated.value = false;
+
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            if (pickerOpen.value) {
+                pickerOpen.value = false;
+                return;
+            }
+
+            openPicker();
+        }
+
+        function onKeydownEnter(e: KeyboardEvent): void {
+            if (computedDisabled.value || computedReadonly.value) {
+                return;
+            }
+
+            const input = dateInputRef.value?.inputRef;
+            if (!input) {
+                return;
+            }
+
+            e.preventDefault();
+
+            if (pickerOpen.value) {
+                closePicker(input);
+                return;
+            }
+
+            openPicker();
         }
 
         watch(
@@ -325,6 +406,9 @@ export default defineComponent({
 
             // Methods
             onDateInput,
+            onPointerDown,
+            onClick,
+            onKeydownEnter,
             onFocus,
             onBlur,
             focus,
