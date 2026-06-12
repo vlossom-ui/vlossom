@@ -54,12 +54,12 @@
                     @click-item="selectOptionItem"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search vs-select-focusable" data-focusable data-role="search">
+                        <div class="vs-select-search" data-focusable data-role="search">
                             <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" :size />
                         </div>
                         <div
                             v-if="multiple && selectAll"
-                            class="vs-select-all vs-select-focusable"
+                            class="vs-select-all"
                             data-focusable
                             data-role="select-all"
                             @click.prevent.stop="toggleSelectAll"
@@ -79,18 +79,17 @@
                     <template #group="groupSlotProps" v-if="$slots.group">
                         <slot name="group" v-bind="groupSlotProps" />
                     </template>
-                    <template #item="itemSlotProps">
+                    <template #item="{ item, ...itemSlotProps }">
                         <div
-                            :class="[
-                                'vs-select-option-wrap',
-                                'vs-select-focusable',
-                                { selected: isSelected(itemSlotProps.id) },
-                            ]"
+                            :class="['vs-select-option-wrap', { selected: isSelected(itemSlotProps.id) }]"
                             :style="getOptionStyleSet(itemSlotProps.id)"
                             :data-id="itemSlotProps.id"
                             :data-focusable="itemSlotProps.disabled ? undefined : true"
                         >
-                            <slot name="option" v-bind="{ ...itemSlotProps, selected: isSelected(itemSlotProps.id) }">
+                            <slot
+                                name="option"
+                                v-bind="{ ...itemSlotProps, option: item, selected: isSelected(itemSlotProps.id) }"
+                            >
                                 <div class="vs-select-option">
                                     {{ itemSlotProps.label }}
                                 </div>
