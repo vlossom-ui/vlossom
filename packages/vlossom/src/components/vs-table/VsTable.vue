@@ -388,6 +388,21 @@ export default defineComponent({
             emit('update:totalItems', items);
         }
 
+        function expand(index: number): void {
+            const row = table.bodyCells.value[index];
+            if (!row) {
+                return;
+            }
+            table.setExpand(row, true);
+        }
+        function collapse(index: number): void {
+            const row = table.bodyCells.value[index];
+            if (!row) {
+                return;
+            }
+            table.setExpand(row, false);
+        }
+
         watch(useStickyHeader, (visible) => {
             if (visible) {
                 nextTick(syncStickyScroll);
@@ -434,6 +449,8 @@ export default defineComponent({
             updateSelectedItems,
             updatePage,
             updatePageSize,
+            expand,
+            collapse,
         };
     },
 });

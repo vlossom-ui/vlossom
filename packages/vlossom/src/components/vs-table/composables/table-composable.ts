@@ -152,7 +152,7 @@ export function useTable(
     });
 
     const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
-    const { anyExpandable, isExpanded, toggleExpand } = useTableExpand(expandable, items);
+    const { anyExpandable, isExpanded, toggleExpand, setExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
     const {
@@ -241,6 +241,7 @@ export function useTable(
         anyExpandable,
         isExpanded,
         toggleExpand,
+        setExpand,
         anySelectable,
         selectedItems: internalSelectedItems,
         selectedAll,
@@ -292,6 +293,7 @@ export type TableComposable = {
     pageEndIndex: ComputedRef<number>;
     isExpanded: (row: VsTableCell[]) => boolean;
     toggleExpand: (row: VsTableCell[]) => boolean;
+    setExpand: (row: VsTableCell[], shouldExpand: boolean) => boolean;
     updateSortType: (headerKey: string) => void;
     initialize: () => void;
     toggleSelectAll: () => void;
