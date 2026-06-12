@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'vue';
+import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 import type { VsSearchInputStyleSet } from '@/components/vs-search-input/types';
@@ -9,6 +9,11 @@ declare module 'vue' {
     interface GlobalComponents {
         VsTable: typeof VsTable;
     }
+}
+
+export interface VsTableRef extends ComponentPublicInstance<typeof VsTable> {
+    expand: (index: number) => void;
+    collapse: (index: number) => void;
 }
 
 export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');

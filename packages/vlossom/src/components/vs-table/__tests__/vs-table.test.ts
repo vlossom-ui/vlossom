@@ -303,6 +303,89 @@ describe('VsTable', () => {
 
             expect(wrapper.findAll('tbody tr button')).toHaveLength(tableItems.length);
         });
+
+        it('expand(index) 메서드로 해당 index의 행을 펼칠 수 있다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+                slots: {
+                    expand: ({ item }: { item: VsTableItem }) => h('div', {}, String(item.name)),
+                },
+            });
+
+            await nextTick();
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+
+            (wrapper.vm as unknown as { expand: (index: number) => void }).expand(0);
+            await nextTick();
+
+            const expandedContent = wrapper.find('[data-testid="vs-expandable"]');
+            expect(expandedContent.exists()).toBe(true);
+            expect(expandedContent.text()).toBe('Alice');
+        });
+
+        it('collapse(index) 메서드로 펼쳐진 행을 접을 수 있다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+                slots: {
+                    expand: ({ item }: { item: VsTableItem }) => h('div', {}, String(item.name)),
+                },
+            });
+
+            await nextTick();
+            const vm = wrapper.vm as unknown as {
+                expand: (index: number) => void;
+                collapse: (index: number) => void;
+            };
+
+            vm.expand(0);
+            await nextTick();
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(true);
+
+            vm.collapse(0);
+            await nextTick();
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+        });
+
+        it('expand(index)에 해당하는 행이 없으면 아무 동작도 하지 않는다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: true },
+                slots: {
+                    expand: ({ item }: { item: VsTableItem }) => h('div', {}, String(item.name)),
+                },
+            });
+
+            await nextTick();
+
+            (wrapper.vm as unknown as { expand: (index: number) => void }).expand(999);
+            await nextTick();
+
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+        });
+
+        it('expandable하지 않은 행은 expand(index)로 펼쳐지지 않는다', async () => {
+            const wrapper = mountTable({
+                props: { expandable: (item: VsTableItem) => item.name !== 'Alice' },
+                slots: {
+                    expand: ({ item }: { item: VsTableItem }) => h('div', {}, String(item.name)),
+                },
+            });
+
+            await nextTick();
+
+            const vm = wrapper.vm as unknown as { expand: (index: number) => void };
+
+            // index 0 = Alice (확장 불가)
+            vm.expand(0);
+            await nextTick();
+            expect(wrapper.find('[data-testid="vs-expandable"]').exists()).toBe(false);
+
+            // index 1 = Bob (확장 가능)
+            vm.expand(1);
+            await nextTick();
+            const expandedContent = wrapper.find('[data-testid="vs-expandable"]');
+            expect(expandedContent.exists()).toBe(true);
+            expect(expandedContent.text()).toBe('Bob');
+        });
     });
 
     describe('pagination', () => {

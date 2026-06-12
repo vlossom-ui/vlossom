@@ -222,5 +222,7 @@ interface VsTablePaginationOptions {
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
+| Method     | Parameters       | Description                                                                                              |
+| ---------- | ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `expand`   | `index: number`  | Expands the expandable row at the given index in the currently displayed rows. No-op if the row does not exist or is not expandable |
+| `collapse` | `index: number`  | Collapses the expandable row at the given index in the currently displayed rows. No-op if the row does not exist or is not expandable |
