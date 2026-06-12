@@ -9,29 +9,24 @@
     > .vs-cell {
         @apply relative flex;
 
+        align-items: center;
+        padding: 0 var(--vs-size-padding, var(--vs-padding-md));
+        min-height: var(--vs-size-height, var(--vs-comp-height-md));
+        color: var(--vs-cs-font-colored);
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
+
         &.vs-label {
             @apply wrap-break-word whitespace-nowrap;
 
-            align-items: center;
             border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             background-color: var(--vs-cs-bg);
-            padding: 0 var(--vs-size-padding, var(--vs-padding-md));
-            min-height: var(--vs-size-height, var(--vs-comp-height-md));
-            color: var(--vs-cs-font-colored);
             font-weight: 500;
-            font-size: var(--vs-size-font, var(--vs-font-size-md));
         }
 
         &.vs-value {
             @apply flex-1 overflow-x-auto;
 
-            align-items: center;
             background-color: var(--vs-no-color);
-            padding: 0 var(--vs-size-padding, var(--vs-padding-md));
-            min-height: var(--vs-size-height, var(--vs-comp-height-md));
-            color: var(--vs-cs-font-colored);
-            font-weight: 500;
-            font-size: var(--vs-size-font, var(--vs-font-size-md));
         }
     }
 
@@ -55,6 +50,11 @@
                 @apply border-r-0;
                 border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
             }
+
+            &.vs-value {
+                padding-top: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
+                padding-bottom: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
+            }
         }
 
         &.vs-primary {
@@ -76,6 +76,11 @@
                 &.vs-label {
                     @apply border-r-0;
                     border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+                }
+
+                &.vs-value {
+                    padding-top: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
+                    padding-bottom: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
                 }
             }
 
