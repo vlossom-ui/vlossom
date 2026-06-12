@@ -13,6 +13,7 @@ import { computed, defineComponent, toRefs } from 'vue';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { numberUtil } from '@/utils';
 import type { VsProgressStyleSet } from './types';
 
 const componentName = VsComponent.VsProgress;
@@ -50,23 +51,14 @@ export default defineComponent({
 
         const computedMax = computed(() => {
             const num = Number(max.value);
-            if (!isFinite(num) || num <= 0) {
-                return 1;
-            }
 
-            return num;
+            return numberUtil.clamp(num, 1, Number.MAX_SAFE_INTEGER);
         });
 
         const computedValue = computed(() => {
             const num = Number(value.value);
-            if (!isFinite(num) || num < 0) {
-                return 0;
-            }
-            if (num > computedMax.value) {
-                return computedMax.value;
-            }
 
-            return num;
+            return numberUtil.clamp(num, 0, computedMax.value);
         });
 
         return {

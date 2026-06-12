@@ -1,5 +1,6 @@
 import { ref, type Ref, computed } from 'vue';
 import type { GlobalColorSchemes, GlobalStyleSets, Theme, VsComponent } from '@/declaration';
+import { numberUtil } from '@/utils';
 
 export class OptionsStore {
     private _colorScheme: Ref<GlobalColorSchemes> = ref({});
@@ -28,7 +29,7 @@ export class OptionsStore {
     public radiusRatio = computed(() => this._radiusRatio.value);
 
     public setRadiusRatio(radiusRatio: number) {
-        this._radiusRatio.value = Math.max(0, Math.min(1, radiusRatio));
+        this._radiusRatio.value = numberUtil.clamp(radiusRatio, 0, 1);
     }
 
     public getComponentStyleSet<T extends { [key: string]: any }>(
