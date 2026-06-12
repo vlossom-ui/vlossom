@@ -1,6 +1,6 @@
 import { ref, type Ref, computed } from 'vue';
 import type { GlobalColorSchemes, GlobalStyleSets, Theme, VsComponent } from '@/declaration';
-import { numberUtil } from '@/utils';
+import { logUtil, numberUtil } from '@/utils';
 
 export class OptionsStore {
     private _colorScheme: Ref<GlobalColorSchemes> = ref({});
@@ -29,6 +29,14 @@ export class OptionsStore {
     public radiusRatio = computed(() => this._radiusRatio.value);
 
     public setRadiusRatio(radiusRatio: number) {
+        if (isNaN(radiusRatio)) {
+            logUtil.warning('OptionsStore', 'Radius ratio should be a number');
+        }
+
+        if (radiusRatio < 0 || radiusRatio > 1) {
+            logUtil.warning('OptionsStore', 'Radius ratio should be in the range of 0 to 1');
+        }
+
         this._radiusRatio.value = numberUtil.clamp(radiusRatio, 0, 1);
     }
 
