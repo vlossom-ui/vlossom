@@ -201,7 +201,9 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
 
-        const renderClearButton = computed(() => !noClear.value && !computedReadonly.value && !computedDisabled.value);
+        const renderClearButton = computed(
+            () => !!inputValue.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
+        );
 
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;

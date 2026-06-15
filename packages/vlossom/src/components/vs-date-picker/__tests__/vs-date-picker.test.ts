@@ -10,14 +10,18 @@ function findDateInput(wrapper: ReturnType<typeof mount>) {
 
 describe('VsDatePicker', () => {
     describe('datetime 기본 동작', () => {
-        it('type=date에서 VsInput 내부 input의 type 속성이 date여야 한다', () => {
+        it('type=date에서 포커스되면 VsInput 내부 input의 type 속성이 date여야 한다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: '', type: 'date' },
             });
+            // 빈 값 + 비포커스 상태에서는 placeholder 노출을 위해 text 타입으로 렌더링된다.
+            expect(findDateInput(wrapper).attributes('type')).toBe('text');
+
+            await findDateInput(wrapper).trigger('focus');
             expect(findDateInput(wrapper).attributes('type')).toBe('date');
         });
 
-        it('type 4종 (date/datetime-local/time/month) 전환', () => {
+        it('type 4종 (date/datetime-local/time/month) 전환', async () => {
             const types: Array<'date' | 'datetime-local' | 'time' | 'month'> = [
                 'date',
                 'datetime-local',
@@ -28,6 +32,8 @@ describe('VsDatePicker', () => {
                 const wrapper = mount(VsDatePicker, {
                     props: { modelValue: '', type: t },
                 });
+                // 포커스되면 native picker type으로 전환된다.
+                await findDateInput(wrapper).trigger('focus');
                 expect(findDateInput(wrapper).attributes('type')).toBe(t);
             }
         });
@@ -173,6 +179,151 @@ describe('VsDatePicker', () => {
             ).$refs.formRef;
             const valid = await formRef.validate();
             expect(valid).toBe(false);
+        });
+    });
+
+    describe('placeholder', () => {
+        it('빈 값이면 placeholder가 보이도록 input type이 text가 되고 placeholder가 forward된다', () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date', placeholder: 'Select date' },
+            });
+            const input = findDateInput(wrapper);
+            // native date input은 placeholder를 무시하므로 빈 값일 때는 text 타입으로 노출한다.
+            expect(input.attributes('type')).toBe('text');
+            expect(input.attributes('placeholder')).toBe('Select date');
+        });
+
+        it('포커스 시 native picker type으로 전환되고 blur 후 빈 값이면 다시 text로 돌아간다', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date', placeholder: 'Select date' },
+            });
+            await findDateInput(wrapper).trigger('focus');
+            expect(findDateInput(wrapper).attributes('type')).toBe('date');
+
+            await findDateInput(wrapper).trigger('blur');
+            expect(findDateInput(wrapper).attributes('type')).toBe('text');
+        });
+
+        it('값이 있으면 비포커스라도 native picker type을 유지한다', () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '2026-05-18', type: 'date' },
+            });
+            expect(findDateInput(wrapper).attributes('type')).toBe('date');
+        });
+
+        it('pointer로 인한 focus 시에는 click 전까지 text 타입을 유지하고, click 시 native picker로 전환하며 picker를 연다', async () => {
+            // pointerdown -> focus 사이에 type을 바꾸면 브라우저가 click 이벤트를 삼켜
+            // 클릭-투-오픈이 깨진다. 따라서 pointer focus 동안에는 text를 유지해야 한다.
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date', placeholder: 'Select date' },
+            });
+            const inputEl = findDateInput(wrapper).element as HTMLInputElement & {
+                showPicker?: () => void;
+            };
+            const showPicker = vi.fn();
+            inputEl.showPicker = showPicker;
+
+            await findDateInput(wrapper).trigger('pointerdown');
+            await findDateInput(wrapper).trigger('focus');
+            // pointer로 인한 focus 동안에는 click을 삼키지 않도록 text 타입을 유지한다.
+            expect(findDateInput(wrapper).attributes('type')).toBe('text');
+
+            await findDateInput(wrapper).trigger('click');
+            expect(findDateInput(wrapper).attributes('type')).toBe('date');
+            expect(showPicker).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('picker toggle', () => {
+        function withShowPicker(wrapper: ReturnType<typeof mount>) {
+            const inputEl = findDateInput(wrapper).element as HTMLInputElement & {
+                showPicker?: () => void;
+            };
+            const showPicker = vi.fn();
+            inputEl.showPicker = showPicker;
+            return showPicker;
+        }
+
+        it('첫 클릭은 picker를 열고, 다시 클릭하면 다시 열지 않는다 (토글로 닫힘)', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date' },
+            });
+            const showPicker = withShowPicker(wrapper);
+
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            // 열린 상태에서 다시 클릭하면 재오픈하지 않는다 (브라우저가 mousedown에서 닫음).
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            // 닫힌 뒤 다시 클릭하면 다시 열린다.
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(2);
+        });
+
+        it('blur 후 다시 클릭하면 picker가 다시 열린다', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date' },
+            });
+            const showPicker = withShowPicker(wrapper);
+
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            await findDateInput(wrapper).trigger('blur');
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(2);
+        });
+
+        it('Enter 키로 picker를 열고 닫을 수 있다 (포커스 유지)', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date' },
+            });
+            const showPicker = withShowPicker(wrapper);
+
+            await findDateInput(wrapper).trigger('focus');
+
+            // Enter로 열기
+            await findDateInput(wrapper).trigger('keydown', { key: 'Enter' });
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            // Enter로 닫기 (재오픈 없음)
+            await findDateInput(wrapper).trigger('keydown', { key: 'Enter' });
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            // Enter로 다시 열기
+            await findDateInput(wrapper).trigger('keydown', { key: 'Enter' });
+            expect(showPicker).toHaveBeenCalledTimes(2);
+        });
+
+        it('값을 선택하면 picker 상태가 닫힘으로 리셋되어 다음 클릭에 다시 열린다', async () => {
+            const wrapper = mount(VsDatePicker, {
+                props: { modelValue: '', type: 'date' },
+            });
+            const showPicker = withShowPicker(wrapper);
+
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(1);
+
+            // 값 선택 = picker 닫힘
+            await findDateInput(wrapper).setValue('2026-05-18');
+
+            await findDateInput(wrapper).trigger('click');
+            expect(showPicker).toHaveBeenCalledTimes(2);
+        });
+
+        it('disabled/readonly 상태에서는 클릭/Enter로 picker가 열리지 않는다', async () => {
+            for (const propKey of ['disabled', 'readonly'] as const) {
+                const wrapper = mount(VsDatePicker, {
+                    props: { modelValue: '', type: 'date', [propKey]: true },
+                });
+                const showPicker = withShowPicker(wrapper);
+
+                await findDateInput(wrapper).trigger('click');
+                await findDateInput(wrapper).trigger('keydown', { key: 'Enter' });
+                expect(showPicker).not.toHaveBeenCalled();
+            }
         });
     });
 
