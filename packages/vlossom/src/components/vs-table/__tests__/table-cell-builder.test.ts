@@ -1,21 +1,11 @@
-import { describe, it, expect, expectTypeOf, beforeEach, afterEach, vi } from 'vitest';
-import { stringUtil } from '@/utils';
+import { describe, it, expect, expectTypeOf } from 'vitest';
 import { TableCellBuilder } from './../models/table-cell-builder';
 import type { VsTableColumnDef } from './../types';
 
 describe('TableCellBuilder', () => {
-    beforeEach(() => {
-        let seq = 0;
-        vi.spyOn(stringUtil, 'createID').mockImplementation(() => `id-${seq++}`);
-    });
-
-    afterEach(() => {
-        vi.restoreAllMocks();
-    });
-
     it('컬럼 정의가 없을 때 아이템 키를 기반으로 헤더/바디 셀을 생성한다', () => {
         const items = [{ id: '1', name: 'Alice', age: 24 }];
-        const builder = new TableCellBuilder(items, []);
+        const builder = new TableCellBuilder('test-table-id', items, []);
 
         const [header, ...body] = builder.build();
 
@@ -42,7 +32,7 @@ describe('TableCellBuilder', () => {
             { id: '1', name: 'Alice', meta: { age: 27 } },
             { id: '2', name: 'Bob', meta: { age: 31 } },
         ];
-        const builder = new TableCellBuilder(items, ['name', 'meta.age']);
+        const builder = new TableCellBuilder('test-table-id', items, ['name', 'meta.age']);
 
         const [header, ...body] = builder.build();
 
@@ -58,7 +48,7 @@ describe('TableCellBuilder', () => {
             { key: 'age', label: '나이' },
         ];
         const items = [{ id: '1', name: 'Alice', age: 24 }];
-        const builder = new TableCellBuilder(items, columnDefs);
+        const builder = new TableCellBuilder('test-table-id', items, columnDefs);
 
         const [header] = builder.build();
         expect(header.map((h) => h.value)).toEqual(['이름', '나이']);

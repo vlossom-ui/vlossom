@@ -496,7 +496,7 @@ describe('VsTable', () => {
                 expect(pageSize).toBe(10);
             });
 
-            it('서버 모드에서 totalItemCount가 없으면 에러가 발생한다', async () => {
+            it('서버 모드에서 totalItemCount가 없으면 pagination을 렌더링하지 않는다', async () => {
                 const serverItems = Array.from({ length: 10 }, (_, i) => ({
                     id: `${i}`,
                     name: `User ${i}`,
@@ -515,7 +515,7 @@ describe('VsTable', () => {
 
                 await nextTick();
 
-                expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeTruthy();
+                expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeFalsy();
             });
 
             it('서버 모드에서는 client-side pagination을 수행하지 않고 모든 items를 렌더링한다', async () => {

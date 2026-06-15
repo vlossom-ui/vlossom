@@ -1,4 +1,13 @@
-import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
+import {
+    computed,
+    ref,
+    toRefs,
+    watch,
+    type ComputedRef,
+    type Ref,
+    type TemplateRef,
+    type WritableComputedRef,
+} from 'vue';
 import { functionUtil, objectUtil } from '@/utils';
 import { type UIState, type VsComponent, type PropsOf, type SearchProps, type Size } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
@@ -29,6 +38,7 @@ import {
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
+    tableId: string,
     props: PropsOf<VsComponent.VsTable>,
     refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
     cb?: {
@@ -151,7 +161,7 @@ export function useTable(
         },
     });
 
-    const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
+    const tableCellBuilder = new TableCellBuilder(tableId, items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand, setExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
@@ -285,8 +295,8 @@ export type TableComposable = {
     size: Ref<Size | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
-    page: ComputedRef<number>;
-    pageSize: ComputedRef<number>;
+    page: WritableComputedRef<number>;
+    pageSize: WritableComputedRef<number>;
     totalPages: ComputedRef<number>;
     totalItems: ComputedRef<number>;
     pageStartIndex: ComputedRef<number>;

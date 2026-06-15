@@ -9,9 +9,10 @@ import {
 } from './strategy';
 
 export class TableCellBuilder {
-    private cellStrategy: TableCellStrategy = new NoColumnDefCellStrategy([]);
+    private cellStrategy: TableCellStrategy;
 
     public constructor(
+        private readonly tableId: string,
         private items: VsTableItem[],
         private columnDefs: VsTableColumnDef[] | string[],
     ) {
@@ -20,12 +21,12 @@ export class TableCellBuilder {
 
     private getCellStrategy(): TableCellStrategy {
         if (!this.columnDefs?.length) {
-            return new NoColumnDefCellStrategy(this.items);
+            return new NoColumnDefCellStrategy(this.tableId, this.items);
         }
         if (isVsTableColumnDefArray(this.columnDefs)) {
-            return new ObjectColumnDefCellStrategy(this.items, this.columnDefs);
+            return new ObjectColumnDefCellStrategy(this.tableId, this.items, this.columnDefs);
         }
-        return new StringKeyColumnDefCellStrategy(this.items, this.columnDefs);
+        return new StringKeyColumnDefCellStrategy(this.tableId, this.items, this.columnDefs);
     }
 
     public updateItems(items: VsTableItem[]): TableCellBuilder {
