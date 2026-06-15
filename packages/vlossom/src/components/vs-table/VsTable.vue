@@ -71,7 +71,7 @@
             </vs-visible-render>
         </div>
 
-        <vs-table-pagination v-if="pagination && totalPages" @paginate="paginate" />
+        <vs-table-pagination v-if="pagination && totalPages" />
     </div>
 </template>
 
@@ -313,7 +313,7 @@ export default defineComponent({
             tableId,
             props,
             { searchInputRef },
-            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems },
+            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems, paginate },
         );
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
@@ -383,11 +383,8 @@ export default defineComponent({
             const items = table.bodyCells.value.map((row) => getRowItem(row));
             emit('search', items, searchText);
         }
-        function paginate(nextPage: number): void {
-            if (!serverMode.value) {
-                return;
-            }
-            emit('paginate', nextPage, table.pageSize.value);
+        function paginate(page: number, pageSize: number): void {
+            emit('paginate', page, pageSize);
         }
         function updateSelectedItems(items: VsTableItem[]): void {
             emit('update:selectedItems', items);
@@ -434,7 +431,7 @@ export default defineComponent({
             scrollWrapperRef.value?.addEventListener('scroll', syncStickyScroll, { passive: true });
 
             if (serverMode.value && pagination.value) {
-                emit('paginate', table.page.value, table.pageSize.value);
+                paginate(table.page.value, table.pageSize.value);
             }
         });
 
@@ -465,7 +462,6 @@ export default defineComponent({
             selectRow,
             expandRow,
             searchRows,
-            paginate,
             dragRow,
             updateSelectedItems,
             updatePage,

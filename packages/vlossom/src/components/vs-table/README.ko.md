@@ -201,7 +201,7 @@ interface VsTablePaginationOptions {
 | `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | 행 확장 시 발생                  |
 | `drag`                 | `SortableEvent`                               | 드래그 앤 드롭 재정렬 후 발생    |
 | `search`               | `(items: VsTableItem[], searchText: string)`  | 검색 시 발생                     |
-| `paginate`             | `(nextPage: number, pageSize: number)`        | 페이지 변경 시 발생              |
+| `paginate`             | `(nextPage: number, pageSize: number)`        | 페이지 또는 page size 변경 시 발생 (page size 변경 시 페이지는 0으로 초기화) |
 | `update:selectedItems` | `VsTableItem[]`                               | 선택된 행 변경 시 발생           |
 | `update:page`          | `number`                                      | 현재 페이지 변경 시 발생         |
 | `update:pageSize`      | `number`                                      | 페이지 크기 변경 시 발생         |

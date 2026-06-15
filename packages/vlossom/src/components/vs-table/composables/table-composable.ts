@@ -47,6 +47,7 @@ export function useTable(
         updatePageSize: (pageSize: number) => void;
         updatePagedItems: (items: VsTableItem[]) => void;
         updateTotalItems: (items: VsTableItem[]) => void;
+        paginate: (page: number, pageSize: number) => void;
     },
 ) {
     const {
@@ -235,6 +236,11 @@ export function useTable(
             return firstCell?.item || {};
         });
         cb?.updateTotalItems(nextTotalItems);
+    });
+
+    // pageSize 변경은 page를 0으로 리셋하지만 두 변경이 같은 tick에 일어나므로 콜백은 한 번만 실행된다.
+    watch([page, pageSize], ([nextPage, nextPageSize]) => {
+        cb?.paginate(nextPage, nextPageSize);
     });
 
     return {

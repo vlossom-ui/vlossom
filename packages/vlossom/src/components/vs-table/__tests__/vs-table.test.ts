@@ -1,10 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
-import { stringUtil } from '@/utils';
+import { stringUtil, logUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
 import type { VsTableBodyCell, VsTableItem, VsTableColumnDef } from './../types';
-import { DEFAULT_PAGE_SIZE } from './../constants';
 
 const defaultColumns = ['name', 'age'];
 const labeledColumns = [
@@ -158,9 +157,12 @@ describe('VsTable', () => {
         });
 
         it('`header-${id}` Slot이 `header-${colKey}` Slot보다 우선한다', async () => {
+            // 셀 id는 `${tableId}-${colKey}` 형태로 결정적이다. tableId를 고정해 id 슬롯명을 예측한다.
+            vi.mocked(stringUtil.createID).mockReturnValue('tid');
+
             const wrapper = mountTable({
                 slots: {
-                    'header-name-id-6': ({ value }: { value: unknown }) => `ID-${value}`,
+                    'header-tid-name': ({ value }: { value: unknown }) => `ID-${value}`,
                     'header-name': ({ item }: { item: VsTableColumnDef }) => `COL-${item.key}`,
                 },
             });
@@ -400,7 +402,7 @@ describe('VsTable', () => {
             expect(wrapper.find('[data-testid="vs-select"]').exists()).toBe(true);
         });
 
-        it('vs-pagination change 이벤트를 paginate로 전달한다', async () => {
+        it('페이지를 변경하면 paginate 이벤트를 발생시킨다', async () => {
             const wrapper = mountTable({
                 props: { pagination: true },
             });
@@ -408,11 +410,106 @@ describe('VsTable', () => {
             await nextTick();
             await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
 
-            const emitted = wrapper.emitted('paginate');
-            expect(emitted).toHaveLength(1);
-            const [page, pageSize] = emitted![0] as [number, number];
-            expect(page).toBe(1);
-            expect(pageSize).toBe(DEFAULT_PAGE_SIZE);
+            expect(wrapper.emitted('paginate')).toEqual([[1, 50]]);
+        });
+
+        it('page size를 변경하면 paginate를 (0, 새 size)로 발생시킨다', async () => {
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items: tableItems,
+                    pagination: true,
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-select': {
+                            props: ['modelValue', 'options'],
+                            emits: ['update:modelValue'],
+                            template:
+                                '<button data-testid="vs-select" @click="$emit(\'update:modelValue\', 20)">size</button>',
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+            await wrapper.get('[data-testid="vs-select"]').trigger('click');
+
+            expect(wrapper.emitted('paginate')).toEqual([[0, 20]]);
+        });
+
+        it('page 이동 후 page size를 변경하면 page 리셋과 합쳐져 paginate가 (0, 새 size)로 한 번만 발생한다', async () => {
+            const items = Array.from({ length: 6 }, (_, i) => ({ id: `${i}`, name: `User ${i}`, age: i }));
+            const wrapper = mount(VsTable, {
+                props: {
+                    columns: defaultColumns,
+                    items,
+                    pagination: {
+                        pageSizeOptions: [
+                            { label: '2', value: 2 },
+                            { label: '4', value: 4 },
+                        ],
+                    },
+                },
+                global: {
+                    stubs: {
+                        ...defaultGlobal.stubs,
+                        'vs-select': {
+                            props: ['modelValue', 'options'],
+                            emits: ['update:modelValue'],
+                            template:
+                                '<button data-testid="vs-select" @click="$emit(\'update:modelValue\', 4)">size</button>',
+                        },
+                    },
+                },
+            });
+
+            await nextTick();
+            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
+            await wrapper.get('[data-testid="vs-select"]').trigger('click');
+
+            expect(wrapper.emitted('paginate')).toEqual([
+                [1, 2],
+                [0, 4],
+            ]);
+        });
+
+        it('서버 모드에서는 마운트 시 초기 데이터 로드를 위해 paginate를 발생시킨다', async () => {
+            const serverItems = Array.from({ length: 10 }, (_, i) => ({
+                id: `${i}`,
+                name: `User ${i}`,
+                age: 20 + i,
+            }));
+
+            const wrapper = mountTable({
+                props: {
+                    items: serverItems,
+                    pagination: { totalItemCount: 100 },
+                    serverMode: true,
+                    page: 2,
+                    pageSize: 10,
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.emitted('paginate')).toEqual([[2, 10]]);
+        });
+
+        it('클라이언트 모드에서는 마운트 시 paginate를 발생시키지 않는다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    items: Array.from({ length: 40 }, (_, i) => ({ id: `${i}`, name: `User ${i}`, age: i })),
+                    pagination: true,
+                    page: 0,
+                    pageSize: 10,
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.emitted('paginate')).toBeUndefined();
         });
 
         it('초기 pageSize가 없으면 pageSizeOptions의 첫 번째 값을 사용한다', async () => {
@@ -433,13 +530,6 @@ describe('VsTable', () => {
             await nextTick();
 
             expect(wrapper.findAll('tbody tr')).toHaveLength(5);
-
-            await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
-
-            const emitted = wrapper.emitted('paginate');
-            expect(emitted).toHaveLength(1);
-            const [, pageSize] = emitted![0] as [number, number];
-            expect(pageSize).toBe(5);
         });
 
         describe('server mode', () => {
@@ -467,36 +557,8 @@ describe('VsTable', () => {
                 expect(wrapper.findAll('tbody tr')).toHaveLength(10);
             });
 
-            it('서버 모드에서 페이지 변경 시 paginate 이벤트를 발생시킨다', async () => {
-                const serverItems = Array.from({ length: 10 }, (_, i) => ({
-                    id: `${i}`,
-                    name: `User ${i}`,
-                    age: 20 + i,
-                }));
-
-                const wrapper = mountTable({
-                    props: {
-                        items: serverItems,
-                        pagination: {
-                            totalItemCount: 100,
-                        },
-                        serverMode: true,
-                        page: 0,
-                        pageSize: 10,
-                    },
-                });
-
-                await nextTick();
-                await wrapper.get('[data-testid="vs-pagination"]').trigger('click');
-
-                const emitted = wrapper.emitted('paginate');
-                expect(emitted).toHaveLength(1);
-                const [page, pageSize] = emitted![0] as [number, number];
-                expect(page).toBe(1);
-                expect(pageSize).toBe(10);
-            });
-
-            it('서버 모드에서 totalItemCount가 없으면 pagination을 렌더링하지 않는다', async () => {
+            it('서버 모드에서 totalItemCount가 없으면 prop 에러를 남기고 pagination을 렌더링하지 않는다', async () => {
+                const propError = vi.spyOn(logUtil, 'propError').mockImplementation(() => {});
                 const serverItems = Array.from({ length: 10 }, (_, i) => ({
                     id: `${i}`,
                     name: `User ${i}`,
@@ -515,6 +577,44 @@ describe('VsTable', () => {
 
                 await nextTick();
 
+                expect(propError).toHaveBeenCalled();
+                expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeFalsy();
+            });
+
+            it('서버 모드에서 totalItemCount가 음수면 prop 에러를 남긴다', async () => {
+                const propError = vi.spyOn(logUtil, 'propError').mockImplementation(() => {});
+
+                mountTable({
+                    props: {
+                        items: [],
+                        pagination: { totalItemCount: -1 },
+                        serverMode: true,
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(propError).toHaveBeenCalled();
+            });
+
+            it('서버 모드에서 totalItemCount가 0이면 prop 에러 없이 pagination을 렌더링하지 않는다', async () => {
+                const propError = vi.spyOn(logUtil, 'propError').mockImplementation(() => {});
+
+                const wrapper = mountTable({
+                    props: {
+                        items: [],
+                        pagination: { totalItemCount: 0 },
+                        serverMode: true,
+                        page: 0,
+                        pageSize: 10,
+                    },
+                });
+
+                await nextTick();
+
+                expect(propError).not.toHaveBeenCalled();
                 expect(wrapper.vm.$el.querySelector('.vs-table-pagination')).toBeFalsy();
             });
 
@@ -757,6 +857,31 @@ describe('VsTable', () => {
             const paginationBtn = wrapper.find('[data-testid="vs-pagination"]');
             expect(paginationBtn.exists()).toBe(true);
             expect(paginationBtn.attributes('disabled')).toBeDefined();
+        });
+
+        it('loading이 true면 데이터가 있던 셀이 스켈레톤으로 표시된다', async () => {
+            const wrapper = mount(VsTable, {
+                props: { columns: defaultColumns, items: tableItems, loading: true },
+                global: defaultGlobal,
+            });
+
+            await nextTick();
+
+            const skeleton = wrapper.find('.vs-skeleton');
+            expect(skeleton.exists()).toBe(true);
+        });
+
+        it('스켈레톤은 확정 높이를 가져 보이지 않게 무너지지 않는다', async () => {
+            const wrapper = mount(VsTable, {
+                props: { columns: defaultColumns, items: tableItems, loading: true },
+                global: defaultGlobal,
+            });
+
+            await nextTick();
+
+            const style = wrapper.find('.vs-skeleton').attributes('style') ?? '';
+            expect(style).toContain('height');
+            expect(style).not.toContain('100%');
         });
     });
 

@@ -29,7 +29,6 @@
             :showing-length="pagination.showingLength"
             :edge-buttons="pagination.edgeButtons"
             :size
-            @change="paginate"
         />
     </div>
 </template>
@@ -50,8 +49,7 @@ import VsSelect from '@/components/vs-select/VsSelect.vue';
 
 export default defineComponent({
     components: { VsPagination, VsSelect },
-    emits: ['paginate'],
-    setup(_, { emit }) {
+    setup() {
         const {
             pagination,
             totalPages,
@@ -71,10 +69,6 @@ export default defineComponent({
             return pagination.value.pageSizeOptions ?? [];
         });
 
-        function paginate(nextPage: number): void {
-            emit('paginate', nextPage, pageSize.value);
-        }
-
         return {
             pagination,
             page,
@@ -84,7 +78,6 @@ export default defineComponent({
             totalItems,
             pageStartIndex,
             pageEndIndex,
-            paginate,
             loading,
             primary,
             size,
