@@ -90,11 +90,13 @@ value = '2026-05';
 
 네이티브 캘린더는 다음 중 하나로 열립니다:
 
-- input 영역을 클릭하거나,
-- 오른쪽 끝의 캘린더 아이콘 버튼을 누르거나,
+- input 영역(또는 캘린더 아이콘)을 클릭 — 열린 상태에서 다시 클릭하면 닫힙니다.
+- 필드가 포커스된 상태(클릭이든 Tab 이동이든)에서 **Enter** 키를 누르면 picker가 열리고, 다시 누르면 닫힙니다(토글).
 - 사용자 제스처 안에서 `dpRef.value.open()`을 호출.
 
-`disabled`/`readonly` 상태에서는 세 가지 모두 무시됩니다.
+`disabled`/`readonly` 상태에서는 모두 무시됩니다.
+
+> **placeholder 참고**: 네이티브 `date`/`time` input은 `placeholder` 속성을 무시합니다. 값이 비어 있고 포커스되지 않은 동안에는 `text` input으로 렌더링해 `placeholder`가 보이게 하고, 상호작용 시 네이티브 picker 타입으로 전환합니다.
 
 ## 커스텀 룰
 

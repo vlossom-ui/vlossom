@@ -90,11 +90,13 @@ value = '2026-05';
 
 The native calendar opens when:
 
-- the input area is clicked, or
-- the trailing calendar icon button is pressed, or
+- the input area (or the calendar icon) is clicked — clicking again while it is open closes it, or
+- the **Enter** key is pressed while the field is focused (whether reached by click or by Tab) — Enter toggles the picker open and closed, or
 - `dpRef.value.open()` is invoked inside a user-gesture handler.
 
-When `disabled` or `readonly` is set, all three triggers are no-ops.
+When `disabled` or `readonly` is set, all triggers are no-ops.
+
+> **Placeholder note**: native `date`/`time` inputs ignore the `placeholder` attribute. While the field is empty and unfocused it is rendered as a `text` input so the `placeholder` is visible, then switched to the native picker type on interaction.
 
 ## Custom Rules
 
