@@ -14,7 +14,7 @@
                 :data-label="getHeaderLabel(cell.colIdx, cell.colKey)"
                 @click.stop="clickCell(cell, $event)"
             >
-                <vs-skeleton v-if="loading" :color-scheme :style-set="skeletonStyleSet" />
+                <vs-skeleton v-if="loading" :color-scheme :style-set="{ height: '1lh' }" />
                 <template v-else>
                     <slot
                         :name="findMatchingSlotName(cell)"
@@ -46,7 +46,6 @@ import { defineComponent, inject, computed, type ComputedRef, type PropType, toR
 import { objectUtil, stringUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { ColorScheme, UIState } from '@/declaration';
-import type { VsSkeletonStyleSet } from './../vs-skeleton/types';
 import {
     TABLE_COLOR_SCHEME_TOKEN,
     TABLE_STYLE_SET_TOKEN,
@@ -140,7 +139,6 @@ export default defineComponent({
             const statedRowStyle = isSelected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
             return objectUtil.assign(statedRowStyle, gridStyle.value ?? {});
         });
-        const skeletonStyleSet = computed<VsSkeletonStyleSet>(() => ({ height: '100%' }));
 
         function getGridColumnWidth(column?: VsTableColumnDef): string {
             if (!column) {
@@ -232,7 +230,6 @@ export default defineComponent({
             classObj,
             rowStyle,
             showExpand,
-            skeletonStyleSet,
             getCellStyle,
             stateClasses,
             clickCell,

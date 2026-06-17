@@ -29,7 +29,7 @@ function setupUseTable(
 ) {
     const reactiveProps = reactive(props);
     const searchInputRef = options?.searchInputRef ?? ref<VsSearchInputRef | null>(null);
-    const table = useTable(reactiveProps as any, { searchInputRef } as any);
+    const table = useTable('test-table-id', reactiveProps as any, { searchInputRef } as any);
     table.initialize();
     return { table, reactiveProps, searchInputRef };
 }
@@ -269,7 +269,7 @@ describe('useTable', () => {
                 expect(table.bodyCells.value[9][0].value).toBe('User 29');
             });
 
-            it('서버 모드에서 totalItemCount가 없으면 에러를 발생시킨다', async () => {
+            it('서버 모드에서 totalItemCount가 없으면 총 페이지를 0으로 계산한다', async () => {
                 const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const { table } = setupUseTable({
                     columns: ['name'],
@@ -282,7 +282,23 @@ describe('useTable', () => {
 
                 await nextTick();
 
-                expect(table.totalPages.value).toBe(-1);
+                expect(table.totalPages.value).toBe(0);
+            });
+
+            it('서버 모드에서 totalItemCount가 0이면 총 페이지를 0으로 계산한다', async () => {
+                const items = Array.from({ length: 10 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
+                const { table } = setupUseTable({
+                    columns: ['name'],
+                    items,
+                    pagination: { totalItemCount: 0 },
+                    serverMode: true,
+                    page: 0,
+                    pageSize: 10,
+                });
+
+                await nextTick();
+
+                expect(table.totalPages.value).toBe(0);
             });
 
             it('서버 모드에서 pageSize 변경 시에도 totalItemCount 기반으로 총 페이지를 재계산한다', async () => {

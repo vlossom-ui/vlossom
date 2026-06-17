@@ -3,14 +3,17 @@ import type { VsTableBodyCell, VsTableHeaderCell, VsTableItem } from './../../ty
 import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class NoColumnDefCellStrategy implements TableCellStrategy {
-    public constructor(private items: VsTableItem[]) {}
+    public constructor(
+        private tableId: string,
+        private items: VsTableItem[],
+    ) {}
 
     public createHeaderCell(): VsTableHeaderCell[] {
         const tag = 'th';
         const itemKeys = this.items.length > 0 ? Object.keys(this.items[0]) : [];
         return itemKeys.map((key: string, idx: number) => ({
             tag,
-            id: `${key}-${stringUtil.createID()}`,
+            id: `${this.tableId}-${stringUtil.kebabCase(key)}`,
             value: key,
             colKey: key,
             colIdx: idx,
@@ -24,7 +27,7 @@ export default class NoColumnDefCellStrategy implements TableCellStrategy {
         return this.items.map((item: VsTableItem, rowIdx: number) => {
             return Object.keys(item).map((key: string, colIdx: number) => ({
                 tag,
-                id: `${key}-${stringUtil.createID()}`,
+                id: `${this.tableId}-${stringUtil.kebabCase(key)}-${rowIdx}`,
                 value: item[key],
                 item,
                 colKey: key,

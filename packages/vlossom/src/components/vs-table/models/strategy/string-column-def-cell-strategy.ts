@@ -4,6 +4,7 @@ import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class StringKeyColumnDefCellStrategy implements TableCellStrategy {
     public constructor(
+        private tableId: string,
         private items: VsTableItem[],
         private columnDefs: string[],
     ) {}
@@ -12,7 +13,7 @@ export default class StringKeyColumnDefCellStrategy implements TableCellStrategy
         const tag = 'th';
         return this.columnDefs.map((headerKey: string, idx: number) => ({
             tag,
-            id: `${stringUtil.kebabCase(headerKey)}-${stringUtil.createID()}`,
+            id: `${this.tableId}-${stringUtil.kebabCase(headerKey)}`,
             value: headerKey,
             colKey: headerKey,
             colIdx: idx,
@@ -26,7 +27,7 @@ export default class StringKeyColumnDefCellStrategy implements TableCellStrategy
         return this.items.map((item: VsTableItem, rowIdx: number) => {
             return this.columnDefs.map((headerKey: string, colIdx: number) => ({
                 tag,
-                id: `${stringUtil.kebabCase(headerKey)}-${stringUtil.createID()}`,
+                id: `${this.tableId}-${stringUtil.kebabCase(headerKey)}-${rowIdx}`,
                 value: objectUtil.get(item, headerKey),
                 item,
                 colKey: headerKey,

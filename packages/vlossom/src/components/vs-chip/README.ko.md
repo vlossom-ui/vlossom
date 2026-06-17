@@ -11,7 +11,7 @@
 - `closable` prop으로 닫기 버튼 활성화 및 `close` 이벤트 발생
 - 시각적 지시자를 위한 선행 아이콘 슬롯
 - 다양한 시각적 변형: `primary`, `outline`
-- 5가지 크기 옵션: `xs`, `sm` (기본값), `md`, `lg`, `xl`
+- 5가지 크기 옵션: `xs`, `sm`, `md`, `lg`, `xl`
 - CSSProperties를 통한 아이콘 및 닫기 버튼 개별 스타일 제어
 
 ## Basic Usage
@@ -64,14 +64,14 @@
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | 컴포넌트 색상 테마 |
-| `styleSet` | `string \| VsChipStyleSet` | | | 커스텀 스타일 세트 |
-| `closable` | `boolean` | `false` | | 닫기 버튼 표시 |
-| `outline` | `boolean` | `false` | | 외곽선 스타일 적용 |
-| `primary` | `boolean` | `false` | | Primary 색상 테마 적용 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'sm'` | | Chip 크기 |
+| Prop          | Type                                   | Default | Required | Description            |
+| ------------- | -------------------------------------- | ------- | -------- | ---------------------- |
+| `colorScheme` | `ColorScheme`                          |         |          | 컴포넌트 색상 테마     |
+| `styleSet`    | `string \| VsChipStyleSet`             |         |          | 커스텀 스타일 세트     |
+| `closable`    | `boolean`                              | `false` |          | 닫기 버튼 표시         |
+| `outline`     | `boolean`                              | `false` |          | 외곽선 스타일 적용     |
+| `primary`     | `boolean`                              | `false` |          | Primary 색상 테마 적용 |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  |          | Chip 크기              |
 
 ## Types
 
@@ -110,16 +110,16 @@ interface VsChipStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `close` | — | 닫기 버튼이 클릭될 때 발생 |
+| Event   | Payload | Description                |
+| ------- | ------- | -------------------------- |
+| `close` | —       | 닫기 버튼이 클릭될 때 발생 |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Chip 라벨 콘텐츠 |
-| `icon` | 라벨 앞에 표시되는 선행 아이콘 |
+| Slot      | Description                    |
+| --------- | ------------------------------ |
+| `default` | Chip 라벨 콘텐츠               |
+| `icon`    | 라벨 앞에 표시되는 선행 아이콘 |
 
 ## Methods
 
