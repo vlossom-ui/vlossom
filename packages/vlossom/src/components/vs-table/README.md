@@ -201,7 +201,7 @@ interface VsTablePaginationOptions {
 | `expand-row`           | `(row: VsTableBodyCell[], event: MouseEvent)` | Emitted when a row is expanded        |
 | `drag`                 | `SortableEvent`                               | Emitted after a drag-and-drop reorder |
 | `search`               | `(items: VsTableItem[], searchText: string)`  | Emitted on search                     |
-| `paginate`             | `(nextPage: number, pageSize: number)`        | Emitted when page changes             |
+| `paginate`             | `(nextPage: number, pageSize: number)`        | Emitted when the page or page size changes (page size changes reset the page to 0) |
 | `update:selectedItems` | `VsTableItem[]`                               | Emitted when selected rows change     |
 | `update:page`          | `number`                                      | Emitted when the current page changes |
 | `update:pageSize`      | `number`                                      | Emitted when the page size changes    |

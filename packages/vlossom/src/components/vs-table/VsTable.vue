@@ -71,7 +71,7 @@
             </vs-visible-render>
         </div>
 
-        <vs-table-pagination v-if="pagination && totalPages" @paginate="paginate" />
+        <vs-table-pagination v-if="pagination && totalPages" />
     </div>
 </template>
 
@@ -173,15 +173,25 @@ export default defineComponent({
             default: false,
             validator: (serverMode: boolean, props: unknown) => {
                 const { pagination } = props as PropsOf<VsComponent.VsTable>;
-                if (serverMode && typeof pagination === 'object') {
-                    if (!pagination.totalItemCount) {
-                        logUtil.propError(
-                            componentName,
-                            'serverMode',
-                            'totalItemCount is required when serverMode is true',
-                        );
-                        return false;
-                    }
+                if (!serverMode || !pagination) {
+                    return true;
+                }
+                const totalItemCount = typeof pagination === 'object' ? pagination.totalItemCount : undefined;
+                if (totalItemCount === undefined || totalItemCount === null) {
+                    logUtil.propError(
+                        componentName,
+                        'serverMode',
+                        'totalItemCount is required when serverMode is true',
+                    );
+                    return false;
+                }
+                if (totalItemCount < 0) {
+                    logUtil.propError(
+                        componentName,
+                        'serverMode',
+                        'totalItemCount must be greater than or equal to 0',
+                    );
+                    return false;
                 }
                 return true;
             },
@@ -284,7 +294,8 @@ export default defineComponent({
         'update:totalItems',
     ],
     setup(props, { slots, emit }) {
-        const { colorScheme, styleSet, responsive, stickyHeader, size, primary } = toRefs(props);
+        const { colorScheme, styleSet, responsive, stickyHeader, size, primary, serverMode, pagination } =
+            toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
@@ -296,10 +307,13 @@ export default defineComponent({
         const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
+
+        const tableId = stringUtil.createID();
         const table: TableComposable = useTable(
+            tableId,
             props,
             { searchInputRef },
-            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems },
+            { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems, paginate },
         );
 
         provide<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN, componentStyleSet);
@@ -369,8 +383,8 @@ export default defineComponent({
             const items = table.bodyCells.value.map((row) => getRowItem(row));
             emit('search', items, searchText);
         }
-        function paginate(nextPage: number): void {
-            emit('paginate', nextPage, table.pageSize.value);
+        function paginate(page: number, pageSize: number): void {
+            emit('paginate', page, pageSize);
         }
         function updateSelectedItems(items: VsTableItem[]): void {
             emit('update:selectedItems', items);
@@ -415,6 +429,10 @@ export default defineComponent({
 
         onMounted(() => {
             scrollWrapperRef.value?.addEventListener('scroll', syncStickyScroll, { passive: true });
+
+            if (serverMode.value && pagination.value) {
+                paginate(table.page.value, table.pageSize.value);
+            }
         });
 
         onBeforeUnmount(() => {
@@ -444,7 +462,6 @@ export default defineComponent({
             selectRow,
             expandRow,
             searchRows,
-            paginate,
             dragRow,
             updateSelectedItems,
             updatePage,

@@ -1,4 +1,13 @@
-import { computed, ref, toRefs, watch, type ComputedRef, type Ref, type TemplateRef } from 'vue';
+import {
+    computed,
+    ref,
+    toRefs,
+    watch,
+    type ComputedRef,
+    type Ref,
+    type TemplateRef,
+    type WritableComputedRef,
+} from 'vue';
 import { functionUtil, objectUtil } from '@/utils';
 import { type UIState, type VsComponent, type PropsOf, type SearchProps, type Size } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
@@ -29,6 +38,7 @@ import {
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
+    tableId: string,
     props: PropsOf<VsComponent.VsTable>,
     refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
     cb?: {
@@ -37,6 +47,7 @@ export function useTable(
         updatePageSize: (pageSize: number) => void;
         updatePagedItems: (items: VsTableItem[]) => void;
         updateTotalItems: (items: VsTableItem[]) => void;
+        paginate: (page: number, pageSize: number) => void;
     },
 ) {
     const {
@@ -151,7 +162,7 @@ export function useTable(
         },
     });
 
-    const tableCellBuilder = new TableCellBuilder(items.value, columns.value);
+    const tableCellBuilder = new TableCellBuilder(tableId, items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand, setExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
@@ -227,6 +238,11 @@ export function useTable(
         cb?.updateTotalItems(nextTotalItems);
     });
 
+    // pageSize 변경은 page를 0으로 리셋하지만 두 변경이 같은 tick에 일어나므로 콜백은 한 번만 실행된다.
+    watch([page, pageSize], ([nextPage, nextPageSize]) => {
+        cb?.paginate(nextPage, nextPageSize);
+    });
+
     return {
         initialize,
         columns,
@@ -285,8 +301,8 @@ export type TableComposable = {
     size: Ref<Size | undefined> | undefined;
     search: ComputedRef<Exclude<SearchProps, boolean>>;
     pagination: ComputedRef<VsTablePaginationOptions>;
-    page: ComputedRef<number>;
-    pageSize: ComputedRef<number>;
+    page: WritableComputedRef<number>;
+    pageSize: WritableComputedRef<number>;
     totalPages: ComputedRef<number>;
     totalItems: ComputedRef<number>;
     pageStartIndex: ComputedRef<number>;

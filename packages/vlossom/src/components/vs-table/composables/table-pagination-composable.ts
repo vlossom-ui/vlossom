@@ -40,10 +40,8 @@ export function useTablePagination(
             return 1;
         }
         if (serverMode.value) {
-            if (!options.value.totalItemCount) {
-                return -1;
-            }
-            return Math.ceil(options.value.totalItemCount / currentPageSize);
+            const serverTotalItemCount = options.value.totalItemCount ?? 0;
+            return serverTotalItemCount > 0 ? Math.ceil(serverTotalItemCount / currentPageSize) : 0;
         }
         return Math.ceil(totalItemsCount.value / currentPageSize);
     });

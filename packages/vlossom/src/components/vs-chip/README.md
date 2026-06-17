@@ -11,7 +11,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 - Optional close button via `closable` prop that emits a `close` event
 - Optional leading icon slot for visual indicators
 - Multiple visual variants: `primary`, `outline`
-- Five size options: `xs`, `sm` (default), `md`, `lg`, `xl`
+- Five size options: `xs`, `sm`, `md`, `lg`, `xl`
 - Separate style control for icon and close button via CSSProperties
 
 ## Basic Usage
@@ -64,14 +64,14 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `ColorScheme` | | | Color scheme for the component |
-| `styleSet` | `string \| VsChipStyleSet` | | | Custom style set |
-| `closable` | `boolean` | `false` | | Shows a close button |
-| `outline` | `boolean` | `false` | | Applies outlined style |
-| `primary` | `boolean` | `false` | | Applies primary color scheme |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'sm'` | | Chip size |
+| Prop          | Type                                   | Default | Required | Description                    |
+| ------------- | -------------------------------------- | ------- | -------- | ------------------------------ |
+| `colorScheme` | `ColorScheme`                          |         |          | Color scheme for the component |
+| `styleSet`    | `string \| VsChipStyleSet`             |         |          | Custom style set               |
+| `closable`    | `boolean`                              | `false` |          | Shows a close button           |
+| `outline`     | `boolean`                              | `false` |          | Applies outlined style         |
+| `primary`     | `boolean`                              | `false` |          | Applies primary color scheme   |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`  |          | Chip size                      |
 
 ## Types
 
@@ -110,16 +110,16 @@ interface VsChipStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
-| `close` | — | Emitted when the close button is clicked |
+| Event   | Payload | Description                              |
+| ------- | ------- | ---------------------------------------- |
+| `close` | —       | Emitted when the close button is clicked |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
-| `default` | Chip label content |
-| `icon` | Leading icon displayed before the label |
+| Slot      | Description                             |
+| --------- | --------------------------------------- |
+| `default` | Chip label content                      |
+| `icon`    | Leading icon displayed before the label |
 
 ## Methods
 
