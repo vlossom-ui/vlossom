@@ -68,6 +68,7 @@
                                 :model-value="isSelectedAll"
                                 :color-scheme="computedColorScheme"
                                 :style-set="componentStyleSet.$selectAllCheckbox"
+                                :size
                                 check-label="Select All"
                                 readonly
                                 no-label
