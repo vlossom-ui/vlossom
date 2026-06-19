@@ -21,15 +21,8 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
-            const { componentProps, ...modalOptions } = options;
-            const {
-                container = 'body',
-                colorScheme,
-                styleSet,
-                okText = 'OK',
-                cancelText = 'Cancel',
-                swapButtons,
-            } = modalOptions;
+            const { componentProps, okText = 'OK', cancelText = 'Cancel', swapButtons, ...modalOptions } = options;
+            const { container = 'body', colorScheme, styleSet, escClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsConfirmStyleSet>> = ref({
                 $okButton: { minWidth: '8rem' },
@@ -70,6 +63,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(confirm, {
                     ...modalOptions,
+                    escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,
                         [CONFIRM_OK]: () => {
@@ -84,10 +78,12 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                             resolve(true);
                             modalPlugin.closeWithId(container, modalId);
                         },
-                        'key-Escape': () => {
-                            resolve(false);
-                            modalPlugin.closeWithId(container, modalId);
-                        },
+                        ...(escClose && {
+                            'key-Escape': () => {
+                                resolve(false);
+                                modalPlugin.closeWithId(container, modalId);
+                            },
+                        }),
                         [OVERLAY_CLOSE]: () => {
                             resolve(false);
                         },
