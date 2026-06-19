@@ -20,16 +20,15 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
 
     return {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
-            const { componentProps, ...modalOptions } = options;
             const {
-                container = 'body',
-                colorScheme,
-                styleSet,
+                componentProps,
                 okText = 'OK',
                 cancelText = 'Cancel',
                 swapButtons,
                 input: inputOptions,
-            } = modalOptions;
+                ...modalOptions
+            } = options;
+            const { container = 'body', colorScheme, styleSet, escClose = true } = modalOptions;
 
             const inputRef = ref<VsInputRef | null>(null);
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
@@ -89,6 +88,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(prompt, {
                     ...modalOptions,
+                    escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,
                         [PROMPT_OK]: () => {
@@ -110,11 +110,13 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                             resolve(inputValue.value);
                             modalPlugin.closeWithId(container, modalId);
                         },
-                        'key-Escape': () => {
-                            inputRef.value?.clear();
-                            resolve(null);
-                            modalPlugin.closeWithId(container, modalId);
-                        },
+                        ...(escClose && {
+                            'key-Escape': () => {
+                                inputRef.value?.clear();
+                                resolve(null);
+                                modalPlugin.closeWithId(container, modalId);
+                            },
+                        }),
                         [OVERLAY_CLOSE]: () => {
                             resolve(null);
                         },

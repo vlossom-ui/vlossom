@@ -12,6 +12,7 @@
 - Promise를 resolve하는 단일 확인 버튼을 제공합니다
 - 커스텀 확인 버튼 텍스트, 색상 스킴, 스타일 세트를 지원합니다
 - 키보드 지원: Enter 및 Escape 키도 Promise를 resolve하고 대화상자를 닫습니다
+- 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
 - Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
 
 ## 기본 사용법
@@ -108,3 +109,4 @@ interface AlertPlugin {
 
 - Alert 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
 - Escape 키를 누르거나 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) Promise가 resolve되고 대화상자가 닫힙니다.
+- Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.

@@ -12,6 +12,7 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 - Renders a `VsInput` field with configurable input props
 - Returns the input value on OK (or Enter key) and `null` on Cancel (or Escape key)
 - Validates input before resolving — if validation fails, the modal stays open
+- Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
@@ -123,3 +124,4 @@ interface PromptPlugin {
 - The prompt plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - If the input fails validation on OK/Enter, the modal remains open and the promise is not yet resolved.
 - Pressing Escape or clicking outside the modal (if `dimClose` is enabled) resolves the promise with `null` and clears the input.
+- Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
