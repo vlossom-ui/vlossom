@@ -74,7 +74,9 @@
                                 no-messages
                             />
                         </div>
-                        <slot name="options-header" v-if="$slots['options-header']" />
+                        <div class="vs-select-slot" v-if="$slots['options-header']" @keydown.stop>
+                            <slot name="options-header" />
+                        </div>
                     </template>
                     <template #group="groupSlotProps" v-if="$slots.group">
                         <slot name="group" v-bind="groupSlotProps" />
@@ -97,7 +99,9 @@
                         </div>
                     </template>
                     <template #footer v-if="$slots['options-footer']">
-                        <slot name="options-footer" />
+                        <div class="vs-select-slot" @keydown.stop>
+                            <slot name="options-footer" />
+                        </div>
                     </template>
                 </vs-grouped-list>
             </vs-floating>
