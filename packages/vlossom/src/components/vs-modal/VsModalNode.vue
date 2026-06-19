@@ -45,8 +45,8 @@ export default defineComponent({
             default: undefined,
         },
         container: { type: String, default: 'body' },
-        escClose: { type: Boolean, default: true },
-        dimClose: { type: Boolean, default: true },
+        escClose: { type: Boolean, default: false },
+        dimClose: { type: Boolean, default: false },
         size: {
             type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
         },

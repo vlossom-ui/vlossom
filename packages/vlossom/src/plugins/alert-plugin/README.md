@@ -12,6 +12,7 @@ Displays a modal alert dialog with a single OK button. Returns a `Promise<void>`
 - Provides a single OK button that resolves the returned promise
 - Supports custom OK button text, color scheme, and style set
 - Keyboard support: Enter and Escape keys also resolve the promise and close the dialog
+- Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
 - Built on top of the Modal Plugin — all `ModalOptions` are inherited
 
 ## Basic Usage
@@ -108,3 +109,4 @@ interface AlertPlugin {
 
 - The alert plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - Pressing Escape or clicking outside the modal (if `dimClose` is enabled) also resolves the promise and closes the dialog.
+- Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
