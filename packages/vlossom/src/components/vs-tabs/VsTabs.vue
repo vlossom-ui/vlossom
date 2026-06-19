@@ -232,21 +232,26 @@ export default defineComponent({
 
             const tabItems = getTabItems();
             const selectedTab = tabItems[selectedIndex.value];
+            const tabList = selectedTab.parentElement;
 
-            if (!selectedTab) {
+            if (!tabList || !selectedTab) {
                 indicatorStyle.value = null;
                 return;
             }
 
+            const tabRect = selectedTab.getBoundingClientRect();
+            const tabListRect = tabList.getBoundingClientRect();
+            const hasRenderedRect = tabRect.width > 0 || tabRect.height > 0;
+
             if (vertical.value) {
                 indicatorStyle.value = {
-                    top: `${selectedTab.offsetTop}px`,
-                    height: `${selectedTab.offsetHeight}px`,
+                    top: `${hasRenderedRect ? tabRect.top - tabListRect.top : selectedTab.offsetTop}px`,
+                    height: `${hasRenderedRect ? tabRect.height : selectedTab.offsetHeight}px`,
                 };
             } else {
                 indicatorStyle.value = {
-                    left: `${selectedTab.offsetLeft}px`,
-                    width: `${selectedTab.offsetWidth}px`,
+                    left: `${hasRenderedRect ? tabRect.left - tabListRect.left : selectedTab.offsetLeft}px`,
+                    width: `${hasRenderedRect ? tabRect.width : selectedTab.offsetWidth}px`,
                 };
             }
         }
