@@ -80,18 +80,18 @@ export default defineComponent({
     name: 'ColorScheme',
     setup() {
         const csVariables = [
-            { key: '--vs-cs-line', label: '--vs-cs-line' },
-            { key: '--vs-cs-font', label: '--vs-cs-font' },
-            { key: '--vs-cs-font-colored', label: '--vs-cs-font-colored' },
-            { key: '--vs-cs-font-primary', label: '--vs-cs-font-primary' },
-            { key: '--vs-cs-bg-area', label: '--vs-cs-bg-area' },
-            { key: '--vs-cs-bg-area-colored', label: '--vs-cs-bg-area-colored' },
-            { key: '--vs-cs-bg', label: '--vs-cs-bg' },
-            { key: '--vs-cs-bg-colored', label: '--vs-cs-bg-colored' },
-            { key: '--vs-cs-bg-comp', label: '--vs-cs-bg-comp' },
-            { key: '--vs-cs-bg-comp-colored', label: '--vs-cs-bg-comp-colored' },
-            { key: '--vs-cs-bg-primary', label: '--vs-cs-bg-primary' },
-            { key: '--vs-cs-shadow-color', label: '--vs-cs-shadow-color' },
+            { key: 'vs-cs-line', label: '--vs-cs-line' },
+            { key: 'vs-cs-font', label: '--vs-cs-font' },
+            { key: 'vs-cs-font-colored', label: '--vs-cs-font-colored' },
+            { key: 'vs-cs-font-primary', label: '--vs-cs-font-primary' },
+            { key: 'vs-cs-bg-area', label: '--vs-cs-bg-area' },
+            { key: 'vs-cs-bg-area-colored', label: '--vs-cs-bg-area-colored' },
+            { key: 'vs-cs-bg', label: '--vs-cs-bg' },
+            { key: 'vs-cs-bg-colored', label: '--vs-cs-bg-colored' },
+            { key: 'vs-cs-bg-comp', label: '--vs-cs-bg-comp' },
+            { key: 'vs-cs-bg-comp-colored', label: '--vs-cs-bg-comp-colored' },
+            { key: 'vs-cs-bg-primary', label: '--vs-cs-bg-primary' },
+            { key: 'vs-cs-shadow-color', label: '--vs-cs-shadow-color' },
         ];
 
         const colorSchemes = [
