@@ -61,6 +61,7 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
+        border-bottom: 1px solid var(--vs-cs-line);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
         color: var(--vs-cs-font-colored);
@@ -82,7 +83,6 @@
     .vs-table-td {
         @apply flex items-center;
         grid-row: 1;
-        border-top: 1px solid var(--vs-cs-line);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
@@ -91,7 +91,17 @@
 
     /* ── Body rows ── */
     .vs-table-draggable-wrapper > .vs-table-body-row {
-        @apply transition-colors duration-250 ease-in-out;
+        @apply relative box-border transition-colors duration-250 ease-in-out;
+        border: 1px solid transparent;
+        border-top-color: var(--vs-cs-bg-comp-colored);
+
+        &:not(:first-child) {
+            margin-top: -1px;
+        }
+
+        &:first-child {
+            border-top-color: transparent;
+        }
 
         &.vs-stated {
             background-color: var(--vs-state-color-bg);
@@ -103,11 +113,18 @@
         }
 
         &:last-child {
-            border-bottom: 1px solid var(--vs-cs-line);
+            border-bottom-color: var(--vs-cs-line);
         }
 
         &:hover {
-            background-color: var(--vs-cs-bg-area-colored);
+            z-index: 1;
+
+            &:after {
+                content: '';
+                @apply pointer-events-none absolute;
+                inset: -1px;
+                border: 1px solid var(--vs-cs-bg-primary);
+            }
         }
 
         > .vs-table-td.vs-table-expanded-row {
@@ -247,7 +264,7 @@
         }
 
         .vs-table-draggable-wrapper > .vs-table-body-row {
-            @apply mx-0 mb-3 border border-solid;
+            @apply mx-0 mt-0 mb-3 border border-solid;
             border: 0.0325rem solid var(--vs-cs-line);
         }
 
