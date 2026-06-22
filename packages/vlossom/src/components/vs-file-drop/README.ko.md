@@ -134,6 +134,7 @@ interface VsFileDropStyleSet extends CSSProperties {
 | `update:changed` | `File[]` | 파일이 변경될 때 발생 |
 | `update:valid` | `boolean` | 유효성 검사 상태가 변경될 때 발생 |
 | `change` | `File[]` | 파일 선택이 변경될 때 발생 |
+| `clear` | `File[]` | 모든 파일이 삭제될 때 삭제 직전의 파일 목록과 함께 발생 |
 | `drop` | `File[]` | 파일이 드롭될 때 발생 |
 | `focus` | `FocusEvent` | 파일 드롭 영역이 포커스를 받을 때 발생 |
 | `blur` | `FocusEvent` | 파일 드롭 영역이 포커스를 잃을 때 발생 |
