@@ -728,6 +728,42 @@ describe('VsSelect', () => {
         });
     });
 
+    describe('options slot 키 이벤트', () => {
+        it('options-header slot 안에서 발생한 키 이벤트는 select 키 동작에 가로채이지 않는다', async () => {
+            // given
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options: basicOptions, modelValue: null },
+                slots: { 'options-header': '<input class="slot-input" />' },
+            });
+
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            const slotInput = document.querySelector('.slot-input');
+            expect(slotInput).not.toBeNull();
+
+            // when: slot 내부에서 키 이벤트 발생
+            const slotEvent = new KeyboardEvent('keydown', { code: 'ArrowDown', bubbles: true, cancelable: true });
+            slotInput?.dispatchEvent(slotEvent);
+
+            // then: slot 영역의 키는 preventDefault 되지 않는다
+            expect(slotEvent.defaultPrevented).toBe(false);
+
+            // and: slot 밖에서 발생한 키는 기존대로 select가 처리한다
+            const outsideEvent = new KeyboardEvent('keydown', { code: 'ArrowDown', bubbles: true, cancelable: true });
+            document.dispatchEvent(outsideEvent);
+            expect(outsideEvent.defaultPrevented).toBe(true);
+
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+    });
+
     describe('deselectOption', () => {
         it('다중 선택 모드에서 선택된 옵션을 해제할 수 있다', async () => {
             // given
