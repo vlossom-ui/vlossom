@@ -82,7 +82,7 @@
                 :style="componentStyleSet.$closeButton"
                 aria-label="Clear"
                 tabindex="-1"
-                @click.prevent.stop="onClear()"
+                @click.prevent.stop="clear"
             >
                 <XIcon class="vs-file-drop-close-icon" />
             </button>
@@ -212,6 +212,7 @@ export default defineComponent({
                         inputValue.value = modelValue.value ?? [];
                     },
                     onClear,
+                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );
@@ -330,16 +331,12 @@ export default defineComponent({
         }
 
         function onClear() {
-            const files = inputValue.value;
-
             if (fileDropRef.value) {
                 fileDropRef.value.value = '';
             }
 
             inputValue.value = [];
             componentMessages.value = [];
-
-            emit('clear', files);
         }
 
         function onFocus(e: FocusEvent) {
@@ -385,7 +382,6 @@ export default defineComponent({
             handleFileDialog,
             handleFileDrop,
             handleFileRemove,
-            onClear,
             onFocus,
             onBlur,
             focus,

@@ -216,6 +216,7 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onClear,
+                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );
@@ -257,7 +258,7 @@ export default defineComponent({
                 if (inputValue.value && !isValidFormat(inputValue.value, type.value)) {
                     return;
                 }
-                onClear();
+                clear();
                 return;
             }
 
@@ -279,7 +280,6 @@ export default defineComponent({
 
         function onClear(): void {
             inputValue.value = '';
-            emit('clear');
         }
 
         function onPointerDown(): void {

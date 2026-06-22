@@ -267,7 +267,6 @@ export default defineComponent({
         function onClear() {
             clearSelected();
             searchInputRef.value?.clear();
-            emit('clear');
         }
 
         const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
@@ -321,6 +320,7 @@ export default defineComponent({
                         inputValue.value = convertValue(inputValue.value);
                     },
                     onClear,
+                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );

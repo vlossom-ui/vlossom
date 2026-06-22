@@ -724,7 +724,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(wrapper.emitted('clear')).toBeTruthy();
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['Apple']);
         });
     });
 

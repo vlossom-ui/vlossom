@@ -86,7 +86,7 @@ describe('VsDatePicker', () => {
                 },
             });
             await wrapper.find('.vs-clear-button').trigger('click');
-            expect(wrapper.emitted('clear')).toBeTruthy();
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['2026-05-18T15:30']);
             const updates = wrapper.emitted('update:modelValue') as Array<[string]>;
             expect(updates[updates.length - 1][0]).toBe('');
         });
