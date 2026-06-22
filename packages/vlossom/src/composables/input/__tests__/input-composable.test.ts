@@ -33,6 +33,7 @@ describe('useInput composable', () => {
                         onMounted: onMountedSpy,
                         onChange: onChangeSpy,
                         onClear: onClearSpy,
+                        getClearPayload: (oldValue) => oldValue,
                     },
                     messages,
                     rules,
@@ -616,6 +617,7 @@ describe('useInput composable', () => {
             expect(wrapper.vm.modelValue).toBe('');
             expect(inputValue.value).toBe('');
             expect(onClearSpy).toHaveBeenCalledTimes(1);
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['test']);
         });
     });
 });

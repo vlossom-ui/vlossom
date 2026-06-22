@@ -127,8 +127,19 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     }
 
     function clear() {
+        const oldValue = inputValue.value;
+
         if (callbacks.onClear) {
             callbacks.onClear();
+        }
+
+        if (callbacks.getClearPayload) {
+            const clearPayload = callbacks.getClearPayload(oldValue);
+            if (clearPayload === undefined) {
+                emit('clear');
+            } else {
+                emit('clear', clearPayload);
+            }
         }
 
         nextTick(() => {
