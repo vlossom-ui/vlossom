@@ -129,7 +129,7 @@ export default defineComponent({
             default: () => [],
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {
@@ -330,12 +330,16 @@ export default defineComponent({
         }
 
         function onClear() {
+            const files = inputValue.value;
+
             if (fileDropRef.value) {
                 fileDropRef.value.value = '';
             }
 
             inputValue.value = [];
             componentMessages.value = [];
+
+            emit('clear', files);
         }
 
         function onFocus(e: FocusEvent) {

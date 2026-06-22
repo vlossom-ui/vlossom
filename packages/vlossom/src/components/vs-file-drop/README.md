@@ -134,6 +134,7 @@ interface VsFileDropStyleSet extends CSSProperties {
 | `update:changed` | `File[]` | Emitted when files are changed |
 | `update:valid` | `boolean` | Emitted when the validation state changes |
 | `change` | `File[]` | Emitted on file selection change |
+| `clear` | `File[]` | Emitted with the previously selected files when all files are cleared |
 | `drop` | `File[]` | Emitted when files are dropped |
 | `focus` | `FocusEvent` | Emitted when the file drop area gains focus |
 | `blur` | `FocusEvent` | Emitted when the file drop area loses focus |

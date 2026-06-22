@@ -33,6 +33,14 @@ describe('vs-file-drop', () => {
             expect(emittedEvents).toBeTruthy();
             expect(emittedEvents?.length).toBe(2);
             expect(emittedEvents?.[1][0]).toEqual([]);
+
+            const clearEvents = wrapper.emitted('clear');
+            expect(clearEvents).toBeTruthy();
+            expect(clearEvents?.[0][0]).toEqual(files);
+
+            const changeEvents = wrapper.emitted('change');
+            expect(changeEvents).toBeTruthy();
+            expect(changeEvents?.[0][0]).toEqual([]);
         });
     });
 
@@ -309,6 +317,14 @@ describe('vs-file-drop', () => {
             const emittedEvents = wrapper.emitted('update:modelValue');
             expect(emittedEvents).toBeTruthy();
             expect(emittedEvents?.[1][0]).toEqual([]);
+
+            const clearEvents = wrapper.emitted('clear');
+            expect(clearEvents).toBeTruthy();
+            expect(clearEvents?.[0][0]).toEqual(files);
+
+            const changeEvents = wrapper.emitted('change');
+            expect(changeEvents).toBeTruthy();
+            expect(changeEvents?.[0][0]).toEqual([]);
         });
 
         it('clear 메서드 호출 시 file input의 value도 초기화된다', async () => {
