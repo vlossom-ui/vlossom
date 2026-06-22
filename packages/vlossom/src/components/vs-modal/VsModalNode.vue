@@ -21,9 +21,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, toRefs, type ComputedRef, type PropType } from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useStyleSet } from '@/composables';
+import { useColorScheme, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { objectUtil, stringUtil } from '@/utils';
@@ -47,14 +47,26 @@ export default defineComponent({
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: false },
         dimClose: { type: Boolean, default: false },
+        scrollLock: { type: [Boolean, String] as PropType<boolean | string>, default: false },
         size: {
             type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
         },
     },
     emits: ['close', 'click-dimmed'],
     setup(props, { emit }) {
-        const { beforeClose, colorScheme, styleSet, dimClose, size, id, escClose, callbacks, focusLock } =
-            toRefs(props);
+        const {
+            beforeClose,
+            colorScheme,
+            styleSet,
+            dimClose,
+            size,
+            id,
+            escClose,
+            callbacks,
+            focusLock,
+            container,
+            scrollLock,
+        } = toRefs(props);
 
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
@@ -114,8 +126,18 @@ export default defineComponent({
             additionalStyleSet,
         );
 
+        function resolveScrollLockTarget(): string | null {
+            if (!scrollLock.value) {
+                return null;
+            }
+            return typeof scrollLock.value === 'string' ? scrollLock.value : container.value;
+        }
+        const scrollLockTarget = resolveScrollLockTarget();
+        const scrollLockApi = scrollLockTarget ? useScrollLock(scrollLockTarget) : null;
+
         function openModalNode() {
             activate();
+            scrollLockApi?.lock();
         }
 
         function closeModalNode() {
@@ -170,6 +192,7 @@ export default defineComponent({
         }
 
         onMounted(openModalNode);
+        onUnmounted(() => scrollLockApi?.unlock());
 
         return {
             colorSchemeClass,

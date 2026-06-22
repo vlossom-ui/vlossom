@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsModalNode from './../VsModalNode.vue';
 
@@ -179,6 +179,67 @@ describe('VsModalNode', () => {
 
             // then
             expect(wrapper.emitted('close')).toBeFalsy();
+        });
+    });
+
+    describe('scrollLock 기능', () => {
+        beforeEach(() => {
+            vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+                cb(0);
+                return 0;
+            });
+        });
+
+        afterEach(() => {
+            vi.unstubAllGlobals();
+            document.body.style.overflow = '';
+        });
+
+        it('scrollLock이 true이면 마운트 시 body 스크롤을 잠그고 언마운트 시 복원해야 한다', () => {
+            // given, when
+            const wrapper = mount(VsModalNode, {
+                props: { scrollLock: true },
+            });
+
+            // then
+            expect(document.body.style.overflow).toBe('hidden');
+
+            // when
+            wrapper.unmount();
+
+            // then
+            expect(document.body.style.overflow).toBe('');
+        });
+
+        it('scrollLock이 false(기본값)이면 body 스크롤을 잠그지 않아야 한다', () => {
+            // given, when
+            mount(VsModalNode, {});
+
+            // then
+            expect(document.body.style.overflow).toBe('');
+        });
+
+        it('scrollLock에 selector 문자열을 주면 해당 요소를 잠그고 body는 잠그지 않아야 한다', () => {
+            // given
+            const target = document.createElement('div');
+            target.id = 'scroll-lock-target';
+            document.body.appendChild(target);
+
+            // when
+            const wrapper = mount(VsModalNode, {
+                props: { scrollLock: '#scroll-lock-target' },
+            });
+
+            // then
+            expect(target.style.overflow).toBe('hidden');
+            expect(document.body.style.overflow).toBe('');
+
+            // when
+            wrapper.unmount();
+
+            // then
+            expect(target.style.overflow).toBe('');
+            target.remove();
         });
     });
 });

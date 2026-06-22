@@ -11,6 +11,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 - Opens and closes a modal dialog controlled by a `v-model` boolean.
 - Content is teleported to a configurable container element (default: `body`).
 - Supports dimmed overlay background, focus locking, ESC key close, and dim click close.
+- Optionally locks page scroll, or a specific scroll container by CSS selector, via `scroll-lock`.
 - Configurable size via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values.
 - Emits `open` and `close` events for lifecycle hooks.
 
@@ -94,6 +95,37 @@ async function confirmClose() {
 </script>
 ```
 
+### Scroll Lock
+
+Set `scroll-lock` to `true` to lock the page (`body`) scroll while the modal is open:
+
+```html
+<template>
+    <vs-modal v-model="isOpen" :scroll-lock="true">
+        <div>Background page scroll is locked while open.</div>
+    </vs-modal>
+</template>
+```
+
+Pass a CSS selector string to lock a specific scroll container instead of `body`. The page keeps scrolling while only the targeted element is locked:
+
+```html
+<template>
+    <div id="scroll-area" style="height: 200px; overflow: auto">
+        <!-- long scrollable content -->
+    </div>
+
+    <vs-modal v-model="isOpen" scroll-lock="#scroll-area">
+        <div>Only #scroll-area is locked; the page can still scroll.</div>
+    </vs-modal>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const isOpen = ref(false);
+</script>
+```
+
 ## Props
 
 | Prop          | Type                                                                                                  | Default  | Required | Description                                                                                                |
@@ -110,6 +142,7 @@ async function confirmClose() {
 | `dimmed`      | `boolean`                                                                                             | `false`  | -        | Shows a dimmed overlay behind the modal.                                                                   |
 | `focusLock`   | `boolean`                                                                                             | `false`  | -        | Traps focus within the modal while it is open.                                                             |
 | `hideScroll`  | `boolean`                                                                                             | `false`  | -        | Hides the scroll on the container when the modal is open.                                                  |
+| `scrollLock`  | `boolean \| string`                                                                                   | `false`  | -        | Locks scrolling while the modal is open. Pass a CSS selector to lock that element instead of `container`.  |
 | `id`          | `string`                                                                                              | `''`     | -        | Custom ID for the modal overlay instance.                                                                  |
 
 ## Types

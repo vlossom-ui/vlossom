@@ -11,6 +11,7 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 - `v-model` boolean으로 제어되는 모달 다이얼로그를 열고 닫습니다.
 - 설정 가능한 컨테이너 요소(기본: `body`)로 콘텐츠를 텔레포트합니다.
 - 딤드 오버레이 배경, 포커스 잠금, ESC 키 닫기, 딤 클릭 닫기를 지원합니다.
+- `scroll-lock`으로 페이지 스크롤 또는 CSS 선택자로 지정한 특정 스크롤 컨테이너를 잠글 수 있습니다.
 - 사전 정의된 크기 키워드(`xs`, `sm`, `md`, `lg`, `xl`) 또는 커스텀 값으로 크기를 설정할 수 있습니다.
 - 라이프사이클 훅을 위한 `open` 및 `close` 이벤트를 발생시킵니다.
 
@@ -94,6 +95,37 @@ async function confirmClose() {
 </script>
 ```
 
+### Scroll Lock
+
+`scroll-lock`을 `true`로 설정하면 모달이 열려 있는 동안 페이지(`body`) 스크롤을 잠급니다:
+
+```html
+<template>
+    <vs-modal v-model="isOpen" :scroll-lock="true">
+        <div>모달이 열려 있는 동안 배경 페이지 스크롤이 잠깁니다.</div>
+    </vs-modal>
+</template>
+```
+
+CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이너만 잠급니다. 페이지는 계속 스크롤되고 지정한 요소만 잠깁니다:
+
+```html
+<template>
+    <div id="scroll-area" style="height: 200px; overflow: auto">
+        <!-- 스크롤 가능한 긴 콘텐츠 -->
+    </div>
+
+    <vs-modal v-model="isOpen" scroll-lock="#scroll-area">
+        <div>#scroll-area만 잠기고 페이지는 계속 스크롤됩니다.</div>
+    </vs-modal>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+const isOpen = ref(false);
+</script>
+```
+
 ## Props
 
 | Prop          | Type                                                                                                  | Default  | Required | Description                                                                                                       |
@@ -110,6 +142,7 @@ async function confirmClose() {
 | `dimmed`      | `boolean`                                                                                             | `false`  | -        | 모달 뒤에 딤드 오버레이를 표시합니다.                                                                             |
 | `focusLock`   | `boolean`                                                                                             | `false`  | -        | 모달이 열려 있는 동안 포커스를 내부에 고정합니다.                                                                 |
 | `hideScroll`  | `boolean`                                                                                             | `false`  | -        | 모달이 열려 있을 때 컨테이너의 스크롤을 숨깁니다.                                                                 |
+| `scrollLock`  | `boolean \| string`                                                                                   | `false`  | -        | 모달이 열려 있는 동안 스크롤을 잠급니다. CSS 선택자를 전달하면 `container` 대신 해당 요소를 잠급니다.             |
 | `id`          | `string`                                                                                              | `''`     | -        | 모달 오버레이 인스턴스의 커스텀 ID.                                                                               |
 
 ## Types

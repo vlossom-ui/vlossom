@@ -68,6 +68,10 @@ const meta: Meta<typeof VsModalNode> = {
             control: 'boolean',
             description: 'dimmed 배경 표시 여부',
         },
+        scrollLock: {
+            control: 'boolean',
+            description: '모달이 열려 있는 동안 스크롤 잠금 여부. CSS 선택자를 전달하면 해당 요소를 잠급니다.',
+        },
     },
     args: {
         escClose: true,

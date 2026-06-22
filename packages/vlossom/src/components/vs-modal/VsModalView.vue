@@ -6,6 +6,7 @@
                 :key="modal.id"
                 :before-close="modal.beforeClose"
                 :color-scheme="modal.colorScheme"
+                :container="modal.container"
                 :style-set="modal.styleSet"
                 :callbacks="modal.callbacks"
                 :dim-close="modal.dimClose"
@@ -14,6 +15,7 @@
                 :focus-lock="modal.focusLock"
                 :hide-scroll="modal.hideScroll"
                 :id="modal.id"
+                :scroll-lock="modal.scrollLock"
                 :size="modal.size"
                 @close="onClose(modal.id)"
             >
