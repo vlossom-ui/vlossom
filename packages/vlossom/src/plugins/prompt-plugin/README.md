@@ -85,8 +85,8 @@ async function askAge() {
 
 ## Methods
 
-| Method | Parameters                                                                      | Description                                                                                                                                                 |
-| ------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Method | Parameters                                                   | Description                                                                                                                                                  |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `open` | `content: string \| Component, options?: PromptModalOptions` | Opens a prompt modal with the given content and options. Returns `Promise<string \| number \| null>` resolving to the input value on OK or `null` on Cancel. |
 
 ## Types

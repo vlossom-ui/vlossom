@@ -28,7 +28,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 input: inputOptions,
                 ...modalOptions
             } = options;
-            const { container = 'body', colorScheme, styleSet, escClose = true } = modalOptions;
+            const { colorScheme, styleSet, escClose = true } = modalOptions;
 
             const inputRef = ref<VsInputRef | null>(null);
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
@@ -96,25 +96,25 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                                 return;
                             }
                             resolve(inputValue.value);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         [PROMPT_CANCEL]: () => {
                             inputRef.value?.clear();
                             resolve(null);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         'key-Enter': () => {
                             if (!inputRef.value?.validate()) {
                                 return;
                             }
                             resolve(inputValue.value);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         ...(escClose && {
                             'key-Escape': () => {
                                 inputRef.value?.clear();
                                 resolve(null);
-                                modalPlugin.closeWithId(container, modalId);
+                                modalPlugin.closeWithId(modalId);
                             },
                         }),
                         [OVERLAY_CLOSE]: () => {

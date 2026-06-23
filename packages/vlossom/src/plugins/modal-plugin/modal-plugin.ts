@@ -18,6 +18,45 @@ export function createModalPlugin(): ModalPlugin {
         return result !== false;
     }
 
+    function getAllModals(): ModalInfo[] {
+        const containers = Array.from(modalStore.map.value.keys());
+        return containers.flatMap((container) => modalStore.get(container));
+    }
+
+    function findModal(id: string): ModalInfo | undefined {
+        return getAllModals().find((modal) => modal.id === id);
+    }
+
+    // overlay 스택은 모달 외 오버레이(드로어, 툴팁 등)도 공유하므로, 스택을 위에서부터 훑어
+    // 실제 모달인 최상단 항목을 찾는다. close()와 close(container)가 동일한 순서 기준을 쓰도록 하기 위함.
+    function findTopModal(container?: string): ModalInfo | undefined {
+        const overlays = overlayCallbackStore.overlays.value;
+        for (let i = overlays.length - 1; i >= 0; i--) {
+            const [overlayId] = overlays[i];
+            const modal = findModal(overlayId);
+            if (modal && (!container || modal.container === container)) {
+                return modal;
+            }
+        }
+        return undefined;
+    }
+
+    async function closeModal(modal: ModalInfo): Promise<boolean> {
+        if (!(await runBeforeClose(modal))) {
+            return false;
+        }
+
+        modalStore.remove(modal.container, modal.id);
+        overlayCallbackStore.remove(modal.id);
+        return true;
+    }
+
+    function removeModals(modals: ModalInfo[]) {
+        modals.forEach((modal) => {
+            overlayCallbackStore.remove(modal.id);
+        });
+    }
+
     return {
         open(content: string | Component, options: ModalOptions = {}): string {
             const container = options.container || 'body';
@@ -49,44 +88,31 @@ export function createModalPlugin(): ModalPlugin {
             return overlayCallbackStore.run(id, eventName, ...args);
         },
 
-        async close(container = 'body'): Promise<boolean> {
-            const modals = modalStore.get(container);
-            if (modals.length === 0) {
-                return false;
-            }
-            const last = modals[modals.length - 1];
-            if (!(await runBeforeClose(last))) {
-                return false;
-            }
-
-            modalStore.pop(container);
-
-            const lastOverlayId = overlayCallbackStore.getLastOverlayId();
-            overlayCallbackStore.remove(lastOverlayId);
-            return true;
-        },
-
-        async closeWithId(container: string, id: string): Promise<boolean> {
-            const target = modalStore.get(container).find((modal) => modal.id === id);
+        async close(container?: string): Promise<boolean> {
+            const target = findTopModal(container);
             if (!target) {
                 return false;
             }
-            if (!(await runBeforeClose(target))) {
-                return false;
-            }
-
-            modalStore.remove(container, id);
-
-            overlayCallbackStore.remove(id);
-            return true;
+            return closeModal(target);
         },
 
-        clear(container = 'body') {
-            const modalIds = modalStore.get(container).map((modal) => modal.id);
-            modalIds.forEach((modalId) => {
-                overlayCallbackStore.remove(modalId);
-            });
-            modalStore.delete(container);
+        async closeWithId(id: string): Promise<boolean> {
+            const target = findModal(id);
+            if (!target) {
+                return false;
+            }
+            return closeModal(target);
+        },
+
+        clear(container?: string) {
+            if (container) {
+                removeModals(modalStore.get(container));
+                modalStore.delete(container);
+                return;
+            }
+
+            removeModals(getAllModals());
+            modalStore.clear();
         },
     };
 }

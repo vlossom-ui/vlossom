@@ -85,8 +85,8 @@ function handleConfirm() {
 
 ## Methods
 
-| Method | Parameters                                                                     | Description                                                                                                                |
-| ------ | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Method | Parameters                                                    | Description                                                                                                                               |
+| ------ | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `open` | `content: string \| Component, options?: ConfirmModalOptions` | Opens a confirmation modal with the given content and options. Returns `Promise<boolean>` resolving to `true` on OK or `false` on Cancel. |
 
 ## Types

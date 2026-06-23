@@ -31,6 +31,6 @@ export interface ModalPlugin {
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): Promise<boolean>;
-    closeWithId(container: string, id: string): Promise<boolean>;
+    closeWithId(id: string): Promise<boolean>;
     clear(container?: string): void;
 }

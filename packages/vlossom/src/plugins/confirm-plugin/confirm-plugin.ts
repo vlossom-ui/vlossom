@@ -22,7 +22,7 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
             const { componentProps, okText = 'OK', cancelText = 'Cancel', swapButtons, ...modalOptions } = options;
-            const { container = 'body', colorScheme, styleSet, escClose = true } = modalOptions;
+            const { colorScheme, styleSet, escClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsConfirmStyleSet>> = ref({
                 $okButton: { minWidth: '8rem' },
@@ -68,20 +68,20 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
                         ...modalOptions.callbacks,
                         [CONFIRM_OK]: () => {
                             resolve(true);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         [CONFIRM_CANCEL]: () => {
                             resolve(false);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         'key-Enter': () => {
                             resolve(true);
-                            modalPlugin.closeWithId(container, modalId);
+                            modalPlugin.closeWithId(modalId);
                         },
                         ...(escClose && {
                             'key-Escape': () => {
                                 resolve(false);
-                                modalPlugin.closeWithId(container, modalId);
+                                modalPlugin.closeWithId(modalId);
                             },
                         }),
                         [OVERLAY_CLOSE]: () => {

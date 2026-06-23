@@ -31,7 +31,7 @@ export default defineComponent({
     inheritAttrs: false,
     setup(props, { emit, slots }) {
         const $vs = useVlossom();
-        const { modelValue, container, callbacks } = toRefs(props);
+        const { modelValue, callbacks } = toRefs(props);
 
         const isOpen = ref(modelValue.value);
         const modalId = ref('');
@@ -53,7 +53,7 @@ export default defineComponent({
                 return;
             }
             if (!o) {
-                const closed = await $vs.modal.closeWithId(container.value, modalId.value);
+                const closed = await $vs.modal.closeWithId(modalId.value);
                 if (!closed) {
                     emit('update:modelValue', true);
                 }
