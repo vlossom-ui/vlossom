@@ -11,6 +11,7 @@ describe('useInputForm', () => {
     let changed: Ref<boolean>;
     let validateSpy: ReturnType<typeof vi.fn<() => boolean>>;
     let clearSpy: ReturnType<typeof vi.fn<() => void>>;
+    let resetSpy: ReturnType<typeof vi.fn<() => void>>;
     let TestComponent: ReturnType<typeof defineComponent>;
 
     beforeEach(() => {
@@ -21,9 +22,10 @@ describe('useInputForm', () => {
         changed = ref(false);
         validateSpy = vi.fn<() => boolean>();
         clearSpy = vi.fn<() => void>();
+        resetSpy = vi.fn<() => void>();
         TestComponent = defineComponent({
             setup() {
-                const result = useInputForm(id, valid, changed, validateSpy, clearSpy);
+                const result = useInputForm(id, valid, changed, validateSpy, clearSpy, resetSpy);
                 return { result };
             },
             template: '<div></div>',
@@ -88,6 +90,20 @@ describe('useInputForm', () => {
 
         // then
         expect(clearSpy).toHaveBeenCalled();
+    });
+
+    it('resetFlag가 토글되면 reset 함수가 호출되어야 한다', async () => {
+        // given
+        mount(TestComponent);
+
+        await nextTick();
+
+        // when
+        formStore.toggleResetFlag();
+        await nextTick();
+
+        // then
+        expect(resetSpy).toHaveBeenCalled();
     });
 
     it('컴포넌트 마운트 시 초기값으로 updateChanged와 updateValid가 호출되어야 한다', async () => {

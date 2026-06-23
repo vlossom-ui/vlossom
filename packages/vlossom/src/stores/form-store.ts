@@ -7,6 +7,7 @@ export class FormStore {
     private _validObj: Ref<Record<string, boolean>> = ref({});
     private _validateFlag = ref(false);
     private _clearFlag = ref(false);
+    private _resetFlag = ref(false);
 
     public static getDefaultFormStore(): FormStore {
         return new FormStore();
@@ -51,5 +52,11 @@ export class FormStore {
 
     public toggleClearFlag() {
         this._clearFlag.value = !this._clearFlag.value;
+    }
+
+    public resetFlag = computed(() => this._resetFlag.value);
+
+    public toggleResetFlag() {
+        this._resetFlag.value = !this._resetFlag.value;
     }
 }

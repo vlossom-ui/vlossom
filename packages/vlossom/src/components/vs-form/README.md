@@ -10,7 +10,8 @@ A form container component that manages validation state and propagates `disable
 
 - Provides a form store context that all child `Vlossom` form inputs can subscribe to
 - Centralized `validate()` method to trigger validation across all child inputs
-- Centralized `clear()` method to reset all child inputs
+- Centralized `clear()` method to empty all child inputs
+- Centralized `reset()` method to restore all child inputs to their initial values
 - `valid` and `changed` computed properties for form-level state inspection
 - Propagates `disabled` and `readonly` states to all child form components
 - Renders as a `<form>` element using `VsGrid` internally for responsive layout
@@ -107,6 +108,7 @@ VsForm does not use a `styleSet` prop. Use `VsGrid` props (`gridSize`, `columnGa
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
 | `validate` | - | Triggers validation for all child inputs. Returns `Promise<boolean>` indicating whether the form is valid |
-| `clear` | - | Resets all child inputs to their initial state |
+| `clear` | - | Empties all child inputs |
+| `reset` | - | Restores all child inputs to the values captured at initialization (so `changed` becomes `false`) |
 | `valid` | - | Computed property (`ComputedRef<boolean>`) — `true` when all child inputs are valid |
 | `changed` | - | Computed property (`ComputedRef<boolean>`) — `true` when any child input has been changed |

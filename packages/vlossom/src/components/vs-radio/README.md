@@ -223,6 +223,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | Method     | Parameters | Description                  |
 | ---------- | ---------- | ---------------------------- |
 | `clear`    | -          | Clears the selected value    |
+| `reset`    | -          | Resets the selected value to its initial value |
 | `validate` | -          | Triggers validation          |
 | `focus`    | -          | Focuses the radio input      |
 | `blur`     | -          | Blurs the radio input        |
@@ -235,3 +236,4 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `blur`     | -          | Blurs the first radio input      |
 | `validate` | -          | Triggers validation              |
 | `clear`    | -          | Clears the selected value        |
+| `reset`    | -          | Resets the selected value to its initial value |

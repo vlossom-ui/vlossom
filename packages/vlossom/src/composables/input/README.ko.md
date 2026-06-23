@@ -91,7 +91,7 @@ interface InputComponentParams<T> {
 
 | RefType            | 타입                          | 설명                                                                        |
 | ------------------ | ----------------------------- | --------------------------------------------------------------------------- |
-| `changed`          | `Ref<boolean>`                | 초기화 후 사용자가 값을 변경하면 `true`가 됩니다.                            |
+| `changed`          | `ComputedRef<boolean>`        | 현재 값이 초기화 시점의 기준값과 다르면(dirty) `true`입니다. 초기값으로 되돌리면 다시 `false`가 됩니다. |
 | `valid`            | `ComputedRef<boolean>`        | 활성 규칙 메시지가 없으면 `true`.                                            |
 | `shake`            | `Ref<boolean>`                | `validate()` 실패 시마다 토글됩니다 — 흔들기 CSS 클래스에 바인딩하세요.     |
 | `computedMessages` | `ComputedRef<StateMessage[]>` | 표시할 정적 및 규칙 메시지의 통합 목록.                                      |
@@ -106,7 +106,8 @@ interface InputComponentParams<T> {
 | 메서드     | 파라미터 | 설명                                                                        |
 | ---------- | -------- | --------------------------------------------------------------------------- |
 | `validate` | —        | 규칙 메시지를 표시하고 유효하지 않으면 `shake`를 토글합니다. 유효하면 `true`를 반환합니다. |
-| `clear`    | —        | `onClear` 콜백을 호출하고 메시지/변경 상태를 초기화합니다.                  |
+| `clear`    | —        | `onClear` 콜백을 호출하고 규칙 메시지를 숨깁니다. `changed`는 비워진 값과 초기값의 diff로 결정됩니다(값이 있던 입력을 clear하면 `true`). |
+| `reset`    | —        | `inputValue`를 초기화 시점의 기준값으로 되돌리고 규칙 메시지를 숨겨 `changed`를 `false`로 만듭니다. clear와 달리 빈 값이 아니라 기준값으로 복원합니다. |
 
 ## Hooks
 

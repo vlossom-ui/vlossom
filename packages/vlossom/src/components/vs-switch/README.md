@@ -153,3 +153,4 @@ interface VsSwitchStyleSet extends CSSProperties {
 | `blur` | | Blurs the switch input |
 | `validate` | | Triggers validation |
 | `clear` | | Clears the value |
+| `reset` | | Resets the value to its initial value |

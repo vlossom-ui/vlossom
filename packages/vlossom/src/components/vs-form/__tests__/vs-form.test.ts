@@ -219,6 +219,22 @@ describe('VsForm', () => {
                 expect(formStore.clearFlag.value).toBe(!initialFlag);
             });
         });
+
+        describe('reset', () => {
+            it('reset 호출 시 FormStore의 resetFlag가 토글되어야 한다', () => {
+                // given
+                const initialFlag = formStore.resetFlag.value;
+                const wrapper = mount(VsForm);
+                const toggleResetFlagSpy = vi.spyOn(formStore, 'toggleResetFlag');
+
+                // when
+                wrapper.vm.reset();
+
+                // then
+                expect(toggleResetFlagSpy).toHaveBeenCalled();
+                expect(formStore.resetFlag.value).toBe(!initialFlag);
+            });
+        });
     });
 
     describe('events', () => {

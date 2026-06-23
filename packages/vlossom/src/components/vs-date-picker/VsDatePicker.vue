@@ -201,6 +201,7 @@ export default defineComponent({
             shake,
             validate,
             clear,
+            reset,
         } = useInput<VsDatePickerValueType>(
             { emit },
             {
@@ -411,6 +412,7 @@ export default defineComponent({
             focus,
             blur,
             clear,
+            reset,
             validate,
             open: openPicker,
         };

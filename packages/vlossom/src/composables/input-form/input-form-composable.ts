@@ -8,6 +8,7 @@ export function useInputForm(
     changed: Ref<boolean>,
     validate: () => boolean,
     clear: () => void,
+    reset: () => void,
 ) {
     const formStore = inject<FormStore>(
         FORM_STORE_KEY,
@@ -25,6 +26,8 @@ export function useInputForm(
     watch(formStore.validateFlag, validate);
 
     watch(formStore.clearFlag, clear);
+
+    watch(formStore.resetFlag, reset);
 
     onMounted(() => {
         formStore.updateChanged(id.value, changed.value);
