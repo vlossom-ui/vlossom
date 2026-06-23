@@ -177,6 +177,7 @@ export default defineComponent({
                 defaultRules: computed(() => [requiredCheck, maxCheck, minCheck]),
                 noDefaultRules,
                 state,
+                emitClear: true,
                 callbacks: {
                     onMounted: () => {
                         inputValue.value = convertValue(inputValue.value);
@@ -185,7 +186,6 @@ export default defineComponent({
                         inputValue.value = convertValue(inputValue.value);
                     },
                     onClear,
-                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );

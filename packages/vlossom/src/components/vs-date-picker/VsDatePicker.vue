@@ -214,9 +214,9 @@ export default defineComponent({
                 defaultRules: computed(() => [requiredCheck, minCheck, maxCheck]),
                 noDefaultRules,
                 state,
+                emitClear: true,
                 callbacks: {
                     onClear,
-                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );

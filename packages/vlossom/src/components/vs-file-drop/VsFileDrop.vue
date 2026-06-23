@@ -207,12 +207,12 @@ export default defineComponent({
                 rules,
                 defaultRules: computed(() => [requiredCheck, acceptCheck]),
                 state,
+                emitClear: true,
                 callbacks: {
                     onMounted: () => {
                         inputValue.value = modelValue.value ?? [];
                     },
                     onClear,
-                    getClearPayload: (oldValue) => oldValue,
                 },
             },
         );

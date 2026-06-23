@@ -98,12 +98,12 @@ export interface InputComponentParams<T = unknown> {
     defaultRules?: Ref<Rule<T>[]>;
     noDefaultRules?: Ref<boolean>;
     state?: Ref<UIState>;
+    emitClear?: boolean;
     callbacks?: {
         onBeforeMount?: () => void;
         onMounted?: () => void;
         onChange?: (newValue: T, oldValue: T) => void;
         onClear?: () => void;
-        getClearPayload?: (oldValue: T) => unknown;
         onBeforeUnmount?: () => void;
         onUnmounted?: () => void;
     };

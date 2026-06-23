@@ -18,6 +18,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         defaultRules = ref([]),
         noDefaultRules = ref(false),
         state = ref('idle'),
+        emitClear = false,
         callbacks = {},
     } = inputParams;
 
@@ -133,13 +134,8 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
             callbacks.onClear();
         }
 
-        if (callbacks.getClearPayload) {
-            const clearPayload = callbacks.getClearPayload(oldValue);
-            if (clearPayload === undefined) {
-                emit('clear');
-            } else {
-                emit('clear', clearPayload);
-            }
+        if (emitClear) {
+            emit('clear', oldValue);
         }
 
         nextTick(() => {
