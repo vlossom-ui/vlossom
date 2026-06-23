@@ -4,7 +4,7 @@
         ".env": ".env*",
         "tsconfig.json": "tsconfig.*.json",
         "vite.config.ts": "vite.config.common.ts, vite.config.playground.ts, jsconfig*, vitest.*, cypress.config.*, playwright.config.*, visualizer*",
-        "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, .editorconfig, postcss*, tailwind*"
+        "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .oxlint*, oxlint*, .prettier*, prettier*, .editorconfig, postcss*, tailwind*, stylelint*"
     },
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
