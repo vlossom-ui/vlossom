@@ -77,8 +77,8 @@ function showAlert() {
 
 ## Methods
 
-| Method | Parameters                                                                | Description                                                                                       |
-| ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Method | Parameters                                                  | Description                                                                                                                           |
+| ------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `open` | `content: string \| Component, options?: AlertModalOptions` | Opens an alert modal with the given content and options. Returns `Promise<void>` that resolves when the user acknowledges the dialog. |
 
 ## Types
