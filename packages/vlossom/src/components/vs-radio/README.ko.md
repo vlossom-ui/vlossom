@@ -184,6 +184,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `toggle`            | `boolean`                 | 라디오가 토글될 때 발생            |
 | `focus`             | `FocusEvent`              | 라디오가 포커스를 받을 때 발생     |
 | `blur`              | `FocusEvent`              | 라디오가 포커스를 잃을 때 발생     |
+| `clear`             | `any`                     | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ### VsRadioSet
 
@@ -195,6 +196,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `change`            | `any`                     | 선택이 변경될 때 발생              |
 | `focus`             | `(option: any, event: FocusEvent)` | 라디오가 포커스를 받을 때 발생 |
 | `blur`              | `(option: any, event: FocusEvent)` | 라디오가 포커스를 잃을 때 발생 |
+| `clear`             | `any`                     | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## Slots
 

@@ -99,7 +99,7 @@ export default defineComponent({
             default: () => [],
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear'],
     setup(props, { emit }) {
         const {

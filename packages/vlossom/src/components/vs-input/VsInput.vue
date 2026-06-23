@@ -102,7 +102,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'select'],
     setup(props, { emit }) {
         const {
@@ -151,10 +151,6 @@ export default defineComponent({
             return modifyStringValue(v.toString());
         }
 
-        function onClear() {
-            inputValue.value = isNumberInput.value ? null : '';
-        }
-
         const {
             computedId,
             computedMessages,
@@ -184,7 +180,9 @@ export default defineComponent({
                     onChange: () => {
                         inputValue.value = convertValue(inputValue.value);
                     },
-                    onClear,
+                    onClear: () => {
+                        inputValue.value = isNumberInput.value ? null : '';
+                    },
                 },
             },
         );
@@ -232,7 +230,7 @@ export default defineComponent({
         }
 
         function clearWithFocus() {
-            onClear();
+            clear();
             focus();
         }
 

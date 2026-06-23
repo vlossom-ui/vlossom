@@ -348,6 +348,7 @@ describe('VsSwitch', () => {
                 // then
                 expect(wrapper.vm.isChecked).toBe(false);
                 expect(wrapper.props('modelValue')).toEqual([]);
+                expect(wrapper.emitted('clear')?.[0]).toEqual([['A', 'B']]);
             });
         });
 
@@ -368,6 +369,7 @@ describe('VsSwitch', () => {
                 // then
                 expect(wrapper.vm.isChecked).toBe(false);
                 expect(wrapper.props('modelValue')).toBe(false);
+                expect(wrapper.emitted('clear')?.[0]).toEqual([true]);
             });
         });
     });

@@ -298,6 +298,7 @@ describe('VsInput', () => {
 
             // then
             expect(wrapper.vm.inputValue).toBe('');
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['test value']);
         });
     });
 

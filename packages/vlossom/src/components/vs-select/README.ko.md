@@ -157,7 +157,7 @@ interface VsSelectStyleSet extends CSSProperties {
 | `click-option`      | `OptionItem`  | 옵션이 클릭될 때 발생                      |
 | `open`              | -             | 드롭다운이 열릴 때 발생                    |
 | `close`             | -             | 드롭다운이 닫힐 때 발생                    |
-| `clear`             | -             | 선택 값이 초기화될 때 발생                 |
+| `clear`             | `any`         | 선택 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## Slots
 

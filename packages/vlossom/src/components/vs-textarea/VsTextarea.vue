@@ -73,7 +73,7 @@ export default defineComponent({
             default: () => ({}),
         },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'select'],
     setup(props, { emit }) {
         const {
@@ -140,6 +140,9 @@ export default defineComponent({
                     },
                     onChange: () => {
                         inputValue.value = convertValue(inputValue.value);
+                    },
+                    onClear: () => {
+                        inputValue.value = '';
                     },
                 },
             },
