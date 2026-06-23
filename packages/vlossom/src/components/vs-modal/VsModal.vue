@@ -19,6 +19,7 @@ export default defineComponent({
         },
         container: { type: String, default: 'body' },
         escClose: { type: Boolean, default: false },
+        scrollLock: { type: [Boolean, String] as PropType<boolean | string>, default: false },
         size: {
             type: [String, Number, Object] as PropType<SizeProp | { width?: SizeProp; height?: SizeProp }>,
         },

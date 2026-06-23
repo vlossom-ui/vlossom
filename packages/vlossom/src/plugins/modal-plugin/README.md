@@ -12,7 +12,7 @@ Programmatically opens and manages modal dialogs. Supports mounting any string o
 - Supports custom callbacks for events (e.g. button clicks, keyboard shortcuts)
 - Multiple modals can be stacked inside the same or different containers
 - Provides imperative API to emit events, close specific modals, or clear all modals
-- Configurable overlay behavior: dim, dim-close, focus lock, scroll hiding, size
+- Configurable overlay behavior: dim, dim-close, focus lock, scroll hiding, scroll lock, size
 - All Alert, Confirm, and Prompt plugins are built on top of this plugin
 
 ## Basic Usage
@@ -104,6 +104,40 @@ function closeModal() {
 </script>
 ```
 
+### Locking Scroll
+
+Set `scrollLock: true` to lock the page (`body`) scroll while the modal is open:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('Background scroll is locked.', {
+        scrollLock: true,
+    });
+}
+</script>
+```
+
+Pass a CSS selector string to lock a specific scroll container instead of `body`:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('Only #scroll-area is locked; the page can still scroll.', {
+        scrollLock: '#scroll-area',
+    });
+}
+</script>
+```
+
 ## Methods
 
 | Method          | Parameters                                                                 | Description                                                                                                   |
@@ -130,6 +164,7 @@ interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    scrollLock?: boolean | string;
     componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
