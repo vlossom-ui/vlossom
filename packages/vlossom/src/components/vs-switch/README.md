@@ -134,6 +134,7 @@ interface VsSwitchStyleSet extends CSSProperties {
 | `change` | `any` | Emitted on value change |
 | `focus` | `FocusEvent` | Emitted on focus |
 | `blur` | `FocusEvent` | Emitted on blur |
+| `clear` | `any` | Emitted with the previous value when the value is cleared |
 
 ## Slots
 

@@ -207,12 +207,18 @@ export default defineComponent({
                 rules,
                 defaultRules: computed(() => [requiredCheck, acceptCheck]),
                 state,
-                emitClear: true,
                 callbacks: {
                     onMounted: () => {
                         inputValue.value = modelValue.value ?? [];
                     },
-                    onClear,
+                    onClear: () => {
+                        if (fileDropRef.value) {
+                            fileDropRef.value.value = '';
+                        }
+
+                        inputValue.value = [];
+                        componentMessages.value = [];
+                    },
                 },
             },
         );
@@ -328,15 +334,6 @@ export default defineComponent({
             }
 
             inputValue.value = filteredFiles;
-        }
-
-        function onClear() {
-            if (fileDropRef.value) {
-                fileDropRef.value.value = '';
-            }
-
-            inputValue.value = [];
-            componentMessages.value = [];
         }
 
         function onFocus(e: FocusEvent) {

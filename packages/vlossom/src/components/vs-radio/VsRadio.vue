@@ -75,7 +75,7 @@ export default defineComponent({
         // v-model
         modelValue: { type: null, default: null },
     },
-    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur'],
+    emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur', 'clear'],
     // expose: ['clear', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {

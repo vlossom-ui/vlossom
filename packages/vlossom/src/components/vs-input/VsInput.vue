@@ -151,10 +151,6 @@ export default defineComponent({
             return modifyStringValue(v.toString());
         }
 
-        function onClear() {
-            inputValue.value = isNumberInput.value ? null : '';
-        }
-
         const {
             computedId,
             computedMessages,
@@ -177,7 +173,6 @@ export default defineComponent({
                 defaultRules: computed(() => [requiredCheck, maxCheck, minCheck]),
                 noDefaultRules,
                 state,
-                emitClear: true,
                 callbacks: {
                     onMounted: () => {
                         inputValue.value = convertValue(inputValue.value);
@@ -185,7 +180,9 @@ export default defineComponent({
                     onChange: () => {
                         inputValue.value = convertValue(inputValue.value);
                     },
-                    onClear,
+                    onClear: () => {
+                        inputValue.value = isNumberInput.value ? null : '';
+                    },
                 },
             },
         );

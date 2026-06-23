@@ -134,6 +134,7 @@ interface VsSwitchStyleSet extends CSSProperties {
 | `change` | `any` | 값 변경 시 발생 |
 | `focus` | `FocusEvent` | 포커스 시 발생 |
 | `blur` | `FocusEvent` | 포커스 해제 시 발생 |
+| `clear` | `any` | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## 슬롯
 

@@ -214,9 +214,10 @@ export default defineComponent({
                 defaultRules: computed(() => [requiredCheck, minCheck, maxCheck]),
                 noDefaultRules,
                 state,
-                emitClear: true,
                 callbacks: {
-                    onClear,
+                    onClear: () => {
+                        inputValue.value = '';
+                    },
                 },
             },
         );
@@ -276,10 +277,6 @@ export default defineComponent({
 
         function blur(): void {
             dateInputRef.value?.blur();
-        }
-
-        function onClear(): void {
-            inputValue.value = '';
         }
 
         function onPointerDown(): void {
