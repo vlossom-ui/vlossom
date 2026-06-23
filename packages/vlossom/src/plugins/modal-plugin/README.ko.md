@@ -98,7 +98,7 @@ function openModal() {
 
 function closeModal() {
     if (currentModalId) {
-        $vs.modal.closeWithId('body', currentModalId);
+        $vs.modal.closeWithId(currentModalId);
     }
 }
 </script>
@@ -145,9 +145,9 @@ function openModal() {
 | `open`          | `content: string \| Component, options?: ModalOptions`      | 주어진 콘텐츠와 옵션으로 모달을 엽니다. 모달의 고유 문자열 ID를 반환합니다. `content`가 컴포넌트인 경우 옵션의 `componentProps`로 props를 전달할 수 있습니다. |
 | `emit`          | `eventName: string, ...args: any[]`                                        | 가장 최근에 열린 모달의 콜백 스토어에 이름이 있는 이벤트를 emit합니다.                                  |
 | `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | ID로 특정 모달에 이름이 있는 이벤트를 emit합니다.                                                       |
-| `close`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)에서 가장 최근에 열린 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
-| `closeWithId`   | `container: string, id: string`                                            | 컨테이너와 ID로 특정 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다.              |
-| `clear`         | `container?: string`                                                       | 주어진 컨테이너(기본값: `'body'`)의 모든 모달을 닫습니다. `beforeClose`를 무시합니다.                  |
+| `close`         | `container?: string`                                                       | 가장 최근에 열린 모달을 닫습니다. `container`를 생략하면 모든 컨테이너를 통틀어 마지막으로 열린 모달을, `container`를 지정하면 해당 컨테이너의 마지막 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다 (`beforeClose`가 `false`를 반환하면 닫기를 취소). |
+| `closeWithId`   | `id: string`                                                               | 컨테이너와 무관하게 ID로 특정 모달을 닫습니다. 실제로 닫혔는지를 `Promise<boolean>`으로 반환합니다.     |
+| `clear`         | `container?: string`                                                       | 모든 모달을 닫습니다. `container`를 생략하면 모든 컨테이너의 모달을, `container`를 지정하면 해당 컨테이너의 모달만 닫습니다. `beforeClose`를 무시합니다. |
 
 ## 타입
 
@@ -175,7 +175,7 @@ interface ModalPlugin {
     emit(eventName: string, ...args: any[]): void | Promise<void>;
     emitWithId(id: string, eventName: string, ...args: any[]): void | Promise<void>;
     close(container?: string): Promise<boolean>;
-    closeWithId(container: string, id: string): Promise<boolean>;
+    closeWithId(id: string): Promise<boolean>;
     clear(container?: string): void;
 }
 ```

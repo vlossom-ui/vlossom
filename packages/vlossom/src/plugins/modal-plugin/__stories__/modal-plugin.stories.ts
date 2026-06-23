@@ -69,7 +69,7 @@ export const Default: Story = {
 
             function handleCloseWithId() {
                 if (currentModalId) {
-                    $vs.modal.closeWithId('body', currentModalId);
+                    $vs.modal.closeWithId(currentModalId);
                     currentModalId = '';
                 }
             }

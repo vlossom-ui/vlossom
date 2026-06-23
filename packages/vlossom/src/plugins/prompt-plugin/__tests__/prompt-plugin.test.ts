@@ -6,12 +6,12 @@ import type { ModalPlugin } from '@/plugins/modal-plugin';
 
 describe('prompt-plugin', () => {
     let registeredCallbacks: Record<string, (...args: any[]) => void>;
-    let closeWithId: ReturnType<typeof vi.fn<(container: string, id: string) => Promise<boolean>>>;
+    let closeWithId: ReturnType<typeof vi.fn<(id: string) => Promise<boolean>>>;
     let modalPlugin: ModalPlugin;
 
     beforeEach(() => {
         registeredCallbacks = {};
-        closeWithId = vi.fn<(container: string, id: string) => Promise<boolean>>(async () => true);
+        closeWithId = vi.fn<(id: string) => Promise<boolean>>(async () => true);
         modalPlugin = {
             open: vi.fn((_content: any, options) => {
                 registeredCallbacks = options?.callbacks ?? {};
@@ -32,7 +32,7 @@ describe('prompt-plugin', () => {
         registeredCallbacks[PROMPT_CANCEL]?.();
 
         await expect(promise).resolves.toBeNull();
-        expect(closeWithId).toHaveBeenCalledWith('body', 'modal-id');
+        expect(closeWithId).toHaveBeenCalledWith('modal-id');
     });
 
     it('기본적으로 Escape 키 콜백이 등록되며, 호출되면 null로 resolve하고 모달을 닫는다', async () => {
@@ -44,7 +44,7 @@ describe('prompt-plugin', () => {
         registeredCallbacks['key-Escape']?.();
 
         await expect(promise).resolves.toBeNull();
-        expect(closeWithId).toHaveBeenCalledWith('body', 'modal-id');
+        expect(closeWithId).toHaveBeenCalledWith('modal-id');
     });
 
     it('escClose가 false면 Escape 키 콜백이 등록되지 않는다', () => {
