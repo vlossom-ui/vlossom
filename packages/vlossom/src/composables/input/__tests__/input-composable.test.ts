@@ -29,7 +29,6 @@ describe('useInput composable', () => {
                     id,
                     disabled,
                     readonly,
-                    emitClear: true,
                     callbacks: {
                         onMounted: onMountedSpy,
                         onChange: onChangeSpy,
