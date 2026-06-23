@@ -173,7 +173,7 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `change`            | `string`            | 값이 commit된 후 emit.                           |
 | `focus`             | `FocusEvent`        | 포커스 시 emit.                                  |
 | `blur`              | `FocusEvent`        | 블러 시 emit.                                    |
-| `clear`             | -                   | 지우기 버튼 클릭 시 emit.                        |
+| `clear`             | `string`            | 값이 초기화될 때 초기화 직전 값과 함께 emit.     |
 | `invalid`           | `{ input: string }` | format 불일치 시 emit.                           |
 
 ## Slots

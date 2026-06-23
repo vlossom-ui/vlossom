@@ -215,7 +215,9 @@ export default defineComponent({
                 noDefaultRules,
                 state,
                 callbacks: {
-                    onClear,
+                    onClear: () => {
+                        inputValue.value = '';
+                    },
                 },
             },
         );
@@ -257,7 +259,7 @@ export default defineComponent({
                 if (inputValue.value && !isValidFormat(inputValue.value, type.value)) {
                     return;
                 }
-                onClear();
+                clear();
                 return;
             }
 
@@ -275,11 +277,6 @@ export default defineComponent({
 
         function blur(): void {
             dateInputRef.value?.blur();
-        }
-
-        function onClear(): void {
-            inputValue.value = '';
-            emit('clear');
         }
 
         function onPointerDown(): void {

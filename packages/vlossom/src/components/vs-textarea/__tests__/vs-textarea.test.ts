@@ -717,4 +717,24 @@ describe('VsTextarea', () => {
             expect(typeof wrapper.vm.inputValue).toBe('string');
         });
     });
+
+    describe('clear', () => {
+        it('clear 함수를 호출하면 값을 초기화하고 clear 이벤트에 이전 값을 전달해야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    modelValue: 'test value',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+
+            // when
+            wrapper.vm.clear();
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('');
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['test value']);
+        });
+    });
 });

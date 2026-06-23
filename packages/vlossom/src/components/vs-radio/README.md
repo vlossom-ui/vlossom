@@ -184,6 +184,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `toggle`            | `boolean`                 | Emitted when the radio is toggled        |
 | `focus`             | `FocusEvent`              | Emitted when the radio receives focus    |
 | `blur`              | `FocusEvent`              | Emitted when the radio loses focus       |
+| `clear`             | `any`                     | Emitted with the previous value when the value is cleared |
 
 ### VsRadioSet
 
@@ -195,6 +196,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `change`            | `any`                     | Emitted when the selection changes       |
 | `focus`             | `(option: any, event: FocusEvent)` | Emitted when a radio receives focus |
 | `blur`              | `(option: any, event: FocusEvent)` | Emitted when a radio loses focus   |
+| `clear`             | `any`                     | Emitted with the previous value when the value is cleared |
 
 ## Slots
 

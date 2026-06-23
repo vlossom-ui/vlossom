@@ -190,6 +190,7 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `focus` | `FocusEvent` | Emitted when the checkbox gains focus |
 | `blur` | `FocusEvent` | Emitted when the checkbox loses focus |
 | `toggle` | `boolean, MouseEvent` | Emitted after toggling; payload is the new checked state and the mouse event |
+| `clear` | `any` | Emitted with the previous value when the value is cleared |
 
 ## Slots
 

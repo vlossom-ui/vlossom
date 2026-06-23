@@ -190,6 +190,7 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `focus` | `FocusEvent` | 체크박스가 포커스를 받을 때 발생 |
 | `blur` | `FocusEvent` | 체크박스가 포커스를 잃을 때 발생 |
 | `toggle` | `boolean, MouseEvent` | 토글 후 발생; 새로운 체크 상태와 마우스 이벤트가 페이로드 |
+| `clear` | `any` | 값이 초기화될 때 초기화 직전 값과 함께 발생 |
 
 ## Slots
 

@@ -148,6 +148,7 @@ interface VsInputStyleSet extends CSSProperties {
 | `change`            | -                          | Emitted after the value is committed.               |
 | `focus`             | `FocusEvent`               | Emitted when the input receives focus.              |
 | `blur`              | `FocusEvent`               | Emitted when the input loses focus.                 |
+| `clear`             | `string \| number \| null` | Emitted with the previous value when the value is cleared. |
 
 ## Slots
 

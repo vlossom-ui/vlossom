@@ -127,9 +127,13 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     }
 
     function clear() {
+        const oldValue = inputValue.value;
+
         if (callbacks.onClear) {
             callbacks.onClear();
         }
+
+        emit('clear', oldValue);
 
         nextTick(() => {
             checkMessages();

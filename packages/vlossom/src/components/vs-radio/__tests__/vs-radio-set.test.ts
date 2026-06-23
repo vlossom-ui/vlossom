@@ -227,6 +227,7 @@ describe('VsRadioSet', () => {
 
             // then
             expect(wrapper.props('modelValue')).toBe(null);
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['A']);
         });
     });
 });

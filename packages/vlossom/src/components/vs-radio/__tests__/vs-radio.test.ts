@@ -83,6 +83,7 @@ describe('vs-radio', () => {
             expect(wrapper.props('modelValue')).toBe(null);
             expect(wrapper.vm.isChecked).toBe(false);
             expect(wrapper.find('input').element.checked).toBe(false);
+            expect(wrapper.emitted('clear')?.[0]).toEqual(['test']);
         });
     });
 

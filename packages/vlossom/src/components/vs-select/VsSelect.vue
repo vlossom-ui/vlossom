@@ -264,12 +264,6 @@ export default defineComponent({
 
         const { isUsingSearch, searchProps } = useSelectSearch(search);
 
-        function onClear() {
-            clearSelected();
-            searchInputRef.value?.clear();
-            emit('clear');
-        }
-
         const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
 
         const {
@@ -320,7 +314,10 @@ export default defineComponent({
                     onChange: () => {
                         inputValue.value = convertValue(inputValue.value);
                     },
-                    onClear,
+                    onClear: () => {
+                        clearSelected();
+                        searchInputRef.value?.clear();
+                    },
                 },
             },
         );

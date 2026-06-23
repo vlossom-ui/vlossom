@@ -193,6 +193,7 @@ describe('VsCheckboxSet', () => {
 
             // then
             expect(wrapper.props('modelValue')).toEqual([]);
+            expect(wrapper.emitted('clear')?.[0]).toEqual([['A', 'B']]);
         });
     });
 

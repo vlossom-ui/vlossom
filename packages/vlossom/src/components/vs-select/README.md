@@ -157,7 +157,7 @@ interface VsSelectStyleSet extends CSSProperties {
 | `click-option`      | `OptionItem`  | Emitted when an option is clicked                |
 | `open`              | -             | Emitted when the dropdown opens                  |
 | `close`             | -             | Emitted when the dropdown closes                 |
-| `clear`             | -             | Emitted when the selected value is cleared       |
+| `clear`             | `any`         | Emitted with the previously selected value when the value is cleared |
 
 ## Slots
 
