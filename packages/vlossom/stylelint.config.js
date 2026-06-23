@@ -11,11 +11,11 @@ export default {
         '**/*.vue',
         // SCSS files with dynamic variable interpolation
         '**/color-scheme.scss',
+        '**/state.css',
         // Tailwind CSS color variables (--color-*) reference
         '**/pallete.css',
         // Dynamic CSS variables set via inline styles from JS
         '**/vs-responsive/VsResponsive.css',
-        '**/vs-steps/VsSteps.css',
     ],
     rules: {
         // CSS variable validation - main purpose of this config

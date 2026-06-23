@@ -3,6 +3,20 @@ $colors:
     'violet', 'purple', 'fuchsia', 'pink', 'rose', 'gray';
 
 :root {
+    @each $color in $colors {
+        --vs-#{$color}-soft: var(--vs-#{$color}-100);
+        --vs-#{$color}: var(--vs-#{$color}-600);
+        --vs-#{$color}-strong: var(--vs-#{$color}-800);
+    }
+
+    &.vs-dark {
+        @each $color in $colors {
+            --vs-#{$color}-soft: var(--vs-#{$color}-950);
+            --vs-#{$color}: var(--vs-#{$color}-600);
+            --vs-#{$color}-strong: var(--vs-#{$color}-200);
+        }
+    }
+
     .vs-cs-default {
         --vs-cs-line: var(--vs-gray-300);
 

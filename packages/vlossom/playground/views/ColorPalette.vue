@@ -13,6 +13,13 @@
                 >
                     <span class="text-xs">{{ step }}</span>
                 </vs-avatar>
+                <vs-avatar
+                    v-for="token in tokens"
+                    :key="token.label"
+                    :style-set="{ border: 'none', width: '3rem', height: '1rem' }"
+                >
+                    <span class="text-xs">{{ token.label }}</span>
+                </vs-avatar>
             </div>
             <div v-for="color in COLORS" :key="color" class="flex flex-nowrap gap-3">
                 <vs-avatar :style-set="{ border: 'none', width: '4rem', height: '3rem' }">
@@ -23,6 +30,16 @@
                     :key="`${color}-${step}`"
                     :style-set="{
                         backgroundColor: `var(--vs-${color}-${step})`,
+                        border: 'none',
+                        width: '3rem',
+                        height: '3rem',
+                    }"
+                />
+                <vs-avatar
+                    v-for="token in tokens"
+                    :key="`${color}-${token.label}`"
+                    :style-set="{
+                        backgroundColor: `var(--vs-${color}${token.suffix})`,
                         border: 'none',
                         width: '3rem',
                         height: '3rem',
@@ -40,10 +57,16 @@ import { COLORS } from '@/declaration';
 export default defineComponent({
     setup() {
         const steps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+        const tokens = [
+            { label: 'soft', suffix: '-soft' },
+            { label: 'base', suffix: '' },
+            { label: 'strong', suffix: '-strong' },
+        ];
 
         return {
             COLORS,
             steps,
+            tokens,
         };
     },
 });
