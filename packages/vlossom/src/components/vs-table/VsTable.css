@@ -104,7 +104,8 @@
         }
 
         &.vs-stated {
-            background-color: var(--vs-state-color-bg);
+            background-color: var(--vs-sc-soft);
+            color: var(--vs-sc);
         }
 
         &.vs-selected {

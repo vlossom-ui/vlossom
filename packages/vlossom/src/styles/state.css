@@ -1,46 +1,45 @@
 @layer utilities {
     :root {
-        --vs-state-color-info: var(--vs-blue-600);
-        --vs-state-color-success: var(--vs-green-600);
-        --vs-state-color-warning: var(--vs-yellow-600);
-        --vs-state-color-error: var(--vs-red-600);
+        --vs-sc-info: var(--vs-sky);
+        --vs-sc-success: var(--vs-green);
+        --vs-sc-warning: var(--vs-yellow);
+        --vs-sc-error: var(--vs-red);
 
-        --vs-state-color-bg-info: var(--vs-blue-100);
-        --vs-state-color-bg-success: var(--vs-green-100);
-        --vs-state-color-bg-warning: var(--vs-yellow-100);
-        --vs-state-color-bg-error: var(--vs-red-100);
+        --vs-sc-soft-info: var(--vs-sky-soft);
+        --vs-sc-soft-success: var(--vs-green-soft);
+        --vs-sc-soft-warning: var(--vs-yellow-soft);
+        --vs-sc-soft-error: var(--vs-red-soft);
 
-        @variant dark {
-            --vs-state-color-info: var(--vs-blue-700);
-            --vs-state-color-success: var(--vs-green-700);
-            --vs-state-color-warning: var(--vs-yellow-700);
-            --vs-state-color-error: var(--vs-red-700);
-
-            --vs-state-color-bg-info: var(--vs-blue-950);
-            --vs-state-color-bg-success: var(--vs-green-950);
-            --vs-state-color-bg-warning: var(--vs-yellow-950);
-            --vs-state-color-bg-error: var(--vs-red-950);
-        }
+        --vs-sc-strong-info: var(--vs-sky-strong);
+        --vs-sc-strong-success: var(--vs-green-strong);
+        --vs-sc-strong-warning: var(--vs-yellow-strong);
+        --vs-sc-strong-error: var(--vs-red-strong);
 
         .vs-state-info {
-            --vs-state-color: var(--vs-state-color-info);
-            --vs-state-color-bg: var(--vs-state-color-bg-info);
+            --vs-sc: var(--vs-sc-info);
+            --vs-sc-soft: var(--vs-sc-soft-info);
+            --vs-sc-strong: var(--vs-sc-strong-info);
         }
         .vs-state-success {
-            --vs-state-color: var(--vs-state-color-success);
-            --vs-state-color-bg: var(--vs-state-color-bg-success);
+            --vs-sc: var(--vs-sc-success);
+            --vs-sc-soft: var(--vs-sc-soft-success);
+            --vs-sc-strong: var(--vs-sc-strong-success);
         }
         .vs-state-warning {
-            --vs-state-color: var(--vs-state-color-warning);
-            --vs-state-color-bg: var(--vs-state-color-bg-warning);
+            --vs-sc: var(--vs-sc-warning);
+            --vs-sc-soft: var(--vs-sc-soft-warning);
+            --vs-sc-strong: var(--vs-sc-strong-warning);
         }
         .vs-state-error {
-            --vs-state-color: var(--vs-state-color-error);
-            --vs-state-color-bg: var(--vs-state-color-bg-error);
+            --vs-sc: var(--vs-sc-error);
+            --vs-sc-soft: var(--vs-sc-soft-error);
+            --vs-sc-strong: var(--vs-sc-strong-error);
         }
     }
 
     .vs-state-box {
-        @apply outline-3 outline-offset-2 outline-(--vs-state-color);
+        @apply outline-3 outline-offset-2;
+
+        outline-color: var(--vs-sc);
     }
 }

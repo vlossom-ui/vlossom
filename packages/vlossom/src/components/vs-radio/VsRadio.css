@@ -59,7 +59,7 @@
 
         .vs-radio-label {
             &:before {
-                @apply outline-3 outline-offset-2 outline-(--vs-state-color);
+                @apply outline-3 outline-offset-2 outline-(--vs-sc);
             }
         }
     }
