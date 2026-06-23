@@ -28,7 +28,7 @@ export class ScrollLockStore {
             original: this._capture(element),
         };
         this._locks.set(element, created);
-        requestAnimationFrame(() => this._apply(element));
+        this._apply(element);
     }
 
     public unlock(ownerId: string, element: HTMLElement): void {
@@ -43,7 +43,7 @@ export class ScrollLockStore {
         }
 
         this._locks.delete(element);
-        requestAnimationFrame(() => this._restore(element, entry.original));
+        this._restore(element, entry.original);
     }
 
     public clear(): void {

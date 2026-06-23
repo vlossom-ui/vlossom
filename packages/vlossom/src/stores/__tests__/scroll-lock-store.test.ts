@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { ScrollLockStore } from './../scroll-lock-store';
 
 describe('scroll-lock-store', () => {
@@ -6,17 +6,12 @@ describe('scroll-lock-store', () => {
     let element: HTMLElement;
 
     beforeEach(() => {
-        vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
-            cb(0);
-            return 0;
-        });
         store = new ScrollLockStore();
         element = document.createElement('div');
         document.body.appendChild(element);
     });
 
     afterEach(() => {
-        vi.unstubAllGlobals();
         element.remove();
     });
 
@@ -68,6 +63,28 @@ describe('scroll-lock-store', () => {
 
         // then
         expect(element.style.overflow).toBe('scroll');
+    });
+
+    it('같은 element를 잠그는 모달을 연속 전환해도 마지막 unlock 시 원래 상태로 복원되어야 한다', () => {
+        // given
+        element.style.overflow = 'auto';
+
+        // when - 첫 모달이 잠그고
+        store.lock('owner-1', element);
+        expect(element.style.overflow).toBe('hidden');
+
+        // when - 첫 모달을 닫은 직후 곧바로 다음 모달을 여는 전환
+        store.unlock('owner-1', element);
+        store.lock('owner-2', element);
+
+        // then - 다음 모달이 캡처한 원본이 'hidden'으로 오염되지 않아야 한다
+        expect(element.style.overflow).toBe('hidden');
+
+        // when - 다음 모달 닫기
+        store.unlock('owner-2', element);
+
+        // then
+        expect(element.style.overflow).toBe('auto');
     });
 
     it('동일 owner가 중복 lock/unlock 해도 일관되게 동작해야 한다', () => {
