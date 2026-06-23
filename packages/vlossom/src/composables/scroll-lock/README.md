@@ -13,6 +13,7 @@ Prevents scrolling on a container element (defaults to `body`) by setting `overf
 - Saves the original overflow and padding values before locking and restores them on unlock
 - Uses `requestAnimationFrame` for smooth style application/restoration
 - Tracks locked state via the reactive `isLocked` ref
+- Reference-counts locks per resolved element through a shared store, so multiple overlays locking the same element keep it locked until the last owner unlocks
 
 ## Basic Usage
 
@@ -70,4 +71,5 @@ interface ScrollLockState {
 
 - The composable queries the container element at call time. If the DOM is not ready when `useScrollLock` is called, `containerElement` will be `null` and `lock`/`unlock` will be no-ops.
 - Scrollbar compensation is skipped on touch devices to avoid layout shifts.
-- Calling `lock` when already locked, or `unlock` when already unlocked, is a no-op.
+- Calling `lock` when already locked, or `unlock` when already unlocked, is a no-op (`isLocked` guards each owner).
+- Locks are shared and reference-counted per resolved element across all callers. The original state is captured on the first lock and restored only when the last owner unlocks, so close order does not matter.

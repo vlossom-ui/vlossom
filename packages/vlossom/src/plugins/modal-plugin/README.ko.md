@@ -12,7 +12,7 @@
 - 이벤트(예: 버튼 클릭, 키보드 단축키)에 대한 커스텀 콜백을 지원합니다
 - 동일하거나 다른 컨테이너 내에 여러 모달을 스택할 수 있습니다
 - 이벤트 emit, 특정 모달 닫기, 모든 모달 닫기를 위한 명령형 API를 제공합니다
-- 오버레이 동작 구성 가능: 딤, 딤 닫기, 포커스 잠금, 스크롤 숨기기, 크기 설정
+- 오버레이 동작 구성 가능: 딤, 딤 닫기, 포커스 잠금, 스크롤 숨기기, 스크롤 잠금, 크기 설정
 - Alert, Confirm, Prompt 플러그인이 모두 이 플러그인 위에 구축됩니다
 
 ## 기본 사용법
@@ -104,6 +104,40 @@ function closeModal() {
 </script>
 ```
 
+### 스크롤 잠금
+
+`scrollLock: true`로 설정하면 모달이 열려 있는 동안 페이지(`body`) 스크롤을 잠급니다:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('배경 스크롤이 잠깁니다.', {
+        scrollLock: true,
+    });
+}
+</script>
+```
+
+CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이너만 잠급니다:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('#scroll-area만 잠기고 페이지는 계속 스크롤됩니다.', {
+        scrollLock: '#scroll-area',
+    });
+}
+</script>
+```
+
 ## 메서드
 
 | 메서드          | 파라미터                                                                   | 설명                                                                                                     |
@@ -130,6 +164,7 @@ interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    scrollLock?: boolean | string;
     componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }

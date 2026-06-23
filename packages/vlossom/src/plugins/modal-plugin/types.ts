@@ -14,6 +14,7 @@ export interface ModalOptions {
     focusLock?: boolean;
     hideScroll?: boolean;
     id?: string;
+    scrollLock?: boolean | string;
     componentProps?: Record<string, any>;
     size?: SizeProp | { width?: SizeProp; height?: SizeProp };
 }
