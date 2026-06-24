@@ -38,7 +38,7 @@
 
         <div class="vs-table-content" ref="scrollWrapperRef">
             <div ref="headerSentinelRef" class="vs-table-header-sentinel" aria-hidden="true" />
-            <vs-visible-render :disabled="noVirtualScroll" root-margin="150px">
+            <vs-visible-render :selector="`#${bodyId}`" :disabled="noVirtualScroll" root-margin="150px">
                 <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
                     <caption v-if="$slots['caption']" class="vs-table-caption" :style="componentStyleSet.$caption">
                         <slot name="caption" />
@@ -49,6 +49,7 @@
                         </template>
                     </vs-table-header>
                     <vs-table-body
+                        :id="bodyId"
                         @click-cell="clickCell"
                         @click-row="clickRow"
                         @select-row="selectRow"
@@ -286,6 +287,7 @@ export default defineComponent({
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
 
         const tableId = stringUtil.createID();
+        const bodyId = computed(() => `${tableId}-body`);
         const hasExpandSlot = computed<boolean>(() => !!slots.expand);
         const table: TableComposable = useTable(
             tableId,
@@ -431,6 +433,7 @@ export default defineComponent({
 
         return {
             TABLE_DRAG_WRAPPER_CLASS,
+            bodyId,
             colorSchemeClass,
             computedColorScheme,
             componentStyleSet,
