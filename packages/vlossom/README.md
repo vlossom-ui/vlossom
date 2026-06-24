@@ -25,7 +25,6 @@
 ## Requirements
 
 - Vue 3.5+
-- TypeScript 5.9+ (recommended)
 
 ## Installation
 
@@ -282,67 +281,33 @@ function openEditor() {
 | [vs-theme-button](src/components/vs-theme-button/README.md)     | Dark/light theme toggle      |
 | [vs-tooltip](src/components/vs-tooltip/README.md)               | Tooltip popup                |
 
-## Styling & Theming
+## Vlossom Options
 
-### Color Schemes
-
-Apply any of built-in colors to any component:
-
-```html
-<vs-button color-scheme="blue">Blue</vs-button>
-<vs-chip color-scheme="emerald">Tag</vs-chip>
-```
-
-Available colors: `red` · `orange` · `brown` · `amber` · `yellow` · `lime` · `green` · `emerald` · `teal` · `cyan` · `sky` · `blue` · `indigo` · `violet` · `purple` · `fuchsia` · `pink` · `rose` · `gray` · `none`
-
-### Style Sets
-
-Override component styles at global or per-instance level:
-
-```typescript
-app.use(
-    createVlossom({
-        components: VlossomComponents,
-        styleSet: {
-            mySet: {
-                VsButton: { backgroundColor: '#1a1a1a', fontColor: '#fff' },
-            },
-        },
-    }),
-);
-```
-
-```html
-<vs-button style-set="mySet">Styled</vs-button>
-```
-
-### Theme
-
-Toggle dark/light theme globally:
+Configure the app-wide theme, radius, and named style sets in `createVlossom`, then adjust individual components with props when needed:
 
 ```typescript
 app.use(
     createVlossom({
         components: VlossomComponents,
         theme: 'dark',
-    }),
-);
-```
-
-Or toggle at runtime with `<vs-theme-button />`.
-
-### Radius Ratio
-
-Control the global border radius ratio from `0` to `1`:
-
-```typescript
-app.use(
-    createVlossom({
-        components: VlossomComponents,
         radiusRatio: 0.5,
+        styleSet: {
+            brand: {
+                VsButton: {
+                    backgroundColor: '#1a1a1a',
+                    fontColor: '#fff',
+                },
+            },
+        },
     }),
 );
 ```
+
+- `theme` sets the initial global theme. Use `<vs-theme-button />` to toggle it at runtime.
+- `radiusRatio` controls the global border radius ratio from `0` to `1`.
+- `styleSet` defines reusable named style overrides for components.
+- `color-scheme` applies a built-in color to a component instance.
+    - Available colors: `red` · `orange` · `brown` · `amber` · `yellow` · `lime` · `green` · `emerald` · `teal` · `cyan` · `sky` · `blue` · `indigo` · `violet` · `purple` · `fuchsia` · `pink` · `rose` · `gray` · `none`
 
 ## Links
 
