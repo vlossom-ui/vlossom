@@ -17,7 +17,7 @@
 
 - **Various Color Schemes** — Easily style any component with a single prop
 - **Layered Style Sets** — Global, named, or per-instance style overrides via CSS variables
-- **Overlay System** — Modal, Toast, Confirm as plugins with full app context inheritance
+- **Overlay System** — Modal, Toast, Alert, Confirm, Prompt as plugins with full app context inheritance
 - **Declarative Responsive** — Breakpoint objects instead of media queries
 - **Async Validation** — Sync and async rules with built-in defaults per component
 - **Dark / Light Theme** — One-line global toggle, auto-persisted
@@ -25,7 +25,7 @@
 ## Requirements
 
 - Vue 3.5+
-- TypeScript 5.8+ (recommended)
+- TypeScript 5.9+ (recommended)
 
 ## Installation
 
@@ -139,7 +139,7 @@ const uniqueEmail = async (v: string) => {
 </script>
 ```
 
-### Overlay Plugins (Toast · Confirm · Modal)
+### Overlay Plugins (Toast · Alert · Confirm · Prompt · Modal)
 
 Call overlays from any composable — no template wiring needed:
 
@@ -154,6 +154,10 @@ function notify() {
     $vs.toast.success('Saved successfully');
 }
 
+async function alertSaved() {
+    await $vs.alert.open('Saved successfully');
+}
+
 async function remove() {
     const ok = await $vs.confirm.open('Delete this item?', {
         okText: 'Delete',
@@ -162,6 +166,17 @@ async function remove() {
     });
     if (ok) {
         $vs.toast.info('Item deleted');
+    }
+}
+
+async function askReason() {
+    const reason = await $vs.prompt.open('Why are you deleting this item?', {
+        input: { placeholder: 'Reason' },
+        okText: 'Submit',
+        cancelText: 'Skip',
+    });
+    if (reason) {
+        $vs.toast.info(`Reason: ${reason}`);
     }
 }
 
@@ -194,12 +209,19 @@ function openEditor() {
 | [vs-header](src/components/vs-header/README.md)         | Page header                                  |
 | [vs-footer](src/components/vs-footer/README.md)         | Page footer                                  |
 
+### Actions
+
+| Component                                       | Description    |
+| ----------------------------------------------- | -------------- |
+| [vs-button](src/components/vs-button/README.md) | Button control |
+
 ### Form
 
 | Component                                                     | Description                     |
 | ------------------------------------------------------------- | ------------------------------- |
 | [vs-input](src/components/vs-input/README.md)                 | Text input field                |
 | [vs-textarea](src/components/vs-textarea/README.md)           | Multi-line text input           |
+| [vs-date-picker](src/components/vs-date-picker/README.md)     | Date and time input             |
 | [vs-checkbox](src/components/vs-checkbox/README.md)           | Checkbox and checkbox set       |
 | [vs-radio](src/components/vs-radio/README.md)                 | Radio button and radio set      |
 | [vs-select](src/components/vs-select/README.md)               | Dropdown select                 |
@@ -224,6 +246,7 @@ function openEditor() {
 | [vs-image](src/components/vs-image/README.md)               | Image with fallback          |
 | [vs-label-value](src/components/vs-label-value/README.md)   | Label-value pair display     |
 | [vs-skeleton](src/components/vs-skeleton/README.md)         | Loading skeleton placeholder |
+| [vs-table](src/components/vs-table/README.md)               | Data table                   |
 | [vs-text-wrap](src/components/vs-text-wrap/README.md)       | Text with overflow handling  |
 
 ### Feedback
@@ -270,7 +293,7 @@ Apply any of built-in colors to any component:
 <vs-chip color-scheme="emerald">Tag</vs-chip>
 ```
 
-Available colors: `red` · `orange` · `brown` · `amber` · `yellow` · `lime` · `green` · `emerald` · `teal` · `cyan` · `sky` · `blue` · `indigo` · `violet` · `purple` · `fuchsia` · `pink` · `rose` · `gray`
+Available colors: `red` · `orange` · `brown` · `amber` · `yellow` · `lime` · `green` · `emerald` · `teal` · `cyan` · `sky` · `blue` · `indigo` · `violet` · `purple` · `fuchsia` · `pink` · `rose` · `gray` · `none`
 
 ### Style Sets
 
@@ -307,6 +330,19 @@ app.use(
 ```
 
 Or toggle at runtime with `<vs-theme-button />`.
+
+### Radius Ratio
+
+Control the global border radius ratio from `0` to `1`:
+
+```typescript
+app.use(
+    createVlossom({
+        components: VlossomComponents,
+        radiusRatio: 0.5,
+    }),
+);
+```
 
 ## Links
 
