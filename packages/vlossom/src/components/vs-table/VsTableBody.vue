@@ -3,6 +3,7 @@
         tag="tbody"
         v-model="displayedBodyCells"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
+        :id
         :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
         :item-key="getRowId"
         :disabled="loading"
@@ -64,6 +65,9 @@ export default defineComponent({
         VsTableBodyRow,
         BanIcon,
         draggable,
+    },
+    props: {
+        id: { type: String, default: '' },
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {

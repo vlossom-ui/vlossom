@@ -137,7 +137,9 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
+    $caption?: CSSProperties;
     $header?: CSSProperties;
+    $stickyHeaderTop?: string;
     $row?: CSSProperties & {
         $selected?: CSSProperties;
     };
@@ -181,6 +183,7 @@ interface VsTablePaginationOptions {
         :style-set="{
             borderRadius: '0.5rem', overflow: 'hidden',
             $header: { fontSize: '0.875rem', fontWeight: 700 },
+            $stickyHeaderTop: '60px',
             $row: {
                 height: '3rem',
                 $selected: { backgroundColor: '#e3f2fd' },
@@ -190,6 +193,8 @@ interface VsTablePaginationOptions {
     />
 </template>
 ```
+
+`$stickyHeaderTop` sets the `top` offset of the floating header shown while `stickyHeader` is enabled. It sticks to the top of the viewport (`0`) by default; set this to offset it below a fixed app header (e.g. `'60px'`).
 
 ## Events
 

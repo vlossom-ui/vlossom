@@ -8,7 +8,7 @@ import {
     type TemplateRef,
     type WritableComputedRef,
 } from 'vue';
-import { functionUtil, objectUtil } from '@/utils';
+import { functionUtil, objectUtil, stringUtil } from '@/utils';
 import { type UIState, type VsComponent, type PropsOf, type SearchProps, type Size } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
@@ -40,7 +40,7 @@ export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
     tableId: string,
     props: PropsOf<VsComponent.VsTable>,
-    refs: { searchInputRef: TemplateRef<VsSearchInputRef> },
+    refs: { searchInputRef: TemplateRef<VsSearchInputRef>; hasExpandSlot: ComputedRef<boolean> },
     cb?: {
         updateSelectedItems: (items: VsTableItem[]) => void;
         updatePage: (page: number) => void;
@@ -174,6 +174,43 @@ export function useTable(
         toggleSelectAll,
     } = useTableSelect(selectable, items, selectedItems);
 
+    function getGridColumnWidth(column: VsTableColumnDef): string {
+        const { width, minWidth, maxWidth } = column;
+        if (width) {
+            return stringUtil.toStringSize(width);
+        }
+        const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
+        const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
+        if (min && max) {
+            return `minmax(${min}, ${max})`;
+        }
+        if (min) {
+            return `minmax(${min}, 1fr)`;
+        }
+        if (max) {
+            return `minmax(auto, ${max})`;
+        }
+        return 'minmax(max-content, 1fr)';
+    }
+
+    const gridTemplateColumns = computed<string>(() => {
+        const cols: string[] = [];
+        if (draggable?.value) {
+            cols.push('auto');
+        }
+        if (anySelectable.value) {
+            cols.push('auto');
+        }
+        columns.value.forEach((column) => {
+            cols.push(getGridColumnWidth(column));
+        });
+        // expand 셀은 anyExpandable && expand 슬롯이 있을 때만 렌더되므로(showExpand) 트랙도 같은 조건으로 추가한다.
+        if (anyExpandable.value && refs.hasExpandSlot.value) {
+            cols.push('auto');
+        }
+        return cols.join(' ');
+    });
+
     const builtCellMatrix = computed<VsTableCell[][]>(() => {
         return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
     });
@@ -254,6 +291,7 @@ export function useTable(
         headerCells,
         bodyCells,
         loading,
+        gridTemplateColumns,
         anyExpandable,
         isExpanded,
         toggleExpand,
@@ -285,6 +323,7 @@ export type TableComposable = {
     items: Ref<VsTableItem[]>;
     headerCells: Ref<VsTableHeaderCell[]>;
     bodyCells: ComputedRef<VsTableBodyCell[][]>;
+    gridTemplateColumns: ComputedRef<string>;
     anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;
     selectedItems: Ref<VsTableItem[]>;
