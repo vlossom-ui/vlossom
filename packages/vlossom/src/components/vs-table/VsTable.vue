@@ -27,7 +27,7 @@
             class="vs-table-sticky-wrapper"
             :style="{ top: stickyHeaderTop }"
         >
-            <table class="vs-table-table" :style="tableColumnStyle">
+            <table class="vs-table-table" :style="stickyTableColumnStyle">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
@@ -37,12 +37,8 @@
         </div>
 
         <div class="vs-table-content" ref="scrollWrapperRef">
-            <vs-visible-render
-                :disabled="noVirtualScroll"
-                :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
-                root-margin="150px"
-            >
-                <table class="vs-table-table" :style="tableColumnStyle">
+            <vs-visible-render :disabled="noVirtualScroll" root-margin="150px">
+                <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
                     <caption v-if="$slots['caption']" class="vs-table-caption">
                         <slot name="caption" />
                     </caption>
@@ -93,7 +89,7 @@ import {
     type ComputedRef,
     type Ref,
 } from 'vue';
-import { useIntersectionObserver } from '@vueuse/core';
+import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
 import {
     LAYOUT_STORE_KEY,
@@ -295,6 +291,7 @@ export default defineComponent({
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
         const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const contentTableRef = useTemplateRef<HTMLTableElement>('contentTableRef');
         const scrollWrapperRef = useTemplateRef<HTMLDivElement>('scrollWrapperRef');
         const stickyScrollRef = useTemplateRef<HTMLDivElement>('stickyScrollRef');
 
@@ -337,6 +334,20 @@ export default defineComponent({
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
         const tableColumnStyle = computed(() => ({ gridTemplateColumns: table.gridTemplateColumns.value }));
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
+
+        // sticky 헤더는 복제본이라 column의 폭이 실제 table과 달라져서 일치 시키는 작업이 필요
+        const stickyColumnTracks = ref<string>('');
+        const stickyTableColumnStyle = computed(() => ({
+            gridTemplateColumns: stickyColumnTracks.value || table.gridTemplateColumns.value,
+        }));
+
+        function syncStickyColumns() {
+            if (contentTableRef.value) {
+                stickyColumnTracks.value = getComputedStyle(contentTableRef.value).gridTemplateColumns;
+            }
+        }
+
+        useResizeObserver(contentTableRef, syncStickyColumns);
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
             headerRef,
@@ -417,7 +428,10 @@ export default defineComponent({
 
         watch(useStickyHeader, (visible) => {
             if (visible) {
-                nextTick(syncStickyScroll);
+                nextTick(() => {
+                    syncStickyColumns();
+                    syncStickyScroll();
+                });
             }
         });
 
@@ -446,6 +460,7 @@ export default defineComponent({
             componentInlineStyle,
             classObj,
             headerRef,
+            contentTableRef,
             scrollWrapperRef,
             stickyScrollRef,
             headerSlots,
@@ -454,6 +469,7 @@ export default defineComponent({
             stickyHeaderTop,
             searchOptions,
             tableColumnStyle,
+            stickyTableColumnStyle,
             table,
             totalPages: table.totalPages,
             clickCell,
