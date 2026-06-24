@@ -39,16 +39,25 @@
         @apply min-w-full overflow-x-auto;
     }
 
-    /* ── Table structure ── */
+    /* ── Table structure ──
+       table을 grid로, thead/tbody는 display:contents로 펼쳐서 모든 행을 같은 grid의 아이템으로 만든다.
+       각 행은 subgrid로 table이 정의한 컬럼 트랙을 공유하므로 행 간 컬럼 폭이 항상 일치한다.
+       트랙은 컨테이너 폭(definite)에 맞춰 계산된다. 내용이 좁으면 1fr이 남는 공간을 나눠 채워 꽉 차고,
+       내용이 넓으면 각 컬럼이 max-content를 유지한 채 넘쳐 가로 스크롤이 생긴다(행이 트랙 전체를 span). */
     .vs-table-table {
-        @apply mx-auto min-w-full;
-        border-collapse: separate;
-        border-spacing: 0;
+        @apply mx-auto grid min-w-full;
+    }
+
+    .vs-table-thead,
+    .vs-table-tbody {
+        display: contents;
     }
 
     .vs-table-header-row,
     .vs-table-body-row {
         @apply grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1;
     }
 
     .vs-table-thead > .vs-table-header-row {
@@ -64,10 +73,17 @@
         border-bottom: 1px solid var(--vs-cs-line);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
+
+        /* min-width: auto 무력화 */
+        min-width: 0;
         color: var(--vs-cs-font-colored);
         font-weight: var(--vs-font-weight);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
+
+        /* width/minWidth/maxWidth로 폭을 제한한 컬럼에서 긴 토큰이 옆 칸으로 삐져나오지(bleeding) 않도록 줄바꿈.
+           기본(max-content) 컬럼은 트랙이 내용 폭을 확보하므로 줄바꿈되지 않는다. */
+        overflow-wrap: anywhere;
 
         &:first-child {
             border-left: 1px solid var(--vs-cs-line);
@@ -85,8 +101,12 @@
         grid-row: 1;
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
+
+        /* min-width: auto 무력화 */
+        min-width: 0;
         font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
+        overflow-wrap: anywhere;
     }
 
     /* ── Body rows ── */
@@ -109,7 +129,7 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg-comp-colored);
+            background-color: var(--vs-cs-bg-colored);
             color: var(--vs-cs-font);
         }
 
@@ -221,7 +241,8 @@
     }
 
     .vs-table-caption {
-        @apply caption-bottom;
+        grid-column: 1 / -1;
+        order: 1;
     }
 
     /* ── Modifiers ── */
@@ -248,7 +269,8 @@
         }
 
         .vs-table-table {
-            @apply min-w-full;
+            @apply block min-w-full;
+            width: auto;
         }
 
         .vs-table-draggable-wrapper,
@@ -258,6 +280,8 @@
         .vs-table-body-row,
         .vs-table-header-row {
             @apply block w-full border-x-0;
+            grid-template-columns: revert;
+            grid-column: revert;
         }
 
         .vs-table-thead {
@@ -272,6 +296,9 @@
         .vs-table-td {
             @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
             grid-column: minmax(6rem, 9rem) 1fr;
+
+            /* 구분선 색을 카드 외곽선과 동일하게 고정. (명시하지 않으면 currentColor를 따라 셀 텍스트색에 따라 달라진다) */
+            border-bottom-color: var(--vs-cs-line);
         }
 
         .vs-table-td:first-child {
@@ -282,13 +309,13 @@
             @apply border-b-0;
         }
 
-        .vs-table-td::before {
+        .vs-table-td[data-label]::before {
             @apply font-bold;
             content: attr(data-label);
         }
 
         .vs-table-td.vs-table-drag-handle {
-            @apply w-6 px-0 py-1;
+            @apply w-full px-2!;
         }
 
         .vs-table {
@@ -323,7 +350,7 @@
                 @apply border-b-0;
             }
 
-            .vs-table-td::before {
+            .vs-table-td[data-label]::before {
                 content: none;
             }
         }

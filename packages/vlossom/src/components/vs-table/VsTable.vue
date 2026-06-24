@@ -27,7 +27,7 @@
             class="vs-table-sticky-wrapper"
             :style="{ top: stickyHeaderTop }"
         >
-            <table class="vs-table-table">
+            <table class="vs-table-table" :style="tableColumnStyle">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
@@ -42,7 +42,7 @@
                 :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
                 root-margin="150px"
             >
-                <table class="vs-table-table">
+                <table class="vs-table-table" :style="tableColumnStyle">
                     <caption v-if="$slots['caption']" class="vs-table-caption">
                         <slot name="caption" />
                     </caption>
@@ -186,11 +186,7 @@ export default defineComponent({
                     return false;
                 }
                 if (totalItemCount < 0) {
-                    logUtil.propError(
-                        componentName,
-                        'serverMode',
-                        'totalItemCount must be greater than or equal to 0',
-                    );
+                    logUtil.propError(componentName, 'serverMode', 'totalItemCount must be greater than or equal to 0');
                     return false;
                 }
                 return true;
@@ -309,10 +305,11 @@ export default defineComponent({
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
 
         const tableId = stringUtil.createID();
+        const hasExpandSlot = computed<boolean>(() => !!slots.expand);
         const table: TableComposable = useTable(
             tableId,
             props,
-            { searchInputRef },
+            { searchInputRef, hasExpandSlot },
             { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems, paginate },
         );
 
@@ -338,6 +335,7 @@ export default defineComponent({
             [sizeClass.value]: !!sizeClass.value,
         }));
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
+        const tableColumnStyle = computed(() => ({ gridTemplateColumns: table.gridTemplateColumns.value }));
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
 
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
@@ -455,6 +453,7 @@ export default defineComponent({
             useStickyHeader,
             stickyHeaderTop,
             searchOptions,
+            tableColumnStyle,
             table,
             totalPages: table.totalPages,
             clickCell,

@@ -997,10 +997,10 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
             expect(style).toContain('200px');
-            expect(style).toContain('1fr');
+            expect(style).toContain('minmax(max-content, 1fr)');
         });
 
         it('minWidth만 정의된 컬럼은 minmax(min, 1fr)로 반영된다', async () => {
@@ -1015,8 +1015,8 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
             expect(style).toContain('minmax(150px, 1fr)');
         });
 
@@ -1032,8 +1032,8 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
             expect(style).toContain('minmax(auto, 300px)');
         });
 
@@ -1049,8 +1049,8 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
             expect(style).toContain('minmax(100px, 400px)');
         });
 
@@ -1066,12 +1066,12 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
             expect(style).toContain('250px');
         });
 
-        it('width/minWidth/maxWidth가 없는 컬럼은 기본값 1fr로 반영된다', async () => {
+        it('width/minWidth/maxWidth가 없는 컬럼은 기본값 minmax(max-content, 1fr)로 반영된다', async () => {
             const wrapper = mountTable({
                 props: {
                     columns: [
@@ -1083,9 +1083,47 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            const headerRow = wrapper.find('thead tr');
-            const style = headerRow.attributes('style') ?? '';
-            expect(style).toContain('grid-template-columns: 1fr 1fr');
+            const table = wrapper.find('.vs-table-table');
+            const style = table.attributes('style') ?? '';
+            expect(style).toContain('grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr)');
+        });
+    });
+
+    describe('expand 슬롯에 따른 grid 트랙', () => {
+        it('expand 슬롯이 없으면 expand 트랙(auto)이 추가되지 않는다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+            });
+
+            await nextTick();
+
+            const style = wrapper.find('.vs-table-table').attributes('style') ?? '';
+            expect(style).toContain('grid-template-columns: minmax(max-content, 1fr) minmax(max-content, 1fr)');
+            expect(style).not.toContain('auto');
+        });
+
+        it('expand 슬롯이 있으면 끝에 expand 트랙(auto)이 추가된다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: 'Name' },
+                        { key: 'age', label: 'Age' },
+                    ],
+                },
+                slots: {
+                    expand: '<div>detail</div>',
+                },
+            });
+
+            await nextTick();
+
+            const style = wrapper.find('.vs-table-table').attributes('style') ?? '';
+            expect(style).toContain('minmax(max-content, 1fr) minmax(max-content, 1fr) auto');
         });
     });
 

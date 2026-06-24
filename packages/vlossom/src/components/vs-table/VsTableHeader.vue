@@ -42,13 +42,12 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed, type Component, type ComputedRef, type CSSProperties } from 'vue';
-import { objectUtil, stringUtil } from '@/utils';
+import { objectUtil } from '@/utils';
 import {
     VsTableSortType,
     TABLE_STYLE_SET_TOKEN,
     type VsTableHeaderCell,
     type VsTableStyleSet,
-    type VsTableColumnDef,
 } from './types';
 import { HEADER_ROW_INDEX } from './models/strategy';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
@@ -66,57 +65,16 @@ export default defineComponent({
     },
     emits: ['click-cell', 'select-row'],
     setup(props, { slots, emit }) {
-        const { headerCells, columns, anyExpandable, anySelectable, draggable, sortType, sortColumn, updateSortType } =
+        const { headerCells, columns, anyExpandable, sortType, sortColumn, updateSortType } =
             inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
         const showExpand = computed(() => anyExpandable.value && !!slots.expand);
         const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.$cell);
-        const gridStyle = computed<CSSProperties | undefined>(() => {
-            const cols: string[] = [];
-            if (draggable?.value) {
-                cols.push('auto');
-            }
-            if (anySelectable.value) {
-                cols.push('auto');
-            }
-            headerCells.value.forEach((_, index) => {
-                cols.push(getGridColumnWidth(columns.value?.[index]));
-            });
-            if (anyExpandable.value) {
-                cols.push('auto');
-            }
-            return {
-                gridTemplateColumns: cols.join(' '),
-            };
-        });
         const headerStyle = computed<CSSProperties | undefined>(() => {
             const { $selected, ...baseRow } = tableStyleSet?.value?.$row ?? {};
-            const baseRowStyle = objectUtil.assign(baseRow, tableStyleSet?.value?.$header ?? {});
-            return objectUtil.assign(baseRowStyle, gridStyle.value ?? {});
+            return objectUtil.assign(baseRow, tableStyleSet?.value?.$header ?? {});
         });
-
-        function getGridColumnWidth(column?: VsTableColumnDef): string {
-            if (!column) {
-                return '1fr';
-            }
-            const { width, minWidth, maxWidth } = column;
-            if (width) {
-                return stringUtil.toStringSize(width);
-            }
-            const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
-            const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
-            if (min && max) {
-                return `minmax(${min}, ${max})`;
-            }
-            if (min) {
-                return `minmax(${min}, 1fr)`;
-            }
-            if (max) {
-                return `minmax(auto, ${max})`;
-            }
-            return '1fr';
-        }
 
         function getCellStyle(index: number): CSSProperties {
             const align = columns.value?.[index]?.headerAlign;

@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, computed, type ComputedRef, type PropType, toRefs, type CSSProperties } from 'vue';
-import { objectUtil, stringUtil } from '@/utils';
+import { objectUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { ColorScheme, UIState } from '@/declaration';
 import {
@@ -51,7 +51,6 @@ import {
     TABLE_STYLE_SET_TOKEN,
     type VsTableBodyCell,
     type VsTableStyleSet,
-    type VsTableColumnDef,
 } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import { getRowItem } from './models/table-model';
@@ -86,7 +85,6 @@ export default defineComponent({
         const {
             anyExpandable,
             anySelectable,
-            draggable,
             headerCells,
             loading,
             selectedItems,
@@ -116,51 +114,10 @@ export default defineComponent({
         }));
 
         const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.$cell);
-        const gridStyle = computed<CSSProperties | undefined>(() => {
-            const cols: string[] = [];
-            if (draggable?.value) {
-                cols.push('auto');
-            }
-            if (anySelectable.value) {
-                cols.push('auto');
-            }
-            props.cells.forEach((_, index) => {
-                cols.push(getGridColumnWidth(columns.value?.[index]));
-            });
-            if (anyExpandable.value) {
-                cols.push('auto');
-            }
-            return {
-                gridTemplateColumns: cols.join(' '),
-            };
-        });
         const rowStyle = computed<CSSProperties | undefined>(() => {
             const { $selected = {}, ...baseRow } = tableStyleSet?.value?.$row ?? {};
-            const statedRowStyle = isSelected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
-            return objectUtil.assign(statedRowStyle, gridStyle.value ?? {});
+            return isSelected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
         });
-
-        function getGridColumnWidth(column?: VsTableColumnDef): string {
-            if (!column) {
-                return '1fr';
-            }
-            const { width, minWidth, maxWidth } = column;
-            if (width) {
-                return stringUtil.toStringSize(width);
-            }
-            const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
-            const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
-            if (min && max) {
-                return `minmax(${min}, ${max})`;
-            }
-            if (min) {
-                return `minmax(${min}, 1fr)`;
-            }
-            if (max) {
-                return `minmax(auto, ${max})`;
-            }
-            return '1fr';
-        }
 
         function getCellStyle(index: number): CSSProperties {
             const { align, verticalAlign } = columns.value?.[index] ?? {};
@@ -225,7 +182,6 @@ export default defineComponent({
         return {
             anyExpandable,
             colorScheme,
-            draggable,
             loading,
             classObj,
             rowStyle,
