@@ -25,9 +25,9 @@
             v-if="useStickyHeader"
             ref="stickyScrollRef"
             class="vs-table-sticky-wrapper"
-            :style="{ top: stickyHeaderTop }"
+            :style="{ top: componentStyleSet.$stickyHeaderTop }"
         >
-            <table class="vs-table-table">
+            <table class="vs-table-table" :style="stickyTableColumnStyle">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
                     <template v-for="name in headerSlots" #[name]="slotData">
                         <slot :name v-bind="slotData || {}" />
@@ -37,26 +37,19 @@
         </div>
 
         <div class="vs-table-content" ref="scrollWrapperRef">
-            <vs-visible-render
-                :disabled="noVirtualScroll"
-                :selector="`.${TABLE_DRAG_WRAPPER_CLASS}`"
-                root-margin="150px"
-            >
-                <table class="vs-table-table">
-                    <caption v-if="$slots['caption']" class="vs-table-caption">
+            <div ref="headerSentinelRef" class="vs-table-header-sentinel" aria-hidden="true" />
+            <vs-visible-render :selector="`#${bodyId}`" :disabled="noVirtualScroll" root-margin="150px">
+                <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
+                    <caption v-if="$slots['caption']" class="vs-table-caption" :style="componentStyleSet.$caption">
                         <slot name="caption" />
                     </caption>
-                    <vs-table-header
-                        ref="headerRef"
-                        class="vs-table-original-header"
-                        @click-cell="clickCell"
-                        @select-row="selectRow"
-                    >
+                    <vs-table-header class="vs-table-original-header" @click-cell="clickCell" @select-row="selectRow">
                         <template v-for="name in headerSlots" #[name]="slotData">
                             <slot :name v-bind="slotData || {}" />
                         </template>
                     </vs-table-header>
                     <vs-table-body
+                        :id="bodyId"
                         @click-cell="clickCell"
                         @click-row="clickRow"
                         @select-row="selectRow"
@@ -89,25 +82,15 @@ import {
     onBeforeUnmount,
     watch,
     nextTick,
-    inject,
     type ComputedRef,
     type Ref,
 } from 'vue';
-import { useIntersectionObserver } from '@vueuse/core';
+import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import {
-    LAYOUT_STORE_KEY,
-    type SearchProps,
-    type UIState,
-    VsComponent,
-    type PropsOf,
-    type ColorScheme,
-    type Size,
-} from '@/declaration';
+import { type SearchProps, type UIState, VsComponent, type PropsOf, type ColorScheme, type Size } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
-import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
@@ -186,11 +169,7 @@ export default defineComponent({
                     return false;
                 }
                 if (totalItemCount < 0) {
-                    logUtil.propError(
-                        componentName,
-                        'serverMode',
-                        'totalItemCount must be greater than or equal to 0',
-                    );
+                    logUtil.propError(componentName, 'serverMode', 'totalItemCount must be greater than or equal to 0');
                     return false;
                 }
                 return true;
@@ -298,21 +277,22 @@ export default defineComponent({
             toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
-        const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const headerSentinelRef = useTemplateRef<HTMLDivElement>('headerSentinelRef');
+        const contentTableRef = useTemplateRef<HTMLTableElement>('contentTableRef');
         const scrollWrapperRef = useTemplateRef<HTMLDivElement>('scrollWrapperRef');
         const stickyScrollRef = useTemplateRef<HTMLDivElement>('stickyScrollRef');
 
         const isHeaderOutOfView = ref<boolean>(true);
-        const stickyHeaderTop = ref<string>('0px');
-        const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
 
         const tableId = stringUtil.createID();
+        const bodyId = computed(() => `${tableId}-body`);
+        const hasExpandSlot = computed<boolean>(() => !!slots.expand);
         const table: TableComposable = useTable(
             tableId,
             props,
-            { searchInputRef },
+            { searchInputRef, hasExpandSlot },
             { updateSelectedItems, updatePage, updatePageSize, updatePagedItems, updateTotalItems, paginate },
         );
 
@@ -338,21 +318,29 @@ export default defineComponent({
             [sizeClass.value]: !!sizeClass.value,
         }));
         const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
+        const tableColumnStyle = computed(() => ({ gridTemplateColumns: table.gridTemplateColumns.value }));
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
 
+        // sticky 헤더는 복제본이라 column의 폭이 실제 table과 달라져서 일치 시키는 작업이 필요
+        const stickyColumnTracks = ref<string>('');
+        const stickyTableColumnStyle = computed(() => ({
+            gridTemplateColumns: stickyColumnTracks.value || table.gridTemplateColumns.value,
+        }));
+
+        function syncStickyColumns() {
+            if (contentTableRef.value) {
+                stickyColumnTracks.value = getComputedStyle(contentTableRef.value).gridTemplateColumns;
+            }
+        }
+
+        useResizeObserver(contentTableRef, syncStickyColumns);
+
+        // thead(.vs-table-thead)는 display:contents라 박스가 없어 직접 관측할 수 없다.
+        // 콘텐츠 최상단(=헤더 상단)에 둔 sentinel을 관측해, 헤더가 화면 위로 벗어났는지를 판단한다.
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
-            headerRef,
-            ([{ isIntersecting, boundingClientRect }]) => {
+            headerSentinelRef,
+            ([{ isIntersecting }]) => {
                 isHeaderOutOfView.value = !isIntersecting;
-                if (!isIntersecting) {
-                    const headerHeight = vsLayoutHeader.value.height;
-                    // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
-                    if (boundingClientRect.top < Number(headerHeight)) {
-                        stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
-                        return;
-                    }
-                    stickyHeaderTop.value = '0px';
-                }
             },
             // The '999999px' value for rootMargin ensures that the header visibility is considered partially hidden when an x-overflow occurs.
             { threshold: 0, rootMargin: '0px 999999px' },
@@ -419,7 +407,10 @@ export default defineComponent({
 
         watch(useStickyHeader, (visible) => {
             if (visible) {
-                nextTick(syncStickyScroll);
+                nextTick(() => {
+                    syncStickyColumns();
+                    syncStickyScroll();
+                });
             }
         });
 
@@ -442,19 +433,22 @@ export default defineComponent({
 
         return {
             TABLE_DRAG_WRAPPER_CLASS,
+            bodyId,
             colorSchemeClass,
             computedColorScheme,
             componentStyleSet,
             componentInlineStyle,
             classObj,
-            headerRef,
+            headerSentinelRef,
+            contentTableRef,
             scrollWrapperRef,
             stickyScrollRef,
             headerSlots,
             bodySlots,
             useStickyHeader,
-            stickyHeaderTop,
             searchOptions,
+            tableColumnStyle,
+            stickyTableColumnStyle,
             table,
             totalPages: table.totalPages,
             clickCell,

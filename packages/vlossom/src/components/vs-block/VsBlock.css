@@ -21,7 +21,7 @@
     }
 
     .vs-block-content {
-        @apply relative h-full w-full;
+        @apply relative w-full;
 
         padding: 0.8rem 1.2rem;
     }

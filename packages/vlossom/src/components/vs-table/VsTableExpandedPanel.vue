@@ -1,5 +1,5 @@
 <template>
-    <vs-expandable :open="isExpanded(cells)" :size="size ?? 'md'" :style-set="expandableStyleSet">
+    <vs-expandable :open="isExpanded(cells)" :size :style-set="expandableStyleSet">
         <slot name="expand" :item="getRowItem(cells)" :value="isExpanded(cells)" :rowIdx />
     </vs-expandable>
 </template>

@@ -25,11 +25,12 @@ function setupUseTable(
         pageSize?: number;
         serverMode?: boolean;
     },
-    options?: { searchInputRef?: Ref<VsSearchInputRef | null> },
+    options?: { searchInputRef?: Ref<VsSearchInputRef | null>; hasExpandSlot?: Ref<boolean> },
 ) {
     const reactiveProps = reactive(props);
     const searchInputRef = options?.searchInputRef ?? ref<VsSearchInputRef | null>(null);
-    const table = useTable('test-table-id', reactiveProps as any, { searchInputRef } as any);
+    const hasExpandSlot = options?.hasExpandSlot ?? ref(false);
+    const table = useTable('test-table-id', reactiveProps as any, { searchInputRef, hasExpandSlot } as any);
     table.initialize();
     return { table, reactiveProps, searchInputRef };
 }
