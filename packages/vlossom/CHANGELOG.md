@@ -1,5 +1,34 @@
 # Changelog
 
+## [2.1.0-beta.5](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.5...vlossom-v2.1.0-beta.5) (2026-06-24)
+
+
+### Features
+
+* **colors:** add color tokens (soft, base, strong) & update state color ([#550](https://github.com/vlossom-ui/vlossom/issues/550)) ([2102383](https://github.com/vlossom-ui/vlossom/commit/21023833d0e70ee93a65c39bfda77db30338c436))
+* **input:** add reset() and redefine changed as initial-value diff ([#555](https://github.com/vlossom-ui/vlossom/issues/555)) ([761ca5c](https://github.com/vlossom-ui/vlossom/commit/761ca5ce1cf37526199147aa7a5960dcb5e27758))
+* **modal:** change modal-plugin close, clear, closeWithId interface ([#553](https://github.com/vlossom-ui/vlossom/issues/553)) ([04bd233](https://github.com/vlossom-ui/vlossom/commit/04bd233612fc90a7156e942f62331780510be9c4))
+* **number-util:** add clamp utility for numeric value limits ([#530](https://github.com/vlossom-ui/vlossom/issues/530)) ([3e97581](https://github.com/vlossom-ui/vlossom/commit/3e97581f61b4ee806033e7d2bdd597b259ba9ad8))
+* **VsDatePicker:** add placeholder + key binding ([#529](https://github.com/vlossom-ui/vlossom/issues/529)) ([6c4b7f9](https://github.com/vlossom-ui/vlossom/commit/6c4b7f9bcb880efec7269ec0d30760ec4bea52f4))
+* **VsFileDrop:** add 'clear' event to emit previously selected files… ([#547](https://github.com/vlossom-ui/vlossom/issues/547)) ([73350fb](https://github.com/vlossom-ui/vlossom/commit/73350fb2940313084a40d95b69d6ebb83d121ef1))
+* **VsImage:** add fallback slot ([#508](https://github.com/vlossom-ui/vlossom/issues/508)) ([994cdbe](https://github.com/vlossom-ui/vlossom/commit/994cdbe82243c7bef9365df983bee523ad6fb25c))
+* **VsTable:** add expand, collapse methods ([#534](https://github.com/vlossom-ui/vlossom/issues/534)) ([74801ff](https://github.com/vlossom-ui/vlossom/commit/74801ff1b203fc9cbe03ed10e41bc254a86eab59))
+* **VsTable:** change row hover style ([#542](https://github.com/vlossom-ui/vlossom/issues/542)) ([519a3a0](https://github.com/vlossom-ui/vlossom/commit/519a3a05d93a7f8c56b741b4063cc41a20213406))
+
+
+### Bug Fixes
+
+* **click:** remove invalid preventDefault from click event ([#523](https://github.com/vlossom-ui/vlossom/issues/523)) ([933b092](https://github.com/vlossom-ui/vlossom/commit/933b0921c381144dce9e58376afe506a2138007a))
+* **escClose:** change escClose default value & fix plugin escClose event binding ([#544](https://github.com/vlossom-ui/vlossom/issues/544)) ([b875555](https://github.com/vlossom-ui/vlossom/commit/b8755559c74873f6634351e69315f7a8ab68ad84))
+* **VsBlock,VsExpandable:** remove content bg color ([#524](https://github.com/vlossom-ui/vlossom/issues/524)) ([01be18d](https://github.com/vlossom-ui/vlossom/commit/01be18dfe2aca19ddb45e15e05e561c9361278a5))
+* **VsInput:** fix input prepend, append font color ([#526](https://github.com/vlossom-ui/vlossom/issues/526)) ([c71ba37](https://github.com/vlossom-ui/vlossom/commit/c71ba37037a48526c84c2e46efc85fe980443a4b))
+* **VsLabelValue:** add vertical padding + refactoring css ([#527](https://github.com/vlossom-ui/vlossom/issues/527)) ([42f4742](https://github.com/vlossom-ui/vlossom/commit/42f4742ed1b7750a759c64dd2a3f11a99636872c))
+* **VsSelect:** fix vs-select issues ([#525](https://github.com/vlossom-ui/vlossom/issues/525)) ([be51eea](https://github.com/vlossom-ui/vlossom/commit/be51eea528772136c9344f07be25badabee7eab6))
+* **VsSelect:** stop event bubbling at options slots ([#546](https://github.com/vlossom-ui/vlossom/issues/546)) ([078ec4f](https://github.com/vlossom-ui/vlossom/commit/078ec4f9ce355da48c9d2f59bbcdbbca6f443416))
+* **VsTable:** fix column styles & fix vs-visible-render usage ([#558](https://github.com/vlossom-ui/vlossom/issues/558)) ([d0ed07f](https://github.com/vlossom-ui/vlossom/commit/d0ed07f8835744100df6a83c12869068685e1d88))
+* **VsTable:** fix table pagination, reactivity issues ([#537](https://github.com/vlossom-ui/vlossom/issues/537)) ([20486a6](https://github.com/vlossom-ui/vlossom/commit/20486a66f53e82fd60f5c1bea036edacf260a5b8))
+* **VsTabs:** prevent indicator sub-pixel overflow ([#541](https://github.com/vlossom-ui/vlossom/issues/541)) ([fd954b2](https://github.com/vlossom-ui/vlossom/commit/fd954b2908e3061d78646604c482c86d9a29f1c9))
+
 ## [2.0.0-beta.5](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.4...vlossom-v2.0.0-beta.5) (2026-05-28)
 
 
