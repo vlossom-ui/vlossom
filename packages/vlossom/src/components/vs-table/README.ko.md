@@ -137,7 +137,9 @@ const selected = ref([]);
 interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
+    $caption?: CSSProperties;
     $header?: CSSProperties;
+    $stickyHeaderTop?: string;
     $row?: CSSProperties & {
         $selected?: CSSProperties;
     };
@@ -181,6 +183,7 @@ interface VsTablePaginationOptions {
         :style-set="{
             borderRadius: '0.5rem', overflow: 'hidden',
             $header: { fontSize: '0.875rem', fontWeight: 700 },
+            $stickyHeaderTop: '60px',
             $row: {
                 height: '3rem',
                 $selected: { backgroundColor: '#e3f2fd' },
@@ -190,6 +193,8 @@ interface VsTablePaginationOptions {
     />
 </template>
 ```
+
+`$stickyHeaderTop`은 `stickyHeader`가 켜졌을 때 떠 있는 헤더의 `top` 오프셋입니다. 기본적으로 뷰포트 상단(`0`)에 붙으며, 앱 고정 헤더 아래로 내리고 싶을 때 값을 지정합니다(예: `'60px'`).
 
 ## 이벤트
 

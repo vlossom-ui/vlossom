@@ -25,7 +25,7 @@
             v-if="useStickyHeader"
             ref="stickyScrollRef"
             class="vs-table-sticky-wrapper"
-            :style="{ top: stickyHeaderTop }"
+            :style="{ top: componentStyleSet.$stickyHeaderTop }"
         >
             <table class="vs-table-table" :style="stickyTableColumnStyle">
                 <vs-table-header class="vs-table-sticky-header" @click-cell="clickCell" @select-row="selectRow">
@@ -37,17 +37,13 @@
         </div>
 
         <div class="vs-table-content" ref="scrollWrapperRef">
+            <div ref="headerSentinelRef" class="vs-table-header-sentinel" aria-hidden="true" />
             <vs-visible-render :disabled="noVirtualScroll" root-margin="150px">
                 <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
-                    <caption v-if="$slots['caption']" class="vs-table-caption">
+                    <caption v-if="$slots['caption']" class="vs-table-caption" :style="componentStyleSet.$caption">
                         <slot name="caption" />
                     </caption>
-                    <vs-table-header
-                        ref="headerRef"
-                        class="vs-table-original-header"
-                        @click-cell="clickCell"
-                        @select-row="selectRow"
-                    >
+                    <vs-table-header class="vs-table-original-header" @click-cell="clickCell" @select-row="selectRow">
                         <template v-for="name in headerSlots" #[name]="slotData">
                             <slot :name v-bind="slotData || {}" />
                         </template>
@@ -85,25 +81,15 @@ import {
     onBeforeUnmount,
     watch,
     nextTick,
-    inject,
     type ComputedRef,
     type Ref,
 } from 'vue';
 import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import {
-    LAYOUT_STORE_KEY,
-    type SearchProps,
-    type UIState,
-    VsComponent,
-    type PropsOf,
-    type ColorScheme,
-    type Size,
-} from '@/declaration';
+import { type SearchProps, type UIState, VsComponent, type PropsOf, type ColorScheme, type Size } from '@/declaration';
 import { logUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
-import { LayoutStore } from '@/stores';
 
 import { TABLE_COMPOSABLE_TOKEN, useTable, type TableComposable } from './composables/table-composable';
 import {
@@ -290,14 +276,12 @@ export default defineComponent({
             toRefs(props);
 
         const searchInputRef = useTemplateRef<VsSearchInputRef>('searchInputRef');
-        const headerRef = useTemplateRef<HTMLTableSectionElement>('headerRef');
+        const headerSentinelRef = useTemplateRef<HTMLDivElement>('headerSentinelRef');
         const contentTableRef = useTemplateRef<HTMLTableElement>('contentTableRef');
         const scrollWrapperRef = useTemplateRef<HTMLDivElement>('scrollWrapperRef');
         const stickyScrollRef = useTemplateRef<HTMLDivElement>('stickyScrollRef');
 
         const isHeaderOutOfView = ref<boolean>(true);
-        const stickyHeaderTop = ref<string>('0px');
-        const { header: vsLayoutHeader } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
 
@@ -349,19 +333,12 @@ export default defineComponent({
 
         useResizeObserver(contentTableRef, syncStickyColumns);
 
+        // thead(.vs-table-thead)는 display:contents라 박스가 없어 직접 관측할 수 없다.
+        // 콘텐츠 최상단(=헤더 상단)에 둔 sentinel을 관측해, 헤더가 화면 위로 벗어났는지를 판단한다.
         const { pause: pauseHeaderObserver } = useIntersectionObserver(
-            headerRef,
-            ([{ isIntersecting, boundingClientRect }]) => {
+            headerSentinelRef,
+            ([{ isIntersecting }]) => {
                 isHeaderOutOfView.value = !isIntersecting;
-                if (!isIntersecting) {
-                    const headerHeight = vsLayoutHeader.value.height;
-                    // sticky header has to be positioned at the bottom of the vs-header when the table is hidden by vs-header
-                    if (boundingClientRect.top < Number(headerHeight)) {
-                        stickyHeaderTop.value = stringUtil.toStringSize(headerHeight);
-                        return;
-                    }
-                    stickyHeaderTop.value = '0px';
-                }
             },
             // The '999999px' value for rootMargin ensures that the header visibility is considered partially hidden when an x-overflow occurs.
             { threshold: 0, rootMargin: '0px 999999px' },
@@ -459,14 +436,13 @@ export default defineComponent({
             componentStyleSet,
             componentInlineStyle,
             classObj,
-            headerRef,
+            headerSentinelRef,
             contentTableRef,
             scrollWrapperRef,
             stickyScrollRef,
             headerSlots,
             bodySlots,
             useStickyHeader,
-            stickyHeaderTop,
             searchOptions,
             tableColumnStyle,
             stickyTableColumnStyle,

@@ -82,6 +82,19 @@ describe('VsTable', () => {
             expect(wrapper.find('caption').text()).toBe('사용자 목록');
         });
 
+        it('styleSet의 $caption을 caption 요소에 적용한다', async () => {
+            const wrapper = mountTable({
+                props: { styleSet: { $caption: { color: 'rgb(255, 0, 0)' } } },
+                slots: {
+                    caption: '<span>사용자 목록</span>',
+                },
+            });
+
+            await nextTick();
+
+            expect(wrapper.find('caption').attributes('style')).toContain('color: rgb(255, 0, 0)');
+        });
+
         it('컬럼 정의와 아이템을 기반으로 헤더와 바디 셀을 렌더링한다', async () => {
             const wrapper = mountTable({
                 props: { columns: labeledColumns },
@@ -1124,6 +1137,96 @@ describe('VsTable', () => {
 
             const style = wrapper.find('.vs-table-table').attributes('style') ?? '';
             expect(style).toContain('minmax(max-content, 1fr) minmax(max-content, 1fr) auto');
+        });
+    });
+
+    describe('sticky header', () => {
+        // thead(.vs-table-thead)는 display:contents라 박스가 없어 직접 관측할 수 없다.
+        // 박스를 갖는 sentinel 마커를 관측 대상으로 삼는지 회귀로 고정한다.
+        it('display:contents인 thead가 아니라 박스가 있는 sentinel(.vs-table-header-sentinel)을 관측한다', async () => {
+            const observed: Element[] = [];
+            const callbacks: IntersectionObserverCallback[] = [];
+            const original = globalThis.IntersectionObserver;
+            class MockIntersectionObserver {
+                constructor(callback: IntersectionObserverCallback) {
+                    callbacks.push(callback);
+                }
+                observe(el: Element) {
+                    observed.push(el);
+                }
+                unobserve() {}
+                disconnect() {}
+                takeRecords() {
+                    return [];
+                }
+            }
+            globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+
+            try {
+                const wrapper = mountTable({ props: { stickyHeader: true } });
+                await nextTick();
+                await nextTick();
+
+                const target = observed[observed.length - 1] as HTMLElement | undefined;
+                expect(target).toBeTruthy();
+                expect(target?.classList.contains('vs-table-header-sentinel')).toBe(true);
+                expect(target?.tagName).not.toBe('THEAD');
+
+                wrapper.unmount();
+            } finally {
+                globalThis.IntersectionObserver = original;
+            }
+        });
+
+        it('원본 헤더가 화면에 보이면 sticky 복제 헤더를 렌더링하지 않고, 벗어나면 렌더링한다', async () => {
+            const callbacks: IntersectionObserverCallback[] = [];
+            const original = globalThis.IntersectionObserver;
+            class MockIntersectionObserver {
+                constructor(callback: IntersectionObserverCallback) {
+                    callbacks.push(callback);
+                }
+                observe() {}
+                unobserve() {}
+                disconnect() {}
+                takeRecords() {
+                    return [];
+                }
+            }
+            globalThis.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+
+            try {
+                const wrapper = mountTable({ props: { stickyHeader: true } });
+                await nextTick();
+                await nextTick();
+
+                const fire = (isIntersecting: boolean) => {
+                    const callback = callbacks[callbacks.length - 1];
+                    const entries = [{ isIntersecting }] as unknown as IntersectionObserverEntry[];
+                    callback?.(entries, {} as IntersectionObserver);
+                };
+
+                fire(true);
+                await nextTick();
+                expect(wrapper.find('.vs-table-sticky-header').exists()).toBe(false);
+
+                fire(false);
+                await nextTick();
+                expect(wrapper.find('.vs-table-sticky-header').exists()).toBe(true);
+
+                wrapper.unmount();
+            } finally {
+                globalThis.IntersectionObserver = original;
+            }
+        });
+
+        it('styleSet의 $stickyHeaderTop을 sticky wrapper의 top 오프셋으로 적용한다', async () => {
+            const wrapper = mountTable({ props: { stickyHeader: true, styleSet: { $stickyHeaderTop: '60px' } } });
+            await nextTick();
+
+            // 마운트 직후 isHeaderOutOfView 기본값(true)으로 sticky wrapper가 렌더된다.
+            expect(wrapper.find('.vs-table-sticky-wrapper').attributes('style')).toContain('top: 60px');
+
+            wrapper.unmount();
         });
     });
 

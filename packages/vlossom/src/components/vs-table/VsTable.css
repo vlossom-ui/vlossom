@@ -20,7 +20,7 @@
     }
 
     > .vs-table-sticky-wrapper {
-        @apply pointer-events-none sticky w-full overflow-hidden;
+        @apply pointer-events-none sticky top-0 w-full overflow-hidden;
         z-index: var(--vs-table-sticky-header-z-index);
         padding-bottom: 1rem;
 
@@ -37,6 +37,12 @@
 
     > .vs-table-content {
         @apply min-w-full overflow-x-auto;
+
+        /* sticky 헤더 노출 여부를 판단하기 위한 IntersectionObserver 관측용 마커.
+           콘텐츠 최상단(=헤더 상단)에 위치하며, 레이아웃에 영향을 주지 않도록 높이를 갖지 않는다. */
+        > .vs-table-header-sentinel {
+            height: 0;
+        }
     }
 
     /* ── Table structure ──

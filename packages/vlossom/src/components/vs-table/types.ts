@@ -23,7 +23,9 @@ export const TABLE_SIZE_TOKEN = Symbol('TABLE_SIZE_TOKEN');
 export interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
+    $caption?: CSSProperties;
     $header?: CSSProperties;
+    $stickyHeaderTop?: string;
     $row?: CSSProperties & {
         $selected?: CSSProperties;
     };
