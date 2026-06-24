@@ -138,4 +138,5 @@ interface VsTextareaStyleSet {
 | `blur` | | Blurs the textarea |
 | `validate` | | Triggers validation |
 | `clear` | | Clears the value |
+| `reset` | | Resets the value to its initial value |
 | `select` | | Selects all text in the textarea |

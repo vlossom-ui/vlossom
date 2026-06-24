@@ -178,3 +178,4 @@ interface VsSelectStyleSet extends CSSProperties {
 | `blur`     | -          | Blurs the select trigger      |
 | `validate` | -          | Triggers validation           |
 | `clear`    | -          | Clears the selected value     |
+| `reset`    | -          | Resets the selected value to its initial value |

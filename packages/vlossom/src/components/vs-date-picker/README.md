@@ -193,4 +193,5 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `blur`     | -          | Blurs the date input element.                                         |
 | `validate` | -          | Triggers validation and returns the result.                           |
 | `clear`    | -          | Clears the value (modelValue → `''`).                                 |
+| `reset`    | -          | Resets the value to its initial value.                                |
 | `open`     | -          | Opens the native picker via `showPicker()` (falls back to `focus()`). |

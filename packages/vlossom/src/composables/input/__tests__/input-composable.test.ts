@@ -271,7 +271,8 @@ describe('useInput composable', () => {
 
             // then
             expect(wrapper.vm.valid).toBe(false);
-            expect(wrapper.vm.changed).toBe(true);
+            // 초기값('')으로 되돌아왔으므로 changed는 false다.
+            expect(wrapper.vm.changed).toBe(false);
             expect(wrapper.vm.showRuleMessages).toBe(true);
             expect(wrapper.vm.computedMessages).toEqual([{ state: 'error', text: 'required' }]);
         });
@@ -298,7 +299,8 @@ describe('useInput composable', () => {
 
             // then
             expect(wrapper.vm.valid).toBe(false);
-            expect(wrapper.vm.changed).toBe(true);
+            // 초기값('')으로 되돌아왔으므로 changed는 false다.
+            expect(wrapper.vm.changed).toBe(false);
             expect(wrapper.vm.showRuleMessages).toBe(true);
             expect(wrapper.vm.computedMessages).toEqual([{ state: 'error', text: 'required' }]);
         });
@@ -322,7 +324,8 @@ describe('useInput composable', () => {
 
             // then
             expect(wrapper.vm.valid).toBe(false);
-            expect(wrapper.vm.changed).toBe(true);
+            // 초기값('')으로 되돌아왔으므로 changed는 false다.
+            expect(wrapper.vm.changed).toBe(false);
             expect(wrapper.vm.showRuleMessages).toBe(true);
             expect(wrapper.vm.computedMessages).toHaveLength(2);
             expect(wrapper.vm.computedMessages[0]).toEqual(infoMsg);
@@ -468,7 +471,8 @@ describe('useInput composable', () => {
             await nextTick();
 
             // then
-            expect(wrapper.vm.changed).toBe(true);
+            // 초기값('')으로 되돌아왔으므로 changed는 false다.
+            expect(wrapper.vm.changed).toBe(false);
             expect(wrapper.vm.valid).toBe(false);
             expect(wrapper.vm.computedState).toBe('error');
         });
@@ -617,6 +621,103 @@ describe('useInput composable', () => {
             expect(inputValue.value).toBe('');
             expect(onClearSpy).toHaveBeenCalledTimes(1);
             expect(wrapper.emitted('clear')?.[0]).toEqual(['test']);
+        });
+
+        it('초기값이 있는 입력을 clear하면 기준값과 달라지므로 changed가 true가 된다', async () => {
+            // given
+            inputValue.value = 'initial';
+            const wrapper = mount(TestInputComponent, {
+                props: {
+                    modelValue: 'initial',
+                    'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+                },
+            });
+
+            // when
+            await nextTick();
+            expect(wrapper.vm.changed).toBe(false);
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then
+            expect(inputValue.value).toBe('');
+            expect(wrapper.vm.changed).toBe(true);
+        });
+    });
+
+    describe('changed', () => {
+        it('값을 바꿨다가 초기값으로 되돌리면 changed가 false가 된다', async () => {
+            // given
+            const wrapper = mount(TestInputComponent, {
+                props: {
+                    modelValue: '',
+                    'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+                },
+            });
+
+            // when
+            await nextTick();
+            inputValue.value = 'test';
+            await nextTick();
+            expect(wrapper.vm.changed).toBe(true);
+
+            inputValue.value = '';
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.changed).toBe(false);
+        });
+    });
+
+    describe('reset', () => {
+        it('reset 함수를 호출하면 기준값으로 되돌아가 changed가 false가 된다', async () => {
+            // given
+            inputValue.value = 'initial';
+            const wrapper = mount(TestInputComponent, {
+                props: {
+                    modelValue: 'initial',
+                    'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+                },
+            });
+
+            // when
+            await nextTick();
+            inputValue.value = 'changed';
+            await nextTick();
+            expect(wrapper.vm.changed).toBe(true);
+
+            wrapper.vm.reset();
+            await nextTick();
+
+            // then
+            expect(inputValue.value).toBe('initial');
+            expect(wrapper.vm.modelValue).toBe('initial');
+            expect(wrapper.vm.changed).toBe(false);
+        });
+
+        it('clear와 달리 reset은 빈 값이 아니라 기준값으로 되돌린다', async () => {
+            // given
+            inputValue.value = 'initial';
+            const wrapper = mount(TestInputComponent, {
+                props: {
+                    modelValue: 'initial',
+                    'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+                },
+            });
+
+            // when
+            await nextTick();
+            wrapper.vm.clear();
+            await nextTick();
+            expect(inputValue.value).toBe('');
+            expect(wrapper.vm.changed).toBe(true);
+
+            wrapper.vm.reset();
+            await nextTick();
+
+            // then
+            expect(inputValue.value).toBe('initial');
+            expect(wrapper.vm.changed).toBe(false);
         });
     });
 });

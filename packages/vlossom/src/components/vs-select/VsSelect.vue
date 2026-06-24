@@ -288,6 +288,7 @@ export default defineComponent({
             shake,
             validate,
             clear,
+            reset,
         } = useInput(
             { emit },
             {
@@ -584,6 +585,7 @@ export default defineComponent({
             blur,
             validate,
             clear,
+            reset,
             isEmpty,
             selectedOptions,
             deselectOption,

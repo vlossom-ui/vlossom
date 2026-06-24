@@ -103,7 +103,7 @@ export default defineComponent({
         },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
-    // expose: ['focus', 'blur', 'validate', 'clear', 'select'],
+    // expose: ['focus', 'blur', 'validate', 'clear', 'reset', 'select'],
     setup(props, { emit }) {
         const {
             colorScheme,
@@ -160,6 +160,7 @@ export default defineComponent({
             shake,
             validate,
             clear,
+            reset,
         } = useInput(
             { emit },
             {
@@ -259,6 +260,7 @@ export default defineComponent({
             blur,
             select,
             clear,
+            reset,
             onFocus,
             onBlur,
             validate,

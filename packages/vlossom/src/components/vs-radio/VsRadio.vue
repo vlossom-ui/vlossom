@@ -76,7 +76,7 @@ export default defineComponent({
         modelValue: { type: null, default: null },
     },
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur', 'clear'],
-    // expose: ['clear', 'validate', 'focus', 'blur'],
+    // expose: ['clear', 'reset', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
         const {
             beforeChange,
@@ -128,6 +128,7 @@ export default defineComponent({
             shake,
             validate,
             clear,
+            reset,
         } = useInput(
             { emit },
             {
@@ -216,6 +217,7 @@ export default defineComponent({
             shake,
             validate,
             clear,
+            reset,
             onToggle,
             onFocus,
             onBlur,

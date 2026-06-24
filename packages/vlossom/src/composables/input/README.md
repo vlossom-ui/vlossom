@@ -91,7 +91,7 @@ interface InputComponentParams<T> {
 
 | RefType           | Type                        | Description                                                                    |
 | ----------------- | --------------------------- | ------------------------------------------------------------------------------ |
-| `changed`         | `Ref<boolean>`              | `true` once the user has changed the value after initialization.               |
+| `changed`         | `ComputedRef<boolean>`      | `true` when the current value differs from the value captured at initialization (dirty). Reverting to the initial value sets it back to `false`. |
 | `valid`           | `ComputedRef<boolean>`      | `true` when there are no active rule messages.                                 |
 | `shake`           | `Ref<boolean>`              | Toggled each time `validate()` fails — bind to a shake CSS class.              |
 | `computedMessages`| `ComputedRef<StateMessage[]>` | Combined list of static and rule messages to display.                        |
@@ -106,7 +106,8 @@ interface InputComponentParams<T> {
 | Method     | Parameters | Description                                                                 |
 | ---------- | ---------- | --------------------------------------------------------------------------- |
 | `validate` | —          | Shows rule messages and toggles `shake` if invalid. Returns `true` if valid.|
-| `clear`    | —          | Invokes the `onClear` callback and resets message/changed state.            |
+| `clear`    | —          | Invokes the `onClear` callback and hides rule messages. `changed` follows from the resulting value vs. the initial value (clearing a prefilled input makes it `true`). |
+| `reset`    | —          | Restores `inputValue` to the value captured at initialization and hides rule messages, so `changed` becomes `false`. Unlike `clear`, it returns to the initial value rather than emptying. |
 
 ## Hooks
 

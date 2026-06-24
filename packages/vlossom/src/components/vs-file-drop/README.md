@@ -155,3 +155,4 @@ interface VsFileDropStyleSet extends CSSProperties {
 | `blur` | - | Remove focus from the file input |
 | `validate` | - | Trigger validation and return the result |
 | `clear` | - | Clear the selected files |
+| `reset` | - | Reset the selected files to their initial value |

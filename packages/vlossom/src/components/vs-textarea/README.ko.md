@@ -137,5 +137,6 @@ interface VsTextareaStyleSet {
 | `focus` | | textarea에 포커스 |
 | `blur` | | textarea의 포커스 해제 |
 | `validate` | | 유효성 검사 실행 |
-| `clear` | | 값 초기화 |
+| `clear` | | 값 비우기 |
+| `reset` | | 값을 초기값으로 되돌리기 |
 | `select` | | textarea의 모든 텍스트 선택 |
