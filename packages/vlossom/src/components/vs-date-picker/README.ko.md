@@ -193,4 +193,5 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `blur`     | -          | 입력 요소의 포커스를 해제합니다.                                          |
 | `validate` | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                               |
 | `clear`    | -          | 값을 비웁니다 (modelValue → `''`).                                        |
+| `reset`    | -          | 값을 초기값으로 되돌립니다.                                               |
 | `open`     | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback). |

@@ -4,13 +4,13 @@
 
 **Available Version**: 2.0.0+
 
-Vue의 provide/inject 메커니즘을 통해 개별 입력 컴포넌트를 가장 가까운 부모 `VsForm`에 연결하여 폼 수준의 유효성 검사, 초기화, 상태 동기화를 활성화합니다.
+Vue의 provide/inject 메커니즘을 통해 개별 입력 컴포넌트를 가장 가까운 부모 `VsForm`에 연결하여 폼 수준의 유효성 검사, 비우기(clear), 되돌리기(reset), 상태 동기화를 활성화합니다.
 
 ## Feature
 
 - `FORM_STORE_KEY`를 사용하여 부모 폼 스토어를 주입합니다. 폼이 없을 경우 기본 no-op 스토어로 폴백합니다
 - 마운트/언마운트 및 id 변경 시 폼에서 입력을 자동으로 등록하고 제거합니다
-- 폼의 `validateFlag`와 `clearFlag`를 감시하여 입력 자체의 `validate` 및 `clear` 함수를 트리거합니다
+- 폼의 `validateFlag`, `clearFlag`, `resetFlag`를 감시하여 입력 자체의 `validate`, `clear`, `reset` 함수를 트리거합니다
 - `valid` 및 `changed` 상태 변경을 폼 스토어에 전파합니다
 - 폼 주도의 `formDisabled` 및 `formReadonly` ref를 노출합니다
 
@@ -27,9 +27,10 @@ const valid = ref(true);
 const changed = ref(false);
 
 function validate() { return valid.value; }
-function clear() { changed.value = false; }
+function clear() { /* 값을 비웁니다 */ }
+function reset() { /* 초기값으로 되돌립니다 */ }
 
-const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate, clear);
+const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate, clear, reset);
 </script>
 ```
 
@@ -41,7 +42,8 @@ const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate
 | `valid`    | `Ref<boolean>`  | —      | Yes  | 입력의 반응형 유효성 상태.                                     |
 | `changed`  | `Ref<boolean>`  | —      | Yes  | 사용자가 값을 변경했는지 나타내는 반응형 ref.                  |
 | `validate` | `() => boolean` | —      | Yes  | 폼이 유효성 검사를 트리거할 때 호출되는 함수.                  |
-| `clear`    | `() => void`    | —      | Yes  | 폼이 초기화를 트리거할 때 호출되는 함수.                       |
+| `clear`    | `() => void`    | —      | Yes  | 폼이 비우기를 트리거할 때 호출되는 함수.                       |
+| `reset`    | `() => void`    | —      | Yes  | 폼이 되돌리기를 트리거할 때 호출되는 함수.                     |
 
 ## Types
 
@@ -65,7 +67,7 @@ const { formDisabled, formReadonly } = useInputForm(id, valid, changed, validate
 | ----------------- | --------------------------------------------------------------------------------- |
 | `onMounted`       | 입력의 현재 `changed` 및 `valid` 상태를 폼에 등록합니다.                           |
 | `onBeforeUnmount` | 폼 스토어에서 입력을 제거합니다.                                                   |
-| `watch`           | `changed`, `valid`, `validateFlag`, `clearFlag`, `id`를 감시하여 폼 스토어를 동기화합니다. |
+| `watch`           | `changed`, `valid`, `validateFlag`, `clearFlag`, `resetFlag`, `id`를 감시하여 폼 스토어를 동기화합니다. |
 
 ## Cautions
 

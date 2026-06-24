@@ -154,4 +154,5 @@ interface VsFileDropStyleSet extends CSSProperties {
 | `focus` | - | 파일 입력에 포커스 설정 |
 | `blur` | - | 파일 입력에서 포커스 제거 |
 | `validate` | - | 유효성 검사를 트리거하고 결과 반환 |
-| `clear` | - | 선택된 파일 지우기 |
+| `clear` | - | 선택된 파일 비우기 |
+| `reset` | - | 선택된 파일을 초기값으로 되돌리기 |

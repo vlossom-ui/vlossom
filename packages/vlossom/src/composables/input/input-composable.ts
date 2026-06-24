@@ -1,4 +1,14 @@
-import { computed, nextTick, onBeforeMount, onMounted, onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
+import {
+    computed,
+    nextTick,
+    onBeforeMount,
+    onMounted,
+    onBeforeUnmount,
+    onUnmounted,
+    ref,
+    shallowRef,
+    watch,
+} from 'vue';
 import type { InputComponentParams } from '@/declaration';
 import { useInputForm } from '@/composables/input-form/input-form-composable';
 import { useInputMessages } from '@/composables/input-messages/input-messages-composable';
@@ -24,8 +34,9 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     const innerId = `vs-input-${stringUtil.createID()}`;
     const computedId = computed(() => id.value || innerId);
 
-    const changed = ref(false);
     const isInitialized = ref(false);
+
+    const initialValue = shallowRef(inputValue.value);
 
     const { ruleMessages, checkRules } = useInputRules<T>(inputValue, rules, defaultRules, noDefaultRules);
 
@@ -45,6 +56,8 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         return objectUtil.isEqual(a, b);
     }
 
+    const changed = computed(() => isInitialized.value && !isInputValueEqual(inputValue.value, initialValue.value));
+
     watch(
         inputValue,
         (value, oldValue) => {
@@ -63,7 +76,6 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
             if (!isInitialized.value) {
                 return;
             }
-            changed.value = true;
             showRuleMessages.value = true;
             emit('change', value);
         },
@@ -101,6 +113,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         checkRules();
 
         nextTick(() => {
+            initialValue.value = objectUtil.clone(inputValue.value);
             isInitialized.value = true;
         });
     });
@@ -136,14 +149,19 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         emit('clear', oldValue);
 
         nextTick(() => {
-            checkMessages();
-            checkRules();
             showRuleMessages.value = false;
-            changed.value = false;
         });
     }
 
-    const { formDisabled, formReadonly } = useInputForm(computedId, valid, changed, validate, clear);
+    function reset() {
+        inputValue.value = objectUtil.clone(initialValue.value);
+
+        nextTick(() => {
+            showRuleMessages.value = false;
+        });
+    }
+
+    const { formDisabled, formReadonly } = useInputForm(computedId, valid, changed, validate, clear, reset);
 
     const computedDisabled = computed(() => disabled.value || formDisabled.value);
 
@@ -163,6 +181,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
         showRuleMessages,
         validate,
         clear,
+        reset,
         computedId,
         computedDisabled,
         computedReadonly,

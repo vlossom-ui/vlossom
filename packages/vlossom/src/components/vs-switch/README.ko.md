@@ -152,4 +152,5 @@ interface VsSwitchStyleSet extends CSSProperties {
 | `focus` | | 스위치 입력에 포커스 |
 | `blur` | | 스위치 입력의 포커스 해제 |
 | `validate` | | 유효성 검사 실행 |
-| `clear` | | 값 초기화 |
+| `clear` | | 값 비우기 |
+| `reset` | | 값을 초기값으로 되돌리기 |

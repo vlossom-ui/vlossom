@@ -222,7 +222,8 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 | Method     | Parameters | 설명                       |
 | ---------- | ---------- | -------------------------- |
-| `clear`    | -          | 선택 값 초기화             |
+| `clear`    | -          | 선택 값 비우기            |
+| `reset`    | -          | 선택 값을 초기값으로 되돌리기 |
 | `validate` | -          | 유효성 검사 실행           |
 | `focus`    | -          | 라디오 입력에 포커스       |
 | `blur`     | -          | 라디오 입력에서 포커스 해제 |
@@ -234,4 +235,5 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `focus`    | -          | 첫 번째 라디오 입력에 포커스   |
 | `blur`     | -          | 첫 번째 라디오 입력 포커스 해제 |
 | `validate` | -          | 유효성 검사 실행               |
-| `clear`    | -          | 선택 값 초기화                 |
+| `clear`    | -          | 선택 값 비우기                |
+| `reset`    | -          | 선택 값을 초기값으로 되돌리기  |

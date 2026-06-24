@@ -167,4 +167,5 @@ interface VsInputStyleSet extends CSSProperties {
 | `blur`     | -          | Blurs the input element.                            |
 | `validate` | -          | Triggers validation and returns the result.         |
 | `clear`    | -          | Clears the input value.                             |
+| `reset`    | -          | Resets the input value to its initial value.        |
 | `select`   | -          | Selects all text in the input element.              |

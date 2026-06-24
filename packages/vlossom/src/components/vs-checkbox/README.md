@@ -206,6 +206,7 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
 | `clear` | — | Clears the checkbox value |
+| `reset` | — | Resets the checkbox value to its initial value |
 | `validate` | — | Triggers validation and returns the result |
 | `focus` | — | Focuses the checkbox input element |
 | `blur` | — | Blurs the checkbox input element |

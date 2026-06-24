@@ -22,7 +22,7 @@ export default defineComponent({
         readonly: { type: Boolean, default: false },
     },
     emits: ['error'],
-    // expose: ['valid', 'changed', 'validate', 'clear'],
+    // expose: ['valid', 'changed', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
         const { disabled, readonly } = toRefs(props);
 
@@ -49,6 +49,10 @@ export default defineComponent({
             formStore.toggleClearFlag();
         }
 
+        function reset() {
+            formStore.toggleResetFlag();
+        }
+
         watch(
             disabled,
             (value) => {
@@ -70,6 +74,7 @@ export default defineComponent({
             changed,
             validate,
             clear,
+            reset,
         };
     },
 });
