@@ -1,6 +1,6 @@
 {
     "draft": false,
-    "prerelease": true,
+    "prerelease": false,
     "separate-pull-requests": true,
     "packages": {
         "packages/vlossom": {
