@@ -38,7 +38,7 @@ yarn add vlossom
 
 > [!TIP]
 > Vlossom supports per-component tree shaking.
-> See [VLOSSOM_USAGE_GUIDE.md](/packages/vlossom/VLOSSOM_USAGE_GUIDE.md).
+> See [VLOSSOM_USAGE_GUIDE.md](VLOSSOM_USAGE_GUIDE.md).
 
 ## Setup
 

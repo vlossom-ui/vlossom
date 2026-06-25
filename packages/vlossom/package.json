@@ -5,7 +5,8 @@
     "author": "vlossom",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/vlossom-ui/vlossom.git"
+        "url": "git+https://github.com/vlossom-ui/vlossom.git",
+        "directory": "packages/vlossom"
     },
     "bugs": {
         "url": "https://github.com/vlossom-ui/vlossom/issues"
