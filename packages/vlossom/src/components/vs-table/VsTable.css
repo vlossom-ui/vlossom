@@ -149,7 +149,7 @@
             &:after {
                 content: '';
                 @apply pointer-events-none absolute;
-                inset: -1px;
+                inset: 0;
                 border: 1px solid var(--vs-cs-bg-primary);
             }
         }
