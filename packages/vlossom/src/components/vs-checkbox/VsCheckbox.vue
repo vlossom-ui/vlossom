@@ -33,7 +33,7 @@
                     :checked="isChecked"
                     :aria-required="required"
                     :name
-                    @click.prevent.stop="toggle"
+                    @click.prevent.stop="onToggle"
                     @focus.stop="onFocus"
                     @blur.stop="onBlur"
                 />
@@ -204,9 +204,9 @@ export default defineComponent({
             'vs-readonly': computedReadonly.value,
         }));
 
-        async function toggle(e: MouseEvent) {
+        async function toggle(): Promise<boolean> {
             if (computedDisabled.value || computedReadonly.value) {
-                return;
+                return false;
             }
 
             const toValue = getUpdatedValue(!isChecked.value);
@@ -215,12 +215,19 @@ export default defineComponent({
             if (beforeChangeFn) {
                 const result = await beforeChangeFn(inputValue.value, toValue, trueValue.value);
                 if (!result) {
-                    return;
+                    return false;
                 }
             }
 
             inputValue.value = toValue;
-            emit('toggle', isChecked.value, e);
+            return true;
+        }
+
+        async function onToggle(e: MouseEvent) {
+            const toggled = await toggle();
+            if (toggled) {
+                emit('toggle', isChecked.value, e);
+            }
         }
 
         function onFocus(e: FocusEvent) {
@@ -270,6 +277,7 @@ export default defineComponent({
             isChecked,
             shake,
             toggle,
+            onToggle,
             onFocus,
             onBlur,
             validate,
