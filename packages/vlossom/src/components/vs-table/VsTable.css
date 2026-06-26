@@ -84,6 +84,7 @@
         min-width: 0;
         color: var(--vs-cs-font-colored);
         font-weight: var(--vs-font-weight);
+        font-weight: 500;
         font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
 
