@@ -83,7 +83,7 @@
         /* min-width: auto 무력화 */
         min-width: 0;
         color: var(--vs-cs-font-colored);
-        font-weight: var(--vs-font-weight);
+        font-weight: 500;
         font-size: var(--vs-size-font, var(--vs-font-size-md));
         text-align: left;
 
@@ -149,7 +149,7 @@
             &:after {
                 content: '';
                 @apply pointer-events-none absolute;
-                inset: -1px;
+                inset: 0;
                 border: 1px solid var(--vs-cs-bg-primary);
             }
         }
