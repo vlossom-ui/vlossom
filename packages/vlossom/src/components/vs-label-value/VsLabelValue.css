@@ -1,16 +1,23 @@
 .vs-label-value {
     --vs-label-value-border: initial;
+    --vs-label-value-line: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+    --vs-label-value-direction: row;
+    --vs-label-value-cell-justify: normal;
+    --vs-label-value-label-border-right: var(--vs-label-value-line);
+    --vs-label-value-label-border-bottom: none;
 
-    @apply relative flex h-full w-full overflow-hidden;
+    @apply relative flex w-full overflow-hidden;
 
-    border: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+    flex-direction: var(--vs-label-value-direction);
+    border: var(--vs-label-value-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-sm));
 
     > .vs-cell {
         @apply relative flex;
+        justify-content: var(--vs-label-value-cell-justify);
 
         align-items: center;
-        padding: 0 var(--vs-size-padding, var(--vs-padding-md));
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5) var(--vs-size-padding, var(--vs-padding-md));
         min-height: var(--vs-size-height, var(--vs-comp-height-md));
         color: var(--vs-cs-font-colored);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
@@ -18,7 +25,8 @@
         &.vs-label {
             @apply wrap-break-word whitespace-nowrap;
 
-            border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+            border-right: var(--vs-label-value-label-border-right);
+            border-bottom: var(--vs-label-value-label-border-bottom);
             background-color: var(--vs-cs-bg);
             font-weight: 500;
         }
@@ -31,66 +39,27 @@
     }
 
     &.vs-primary {
-        border: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
+        --vs-label-value-line: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
 
         .vs-label {
-            border-right: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
             background-color: var(--vs-cs-bg-primary);
             color: var(--vs-cs-font-primary);
         }
     }
 
     &.vs-vertical {
-        @apply flex-col;
-
-        > .vs-cell {
-            @apply justify-start;
-
-            &.vs-label {
-                @apply border-r-0;
-                border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
-            }
-
-            &.vs-value {
-                padding-top: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
-                padding-bottom: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
-            }
-        }
-
-        &.vs-primary {
-            > .vs-cell {
-                &.vs-label {
-                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
-                }
-            }
-        }
+        --vs-label-value-direction: column;
+        --vs-label-value-cell-justify: flex-start;
+        --vs-label-value-label-border-right: none;
+        --vs-label-value-label-border-bottom: var(--vs-label-value-line);
     }
 
     @container (max-width: 768px) {
         &.vs-responsive-vertical {
-            @apply flex-col;
-
-            > .vs-cell {
-                @apply justify-start;
-
-                &.vs-label {
-                    @apply border-r-0;
-                    border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
-                }
-
-                &.vs-value {
-                    padding-top: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
-                    padding-bottom: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5);
-                }
-            }
-
-            &.vs-primary {
-                > .vs-cell {
-                    &.vs-label {
-                        border-bottom: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
-                    }
-                }
-            }
+            --vs-label-value-direction: column;
+            --vs-label-value-cell-justify: flex-start;
+            --vs-label-value-label-border-right: none;
+            --vs-label-value-label-border-bottom: var(--vs-label-value-line);
         }
     }
 }
