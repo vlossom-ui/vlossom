@@ -112,8 +112,8 @@ export default defineComponent({
 
         if (hasIntersectionObserver && lazy.value) {
             // Use Intersection Observer for Lazy Load
-            const { pause } = useIntersectionObserver(vsImageRef, ([{ isIntersecting }]) => {
-                if (isIntersecting) {
+            const { pause } = useIntersectionObserver(vsImageRef, (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
                     isLoaded.value = true;
                     pause();
                 }

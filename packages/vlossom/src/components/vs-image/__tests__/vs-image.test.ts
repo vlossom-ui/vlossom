@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
+import { nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import VsImage from './../VsImage.vue';
 
@@ -181,9 +182,14 @@ describe('vs-image', () => {
     });
 
     describe('lazy', () => {
+        let observerCallback: IntersectionObserverCallback | null = null;
         const mockIntersectionObserver = class IntersectionObserver {
-            constructor() {}
+            constructor(callback: IntersectionObserverCallback) {
+                observerCallback = callback;
+            }
             observe = () => null;
+            disconnect = () => null;
+            unobserve = () => null;
         };
         const originalIntersectionObserver = window.IntersectionObserver;
 
@@ -219,8 +225,35 @@ describe('vs-image', () => {
             expect(wrapper.html()).toContain(imagePath);
         });
 
+        it('교차 변화가 batch로 묶여 전달되어도, intersecting entry가 있으면 lazy 이미지를 로드해야 한다', async () => {
+            // given
+            window.IntersectionObserver = mockIntersectionObserver as any;
+
+            const imagePath = '/images/test.png';
+            const wrapper = mount(VsImage, {
+                props: {
+                    src: imagePath,
+                    lazy: true,
+                },
+            });
+            await nextTick();
+
+            expect(wrapper.html()).not.toContain(imagePath);
+
+            // when: 첫 entry가 stale(false)이고 최신 entry가 true인 batch 전달
+            observerCallback?.(
+                [{ isIntersecting: false }, { isIntersecting: true }] as IntersectionObserverEntry[],
+                {} as IntersectionObserver,
+            );
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.computedSrc).toBe(imagePath);
+        });
+
         afterEach(() => {
             window.IntersectionObserver = originalIntersectionObserver;
+            observerCallback = null;
         });
     });
 });
