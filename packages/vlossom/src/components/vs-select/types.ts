@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
-import type { FocusableRef } from '@/declaration';
+import type { FocusableRef, FormChildRef } from '@/declaration';
 import type VsSelect from './VsSelect.vue';
 import type VsSelectTrigger from './VsSelectTrigger.vue';
 
@@ -15,7 +15,10 @@ declare module 'vue' {
 
 export type { VsSelect, VsSelectTrigger };
 
-export interface VsSelectRef extends ComponentPublicInstance<typeof VsSelect> {}
+export interface VsSelectRef extends ComponentPublicInstance<typeof VsSelect>, FocusableRef, FormChildRef {
+    openOptions: () => void;
+    closeOptions: () => void;
+}
 
 export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSelectTrigger>, FocusableRef {}
 

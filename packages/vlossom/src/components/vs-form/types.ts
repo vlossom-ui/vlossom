@@ -13,5 +13,6 @@ export interface VsFormRef extends ComponentPublicInstance<typeof VsForm> {
     valid: ComputedRef<boolean>;
     changed: ComputedRef<boolean>;
     clear: () => void;
+    reset: () => void;
     validate: () => Promise<boolean>;
 }

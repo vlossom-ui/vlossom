@@ -111,6 +111,7 @@ export interface InputComponentParams<T = unknown> {
 export interface FormChildRef {
     validate: () => boolean;
     clear: () => void;
+    reset: () => void;
 }
 
 export interface FocusableRef {
