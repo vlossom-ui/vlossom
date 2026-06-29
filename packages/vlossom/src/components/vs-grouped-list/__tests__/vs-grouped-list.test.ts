@@ -133,6 +133,29 @@ describe('vs-grouped-list', () => {
             expect(groupedItems[3].name).toBe('D'); // 등장 순서대로
         });
 
+        it('groupOrder에 중복된 그룹이 있어도 그룹은 한 번만 나와야 한다', () => {
+            // given
+            const rawItems = [
+                { id: 1, name: '아이템 1', category: 'A' },
+                { id: 2, name: '아이템 2', category: 'B' },
+            ];
+            const items = createOptionItems(rawItems);
+
+            // when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items,
+                    groupBy: (item: any) => item.category,
+                    groupOrder: ['A', 'A', 'B'],
+                },
+            });
+
+            // then
+            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
+            expect(groupedItems).toHaveLength(2);
+            expect(groupedItems.map((group) => group.name)).toEqual(['A', 'B']);
+        });
+
         it('ungrouped 아이템은 항상 제일 밑에 위치해야 한다', () => {
             // given
             const rawItems = [
