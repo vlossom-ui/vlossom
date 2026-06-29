@@ -26,6 +26,7 @@
 
         border: 1px solid var(--vs-cs-line);
         border-radius: 50%;
+        background-color: var(--vs-cs-bg-area-colored);
         min-width: var(--vs-chip-icon-size);
         max-width: var(--vs-chip-icon-size);
         min-height: var(--vs-chip-icon-size);
@@ -37,7 +38,8 @@
         @apply shrink-0 cursor-pointer;
 
         .vs-chip-close-icon {
-            @apply size-5;
+            width: calc(var(--vs-chip-computed-height) * 0.5);
+            height: calc(var(--vs-chip-computed-height) * 0.5);
         }
     }
 
@@ -73,8 +75,8 @@
         color: var(--vs-cs-font-primary);
 
         .vs-chip-icon {
-            border: 1px solid var(--vs-cs-font-primary);
-            color: var(--vs-cs-font-primary);
+            border: 1px solid var(--vs-cs-bg-primary);
+            color: var(--vs-cs-font);
         }
     }
 
