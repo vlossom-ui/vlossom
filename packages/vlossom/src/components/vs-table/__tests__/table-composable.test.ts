@@ -6,7 +6,6 @@ import type { VsSearchInputRef } from '@/components';
 import { useTable } from './../composables/table-composable';
 import {
     VsTableSortType,
-    type VsTableBodyCell,
     type VsTableColumnDef,
     type VsTableHeaderCell,
     type VsTableItem,
@@ -74,11 +73,11 @@ describe('useTable', () => {
         await nextTick();
 
         const headerCells = table.headerCells.value as VsTableHeaderCell[];
-        const bodyCells = table.bodyCells.value as VsTableBodyCell[][];
+        const bodyRows = table.bodyRows.value;
 
         expect(headerCells.map((h) => h.value)).toEqual(['이름', '나이']);
-        expect(bodyCells).toHaveLength(2);
-        expect(bodyCells[0].map((cell) => cell.value)).toEqual(['Alice', 24]);
+        expect(bodyRows).toHaveLength(2);
+        expect(bodyRows[0].cells.map((cell) => cell.value)).toEqual(['Alice', 24]);
     });
 
     it('컬럼과 아이템 변경을 감지해 셀을 재생성한다', async () => {
@@ -94,10 +93,29 @@ describe('useTable', () => {
         await nextTick();
 
         const columns = table.columns.value as VsTableColumnDef[] | null;
-        const bodyCells = table.bodyCells.value as VsTableBodyCell[][];
+        const bodyRows = table.bodyRows.value;
 
         expect(columns?.map((c) => c.key)).toEqual(['title']);
-        expect(bodyCells[0][0]).toMatchObject({ value: '새 항목', colKey: 'title' });
+        expect(bodyRows[0].cells[0]).toMatchObject({ value: '새 항목', colKey: 'title' });
+    });
+
+    it('아이템을 맨 앞에 추가해 인덱스가 밀려도 기존 행의 key가 유지된다', async () => {
+        const alice = { id: '1', name: 'Alice' };
+        const bob = { id: '2', name: 'Bob' };
+        const { table, reactiveProps } = setupUseTable({ columns: ['name'], items: [alice, bob] });
+
+        await nextTick();
+
+        const aliceKey = table.bodyRows.value[0].key;
+        const bobKey = table.bodyRows.value[1].key;
+
+        reactiveProps.items = [{ id: '3', name: 'Carol' }, alice, bob];
+        await nextTick();
+
+        expect(table.bodyRows.value.map((row) => row.item.name)).toEqual(['Carol', 'Alice', 'Bob']);
+        expect(table.bodyRows.value[1].key).toBe(aliceKey);
+        expect(table.bodyRows.value[2].key).toBe(bobKey);
+        expect(table.bodyRows.value[0].key).not.toBe(aliceKey);
     });
 
     it('선택 가능한 행이 있을 때 전체 선택/해제를 토글한다', async () => {
@@ -172,7 +190,7 @@ describe('useTable', () => {
         } as any;
         await nextTick();
 
-        const filteredNames = table.bodyCells.value.map((row) => row[1].value);
+        const filteredNames = table.bodyRows.value.map((row) => row.cells[1].value);
         expect(filteredNames).toEqual(['XYZ 사용자']);
     });
 
@@ -188,7 +206,7 @@ describe('useTable', () => {
             await nextTick();
 
             expect(table.pageSize.value).toBe(DEFAULT_PAGE_SIZE);
-            expect(table.bodyCells.value).toHaveLength(DEFAULT_PAGE_SIZE);
+            expect(table.bodyRows.value).toHaveLength(DEFAULT_PAGE_SIZE);
             expect(table.totalPages.value).toBe(3);
         });
 
@@ -214,7 +232,7 @@ describe('useTable', () => {
 
             expect(table.pageSize.value).toBe(20);
             expect(table.totalPages.value).toBe(3);
-            expect(table.bodyCells.value).toHaveLength(20);
+            expect(table.bodyRows.value).toHaveLength(20);
 
             reactiveProps.page = 2;
             reactiveProps.pageSize = 10;
@@ -223,7 +241,7 @@ describe('useTable', () => {
             expect(table.page.value).toBe(0);
             expect(table.pageSize.value).toBe(10);
             expect(table.totalPages.value).toBe(6);
-            expect(table.bodyCells.value).toHaveLength(10);
+            expect(table.bodyRows.value).toHaveLength(10);
         });
 
         describe('server mode', () => {
@@ -243,7 +261,7 @@ describe('useTable', () => {
                 await nextTick();
 
                 expect(table.totalPages.value).toBe(Math.ceil(500 / 10));
-                expect(table.bodyCells.value).toHaveLength(10);
+                expect(table.bodyRows.value).toHaveLength(10);
             });
 
             it('서버 모드에서는 client-side pagination을 수행하지 않는다', async () => {
@@ -265,9 +283,9 @@ describe('useTable', () => {
 
                 await nextTick();
 
-                expect(table.bodyCells.value).toHaveLength(10);
-                expect(table.bodyCells.value[0][0].value).toBe('User 20');
-                expect(table.bodyCells.value[9][0].value).toBe('User 29');
+                expect(table.bodyRows.value).toHaveLength(10);
+                expect(table.bodyRows.value[0].cells[0].value).toBe('User 20');
+                expect(table.bodyRows.value[9].cells[0].value).toBe('User 29');
             });
 
             it('서버 모드에서 totalItemCount가 없으면 총 페이지를 0으로 계산한다', async () => {
@@ -400,7 +418,7 @@ describe('useTable', () => {
                 expect(table.totalPages.value).toBe(1);
             });
 
-            it('pageSize가 Infinity일 때 bodyCells에 모든 아이템이 포함된다', async () => {
+            it('pageSize가 Infinity일 때 bodyRows에 모든 아이템이 포함된다', async () => {
                 const items = Array.from({ length: 50 }, (_, i) => ({ id: `${i}`, name: `User ${i}` }));
                 const { table } = setupUseTable({
                     columns: ['name'],
@@ -411,9 +429,9 @@ describe('useTable', () => {
                 });
 
                 await nextTick();
-                expect(table.bodyCells.value.length).toBe(50);
-                expect(table.bodyCells.value[0][0].value).toBe('User 0');
-                expect(table.bodyCells.value[49][0].value).toBe('User 49');
+                expect(table.bodyRows.value.length).toBe(50);
+                expect(table.bodyRows.value[0].cells[0].value).toBe('User 0');
+                expect(table.bodyRows.value[49].cells[0].value).toBe('User 49');
             });
 
             it('서버 모드에서 pageSize가 Infinity이면 totalItemCount 기반으로 전체 데이터를 표시한다', async () => {
@@ -457,7 +475,7 @@ describe('useTable', () => {
                 await nextTick();
 
                 expect(table.pageSize.value).toBe(5);
-                expect(table.bodyCells.value).toHaveLength(5);
+                expect(table.bodyRows.value).toHaveLength(5);
                 expect(table.totalPages.value).toBe(6);
             });
 
@@ -547,7 +565,7 @@ describe('useTable', () => {
             });
 
             await nextTick();
-            const row = table.bodyCells.value[0];
+            const row = table.bodyRows.value[0].cells;
 
             expect(table.anyExpandable.value).toBe(true);
             expect(table.isExpanded(row)).toBe(false);
@@ -567,7 +585,7 @@ describe('useTable', () => {
             });
 
             await nextTick();
-            const row = table.bodyCells.value[0];
+            const row = table.bodyRows.value[0].cells;
 
             expect(table.anyExpandable.value).toBe(false);
             expect(table.toggleExpand(row)).toBe(false);
@@ -580,7 +598,8 @@ describe('useTable', () => {
             { key: 'name', label: '이름', sortable: true },
         ];
 
-        const getNames = (table: ReturnType<typeof useTable>) => table.bodyCells.value.map((row) => row[1].value);
+        const getNames = (table: ReturnType<typeof useTable>) =>
+            table.bodyRows.value.map((row) => row.cells[1].value);
 
         it('초기 상태는 NONE이며 원본 순서를 유지한다', async () => {
             const { table } = setupUseTable({

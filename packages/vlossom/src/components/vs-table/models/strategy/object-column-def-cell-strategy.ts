@@ -1,5 +1,5 @@
 import { objectUtil, stringUtil } from '@/utils';
-import type { VsTableBodyCell, VsTableColumnDef, VsTableHeaderCell, VsTableItem } from './../../types';
+import type { VsTableBodyCell, VsTableColumnDef, VsTableHeaderCell, VsTableItem, VsTableRow } from './../../types';
 import { HEADER_ROW_INDEX, type TableCellStrategy } from './index';
 
 export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
@@ -7,6 +7,7 @@ export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
         private tableId: string,
         private items: VsTableItem[],
         private columnDefs: VsTableColumnDef[],
+        private getRowKey: (item: VsTableItem) => string,
     ) {}
 
     public createHeaderCell(): VsTableHeaderCell[] {
@@ -23,12 +24,13 @@ export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
         }));
     }
 
-    public createBodyCell(): VsTableBodyCell[][] {
+    public createBodyRows(): VsTableRow[] {
         const tag = 'td';
         return this.items.map((item: VsTableItem, rowIdx: number) => {
-            return this.columnDefs.map((header: VsTableColumnDef, colIdx: number) => ({
+            const key = this.getRowKey(item);
+            const cells: VsTableBodyCell[] = this.columnDefs.map((header: VsTableColumnDef, colIdx: number) => ({
                 tag,
-                id: `${this.tableId}-${stringUtil.kebabCase(header.key)}-${rowIdx}`,
+                id: `${this.tableId}-${stringUtil.kebabCase(header.key)}-${key}`,
                 value: header.transform
                     ? header.transform(objectUtil.get(item, header.key), item)
                     : objectUtil.get(item, header.key),
@@ -37,6 +39,7 @@ export default class ObjectColumnDefCellStrategy implements TableCellStrategy {
                 colIdx,
                 rowIdx,
             }));
+            return { key, item, cells };
         });
     }
 }

@@ -105,3 +105,9 @@ export interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
     tag: 'td';
     item: I;
 }
+
+export interface VsTableRow<I = VsTableItem> {
+    key: string;
+    item: I;
+    cells: VsTableBodyCell<I>[];
+}
