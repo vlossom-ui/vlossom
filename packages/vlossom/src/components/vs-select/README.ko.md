@@ -172,10 +172,12 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ## Methods
 
-| Method     | Parameters | 설명                        |
-| ---------- | ---------- | --------------------------- |
-| `focus`    | -          | 셀렉트 트리거에 포커스      |
-| `blur`     | -          | 셀렉트 트리거 포커스 해제   |
-| `validate` | -          | 유효성 검사 실행            |
-| `clear`    | -          | 선택 값 비우기             |
-| `reset`    | -          | 선택 값을 초기값으로 되돌리기 |
+| Method         | Parameters | 설명                          |
+| -------------- | ---------- | ----------------------------- |
+| `focus`        | -          | 셀렉트 트리거에 포커스        |
+| `blur`         | -          | 셀렉트 트리거 포커스 해제     |
+| `openOptions`  | -          | 옵션 드롭다운 열기            |
+| `closeOptions` | -          | 옵션 드롭다운 닫기            |
+| `validate`     | -          | 유효성 검사 실행              |
+| `clear`        | -          | 선택 값 비우기               |
+| `reset`        | -          | 선택 값을 초기값으로 되돌리기 |
