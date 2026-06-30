@@ -110,7 +110,6 @@ import {
     VS_TABLE_BODY_SLOT_PREFIXES,
     VS_TABLE_HEADER_SLOT_PREFIXES,
 } from './constants';
-import { getRowItem } from './models/table-model';
 
 import type { VsSearchInputRef } from './../vs-search-input/types';
 
@@ -368,7 +367,7 @@ export default defineComponent({
             emit('drag', event);
         }
         function searchRows(searchText: string): void {
-            const items = table.bodyCells.value.map((row) => getRowItem(row));
+            const items = table.bodyRows.value.map((row) => row.item);
             emit('search', items, searchText);
         }
         function paginate(page: number, pageSize: number): void {
@@ -391,18 +390,18 @@ export default defineComponent({
         }
 
         function expand(index: number): void {
-            const row = table.bodyCells.value[index];
+            const row = table.bodyRows.value[index];
             if (!row) {
                 return;
             }
-            table.setExpand(row, true);
+            table.setExpand(row.cells, true);
         }
         function collapse(index: number): void {
-            const row = table.bodyCells.value[index];
+            const row = table.bodyRows.value[index];
             if (!row) {
                 return;
             }
-            table.setExpand(row, false);
+            table.setExpand(row.cells, false);
         }
 
         watch(useStickyHeader, (visible) => {

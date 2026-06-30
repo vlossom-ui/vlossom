@@ -14,11 +14,11 @@ import type { VsSearchInputRef } from '@/components';
 
 import {
     type VsTableSortType,
-    type VsTableBodyCell,
     type VsTableColumnDef,
     type VsTableHeaderCell,
     type VsTableCell,
     type VsTableItem,
+    type VsTableRow,
     type VsTablePaginationOptions,
 } from './../types';
 import { TableCellBuilder } from './../models/table-cell-builder';
@@ -211,13 +211,13 @@ export function useTable(
         return cols.join(' ');
     });
 
-    const builtCellMatrix = computed<VsTableCell[][]>(() => {
+    const builtTable = computed<{ header: VsTableHeaderCell[]; rows: VsTableRow[] }>(() => {
         return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
     });
     const headerCells = ref<VsTableHeaderCell[]>([]);
-    const rawBodyCells = ref<VsTableBodyCell[][]>([]);
+    const rawBodyRows = ref<VsTableRow[]>([]);
 
-    const totalItemsCount = computed(() => rawBodyCells.value.filter(matchBySearch).length);
+    const totalItemsCount = computed(() => rawBodyRows.value.filter(matchBySearch).length);
     const { totalPages, totalItems, pageStartIndex, pageEndIndex } = useTablePagination(
         pagination,
         page,
@@ -225,54 +225,42 @@ export function useTable(
         totalItemsCount,
         serverMode,
     );
-    const preprocessedBodyCells = computed<VsTableBodyCell[][]>(() => {
-        return rawBodyCells.value.filter(matchBySearch).sort(compareRows);
+    const preprocessedBodyRows = computed<VsTableRow[]>(() => {
+        return rawBodyRows.value.filter(matchBySearch).sort(compareRows);
     });
-    const bodyCells = computed<VsTableBodyCell[][]>(() => {
+    const bodyRows = computed<VsTableRow[]>(() => {
         if (objectUtil.isEmpty(pagination.value)) {
-            return preprocessedBodyCells.value;
+            return preprocessedBodyRows.value;
         }
         if (serverMode.value) {
-            return preprocessedBodyCells.value;
+            return preprocessedBodyRows.value;
         }
-        return preprocessedBodyCells.value.slice(pageStartIndex.value, pageEndIndex.value);
+        return preprocessedBodyRows.value.slice(pageStartIndex.value, pageEndIndex.value);
     });
 
-    function initCells(cellMatrix: VsTableCell[][]): void {
-        const [header, ...body] = cellMatrix;
-        const nextHeaderCells = [...header] as VsTableHeaderCell[];
-        const nextBodyCells = [...body] as VsTableBodyCell[][];
-
-        headerCells.value = nextHeaderCells;
-        rawBodyCells.value = nextBodyCells;
+    function initTable(built: { header: VsTableHeaderCell[]; rows: VsTableRow[] }): void {
+        headerCells.value = [...built.header];
+        rawBodyRows.value = [...built.rows];
     }
 
     function initialize(): void {
-        initCells(tableCellBuilder.build());
+        initTable(tableCellBuilder.build());
     }
 
-    watch(builtCellMatrix, (matrix) => {
-        initCells(matrix);
+    watch(builtTable, (next) => {
+        initTable(next);
     });
 
     watch(internalSelectedItems, (nextSelectedItems) => {
         cb?.updateSelectedItems(nextSelectedItems);
     });
 
-    watch(bodyCells, (nextBodyCells) => {
-        const pagedItems = nextBodyCells.map((row) => {
-            const firstCell = row[0];
-            return firstCell?.item || {};
-        });
-        cb?.updatePagedItems(pagedItems);
+    watch(bodyRows, (rows) => {
+        cb?.updatePagedItems(rows.map((row) => row.item));
     });
 
-    watch(preprocessedBodyCells, (nextBodyCells) => {
-        const nextTotalItems = nextBodyCells.map((row) => {
-            const firstCell = row[0];
-            return firstCell?.item || {};
-        });
-        cb?.updateTotalItems(nextTotalItems);
+    watch(preprocessedBodyRows, (rows) => {
+        cb?.updateTotalItems(rows.map((row) => row.item));
     });
 
     // pageSize 변경은 page를 0으로 리셋하지만 두 변경이 같은 tick에 일어나므로 콜백은 한 번만 실행된다.
@@ -289,7 +277,7 @@ export function useTable(
         state,
         draggable,
         headerCells,
-        bodyCells,
+        bodyRows,
         loading,
         gridTemplateColumns,
         anyExpandable,
@@ -322,7 +310,7 @@ export type TableComposable = {
     columns: ComputedRef<VsTableColumnDef[] | null>;
     items: Ref<VsTableItem[]>;
     headerCells: Ref<VsTableHeaderCell[]>;
-    bodyCells: ComputedRef<VsTableBodyCell[][]>;
+    bodyRows: ComputedRef<VsTableRow[]>;
     gridTemplateColumns: ComputedRef<string>;
     anyExpandable: ComputedRef<boolean>;
     anySelectable: ComputedRef<boolean>;

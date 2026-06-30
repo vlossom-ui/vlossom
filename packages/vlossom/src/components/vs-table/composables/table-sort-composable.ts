@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import { VsTableSortType, type VsTableColumnDef, type VsTableBodyCell } from './../types';
+import { VsTableSortType, type VsTableColumnDef, type VsTableRow } from './../types';
 import { objectUtil, compareUtil } from '@/utils';
 
 const SORT_TYPE_COUNT = Object.keys(VsTableSortType).filter((value) => !isNaN(Number(value))).length;
@@ -8,15 +8,15 @@ export function useTableSort(columns: Ref<VsTableColumnDef[]>) {
     const sortType = ref<VsTableSortType>(VsTableSortType.NONE);
     const sortColumn = ref<VsTableColumnDef | null>(null);
 
-    function compareRows(aRow: VsTableBodyCell[], bRow: VsTableBodyCell[]): number {
+    function compareRows(aRow: VsTableRow, bRow: VsTableRow): number {
         if (sortType.value === VsTableSortType.NONE) {
             return 0;
         }
         if (!columns.value.length || !sortColumn.value) {
             return 0;
         }
-        const aItem = aRow[0]?.item;
-        const bItem = bRow[0]?.item;
+        const aItem = aRow.item;
+        const bItem = bRow.item;
         if (!aItem || !bItem) {
             return 0;
         }
