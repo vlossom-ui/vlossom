@@ -14,7 +14,7 @@
         </template>
 
         <vs-visible-render class="vs-grouped-list-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
-            <template v-for="(group, groupIndex) in groupedItems" :key="`group-${groupIndex}`">
+            <template v-for="(group, groupIndex) in groupedItems" :key="group.name">
                 <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.$group">
                     <slot name="group" :group="group.name" :groupIndex :items="group.items">
                         <div class="vs-grouped-list-group-content">
@@ -24,7 +24,7 @@
                 </div>
                 <div
                     v-for="(item, groupedIndex) in group.items"
-                    :key="`${item.id}-${groupedIndex}`"
+                    :key="item.id"
                     :id="item.id"
                     :class="['vs-grouped-list-item', { 'vs-disabled': item.disabled }]"
                     :style="componentStyleSet.$item"
@@ -130,7 +130,7 @@ export default defineComponent({
                 // groupOrder가 있으면 그 순서대로, 나머지는 순서대로
                 const orderedSet = new Set<string>();
                 for (const groupName of groupOrder.value) {
-                    if (allGroups.includes(groupName)) {
+                    if (!orderedSet.has(groupName) && allGroups.includes(groupName)) {
                         orderedSet.add(groupName);
                         orderedGroups.push(groupName);
                     }

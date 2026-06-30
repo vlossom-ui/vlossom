@@ -1,17 +1,17 @@
 <template>
     <draggable
         tag="tbody"
-        v-model="displayedBodyCells"
+        v-model="displayedRows"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
         :id
         :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
-        :item-key="getRowId"
+        :item-key="getRowKey"
         :disabled="loading"
         @update="handleDragUpdate"
     >
         <template #item="{ element, index }">
             <vs-table-body-row
-                :cells="element"
+                :row="element"
                 :rowIdx="index"
                 @click-cell="clickCell"
                 @click-row="clickRow"
@@ -25,7 +25,7 @@
         </template>
     </draggable>
 
-    <tbody class="vs-table-tbody" v-if="displayedBodyCells.length === 0">
+    <tbody class="vs-table-tbody" v-if="displayedRows.length === 0">
         <tr class="vs-table-body-row">
             <td class="vs-table-td vs-table-no-data-cell" colspan="100%">
                 <div class="vs-table-no-data">
@@ -48,12 +48,11 @@
 <script lang="ts">
 import { computed, defineComponent, inject, ref, watch, type ComputedRef } from 'vue';
 import type { ColorScheme } from '@/declaration';
-import { TABLE_COLOR_SCHEME_TOKEN, type VsTableBodyCell } from './types';
+import { TABLE_COLOR_SCHEME_TOKEN, type VsTableBodyCell, type VsTableRow } from './types';
 import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS, VS_TABLE_BODY_SLOT_PREFIXES } from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
-import { getRowId, getRowItem } from './models/table-model';
 
 import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
@@ -71,7 +70,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
-        const { bodyCells, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const bodySlots = computed(() =>
@@ -82,21 +81,24 @@ export default defineComponent({
 
         // NOTE: These values are arrays used to represent the **draggable** view.
         const displayOrder = ref<number[]>([]);
-        const displayedBodyCells = computed<VsTableBodyCell[][]>({
-            get(): VsTableBodyCell[][] {
-                const baseCells = bodyCells.value;
+        const displayedRows = computed<VsTableRow[]>({
+            get(): VsTableRow[] {
+                const base = bodyRows.value;
                 if (displayOrder.value.length === 0) {
-                    return baseCells;
+                    return base;
                 }
-                return displayOrder.value.map((idx) => baseCells[idx]);
+                return displayOrder.value.map((idx) => base[idx]);
             },
-            set(newCells: VsTableBodyCell[][]): void {
-                const baseCells = bodyCells.value;
-                const baseIds = baseCells.map(getRowId);
+            set(newRows: VsTableRow[]): void {
+                const baseKeys = bodyRows.value.map((row) => row.key);
 
-                displayOrder.value = newCells.map((row) => baseIds.indexOf(getRowId(row))).filter((idx) => idx !== -1);
+                displayOrder.value = newRows.map((row) => baseKeys.indexOf(row.key)).filter((idx) => idx !== -1);
             },
         });
+
+        function getRowKey(row: VsTableRow): string {
+            return row.key;
+        }
 
         function clickCell(cell: VsTableBodyCell, event: MouseEvent): void {
             emit('click-cell', { ...cell }, event);
@@ -120,9 +122,9 @@ export default defineComponent({
         }
 
         watch(
-            bodyCells,
-            (newCells) => {
-                displayOrder.value = newCells.map((_, idx) => idx);
+            bodyRows,
+            (rows) => {
+                displayOrder.value = rows.map((_, idx) => idx);
             },
             { immediate: true },
         );
@@ -132,12 +134,11 @@ export default defineComponent({
             TABLE_DRAG_WRAPPER_CLASS,
             bodySlots,
             colorScheme,
-            displayedBodyCells,
+            displayedRows,
+            getRowKey,
             loading,
             clickCell,
             clickRow,
-            getRowItem: getRowItem,
-            getRowId,
             selectRow,
             expandRow,
             handleDragUpdate,

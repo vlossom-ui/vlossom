@@ -1,8 +1,7 @@
 import { computed, type ComputedRef, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components';
 import { objectUtil } from '@/utils';
-import { type VsTableBodyCell, type VsTableColumnDef } from './../types';
-import { getRowItem } from './../models/table-model';
+import { type VsTableColumnDef, type VsTableRow } from './../types';
 
 export function useTableSearch(ref: Ref<VsSearchInputRef | null>, columns: ComputedRef<VsTableColumnDef[] | null>) {
     const skipKeyList = computed<string[]>(() => {
@@ -12,11 +11,11 @@ export function useTableSearch(ref: Ref<VsSearchInputRef | null>, columns: Compu
         return columns.value.filter((col) => col.skipSearch).map((column) => column.key);
     });
 
-    function matchBySearch(row: VsTableBodyCell[]): boolean {
+    function matchBySearch(row: VsTableRow): boolean {
         if (!ref.value) {
             return true;
         }
-        const item = getRowItem(row);
+        const item = row.item;
         if (!item) {
             return false;
         }

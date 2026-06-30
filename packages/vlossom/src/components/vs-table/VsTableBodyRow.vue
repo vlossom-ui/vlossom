@@ -1,12 +1,12 @@
 <template>
     <tr :class="['vs-table-body-row', classObj, stateClasses]" :style="rowStyle">
-        <vs-table-drag-cell :cells :rowIdx />
-        <vs-table-checkbox-cell :cells :rowIdx @select-row="selectRow">
+        <vs-table-drag-cell :cells="row.cells" :rowIdx />
+        <vs-table-checkbox-cell :cells="row.cells" :rowIdx @select-row="selectRow">
             <template #select="slotData">
                 <slot name="select" v-bind="slotData" />
             </template>
         </vs-table-checkbox-cell>
-        <template v-for="(cell, index) in cells" :key="cell.id">
+        <template v-for="(cell, index) in row.cells" :key="cell.id">
             <td
                 class="vs-table-td"
                 :id="cell.id"
@@ -30,9 +30,9 @@
                 </template>
             </td>
         </template>
-        <vs-table-expand-cell v-if="showExpand" :cells :rowIdx @expand-row="expandRow" />
+        <vs-table-expand-cell v-if="showExpand" :cells="row.cells" :rowIdx @expand-row="expandRow" />
         <td v-if="showExpand" class="vs-table-td vs-table-expanded-row">
-            <vs-table-expanded-panel :cells :rowIdx>
+            <vs-table-expanded-panel :cells="row.cells" :rowIdx>
                 <template #expand="slotData">
                     <slot name="expand" v-bind="slotData" />
                 </template>
@@ -50,10 +50,10 @@ import {
     TABLE_COLOR_SCHEME_TOKEN,
     TABLE_STYLE_SET_TOKEN,
     type VsTableBodyCell,
+    type VsTableRow,
     type VsTableStyleSet,
 } from './types';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import { getRowItem } from './models/table-model';
 
 import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 import VsTableDragCell from './VsTableDragCell.vue';
@@ -70,8 +70,8 @@ export default defineComponent({
         VsTableCheckboxCell,
     },
     props: {
-        cells: {
-            type: Array as PropType<VsTableBodyCell[]>,
+        row: {
+            type: Object as PropType<VsTableRow>,
             required: true,
         },
         rowIdx: {
@@ -81,7 +81,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
-        const { cells, rowIdx: rowIndex } = toRefs(props);
+        const { row, rowIdx: rowIndex } = toRefs(props);
         const {
             anyExpandable,
             anySelectable,
@@ -96,7 +96,7 @@ export default defineComponent({
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const state = computed<UIState>(() => {
-            return stateFn.value(getRowItem(cells.value), rowIndex.value, items?.value);
+            return stateFn.value(row.value.item, rowIndex.value, items?.value);
         });
         const { stateClasses } = useStateClass(state);
 
@@ -104,7 +104,7 @@ export default defineComponent({
             if (!anySelectable.value) {
                 return false;
             }
-            return selectedItems.value.includes(getRowItem(props.cells));
+            return selectedItems.value.includes(row.value.item);
         });
 
         const showExpand = computed(() => anyExpandable.value && !!slots.expand);
@@ -171,12 +171,12 @@ export default defineComponent({
             return String(header.value ?? fallback);
         }
 
-        function selectRow(row: VsTableBodyCell[], event: MouseEvent): void {
-            emit('select-row', row, event);
+        function selectRow(cells: VsTableBodyCell[], event: MouseEvent): void {
+            emit('select-row', cells, event);
         }
 
-        function expandRow(row: VsTableBodyCell[], event: MouseEvent): void {
-            emit('expand-row', row, event);
+        function expandRow(cells: VsTableBodyCell[], event: MouseEvent): void {
+            emit('expand-row', cells, event);
         }
 
         return {
