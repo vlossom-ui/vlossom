@@ -355,6 +355,141 @@ describe('vs-checkbox', () => {
         });
     });
 
+    describe('toggle', () => {
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        it('toggle 함수를 호출하면 체크 상태가 전환되고 true를 반환한다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            const result = await wrapper.vm.toggle();
+            await nextTick();
+
+            // then
+            expect(result).toBe(true);
+            expect(wrapper.vm.isChecked).toBe(true);
+            expect(wrapper.props('modelValue')).toBe(true);
+        });
+
+        it('disabled이면 toggle 함수가 상태를 바꾸지 않고 false를 반환한다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    disabled: true,
+                },
+            });
+
+            // when
+            const result = await wrapper.vm.toggle();
+            await nextTick();
+
+            // then
+            expect(result).toBe(false);
+            expect(wrapper.vm.isChecked).toBe(false);
+        });
+
+        it('readonly이면 toggle 함수가 상태를 바꾸지 않고 false를 반환한다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    readonly: true,
+                },
+            });
+
+            // when
+            const result = await wrapper.vm.toggle();
+            await nextTick();
+
+            // then
+            expect(result).toBe(false);
+            expect(wrapper.vm.isChecked).toBe(false);
+        });
+
+        it('beforeChange가 false를 반환하면 toggle 함수가 상태를 바꾸지 않고 false를 반환한다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    beforeChange: () => Promise.resolve(false),
+                },
+            });
+
+            // when
+            const result = await wrapper.vm.toggle();
+            await nextTick();
+
+            // then
+            expect(result).toBe(false);
+            expect(wrapper.vm.isChecked).toBe(false);
+        });
+
+        it('toggle 함수 호출은 toggle 이벤트를 발생시키지 않는다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            await wrapper.vm.toggle();
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('toggle')).toBeUndefined();
+        });
+
+        it('input click 시 toggle 이벤트가 새 체크 상태, 마우스 이벤트와 함께 발생한다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            await wrapper.find('input').trigger('click');
+
+            // then
+            const toggleEvent = wrapper.emitted('toggle');
+            expect(toggleEvent).toHaveLength(1);
+            expect(toggleEvent?.[0][0]).toBe(true);
+            expect(toggleEvent?.[0][1]).toBeInstanceOf(Event);
+        });
+
+        it('beforeChange가 false를 반환하면 input click 시 toggle 이벤트가 발생하지 않는다', async () => {
+            // given
+            const wrapper = mount(VsCheckbox, {
+                props: {
+                    modelValue: false,
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                    beforeChange: () => Promise.resolve(false),
+                },
+            });
+
+            // when
+            await wrapper.find('input').trigger('click');
+
+            // then
+            expect(wrapper.emitted('toggle')).toBeUndefined();
+        });
+    });
+
     describe('clear', () => {
         describe('multiple 이 true인 경우', () => {
             it('clear 함수를 호출하면 빈 배열로 업데이트된다', async () => {

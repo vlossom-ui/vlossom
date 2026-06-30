@@ -210,4 +210,4 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `validate` | — | Triggers validation and returns the result |
 | `focus` | — | Focuses the checkbox input element |
 | `blur` | — | Blurs the checkbox input element |
-| `toggle` | — | Toggles the checked state |
+| `toggle` | — | Toggles the checked state and returns whether the value changed |
