@@ -14,7 +14,7 @@ declare module 'vue' {
 export type { VsCheckbox, VsCheckboxSet };
 
 export interface VsCheckboxRef extends ComponentPublicInstance<typeof VsCheckbox>, FocusableRef, FormChildRef {
-    toggle: () => void;
+    toggle: () => Promise<boolean>;
 }
 
 export interface VsCheckboxSetRef extends ComponentPublicInstance<typeof VsCheckboxSet>, FocusableRef, FormChildRef {}

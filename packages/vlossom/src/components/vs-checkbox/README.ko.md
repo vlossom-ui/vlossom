@@ -210,4 +210,4 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `validate` | — | 유효성 검사를 실행하고 결과를 반환합니다 |
 | `focus` | — | 체크박스 입력 요소에 포커스를 줍니다 |
 | `blur` | — | 체크박스 입력 요소의 포커스를 제거합니다 |
-| `toggle` | — | 체크 상태를 전환합니다 |
+| `toggle` | — | 체크 상태를 전환하고 값이 변경됐는지 반환합니다 |
