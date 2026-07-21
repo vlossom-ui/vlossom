@@ -59,18 +59,25 @@ export class ScrollLockStore {
     }
 
     private _apply(element: HTMLElement): void {
-        element.style.overflow = 'hidden';
-
         if (domUtil.isBrowser() && deviceUtil.isTouchDevice()) {
             return;
         }
 
-        if (element.scrollHeight >= element.clientHeight) {
+        const hasVerticalScrollbar = domUtil.isViewport(element)
+            ? window.innerWidth > document.documentElement.clientWidth
+            : element.scrollHeight > element.clientHeight;
+        const hasHorizontalScrollbar = domUtil.isViewport(element)
+            ? window.innerHeight > document.documentElement.clientHeight
+            : element.scrollWidth > element.clientWidth;
+
+        if (hasVerticalScrollbar) {
             element.style.paddingRight = SCROLLBAR_WIDTH;
         }
-        if (element.scrollWidth >= element.clientWidth) {
+        if (hasHorizontalScrollbar) {
             element.style.paddingBottom = SCROLLBAR_WIDTH;
         }
+
+        element.style.overflow = 'hidden';
     }
 
     private _restore(element: HTMLElement, original: ScrollLockState): void {
