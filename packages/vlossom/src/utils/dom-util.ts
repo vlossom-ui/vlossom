@@ -2,6 +2,9 @@ export const domUtil = {
     isBrowser(): boolean {
         return typeof window !== 'undefined';
     },
+    isViewport(element: HTMLElement): boolean {
+        return element === document.documentElement || element === document.body;
+    },
     getClientRect(element: HTMLElement): DOMRect {
         return element.getBoundingClientRect();
     },
