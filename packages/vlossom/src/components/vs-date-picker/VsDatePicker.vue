@@ -175,7 +175,6 @@ export default defineComponent({
             readonly,
             messages,
             placeholder,
-            focusPlaceholder,
             rules,
             noDefaultRules,
             state,
@@ -222,9 +221,6 @@ export default defineComponent({
         );
 
         const computedPlaceholder = computed<string>(() => {
-            if (pickerOpen.value && focusPlaceholder.value) {
-                return focusPlaceholder.value;
-            }
             return placeholder.value || TYPE_TO_FORMAT[type.value];
         });
 
