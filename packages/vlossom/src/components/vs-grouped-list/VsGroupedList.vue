@@ -164,7 +164,7 @@ export default defineComponent({
             emit('click-item', { ...item, groupedIndex, group, groupIndex });
         }
 
-        function scrollToItem(id: string) {
+        function scrollToItem(id: string, offset: number = 0) {
             if (!visibleRenderRef.value) {
                 return;
             }
@@ -180,7 +180,7 @@ export default defineComponent({
                 return;
             }
 
-            visibleRenderRef.value.scrollToElement(targetElement);
+            visibleRenderRef.value.scrollToElement(targetElement, offset);
         }
 
         function hasScroll() {
