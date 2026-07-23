@@ -96,7 +96,7 @@ value = '2026-05';
 
 값을 선택하거나 필드가 포커스를 잃으면 picker가 닫힙니다. `disabled`/`readonly` 상태에서는 모두 무시됩니다.
 
-> **placeholder 참고**: 네이티브 `date`/`time` input은 `placeholder` 속성을 무시합니다. 값이 비어 있고 picker가 닫혀 있는 동안에는 `text` input으로 렌더링해 `placeholder`가 보이게 하고, picker가 열리면 네이티브 picker 타입으로 전환합니다. 이 때문에 (picker가 열려 있을 때 노출되는) `focusPlaceholder`는 `date`/`time` 타입에서는 시각적 효과가 없습니다 — 네이티브 picker UI가 대신 표시됩니다.
+> **placeholder 참고**: 네이티브 `date`/`time` input은 `placeholder` 속성을 무시합니다. 값이 비어 있고 picker가 닫혀 있는 동안에는 `text` input으로 렌더링해 `placeholder`가 보이게 하고, picker가 열리면 네이티브 picker 타입으로 전환합니다.
 
 ## 커스텀 룰
 
@@ -127,7 +127,6 @@ value = '2026-05';
 | `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | 입력 영역 높이 · 패딩 · 폰트 · 아이콘 크기 제어.                                       |
 | `label`          | `string`                                          | `''`        | -        | 라벨 텍스트.                                                                           |
 | `placeholder`    | `string`                                          | `''`        | -        | 플레이스홀더.                                                                          |
-| `focusPlaceholder` | `string`                                        | `''`        | -        | picker가 열려 있는 동안 표시되는 플레이스홀더. 그 외에는 `placeholder`로 대체. 위 참고. |
 | `disabled`       | `boolean`                                         | `false`     | -        | 컴포넌트 비활성화.                                                                     |
 | `readonly`       | `boolean`                                         | `false`     | -        | 읽기 전용.                                                                             |
 | `required`       | `boolean`                                         | `false`     | -        | `required` 룰 추가.                                                                    |

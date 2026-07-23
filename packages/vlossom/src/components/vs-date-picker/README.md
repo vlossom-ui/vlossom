@@ -96,7 +96,7 @@ The native calendar opens when:
 
 The picker closes when a value is selected or the field loses focus. When `disabled` or `readonly` is set, all triggers are no-ops.
 
-> **Placeholder note**: native `date`/`time` inputs ignore the `placeholder` attribute. While the field is empty and the picker is closed it is rendered as a `text` input so the `placeholder` is visible, then switched to the native picker type when the picker opens. Because of this, `focusPlaceholder` (shown while the picker is open) has no visible effect on `date`/`time` types — the native picker UI is shown instead.
+> **Placeholder note**: native `date`/`time` inputs ignore the `placeholder` attribute. While the field is empty and the picker is closed it is rendered as a `text` input so the `placeholder` is visible, then switched to the native picker type when the picker opens.
 
 ## Custom Rules
 
@@ -127,7 +127,6 @@ Default rules can be turned off via `noDefaultRules`.
 | `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | Input height, padding, font, and icon size.                                                                         |
 | `label`          | `string`                                          | `''`        | -        | Label text.                                                                                                         |
 | `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                                        |
-| `focusPlaceholder` | `string`                                        | `''`        | -        | Placeholder shown while the picker is open; falls back to `placeholder` otherwise. See the Placeholder note above.  |
 | `disabled`       | `boolean`                                         | `false`     | -        | Disables the component.                                                                                             |
 | `readonly`       | `boolean`                                         | `false`     | -        | Makes the component read-only.                                                                                      |
 | `required`       | `boolean`                                         | `false`     | -        | Adds `required` rule.                                                                                               |
