@@ -70,6 +70,10 @@
     background-color: var(--vs-no-color);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
+    .vs-inner-scroll-body {
+        overflow-x: hidden;
+    }
+
     .vs-select-search {
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
@@ -83,6 +87,8 @@
     }
 
     .vs-select-option-wrap {
+        overflow-wrap: anywhere;
+
         .vs-select-option {
             @apply cursor-pointer;
 
