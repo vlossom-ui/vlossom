@@ -26,7 +26,7 @@
                 :color-scheme="computedColorScheme"
                 :is-empty
                 :is-open
-                :placeholder
+                :placeholder="computedPlaceholder"
                 :multiple
                 :collapse-chips
                 :closable-chips
@@ -226,6 +226,8 @@ export default defineComponent({
             min,
             max,
             size,
+            placeholder,
+            focusPlaceholder,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -379,6 +381,13 @@ export default defineComponent({
             'vs-readonly': computedReadonly.value,
             [sizeClass.value]: !!sizeClass.value,
         }));
+
+        const computedPlaceholder = computed(() => {
+            if (isUsingSelect.value && focusPlaceholder.value) {
+                return focusPlaceholder.value;
+            }
+            return placeholder.value ?? '';
+        });
 
         function toggleOpen() {
             if (isSelectUnavailable.value) {
@@ -567,6 +576,7 @@ export default defineComponent({
             computedState,
             computedDisabled,
             computedReadonly,
+            computedPlaceholder,
             filteredOptions,
             shake,
             openOptions,

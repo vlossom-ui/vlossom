@@ -787,4 +787,83 @@ describe('VsSelect', () => {
             expect(wrapper.props('modelValue')).toEqual(['Banana']);
         });
     });
+
+    describe('focusPlaceholder', () => {
+        it('옵션 목록이 열리면 focusPlaceholder를 보여주고 닫히면 placeholder로 되돌아간다', async () => {
+            // given: placeholder와 focusPlaceholder가 모두 설정된 select (선택값 없음)
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                    placeholder: 'Select a fruit',
+                    focusPlaceholder: 'Pick from the list below',
+                },
+            });
+            const placeholderText = () => wrapper.find('.vs-select-placeholder').text();
+
+            // then: 닫힌 상태에서는 placeholder가 보인다
+            expect(placeholderText()).toBe('Select a fruit');
+
+            // when: 옵션 목록을 연다
+            wrapper.vm.openOptions();
+            await nextTick();
+
+            // then: focusPlaceholder가 보인다
+            expect(placeholderText()).toBe('Pick from the list below');
+
+            // when: 옵션 목록을 닫는다
+            wrapper.vm.closeOptions();
+            await nextTick();
+
+            // then: 다시 placeholder로 되돌아간다
+            expect(placeholderText()).toBe('Select a fruit');
+        });
+
+        it('트리거가 포커스되면 focusPlaceholder를 보여주고 blur되면 placeholder로 되돌아간다', async () => {
+            // given: placeholder와 focusPlaceholder가 모두 설정된 select (선택값 없음)
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                    placeholder: 'Select a fruit',
+                    focusPlaceholder: 'Pick from the list below',
+                },
+            });
+            const trigger = wrapper.find('.vs-select-trigger');
+            const placeholderText = () => wrapper.find('.vs-select-placeholder').text();
+
+            // then: 포커스 전에는 placeholder가 보인다
+            expect(placeholderText()).toBe('Select a fruit');
+
+            // when: 트리거에 포커스를 준다
+            await trigger.trigger('focus');
+
+            // then: focusPlaceholder가 보인다
+            expect(placeholderText()).toBe('Pick from the list below');
+
+            // when: 트리거에서 포커스가 해제된다
+            await trigger.trigger('blur');
+
+            // then: 다시 placeholder로 되돌아간다
+            expect(placeholderText()).toBe('Select a fruit');
+        });
+
+        it('focusPlaceholder가 비어 있으면 열려 있어도 placeholder를 유지한다', async () => {
+            // given: focusPlaceholder가 설정되지 않은 select (선택값 없음)
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                    placeholder: 'Select a fruit',
+                },
+            });
+
+            // when: 옵션 목록을 연다
+            wrapper.vm.openOptions();
+            await nextTick();
+
+            // then: focusPlaceholder가 없으므로 placeholder를 그대로 보여준다
+            expect(wrapper.find('.vs-select-placeholder').text()).toBe('Select a fruit');
+        });
+    });
 });

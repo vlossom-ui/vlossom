@@ -54,6 +54,11 @@ const meta: Meta<typeof VsTextarea> = {
             description: '플레이스홀더 텍스트',
             table: { category: 'Textarea Props' },
         },
+        focusPlaceholder: {
+            control: 'text',
+            description: '포커스 상태일 때 표시되는 플레이스홀더 텍스트 (미설정 시 placeholder로 대체)',
+            table: { category: 'Textarea Props' },
+        },
         autocomplete: {
             control: 'boolean',
             description: '자동완성 활성화',
@@ -224,6 +229,23 @@ export const WithLabel: Story = {
     args: {
         label: '설명',
         placeholder: '설명을 입력하세요',
+    },
+};
+
+export const FocusPlaceholder: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'focusPlaceholder prop을 사용하면 포커스 상태일 때 다른 플레이스홀더를 표시할 수 있습니다. ' +
+                    '포커스가 해제되면 placeholder로 돌아갑니다.',
+            },
+        },
+    },
+    args: {
+        label: '설명',
+        placeholder: '클릭하여 입력을 시작하세요',
+        focusPlaceholder: '설명을 자세히 입력해 주세요...',
     },
 };
 

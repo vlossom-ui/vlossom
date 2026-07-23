@@ -43,6 +43,12 @@ const meta: Meta<typeof VsDatePicker> = {
             description: '플레이스홀더 텍스트',
             table: { category: 'Input Props' },
         },
+        focusPlaceholder: {
+            control: 'text',
+            description:
+                'picker가 열려 있는 동안 표시되는 플레이스홀더. date/time 타입은 열리면 네이티브 picker가 표시되어 시각적 효과는 없습니다.',
+            table: { category: 'Input Props' },
+        },
         noClear: {
             control: 'boolean',
             description: 'clear 버튼 숨김',
@@ -165,6 +171,23 @@ export const WithLabel: Story = {
     args: {
         label: '시작일',
         placeholder: '날짜를 선택하세요',
+    },
+};
+
+export const FocusPlaceholder: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'focusPlaceholder는 picker가 열려 있는 동안 노출되는 플레이스홀더입니다. ' +
+                    '단, date/time 타입은 picker가 열리면 네이티브 picker UI가 표시되므로 시각적 효과는 없습니다.',
+            },
+        },
+    },
+    args: {
+        label: '날짜',
+        placeholder: '날짜를 선택하세요',
+        focusPlaceholder: 'YYYY-MM-DD',
     },
 };
 

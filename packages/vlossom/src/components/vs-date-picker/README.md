@@ -11,7 +11,7 @@ A native-first date picker component with form validation and format-validated s
 - Four input types: `date`, `datetime-local`, `time`, `month` — backed by native `<input type>`.
 - `modelValue` is always a format-validated string. The format is derived from `type`.
 - Form validation with `required`, `min`/`max` (string), and format-mismatch detection.
-- Built-in clear button and calendar icon button; `showPicker()` feature detection on `open()`.
+- Built-in clear button and a calendar/clock icon; the native picker opens on click, Enter/Space, or the `open()` method (`showPicker()`).
 
 ## Basic Usage
 
@@ -83,20 +83,20 @@ value = '2026-05';
 ## Limitations
 
 - **`format` prop is not supported.** Native pickers respect the browser/OS locale; the library cannot override this. Use a custom rendering layer if you need a specific visual format.
-- **`open()` (showPicker)** requires a user gesture in some browsers. Calling it programmatically (outside an event handler) may silently fall back to `focus()`.
+- **`open()` (`showPicker()`)** requires a user gesture in most browsers. Calling it outside a user-gesture handler may be ignored by the browser.
 - **Validation constraints are rule-based.** `min` and `max` validate the selected value but are not forwarded to the native picker UI.
 
 ### Picker Trigger
 
 The native calendar opens when:
 
-- the input area (or the calendar icon) is clicked — clicking again while it is open closes it, or
-- the **Enter** key is pressed while the field is focused (whether reached by click or by Tab) — Enter toggles the picker open and closed, or
+- the input area (including the calendar icon) is clicked, or
+- the **Enter** or **Space** key is pressed while the field is focused (whether reached by click or by Tab), or
 - `dpRef.value.open()` is invoked inside a user-gesture handler.
 
-When `disabled` or `readonly` is set, all triggers are no-ops.
+The picker closes when a value is selected or the field loses focus. When `disabled` or `readonly` is set, all triggers are no-ops.
 
-> **Placeholder note**: native `date`/`time` inputs ignore the `placeholder` attribute. While the field is empty and unfocused it is rendered as a `text` input so the `placeholder` is visible, then switched to the native picker type on interaction.
+> **Placeholder note**: native `date`/`time` inputs ignore the `placeholder` attribute. While the field is empty and the picker is closed it is rendered as a `text` input so the `placeholder` is visible, then switched to the native picker type when the picker opens. Because of this, `focusPlaceholder` (shown while the picker is open) has no visible effect on `date`/`time` types — the native picker UI is shown instead.
 
 ## Custom Rules
 
@@ -127,6 +127,7 @@ Default rules can be turned off via `noDefaultRules`.
 | `size`           | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`      | -        | Input height, padding, font, and icon size.                                                                         |
 | `label`          | `string`                                          | `''`        | -        | Label text.                                                                                                         |
 | `placeholder`    | `string`                                          | `''`        | -        | Placeholder.                                                                                                        |
+| `focusPlaceholder` | `string`                                        | `''`        | -        | Placeholder shown while the picker is open; falls back to `placeholder` otherwise. See the Placeholder note above.  |
 | `disabled`       | `boolean`                                         | `false`     | -        | Disables the component.                                                                                             |
 | `readonly`       | `boolean`                                         | `false`     | -        | Makes the component read-only.                                                                                      |
 | `required`       | `boolean`                                         | `false`     | -        | Adds `required` rule.                                                                                               |
@@ -194,4 +195,4 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `validate` | -          | Triggers validation and returns the result.                           |
 | `clear`    | -          | Clears the value (modelValue → `''`).                                 |
 | `reset`    | -          | Resets the value to its initial value.                                |
-| `open`     | -          | Opens the native picker via `showPicker()` (falls back to `focus()`). |
+| `open`     | -          | Opens the native picker via `showPicker()`. Call from within a user-gesture handler. |

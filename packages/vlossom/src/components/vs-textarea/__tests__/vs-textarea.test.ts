@@ -190,6 +190,38 @@ describe('VsTextarea', () => {
         });
     });
 
+    describe('focusPlaceholder', () => {
+        it('포커스 상태에 따라 placeholder가 focusPlaceholder로 전환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: {
+                    placeholder: 'blur placeholder',
+                    focusPlaceholder: 'focus placeholder',
+                },
+                attachTo: document.body,
+            });
+            const textarea = wrapper.find('textarea');
+
+            // then: 포커스 전에는 placeholder가 노출된다
+            expect(textarea.attributes('placeholder')).toBe('blur placeholder');
+
+            // when: 포커스되면 focusPlaceholder로 전환된다
+            await textarea.trigger('focus');
+
+            // then
+            expect(textarea.attributes('placeholder')).toBe('focus placeholder');
+
+            // when: 포커스가 해제되면 다시 placeholder로 돌아온다
+            await textarea.trigger('blur');
+
+            // then
+            expect(textarea.attributes('placeholder')).toBe('blur placeholder');
+
+            // cleanup
+            wrapper.unmount();
+        });
+    });
+
     describe('state', () => {
         it('state를 error로 설정하면 vs-state-error 클래스가 추가되어야 한다', () => {
             // given

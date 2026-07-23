@@ -47,6 +47,22 @@ const options = ['Apple', 'Banana', 'Cherry'];
 </template>
 ```
 
+### Focus Placeholder
+
+Show a different placeholder while the select is focused or open. It falls back to `placeholder` otherwise.
+
+```html
+<template>
+    <vs-select
+        v-model="selected"
+        :options="options"
+        placeholder="Select a fruit"
+        focus-placeholder="Pick from the list below"
+        label="Choose a fruit"
+    />
+</template>
+```
+
 ### Object Options with Custom Labels
 
 ```html
@@ -86,6 +102,8 @@ const options = [
 | `messages`        | `Message[]`                                                      | `[]`                  | -        | Validation messages                                     |
 | `name`            | `string`                                                         | `''`                  | -        | HTML name attribute                                     |
 | `noDefaultRules`  | `boolean`                                                        | `false`               | -        | Disables built-in validation rules                      |
+| `placeholder`     | `string`                                                         | `''`                  | -        | Placeholder shown when no option is selected            |
+| `focusPlaceholder`| `string`                                                         | `''`                  | -        | Placeholder shown while the select is focused/open. Falls back to `placeholder` otherwise. |
 | `readonly`        | `boolean`                                                        | `false`               | -        | Makes the select read-only                              |
 | `rules`           | `Rule[]`                                                         | `[]`                  | -        | Custom validation rules                                 |
 | `state`           | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`        | `'idle'`              | -        | Validation state                                        |

@@ -36,7 +36,8 @@
             <vs-file-drop
                 v-model="files"
                 label="Upload Files"
-                placeholder="Drop files here"
+                placeholder="Drag files here or Click to select"
+                focus-placeholder="DROP THEM HERE !"
                 multiple
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
@@ -48,7 +49,13 @@
 
         <h3 class="mb-4 font-semibold">VsInput</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
-            <vs-input v-model="inputText" label="Text" placeholder="Enter text..." :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-input
+                v-model="inputText"
+                label="Text"
+                placeholder="Enter a fruit..."
+                focus-placeholder="e.g. apple, banana, cherry..."
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
             <vs-input placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
             <vs-input
                 v-model="inputNumber"
@@ -73,7 +80,11 @@
         <h3 class="mb-4 font-semibold">VsDatePicker</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-date-picker v-model="dpDate" type="date" label="Date" :grid="{ xs: 12, md: 6, lg: 3 }" />
-            <vs-date-picker placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-date-picker
+                placeholder="select Your birth date "
+                focus-placeholder="it will be presented as 'YYYY-MM-DD'"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
             <vs-date-picker
                 v-model="dpDatetime"
                 type="datetime-local"
@@ -106,6 +117,7 @@
                 v-model="selectValue"
                 label="Basic"
                 placeholder="Select a fruit..."
+                focus-placeholder="Try click a fruit below options..."
                 :options="selectOptions"
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
@@ -260,6 +272,7 @@
                 v-model="textareaValue"
                 label="Description"
                 placeholder="Enter description..."
+                :focus-placeholder="'e.g. ' + LOREM_IPSUM"
                 :grid="{ xs: 12, md: 6, lg: 3 }"
             />
             <vs-textarea placeholder="No label" :grid="{ xs: 12, md: 6, lg: 3 }" />
@@ -272,6 +285,17 @@
 <script lang="ts">
 import { defineComponent, ref, useTemplateRef, type Ref, type TemplateRef } from 'vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
+
+const LOREM_IPSUM = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+deserunt mollit anim id est laborum. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. 
+Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit.
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. 
+Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. 
+Sed lectus. Integer euismod lacus luctus magna.  Integer id quam. Morbi mi. Quisque nisl felis,
+venenatis tristique, dignissim in, ultrices sit amet, augue. Proin sodales libero eget ante.`;
 
 export default defineComponent({
     name: 'Inputs',
@@ -353,6 +377,7 @@ export default defineComponent({
         const dpReadonlyValue: Ref<string> = ref('2026-05-18');
 
         return {
+            LOREM_IPSUM,
             inputText,
             inputNumber,
             inputPassword,

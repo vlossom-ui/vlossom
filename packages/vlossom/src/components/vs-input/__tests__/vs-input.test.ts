@@ -147,6 +147,38 @@ describe('VsInput', () => {
         });
     });
 
+    describe('focusPlaceholder', () => {
+        it('focus 시에는 focusPlaceholder를, blur 시에는 placeholder를 보여줘야 한다', async () => {
+            // given
+            const wrapper = mount(VsInput, {
+                props: {
+                    placeholder: 'Enter text',
+                    focusPlaceholder: 'Type a keyword...',
+                },
+                attachTo: document.body,
+            });
+            const input = wrapper.find('input');
+
+            // then (포커스 전에는 placeholder를 보여준다)
+            expect(input.attributes('placeholder')).toBe('Enter text');
+
+            // when (focus)
+            await input.trigger('focus');
+
+            // then (포커스 중에는 focusPlaceholder를 보여준다)
+            expect(input.attributes('placeholder')).toBe('Type a keyword...');
+
+            // when (blur)
+            await input.trigger('blur');
+
+            // then (포커스가 해제되면 다시 placeholder로 되돌아간다)
+            expect(input.attributes('placeholder')).toBe('Enter text');
+
+            // cleanup
+            wrapper.unmount();
+        });
+    });
+
     describe('state', () => {
         it('state를 error로 설정하면 vs-state-error 클래스가 추가되어야 한다', () => {
             // given

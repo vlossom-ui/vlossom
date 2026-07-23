@@ -47,6 +47,22 @@ const options = ['사과', '바나나', '체리'];
 </template>
 ```
 
+### Focus Placeholder
+
+셀렉트가 포커스되거나 열려 있을 때 다른 placeholder를 표시합니다. 그 외에는 `placeholder`로 폴백합니다.
+
+```html
+<template>
+    <vs-select
+        v-model="selected"
+        :options="options"
+        placeholder="과일 선택"
+        focus-placeholder="아래 목록에서 선택하세요"
+        label="과일 선택"
+    />
+</template>
+```
+
 ### 커스텀 레이블이 있는 객체 옵션
 
 ```html
@@ -86,6 +102,8 @@ const options = [
 | `messages`        | `Message[]`                                                      | `[]`                  | -        | 유효성 검사 메시지                                      |
 | `name`            | `string`                                                         | `''`                  | -        | HTML name 속성                                          |
 | `noDefaultRules`  | `boolean`                                                        | `false`               | -        | 내장 유효성 검사 규칙 비활성화                          |
+| `placeholder`     | `string`                                                         | `''`                  | -        | 선택된 옵션이 없을 때 표시되는 placeholder              |
+| `focusPlaceholder`| `string`                                                         | `''`                  | -        | 셀렉트가 포커스되거나 열려 있을 때 표시되는 placeholder. 그 외에는 `placeholder`로 폴백합니다. |
 | `readonly`        | `boolean`                                                        | `false`               | -        | 셀렉트를 읽기 전용으로 설정                             |
 | `rules`           | `Rule[]`                                                         | `[]`                  | -        | 커스텀 유효성 검사 규칙                                 |
 | `state`           | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`        | `'idle'`              | -        | 유효성 검사 상태                                        |
