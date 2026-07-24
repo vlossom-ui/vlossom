@@ -151,7 +151,7 @@ import {
     useClickOutside,
     useSizeClass,
 } from '@/composables';
-import { objectUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
@@ -279,6 +279,25 @@ export default defineComponent({
 
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
 
+        function warnIfInvalid(value: any) {
+            if (value === null || value === undefined) {
+                return;
+            }
+            const isArrayMultiple = multiple.value && Array.isArray(value);
+            const valueArray = isArrayMultiple ? value : [value];
+            const invalidValues = valueArray.filter(
+                (v: any) => !computedOptions.value.some((o) => objectUtil.isEqual(o.value, v)),
+            );
+            if (invalidValues.length > 0) {
+                const display = isArrayMultiple ? JSON.stringify(invalidValues) : `"${invalidValues[0]}"`;
+                logUtil.warning('VsSelect', `${display} not in options, ignored`);
+            }
+        }
+
+        watch(modelValue, (newValue) => {
+            warnIfInvalid(newValue);
+        });
+
         const {
             computedId,
             computedMessages,
@@ -310,6 +329,7 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
+                        warnIfInvalid(modelValue.value);
                         inputValue.value = convertValue(inputValue.value);
                     },
                     onChange: () => {

@@ -237,3 +237,8 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `validate` | -          | 유효성 검사 실행               |
 | `clear`    | -          | 선택 값 비우기                |
 | `reset`    | -          | 선택 값을 초기값으로 되돌리기  |
+
+## Cautions
+
+- `VsRadioSet`의 `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `null`로 초기화되고 콘솔 경고가 출력됩니다.
+- `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면 값이 `null`로 초기화되고 콘솔 경고가 출력됩니다.

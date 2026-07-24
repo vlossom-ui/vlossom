@@ -181,3 +181,9 @@ interface VsSelectStyleSet extends CSSProperties {
 | `validate`     | -          | Triggers validation                             |
 | `clear`        | -          | Clears the selected value                        |
 | `reset`        | -          | Resets the selected value to its initial value  |
+
+
+## Cautions
+
+- If `modelValue` is set to a value not present in `options` — either on mount or programmatically — the invalid value is reset to `null` (single) or the invalid entries are removed (multiple), and a console warning is printed.
+- If `options` changes and the current `modelValue` is no longer present, the value is reset to `null` (single) or the missing entries are removed (multiple), and a console warning is printed.

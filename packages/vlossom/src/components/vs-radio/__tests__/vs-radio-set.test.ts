@@ -230,4 +230,96 @@ describe('VsRadioSet', () => {
             expect(wrapper.emitted('clear')?.[0]).toEqual(['A']);
         });
     });
+
+    describe('invalid modelValue warning', () => {
+        it('options에 없는 초기 modelValue를 설정하면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'invalid',
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('options에 있는 유효한 초기 modelValue를 설정하면 경고가 출력되지 않는다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it('프로그래매틱하게 options에 없는 값으로 변경하면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'invalid' });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('options에 없는 초기 modelValue를 설정하면 null로 리셋된다', async () => {
+            // given
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'invalid',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
+        });
+
+        it('프로그래매틱하게 options에 없는 값으로 변경하면 null로 리셋된다', async () => {
+            // given
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: 'A',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'invalid' });
+            await nextTick();
+
+            // then
+            const events = wrapper.emitted('update:modelValue');
+            expect(events?.[events.length - 1]).toEqual([null]);
+        });
+    });
 });

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ref, nextTick } from 'vue';
 import { useInputOption } from './../input-option-composable';
 
@@ -134,6 +134,100 @@ describe('useInputOption', () => {
 
                 // then
                 expect(inputValue.value).toEqual([2]);
+            });
+        });
+
+        describe('options 변경 시 invalid value 경고', () => {
+            it('single 모드에서 options에 없는 값이 있으면 경고를 출력한다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref('A');
+                const options = ref(['A', 'B', 'C']);
+                const optionLabel = ref('');
+                const optionValue = ref('');
+                useInputOption(inputValue, options, optionLabel, optionValue);
+
+                // when
+                options.value = ['D', 'E', 'F'];
+                await nextTick();
+
+                // then
+                expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"A" not in options'));
+                warnSpy.mockRestore();
+            });
+
+            it('single 모드에서 options에 값이 있으면 경고를 출력하지 않는다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref('A');
+                const options = ref(['A', 'B', 'C']);
+                const optionLabel = ref('');
+                const optionValue = ref('');
+                useInputOption(inputValue, options, optionLabel, optionValue);
+
+                // when
+                options.value = ['A', 'D', 'E'];
+                await nextTick();
+
+                // then
+                expect(warnSpy).not.toHaveBeenCalled();
+                warnSpy.mockRestore();
+            });
+
+            it('single 모드에서 inputValue가 null이면 경고를 출력하지 않는다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref(null);
+                const options = ref(['A', 'B', 'C']);
+                const optionLabel = ref('');
+                const optionValue = ref('');
+                useInputOption(inputValue, options, optionLabel, optionValue);
+
+                // when
+                options.value = ['D', 'E', 'F'];
+                await nextTick();
+
+                // then
+                expect(warnSpy).not.toHaveBeenCalled();
+                warnSpy.mockRestore();
+            });
+
+            it('multiple 모드에서 options에 없는 값이 있으면 경고를 출력한다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref(['A', 'B', 'C']);
+                const options = ref(['A', 'B', 'C', 'D']);
+                const optionLabel = ref('');
+                const optionValue = ref('');
+                const multiple = ref(true);
+                useInputOption(inputValue, options, optionLabel, optionValue, multiple);
+
+                // when
+                options.value = ['B', 'D', 'E'];
+                await nextTick();
+
+                // then
+                expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('not in options'));
+                warnSpy.mockRestore();
+            });
+
+            it('multiple 모드에서 모든 값이 options에 있으면 경고를 출력하지 않는다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref(['A', 'B']);
+                const options = ref(['A', 'B', 'C']);
+                const optionLabel = ref('');
+                const optionValue = ref('');
+                const multiple = ref(true);
+                useInputOption(inputValue, options, optionLabel, optionValue, multiple);
+
+                // when
+                options.value = ['A', 'B', 'D'];
+                await nextTick();
+
+                // then
+                expect(warnSpy).not.toHaveBeenCalled();
+                warnSpy.mockRestore();
             });
         });
 

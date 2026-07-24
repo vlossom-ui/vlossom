@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type PropType, type TemplateRef } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import {
     getColorSchemeProps,
@@ -67,7 +67,7 @@ import {
     getMinMaxProps,
 } from '@/props';
 import { useColorScheme, useInput, useSizeClass, useStyleSet, useInputOption } from '@/composables';
-import { objectUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
@@ -143,6 +143,31 @@ export default defineComponent({
             ref(true),
         );
 
+        function warnIfInvalid(value: any) {
+            if (!Array.isArray(value)) {
+                return;
+            }
+            const invalidValues = value.filter(
+                (v: any) => !options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v)),
+            );
+            if (invalidValues.length > 0) {
+                logUtil.warning('VsCheckboxSet', `${JSON.stringify(invalidValues)} not in options, ignored`);
+            }
+        }
+
+        function convertValue(value: any) {
+            if (!Array.isArray(value)) {
+                return [];
+            }
+            return value.filter(
+                (v: any) => options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v)),
+            );
+        }
+
+        watch(modelValue, (newValue) => {
+            warnIfInvalid(newValue);
+        });
+
         const {
             computedId,
             computedMessages,
@@ -168,14 +193,11 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        if (!Array.isArray(inputValue.value)) {
-                            inputValue.value = [];
-                        }
+                        warnIfInvalid(modelValue.value);
+                        inputValue.value = convertValue(inputValue.value);
                     },
                     onChange: () => {
-                        if (!Array.isArray(inputValue.value)) {
-                            inputValue.value = [];
-                        }
+                        inputValue.value = convertValue(inputValue.value);
                     },
                     onClear: () => {
                         inputValue.value = [];

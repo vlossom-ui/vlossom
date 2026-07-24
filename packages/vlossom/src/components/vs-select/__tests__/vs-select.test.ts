@@ -847,4 +847,81 @@ describe('VsSelect', () => {
             expect(wrapper.props('modelValue')).toEqual(['Banana']);
         });
     });
+
+    describe('invalid modelValue warning', () => {
+        it('단일 선택 모드에서 options에 없는 초기 modelValue를 설정하면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: 'invalid',
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('다중 선택 모드에서 options에 없는 초기 modelValue가 있으면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: ['Apple', 'invalid'],
+                    multiple: true,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('options에 있는 유효한 초기 modelValue를 설정하면 경고가 출력되지 않는다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: 'Apple',
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it('프로그래매틱하게 options에 없는 값으로 변경하면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: 'Apple',
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'invalid' });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            warnSpy.mockRestore();
+        });
+    });
 });

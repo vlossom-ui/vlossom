@@ -56,11 +56,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, watch, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
-import { objectUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -125,6 +125,28 @@ export default defineComponent({
 
         const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
 
+        function warnIfInvalid(value: any) {
+            if (value === null || value === undefined) {
+                return;
+            }
+            const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+            if (!found) {
+                logUtil.warning('VsRadioSet', `"${value}" not in options, ignored`);
+            }
+        }
+
+        function convertValue(value: any) {
+            if (value === null || value === undefined) {
+                return value;
+            }
+            const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+            return found ? value : null;
+        }
+
+        watch(modelValue, (newValue) => {
+            warnIfInvalid(newValue);
+        });
+
         function requiredCheck(value: any) {
             if (!required.value) {
                 return '';
@@ -157,6 +179,13 @@ export default defineComponent({
                 noDefaultRules,
                 state,
                 callbacks: {
+                    onMounted: () => {
+                        warnIfInvalid(modelValue.value);
+                        inputValue.value = convertValue(inputValue.value);
+                    },
+                    onChange: () => {
+                        inputValue.value = convertValue(inputValue.value);
+                    },
                     onClear: () => {
                         inputValue.value = null;
                     },
