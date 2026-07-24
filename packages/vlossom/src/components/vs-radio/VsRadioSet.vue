@@ -131,7 +131,7 @@ export default defineComponent({
             }
             const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
             if (!found) {
-                logUtil.warning('VsRadioSet', `"${value}" not in options, ignored`);
+                logUtil.warning('VsRadioSet', `"${value}" not in options, reset to null`);
             }
         }
 

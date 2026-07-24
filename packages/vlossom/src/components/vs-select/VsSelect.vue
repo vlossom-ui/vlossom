@@ -290,7 +290,7 @@ export default defineComponent({
             );
             if (invalidValues.length > 0) {
                 const display = isArrayMultiple ? JSON.stringify(invalidValues) : `"${invalidValues[0]}"`;
-                logUtil.warning('VsSelect', `${display} not in options, ignored`);
+                logUtil.warning('VsSelect', `${display} not in options, reset`);
             }
         }
 

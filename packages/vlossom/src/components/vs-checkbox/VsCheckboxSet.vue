@@ -151,7 +151,7 @@ export default defineComponent({
                 (v: any) => !options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v)),
             );
             if (invalidValues.length > 0) {
-                logUtil.warning('VsCheckboxSet', `${JSON.stringify(invalidValues)} not in options, ignored`);
+                logUtil.warning('VsCheckboxSet', `${JSON.stringify(invalidValues)} not in options, removed`);
             }
         }
 
