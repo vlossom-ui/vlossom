@@ -651,6 +651,66 @@ describe('VsSelect', () => {
             // then
             expect(wrapper.vm.isOpen).toBe(false);
         });
+
+        it('선택된 옵션이 있고 스크롤이 있을 때 openOptions 호출 시 scrollToItem에 50px offset이 전달된다', async () => {
+            // given
+            // VsFloating을 스텁으로 대체해 Teleport/v-if 없이 슬롯을 바로 렌더링 → optionsListRef 즉시 접근 가능
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                props: {
+                    options: basicOptions,
+                    modelValue: 'Apple',
+                },
+            });
+            await nextTick();
+
+            const optionsListRef = wrapper.vm.optionsListRef;
+            vi.spyOn(optionsListRef as any, 'hasScroll').mockReturnValue(true);
+            const scrollToItemSpy = vi.spyOn(optionsListRef as any, 'scrollToItem');
+
+            // when
+            wrapper.vm.openOptions();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+
+            // then
+            const appleOption = wrapper.vm.filteredOptions.find((o: any) => o.value === 'Apple');
+            expect(scrollToItemSpy).toHaveBeenCalledWith(appleOption?.id, 50);
+
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+
+        it('선택된 옵션이 없을 때 openOptions 호출 시 scrollToItem이 호출되지 않는다', async () => {
+            // given
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                props: {
+                    options: basicOptions,
+                    modelValue: null,
+                },
+            });
+            await nextTick();
+
+            const optionsListRef = wrapper.vm.optionsListRef;
+            vi.spyOn(optionsListRef as any, 'hasScroll').mockReturnValue(true);
+            const scrollToItemSpy = vi.spyOn(optionsListRef as any, 'scrollToItem');
+
+            // when
+            wrapper.vm.openOptions();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+
+            // then
+            expect(scrollToItemSpy).not.toHaveBeenCalled();
+
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
     });
 
     describe('emits', () => {

@@ -439,7 +439,7 @@ export default defineComponent({
 
                     const selectedId = selectedOptionIds.value[0];
                     if (selectedId && optionsListRef.value?.hasScroll()) {
-                        optionsListRef.value?.scrollToItem(selectedId);
+                        optionsListRef.value?.scrollToItem(selectedId, 50);
                     }
 
                     if (isUsingSearch.value) {

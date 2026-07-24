@@ -121,5 +121,5 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | 메서드 | 파라미터 | 설명 |
 | ------ | -------- | ---- |
-| `scrollToItem` | `id: string` | 주어진 id를 가진 항목으로 목록 스크롤 |
+| `scrollToItem` | `id: string, offset?: number` | 주어진 id를 가진 항목으로 목록 스크롤. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`) |
 | `hasScroll` | - | `boolean` 반환 — 목록에 스크롤바가 있으면 `true` |

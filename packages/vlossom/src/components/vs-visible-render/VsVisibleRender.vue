@@ -215,7 +215,7 @@ export default defineComponent({
             });
         }
 
-        function scrollToElement(element: HTMLElement) {
+        function scrollToElement(element: HTMLElement, offset: number = 0) {
             if (!computedVisibleRenderRef.value || !element) {
                 return;
             }
@@ -233,7 +233,7 @@ export default defineComponent({
                     // viewport가 스크롤 컨테이너인 경우 window.scrollTo 사용
                     const rect = element.getBoundingClientRect();
                     const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-                    const targetScrollY = currentScrollY + rect.top;
+                    const targetScrollY = currentScrollY + rect.top - offset;
 
                     window.scrollTo({
                         top: targetScrollY,
@@ -244,7 +244,7 @@ export default defineComponent({
                     const scrollContainer = scrollRoot as HTMLElement;
                     const containerRect = scrollContainer.getBoundingClientRect();
                     const targetRect = element.getBoundingClientRect();
-                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top;
+                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
 
                     scrollContainer.scrollTo({
                         top: targetScrollTop,
