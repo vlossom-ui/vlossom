@@ -11,7 +11,7 @@ declare module 'vue' {
 export type { VsGroupedList };
 
 export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
-    scrollToItem: (id: string) => void;
+    scrollToItem: (id: string, offset?: number) => void;
     hasScroll: () => boolean;
 }
 

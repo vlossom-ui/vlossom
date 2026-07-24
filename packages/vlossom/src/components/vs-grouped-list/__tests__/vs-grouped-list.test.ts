@@ -340,4 +340,38 @@ describe('vs-grouped-list', () => {
             expect(groupedItems[0].items).toHaveLength(0);
         });
     });
+
+    describe('scrollToItem', () => {
+        it('존재하지 않는 id로 호출해도 오류가 발생하지 않아야 한다', () => {
+            // given
+            const wrapper = mount(VsGroupedList, {
+                props: { items: defaultItems },
+            });
+
+            // when, then
+            expect(() => wrapper.vm.scrollToItem('non-existent-id')).not.toThrow();
+        });
+
+        it('offset 없이 호출하면 오류가 발생하지 않아야 한다', () => {
+            // given
+            const wrapper = mount(VsGroupedList, {
+                props: { items: defaultItems },
+            });
+
+            // when, then
+            const targetId = defaultItems[0].id;
+            expect(() => wrapper.vm.scrollToItem(targetId)).not.toThrow();
+        });
+
+        it('offset을 전달하면 오류가 발생하지 않아야 한다', () => {
+            // given
+            const wrapper = mount(VsGroupedList, {
+                props: { items: defaultItems },
+            });
+
+            // when, then
+            const targetId = defaultItems[0].id;
+            expect(() => wrapper.vm.scrollToItem(targetId, 50)).not.toThrow();
+        });
+    });
 });

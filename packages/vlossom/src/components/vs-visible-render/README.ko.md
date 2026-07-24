@@ -94,7 +94,7 @@ IntersectionObserver를 사용하여 자식 요소의 가시성을 추적하고 
 
 | 메서드 | 매개변수 | 설명 |
 | ------ | -------- | ---- |
-| `scrollToElement` | `element: HTMLElement` | 주어진 요소가 보이도록 컨테이너를 스크롤 |
+| `scrollToElement` | `element: HTMLElement, offset?: number` | 주어진 요소가 보이도록 컨테이너를 스크롤. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`) |
 
 ## 주의사항
 

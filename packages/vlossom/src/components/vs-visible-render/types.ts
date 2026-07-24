@@ -10,5 +10,5 @@ declare module 'vue' {
 export type { VsVisibleRender };
 
 export interface VsVisibleRenderRef extends ComponentPublicInstance<typeof VsVisibleRender> {
-    scrollToElement: (element: HTMLElement) => void;
+    scrollToElement: (element: HTMLElement, offset?: number) => void;
 }

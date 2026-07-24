@@ -121,5 +121,5 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
-| `scrollToItem` | `id: string` | Scroll the list to the item with the given id |
+| `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id. `offset` shifts the scroll position up by the given pixels (default: `0`) |
 | `hasScroll` | - | Returns `boolean` — `true` if the list has a scrollbar |

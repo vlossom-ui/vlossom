@@ -94,7 +94,7 @@ No StyleSet for this component.
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
-| `scrollToElement` | `element: HTMLElement` | Scrolls the container so the given element is visible |
+| `scrollToElement` | `element: HTMLElement, offset?: number` | Scrolls the container so the given element is visible. `offset` shifts the scroll position up by the given pixels (default: `0`) |
 
 ## Caution
 
