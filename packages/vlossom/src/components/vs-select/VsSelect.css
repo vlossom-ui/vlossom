@@ -28,11 +28,11 @@
 
         .vs-select-clear-button {
             @apply flex items-center justify-center rounded border-none opacity-0 focus-visible:outline-1;
+            transition: opacity 0.4s;
+            background: none;
 
             width: 1.25em;
             height: 1.25em;
-            transition: opacity 0.4s;
-            background: none;
             color: var(--vs-cs-font);
 
             .vs-select-clear-icon {
@@ -70,10 +70,6 @@
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-no-color);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
-
-    .vs-inner-scroll-body {
-        overflow-x: hidden;
-    }
 
     .vs-select-search {
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
