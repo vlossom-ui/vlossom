@@ -28,9 +28,9 @@
 
         .vs-select-clear-button {
             @apply flex items-center justify-center rounded border-none opacity-0 focus-visible:outline-1;
+
             transition: opacity 0.4s;
             background: none;
-
             width: 1.25em;
             height: 1.25em;
             color: var(--vs-cs-font);
