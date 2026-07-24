@@ -13,6 +13,7 @@
 
         .vs-select-value {
             @apply flex min-w-0 flex-1 flex-wrap items-center gap-1;
+            overflow-wrap: anywhere;
         }
 
         .vs-select-placeholder {
