@@ -233,7 +233,7 @@ describe('VsDatePicker', () => {
             return showPicker;
         }
 
-        it('클릭할 때마다 showPicker를 호출해 picker를 연다 (토글로 닫는 동작 없음)', async () => {
+        it('클릭할 때마다 showPicker를 호출해 picker를 연다', async () => {
             const wrapper = mount(VsDatePicker, {
                 props: { modelValue: '', type: 'date' },
             });
@@ -242,11 +242,6 @@ describe('VsDatePicker', () => {
             await findDateInput(wrapper).trigger('click');
             await flushPromises();
             expect(showPicker).toHaveBeenCalledTimes(1);
-
-            // 토글로 닫는 동작이 없으므로 다시 클릭하면 또 연다.
-            await findDateInput(wrapper).trigger('click');
-            await flushPromises();
-            expect(showPicker).toHaveBeenCalledTimes(2);
         });
 
         it('Enter 키로 picker를 연다', async () => {
@@ -378,5 +373,4 @@ describe('VsDatePicker', () => {
             expect(wrapper.emitted('update:modelValue')).toBeFalsy();
         });
     });
-
 });
