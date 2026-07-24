@@ -287,6 +287,10 @@ export default defineComponent({
         }
 
         async function onClick(): Promise<void> {
+            if (pickerOpen.value) {
+                pickerOpen.value = false;
+                return;
+            }
             await openPicker();
         }
 
@@ -298,6 +302,11 @@ export default defineComponent({
             pickerOpen.value = true;
 
             await nextTick();
+
+            if (typeof dateInputRef.value?.inputRef?.showPicker !== 'function') {
+                pickerOpen.value = false;
+                return;
+            }
             dateInputRef.value?.inputRef?.showPicker();
         }
 
