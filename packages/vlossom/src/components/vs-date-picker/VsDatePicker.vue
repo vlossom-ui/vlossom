@@ -183,7 +183,7 @@ export default defineComponent({
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
-        const pickerOpen: Ref<boolean> = ref(false); // 네이티브 picker는 열기/닫기 API가 없어 상태를 직접 추적
+        const pickerOpen = ref(false); // 네이티브 picker는 열기/닫기 API가 없어 상태를 직접 추적
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
