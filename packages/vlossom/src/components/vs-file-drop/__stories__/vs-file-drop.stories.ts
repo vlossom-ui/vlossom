@@ -91,6 +91,23 @@ export const WithLabel: Story = {
     },
 };
 
+export const FocusPlaceholder: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'focusPlaceholder는 파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 노출되는 플레이스홀더입니다. ' +
+                    '그 외에는 placeholder로 되돌아갑니다.',
+            },
+        },
+    },
+    args: {
+        label: '첨부 파일',
+        placeholder: '파일을 드래그하거나 클릭하여 업로드하세요',
+        focusPlaceholder: '여기에 파일을 놓으세요',
+    },
+};
+
 export const AcceptFileTypes: Story = {
     parameters: {
         docs: {

@@ -17,6 +17,7 @@ export const inputPropsArgTypes = {
     name: { control: 'text' as any, table: { category: 'Input Props' } },
     noDefaultRules: { control: 'boolean' as any, table: { category: 'Input Props' } },
     placeholder: { control: 'text' as any, table: { category: 'Input Props' } },
+    focusPlaceholder: { control: 'text' as any, table: { category: 'Input Props' } },
     readonly: { control: 'boolean' as any, table: { category: 'Input Props' } },
     rules: { control: 'object' as any, table: { category: 'Input Props' } },
     state: {

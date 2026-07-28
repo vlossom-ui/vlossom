@@ -39,9 +39,9 @@
             @update:model-value="onDateInput"
             @focus="onFocus"
             @blur="onBlur"
-            @pointerdown="onPointerDown"
-            @click="onClick"
-            @keydown.enter.stop="onKeydownEnter"
+            @click.prevent.stop="onClick"
+            @keydown.enter.stop="open"
+            @keydown.space.prevent.stop="open"
         >
             <template #prepend>
                 <slot v-if="$slots['prepend']" name="prepend" />
@@ -62,6 +62,7 @@
 import {
     computed,
     defineComponent,
+    nextTick,
     ref,
     toRefs,
     useTemplateRef,
@@ -74,6 +75,7 @@ import {
 import { VsComponent, type Size } from '@/declaration';
 import { logUtil } from '@/utils';
 import { useStyleSet, useInput } from '@/composables';
+import type { VsInputRef, VsInputType } from '@/components';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
 
 import { FORMAT_PATTERNS, TYPE_TO_FORMAT } from './constants';
@@ -81,7 +83,6 @@ import { type VsDatePickerStyleSet, type VsDatePickerType, type VsDatePickerValu
 import { useVsDatePickerRules } from './vs-date-picker-rules';
 
 import { CalendarIcon, ClockIcon } from '@lucide/vue';
-import type { VsInputRef, VsInputType } from '@/components/vs-input/types';
 import VsInput from '@/components/vs-input/VsInput.vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
@@ -182,11 +183,7 @@ export default defineComponent({
         const dateInputRef: TemplateRef<VsInputRef> = useTemplateRef('dateInputRef');
 
         const inputValue: Ref<VsDatePickerValueType> = ref(modelValue.value);
-        const isFocused = ref(false);
-        const pointerInitiated = ref(false);
-        // 네이티브 picker는 열기/닫기 API가 없어 상태를 직접 추적
-        const pickerOpen = ref(false);
-        const suppressFocusEvents = ref(false);
+        const pickerOpen = ref(false); // 네이티브 picker는 열기/닫기 API가 없어 상태를 직접 추적
 
         const { componentStyleSet } = useStyleSet<VsDatePickerStyleSet>(componentName, styleSet);
 
@@ -224,10 +221,7 @@ export default defineComponent({
         );
 
         const computedPlaceholder = computed<string>(() => {
-            if (!placeholder.value) {
-                return TYPE_TO_FORMAT[type.value];
-            }
-            return placeholder.value;
+            return placeholder.value || TYPE_TO_FORMAT[type.value];
         });
 
         const displayValue = computed<string>(() => {
@@ -244,9 +238,12 @@ export default defineComponent({
             return CalendarIcon;
         });
 
-        // date/time input은 placeholder를 무시 → 비어있고 비포커스면 text로 노출 후 네이티브 타입으로 캐스팅
+        /**
+         * input type 'date/time'는 custom placeholder 설정 값을 무시하고 native placeholder를 노출한다.
+         * input type 'text'로 우회하여 custom placeholder가 노출되도록 강제한다.
+         */
         const deceiveType = computed<VsInputType>(() => {
-            if (!isFocused.value && !displayValue.value) {
+            if (!pickerOpen.value && !displayValue.value) {
                 return 'text';
             }
             return type.value as unknown as VsInputType;
@@ -273,106 +270,44 @@ export default defineComponent({
         }
 
         function focus(): void {
-            dateInputRef.value?.focus();
+            dateInputRef.value?.inputRef?.focus();
         }
 
         function blur(): void {
-            dateInputRef.value?.blur();
-        }
-
-        function onPointerDown(): void {
-            pointerInitiated.value = true;
+            dateInputRef.value?.inputRef?.blur();
         }
 
         function onFocus(e: FocusEvent): void {
-            // 포인터 focus는 click까지 text 유지(타입 변경 시 click 무시), 키보드 focus는 즉시 전환
-            if (!pointerInitiated.value) {
-                isFocused.value = true;
-            }
-            if (suppressFocusEvents.value) {
-                return;
-            }
             emit('focus', e);
         }
 
         function onBlur(e: FocusEvent): void {
-            isFocused.value = false;
-            pointerInitiated.value = false;
             pickerOpen.value = false;
-            if (suppressFocusEvents.value) {
-                return;
-            }
             emit('blur', e);
         }
 
-        // text→네이티브 타입 전환 후 picker 열기. click 핸들러 안에서 해야 제스처가 유지돼 첫 click에 열림
-        function openPicker(): void {
-            if (computedDisabled.value || computedReadonly.value) {
-                return;
-            }
-
-            const input = dateInputRef.value?.inputRef;
-            if (!input) {
-                return;
-            }
-
-            isFocused.value = true;
-            if (input.type !== type.value) {
-                input.type = type.value;
-            }
-
-            input.focus();
-
-            const showPicker = input.showPicker;
-            if (typeof showPicker === 'function') {
-                showPicker.call(input);
-            }
-            pickerOpen.value = true;
-        }
-
-        // 포커스 유지하며 닫는 API가 없어 blur로 닫고 재포커스
-        function closePicker(input: HTMLInputElement): void {
-            pickerOpen.value = false;
-            suppressFocusEvents.value = true;
-            input.blur();
-            input.focus();
-            suppressFocusEvents.value = false;
-        }
-
-        // 토글: 열린 picker는 mousedown에서 브라우저가 닫으므로 재오픈만 안 하면 됨
-        function onClick(): void {
-            pointerInitiated.value = false;
-
-            if (computedDisabled.value || computedReadonly.value) {
-                return;
-            }
-
+        async function onClick(): Promise<void> {
             if (pickerOpen.value) {
                 pickerOpen.value = false;
                 return;
             }
-
-            openPicker();
+            await openPicker();
         }
 
-        function onKeydownEnter(e: KeyboardEvent): void {
+        async function openPicker(): Promise<void> {
             if (computedDisabled.value || computedReadonly.value) {
                 return;
             }
 
-            const input = dateInputRef.value?.inputRef;
-            if (!input) {
+            pickerOpen.value = true;
+
+            await nextTick();
+
+            if (typeof dateInputRef.value?.inputRef?.showPicker !== 'function') {
+                pickerOpen.value = false;
                 return;
             }
-
-            e.preventDefault();
-
-            if (pickerOpen.value) {
-                closePicker(input);
-                return;
-            }
-
-            openPicker();
+            dateInputRef.value?.inputRef?.showPicker();
         }
 
         watch(
@@ -404,9 +339,7 @@ export default defineComponent({
 
             // Methods
             onDateInput,
-            onPointerDown,
             onClick,
-            onKeydownEnter,
             onFocus,
             onBlur,
             focus,

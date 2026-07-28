@@ -38,6 +38,7 @@
                 :accept
                 :multiple
                 @change.stop="handleFileDialog"
+                @click.stop="onClick"
                 @focus.stop="onFocus"
                 @blur.stop="onBlur"
                 @keydown.enter.stop="openFileDialog"
@@ -48,7 +49,7 @@
                 <slot :dragging="dragging">
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <PaperclipIcon class="placeholder-icon" :stroke-width="2.5" />
-                        <span class="placeholder-text">{{ placeholder }}</span>
+                        <span class="placeholder-text">{{ computedPlaceholder }}</span>
                     </div>
 
                     <div v-if="hasValue" class="vs-file-drop-files" :style="componentStyleSet.$files">
@@ -95,7 +96,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef } from 'vue';
+import {
+    computed,
+    defineComponent,
+    ref,
+    toRefs,
+    useTemplateRef,
+    type ComputedRef,
+    type PropType,
+    type Ref,
+    type TemplateRef,
+} from 'vue';
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
@@ -149,11 +160,14 @@ export default defineComponent({
             min,
             width,
             height,
+            placeholder,
+            focusPlaceholder,
         } = toRefs(props);
 
         const inputValue: Ref<FileDropValueType> = ref([]);
         const fileDropRef: TemplateRef<HTMLInputElement> = useTemplateRef('fileDropRef');
-        const dragging = ref(false);
+        const dragging: Ref<boolean> = ref(false);
+        const isDialogOpen: Ref<boolean> = ref(false);
         const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -234,6 +248,18 @@ export default defineComponent({
 
         const { stateBoxClasses } = useStateClass(computedState);
         const hasValue = computed(() => inputValue.value.length > 0);
+        const computedPlaceholder: ComputedRef<string> = computed(() => {
+            if (!focusPlaceholder.value) {
+                return placeholder.value || '';
+            }
+            if (isDialogOpen.value) {
+                return focusPlaceholder.value;
+            }
+            if (dragging.value) {
+                return focusPlaceholder.value;
+            }
+            return placeholder.value || '';
+        });
 
         function setDragging(value: boolean) {
             if (computedDisabled.value || computedReadonly.value) {
@@ -337,11 +363,29 @@ export default defineComponent({
             inputValue.value = filteredFiles;
         }
 
-        function onFocus(e: FocusEvent) {
+        function onClick(): void {
+            isDialogOpen.value = true;
+        }
+
+        function onFocus(e: FocusEvent): void {
+            /**
+             * OS 파일 선택 다이얼로그가 닫히는 시점을 focus 이벤트로 감지한다.
+             *
+             * 'file' 타입 <input/> 은 포커스 동작이 독특하다.
+             * 1. 다이얼로그를 열려고 <input/> 을 클릭(터치)하면,
+             *    브라우저는 <input/> 을 focus 했다가 곧바로 blur 한다 (즉, 다이얼로그가 떠 있는 동안 <input/> 은 blur 상태다.)
+             * 2. 다이얼로그를 닫으면, 브라우저는 blur 돼 있던 <input/> 을 다시 focus 한다.
+             *
+             * 따라서 isDialogOpen 이 true 인데 focus 가 들어왔다면,
+             * 다이얼로그가 방금 닫혔다는 뜻이므로 상태를 false 로 되돌린다.
+             */
+            if (isDialogOpen.value) {
+                isDialogOpen.value = false;
+            }
             emit('focus', e);
         }
 
-        function onBlur(e: FocusEvent) {
+        function onBlur(e: FocusEvent): void {
             emit('blur', e);
         }
 
@@ -362,6 +406,7 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
+            computedPlaceholder,
             shake,
             colorSchemeClass,
             componentStyleSet,
@@ -380,6 +425,7 @@ export default defineComponent({
             handleFileDialog,
             handleFileDrop,
             handleFileRemove,
+            onClick,
             onFocus,
             onBlur,
             focus,

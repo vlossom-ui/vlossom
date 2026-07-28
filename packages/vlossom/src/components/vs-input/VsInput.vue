@@ -34,7 +34,7 @@
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
                 :aria-required="required"
-                :placeholder
+                :placeholder="computedPlaceholder"
                 @input.stop="onInput"
                 @focus.stop="onFocus"
                 @blur.stop="onBlur"
@@ -66,7 +66,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type Ref, type TemplateRef, ref } from 'vue';
+import {
+    computed,
+    defineComponent,
+    toRefs,
+    useTemplateRef,
+    ref,
+    type PropType,
+    type Ref,
+    type TemplateRef,
+    type ComputedRef,
+} from 'vue';
 import { VsComponent, type Size, type StringModifiers } from '@/declaration';
 import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass, useSizeClass } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
@@ -123,9 +133,13 @@ export default defineComponent({
             noDefaultRules,
             size,
             state,
+            placeholder,
+            focusPlaceholder,
         } = toRefs(props);
 
         const inputValue: Ref<VsInputValueType> = ref(modelValue.value);
+        const focused: Ref<boolean> = ref(false);
+
         const inputRef: TemplateRef<HTMLInputElement> = useTemplateRef('inputRef');
         const isNumberInput = computed(() => type.value === 'number');
 
@@ -204,6 +218,13 @@ export default defineComponent({
             () => !!inputValue.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
         );
 
+        const computedPlaceholder: ComputedRef<string> = computed(() => {
+            if (focused.value && focusPlaceholder.value) {
+                return focusPlaceholder.value;
+            }
+            return placeholder.value || '';
+        });
+
         function onInput(event: Event) {
             const target = event.target as HTMLInputElement;
             const value = target.value || '';
@@ -220,10 +241,12 @@ export default defineComponent({
 
         function onFocus(e: FocusEvent) {
             emit('focus', e);
+            focused.value = true;
         }
 
         function onBlur(e: FocusEvent) {
             emit('blur', e);
+            focused.value = false;
         }
 
         function select() {
@@ -249,6 +272,7 @@ export default defineComponent({
             computedMessages,
             computedDisabled,
             computedReadonly,
+            computedPlaceholder,
             renderClearButton,
             shake,
             stateBoxClasses,

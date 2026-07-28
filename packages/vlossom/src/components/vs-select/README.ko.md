@@ -47,6 +47,22 @@ const options = ['사과', '바나나', '체리'];
 </template>
 ```
 
+### Focus Placeholder
+
+셀렉트가 포커스되거나 열려 있을 때 다른 placeholder를 표시합니다. 그 외에는 `placeholder`로 폴백합니다.
+
+```html
+<template>
+    <vs-select
+        v-model="selected"
+        :options="options"
+        placeholder="과일 선택"
+        focus-placeholder="아래 목록에서 선택하세요"
+        label="과일 선택"
+    />
+</template>
+```
+
 ### 커스텀 레이블이 있는 객체 옵션
 
 ```html
@@ -86,41 +102,43 @@ const options = [
 
 ## Props
 
-| Prop              | Type                                                                   | Default                   | Required | 설명                                                                                     |
-| ----------------- | ---------------------------------------------------------------------- | ------------------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `colorScheme`     | `string`                                                               | -                         | -        | 컴포넌트의 색상 스킴                                                                     |
-| `styleSet`        | `string \| VsSelectStyleSet`                                           | -                         | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                                     |
-| `disabled`        | `boolean`                                                              | `false`                   | -        | 셀렉트 비활성화                                                                          |
-| `hidden`          | `boolean`                                                              | `false`                   | -        | 컴포넌트 숨김                                                                            |
-| `id`              | `string`                                                               | `''`                      | -        | HTML id 속성                                                                             |
-| `label`           | `string`                                                               | `''`                      | -        | 셀렉트 레이블 텍스트                                                                     |
-| `noLabel`         | `boolean`                                                              | `false`                   | -        | 레이블 숨김                                                                              |
-| `noMessages`      | `boolean`                                                              | `false`                   | -        | 유효성 검사 메시지 숨김                                                                  |
-| `required`        | `boolean`                                                              | `false`                   | -        | 필수 입력 필드로 지정                                                                    |
-| `messages`        | `Message[]`                                                            | `[]`                      | -        | 유효성 검사 메시지                                                                       |
-| `name`            | `string`                                                               | `''`                      | -        | HTML name 속성                                                                           |
-| `noDefaultRules`  | `boolean`                                                              | `false`                   | -        | 내장 유효성 검사 규칙 비활성화                                                           |
-| `readonly`        | `boolean`                                                              | `false`                   | -        | 셀렉트를 읽기 전용으로 설정                                                              |
-| `rules`           | `Rule[]`                                                               | `[]`                      | -        | 커스텀 유효성 검사 규칙                                                                  |
-| `state`           | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`                | `'idle'`                  | -        | 유효성 검사 상태                                                                         |
-| `width`           | `string \| number \| Breakpoints`                                      | -                         | -        | 반응형 너비                                                                              |
-| `grid`            | `string \| number \| Breakpoints`                                      | -                         | -        | 그리드 컬럼 스팬                                                                         |
-| `options`         | `any[]`                                                                | `[]`                      | -        | 옵션 값 또는 객체의 배열                                                                 |
-| `optionLabel`     | `string`                                                               | `''`                      | -        | 옵션이 객체일 때 레이블에 사용할 키 이름                                                 |
-| `optionValue`     | `string`                                                               | `''`                      | -        | 옵션이 객체일 때 값에 사용할 키 이름                                                     |
-| `groupBy`         | `(option: any, index: number) => string \| null`                       | `null`                    | -        | 옵션을 그룹화하는 함수                                                                   |
-| `groupOrder`      | `string[]`                                                             | `[]`                      | -        | 그룹 순서                                                                                |
-| `min`             | `number \| string`                                                     | `0`                       | -        | 최소 선택 수 (다중 선택 모드)                                                            |
-| `max`             | `number \| string`                                                     | `Number.MAX_SAFE_INTEGER` | -        | 최대 선택 수 (다중 선택 모드)                                                            |
-| `search`          | `boolean \| SearchProps`                                               | `false`                   | -        | 내장 검색 기능 활성화                                                                    |
-| `closableChips`   | `boolean`                                                              | `false`                   | -        | 선택된 칩에 닫기 버튼 표시                                                               |
-| `collapseChips`   | `boolean`                                                              | `false`                   | -        | 선택된 칩을 개수 표시로 접기                                                             |
-| `multiple`        | `boolean`                                                              | `false`                   | -        | 다중 선택 모드 활성화                                                                    |
-| `noClear`         | `boolean`                                                              | `false`                   | -        | 초기화 버튼 숨김                                                                         |
-| `optionsDisabled` | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | 개별 옵션 비활성화                                                                       |
-| `selectAll`       | `boolean`                                                              | `false`                   | -        | 전체 선택 체크박스 표시 (다중 선택 모드)                                                 |
-| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | 트리거 높이 · 패딩 · 폰트 · 모서리 반경 및 옵션 드롭다운(패딩 · 폰트 · 모서리 반경) 제어 |
-| `modelValue`      | `any`                                                                  | `null`                    | -        | 선택된 값 (v-model)                                                                      |
+| Prop               | Type                                                                   | Default                   | Required | 설명                                                                                           |
+| ------------------ | ---------------------------------------------------------------------- | ------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                               | -                         | -        | 컴포넌트의 색상 스킴                                                                           |
+| `styleSet`         | `string \| VsSelectStyleSet`                                           | -                         | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                                           |
+| `disabled`         | `boolean`                                                              | `false`                   | -        | 셀렉트 비활성화                                                                                |
+| `hidden`           | `boolean`                                                              | `false`                   | -        | 컴포넌트 숨김                                                                                  |
+| `id`               | `string`                                                               | `''`                      | -        | HTML id 속성                                                                                   |
+| `label`            | `string`                                                               | `''`                      | -        | 셀렉트 레이블 텍스트                                                                           |
+| `noLabel`          | `boolean`                                                              | `false`                   | -        | 레이블 숨김                                                                                    |
+| `noMessages`       | `boolean`                                                              | `false`                   | -        | 유효성 검사 메시지 숨김                                                                        |
+| `required`         | `boolean`                                                              | `false`                   | -        | 필수 입력 필드로 지정                                                                          |
+| `messages`         | `Message[]`                                                            | `[]`                      | -        | 유효성 검사 메시지                                                                             |
+| `name`             | `string`                                                               | `''`                      | -        | HTML name 속성                                                                                 |
+| `noDefaultRules`   | `boolean`                                                              | `false`                   | -        | 내장 유효성 검사 규칙 비활성화                                                                 |
+| `placeholder`      | `string`                                                               | `''`                      | -        | 선택된 옵션이 없을 때 표시되는 placeholder                                                     |
+| `focusPlaceholder` | `string`                                                               | `''`                      | -        | 셀렉트가 포커스되거나 열려 있을 때 표시되는 placeholder. 그 외에는 `placeholder`로 폴백합니다. |
+| `readonly`         | `boolean`                                                              | `false`                   | -        | 셀렉트를 읽기 전용으로 설정                                                                    |
+| `rules`            | `Rule[]`                                                               | `[]`                      | -        | 커스텀 유효성 검사 규칙                                                                        |
+| `state`            | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`                | `'idle'`                  | -        | 유효성 검사 상태                                                                               |
+| `width`            | `string \| number \| Breakpoints`                                      | -                         | -        | 반응형 너비                                                                                    |
+| `grid`             | `string \| number \| Breakpoints`                                      | -                         | -        | 그리드 컬럼 스팬                                                                               |
+| `options`          | `any[]`                                                                | `[]`                      | -        | 옵션 값 또는 객체의 배열                                                                       |
+| `optionLabel`      | `string`                                                               | `''`                      | -        | 옵션이 객체일 때 레이블에 사용할 키 이름                                                       |
+| `optionValue`      | `string`                                                               | `''`                      | -        | 옵션이 객체일 때 값에 사용할 키 이름                                                           |
+| `groupBy`          | `(option: any, index: number) => string \| null`                       | `null`                    | -        | 옵션을 그룹화하는 함수                                                                         |
+| `groupOrder`       | `string[]`                                                             | `[]`                      | -        | 그룹 순서                                                                                      |
+| `min`              | `number \| string`                                                     | `0`                       | -        | 최소 선택 수 (다중 선택 모드)                                                                  |
+| `max`              | `number \| string`                                                     | `Number.MAX_SAFE_INTEGER` | -        | 최대 선택 수 (다중 선택 모드)                                                                  |
+| `search`           | `boolean \| SearchProps`                                               | `false`                   | -        | 내장 검색 기능 활성화                                                                          |
+| `closableChips`    | `boolean`                                                              | `false`                   | -        | 선택된 칩에 닫기 버튼 표시                                                                     |
+| `collapseChips`    | `boolean`                                                              | `false`                   | -        | 선택된 칩을 개수 표시로 접기                                                                   |
+| `multiple`         | `boolean`                                                              | `false`                   | -        | 다중 선택 모드 활성화                                                                          |
+| `noClear`          | `boolean`                                                              | `false`                   | -        | 초기화 버튼 숨김                                                                               |
+| `optionsDisabled`  | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | 개별 옵션 비활성화                                                                             |
+| `selectAll`        | `boolean`                                                              | `false`                   | -        | 전체 선택 체크박스 표시 (다중 선택 모드)                                                       |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | 트리거 높이 · 패딩 · 폰트 · 모서리 반경 및 옵션 드롭다운(패딩 · 폰트 · 모서리 반경) 제어       |
+| `modelValue`       | `any`                                                                  | `null`                    | -        | 선택된 값 (v-model)                                                                            |
 
 ## Types
 
