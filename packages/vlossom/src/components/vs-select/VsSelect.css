@@ -13,6 +13,7 @@
 
         .vs-select-value {
             @apply flex min-w-0 flex-1 flex-wrap items-center gap-1;
+            overflow-wrap: anywhere;
         }
 
         .vs-select-placeholder {
@@ -28,10 +29,10 @@
         .vs-select-clear-button {
             @apply flex items-center justify-center rounded border-none opacity-0 focus-visible:outline-1;
 
-            width: 1.25em;
-            height: 1.25em;
             transition: opacity 0.4s;
             background: none;
+            width: 1.25em;
+            height: 1.25em;
             color: var(--vs-cs-font);
 
             .vs-select-clear-icon {
@@ -83,6 +84,8 @@
     }
 
     .vs-select-option-wrap {
+        overflow-wrap: anywhere;
+
         .vs-select-option {
             @apply cursor-pointer;
 
