@@ -17,20 +17,9 @@ Do not add temporary notes or version-specific cleanup history.
 ## Commands
 
 Run Vlossom commands from `packages/vlossom`.
-
-- `pnpm dev` starts the playground.
-- `pnpm storybook` starts Storybook.
-- `pnpm lint` runs ESLint and Stylelint.
-- `pnpm type-check` runs Vue TypeScript checks.
-- `pnpm test` runs Vitest.
-- `pnpm test:coverage` runs coverage.
-- `pnpm build` runs type-check and library build.
-
 Run MCP commands from `packages/vlossom-mcp`.
 
-- `pnpm build` builds the server.
-- `pnpm test` runs its test suite.
-- `pnpm verify` runs the publish verification path.
+Each package's `package.json` scripts are the source of truth for what is available.
 
 ## Source Contracts
 
