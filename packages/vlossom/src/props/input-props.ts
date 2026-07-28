@@ -29,6 +29,7 @@ interface InputPropsDefinition<T = unknown> extends InputWrapperPropsDefinition 
     name: { type: typeof String; default: string };
     noDefaultRules: { type: typeof Boolean; default: boolean };
     placeholder: { type: typeof String; default: string };
+    focusPlaceholder: { type: typeof String; default: string };
     readonly: { type: typeof Boolean; default: boolean };
     rules: { type: PropType<Rule<T>[]>; default: () => Rule<T>[] };
     state: { type: PropType<UIState>; default: UIState };
@@ -45,6 +46,7 @@ export function getInputProps<T = unknown, K extends keyof InputPropsDefinition<
             name: { type: String, default: '' },
             noDefaultRules: { type: Boolean, default: false },
             placeholder: { type: String, default: '' },
+            focusPlaceholder: { type: String, default: '' },
             readonly: { type: Boolean, default: false },
             rules: { type: Array as PropType<Rule<T>[]>, default: () => [] },
             state: { type: String as PropType<UIState>, default: 'idle' },

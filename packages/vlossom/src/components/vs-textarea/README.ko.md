@@ -50,6 +50,19 @@ const text = ref('');
 </template>
 ```
 
+### 포커스 플레이스홀더
+
+```html
+<template>
+    <vs-textarea
+        v-model="text"
+        label="설명"
+        placeholder="설명을 입력하세요..."
+        focus-placeholder="여기에 내용을 입력하세요"
+    />
+</template>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -73,6 +86,7 @@ const text = ref('');
 | `noLabel` | `boolean` | `false` | | 레이블 영역 숨김 |
 | `noMessages` | `boolean` | `false` | | 메시지 영역 숨김 |
 | `placeholder` | `string` | `''` | | 플레이스홀더 텍스트 |
+| `focusPlaceholder` | `string` | `''` | | textarea가 포커스된 동안 표시되는 플레이스홀더입니다. 포커스가 해제되면 `placeholder`로 대체됩니다. |
 | `readonly` | `boolean` | `false` | | 읽기 전용 모드 |
 | `required` | `boolean` | `false` | | 필수 입력 필드로 표시 |
 | `rules` | `Rule[]` | `[]` | | 커스텀 유효성 검사 규칙 |

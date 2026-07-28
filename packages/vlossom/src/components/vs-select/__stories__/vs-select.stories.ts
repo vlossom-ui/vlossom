@@ -51,6 +51,23 @@ export const Default: Story = {
     },
 };
 
+export const FocusPlaceholder: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'select가 포커스되거나 열려 있을 때는 focusPlaceholder를, 그 외에는 placeholder를 보여줍니다.',
+            },
+        },
+    },
+    args: {
+        label: 'Select',
+        options: basicOptions,
+        placeholder: 'Select a fruit',
+        focusPlaceholder: 'Pick from the list below',
+        modelValue: null,
+    },
+};
+
 export const Sizes: Story = {
     parameters: {
         docs: {
