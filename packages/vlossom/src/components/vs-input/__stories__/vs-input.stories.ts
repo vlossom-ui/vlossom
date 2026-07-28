@@ -60,6 +60,11 @@ const meta: Meta<typeof VsInput> = {
             description: '플레이스홀더 텍스트',
             table: { category: 'Input Props' },
         },
+        focusPlaceholder: {
+            control: 'text',
+            description: '포커스 상태일 때 표시되는 플레이스홀더 (미포커스 시 placeholder로 대체)',
+            table: { category: 'Input Props' },
+        },
         autocomplete: {
             control: 'boolean',
             description: '자동완성 활성화',
@@ -210,6 +215,21 @@ export const WithLabel: Story = {
     args: {
         label: '이름',
         placeholder: '이름을 입력하세요',
+    },
+};
+
+export const FocusPlaceholder: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'focusPlaceholder prop을 사용하면 입력에 포커스된 동안 다른 플레이스홀더를 표시할 수 있습니다. 포커스가 해제되면 placeholder로 되돌아갑니다.',
+            },
+        },
+    },
+    args: {
+        label: '검색',
+        placeholder: '검색',
+        focusPlaceholder: '키워드를 입력하세요...',
     },
 };
 

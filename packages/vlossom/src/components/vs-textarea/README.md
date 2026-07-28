@@ -50,6 +50,19 @@ const text = ref('');
 </template>
 ```
 
+### Focus Placeholder
+
+```html
+<template>
+    <vs-textarea
+        v-model="text"
+        label="Description"
+        placeholder="Enter description..."
+        focus-placeholder="Type your text here"
+    />
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -73,6 +86,7 @@ const text = ref('');
 | `noLabel` | `boolean` | `false` | | Hides the label area |
 | `noMessages` | `boolean` | `false` | | Hides the message area |
 | `placeholder` | `string` | `''` | | Placeholder text |
+| `focusPlaceholder` | `string` | `''` | | Placeholder shown while the textarea is focused. Falls back to `placeholder` when not focused. |
 | `readonly` | `boolean` | `false` | | Makes the textarea read-only |
 | `required` | `boolean` | `false` | | Marks the field as required |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |

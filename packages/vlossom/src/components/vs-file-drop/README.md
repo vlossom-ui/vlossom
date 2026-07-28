@@ -62,6 +62,21 @@ const files = ref([]);
 </template>
 ```
 
+### Focus Placeholder
+
+Show a different hint while a file is being dragged over the area or the file dialog is open:
+
+```html
+<template>
+    <vs-file-drop
+        v-model="files"
+        label="Upload"
+        placeholder="Drop files here or click to select"
+        focus-placeholder="Release to drop"
+    />
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -79,6 +94,7 @@ const files = ref([]);
 | `name` | `string` | `''` | | HTML name attribute for the input |
 | `noDefaultRules` | `boolean` | `false` | | Disable default validation rules |
 | `placeholder` | `string` | `''` | | Placeholder text shown in the drop area |
+| `focusPlaceholder` | `string` | `''` | | Placeholder shown while a file is dragged over the area or the file dialog is open; falls back to `placeholder` otherwise |
 | `readonly` | `boolean` | `false` | | Make the component read-only |
 | `rules` | `Rule[]` | `[]` | | Custom validation rules |
 | `state` | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | | Current validation state |

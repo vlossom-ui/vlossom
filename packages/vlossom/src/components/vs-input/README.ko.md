@@ -74,6 +74,14 @@ const text = ref('');
 </template>
 ```
 
+### 포커스 플레이스홀더
+
+```html
+<template>
+    <vs-input v-model="value" placeholder="검색" focus-placeholder="키워드를 입력하세요..." />
+</template>
+```
+
 ## Props
 
 | Prop              | Type                                              | Default  | Required | Description                                                          |
@@ -84,6 +92,7 @@ const text = ref('');
 | `type`            | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | - | HTML 입력 타입.              |
 | `label`           | `string`                                          | `''`     | -        | 입력 위에 표시되는 라벨 텍스트.                                      |
 | `placeholder`     | `string`                                          | `''`     | -        | 입력의 플레이스홀더 텍스트.                                          |
+| `focusPlaceholder` | `string`                                          | `''`     | -        | 입력에 포커스된 동안 표시되는 플레이스홀더. 포커스가 아닐 때는 `placeholder`로 대체됩니다. |
 | `disabled`        | `boolean`                                         | `false`  | -        | 입력을 비활성화합니다.                                               |
 | `readonly`        | `boolean`                                         | `false`  | -        | 입력을 읽기 전용으로 설정합니다.                                     |
 | `required`        | `boolean`                                         | `false`  | -        | 필드를 필수로 표시합니다 (유효성 검사 추가).                         |

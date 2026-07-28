@@ -545,6 +545,58 @@ describe('vs-file-drop', () => {
         });
     });
 
+    describe('focusPlaceholder', () => {
+        it('파일을 드래그하는 동안 focusPlaceholder를, 그 외에는 placeholder를 노출한다', async () => {
+            // given
+            const placeholder = 'Drop files here';
+            const focusPlaceholder = 'Release to drop';
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], placeholder, focusPlaceholder } });
+            const input = wrapper.find('input[type="file"]');
+
+            // then: 드래그 전에는 placeholder를 노출한다.
+            expect(wrapper.find('.placeholder-text').text()).toBe(placeholder);
+
+            // when: 파일을 영역 위로 드래그한다.
+            await input.trigger('dragenter');
+
+            // then: focusPlaceholder를 노출한다.
+            expect(wrapper.find('.placeholder-text').text()).toBe(focusPlaceholder);
+
+            // when: 드래그가 영역을 벗어난다.
+            await wrapper.find('.vs-file-drop').trigger('dragleave');
+
+            // then: 다시 placeholder를 노출한다.
+            expect(wrapper.find('.placeholder-text').text()).toBe(placeholder);
+        });
+
+        it('파일 다이얼로그가 열리면(click) focusPlaceholder를 노출한다', async () => {
+            // given
+            const placeholder = 'Drop files here';
+            const focusPlaceholder = 'Choosing a file...';
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], placeholder, focusPlaceholder } });
+            const input = wrapper.find('input[type="file"]');
+
+            // when: input 클릭으로 파일 다이얼로그를 연다.
+            await input.trigger('click');
+
+            // then: focusPlaceholder를 노출한다.
+            expect(wrapper.find('.placeholder-text').text()).toBe(focusPlaceholder);
+        });
+
+        it('focusPlaceholder가 없으면 드래그 중에도 placeholder를 유지한다', async () => {
+            // given
+            const placeholder = 'Drop files here';
+            const wrapper = mount(VsFileDrop, { props: { modelValue: [], placeholder } });
+            const input = wrapper.find('input[type="file"]');
+
+            // when
+            await input.trigger('dragenter');
+
+            // then
+            expect(wrapper.find('.placeholder-text').text()).toBe(placeholder);
+        });
+    });
+
     describe('파일 입력 (dialog)', () => {
         it('accept를 설정하면 원하는 타입의 파일만 dialog에서 확인할 수 있다', () => {
             // given

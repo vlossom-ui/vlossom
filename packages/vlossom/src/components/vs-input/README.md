@@ -74,6 +74,14 @@ const text = ref('');
 </template>
 ```
 
+### Focus Placeholder
+
+```html
+<template>
+    <vs-input v-model="value" placeholder="Search" focus-placeholder="Type a keyword..." />
+</template>
+```
+
 ## Props
 
 | Prop              | Type                                              | Default  | Required | Description                                                      |
@@ -84,6 +92,7 @@ const text = ref('');
 | `type`            | `'email' \| 'number' \| 'password' \| 'search' \| 'tel' \| 'text' \| 'url'` | `'text'` | - | HTML input type.                     |
 | `label`           | `string`                                          | `''`     | -        | Label text displayed above the input.                            |
 | `placeholder`     | `string`                                          | `''`     | -        | Placeholder text for the input.                                  |
+| `focusPlaceholder` | `string`                                          | `''`     | -        | Placeholder shown while the input is focused. Falls back to `placeholder` when not focused. |
 | `disabled`        | `boolean`                                         | `false`  | -        | Disables the input.                                              |
 | `readonly`        | `boolean`                                         | `false`  | -        | Makes the input read-only.                                       |
 | `required`        | `boolean`                                         | `false`  | -        | Marks the field as required (adds validation).                   |

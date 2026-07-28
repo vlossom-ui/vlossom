@@ -26,7 +26,7 @@
             :disabled="computedDisabled"
             :readonly="computedReadonly"
             :name
-            :placeholder="placeholder"
+            :placeholder="computedPlaceholder"
             :value="inputValue"
             :aria-required="required"
             :autocomplete="autocomplete ? 'on' : 'off'"
@@ -96,6 +96,7 @@ export default defineComponent({
 
         const textareaRef: TemplateRef<HTMLTextAreaElement> = useTemplateRef('textareaRef');
         const inputValue: Ref<VsTextareaValueType> = ref(modelValue.value);
+        const isFocused: Ref<boolean> = ref(false);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -155,6 +156,13 @@ export default defineComponent({
             'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
         }));
 
+        const computedPlaceholder = computed(() => {
+            if (isFocused.value && props.focusPlaceholder) {
+                return props.focusPlaceholder;
+            }
+            return props.placeholder ?? '';
+        });
+
         const { stateBoxClasses } = useStateClass(computedState);
 
         const { sizeClass } = useSizeClass(size);
@@ -166,10 +174,12 @@ export default defineComponent({
         }
 
         function onFocus(e: FocusEvent) {
+            isFocused.value = true;
             emit('focus', e);
         }
 
         function onBlur(e: FocusEvent) {
+            isFocused.value = false;
             emit('blur', e);
         }
 
@@ -200,6 +210,7 @@ export default defineComponent({
             computedReadonly,
             computedMessages,
             computedState,
+            computedPlaceholder,
             inputValue,
             shake,
 

@@ -11,7 +11,7 @@
 - 네이티브 `<input type>` 기반 4종 타입 지원: `date`, `datetime-local`, `time`, `month`.
 - `modelValue`는 항상 format-validated 문자열입니다. format은 `type` 으로부터 결정됩니다.
 - `required`, `min`/`max` (string), format 불일치 감지를 포함한 폼 유효성 검사.
-- 기본 지우기 버튼 + 캘린더 아이콘 버튼 제공. `open()`은 `showPicker()` feature detect 후 fallback.
+- 기본 지우기 버튼 + 캘린더/시계 아이콘 제공. 네이티브 picker는 클릭, Enter/Space, 또는 `open()` 메서드(`showPicker()`)로 열립니다.
 
 ## Basic Usage
 
@@ -83,20 +83,20 @@ value = '2026-05';
 ## 제한 사항
 
 - **`format` prop은 지원하지 않습니다.** 네이티브 picker는 브라우저/OS 로케일을 따르며 라이브러리가 이를 덮어쓸 수 없습니다. 특정 시각 포맷이 필요하면 별도 렌더링 레이어를 사용하세요.
-- **`open()` (showPicker)** 는 일부 브라우저에서 사용자 제스처를 요구합니다. 이벤트 핸들러 바깥에서 프로그래밍적으로 호출하면 조용히 `focus()`로 fallback될 수 있습니다.
+- **`open()` (`showPicker()`)** 는 대부분의 브라우저에서 사용자 제스처를 요구합니다. 사용자 제스처 핸들러 바깥에서 호출하면 브라우저가 무시할 수 있습니다.
 - **제약은 rule 기반으로만 적용됩니다.** `min`, `max`는 선택 값을 검증하지만 네이티브 picker UI로 forward되지는 않습니다.
 
 ### Picker 열기 동작
 
 네이티브 캘린더는 다음 중 하나로 열립니다:
 
-- input 영역(또는 캘린더 아이콘)을 클릭 — 열린 상태에서 다시 클릭하면 닫힙니다.
-- 필드가 포커스된 상태(클릭이든 Tab 이동이든)에서 **Enter** 키를 누르면 picker가 열리고, 다시 누르면 닫힙니다(토글).
+- input 영역(캘린더 아이콘 포함)을 클릭하거나,
+- 필드가 포커스된 상태(클릭이든 Tab 이동이든)에서 **Enter** 또는 **Space** 키를 누르거나,
 - 사용자 제스처 안에서 `dpRef.value.open()`을 호출.
 
-`disabled`/`readonly` 상태에서는 모두 무시됩니다.
+값을 선택하거나 필드가 포커스를 잃으면 picker가 닫힙니다. `disabled`/`readonly` 상태에서는 모두 무시됩니다.
 
-> **placeholder 참고**: 네이티브 `date`/`time` input은 `placeholder` 속성을 무시합니다. 값이 비어 있고 포커스되지 않은 동안에는 `text` input으로 렌더링해 `placeholder`가 보이게 하고, 상호작용 시 네이티브 picker 타입으로 전환합니다.
+> **placeholder 참고**: 네이티브 `date`/`time` input은 `placeholder` 속성을 무시합니다. 값이 비어 있고 picker가 닫혀 있는 동안에는 `text` input으로 렌더링해 `placeholder`가 보이게 하고, picker가 열리면 네이티브 picker 타입으로 전환합니다.
 
 ## 커스텀 룰
 
@@ -194,4 +194,4 @@ interface VsDatePickerStyleSet extends CSSProperties {
 | `validate` | -          | 유효성 검사를 트리거하고 결과를 반환합니다.                               |
 | `clear`    | -          | 값을 비웁니다 (modelValue → `''`).                                        |
 | `reset`    | -          | 값을 초기값으로 되돌립니다.                                               |
-| `open`     | -          | `showPicker()`로 네이티브 picker를 엽니다 (실패 시 `focus()`로 fallback). |
+| `open`     | -          | `showPicker()`로 네이티브 picker를 엽니다. 사용자 제스처 핸들러 안에서 호출하세요. |

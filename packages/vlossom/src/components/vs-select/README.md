@@ -47,6 +47,22 @@ const options = ['Apple', 'Banana', 'Cherry'];
 </template>
 ```
 
+### Focus Placeholder
+
+Show a different placeholder while the select is focused or open. It falls back to `placeholder` otherwise.
+
+```html
+<template>
+    <vs-select
+        v-model="selected"
+        :options="options"
+        placeholder="Select a fruit"
+        focus-placeholder="Pick from the list below"
+        label="Choose a fruit"
+    />
+</template>
+```
+
 ### Object Options with Custom Labels
 
 ```html
@@ -86,41 +102,43 @@ When there is no option to show — because `options` is empty or the search key
 
 ## Props
 
-| Prop              | Type                                                                   | Default                   | Required | Description                                                                                         |
-| ----------------- | ---------------------------------------------------------------------- | ------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
-| `colorScheme`     | `string`                                                               | -                         | -        | Color scheme for the component                                                                      |
-| `styleSet`        | `string \| VsSelectStyleSet`                                           | -                         | -        | Custom style set for the component                                                                  |
-| `disabled`        | `boolean`                                                              | `false`                   | -        | Disables the select                                                                                 |
-| `hidden`          | `boolean`                                                              | `false`                   | -        | Hides the component                                                                                 |
-| `id`              | `string`                                                               | `''`                      | -        | HTML id attribute                                                                                   |
-| `label`           | `string`                                                               | `''`                      | -        | Label text for the select                                                                           |
-| `noLabel`         | `boolean`                                                              | `false`                   | -        | Hides the label                                                                                     |
-| `noMessages`      | `boolean`                                                              | `false`                   | -        | Hides validation messages                                                                           |
-| `required`        | `boolean`                                                              | `false`                   | -        | Marks the field as required                                                                         |
-| `messages`        | `Message[]`                                                            | `[]`                      | -        | Validation messages                                                                                 |
-| `name`            | `string`                                                               | `''`                      | -        | HTML name attribute                                                                                 |
-| `noDefaultRules`  | `boolean`                                                              | `false`                   | -        | Disables built-in validation rules                                                                  |
-| `readonly`        | `boolean`                                                              | `false`                   | -        | Makes the select read-only                                                                          |
-| `rules`           | `Rule[]`                                                               | `[]`                      | -        | Custom validation rules                                                                             |
-| `state`           | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`                | `'idle'`                  | -        | Validation state                                                                                    |
-| `width`           | `string \| number \| Breakpoints`                                      | -                         | -        | Responsive width                                                                                    |
-| `grid`            | `string \| number \| Breakpoints`                                      | -                         | -        | Grid column span                                                                                    |
-| `options`         | `any[]`                                                                | `[]`                      | -        | Array of option values or objects                                                                   |
-| `optionLabel`     | `string`                                                               | `''`                      | -        | Key name for the label when options are objects                                                     |
-| `optionValue`     | `string`                                                               | `''`                      | -        | Key name for the value when options are objects                                                     |
-| `groupBy`         | `(option: any, index: number) => string \| null`                       | `null`                    | -        | Function to group options by a string key                                                           |
-| `groupOrder`      | `string[]`                                                             | `[]`                      | -        | Order of groups                                                                                     |
-| `min`             | `number \| string`                                                     | `0`                       | -        | Minimum number of selections (multiple mode)                                                        |
-| `max`             | `number \| string`                                                     | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of selections (multiple mode)                                                        |
-| `search`          | `boolean \| SearchProps`                                               | `false`                   | -        | Enables built-in search                                                                             |
-| `closableChips`   | `boolean`                                                              | `false`                   | -        | Shows a close button on selected chips                                                              |
-| `collapseChips`   | `boolean`                                                              | `false`                   | -        | Collapses selected chips into a count display                                                       |
-| `multiple`        | `boolean`                                                              | `false`                   | -        | Enables multiple selection mode                                                                     |
-| `noClear`         | `boolean`                                                              | `false`                   | -        | Hides the clear button                                                                              |
-| `optionsDisabled` | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | Disables individual options                                                                         |
-| `selectAll`       | `boolean`                                                              | `false`                   | -        | Shows a select-all checkbox (multiple mode)                                                         |
-| `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | Trigger height, padding, font, border-radius, and the options dropdown (padding/font/border-radius) |
-| `modelValue`      | `any`                                                                  | `null`                    | -        | Selected value (v-model)                                                                            |
+| Prop               | Type                                                                   | Default                   | Required | Description                                                                                         |
+| ------------------ | ---------------------------------------------------------------------- | ------------------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                                                               | -                         | -        | Color scheme for the component                                                                      |
+| `styleSet`         | `string \| VsSelectStyleSet`                                           | -                         | -        | Custom style set for the component                                                                  |
+| `disabled`         | `boolean`                                                              | `false`                   | -        | Disables the select                                                                                 |
+| `hidden`           | `boolean`                                                              | `false`                   | -        | Hides the component                                                                                 |
+| `id`               | `string`                                                               | `''`                      | -        | HTML id attribute                                                                                   |
+| `label`            | `string`                                                               | `''`                      | -        | Label text for the select                                                                           |
+| `noLabel`          | `boolean`                                                              | `false`                   | -        | Hides the label                                                                                     |
+| `noMessages`       | `boolean`                                                              | `false`                   | -        | Hides validation messages                                                                           |
+| `required`         | `boolean`                                                              | `false`                   | -        | Marks the field as required                                                                         |
+| `messages`         | `Message[]`                                                            | `[]`                      | -        | Validation messages                                                                                 |
+| `name`             | `string`                                                               | `''`                      | -        | HTML name attribute                                                                                 |
+| `noDefaultRules`   | `boolean`                                                              | `false`                   | -        | Disables built-in validation rules                                                                  |
+| `placeholder`      | `string`                                                               | `''`                      | -        | Placeholder shown when no option is selected                                                        |
+| `focusPlaceholder` | `string`                                                               | `''`                      | -        | Placeholder shown while the select is focused/open. Falls back to `placeholder` otherwise.          |
+| `readonly`         | `boolean`                                                              | `false`                   | -        | Makes the select read-only                                                                          |
+| `rules`            | `Rule[]`                                                               | `[]`                      | -        | Custom validation rules                                                                             |
+| `state`            | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`                | `'idle'`                  | -        | Validation state                                                                                    |
+| `width`            | `string \| number \| Breakpoints`                                      | -                         | -        | Responsive width                                                                                    |
+| `grid`             | `string \| number \| Breakpoints`                                      | -                         | -        | Grid column span                                                                                    |
+| `options`          | `any[]`                                                                | `[]`                      | -        | Array of option values or objects                                                                   |
+| `optionLabel`      | `string`                                                               | `''`                      | -        | Key name for the label when options are objects                                                     |
+| `optionValue`      | `string`                                                               | `''`                      | -        | Key name for the value when options are objects                                                     |
+| `groupBy`          | `(option: any, index: number) => string \| null`                       | `null`                    | -        | Function to group options by a string key                                                           |
+| `groupOrder`       | `string[]`                                                             | `[]`                      | -        | Order of groups                                                                                     |
+| `min`              | `number \| string`                                                     | `0`                       | -        | Minimum number of selections (multiple mode)                                                        |
+| `max`              | `number \| string`                                                     | `Number.MAX_SAFE_INTEGER` | -        | Maximum number of selections (multiple mode)                                                        |
+| `search`           | `boolean \| SearchProps`                                               | `false`                   | -        | Enables built-in search                                                                             |
+| `closableChips`    | `boolean`                                                              | `false`                   | -        | Shows a close button on selected chips                                                              |
+| `collapseChips`    | `boolean`                                                              | `false`                   | -        | Collapses selected chips into a count display                                                       |
+| `multiple`         | `boolean`                                                              | `false`                   | -        | Enables multiple selection mode                                                                     |
+| `noClear`          | `boolean`                                                              | `false`                   | -        | Hides the clear button                                                                              |
+| `optionsDisabled`  | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | Disables individual options                                                                         |
+| `selectAll`        | `boolean`                                                              | `false`                   | -        | Shows a select-all checkbox (multiple mode)                                                         |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | Trigger height, padding, font, border-radius, and the options dropdown (padding/font/border-radius) |
+| `modelValue`       | `any`                                                                  | `null`                    | -        | Selected value (v-model)                                                                            |
 
 ## Types
 

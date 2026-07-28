@@ -62,6 +62,21 @@ const files = ref([]);
 </template>
 ```
 
+### 포커스 플레이스홀더
+
+파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 다른 안내 문구를 표시합니다:
+
+```html
+<template>
+    <vs-file-drop
+        v-model="files"
+        label="업로드"
+        placeholder="파일을 여기에 드롭하거나 클릭해서 선택하세요"
+        focus-placeholder="여기에 놓으세요"
+    />
+</template>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -79,6 +94,7 @@ const files = ref([]);
 | `name` | `string` | `''` | | 입력의 HTML name 속성 |
 | `noDefaultRules` | `boolean` | `false` | | 기본 유효성 검사 규칙 비활성화 |
 | `placeholder` | `string` | `''` | | 드롭 영역에 표시되는 플레이스홀더 텍스트 |
+| `focusPlaceholder` | `string` | `''` | | 파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 표시되는 플레이스홀더. 그 외에는 `placeholder`로 대체 |
 | `readonly` | `boolean` | `false` | | 컴포넌트를 읽기 전용으로 만들기 |
 | `rules` | `Rule[]` | `[]` | | 사용자 정의 유효성 검사 규칙 |
 | `state` | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'` | `'idle'` | | 현재 유효성 검사 상태 |
