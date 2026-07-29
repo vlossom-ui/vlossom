@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type TemplateRef, useTemplateRef, type PropType } from 'vue';
+import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
 import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
@@ -125,27 +125,18 @@ export default defineComponent({
 
         const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
 
-        function warnIfInvalid(value: any) {
-            if (value === null || value === undefined) {
-                return;
-            }
-            const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-            if (!found) {
-                logUtil.warning('VsRadioSet', `"${value}" not in options, reset to null`);
-            }
-        }
-
-        function convertValue(value: any) {
+        function sanitizeValue(value: any) {
             if (value === null || value === undefined) {
                 return value;
             }
             const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-            return found ? value : null;
+            if (!found) {
+                const attempted = JSON.stringify(value);
+                logUtil.warning('VsRadioSet', `Tried to set ${attempted}, but it is not in options. Reset to null.`);
+                return null;
+            }
+            return value;
         }
-
-        watch(modelValue, (newValue) => {
-            warnIfInvalid(newValue);
-        });
 
         function requiredCheck(value: any) {
             if (!required.value) {
@@ -180,11 +171,10 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        warnIfInvalid(modelValue.value);
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(modelValue.value);
                     },
                     onChange: () => {
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(inputValue.value);
                     },
                     onClear: () => {
                         inputValue.value = null;

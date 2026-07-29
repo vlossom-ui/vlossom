@@ -279,25 +279,6 @@ export default defineComponent({
 
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
 
-        function warnIfInvalid(value: any) {
-            if (value === null || value === undefined) {
-                return;
-            }
-            const isArrayMultiple = multiple.value && Array.isArray(value);
-            const valueArray = isArrayMultiple ? value : [value];
-            const invalidValues = valueArray.filter(
-                (v: any) => !computedOptions.value.some((o) => objectUtil.isEqual(o.value, v)),
-            );
-            if (invalidValues.length > 0) {
-                const display = isArrayMultiple ? JSON.stringify(invalidValues) : `"${invalidValues[0]}"`;
-                logUtil.warning('VsSelect', `${display} not in options, reset`);
-            }
-        }
-
-        watch(modelValue, (newValue) => {
-            warnIfInvalid(newValue);
-        });
-
         const {
             computedId,
             computedMessages,
@@ -329,11 +310,10 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        warnIfInvalid(modelValue.value);
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(modelValue.value);
                     },
                     onChange: () => {
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(inputValue.value);
                     },
                     onClear: () => {
                         clearSelected();
@@ -353,6 +333,7 @@ export default defineComponent({
             isEmpty,
             selectedOptions,
             convertValue,
+            isExistingValue,
             deselectOption,
             toggleSelect,
             clearSelected,
@@ -364,6 +345,28 @@ export default defineComponent({
             filteredOptions,
             multiple,
         });
+
+        function sanitizeValue(value: any) {
+            if (value === null || value === undefined) {
+                return convertValue(value);
+            }
+            const isArrayMultiple = multiple.value && Array.isArray(value);
+            const valueArray = isArrayMultiple ? value : [value];
+            const removed = valueArray.filter((v: any) => !isExistingValue(v));
+            if (removed.length > 0) {
+                const attempted = JSON.stringify(value);
+                if (isArrayMultiple) {
+                    const missing = JSON.stringify(removed);
+                    logUtil.warning(
+                        'VsSelect',
+                        `Tried to set ${attempted}, but some values are not in options: ${missing}. Removed them.`,
+                    );
+                } else {
+                    logUtil.warning('VsSelect', `Tried to set ${attempted}, but it is not in options. Reset to null.`);
+                }
+            }
+            return convertValue(value);
+        }
 
         const { computedCallbacks } = useSelectKeyboard({
             isOpen,

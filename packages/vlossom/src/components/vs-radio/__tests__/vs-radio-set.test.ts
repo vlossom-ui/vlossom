@@ -246,7 +246,7 @@ describe('VsRadioSet', () => {
             await nextTick();
 
             // then
-            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Tried to set "invalid"'));
             warnSpy.mockRestore();
         });
 
@@ -284,7 +284,7 @@ describe('VsRadioSet', () => {
             await nextTick();
 
             // then
-            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Tried to set "invalid"'));
             warnSpy.mockRestore();
         });
 

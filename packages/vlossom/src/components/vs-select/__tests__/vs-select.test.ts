@@ -863,7 +863,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Tried to set "invalid"'));
             warnSpy.mockRestore();
         });
 
@@ -920,7 +920,7 @@ describe('VsSelect', () => {
             await nextTick();
 
             // then
-            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"invalid" not in options'));
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Tried to set "invalid"'));
             warnSpy.mockRestore();
         });
     });

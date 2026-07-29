@@ -17,21 +17,30 @@ export function useInputOption(
         }
 
         if (multiple.value && Array.isArray(inputValue.value)) {
-            const removedValues = inputValue.value.filter((value) => {
-                return !newOptions.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+            const removedValues: any[] = [];
+            const keptValues = inputValue.value.filter((value) => {
+                const found = newOptions.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+                if (!found) {
+                    removedValues.push(value);
+                }
+                return found;
             });
             if (removedValues.length > 0) {
-                logUtil.warning('modelValue', `${JSON.stringify(removedValues)} not in options, removed`);
+                logUtil.warning(
+                    'modelValue',
+                    `Some selected values are no longer in options: ${JSON.stringify(removedValues)}. Removed them.`,
+                );
             }
-            inputValue.value = inputValue.value.filter((value) => {
-                return newOptions.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-            });
+            inputValue.value = keptValues;
         } else {
             const option = newOptions.find((o) => objectUtil.isEqual(getOptionValue(o), inputValue.value));
 
             if (!option) {
                 if (inputValue.value !== null && inputValue.value !== undefined) {
-                    logUtil.warning('modelValue', `"${inputValue.value}" not in options, reset to null`);
+                    logUtil.warning(
+                        'modelValue',
+                        `Current value ${JSON.stringify(inputValue.value)} is no longer in options. Reset to null.`,
+                    );
                 }
                 inputValue.value = null;
             }

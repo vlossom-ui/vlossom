@@ -152,7 +152,9 @@ describe('useInputOption', () => {
                 await nextTick();
 
                 // then
-                expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('"A" not in options'));
+                expect(warnSpy).toHaveBeenCalledWith(
+                    expect.stringContaining('Current value "A" is no longer in options'),
+                );
                 warnSpy.mockRestore();
             });
 
@@ -207,7 +209,7 @@ describe('useInputOption', () => {
                 await nextTick();
 
                 // then
-                expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('not in options'));
+                expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('no longer in options'));
                 warnSpy.mockRestore();
             });
 

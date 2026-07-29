@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type PropType, type TemplateRef } from 'vue';
+import { computed, defineComponent, ref, toRefs, type PropType, type TemplateRef } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import {
     getColorSchemeProps,
@@ -143,30 +143,28 @@ export default defineComponent({
             ref(true),
         );
 
-        function warnIfInvalid(value: any) {
-            if (!Array.isArray(value)) {
-                return;
-            }
-            const invalidValues = value.filter(
-                (v: any) => !options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v)),
-            );
-            if (invalidValues.length > 0) {
-                logUtil.warning('VsCheckboxSet', `${JSON.stringify(invalidValues)} not in options, removed`);
-            }
-        }
-
-        function convertValue(value: any) {
+        function sanitizeValue(value: any) {
             if (!Array.isArray(value)) {
                 return [];
             }
-            return value.filter(
-                (v: any) => options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v)),
-            );
+            const removed: any[] = [];
+            const kept = value.filter((v: any) => {
+                const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v));
+                if (!found) {
+                    removed.push(v);
+                }
+                return found;
+            });
+            if (removed.length > 0) {
+                const attempted = JSON.stringify(value);
+                const missing = JSON.stringify(removed);
+                logUtil.warning(
+                    'VsCheckboxSet',
+                    `Tried to set ${attempted}, but some values are not in options: ${missing}. Removed them.`,
+                );
+            }
+            return kept;
         }
-
-        watch(modelValue, (newValue) => {
-            warnIfInvalid(newValue);
-        });
 
         const {
             computedId,
@@ -193,11 +191,10 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        warnIfInvalid(modelValue.value);
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(modelValue.value);
                     },
                     onChange: () => {
-                        inputValue.value = convertValue(inputValue.value);
+                        inputValue.value = sanitizeValue(inputValue.value);
                     },
                     onClear: () => {
                         inputValue.value = [];
