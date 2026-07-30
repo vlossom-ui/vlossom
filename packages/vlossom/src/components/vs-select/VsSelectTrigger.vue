@@ -18,7 +18,6 @@
                         :color-scheme
                         :closable="closableChips"
                         :style-set="componentStyleSet.$chip"
-                        primary
                         size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
                     >
@@ -33,7 +32,6 @@
                         :color-scheme
                         :closable="closableChips"
                         :style-set="componentStyleSet.$chip"
-                        primary
                         size="xs"
                         @close="$emit('deselect', option.id)"
                     >

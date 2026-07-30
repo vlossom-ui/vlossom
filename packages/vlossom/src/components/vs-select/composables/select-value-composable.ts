@@ -142,6 +142,7 @@ export function useSelectValue({
         isEmpty,
         selectedOptions,
         convertValue,
+        isExistingValue,
         isSelected,
         selectOption,
         deselectOption,

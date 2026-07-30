@@ -237,3 +237,8 @@ interface VsRadioSetStyleSet extends CSSProperties {
 | `validate` | -          | Triggers validation              |
 | `clear`    | -          | Clears the selected value        |
 | `reset`    | -          | Resets the selected value to its initial value |
+
+## Cautions
+
+- If `modelValue` of `VsRadioSet` is set to a value not present in `options` — either on mount or programmatically — the value is reset to `null` and a console warning is printed.
+- If `options` changes and the current `modelValue` is no longer present, the value is reset to `null` and a console warning is printed.

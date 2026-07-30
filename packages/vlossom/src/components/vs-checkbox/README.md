@@ -211,3 +211,8 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `focus` | — | Focuses the checkbox input element |
 | `blur` | — | Blurs the checkbox input element |
 | `toggle` | — | Toggles the checked state and returns whether the value changed |
+
+## Cautions
+
+- If `modelValue` of `VsCheckboxSet` is set to values not present in `options` — either on mount or programmatically — the invalid values are removed and a console warning is printed.
+- If `options` changes and some selected values are no longer present, the missing entries are removed and a console warning is printed.

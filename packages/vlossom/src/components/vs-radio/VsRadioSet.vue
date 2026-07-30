@@ -60,7 +60,7 @@ import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRe
 import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
-import { objectUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -125,6 +125,19 @@ export default defineComponent({
 
         const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
 
+        function sanitizeValue(value: any) {
+            if (value === null || value === undefined) {
+                return value;
+            }
+            const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+            if (!found) {
+                const attempted = JSON.stringify(value);
+                logUtil.warning('VsRadioSet', `Tried to set ${attempted}, but it is not in options. Reset to null.`);
+                return null;
+            }
+            return value;
+        }
+
         function requiredCheck(value: any) {
             if (!required.value) {
                 return '';
@@ -157,6 +170,12 @@ export default defineComponent({
                 noDefaultRules,
                 state,
                 callbacks: {
+                    onMounted: () => {
+                        inputValue.value = sanitizeValue(modelValue.value);
+                    },
+                    onChange: () => {
+                        inputValue.value = sanitizeValue(inputValue.value);
+                    },
                     onClear: () => {
                         inputValue.value = null;
                     },
