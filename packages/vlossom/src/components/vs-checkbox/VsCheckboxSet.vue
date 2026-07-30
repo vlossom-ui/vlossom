@@ -67,7 +67,7 @@ import {
     getMinMaxProps,
 } from '@/props';
 import { useColorScheme, useInput, useSizeClass, useStyleSet, useInputOption } from '@/composables';
-import { objectUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 
 import type { VsCheckboxSetStyleSet } from './types';
 import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
@@ -143,6 +143,29 @@ export default defineComponent({
             ref(true),
         );
 
+        function sanitizeValue(value: any) {
+            if (!Array.isArray(value)) {
+                return [];
+            }
+            const removed: any[] = [];
+            const kept = value.filter((v: any) => {
+                const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v));
+                if (!found) {
+                    removed.push(v);
+                }
+                return found;
+            });
+            if (removed.length > 0) {
+                const attempted = JSON.stringify(value);
+                const missing = JSON.stringify(removed);
+                logUtil.warning(
+                    'VsCheckboxSet',
+                    `Tried to set ${attempted}, but some values are not in options: ${missing}. Removed them.`,
+                );
+            }
+            return kept;
+        }
+
         const {
             computedId,
             computedMessages,
@@ -168,14 +191,10 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        if (!Array.isArray(inputValue.value)) {
-                            inputValue.value = [];
-                        }
+                        inputValue.value = sanitizeValue(modelValue.value);
                     },
                     onChange: () => {
-                        if (!Array.isArray(inputValue.value)) {
-                            inputValue.value = [];
-                        }
+                        inputValue.value = sanitizeValue(inputValue.value);
                     },
                     onClear: () => {
                         inputValue.value = [];

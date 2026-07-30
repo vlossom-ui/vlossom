@@ -211,3 +211,8 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 | `focus` | — | 체크박스 입력 요소에 포커스를 줍니다 |
 | `blur` | — | 체크박스 입력 요소의 포커스를 제거합니다 |
 | `toggle` | — | 체크 상태를 전환하고 값이 변경됐는지 반환합니다 |
+
+## Cautions
+
+- `VsCheckboxSet`의 `modelValue`에 `options`에 없는 값이 포함되면 (마운트 시 또는 프로그래매틱하게) 해당 값들은 제거되고 콘솔 경고가 출력됩니다.
+- `options`가 변경되어 현재 선택된 일부 값이 더 이상 존재하지 않으면 해당 항목이 제거되고 콘솔 경고가 출력됩니다.

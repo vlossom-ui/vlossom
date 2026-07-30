@@ -65,3 +65,4 @@ No additional exported types.
 
 - When `multiple` is `false` and the current value is not found in the new options, `inputValue` is set to `null`.
 - When `multiple` is `true`, only values that still exist in the new options are retained.
+- When a value is cleared because it is no longer in the new options, a console warning is printed.

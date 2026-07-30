@@ -65,3 +65,4 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 
 - `multiple`이 `false`이고 현재 값이 새 옵션에서 찾을 수 없는 경우, `inputValue`는 `null`로 설정됩니다.
 - `multiple`이 `true`인 경우, 새 옵션에 여전히 존재하는 값만 유지됩니다.
+- 값이 새 옵션에 없어서 제거될 때 콘솔 경고가 출력됩니다.

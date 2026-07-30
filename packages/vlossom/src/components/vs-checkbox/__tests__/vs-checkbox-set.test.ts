@@ -260,4 +260,96 @@ describe('VsCheckboxSet', () => {
             expect(updateModelValueEvent).toBeUndefined();
         });
     });
+
+    describe('invalid modelValue warning', () => {
+        it('options에 없는 초기 modelValue가 있으면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: ['A', 'X', 'Y'],
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('options에 있는 유효한 초기 modelValue를 설정하면 경고가 출력되지 않는다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: ['A', 'B'],
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it('프로그래매틱하게 options에 없는 값이 포함된 배열로 변경하면 경고가 출력된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: ['A'],
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: ['A', 'X', 'Y'] });
+            await nextTick();
+
+            // then
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('not in options'));
+            warnSpy.mockRestore();
+        });
+
+        it('options에 없는 초기 modelValue가 포함되면 유효한 값만 남도록 리셋된다', async () => {
+            // given
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: ['A', 'X', 'Y'],
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['A']]);
+        });
+
+        it('프로그래매틱하게 options에 없는 값이 포함된 배열로 변경하면 유효한 값만 남도록 리셋된다', async () => {
+            // given
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: ['A', 'B', 'C'],
+                    modelValue: ['A'],
+                    'onUpdate:modelValue': (e) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: ['A', 'X', 'Y'] });
+            await nextTick();
+
+            // then
+            const events = wrapper.emitted('update:modelValue');
+            expect(events?.[events.length - 1]).toEqual([['A']]);
+        });
+    });
 });
