@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-label-value {
     --vs-label-value-border: initial;
     --vs-label-value-line: var(--vs-label-value-border, 1px solid var(--vs-cs-line));

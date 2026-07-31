@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 @keyframes vs-loading-animation {
     0%,
     40%,

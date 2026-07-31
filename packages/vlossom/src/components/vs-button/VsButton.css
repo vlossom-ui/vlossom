@@ -1,8 +1,8 @@
 @reference 'tailwindcss';
 
 .vs-button {
-    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden select-none
-        hover:brightness-96 active:brightness-92;
+    @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden font-normal
+        select-none hover:brightness-96 active:brightness-92;
 
     border: 1px solid var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
@@ -52,12 +52,11 @@
     }
 
     &.vs-primary {
-        @apply hover:brightness-104 active:brightness-108;
+        @apply font-medium hover:brightness-104 active:brightness-108;
 
         border: 1px solid var(--vs-cs-bg-primary);
         background-color: var(--vs-cs-bg-primary);
         color: var(--vs-cs-font-primary);
-        font-weight: 500;
 
         &:hover {
             background-color: var(--vs-cs-bg-primary);

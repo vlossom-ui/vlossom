@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-block {
     --vs-block-blockBorder: initial;
 
