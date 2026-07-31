@@ -1,6 +1,8 @@
+@reference 'tailwindcss';
+
 /* VsExpandable 기본 구조 스타일 */
 .vs-expandable-wrapper {
-    @apply relative w-full overflow-hidden;
+    @apply relative w-full overflow-hidden font-normal;
 
     .vs-expandable-content {
         @apply w-full;

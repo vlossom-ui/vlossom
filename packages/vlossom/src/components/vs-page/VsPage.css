@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-page {
     @apply relative w-full;
 

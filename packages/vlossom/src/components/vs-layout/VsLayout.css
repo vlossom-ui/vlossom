@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-layout {
     @apply relative h-full w-full;
 }

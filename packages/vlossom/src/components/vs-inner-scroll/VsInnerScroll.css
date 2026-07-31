@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-inner-scroll {
     @apply relative flex h-full w-full flex-col;
 

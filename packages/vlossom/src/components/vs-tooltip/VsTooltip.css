@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-tooltip {
     --vs-tooltip-arrowColor: initial;
     --vs-tooltip-arrowSize: initial;

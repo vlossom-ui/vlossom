@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-visible-render {
     @apply relative w-full;
 }

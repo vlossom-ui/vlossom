@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-avatar {
     --vs-avatar-imageObjectFit: initial;
 

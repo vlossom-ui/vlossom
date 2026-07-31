@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 .vs-accordion {
     --vs-accordion-arrowColor: initial;
     --vs-accordion-arrowSize: initial;
@@ -10,7 +12,8 @@
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
 
     .vs-accordion-title {
-        @apply relative flex w-full cursor-pointer items-center outline-none hover:brightness-96 active:brightness-92;
+        @apply relative flex w-full cursor-pointer items-center font-medium outline-none hover:brightness-96
+            active:brightness-92;
 
         background-color: var(--vs-cs-bg);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
