@@ -64,7 +64,7 @@ const columns = [
 </script>
 ```
 
-같은 키가 `skipSearch` 컬럼이면서 `extraKeys`에도 있으면 제외가 우선합니다.
+둘 다 컬럼 `key`와 동일하게 점 표기 경로(`'metadata.email'`)를 지원합니다. 어떤 키가 `skipSearch` 컬럼이거나 그 하위 경로이면, `extraKeys`에 있어도 제외가 우선합니다.
 
 ### 행 선택
 

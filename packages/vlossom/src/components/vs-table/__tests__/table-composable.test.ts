@@ -273,6 +273,43 @@ describe('useTable', () => {
             expect(table.bodyRows.value).toHaveLength(0);
         });
 
+        it('extraKeys에 중첩 키를 지정하면 해당 경로의 값으로 검색한다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo: { content: 'XYZ 메모' } },
+                    { name: 'Bob', memo: { content: '' } },
+                ],
+                search: { extraKeys: ['memo.content'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['Carol']);
+        });
+
+        it('skipSearch 컬럼의 하위 경로는 extraKeys로도 되살아나지 않는다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [
+                    { key: 'name', label: '이름' },
+                    { key: 'memo', label: '메모', skipSearch: true },
+                ],
+                items: [
+                    { name: 'Carol', memo: { content: 'XYZ 메모' } },
+                    { name: 'Bob', memo: { content: '' } },
+                ],
+                search: { extraKeys: ['memo.content'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value).toHaveLength(0);
+        });
+
         it('transform이 적용된 렌더 값으로 검색한다', async () => {
             const { table, searchInputRef } = setupUseTable({
                 columns: [

@@ -24,8 +24,11 @@ export function useTableSearch(
     });
 
     // 같은 키가 skipSearch 컬럼이면서 extraKeys에도 있으면, 노출 사고를 막기 위해 제외를 우선한다.
+    // 부모 컬럼을 제외했는데 하위 경로가 extraKeys로 되살아나지 않도록 prefix까지 본다.
     const extraKeys = computed<string[]>(() => {
-        return (search.value.extraKeys ?? []).filter((key) => !skipKeys.value.has(key));
+        const isSkipped = (key: string) =>
+            [...skipKeys.value].some((skipKey) => key === skipKey || key.startsWith(`${skipKey}.`));
+        return (search.value.extraKeys ?? []).filter((key) => !isSkipped(key));
     });
 
     function matchBySearch(row: VsTableRow): boolean {

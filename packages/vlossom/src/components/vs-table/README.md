@@ -64,7 +64,7 @@ const columns = [
 </script>
 ```
 
-If a key is both a `skipSearch` column and listed in `extraKeys`, it stays excluded.
+Both accept dot paths (`'metadata.email'`), same as a column `key`. If a key is a `skipSearch` column — or nested under one — it stays excluded even when listed in `extraKeys`.
 
 ### Selectable Rows
 
