@@ -42,6 +42,30 @@ const items = [
 </template>
 ```
 
+### Search Scope
+
+Search matches against the values rendered in the table body, so a column's `transform` result is searched exactly as it is displayed. Two options adjust that scope:
+
+- `skipSearch` on a column excludes a rendered column from the search.
+- `search.extraKeys` adds item fields that no column renders — useful when a slot pulls the value into another cell, or when you want to filter on hidden metadata.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="items" :search="{ extraKeys: ['tags'] }">
+        <template #body-name="{ item }">{{ item.name }} ({{ item.tags }})</template>
+    </vs-table>
+</template>
+
+<script setup>
+const columns = [
+    { key: 'name', label: 'Name' },
+    { key: 'note', label: 'Note', skipSearch: true },
+];
+</script>
+```
+
+If a key is both a `skipSearch` column and listed in `extraKeys`, it stays excluded.
+
 ### Selectable Rows
 
 ```html
@@ -123,7 +147,7 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 | `pagination`      | `boolean \| VsTablePaginationOptions`          | `false`  | Enables pagination                          |
 | `primary`         | `boolean`                                      | `false`  | Applies primary color to the header         |
 | `responsive`      | `boolean`                                      | `false`  | Enables responsive (stacked) layout         |
-| `search`          | `boolean \| SearchProps`                       | `false`  | Enables built-in search                     |
+| `search`          | `boolean \| VsTableSearchOptions`              | `false`  | Enables built-in search                     |
 | `selectable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | Enables row selection                       |
 | `selectedItems`   | `VsTableItem[]`                                | `[]`     | Selected rows, v-model                      |
 | `serverMode`      | `boolean`                                      | `false`  | Switches to server-side pagination mode     |
@@ -146,6 +170,13 @@ interface VsTableStyleSet extends CSSProperties {
     $cell?: CSSProperties;
     $pagination?: VsPaginationStyleSet;
     $pageSizeSelect?: VsSelectStyleSet;
+}
+
+interface VsTableSearchOptions<I = VsTableItem> {
+    useRegex?: boolean;
+    useCaseSensitive?: boolean;
+    placeholder?: string;
+    extraKeys?: VsTableColumnKey<I>[];
 }
 
 interface VsTableColumnDef<I = VsTableItem> {

@@ -10,6 +10,7 @@ import {
     type VsTableHeaderCell,
     type VsTableItem,
     type VsTablePaginationOptions,
+    type VsTableSearchOptions,
 } from './../types';
 import { DEFAULT_PAGE_SIZE } from './../constants';
 
@@ -20,6 +21,7 @@ function setupUseTable(
         selectable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
         expandable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
         pagination?: boolean | VsTablePaginationOptions;
+        search?: boolean | VsTableSearchOptions;
         page?: number;
         pageSize?: number;
         serverMode?: boolean;
@@ -172,26 +174,123 @@ describe('useTable', () => {
         expect(table.selectedAll.value).toBe(false);
     });
 
-    it('skipSearch가 지정된 컬럼은 검색 대상에서 제외된다', async () => {
-        const { table, searchInputRef } = setupUseTable({
-            columns: [
-                { key: 'id', label: 'ID', skipSearch: true },
-                { key: 'name', label: '이름' },
-            ],
-            items: [
-                { id: 'XYZ-1', name: 'Carol' },
-                { id: 'ABC-2', name: 'XYZ 사용자' },
-            ],
+    describe('search', () => {
+        function matchXYZ(searchInputRef: Ref<VsSearchInputRef | null>) {
+            searchInputRef.value = {
+                match: (value: string) => String(value).includes('XYZ'),
+            } as any;
+        }
+
+        it('skipSearch가 지정된 컬럼은 검색 대상에서 제외된다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [
+                    { key: 'id', label: 'ID', skipSearch: true },
+                    { key: 'name', label: '이름' },
+                ],
+                items: [
+                    { id: 'XYZ-1', name: 'Carol' },
+                    { id: 'ABC-2', name: 'XYZ 사용자' },
+                ],
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            const filteredNames = table.bodyRows.value.map((row) => row.cells[1].value);
+            expect(filteredNames).toEqual(['XYZ 사용자']);
         });
-        await nextTick();
 
-        searchInputRef.value = {
-            match: (value: string) => String(value).includes('XYZ'),
-        } as any;
-        await nextTick();
+        it('중첩 키 컬럼에 지정된 skipSearch도 검색 대상에서 제외된다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [
+                    { key: 'name', label: '이름' },
+                    { key: 'metadata.email', label: '이메일', skipSearch: true },
+                ],
+                items: [
+                    { name: 'Carol', metadata: { email: 'XYZ@example.com' } },
+                    { name: 'XYZ 사용자', metadata: { email: 'bob@example.com' } },
+                ],
+            });
+            await nextTick();
 
-        const filteredNames = table.bodyRows.value.map((row) => row.cells[1].value);
-        expect(filteredNames).toEqual(['XYZ 사용자']);
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['XYZ 사용자']);
+        });
+
+        it('컬럼으로 정의되지 않은 필드는 검색 대상에 포함되지 않는다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo: 'XYZ 메모' },
+                    { name: 'XYZ 사용자', memo: '' },
+                ],
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['XYZ 사용자']);
+        });
+
+        it('search.extraKeys에 지정한 필드는 컬럼이 없어도 검색 대상에 포함된다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo: 'XYZ 메모' },
+                    { name: 'Bob', memo: '' },
+                ],
+                search: { extraKeys: ['memo'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['Carol']);
+        });
+
+        it('skipSearch와 extraKeys가 같은 키를 가리키면 skipSearch가 우선한다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [
+                    { key: 'name', label: '이름' },
+                    { key: 'memo', label: '메모', skipSearch: true },
+                ],
+                items: [
+                    { name: 'Carol', memo: 'XYZ 메모' },
+                    { name: 'Bob', memo: '' },
+                ],
+                search: { extraKeys: ['memo'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value).toHaveLength(0);
+        });
+
+        it('transform이 적용된 렌더 값으로 검색한다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [
+                    { key: 'name', label: '이름' },
+                    { key: 'status', label: '상태', transform: (value: string) => (value === 'on' ? 'XYZ' : 'ABC') },
+                ],
+                items: [
+                    { name: 'Carol', status: 'on' },
+                    { name: 'Bob', status: 'off' },
+                ],
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['Carol']);
+        });
     });
 
     describe('pagination', () => {

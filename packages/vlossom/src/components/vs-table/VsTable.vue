@@ -87,8 +87,15 @@ import {
 } from 'vue';
 import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 import type { SortableEvent } from 'sortablejs';
-import { type SearchProps, type UIState, VsComponent, type PropsOf, type ColorScheme, type Size } from '@/declaration';
-import { logUtil, stringUtil } from '@/utils';
+import {
+    type SearchOptions,
+    type UIState,
+    VsComponent,
+    type PropsOf,
+    type ColorScheme,
+    type Size,
+} from '@/declaration';
+import { logUtil, objectUtil, stringUtil } from '@/utils';
 import { getColorSchemeProps, getStyleSetProps, getSearchProps } from '@/props';
 import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 
@@ -103,6 +110,7 @@ import {
     type VsTableStyleSet,
     type VsTablePaginationOptions,
     type VsTablePageSizeOptions,
+    type VsTableSearchOptions,
 } from './types';
 import {
     DEFAULT_PAGE_SIZE_OPTIONS,
@@ -128,7 +136,7 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsTableStyleSet>(),
-        ...getSearchProps(),
+        ...getSearchProps<VsTableSearchOptions>(),
         columns: {
             type: Array as PropType<VsTableColumnDef[] | string[]>,
             default: () => [],
@@ -316,7 +324,8 @@ export default defineComponent({
             'vs-primary': primary.value,
             [sizeClass.value]: !!sizeClass.value,
         }));
-        const searchOptions = computed<Exclude<SearchProps, boolean>>(() => table.search.value);
+
+        const searchOptions = computed<SearchOptions>(() => objectUtil.omit(table.search.value, ['extraKeys']));
         const tableColumnStyle = computed(() => ({ gridTemplateColumns: table.gridTemplateColumns.value }));
         const useStickyHeader = computed<boolean>(() => stickyHeader.value && isHeaderOutOfView.value);
 

@@ -1,9 +1,8 @@
-import type { SearchProps } from '@/declaration';
+import type { SearchOptions } from '@/declaration';
 import type { VsTablePageSizeOption, VsTablePageSizeOptions, VsTablePaginationOptions } from './types';
 import type { Options as SortableOptions } from 'sortablejs';
 
-export const TABLE_SEARCH_OPTIONS: Exclude<SearchProps, boolean> = {
-    placeholder: 'Search',
+export const TABLE_SEARCH_OPTIONS: SearchOptions = {
     useCaseSensitive: true,
     useRegex: true,
 } as const;

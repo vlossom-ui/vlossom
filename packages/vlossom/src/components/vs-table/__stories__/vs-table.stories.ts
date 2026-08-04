@@ -64,7 +64,7 @@ const meta: Meta<typeof VsTable> = {
         },
         search: {
             control: { type: 'object' },
-            description: '검색 입력 표시 여부 및 옵션(`useCaseSensitive`, `useRegex`).',
+            description: '검색 입력 표시 여부 및 옵션(`useCaseSensitive`, `useRegex`, `extraKeys`).',
         },
         pagination: {
             control: { type: 'object' },
@@ -269,12 +269,38 @@ export const Searchable: Story = {
             { key: 'metadata.email', label: 'Email', skipSearch: true },
         ],
         items: baseItems,
-        search: { placeholder: 'Search name only', useRegex: true, useCaseSensitive: false },
+        search: { placeholder: 'Search name/age', useRegex: true, useCaseSensitive: false },
     },
     parameters: {
         docs: {
             description: {
-                story: 'search prop을 켜면 검색 입력이 표시되고, `skipSearch`가 설정된 컬럼은 검색 대상에서 제외됩니다.',
+                story:
+                    '검색은 렌더링된 셀 값을 대상으로 동작합니다. `skipSearch`가 설정된 Email 컬럼은 ' +
+                    '화면에 보이지만 검색 대상에서 제외되므로, 이메일 문자열로는 걸러지지 않습니다.',
+            },
+        },
+    },
+};
+
+export const SearchExtraKeys: Story = {
+    args: {
+        columns: [
+            { key: 'name', label: 'Name' },
+            { key: 'age', label: 'Age' },
+        ],
+        items: baseItems.map((item, index) => ({
+            ...item,
+            department: index % 2 === 0 ? 'Engineering' : 'Design',
+        })),
+        search: { placeholder: 'Try "Design"', extraKeys: ['department'] },
+    },
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '`search.extraKeys`에 지정한 키는 컬럼으로 렌더링되지 않아도 검색 대상에 포함됩니다. ' +
+                    '슬롯으로 값을 끌어와 보여주거나 숨겨진 메타데이터로 필터링할 때 사용합니다. ' +
+                    '이 예시에서 `department`는 화면에 없지만 "Design"으로 검색됩니다.',
             },
         },
     },

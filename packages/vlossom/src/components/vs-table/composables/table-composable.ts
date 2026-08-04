@@ -9,7 +9,7 @@ import {
     type WritableComputedRef,
 } from 'vue';
 import { functionUtil, objectUtil, stringUtil } from '@/utils';
-import { type UIState, type VsComponent, type PropsOf, type SearchProps, type Size } from '@/declaration';
+import { type UIState, type VsComponent, type PropsOf, type Size } from '@/declaration';
 import type { VsSearchInputRef } from '@/components';
 
 import {
@@ -20,6 +20,7 @@ import {
     type VsTableItem,
     type VsTableRow,
     type VsTablePaginationOptions,
+    type VsTableSearchOptions,
 } from './../types';
 import { TableCellBuilder } from './../models/table-cell-builder';
 import { isVsTableColumnDefArray } from './../models/table-model';
@@ -95,7 +96,7 @@ export function useTable(
     const selectedItems = computed<VsTableItem[]>(() => {
         return rawSelectedItems?.value ?? [];
     });
-    const search = computed<Exclude<SearchProps, boolean>>(() => {
+    const search = computed<VsTableSearchOptions>(() => {
         if (!rawSearch?.value) {
             return {};
         }
@@ -165,7 +166,7 @@ export function useTable(
     const tableCellBuilder = new TableCellBuilder(tableId, items.value, columns.value);
     const { anyExpandable, isExpanded, toggleExpand, setExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
-    const { matchBySearch } = useTableSearch(refs.searchInputRef, columns);
+    const { matchBySearch } = useTableSearch(refs.searchInputRef, columns, search);
     const {
         selectedItems: internalSelectedItems,
         selectedAll,
@@ -326,7 +327,7 @@ export type TableComposable = {
     draggable: Ref<boolean | undefined> | undefined;
     primary: Ref<boolean | undefined> | undefined;
     size: Ref<Size | undefined> | undefined;
-    search: ComputedRef<Exclude<SearchProps, boolean>>;
+    search: ComputedRef<VsTableSearchOptions>;
     pagination: ComputedRef<VsTablePaginationOptions>;
     page: WritableComputedRef<number>;
     pageSize: WritableComputedRef<number>;

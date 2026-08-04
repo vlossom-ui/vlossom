@@ -19,13 +19,12 @@ export function useSelectSearch(search: Ref<SearchProps>) {
             return {
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             };
         }
         return {
             useRegex: search.value.useRegex ?? true,
             useCaseSensitive: search.value.useCaseSensitive ?? true,
-            placeholder: search.value.placeholder ?? '',
+            placeholder: search.value.placeholder,
         };
     });
 
