@@ -308,6 +308,26 @@ app.use(
 
 Or toggle at runtime with `<vs-theme-button />`.
 
+### Line Tiers
+
+Borders and dividers are drawn with two line variables, so lines carry a visual hierarchy instead of all reading at the
+same weight. Each color scheme and theme defines both.
+
+| Variable              | Used for                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------ |
+| `--vs-cs-line`        | Default. Everything at rest: borders, dividers and form controls.                          |
+| `--vs-cs-line-strong` | Lines that need to be noticed: focus, hover, active, and separators that delimit a region. |
+
+Both tiers come straight from the palette, and the resting tier is always exactly one palette step weaker than the
+strong one, in every scheme and theme:
+
+```css
+.my-scope {
+    --vs-cs-line: #c8c8c8;
+    --vs-cs-line-strong: #a3a3a3;
+}
+```
+
 ## Links
 
 - [GitHub Repository](https://github.com/vlossom-ui/vlossom)

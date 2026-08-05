@@ -10,7 +10,7 @@
 
     .vs-focus-visible:focus-visible,
     .vs-focus-within:focus-within {
-        outline: 1px solid var(--vs-cs-line) !important;
+        outline: 1px solid var(--vs-cs-line-strong) !important;
         outline-offset: 2px !important;
     }
 

@@ -13,6 +13,12 @@
                 <template #body-vs-cs-line="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-line)' }" />
                 </template>
+                <template #body-vs-cs-line-strong="{ item }">
+                    <div
+                        :class="['cs-swatch', item.className]"
+                        :style="{ backgroundColor: 'var(--vs-cs-line-strong)' }"
+                    />
+                </template>
                 <template #body-vs-cs-font="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-font)' }" />
                 </template>
@@ -81,6 +87,7 @@ export default defineComponent({
     setup() {
         const csVariables = [
             { key: 'vs-cs-line', label: '--vs-cs-line' },
+            { key: 'vs-cs-line-strong', label: '--vs-cs-line-strong' },
             { key: 'vs-cs-font', label: '--vs-cs-font' },
             { key: 'vs-cs-font-colored', label: '--vs-cs-font-colored' },
             { key: 'vs-cs-font-primary', label: '--vs-cs-font-primary' },

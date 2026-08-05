@@ -5,6 +5,7 @@
  */
 :root {
     --vs-cs-line: initial;
+    --vs-cs-line-strong: initial;
 
     --vs-cs-font: initial;
     --vs-cs-font-colored: initial;

@@ -76,7 +76,7 @@
     &:focus-within {
         .vs-switch-button {
             @apply outline-offset-2;
-            outline: 1px solid var(--vs-cs-line) !important;
+            outline: 1px solid var(--vs-cs-line-strong) !important;
         }
     }
 }

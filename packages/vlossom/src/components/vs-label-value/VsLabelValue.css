@@ -3,9 +3,10 @@
 .vs-label-value {
     --vs-label-value-border: initial;
     --vs-label-value-line: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
+    --vs-label-value-inner-line: var(--vs-label-value-border, 1px solid var(--vs-cs-line));
     --vs-label-value-direction: row;
     --vs-label-value-cell-justify: normal;
-    --vs-label-value-label-border-right: var(--vs-label-value-line);
+    --vs-label-value-label-border-right: var(--vs-label-value-inner-line);
     --vs-label-value-label-border-bottom: none;
 
     @apply relative flex w-full overflow-hidden;
@@ -42,6 +43,7 @@
 
     &.vs-primary {
         --vs-label-value-line: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
+        --vs-label-value-inner-line: var(--vs-label-value-border, 1px solid var(--vs-cs-bg-primary));
 
         .vs-label {
             background-color: var(--vs-cs-bg-primary);
@@ -53,7 +55,7 @@
         --vs-label-value-direction: column;
         --vs-label-value-cell-justify: flex-start;
         --vs-label-value-label-border-right: none;
-        --vs-label-value-label-border-bottom: var(--vs-label-value-line);
+        --vs-label-value-label-border-bottom: var(--vs-label-value-inner-line);
     }
 
     @container (max-width: 768px) {
@@ -61,7 +63,7 @@
             --vs-label-value-direction: column;
             --vs-label-value-cell-justify: flex-start;
             --vs-label-value-label-border-right: none;
-            --vs-label-value-label-border-bottom: var(--vs-label-value-line);
+            --vs-label-value-label-border-bottom: var(--vs-label-value-inner-line);
         }
     }
 }

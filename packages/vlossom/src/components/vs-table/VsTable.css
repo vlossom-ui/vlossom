@@ -30,7 +30,7 @@
             background-color: var(--vs-no-color);
 
             .vs-table-th {
-                border-bottom: 1px solid var(--vs-cs-line);
+                border-bottom: 1px solid var(--vs-cs-line-strong);
             }
         }
     }
@@ -76,7 +76,7 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        border-bottom: 1px solid var(--vs-cs-line);
+        border-bottom: 1px solid var(--vs-cs-line-strong);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
 
@@ -119,7 +119,7 @@
     .vs-table-draggable-wrapper > .vs-table-body-row {
         @apply relative box-border transition-colors duration-250 ease-in-out;
         border: 1px solid transparent;
-        border-top-color: var(--vs-cs-bg-comp-colored);
+        border-top-color: var(--vs-cs-line);
 
         &:not(:first-child) {
             margin-top: -1px;
@@ -210,7 +210,7 @@
 
     .vs-table-td.vs-table-drag-handle {
         @apply w-4 cursor-grab px-0!;
-        color: var(--vs-cs-line);
+        color: var(--vs-cs-font-colored);
     }
 
     .vs-table-th.vs-table-expand-handle,
@@ -296,14 +296,14 @@
 
         .vs-table-draggable-wrapper > .vs-table-body-row {
             @apply mx-0 mt-0 mb-3 border border-solid;
-            border: 0.0325rem solid var(--vs-cs-line);
+            border: 1px solid var(--vs-cs-line);
         }
 
         .vs-table-td {
             @apply grid gap-2 border-r-0 border-b border-l-0 border-dashed p-3;
             grid-column: minmax(6rem, 9rem) 1fr;
 
-            /* 구분선 색을 카드 외곽선과 동일하게 고정. (명시하지 않으면 currentColor를 따라 셀 텍스트색에 따라 달라진다) */
+            /* 구분선 색을 명시하지 않으면 currentColor를 따라 셀 텍스트색에 따라 달라진다. */
             border-bottom-color: var(--vs-cs-line);
         }
 

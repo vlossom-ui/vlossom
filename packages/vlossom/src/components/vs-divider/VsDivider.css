@@ -9,7 +9,6 @@
     --vs-divider-verticalHeight: initial;
     --vs-divider-verticalMargin: initial;
 
-    opacity: 50%;
     margin: var(--vs-divider-horizontalMargin, 0.6rem 0);
     border-top: var(--vs-divider-border, 1px solid var(--vs-cs-line));
     width: var(--vs-divider-horizontalWidth, 100%);

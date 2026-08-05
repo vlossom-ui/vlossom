@@ -14,12 +14,12 @@
     height: auto;
 
     &:hover {
-        outline: 1px solid var(--vs-cs-line) !important;
+        outline: 1px solid var(--vs-cs-line-strong) !important;
         outline-offset: 2px !important;
     }
 
     &.vs-dragging {
-        outline: 2px dashed var(--vs-cs-line);
+        outline: 2px dashed var(--vs-cs-line-strong);
         background-color: var(--vs-file-drop-dragBackgroundColor, var(--vs-cs-bg-area));
     }
 
