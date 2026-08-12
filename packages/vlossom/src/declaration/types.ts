@@ -125,7 +125,13 @@ export interface StringModifiers {
     upper?: boolean;
 }
 
-export type SearchProps = boolean | { useRegex?: boolean; useCaseSensitive?: boolean; placeholder?: string };
+export interface SearchOptions {
+    useRegex?: boolean;
+    useCaseSensitive?: boolean;
+    placeholder?: string;
+}
+
+export type SearchProps = boolean | SearchOptions;
 
 export interface OptionItem {
     id: string;

@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
-import type { SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
+import type { SearchOptions, SizeProp, TextAlignment, VerticalAlignment } from '@/declaration';
 import type VsTable from './VsTable.vue';
 import type { VsSearchInputStyleSet } from '@/components/vs-search-input/types';
 import type { VsPaginationStyleSet } from '@/components/vs-pagination/types';
@@ -70,6 +70,10 @@ export enum VsTableSortType {
     NONE,
     ASCEND,
     DESCEND,
+}
+
+export interface VsTableSearchOptions<I = VsTableItem> extends SearchOptions {
+    extraKeys?: VsTableColumnKey<I>[];
 }
 
 export interface VsTableColumnDef<I = VsTableItem> {
