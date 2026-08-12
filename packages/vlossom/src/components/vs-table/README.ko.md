@@ -42,6 +42,30 @@ const items = [
 </template>
 ```
 
+### 검색 범위
+
+검색은 테이블 바디에 렌더링된 값을 대상으로 동작하므로, 컬럼의 `transform` 결과도 화면에 보이는 그대로 검색됩니다. 범위는 두 가지 옵션으로 조정합니다.
+
+- 컬럼의 `skipSearch`: 렌더링되는 컬럼을 검색 대상에서 제외합니다.
+- `search.extraKeys`: 어떤 컬럼으로도 렌더링되지 않는 아이템 필드를 검색 대상에 추가합니다. 슬롯으로 값을 다른 셀에 끌어와 보여주거나, 숨겨진 메타데이터로 필터링할 때 사용합니다.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="items" :search="{ extraKeys: ['tags'] }">
+        <template #body-name="{ item }">{{ item.name }} ({{ item.tags }})</template>
+    </vs-table>
+</template>
+
+<script setup>
+const columns = [
+    { key: 'name', label: 'Name' },
+    { key: 'note', label: 'Note', skipSearch: true },
+];
+</script>
+```
+
+둘 다 컬럼 `key`와 동일하게 점 표기 경로(`'metadata.email'`)를 지원합니다. 어떤 키가 `skipSearch` 컬럼이거나 그 하위 경로이면, `extraKeys`에 있어도 제외가 우선합니다.
+
 ### 행 선택
 
 ```html
@@ -123,7 +147,7 @@ const selected = ref([]);
 | `pagination`      | `boolean \| VsTablePaginationOptions`          | `false`  | 페이지네이션 활성화                     |
 | `primary`         | `boolean`                                      | `false`  | 헤더에 기본 색상 적용                   |
 | `responsive`      | `boolean`                                      | `false`  | 반응형(스택) 레이아웃 활성화            |
-| `search`          | `boolean \| SearchProps`                       | `false`  | 내장 검색 활성화                        |
+| `search`          | `boolean \| VsTableSearchOptions`              | `false`  | 내장 검색 활성화                        |
 | `selectable`      | `boolean \| (item, index?, items?) => boolean` | `false`  | 행 선택 활성화                          |
 | `selectedItems`   | `VsTableItem[]`                                | `[]`     | 선택된 행, v-model                      |
 | `serverMode`      | `boolean`                                      | `false`  | 서버 측 페이지네이션 모드로 전환        |
@@ -146,6 +170,13 @@ interface VsTableStyleSet extends CSSProperties {
     $cell?: CSSProperties;
     $pagination?: VsPaginationStyleSet;
     $pageSizeSelect?: VsSelectStyleSet;
+}
+
+interface VsTableSearchOptions<I = VsTableItem> {
+    useRegex?: boolean;
+    useCaseSensitive?: boolean;
+    placeholder?: string;
+    extraKeys?: VsTableColumnKey<I>[];
 }
 
 interface VsTableColumnDef<I = VsTableItem> {

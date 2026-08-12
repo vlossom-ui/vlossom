@@ -74,7 +74,7 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 | `width`            | `string \| number \| Breakpoints` | -     | -        | 반응형 너비                                          |
 | `grid`             | `string \| number \| Breakpoints` | -     | -        | 그리드 컬럼 스팬                                     |
 | `disabled`         | `boolean`                       | `false` | -        | 입력 비활성화                                        |
-| `placeholder`      | `string`                        | `''`    | -        | 플레이스홀더 텍스트                                  |
+| `placeholder`      | `string`                        | `'Search'` | -     | 플레이스홀더 텍스트                                  |
 | `readonly`         | `boolean`                       | `false` | -        | 입력을 읽기 전용으로 설정                            |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -    | 입력 영역 높이 · 패딩 · 폰트 · 토글 버튼 크기 제어   |
 | `useCaseSensitive` | `boolean`                       | `false` | -        | 대소문자 구분 토글 버튼 표시                         |

@@ -106,7 +106,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
         });
 
@@ -121,7 +120,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
         });
     });
@@ -182,7 +180,7 @@ describe('useSelectSearch', () => {
             expect(searchProps.value.placeholder).toBe('Search options...');
         });
 
-        it('placeholder가 명시되지 않으면 빈 문자열을 사용해야 한다', () => {
+        it('placeholder가 명시되지 않으면 VsSearchInput의 기본값에 맡긴다', () => {
             // given
             const search = ref<SearchProps>({});
 
@@ -190,7 +188,7 @@ describe('useSelectSearch', () => {
             const { searchProps } = useSelectSearch(search);
 
             // then
-            expect(searchProps.value.placeholder).toBe('');
+            expect(searchProps.value.placeholder).toBeUndefined();
         });
 
         it('모든 속성을 명시한 경우 해당 값들을 사용해야 한다', () => {
@@ -225,7 +223,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: false,
                 useCaseSensitive: true,
-                placeholder: '',
             });
         });
     });
@@ -239,7 +236,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
 
             // when
@@ -290,7 +286,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
 
             // when - search true로 변경
@@ -301,7 +296,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
 
             // when - search 객체로 변경
@@ -327,7 +321,6 @@ describe('useSelectSearch', () => {
             expect(searchProps.value).toEqual({
                 useRegex: true,
                 useCaseSensitive: true,
-                placeholder: '',
             });
         });
     });
