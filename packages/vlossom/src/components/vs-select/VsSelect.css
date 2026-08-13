@@ -101,4 +101,16 @@
             }
         }
     }
+
+    .vs-select-empty {
+        @apply flex flex-col items-center justify-center gap-1 select-none;
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
+
+        color: var(--vs-cs-line);
+
+        .vs-select-empty-icon {
+            width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.5);
+            height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.5);
+        }
+    }
 }

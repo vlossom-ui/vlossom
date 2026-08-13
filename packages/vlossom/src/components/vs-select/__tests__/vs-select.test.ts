@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import VsSelect from './../VsSelect.vue';
@@ -120,6 +120,19 @@ describe('VsSelect', () => {
             expect(wrapper.vm.filteredOptions[0].value).toBe(1);
         });
 
+        it('빈 배열 옵션을 전달하면 표시할 옵션이 없다', () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: [],
+                    modelValue: null,
+                },
+            });
+
+            // then
+            expect(wrapper.vm.filteredOptions).toHaveLength(0);
+        });
+
         it('disabled 옵션이 있는 경우 disabled 속성이 설정되어야 한다', () => {
             // given
             const wrapper = mount(VsSelect, {
@@ -134,6 +147,81 @@ describe('VsSelect', () => {
 
             // then
             expect(wrapper.vm.filteredOptions[2].disabled).toBe(true);
+        });
+    });
+
+    describe('empty UI', () => {
+        async function mountAndOpen(options: Record<string, any>) {
+            const wrapper = mount(VsSelect, { attachTo: document.body, ...options });
+
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            return wrapper;
+        }
+
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it('options가 비어 있으면 기본 empty UI가 렌더링된다', async () => {
+            // given, when
+            const wrapper = await mountAndOpen({ props: { options: [], modelValue: null } });
+
+            // then
+            const empty = document.querySelector('.vs-select-empty');
+            expect(empty).not.toBeNull();
+            expect(empty?.textContent).toContain('No Options');
+
+            wrapper.unmount();
+        });
+
+        it('options가 있으면 empty UI가 렌더링되지 않는다', async () => {
+            // given, when
+            const wrapper = await mountAndOpen({ props: { options: basicOptions, modelValue: null } });
+
+            // then
+            expect(document.querySelector('.vs-select-empty')).toBeNull();
+
+            wrapper.unmount();
+        });
+
+        it('empty slot으로 기본 empty UI를 대체할 수 있다', async () => {
+            // given, when
+            const wrapper = await mountAndOpen({
+                props: { options: [], modelValue: null },
+                slots: { empty: '<p class="custom-empty">옵션이 없습니다</p>' },
+            });
+
+            // then
+            const empty = document.querySelector('.vs-select-empty');
+            expect(empty?.textContent).not.toContain('No Options');
+            expect(document.querySelector('.custom-empty')?.textContent).toBe('옵션이 없습니다');
+
+            wrapper.unmount();
+        });
+
+        it('검색 결과가 없으면 empty UI가 렌더링된다', async () => {
+            // given
+            const wrapper = await mountAndOpen({ props: { options: basicOptions, modelValue: null, search: true } });
+            expect(document.querySelector('.vs-select-empty')).toBeNull();
+
+            // when
+            (wrapper.vm.searchInputRef as any).searchText = 'Melon';
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.filteredOptions).toHaveLength(0);
+            expect(document.querySelector('.vs-select-empty')).not.toBeNull();
+
+            wrapper.unmount();
         });
     });
 
