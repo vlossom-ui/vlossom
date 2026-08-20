@@ -114,6 +114,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | ---- | ----------- |
 | `header` | Content for the scrollable list header |
 | `footer` | Content for the scrollable list footer |
+| `empty` | Content shown in the list body when `items` is empty |
 | `group` | Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }` |
 | `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, group, groupIndex }` |
 

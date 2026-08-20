@@ -114,6 +114,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | ---- | ---- |
 | `header` | 스크롤 가능한 목록 헤더의 콘텐츠 |
 | `footer` | 스크롤 가능한 목록 푸터의 콘텐츠 |
+| `empty` | `items`가 비어 있을 때 목록 본문에 표시되는 콘텐츠 |
 | `group` | 그룹 헤더의 사용자 정의 렌더링. `{ group: string, groupIndex: number, items: OptionItem[] }` 제공 |
 | `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ groupedIndex, group, groupIndex }` 제공 |
 

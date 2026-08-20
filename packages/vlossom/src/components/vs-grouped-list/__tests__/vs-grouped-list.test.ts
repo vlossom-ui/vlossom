@@ -341,6 +341,38 @@ describe('vs-grouped-list', () => {
         });
     });
 
+    describe('empty slot', () => {
+        it('빈 items 배열일 때 empty slot이 렌더링되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: [],
+                },
+                slots: {
+                    empty: '<p class="custom-empty">데이터가 없습니다</p>',
+                },
+            });
+
+            // then
+            expect(wrapper.find('.custom-empty').exists()).toBe(true);
+        });
+
+        it('items가 있으면 empty slot이 렌더링되지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsGroupedList, {
+                props: {
+                    items: defaultItems,
+                },
+                slots: {
+                    empty: '<p class="custom-empty">데이터가 없습니다</p>',
+                },
+            });
+
+            // then
+            expect(wrapper.find('.custom-empty').exists()).toBe(false);
+        });
+    });
+
     describe('scrollToItem', () => {
         it('존재하지 않는 id로 호출해도 오류가 발생하지 않아야 한다', () => {
             // given
