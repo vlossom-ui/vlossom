@@ -1,6 +1,21 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { globSync } from 'glob';
 
 const cssFiles = globSync('./src/**/*.css', { cwd: import.meta.dirname, absolute: true });
+
+// color-scheme.scss는 @each 루프로 --vs-{color}(-soft|-strong)를 만들어서 파일에서 정적으로 추출할 수 없다.
+// $colors 목록만 읽어 SCSS와 같은 규칙으로 변수 이름을 다시 만든다.
+const colorSchemeScss = fs.readFileSync(path.join(import.meta.dirname, 'src/styles/color-scheme.scss'), 'utf-8');
+const colors = (colorSchemeScss.match(/\$colors:([^;]*);/)?.[1] ?? '')
+    .split(',')
+    .map((color) => color.trim().replaceAll("'", ''))
+    .filter(Boolean);
+const semanticColorProperties = Object.fromEntries(
+    colors.flatMap((color) =>
+        [`--vs-${color}-soft`, `--vs-${color}`, `--vs-${color}-strong`].map((name) => [name, '']),
+    ),
+);
 
 /** @type {import('stylelint').Config} */
 export default {
@@ -11,9 +26,6 @@ export default {
         '**/*.vue',
         // SCSS files with dynamic variable interpolation
         '**/color-scheme.scss',
-        '**/state.css',
-        // Tailwind CSS color variables (--color-*) reference
-        '**/pallete.css',
         // Dynamic CSS variables set via inline styles from JS
         '**/vs-responsive/VsResponsive.css',
     ],
@@ -22,7 +34,7 @@ export default {
         'csstools/value-no-unknown-custom-properties': [
             true,
             {
-                importFrom: cssFiles,
+                importFrom: [...cssFiles, { customProperties: semanticColorProperties }],
             },
         ],
 

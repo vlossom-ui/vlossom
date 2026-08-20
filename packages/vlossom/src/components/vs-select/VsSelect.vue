@@ -99,6 +99,14 @@
                             </slot>
                         </div>
                     </template>
+                    <template #empty>
+                        <div class="vs-select-empty" @keydown.stop>
+                            <slot name="empty">
+                                <BanIcon class="vs-select-empty-icon" />
+                                <p class="vs-select-empty-text">No Options</p>
+                            </slot>
+                        </div>
+                    </template>
                     <template #footer v-if="$slots['options-footer']">
                         <div class="vs-select-slot" @keydown.stop>
                             <slot name="options-footer" />
@@ -156,6 +164,7 @@ import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
 
+import { BanIcon } from '@lucide/vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
@@ -168,7 +177,7 @@ import VsSelectTrigger from './VsSelectTrigger.vue';
 const componentName = VsComponent.VsSelect;
 export default defineComponent({
     name: componentName,
-    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsGroupedList, VsSelectTrigger },
+    components: { VsFloating, VsInputWrapper, VsSearchInput, VsCheckbox, VsGroupedList, VsSelectTrigger, BanIcon },
     props: {
         ...getInputProps<any>(),
         ...getResponsiveProps(),

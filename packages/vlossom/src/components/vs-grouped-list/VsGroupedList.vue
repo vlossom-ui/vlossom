@@ -39,6 +39,8 @@
             </template>
         </vs-visible-render>
 
+        <slot name="empty" v-if="items.length === 0" />
+
         <template #footer v-if="$slots.footer">
             <slot name="footer" />
         </template>
