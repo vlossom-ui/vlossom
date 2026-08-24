@@ -4,6 +4,27 @@
             <h1 class="text-2xl font-bold">Line Tiers</h1>
         </template>
 
+        <h3 class="mb-4 font-semibold">Input components by size</h3>
+        <p class="mb-4 text-sm">
+            Every input component at every size, one row per size. Controls in a row are centered on a single line, so a
+            control whose box is taller or shorter than the others shows up as a misalignment.
+        </p>
+        <div class="mb-8 flex w-full flex-col gap-4">
+            <div v-for="size in sizes" :key="size" class="flex flex-wrap items-center gap-3">
+                <code class="size-name">{{ size }}</code>
+                <vs-input v-model="text" :size width="16rem" placeholder="Input" />
+                <vs-search-input :size width="16rem" placeholder="Search" />
+                <vs-select v-model="fruit" :size width="16rem" :options="fruits" placeholder="Select" />
+                <vs-date-picker v-model="date" :size width="16rem" />
+                <vs-checkbox v-model="checked" :size width="16rem" check-label="Checkbox" />
+                <vs-radio-set v-model="choice" :size width="16rem" :options="['One', 'Two']" />
+                <vs-switch v-model="toggled" :size width="16rem" true-label="ON" false-label="OFF" />
+                <vs-textarea v-model="text" :size width="16rem" placeholder="Textarea" />
+            </div>
+        </div>
+        <vs-divider style-set="playground" />
+
+        <h3 class="mb-4 font-semibold">Line Tiers</h3>
         <p class="mb-8 text-sm">
             Lines come in two tiers. <code>--vs-cs-line</code> is the default for anything at rest, and
             <code>--vs-cs-line-strong</code> is one step up for lines that need to be noticed. Toggle the theme in the
@@ -131,7 +152,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { COLORS } from '@/declaration';
+import { COLORS, SIZES } from '@/declaration';
 
 export default defineComponent({
     name: 'Sandbox',
@@ -162,6 +183,7 @@ export default defineComponent({
         ];
 
         return {
+            sizes: SIZES,
             tiers,
             backgrounds,
             schemes,
@@ -172,6 +194,7 @@ export default defineComponent({
             choice: ref('One'),
             toggled: ref(false),
             fruit: ref<string | null>(null),
+            date: ref(''),
             fruits: ['Apple', 'Banana', 'Cherry'],
             focusChecked: ref(false),
             focusToggled: ref(false),
@@ -182,6 +205,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.size-name {
+    width: 2rem;
+    font-size: 0.75rem;
+}
+
 .tier-legend {
     display: flex;
     flex-direction: column;

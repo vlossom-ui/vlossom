@@ -1,7 +1,9 @@
 @reference 'tailwindcss';
 
 .vs-chip {
-    --vs-chip-computed-height: var(--vs-size-height, var(--vs-comp-height-md));
+    --vs-chip-height: initial;
+
+    --vs-chip-computed-height: var(--vs-chip-height, var(--vs-size-height, var(--vs-comp-height-md)));
     --vs-chip-icon-size: calc(var(--vs-chip-computed-height) * 0.75);
     --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.12);
 
