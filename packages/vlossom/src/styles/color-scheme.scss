@@ -5,15 +5,15 @@ $colors:
 :root {
     @each $color in $colors {
         --vs-#{$color}-soft: var(--vs-#{$color}-100);
-        --vs-#{$color}: var(--vs-#{$color}-600);
+        --vs-#{$color}: var(--vs-#{$color}-500);
         --vs-#{$color}-strong: var(--vs-#{$color}-800);
     }
 
     &.vs-dark {
         @each $color in $colors {
-            --vs-#{$color}-soft: var(--vs-#{$color}-950);
-            --vs-#{$color}: var(--vs-#{$color}-600);
-            --vs-#{$color}-strong: var(--vs-#{$color}-200);
+            --vs-#{$color}-soft: var(--vs-#{$color}-900);
+            --vs-#{$color}: var(--vs-#{$color}-700);
+            --vs-#{$color}-strong: var(--vs-#{$color}-300);
         }
     }
 

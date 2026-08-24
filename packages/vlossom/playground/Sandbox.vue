@@ -24,6 +24,58 @@
         </div>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">Input components by state</h3>
+        <p class="mb-4 text-sm">
+            Every input component in each <code>state</code>, with a matching message. The state color has to reach the
+            control itself, not only the message line.
+        </p>
+        <div class="mb-8 flex w-full flex-col gap-4">
+            <div v-for="state in states" :key="state" class="flex flex-wrap items-start gap-3">
+                <code class="size-name">{{ state }}</code>
+                <vs-input v-model="text" :state :messages="messagesFor(state)" width="16rem" placeholder="Input" />
+                <vs-search-input :state width="16rem" placeholder="Search" />
+                <vs-select
+                    v-model="fruit"
+                    :state
+                    :messages="messagesFor(state)"
+                    :options="fruits"
+                    width="16rem"
+                    placeholder="Select"
+                />
+                <vs-date-picker v-model="date" :state :messages="messagesFor(state)" width="16rem" />
+                <vs-checkbox
+                    v-model="checked"
+                    :state
+                    :messages="messagesFor(state)"
+                    width="16rem"
+                    check-label="Checkbox"
+                />
+                <vs-radio-set
+                    v-model="choice"
+                    :state
+                    :messages="messagesFor(state)"
+                    :options="['One', 'Two']"
+                    width="16rem"
+                />
+                <vs-switch
+                    v-model="toggled"
+                    :state
+                    :messages="messagesFor(state)"
+                    width="16rem"
+                    true-label="ON"
+                    false-label="OFF"
+                />
+                <vs-textarea
+                    v-model="text"
+                    :state
+                    :messages="messagesFor(state)"
+                    width="16rem"
+                    placeholder="Textarea"
+                />
+            </div>
+        </div>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">Line Tiers</h3>
         <p class="mb-8 text-sm">
             Lines come in two tiers. <code>--vs-cs-line</code> is the default for anything at rest, and
@@ -152,7 +204,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { COLORS, SIZES } from '@/declaration';
+import { COLORS, SIZES, type UIState } from '@/declaration';
 
 export default defineComponent({
     name: 'Sandbox',
@@ -182,8 +234,16 @@ export default defineComponent({
             { id: 3, name: 'Charlie', role: 'viewer' },
         ];
 
+        const states: UIState[] = ['idle', 'success', 'info', 'warning', 'error'];
+
+        function messagesFor(state: UIState) {
+            return state === 'idle' ? [] : [{ state, text: `${state} message` }];
+        }
+
         return {
             sizes: SIZES,
+            states,
+            messagesFor,
             tiers,
             backgrounds,
             schemes,
