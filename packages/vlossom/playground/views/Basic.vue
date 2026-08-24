@@ -83,7 +83,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <vs-button size="xs">Extra Small</vs-button>
                     <vs-button size="sm">Small</vs-button>
-                    <vs-button>Default</vs-button>
+                    <vs-button>Medium</vs-button>
                     <vs-button size="lg">Large</vs-button>
                     <vs-button size="xl">Extra Large</vs-button>
                 </div>
@@ -113,7 +113,7 @@
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Sizes</h4>
                 <div class="flex flex-wrap items-center gap-2">
                     <vs-chip size="xs">Extra Small</vs-chip>
-                    <vs-chip>Small(Default)</vs-chip>
+                    <vs-chip size="sm">Small</vs-chip>
                     <vs-chip size="md">Medium</vs-chip>
                     <vs-chip size="lg">Large</vs-chip>
                     <vs-chip size="xl">Extra Large</vs-chip>
@@ -223,9 +223,7 @@
                     class="flex w-40 flex-col items-center justify-center gap-2 rounded border border-dashed
                         border-gray-300 p-3 dark:border-gray-600"
                 >
-                    <vs-chip :primary="toggleValue" :style-set="{ width: '120px' }">{{
-                        toggleValue
-                    }}</vs-chip>
+                    <vs-chip :primary="toggleValue" :style-set="{ width: '120px' }">{{ toggleValue }}</vs-chip>
                 </div>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -242,7 +240,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <vs-toggle v-model="toggleValue" size="xs">Extra Small</vs-toggle>
                     <vs-toggle v-model="toggleValue" size="sm">Small</vs-toggle>
-                    <vs-toggle v-model="toggleValue">Default</vs-toggle>
+                    <vs-toggle v-model="toggleValue">Medium</vs-toggle>
                     <vs-toggle v-model="toggleValue" size="lg">Large</vs-toggle>
                     <vs-toggle v-model="toggleValue" size="xl">Extra Large</vs-toggle>
                 </div>

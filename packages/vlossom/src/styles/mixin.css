@@ -4,6 +4,12 @@
         opacity: 0.5 !important;
     }
 
+    .vs-dark {
+        .vs-disabled {
+            opacity: 0.75 !important;
+        }
+    }
+
     .vs-readonly {
         @apply pointer-events-none cursor-default;
     }
