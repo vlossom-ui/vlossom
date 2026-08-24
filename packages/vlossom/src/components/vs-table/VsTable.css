@@ -135,7 +135,7 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg-colored);
+            background-color: var(--vs-cs-bg-area-colored);
             color: var(--vs-cs-font);
         }
 
