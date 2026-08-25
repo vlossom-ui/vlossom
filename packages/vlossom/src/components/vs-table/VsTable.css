@@ -76,7 +76,7 @@
         @apply flex items-center;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-line);
-        border-bottom: 1px solid var(--vs-cs-line-strong);
+        border-bottom: 1px solid var(--vs-cs-line);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8);
 
