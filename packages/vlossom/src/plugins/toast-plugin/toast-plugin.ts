@@ -36,7 +36,7 @@ export function createToastPlugin(): ToastPlugin {
         },
 
         info(content: string | Component, options: ToastOptions = {}) {
-            this.show(content, { colorScheme: 'cyan', ...options });
+            this.show(content, { colorScheme: 'sky', ...options });
         },
 
         success(content: string | Component, options: ToastOptions = {}) {
