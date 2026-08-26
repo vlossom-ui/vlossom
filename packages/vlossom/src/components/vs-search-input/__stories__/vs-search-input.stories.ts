@@ -45,6 +45,12 @@ const meta: Meta<typeof VsSearchInput> = {
             description: '플레이스홀더 텍스트',
             table: { category: 'Common Props' },
         },
+        state: {
+            control: 'select',
+            options: ['idle', 'success', 'error', 'info', 'warning'],
+            description: 'Input 상태',
+            table: { category: 'Common Props', defaultValue: { summary: 'idle' } },
+        },
         // Layout
         size: {
             control: 'select',
@@ -221,6 +227,28 @@ export const DisabledAndReadonly: Story = {
                 <vs-search-input placeholder="정상 상태" />
                 <vs-search-input placeholder="비활성화 상태" disabled />
                 <vs-search-input placeholder="읽기 전용 상태" readonly />
+            </div>
+        `,
+    }),
+};
+
+export const States: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'state prop으로 검색 입력 필드의 상태를 시각적으로 표현할 수 있습니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsSearchInput },
+        setup() {
+            const states = ['idle', 'success', 'info', 'warning', 'error'] as const;
+            return { states };
+        },
+        template: `
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <vs-search-input v-for="state in states" :key="state" :state="state" :placeholder="state" />
             </div>
         `,
     }),

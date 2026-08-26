@@ -19,7 +19,7 @@
 
             &:focus-within {
                 @apply outline-1 outline-offset-2;
-                outline-color: var(--vs-checkbox-checkboxColor, var(--vs-cs-line));
+                outline-color: var(--vs-checkbox-checkboxColor, var(--vs-cs-line-strong));
             }
 
             &:before {

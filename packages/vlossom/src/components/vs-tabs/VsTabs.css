@@ -5,7 +5,7 @@
 
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     --tab-border: 1px solid transparent;
-    --tab-border-color: var(--vs-cs-line);
+    --tab-border-color: var(--vs-cs-line-strong);
     --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @apply relative flex w-full items-start gap-2 select-none;
@@ -55,7 +55,7 @@
                 }
 
                 &:focus-visible:not(.vs-disabled) {
-                    outline: 1px solid var(--vs-cs-line);
+                    outline: 1px solid var(--vs-cs-line-strong);
                     outline-offset: -3px;
                 }
             }
@@ -69,7 +69,7 @@
                 border-bottom: transparent;
                 border-top-right-radius: var(--tab-radius);
                 border-top-left-radius: var(--tab-radius);
-                background-color: var(--vs-cs-bg-area-colored);
+                background-color: var(--vs-cs-bg-colored);
             }
         }
     }
@@ -103,7 +103,7 @@
                     border-bottom-left-radius: var(--tab-radius);
 
                     &:hover:not(.vs-disabled):not(.vs-selected) {
-                        border-right-color: var(--vs-cs-bg-colored);
+                        border-right-color: var(--tab-border-color);
                     }
                 }
 

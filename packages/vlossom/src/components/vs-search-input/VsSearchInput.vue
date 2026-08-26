@@ -12,6 +12,7 @@
         :readonly
         :placeholder
         :size
+        :state
         no-clear
         no-messages
         no-label
@@ -67,7 +68,7 @@ import {
     type TemplateRef,
     type ComputedRef,
 } from 'vue';
-import { VsComponent, type Size } from '@/declaration';
+import { VsComponent, type Size, type UIState } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { functionUtil } from '@/utils';
@@ -89,6 +90,7 @@ export default defineComponent({
         placeholder: { type: String, default: 'Search' },
         readonly: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
+        state: { type: String as PropType<UIState>, default: 'idle' },
         useCaseSensitive: { type: Boolean, default: false },
         useRegex: { type: Boolean, default: false },
 

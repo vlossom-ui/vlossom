@@ -9,9 +9,8 @@
     --vs-divider-verticalHeight: initial;
     --vs-divider-verticalMargin: initial;
 
-    opacity: 50%;
     margin: var(--vs-divider-horizontalMargin, 0.6rem 0);
-    border-top: var(--vs-divider-border, 1px solid var(--vs-cs-line));
+    border-top: var(--vs-divider-border, 1px solid var(--vs-cs-line-strong));
     width: var(--vs-divider-horizontalWidth, 100%);
     height: 0;
 
@@ -19,7 +18,7 @@
         @apply inline-block w-0 border-t-0 border-l align-top;
 
         margin: var(--vs-divider-verticalMargin, 0 0.6rem);
-        border-left: var(--vs-divider-border, 1px solid var(--vs-cs-line));
+        border-left: var(--vs-divider-border, 1px solid var(--vs-cs-line-strong));
         width: 0;
         height: var(--vs-divider-verticalHeight, 100%);
     }
@@ -29,7 +28,7 @@
         @apply border-t border-l-0;
 
         margin: var(--vs-divider-horizontalMargin, 0.6rem 0);
-        border-top: var(--vs-divider-border, 1px solid var(--vs-cs-line));
+        border-top: var(--vs-divider-border, 1px solid var(--vs-cs-line-strong));
         width: var(--vs-divider-horizontalWidth, 100%);
         height: 0;
     }

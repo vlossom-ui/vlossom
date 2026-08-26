@@ -77,6 +77,7 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 | `placeholder`      | `string`                        | `'Search'` | -     | 플레이스홀더 텍스트                                  |
 | `readonly`         | `boolean`                       | `false` | -        | 입력을 읽기 전용으로 설정                            |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -    | 입력 영역 높이 · 패딩 · 폰트 · 토글 버튼 크기 제어   |
+| `state`            | `UIState`                       | `'idle'` | -       | 시각적 상태 (`idle`, `info`, `success`, `warning`, `error`) |
 | `useCaseSensitive` | `boolean`                       | `false` | -        | 대소문자 구분 토글 버튼 표시                         |
 | `useRegex`         | `boolean`                       | `false` | -        | 정규식 토글 버튼 표시                                |
 | `modelValue`       | `string`                        | `''`    | -        | 검색 텍스트 값 (v-model)                             |

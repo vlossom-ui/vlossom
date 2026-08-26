@@ -234,6 +234,30 @@ describe('VsSearchInput', () => {
         });
     });
 
+    describe('state', () => {
+        it('state prop이 내부 input에 전달되어야 한다', () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: {
+                    state: 'error',
+                },
+            });
+
+            // then
+            expect(wrapper.find('.vs-input').classes()).toEqual(
+                expect.arrayContaining(['vs-state-box', 'vs-stated', 'vs-state-error']),
+            );
+        });
+
+        it('state 기본값은 idle이어서 state class가 붙지 않아야 한다', () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+
+            // then
+            expect(wrapper.find('.vs-input').classes()).not.toContain('vs-stated');
+        });
+    });
+
     describe('match 메서드', () => {
         it('검색어가 없으면 항상 true를 반환해야 한다', () => {
             // given
