@@ -46,7 +46,7 @@
                 .vs-step-num::after {
                     position: absolute;
                     inset: 2px;
-                    border: 1px solid var(--vs-cs-line);
+                    border: 1px solid var(--vs-cs-line-strong);
                     border-radius: 100%;
                     pointer-events: none;
                     content: '';

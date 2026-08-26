@@ -21,6 +21,5 @@
 
         width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
         height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
-        color: var(--vs-cs-font-primary);
     }
 }

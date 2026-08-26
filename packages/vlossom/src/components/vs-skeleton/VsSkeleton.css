@@ -11,7 +11,7 @@
     .vs-skeleton-bg {
         @apply absolute h-full w-full;
 
-        animation: skeleton-blink 1s ease infinite alternate;
+        animation: skeleton-blink 1.2s ease infinite alternate;
         background-color: var(--vs-cs-bg-comp-colored);
     }
 
@@ -24,10 +24,10 @@
 
 @keyframes skeleton-blink {
     0% {
-        opacity: 0.05;
+        opacity: 0.2;
     }
 
     100% {
-        opacity: 0.25;
+        opacity: 0.5;
     }
 }

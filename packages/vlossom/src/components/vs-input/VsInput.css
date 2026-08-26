@@ -26,19 +26,18 @@
     .vs-prepend,
     .vs-append {
         opacity: 1;
-        background-color: var(--vs-cs-bg-primary);
+        background-color: var(--vs-cs-bg-colored);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
-        color: var(--vs-cs-font-primary);
+        color: var(--vs-cs-bg-primary);
     }
 
     .vs-clear-button {
         @apply mr-2.5 flex items-center justify-center rounded border-none opacity-0;
 
+        transition: opacity 0.4s;
+        background: none;
         width: 1.25em;
         height: 1.25em;
-        transition: opacity 0.4s;
-
-        background: none;
 
         .vs-clear-icon {
             width: 100%;

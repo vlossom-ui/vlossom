@@ -37,11 +37,11 @@
 
         --vs-comp-height-xs: 1.5rem;
         --vs-comp-height-sm: 1.8rem;
-        --vs-comp-height-md: 2rem;
-        --vs-comp-height-lg: 2.2rem;
-        --vs-comp-height-xl: 2.5rem;
+        --vs-comp-height-md: 2.2rem;
+        --vs-comp-height-lg: 2.4rem;
+        --vs-comp-height-xl: 2.8rem;
 
-        --vs-padding-xs: 0.4rem;
+        --vs-padding-xs: 0.5rem;
         --vs-padding-sm: 0.6rem;
         --vs-padding-md: 0.8rem;
         --vs-padding-lg: 1rem;

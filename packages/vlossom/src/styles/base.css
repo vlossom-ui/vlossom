@@ -1,6 +1,5 @@
-body {
-    color: var(--vs-no-color-inverse);
-    font-size: var(--vs-font-size-md);
+html {
+    font-size: 15px;
 }
 
 html,
@@ -22,6 +21,11 @@ body {
         'Segoe UI Emoji',
         'Segoe UI Symbol',
         sans-serif;
+}
+
+body {
+    color: var(--vs-no-color-inverse);
+    font-size: var(--vs-font-size-md);
 }
 
 /* 스크롤바 너비를 8px로 고정 -> 변경 시 scroll-lock-composable.ts 수정 필요 */

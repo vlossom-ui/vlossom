@@ -66,7 +66,7 @@
 .vs-select-options {
     @apply overflow-hidden;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-line-strong);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-no-color);
     font-size: var(--vs-size-font, var(--vs-font-size-md));

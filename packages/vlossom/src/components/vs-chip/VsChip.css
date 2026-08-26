@@ -5,7 +5,7 @@
 
     --vs-chip-computed-height: var(--vs-chip-height, var(--vs-size-height, var(--vs-comp-height-md)));
     --vs-chip-icon-size: calc(var(--vs-chip-computed-height) * 0.75);
-    --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.13);
+    --vs-chip-icon-margin: calc(var(--vs-chip-computed-height) * 0.12);
 
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96
         active:brightness-92;

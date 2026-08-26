@@ -182,12 +182,8 @@
                 >
                     <vs-chip :style-set="{ width: '80px' }">{{ progressValue }}%</vs-chip>
                     <div class="flex gap-2">
-                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="decreaseProgress"
-                            >-</vs-button
-                        >
-                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="increaseProgress"
-                            >+</vs-button
-                        >
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="decreaseProgress">-</vs-button>
+                        <vs-button size="sm" :style-set="{ width: '2.5rem' }" @click="increaseProgress">+</vs-button>
                     </div>
                 </div>
             </vs-responsive>

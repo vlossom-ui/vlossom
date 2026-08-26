@@ -5,5 +5,5 @@
 }
 
 [data-focusable].vs-focusable-active {
-    border-color: var(--vs-cs-line);
+    border-color: var(--vs-cs-line-strong);
 }
