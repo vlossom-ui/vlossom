@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.0.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0...vlossom-v2.0.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* **colors:** update style & colors for v2.0.1 ([#607](https://github.com/vlossom-ui/vlossom/issues/607)) ([27f1a25](https://github.com/vlossom-ui/vlossom/commit/27f1a25012640e376b2f43db1651e28b2cf45887))
+* **scroll-lock:** incorrect cond for detecting scrollbar ([#588](https://github.com/vlossom-ui/vlossom/issues/588)) ([5e51601](https://github.com/vlossom-ui/vlossom/commit/5e51601911465fea4d9d0e9eeefdab76c9efdf61))
+* **tailwind:** add missing tailwindcss ([bc6a0a4](https://github.com/vlossom-ui/vlossom/commit/bc6a0a4f0f89a402e3b2c957afd44e98876487bc))
+* **VsCheckbox:** match the checkbox interface and implementation ([#574](https://github.com/vlossom-ui/vlossom/issues/574)) ([c96bc34](https://github.com/vlossom-ui/vlossom/commit/c96bc341d3bb401baf6b26ccd47b39866e1a5f50))
+* **VsImage:** fix image IntersectionObserver entries check ([#576](https://github.com/vlossom-ui/vlossom/issues/576)) ([9c2863d](https://github.com/vlossom-ui/vlossom/commit/9c2863dbd4a70fff757144d2bc584cc72f5a1da8))
+* **VsLabelValue:** fix vs-label-value padding ([#575](https://github.com/vlossom-ui/vlossom/issues/575)) ([fb2ffe1](https://github.com/vlossom-ui/vlossom/commit/fb2ffe1903d519cb30e2b9f11876034712e7cea4))
+* **VsSelect,VsRadioSet,VsCheckboxSet:** warn and reset invalid modelValue ([#593](https://github.com/vlossom-ui/vlossom/issues/593)) ([f670218](https://github.com/vlossom-ui/vlossom/commit/f67021811a99638bc2511a47838a53795e20e82a))
+* **VsSelect:** add no options slot ([#602](https://github.com/vlossom-ui/vlossom/issues/602)) ([5347c80](https://github.com/vlossom-ui/vlossom/commit/5347c803bf1e0fdad51369a67146f72a75abf660))
+* **VsSelect:** add offset option at scrollToItem ([#591](https://github.com/vlossom-ui/vlossom/issues/591)) ([4859c9f](https://github.com/vlossom-ui/vlossom/commit/4859c9f2f23f13fe961c433b4ff0d1a494562263))
+* **VsSelect:** fill missing interfaces (open, close options) ([#573](https://github.com/vlossom-ui/vlossom/issues/573)) ([bcb6552](https://github.com/vlossom-ui/vlossom/commit/bcb65525dc6e4e37291d47a570e28f556ec66ad8))
+* **VsSelect:** wrap overflowing option content ([#592](https://github.com/vlossom-ui/vlossom/issues/592)) ([135d2ec](https://github.com/vlossom-ui/vlossom/commit/135d2ecc2787ef20c02bd1f3b1b410cee107759e))
+* **VsTable:** bind row key to item identity instead of row index ([#578](https://github.com/vlossom-ui/vlossom/issues/578)) ([e9f605c](https://github.com/vlossom-ui/vlossom/commit/e9f605cf2b2dc60905218fd44b019333397ff98e))
+* **VsTable:** fix table hover border inset ([#569](https://github.com/vlossom-ui/vlossom/issues/569)) ([9b89527](https://github.com/vlossom-ui/vlossom/commit/9b895275d013f12bc36118e43e5af97c1e3d4578))
+* **VsTable:** search rendered cell values and add search.extraKeys ([#599](https://github.com/vlossom-ui/vlossom/issues/599)) ([dd59e2d](https://github.com/vlossom-ui/vlossom/commit/dd59e2daadf99a1773ae1c8076e36b873ca8a216))
+* **XIcon:** adjust xIcon size by prop size ([#571](https://github.com/vlossom-ui/vlossom/issues/571)) ([b6b71cb](https://github.com/vlossom-ui/vlossom/commit/b6b71cb06c56a872530120b8ab27bc8503d7e4b3))
+
 ## [2.0.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0-beta.5...vlossom-v2.0.0) (2026-06-24)
 
 
