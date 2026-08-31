@@ -2,7 +2,7 @@
 
 # VsGroupedList
 
-선택적 그룹핑, 성능을 위한 가상 가시성 렌더링, 완전한 슬롯 커스터마이징을 지원하는 스크롤 가능한 목록 컴포넌트입니다.
+선택적 그룹핑, 대용량 목록을 위한 자동 가상 스크롤, 완전한 슬롯 커스터마이징을 지원하는 스크롤 가능한 목록 컴포넌트입니다.
 
 **사용 가능 버전**: 2.0.0+
 
@@ -11,6 +11,8 @@
 - `OptionItem` 배열에서 플랫 또는 그룹화된 목록 렌더링
 - `groupBy` 함수 및 `groupOrder` 배열을 통한 선택적 그룹핑
 - 임베디드 `VsInnerScroll` 컴포넌트를 통한 스크롤 가능
+- `items.length >= 100`이면 가상 스크롤 자동 활성화 — 별도 설정 불필요
+- 가상 스크롤은 각 아이템의 실제 DOM 높이를 측정하므로 가변 높이 아이템을 지원
 - 그룹 헤더 및 개별 항목에 대한 완전한 슬롯 커스터마이징
 - 프로그래밍 방식 제어를 위한 `scrollToItem` 및 `hasScroll` 메서드 노출
 
@@ -65,6 +67,32 @@ function onClickItem(item) {
 </template>
 ```
 
+### 대용량 목록 (가상 스크롤)
+
+`items.length >= 100`이면 가상 스크롤이 자동으로 활성화됩니다. 추가 prop이 필요 없습니다. 각 아이템의 실제 DOM 높이를 측정하므로 높이가 서로 다른 아이템도 정확하게 처리됩니다.
+
+```html
+<template>
+    <div style="height: 400px;">
+        <vs-grouped-list
+            ref="listRef"
+            :items="largeItems"
+            @click-item="onClickItem"
+        />
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const listRef = ref(null);
+
+function scrollToSelected(id) {
+    listRef.value?.scrollToItem(id);
+}
+</script>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -105,7 +133,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | 이벤트 | 페이로드 | 설명 |
 | ------ | -------- | ---- |
-| `click-item` | `OptionItem & { groupedIndex: number; group: VsGroupedListGroup; groupIndex: number }` | 항목이 클릭될 때 발생 |
+| `click-item` | `OptionItem & { itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | 항목이 클릭될 때 발생 |
 
 ## 슬롯
 
@@ -115,11 +143,11 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | `footer` | 스크롤 가능한 목록 푸터의 콘텐츠 |
 | `empty` | `items`가 비어 있을 때 목록 본문에 표시되는 콘텐츠 |
 | `group` | 그룹 헤더의 사용자 정의 렌더링. `{ group: string, groupIndex: number, items: OptionItem[] }` 제공 |
-| `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ groupedIndex, group, groupIndex }` 제공 |
+| `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ itemIndex, group, groupIndex }` 제공 |
 
 ## 메서드
 
 | 메서드 | 파라미터 | 설명 |
 | ------ | -------- | ---- |
-| `scrollToItem` | `id: string, offset?: number` | 주어진 id를 가진 항목으로 목록 스크롤. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`) |
+| `scrollToItem` | `id: string, offset?: number` | 주어진 id를 가진 항목으로 목록 스크롤. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`). 가상/일반 렌더링 모드 모두 동작. |
 | `hasScroll` | - | `boolean` 반환 — 목록에 스크롤바가 있으면 `true` |

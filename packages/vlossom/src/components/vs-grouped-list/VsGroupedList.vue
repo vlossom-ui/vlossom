@@ -13,29 +13,72 @@
             <slot name="header" />
         </template>
 
-        <div class="vs-grouped-list-list" ref="listRef" tabindex="-1">
-            <template v-for="(group, groupIndex) in groupedItems" :key="group.name">
-                <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.$group">
-                    <slot name="group" :group="group.name" :groupIndex :items="group.items">
-                        <div class="vs-grouped-list-group-content">
-                            <span>{{ group.name || 'Ungrouped' }}</span>
-                        </div>
-                    </slot>
-                </div>
+        <div
+            class="vs-grouped-list-list"
+            ref="listRef"
+            tabindex="-1"
+            :style="isVirtual ? { position: 'relative', height: `${virtualizer.getTotalSize()}px` } : {}"
+        >
+            <!-- Virtual scroll mode -->
+            <template v-if="isVirtual">
                 <div
-                    v-for="(item, groupedIndex) in group.items"
-                    :key="item.id"
-                    :id="item.id"
-                    :class="['vs-grouped-list-item', { 'vs-disabled': item.disabled }]"
-                    :style="componentStyleSet.$item"
-                    @click.stop="emitClickItem(item, groupedIndex, group, groupIndex)"
+                    v-for="vRow in virtualRowData"
+                    :key="vRow.key"
+                    :data-index="vRow.index"
+                    :ref="(el) => virtualizer.measureElement(el as Element)"
+                    :style="{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        transform: `translateY(${vRow.start}px)`,
+                    }"
                 >
-                    <slot name="item" v-bind="item" :groupedIndex :group :groupIndex>
-                        <div class="vs-grouped-list-item-content">
-                            <span>{{ item.label }}</span>
-                        </div>
-                    </slot>
+                    <vs-grouped-list-group-row
+                        v-if="vRow.type === 'group'"
+                        :row="vRow"
+                        :styleSet="componentStyleSet.$group"
+                    >
+                        <template #default="slotProps">
+                            <slot name="group" v-bind="slotProps" />
+                        </template>
+                    </vs-grouped-list-group-row>
+                    <vs-grouped-list-item-row
+                        v-else
+                        :row="vRow"
+                        :styleSet="componentStyleSet.$item"
+                        @click="emitClickItem(vRow)"
+                    >
+                        <template #default="slotProps">
+                            <slot name="item" v-bind="slotProps" />
+                        </template>
+                    </vs-grouped-list-item-row>
                 </div>
+            </template>
+
+            <!-- Regular rendering mode -->
+            <template v-else>
+                <template v-for="row in flatRows" :key="getRowKey(row)">
+                    <vs-grouped-list-group-row
+                        v-if="row.type === 'group'"
+                        :row="row"
+                        :styleSet="componentStyleSet.$group"
+                    >
+                        <template #default="slotProps">
+                            <slot name="group" v-bind="slotProps" />
+                        </template>
+                    </vs-grouped-list-group-row>
+                    <vs-grouped-list-item-row
+                        v-else
+                        :row="row"
+                        :styleSet="componentStyleSet.$item"
+                        @click="emitClickItem(row)"
+                    >
+                        <template #default="slotProps">
+                            <slot name="item" v-bind="slotProps" />
+                        </template>
+                    </vs-grouped-list-item-row>
+                </template>
             </template>
         </div>
 
@@ -58,19 +101,23 @@ import {
     type PropType,
     type TemplateRef,
 } from 'vue';
+import { useVirtualizer } from '@tanstack/vue-virtual';
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
 import { getGroupByProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
-import type { VsGroupedListGroup, VsGroupedListStyleSet } from './types';
+import type { VsGroupedListGroup, VsGroupedListStyleSet, GroupRow, ItemRow, Row, VirtualRow } from './types';
 
 import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
+import VsGroupedListGroupRow from './VsGroupedListGroupRow.vue';
+import VsGroupedListItemRow from './VsGroupedListItemRow.vue';
+import { VIRTUAL_ITEM_THRESHOLD, ESTIMATED_ITEM_SIZE, VIRTUAL_OVERSCAN } from './constants';
 
 const componentName = VsComponent.VsGroupedList;
 export default defineComponent({
     name: componentName,
-    components: { VsInnerScroll },
+    components: { VsInnerScroll, VsGroupedListGroupRow, VsGroupedListItemRow },
     props: {
         ...getStyleSetProps<VsGroupedListStyleSet>(),
         ...getGroupByProps(),
@@ -91,6 +138,8 @@ export default defineComponent({
             componentName,
             styleSet,
         );
+
+        const isVirtual = computed(() => items.value.length >= VIRTUAL_ITEM_THRESHOLD);
 
         const groupedItems: ComputedRef<VsGroupedListGroup[]> = computed(() => {
             // groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환
@@ -161,11 +210,74 @@ export default defineComponent({
             return result;
         });
 
-        function emitClickItem(item: OptionItem, groupedIndex: number, group: VsGroupedListGroup, groupIndex: number) {
-            emit('click-item', { ...item, groupedIndex, group, groupIndex });
+        // Group headers + items를 하나의 평탄화 배열로 (virtual/regular 공용)
+        const flatRows = computed<Row[]>(() => {
+            const rows: Row[] = [];
+            groupedItems.value.forEach((group, groupIndex) => {
+                if (groupBy.value != null) {
+                    const groupRow: GroupRow = { type: 'group', name: group.name, groupIndex, items: group.items };
+                    rows.push(groupRow);
+                }
+                group.items.forEach((item, itemIndex) => {
+                    const itemRow: ItemRow = { type: 'item', item, itemIndex, group, groupIndex };
+                    rows.push(itemRow);
+                });
+            });
+            return rows;
+        });
+
+        const virtualizer = useVirtualizer(
+            computed(() => ({
+                count: flatRows.value.length,
+                getScrollElement: () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
+                estimateSize: () => ESTIMATED_ITEM_SIZE,
+                overscan: VIRTUAL_OVERSCAN,
+            })),
+        );
+
+        const virtualRowData = computed<VirtualRow[]>(() => {
+            if (!isVirtual.value) {
+                return [];
+            }
+            return virtualizer.value.getVirtualItems().reduce<VirtualRow[]>((acc, vRow) => {
+                const row = flatRows.value[vRow.index];
+                if (!row) {
+                    return acc;
+                }
+                const positioned = { key: String(vRow.key), index: vRow.index, start: vRow.start };
+                acc.push({ ...positioned, ...row } as VirtualRow);
+                return acc;
+            }, []);
+        });
+
+        function getRowKey(row: Row): string {
+            return row.type === 'group' ? `group-${row.groupIndex}` : row.item.id;
+        }
+
+        function emitClickItem({ item, itemIndex, group, groupIndex }: ItemRow) {
+            emit('click-item', { ...item, itemIndex, group, groupIndex });
         }
 
         function scrollToItem(id: string, offset: number = 0) {
+            if (isVirtual.value) {
+                const targetIndex = flatRows.value.findIndex((row) => row.type === 'item' && row.item.id === id);
+                if (targetIndex === -1) {
+                    return;
+                }
+                virtualizer.value.scrollToIndex(targetIndex, { align: 'start' });
+                if (offset !== 0) {
+                    nextTick(() => {
+                        requestAnimationFrame(() => {
+                            const scrollContainer = innerScrollRef.value?.bodyRef as HTMLElement | null;
+                            if (scrollContainer) {
+                                scrollContainer.scrollTop = Math.max(0, scrollContainer.scrollTop - offset);
+                            }
+                        });
+                    });
+                }
+                return;
+            }
+
             const targetItem = items.value.find((i) => i.id === id);
             if (!targetItem || !listRef.value || !innerScrollRef.value) {
                 return;
@@ -184,8 +296,7 @@ export default defineComponent({
                     }
                     const containerRect = scrollContainer.getBoundingClientRect();
                     const targetRect = targetElement.getBoundingClientRect();
-                    const targetScrollTop =
-                        scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
+                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
                     scrollContainer.scrollTo({ top: targetScrollTop, behavior: 'auto' });
                 });
             });
@@ -199,12 +310,15 @@ export default defineComponent({
         }
 
         return {
-            listRef,
-            innerScrollRef,
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
+            isVirtual,
+            virtualizer,
+            virtualRowData,
+            flatRows,
             groupedItems,
+            getRowKey,
             emitClickItem,
             scrollToItem,
             hasScroll,

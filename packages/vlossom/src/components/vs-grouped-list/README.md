@@ -2,7 +2,7 @@
 
 # VsGroupedList
 
-A scrollable list component that renders items with optional grouping, virtual visibility rendering for performance, and full slot customization.
+A scrollable list component that renders items with optional grouping, automatic virtual scroll for large lists, and full slot customization.
 
 **Available Version**: 2.0.0+
 
@@ -11,6 +11,8 @@ A scrollable list component that renders items with optional grouping, virtual v
 - Renders a flat or grouped list from an `items` array of `OptionItem`
 - Optional grouping via the `groupBy` function and `groupOrder` array
 - Scrollable via the embedded `VsInnerScroll` component
+- Automatically switches to virtual scroll when `items.length >= 100` — no configuration needed
+- Virtual scroll measures each item's actual DOM height, so variable-height items are supported
 - Full slot customization for group headers and individual items
 - Exposes `scrollToItem` and `hasScroll` methods for programmatic control
 
@@ -65,6 +67,32 @@ function onClickItem(item) {
 </template>
 ```
 
+### Large List (Virtual Scroll)
+
+Virtual scroll activates automatically when `items.length >= 100`. No additional props are required. The component measures each item's real DOM height, so rows with different heights are handled correctly.
+
+```html
+<template>
+    <div style="height: 400px;">
+        <vs-grouped-list
+            ref="listRef"
+            :items="largeItems"
+            @click-item="onClickItem"
+        />
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const listRef = ref(null);
+
+function scrollToSelected(id) {
+    listRef.value?.scrollToItem(id);
+}
+</script>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -105,7 +133,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | Event | Payload | Description |
 | ----- | ------- | ----------- |
-| `click-item` | `OptionItem & { groupedIndex: number; group: VsGroupedListGroup; groupIndex: number }` | Emitted when an item is clicked |
+| `click-item` | `OptionItem & { itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | Emitted when an item is clicked |
 
 ## Slots
 
@@ -115,11 +143,11 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | `footer` | Content for the scrollable list footer |
 | `empty` | Content shown in the list body when `items` is empty |
 | `group` | Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }` |
-| `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, group, groupIndex }` |
+| `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ itemIndex, group, groupIndex }` |
 
 ## Methods
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
-| `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id. `offset` shifts the scroll position up by the given pixels (default: `0`) |
+| `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id. `offset` shifts the scroll position up by the given pixels (default: `0`). Works in both virtual and regular rendering modes. |
 | `hasScroll` | - | Returns `boolean` — `true` if the list has a scrollbar |
