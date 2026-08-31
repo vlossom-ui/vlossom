@@ -26,6 +26,9 @@ import VsFocusTrap from './vs-focus-trap/VsFocusTrap.vue';
 import VsFooter from './vs-footer/VsFooter.vue';
 import VsForm from './vs-form/VsForm.vue';
 import VsGrid from './vs-grid/VsGrid.vue';
+import VsGroupedList from './vs-grouped-list/VsGroupedList.vue';
+import VsGroupedListGroupRow from './vs-grouped-list/VsGroupedListGroupRow.vue';
+import VsGroupedListItemRow from './vs-grouped-list/VsGroupedListItemRow.vue';
 import VsHeader from './vs-header/VsHeader.vue';
 import VsImage from './vs-image/VsImage.vue';
 import VsIndexView from './vs-index-view/VsIndexView.vue';
@@ -39,7 +42,6 @@ import VsMessage from './vs-message/VsMessage.vue';
 import VsModal from './vs-modal/VsModal.vue';
 import VsModalNode from './vs-modal/VsModalNode.vue';
 import VsModalView from './vs-modal/VsModalView.vue';
-import VsGroupedList from './vs-grouped-list/VsGroupedList.vue';
 import VsPage from './vs-page/VsPage.vue';
 import VsPagination from './vs-pagination/VsPagination.vue';
 import VsProgress from './vs-progress/VsProgress.vue';
@@ -66,8 +68,8 @@ export const VlossomComponents = {
     VsAccordion,
     VsAvatar,
     VsBar,
-    VsButton,
     VsBlock,
+    VsButton,
     VsCheckbox,
     VsCheckboxSet,
     VsChip,
@@ -84,6 +86,9 @@ export const VlossomComponents = {
     VsFooter,
     VsForm,
     VsGrid,
+    VsGroupedList,
+    VsGroupedListGroupRow,
+    VsGroupedListItemRow,
     VsHeader,
     VsImage,
     VsIndexView,
@@ -97,7 +102,6 @@ export const VlossomComponents = {
     VsModal,
     VsModalNode,
     VsModalView,
-    VsGroupedList,
     VsPage,
     VsPagination,
     VsProgress,

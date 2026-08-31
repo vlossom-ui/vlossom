@@ -11,6 +11,12 @@ importers:
       '@lucide/vue':
         specifier: ^1.42.0
         version: 1.42.0(vue@3.5.42(typescript@6.0.3))
+      '@tanstack/vue-virtual':
+        specifier: ^3.13.36
+        version: 3.13.36(vue@3.5.33(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: ^14.2.1
+        version: 14.2.1(vue@3.5.33(typescript@5.9.3))
       change-case:
         specifier: ^5.4.4
         version: 5.4.4
@@ -1330,6 +1336,14 @@ packages:
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
+
+  '@tanstack/virtual-core@3.17.8':
+    resolution: {integrity: sha512-BfEvehNpOT75r5Ksc5xW6NZuXujTfb7nlSEyVu4XHG3gdxNg1KqXruWbDewXOUaUYIo4oRbSfkjIajz4MAT8tA==}
+
+  '@tanstack/vue-virtual@3.13.36':
+    resolution: {integrity: sha512-gKpExv4RbB9luVG+SucTXoqPZv/gzu/Yvz6BNO+8kpNxJ2x+I/ulryzl5W9BRciahZGp5Tls3Dp5XP1ztVGbMw==}
+    peerDependencies:
+      vue: ^2.7.0 || ^3.0.0
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -3665,6 +3679,12 @@ packages:
       typescript:
         optional: true
 
+  vue-component-type-helpers@2.2.12:
+    resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
+
+  vue-component-type-helpers@3.2.7:
+    resolution: {integrity: sha512-+gPp5YGmhfsj1IN+xUo7y0fb4clfnOiiUA39y07yW1VzCRjzVgwLbtmdWlghh7mXrPsEaYc7rrIir/HT6C8vYQ==}
+
   vue-component-type-helpers@3.3.11:
     resolution: {integrity: sha512-LwcxzeliO9fkQcpJG0PoX8X5kmAhKmH9wkpDLxNabwzkQ9Zeib2YVHwFV4pcWmMLfXVfjr/dSV+DaJ3cIPgSNA==}
 
@@ -4678,16 +4698,10 @@ snapshots:
   '@storybook/vue3@10.6.0(storybook@10.6.0(@types/react@19.2.8)(prettier@3.9.6)(react@19.2.8))(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))':
     dependencies:
       '@storybook/global': 5.0.0
-      '@vue/compiler-dom': 3.5.42
-      '@vue/language-core': 3.3.11
-      storybook: 10.6.0(@types/react@19.2.8)(prettier@3.9.6)(react@19.2.8)
-      type-fest: 5.9.0
-      vue: 3.5.42(typescript@6.0.3)
-      vue-component-meta: 3.3.11(typescript@6.0.3)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      type-fest: 2.19.0
+      vue: 3.5.33(typescript@5.9.3)
       vue-component-type-helpers: 3.3.11
-      vue-docgen-api: 4.79.2(vue@3.5.42(typescript@6.0.3))
-    optionalDependencies:
-      typescript: 6.0.3
 
   '@tailwindcss/node@4.3.3':
     dependencies:
@@ -4756,6 +4770,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.0)
+
+  '@tanstack/virtual-core@3.17.8': {}
+
+  '@tanstack/vue-virtual@3.13.36(vue@3.5.33(typescript@5.9.3))':
+    dependencies:
+      '@tanstack/virtual-core': 3.17.8
+      vue: 3.5.33(typescript@5.9.3)
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -7042,7 +7063,11 @@ snapshots:
 
   vue-component-type-helpers@3.3.11: {}
 
-  vue-docgen-api@4.79.2(vue@3.5.42(typescript@6.0.3)):
+  vue-component-type-helpers@3.2.7: {}
+
+  vue-component-type-helpers@3.3.11: {}
+
+  vue-docgen-api@4.79.2(vue@3.5.33(typescript@5.9.3)):
     dependencies:
       '@babel/parser': 7.29.8
       '@babel/types': 7.29.8
