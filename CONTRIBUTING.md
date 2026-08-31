@@ -60,8 +60,7 @@ vs-[name]/
 ├── __tests__/
 │   └── vs-[name].test.ts                 # Unit tests
 └── __stories__/
-    ├── vs-[name].stories.ts              # Storybook stories
-    └── vs-[name].chromatic.stories.ts    # Visual regression tests
+    └── vs-[name].stories.ts              # Storybook stories
 ```
 
 For complex components, you may also include:
@@ -137,7 +136,6 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 1. Make sure all tests pass and there are no lint errors
 2. Fill out the [PR template](.github/pull_request_template.md)
 3. Request a review
-4. To trigger a Chromatic visual regression build, include `chromatic-build` in a PR review comment
 
 ## Reporting Issues
 

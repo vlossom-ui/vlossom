@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsLabelValue from './../VsLabelValue.vue';
 import type { VsLabelValueStyleSet } from './../types';
@@ -203,9 +203,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const StyleSet: Story = {

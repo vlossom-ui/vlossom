@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 
 import VsRadioSet from './../VsRadioSet.vue';
 import { useTemplateRef } from 'vue';
@@ -154,9 +154,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const StyleSet: Story = {

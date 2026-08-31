@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import { ref } from 'vue';
 
 import { VsForm, VsButton } from '@/components';
@@ -234,9 +234,6 @@ export const WithStyleSet: Story = {
 };
 
 export const DarkMode: Story = {
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
     render: () => ({
         components: { VsDatePicker },
         template: `

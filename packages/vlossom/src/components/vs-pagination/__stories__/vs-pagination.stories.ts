@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import VsPagination from './../VsPagination.vue';
 
 const meta: Meta<typeof VsPagination> = {
@@ -185,7 +185,6 @@ export const ColorScheme: Story = {
                 story: '다양한 색상 테마가 적용된 페이지네이션입니다. colorScheme prop을 사용하여 미리 정의된 색상 조합을 적용할 수 있습니다.',
             },
         },
-        chromatic: chromaticParameters.theme,
     },
     render: (args: any) => ({
         components: { VsPagination },

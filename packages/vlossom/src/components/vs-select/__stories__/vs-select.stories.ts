@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import VsSelect from './../VsSelect.vue';
 
 type VsSelectArgs = InstanceType<typeof VsSelect>['$props'];
@@ -263,9 +263,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const StyleSet: Story = {

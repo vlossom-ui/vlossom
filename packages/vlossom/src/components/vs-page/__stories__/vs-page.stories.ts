@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, LOREM_IPSUM } from '@/storybook';
+import { LOREM_IPSUM } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsPage from './../VsPage.vue';
 import type { VsPageStyleSet } from './../types';
@@ -90,7 +90,6 @@ export const Default: Story = {
                 story: '기본 페이지 레이아웃입니다. 제목, 설명, 본문으로 구성된 표준적인 페이지 구조를 제공합니다.',
             },
         },
-        chromatic: chromaticParameters.theme,
     },
 };
 

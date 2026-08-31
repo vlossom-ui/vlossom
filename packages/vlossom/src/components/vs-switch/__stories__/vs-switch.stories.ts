@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsSwitch from './../VsSwitch.vue';
 import VsContainer from '@/components/vs-container/VsContainer.vue';
@@ -92,9 +92,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const State: Story = {
@@ -118,9 +115,6 @@ export const State: Story = {
 export const Disabled: Story = {
     args: {
         disabled: true,
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 
