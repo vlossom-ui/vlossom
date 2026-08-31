@@ -19,7 +19,6 @@ const defaultGlobal = {
     stubs: {
         'vs-render': true,
         'vs-checkbox': true,
-        'vs-visible-render': { props: ['disabled', 'selector', 'rootMargin'], template: '<div><slot /></div>' },
         'vs-button': { template: '<button data-testid="vs-button"><slot /></button>' },
         'vs-expandable': { props: ['open'], template: '<div v-if="open" data-testid="vs-expandable"><slot /></div>' },
         'vs-pagination': {

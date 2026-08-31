@@ -38,30 +38,27 @@
 
         <div class="vs-table-content" ref="scrollWrapperRef">
             <div ref="headerSentinelRef" class="vs-table-header-sentinel" aria-hidden="true" />
-            <vs-visible-render :selector="`#${bodyId}`" :disabled="noVirtualScroll" root-margin="150px">
-                <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
-                    <caption v-if="$slots['caption']" class="vs-table-caption" :style="componentStyleSet.$caption">
-                        <slot name="caption" />
-                    </caption>
-                    <vs-table-header class="vs-table-original-header" @click-cell="clickCell" @select-row="selectRow">
-                        <template v-for="name in headerSlots" #[name]="slotData">
-                            <slot :name v-bind="slotData || {}" />
-                        </template>
-                    </vs-table-header>
-                    <vs-table-body
-                        :id="bodyId"
-                        @click-cell="clickCell"
-                        @click-row="clickRow"
-                        @select-row="selectRow"
-                        @expand-row="expandRow"
-                        @drag="dragRow"
-                    >
-                        <template v-for="name in bodySlots" #[name]="slotData">
-                            <slot :name v-bind="slotData || {}" />
-                        </template>
-                    </vs-table-body>
-                </table>
-            </vs-visible-render>
+            <table ref="contentTableRef" class="vs-table-table" :style="tableColumnStyle">
+                <caption v-if="$slots['caption']" class="vs-table-caption" :style="componentStyleSet.$caption">
+                    <slot name="caption" />
+                </caption>
+                <vs-table-header class="vs-table-original-header" @click-cell="clickCell" @select-row="selectRow">
+                    <template v-for="name in headerSlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-header>
+                <vs-table-body
+                    @click-cell="clickCell"
+                    @click-row="clickRow"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                    @drag="dragRow"
+                >
+                    <template v-for="name in bodySlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body>
+            </table>
         </div>
 
         <vs-table-pagination v-if="pagination && totalPages" />
@@ -155,7 +152,6 @@ export default defineComponent({
         size: { type: String as PropType<Size>, default: 'md' },
         primary: { type: Boolean, default: false },
         responsive: { type: Boolean, default: false },
-        noVirtualScroll: { type: Boolean, default: false },
         stickyHeader: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
         serverMode: {
@@ -294,7 +290,6 @@ export default defineComponent({
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
 
         const tableId = stringUtil.createID();
-        const bodyId = computed(() => `${tableId}-body`);
         const hasExpandSlot = computed<boolean>(() => !!slots.expand);
         const table: TableComposable = useTable(
             tableId,
@@ -441,7 +436,6 @@ export default defineComponent({
 
         return {
             TABLE_DRAG_WRAPPER_CLASS,
-            bodyId,
             colorSchemeClass,
             computedColorScheme,
             componentStyleSet,

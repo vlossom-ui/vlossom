@@ -12,7 +12,6 @@
 - 행 선택 (단일/다중) 및 확장 행 패널
 - SortableJS를 통한 드래그 앤 드롭 행 재정렬
 - 자동 레이아웃 동기화를 지원하는 스티키 헤더
-- 대용량 데이터를 위한 `VsVisibleRender` 가상 스크롤
 - 작은 화면에서 컬럼을 세로로 쌓는 반응형 레이아웃
 
 ## 기본 사용법
@@ -140,7 +139,6 @@ const selected = ref([]);
 | `draggable`       | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화         |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | 확장 행 활성화. `expand` 슬롯이 제공된 경우에만 확장 UI가 렌더링됩니다 |
 | `loading`         | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색 비활성화         |
-| `noVirtualScroll` | `boolean`                                      | `false`  | 가상 스크롤 최적화 비활성화             |
 | `page`            | `number`                                       |          | 현재 페이지 인덱스(0부터 시작), v-model |
 | `pageSize`        | `number`                                       | `10`     | 페이지당 행 수, v-model                 |
 | `pagedItems`      | `VsTableItem[]`                                | `[]`     | 서버 모드 현재 페이지 아이템, v-model   |
