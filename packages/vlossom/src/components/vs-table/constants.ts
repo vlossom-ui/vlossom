@@ -41,3 +41,11 @@ export const DEFAULT_SORTABLE_OPTIONS: Partial<SortableOptions> = {
 
 export const VS_TABLE_HEADER_SLOT_PREFIXES = ['header', 'select', 'expand'] as const;
 export const VS_TABLE_BODY_SLOT_PREFIXES = ['body', 'select', 'expand', 'empty'] as const;
+
+export const VIRTUAL_ITEM_THRESHOLD = 100;
+export const VIRTUAL_OVERSCAN = 5;
+export const ESTIMATED_ROW_SIZES: Record<string, number> = {
+    sm: 32,
+    md: 40,
+    lg: 48,
+};

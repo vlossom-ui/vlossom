@@ -1,18 +1,12 @@
 <template>
-    <draggable
-        tag="tbody"
-        v-model="displayedRows"
-        v-bind="DEFAULT_SORTABLE_OPTIONS"
-        :id
-        :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
-        :item-key="getRowKey"
-        :disabled="loading"
-        @update="handleDragUpdate"
-    >
-        <template #item="{ element, index }">
+    <template v-if="isVirtual">
+        <tbody class="vs-table-tbody">
+            <tr v-if="virtualTopPadding > 0" class="vs-table-virtual-spacer" :style="{ height: `${virtualTopPadding}px` }" />
             <vs-table-body-row
-                :row="element"
-                :rowIdx="index"
+                v-for="vRow in virtualRows"
+                :key="vRow.key"
+                :row="vRow.row"
+                :rowIdx="vRow.index"
                 @click-cell="clickCell"
                 @click-row="clickRow"
                 @select-row="selectRow"
@@ -22,8 +16,37 @@
                     <slot :name v-bind="slotData || {}" />
                 </template>
             </vs-table-body-row>
-        </template>
-    </draggable>
+            <tr v-if="virtualBottomPadding > 0" class="vs-table-virtual-spacer" :style="{ height: `${virtualBottomPadding}px` }" />
+        </tbody>
+    </template>
+
+    <template v-else>
+        <draggable
+            tag="tbody"
+            v-model="displayedRows"
+            v-bind="DEFAULT_SORTABLE_OPTIONS"
+            :id
+            :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']"
+            :item-key="getRowKey"
+            :disabled="loading"
+            @update="handleDragUpdate"
+        >
+            <template #item="{ element, index }">
+                <vs-table-body-row
+                    :row="element"
+                    :rowIdx="index"
+                    @click-cell="clickCell"
+                    @click-row="clickRow"
+                    @select-row="selectRow"
+                    @expand-row="expandRow"
+                >
+                    <template v-for="name in bodySlots" #[name]="slotData">
+                        <slot :name v-bind="slotData || {}" />
+                    </template>
+                </vs-table-body-row>
+            </template>
+        </draggable>
+    </template>
 
     <tbody class="vs-table-tbody" v-if="displayedRows.length === 0">
         <tr class="vs-table-body-row">
@@ -46,10 +69,24 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref, watch, type ComputedRef } from 'vue';
-import type { ColorScheme } from '@/declaration';
-import { TABLE_COLOR_SCHEME_TOKEN, type VsTableBodyCell, type VsTableRow } from './types';
-import { DEFAULT_SORTABLE_OPTIONS, TABLE_DRAG_WRAPPER_CLASS, VS_TABLE_BODY_SLOT_PREFIXES } from './constants';
+import { computed, defineComponent, inject, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { useVirtualizer } from '@tanstack/vue-virtual';
+import type { ColorScheme, Size } from '@/declaration';
+import {
+    TABLE_COLOR_SCHEME_TOKEN,
+    TABLE_SCROLL_TOKEN,
+    TABLE_SIZE_TOKEN,
+    type VsTableBodyCell,
+    type VsTableRow,
+} from './types';
+import {
+    DEFAULT_SORTABLE_OPTIONS,
+    ESTIMATED_ROW_SIZES,
+    TABLE_DRAG_WRAPPER_CLASS,
+    VIRTUAL_ITEM_THRESHOLD,
+    VIRTUAL_OVERSCAN,
+    VS_TABLE_BODY_SLOT_PREFIXES,
+} from './constants';
 import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
 import draggable from 'vuedraggable/src/vuedraggable';
 import type { SortableEvent } from 'sortablejs';
@@ -72,6 +109,8 @@ export default defineComponent({
     setup(props, { slots, emit }) {
         const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
+        const size = inject<Ref<Size>>(TABLE_SIZE_TOKEN);
+        const scrollWrapper = inject<Ref<HTMLDivElement | null>>(TABLE_SCROLL_TOKEN);
 
         const bodySlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
@@ -91,10 +130,51 @@ export default defineComponent({
             },
             set(newRows: VsTableRow[]): void {
                 const baseKeys = bodyRows.value.map((row) => row.key);
-
                 displayOrder.value = newRows.map((row) => baseKeys.indexOf(row.key)).filter((idx) => idx !== -1);
             },
         });
+
+        const isVirtual = computed(() => displayedRows.value.length >= VIRTUAL_ITEM_THRESHOLD);
+
+        const estimatedRowSize = computed(() => ESTIMATED_ROW_SIZES[size?.value ?? 'md'] ?? ESTIMATED_ROW_SIZES.md);
+
+        const virtualizer = useVirtualizer(
+            computed(() => ({
+                count: displayedRows.value.length,
+                getScrollElement: () => scrollWrapper?.value ?? null,
+                estimateSize: () => estimatedRowSize.value,
+                overscan: VIRTUAL_OVERSCAN,
+            })),
+        );
+
+        const virtualItems = computed(() => {
+            if (!isVirtual.value) {
+                return [];
+            }
+            return virtualizer.value.getVirtualItems();
+        });
+
+        const virtualTopPadding = computed(() =>
+            virtualItems.value.length > 0 ? virtualItems.value[0].start : 0,
+        );
+
+        const virtualBottomPadding = computed(() => {
+            if (virtualItems.value.length === 0) {
+                return 0;
+            }
+            const last = virtualItems.value[virtualItems.value.length - 1];
+            return virtualizer.value.getTotalSize() - last.end;
+        });
+
+        const virtualRows = computed(() =>
+            virtualItems.value
+                .map((vRow) => ({
+                    key: String(vRow.key),
+                    index: vRow.index,
+                    row: displayedRows.value[vRow.index],
+                }))
+                .filter((vRow) => vRow.row != null),
+        );
 
         function getRowKey(row: VsTableRow): string {
             return row.key;
@@ -137,6 +217,10 @@ export default defineComponent({
             displayedRows,
             getRowKey,
             loading,
+            isVirtual,
+            virtualRows,
+            virtualTopPadding,
+            virtualBottomPadding,
             clickCell,
             clickRow,
             selectRow,

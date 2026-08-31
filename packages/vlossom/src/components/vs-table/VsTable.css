@@ -168,6 +168,22 @@
         }
     }
 
+    /* ── Virtual scroll ── */
+    &.vs-table-virtual-scroll {
+        display: flex;
+        flex-direction: column;
+
+        > .vs-table-content {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+    }
+
+    .vs-table-virtual-spacer {
+        grid-column: 1 / -1;
+    }
+
     /* ── No data ── */
     .vs-table-no-data-cell {
         @apply justify-center;

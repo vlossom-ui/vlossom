@@ -1,5 +1,5 @@
 <template>
-    <div :class="['vs-table', colorSchemeClass, classObj]" :style="componentInlineStyle">
+    <div :class="['vs-table', colorSchemeClass, classObj, { 'vs-table-virtual-scroll': isVirtual }]" :style="componentInlineStyle">
         <vs-grid v-if="search || $slots['toolbar']" class="vs-table-toolbar" :column-gap="'1rem'">
             <vs-responsive
                 class="vs-table-toolbar-start"
@@ -101,6 +101,7 @@ import {
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
     TABLE_SIZE_TOKEN,
+    TABLE_SCROLL_TOKEN,
     type VsTableBodyCell,
     type VsTableColumnDef,
     type VsTableItem,
@@ -112,6 +113,7 @@ import {
 import {
     DEFAULT_PAGE_SIZE_OPTIONS,
     TABLE_DRAG_WRAPPER_CLASS,
+    VIRTUAL_ITEM_THRESHOLD,
     VS_TABLE_BODY_SLOT_PREFIXES,
     VS_TABLE_HEADER_SLOT_PREFIXES,
 } from './constants';
@@ -302,6 +304,9 @@ export default defineComponent({
         provide<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN, computedColorScheme);
         provide<Ref<Size>>(TABLE_SIZE_TOKEN, size);
         provide<TableComposable>(TABLE_COMPOSABLE_TOKEN, table);
+        provide(TABLE_SCROLL_TOKEN, scrollWrapperRef);
+
+        const isVirtual = computed(() => table.bodyRows.value.length >= VIRTUAL_ITEM_THRESHOLD);
 
         const headerSlots = computed(() =>
             Object.keys(slots).filter((slotName) =>
@@ -441,6 +446,7 @@ export default defineComponent({
             componentStyleSet,
             componentInlineStyle,
             classObj,
+            isVirtual,
             headerSentinelRef,
             contentTableRef,
             scrollWrapperRef,

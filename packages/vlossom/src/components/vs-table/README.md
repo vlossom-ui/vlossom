@@ -13,6 +13,7 @@ A feature-rich data table component with sorting, searching, pagination, selecti
 - Drag-and-drop row reordering via SortableJS
 - Sticky header support with automatic layout synchronization
 - Responsive layout that stacks columns on smaller screens
+- Automatically switches to virtual scroll when `items.length >= 100` (with no pagination) — no configuration needed
 
 ## Basic Usage
 
@@ -127,6 +128,37 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
         @paginate="fetchData"
     />
 </template>
+```
+
+### Large List (Virtual Scroll)
+
+Virtual scroll activates automatically when `items.length >= 100` and pagination is not used. Wrap the table in a fixed-height container so the virtualizer has a bounded scroll area. Drag-and-drop is disabled in virtual scroll mode.
+
+```html
+<template>
+    <div style="height: 500px;">
+        <vs-table
+            :columns="columns"
+            :items="largeItems"
+            :style-set="{ height: '100%' }"
+        />
+    </div>
+</template>
+
+<script setup>
+const columns = [
+    { key: 'index', label: '#', width: '60px' },
+    { key: 'name', label: 'Name' },
+    { key: 'department', label: 'Department' },
+];
+
+const departments = ['Engineering', 'Design', 'Marketing'];
+const largeItems = Array.from({ length: 10000 }, (_, i) => ({
+    index: i + 1,
+    name: `User ${i + 1}`,
+    department: departments[i % departments.length],
+}));
+</script>
 ```
 
 ## Props

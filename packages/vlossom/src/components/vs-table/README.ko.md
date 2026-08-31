@@ -13,6 +13,7 @@
 - SortableJS를 통한 드래그 앤 드롭 행 재정렬
 - 자동 레이아웃 동기화를 지원하는 스티키 헤더
 - 작은 화면에서 컬럼을 세로로 쌓는 반응형 레이아웃
+- 페이지네이션 없이 `items.length >= 100`이면 가상 스크롤 자동 활성화 — 별도 설정 불필요
 
 ## 기본 사용법
 
@@ -127,6 +128,37 @@ const selected = ref([]);
         @paginate="fetchData"
     />
 </template>
+```
+
+### 대용량 목록 (가상 스크롤)
+
+페이지네이션을 사용하지 않을 때 `items.length >= 100`이면 가상 스크롤이 자동으로 활성화됩니다. 가상스크롤러가 스크롤 영역을 인식하려면 고정 높이 컨테이너로 테이블을 감싸야 합니다. 가상 스크롤 모드에서는 드래그 앤 드롭이 비활성화됩니다.
+
+```html
+<template>
+    <div style="height: 500px;">
+        <vs-table
+            :columns="columns"
+            :items="largeItems"
+            :style-set="{ height: '100%' }"
+        />
+    </div>
+</template>
+
+<script setup>
+const columns = [
+    { key: 'index', label: '#', width: '60px' },
+    { key: 'name', label: '이름' },
+    { key: 'department', label: '부서' },
+];
+
+const departments = ['개발', '디자인', '마케팅'];
+const largeItems = Array.from({ length: 10000 }, (_, i) => ({
+    index: i + 1,
+    name: `사용자 ${i + 1}`,
+    department: departments[i % departments.length],
+}));
+</script>
 ```
 
 ## Props
