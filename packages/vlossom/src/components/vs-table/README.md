@@ -12,7 +12,6 @@ A feature-rich data table component with sorting, searching, pagination, selecti
 - Row selection (single or multi) and expandable row panels
 - Drag-and-drop row reordering via SortableJS
 - Sticky header support with automatic layout synchronization
-- Virtual scroll via `VsVisibleRender` for large datasets
 - Responsive layout that stacks columns on smaller screens
 
 ## Basic Usage
@@ -142,7 +141,6 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 | `draggable`       | `boolean`                                      | `false`  | Enables drag-and-drop row reordering        |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | Enables expandable rows. Expand UI is rendered only when an `expand` slot is provided |
 | `loading`         | `boolean`                                      | `false`  | Shows loading state and disables search     |
-| `noVirtualScroll` | `boolean`                                      | `false`  | Disables virtual scroll optimization        |
 | `page`            | `number`                                       |          | Current page index (0-based), v-model       |
 | `pageSize`        | `number`                                       | `10`     | Number of rows per page, v-model            |
 | `pagedItems`      | `VsTableItem[]`                                | `[]`     | Current page items for server mode, v-model |
