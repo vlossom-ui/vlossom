@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsToast from './../VsToast.vue';
 import type { VsToastStyleSet } from './../types';
@@ -133,7 +133,6 @@ export const ColorScheme: Story = {
                 story: '다양한 색상 테마가 적용된 토스트들입니다. colorScheme prop을 사용하여 미리 정의된 색상 조합을 적용할 수 있습니다.',
             },
         },
-        chromatic: chromaticParameters.theme,
     },
     render: (args: any) => ({
         components: { VsToast },

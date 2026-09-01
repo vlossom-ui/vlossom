@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import VsTextarea from './../VsTextarea.vue';
 
 const meta: Meta<typeof VsTextarea> = {
@@ -429,7 +429,6 @@ export const ColorScheme: Story = {
                 story: 'colorScheme prop을 사용하여 다양한 색상 테마를 적용할 수 있습니다.',
             },
         },
-        chromatic: chromaticParameters.theme,
     },
     render: (args: any) => ({
         components: { VsTextarea },

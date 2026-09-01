@@ -4,7 +4,6 @@
         "src/**/__tests__/*",
         "src/**/__stories__/*",
         ".storybook/**/*",
-        ".storybook-chromatic/**/*",
         "shims.d.ts",
         "vitest-shims.d.ts"
     ],

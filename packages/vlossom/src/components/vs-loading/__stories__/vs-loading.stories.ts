@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { colorScheme, getColorSchemeTemplate, chromaticParameters } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsLoading from './../VsLoading.vue';
 import type { VsLoadingStyleSet } from './../types';
@@ -64,9 +64,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const StyleSet: Story = {

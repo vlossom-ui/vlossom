@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 
 import VsContainer from '@/components/vs-container/VsContainer.vue';
 import VsRadio from './../VsRadio.vue';
@@ -86,9 +86,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const State: Story = {
@@ -109,9 +106,6 @@ export const State: Story = {
 export const Disabled: Story = {
     args: {
         disabled: true,
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 
