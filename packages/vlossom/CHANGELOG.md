@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.1...vlossom-v2.0.2) (2026-09-01)
+
+
+### Bug Fixes
+
+* **VsTable:** fix toSearchText for class instance ([#615](https://github.com/vlossom-ui/vlossom/issues/615)) ([8fc7cd4](https://github.com/vlossom-ui/vlossom/commit/8fc7cd4b707ed68eb61a7165dbe75dbe7292aacd))
+
 ## [2.0.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.0...vlossom-v2.0.1) (2026-08-26)
 
 
