@@ -13,7 +13,7 @@
             <slot name="header" />
         </template>
 
-        <vs-visible-render class="vs-grouped-list-list" ref="visibleRenderRef" root-margin="10px" tabindex="-1">
+        <div class="vs-grouped-list-list" ref="listRef" tabindex="-1">
             <template v-for="(group, groupIndex) in groupedItems" :key="group.name">
                 <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.$group">
                     <slot name="group" :group="group.name" :groupIndex :items="group.items">
@@ -37,7 +37,7 @@
                     </slot>
                 </div>
             </template>
-        </vs-visible-render>
+        </div>
 
         <slot name="empty" v-if="items.length === 0" />
 
@@ -51,6 +51,7 @@
 import {
     computed,
     defineComponent,
+    nextTick,
     toRefs,
     useTemplateRef,
     type ComputedRef,
@@ -63,15 +64,13 @@ import { getGroupByProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
 import type { VsGroupedListGroup, VsGroupedListStyleSet } from './types';
 
-import type { VsVisibleRenderRef } from '@/components/vs-visible-render/types';
-import VsVisibleRender from '@/components/vs-visible-render/VsVisibleRender.vue';
 import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 
 const componentName = VsComponent.VsGroupedList;
 export default defineComponent({
     name: componentName,
-    components: { VsInnerScroll, VsVisibleRender },
+    components: { VsInnerScroll },
     props: {
         ...getStyleSetProps<VsGroupedListStyleSet>(),
         ...getGroupByProps(),
@@ -86,7 +85,7 @@ export default defineComponent({
         const { styleSet, items, groupBy, groupOrder } = toRefs(props);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
-        const visibleRenderRef: TemplateRef<VsVisibleRenderRef> = useTemplateRef('visibleRenderRef');
+        const listRef: TemplateRef<HTMLElement> = useTemplateRef('listRef');
 
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsGroupedListStyleSet>(
             componentName,
@@ -167,22 +166,29 @@ export default defineComponent({
         }
 
         function scrollToItem(id: string, offset: number = 0) {
-            if (!visibleRenderRef.value) {
-                return;
-            }
-
             const targetItem = items.value.find((i) => i.id === id);
-            if (!targetItem) {
+            if (!targetItem || !listRef.value || !innerScrollRef.value) {
                 return;
             }
 
-            const targetElement: HTMLElement | null =
-                visibleRenderRef.value?.$el.querySelector(`#${targetItem.id}`) || null;
+            const targetElement: HTMLElement | null = listRef.value.querySelector(`#${targetItem.id}`);
             if (!targetElement) {
                 return;
             }
 
-            visibleRenderRef.value.scrollToElement(targetElement, offset);
+            nextTick(() => {
+                requestAnimationFrame(() => {
+                    const scrollContainer = innerScrollRef.value?.bodyRef as HTMLElement | null;
+                    if (!scrollContainer || !targetElement) {
+                        return;
+                    }
+                    const containerRect = scrollContainer.getBoundingClientRect();
+                    const targetRect = targetElement.getBoundingClientRect();
+                    const targetScrollTop =
+                        scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
+                    scrollContainer.scrollTo({ top: targetScrollTop, behavior: 'auto' });
+                });
+            });
         }
 
         function hasScroll() {
@@ -193,7 +199,7 @@ export default defineComponent({
         }
 
         return {
-            visibleRenderRef,
+            listRef,
             innerScrollRef,
             componentStyleSet,
             styleSetVariables,

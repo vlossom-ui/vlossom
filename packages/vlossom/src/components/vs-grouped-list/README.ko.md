@@ -10,7 +10,6 @@
 
 - `OptionItem` 배열에서 플랫 또는 그룹화된 목록 렌더링
 - `groupBy` 함수 및 `groupOrder` 배열을 통한 선택적 그룹핑
-- 대용량 목록을 위한 `VsVisibleRender`를 통한 가상화된 가시성 렌더링
 - 임베디드 `VsInnerScroll` 컴포넌트를 통한 스크롤 가능
 - 그룹 헤더 및 개별 항목에 대한 완전한 슬롯 커스터마이징
 - 프로그래밍 방식 제어를 위한 `scrollToItem` 및 `hasScroll` 메서드 노출

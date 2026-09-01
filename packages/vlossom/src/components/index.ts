@@ -47,7 +47,6 @@ export type * from './vs-text-wrap/types';
 export type * from './vs-toast/types';
 export type * from './vs-toggle/types';
 export type * from './vs-tooltip/types';
-export type * from './vs-visible-render/types';
 
 export { default as VsAccordion } from './vs-accordion/VsAccordion.vue';
 export { default as VsAvatar } from './vs-avatar/VsAvatar.vue';
@@ -104,4 +103,3 @@ export { default as VsToast } from './vs-toast/VsToast.vue';
 export { default as VsToastView } from './vs-toast/VsToastView.vue';
 export { default as VsToggle } from './vs-toggle/VsToggle.vue';
 export { default as VsTooltip } from './vs-tooltip/VsTooltip.vue';
-export { default as VsVisibleRender } from './vs-visible-render/VsVisibleRender.vue';

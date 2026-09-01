@@ -10,7 +10,6 @@ A scrollable list component that renders items with optional grouping, virtual v
 
 - Renders a flat or grouped list from an `items` array of `OptionItem`
 - Optional grouping via the `groupBy` function and `groupOrder` array
-- Virtualized visibility rendering via `VsVisibleRender` for large lists
 - Scrollable via the embedded `VsInnerScroll` component
 - Full slot customization for group headers and individual items
 - Exposes `scrollToItem` and `hasScroll` methods for programmatic control

@@ -60,7 +60,6 @@ import VsToast from './vs-toast/VsToast.vue';
 import VsToastView from './vs-toast/VsToastView.vue';
 import VsToggle from './vs-toggle/VsToggle.vue';
 import VsTooltip from './vs-tooltip/VsTooltip.vue';
-import VsVisibleRender from './vs-visible-render/VsVisibleRender.vue';
 
 export const VlossomComponents = {
     VsAccordion,
@@ -118,7 +117,6 @@ export const VlossomComponents = {
     VsToastView,
     VsToggle,
     VsTooltip,
-    VsVisibleRender,
 } as const;
 
 export type VsComponentRegistry = typeof VlossomComponents;
