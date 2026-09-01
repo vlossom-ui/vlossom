@@ -3,16 +3,6 @@ import type { VsSearchInputRef } from '@/components';
 import { objectUtil } from '@/utils';
 import { type VsTableColumnDef, type VsTableRow, type VsTableSearchOptions } from './../types';
 
-function toSearchText(value: unknown): string {
-    if (value === null || value === undefined) {
-        return '';
-    }
-    if (Array.isArray(value) || objectUtil.isObject(value)) {
-        return Object.values(objectUtil.crush(value)).map(toSearchText).filter(Boolean).join(' ');
-    }
-    return String(value);
-}
-
 export function useTableSearch(
     ref: Ref<VsSearchInputRef | null>,
     columns: ComputedRef<VsTableColumnDef[] | null>,
@@ -43,6 +33,33 @@ export function useTableSearch(
 
         const flattenedItemText = [...cellTexts, ...extraTexts].filter(Boolean).join(' ');
         return ref.value.match(flattenedItemText);
+    }
+
+    // plain object뿐 아니라 클래스 인스턴스도 순회해야 하므로 isObject 대신 typeof로 판별
+    function toSearchText(value: unknown, seen = new WeakSet<object>()): string {
+        if (value === null || value === undefined || typeof value === 'function') {
+            return '';
+        }
+        if (typeof value !== 'object') {
+            return String(value);
+        }
+        if (value instanceof Date) {
+            return value.toISOString();
+        }
+        if (ArrayBuffer.isView(value)) {
+            return '';
+        }
+        if (seen.has(value)) {
+            return '';
+        }
+        seen.add(value);
+
+        const values =
+            value instanceof Map || value instanceof Set ? [...value.values()] : Object.values(value as object);
+        return values
+            .map((child) => toSearchText(child, seen))
+            .filter(Boolean)
+            .join(' ');
     }
 
     return {

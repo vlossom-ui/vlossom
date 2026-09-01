@@ -66,6 +66,8 @@ const columns = [
 
 Both accept dot paths (`'metadata.email'`), same as a column `key`. If a key is a `skipSearch` column — or nested under one — it stays excluded even when listed in `extraKeys`.
 
+When a key points at an object or array, every nested value inside it is searched, including class instances. Only own enumerable properties are searched, so values from a prototype getter need their own key. Functions and binary values (`TypedArray`, `Blob`) are ignored, and a `Date` is searched as its ISO string.
+
 ### Selectable Rows
 
 ```html

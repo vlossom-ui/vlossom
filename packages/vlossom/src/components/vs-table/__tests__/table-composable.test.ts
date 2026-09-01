@@ -310,6 +310,67 @@ describe('useTable', () => {
             expect(table.bodyRows.value).toHaveLength(0);
         });
 
+        it('extraKeys 값이 클래스 인스턴스여도 내부 값으로 검색한다', async () => {
+            class Memo {
+                constructor(
+                    public content: string,
+                    public tags: string[],
+                ) {}
+            }
+
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo: new Memo('XYZ 메모', ['event']) },
+                    { name: 'Bob', memo: new Memo('', []) },
+                ],
+                search: { extraKeys: ['memo'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['Carol']);
+        });
+
+        it('순환 참조가 있어도 검색이 동작한다', async () => {
+            const memo: Record<string, unknown> = { content: 'XYZ 메모' };
+            memo.self = memo;
+
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo },
+                    { name: 'Bob', memo: { content: '' } },
+                ],
+                search: { extraKeys: ['memo'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value.map((row) => row.cells[0].value)).toEqual(['Carol']);
+        });
+
+        it('함수 프로퍼티는 검색 대상에 포함되지 않는다', async () => {
+            const { table, searchInputRef } = setupUseTable({
+                columns: [{ key: 'name', label: '이름' }],
+                items: [
+                    { name: 'Carol', memo: { onClick: () => 'XYZ' } },
+                    { name: 'Bob', memo: { onClick: () => '' } },
+                ],
+                search: { extraKeys: ['memo'] },
+            });
+            await nextTick();
+
+            matchXYZ(searchInputRef);
+            await nextTick();
+
+            expect(table.bodyRows.value).toHaveLength(0);
+        });
+
         it('transform이 적용된 렌더 값으로 검색한다', async () => {
             const { table, searchInputRef } = setupUseTable({
                 columns: [
