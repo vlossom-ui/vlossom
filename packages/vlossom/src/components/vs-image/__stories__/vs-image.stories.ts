@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters } from '@/storybook/parameters';
 import { src, fallbackSrc, lazySrc, brokenSrc } from './constants.ts';
 import VsImage from './../VsImage.vue';
 
@@ -23,11 +22,7 @@ const meta: Meta<typeof VsImage> = {
 export default meta;
 type Story = StoryObj<typeof VsImage>;
 
-export const Default: Story = {
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
-};
+export const Default: Story = {};
 
 export const Fallback: Story = {
     render: (args: any) => ({
@@ -40,9 +35,6 @@ export const Fallback: Story = {
     args: {
         src: brokenSrc,
         fallback: fallbackSrc,
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 
@@ -78,9 +70,6 @@ export const FallbackSlot: Story = {
         src: brokenSrc,
         width: '200px',
         height: '200px',
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 
@@ -118,9 +107,6 @@ export const FallbackPriority: Story = {
         width: '200px',
         height: '200px',
     },
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const Alt: Story = {
@@ -135,9 +121,6 @@ export const Alt: Story = {
         src: '',
         alt: 'alternative text',
     },
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const Lazy: Story = {
@@ -151,9 +134,6 @@ export const Lazy: Story = {
     args: {
         src: lazySrc,
         lazy: true,
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 

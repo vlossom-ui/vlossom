@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters, colorScheme, getColorSchemeTemplate } from '@/storybook';
+import { colorScheme, getColorSchemeTemplate } from '@/storybook';
 import VsCheckboxSet from './../VsCheckboxSet.vue';
 
 type VsCheckboxSetArgs = InstanceType<typeof VsCheckboxSet>['$props'];
@@ -132,9 +132,6 @@ export const ColorScheme: Story = {
             </div>
         `,
     }),
-    parameters: {
-        chromatic: chromaticParameters.theme,
-    },
 };
 
 export const StyleSet: Story = {

@@ -1,6 +1,5 @@
 import { ref } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { chromaticParameters } from '@/storybook';
 import { useVlossom } from '@/framework';
 import VsDimmed from './../VsDimmed.vue';
 import type { VsDimmedStyleSet } from './../types';
@@ -34,9 +33,6 @@ type Story = StoryObj<typeof VsDimmed>;
 export const Default: Story = {
     args: {
         modelValue: true,
-    },
-    parameters: {
-        chromatic: chromaticParameters.theme,
     },
 };
 

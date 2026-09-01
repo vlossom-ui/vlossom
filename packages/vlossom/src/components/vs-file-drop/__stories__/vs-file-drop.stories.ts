@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import {
     colorScheme,
     getColorSchemeTemplate,
-    chromaticParameters,
     inputPropsArgTypes,
     minMaxArgTypes,
     responsiveArgTypes,
@@ -411,7 +410,6 @@ export const ColorScheme: Story = {
                 story: 'colorScheme prop을 사용하여 다양한 색상 테마를 적용할 수 있습니다.',
             },
         },
-        chromatic: chromaticParameters.theme,
     },
     render: (args: any) => ({
         components: { VsFileDrop },
