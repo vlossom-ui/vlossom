@@ -116,5 +116,6 @@ export default {
             },
         ],
         'hue-degree-notation': 'number',
+        'at-rule-prelude-no-invalid': [true, { ignoreAtRules: ['media', 'apply'] }],
     },
 };
