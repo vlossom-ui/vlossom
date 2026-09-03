@@ -46,5 +46,7 @@ export const stringUtil = {
         }
         return `vs-${Math.abs(hash).toString(36)}`;
     },
-    kebabCase,
+    kebabCase(input: string): string {
+        return kebabCase(input);
+    },
 };

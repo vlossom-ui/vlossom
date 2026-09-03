@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { commonConfig } from './vite.config.common';
+import { commonConfig } from './vite.config.common.ts';
 import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/

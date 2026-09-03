@@ -76,7 +76,8 @@ export default defineComponent({
         }
 
         return {
-            isVsTableBodyRow,
+            // unplugin-dts fn: fn issue
+            isVsTableBodyRow: (cells: VsTableCell[]): cells is VsTableBodyCell[] => isVsTableBodyRow(cells),
             isExpandable,
             isExpanded,
             expandRow,

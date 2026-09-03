@@ -36,7 +36,8 @@ export default defineComponent({
         return {
             isExpanded,
             size,
-            getRowItem,
+            // unplugin-dts fn: fn issue
+            getRowItem: (row: VsTableBodyCell[]) => getRowItem(row),
             expandableStyleSet,
         };
     },
