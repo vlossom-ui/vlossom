@@ -42,6 +42,7 @@ import { HEADER_ROW_INDEX } from './models/strategy';
 import { getRowItem, isVsTableBodyRow } from './models/table-model';
 import {
     type VsTableCell,
+    type VsTableBodyCell,
     TABLE_STYLE_SET_TOKEN,
     TABLE_COLOR_SCHEME_TOKEN,
     TABLE_SIZE_TOKEN,
@@ -119,8 +120,9 @@ export default defineComponent({
 
         return {
             HEADER_ROW_INDEX,
-            isBodyRow: isVsTableBodyRow,
-            getRowItem,
+            // unplugin-dts fn: fn issue
+            isBodyRow: (cells: VsTableCell[]): cells is VsTableBodyCell[] => isVsTableBodyRow(cells),
+            getRowItem: (row: VsTableBodyCell[]) => getRowItem(row),
             isSelected,
             isRowSelectable,
             selectRow,

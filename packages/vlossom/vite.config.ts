@@ -3,9 +3,9 @@ import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { visualizer } from 'rollup-plugin-visualizer';
-import dts from 'vite-plugin-dts';
+import dts from 'unplugin-dts/vite';
 import prettier from 'prettier';
-import { commonConfig } from './vite.config.common';
+import { commonConfig } from './vite.config.common.ts';
 
 /**
  * @description format .d.ts files with Prettier before vite write .d.ts to disk
@@ -34,7 +34,7 @@ export default defineConfig({
         ...commonConfig.plugins,
         dts({
             tsconfigPath: './tsconfig.app.json',
-            rollupTypes: true,
+            bundleTypes: true,
             insertTypesEntry: true,
             beforeWriteFile,
         }),
