@@ -173,6 +173,25 @@ describe('useInputRules', () => {
         expect(ruleMessages.value[0].text).toBe('5자 이상 필요');
     });
 
+    it('규칙 함수가 내부에서 참조하는 반응형 값이 바뀌면 checkRules가 자동으로 호출되어야 한다', async () => {
+        // given
+        const required = ref(false);
+        inputValue.value = '';
+        defaultRules.value = [(value) => (required.value && !value ? 'required' : '')];
+
+        const { ruleMessages } = useInputRules(inputValue, rules, defaultRules, noDefaultRules);
+        await nextTick();
+        expect(ruleMessages.value.length).toBe(0);
+
+        // when
+        required.value = true;
+        await nextTick();
+
+        // then
+        expect(ruleMessages.value.length).toBe(1);
+        expect(ruleMessages.value[0].text).toBe('required');
+    });
+
     it('규칙이 빈 문자열을 반환하면 통과로 처리되어야 한다', async () => {
         // given
         const emptyStringRule: Rule<string> = () => '';

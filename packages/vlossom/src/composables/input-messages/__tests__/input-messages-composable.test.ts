@@ -178,4 +178,22 @@ describe('useInputMessages', () => {
         expect(computedMessages.value.length).toBe(1);
         expect(computedMessages.value[0].text).toBe('새로운 메시지');
     });
+
+    it('message 함수가 내부에서 참조하는 반응형 값이 바뀌면 checkMessages가 자동으로 호출되어야 한다', async () => {
+        // given
+        const hint = ref('힌트 A');
+        messages.value = [() => ({ state: 'info', text: hint.value })];
+
+        const { computedMessages } = useInputMessages(inputValue, messages, ruleMessages);
+        await nextTick();
+        expect(computedMessages.value[0].text).toBe('힌트 A');
+
+        // when
+        hint.value = '힌트 B';
+        await nextTick();
+
+        // then
+        expect(computedMessages.value.length).toBe(1);
+        expect(computedMessages.value[0].text).toBe('힌트 B');
+    });
 });

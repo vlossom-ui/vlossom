@@ -1,4 +1,4 @@
-import { computed, type ComputedRef, ref, type Ref, watch } from 'vue';
+import { computed, type ComputedRef, getCurrentInstance, onMounted, ref, type Ref, watchEffect } from 'vue';
 import type { Message, StateMessage } from '@/declaration';
 
 export function useInputMessages<T>(
@@ -9,8 +9,12 @@ export function useInputMessages<T>(
     const innerMessages: Ref<StateMessage[]> = ref([]);
     const showRuleMessages = ref(false);
 
+    let latestRun = 0;
+
     async function checkMessages() {
-        innerMessages.value = [];
+        const currentRun = ++latestRun;
+
+        const syncMessages: StateMessage[] = [];
         const pendingMessages: Promise<StateMessage>[] = [];
 
         messages.value.forEach((message) => {
@@ -19,21 +23,44 @@ export function useInputMessages<T>(
                 if (result instanceof Promise) {
                     pendingMessages.push(result);
                 } else {
-                    innerMessages.value.push(result as StateMessage);
+                    syncMessages.push(result as StateMessage);
                 }
             } else {
-                innerMessages.value.push(message);
+                syncMessages.push(message);
             }
         });
+
+        innerMessages.value = syncMessages;
 
         if (pendingMessages.length === 0) {
             return;
         }
         const resolvedMessages = await Promise.all(pendingMessages);
-        innerMessages.value.push(...resolvedMessages);
+
+        if (currentRun !== latestRun) {
+            return;
+        }
+
+        innerMessages.value = [...syncMessages, ...resolvedMessages];
     }
 
-    watch(messages, checkMessages, { deep: true });
+    // 메시지 함수가 내부에서 읽는 반응형 값까지 추적해야 하므로 메시지 배열만 감시하지 않고
+    // 메시지 실행 자체를 effect 안에서 수행한다.
+    // 단, 컴포넌트들이 마운트 시점에 inputValue를 정규화하므로 첫 실행은 마운트 이후로 미룬다.
+    const instance = getCurrentInstance();
+    const tracking = ref(!instance);
+    if (instance) {
+        onMounted(() => {
+            tracking.value = true;
+        });
+    }
+
+    watchEffect(() => {
+        if (!tracking.value) {
+            return;
+        }
+        checkMessages();
+    });
 
     const computedMessages: ComputedRef<StateMessage[]> = computed(() => {
         if (showRuleMessages.value) {

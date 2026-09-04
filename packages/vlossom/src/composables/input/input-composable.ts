@@ -70,9 +70,6 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
                 callbacks.onChange(value, oldValue);
             }
 
-            checkMessages();
-            checkRules();
-
             if (!isInitialized.value) {
                 return;
             }
@@ -109,6 +106,7 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
             callbacks.onMounted();
         }
 
+        // inputValue를 onMounted에서 초기화하는 컴포넌트가 있어서, 마운트 직후 동기 조회를 위해 한 번 더 검사한다.
         checkMessages();
         checkRules();
 

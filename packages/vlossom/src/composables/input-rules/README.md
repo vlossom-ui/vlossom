@@ -11,7 +11,7 @@ Evaluates an array of synchronous and asynchronous validation rules against the 
 - Combines `defaultRules` and `rules`, with `defaultRules` prepended unless `noDefaultRules` is `true`
 - Supports synchronous rules returning a string error message or falsy value
 - Supports asynchronous rules returning `Promise<string>`
-- Re-runs validation automatically whenever the computed rule list changes
+- Re-runs validation automatically whenever the computed rule list changes, or whenever any reactive value a rule reads internally changes
 
 ## Basic Usage
 
@@ -37,12 +37,12 @@ const { ruleMessages, checkRules } = useInputRules(inputValue, rules, defaultRul
 
 ## Args
 
-| Arg              | Type                  | Default | Required | Description                                                              |
-| ---------------- | --------------------- | ------- | -------- | ------------------------------------------------------------------------ |
-| `inputValue`     | `Ref<T>`              | —       | Yes      | The current input value passed to each rule function.                    |
-| `rules`          | `Ref<Rule<T>[]>`      | —       | Yes      | User-supplied validation rules.                                          |
-| `defaultRules`   | `Ref<Rule<T>[]>`      | —       | Yes      | Built-in rules provided by the component (e.g. required, type checks).   |
-| `noDefaultRules` | `Ref<boolean>`        | —       | Yes      | When `true`, only `rules` are applied; `defaultRules` are ignored.       |
+| Arg              | Type             | Default | Required | Description                                                            |
+| ---------------- | ---------------- | ------- | -------- | ---------------------------------------------------------------------- |
+| `inputValue`     | `Ref<T>`         | —       | Yes      | The current input value passed to each rule function.                  |
+| `rules`          | `Ref<Rule<T>[]>` | —       | Yes      | User-supplied validation rules.                                        |
+| `defaultRules`   | `Ref<Rule<T>[]>` | —       | Yes      | Built-in rules provided by the component (e.g. required, type checks). |
+| `noDefaultRules` | `Ref<boolean>`   | —       | Yes      | When `true`, only `rules` are applied; `defaultRules` are ignored.     |
 
 ## Types
 
@@ -57,23 +57,25 @@ interface StateMessage {
 
 ## Return Refs
 
-| RefType        | Type                    | Description                                               |
-| -------------- | ----------------------- | --------------------------------------------------------- |
-| `ruleMessages` | `Ref<StateMessage[]>`   | List of error messages produced by failing rules.         |
+| RefType        | Type                  | Description                                       |
+| -------------- | --------------------- | ------------------------------------------------- |
+| `ruleMessages` | `Ref<StateMessage[]>` | List of error messages produced by failing rules. |
 
 ## Return Methods
 
-| Method       | Parameters | Description                                                                             |
-| ------------ | ---------- | --------------------------------------------------------------------------------------- |
+| Method       | Parameters | Description                                                                                                      |
+| ------------ | ---------- | ---------------------------------------------------------------------------------------------------------------- |
 | `checkRules` | —          | Runs all computed rules against `inputValue` and updates `ruleMessages` synchronously or after async resolution. |
 
 ## Hooks
 
-| Hook    | Description                                                              |
-| ------- | ------------------------------------------------------------------------ |
-| `watch` | Watches `computedRules` deeply and re-runs `checkRules` on any change.   |
+| Hook          | Description                                                                                                                              |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `onMounted`   | Starts rule tracking. Inside a component the first tracked run is deferred until after mount; outside a component it starts immediately. |
+| `watchEffect` | Runs the rules inside an effect, so every reactive value read by the rules (rule list, input value, `required`, closures) is tracked.    |
 
 ## Cautions
 
 - A rule should return a non-empty string to indicate an error. A falsy return value (`false`, `null`, `undefined`, empty string) means the rule passed.
 - Async rules are resolved with `Promise.all` after all synchronous rules are processed.
+- Only the results of the latest `checkRules` run are applied; results of a superseded async run are discarded.

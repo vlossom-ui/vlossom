@@ -11,7 +11,7 @@ Evaluates static and function-based messages for an input value and combines the
 - Supports static `StateMessage` objects and synchronous/asynchronous message functions
 - Resolves all pending async message functions in parallel with `Promise.all`
 - Toggles rule message visibility via the `showRuleMessages` ref
-- Re-evaluates messages reactively whenever the `messages` array changes
+- Re-evaluates messages reactively whenever the `messages` array changes, or whenever any reactive value a message function reads internally changes
 
 ## Basic Usage
 
@@ -33,11 +33,11 @@ const { computedMessages, showRuleMessages, checkMessages } = useInputMessages(i
 
 ## Args
 
-| Arg            | Type                       | Default | Required | Description                                                              |
-| -------------- | -------------------------- | ------- | -------- | ------------------------------------------------------------------------ |
-| `inputValue`   | `Ref<T>`                   | —       | Yes      | The current input value passed to function-based messages.               |
-| `messages`     | `Ref<Message<T>[]>`        | —       | Yes      | Array of static `StateMessage` objects or functions returning a `StateMessage`. |
-| `ruleMessages` | `Ref<StateMessage[]>`      | —       | Yes      | Array of messages produced by validation rules (from `useInputRules`).   |
+| Arg            | Type                  | Default | Required | Description                                                                     |
+| -------------- | --------------------- | ------- | -------- | ------------------------------------------------------------------------------- |
+| `inputValue`   | `Ref<T>`              | —       | Yes      | The current input value passed to function-based messages.                      |
+| `messages`     | `Ref<Message<T>[]>`   | —       | Yes      | Array of static `StateMessage` objects or functions returning a `StateMessage`. |
+| `ruleMessages` | `Ref<StateMessage[]>` | —       | Yes      | Array of messages produced by validation rules (from `useInputRules`).          |
 
 ## Types
 
@@ -52,9 +52,9 @@ interface StateMessage {
 
 ## Return Refs
 
-| RefType            | Type                          | Description                                                                           |
-| ------------------ | ----------------------------- | ------------------------------------------------------------------------------------- |
-| `showRuleMessages` | `Ref<boolean>`                | When `true`, `ruleMessages` are appended to `computedMessages`.                       |
+| RefType            | Type                          | Description                                                                                   |
+| ------------------ | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| `showRuleMessages` | `Ref<boolean>`                | When `true`, `ruleMessages` are appended to `computedMessages`.                               |
 | `computedMessages` | `ComputedRef<StateMessage[]>` | Combined list: static/function messages plus rule messages when `showRuleMessages` is `true`. |
 
 ## Return Methods
@@ -65,8 +65,11 @@ interface StateMessage {
 
 ## Hooks
 
-| Hook    | Description                                         |
-| ------- | --------------------------------------------------- |
-| `watch` | Watches `messages` deeply and re-runs `checkMessages`. |
+| Hook          | Description                                                                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onMounted`   | Starts message tracking. Inside a component the first tracked run is deferred until after mount; outside a component it starts immediately. |
+| `watchEffect` | Runs the messages inside an effect, so every reactive value read by the message functions (message list, input value, closures) is tracked. |
 
 ## Cautions
+
+- Only the results of the latest `checkMessages` run are applied; results of a superseded async run are discarded.

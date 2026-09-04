@@ -11,7 +11,7 @@
 - 정적 `StateMessage` 객체와 동기/비동기 메시지 함수를 지원합니다
 - 모든 대기 중인 비동기 메시지 함수를 `Promise.all`로 병렬 처리합니다
 - `showRuleMessages` ref를 통해 규칙 메시지 표시 여부를 토글합니다
-- `messages` 배열이 변경될 때마다 메시지를 반응적으로 재평가합니다
+- `messages` 배열이 변경되거나, 메시지 함수가 내부에서 읽는 반응형 값이 변경될 때마다 메시지를 반응적으로 재평가합니다
 
 ## Basic Usage
 
@@ -35,9 +35,9 @@ const { computedMessages, showRuleMessages, checkMessages } = useInputMessages(i
 
 | 인자           | 타입                  | 기본값 | 필수 | 설명                                                                     |
 | -------------- | --------------------- | ------ | ---- | ------------------------------------------------------------------------ |
-| `inputValue`   | `Ref<T>`              | —      | Yes  | 함수 기반 메시지에 전달되는 현재 입력값.                                  |
-| `messages`     | `Ref<Message<T>[]>`   | —      | Yes  | 정적 `StateMessage` 객체 또는 `StateMessage`를 반환하는 함수의 배열.      |
-| `ruleMessages` | `Ref<StateMessage[]>` | —      | Yes  | 유효성 검사 규칙에 의해 생성된 메시지 배열 (`useInputRules`에서 생성됨).  |
+| `inputValue`   | `Ref<T>`              | —      | Yes  | 함수 기반 메시지에 전달되는 현재 입력값.                                 |
+| `messages`     | `Ref<Message<T>[]>`   | —      | Yes  | 정적 `StateMessage` 객체 또는 `StateMessage`를 반환하는 함수의 배열.     |
+| `ruleMessages` | `Ref<StateMessage[]>` | —      | Yes  | 유효성 검사 규칙에 의해 생성된 메시지 배열 (`useInputRules`에서 생성됨). |
 
 ## Types
 
@@ -52,21 +52,24 @@ interface StateMessage {
 
 ## Return Refs
 
-| RefType            | 타입                          | 설명                                                                                   |
-| ------------------ | ----------------------------- | -------------------------------------------------------------------------------------- |
-| `showRuleMessages` | `Ref<boolean>`                | `true`일 때 `ruleMessages`가 `computedMessages`에 추가됩니다.                           |
-| `computedMessages` | `ComputedRef<StateMessage[]>` | 정적/함수 메시지와 `showRuleMessages`가 `true`일 때의 규칙 메시지를 합친 목록.         |
+| RefType            | 타입                          | 설명                                                                           |
+| ------------------ | ----------------------------- | ------------------------------------------------------------------------------ |
+| `showRuleMessages` | `Ref<boolean>`                | `true`일 때 `ruleMessages`가 `computedMessages`에 추가됩니다.                  |
+| `computedMessages` | `ComputedRef<StateMessage[]>` | 정적/함수 메시지와 `showRuleMessages`가 `true`일 때의 규칙 메시지를 합친 목록. |
 
 ## Return Methods
 
-| 메서드          | 파라미터 | 설명                                                                          |
-| --------------- | -------- | ----------------------------------------------------------------------------- |
-| `checkMessages` | —        | 현재 `inputValue`에 대해 모든 메시지를 재평가하고 목록을 업데이트합니다.       |
+| 메서드          | 파라미터 | 설명                                                                     |
+| --------------- | -------- | ------------------------------------------------------------------------ |
+| `checkMessages` | —        | 현재 `inputValue`에 대해 모든 메시지를 재평가하고 목록을 업데이트합니다. |
 
 ## Hooks
 
-| Hook    | 설명                                              |
-| ------- | ------------------------------------------------- |
-| `watch` | `messages`를 깊이 감시하고 `checkMessages`를 다시 실행합니다. |
+| Hook          | 설명                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `onMounted`   | 메시지 추적을 시작합니다. 컴포넌트 안에서는 첫 추적 실행이 마운트 이후로 미뤄지고, 컴포넌트 밖에서는 즉시 시작합니다.     |
+| `watchEffect` | 메시지 실행 자체를 effect 안에서 수행하여 메시지 함수가 읽는 모든 반응형 값(메시지 목록, 입력값, 클로저 등)을 추적합니다. |
 
 ## Cautions
+
+- 가장 마지막 `checkMessages` 실행 결과만 반영되며, 그 사이에 밀려난 비동기 실행 결과는 버려집니다.

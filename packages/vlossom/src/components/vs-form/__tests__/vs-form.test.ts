@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { defineComponent, nextTick } from 'vue';
 import VsForm from './../VsForm.vue';
+import VsInput from '@/components/vs-input/VsInput.vue';
 import { FormStore } from '@/stores/form-store';
 
 describe('VsForm', () => {
@@ -234,6 +236,53 @@ describe('VsForm', () => {
                 expect(toggleResetFlagSpy).toHaveBeenCalled();
                 expect(formStore.resetFlag.value).toBe(!initialFlag);
             });
+        });
+    });
+
+    describe('input의 rule 변경', () => {
+        function getForm(wrapper: ReturnType<typeof mount>) {
+            return wrapper.vm.$refs.formRef as InstanceType<typeof VsForm>;
+        }
+
+        it('input의 required가 동적으로 바뀌면 validate 결과에 반영되어야 한다', async () => {
+            // given
+            const TestForm = defineComponent({
+                components: { VsForm, VsInput },
+                props: { required: { type: Boolean, default: false } },
+                template: '<vs-form ref="formRef"><vs-input id="name" :required="required" /></vs-form>',
+            });
+            const wrapper = mount(TestForm);
+            await nextTick();
+            expect(await getForm(wrapper).validate()).toBe(true);
+
+            // when
+            await wrapper.setProps({ required: true });
+
+            // then
+            expect(await getForm(wrapper).validate()).toBe(false);
+            expect(formStore.validObj.value['name']).toBe(false);
+        });
+
+        it('rule 함수가 참조하는 값이 바뀌면 rules 배열이 그대로여도 validate 결과에 반영되어야 한다', async () => {
+            // given
+            const TestForm = defineComponent({
+                components: { VsForm, VsInput },
+                props: { minLength: { type: Number, default: 0 } },
+                setup(props) {
+                    return { rules: [(v: string) => (v.length >= props.minLength ? '' : 'too short')] };
+                },
+                template: '<vs-form ref="formRef"><vs-input id="name" :rules="rules" /></vs-form>',
+            });
+            const wrapper = mount(TestForm);
+            await nextTick();
+            expect(await getForm(wrapper).validate()).toBe(true);
+
+            // when
+            await wrapper.setProps({ minLength: 3 });
+
+            // then
+            expect(await getForm(wrapper).validate()).toBe(false);
+            expect(formStore.validObj.value['name']).toBe(false);
         });
     });
 
