@@ -11,6 +11,7 @@ A multi-line text input component with validation, string modifiers, and min/max
 - Multi-line text input with full validation support
 - String modifiers (trim, lowercase, uppercase, etc.) applied via `v-model.trim` style modifiers
 - Min/max length validation with default rules
+- `header` and `footer` slots for toolbars rendered inside the textarea box
 - Integrated with `VsInputWrapper` for label, message, and state display
 - Autocomplete and read-only modes
 
@@ -39,6 +40,21 @@ const text = ref('');
         :max="200"
         :messages="[{ state: 'info', text: 'Enter 10–200 characters' }]"
     />
+</template>
+```
+
+### With Header and Footer
+
+The `header` and `footer` slots render inside the textarea box, so toolbars and action buttons share its border.
+
+```html
+<template>
+    <vs-textarea v-model="text" label="Message" placeholder="Ask anything">
+        <template #footer>
+            <vs-button size="sm">Attach</vs-button>
+            <vs-button size="sm" style="margin-left: auto">Send</vs-button>
+        </template>
+    </vs-textarea>
 </template>
 ```
 
@@ -98,11 +114,16 @@ const text = ref('');
 ## Types
 
 ```typescript
-interface VsTextareaStyleSet {
+interface VsTextareaStyleSet extends CSSProperties {
+    $header?: CSSProperties;
+    $footer?: CSSProperties;
     $textarea?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> [!NOTE]
+> Root-level CSS properties style the outer box that contains the header, textarea, and footer.
 
 > [!NOTE]
 > `$wrapper` uses [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.md).
@@ -115,11 +136,13 @@ interface VsTextareaStyleSet {
         v-model="text"
         label="Description"
         :style-set="{
+            borderRadius: '1rem',
             $textarea: {
                 minHeight: '6rem',
                 fontFamily: 'monospace',
                 fontSize: '0.875rem',
             },
+            $footer: { justifyContent: 'flex-end' },
         }"
     />
 </template>
@@ -142,6 +165,8 @@ interface VsTextareaStyleSet {
 | Slot | Description |
 | ---- | ----------- |
 | `label` | Custom label content |
+| `header` | Content displayed above the textarea, inside the box |
+| `footer` | Content displayed below the textarea, inside the box |
 | `messages` | Custom message content |
 
 ## Methods
