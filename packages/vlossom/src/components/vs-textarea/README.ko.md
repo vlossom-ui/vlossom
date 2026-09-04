@@ -11,6 +11,7 @@
 - 완전한 유효성 검사 지원을 갖춘 다중 행 텍스트 입력
 - `v-model.trim` 스타일의 수정자로 적용되는 문자열 수정자 (trim, lowercase, uppercase 등)
 - 기본 규칙을 포함한 최소/최대 길이 유효성 검사
+- textarea 박스 안쪽에 툴바를 배치할 수 있는 `header`, `footer` 슬롯
 - 레이블, 메시지, 상태 표시를 위해 `VsInputWrapper`와 통합
 - 자동완성 및 읽기 전용 모드
 
@@ -39,6 +40,21 @@ const text = ref('');
         :max="200"
         :messages="[{ state: 'info', text: '10~200자를 입력하세요' }]"
     />
+</template>
+```
+
+### 헤더 · 푸터
+
+`header`, `footer` 슬롯은 textarea 박스 안쪽에 렌더링되어, 툴바나 액션 버튼이 입력 박스와 테두리를 공유합니다.
+
+```html
+<template>
+    <vs-textarea v-model="text" label="메시지" placeholder="무엇이든 작업하세요">
+        <template #footer>
+            <vs-button size="sm">첨부</vs-button>
+            <vs-button size="sm" style="margin-left: auto">전송</vs-button>
+        </template>
+    </vs-textarea>
 </template>
 ```
 
@@ -98,11 +114,16 @@ const text = ref('');
 ## 타입
 
 ```typescript
-interface VsTextareaStyleSet {
+interface VsTextareaStyleSet extends CSSProperties {
+    $header?: CSSProperties;
+    $footer?: CSSProperties;
     $textarea?: CSSProperties;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
+
+> [!NOTE]
+> 최상위 CSS 속성은 header, textarea, footer를 감싸는 바깥 박스에 적용됩니다.
 
 > [!NOTE]
 > `$wrapper`는 [`VsInputWrapperStyleSet`](../vs-input-wrapper/README.ko.md)을 사용합니다.
@@ -115,11 +136,13 @@ interface VsTextareaStyleSet {
         v-model="text"
         label="설명"
         :style-set="{
+            borderRadius: '1rem',
             $textarea: {
                 minHeight: '6rem',
                 fontFamily: 'monospace',
                 fontSize: '0.875rem',
             },
+            $footer: { justifyContent: 'flex-end' },
         }"
     />
 </template>
@@ -142,6 +165,8 @@ interface VsTextareaStyleSet {
 | 슬롯 | 설명 |
 | ---- | ---- |
 | `label` | 커스텀 레이블 내용 |
+| `header` | 박스 안쪽, textarea 위에 표시되는 콘텐츠 |
+| `footer` | 박스 안쪽, textarea 아래에 표시되는 콘텐츠 |
 | `messages` | 커스텀 메시지 내용 |
 
 ## 메서드

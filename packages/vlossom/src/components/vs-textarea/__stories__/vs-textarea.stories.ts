@@ -465,15 +465,41 @@ export const StyleSet: Story = {
         label: '커스텀 스타일',
         placeholder: '커스텀 텍스트 영역',
         styleSet: {
+            backgroundColor: '#f0f8ff',
+            border: '2px solid #1e88e5',
+            borderRadius: '12px',
+            color: '#1565c0',
             $textarea: {
-                backgroundColor: '#f0f8ff',
-                border: '2px solid #1e88e5',
-                borderRadius: '12px',
-                color: '#1565c0',
                 fontSize: '1.1rem',
                 minHeight: '10rem',
                 padding: '0.75rem 1rem',
             },
         },
     },
+};
+
+export const HeaderFooter: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'header, footer 슬롯으로 입력 영역 위아래에 툴바를 배치할 수 있습니다.',
+            },
+        },
+    },
+    render: () => ({
+        components: { VsTextarea },
+        setup() {
+            const value = ref('');
+            return { value };
+        },
+        template: `
+            <vs-textarea v-model="value" label="메시지" placeholder="무엇이든 작업하세요">
+                <template #footer>
+                    <button type="button">+</button>
+                    <span style="margin-left: auto;">{{ value.length }}자</span>
+                    <button type="button">전송</button>
+                </template>
+            </vs-textarea>
+        `,
+    }),
 };
