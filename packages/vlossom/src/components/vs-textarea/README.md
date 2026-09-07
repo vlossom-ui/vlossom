@@ -45,8 +45,6 @@ const text = ref('');
 
 ### With Header and Footer
 
-The `header` and `footer` slots render inside the textarea box, so toolbars and action buttons share its border.
-
 ```html
 <template>
     <vs-textarea v-model="text" label="Message" placeholder="Ask anything">

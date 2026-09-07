@@ -45,8 +45,6 @@ const text = ref('');
 
 ### 헤더 · 푸터
 
-`header`, `footer` 슬롯은 textarea 박스 안쪽에 렌더링되어, 툴바나 액션 버튼이 입력 박스와 테두리를 공유합니다.
-
 ```html
 <template>
     <vs-textarea v-model="text" label="메시지" placeholder="무엇이든 작업하세요">
