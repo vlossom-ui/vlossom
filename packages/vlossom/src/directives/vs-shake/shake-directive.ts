@@ -8,22 +8,13 @@ function triggerShake(el: HTMLElement): void {
     el.addEventListener('animationend', () => el.classList.remove(SHAKE_CLASS), { once: true });
 }
 
-export const shake: Directive<HTMLElement, boolean | undefined> = {
-    mounted(el, binding) {
-        if (!binding.value) {
-            return;
-        }
+export const shake: Directive<HTMLElement, boolean | undefined> = (el, binding) => {
+    if (!binding.value === !binding.oldValue) {
+        return;
+    }
+    if (binding.value) {
         triggerShake(el);
-    },
-
-    updated(el, binding) {
-        if (binding.value === binding.oldValue) {
-            return;
-        }
-        if (binding.value) {
-            triggerShake(el);
-        } else {
-            el.classList.remove(SHAKE_CLASS);
-        }
-    },
+    } else {
+        el.classList.remove(SHAKE_CLASS);
+    }
 };

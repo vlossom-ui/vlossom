@@ -34,16 +34,9 @@ The shake animation fires each time the bound value transitions to `true`. Setti
 
 ## Binding
 
-| Binding | Type                   | Default     | Description                                                              |
-| ------- | ---------------------- | ----------- | ------------------------------------------------------------------------ |
+| Binding | Type                   | Default     | Description                                                                |
+| ------- | ---------------------- | ----------- | -------------------------------------------------------------------------- |
 | `value` | `boolean \| undefined` | `undefined` | When `true`, triggers the shake animation. When `false`, clears the state. |
-
-## Hooks
-
-| Hook      | Description                                                                                   |
-| --------- | --------------------------------------------------------------------------------------------- |
-| `mounted` | Triggers the shake animation immediately if the initial value is `true`.                      |
-| `updated` | Triggers the shake animation when the value transitions to `true`; clears state when `false`. |
 
 ## Cautions
 
