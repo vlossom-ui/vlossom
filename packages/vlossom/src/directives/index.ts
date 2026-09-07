@@ -1,1 +1,2 @@
-export * from './vs-scroll-shadow/scroll-shadow-directive';
+export * from './vs-scroll-shadow';
+export * from './vs-shake';
