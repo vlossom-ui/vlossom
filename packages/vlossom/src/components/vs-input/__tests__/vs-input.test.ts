@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import VsInput from './../VsInput.vue';
 
@@ -221,7 +222,7 @@ describe('VsInput', () => {
     });
 
     describe('validation (rules)', () => {
-        it('required 체크가 가능하다', () => {
+        it('required 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -232,6 +233,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -260,7 +262,7 @@ describe('VsInput', () => {
             expect(wrapper.vm.shake).toBe(false);
         });
 
-        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', () => {
+        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', async () => {
             // given
             const customRule = (value: string | number | null) => {
                 if (value === 'test') {
@@ -278,6 +280,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -371,7 +374,7 @@ describe('VsInput', () => {
             expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([null]);
         });
 
-        it('input type이 number가 아닐 때 max 길이 체크가 가능하다', () => {
+        it('input type이 number가 아닐 때 max 길이 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -383,6 +386,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -392,7 +396,7 @@ describe('VsInput', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('input type이 number가 아닐 때 min 길이 체크가 가능하다', () => {
+        it('input type이 number가 아닐 때 min 길이 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -404,6 +408,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -413,7 +418,7 @@ describe('VsInput', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('input type이 number 일 때 max 값 체크가 가능하다', () => {
+        it('input type이 number 일 때 max 값 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -425,6 +430,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -434,7 +440,7 @@ describe('VsInput', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('input type이 number 일 때 min 값 체크가 가능하다', () => {
+        it('input type이 number 일 때 min 값 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsInput, {
                 props: {
@@ -446,6 +452,7 @@ describe('VsInput', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
