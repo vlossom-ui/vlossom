@@ -1,16 +1,16 @@
 import { h, ref, type Component, type Ref } from 'vue';
 import { VsRender } from '@/components';
-import { useStyleSet } from '@/composables';
+import { useStyleSet, useMessages } from '@/composables';
 import { useOverlayCallbackStore } from '@/stores';
 import { CONFIRM_CANCEL, CONFIRM_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
 import type { ModalPlugin } from '@/plugins';
 
 import { vnodeUtils } from './../utils/vnode-utils';
 import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
-import { useOptionsStore } from '@/stores';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
+    const { messages } = useMessages();
 
     function handleButton(eventName: typeof CONFIRM_OK | typeof CONFIRM_CANCEL) {
         const overlayId = overlayCallback.getLastOverlayId();
@@ -24,8 +24,8 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
             const {
                 componentProps,
-                okText = useOptionsStore().messages.value.VS_CONFIRM_OK,
-                cancelText = useOptionsStore().messages.value.VS_CONFIRM_CANCEL,
+                okText = messages.value.VS_CONFIRM_OK,
+                cancelText = messages.value.VS_CONFIRM_CANCEL,
                 swapButtons,
                 ...modalOptions
             } = options;

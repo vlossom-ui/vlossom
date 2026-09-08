@@ -60,9 +60,8 @@ import {
 } from 'vue';
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
-import { useOptionsStore } from '@/stores';
 import { getGroupByProps, getStyleSetProps } from '@/props';
-import { useStyleSet } from '@/composables';
+import { useStyleSet, useMessages } from '@/composables';
 import type { VsGroupedListGroup, VsGroupedListStyleSet } from './types';
 
 import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
@@ -83,7 +82,7 @@ export default defineComponent({
     emits: ['click-item'],
     // expose: ['scrollToItem'],
     setup(props, { emit }) {
-        const messages = useOptionsStore().messages;
+        const { messages } = useMessages();
         const { styleSet, items, groupBy, groupOrder } = toRefs(props);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');

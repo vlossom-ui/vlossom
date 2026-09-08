@@ -65,10 +65,17 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
-import { useOptionsStore } from '@/stores';
 import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useSizeClass, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
+import {
+    useColorScheme,
+    useInput,
+    useSizeClass,
+    useStateClass,
+    useStyleSet,
+    useValueMatcher,
+    useMessages,
+} from '@/composables';
 import type { VsSwitchStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -100,7 +107,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             beforeChange,
             checked,

@@ -29,11 +29,10 @@
 import { computed, defineComponent, toRefs, type PropType } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet, useMessages } from '@/composables';
 import type { VsChipStyleSet } from './types';
 
 import { XIcon } from '@lucide/vue';
-import { useOptionsStore } from '@/stores';
 
 const componentName = VsComponent.VsChip;
 export default defineComponent({
@@ -49,7 +48,7 @@ export default defineComponent({
     },
     emits: ['close'],
     setup(props) {
-        const messages = useOptionsStore().messages;
+        const { messages } = useMessages();
         const { colorScheme, size, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);

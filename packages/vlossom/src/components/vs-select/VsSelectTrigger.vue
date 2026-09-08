@@ -61,8 +61,7 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, useTemplateRef, type PropType, type TemplateRef } from 'vue';
 import { VsComponent, type ColorScheme, type OptionItem, type UIState } from '@/declaration';
-import { useOptionsStore } from '@/stores';
-import { useStateClass, useStyleSet } from '@/composables';
+import { useStateClass, useStyleSet, useMessages } from '@/composables';
 import type { VsSelectStyleSet } from './types';
 
 import { ChevronDownIcon, XIcon } from '@lucide/vue';
@@ -91,7 +90,7 @@ export default defineComponent({
     },
     emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
-        const messages = useOptionsStore().messages;
+        const { messages } = useMessages();
         const { isEmpty, selectedOptions, state, noClear, disabled, readonly, styleSet } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');

@@ -57,7 +57,7 @@ import type { SortableEvent } from 'sortablejs';
 import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export default defineComponent({
     components: {
@@ -71,7 +71,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
-        const messages = useOptionsStore().messages;
+        const { messages } = useMessages();
         const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 

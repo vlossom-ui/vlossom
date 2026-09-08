@@ -158,6 +158,7 @@ import {
     useOverlayCallback,
     useClickOutside,
     useSizeClass,
+    useMessages,
 } from '@/composables';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
@@ -165,7 +166,6 @@ import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
 
 import { BanIcon } from '@lucide/vue';
-import { useOptionsStore } from '@/stores';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
@@ -215,7 +215,7 @@ export default defineComponent({
         'clear',
     ],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             colorScheme,
             styleSet,

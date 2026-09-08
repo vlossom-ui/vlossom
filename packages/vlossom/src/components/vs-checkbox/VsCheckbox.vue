@@ -66,9 +66,16 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
-import { useOptionsStore } from '@/stores';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useSizeClass, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
+import {
+    useColorScheme,
+    useInput,
+    useSizeClass,
+    useStyleSet,
+    useStateClass,
+    useValueMatcher,
+    useMessages,
+} from '@/composables';
 import { stringUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
@@ -101,7 +108,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur', 'toggle'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             beforeChange,
             checked,

@@ -34,7 +34,7 @@ importers:
         specifier: 10.6.0
         version: 10.6.0(@types/react@19.2.8)(storybook@10.6.0(@types/react@19.2.8)(prettier@3.9.6)(react@19.2.8))
       '@storybook/builder-vite':
-        specifier: ^10.6.0
+        specifier: ^10.5.10
         version: 10.6.0(storybook@10.6.0(@types/react@19.2.8)(prettier@3.9.6)(react@19.2.8))(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.0))
       '@storybook/vue3-vite':
         specifier: 10.6.0
@@ -85,7 +85,7 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2
       eslint:
-        specifier: ^10.10.0
+        specifier: ^10.9.1
         version: 10.10.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-plugin-storybook:
         specifier: 10.6.0
@@ -124,13 +124,13 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(rolldown@1.2.6)
       sass:
-        specifier: ^1.104.0
+        specifier: ^1.103.1
         version: 1.104.0
       storybook:
         specifier: 10.6.0
         version: 10.6.0(@types/react@19.2.8)(prettier@3.9.6)(react@19.2.8)
       stylelint:
-        specifier: ^17.15.0
+        specifier: ^17.14.1
         version: 17.15.0(supports-color@10.2.2)(typescript@6.0.3)
       stylelint-config-standard:
         specifier: ^40.0.0
@@ -142,10 +142,10 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
       typescript:
-        specifier: ~6.0.3
+        specifier: ^6.0.3
         version: 6.0.3
       unplugin-dts:
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0(@microsoft/api-extractor@7.59.0(@types/node@24.13.3))(@vue/language-core@3.3.11)(esbuild@0.28.2)(rolldown@1.2.6)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.0))
       vite:
         specifier: ^8.2.2

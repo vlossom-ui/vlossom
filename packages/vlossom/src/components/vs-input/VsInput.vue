@@ -78,14 +78,21 @@ import {
     type ComputedRef,
 } from 'vue';
 import { VsComponent, type Size, type StringModifiers } from '@/declaration';
-import { useColorScheme, useStyleSet, useInput, useStringModifier, useStateClass, useSizeClass } from '@/composables';
+import {
+    useColorScheme,
+    useStyleSet,
+    useInput,
+    useStringModifier,
+    useStateClass,
+    useSizeClass,
+    useMessages,
+} from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 
 import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
 
 import { XIcon } from '@lucide/vue';
-import { useOptionsStore } from '@/stores';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
@@ -116,7 +123,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset', 'select'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             colorScheme,
             styleSet,

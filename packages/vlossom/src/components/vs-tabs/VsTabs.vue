@@ -76,8 +76,7 @@ import {
     type ComputedRef,
     type CSSProperties,
 } from 'vue';
-import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector } from '@/composables';
-import { useOptionsStore } from '@/stores';
+import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector, useMessages } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
@@ -120,7 +119,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const { colorScheme, styleSet, size, disabled, primary, height, controls, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);

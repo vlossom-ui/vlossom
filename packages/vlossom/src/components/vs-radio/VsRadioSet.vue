@@ -57,10 +57,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
-import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
+import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet, useMessages } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
-import { useOptionsStore } from '@/stores';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsRadioSetStyleSet } from './types';
 
@@ -89,7 +88,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             colorScheme,
             styleSet,

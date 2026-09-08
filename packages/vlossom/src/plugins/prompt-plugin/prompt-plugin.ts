@@ -1,15 +1,15 @@
 import { h, type Component, ref, type Ref } from 'vue';
 import { OVERLAY_CLOSE, PROMPT_CANCEL, PROMPT_OK, VsComponent } from '@/declaration';
 import { useOverlayCallbackStore } from '@/stores';
-import { useStyleSet } from '@/composables';
+import { useStyleSet, useMessages } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from './../modal-plugin';
 import type { PromptModalOptions, PromptPlugin, VsPromptStyleSet } from './types';
-import { useOptionsStore } from '@/stores';
 import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
     const overlayCallback = useOverlayCallbackStore();
+    const { messages } = useMessages();
 
     function handleButton(eventName: typeof PROMPT_OK | typeof PROMPT_CANCEL) {
         const overlayId = overlayCallback.getLastOverlayId();
@@ -23,8 +23,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
             const {
                 componentProps,
-                okText = useOptionsStore().messages.value.VS_PROMPT_OK,
-                cancelText = useOptionsStore().messages.value.VS_PROMPT_CANCEL,
+                okText = messages.value.VS_PROMPT_OK,
+                cancelText = messages.value.VS_PROMPT_CANCEL,
                 swapButtons,
                 input: inputOptions,
                 ...modalOptions

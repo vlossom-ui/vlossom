@@ -108,7 +108,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
-import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
+import { useColorScheme, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
 
@@ -116,7 +116,6 @@ import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
 
 import { PaperclipIcon, XIcon } from '@lucide/vue';
-import { useOptionsStore } from '@/stores';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 
@@ -144,7 +143,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const globalMessages = useOptionsStore().messages;
+        const { messages: globalMessages } = useMessages();
         const {
             colorScheme,
             styleSet,

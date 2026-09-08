@@ -75,10 +75,9 @@ import {
     type ComputedRef,
 } from 'vue';
 import { VsComponent, type Size, type UIState } from '@/declaration';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useStyleSet, useMessages } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { functionUtil } from '@/utils';
-import { useOptionsStore } from '@/stores';
 import type { VsSearchInputStyleSet } from './types';
 
 import type { VsInputRef } from '@/components/vs-input/types';
@@ -109,7 +108,7 @@ export default defineComponent({
     emits: ['search', 'update:modelValue', 'update:caseSensitive', 'update:regex'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, modelValue, caseSensitive, regex } = toRefs(props);
-        const messages = useOptionsStore().messages;
+        const { messages } = useMessages();
 
         const searchText: Ref<string> = ref(modelValue.value);
         const inputRef: TemplateRef<VsInputRef> = useTemplateRef('inputRef');
