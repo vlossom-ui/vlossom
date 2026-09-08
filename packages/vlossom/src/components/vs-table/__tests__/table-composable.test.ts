@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { nextTick, reactive, ref, type Ref } from 'vue';
+import { nextTick, reactive, ref, toRaw, type Ref } from 'vue';
 import { stringUtil } from '@/utils';
 import type { VsSearchInputRef } from '@/components';
 
@@ -20,6 +20,7 @@ function setupUseTable(
         items: VsTableItem[];
         selectable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
         expandable?: ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean) | boolean;
+        selectedItems?: VsTableItem[];
         pagination?: boolean | VsTablePaginationOptions;
         search?: boolean | VsTableSearchOptions;
         page?: number;
@@ -172,6 +173,141 @@ describe('useTable', () => {
 
         expect(table.selectedPartial.value).toBe(true);
         expect(table.selectedAll.value).toBe(false);
+    });
+
+    it('toggleSelect는 해당 아이템만 선택 상태에 반영한다', async () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+        const { table } = setupUseTable({
+            columns: ['name'],
+            items,
+            selectable: () => true,
+        });
+
+        await nextTick();
+
+        table.toggleSelect(items[0]);
+
+        expect(table.isItemSelected(items[0])).toBe(true);
+        expect(table.isItemSelected(items[1])).toBe(false);
+        expect(table.selectedItems.value).toEqual([items[0]]);
+    });
+
+    it('toggleSelectAll은 즉시 선택 상태에 반영된다', async () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+        const { table } = setupUseTable({
+            columns: ['name'],
+            items,
+            selectable: () => true,
+        });
+
+        await nextTick();
+
+        table.toggleSelectAll();
+        expect(items.every((item) => table.isItemSelected(item))).toBe(true);
+
+        table.toggleSelectAll();
+        expect(items.some((item) => table.isItemSelected(item))).toBe(false);
+    });
+
+    it('아이템 값을 직접 수정하면 바디 셀 값이 갱신된다', async () => {
+        const { table, reactiveProps } = setupUseTable({
+            columns: ['name'],
+            items: [{ id: '1', name: 'Alice' }],
+        });
+
+        await nextTick();
+
+        reactiveProps.items[0].name = 'Bob';
+        await nextTick();
+
+        expect(table.bodyRows.value[0].cells[0].value).toBe('Bob');
+    });
+
+    it('컬럼을 같은 배열에 추가하면 헤더가 갱신된다', async () => {
+        const columns: VsTableColumnDef[] = [{ key: 'name', label: '이름' }];
+        const { table, reactiveProps } = setupUseTable({ columns, items: [{ id: '1', name: 'Alice', age: 24 }] });
+
+        await nextTick();
+
+        (reactiveProps.columns as VsTableColumnDef[]).push({ key: 'age', label: '나이' });
+        await nextTick();
+
+        expect(table.headerCells.value.map((cell) => cell.value)).toEqual(['이름', '나이']);
+    });
+
+    it('내용이 같은 새 아이템으로 교체하면 셀이 새 아이템을 가리킨다', async () => {
+        const { table, reactiveProps } = setupUseTable({
+            columns: ['name'],
+            items: [{ id: '1', name: 'Alice' }],
+        });
+
+        await nextTick();
+
+        const nextItems = [{ id: '1', name: 'Alice' }];
+        reactiveProps.items = nextItems;
+        await nextTick();
+
+        expect(toRaw(table.bodyRows.value[0].item)).toBe(nextItems[0]);
+        expect(toRaw(table.bodyRows.value[0].cells[0].item)).toBe(nextItems[0]);
+    });
+
+    it('내용이 같은 새 selectedItems로 교체해도 새 객체를 선택 상태로 유지한다', async () => {
+        const { table, reactiveProps } = setupUseTable({
+            columns: ['name'],
+            items: [{ id: '1', name: 'Alice' }],
+            selectable: () => true,
+            selectedItems: [{ id: '1', name: 'Alice' }],
+        });
+
+        await nextTick();
+
+        const nextSelectedItem = { id: '1', name: 'Alice' };
+        reactiveProps.selectedItems = [nextSelectedItem];
+        await nextTick();
+
+        expect(table.isItemSelected(nextSelectedItem)).toBe(true);
+        expect(table.isItemSelected(table.items.value[0])).toBe(false);
+    });
+
+    it('행을 추가해도 기존 행 객체와 헤더 배열은 그대로 유지된다', async () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+        const { table, reactiveProps } = setupUseTable({ columns: ['name'], items });
+
+        await nextTick();
+
+        const firstRows = [...table.bodyRows.value];
+        const firstHeader = table.headerCells.value;
+        reactiveProps.items = [...items, { id: '3', name: 'Carol' }];
+        await nextTick();
+
+        expect(table.bodyRows.value[0]).toBe(firstRows[0]);
+        expect(table.bodyRows.value[1]).toBe(firstRows[1]);
+        expect(table.bodyRows.value[2].cells[0].value).toBe('Carol');
+        expect(table.headerCells.value).toBe(firstHeader);
+    });
+
+    it('아이템 내용이 같으면 바디 행 객체를 재사용한다', async () => {
+        const { table, reactiveProps } = setupUseTable({
+            columns: ['name'],
+            items: [{ id: '1', name: 'Alice' }],
+        });
+
+        await nextTick();
+
+        const firstRow = table.bodyRows.value[0];
+        reactiveProps.items = [{ id: '1', name: 'Alice' }];
+        await nextTick();
+
+        expect(table.bodyRows.value[0]).toBe(firstRow);
     });
 
     describe('search', () => {
@@ -795,8 +931,7 @@ describe('useTable', () => {
             { key: 'name', label: '이름', sortable: true },
         ];
 
-        const getNames = (table: ReturnType<typeof useTable>) =>
-            table.bodyRows.value.map((row) => row.cells[1].value);
+        const getNames = (table: ReturnType<typeof useTable>) => table.bodyRows.value.map((row) => row.cells[1].value);
 
         it('초기 상태는 NONE이며 원본 순서를 유지한다', async () => {
             const { table } = setupUseTable({

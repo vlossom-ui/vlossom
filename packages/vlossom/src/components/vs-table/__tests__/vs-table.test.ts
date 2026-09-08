@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil, logUtil } from '@/utils';
 import VsTable from './../VsTable.vue';
+import VsTableBodyRow from './../VsTableBodyRow.vue';
 import type { VsTableBodyCell, VsTableItem, VsTableColumnDef } from './../types';
 
 const defaultColumns = ['name', 'age'];
@@ -1260,7 +1261,7 @@ describe('VsTable', () => {
             expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(true);
         });
 
-        it('draggable이 false이면 draggable wrapper는 렌더링되지만 drag handle이 표시되지 않는다', async () => {
+        it('draggable이 false이면 draggable wrapper를 렌더링하지 않고 drag handle이 표시되지 않는다', async () => {
             const wrapper = mountTable({
                 props: {
                     draggable: false,
@@ -1269,7 +1270,24 @@ describe('VsTable', () => {
 
             await nextTick();
 
-            expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(true);
+            expect(wrapper.find('[data-testid="draggable-wrapper"]').exists()).toBe(false);
+            expect(wrapper.find('.vs-table-drag-handle').exists()).toBe(false);
+        });
+
+        it('draggable을 껐다 켜는 사이 items가 바뀌어도 정렬 순서가 남지 않는다', async () => {
+            const wrapper = mountTable({ props: { draggable: true } });
+
+            await nextTick();
+
+            const findDraggable = () => wrapper.findComponent<any>('[data-testid="draggable-wrapper"]' as any);
+            const draggableStub = findDraggable();
+            draggableStub.vm.$emit('update:modelValue', [...draggableStub.props('modelValue')].reverse());
+            await nextTick();
+
+            await wrapper.setProps({ draggable: false, items: [{ id: '1', name: 'Alice', age: 24 }] });
+            await wrapper.setProps({ draggable: true });
+
+            expect(findDraggable().props('modelValue')).toHaveLength(1);
         });
 
         it('loading이 true이면 draggable이 비활성화된다', async () => {
@@ -1301,6 +1319,91 @@ describe('VsTable', () => {
             expect(draggableWrapper.attributes('data-disabled')).toBe('false');
 
             expect(wrapper.props('draggable')).toBe(true);
+        });
+    });
+
+    describe('행 업데이트 격리', () => {
+        function mountCountingTable(items: VsTableItem[]) {
+            const counter = { updates: 0, mounts: 0 };
+            const wrapper = mount(VsTable, {
+                props: { columns: defaultColumns, items },
+                global: {
+                    ...defaultGlobal,
+                    mixins: [
+                        {
+                            beforeMount(this: any) {
+                                if (this.$.type === VsTableBodyRow) {
+                                    counter.mounts += 1;
+                                }
+                            },
+                            beforeUpdate(this: any) {
+                                if (this.$.type === VsTableBodyRow) {
+                                    counter.updates += 1;
+                                }
+                            },
+                        },
+                    ],
+                },
+            });
+            return { wrapper, counter };
+        }
+
+        it('내용이 같은 배열로 교체해도 바디 행은 다시 렌더되지 않는다', async () => {
+            const { wrapper, counter } = mountCountingTable(tableItems);
+
+            await nextTick();
+            counter.updates = 0;
+            counter.mounts = 0;
+            await wrapper.setProps({ items: [...tableItems] });
+            await nextTick();
+
+            expect(counter).toEqual({ updates: 0, mounts: 0 });
+        });
+
+        it('행을 추가해도 기존 행은 다시 렌더되지 않는다', async () => {
+            const { wrapper, counter } = mountCountingTable(tableItems);
+
+            await nextTick();
+            counter.updates = 0;
+            counter.mounts = 0;
+            await wrapper.setProps({ items: [...tableItems, { id: '3', name: 'Carol', age: 41 }] });
+            await nextTick();
+
+            expect(counter).toEqual({ updates: 0, mounts: 1 });
+            expect(wrapper.findAll('tbody .vs-table-body-row')).toHaveLength(3);
+        });
+
+        it('한 행의 값만 바뀌면 그 행만 다시 만들어진다', async () => {
+            const { wrapper, counter } = mountCountingTable(tableItems);
+
+            await nextTick();
+            counter.updates = 0;
+            counter.mounts = 0;
+            await wrapper.setProps({
+                items: tableItems.map((item, index) => (index === 0 ? { ...item, name: 'Changed' } : item)),
+            });
+            await nextTick();
+
+            // 행 key가 아이템 객체 동일성에 묶여 있어, 바뀐 행은 갱신이 아니라 재마운트된다.
+            expect(counter).toEqual({ updates: 0, mounts: 1 });
+            expect(wrapper.findAll('tbody .vs-table-body-row')[0].text()).toContain('Changed');
+        });
+    });
+
+    describe('행 선택 표시', () => {
+        it('selectedItems에 포함된 행만 vs-selected 클래스를 가진다', async () => {
+            const wrapper = mountTable({
+                props: { selectable: () => true, selectedItems: [tableItems[0]] },
+            });
+
+            await nextTick();
+
+            const rows = wrapper
+                .findAll('tbody .vs-table-body-row')
+                .filter((row) => !row.find('.vs-table-no-data').exists());
+            expect(rows).toHaveLength(2);
+            expect(rows[0].classes()).toContain('vs-selected');
+            expect(rows[1].classes()).not.toContain('vs-selected');
         });
     });
 });

@@ -1,5 +1,6 @@
 <template>
     <draggable
+        v-if="isDraggable"
         tag="tbody"
         v-model="displayedRows"
         v-bind="DEFAULT_SORTABLE_OPTIONS"
@@ -24,6 +25,23 @@
             </vs-table-body-row>
         </template>
     </draggable>
+    <tbody v-else :id :class="[TABLE_DRAG_WRAPPER_CLASS, 'vs-table-body']">
+        <vs-table-body-row
+            v-for="(element, index) in displayedRows"
+            :key="getRowKey(element)"
+            v-memo="[element, index]"
+            :row="element"
+            :rowIdx="index"
+            @click-cell="clickCell"
+            @click-row="clickRow"
+            @select-row="selectRow"
+            @expand-row="expandRow"
+        >
+            <template v-for="name in bodySlots" #[name]="slotData">
+                <slot :name v-bind="slotData || {}" />
+            </template>
+        </vs-table-body-row>
+    </tbody>
 
     <tbody class="vs-table-tbody" v-if="displayedRows.length === 0">
         <tr class="vs-table-body-row">
@@ -70,7 +88,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
-        const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
+        const { bodyRows, loading, draggable: isDraggable } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
         const bodySlots = computed(() =>
@@ -84,7 +102,7 @@ export default defineComponent({
         const displayedRows = computed<VsTableRow[]>({
             get(): VsTableRow[] {
                 const base = bodyRows.value;
-                if (displayOrder.value.length === 0) {
+                if (!isDraggable?.value || displayOrder.value.length === 0) {
                     return base;
                 }
                 return displayOrder.value.map((idx) => base[idx]);
@@ -122,9 +140,9 @@ export default defineComponent({
         }
 
         watch(
-            bodyRows,
-            (rows) => {
-                displayOrder.value = rows.map((_, idx) => idx);
+            [bodyRows, () => isDraggable?.value],
+            ([rows, enabled]) => {
+                displayOrder.value = enabled ? rows.map((_, idx) => idx) : [];
             },
             { immediate: true },
         );
@@ -135,6 +153,7 @@ export default defineComponent({
             bodySlots,
             colorScheme,
             displayedRows,
+            isDraggable,
             getRowKey,
             loading,
             clickCell,

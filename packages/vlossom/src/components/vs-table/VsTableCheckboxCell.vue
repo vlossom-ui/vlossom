@@ -4,13 +4,11 @@
             <slot name="select" :item="getRowItem(cells)" :value="isSelected(cells)" :rowIdx>
                 <vs-checkbox
                     v-if="isRowSelectable(cells, rowIdx)"
-                    multiple
                     :color-scheme
                     :disabled="loading"
                     :size
-                    v-model="selectedItems"
-                    :true-value="getRowItem(cells)"
-                    @toggle="selectRow(cells, $event)"
+                    :model-value="isSelected(cells)"
+                    @toggle="toggleBodyRow(cells, $event)"
                 />
             </slot>
         </td>
@@ -64,11 +62,12 @@ export default defineComponent({
     setup(props, { emit }) {
         const {
             anySelectable,
-            selectedItems,
+            isItemSelected,
             selectable,
             items,
             selectedAll,
             selectedPartial,
+            toggleSelect,
             toggleSelectAll,
             loading,
             primary,
@@ -99,7 +98,7 @@ export default defineComponent({
 
         function isSelected(row: VsTableCell[]): boolean {
             if (isVsTableBodyRow(row)) {
-                return selectedItems.value.includes(getRowItem(row));
+                return isItemSelected(getRowItem(row));
             }
             return selectedAll.value || selectedPartial.value;
         }
@@ -118,6 +117,16 @@ export default defineComponent({
             emit('select-row', row, event);
         }
 
+        function toggleBodyRow(row: VsTableBodyCell[], event: MouseEvent): void {
+            const item = getRowItem(row);
+            const rowIdx = row[0]?.rowIdx;
+            if (!item || !selectable.value(item, rowIdx, items.value)) {
+                return;
+            }
+            toggleSelect(item);
+            emit('select-row', row, event);
+        }
+
         return {
             HEADER_ROW_INDEX,
             // unplugin-dts fn: fn issue
@@ -126,8 +135,8 @@ export default defineComponent({
             isSelected,
             isRowSelectable,
             selectRow,
+            toggleBodyRow,
             anySelectable,
-            selectedItems,
             selectedAll,
             selectedPartial,
             cellStyle,

@@ -87,7 +87,7 @@ export default defineComponent({
             anySelectable,
             headerCells,
             loading,
-            selectedItems,
+            isItemSelected,
             state: stateFn,
             items,
             columns,
@@ -104,7 +104,7 @@ export default defineComponent({
             if (!anySelectable.value) {
                 return false;
             }
-            return selectedItems.value.includes(row.value.item);
+            return isItemSelected(row.value.item);
         });
 
         const showExpand = computed(() => anyExpandable.value && !!slots.expand);

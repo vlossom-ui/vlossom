@@ -1,6 +1,7 @@
 import {
     computed,
     ref,
+    shallowRef,
     toRefs,
     watch,
     type ComputedRef,
@@ -172,6 +173,8 @@ export function useTable(
         selectedAll,
         selectedPartial,
         anySelectable,
+        isItemSelected,
+        toggleSelect,
         toggleSelectAll,
     } = useTableSelect(selectable, items, selectedItems);
 
@@ -215,8 +218,8 @@ export function useTable(
     const builtTable = computed<{ header: VsTableHeaderCell[]; rows: VsTableRow[] }>(() => {
         return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
     });
-    const headerCells = ref<VsTableHeaderCell[]>([]);
-    const rawBodyRows = ref<VsTableRow[]>([]);
+    const headerCells = shallowRef<VsTableHeaderCell[]>([]);
+    const rawBodyRows = shallowRef<VsTableRow[]>([]);
 
     const totalItemsCount = computed(() => rawBodyRows.value.filter(matchBySearch).length);
     const { totalPages, totalItems, pageStartIndex, pageEndIndex } = useTablePagination(
@@ -240,8 +243,9 @@ export function useTable(
     });
 
     function initTable(built: { header: VsTableHeaderCell[]; rows: VsTableRow[] }): void {
-        headerCells.value = [...built.header];
-        rawBodyRows.value = [...built.rows];
+        // 복사본을 만들면 내용이 같아도 배열 동일성이 깨져 모든 행이 다시 렌더된다. 빌더가 만든 배열을 그대로 쓴다.
+        headerCells.value = built.header;
+        rawBodyRows.value = built.rows;
     }
 
     function initialize(): void {
@@ -289,6 +293,8 @@ export function useTable(
         selectedItems: internalSelectedItems,
         selectedAll,
         selectedPartial,
+        isItemSelected,
+        toggleSelect,
         toggleSelectAll,
         sortType,
         sortColumn,
@@ -318,6 +324,8 @@ export type TableComposable = {
     selectedItems: Ref<VsTableItem[]>;
     selectedAll: ComputedRef<boolean>;
     selectedPartial: ComputedRef<boolean>;
+    isItemSelected: (item: VsTableItem) => boolean;
+    toggleSelect: (item: VsTableItem) => void;
     selectable: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>;
     expandable: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>;
     state: ComputedRef<(item: VsTableItem, index?: number, items?: VsTableItem[]) => UIState>;

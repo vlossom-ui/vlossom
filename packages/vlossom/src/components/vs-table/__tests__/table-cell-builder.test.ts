@@ -85,6 +85,80 @@ describe('TableCellBuilder', () => {
         expect(nextRows[0].key).not.toBe(aliceKey);
     });
 
+    it('아이템과 컬럼 내용이 같으면 셀을 재생성하지 않는다', () => {
+        const items = [{ id: '1', name: 'Alice' }];
+        const builder = new TableCellBuilder('test-table-id', items, ['name']);
+
+        const first = builder.build();
+        const second = builder
+            .updateItems([{ id: '1', name: 'Alice' }])
+            .updateColumnDefs(['name'])
+            .build();
+
+        expect(second).toBe(first);
+        expect(second.rows[0]).toBe(first.rows[0]);
+    });
+
+    it('같은 배열의 아이템 값이 바뀌면 셀을 재생성한다', () => {
+        const items = [{ id: '1', name: 'Alice' }];
+        const builder = new TableCellBuilder('test-table-id', items, ['name']);
+
+        builder.build();
+        items[0].name = 'Bob';
+        const next = builder.updateItems(items).build();
+
+        expect(next.rows[0].cells[0].value).toBe('Bob');
+    });
+
+    it('바뀌지 않은 행은 직전 행 객체를 재사용한다', () => {
+        const items = [
+            { id: '1', name: 'Alice' },
+            { id: '2', name: 'Bob' },
+        ];
+        const builder = new TableCellBuilder('test-table-id', items, ['name']);
+
+        const first = builder.build();
+        const next = builder.updateItems([...items, { id: '3', name: 'Carol' }]).build();
+
+        expect(next.rows[0]).toBe(first.rows[0]);
+        expect(next.rows[1]).toBe(first.rows[1]);
+        expect(next.rows[2]).not.toBe(first.rows[1]);
+        expect(next.rows).toHaveLength(3);
+    });
+
+    it('행 순서가 바뀌면 행 객체를 재사용하지 않는다', () => {
+        const alice = { id: '1', name: 'Alice' };
+        const bob = { id: '2', name: 'Bob' };
+        const builder = new TableCellBuilder('test-table-id', [alice, bob], ['name']);
+
+        const first = builder.build();
+        const next = builder.updateItems([bob, alice]).build();
+
+        expect(next.rows[0]).not.toBe(first.rows[0]);
+        expect(next.rows[0].cells[0].rowIdx).toBe(0);
+        expect(next.rows[0].cells[0].value).toBe('Bob');
+    });
+
+    it('헤더 내용이 같으면 헤더 배열 동일성을 유지한다', () => {
+        const items = [{ id: '1', name: 'Alice' }];
+        const builder = new TableCellBuilder('test-table-id', items, ['name']);
+
+        const first = builder.build();
+        const next = builder.updateItems([...items, { id: '2', name: 'Bob' }]).build();
+
+        expect(next.header).toBe(first.header);
+    });
+
+    it('아이템 내용이 바뀌면 셀을 재생성한다', () => {
+        const builder = new TableCellBuilder('test-table-id', [{ id: '1', name: 'Alice' }], ['name']);
+
+        const first = builder.build();
+        const next = builder.updateItems([{ id: '1', name: 'Bob' }]).build();
+
+        expect(next).not.toBe(first);
+        expect(next.rows[0].cells[0].value).toBe('Bob');
+    });
+
     it('transform value 타입은 any이고 item 타입은 유지한다', () => {
         type User = {
             id: string;
