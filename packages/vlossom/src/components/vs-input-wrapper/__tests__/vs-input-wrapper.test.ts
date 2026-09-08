@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsInputWrapper from './../VsInputWrapper.vue';
 
@@ -216,30 +216,21 @@ describe('VsInputWrapper', () => {
             expect(inputWrapper.classes()).toContain('shake-horizontal');
         });
 
-        it('shake 애니메이션이 600ms 후에 자동으로 해제되어야 한다', async () => {
+        it('shake prop이 false로 변경되면 shake-horizontal 클래스가 제거되어야 한다', async () => {
             // given
-            vi.useFakeTimers();
             const wrapper = mount(VsInputWrapper, {
                 props: {
-                    shake: false,
+                    shake: true,
                 },
             });
 
             // when
-            await wrapper.setProps({ shake: true });
-            await wrapper.vm.$nextTick();
-
-            const inputWrapper = wrapper.find('.vs-input-wrapper');
-            expect(inputWrapper.classes()).toContain('shake-horizontal');
-
-            // 600ms 후
-            vi.advanceTimersByTime(600);
+            await wrapper.setProps({ shake: false });
             await wrapper.vm.$nextTick();
 
             // then
+            const inputWrapper = wrapper.find('.vs-input-wrapper');
             expect(inputWrapper.classes()).not.toContain('shake-horizontal');
-
-            vi.useRealTimers();
         });
     });
 });

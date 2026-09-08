@@ -1,10 +1,5 @@
 <template>
-    <vs-responsive
-        :class="['vs-input-wrapper', { 'shake-horizontal': needToShake }]"
-        :width
-        :grid
-        :style="componentInlineStyle"
-    >
+    <vs-responsive class="vs-input-wrapper" v-shake="shake" :width :grid :style="componentInlineStyle">
         <component :is="groupLabel ? 'fieldset' : 'div'">
             <component
                 :is="groupLabel ? 'legend' : 'div'"
@@ -42,10 +37,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRefs, watch, type PropType } from 'vue';
+import { computed, defineComponent, toRefs, type PropType } from 'vue';
 import { VsComponent, type StateMessage, type UIState } from '@/declaration';
 import { getInputWrapperProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useStyleSet } from '@/composables';
+import { shake } from '@/directives';
 import type { VsInputWrapperStyleSet } from './types';
 
 import VsResponsive from '@/components/vs-responsive/VsResponsive.vue';
@@ -55,6 +51,7 @@ const componentName = VsComponent.VsInputWrapper;
 export default defineComponent({
     name: componentName,
     components: { VsResponsive, VsMessage },
+    directives: { shake },
     props: {
         ...getResponsiveProps(),
         ...getInputWrapperProps(),
@@ -67,7 +64,7 @@ export default defineComponent({
         shake: { type: Boolean, default: false },
     },
     setup(props) {
-        const { shake, styleSet } = toRefs(props);
+        const { styleSet } = toRefs(props);
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet(
             componentName,
@@ -77,15 +74,7 @@ export default defineComponent({
             })),
         );
 
-        const needToShake = ref(false);
-        watch(shake, () => {
-            needToShake.value = true;
-            setTimeout(() => {
-                needToShake.value = false;
-            }, 600);
-        });
-
-        return { needToShake, componentStyleSet, componentInlineStyle };
+        return { componentStyleSet, componentInlineStyle };
     },
 });
 </script>

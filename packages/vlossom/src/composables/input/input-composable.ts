@@ -134,7 +134,10 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
     function validate(): boolean {
         showRuleMessages.value = true;
         if (!valid.value) {
-            shake.value = !shake.value;
+            shake.value = false;
+            nextTick(() => {
+                shake.value = true;
+            });
         }
         return valid.value;
     }

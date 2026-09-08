@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import VsTextarea from './../VsTextarea.vue';
 
@@ -264,7 +265,7 @@ describe('VsTextarea', () => {
     });
 
     describe('validation (rules)', () => {
-        it('required 체크가 가능하다', () => {
+        it('required 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -275,6 +276,7 @@ describe('VsTextarea', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -284,7 +286,7 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('max 길이 체크가 가능하다', () => {
+        it('max 길이 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -295,6 +297,7 @@ describe('VsTextarea', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -304,7 +307,7 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.shake).toBe(true);
         });
 
-        it('min 길이 체크가 가능하다', () => {
+        it('min 길이 체크가 가능하다', async () => {
             // given
             const wrapper = mount(VsTextarea, {
                 props: {
@@ -315,6 +318,7 @@ describe('VsTextarea', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
@@ -343,7 +347,7 @@ describe('VsTextarea', () => {
             expect(wrapper.vm.shake).toBe(false);
         });
 
-        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', () => {
+        it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', async () => {
             // given
             const customRule = (value: string) => {
                 if (value === 'test') {
@@ -361,6 +365,7 @@ describe('VsTextarea', () => {
 
             // when
             const isValid = wrapper.vm.validate();
+            await nextTick();
 
             // then
             expect(isValid).toBe(false);
