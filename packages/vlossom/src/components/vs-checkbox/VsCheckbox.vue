@@ -108,7 +108,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur', 'toggle'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             beforeChange,
             checked,
@@ -150,7 +150,7 @@ export default defineComponent({
         } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
 
         function requiredCheck() {
-            return required.value && !isChecked.value ? globalMessages.value.VS_VALIDATION_REQUIRED : '';
+            return required.value && !isChecked.value ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

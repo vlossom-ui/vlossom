@@ -88,7 +88,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -144,7 +144,7 @@ export default defineComponent({
                 return '';
             }
 
-            return value === null || value === undefined ? globalMessages.value.VS_VALIDATION_REQUIRED : '';
+            return value === null || value === undefined ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

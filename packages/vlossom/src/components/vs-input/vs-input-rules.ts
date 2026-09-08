@@ -8,10 +8,10 @@ export function useVsInputRules(
     min: Ref<number | string>,
     type: Ref<VsInputType>,
 ) {
-    const { messages, formatMessage } = useMessages();
+    const { optionMessages, formatMessage } = useMessages();
     function requiredCheck(v: VsInputValueType) {
         if (required.value && v === '') {
-            return messages.value.VS_VALIDATION_REQUIRED;
+            return optionMessages.value.VS_VALIDATION_REQUIRED;
         }
 
         return '';
@@ -20,11 +20,11 @@ export function useVsInputRules(
     function maxCheck(v: VsInputValueType) {
         const limit = Number(max.value);
         if (type.value === 'number' && typeof v === 'number' && v > limit) {
-            return formatMessage(messages.value.VS_VALIDATION_MAX_VALUE, { value: max.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_MAX_VALUE, { value: max.value });
         }
 
         if (type.value !== 'number' && typeof v === 'string' && v.length > limit) {
-            return formatMessage(messages.value.VS_VALIDATION_MAX_LENGTH, { value: max.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_MAX_LENGTH, { value: max.value });
         }
 
         return '';
@@ -33,11 +33,11 @@ export function useVsInputRules(
     function minCheck(v: VsInputValueType) {
         const limit = Number(min.value);
         if (type.value === 'number' && typeof v === 'number' && v < limit) {
-            return formatMessage(messages.value.VS_VALIDATION_MIN_VALUE, { value: min.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_MIN_VALUE, { value: min.value });
         }
 
         if (type.value !== 'number' && typeof v === 'string' && v.length < limit) {
-            return formatMessage(messages.value.VS_VALIDATION_MIN_LENGTH, { value: min.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_MIN_LENGTH, { value: min.value });
         }
 
         return '';

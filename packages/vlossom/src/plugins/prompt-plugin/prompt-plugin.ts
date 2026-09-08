@@ -9,7 +9,7 @@ import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
     const overlayCallback = useOverlayCallbackStore();
-    const { messages } = useMessages();
+    const { optionMessages } = useMessages();
 
     function handleButton(eventName: typeof PROMPT_OK | typeof PROMPT_CANCEL) {
         const overlayId = overlayCallback.getLastOverlayId();
@@ -23,8 +23,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
             const {
                 componentProps,
-                okText = messages.value.VS_PROMPT_OK,
-                cancelText = messages.value.VS_PROMPT_CANCEL,
+                okText = optionMessages.value.VS_PROMPT_OK,
+                cancelText = optionMessages.value.VS_PROMPT_CANCEL,
                 swapButtons,
                 input: inputOptions,
                 ...modalOptions

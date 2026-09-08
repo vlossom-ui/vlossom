@@ -45,7 +45,7 @@
                 v-if="renderClearButton"
                 type="button"
                 class="vs-clear-button"
-                :aria-label="globalMessages.VS_ARIA_INPUT_CLEAR"
+                :aria-label="optionMessages.VS_ARIA_INPUT_CLEAR"
                 :class="{ show: inputValue }"
                 :disabled="!inputValue"
                 :tabindex="!!inputValue ? 0 : -1"
@@ -123,7 +123,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset', 'select'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -282,7 +282,7 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedPlaceholder,
-            globalMessages,
+            optionMessages,
             renderClearButton,
             shake,
             stateBoxClasses,

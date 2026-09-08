@@ -9,10 +9,10 @@ export function useVsFileDropRules(
     accept: Ref<string>,
     multiple: Ref<boolean>,
 ) {
-    const { messages, formatMessage } = useMessages();
+    const { optionMessages, formatMessage } = useMessages();
     function requiredCheck(v: FileDropValueType): string {
         if (required.value && v.length === 0) {
-            return messages.value.VS_VALIDATION_REQUIRED;
+            return optionMessages.value.VS_VALIDATION_REQUIRED;
         }
 
         return '';
@@ -21,7 +21,7 @@ export function useVsFileDropRules(
     function maxCheck(v: FileDropValueType): string {
         const limit = Number(max.value);
         if (v.length > limit) {
-            return formatMessage(messages.value.VS_VALIDATION_FILE_MAX, { value: max.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MAX, { value: max.value });
         }
 
         return '';
@@ -30,7 +30,7 @@ export function useVsFileDropRules(
     function minCheck(v: FileDropValueType): string {
         const limit = Number(min.value);
         if (v.length < limit) {
-            return formatMessage(messages.value.VS_VALIDATION_FILE_MIN, { value: min.value });
+            return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MIN, { value: min.value });
         }
 
         return '';
@@ -64,7 +64,7 @@ export function useVsFileDropRules(
             });
 
             if (invalidFiles.length > 0) {
-                return formatMessage(messages.value.VS_VALIDATION_FILE_TYPE, { value: acceptedTypes.join(', ') });
+                return formatMessage(optionMessages.value.VS_VALIDATION_FILE_TYPE, { value: acceptedTypes.join(', ') });
             }
         }
 
@@ -77,7 +77,7 @@ export function useVsFileDropRules(
         }
 
         if (Array.isArray(value) && value.length > 1) {
-            return formatMessage(messages.value.VS_VALIDATION_SINGLE_FILE);
+            return formatMessage(optionMessages.value.VS_VALIDATION_SINGLE_FILE);
         }
 
         return '';

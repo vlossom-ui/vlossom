@@ -78,7 +78,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             beforeChange,
             checked,
@@ -117,7 +117,7 @@ export default defineComponent({
 
             const radioElements = document.querySelectorAll(`input[name="${name.value}"]`);
             const checkedRadioElement = Array.from(radioElements).find((el) => (el as HTMLInputElement).checked);
-            return !checkedRadioElement ? globalMessages.value.VS_VALIDATION_REQUIRED : '';
+            return !checkedRadioElement ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

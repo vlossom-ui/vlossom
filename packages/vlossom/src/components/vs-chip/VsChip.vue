@@ -16,7 +16,7 @@
             type="button"
             class="vs-chip-icon vs-chip-close-button"
             tabindex="-1"
-            :aria-label="messages.VS_ARIA_CHIP_CLOSE"
+            :aria-label="optionMessages.VS_ARIA_CHIP_CLOSE"
             :style="componentStyleSet.$closeButton"
             @click.prevent.stop="$emit('close')"
         >
@@ -48,7 +48,7 @@ export default defineComponent({
     },
     emits: ['close'],
     setup(props) {
-        const { messages } = useMessages();
+        const { optionMessages } = useMessages();
         const { colorScheme, size, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -69,7 +69,7 @@ export default defineComponent({
         return {
             colorSchemeClass,
             componentStyleSet,
-            messages,
+            optionMessages,
             styleSetVariables,
             componentInlineStyle,
             classObj,

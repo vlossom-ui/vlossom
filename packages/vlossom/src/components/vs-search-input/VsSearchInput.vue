@@ -10,7 +10,7 @@
         :grid
         :disabled
         :readonly
-        :placeholder="placeholder || messages.VS_SEARCH_INPUT_PLACEHOLDER"
+        :placeholder="placeholder || optionMessages.VS_SEARCH_INPUT_PLACEHOLDER"
         :size
         :state
         no-clear
@@ -32,8 +32,8 @@
                     :size
                     :aria-label="
                         isCaseSensitiveOn
-                            ? messages.VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE
-                            : messages.VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE
+                            ? optionMessages.VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE
+                            : optionMessages.VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE
                     "
                     @toggle="$emit('update:caseSensitive', $event)"
                 >
@@ -50,7 +50,9 @@
                     :ghost="!isRegexOn"
                     :size
                     :aria-label="
-                        isRegexOn ? messages.VS_ARIA_SEARCH_INPUT_REGEX : messages.VS_ARIA_SEARCH_INPUT_NO_REGEX
+                        isRegexOn
+                            ? optionMessages.VS_ARIA_SEARCH_INPUT_REGEX
+                            : optionMessages.VS_ARIA_SEARCH_INPUT_NO_REGEX
                     "
                     @toggle="$emit('update:regex', $event)"
                 >
@@ -108,7 +110,7 @@ export default defineComponent({
     emits: ['search', 'update:modelValue', 'update:caseSensitive', 'update:regex'],
     setup(props, { emit }) {
         const { colorScheme, styleSet, modelValue, caseSensitive, regex } = toRefs(props);
-        const { messages } = useMessages();
+        const { optionMessages } = useMessages();
 
         const searchText: Ref<string> = ref(modelValue.value);
         const inputRef: TemplateRef<VsInputRef> = useTemplateRef('inputRef');
@@ -215,7 +217,7 @@ export default defineComponent({
             searchText,
             isCaseSensitiveOn,
             isRegexOn,
-            messages,
+            optionMessages,
             computedColorScheme,
             componentStyleSet,
             styleSetVariables,

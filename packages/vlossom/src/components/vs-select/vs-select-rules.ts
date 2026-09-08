@@ -7,15 +7,17 @@ export function useSelectRules(
     min: Ref<number | string>,
     max: Ref<number | string>,
 ) {
-    const { messages, formatMessage } = useMessages();
+    const { optionMessages, formatMessage } = useMessages();
     function requiredCheck(inputValue: any): string {
         if (!required.value) {
             return '';
         }
         if (multiple.value) {
-            return !Array.isArray(inputValue) || inputValue.length === 0 ? messages.value.VS_VALIDATION_REQUIRED : '';
+            return !Array.isArray(inputValue) || inputValue.length === 0
+                ? optionMessages.value.VS_VALIDATION_REQUIRED
+                : '';
         }
-        return !inputValue ? messages.value.VS_VALIDATION_REQUIRED : '';
+        return !inputValue ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
     }
 
     function maxCheck(inputValue: any): string {
@@ -24,7 +26,7 @@ export function useSelectRules(
         }
         const limit = Number(max.value);
         return inputValue.length > limit
-            ? formatMessage(messages.value.VS_VALIDATION_MAX_ITEMS, { value: max.value })
+            ? formatMessage(optionMessages.value.VS_VALIDATION_MAX_ITEMS, { value: max.value })
             : '';
     }
 
@@ -34,7 +36,7 @@ export function useSelectRules(
         }
         const limit = Number(min.value);
         return inputValue.length < limit
-            ? formatMessage(messages.value.VS_VALIDATION_MIN_ITEMS, { value: min.value })
+            ? formatMessage(optionMessages.value.VS_VALIDATION_MIN_ITEMS, { value: min.value })
             : '';
     }
 

@@ -10,7 +10,7 @@ import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './ty
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
-    const { messages } = useMessages();
+    const { optionMessages } = useMessages();
 
     function handleButton(eventName: typeof CONFIRM_OK | typeof CONFIRM_CANCEL) {
         const overlayId = overlayCallback.getLastOverlayId();
@@ -24,8 +24,8 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
             const {
                 componentProps,
-                okText = messages.value.VS_CONFIRM_OK,
-                cancelText = messages.value.VS_CONFIRM_CANCEL,
+                okText = optionMessages.value.VS_CONFIRM_OK,
+                cancelText = optionMessages.value.VS_CONFIRM_CANCEL,
                 swapButtons,
                 ...modalOptions
             } = options;

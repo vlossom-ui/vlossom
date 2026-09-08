@@ -17,7 +17,7 @@
             />
             <span v-if="pagination.showTotal" class="vs-total-items">
                 {{
-                    formatMessage(messages.VS_TABLE_ITEMS_SUMMARY, {
+                    formatMessage(optionMessages.VS_TABLE_ITEMS_SUMMARY, {
                         start: pageStartIndex + 1,
                         end: pageEndIndex,
                         total: totalItems,
@@ -57,7 +57,7 @@ import { useMessages } from '@/composables';
 export default defineComponent({
     components: { VsPagination, VsSelect },
     setup() {
-        const { messages, formatMessage } = useMessages();
+        const { optionMessages, formatMessage } = useMessages();
         const {
             pagination,
             totalPages,
@@ -91,7 +91,7 @@ export default defineComponent({
             size,
             colorScheme,
             tableStyleSet,
-            messages,
+            optionMessages,
             formatMessage,
         };
     },

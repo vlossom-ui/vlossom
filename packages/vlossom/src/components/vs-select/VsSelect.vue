@@ -103,7 +103,7 @@
                         <div class="vs-select-empty" @keydown.stop>
                             <slot name="empty">
                                 <BanIcon class="vs-select-empty-icon" />
-                                <p class="vs-select-empty-text">{{ globalMessages.VS_SELECT_NO_OPTIONS }}</p>
+                                <p class="vs-select-empty-text">{{ optionMessages.VS_SELECT_NO_OPTIONS }}</p>
                             </slot>
                         </div>
                     </template>
@@ -215,7 +215,7 @@ export default defineComponent({
         'clear',
     ],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -604,7 +604,7 @@ export default defineComponent({
             sizeClass,
             styleSetVariables,
             componentStyleSet,
-            globalMessages,
+            optionMessages,
             classObj,
             computedId,
             computedMessages,

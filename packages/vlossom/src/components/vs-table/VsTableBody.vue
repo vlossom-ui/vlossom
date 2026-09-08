@@ -37,7 +37,7 @@
                     </template>
                     <template v-else>
                         <BanIcon class="vs-table-no-data-icon" />
-                        <p class="vs-table-no-data-text">{{ messages.VS_TABLE_NO_DATA }}</p>
+                        <p class="vs-table-no-data-text">{{ optionMessages.VS_TABLE_NO_DATA }}</p>
                     </template>
                 </div>
             </td>
@@ -71,7 +71,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
-        const { messages } = useMessages();
+        const { optionMessages } = useMessages();
         const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
@@ -136,7 +136,7 @@ export default defineComponent({
             TABLE_DRAG_WRAPPER_CLASS,
             bodySlots,
             colorScheme,
-            messages,
+            optionMessages,
             displayedRows,
             getRowKey,
             loading,

@@ -11,7 +11,7 @@
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
-            :aria-label="messages.VS_ARIA_PAGINATION_FIRST"
+            :aria-label="optionMessages.VS_ARIA_PAGINATION_FIRST"
             :size
             @click.prevent.stop="goFirst()"
         >
@@ -26,7 +26,7 @@
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
-            :aria-label="messages.VS_ARIA_PAGINATION_PREVIOUS"
+            :aria-label="optionMessages.VS_ARIA_PAGINATION_PREVIOUS"
             :size
             @click.prevent.stop="goPrev()"
         >
@@ -45,7 +45,7 @@
                 :disabled
                 :ghost
                 :outline
-                :aria-label="formatMessage(messages.VS_ARIA_PAGINATION_PAGE, { page })"
+                :aria-label="formatMessage(optionMessages.VS_ARIA_PAGINATION_PAGE, { page })"
                 :size
                 @click.prevent.stop="selectIndex(page - 1)"
             >
@@ -61,7 +61,7 @@
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
-            :aria-label="messages.VS_ARIA_PAGINATION_NEXT"
+            :aria-label="optionMessages.VS_ARIA_PAGINATION_NEXT"
             :size
             @click.prevent.stop="goNext()"
         >
@@ -77,7 +77,7 @@
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
-            :aria-label="messages.VS_ARIA_PAGINATION_LAST"
+            :aria-label="optionMessages.VS_ARIA_PAGINATION_LAST"
             :size
             @click.prevent.stop="goLast()"
         >
@@ -141,7 +141,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goFirst', 'goLast', 'goPrev', 'goNext', 'setPage'],
     setup(props, { emit }) {
-        const { messages, formatMessage } = useMessages();
+        const { optionMessages, formatMessage } = useMessages();
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength, size } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
@@ -240,7 +240,7 @@ export default defineComponent({
             componentInlineStyle,
             selectedIndex,
             pages,
-            messages,
+            optionMessages,
             formatMessage,
             getPageButtonStyleSet,
             goFirst,

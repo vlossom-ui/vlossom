@@ -81,7 +81,7 @@
                 type="button"
                 class="vs-file-drop-close-button"
                 :style="componentStyleSet.$closeButton"
-                :aria-label="globalMessages.VS_ARIA_FILE_DROP_CLEAR"
+                :aria-label="optionMessages.VS_ARIA_FILE_DROP_CLEAR"
                 tabindex="-1"
                 @click.prevent.stop="clear"
             >
@@ -143,7 +143,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -408,7 +408,7 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedPlaceholder,
-            globalMessages,
+            optionMessages,
             shake,
             colorSchemeClass,
             componentStyleSet,

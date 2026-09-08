@@ -47,7 +47,7 @@
             v-if="renderClearButton"
             type="button"
             class="vs-select-clear-button"
-            :aria-label="messages.VS_ARIA_SELECT_CLEAR"
+            :aria-label="optionMessages.VS_ARIA_SELECT_CLEAR"
             @click.stop="$emit('clear')"
         >
             <XIcon class="vs-select-clear-icon" />
@@ -90,7 +90,7 @@ export default defineComponent({
     },
     emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
-        const { messages } = useMessages();
+        const { optionMessages } = useMessages();
         const { isEmpty, selectedOptions, state, noClear, disabled, readonly, styleSet } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
@@ -134,7 +134,7 @@ export default defineComponent({
             displayLabel,
             triggerClassObj,
             componentStyleSet,
-            messages,
+            optionMessages,
             componentInlineStyle,
             focus,
             blur,

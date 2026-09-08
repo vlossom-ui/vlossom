@@ -2,11 +2,11 @@ import { useOptionsStore } from '@/stores';
 import type { VlossomMessage, MessageParams } from '@/declaration';
 
 export function useMessages() {
-    const { messages } = useOptionsStore();
+    const { messages: optionMessages } = useOptionsStore();
 
     function formatMessage(template: VlossomMessage, params: MessageParams = {}): string {
         return typeof template === 'function' ? template(params) : template;
     }
 
-    return { messages, formatMessage };
+    return { optionMessages, formatMessage };
 }

@@ -10,8 +10,8 @@
             class="vs-tab-control"
             :aria-label="
                 vertical
-                    ? globalMessages.VS_ARIA_TABS_PREVIOUS_VERTICAL
-                    : globalMessages.VS_ARIA_TABS_PREVIOUS_HORIZONTAL
+                    ? optionMessages.VS_ARIA_TABS_PREVIOUS_VERTICAL
+                    : optionMessages.VS_ARIA_TABS_PREVIOUS_HORIZONTAL
             "
             :disabled="isFirstEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
@@ -48,7 +48,7 @@
             v-if="showControls"
             class="vs-tab-control"
             :aria-label="
-                vertical ? globalMessages.VS_ARIA_TABS_NEXT_VERTICAL : globalMessages.VS_ARIA_TABS_NEXT_HORIZONTAL
+                vertical ? optionMessages.VS_ARIA_TABS_NEXT_VERTICAL : optionMessages.VS_ARIA_TABS_NEXT_HORIZONTAL
             "
             :disabled="isLastEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
@@ -119,7 +119,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
-        const { messages: globalMessages } = useMessages();
+        const { optionMessages } = useMessages();
         const { colorScheme, styleSet, size, disabled, primary, height, controls, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -324,7 +324,7 @@ export default defineComponent({
             selectTab,
             isFirstEdge,
             isLastEdge,
-            globalMessages,
+            optionMessages,
 
             // DOM Refs
             tabsRef,
