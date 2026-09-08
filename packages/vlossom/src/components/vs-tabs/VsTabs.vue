@@ -8,7 +8,11 @@
         <vs-button
             v-if="showControls"
             class="vs-tab-control"
-            :aria-label="vertical ? globalMessages.VS_ARIA_TABS_PREVIOUS_VERTICAL : globalMessages.VS_ARIA_TABS_PREVIOUS_HORIZONTAL"
+            :aria-label="
+                vertical
+                    ? globalMessages.VS_ARIA_TABS_PREVIOUS_VERTICAL
+                    : globalMessages.VS_ARIA_TABS_PREVIOUS_HORIZONTAL
+            "
             :disabled="isFirstEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
@@ -43,7 +47,9 @@
         <vs-button
             v-if="showControls"
             class="vs-tab-control"
-            :aria-label="vertical ? globalMessages.VS_ARIA_TABS_NEXT_VERTICAL : globalMessages.VS_ARIA_TABS_NEXT_HORIZONTAL"
+            :aria-label="
+                vertical ? globalMessages.VS_ARIA_TABS_NEXT_VERTICAL : globalMessages.VS_ARIA_TABS_NEXT_HORIZONTAL
+            "
             :disabled="isLastEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"

@@ -16,7 +16,13 @@
                 no-messages
             />
             <span v-if="pagination.showTotal" class="vs-total-items">
-                {{ formatMessage(messages.VS_TABLE_ITEMS_SUMMARY, { start: pageStartIndex + 1, end: pageEndIndex, total: totalItems }) }}
+                {{
+                    formatMessage(messages.VS_TABLE_ITEMS_SUMMARY, {
+                        start: pageStartIndex + 1,
+                        end: pageEndIndex,
+                        total: totalItems,
+                    })
+                }}
             </span>
         </div>
 

@@ -30,7 +30,11 @@
                     :disabled="disabled || readonly"
                     :ghost="!isCaseSensitiveOn"
                     :size
-                    :aria-label="isCaseSensitiveOn ? messages.VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE : messages.VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE"
+                    :aria-label="
+                        isCaseSensitiveOn
+                            ? messages.VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE
+                            : messages.VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE
+                    "
                     @toggle="$emit('update:caseSensitive', $event)"
                 >
                     <span class="vs-search-input-toggle-text">Aa</span>
@@ -45,7 +49,9 @@
                     :disabled="disabled || readonly"
                     :ghost="!isRegexOn"
                     :size
-                    :aria-label="isRegexOn ? messages.VS_ARIA_SEARCH_INPUT_REGEX : messages.VS_ARIA_SEARCH_INPUT_NO_REGEX"
+                    :aria-label="
+                        isRegexOn ? messages.VS_ARIA_SEARCH_INPUT_REGEX : messages.VS_ARIA_SEARCH_INPUT_NO_REGEX
+                    "
                     @toggle="$emit('update:regex', $event)"
                 >
                     <span class="vs-search-input-toggle-text">.*</span>
@@ -102,7 +108,7 @@ export default defineComponent({
     },
     emits: ['search', 'update:modelValue', 'update:caseSensitive', 'update:regex'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, modelValue, caseSensitive, regex, placeholder } = toRefs(props);
+        const { colorScheme, styleSet, modelValue, caseSensitive, regex } = toRefs(props);
         const messages = useOptionsStore().messages;
 
         const searchText: Ref<string> = ref(modelValue.value);
