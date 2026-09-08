@@ -145,7 +145,7 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
       unplugin-dts:
-        specifier: 1.1.0
+        specifier: ^1.1.0
         version: 1.1.0(@microsoft/api-extractor@7.59.0(@types/node@24.13.3))(@vue/language-core@3.3.11)(esbuild@0.28.2)(rolldown@1.2.6)(supports-color@10.2.2)(typescript@6.0.3)(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.104.0))
       vite:
         specifier: ^8.2.2
