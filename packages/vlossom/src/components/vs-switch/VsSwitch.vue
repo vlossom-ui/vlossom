@@ -65,6 +65,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
+import { useOptionsStore } from '@/stores';
 import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { useColorScheme, useInput, useSizeClass, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
@@ -99,6 +100,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const {
             beforeChange,
             checked,
@@ -148,7 +150,7 @@ export default defineComponent({
         } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
 
         function requiredCheck() {
-            return required.value && !isChecked.value ? 'required' : '';
+            return required.value && !isChecked.value ? globalMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

@@ -5,6 +5,9 @@ import type { VsComponent } from './enums';
 
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
+export type VlossomMessageParams = Record<string, string | number>;
+export type VlossomMessage = string | ((params: VlossomMessageParams) => string);
+
 export type Theme = 'light' | 'dark';
 
 export type GlobalColorSchemes = { [key in VsComponent]?: ColorScheme } & { default?: ColorScheme } & {
@@ -15,12 +18,63 @@ export type GlobalStyleSets = {
     [key: string]: { [key in VsComponent]?: any } & { [key: string]: any };
 };
 
+export interface VlossomMessages {
+    VS_VALIDATION_REQUIRED: string;
+    VS_VALIDATION_MAX_VALUE: VlossomMessage;
+    VS_VALIDATION_MIN_VALUE: VlossomMessage;
+    VS_VALIDATION_MAX_LENGTH: VlossomMessage;
+    VS_VALIDATION_MIN_LENGTH: VlossomMessage;
+    VS_VALIDATION_MAX_ITEMS: VlossomMessage;
+    VS_VALIDATION_MIN_ITEMS: VlossomMessage;
+    VS_VALIDATION_DATE_MIN: VlossomMessage;
+    VS_VALIDATION_DATE_MAX: VlossomMessage;
+    VS_VALIDATION_FILE_MAX: VlossomMessage;
+    VS_VALIDATION_FILE_MIN: VlossomMessage;
+    VS_VALIDATION_FILE_TYPE: VlossomMessage;
+    VS_VALIDATION_SINGLE_FILE: VlossomMessage;
+    VS_TABLE_NO_DATA: string;
+    VS_TABLE_ITEMS_SUMMARY: string;
+    VS_TABLE_PAGE_SIZE_ALL: string;
+    VS_TABLE_PAGE_SIZE_ITEMS: string;
+    VS_SELECT_NO_OPTIONS: string;
+    VS_GROUPED_LIST_UNGROUPED: string;
+    VS_SEARCH_INPUT_PLACEHOLDER: string;
+    VS_ARIA_INPUT_CLEAR: string;
+    VS_ARIA_SELECT_CLEAR: string;
+    VS_ARIA_FILE_DROP_CLEAR: string;
+    VS_ARIA_CHIP_CLOSE: string;
+    VS_ARIA_TEXT_WRAP_COPY: string;
+    VS_ARIA_TEXT_WRAP_LINK: string;
+    VS_ARIA_PAGINATION_FIRST: string;
+    VS_ARIA_PAGINATION_PREVIOUS: string;
+    VS_ARIA_PAGINATION_PAGE: string;
+    VS_ARIA_PAGINATION_NEXT: string;
+    VS_ARIA_PAGINATION_LAST: string;
+    VS_ARIA_TABS_PREVIOUS_HORIZONTAL: string;
+    VS_ARIA_TABS_PREVIOUS_VERTICAL: string;
+    VS_ARIA_TABS_NEXT_HORIZONTAL: string;
+    VS_ARIA_TABS_NEXT_VERTICAL: string;
+    VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE: string;
+    VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE: string;
+    VS_ARIA_SEARCH_INPUT_REGEX: string;
+    VS_ARIA_SEARCH_INPUT_NO_REGEX: string;
+    VS_ARIA_THEME_BUTTON_LIGHT: string;
+    VS_ARIA_THEME_BUTTON_DARK: string;
+    VS_ARIA_MODAL_LABEL: string;
+    VS_ALERT_OK: string;
+    VS_CONFIRM_OK: string;
+    VS_CONFIRM_CANCEL: string;
+    VS_PROMPT_OK: string;
+    VS_PROMPT_CANCEL: string;
+}
+
 export interface VlossomOptions {
     components: { [key: string]: Component };
     colorScheme?: GlobalColorSchemes;
     styleSet?: GlobalStyleSets;
     theme?: Theme;
     radiusRatio?: number;
+    messages?: Partial<VlossomMessages>;
 }
 
 export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';

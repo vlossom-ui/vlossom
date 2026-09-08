@@ -45,7 +45,7 @@
                 v-if="renderClearButton"
                 type="button"
                 class="vs-clear-button"
-                aria-label="Clear"
+                :aria-label="globalMessages.VS_ARIA_INPUT_CLEAR"
                 :class="{ show: inputValue }"
                 :disabled="!inputValue"
                 :tabindex="!!inputValue ? 0 : -1"
@@ -85,6 +85,7 @@ import type { VsInputType, VsInputValueType, VsInputStyleSet } from './types';
 import { useVsInputRules } from './vs-input-rules';
 
 import { XIcon } from '@lucide/vue';
+import { useOptionsStore } from '@/stores';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 
 const componentName = VsComponent.VsInput;
@@ -115,6 +116,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset', 'select'],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const {
             colorScheme,
             styleSet,
@@ -273,6 +275,7 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedPlaceholder,
+            globalMessages,
             renderClearButton,
             shake,
             stateBoxClasses,

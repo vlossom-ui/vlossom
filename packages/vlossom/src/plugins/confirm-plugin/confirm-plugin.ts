@@ -7,6 +7,7 @@ import type { ModalPlugin } from '@/plugins';
 
 import { vnodeUtils } from './../utils/vnode-utils';
 import type { ConfirmModalOptions, ConfirmPlugin, VsConfirmStyleSet } from './types';
+import { useOptionsStore } from '@/stores';
 
 export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
     const overlayCallback = useOverlayCallbackStore();
@@ -21,7 +22,13 @@ export function createConfirmPlugin(modalPlugin: ModalPlugin): ConfirmPlugin {
 
     return {
         open(content: string | Component, options: ConfirmModalOptions = {}): Promise<boolean> {
-            const { componentProps, okText = 'OK', cancelText = 'Cancel', swapButtons, ...modalOptions } = options;
+            const {
+                componentProps,
+                okText = useOptionsStore().messages.value.VS_CONFIRM_OK,
+                cancelText = useOptionsStore().messages.value.VS_CONFIRM_CANCEL,
+                swapButtons,
+                ...modalOptions
+            } = options;
             const { colorScheme, styleSet, escClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsConfirmStyleSet>> = ref({

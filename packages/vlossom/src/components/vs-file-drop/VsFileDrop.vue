@@ -81,7 +81,7 @@
                 type="button"
                 class="vs-file-drop-close-button"
                 :style="componentStyleSet.$closeButton"
-                aria-label="Clear"
+                :aria-label="globalMessages.VS_ARIA_FILE_DROP_CLEAR"
                 tabindex="-1"
                 @click.prevent.stop="clear"
             >
@@ -116,6 +116,7 @@ import type { FileDropValueType, VsFileDropStyleSet } from './types';
 import { useVsFileDropRules } from './vs-file-drop-rules';
 
 import { PaperclipIcon, XIcon } from '@lucide/vue';
+import { useOptionsStore } from '@/stores';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
 
@@ -143,6 +144,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const {
             colorScheme,
             styleSet,
@@ -407,6 +409,7 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedPlaceholder,
+            globalMessages,
             shake,
             colorSchemeClass,
             componentStyleSet,

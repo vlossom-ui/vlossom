@@ -103,7 +103,7 @@
                         <div class="vs-select-empty" @keydown.stop>
                             <slot name="empty">
                                 <BanIcon class="vs-select-empty-icon" />
-                                <p class="vs-select-empty-text">No Options</p>
+                                <p class="vs-select-empty-text">{{ globalMessages.VS_SELECT_NO_OPTIONS }}</p>
                             </slot>
                         </div>
                     </template>
@@ -165,6 +165,7 @@ import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
 
 import { BanIcon } from '@lucide/vue';
+import { useOptionsStore } from '@/stores';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import type { VsGroupedListRef } from '@/components/vs-grouped-list/types';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
@@ -214,6 +215,7 @@ export default defineComponent({
         'clear',
     ],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const {
             colorScheme,
             styleSet,
@@ -602,6 +604,7 @@ export default defineComponent({
             sizeClass,
             styleSetVariables,
             componentStyleSet,
+            globalMessages,
             classObj,
             computedId,
             computedMessages,

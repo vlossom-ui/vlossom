@@ -11,7 +11,7 @@
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
-            aria-label="go to first page"
+            :aria-label="messages.VS_ARIA_PAGINATION_FIRST"
             :size
             @click.prevent.stop="goFirst()"
         >
@@ -26,7 +26,7 @@
             :disabled="disabled || isFirstEdge"
             :ghost
             :outline
-            aria-label="go to previous page"
+            :aria-label="messages.VS_ARIA_PAGINATION_PREVIOUS"
             :size
             @click.prevent.stop="goPrev()"
         >
@@ -45,7 +45,7 @@
                 :disabled
                 :ghost
                 :outline
-                :aria-label="`go to page ${page}`"
+                :aria-label="formatMessage(messages.VS_ARIA_PAGINATION_PAGE, { page })"
                 :size
                 @click.prevent.stop="selectIndex(page - 1)"
             >
@@ -61,7 +61,7 @@
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
-            aria-label="go to next page"
+            :aria-label="messages.VS_ARIA_PAGINATION_NEXT"
             :size
             @click.prevent.stop="goNext()"
         >
@@ -77,7 +77,7 @@
             :disabled="disabled || isLastEdge"
             :ghost
             :outline
-            aria-label="go to last page"
+            :aria-label="messages.VS_ARIA_PAGINATION_LAST"
             :size
             @click.prevent.stop="goLast()"
         >
@@ -97,6 +97,8 @@ import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
 
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
+import { formatMessage } from '@/declaration';
+import { useOptionsStore } from '@/stores';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsPagination;
@@ -141,6 +143,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goFirst', 'goLast', 'goPrev', 'goNext', 'setPage'],
     setup(props, { emit }) {
+        const messages = useOptionsStore().messages;
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength, size } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({
@@ -239,6 +242,8 @@ export default defineComponent({
             componentInlineStyle,
             selectedIndex,
             pages,
+            messages,
+            formatMessage,
             getPageButtonStyleSet,
             goFirst,
             goLast,

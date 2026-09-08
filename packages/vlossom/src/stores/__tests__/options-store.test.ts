@@ -43,6 +43,36 @@ describe('options-store', () => {
         });
     });
 
+    describe('messages', () => {
+        it('기본 메시지를 제공해야 한다', () => {
+            expect(store.messages.value.VS_TABLE_NO_DATA).toBe('NO DATA');
+        });
+
+        it('메시지를 설정하면 새로운 설정 객체로 교체해야 한다', () => {
+            const currentMessages = store.messages.value;
+
+            store.setMessages({ VS_TABLE_NO_DATA: '데이터가 없습니다' });
+
+            expect(store.messages.value).not.toBe(currentMessages);
+            expect(store.messages.value.VS_TABLE_NO_DATA).toBe('데이터가 없습니다');
+        });
+
+        it('새 설정에 없는 메시지는 기본값으로 되돌려야 한다', () => {
+            store.setMessages({ VS_TABLE_NO_DATA: '데이터가 없습니다' });
+            store.resetMessages();
+
+            expect(store.messages.value.VS_TABLE_NO_DATA).toBe('NO DATA');
+        });
+
+        it('메시지를 부분적으로 설정해도 기존 설정을 유지해야 한다', () => {
+            store.setMessages({ VS_TABLE_NO_DATA: '데이터가 없습니다' });
+            store.setMessages({ VS_SELECT_NO_OPTIONS: '선택 가능한 항목이 없습니다' });
+
+            expect(store.messages.value.VS_TABLE_NO_DATA).toBe('데이터가 없습니다');
+            expect(store.messages.value.VS_SELECT_NO_OPTIONS).toBe('선택 가능한 항목이 없습니다');
+        });
+    });
+
     describe('setStyleSet', () => {
         it('styleSet을 설정할 수 있어야 한다', () => {
             // given

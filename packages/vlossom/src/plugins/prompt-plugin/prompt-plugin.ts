@@ -5,6 +5,7 @@ import { useStyleSet } from '@/composables';
 import { VsInput, VsRender, type VsInputRef, type VsInputValueType } from '@/components';
 import type { ModalPlugin } from './../modal-plugin';
 import type { PromptModalOptions, PromptPlugin, VsPromptStyleSet } from './types';
+import { useOptionsStore } from '@/stores';
 import { vnodeUtils } from './../utils/vnode-utils';
 
 export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
@@ -22,8 +23,8 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
         open(content: string | Component, options: PromptModalOptions = {}): Promise<string | number | null> {
             const {
                 componentProps,
-                okText = 'OK',
-                cancelText = 'Cancel',
+                okText = useOptionsStore().messages.value.VS_PROMPT_OK,
+                cancelText = useOptionsStore().messages.value.VS_PROMPT_CANCEL,
                 swapButtons,
                 input: inputOptions,
                 ...modalOptions

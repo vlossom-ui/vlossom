@@ -15,8 +15,8 @@
             v-if="closable"
             type="button"
             class="vs-chip-icon vs-chip-close-button"
-            aria-label="close"
             tabindex="-1"
+            :aria-label="messages.VS_ARIA_CHIP_CLOSE"
             :style="componentStyleSet.$closeButton"
             @click.prevent.stop="$emit('close')"
         >
@@ -33,6 +33,7 @@ import { useColorScheme, useSizeClass, useStyleSet } from '@/composables';
 import type { VsChipStyleSet } from './types';
 
 import { XIcon } from '@lucide/vue';
+import { useOptionsStore } from '@/stores';
 
 const componentName = VsComponent.VsChip;
 export default defineComponent({
@@ -48,6 +49,7 @@ export default defineComponent({
     },
     emits: ['close'],
     setup(props) {
+        const messages = useOptionsStore().messages;
         const { colorScheme, size, primary, outline, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -68,6 +70,7 @@ export default defineComponent({
         return {
             colorSchemeClass,
             componentStyleSet,
+            messages,
             styleSetVariables,
             componentInlineStyle,
             classObj,

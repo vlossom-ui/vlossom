@@ -50,6 +50,7 @@ import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRe
 import { useColorScheme, useSizeClass, useStyleSet, useInput, useStateClass } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
+import { useOptionsStore } from '@/stores';
 import { stringUtil, objectUtil } from '@/utils';
 import type { VsRadioStyleSet } from './types';
 
@@ -78,6 +79,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const {
             beforeChange,
             checked,
@@ -116,7 +118,7 @@ export default defineComponent({
 
             const radioElements = document.querySelectorAll(`input[name="${name.value}"]`);
             const checkedRadioElement = Array.from(radioElements).find((el) => (el as HTMLInputElement).checked);
-            return !checkedRadioElement ? 'required' : '';
+            return !checkedRadioElement ? globalMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

@@ -8,7 +8,7 @@
         <vs-button
             v-if="showControls"
             class="vs-tab-control"
-            :aria-label="vertical ? 'previous tab (up)' : 'previous tab (left)'"
+            :aria-label="vertical ? globalMessages.VS_ARIA_TABS_PREVIOUS_VERTICAL : globalMessages.VS_ARIA_TABS_PREVIOUS_HORIZONTAL"
             :disabled="isFirstEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
@@ -43,7 +43,7 @@
         <vs-button
             v-if="showControls"
             class="vs-tab-control"
-            :aria-label="vertical ? 'next tab (down)' : 'next tab (right)'"
+            :aria-label="vertical ? globalMessages.VS_ARIA_TABS_NEXT_VERTICAL : globalMessages.VS_ARIA_TABS_NEXT_HORIZONTAL"
             :disabled="isLastEdge || isAllDisabled()"
             :style-set="componentStyleSet.$control"
             tabindex="-1"
@@ -71,6 +71,7 @@ import {
     type CSSProperties,
 } from 'vue';
 import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector } from '@/composables';
+import { useOptionsStore } from '@/stores';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { NOT_SELECTED, VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
@@ -113,6 +114,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goPrev', 'goNext'],
     setup(props, { emit }) {
+        const globalMessages = useOptionsStore().messages;
         const { colorScheme, styleSet, size, disabled, primary, height, controls, tabs, modelValue, vertical } =
             toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -317,6 +319,7 @@ export default defineComponent({
             selectTab,
             isFirstEdge,
             isLastEdge,
+            globalMessages,
 
             // DOM Refs
             tabsRef,

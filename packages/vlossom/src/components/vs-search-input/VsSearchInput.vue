@@ -10,7 +10,7 @@
         :grid
         :disabled
         :readonly
-        :placeholder
+        :placeholder="placeholder || messages.VS_SEARCH_INPUT_PLACEHOLDER"
         :size
         :state
         no-clear
@@ -30,7 +30,7 @@
                     :disabled="disabled || readonly"
                     :ghost="!isCaseSensitiveOn"
                     :size
-                    :aria-label="isCaseSensitiveOn ? 'case sensitive' : 'case insensitive'"
+                    :aria-label="isCaseSensitiveOn ? messages.VS_ARIA_SEARCH_INPUT_CASE_SENSITIVE : messages.VS_ARIA_SEARCH_INPUT_CASE_INSENSITIVE"
                     @toggle="$emit('update:caseSensitive', $event)"
                 >
                     <span class="vs-search-input-toggle-text">Aa</span>
@@ -45,7 +45,7 @@
                     :disabled="disabled || readonly"
                     :ghost="!isRegexOn"
                     :size
-                    :aria-label="isRegexOn ? 'regex' : 'no regex'"
+                    :aria-label="isRegexOn ? messages.VS_ARIA_SEARCH_INPUT_REGEX : messages.VS_ARIA_SEARCH_INPUT_NO_REGEX"
                     @toggle="$emit('update:regex', $event)"
                 >
                     <span class="vs-search-input-toggle-text">.*</span>
@@ -72,6 +72,7 @@ import { VsComponent, type Size, type UIState } from '@/declaration';
 import { useColorScheme, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
 import { functionUtil } from '@/utils';
+import { useOptionsStore } from '@/stores';
 import type { VsSearchInputStyleSet } from './types';
 
 import type { VsInputRef } from '@/components/vs-input/types';
@@ -87,7 +88,7 @@ export default defineComponent({
         ...getStyleSetProps<VsSearchInputStyleSet>(),
         ...getResponsiveProps(),
         disabled: { type: Boolean, default: false },
-        placeholder: { type: String, default: 'Search' },
+        placeholder: { type: String, default: '' },
         readonly: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         state: { type: String as PropType<UIState>, default: 'idle' },
@@ -101,7 +102,8 @@ export default defineComponent({
     },
     emits: ['search', 'update:modelValue', 'update:caseSensitive', 'update:regex'],
     setup(props, { emit }) {
-        const { colorScheme, styleSet, modelValue, caseSensitive, regex } = toRefs(props);
+        const { colorScheme, styleSet, modelValue, caseSensitive, regex, placeholder } = toRefs(props);
+        const messages = useOptionsStore().messages;
 
         const searchText: Ref<string> = ref(modelValue.value);
         const inputRef: TemplateRef<VsInputRef> = useTemplateRef('inputRef');
@@ -208,6 +210,7 @@ export default defineComponent({
             searchText,
             isCaseSensitiveOn,
             isRegexOn,
+            messages,
             computedColorScheme,
             componentStyleSet,
             styleSetVariables,

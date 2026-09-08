@@ -1,5 +1,7 @@
 import type { Ref } from 'vue';
 import type { VsInputType, VsInputValueType } from './types';
+import { formatMessage } from '@/declaration';
+import { useOptionsStore } from '@/stores';
 
 export function useVsInputRules(
     required: Ref<boolean>,
@@ -7,9 +9,10 @@ export function useVsInputRules(
     min: Ref<number | string>,
     type: Ref<VsInputType>,
 ) {
+    const messages = useOptionsStore().messages;
     function requiredCheck(v: VsInputValueType) {
         if (required.value && v === '') {
-            return 'required';
+            return messages.value.VS_VALIDATION_REQUIRED;
         }
 
         return '';
@@ -18,11 +21,11 @@ export function useVsInputRules(
     function maxCheck(v: VsInputValueType) {
         const limit = Number(max.value);
         if (type.value === 'number' && typeof v === 'number' && v > limit) {
-            return 'max value: ' + max.value;
+            return formatMessage(messages.value.VS_VALIDATION_MAX_VALUE, { value: max.value });
         }
 
         if (type.value !== 'number' && typeof v === 'string' && v.length > limit) {
-            return 'max length: ' + max.value;
+            return formatMessage(messages.value.VS_VALIDATION_MAX_LENGTH, { value: max.value });
         }
 
         return '';
@@ -31,11 +34,11 @@ export function useVsInputRules(
     function minCheck(v: VsInputValueType) {
         const limit = Number(min.value);
         if (type.value === 'number' && typeof v === 'number' && v < limit) {
-            return 'min value: ' + min.value;
+            return formatMessage(messages.value.VS_VALIDATION_MIN_VALUE, { value: min.value });
         }
 
         if (type.value !== 'number' && typeof v === 'string' && v.length < limit) {
-            return 'min length: ' + min.value;
+            return formatMessage(messages.value.VS_VALIDATION_MIN_LENGTH, { value: min.value });
         }
 
         return '';
