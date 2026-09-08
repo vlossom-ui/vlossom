@@ -769,4 +769,35 @@ describe('VsTextarea', () => {
             expect(wrapper.emitted('clear')?.[0]).toEqual(['test value']);
         });
     });
+
+    describe('slots', () => {
+        it('header, footer 슬롯이 없으면 렌더링되지 않는다', () => {
+            // given, when
+            const wrapper = mount(VsTextarea);
+
+            // then
+            expect(wrapper.find('.vs-textarea-header').exists()).toBe(false);
+            expect(wrapper.find('.vs-textarea-footer').exists()).toBe(false);
+        });
+
+        it('header, footer 슬롯이 textarea 앞뒤에 렌더링된다', () => {
+            // given, when
+            const wrapper = mount(VsTextarea, {
+                slots: {
+                    header: '<span class="my-header">header</span>',
+                    footer: '<button class="my-footer">footer</button>',
+                },
+            });
+
+            // then
+            const children = Array.from(wrapper.find('.vs-textarea').element.children);
+            expect(children.map((el) => el.className || el.tagName)).toEqual([
+                'vs-textarea-header',
+                'TEXTAREA',
+                'vs-textarea-footer',
+            ]);
+            expect(wrapper.find('.my-header').exists()).toBe(true);
+            expect(wrapper.find('.my-footer').exists()).toBe(true);
+        });
+    });
 });

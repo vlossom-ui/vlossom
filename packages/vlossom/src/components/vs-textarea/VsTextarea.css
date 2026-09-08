@@ -1,14 +1,32 @@
 @reference 'tailwindcss';
 
 .vs-textarea {
-    @apply relative flex w-full resize-y overflow-hidden;
+    @apply relative flex w-full resize-y flex-col overflow-hidden;
 
     border: solid 1px var(--vs-cs-line);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
-    padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
-        calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75);
-    min-height: 6rem;
+
+    /* Keeps the resize handle from dragging the box smaller than its header + textarea + footer. */
+    min-height: fit-content;
     color: var(--vs-cs-font);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
+
+    textarea {
+        @apply w-full flex-1 resize-none border-none bg-transparent outline-none;
+
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75);
+        min-height: 6rem;
+        color: inherit;
+        font-size: inherit;
+    }
+
+    .vs-textarea-header,
+    .vs-textarea-footer {
+        @apply flex flex-nowrap items-center gap-2;
+
+        padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.5)
+            calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.75);
+    }
 }

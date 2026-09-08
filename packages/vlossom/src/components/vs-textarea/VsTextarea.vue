@@ -18,23 +18,32 @@
             <slot name="label" />
         </template>
 
-        <textarea
-            ref="textareaRef"
-            :id="computedId"
-            :class="['vs-textarea', colorSchemeClass, sizeClass, classObj, stateBoxClasses]"
-            :style="componentStyleSet.$textarea"
-            :disabled="computedDisabled"
-            :readonly="computedReadonly"
-            :name
-            :placeholder="computedPlaceholder"
-            :value="inputValue"
-            :aria-required="required"
-            :autocomplete="autocomplete ? 'on' : 'off'"
-            @input.stop="updateValue"
-            @focus.stop="onFocus"
-            @blur.stop="onBlur"
-            @change.stop
-        />
+        <div :class="['vs-textarea', colorSchemeClass, classObj, stateBoxClasses]" :style="componentInlineStyle">
+            <div v-if="$slots['header']" class="vs-textarea-header" :style="componentStyleSet.$header">
+                <slot name="header" />
+            </div>
+
+            <textarea
+                ref="textareaRef"
+                :style="componentStyleSet.$textarea"
+                :id="computedId"
+                :disabled="computedDisabled"
+                :readonly="computedReadonly"
+                :name
+                :placeholder="computedPlaceholder"
+                :value="inputValue"
+                :aria-required="required"
+                :autocomplete="autocomplete ? 'on' : 'off'"
+                @input.stop="updateValue"
+                @focus.stop="onFocus"
+                @blur.stop="onBlur"
+                @change.stop
+            />
+
+            <div v-if="$slots['footer']" class="vs-textarea-footer" :style="componentStyleSet.$footer">
+                <slot name="footer" />
+            </div>
+        </div>
 
         <template #messages v-if="!noMessages">
             <slot name="messages" />
@@ -100,7 +109,7 @@ export default defineComponent({
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
-        const { componentStyleSet } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min);
@@ -150,10 +159,14 @@ export default defineComponent({
             },
         );
 
+        const { sizeClass } = useSizeClass(size);
+
         const classObj = computed(() => ({
+            'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
+            'vs-focus-within': !computedDisabled.value && !computedReadonly.value,
             'vs-disabled': computedDisabled.value,
             'vs-readonly': computedReadonly.value,
-            'vs-focus-visible': !computedDisabled.value && !computedReadonly.value,
+            [sizeClass.value]: !!sizeClass.value,
         }));
 
         const computedPlaceholder = computed(() => {
@@ -164,8 +177,6 @@ export default defineComponent({
         });
 
         const { stateBoxClasses } = useStateClass(computedState);
-
-        const { sizeClass } = useSizeClass(size);
 
         function updateValue(event: Event) {
             const target = event.target as HTMLTextAreaElement;
@@ -203,7 +214,7 @@ export default defineComponent({
             classObj,
             colorSchemeClass,
             componentStyleSet,
-            sizeClass,
+            componentInlineStyle,
             stateBoxClasses,
             computedId,
             computedDisabled,
