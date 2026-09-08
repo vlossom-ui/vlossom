@@ -91,14 +91,12 @@
 <script lang="ts">
 import { type ComputedRef, type PropType, computed, defineComponent, toRefs, watch } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
-import { useColorScheme, useStyleSet, useIndexSelector, useSizeClass } from '@/composables';
+import { useColorScheme, useStyleSet, useIndexSelector, useSizeClass, useMessages } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsPaginationStyleSet } from './types';
 
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from '@lucide/vue';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
 import VsButton from '@/components/vs-button/VsButton.vue';
 
 const componentName = VsComponent.VsPagination;
@@ -143,7 +141,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'change'],
     // expose: ['goFirst', 'goLast', 'goPrev', 'goNext', 'setPage'],
     setup(props, { emit }) {
-        const messages = useOptionsStore().messages;
+        const { messages, formatMessage } = useMessages();
         const { colorScheme, styleSet, disabled, modelValue, length, showingLength, size } = toRefs(props);
         const { computedColorScheme, colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const baseStyleSet: ComputedRef<VsPaginationStyleSet> = computed(() => ({

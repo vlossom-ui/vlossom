@@ -1,7 +1,6 @@
 import { type Ref } from 'vue';
 import type { FileDropValueType } from './types';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useVsFileDropRules(
     required: Ref<boolean>,
@@ -10,7 +9,7 @@ export function useVsFileDropRules(
     accept: Ref<string>,
     multiple: Ref<boolean>,
 ) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(v: FileDropValueType): string {
         if (required.value && v.length === 0) {
             return messages.value.VS_VALIDATION_REQUIRED;

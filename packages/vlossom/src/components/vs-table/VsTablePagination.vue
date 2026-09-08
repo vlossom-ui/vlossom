@@ -46,13 +46,12 @@ import {
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export default defineComponent({
     components: { VsPagination, VsSelect },
     setup() {
-        const messages = useOptionsStore().messages;
+        const { messages, formatMessage } = useMessages();
         const {
             pagination,
             totalPages,

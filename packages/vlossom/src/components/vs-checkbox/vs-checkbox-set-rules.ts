@@ -1,9 +1,8 @@
 import type { Ref } from 'vue';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useVsCheckboxSetRules(required: Ref<boolean>, max: Ref<number | string>, min: Ref<number | string>) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(v: any[]) {
         return required.value && v && v.length === 0 ? messages.value.VS_VALIDATION_REQUIRED : '';
     }

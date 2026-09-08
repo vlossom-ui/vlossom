@@ -1,13 +1,12 @@
 import type { Ref } from 'vue';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useVsDatePickerRules(
     required: Ref<boolean>,
     min: Ref<string | undefined>,
     max: Ref<string | undefined>,
 ) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(v: string): string {
         if (required.value && !v) {
             return messages.value.VS_VALIDATION_REQUIRED;

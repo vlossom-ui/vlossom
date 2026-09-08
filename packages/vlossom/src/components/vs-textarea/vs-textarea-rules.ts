@@ -1,10 +1,9 @@
 import type { Ref } from 'vue';
 import type { VsTextareaValueType } from './types';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useVsTextareaRules(required: Ref<boolean>, max: Ref<number | string>, min: Ref<number | string>) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(v: VsTextareaValueType) {
         if (required.value && v === '') {
             return messages.value.VS_VALIDATION_REQUIRED;

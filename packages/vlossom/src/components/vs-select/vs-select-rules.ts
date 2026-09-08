@@ -1,6 +1,5 @@
 import type { Ref } from 'vue';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useSelectRules(
     required: Ref<boolean>,
@@ -8,7 +7,7 @@ export function useSelectRules(
     min: Ref<number | string>,
     max: Ref<number | string>,
 ) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(inputValue: any): string {
         if (!required.value) {
             return '';

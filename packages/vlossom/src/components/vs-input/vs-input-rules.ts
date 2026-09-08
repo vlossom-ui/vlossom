@@ -1,7 +1,6 @@
 import type { Ref } from 'vue';
 import type { VsInputType, VsInputValueType } from './types';
-import { formatMessage } from '@/declaration';
-import { useOptionsStore } from '@/stores';
+import { useMessages } from '@/composables';
 
 export function useVsInputRules(
     required: Ref<boolean>,
@@ -9,7 +8,7 @@ export function useVsInputRules(
     min: Ref<number | string>,
     type: Ref<VsInputType>,
 ) {
-    const messages = useOptionsStore().messages;
+    const { messages, formatMessage } = useMessages();
     function requiredCheck(v: VsInputValueType) {
         if (required.value && v === '') {
             return messages.value.VS_VALIDATION_REQUIRED;
