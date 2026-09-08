@@ -58,14 +58,17 @@
     },
     "dependencies": {
         "@lucide/vue": "^1.38.0",
-        "@vueuse/core": "^14.4.0",
         "change-case": "^5.4.4",
         "nanoid": "^6.0.1",
         "radash": "^12.1.1",
-        "vue": "^3.5.42",
         "vuedraggable": "^4.1.0"
     },
+    "peerDependencies": {
+        "@vueuse/core": "^14.0.0",
+        "vue": "^3.5.0"
+    },
     "devDependencies": {
+        "@vueuse/core": "^14.4.0",
         "@microsoft/api-extractor": "^7.59.0",
         "@storybook/addon-a11y": "10.5.10",
         "@storybook/addon-docs": "10.5.10",
@@ -109,6 +112,7 @@
         "vite": "^8.2.2",
         "vite-plugin-vue-devtools": "^8.2.1",
         "vitest": "^4.1.11",
+        "vue": "^3.5.42",
         "vue-tsc": "^3.3.11"
     }
 }
