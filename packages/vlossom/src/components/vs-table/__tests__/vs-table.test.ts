@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { h, nextTick } from 'vue';
 import { stringUtil, logUtil } from '@/utils';
+import { useOptionsStore } from '@/stores';
 import VsTable from './../VsTable.vue';
 import type { VsTableBodyCell, VsTableItem, VsTableColumnDef } from './../types';
 
@@ -542,6 +543,57 @@ describe('VsTable', () => {
             await nextTick();
 
             expect(wrapper.findAll('tbody tr')).toHaveLength(5);
+        });
+
+        describe('기본 pageSizeOptions label', () => {
+            const pageSizeSelectStub = {
+                props: ['modelValue', 'options'],
+                template: '<ul data-testid="vs-select"><li v-for="o in options">{{ o.label }}</li></ul>',
+            };
+
+            function mountPageSizeSelect() {
+                return mount(VsTable, {
+                    props: { columns: defaultColumns, items: tableItems, pagination: true },
+                    global: { stubs: { ...defaultGlobal.stubs, 'vs-select': pageSizeSelectStub } },
+                });
+            }
+
+            afterEach(() => {
+                useOptionsStore().resetMessages();
+            });
+
+            it('label을 지정하지 않으면 기본 messages를 사용한다', async () => {
+                const wrapper = mountPageSizeSelect();
+
+                await nextTick();
+
+                expect(wrapper.get('[data-testid="vs-select"]').text()).toContain('50 items');
+                expect(wrapper.get('[data-testid="vs-select"]').text()).toContain('All');
+            });
+
+            it('messages를 덮어쓰면 덮어쓴 label을 사용한다', async () => {
+                useOptionsStore().setMessages({
+                    VS_TABLE_PAGE_SIZE_ALL: '전체',
+                    VS_TABLE_PAGE_SIZE_ITEMS: ({ size }) => `${size}개`,
+                });
+
+                const wrapper = mountPageSizeSelect();
+
+                await nextTick();
+
+                expect(wrapper.get('[data-testid="vs-select"]').text()).toContain('50개');
+                expect(wrapper.get('[data-testid="vs-select"]').text()).toContain('전체');
+            });
+
+            it('마운트 이후 messages를 덮어써도 label이 갱신된다', async () => {
+                const wrapper = mountPageSizeSelect();
+
+                await nextTick();
+                useOptionsStore().setMessages({ VS_TABLE_PAGE_SIZE_ITEMS: ({ size }) => `${size}개` });
+                await nextTick();
+
+                expect(wrapper.get('[data-testid="vs-select"]').text()).toContain('50개');
+            });
         });
 
         describe('server mode', () => {

@@ -67,22 +67,22 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 
 ## Props
 
-| Prop               | Type                            | Default | Required | 설명                                                 |
-| ------------------ | ------------------------------- | ------- | -------- | ---------------------------------------------------- |
-| `colorScheme`      | `string`                        | -       | -        | 컴포넌트의 색상 스킴                                 |
-| `styleSet`         | `string \| VsSearchInputStyleSet` | -     | -        | 컴포넌트에 적용할 커스텀 스타일 세트                 |
-| `width`            | `string \| number \| Breakpoints` | -     | -        | 반응형 너비                                          |
-| `grid`             | `string \| number \| Breakpoints` | -     | -        | 그리드 컬럼 스팬                                     |
-| `disabled`         | `boolean`                       | `false` | -        | 입력 비활성화                                        |
-| `placeholder`      | `string`                        | `'Search'` | -     | 플레이스홀더 텍스트                                  |
-| `readonly`         | `boolean`                       | `false` | -        | 입력을 읽기 전용으로 설정                            |
-| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -    | 입력 영역 높이 · 패딩 · 폰트 · 토글 버튼 크기 제어   |
-| `state`            | `UIState`                       | `'idle'` | -       | 시각적 상태 (`idle`, `info`, `success`, `warning`, `error`) |
-| `useCaseSensitive` | `boolean`                       | `false` | -        | 대소문자 구분 토글 버튼 표시                         |
-| `useRegex`         | `boolean`                       | `false` | -        | 정규식 토글 버튼 표시                                |
-| `modelValue`       | `string`                        | `''`    | -        | 검색 텍스트 값 (v-model)                             |
-| `caseSensitive`    | `boolean`                       | `false` | -        | 대소문자 구분 상태 (v-model:caseSensitive)           |
-| `regex`            | `boolean`                       | `false` | -        | 정규식 모드 상태 (v-model:regex)                     |
+| Prop               | Type                                   | Default  | Required | 설명                                                                            |
+| ------------------ | -------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                               | -        | -        | 컴포넌트의 색상 스킴                                                            |
+| `styleSet`         | `string \| VsSearchInputStyleSet`      | -        | -        | 컴포넌트에 적용할 커스텀 스타일 세트                                            |
+| `width`            | `string \| number \| Breakpoints`      | -        | -        | 반응형 너비                                                                     |
+| `grid`             | `string \| number \| Breakpoints`      | -        | -        | 그리드 컬럼 스팬                                                                |
+| `disabled`         | `boolean`                              | `false`  | -        | 입력 비활성화                                                                   |
+| `placeholder`      | `string`                               | -        | -        | 플레이스홀더 텍스트 (지정하지 않으면 `VS_SEARCH_INPUT_PLACEHOLDER` 메시지 사용) |
+| `readonly`         | `boolean`                              | `false`  | -        | 입력을 읽기 전용으로 설정                                                       |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`   | -        | 입력 영역 높이 · 패딩 · 폰트 · 토글 버튼 크기 제어                              |
+| `state`            | `UIState`                              | `'idle'` | -        | 시각적 상태 (`idle`, `info`, `success`, `warning`, `error`)                     |
+| `useCaseSensitive` | `boolean`                              | `false`  | -        | 대소문자 구분 토글 버튼 표시                                                    |
+| `useRegex`         | `boolean`                              | `false`  | -        | 정규식 토글 버튼 표시                                                           |
+| `modelValue`       | `string`                               | `''`     | -        | 검색 텍스트 값 (v-model)                                                        |
+| `caseSensitive`    | `boolean`                              | `false`  | -        | 대소문자 구분 상태 (v-model:caseSensitive)                                      |
+| `regex`            | `boolean`                              | `false`  | -        | 정규식 모드 상태 (v-model:regex)                                                |
 
 ## Types
 
@@ -111,12 +111,12 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Events
 
-| Event                  | Payload   | 설명                                               |
-| ---------------------- | --------- | -------------------------------------------------- |
-| `search`               | `string`  | 검색 텍스트가 변경될 때 디바운스되어 발생          |
-| `update:modelValue`    | `string`  | 검색 텍스트가 변경될 때 발생                       |
-| `update:caseSensitive` | `boolean` | 대소문자 구분 토글이 변경될 때 발생                |
-| `update:regex`         | `boolean` | 정규식 토글이 변경될 때 발생                       |
+| Event                  | Payload   | 설명                                      |
+| ---------------------- | --------- | ----------------------------------------- |
+| `search`               | `string`  | 검색 텍스트가 변경될 때 디바운스되어 발생 |
+| `update:modelValue`    | `string`  | 검색 텍스트가 변경될 때 발생              |
+| `update:caseSensitive` | `boolean` | 대소문자 구분 토글이 변경될 때 발생       |
+| `update:regex`         | `boolean` | 정규식 토글이 변경될 때 발생              |
 
 ## Slots
 
@@ -125,10 +125,10 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Methods
 
-| Method    | Parameters       | 설명                                                  |
-| --------- | ---------------- | ----------------------------------------------------- |
-| `match`   | `text: string`   | 텍스트가 현재 검색 쿼리와 일치하면 `true` 반환        |
-| `select`  | -                | 입력의 모든 텍스트 선택                               |
-| `focus`   | -                | 입력에 포커스                                         |
-| `blur`    | -                | 입력 포커스 해제                                      |
-| `clear`   | -                | 검색 텍스트 초기화                                    |
+| Method   | Parameters     | 설명                                           |
+| -------- | -------------- | ---------------------------------------------- |
+| `match`  | `text: string` | 텍스트가 현재 검색 쿼리와 일치하면 `true` 반환 |
+| `select` | -              | 입력의 모든 텍스트 선택                        |
+| `focus`  | -              | 입력에 포커스                                  |
+| `blur`   | -              | 입력 포커스 해제                               |
+| `clear`  | -              | 검색 텍스트 초기화                             |

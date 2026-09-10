@@ -10,7 +10,7 @@
             <div
                 class="vs-modal-wrap"
                 role="dialog"
-                aria-label="Modal"
+                :aria-label="optionMessages.VS_ARIA_MODAL_LABEL"
                 :aria-modal="true"
                 :style="componentInlineStyle"
             >
@@ -23,7 +23,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, toRefs, type ComputedRef, type PropType } from 'vue';
 import { OVERLAY_CLOSE, SIZES, VsComponent, type Size, type SizeProp } from '@/declaration';
-import { useColorScheme, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
+import { useColorScheme, useMessages, useOverlayCallback, useScrollLock, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { getOverlayProps } from '@/props';
 import { objectUtil, stringUtil } from '@/utils';
@@ -67,6 +67,8 @@ export default defineComponent({
             container,
             scrollLock,
         } = toRefs(props);
+
+        const { optionMessages } = useMessages();
 
         const innerId = stringUtil.createID();
         const computedId = computed(() => id.value || innerId);
@@ -195,6 +197,7 @@ export default defineComponent({
         onUnmounted(() => scrollLockApi?.unlock());
 
         return {
+            optionMessages,
             colorSchemeClass,
             componentStyleSet,
             componentInlineStyle,

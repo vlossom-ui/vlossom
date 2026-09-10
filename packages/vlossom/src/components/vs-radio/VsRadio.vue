@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
-import { useColorScheme, useSizeClass, useStyleSet, useInput, useStateClass } from '@/composables';
+import { useColorScheme, useSizeClass, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
 import { stringUtil, objectUtil } from '@/utils';
@@ -78,6 +78,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'toggle', 'focus', 'blur', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             beforeChange,
             checked,
@@ -116,7 +117,7 @@ export default defineComponent({
 
             const radioElements = document.querySelectorAll(`input[name="${name.value}"]`);
             const checkedRadioElement = Array.from(radioElements).find((el) => (el as HTMLInputElement).checked);
-            return !checkedRadioElement ? 'required' : '';
+            return !checkedRadioElement ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

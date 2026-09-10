@@ -4,6 +4,7 @@ export * from './focusable/focusable-composable';
 export * from './input/input-composable';
 export * from './input-form/input-form-composable';
 export * from './input-messages/input-messages-composable';
+export * from './messages/messages-composable';
 export * from './input-option/input-option-composable';
 export * from './input-rules/input-rules-composable';
 export * from './layout-child/layout-child-composable';

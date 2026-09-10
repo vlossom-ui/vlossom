@@ -103,7 +103,7 @@
                         <div class="vs-select-empty" @keydown.stop>
                             <slot name="empty">
                                 <BanIcon class="vs-select-empty-icon" />
-                                <p class="vs-select-empty-text">No Options</p>
+                                <p class="vs-select-empty-text">{{ optionMessages.VS_SELECT_NO_OPTIONS }}</p>
                             </slot>
                         </div>
                     </template>
@@ -158,6 +158,7 @@ import {
     useOverlayCallback,
     useClickOutside,
     useSizeClass,
+    useMessages,
 } from '@/composables';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
@@ -214,6 +215,7 @@ export default defineComponent({
         'clear',
     ],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -602,6 +604,7 @@ export default defineComponent({
             sizeClass,
             styleSetVariables,
             componentStyleSet,
+            optionMessages,
             classObj,
             computedId,
             computedMessages,

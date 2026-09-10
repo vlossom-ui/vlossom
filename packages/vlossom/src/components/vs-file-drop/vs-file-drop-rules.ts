@@ -1,5 +1,6 @@
 import { type Ref } from 'vue';
 import type { FileDropValueType } from './types';
+import { useMessages } from '@/composables';
 
 export function useVsFileDropRules(
     required: Ref<boolean>,
@@ -8,9 +9,10 @@ export function useVsFileDropRules(
     accept: Ref<string>,
     multiple: Ref<boolean>,
 ) {
+    const { optionMessages, formatMessage } = useMessages();
     function requiredCheck(v: FileDropValueType): string {
         if (required.value && v.length === 0) {
-            return 'required';
+            return optionMessages.value.VS_VALIDATION_REQUIRED;
         }
 
         return '';
@@ -19,7 +21,7 @@ export function useVsFileDropRules(
     function maxCheck(v: FileDropValueType): string {
         const limit = Number(max.value);
         if (v.length > limit) {
-            return `You can only upload up to ${max.value} files`;
+            return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MAX, { value: max.value });
         }
 
         return '';
@@ -28,7 +30,7 @@ export function useVsFileDropRules(
     function minCheck(v: FileDropValueType): string {
         const limit = Number(min.value);
         if (v.length < limit) {
-            return `You must upload at least ${min.value} files`;
+            return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MIN, { value: min.value });
         }
 
         return '';
@@ -62,7 +64,7 @@ export function useVsFileDropRules(
             });
 
             if (invalidFiles.length > 0) {
-                return `Allowed: ${acceptedTypes.join(', ')}`;
+                return formatMessage(optionMessages.value.VS_VALIDATION_FILE_TYPE, { value: acceptedTypes.join(', ') });
             }
         }
 
@@ -75,7 +77,7 @@ export function useVsFileDropRules(
         }
 
         if (Array.isArray(value) && value.length > 1) {
-            return 'You can only upload one file';
+            return formatMessage(optionMessages.value.VS_VALIDATION_SINGLE_FILE);
         }
 
         return '';

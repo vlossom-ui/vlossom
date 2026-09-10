@@ -16,7 +16,7 @@ describe('useVsDatePickerRules', () => {
     describe('requiredCheck', () => {
         it('required=true이고 value가 빈 문자열이면 메시지를 반환한다', () => {
             const { requiredCheck } = setup({ required: true });
-            expect(requiredCheck('')).toBe('Required');
+            expect(requiredCheck('')).toBe('required');
         });
 
         it('required=true이고 value가 채워져 있으면 빈 문자열을 반환한다', () => {

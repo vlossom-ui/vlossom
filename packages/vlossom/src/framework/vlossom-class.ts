@@ -2,6 +2,7 @@ import {
     THEME_KEY,
     type GlobalColorSchemes,
     type GlobalStyleSets,
+    type VlossomMessages,
     type Theme,
     type VlossomOptions,
 } from '@/declaration';
@@ -28,11 +29,13 @@ export class Vlossom {
     private _prompt: PromptPlugin = createPromptPlugin(this._modal);
 
     constructor(options: VlossomOptions) {
-        const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1 } = options;
+        const { colorScheme = {}, styleSet = {}, theme = 'light', radiusRatio = 1, messages = {} } = options;
 
         this._optionsStore.setColorScheme(colorScheme);
         this._optionsStore.setStyleSet(styleSet);
         this._optionsStore.setRadiusRatio(radiusRatio);
+        this._optionsStore.resetMessages();
+        this._optionsStore.setMessages(messages);
 
         this.setDefaultTheme(theme);
     }
@@ -88,6 +91,18 @@ export class Vlossom {
 
     get radiusRatio(): number {
         return this._optionsStore.radiusRatio.value;
+    }
+
+    set messages(messages: Partial<VlossomMessages>) {
+        this._optionsStore.setMessages(messages);
+    }
+
+    get messages(): VlossomMessages {
+        return this._optionsStore.messages.value;
+    }
+
+    public resetMessages() {
+        this._optionsStore.resetMessages();
     }
 
     public toggleTheme() {

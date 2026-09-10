@@ -1,5 +1,12 @@
 import { ref, type Ref, computed } from 'vue';
-import type { GlobalColorSchemes, GlobalStyleSets, Theme, VsComponent } from '@/declaration';
+import {
+    DEFAULT_MESSAGES,
+    type GlobalColorSchemes,
+    type GlobalStyleSets,
+    type Theme,
+    type VlossomMessages,
+    type VsComponent,
+} from '@/declaration';
 import { logUtil, numberUtil } from '@/utils';
 
 export class OptionsStore {
@@ -7,6 +14,7 @@ export class OptionsStore {
     private _styleSet: Ref<GlobalStyleSets> = ref({});
     private _theme: Ref<Theme> = ref('light');
     private _radiusRatio: Ref<number> = ref(1);
+    private _messages: Ref<VlossomMessages> = ref({ ...DEFAULT_MESSAGES });
 
     public colorScheme = computed(() => this._colorScheme.value);
 
@@ -27,6 +35,16 @@ export class OptionsStore {
     }
 
     public radiusRatio = computed(() => this._radiusRatio.value);
+
+    public messages = computed(() => this._messages.value);
+
+    public setMessages(messages: Partial<VlossomMessages>) {
+        this._messages.value = { ...this._messages.value, ...messages };
+    }
+
+    public resetMessages() {
+        this._messages.value = { ...DEFAULT_MESSAGES };
+    }
 
     public setRadiusRatio(radiusRatio: number) {
         if (isNaN(radiusRatio)) {

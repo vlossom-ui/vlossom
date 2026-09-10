@@ -234,6 +234,20 @@ describe('VsSearchInput', () => {
         });
     });
 
+    describe('placeholder', () => {
+        function findPlaceholder(props: Record<string, unknown> = {}) {
+            return mount(VsSearchInput, { props }).findComponent({ name: 'VsInput' }).props('placeholder');
+        }
+
+        it('지정하지 않으면 기본 messages를 사용한다', () => {
+            expect(findPlaceholder()).toBe('Search');
+        });
+
+        it('빈 문자열을 지정하면 빈 문자열을 그대로 사용한다', () => {
+            expect(findPlaceholder({ placeholder: '' })).toBe('');
+        });
+    });
+
     describe('state', () => {
         it('state prop이 내부 input에 전달되어야 한다', () => {
             // given

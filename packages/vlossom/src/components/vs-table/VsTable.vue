@@ -109,12 +109,8 @@ import {
     type VsTablePageSizeOptions,
     type VsTableSearchOptions,
 } from './types';
-import {
-    DEFAULT_PAGE_SIZE_OPTIONS,
-    TABLE_DRAG_WRAPPER_CLASS,
-    VS_TABLE_BODY_SLOT_PREFIXES,
-    VS_TABLE_HEADER_SLOT_PREFIXES,
-} from './constants';
+import { TABLE_DRAG_WRAPPER_CLASS, VS_TABLE_BODY_SLOT_PREFIXES, VS_TABLE_HEADER_SLOT_PREFIXES } from './constants';
+import { getDefaultPageSizeOptions } from './composables/table-pagination-composable';
 
 import type { VsSearchInputRef } from './../vs-search-input/types';
 
@@ -224,7 +220,7 @@ export default defineComponent({
                 }
                 if (pagination && typeof pagination === 'object') {
                     const pageSizeOptions: VsTablePageSizeOptions =
-                        pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZE_OPTIONS;
+                        pagination.pageSizeOptions ?? getDefaultPageSizeOptions();
 
                     if (pagination.showPageSizeSelect) {
                         logUtil.propError(
@@ -238,7 +234,7 @@ export default defineComponent({
                     return true;
                 }
                 if (pagination && typeof pagination === 'boolean') {
-                    const pageSizeOptions: VsTablePageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS;
+                    const pageSizeOptions: VsTablePageSizeOptions = getDefaultPageSizeOptions();
                     const isValidPageSize = pageSizeOptions.some((option) => option.value === value);
                     if (!isValidPageSize) {
                         logUtil.propWarning(componentName, 'pageSize', 'pageSize has not been set in pageSizeOptions');

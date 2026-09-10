@@ -4,29 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'unplugin-dts/vite';
-import prettier from 'prettier';
 import { commonConfig } from './vite.config.common.ts';
-
-/**
- * @description format .d.ts files with Prettier before vite write .d.ts to disk
- * @see {@link https://github.com/vlossom-ui/vlossom/issues/357|Issue #357}
- */
-async function beforeWriteFile(
-    filePath: string,
-    content: string,
-): Promise<{ filePath: string; content: string } | void> {
-    if (!filePath.endsWith('.d.ts')) {
-        return;
-    }
-
-    const prettierConfig = await prettier.resolveConfig(filePath);
-    const formatted = await prettier.format(content, {
-        ...prettierConfig,
-        parser: 'typescript',
-    });
-
-    return { filePath, content: formatted };
-}
 
 export default defineConfig({
     ...commonConfig,
@@ -34,9 +12,7 @@ export default defineConfig({
         ...commonConfig.plugins,
         dts({
             tsconfigPath: './tsconfig.app.json',
-            bundleTypes: true,
             insertTypesEntry: true,
-            beforeWriteFile,
         }),
         visualizer({
             filename: 'visualizer-vlossom.html',

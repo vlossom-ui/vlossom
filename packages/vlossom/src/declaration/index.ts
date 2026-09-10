@@ -1,3 +1,4 @@
 export * from './constants';
 export * from './enums';
+export * from './messages';
 export * from './types';

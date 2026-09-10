@@ -37,7 +37,7 @@
                     </template>
                     <template v-else>
                         <BanIcon class="vs-table-no-data-icon" />
-                        <p class="vs-table-no-data-text">NO DATA</p>
+                        <p class="vs-table-no-data-text">{{ optionMessages.VS_TABLE_NO_DATA }}</p>
                     </template>
                 </div>
             </td>
@@ -57,6 +57,7 @@ import type { SortableEvent } from 'sortablejs';
 import { BanIcon } from '@lucide/vue';
 import VsLoading from '@/components/vs-loading/VsLoading.vue';
 import VsTableBodyRow from './VsTableBodyRow.vue';
+import { useMessages } from '@/composables';
 
 export default defineComponent({
     components: {
@@ -70,6 +71,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row', 'drag'],
     setup(props, { slots, emit }) {
+        const { optionMessages } = useMessages();
         const { bodyRows, loading } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
         const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
 
@@ -134,6 +136,7 @@ export default defineComponent({
             TABLE_DRAG_WRAPPER_CLASS,
             bodySlots,
             colorScheme,
+            optionMessages,
             displayedRows,
             getRowKey,
             loading,
