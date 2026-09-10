@@ -67,22 +67,22 @@ const filteredItems = computed(() => items.filter(item => searchRef.value?.match
 
 ## Props
 
-| Prop               | Type                            | Default | Required | Description                                          |
-| ------------------ | ------------------------------- | ------- | -------- | ---------------------------------------------------- |
-| `colorScheme`      | `string`                        | -       | -        | Color scheme for the component                       |
-| `styleSet`         | `string \| VsSearchInputStyleSet` | -     | -        | Custom style set for the component                   |
-| `width`            | `string \| number \| Breakpoints` | -     | -        | Responsive width                                     |
-| `grid`             | `string \| number \| Breakpoints` | -     | -        | Grid column span                                     |
-| `disabled`         | `boolean`                       | `false` | -        | Disables the input                                   |
-| `placeholder`      | `string`                        | `'Search'` | -     | Placeholder text                                     |
-| `readonly`         | `boolean`                       | `false` | -        | Makes the input read-only                            |
-| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | -    | Input height, padding, font, and toggle button size  |
-| `state`            | `UIState`                       | `'idle'` | -       | Visual state (`idle`, `info`, `success`, `warning`, `error`) |
-| `useCaseSensitive` | `boolean`                       | `false` | -        | Shows the case-sensitive toggle button               |
-| `useRegex`         | `boolean`                       | `false` | -        | Shows the regex toggle button                        |
-| `modelValue`       | `string`                        | `''`    | -        | Search text value (v-model)                          |
-| `caseSensitive`    | `boolean`                       | `false` | -        | Case-sensitive state (v-model:caseSensitive)         |
-| `regex`            | `boolean`                       | `false` | -        | Regex mode state (v-model:regex)                     |
+| Prop               | Type                                   | Default  | Required | Description                                                                |
+| ------------------ | -------------------------------------- | -------- | -------- | -------------------------------------------------------------------------- |
+| `colorScheme`      | `string`                               | -        | -        | Color scheme for the component                                             |
+| `styleSet`         | `string \| VsSearchInputStyleSet`      | -        | -        | Custom style set for the component                                         |
+| `width`            | `string \| number \| Breakpoints`      | -        | -        | Responsive width                                                           |
+| `grid`             | `string \| number \| Breakpoints`      | -        | -        | Grid column span                                                           |
+| `disabled`         | `boolean`                              | `false`  | -        | Disables the input                                                         |
+| `placeholder`      | `string`                               | -        | -        | Placeholder text (falls back to the `VS_SEARCH_INPUT_PLACEHOLDER` message) |
+| `readonly`         | `boolean`                              | `false`  | -        | Makes the input read-only                                                  |
+| `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'`   | -        | Input height, padding, font, and toggle button size                        |
+| `state`            | `UIState`                              | `'idle'` | -        | Visual state (`idle`, `info`, `success`, `warning`, `error`)               |
+| `useCaseSensitive` | `boolean`                              | `false`  | -        | Shows the case-sensitive toggle button                                     |
+| `useRegex`         | `boolean`                              | `false`  | -        | Shows the regex toggle button                                              |
+| `modelValue`       | `string`                               | `''`     | -        | Search text value (v-model)                                                |
+| `caseSensitive`    | `boolean`                              | `false`  | -        | Case-sensitive state (v-model:caseSensitive)                               |
+| `regex`            | `boolean`                              | `false`  | -        | Regex mode state (v-model:regex)                                           |
 
 ## Types
 
@@ -111,12 +111,12 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Events
 
-| Event                  | Payload   | Description                                         |
-| ---------------------- | --------- | --------------------------------------------------- |
-| `search`               | `string`  | Emitted (debounced) when the search text changes    |
-| `update:modelValue`    | `string`  | Emitted when the search text changes                |
-| `update:caseSensitive` | `boolean` | Emitted when the case-sensitive toggle changes      |
-| `update:regex`         | `boolean` | Emitted when the regex toggle changes               |
+| Event                  | Payload   | Description                                      |
+| ---------------------- | --------- | ------------------------------------------------ |
+| `search`               | `string`  | Emitted (debounced) when the search text changes |
+| `update:modelValue`    | `string`  | Emitted when the search text changes             |
+| `update:caseSensitive` | `boolean` | Emitted when the case-sensitive toggle changes   |
+| `update:regex`         | `boolean` | Emitted when the regex toggle changes            |
 
 ## Slots
 
@@ -125,10 +125,10 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Methods
 
-| Method    | Parameters       | Description                                               |
-| --------- | ---------------- | --------------------------------------------------------- |
-| `match`   | `text: string`   | Returns `true` if the text matches the current search query |
-| `select`  | -                | Selects all text in the input                             |
-| `focus`   | -                | Focuses the input                                         |
-| `blur`    | -                | Blurs the input                                           |
-| `clear`   | -                | Clears the search text                                    |
+| Method   | Parameters     | Description                                                 |
+| -------- | -------------- | ----------------------------------------------------------- |
+| `match`  | `text: string` | Returns `true` if the text matches the current search query |
+| `select` | -              | Selects all text in the input                               |
+| `focus`  | -              | Focuses the input                                           |
+| `blur`   | -              | Blurs the input                                             |
+| `clear`  | -              | Clears the search text                                      |

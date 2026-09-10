@@ -10,7 +10,7 @@
         :grid
         :disabled
         :readonly
-        :placeholder="placeholder || optionMessages.VS_SEARCH_INPUT_PLACEHOLDER"
+        :placeholder="placeholder ?? optionMessages.VS_SEARCH_INPUT_PLACEHOLDER"
         :size
         :state
         no-clear
@@ -95,7 +95,7 @@ export default defineComponent({
         ...getStyleSetProps<VsSearchInputStyleSet>(),
         ...getResponsiveProps(),
         disabled: { type: Boolean, default: false },
-        placeholder: { type: String, default: '' },
+        placeholder: { type: String },
         readonly: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         state: { type: String as PropType<UIState>, default: 'idle' },

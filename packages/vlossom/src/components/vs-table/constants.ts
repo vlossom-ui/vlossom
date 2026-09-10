@@ -1,6 +1,5 @@
-import type { SearchOptions } from '@/declaration';
-import type { VsTablePageSizeOption, VsTablePageSizeOptions, VsTablePaginationOptions } from './types';
 import type { Options as SortableOptions } from 'sortablejs';
+import type { SearchOptions } from '@/declaration';
 
 export const TABLE_SEARCH_OPTIONS: SearchOptions = {
     useCaseSensitive: true,
@@ -9,22 +8,7 @@ export const TABLE_SEARCH_OPTIONS: SearchOptions = {
 
 export const DEFAULT_PAGE_SIZE_ALL = Infinity;
 export const DEFAULT_PAGE_SIZE = 50;
-export function toDefaultPageSizeOptions(pageSize: number): VsTablePageSizeOption {
-    if (pageSize === DEFAULT_PAGE_SIZE_ALL) {
-        return { label: 'All', value: DEFAULT_PAGE_SIZE_ALL };
-    }
-    return { label: `${pageSize} items`, value: pageSize };
-}
-export const DEFAULT_PAGE_SIZE_OPTIONS: VsTablePageSizeOptions = [
-    ...[50, 100, DEFAULT_PAGE_SIZE_ALL].map(toDefaultPageSizeOptions),
-];
-export const DEFAULT_PAGINATION_OPTIONS: VsTablePaginationOptions = {
-    pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
-    showPageSizeSelect: true,
-    showingLength: 10,
-    edgeButtons: false,
-    showTotal: true,
-} as const;
+export const DEFAULT_PAGE_SIZES = [50, 100, DEFAULT_PAGE_SIZE_ALL] as const;
 
 export const TABLE_DRAG_WRAPPER_CLASS = 'vs-table-draggable-wrapper';
 export const TABLE_DRAG_HANDLE_CLASS = 'vs-table-drag-handle';
