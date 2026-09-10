@@ -67,7 +67,15 @@ import {
 import { VsComponent, type Size } from '@/declaration';
 import { objectUtil } from '@/utils';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useSizeClass, useStateClass, useStyleSet, useValueMatcher } from '@/composables';
+import {
+    useColorScheme,
+    useInput,
+    useSizeClass,
+    useStateClass,
+    useStyleSet,
+    useValueMatcher,
+    useMessages,
+} from '@/composables';
 import type { VsSwitchStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -99,6 +107,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             beforeChange,
             checked,
@@ -148,7 +157,7 @@ export default defineComponent({
         } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
 
         function requiredCheck() {
-            return required.value && !isChecked.value ? 'required' : '';
+            return required.value && !isChecked.value ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

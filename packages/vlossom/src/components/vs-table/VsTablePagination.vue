@@ -16,7 +16,13 @@
                 no-messages
             />
             <span v-if="pagination.showTotal" class="vs-total-items">
-                {{ pageStartIndex + 1 }}-{{ pageEndIndex }} / {{ totalItems }} items
+                {{
+                    formatMessage(optionMessages.VS_TABLE_ITEMS_SUMMARY, {
+                        start: pageStartIndex + 1,
+                        end: pageEndIndex,
+                        total: totalItems,
+                    })
+                }}
             </span>
         </div>
 
@@ -46,10 +52,12 @@ import {
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
+import { useMessages } from '@/composables';
 
 export default defineComponent({
     components: { VsPagination, VsSelect },
     setup() {
+        const { optionMessages, formatMessage } = useMessages();
         const {
             pagination,
             totalPages,
@@ -83,6 +91,8 @@ export default defineComponent({
             size,
             colorScheme,
             tableStyleSet,
+            optionMessages,
+            formatMessage,
         };
     },
 });

@@ -5,7 +5,7 @@
         :color-scheme
         :style-set="componentStyleSet"
         :style="styleSetVariables"
-        :aria-label="`Switch to ${isDarkTheme ? 'light' : 'dark'} mode`"
+        :aria-label="isDarkTheme ? optionMessages.VS_ARIA_THEME_BUTTON_LIGHT : optionMessages.VS_ARIA_THEME_BUTTON_DARK"
         :disabled="disabled"
         :loading="loading"
         @toggle="changeTheme"
@@ -20,7 +20,7 @@ import { defineComponent, toRefs, computed } from 'vue';
 import { useVlossom } from '@/framework';
 import { VsComponent } from '@/declaration';
 import { getColorSchemeProps, getStyleSetProps, getButtonProps } from '@/props';
-import { useColorScheme, useStyleSet } from '@/composables';
+import { useColorScheme, useMessages, useStyleSet } from '@/composables';
 import type { VsThemeButtonStyleSet } from './types';
 
 import { MoonIcon, SunIcon } from '@lucide/vue';
@@ -38,6 +38,7 @@ export default defineComponent({
     emits: ['change'],
     setup(props, { emit }) {
         const $vs = useVlossom();
+        const { optionMessages } = useMessages();
         const { colorScheme, styleSet } = toRefs(props);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
@@ -58,6 +59,7 @@ export default defineComponent({
         return {
             changeTheme,
             isDarkTheme,
+            optionMessages,
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,

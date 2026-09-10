@@ -10,7 +10,7 @@
                 v-if="copy"
                 type="button"
                 class="vs-text-wrap-button vs-copy-button"
-                aria-label="copy"
+                :aria-label="optionMessages.VS_ARIA_TEXT_WRAP_COPY"
                 @click.stop="copyInnerText"
             >
                 <component
@@ -25,7 +25,7 @@
                 v-if="link"
                 type="button"
                 class="vs-text-wrap-button vs-link-button"
-                aria-label="link"
+                :aria-label="optionMessages.VS_ARIA_TEXT_WRAP_LINK"
                 @click.stop="openLink"
             >
                 <LinkIcon class="vs-icon-container" :style="componentStyleSet.$linkIcon" />
@@ -38,7 +38,7 @@
 import { computed, defineComponent, ref, toRefs, type ComputedRef, type PropType, type Ref } from 'vue';
 import { VsComponent } from '@/declaration';
 import { getStyleSetProps } from '@/props';
-import { useStyleSet } from '@/composables';
+import { useMessages, useStyleSet } from '@/composables';
 import { clipboardUtil, logUtil, objectUtil, stringUtil } from '@/utils';
 import type { VsTextWrapStyleSet } from './types';
 
@@ -56,6 +56,7 @@ export default defineComponent({
     },
     emits: ['copied'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const { styleSet, link, width } = toRefs(props);
 
         const baseStyleSet: ComputedRef<VsTextWrapStyleSet> = computed(() => ({}));
@@ -124,6 +125,7 @@ export default defineComponent({
         }
 
         return {
+            optionMessages,
             componentStyleSet,
             componentInlineStyle,
             contentText,

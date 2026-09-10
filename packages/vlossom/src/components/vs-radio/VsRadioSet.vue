@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRefs, type TemplateRef, useTemplateRef, type PropType } from 'vue';
-import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet } from '@/composables';
+import { useColorScheme, useInput, useInputOption, useSizeClass, useStyleSet, useMessages } from '@/composables';
 import { getColorSchemeProps, getOptionsProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
 import { VsComponent, type Size } from '@/declaration';
 import { logUtil, objectUtil } from '@/utils';
@@ -88,6 +88,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -143,7 +144,7 @@ export default defineComponent({
                 return '';
             }
 
-            return value === null || value === undefined ? 'required' : '';
+            return value === null || value === undefined ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

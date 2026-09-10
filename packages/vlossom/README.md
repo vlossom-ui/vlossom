@@ -306,8 +306,27 @@ app.use(
 - `theme` sets the initial global theme. Use `<vs-theme-button />` to toggle it at runtime.
 - `radiusRatio` controls the global border radius ratio from `0` to `1`.
 - `styleSet` defines reusable named style overrides for components.
+- `messages` overrides the built-in texts Vlossom renders. See [Messages](#messages).
 - `color-scheme` applies a built-in color to a component instance.
     - Available colors: `red` · `orange` · `brown` · `amber` · `yellow` · `lime` · `green` · `emerald` · `teal` · `cyan` · `sky` · `blue` · `indigo` · `violet` · `purple` · `fuchsia` · `pink` · `rose` · `gray` · `none`
+
+### Messages
+
+Every text Vlossom renders on its own — validation messages, empty states, overlay button labels, aria labels — comes
+from a single message table. Override any subset in `createVlossom` to localize or reword them:
+
+```typescript
+app.use(
+    createVlossom({
+        components: VlossomComponents,
+        messages: {
+            VS_VALIDATION_REQUIRED: '필수 항목입니다',
+            VS_VALIDATION_MAX_LENGTH: ({ value }) => `최대 ${value}자까지 입력할 수 있어요`,
+            VS_TABLE_NO_DATA: '내역이 없어요',
+        },
+    }),
+);
+```
 
 ### Line Tiers
 

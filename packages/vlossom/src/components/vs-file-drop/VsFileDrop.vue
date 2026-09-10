@@ -81,7 +81,7 @@
                 type="button"
                 class="vs-file-drop-close-button"
                 :style="componentStyleSet.$closeButton"
-                aria-label="Clear"
+                :aria-label="optionMessages.VS_ARIA_FILE_DROP_CLEAR"
                 tabindex="-1"
                 @click.prevent.stop="clear"
             >
@@ -108,7 +108,7 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
-import { useColorScheme, useStyleSet, useInput, useStateClass } from '@/composables';
+import { useColorScheme, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
 
@@ -143,6 +143,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'drop', 'focus', 'blur', 'clear'],
     // expose: ['focus', 'blur', 'validate', 'clear', 'reset'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             colorScheme,
             styleSet,
@@ -407,6 +408,7 @@ export default defineComponent({
             computedDisabled,
             computedReadonly,
             computedPlaceholder,
+            optionMessages,
             shake,
             colorSchemeClass,
             componentStyleSet,

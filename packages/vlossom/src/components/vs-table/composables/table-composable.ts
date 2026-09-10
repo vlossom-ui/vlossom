@@ -28,14 +28,13 @@ import { useTableSelect } from './table-select-composable';
 import { useTableSort } from './table-sort-composable';
 import { useTableExpand } from './table-expand-composable';
 import { useTableSearch } from './table-search-composable';
-import { useTablePagination } from './table-pagination-composable';
 import {
-    DEFAULT_PAGE_SIZE,
-    DEFAULT_PAGE_SIZE_OPTIONS,
-    DEFAULT_PAGINATION_OPTIONS,
-    TABLE_SEARCH_OPTIONS,
+    getDefaultPageSizeOptions,
+    getDefaultPaginationOptions,
     toDefaultPageSizeOptions,
-} from './../constants';
+    useTablePagination,
+} from './table-pagination-composable';
+import { DEFAULT_PAGE_SIZE, TABLE_SEARCH_OPTIONS } from './../constants';
 
 export const TABLE_COMPOSABLE_TOKEN = Symbol('TABLE_COMPOSABLE_TOKEN');
 export function useTable(
@@ -109,29 +108,31 @@ export function useTable(
         if (!rawPagination?.value) {
             return {};
         }
+        const defaultPaginationOptions = getDefaultPaginationOptions();
         if (typeof rawPagination?.value === 'boolean') {
-            return DEFAULT_PAGINATION_OPTIONS;
+            return defaultPaginationOptions;
         }
         if (rawPagination.value.pageSizeOptions) {
-            return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+            return { ...defaultPaginationOptions, ...rawPagination.value };
         }
         if (typeof rawPageSize?.value === 'number') {
-            const isValidPageSize = DEFAULT_PAGE_SIZE_OPTIONS.some((option) => option.value === rawPageSize.value);
+            const defaultPageSizeOptions = getDefaultPageSizeOptions();
+            const isValidPageSize = defaultPageSizeOptions.some((option) => option.value === rawPageSize.value);
             if (isValidPageSize) {
-                return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+                return { ...defaultPaginationOptions, ...rawPagination.value };
             }
             const addedOption = toDefaultPageSizeOptions(rawPageSize.value as number);
-            const pageSizeOptions = [...DEFAULT_PAGE_SIZE_OPTIONS]
+            const pageSizeOptions = defaultPageSizeOptions
                 .filter((option) => option.value !== addedOption.value)
                 .concat(addedOption)
                 .sort((a, b) => a.value - b.value);
             return {
-                ...DEFAULT_PAGINATION_OPTIONS,
+                ...defaultPaginationOptions,
                 ...rawPagination.value,
                 pageSizeOptions,
             };
         }
-        return { ...DEFAULT_PAGINATION_OPTIONS, ...rawPagination.value };
+        return { ...defaultPaginationOptions, ...rawPagination.value };
     });
     const serverMode = computed(() => rawServerMode?.value ?? false);
     const internalPage = ref(0);

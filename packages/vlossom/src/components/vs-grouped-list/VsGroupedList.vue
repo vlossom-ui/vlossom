@@ -18,7 +18,7 @@
                 <div v-if="!!groupBy" class="vs-grouped-list-group" :style="componentStyleSet.$group">
                     <slot name="group" :group="group.name" :groupIndex :items="group.items">
                         <div class="vs-grouped-list-group-content">
-                            <span>{{ group.name || 'Ungrouped' }}</span>
+                            <span>{{ group.name || optionMessages.VS_GROUPED_LIST_UNGROUPED }}</span>
                         </div>
                     </slot>
                 </div>
@@ -61,7 +61,7 @@ import {
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
 import { getGroupByProps, getStyleSetProps } from '@/props';
-import { useStyleSet } from '@/composables';
+import { useStyleSet, useMessages } from '@/composables';
 import type { VsGroupedListGroup, VsGroupedListStyleSet } from './types';
 
 import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
@@ -82,6 +82,7 @@ export default defineComponent({
     emits: ['click-item'],
     // expose: ['scrollToItem'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const { styleSet, items, groupBy, groupOrder } = toRefs(props);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
@@ -202,6 +203,7 @@ export default defineComponent({
             listRef,
             innerScrollRef,
             componentStyleSet,
+            optionMessages,
             styleSetVariables,
             componentInlineStyle,
             groupedItems,

@@ -67,7 +67,15 @@ import {
 } from 'vue';
 import { VsComponent, type Size } from '@/declaration';
 import { getColorSchemeProps, getInputProps, getResponsiveProps, getStyleSetProps } from '@/props';
-import { useColorScheme, useInput, useSizeClass, useStyleSet, useStateClass, useValueMatcher } from '@/composables';
+import {
+    useColorScheme,
+    useInput,
+    useSizeClass,
+    useStyleSet,
+    useStateClass,
+    useValueMatcher,
+    useMessages,
+} from '@/composables';
 import { stringUtil } from '@/utils';
 import type { VsCheckboxStyleSet } from './types';
 
@@ -100,6 +108,7 @@ export default defineComponent({
     emits: ['update:modelValue', 'update:changed', 'update:valid', 'change', 'focus', 'blur', 'toggle', 'clear'],
     // expose: ['clear', 'reset', 'validate', 'focus', 'blur', 'toggle'],
     setup(props, { emit }) {
+        const { optionMessages } = useMessages();
         const {
             beforeChange,
             checked,
@@ -141,7 +150,7 @@ export default defineComponent({
         } = useValueMatcher(multiple, inputValue, trueValue, falseValue);
 
         function requiredCheck() {
-            return required.value && !isChecked.value ? 'required' : '';
+            return required.value && !isChecked.value ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
         const {

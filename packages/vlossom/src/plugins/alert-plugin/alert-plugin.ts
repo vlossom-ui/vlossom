@@ -1,6 +1,6 @@
 import { h, ref, type Component, type Ref } from 'vue';
 import { ALERT_OK, OVERLAY_CLOSE, VsComponent } from '@/declaration';
-import { useOverlayCallbackStore } from '@/stores';
+import { useOverlayCallbackStore, useOptionsStore } from '@/stores';
 import { useStyleSet } from '@/composables';
 import { VsRender } from '@/components';
 import { vnodeUtils } from './../utils/vnode-utils';
@@ -20,7 +20,8 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
 
     return {
         open(content: string | Component, options: AlertModalOptions = {}): Promise<void> {
-            const { componentProps, okText = 'OK', ...modalOptions } = options;
+            const optionsStore = useOptionsStore();
+            const { componentProps, okText = optionsStore.messages.value.VS_ALERT_OK, ...modalOptions } = options;
             const { colorScheme, styleSet, escClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsAlertStyleSet>> = ref({

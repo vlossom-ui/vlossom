@@ -2,6 +2,7 @@ import type { Component, Ref } from 'vue';
 import type { VsComponentRegistry } from '@/components/component-map';
 import type { ALIGNMENTS, COLOR_SCHEMES, PLACEMENTS, SIZES, TEXT_ALIGNMENTS, VERTICAL_ALIGNMENTS } from './constants';
 import type { VsComponent } from './enums';
+import type { VlossomMessages } from './messages';
 
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 
@@ -21,6 +22,7 @@ export interface VlossomOptions {
     styleSet?: GlobalStyleSets;
     theme?: Theme;
     radiusRatio?: number;
+    messages?: Partial<VlossomMessages>;
 }
 
 export type CssPosition = 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
@@ -141,3 +143,6 @@ export interface OptionItem {
     index: number;
     disabled: boolean;
 }
+
+export type MessageParams = Record<string, string | number>;
+export type VlossomMessage = string | ((params: MessageParams) => string);
