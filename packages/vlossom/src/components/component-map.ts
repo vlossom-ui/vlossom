@@ -20,6 +20,7 @@ import VsDivider from './vs-divider/VsDivider.vue';
 import VsDrawer from './vs-drawer/VsDrawer.vue';
 import VsExpandable from './vs-expandable/VsExpandable.vue';
 import VsFileDrop from './vs-file-drop/VsFileDrop.vue';
+import VsFileInput from './vs-file-input/VsFileInput.vue';
 import VsFloating from './vs-floating/VsFloating.vue';
 import VsFocusTrap from './vs-focus-trap/VsFocusTrap.vue';
 import VsFooter from './vs-footer/VsFooter.vue';
@@ -77,6 +78,7 @@ export const VlossomComponents = {
     VsDrawer,
     VsExpandable,
     VsFileDrop,
+    VsFileInput,
     VsFloating,
     VsFocusTrap,
     VsFooter,

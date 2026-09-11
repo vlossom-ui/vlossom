@@ -1,46 +1,54 @@
 import { type Ref } from 'vue';
-import type { FileDropValueType } from './types';
-import { useMessages } from '@/composables';
+import { useMessages } from '@/composables/messages/messages-composable';
 
-export function useVsFileDropRules(
-    required: Ref<boolean>,
-    max: Ref<number | string>,
-    min: Ref<number | string>,
+export function useFileRules(
     accept: Ref<string>,
     multiple: Ref<boolean>,
+    required: Ref<boolean>,
+    max?: Ref<number | string>,
+    min?: Ref<number | string>,
 ) {
     const { optionMessages, formatMessage } = useMessages();
-    function requiredCheck(v: FileDropValueType): string {
-        if (required.value && v.length === 0) {
+
+    function requiredCheck(files: File[]): string {
+        if (required.value && files.length === 0) {
             return optionMessages.value.VS_VALIDATION_REQUIRED;
         }
 
         return '';
     }
 
-    function maxCheck(v: FileDropValueType): string {
+    function maxCheck(files: File[]): string {
+        if (!max) {
+            return '';
+        }
+
         const limit = Number(max.value);
-        if (v.length > limit) {
+        if (files.length > limit) {
             return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MAX, { value: max.value });
         }
 
         return '';
     }
 
-    function minCheck(v: FileDropValueType): string {
+    function minCheck(files: File[]): string {
+        if (!min) {
+            return '';
+        }
+
         const limit = Number(min.value);
-        if (v.length < limit) {
+        if (files.length < limit) {
             return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MIN, { value: min.value });
         }
 
         return '';
     }
 
-    function acceptCheck(v: FileDropValueType): string {
-        if (accept.value && v.length > 0) {
+    function acceptCheck(files: File[]): string {
+        if (accept.value && files.length > 0) {
             const acceptedTypes = accept.value.split(',').map((type) => type.trim());
 
-            const invalidFiles = v.filter((file) => {
+            const invalidFiles = files.filter((file) => {
                 const fileType = file.type;
                 const fileName = file.name;
                 const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
@@ -71,12 +79,12 @@ export function useVsFileDropRules(
         return '';
     }
 
-    function verifyMultipleFileUpload(value: FileDropValueType): string {
+    function verifyMultipleFileUpload(files: File[]): string {
         if (multiple.value) {
             return '';
         }
 
-        if (Array.isArray(value) && value.length > 1) {
+        if (Array.isArray(files) && files.length > 1) {
             return formatMessage(optionMessages.value.VS_VALIDATION_SINGLE_FILE);
         }
 
