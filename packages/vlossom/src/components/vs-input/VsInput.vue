@@ -162,6 +162,20 @@ export default defineComponent({
         const { modifyStringValue } = useStringModifier(modelModifiers);
         const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
 
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (Number(max.value) < Number.MAX_SAFE_INTEGER) {
+                arr.push(maxCheck);
+            }
+            if (Number(min.value) > 0) {
+                arr.push(minCheck);
+            }
+            return arr;
+        });
+
         function convertValue(v: VsInputValueType | undefined): VsInputValueType {
             if (v === undefined || v === null || v === '') {
                 return isNumberInput.value ? null : '';
@@ -194,7 +208,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: computed(() => [requiredCheck, maxCheck, minCheck]),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {
