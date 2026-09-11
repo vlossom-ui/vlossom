@@ -108,12 +108,11 @@ import {
     type TemplateRef,
 } from 'vue';
 import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
-import { useColorScheme, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
+import { useColorScheme, useFileRules, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
 
 import type { FileDropValueType, VsFileDropStyleSet } from './types';
-import { useVsFileDropRules } from './vs-file-drop-rules';
 
 import { PaperclipIcon, XIcon } from '@lucide/vue';
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
@@ -193,12 +192,12 @@ export default defineComponent({
             additionalStyleSet,
         );
 
-        const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useVsFileDropRules(
+        const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useFileRules(
+            accept,
+            multiple,
             required,
             max,
             min,
-            accept,
-            multiple,
         );
 
         const {
