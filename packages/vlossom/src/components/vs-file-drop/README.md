@@ -104,7 +104,7 @@ Show a different hint while a file is being dragged over the area or the file di
 | `height` | `string \| number \| Breakpoints` | `'auto'` | | Height of the drop area |
 | `directory` | `boolean` | `false` | | Enable folder selection mode (webkitdirectory) |
 | `noClear` | `boolean` | `false` | | Hide the clear button |
-| `multiple` | `boolean` | `false` | | Allow multiple file selection |
+| `multiple` | `boolean` | `false` | | Allow multiple file selection. When false, only the first dropped or selected file is kept |
 | `min` | `number \| string` | `0` | | Minimum number of files required |
 | `max` | `number \| string` | `Number.MAX_SAFE_INTEGER` | | Maximum number of files allowed |
 | `modelValue` | `File[]` | `[]` | | v-model binding for selected files |

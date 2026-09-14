@@ -3,7 +3,6 @@ import { useMessages } from '@/composables/messages/messages-composable';
 
 export function useFileRules(
     accept: Ref<string>,
-    multiple: Ref<boolean>,
     required: Ref<boolean>,
     max: Ref<number | string>,
     min: Ref<number | string>,
@@ -71,23 +70,10 @@ export function useFileRules(
         return '';
     }
 
-    function verifyMultipleFileUpload(files: File[]): string {
-        if (multiple.value) {
-            return '';
-        }
-
-        if (Array.isArray(files) && files.length > 1) {
-            return formatMessage(optionMessages.value.VS_VALIDATION_SINGLE_FILE);
-        }
-
-        return '';
-    }
-
     return {
         requiredCheck,
         maxCheck,
         minCheck,
         acceptCheck,
-        verifyMultipleFileUpload,
     };
 }
