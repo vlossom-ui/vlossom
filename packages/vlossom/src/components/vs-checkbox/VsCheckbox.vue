@@ -153,6 +153,8 @@ export default defineComponent({
             return required.value && !isChecked.value ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
         }
 
+        const defaultRules = computed(() => (required.value ? [requiredCheck] : []));
+
         const {
             computedId,
             computedMessages,
@@ -173,7 +175,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: ref([requiredCheck]),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {

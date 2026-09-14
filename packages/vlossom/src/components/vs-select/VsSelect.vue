@@ -292,6 +292,22 @@ export default defineComponent({
 
         useInputOption(inputValue, options, optionLabel, optionValue, multiple);
 
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (multiple.value) {
+                if (Number(min.value) > 0) {
+                    arr.push(minCheck);
+                }
+                if (Number(max.value) < Number.MAX_SAFE_INTEGER) {
+                    arr.push(maxCheck);
+                }
+            }
+            return arr;
+        });
+
         const {
             computedId,
             computedMessages,
@@ -312,13 +328,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: computed(() => {
-                    const defaultRules = [requiredCheck];
-                    if (multiple.value) {
-                        defaultRules.push(minCheck, maxCheck);
-                    }
-                    return defaultRules;
-                }),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {

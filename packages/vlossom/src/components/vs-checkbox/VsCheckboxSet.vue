@@ -135,6 +135,20 @@ export default defineComponent({
 
         const inputValue = ref<any[]>(modelValue.value || []);
 
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (Number(min.value) > 0) {
+                arr.push(minCheck);
+            }
+            if (Number(max.value) < Number.MAX_SAFE_INTEGER) {
+                arr.push(maxCheck);
+            }
+            return arr;
+        });
+
         const { getOptionLabel, getOptionValue } = useInputOption(
             inputValue,
             options,
@@ -186,7 +200,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: ref([requiredCheck, maxCheck, minCheck]),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {

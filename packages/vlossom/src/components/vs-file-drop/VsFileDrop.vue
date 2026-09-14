@@ -201,6 +201,17 @@ export default defineComponent({
             multiple,
         );
 
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (accept.value) {
+                arr.push(acceptCheck);
+            }
+            return arr;
+        });
+
         const {
             computedId,
             computedMessages,
@@ -221,7 +232,7 @@ export default defineComponent({
                 readonly,
                 messages: computed(() => [...messages.value, ...componentMessages.value]),
                 rules,
-                defaultRules: computed(() => [requiredCheck, acceptCheck]),
+                defaultRules,
                 state,
                 callbacks: {
                     onMounted: () => {

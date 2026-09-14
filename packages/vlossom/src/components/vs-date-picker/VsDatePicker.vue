@@ -189,6 +189,20 @@ export default defineComponent({
 
         const { requiredCheck, minCheck, maxCheck } = useVsDatePickerRules(required, min, max);
 
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (min.value) {
+                arr.push(minCheck);
+            }
+            if (max.value) {
+                arr.push(maxCheck);
+            }
+            return arr;
+        });
+
         const {
             computedId,
             computedMessages,
@@ -209,7 +223,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: computed(() => [requiredCheck, minCheck, maxCheck]),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {
