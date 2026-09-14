@@ -24,6 +24,7 @@ export const DEFAULT_MESSAGES = {
     VS_ARIA_INPUT_CLEAR: 'Clear',
     VS_ARIA_SELECT_CLEAR: 'Clear',
     VS_ARIA_FILE_DROP_CLEAR: 'Clear',
+    VS_ARIA_FILE_INPUT_CLEAR: 'Clear',
     VS_ARIA_CHIP_CLOSE: 'close',
     VS_ARIA_TEXT_WRAP_COPY: 'copy',
     VS_ARIA_TEXT_WRAP_LINK: 'link',
