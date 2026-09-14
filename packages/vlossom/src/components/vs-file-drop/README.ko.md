@@ -102,6 +102,7 @@ const files = ref([]);
 | `grid` | `string \| number \| Breakpoints` | | | 그리드 열 범위 |
 | `accept` | `string` | `''` | | 허용되는 파일 타입 (예: `image/*`, `.pdf`) |
 | `height` | `string \| number \| Breakpoints` | `'auto'` | | 드롭 영역 높이 |
+| `directory` | `boolean` | `false` | | 폴더 선택 모드 활성화 (webkitdirectory) |
 | `noClear` | `boolean` | `false` | | 지우기 버튼 숨기기 |
 | `multiple` | `boolean` | `false` | | 다중 파일 선택 허용 |
 | `min` | `number \| string` | `0` | | 필요한 최소 파일 수 |

@@ -36,7 +36,8 @@
                 :aria-required="required"
                 :name
                 :accept
-                :multiple
+                :multiple="multiple || directory"
+                :webkitdirectory="directory ? '' : undefined"
                 @change.stop="handleFileDialog"
                 @click.stop="onClick"
                 @focus.stop="onFocus"
@@ -130,6 +131,7 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         accept: { type: String, default: '' },
         height: { type: [String, Number, Object] as PropType<string | number | Breakpoints>, default: 'auto' },
+        directory: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
 

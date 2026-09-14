@@ -102,6 +102,7 @@ Show a different hint while a file is being dragged over the area or the file di
 | `grid` | `string \| number \| Breakpoints` | | | Grid column span |
 | `accept` | `string` | `''` | | Accepted file types (e.g. `image/*`, `.pdf`) |
 | `height` | `string \| number \| Breakpoints` | `'auto'` | | Height of the drop area |
+| `directory` | `boolean` | `false` | | Enable folder selection mode (webkitdirectory) |
 | `noClear` | `boolean` | `false` | | Hide the clear button |
 | `multiple` | `boolean` | `false` | | Allow multiple file selection |
 | `min` | `number \| string` | `0` | | Minimum number of files required |
