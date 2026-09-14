@@ -47,6 +47,53 @@
         </vs-grid>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsFileInput</h3>
+        <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-file-input
+                v-model="fileInputValue"
+                label="Single File"
+                placeholder="Click to select a file"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-file-input
+                v-model="fileInputMultiple"
+                label="Multiple Files"
+                placeholder="Click to select files"
+                multiple
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-file-input
+                v-model="fileInputCollapse"
+                label="Collapse Chips"
+                placeholder="Click to select files"
+                multiple
+                collapse-chips
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-file-input
+                v-model="fileInputAccept"
+                label="Images Only"
+                placeholder="Click to select an image"
+                accept="image/*"
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-file-input label="Disabled" placeholder="Disabled" disabled :grid="{ xs: 12, md: 6, lg: 3 }" />
+            <vs-file-input
+                label="Readonly"
+                :model-value="fileInputReadonly"
+                readonly
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+            <vs-file-input
+                v-model="fileInputRequired"
+                label="Required"
+                placeholder="Required field"
+                required
+                :grid="{ xs: 12, md: 6, lg: 3 }"
+            />
+        </vs-grid>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsInput</h3>
         <vs-form :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-input
@@ -333,6 +380,12 @@ export default defineComponent({
         const switchValue2 = ref(false);
         const noLabelSwitchValue = ref(false);
         const files: Ref<File[]> = ref([]);
+        const fileInputValue: Ref<File[]> = ref([]);
+        const fileInputMultiple: Ref<File[]> = ref([]);
+        const fileInputCollapse: Ref<File[]> = ref([]);
+        const fileInputAccept: Ref<File[]> = ref([]);
+        const fileInputReadonly: Ref<File[]> = ref([]);
+        const fileInputRequired: Ref<File[]> = ref([]);
 
         const selectOptions = [
             'Apple',
@@ -396,6 +449,12 @@ export default defineComponent({
             switchValue2,
             noLabelSwitchValue,
             files,
+            fileInputValue,
+            fileInputMultiple,
+            fileInputCollapse,
+            fileInputAccept,
+            fileInputReadonly,
+            fileInputRequired,
             selectOptions,
             colorOptions,
             selectValue,
