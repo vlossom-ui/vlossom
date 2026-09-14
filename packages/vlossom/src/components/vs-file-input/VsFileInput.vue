@@ -117,7 +117,7 @@ import {
     useSizeClass,
     useMessages,
 } from '@/composables';
-import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps } from '@/props';
+import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 
 import type { FileInputValueType, VsFileInputStyleSet } from './types';
 
@@ -135,6 +135,7 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsFileInputStyleSet>(),
+        ...getMinMaxProps(componentName),
         accept: { type: String, default: '' },
         collapseChips: { type: Boolean, default: false },
         directory: { type: Boolean, default: false },
@@ -158,6 +159,8 @@ export default defineComponent({
             multiple,
             size,
             required,
+            min,
+            max,
             modelValue,
             id,
             disabled,
@@ -176,7 +179,24 @@ export default defineComponent({
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsFileInputStyleSet>(componentName, styleSet);
 
-        const { requiredCheck, acceptCheck } = useFileRules(accept, multiple, required);
+        const { requiredCheck, acceptCheck, maxCheck, minCheck } = useFileRules(accept, multiple, required, max, min);
+
+        const defaultRules = computed(() => {
+            const arr = [];
+            if (required.value) {
+                arr.push(requiredCheck);
+            }
+            if (accept.value) {
+                arr.push(acceptCheck);
+            }
+            if (Number(max.value) < Number.MAX_SAFE_INTEGER) {
+                arr.push(maxCheck);
+            }
+            if (Number(min.value) > 0) {
+                arr.push(minCheck);
+            }
+            return arr;
+        });
 
         const {
             computedId,
@@ -198,7 +218,7 @@ export default defineComponent({
                 readonly,
                 messages,
                 rules,
-                defaultRules: computed(() => [requiredCheck, acceptCheck]),
+                defaultRules,
                 noDefaultRules,
                 state,
                 callbacks: {

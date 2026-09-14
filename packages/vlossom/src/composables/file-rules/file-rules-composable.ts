@@ -5,8 +5,8 @@ export function useFileRules(
     accept: Ref<string>,
     multiple: Ref<boolean>,
     required: Ref<boolean>,
-    max?: Ref<number | string>,
-    min?: Ref<number | string>,
+    max: Ref<number | string>,
+    min: Ref<number | string>,
 ) {
     const { optionMessages, formatMessage } = useMessages();
 
@@ -19,10 +19,6 @@ export function useFileRules(
     }
 
     function maxCheck(files: File[]): string {
-        if (!max) {
-            return '';
-        }
-
         const limit = Number(max.value);
         if (files.length > limit) {
             return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MAX, { value: max.value });
@@ -32,10 +28,6 @@ export function useFileRules(
     }
 
     function minCheck(files: File[]): string {
-        if (!min) {
-            return '';
-        }
-
         const limit = Number(min.value);
         if (files.length < limit) {
             return formatMessage(optionMessages.value.VS_VALIDATION_FILE_MIN, { value: min.value });

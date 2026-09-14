@@ -13,7 +13,7 @@ An input-style file selector component that opens a file dialog on click or keyb
 - Displays selected files as chips with a close button
 - `collapseChips` to collapse chips when many files are selected
 - File dialog triggered by click or keyboard (Enter/Space)
-- Built-in validation support (required, file type)
+- Built-in validation support (required, file type, min/max file count)
 - Customizable prepend icon via `prepend` slot
 
 ## Basic Usage
@@ -91,6 +91,8 @@ const files = ref([]);
 | `width`          | `string \| number \| Breakpoints`                       | -        | -        | Responsive width                                       |
 | `grid`           | `string \| number \| Breakpoints`                       | -        | -        | Grid column span                                       |
 | `accept`         | `string`                                                | `''`     | -        | Accepted file types (native accept attribute)          |
+| `max`            | `number \| string`                                      | -        | -        | Maximum number of files                                |
+| `min`            | `number \| string`                                      | -        | -        | Minimum number of files                                |
 | `collapseChips`  | `boolean`                                               | `false`  | -        | Show only the first chip and abbreviate the rest as +N |
 | `directory`      | `boolean`                                               | `false`  | -        | Enables folder selection mode (webkitdirectory)        |
 | `multiple`       | `boolean`                                               | `false`  | -        | Allows multiple file selection                         |

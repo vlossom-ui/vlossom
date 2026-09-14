@@ -13,7 +13,7 @@
 - 선택된 파일을 닫기 버튼이 있는 칩으로 표시
 - `collapseChips`로 파일이 많을 때 칩 접기
 - 클릭 및 키보드(Enter/Space) 파일 다이얼로그 열기
-- 내장 유효성 검사 지원 (필수값, 파일 타입)
+- 내장 유효성 검사 지원 (필수값, 파일 타입, 최소/최대 파일 수)
 - `prepend` 슬롯으로 아이콘 커스터마이징 가능
 
 ## 기본 사용법
@@ -91,6 +91,8 @@ const files = ref([]);
 | `width`          | `string \| number \| Breakpoints`                       | -        | -        | 반응형 너비                                                     |
 | `grid`           | `string \| number \| Breakpoints`                       | -        | -        | 그리드 컬럼 스팬                                                |
 | `accept`         | `string`                                                | `''`     | -        | 허용 파일 타입 (native accept 속성)                             |
+| `max`            | `number \| string`                                      | -        | -        | 최대 파일 수                                                    |
+| `min`            | `number \| string`                                      | -        | -        | 최소 파일 수                                                    |
 | `collapseChips`  | `boolean`                                               | `false`  | -        | 파일이 2개 이상일 때 첫 번째 칩만 표시하고 나머지는 +N으로 축약 |
 | `directory`      | `boolean`                                               | `false`  | -        | 폴더 선택 모드 활성화 (webkitdirectory)                         |
 | `multiple`       | `boolean`                                               | `false`  | -        | 복수 파일 선택 허용                                             |
