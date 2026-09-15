@@ -156,7 +156,6 @@ export default defineComponent({
             colorScheme,
             styleSet,
             accept,
-            multiple,
             size,
             required,
             min,
@@ -179,7 +178,7 @@ export default defineComponent({
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsFileInputStyleSet>(componentName, styleSet);
 
-        const { requiredCheck, acceptCheck, maxCheck, minCheck } = useFileRules(accept, multiple, required, max, min);
+        const { requiredCheck, acceptCheck, maxCheck, minCheck } = useFileRules(accept, required, max, min);
 
         const defaultRules = computed(() => {
             const arr = [];

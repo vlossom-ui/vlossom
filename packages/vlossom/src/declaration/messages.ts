@@ -13,7 +13,6 @@ export const DEFAULT_MESSAGES = {
     VS_VALIDATION_FILE_MAX: ({ value }: MessageParams) => `You can only upload up to ${value} files`,
     VS_VALIDATION_FILE_MIN: ({ value }: MessageParams) => `You must upload at least ${value} files`,
     VS_VALIDATION_FILE_TYPE: ({ value }: MessageParams) => `Allowed: ${value}`,
-    VS_VALIDATION_SINGLE_FILE: () => 'You can only upload one file',
     VS_TABLE_NO_DATA: 'NO DATA',
     VS_TABLE_ITEMS_SUMMARY: ({ start, end, total }: MessageParams) => `${start}-${end} / ${total} items`,
     VS_TABLE_PAGE_SIZE_ALL: 'All',
