@@ -102,8 +102,9 @@ const files = ref([]);
 | `grid` | `string \| number \| Breakpoints` | | | 그리드 열 범위 |
 | `accept` | `string` | `''` | | 허용되는 파일 타입 (예: `image/*`, `.pdf`) |
 | `height` | `string \| number \| Breakpoints` | `'auto'` | | 드롭 영역 높이 |
+| `directory` | `boolean` | `false` | | 폴더 선택 모드 활성화 (webkitdirectory) |
 | `noClear` | `boolean` | `false` | | 지우기 버튼 숨기기 |
-| `multiple` | `boolean` | `false` | | 다중 파일 선택 허용 |
+| `multiple` | `boolean` | `false` | | 다중 파일 선택 허용. false이면 여러 파일을 드롭/선택해도 첫 번째 파일만 유지합니다 |
 | `min` | `number \| string` | `0` | | 필요한 최소 파일 수 |
 | `max` | `number \| string` | `Number.MAX_SAFE_INTEGER` | | 허용되는 최대 파일 수 |
 | `modelValue` | `File[]` | `[]` | | 선택된 파일의 v-model 바인딩 |

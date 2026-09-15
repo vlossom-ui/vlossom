@@ -209,7 +209,7 @@ describe('vs-file-drop', () => {
             });
         });
 
-        it('max를 초과하는 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
+        it('max를 초과하는 파일을 추가하면 값은 반영되고 validate 호출 시 에러 메시지가 노출된다', async () => {
             // given
             const wrapper = mount(VsFileDrop, { props: { max: 2, multiple: true } });
             const files = [createFile('a.png'), createFile('b.png'), createFile('c.png')];
@@ -224,6 +224,7 @@ describe('vs-file-drop', () => {
             wrapper.vm.validate();
 
             // then
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(files);
             const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
             expect(errorMessages).toHaveLength(1);
             expect(errorMessages[0]).toEqual({
@@ -232,7 +233,7 @@ describe('vs-file-drop', () => {
             });
         });
 
-        it('min 미만의 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
+        it('min 미만의 파일을 추가하면 값은 반영되고 validate 호출 시 에러 메시지가 노출된다', async () => {
             // given
             const wrapper = mount(VsFileDrop, { props: { min: 2 } });
             const files = [createFile('a.png')];
@@ -247,6 +248,7 @@ describe('vs-file-drop', () => {
             wrapper.vm.validate();
 
             // then
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(files);
             expect(wrapper.vm.computedMessages).toHaveLength(1);
             expect(wrapper.vm.computedMessages[0]).toEqual({
                 text: 'You must upload at least 2 files',
@@ -1355,7 +1357,7 @@ describe('vs-file-drop', () => {
     });
 
     describe('multiple prop', () => {
-        it('multiple이 false일 때 여러 파일을 추가하면 validate 호출 시 에러 메시지가 노출된다', async () => {
+        it('multiple이 false일 때 여러 파일을 추가하면 첫 번째 파일만 등록된다', async () => {
             // given
             const wrapper = mount(VsFileDrop, { props: { multiple: false } });
             const files = [createFile('test1.png'), createFile('test2.png')];
@@ -1367,15 +1369,46 @@ describe('vs-file-drop', () => {
                 },
             } as unknown as Event);
             await wrapper.vm.$nextTick();
-            wrapper.vm.validate();
 
             // then
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([files[0]]);
             const errorMessages = wrapper.vm.computedMessages.filter((msg: any) => msg.state === 'error');
-            expect(errorMessages).toHaveLength(1);
-            expect(errorMessages[0]).toEqual({
-                text: 'You can only upload one file',
-                state: 'error',
-            });
+            expect(errorMessages).toHaveLength(0);
+        });
+
+        it('multiple이 false일 때 여러 파일을 드롭하면 첫 번째 파일만 등록된다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { props: { multiple: false } });
+            const files = [createFile('test1.png'), createFile('test2.png')];
+
+            // when
+            await wrapper.vm.handleFileDrop({
+                dataTransfer: {
+                    files,
+                },
+            } as unknown as DragEvent);
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(wrapper.emitted('drop')?.[0][0]).toEqual(files);
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual([files[0]]);
+        });
+
+        it('directory가 true이면 multiple이 false여도 여러 파일을 모두 등록한다', async () => {
+            // given
+            const wrapper = mount(VsFileDrop, { props: { directory: true } });
+            const files = [createFile('test1.png'), createFile('test2.png')];
+
+            // when
+            await wrapper.vm.handleFileDialog({
+                target: {
+                    files,
+                },
+            } as unknown as Event);
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.[0][0]).toEqual(files);
         });
 
         it('multiple이 false일 때 1개 파일을 추가하면 에러가 없다', async () => {

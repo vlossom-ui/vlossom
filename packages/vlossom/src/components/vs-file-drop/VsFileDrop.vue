@@ -36,7 +36,8 @@
                 :aria-required="required"
                 :name
                 :accept
-                :multiple
+                :multiple="multiple || directory"
+                :webkitdirectory="directory ? '' : undefined"
                 @change.stop="handleFileDialog"
                 @click.stop="onClick"
                 @focus.stop="onFocus"
@@ -107,7 +108,7 @@ import {
     type Ref,
     type TemplateRef,
 } from 'vue';
-import { VsComponent, type Breakpoints, type StateMessage } from '@/declaration';
+import { VsComponent, type Breakpoints } from '@/declaration';
 import { useColorScheme, useFileRules, useStyleSet, useInput, useStateClass, useMessages } from '@/composables';
 import { getInputProps, getResponsiveProps, getColorSchemeProps, getStyleSetProps, getMinMaxProps } from '@/props';
 import { stringUtil, objectUtil } from '@/utils';
@@ -130,6 +131,7 @@ export default defineComponent({
         ...getMinMaxProps(componentName),
         accept: { type: String, default: '' },
         height: { type: [String, Number, Object] as PropType<string | number | Breakpoints>, default: 'auto' },
+        directory: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
 
@@ -154,7 +156,9 @@ export default defineComponent({
             readonly,
             messages,
             multiple,
+            directory,
             rules,
+            noDefaultRules,
             state,
             max,
             min,
@@ -168,7 +172,6 @@ export default defineComponent({
         const fileDropRef: TemplateRef<HTMLInputElement> = useTemplateRef('fileDropRef');
         const dragging: Ref<boolean> = ref(false);
         const isDialogOpen: Ref<boolean> = ref(false);
-        const componentMessages: Ref<StateMessage[]> = ref([]);
 
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -192,13 +195,7 @@ export default defineComponent({
             additionalStyleSet,
         );
 
-        const { requiredCheck, maxCheck, minCheck, acceptCheck, verifyMultipleFileUpload } = useFileRules(
-            accept,
-            multiple,
-            required,
-            max,
-            min,
-        );
+        const { requiredCheck, maxCheck, minCheck, acceptCheck } = useFileRules(accept, required, max, min);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -207,6 +204,12 @@ export default defineComponent({
             }
             if (accept.value) {
                 arr.push(acceptCheck);
+            }
+            if (Number(max.value) < Number.MAX_SAFE_INTEGER) {
+                arr.push(maxCheck);
+            }
+            if (Number(min.value) > 0) {
+                arr.push(minCheck);
             }
             return arr;
         });
@@ -229,9 +232,10 @@ export default defineComponent({
                 id,
                 disabled,
                 readonly,
-                messages: computed(() => [...messages.value, ...componentMessages.value]),
+                messages,
                 rules,
                 defaultRules,
+                noDefaultRules,
                 state,
                 callbacks: {
                     onMounted: () => {
@@ -243,7 +247,6 @@ export default defineComponent({
                         }
 
                         inputValue.value = [];
-                        componentMessages.value = [];
                     },
                 },
             },
@@ -292,44 +295,14 @@ export default defineComponent({
             fileDropRef.value?.click();
         }
 
-        function checkFileInputCondition(files: File[]) {
-            componentMessages.value = [];
-
-            const multipleFileUploadError = verifyMultipleFileUpload(files);
-            if (multipleFileUploadError) {
-                componentMessages.value.push({ state: 'error', text: multipleFileUploadError });
-
-                return false;
-            }
-
-            const minError = minCheck(files);
-            if (minError) {
-                componentMessages.value.push({ state: 'error', text: minError });
-
-                return false;
-            }
-
-            const maxError = maxCheck(files);
-            if (maxError) {
-                componentMessages.value.push({ state: 'error', text: maxError });
-
-                return false;
-            }
-
-            return true;
-        }
-
         function setInputValue(files: File[]) {
             if (!files || files.length === 0) {
                 return;
             }
 
-            if (!checkFileInputCondition(files)) {
-                return;
-            }
-
-            inputValue.value = files;
-            emit('update:changed', files);
+            const nextFiles = multiple.value || directory.value ? files : files.slice(0, 1);
+            inputValue.value = nextFiles;
+            emit('update:changed', nextFiles);
         }
 
         function handleFileDialog(event: Event) {
@@ -362,16 +335,7 @@ export default defineComponent({
                 return;
             }
 
-            const files = inputValue.value;
-            const filteredFiles = files.filter((file) => file !== target);
-
-            const minError = minCheck(filteredFiles);
-            if (minError) {
-                componentMessages.value = [];
-                componentMessages.value.push({ state: 'error', text: minError });
-            }
-
-            inputValue.value = filteredFiles;
+            inputValue.value = inputValue.value.filter((file) => file !== target);
         }
 
         function onClick(): void {
