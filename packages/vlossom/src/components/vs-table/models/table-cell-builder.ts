@@ -11,18 +11,28 @@ import {
 export class TableCellBuilder {
     private cellStrategy: TableCellStrategy;
 
-    // 행 key를 배열 인덱스가 아니라 아이템 객체의 동일성에 묶어, 아이템 추가/정렬 시에도 안정적으로 유지한다.
+    // itemKey가 없을 때의 fallback. 행 key를 배열 인덱스가 아니라 아이템 객체의 동일성에 묶어,
+    // 아이템 추가/정렬 시에도 안정적으로 유지한다.
+    // 아이템을 새 객체로 교체하는 앱에서는 이 동일성이 끊겨 행이 remount되므로 itemKey로 데이터 기반 key를 지정한다.
     private readonly rowKeys = new WeakMap<object, string>();
 
     public constructor(
         private readonly tableId: string,
         private items: VsTableItem[],
         private columnDefs: VsTableColumnDef[] | string[],
+        private itemKey: string = '',
     ) {
         this.cellStrategy = this.getCellStrategy();
     }
 
     private getRowKey = (item: VsTableItem): string => {
+        if (this.itemKey) {
+            const itemKeyValue = objectUtil.get(item, this.itemKey);
+            if (itemKeyValue !== undefined && itemKeyValue !== null) {
+                return String(itemKeyValue);
+            }
+        }
+
         let key = this.rowKeys.get(item);
         if (key === undefined) {
             key = stringUtil.createID();
@@ -47,6 +57,11 @@ export class TableCellBuilder {
         }
         this.items = items;
         this.cellStrategy = this.getCellStrategy();
+        return this;
+    }
+
+    public updateItemKey(itemKey: string): TableCellBuilder {
+        this.itemKey = itemKey;
         return this;
     }
 

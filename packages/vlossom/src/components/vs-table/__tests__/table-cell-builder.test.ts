@@ -85,6 +85,36 @@ describe('TableCellBuilder', () => {
         expect(nextRows[0].key).not.toBe(aliceKey);
     });
 
+    it('itemKey를 지정하면 아이템을 새 객체로 교체해도 행 key와 셀 id가 유지된다', () => {
+        const columnDefs: VsTableColumnDef[] = [{ key: 'name', label: '이름' }];
+        const builder = new TableCellBuilder('test-table-id', [{ id: '1', name: 'Alice' }], columnDefs, 'id');
+
+        const { rows } = builder.build();
+
+        builder.updateItems([{ id: '1', name: 'Alice Kim' }]);
+        const { rows: nextRows } = builder.build();
+
+        expect(nextRows[0].key).toBe(rows[0].key);
+        expect(nextRows[0].cells[0].id).toBe(rows[0].cells[0].id);
+        expect(nextRows[0].cells[0].value).toBe('Alice Kim');
+    });
+
+    it('itemKey는 중첩 경로도 읽고, 값이 없으면 객체 동일성 key로 폴백한다', () => {
+        const columnDefs: VsTableColumnDef[] = [{ key: 'name', label: '이름' }];
+        const keyed = { meta: { id: 'a' }, name: 'Alice' };
+        const keyless = { name: 'Bob' };
+        const builder = new TableCellBuilder('test-table-id', [keyed, keyless], columnDefs, 'meta.id');
+
+        const { rows } = builder.build();
+        expect(rows[0].key).toBe('a');
+
+        builder.updateItems([{ meta: { id: 'a' }, name: 'Alice Kim' }, keyless]);
+        const { rows: nextRows } = builder.build();
+
+        expect(nextRows[0].key).toBe('a');
+        expect(nextRows[1].key).toBe(rows[1].key);
+    });
+
     it('transform value 타입은 any이고 item 타입은 유지한다', () => {
         type User = {
             id: string;

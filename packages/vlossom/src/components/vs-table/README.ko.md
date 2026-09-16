@@ -113,6 +113,24 @@ const selected = ref([]);
 </template>
 ```
 
+### 행 식별
+
+기본적으로 행은 아이템 객체 자체로 식별합니다. 덕분에 아이템을 추가하거나 정렬·재정렬해도 행이 안정적으로 유지됩니다. 다만 아이템을 mutate하지 않고 새 객체로 교체하는 코드라면 이 동일성이 끊겨 행이 다시 생성되고, 셀 안에서 입력 중이던 input은 한 글자 만에 포커스를 잃습니다.
+
+아이템을 고유하게 식별하는 필드를 `item-key`로 지정하면 행 식별을 데이터 기준으로 바꿀 수 있습니다.
+
+```html
+<template>
+    <vs-table :columns="columns" :items="items" item-key="id">
+        <template #body-name="{ item }">
+            <vs-input :model-value="item.name" @update:model-value="rename(item.id, $event)" />
+        </template>
+    </vs-table>
+</template>
+```
+
+`item-key`는 컬럼 `key`와 마찬가지로 점 경로(`'metadata.id'`)를 지원합니다. 해당 경로에 값이 없는 아이템은 객체 동일성으로 폴백합니다.
+
 ### 서버 모드
 
 ```html
@@ -140,6 +158,7 @@ const selected = ref([]);
 | `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | 테이블 크기 — 셀 패딩/폰트 제어 및 검색 입력 · 페이지네이션(페이지 사이즈 셀렉트 포함) · 선택 체크박스로 전파 |
 | `draggable`       | `boolean`                                      | `false`  | 드래그 앤 드롭 행 재정렬 활성화         |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | 확장 행 활성화. `expand` 슬롯이 제공된 경우에만 확장 UI가 렌더링됩니다 |
+| `itemKey`         | `string`                                       | `''`     | 행을 식별하는 아이템 필드(점 경로). 지정하지 않거나 값이 없으면 객체 동일성으로 폴백 |
 | `loading`         | `boolean`                                      | `false`  | 로딩 상태 표시 및 검색 비활성화         |
 | `page`            | `number`                                       |          | 현재 페이지 인덱스(0부터 시작), v-model |
 | `pageSize`        | `number`                                       | `10`     | 페이지당 행 수, v-model                 |

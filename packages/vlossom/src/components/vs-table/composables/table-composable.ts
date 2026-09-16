@@ -53,6 +53,7 @@ export function useTable(
     const {
         columns: rawColumns,
         items: rawItems,
+        itemKey: rawItemKey,
         selectable: rawSelectable,
         expandable: rawExpandable,
         state: rawState,
@@ -83,6 +84,7 @@ export function useTable(
     const items = computed<VsTableItem[]>(() => {
         return rawItems?.value ?? ([] as VsTableItem[]);
     });
+    const itemKey = computed<string>(() => rawItemKey?.value ?? '');
     const expandable = computed(() => {
         return functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawExpandable?.value);
     });
@@ -164,7 +166,7 @@ export function useTable(
         },
     });
 
-    const tableCellBuilder = new TableCellBuilder(tableId, items.value, columns.value);
+    const tableCellBuilder = new TableCellBuilder(tableId, items.value, columns.value, itemKey.value);
     const { anyExpandable, isExpanded, toggleExpand, setExpand } = useTableExpand(expandable, items);
     const { sortType, sortColumn, compareRows, updateSortType } = useTableSort(columns);
     const { matchBySearch } = useTableSearch(refs.searchInputRef, columns, search);
@@ -214,7 +216,11 @@ export function useTable(
     });
 
     const builtTable = computed<{ header: VsTableHeaderCell[]; rows: VsTableRow[] }>(() => {
-        return tableCellBuilder.updateColumnDefs(columns.value).updateItems(items.value).build();
+        return tableCellBuilder
+            .updateItemKey(itemKey.value)
+            .updateColumnDefs(columns.value)
+            .updateItems(items.value)
+            .build();
     });
     const headerCells = ref<VsTableHeaderCell[]>([]);
     const rawBodyRows = ref<VsTableRow[]>([]);
@@ -274,6 +280,7 @@ export function useTable(
         initialize,
         columns,
         items,
+        itemKey,
         selectable,
         expandable,
         state,
@@ -311,6 +318,7 @@ export function useTable(
 export type TableComposable = {
     columns: ComputedRef<VsTableColumnDef[] | null>;
     items: Ref<VsTableItem[]>;
+    itemKey: ComputedRef<string>;
     headerCells: Ref<VsTableHeaderCell[]>;
     bodyRows: ComputedRef<VsTableRow[]>;
     gridTemplateColumns: ComputedRef<string>;
