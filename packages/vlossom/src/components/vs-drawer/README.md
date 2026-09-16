@@ -49,11 +49,11 @@ const drawerOpen = ref(false);
 </script>
 ```
 
-### Fixed Drawer with Custom Size
+### Fixed-Position Drawer with Custom Size
 
 ```html
 <template>
-    <vs-drawer v-model="open" placement="top" :size="'30%'" fixed>
+    <vs-drawer v-model="open" placement="top" :size="'30%'" position="fixed">
         <p>Top drawer at 30% height.</p>
     </vs-drawer>
 </template>
@@ -89,7 +89,7 @@ Set the `layout` prop to register the drawer with the layout store. Combine with
 | `focusLock` | `boolean` | `false` | | Trap focus inside the drawer while it is open |
 | `hideScroll` | `boolean` | `false` | | Hide the scrollbar inside the drawer |
 | `id` | `string` | `''` | | HTML id attribute for the drawer |
-| `fixed` | `boolean` | `false` | | Use `position: fixed` instead of `absolute` |
+| `position` | `'absolute' \| 'fixed'` | `'absolute'` | | CSS position of the drawer panel. Replaces the `fixed` boolean prop as of 2.1.0 |
 | `open` | `boolean` | `false` | | Open the drawer on mount |
 | `layout` | `boolean` | `false` | | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect |
 | `pushContainer` | `boolean` | `false` | | When used with `layout`, push the sibling `VsContainer` to make room for the drawer instead of overlaying it |

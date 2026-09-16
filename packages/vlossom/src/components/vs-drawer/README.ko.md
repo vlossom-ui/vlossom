@@ -53,7 +53,7 @@ const drawerOpen = ref(false);
 
 ```html
 <template>
-    <vs-drawer v-model="open" placement="top" :size="'30%'" fixed>
+    <vs-drawer v-model="open" placement="top" :size="'30%'" position="fixed">
         <p>30% 높이의 상단 드로어.</p>
     </vs-drawer>
 </template>
@@ -89,7 +89,7 @@ const drawerOpen = ref(false);
 | `focusLock` | `boolean` | `false` | | 드로어가 열려 있는 동안 포커스 가두기 |
 | `hideScroll` | `boolean` | `false` | | 드로어 내부 스크롤바 숨기기 |
 | `id` | `string` | `''` | | 드로어의 HTML id 속성 |
-| `fixed` | `boolean` | `false` | | `absolute` 대신 `position: fixed` 사용 |
+| `position` | `'absolute' \| 'fixed'` | `'absolute'` | | 드로어 패널의 CSS position. 2.1.0부터 `fixed` boolean prop을 대체 |
 | `open` | `boolean` | `false` | | 마운트 시 드로어 열기 |
 | `layout` | `boolean` | `false` | | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다 |
 | `pushContainer` | `boolean` | `false` | | `layout`과 함께 사용 시 드로어가 `VsContainer`를 옆으로 밀어 공간을 확보 (overlay 대신) |
