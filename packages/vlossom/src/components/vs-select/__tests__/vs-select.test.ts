@@ -813,7 +813,8 @@ describe('VsSelect', () => {
             });
 
             // when
-            await wrapper.setProps({ modelValue: 'Apple' });
+            const appleOption = wrapper.vm.filteredOptions[0];
+            wrapper.vm.selectOptionItem(appleOption);
             await nextTick();
 
             // then
