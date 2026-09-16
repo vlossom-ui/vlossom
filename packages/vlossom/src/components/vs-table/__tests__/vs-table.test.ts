@@ -113,7 +113,7 @@ describe('VsTable', () => {
         });
     });
 
-    describe('itemKey', () => {
+    describe('행 DOM 안정성 (predecessor map)', () => {
         const replacedItems = [
             { id: '1', name: 'Alice Kim', age: 24 },
             { id: '2', name: 'Bob', age: 30 },
@@ -121,8 +121,8 @@ describe('VsTable', () => {
         const cellElementsOf = (wrapper: ReturnType<typeof mount>) =>
             wrapper.findAll('tbody td').map((td) => td.element);
 
-        it('itemKey를 지정하면 아이템이 새 객체로 교체돼도 셀 DOM이 유지된다', async () => {
-            const wrapper = mountTable({ props: { itemKey: 'id' } });
+        it('아이템이 새 객체로 교체돼도 셀 DOM이 유지된다', async () => {
+            const wrapper = mountTable();
             await nextTick();
             const before = cellElementsOf(wrapper);
 
@@ -133,17 +133,6 @@ describe('VsTable', () => {
                 expect(element).toBe(before[index]);
             });
             expect(bodyTextsOf(wrapper)).toEqual(['Alice Kim', '24', 'Bob', '30']);
-        });
-
-        it('itemKey가 없으면 아이템 객체가 바뀔 때 셀 DOM이 다시 생성된다', async () => {
-            const wrapper = mountTable();
-            await nextTick();
-            const before = cellElementsOf(wrapper);
-
-            await wrapper.setProps({ items: replacedItems });
-            await nextTick();
-
-            expect(cellElementsOf(wrapper)[0]).not.toBe(before[0]);
         });
     });
 

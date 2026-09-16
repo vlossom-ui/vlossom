@@ -62,11 +62,6 @@ const meta: Meta<typeof VsTable> = {
             control: { type: 'object' },
             description: '테이블 렌더링 대상 아이템입니다.',
         },
-        itemKey: {
-            control: { type: 'text' },
-            description:
-                '행을 식별하는 아이템 필드(점 경로)입니다. 지정하지 않으면 아이템 객체의 동일성으로 행을 식별하므로, 아이템을 새 객체로 교체하면 행이 다시 생성됩니다.',
-        },
         search: {
             control: { type: 'object' },
             description: '검색 입력 표시 여부 및 옵션(`useCaseSensitive`, `useRegex`, `extraKeys`).',

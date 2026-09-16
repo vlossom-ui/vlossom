@@ -73,7 +73,6 @@ import {
     toRefs,
     computed,
     ref,
-    onBeforeMount,
     onMounted,
     useTemplateRef,
     onBeforeUnmount,
@@ -145,7 +144,6 @@ export default defineComponent({
                 return true;
             },
         },
-        itemKey: { type: String, default: '' },
         size: { type: String as PropType<Size>, default: 'md' },
         primary: { type: Boolean, default: false },
         responsive: { type: Boolean, default: false },
@@ -412,10 +410,6 @@ export default defineComponent({
                     syncStickyScroll();
                 });
             }
-        });
-
-        onBeforeMount(() => {
-            table.initialize();
         });
 
         onMounted(() => {

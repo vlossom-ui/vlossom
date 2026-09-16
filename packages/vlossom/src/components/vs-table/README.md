@@ -113,24 +113,6 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when `items
 </template>
 ```
 
-### Row Identity
-
-By default a row is identified by the item object itself, which keeps rows stable while items are added, sorted, or reordered. If your code replaces items with new objects instead of mutating them, that identity breaks and the row is re-created — an input being edited inside a cell loses its focus after one keystroke.
-
-Set `item-key` to a field that uniquely identifies an item so the row identity comes from the data instead:
-
-```html
-<template>
-    <vs-table :columns="columns" :items="items" item-key="id">
-        <template #body-name="{ item }">
-            <vs-input :model-value="item.name" @update:model-value="rename(item.id, $event)" />
-        </template>
-    </vs-table>
-</template>
-```
-
-`item-key` accepts a dot path (`'metadata.id'`), same as a column `key`. Items with no value at that path fall back to object identity.
-
 ### Server Mode
 
 ```html
@@ -158,7 +140,6 @@ Set `item-key` to a field that uniquely identifies an item so the row identity c
 | `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`         | `'md'`   | Table size — controls cell padding/font and propagates to the search input, pagination (incl. page-size select), and selection checkboxes |
 | `draggable`       | `boolean`                                      | `false`  | Enables drag-and-drop row reordering        |
 | `expandable`      | `boolean \| (item, index?, items?) => boolean` | `true`   | Enables expandable rows. Expand UI is rendered only when an `expand` slot is provided |
-| `itemKey`         | `string`                                       | `''`     | Item field (dot path) that identifies a row. Falls back to object identity when unset or empty |
 | `loading`         | `boolean`                                      | `false`  | Shows loading state and disables search     |
 | `page`            | `number`                                       |          | Current page index (0-based), v-model       |
 | `pageSize`        | `number`                                       | `10`     | Number of rows per page, v-model            |
