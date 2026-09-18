@@ -71,6 +71,54 @@
 
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsTable2</h3>
+        <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
+            <vs-table2
+                :columns="tableColumns"
+                :items="tableItems"
+                item-key="name"
+                :size="tableSize"
+                :primary="tablePropsSelected.includes('primary')"
+                :selectable="tablePropsSelected.includes('selectable')"
+                :responsive="tablePropsSelected.includes('responsive')"
+                :sticky-header="tablePropsSelected.includes('stickyHeader')"
+                :loading="tablePropsSelected.includes('loading')"
+                :draggable="tablePropsSelected.includes('draggable')"
+                :expandable="tablePropsSelected.includes('expandable')"
+                :search="tablePropsSelected.includes('search')"
+                :pagination="tablePropsSelected.includes('pagination')"
+                :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
+                v-model:selected-items="table2SelectedItems"
+                v-model:paged-items="table2PagedItems"
+                v-model:total-items="table2TotalItems"
+            >
+                <template #item-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
+                <template #item-score="{ item, value }">
+                    <div v-if="tablePropsSelected.includes('customSlot')">
+                        <vs-input v-model="item.score" />
+                    </div>
+                    <vs-button v-else>{{ value }}</vs-button>
+                </template>
+                <template #expand="{ item }">
+                    <div
+                        class="flex items-center justify-center p-3 text-sm text-gray-600 dark:text-gray-400"
+                        :style="{ height: '200px' }"
+                    >
+                        {{ item.name }} — Score: {{ item.score }}
+                    </div>
+                </template>
+            </vs-table2>
+        </div>
+
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Paged: {{ table2PagedItems.length }} / Total: {{ table2TotalItems.length }}
+            <template v-if="table2SelectedItems.length">
+                / Selected: {{ table2SelectedItems.map((i) => i.name).join(', ') }}
+            </template>
+        </p>
+
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsImage</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -236,7 +284,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import type { UIState } from '@/declaration';
-import type { VsTableColumnDef, VsTableItem } from '@/components';
+import type { VsTable2Item, VsTableColumnDef, VsTableItem } from '@/components';
 
 export default defineComponent({
     name: 'DataDisplay',
@@ -286,6 +334,9 @@ export default defineComponent({
             { value: 'xl', label: 'xl' },
         ];
         const tableSelectedItems = ref<VsTableItem[]>([]);
+        const table2SelectedItems = ref<VsTable2Item[]>([]);
+        const table2PagedItems = ref<VsTable2Item[]>([]);
+        const table2TotalItems = ref<VsTable2Item[]>([]);
         const tableColumns = computed<VsTableColumnDef[]>(() => {
             return [
                 { key: 'name', label: 'Name', sortable: true },
@@ -343,6 +394,9 @@ export default defineComponent({
             increaseProgress,
             decreaseProgress,
             tableSelectedItems,
+            table2SelectedItems,
+            table2PagedItems,
+            table2TotalItems,
             tablePropsOptions,
             tablePropsSelected,
             tableSize,

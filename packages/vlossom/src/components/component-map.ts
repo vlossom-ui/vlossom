@@ -53,6 +53,7 @@ import VsSkeleton from './vs-skeleton/VsSkeleton.vue';
 import VsSteps from './vs-steps/VsSteps.vue';
 import VsSwitch from './vs-switch/VsSwitch.vue';
 import VsTable from './vs-table/VsTable.vue';
+import VsTable2 from './vs-table2/VsTable2.vue';
 import VsTabs from './vs-tabs/VsTabs.vue';
 import VsTextarea from './vs-textarea/VsTextarea.vue';
 import VsTextWrap from './vs-text-wrap/VsTextWrap.vue';
@@ -111,6 +112,7 @@ export const VlossomComponents = {
     VsSteps,
     VsSwitch,
     VsTable,
+    VsTable2,
     VsTabs,
     VsTextarea,
     VsTextWrap,
