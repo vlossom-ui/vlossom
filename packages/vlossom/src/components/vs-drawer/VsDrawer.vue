@@ -81,8 +81,8 @@ export default defineComponent({
         ...getStyleSetProps<VsDrawerStyleSet>(),
         ...getOverlayProps(),
         ...getLayoutProps(),
-        fixed: { type: Boolean, default: false },
         open: { type: Boolean, default: false },
+        position: { type: String as PropType<'absolute' | 'fixed'> },
         pushContainer: { type: Boolean, default: false },
         placement: {
             type: String as PropType<DrawerPlacement>,
@@ -103,8 +103,8 @@ export default defineComponent({
             dimClose,
             dimmed,
             escClose,
-            fixed,
             open: initialOpen,
+            position,
             layout,
             pushContainer,
             modelValue,
@@ -140,7 +140,7 @@ export default defineComponent({
         const additionalStyleSet: ComputedRef<Partial<VsDrawerStyleSet>> = computed(() => {
             return objectUtil.shake({
                 $size: drawerSize.value,
-                position: fixed.value ? 'fixed' : undefined,
+                position: position.value || undefined,
             });
         });
 
