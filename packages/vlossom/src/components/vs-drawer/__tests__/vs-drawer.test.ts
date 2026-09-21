@@ -196,15 +196,15 @@ describe('VsDrawer', () => {
         });
     });
 
-    describe('fixed props', () => {
-        it('fixed가 true일 때 position: fixed가 적용되어야 한다', () => {
+    describe('position props', () => {
+        it('position이 fixed일 때 position: fixed가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsDrawer, {
                 ...defaultOptions,
                 props: {
                     ...defaultOptions.props,
                     modelValue: true,
-                    fixed: true,
+                    position: 'fixed',
                 },
             });
 
@@ -213,6 +213,21 @@ describe('VsDrawer', () => {
                 '--vs-drawer-size': '20%',
             });
             expect(wrapper.vm.componentStyleSet.position).toBe('fixed');
+        });
+
+        it('position이 absolute일 때 position: absolute가 적용되어야 한다', () => {
+            // given, when
+            const wrapper = mount(VsDrawer, {
+                ...defaultOptions,
+                props: {
+                    ...defaultOptions.props,
+                    modelValue: true,
+                    position: 'absolute',
+                },
+            });
+
+            // then
+            expect(wrapper.vm.componentStyleSet.position).toBe('absolute');
         });
     });
 
