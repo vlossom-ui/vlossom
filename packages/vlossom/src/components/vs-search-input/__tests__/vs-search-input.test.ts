@@ -287,8 +287,11 @@ describe('VsSearchInput', () => {
         it('기본적으로 대소문자를 구분하지 않고 검색해야 한다', async () => {
             // given
             const wrapper = mount(VsSearchInput);
+            await nextTick(); // isInitialized 설정 대기
             const input = wrapper.find('input');
             await input.setValue('TEST');
+            vi.advanceTimersByTime(400);
+            await nextTick();
 
             // when
             const result1 = wrapper.vm.match('test text');
@@ -308,14 +311,14 @@ describe('VsSearchInput', () => {
                     useCaseSensitive: true,
                 },
             });
+            await nextTick(); // isInitialized 설정 대기
             const input = wrapper.find('input');
             await input.setValue('TEST');
-            await nextTick();
-
-            // when - 토글 활성화
             wrapper.vm.isCaseSensitiveOn = true;
+            vi.advanceTimersByTime(400);
             await nextTick();
 
+            // when
             const result1 = wrapper.vm.match('test text');
             const result2 = wrapper.vm.match('TEST TEXT');
             const result3 = wrapper.vm.match('Test Text');
@@ -333,14 +336,14 @@ describe('VsSearchInput', () => {
                     useRegex: true,
                 },
             });
+            await nextTick(); // isInitialized 설정 대기
             const input = wrapper.find('input');
             await input.setValue('^test');
-            await nextTick();
-
-            // when - 토글 활성화
             wrapper.vm.isRegexOn = true;
+            vi.advanceTimersByTime(400);
             await nextTick();
 
+            // when
             const result1 = wrapper.vm.match('test text');
             const result2 = wrapper.vm.match('other test');
             const result3 = wrapper.vm.match('text test');
@@ -358,20 +361,108 @@ describe('VsSearchInput', () => {
                     useRegex: true,
                 },
             });
+            await nextTick(); // isInitialized 설정 대기
             const input = wrapper.find('input');
             await input.setValue('[');
-            await nextTick();
-
-            // when - 토글 활성화
             wrapper.vm.isRegexOn = true;
+            vi.advanceTimersByTime(400);
             await nextTick();
 
+            // when
             const result1 = wrapper.vm.match('[');
             const result2 = wrapper.vm.match('test text');
 
             // then
             expect(result1).toBe(true);
             expect(result2).toBe(false);
+        });
+    });
+
+    describe('match 메서드 - debounce', () => {
+        it('입력 직후(debounce 전)에는 match가 이전 검색어 기준으로 동작해야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            const input = wrapper.find('input');
+
+            // when - 입력했지만 debounce 아직 미완료
+            await input.setValue('apple');
+
+            // then - appliedSearchText가 아직 '' 이므로 모두 true
+            expect(wrapper.vm.match('apple')).toBe(true);
+            expect(wrapper.vm.match('banana')).toBe(true);
+        });
+
+        it('400ms 후 match가 새 검색어로 동작해야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            await nextTick(); // isInitialized 설정 대기
+            const input = wrapper.find('input');
+
+            // when
+            await input.setValue('apple');
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.match('apple')).toBe(true);
+            expect(wrapper.vm.match('banana')).toBe(false);
+        });
+
+        it('빠르게 연속 입력 시 마지막 값으로만 match가 적용되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            const input = wrapper.find('input');
+
+            // when - 300ms 안에 연속 입력
+            await input.setValue('a');
+            vi.advanceTimersByTime(100);
+            await input.setValue('ap');
+            vi.advanceTimersByTime(100);
+            await input.setValue('app');
+            vi.advanceTimersByTime(100);
+
+            // then - debounce 미완료 상태: 아직 필터 미적용
+            expect(wrapper.vm.match('banana')).toBe(true);
+
+            // 마지막 입력으로부터 400ms 후
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            expect(wrapper.vm.match('apple')).toBe(true);
+            expect(wrapper.vm.match('banana')).toBe(false);
+        });
+
+        it('clear 시 debounce 없이 즉시 match가 초기화되어야 한다', async () => {
+            // given - 검색어가 적용된 상태
+            const wrapper = mount(VsSearchInput);
+            await nextTick(); // isInitialized 설정 대기
+            const input = wrapper.find('input');
+            await input.setValue('apple');
+            vi.advanceTimersByTime(400);
+            await nextTick();
+            expect(wrapper.vm.match('banana')).toBe(false);
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then - 즉시 전체 일치
+            expect(wrapper.vm.match('banana')).toBe(true);
+        });
+
+        it('modelValue prop 변경 시 debounce 없이 즉시 match에 반영되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: { modelValue: '' },
+            });
+
+            // when
+            await wrapper.setProps({ modelValue: 'apple' });
+            await nextTick();
+
+            // then - timer advance 없이 즉시 적용
+            expect(wrapper.vm.match('apple')).toBe(true);
+            expect(wrapper.vm.match('banana')).toBe(false);
         });
     });
 });

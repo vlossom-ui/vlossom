@@ -214,7 +214,8 @@ describe('VsSelect', () => {
             expect(document.querySelector('.vs-select-empty')).toBeNull();
 
             // when
-            (wrapper.vm.searchInputRef as any).searchText = 'Melon';
+            (wrapper.vm.searchInputRef as any).onInputChange('Melon');
+            vi.advanceTimersByTime(400);
             await nextTick();
 
             // then
