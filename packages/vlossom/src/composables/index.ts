@@ -21,3 +21,4 @@ export * from './state-class/state-class-composable';
 export * from './string-modifier/string-modifier-composable';
 export * from './style-set/style-set-composable';
 export * from './value-matcher/value-matcher-composable';
+export * from './virtual-scroll/virtual-scroll-composable';

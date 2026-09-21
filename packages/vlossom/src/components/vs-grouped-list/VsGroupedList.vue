@@ -17,7 +17,7 @@
             class="vs-grouped-list-list"
             ref="listRef"
             tabindex="-1"
-            :style="isVirtual ? { position: 'relative', height: `${virtualizer.getTotalSize()}px` } : {}"
+            :style="isVirtual ? { position: 'relative', height: `${totalSize}px` } : {}"
         >
             <!-- Virtual scroll mode -->
             <template v-if="isVirtual">
@@ -25,7 +25,7 @@
                     v-for="vRow in virtualRowData"
                     :key="vRow.key"
                     :data-index="vRow.index"
-                    :ref="(el) => virtualizer.measureElement(el as HTMLElement)"
+                    :ref="(el) => measureElement(el as HTMLElement)"
                     :style="{
                         position: 'absolute',
                         top: 0,
@@ -103,15 +103,14 @@ import {
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
 import { getGroupByProps, getStyleSetProps } from '@/props';
-import { useStyleSet, useMessages } from '@/composables';
+import { useStyleSet, useMessages, useVirtualScroll, VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
 import type { VsGroupedListGroup, VsGroupedListStyleSet, GroupRow, ItemRow, Row, VirtualRow } from './types';
 
 import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 import VsGroupedListGroupRow from './VsGroupedListGroupRow.vue';
 import VsGroupedListItemRow from './VsGroupedListItemRow.vue';
-import { VIRTUAL_ITEM_THRESHOLD } from './constants';
-import { useVirtualScroll } from './virtual-scroll-composable';
+import { ESTIMATED_ITEM_SIZE } from './constants';
 
 const componentName = VsComponent.VsGroupedList;
 export default defineComponent({
@@ -139,7 +138,7 @@ export default defineComponent({
             styleSet,
         );
 
-        const isVirtual = computed(() => items.value.length >= VIRTUAL_ITEM_THRESHOLD);
+        const isVirtual = computed(() => items.value.length >= VIRTUAL_SCROLL_THRESHOLD);
 
         const groupedItems: ComputedRef<VsGroupedListGroup[]> = computed(() => {
             // groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환
@@ -231,24 +230,24 @@ export default defineComponent({
             return rows;
         });
 
-        const { virtualizer, scrollMargin, scrollIntoView, scrollToIndex } = useVirtualScroll(
-            isVirtual,
-            computed(() => flatRows.value.length),
-            () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
-            () => listRef.value,
-        );
+        const { virtualItems, totalSize, measureElement, scrollIntoView, scrollToIndex } = useVirtualScroll({
+            enabled: isVirtual,
+            count: computed(() => flatRows.value.length),
+            estimateSize: ESTIMATED_ITEM_SIZE,
+            getScrollContainer: () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
+            getContentElement: () => listRef.value,
+        });
 
         const virtualRowData = computed<VirtualRow[]>(() => {
             if (!isVirtual.value) {
                 return [];
             }
-            return virtualizer.value.getVirtualItems().reduce<VirtualRow[]>((acc, vRow) => {
+            return virtualItems.value.reduce<VirtualRow[]>((acc, vRow) => {
                 const row = flatRows.value[vRow.index];
                 if (!row) {
                     return acc;
                 }
-                // vRow.start는 스크롤 컨테이너 기준이라, 리스트 내부 좌표로 되돌린다
-                const positioned = { key: String(vRow.key), index: vRow.index, start: vRow.start - scrollMargin.value };
+                const positioned = { key: vRow.key, index: vRow.index, start: vRow.start };
                 acc.push({ ...positioned, ...row } as VirtualRow);
                 return acc;
             }, []);
@@ -298,7 +297,8 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             isVirtual,
-            virtualizer,
+            totalSize,
+            measureElement,
             virtualRowData,
             flatRows,
             groupedItems,

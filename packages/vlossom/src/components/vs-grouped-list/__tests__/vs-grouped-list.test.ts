@@ -2,10 +2,9 @@ import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } fr
 import { nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { OptionItem } from '@/declaration';
-import { useOptionList } from '@/composables';
+import { useOptionList, VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
 import { domUtil } from '@/utils';
 import type { VsGroupedListGroup } from './../types';
-import { VIRTUAL_ITEM_THRESHOLD } from './../constants';
 import VsGroupedList from './../VsGroupedList.vue';
 
 function createOptionItems(rawItems: any[]): OptionItem[] {
@@ -420,7 +419,7 @@ describe('vs-grouped-list', () => {
             host.className = 'scrollable-ancestor';
             document.body.appendChild(host);
             manyItems = createOptionItems(
-                Array.from({ length: VIRTUAL_ITEM_THRESHOLD }, (_, i) => ({ id: i + 1, name: `아이템 ${i + 1}` })),
+                Array.from({ length: VIRTUAL_SCROLL_THRESHOLD }, (_, i) => ({ id: i + 1, name: `아이템 ${i + 1}` })),
             );
         });
 
