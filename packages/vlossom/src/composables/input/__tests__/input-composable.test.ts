@@ -98,6 +98,26 @@ describe('useInput composable', () => {
             expect(wrapper.emitted().change?.[0]).toEqual(['test']);
         });
 
+        it('modelValue prop이 변경되면 inputValue가 동기화되고 change 이벤트가 발생하지만 update:modelValue echo는 발생하지 않는다', async () => {
+            // given
+            const wrapper = mount(TestInputComponent, {
+                props: {
+                    modelValue: '',
+                    'onUpdate:modelValue': (v: string) => wrapper.setProps({ modelValue: v }),
+                },
+            });
+
+            // when
+            await nextTick();
+            await wrapper.setProps({ modelValue: 'test' });
+
+            // then
+            expect(inputValue.value).toBe('test');
+            expect(wrapper.emitted('change')).toHaveLength(1);
+            expect(wrapper.emitted('change')?.[0]).toEqual(['test']);
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+        });
+
         it('mount 시점에 onMounted callback을 실행한다', () => {
             // given
             // when
