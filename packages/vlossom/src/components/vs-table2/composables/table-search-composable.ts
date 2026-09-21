@@ -5,32 +5,6 @@ import type { VsTable2ColumnDef, VsTable2Item, VsTable2SearchOptions } from './.
 import { TABLE_SEARCH_OPTIONS } from './../constants';
 import { getCellValue } from './table-column-composable';
 
-// plain object뿐 아니라 클래스 인스턴스도 순회해야 하므로 isObject 대신 typeof로 판별
-function toSearchText(value: unknown, seen = new WeakSet<object>()): string {
-    if (value === null || value === undefined || typeof value === 'function') {
-        return '';
-    }
-    if (typeof value !== 'object') {
-        return String(value);
-    }
-    if (value instanceof Date) {
-        return value.toISOString();
-    }
-    if (ArrayBuffer.isView(value)) {
-        return '';
-    }
-    if (seen.has(value)) {
-        return '';
-    }
-    seen.add(value);
-
-    const values = value instanceof Map || value instanceof Set ? [...value.values()] : Object.values(value as object);
-    return values
-        .map((child) => toSearchText(child, seen))
-        .filter(Boolean)
-        .join(' ');
-}
-
 export function useTableSearchComposable(
     searchInputRef: TemplateRef<VsSearchInputRef>,
     rawSearch: Ref<boolean | VsTable2SearchOptions>,
@@ -75,5 +49,31 @@ export function useTableSearchComposable(
         return items.value.filter((item) => searchInput.match(getItemSearchText(item)));
     });
 
+    // plain object뿐 아니라 클래스 인스턴스도 순회해야 하므로 isObject 대신 typeof로 판별
+    function toSearchText(value: unknown, seen = new WeakSet<object>()): string {
+        if (value === null || value === undefined || typeof value === 'function') {
+            return '';
+        }
+        if (typeof value !== 'object') {
+            return String(value);
+        }
+        if (value instanceof Date) {
+            return value.toISOString();
+        }
+        if (ArrayBuffer.isView(value)) {
+            return '';
+        }
+        if (seen.has(value)) {
+            return '';
+        }
+        seen.add(value);
+
+        const values =
+            value instanceof Map || value instanceof Set ? [...value.values()] : Object.values(value as object);
+        return values
+            .map((child) => toSearchText(child, seen))
+            .filter(Boolean)
+            .join(' ');
+    }
     return { searchOptions, searchedItems };
 }

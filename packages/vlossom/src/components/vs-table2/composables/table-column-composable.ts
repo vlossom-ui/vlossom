@@ -7,25 +7,6 @@ export function getCellValue(item: VsTable2Item, column: VsTable2ColumnDef): unk
     return column.transform ? column.transform(value, item) : value;
 }
 
-function getGridColumnWidth(column: VsTable2ColumnDef): string {
-    const { width, minWidth, maxWidth } = column;
-    if (width) {
-        return stringUtil.toStringSize(width);
-    }
-    const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
-    const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
-    if (min && max) {
-        return `minmax(${min}, ${max})`;
-    }
-    if (min) {
-        return `minmax(${min}, 1fr)`;
-    }
-    if (max) {
-        return `minmax(auto, ${max})`;
-    }
-    return 'minmax(max-content, 1fr)';
-}
-
 export function useTableColumnComposable(
     rawColumns: Ref<VsTable2ColumnDef[] | string[] | undefined>,
     items: Ref<VsTable2Item[]>,
@@ -58,6 +39,25 @@ export function useTableColumnComposable(
         }
         return tracks.join(' ');
     });
+
+    function getGridColumnWidth(column: VsTable2ColumnDef): string {
+        const { width, minWidth, maxWidth } = column;
+        if (width) {
+            return stringUtil.toStringSize(width);
+        }
+        const min = minWidth ? stringUtil.toStringSize(minWidth) : null;
+        const max = maxWidth ? stringUtil.toStringSize(maxWidth) : null;
+        if (min && max) {
+            return `minmax(${min}, ${max})`;
+        }
+        if (min) {
+            return `minmax(${min}, 1fr)`;
+        }
+        if (max) {
+            return `minmax(auto, ${max})`;
+        }
+        return 'minmax(max-content, 1fr)';
+    }
 
     return { columns, gridTemplateColumns };
 }
