@@ -65,7 +65,9 @@ export function useInput<T = unknown>(ctx: any, inputParams: InputComponentParam
                 return;
             }
 
-            emit('update:modelValue', value);
+            if (!isInputValueEqual(value, modelValue.value)) {
+                emit('update:modelValue', value);
+            }
             if (callbacks.onChange) {
                 callbacks.onChange(value, oldValue);
             }

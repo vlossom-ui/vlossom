@@ -31,8 +31,7 @@ describe('vs-file-drop', () => {
             // then
             const emittedEvents = wrapper.emitted('update:modelValue');
             expect(emittedEvents).toBeTruthy();
-            expect(emittedEvents?.length).toBe(2);
-            expect(emittedEvents?.[1][0]).toEqual([]);
+            expect(emittedEvents?.[0][0]).toEqual([]);
 
             const clearEvents = wrapper.emitted('clear');
             expect(clearEvents).toBeTruthy();
@@ -318,7 +317,7 @@ describe('vs-file-drop', () => {
             // then
             const emittedEvents = wrapper.emitted('update:modelValue');
             expect(emittedEvents).toBeTruthy();
-            expect(emittedEvents?.[1][0]).toEqual([]);
+            expect(emittedEvents?.[0][0]).toEqual([]);
 
             const clearEvents = wrapper.emitted('clear');
             expect(clearEvents).toBeTruthy();
@@ -739,7 +738,12 @@ describe('vs-file-drop', () => {
         it('파일을 삭제한 후 같은 파일을 다시 업로드할 수 있다', async () => {
             // given
             const file = createFile('test.png');
-            const wrapper = mount(VsFileDrop, { props: { modelValue: [] } });
+            const wrapper = mount(VsFileDrop, {
+                props: {
+                    modelValue: [],
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
 
             // 첫 번째 파일 업로드
             const mockInput = { files: [file], value: 'test.png' };
