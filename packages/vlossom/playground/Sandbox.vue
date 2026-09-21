@@ -135,8 +135,124 @@
 
             <vs-divider style-set="playground" />
 
-            <!-- 4. 서버 모드 -->
-            <h3 class="mb-2 font-semibold">4. 서버 모드</h3>
+            <!-- 4. 중첩 테이블 + :model-value/@update:model-value -->
+            <h3 class="mb-2 font-semibold">4. 테이블 안의 테이블 안의 input (:model-value / @update:model-value)</h3>
+            <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">
+                3번과 같은 구조를 v-model 대신 :model-value로 읽고 @update:model-value로 씁니다. 두 테이블이 같은
+                데이터를 쓰므로 한쪽에서 바꾼 값이 다른 쪽에도 그대로 보입니다.
+            </p>
+            <div class="mb-3 flex flex-wrap items-center gap-3">
+                <vs-checkbox
+                    v-model="immutableMemberUpdate"
+                    check-label="member를 새 인스턴스로 교체 (immutable)"
+                    no-messages
+                />
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                    member는 Member 클래스 인스턴스입니다. 켜면 한 글자 입력할 때마다 with()로 새 인스턴스를 만들어
+                    교체하므로, 안쪽 테이블에 item-key가 없으면 행이 새로 그려지고 입력 포커스가 풀립니다.
+                </span>
+            </div>
+            <div class="grid gap-6 xl:grid-cols-2">
+                <div>
+                    <p class="mb-2 text-sm font-semibold">VsTable2</p>
+                    <vs-table2 :columns="teamColumns" :items="teams" :size="tableSize" search>
+                        <template #item-name="{ item: team }">
+                            <vs-input
+                                :model-value="team.name"
+                                :size="tableSize"
+                                no-label
+                                no-messages
+                                no-clear
+                                @update:model-value="(value) => (team.name = value)"
+                            />
+                        </template>
+                        <template #expand="{ item: team }">
+                            <div class="p-4">
+                                <vs-table2 :columns="memberColumns" :items="team.members" :size="tableSize">
+                                    <template #item-hours="{ item: member }">
+                                        <vs-input
+                                            :model-value="member.hours"
+                                            type="number"
+                                            :size="tableSize"
+                                            no-label
+                                            no-messages
+                                            no-clear
+                                            @update:model-value="
+                                                (value) => setMemberField(team, member, 'hours', value)
+                                            "
+                                        />
+                                    </template>
+                                    <template #item-memo="{ item: member }">
+                                        <vs-input
+                                            :model-value="member.memo"
+                                            :size="tableSize"
+                                            placeholder="메모를 입력하세요"
+                                            no-label
+                                            no-messages
+                                            @update:model-value="(value) => setMemberField(team, member, 'memo', value)"
+                                        />
+                                    </template>
+                                </vs-table2>
+                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    합계 {{ getTotalHours(team) }}시간
+                                </p>
+                            </div>
+                        </template>
+                    </vs-table2>
+                </div>
+                <div>
+                    <p class="mb-2 text-sm font-semibold">VsTable (v1)</p>
+                    <vs-table :columns="teamColumns" :items="teams" :size="tableSize" search>
+                        <template #body-name="{ item: team }">
+                            <vs-input
+                                :model-value="team.name"
+                                :size="tableSize"
+                                no-label
+                                no-messages
+                                no-clear
+                                @update:model-value="(value) => (team.name = value)"
+                            />
+                        </template>
+                        <template #expand="{ item: team }">
+                            <div class="p-4">
+                                <vs-table :columns="memberColumns" :items="team.members" :size="tableSize">
+                                    <template #body-hours="{ item: member }">
+                                        <vs-input
+                                            :model-value="member.hours"
+                                            type="number"
+                                            :size="tableSize"
+                                            no-label
+                                            no-messages
+                                            no-clear
+                                            @update:model-value="
+                                                (value) => setMemberField(team, member, 'hours', value)
+                                            "
+                                        />
+                                    </template>
+                                    <template #body-memo="{ item: member }">
+                                        <vs-input
+                                            :model-value="member.memo"
+                                            :size="tableSize"
+                                            placeholder="메모를 입력하세요"
+                                            no-label
+                                            no-messages
+                                            @update:model-value="(value) => setMemberField(team, member, 'memo', value)"
+                                        />
+                                    </template>
+                                </vs-table>
+                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    합계 {{ getTotalHours(team) }}시간
+                                </p>
+                            </div>
+                        </template>
+                    </vs-table>
+                </div>
+            </div>
+
+            <vs-divider style-set="playground" />
+
+            <!-- 5. 서버 모드 -->
+            <h3 class="mb-2 font-semibold">5. 서버 모드</h3>
             <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">
                 paginate 이벤트로 받은 페이지만 조회해 렌더링합니다. 클라이언트 페이징은 하지 않습니다.
             </p>
@@ -155,8 +271,8 @@
 
             <vs-divider style-set="playground" />
 
-            <!-- 5. 상태별 표시 -->
-            <h3 class="mb-2 font-semibold">5. 빈 상태 · 로딩 · UI State · 반응형</h3>
+            <!-- 6. 상태별 표시 -->
+            <h3 class="mb-2 font-semibold">6. 빈 상태 · 로딩 · UI State · 반응형</h3>
             <div class="mb-3 flex flex-wrap items-center gap-2">
                 <vs-checkbox-set
                     v-model="stateFlags"
@@ -194,6 +310,19 @@ import type { VsTable2Cell, VsTable2ColumnDef, VsTable2Item } from '@/components
 
 const ROLES = ['Admin', 'Editor', 'Viewer'];
 const SERVER_TOTAL = 320;
+
+class Member {
+    constructor(
+        public id: string,
+        public name: string,
+        public hours: number,
+        public memo: string,
+    ) {}
+
+    with(key: 'hours' | 'memo', value: any): Member {
+        return Object.assign(new Member(this.id, this.name, this.hours, this.memo), { [key]: value });
+    }
+}
 
 function createUsers(count: number, startId = 1): VsTable2Item[] {
     return Array.from({ length: count }, (_, index) => {
@@ -324,28 +453,35 @@ export default defineComponent({
                 id: 'team-1',
                 name: 'Design',
                 lead: 'Alice',
-                members: [
-                    { id: 'm-1', name: 'Bob', hours: 8, memo: '' },
-                    { id: 'm-2', name: 'Carol', hours: 6, memo: '리서치 진행 중' },
-                ],
+                members: [new Member('m-1', 'Bob', 8, ''), new Member('m-2', 'Carol', 6, '리서치 진행 중')],
             },
             {
                 id: 'team-2',
                 name: 'Engineering',
                 lead: 'Dave',
                 members: [
-                    { id: 'm-3', name: 'Erin', hours: 7, memo: '' },
-                    { id: 'm-4', name: 'Frank', hours: 5, memo: '' },
-                    { id: 'm-5', name: 'Grace', hours: 9, memo: '배포 담당' },
+                    new Member('m-3', 'Erin', 7, ''),
+                    new Member('m-4', 'Frank', 5, ''),
+                    new Member('m-5', 'Grace', 9, '배포 담당'),
                 ],
             },
         ]);
+
+        const immutableMemberUpdate = ref(false);
+
+        function setMemberField(team: VsTable2Item, member: Member, key: 'hours' | 'memo', value: any) {
+            if (!immutableMemberUpdate.value) {
+                Object.assign(member, { [key]: value });
+                return;
+            }
+            team.members = team.members.map((target: Member) => (target === member ? target.with(key, value) : target));
+        }
 
         function getTotalHours(team: VsTable2Item): number {
             return team.members.reduce((total: number, member: VsTable2Item) => total + Number(member.hours || 0), 0);
         }
 
-        // 4. 서버 모드
+        // 5. 서버 모드
         const serverItems = ref<VsTable2Item[]>([]);
         const serverPage = ref(0);
         const serverPageSize = ref(10);
@@ -361,7 +497,7 @@ export default defineComponent({
             }, 400);
         }
 
-        // 5. 상태별 표시
+        // 6. 상태별 표시
         const stateFlagOptions = [
             { value: 'empty', label: 'Empty' },
             { value: 'loading', label: 'Loading' },
@@ -414,6 +550,8 @@ export default defineComponent({
             teamColumns,
             memberColumns,
             teams,
+            immutableMemberUpdate,
+            setMemberField,
             getTotalHours,
             serverItems,
             serverPage,
