@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { ref } from 'vue';
+import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest';
+import { nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { OptionItem } from '@/declaration';
 import { useOptionList } from '@/composables';
+import { domUtil } from '@/utils';
 import type { VsGroupedListGroup } from './../types';
+import { VIRTUAL_ITEM_THRESHOLD } from './../constants';
 import VsGroupedList from './../VsGroupedList.vue';
 
 function createOptionItems(rawItems: any[]): OptionItem[] {
@@ -404,6 +406,93 @@ describe('vs-grouped-list', () => {
             // when, then
             const targetId = defaultItems[0].id;
             expect(() => wrapper.vm.scrollToItem(targetId, 50)).not.toThrow();
+        });
+    });
+
+    describe('scroll target', () => {
+        let windowScrollTo: MockInstance;
+        let host: HTMLElement;
+        let manyItems: OptionItem[];
+
+        beforeEach(() => {
+            windowScrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+            host = document.createElement('div');
+            host.className = 'scrollable-ancestor';
+            document.body.appendChild(host);
+            manyItems = createOptionItems(
+                Array.from({ length: VIRTUAL_ITEM_THRESHOLD }, (_, i) => ({ id: i + 1, name: `아이템 ${i + 1}` })),
+            );
+        });
+
+        afterEach(() => {
+            host.remove();
+        });
+
+        // 어떤 엘리먼트가 스크롤 컨테이너인지만 바꿔가며 검증한다 (jsdom에는 레이아웃이 없다)
+        function mountWithScroller(items: OptionItem[], scrollableSelector: string | null) {
+            vi.spyOn(domUtil, 'isScrollableY').mockImplementation(
+                (element) => scrollableSelector !== null && element.matches(scrollableSelector),
+            );
+            return mount(VsGroupedList, { props: { items }, attachTo: host });
+        }
+
+        it('내부 스크롤 컨테이너가 스크롤 가능하면 내부 컨테이너를 스크롤한다', async () => {
+            // given
+            const wrapper = mountWithScroller(manyItems, '.vs-inner-scroll-body');
+            await nextTick();
+            const body = wrapper.find('.vs-inner-scroll-body').element;
+            const bodyScrollTo = vi.spyOn(body, 'scrollTo');
+
+            // when
+            wrapper.vm.scrollToItem(manyItems[50].id);
+
+            // then
+            expect(bodyScrollTo).toHaveBeenCalled();
+            expect(windowScrollTo).not.toHaveBeenCalled();
+            wrapper.unmount();
+        });
+
+        it('내부 스크롤 컨테이너가 스크롤되지 않으면 window를 스크롤한다', async () => {
+            // given
+            const wrapper = mountWithScroller(manyItems, null);
+            await nextTick();
+            const bodyScrollTo = vi.spyOn(wrapper.find('.vs-inner-scroll-body').element, 'scrollTo');
+
+            // when
+            wrapper.vm.scrollToItem(manyItems[50].id);
+
+            // then
+            expect(windowScrollTo).toHaveBeenCalled();
+            expect(bodyScrollTo).not.toHaveBeenCalled();
+            wrapper.unmount();
+        });
+
+        it('스크롤 가능한 조상이 있으면 조상을 스크롤한다', async () => {
+            // given
+            const ancestorScrollTo = vi.spyOn(host, 'scrollTo');
+            const wrapper = mountWithScroller(manyItems, '.scrollable-ancestor');
+            await nextTick();
+
+            // when
+            wrapper.vm.scrollToItem(manyItems[50].id);
+
+            // then
+            expect(ancestorScrollTo).toHaveBeenCalled();
+            expect(windowScrollTo).not.toHaveBeenCalled();
+            wrapper.unmount();
+        });
+
+        it('virtual scroll이 아닐 때도 스크롤 컨테이너를 따라간다', () => {
+            // given
+            const wrapper = mountWithScroller(defaultItems, null);
+
+            // when
+            wrapper.vm.scrollToItem(defaultItems[2].id);
+
+            // then
+            expect(wrapper.vm.isVirtual).toBe(false);
+            expect(windowScrollTo).toHaveBeenCalled();
+            wrapper.unmount();
         });
     });
 });

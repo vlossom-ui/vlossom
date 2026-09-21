@@ -13,6 +13,7 @@ A scrollable list component that renders items with optional grouping, automatic
 - Scrollable via the embedded `VsInnerScroll` component
 - Automatically switches to virtual scroll when `items.length >= 100` — no configuration needed
 - Virtual scroll measures each item's actual DOM height, so variable-height items are supported
+- Virtual scroll follows whichever element actually scrolls: the list itself, a scrollable ancestor, or the window
 - Full slot customization for group headers and individual items
 - Exposes `scrollToItem` and `hasScroll` methods for programmatic control
 
@@ -93,6 +94,33 @@ function scrollToSelected(id) {
 </script>
 ```
 
+### Scroll Container
+
+The list detects which element actually scrolls and virtualizes against it. No prop is needed.
+
+| Layout | Scroll container |
+| ------ | ---------------- |
+| The list is given a bounded height | The list's own inner container |
+| An ancestor has a bounded height and `overflow: auto \| scroll` | That ancestor |
+| Neither | The window (page scroll) |
+
+`scrollToItem` scrolls whichever container is in use, so it works the same in all three layouts.
+
+```html
+<template>
+    <!-- page scroll: the list grows to its full height and the page scrolls -->
+    <vs-grouped-list :items="largeItems" />
+
+    <!-- ancestor scroll: the outer element scrolls, the list does not -->
+    <div style="height: 400px; overflow: auto;">
+        <h2>Header above the list</h2>
+        <div>
+            <vs-grouped-list :items="largeItems" />
+        </div>
+    </div>
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -150,4 +178,4 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
 | `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id. `offset` shifts the scroll position up by the given pixels (default: `0`). Works in both virtual and regular rendering modes. |
-| `hasScroll` | - | Returns `boolean` — `true` if the list has a scrollbar |
+| `hasScroll` | - | Returns `boolean` — `true` if the list's own inner container has a scrollbar |

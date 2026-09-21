@@ -13,6 +13,7 @@
 - 임베디드 `VsInnerScroll` 컴포넌트를 통한 스크롤 가능
 - `items.length >= 100`이면 가상 스크롤 자동 활성화 — 별도 설정 불필요
 - 가상 스크롤은 각 아이템의 실제 DOM 높이를 측정하므로 가변 높이 아이템을 지원
+- 가상 스크롤은 실제로 스크롤되는 엘리먼트를 따라감: 목록 자체, 스크롤 가능한 조상, 또는 window
 - 그룹 헤더 및 개별 항목에 대한 완전한 슬롯 커스터마이징
 - 프로그래밍 방식 제어를 위한 `scrollToItem` 및 `hasScroll` 메서드 노출
 
@@ -93,6 +94,33 @@ function scrollToSelected(id) {
 </script>
 ```
 
+### 스크롤 컨테이너
+
+실제로 스크롤되는 엘리먼트를 감지해서 그 기준으로 가상 스크롤을 계산합니다. 별도 prop이 필요 없습니다.
+
+| 레이아웃 | 스크롤 컨테이너 |
+| -------- | --------------- |
+| 목록에 높이가 지정된 경우 | 목록 자체의 내부 컨테이너 |
+| 조상에 높이와 `overflow: auto \| scroll`이 있는 경우 | 해당 조상 |
+| 둘 다 없는 경우 | window (페이지 스크롤) |
+
+`scrollToItem`도 현재 사용 중인 컨테이너를 스크롤하므로 세 경우 모두 동일하게 동작합니다.
+
+```html
+<template>
+    <!-- 페이지 스크롤: 목록이 전체 높이로 늘어나고 페이지가 스크롤됩니다 -->
+    <vs-grouped-list :items="largeItems" />
+
+    <!-- 조상 스크롤: 바깥 엘리먼트가 스크롤되고 목록은 스크롤되지 않습니다 -->
+    <div style="height: 400px; overflow: auto;">
+        <h2>목록 위쪽 콘텐츠</h2>
+        <div>
+            <vs-grouped-list :items="largeItems" />
+        </div>
+    </div>
+</template>
+```
+
 ## Props
 
 | Prop | 타입 | 기본값 | 필수 | 설명 |
@@ -150,4 +178,4 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | 메서드 | 파라미터 | 설명 |
 | ------ | -------- | ---- |
 | `scrollToItem` | `id: string, offset?: number` | 주어진 id를 가진 항목으로 목록 스크롤. `offset`만큼 스크롤 위치를 위로 당겨 여백을 확보 (기본값: `0`). 가상/일반 렌더링 모드 모두 동작. |
-| `hasScroll` | - | `boolean` 반환 — 목록에 스크롤바가 있으면 `true` |
+| `hasScroll` | - | `boolean` 반환 — 목록 자체의 내부 컨테이너에 스크롤바가 있으면 `true` |

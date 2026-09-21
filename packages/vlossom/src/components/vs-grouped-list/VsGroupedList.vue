@@ -25,7 +25,7 @@
                     v-for="vRow in virtualRowData"
                     :key="vRow.key"
                     :data-index="vRow.index"
-                    :ref="(el) => virtualizer.measureElement(el as Element)"
+                    :ref="(el) => virtualizer.measureElement(el as HTMLElement)"
                     :style="{
                         position: 'absolute',
                         top: 0,
@@ -94,14 +94,12 @@
 import {
     computed,
     defineComponent,
-    nextTick,
     toRefs,
     useTemplateRef,
     type ComputedRef,
     type PropType,
     type TemplateRef,
 } from 'vue';
-import { useVirtualizer } from '@tanstack/vue-virtual';
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
 import { getGroupByProps, getStyleSetProps } from '@/props';
@@ -112,7 +110,8 @@ import type { VsInnerScrollRef } from '@/components/vs-inner-scroll/types';
 import VsInnerScroll from '@/components/vs-inner-scroll/VsInnerScroll.vue';
 import VsGroupedListGroupRow from './VsGroupedListGroupRow.vue';
 import VsGroupedListItemRow from './VsGroupedListItemRow.vue';
-import { VIRTUAL_ITEM_THRESHOLD, ESTIMATED_ITEM_SIZE, VIRTUAL_OVERSCAN } from './constants';
+import { VIRTUAL_ITEM_THRESHOLD } from './constants';
+import { useVirtualScroll } from './virtual-scroll-composable';
 
 const componentName = VsComponent.VsGroupedList;
 export default defineComponent({
@@ -232,13 +231,11 @@ export default defineComponent({
             return rows;
         });
 
-        const virtualizer = useVirtualizer(
-            computed(() => ({
-                count: flatRows.value.length,
-                getScrollElement: () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
-                estimateSize: () => ESTIMATED_ITEM_SIZE,
-                overscan: VIRTUAL_OVERSCAN,
-            })),
+        const { virtualizer, scrollMargin, scrollIntoView, scrollToIndex } = useVirtualScroll(
+            isVirtual,
+            computed(() => flatRows.value.length),
+            () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
+            () => listRef.value,
         );
 
         const virtualRowData = computed<VirtualRow[]>(() => {
@@ -250,7 +247,8 @@ export default defineComponent({
                 if (!row) {
                     return acc;
                 }
-                const positioned = { key: String(vRow.key), index: vRow.index, start: vRow.start };
+                // vRow.start는 스크롤 컨테이너 기준이라, 리스트 내부 좌표로 되돌린다
+                const positioned = { key: String(vRow.key), index: vRow.index, start: vRow.start - scrollMargin.value };
                 acc.push({ ...positioned, ...row } as VirtualRow);
                 return acc;
             }, []);
@@ -270,22 +268,12 @@ export default defineComponent({
                 if (targetIndex === -1) {
                     return;
                 }
-                virtualizer.value.scrollToIndex(targetIndex, { align: 'start' });
-                if (offset !== 0) {
-                    nextTick(() => {
-                        requestAnimationFrame(() => {
-                            const scrollContainer = innerScrollRef.value?.bodyRef as HTMLElement | null;
-                            if (scrollContainer) {
-                                scrollContainer.scrollTop = Math.max(0, scrollContainer.scrollTop - offset);
-                            }
-                        });
-                    });
-                }
+                scrollToIndex(targetIndex, offset);
                 return;
             }
 
             const targetItem = items.value.find((i) => i.id === id);
-            if (!targetItem || !listRef.value || !innerScrollRef.value) {
+            if (!targetItem || !listRef.value) {
                 return;
             }
 
@@ -294,18 +282,7 @@ export default defineComponent({
                 return;
             }
 
-            nextTick(() => {
-                requestAnimationFrame(() => {
-                    const scrollContainer = innerScrollRef.value?.bodyRef as HTMLElement | null;
-                    if (!scrollContainer || !targetElement) {
-                        return;
-                    }
-                    const containerRect = scrollContainer.getBoundingClientRect();
-                    const targetRect = targetElement.getBoundingClientRect();
-                    const targetScrollTop = scrollContainer.scrollTop + targetRect.top - containerRect.top - offset;
-                    scrollContainer.scrollTo({ top: targetScrollTop, behavior: 'auto' });
-                });
-            });
+            scrollIntoView(targetElement, offset);
         }
 
         function hasScroll() {
