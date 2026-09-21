@@ -113,6 +113,7 @@ export default defineComponent({
         const { optionMessages } = useMessages();
 
         const searchText: Ref<string> = ref(modelValue.value);
+        const debouncedText: Ref<string> = ref(modelValue.value);
         const inputRef: TemplateRef<VsInputRef> = useTemplateRef('inputRef');
         const isCaseSensitiveOn = ref(caseSensitive.value);
         const isRegexOn = ref(regex.value);
@@ -138,25 +139,25 @@ export default defineComponent({
         );
 
         const debouncedEmitSearch = functionUtil.debounce({ delay: 400 }, (value: string) => {
+            debouncedText.value = value;
             emit('search', value);
             emit('update:modelValue', value);
         });
 
         function onInputChange(value: string | number | null) {
             const stringValue = value === null || value === undefined ? '' : String(value);
-            searchText.value = stringValue;
             debouncedEmitSearch(stringValue);
         }
 
         function matchByText(text: string): boolean {
-            const searchTextValue = isCaseSensitiveOn.value ? searchText.value : searchText.value.toLowerCase();
+            const searchTextValue = isCaseSensitiveOn.value ? debouncedText.value : debouncedText.value.toLowerCase();
             const targetText = isCaseSensitiveOn.value ? text : text.toLowerCase();
             return targetText.includes(searchTextValue);
         }
 
         function matchByRegex(text: string): boolean {
             try {
-                const pattern = searchText.value;
+                const pattern = debouncedText.value;
                 const flags = isCaseSensitiveOn.value ? 'g' : 'gi';
 
                 const regexPattern = new RegExp(pattern, flags);
@@ -168,7 +169,7 @@ export default defineComponent({
         }
 
         function match(text: string): boolean {
-            if (!searchText.value) {
+            if (!debouncedText.value) {
                 return true;
             }
 
@@ -193,6 +194,7 @@ export default defineComponent({
         function clear() {
             inputRef.value?.clear();
             searchText.value = '';
+            debouncedText.value = '';
         }
 
         watch([isCaseSensitiveOn, isRegexOn], () => {
@@ -202,6 +204,7 @@ export default defineComponent({
 
         watch(modelValue, (value) => {
             searchText.value = value;
+            debouncedText.value = value;
         });
 
         watch(caseSensitive, (value) => {
