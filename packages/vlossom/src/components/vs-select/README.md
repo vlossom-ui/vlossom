@@ -14,7 +14,8 @@ A dropdown select component supporting single and multiple selection with search
 - Select-all checkbox for multiple mode
 - Closable chip display for selected values in multiple mode
 - Built-in validation support (required, min, max)
-- Keyboard navigation within the dropdown list
+- Keyboard navigation over the full option list, including options that virtual scroll has not rendered yet
+- Exposed as an ARIA combobox: `aria-expanded`, `aria-controls`, and `aria-activedescendant` follow the dropdown and the focused option
 - Customizable option, selected option, and chip styles
 
 ## Basic Usage

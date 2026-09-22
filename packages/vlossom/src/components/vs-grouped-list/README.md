@@ -15,6 +15,7 @@ A scrollable list component that renders items with optional grouping, automatic
 - Virtual scroll measures each item's actual DOM height, so variable-height items are supported
 - Virtual scroll follows whichever element actually scrolls: the list itself, a scrollable ancestor, or the window
 - Full slot customization for group headers and individual items
+- Items are exposed as `role="listitem"` with `aria-posinset` / `aria-setsize`, so the full list size is announced even when virtualized
 - Exposes `scrollToItem` and `hasScroll` methods for programmatic control
 
 ## Basic Usage

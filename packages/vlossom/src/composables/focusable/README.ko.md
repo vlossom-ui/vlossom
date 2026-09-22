@@ -4,39 +4,47 @@
 
 **Available Version**: 2.0.0+
 
-`[data-focusable]` 요소를 쿼리하고 스로틀된 마우스 이동 지원으로 포커스 인덱스를 업데이트하여 래퍼 요소 내에서 키보드 접근성 있는 포커스 추적을 관리합니다.
+포커스 가능한 키 목록을 기준으로 키보드 포커스를 추적하며, 스로틀된 마우스 이동을 지원합니다. 포커스 위치를 DOM이 아니라 키 목록으로 세기 때문에, 목록의 일부만 렌더되어 있어도 정확하게 동작합니다.
 
 ## Feature
 
-- `[data-focusable]` 요소 목록 내에서 인덱스로 현재 포커스된 항목을 추적합니다
-- 인덱스 변경 시 `vs-focusable-active` CSS 클래스를 자동으로 적용하거나 제거합니다
+- 포커스된 항목을 키로 추적하므로, 가상 스크롤 목록에서 아직 DOM에 없는 항목에도 포커스를 옮길 수 있습니다
+- `getFocusableElement`로 필요할 때 키에 해당하는 DOM 엘리먼트를 찾습니다
 - 마우스 이동 이벤트를 스로틀링(25ms 간격)하여 성능 오버헤드를 최소화합니다
 - 라이프사이클 제어를 위한 `addMouseMoveListener` / `removeMouseMoveListener`를 제공합니다
-- 외부에서의 실수로 인한 변경을 방지하기 위해 `readonly` ref를 반환합니다
 
 ## Basic Usage
+
+포커스 가능한 엘리먼트는 각자의 키를 `data-focusable`에 담습니다. 순서와 개수의 기준은 키 목록입니다.
 
 ```html
 <template>
     <ul ref="listRef">
         <li
-            v-for="(item, i) in items"
-            :key="i"
-            data-focusable
-            @keydown.arrow-down.prevent="updateFocusIndex(i + 1)"
-            @keydown.arrow-up.prevent="updateFocusIndex(i - 1)"
+            v-for="item in items"
+            :key="item.id"
+            :data-focusable="item.id"
+            :class="{ 'my-active': currentFocusableKey === item.id }"
         >
-            {{ item }}
+            {{ item.label }}
         </li>
     </ul>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
-import { useFocusable } from '@/composables';
+import { computed, onMounted, onBeforeUnmount, ref, useTemplateRef } from 'vue';
+import { useFocusable } from 'vlossom';
 
+const items = ref([]);
 const listRef = useTemplateRef('listRef');
-const { focusIndex, updateFocusIndex, addMouseMoveListener, removeMouseMoveListener } = useFocusable(listRef);
+const focusableKeys = computed(() => items.value.map((item) => item.id));
+
+const { focusIndex, currentFocusableKey, updateFocusIndex, addMouseMoveListener, removeMouseMoveListener } =
+    useFocusable(listRef, focusableKeys);
+
+function moveDown() {
+    updateFocusIndex(focusIndex.value + 1);
+}
 
 onMounted(addMouseMoveListener);
 onBeforeUnmount(removeMouseMoveListener);
@@ -45,37 +53,38 @@ onBeforeUnmount(removeMouseMoveListener);
 
 ## Args
 
-| 인자             | 타입                       | 기본값 | 필수 | 설명                                                               |
-| ---------------- | -------------------------- | ------ | ---- | ------------------------------------------------------------------ |
-| `wrapperElement` | `TemplateRef<HTMLElement>` | —      | Yes  | `[data-focusable]` 자식 요소를 포함하는 컨테이너 요소를 가리키는 템플릿 ref. |
+| 인자 | 타입 | 기본값 | 필수 | 설명 |
+| ---- | ---- | ------ | ---- | ---- |
+| `wrapperElement` | `TemplateRef<HTMLElement>` | | O | `[data-focusable]` 엘리먼트들을 담고 있는 컨테이너 엘리먼트의 템플릿 ref |
+| `focusableKeys` | `Ref<string[]>` | | O | 포커스 순서대로 나열한 전체 키 목록. 렌더되지 않은 키도 포함합니다 |
 
 ## Types
 
-추가로 내보내는 타입이 없습니다.
+추가로 export되는 타입은 없습니다.
 
 ## Return Refs
 
-| RefType                   | 타입                                     | 설명                                                                    |
-| ------------------------- | ---------------------------------------- | ----------------------------------------------------------------------- |
-| `focusIndex`              | `DeepReadonly<Ref<number>>`              | 현재 포커스 인덱스. `-1`은 아무것도 포커스되지 않음을 의미합니다.        |
-| `currentFocusableElement` | `DeepReadonly<Ref<HTMLElement \| null>>` | 현재 `vs-focusable-active` 클래스를 가진 DOM 요소.                      |
+| RefType | 타입 | 설명 |
+| ---- | ---- | ---- |
+| `focusIndex` | `DeepReadonly<Ref<number>>` | `focusableKeys` 안에서의 현재 포커스 위치. `-1`은 포커스 없음 |
+| `currentFocusableKey` | `ComputedRef<string \| null>` | `focusIndex` 위치의 키. 포커스가 없으면 `null` |
 
 ## Return Methods
 
-| 메서드                    | 파라미터        | 설명                                                                                    |
-| ------------------------- | --------------- | --------------------------------------------------------------------------------------- |
-| `updateFocusIndex`        | `index: number` | `focusIndex`를 주어진 값으로 설정하며, 유효한 범위로 클램핑됩니다. `-1`은 포커스를 해제합니다. |
-| `getFocusableElements`    | —               | 래퍼 내의 모든 `[data-focusable]` 요소를 배열로 반환합니다.                             |
-| `addMouseMoveListener`    | —               | 래퍼 요소에 스로틀된 `mousemove` 리스너를 연결합니다.                                   |
-| `removeMouseMoveListener` | —               | 래퍼 요소에서 스로틀된 `mousemove` 리스너를 제거합니다.                                 |
+| 메서드 | 파라미터 | 설명 |
+| ------ | -------- | ---- |
+| `updateFocusIndex` | `index: number` | `focusIndex`를 설정합니다. 마지막 키로 clamp되고, 음수를 주면 포커스를 해제합니다 |
+| `getFocusableElement` | `key: string` | `data-focusable`이 해당 키인 엘리먼트를 반환합니다. 렌더되지 않았으면 `null` |
+| `addMouseMoveListener` | - | 래퍼 엘리먼트에 스로틀된 `mousemove` 리스너를 등록합니다 |
+| `removeMouseMoveListener` | - | 래퍼 엘리먼트에서 스로틀된 `mousemove` 리스너를 제거합니다 |
 
 ## Hooks
 
-| Hook    | 설명                                                                          |
-| ------- | ----------------------------------------------------------------------------- |
-| `watch` | `focusIndex`를 감시하여 대상 요소의 `vs-focusable-active` 클래스를 업데이트합니다. |
+등록하는 라이프사이클 훅은 없습니다. `addMouseMoveListener`와 `removeMouseMoveListener`를 직접 호출하세요.
 
 ## Cautions
 
-- 추적되려면 요소에 `data-focusable` 속성이 있어야 합니다. 이 속성이 없는 요소는 이 컴포저블에서 인식되지 않습니다.
-- 이벤트 리스너 누수를 방지하기 위해 래퍼 마운트 후 `addMouseMoveListener`를 호출하고, 언마운트 전에 `removeMouseMoveListener`를 호출하세요.
+- 포커스 가능한 엘리먼트는 `data-focusable`에 자신의 키를 넣어야 합니다. 키가 없는 엘리먼트는 이 composable에 보이지 않고, `focusableKeys`에 없는 키는 hover 시 무시됩니다.
+- 키는 래퍼 안에서 유일해야 합니다. 그렇지 않으면 `getFocusableElement`가 다른 엘리먼트를 찾습니다.
+- 포커스 스타일 적용은 호출하는 쪽의 몫입니다. DOM을 직접 조작하지 말고 `currentFocusableKey`로 클래스를 바인딩하면, 가상 스크롤 목록에서 다시 렌더될 때도 스타일이 유지됩니다.
+- 이벤트 리스너 누수를 막기 위해 래퍼가 마운트된 뒤 `addMouseMoveListener`를, 언마운트 전에 `removeMouseMoveListener`를 호출하세요.

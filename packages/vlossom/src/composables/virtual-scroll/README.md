@@ -76,7 +76,7 @@ Spacers — for layouts where items cannot leave the normal flow, such as a tabl
 | ---- | ---- | ------- | -------- | ----------- |
 | `enabled` | `Ref<boolean>` | | Yes | When `false`, nothing is virtualized and `virtualItems` is empty |
 | `count` | `Ref<number>` | | Yes | Total number of items |
-| `estimateSize` | `MaybeRef<number>` | | Yes | Estimated item size in pixels, used until an item is measured |
+| `estimateSize` | `number` | | Yes | Estimated item size in pixels, used until an item is measured |
 | `getScrollContainer` | `() => HTMLElement \| null` | | Yes | Where scroll container resolution starts. Resolution walks up from this element |
 | `getContentElement` | `() => HTMLElement \| null` | | Yes | The element items are laid out in. Its position inside the scroll container becomes the offset baseline |
 | `overscan` | `number` | `5` | | Extra items rendered above and below the visible range |

@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-grouped-list-group" :style="styleSet">
+    <div class="vs-grouped-list-group" :style="styleSet" role="presentation">
         <slot :group="row.name" :group-index="row.groupIndex" :items="row.items">
             <div class="vs-grouped-list-group-content">
                 <span>{{ row.name || 'Ungrouped' }}</span>

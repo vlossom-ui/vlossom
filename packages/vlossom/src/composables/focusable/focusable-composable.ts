@@ -1,24 +1,24 @@
-import { readonly, ref, watch, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
+import { computed, readonly, ref, type ComputedRef, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
 import { functionUtil } from '@/utils';
 
-export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
+export function useFocusable(
+    wrapperElement: TemplateRef<HTMLElement>,
+    focusableKeys: Ref<string[]>,
+): {
     focusIndex: DeepReadonly<Ref<number>>;
-    currentFocusableElement: DeepReadonly<Ref<HTMLElement | null>>;
+    currentFocusableKey: ComputedRef<string | null>;
     updateFocusIndex: (index: number) => void;
-    getFocusableElements: () => HTMLElement[];
+    getFocusableElement: (key: string) => HTMLElement | null;
     addMouseMoveListener: () => void;
     removeMouseMoveListener: () => void;
 } {
     const focusIndex = ref(-1);
-    const currentFocusableElement = ref<HTMLElement | null>(null);
 
-    function getFocusableElements() {
-        const focusableElements = wrapperElement.value?.querySelectorAll<HTMLElement>('[data-focusable]');
-        if (!focusableElements) {
-            return [];
-        }
+    // 가상 스크롤을 쓰면 DOM에는 보이는 구간만 있으므로, 포커스 위치는 DOM 순서가 아니라 키 목록으로 센다
+    const currentFocusableKey = computed(() => focusableKeys.value[focusIndex.value] ?? null);
 
-        return Array.from(focusableElements);
+    function getFocusableElement(key: string): HTMLElement | null {
+        return wrapperElement.value?.querySelector<HTMLElement>(`[data-focusable="${key}"]`) ?? null;
     }
 
     function updateFocusIndex(index: number) {
@@ -27,29 +27,17 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
             return;
         }
 
-        const focusableElements = getFocusableElements();
-        if (index >= focusableElements.length) {
-            focusIndex.value = focusableElements.length - 1;
-            return;
-        }
-
-        focusIndex.value = index;
+        focusIndex.value = Math.min(index, focusableKeys.value.length - 1);
     }
 
     function trackMouseMove(event: MouseEvent) {
-        if (!wrapperElement.value) {
+        const targetElement = (event.target as HTMLElement).closest<HTMLElement>('[data-focusable]');
+        const key = targetElement?.dataset['focusable'];
+        if (!key || key === currentFocusableKey.value) {
             return;
         }
 
-        const targetElement: HTMLElement | null = (event.target as HTMLElement).closest('[data-focusable]');
-
-        if (!targetElement || targetElement === currentFocusableElement.value) {
-            return;
-        }
-
-        const focusableElements = getFocusableElements();
-
-        const targetIndex = focusableElements.indexOf(targetElement);
+        const targetIndex = focusableKeys.value.indexOf(key);
         if (targetIndex === -1) {
             return;
         }
@@ -67,39 +55,11 @@ export function useFocusable(wrapperElement: TemplateRef<HTMLElement>): {
         wrapperElement.value?.removeEventListener('mousemove', throttledTrackMouseMove);
     }
 
-    watch(focusIndex, () => {
-        if (!wrapperElement.value) {
-            return;
-        }
-
-        if (currentFocusableElement.value) {
-            currentFocusableElement.value.classList.remove('vs-focusable-active');
-        }
-
-        if (focusIndex.value === -1) {
-            currentFocusableElement.value = null;
-            return;
-        }
-
-        const focusableElements = getFocusableElements();
-        if (focusableElements.length === 0) {
-            return;
-        }
-
-        const targetElement = focusableElements[focusIndex.value];
-        if (!targetElement) {
-            return;
-        }
-
-        targetElement.classList.add('vs-focusable-active');
-        currentFocusableElement.value = targetElement;
-    });
-
     return {
         focusIndex: readonly(focusIndex),
-        currentFocusableElement: readonly(currentFocusableElement),
+        currentFocusableKey,
         updateFocusIndex,
-        getFocusableElements,
+        getFocusableElement,
         addMouseMoveListener,
         removeMouseMoveListener,
     };

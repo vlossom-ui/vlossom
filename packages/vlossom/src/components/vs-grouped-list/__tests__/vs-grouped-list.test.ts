@@ -443,6 +443,53 @@ describe('vs-grouped-list', () => {
         });
     });
 
+    describe('aria', () => {
+        it('아이템마다 전체 개수와 위치를 알려준다', () => {
+            // given, when
+            const wrapper = mount(VsGroupedList, {
+                props: { items: defaultItems, groupBy: (item: any) => item.category },
+            });
+
+            // then
+            expect(wrapper.find('.vs-grouped-list-list').attributes('role')).toBe('list');
+            const items = wrapper.findAll('.vs-grouped-list-item');
+            expect(items).toHaveLength(defaultItems.length);
+            items.forEach((item, index) => {
+                expect(item.attributes('role')).toBe('listitem');
+                expect(item.attributes('aria-posinset')).toBe(String(index + 1));
+                expect(item.attributes('aria-setsize')).toBe(String(defaultItems.length));
+            });
+        });
+
+        it('가상 스크롤로 일부만 렌더해도 전체 개수를 알려준다', async () => {
+            // given
+            const offsetHeight = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(ROW_HEIGHT);
+            const manyItems = createOptionItems(
+                Array.from({ length: 1000 }, (_, i) => ({ id: i + 1, name: `아이템 ${i + 1}` })),
+            );
+
+            // when
+            const wrapper = mount(VsGroupedList, { props: { items: manyItems }, attachTo: document.body });
+            await nextTick();
+
+            // then
+            const items = wrapper.findAll('.vs-grouped-list-item');
+            expect(items.length).toBeLessThan(manyItems.length);
+            expect(items[0].attributes('aria-setsize')).toBe(String(manyItems.length));
+            expect(items[0].attributes('aria-posinset')).toBe('1');
+            offsetHeight.mockRestore();
+            wrapper.unmount();
+        });
+
+        it('가상 스크롤 위치용 래퍼는 접근성 트리에서 제외된다', () => {
+            // given, when
+            const wrapper = mount(VsGroupedList, { props: { items: defaultItems } });
+
+            // then
+            expect(wrapper.find('.vs-grouped-list-row').attributes('role')).toBe('presentation');
+        });
+    });
+
     describe('scroll target', () => {
         let windowScrollTo: MockInstance;
         let host: HTMLElement;

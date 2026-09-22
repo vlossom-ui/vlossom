@@ -17,12 +17,14 @@
             :class="['vs-grouped-list-list', { 'vs-grouped-list-virtual': isVirtual }]"
             ref="listRef"
             tabindex="-1"
+            role="list"
             :style="isVirtual ? { height: `${totalSize}px` } : undefined"
         >
             <div
                 v-for="row in renderedRows"
                 :key="row.key"
                 class="vs-grouped-list-row"
+                role="presentation"
                 :data-index="row.index"
                 :ref="measureRow"
                 :style="isVirtual ? { transform: `translateY(${row.start}px)` } : undefined"
@@ -36,6 +38,7 @@
                     v-else
                     :row="row"
                     :styleSet="componentStyleSet.$item"
+                    :item-count="items.length"
                     @click="emitClickItem(row)"
                 >
                     <template #default="slotProps">
@@ -176,6 +179,7 @@ export default defineComponent({
         // Group headers + items를 하나의 평탄화 배열로 (virtual/regular 공용)
         const flatRows = computed<Row[]>(() => {
             const rows: Row[] = [];
+            let itemPosition = 0;
             groupedItems.value.forEach((group, groupIndex) => {
                 if (groupBy.value != null) {
                     const groupRow: GroupRow = {
@@ -187,7 +191,8 @@ export default defineComponent({
                     rows.push(groupRow);
                 }
                 group.items.forEach((item, itemIndex) => {
-                    const itemRow: ItemRow = { type: 'item', item, itemIndex, group, groupIndex };
+                    itemPosition += 1;
+                    const itemRow: ItemRow = { type: 'item', item, itemIndex, group, groupIndex, itemPosition };
                     rows.push(itemRow);
                 });
             });

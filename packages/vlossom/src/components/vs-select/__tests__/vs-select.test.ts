@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { nextTick } from 'vue';
+import { VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
 import VsSelect from './../VsSelect.vue';
 
 describe('VsSelect', () => {
@@ -909,6 +910,176 @@ describe('VsSelect', () => {
             document.dispatchEvent(outsideEvent);
             expect(outsideEvent.defaultPrevented).toBe(true);
 
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+    });
+
+    describe('키보드 포커스 이동', () => {
+        // 가상 스크롤이 켜지는 크기. DOM에는 보이는 구간만 남는다
+        const manyOptions = Array.from({ length: VIRTUAL_SCROLL_THRESHOLD * 2 }, (_, i) => `option-${i}`);
+
+        function pressKey(code: string) {
+            document.dispatchEvent(new KeyboardEvent('keydown', { code, bubbles: true, cancelable: true }));
+        }
+
+        // 옵션 목록은 vs-floating이 teleport하므로 wrapper가 아니라 document에서 찾는다
+        function renderedFocusables() {
+            return Array.from(document.querySelectorAll<HTMLElement>('[data-focusable]'));
+        }
+
+        async function openSelect(options: string[]) {
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options, modelValue: null },
+            });
+
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            return wrapper;
+        }
+
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it('End를 누르면 렌더된 마지막이 아니라 전체 마지막 옵션으로 이동한다', async () => {
+            // given
+            const wrapper = await openSelect(manyOptions);
+            const renderedCount = renderedFocusables().length;
+            expect(renderedCount).toBeGreaterThan(0);
+            expect(renderedCount).toBeLessThan(manyOptions.length);
+
+            // when
+            pressKey('End');
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.currentFocusableKey).toBe(wrapper.vm.filteredOptions[manyOptions.length - 1].id);
+            wrapper.unmount();
+        });
+
+        it('렌더 구간을 넘어서도 ArrowDown으로 계속 이동할 수 있다', async () => {
+            // given
+            const wrapper = await openSelect(manyOptions);
+            const pressCount = renderedFocusables().length + 5;
+
+            // when: 렌더된 개수보다 많이 눌러 구간 밖으로 나간다
+            for (let i = 0; i < pressCount; i++) {
+                pressKey('ArrowDown');
+                await nextTick();
+            }
+
+            // then: -1에서 시작하므로 pressCount번 누르면 pressCount - 1번째 옵션에 있다
+            expect(wrapper.vm.currentFocusableKey).toBe(wrapper.vm.filteredOptions[pressCount - 1].id);
+            wrapper.unmount();
+        });
+
+        it('포커스된 옵션이 렌더되어 있으면 vs-focusable-active 클래스를 갖는다', async () => {
+            // given
+            const wrapper = await openSelect(basicOptions);
+
+            // when
+            pressKey('ArrowDown');
+            await nextTick();
+
+            // then
+            const active = Array.from(document.querySelectorAll('.vs-focusable-active'));
+            expect(active).toHaveLength(1);
+            expect(active[0].getAttribute('data-focusable')).toBe(wrapper.vm.currentFocusableKey);
+            wrapper.unmount();
+        });
+
+        it('Enter를 누르면 포커스된 옵션이 선택된다', async () => {
+            // given
+            const wrapper = await openSelect(basicOptions);
+
+            // when
+            pressKey('ArrowDown');
+            await nextTick();
+            pressKey('ArrowDown');
+            await nextTick();
+            pressKey('Enter');
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.inputValue).toBe(basicOptions[1]);
+            wrapper.unmount();
+        });
+
+        it('disabled 옵션은 포커스 대상에서 제외된다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: {
+                    options: objectOptions,
+                    optionLabel: 'name',
+                    modelValue: null,
+                    optionsDisabled: (option: any) => option.disabled,
+                },
+            });
+            await nextTick();
+
+            // when
+            const disabledOption = wrapper.vm.filteredOptions.find((option: any) => option.disabled);
+
+            // then
+            expect(disabledOption).toBeDefined();
+            pressKey('End');
+            await nextTick();
+            expect(wrapper.vm.currentFocusableKey).not.toBe(disabledOption?.id);
+            wrapper.unmount();
+        });
+    });
+
+    describe('aria', () => {
+        it('트리거가 combobox로 노출되고 열림 상태를 알려준다', async () => {
+            // given
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, { attachTo: document.body, props: { options: basicOptions } });
+            const trigger = wrapper.find('.vs-select-trigger');
+
+            // then
+            expect(trigger.attributes('role')).toBe('combobox');
+            expect(trigger.attributes('aria-expanded')).toBe('false');
+            expect(trigger.attributes('aria-controls')).toBe(wrapper.vm.optionsId);
+
+            // when
+            wrapper.vm.openOptions();
+            await nextTick();
+
+            // then
+            expect(wrapper.find('.vs-select-trigger').attributes('aria-expanded')).toBe('true');
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+
+        it('포커스된 옵션을 aria-activedescendant로 알려준다', async () => {
+            // given
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, { attachTo: document.body, props: { options: basicOptions } });
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            // when
+            document.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowDown', bubbles: true }));
+            await nextTick();
+
+            // then
+            const activeId = wrapper.find('.vs-select-trigger').attributes('aria-activedescendant');
+            expect(activeId).toBe(wrapper.vm.currentFocusableKey);
+            expect(document.getElementById(activeId as string)).not.toBeNull();
             wrapper.unmount();
             vi.useRealTimers();
         });

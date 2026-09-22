@@ -3,6 +3,10 @@
         :id="row.item.id"
         :class="['vs-grouped-list-item', { 'vs-disabled': row.item.disabled }]"
         :style="styleSet"
+        role="listitem"
+        :aria-posinset="row.itemPosition"
+        :aria-setsize="itemCount"
+        :aria-disabled="row.item.disabled || undefined"
         @click.stop="$emit('click')"
     >
         <slot v-bind="row.item" :group="row.group" :group-index="row.groupIndex" :item-index="row.itemIndex">
@@ -22,6 +26,7 @@ export default defineComponent({
     props: {
         styleSet: { type: Object as PropType<CSSProperties> },
         row: { type: Object as PropType<ItemRow>, required: true },
+        itemCount: { type: Number, default: 0 },
     },
     emits: ['click'],
 });

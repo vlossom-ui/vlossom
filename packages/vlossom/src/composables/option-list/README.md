@@ -9,7 +9,7 @@ Transforms a raw options array into a normalized, computed list with stable ids,
 ## Feature
 
 - Computes a normalized option list reactively from the raw `options` array
-- Generates a stable `id` for each option using a hash of its label and index
+- Generates a stable, unique `id` for each option: object identity for objects, a value hash for primitives
 - Extracts `label` and `value` via `useOptionLabelValue`
 - Evaluates per-item or global `disabled` state into each option object
 - The returned `computedOptions` array is ready to use in list rendering
@@ -58,7 +58,7 @@ const { computedOptions } = useOptionList(options, optionLabel, optionValue, dis
 
 ```typescript
 interface ComputedOption {
-    id: string;      // stable hash based on label + index
+    id: string;      // unique per option (see Cautions)
     item: any;       // original option object
     label: string;   // extracted display label
     value: any;      // extracted value
@@ -84,3 +84,7 @@ interface ComputedOption {
 | ---- | ----------- |
 
 ## Cautions
+
+- Ids are unique within one computed list, even when the same primitive value appears twice or two values hash to the same string: repeats get an occurrence suffix (`vs-1a2b-1`). Use `id` for keys and DOM ids, and `value` to compare against the model.
+- Ids are derived from the current `options` array, so they change when the array changes. Do not persist them.
+- Duplicate option values cannot be told apart by the model, so selecting either one resolves to the first. Prefer distinct values.

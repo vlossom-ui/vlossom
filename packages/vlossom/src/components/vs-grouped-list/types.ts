@@ -43,6 +43,8 @@ export interface ItemRow {
     itemIndex: number;
     group: VsGroupedListGroup;
     groupIndex: number;
+    // 가상 스크롤에서는 렌더된 아이템만 DOM에 있으므로 aria로 전체 위치를 알려준다 (1-based)
+    itemPosition: number;
 }
 
 export type Row = GroupRow | ItemRow;

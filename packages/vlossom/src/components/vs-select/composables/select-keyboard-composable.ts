@@ -1,15 +1,17 @@
-import { computed, nextTick, type ComputedRef, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
+import { computed, type ComputedRef, type Ref, type TemplateRef } from 'vue';
 import type { OptionItem } from '@/declaration';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
+import { FOCUSABLE_SEARCH, FOCUSABLE_SELECT_ALL } from './../constants';
 
 interface UseSelectKeyboardParams {
     isOpen: Ref<boolean>;
     focusIndex: Ref<number>;
-    currentFocusableElement: DeepReadonly<Ref<HTMLElement | null>>;
+    focusableKeys: ComputedRef<string[]>;
+    currentFocusableKey: ComputedRef<string | null>;
     searchInputRef: TemplateRef<VsSearchInputRef>;
     filteredOptions: ComputedRef<OptionItem[]>;
     updateFocusIndex: (index: number) => void;
-    getFocusableElements: () => HTMLElement[];
+    scrollFocusIntoView: (key: string) => void;
     openOptions: () => void;
     closeOptions: () => void;
     focusTrigger: () => void;
@@ -20,56 +22,58 @@ interface UseSelectKeyboardParams {
 export function useSelectKeyboard({
     isOpen,
     focusIndex,
-    currentFocusableElement,
+    focusableKeys,
+    currentFocusableKey,
     searchInputRef,
     filteredOptions,
     updateFocusIndex,
-    getFocusableElements,
+    scrollFocusIntoView,
     openOptions,
     closeOptions,
     focusTrigger,
     toggleSelectAll,
     selectOptionItem,
 }: UseSelectKeyboardParams) {
-    function getCurrentFocusableRole() {
-        return currentFocusableElement.value?.dataset['role'];
-    }
-
     function isSearchFocused() {
-        return getCurrentFocusableRole() === 'search';
+        return currentFocusableKey.value === FOCUSABLE_SEARCH;
     }
 
     function moveSelectFocus(index: number) {
         updateFocusIndex(index);
 
-        nextTick(() => {
-            currentFocusableElement.value?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            if (isSearchFocused()) {
-                searchInputRef.value?.focus();
-            } else {
-                searchInputRef.value?.blur();
-            }
-        });
+        const key = currentFocusableKey.value;
+        if (key === null) {
+            return;
+        }
+
+        if (key === FOCUSABLE_SEARCH) {
+            searchInputRef.value?.focus();
+            return;
+        }
+
+        searchInputRef.value?.blur();
+        scrollFocusIntoView(key);
     }
 
     function handleSelectionKey() {
-        if (isOpen.value) {
-            const role = getCurrentFocusableRole();
-            if (role === 'search') {
-                return;
-            } else if (role === 'select-all') {
-                toggleSelectAll();
-            } else {
-                const optionId = currentFocusableElement.value?.dataset['id'];
-                if (optionId) {
-                    const optionItem = filteredOptions.value.find((o) => o.id === optionId);
-                    if (optionItem) {
-                        selectOptionItem(optionItem);
-                    }
-                }
-            }
-        } else {
+        if (!isOpen.value) {
             openOptions();
+            return;
+        }
+
+        const key = currentFocusableKey.value;
+        if (key === null || key === FOCUSABLE_SEARCH) {
+            return;
+        }
+
+        if (key === FOCUSABLE_SELECT_ALL) {
+            toggleSelectAll();
+            return;
+        }
+
+        const optionItem = filteredOptions.value.find((option) => option.id === key);
+        if (optionItem) {
+            selectOptionItem(optionItem);
         }
     }
 
@@ -79,8 +83,7 @@ export function useSelectKeyboard({
                 e.preventDefault();
                 e.stopPropagation();
                 if (isOpen.value) {
-                    const nextFocusIndex = Math.max(focusIndex.value - 1, 0);
-                    moveSelectFocus(nextFocusIndex);
+                    moveSelectFocus(Math.max(focusIndex.value - 1, 0));
                 }
             },
             'key-ArrowDown': (e: KeyboardEvent) => {
@@ -111,7 +114,7 @@ export function useSelectKeyboard({
                     e.preventDefault();
                 }
                 e.stopPropagation();
-                moveSelectFocus(getFocusableElements().length - 1);
+                moveSelectFocus(focusableKeys.value.length - 1);
             },
             'key-Enter': (e: KeyboardEvent) => {
                 if (!isSearchFocused()) {

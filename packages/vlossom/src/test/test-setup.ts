@@ -57,6 +57,7 @@ vi.stubGlobal('IntersectionObserver', intersectionObserverMock);
 
 // jsdom does not implement scrolling
 Element.prototype.scrollTo = vi.fn();
+Element.prototype.scrollIntoView = vi.fn();
 window.scrollTo = vi.fn();
 
 const clipboardMock = {

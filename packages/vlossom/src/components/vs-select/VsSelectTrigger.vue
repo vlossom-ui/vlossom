@@ -4,6 +4,12 @@
         :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
         :style="componentInlineStyle"
         tabindex="0"
+        role="combobox"
+        :aria-expanded="isOpen"
+        :aria-controls="optionsId"
+        :aria-activedescendant="isOpen ? activeOptionId : undefined"
+        :aria-disabled="disabled || undefined"
+        :aria-readonly="readonly || undefined"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
         @click="$emit('click')"
@@ -72,6 +78,7 @@ export default defineComponent({
     components: { VsChip, ChevronDownIcon, XIcon },
     props: {
         styleSet: { type: Object as PropType<VsSelectStyleSet> },
+        activeOptionId: { type: String },
         colorScheme: { type: String as PropType<ColorScheme> },
         collapseChips: { type: Boolean, default: false },
         closableChips: { type: Boolean, default: false },
@@ -80,6 +87,7 @@ export default defineComponent({
         isOpen: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
+        optionsId: { type: String, default: '' },
         placeholder: { type: String, default: '' },
         readonly: { type: Boolean, default: false },
         selectedOptions: {

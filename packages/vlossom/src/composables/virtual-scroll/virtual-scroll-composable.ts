@@ -1,15 +1,4 @@
-import {
-    computed,
-    onBeforeUnmount,
-    onMounted,
-    ref,
-    shallowRef,
-    unref,
-    watch,
-    type ComputedRef,
-    type MaybeRef,
-    type Ref,
-} from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch, type ComputedRef, type Ref } from 'vue';
 import {
     elementScroll,
     observeElementOffset,
@@ -37,7 +26,7 @@ export interface VsVirtualItem {
 export interface VirtualScrollOptions {
     enabled: Ref<boolean>;
     count: Ref<number>;
-    estimateSize: MaybeRef<number>;
+    estimateSize: number;
     // 스크롤 컨테이너 탐색의 시작점. 이 엘리먼트부터 조상으로 올라가며 실제 스크롤 주체를 찾는다
     getScrollContainer: () => HTMLElement | null;
     // 아이템이 배치되는 엘리먼트. 스크롤 컨테이너 안에서의 위치가 scrollMargin이 된다
@@ -120,12 +109,11 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
     const virtualizer = useVirtualizer<any, HTMLElement>(
         computed<VirtualizerSetupOptions>(() => {
             const windowScrollMode = isWindowScroll.value;
-            const itemSize = unref(estimateSize);
 
             return {
                 count: count.value,
                 enabled: enabled.value,
-                estimateSize: () => itemSize,
+                estimateSize: () => estimateSize,
                 overscan,
                 scrollMargin: scrollMargin.value,
                 getScrollElement: () => (windowScrollMode ? window : scrollElement.value),

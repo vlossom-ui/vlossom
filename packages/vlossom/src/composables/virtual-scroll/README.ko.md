@@ -76,7 +76,7 @@ const { virtualItems, totalSize, measureElement } = useVirtualScroll({
 | ---- | ---- | ------ | ---- | ---- |
 | `enabled` | `Ref<boolean>` | | O | `false`면 가상 스크롤을 하지 않고 `virtualItems`가 비어 있음 |
 | `count` | `Ref<number>` | | O | 전체 아이템 개수 |
-| `estimateSize` | `MaybeRef<number>` | | O | 아이템의 예상 높이(px). 실제 측정 전까지 사용됨 |
+| `estimateSize` | `number` | | O | 아이템의 예상 높이(px). 실제 측정 전까지 사용됨 |
 | `getScrollContainer` | `() => HTMLElement \| null` | | O | 스크롤 컨테이너 해석의 시작점. 이 엘리먼트부터 조상으로 올라가며 찾음 |
 | `getContentElement` | `() => HTMLElement \| null` | | O | 아이템이 배치되는 엘리먼트. 스크롤 컨테이너 안에서의 위치가 오프셋 기준이 됨 |
 | `overscan` | `number` | `5` | | 보이는 구간 위아래로 추가 렌더할 아이템 수 |

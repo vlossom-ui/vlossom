@@ -26,12 +26,22 @@ export function useOptionList(
     }
 
     const computedOptions = computed(() => {
+        // 같은 원시값이 두 번 오거나 hash가 충돌하면 id가 겹치므로, 등장 횟수를 붙여 항상 유일하게 만든다
+        const idCounts = new Map<string, number>();
+
+        function getUniqueOptionId(option: any): string {
+            const baseId = getOptionId(option);
+            const count = idCounts.get(baseId) ?? 0;
+            idCounts.set(baseId, count + 1);
+            return count === 0 ? baseId : `${baseId}-${count}`;
+        }
+
         return options.value.map((option, index) => {
             const label = getOptionLabel(option);
             const value = getOptionValue(option);
 
             return {
-                id: getOptionId(option),
+                id: getUniqueOptionId(option),
                 item: option,
                 label,
                 value,

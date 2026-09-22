@@ -22,6 +22,8 @@
             <vs-select-trigger
                 ref="triggerRef"
                 :id="triggerId"
+                :options-id="optionsId"
+                :active-option-id="activeOptionId"
                 :style-set="componentStyleSet"
                 :color-scheme="computedColorScheme"
                 :is-empty
@@ -54,14 +56,22 @@
                     @click-item="selectOptionItem"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search" data-focusable data-role="search">
+                        <div
+                            :class="[
+                                'vs-select-search',
+                                { 'vs-focusable-active': currentFocusableKey === FOCUSABLE_SEARCH },
+                            ]"
+                            :data-focusable="FOCUSABLE_SEARCH"
+                        >
                             <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" :size />
                         </div>
                         <div
                             v-if="multiple && selectAll"
-                            class="vs-select-all"
-                            data-focusable
-                            data-role="select-all"
+                            :class="[
+                                'vs-select-all',
+                                { 'vs-focusable-active': currentFocusableKey === FOCUSABLE_SELECT_ALL },
+                            ]"
+                            :data-focusable="FOCUSABLE_SELECT_ALL"
                             @click.prevent.stop="toggleSelectAll"
                         >
                             <vs-checkbox
@@ -84,10 +94,15 @@
                     </template>
                     <template #item="{ item, ...itemSlotProps }">
                         <div
-                            :class="['vs-select-option-wrap', { selected: isSelected(itemSlotProps.id) }]"
+                            :class="[
+                                'vs-select-option-wrap',
+                                {
+                                    selected: isSelected(itemSlotProps.id),
+                                    'vs-focusable-active': currentFocusableKey === itemSlotProps.id,
+                                },
+                            ]"
                             :style="getOptionStyleSet(itemSlotProps.id)"
-                            :data-id="itemSlotProps.id"
-                            :data-focusable="itemSlotProps.disabled ? undefined : true"
+                            :data-focusable="itemSlotProps.disabled ? undefined : itemSlotProps.id"
                         >
                             <slot
                                 name="option"
@@ -162,6 +177,7 @@ import {
 } from '@/composables';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
+import { FOCUSABLE_SEARCH, FOCUSABLE_SELECT_ALL } from './constants';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
 
@@ -239,6 +255,7 @@ export default defineComponent({
             size,
             placeholder,
             focusPlaceholder,
+            selectAll,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -279,14 +296,41 @@ export default defineComponent({
 
         const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
 
+        // 가상 스크롤이 켜지면 DOM에는 보이는 옵션만 남으므로, 포커스 순서는 DOM이 아니라 이 목록이 기준이다
+        const focusableKeys = computed<string[]>(() => [
+            ...(isUsingSearch.value ? [FOCUSABLE_SEARCH] : []),
+            ...(multiple.value && selectAll.value ? [FOCUSABLE_SELECT_ALL] : []),
+            ...filteredOptions.value.filter((option) => !option.disabled).map((option) => option.id),
+        ]);
+
         const {
             focusIndex,
+            currentFocusableKey,
             updateFocusIndex,
-            currentFocusableElement,
-            getFocusableElements,
+            getFocusableElement,
             addMouseMoveListener,
             removeMouseMoveListener,
-        } = useFocusable(optionsListElement);
+        } = useFocusable(optionsListElement, focusableKeys);
+
+        function scrollFocusIntoView(key: string) {
+            const element = getFocusableElement(key);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            // 가상 스크롤에서 아직 렌더되지 않은 옵션은 목록이 직접 스크롤해야 한다
+            optionsListRef.value?.scrollToItem(key);
+        }
+
+        // VsGroupedList가 아이템 엘리먼트 id로 OptionItem.id를 쓰기 때문에 그대로 참조할 수 있다
+        const activeOptionId = computed(() => {
+            const key = currentFocusableKey.value;
+            if (key === null || key === FOCUSABLE_SEARCH || key === FOCUSABLE_SELECT_ALL) {
+                return undefined;
+            }
+            return key;
+        });
 
         const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
 
@@ -394,11 +438,12 @@ export default defineComponent({
         const { computedCallbacks } = useSelectKeyboard({
             isOpen,
             focusIndex,
-            currentFocusableElement,
+            focusableKeys,
+            currentFocusableKey,
             searchInputRef,
             filteredOptions,
             updateFocusIndex,
-            getFocusableElements,
+            scrollFocusIntoView,
             openOptions,
             closeOptions,
             focusTrigger: focus,
@@ -499,10 +544,7 @@ export default defineComponent({
                         searchInputRef.value?.focus();
                         updateFocusIndex(0);
                     } else if (selectedId) {
-                        const targetFocusIndex = getFocusableElements().findIndex(
-                            (element) => element.dataset['id'] === selectedId,
-                        );
-                        updateFocusIndex(targetFocusIndex);
+                        updateFocusIndex(focusableKeys.value.indexOf(selectedId));
                     }
                 });
             }, 50);
@@ -510,7 +552,7 @@ export default defineComponent({
 
         function getOptionStyleSet(optionId: string): CSSProperties {
             const { $focused = {}, $selected = {}, ...base } = componentStyleSet.value.$option ?? {};
-            const isOptionFocused = currentFocusableElement.value?.dataset?.['id'] === optionId;
+            const isOptionFocused = currentFocusableKey.value === optionId;
             if (isSelected(optionId)) {
                 return objectUtil.assign(base, $selected);
             }
@@ -638,6 +680,10 @@ export default defineComponent({
             onBlur,
             focus,
             blur,
+            currentFocusableKey,
+            activeOptionId,
+            FOCUSABLE_SEARCH,
+            FOCUSABLE_SELECT_ALL,
             validate,
             clear,
             reset,
