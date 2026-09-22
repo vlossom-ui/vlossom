@@ -6,7 +6,11 @@ import { useVirtualScroll, type VirtualScrollReturn } from './../virtual-scroll-
 const ESTIMATE_SIZE = 40;
 const COUNT = 1000;
 
-function mountVirtualScroll(contentTop: number, count: Ref<number> = ref(COUNT)) {
+function mountVirtualScroll(
+    contentTop: number,
+    count: Ref<number> = ref(COUNT),
+    getItemKey?: (index: number) => string,
+) {
     let api: VirtualScrollReturn;
 
     const wrapper = mount(
@@ -22,6 +26,7 @@ function mountVirtualScroll(contentTop: number, count: Ref<number> = ref(COUNT))
                     estimateSize: ESTIMATE_SIZE,
                     getScrollContainer: () => containerRef.value,
                     getContentElement: () => contentRef.value,
+                    getItemKey,
                 });
 
                 return { containerRef, contentRef };
@@ -72,6 +77,20 @@ describe('useVirtualScroll', () => {
         const renderedSize = api.virtualItems.value.reduce((sum, item) => sum + item.size, 0);
         expect(api.totalSize.value).toBe(COUNT * ESTIMATE_SIZE);
         expect(api.paddingStart.value + renderedSize + api.paddingEnd.value).toBe(api.totalSize.value);
+        wrapper.unmount();
+    });
+
+    it('getItemKey를 주면 인덱스 대신 그 키를 쓴다', async () => {
+        // given
+        const { wrapper, api } = mountVirtualScroll(0, ref(COUNT), (index) => `row-${index}`);
+
+        // when
+        window.dispatchEvent(new Event('resize'));
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        await nextTick();
+
+        // then
+        expect(api.virtualItems.value[0].key).toBe('row-0');
         wrapper.unmount();
     });
 

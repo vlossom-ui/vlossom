@@ -71,8 +71,6 @@ export { default as VsFooter } from './vs-footer/VsFooter.vue';
 export { default as VsForm } from './vs-form/VsForm.vue';
 export { default as VsGrid } from './vs-grid/VsGrid.vue';
 export { default as VsGroupedList } from './vs-grouped-list/VsGroupedList.vue';
-export { default as VsGroupedListGroupRow } from './vs-grouped-list/VsGroupedListGroupRow.vue';
-export { default as VsGroupedListItemRow } from './vs-grouped-list/VsGroupedListItemRow.vue';
 export { default as VsHeader } from './vs-header/VsHeader.vue';
 export { default as VsImage } from './vs-image/VsImage.vue';
 export { default as VsIndexView } from './vs-index-view/VsIndexView.vue';

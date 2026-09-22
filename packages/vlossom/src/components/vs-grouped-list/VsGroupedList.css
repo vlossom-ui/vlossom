@@ -13,6 +13,14 @@
 
         gap: 0;
 
+        &.vs-grouped-list-virtual {
+            @apply relative block;
+
+            .vs-grouped-list-row {
+                @apply absolute top-0 left-0 w-full;
+            }
+        }
+
         .vs-grouped-list-group-content {
             @apply cursor-default;
 

@@ -7,12 +7,10 @@ import type VsGroupedListItemRow from './VsGroupedListItemRow.vue';
 declare module 'vue' {
     interface GlobalComponents {
         VsGroupedList: typeof VsGroupedList;
-        VsGroupedListGroupRow: typeof VsGroupedListGroupRow;
-        VsGroupedListItemRow: typeof VsGroupedListItemRow;
     }
 }
 
-export type { VsGroupedList };
+export type { VsGroupedList, VsGroupedListGroupRow, VsGroupedListItemRow };
 
 export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
     scrollToItem: (id: string, offset?: number) => void;

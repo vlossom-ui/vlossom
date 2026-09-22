@@ -61,6 +61,19 @@ type VirtualizerSetupOptions = PartialKeys<
     'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
 >;
 
+const WINDOW_SCROLL_OPTIONS = {
+    observeElementRect: observeWindowRect,
+    observeElementOffset: observeWindowOffset,
+    scrollToFn: windowScroll,
+    initialOffset: () => window.scrollY,
+};
+
+const ELEMENT_SCROLL_OPTIONS = {
+    observeElementRect,
+    observeElementOffset,
+    scrollToFn: elementScroll,
+};
+
 function getScrollableParentY(element: HTMLElement): HTMLElement | null {
     const { body, documentElement } = element.ownerDocument;
 
@@ -117,18 +130,7 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
                 scrollMargin: scrollMargin.value,
                 getScrollElement: () => (windowScrollMode ? window : scrollElement.value),
                 ...(getItemKey ? { getItemKey } : {}),
-                ...(windowScrollMode
-                    ? {
-                        observeElementRect: observeWindowRect,
-                        observeElementOffset: observeWindowOffset,
-                        scrollToFn: windowScroll,
-                        initialOffset: () => window.scrollY,
-                    }
-                    : {
-                        observeElementRect,
-                        observeElementOffset,
-                        scrollToFn: elementScroll,
-                    }),
+                ...(windowScrollMode ? WINDOW_SCROLL_OPTIONS : ELEMENT_SCROLL_OPTIONS),
             };
         }),
     );

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } fr
 import { nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { OptionItem } from '@/declaration';
-import { useOptionList, VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
+import { DEFAULT_VIRTUAL_OVERSCAN, useOptionList, VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
 import { domUtil } from '@/utils';
 import type { VsGroupedListGroup } from './../types';
 import VsGroupedList from './../VsGroupedList.vue';
@@ -11,6 +11,8 @@ function createOptionItems(rawItems: any[]): OptionItem[] {
     const { computedOptions } = useOptionList(ref(rawItems), ref('name'), ref('id'), ref(false));
     return computedOptions.value;
 }
+
+const ROW_HEIGHT = 36;
 
 describe('vs-grouped-list', () => {
     let defaultItems: OptionItem[];
@@ -405,6 +407,39 @@ describe('vs-grouped-list', () => {
             // when, then
             const targetId = defaultItems[0].id;
             expect(() => wrapper.vm.scrollToItem(targetId, 50)).not.toThrow();
+        });
+    });
+
+    describe('virtual scroll', () => {
+        it(`아이템이 ${VIRTUAL_SCROLL_THRESHOLD}개 미만이면 모든 row를 렌더한다`, () => {
+            // given, when
+            const wrapper = mount(VsGroupedList, { props: { items: defaultItems } });
+
+            // then
+            expect(wrapper.vm.isVirtual).toBe(false);
+            expect(wrapper.findAll('.vs-grouped-list-row')).toHaveLength(defaultItems.length);
+        });
+
+        it('아이템이 많으면 보이는 구간만 렌더한다', async () => {
+            // given
+            // jsdom은 레이아웃이 없어서 offsetHeight가 항상 0이다. 측정값이 없으면 렌더 구간이 무한정 넓어진다
+            const offsetHeight = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(ROW_HEIGHT);
+            const manyItems = createOptionItems(
+                Array.from({ length: 1000 }, (_, i) => ({ id: i + 1, name: `아이템 ${i + 1}` })),
+            );
+            const visibleRowCount = Math.ceil(window.innerHeight / ROW_HEIGHT);
+
+            // when
+            const wrapper = mount(VsGroupedList, { props: { items: manyItems }, attachTo: document.body });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isVirtual).toBe(true);
+            const renderedRows = wrapper.findAll('.vs-grouped-list-row');
+            expect(renderedRows.length).toBeGreaterThan(0);
+            expect(renderedRows.length).toBeLessThanOrEqual(visibleRowCount + 2 * DEFAULT_VIRTUAL_OVERSCAN);
+            offsetHeight.mockRestore();
+            wrapper.unmount();
         });
     });
 

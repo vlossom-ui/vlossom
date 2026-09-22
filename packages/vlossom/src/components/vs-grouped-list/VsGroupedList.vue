@@ -14,72 +14,35 @@
         </template>
 
         <div
-            class="vs-grouped-list-list"
+            :class="['vs-grouped-list-list', { 'vs-grouped-list-virtual': isVirtual }]"
             ref="listRef"
             tabindex="-1"
-            :style="isVirtual ? { position: 'relative', height: `${totalSize}px` } : {}"
+            :style="isVirtual ? { height: `${totalSize}px` } : undefined"
         >
-            <!-- Virtual scroll mode -->
-            <template v-if="isVirtual">
-                <div
-                    v-for="vRow in virtualRowData"
-                    :key="vRow.key"
-                    :data-index="vRow.index"
-                    :ref="(el) => measureElement(el as HTMLElement)"
-                    :style="{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        transform: `translateY(${vRow.start}px)`,
-                    }"
+            <div
+                v-for="row in renderedRows"
+                :key="row.key"
+                class="vs-grouped-list-row"
+                :data-index="row.index"
+                :ref="measureRow"
+                :style="isVirtual ? { transform: `translateY(${row.start}px)` } : undefined"
+            >
+                <vs-grouped-list-group-row v-if="row.type === 'group'" :row="row" :styleSet="componentStyleSet.$group">
+                    <template #default="slotProps">
+                        <slot name="group" v-bind="slotProps" />
+                    </template>
+                </vs-grouped-list-group-row>
+                <vs-grouped-list-item-row
+                    v-else
+                    :row="row"
+                    :styleSet="componentStyleSet.$item"
+                    @click="emitClickItem(row)"
                 >
-                    <vs-grouped-list-group-row
-                        v-if="vRow.type === 'group'"
-                        :row="vRow"
-                        :styleSet="componentStyleSet.$group"
-                    >
-                        <template #default="slotProps">
-                            <slot name="group" v-bind="slotProps" />
-                        </template>
-                    </vs-grouped-list-group-row>
-                    <vs-grouped-list-item-row
-                        v-else
-                        :row="vRow"
-                        :styleSet="componentStyleSet.$item"
-                        @click="emitClickItem(vRow)"
-                    >
-                        <template #default="slotProps">
-                            <slot name="item" v-bind="slotProps" />
-                        </template>
-                    </vs-grouped-list-item-row>
-                </div>
-            </template>
-
-            <!-- Regular rendering mode -->
-            <template v-else>
-                <template v-for="row in flatRows" :key="getRowKey(row)">
-                    <vs-grouped-list-group-row
-                        v-if="row.type === 'group'"
-                        :row="row"
-                        :styleSet="componentStyleSet.$group"
-                    >
-                        <template #default="slotProps">
-                            <slot name="group" v-bind="slotProps" />
-                        </template>
-                    </vs-grouped-list-group-row>
-                    <vs-grouped-list-item-row
-                        v-else
-                        :row="row"
-                        :styleSet="componentStyleSet.$item"
-                        @click="emitClickItem(row)"
-                    >
-                        <template #default="slotProps">
-                            <slot name="item" v-bind="slotProps" />
-                        </template>
-                    </vs-grouped-list-item-row>
-                </template>
-            </template>
+                    <template #default="slotProps">
+                        <slot name="item" v-bind="slotProps" />
+                    </template>
+                </vs-grouped-list-item-row>
+            </div>
         </div>
 
         <slot name="empty" v-if="items.length === 0" />
@@ -96,6 +59,7 @@ import {
     defineComponent,
     toRefs,
     useTemplateRef,
+    type ComponentPublicInstance,
     type ComputedRef,
     type PropType,
     type TemplateRef,
@@ -230,31 +194,40 @@ export default defineComponent({
             return rows;
         });
 
+        function getRowKey(row: Row): string {
+            return row.type === 'group' ? `group-${row.groupIndex}` : row.item.id;
+        }
+
         const { virtualItems, totalSize, measureElement, scrollIntoView, scrollToIndex } = useVirtualScroll({
             enabled: isVirtual,
             count: computed(() => flatRows.value.length),
             estimateSize: ESTIMATED_ITEM_SIZE,
             getScrollContainer: () => (innerScrollRef.value?.bodyRef as HTMLElement | null) ?? null,
             getContentElement: () => listRef.value,
+            // 인덱스를 키로 쓰면 items가 바뀔 때 측정값과 DOM이 다른 row에 재사용된다
+            getItemKey: (index) => {
+                const row = flatRows.value[index];
+                return row ? getRowKey(row) : String(index);
+            },
         });
 
-        const virtualRowData = computed<VirtualRow[]>(() => {
+        const renderedRows = computed<VirtualRow[]>(() => {
             if (!isVirtual.value) {
-                return [];
+                return flatRows.value.map(
+                    (row, index) => ({ ...row, key: getRowKey(row), index, start: 0 }) as VirtualRow,
+                );
             }
-            return virtualItems.value.reduce<VirtualRow[]>((acc, vRow) => {
+
+            return virtualItems.value.flatMap((vRow) => {
                 const row = flatRows.value[vRow.index];
-                if (!row) {
-                    return acc;
-                }
-                const positioned = { key: vRow.key, index: vRow.index, start: vRow.start };
-                acc.push({ ...positioned, ...row } as VirtualRow);
-                return acc;
-            }, []);
+                return row ? [{ ...row, key: vRow.key, index: vRow.index, start: vRow.start } as VirtualRow] : [];
+            });
         });
 
-        function getRowKey(row: Row): string {
-            return row.type === 'group' ? `group-${row.groupIndex}` : row.item.id;
+        function measureRow(element: Element | ComponentPublicInstance | null) {
+            if (isVirtual.value) {
+                measureElement(element as HTMLElement | null);
+            }
         }
 
         function emitClickItem({ item, itemIndex, group, groupIndex }: ItemRow) {
@@ -298,11 +271,10 @@ export default defineComponent({
             componentInlineStyle,
             isVirtual,
             totalSize,
-            measureElement,
-            virtualRowData,
+            measureRow,
+            renderedRows,
             flatRows,
             groupedItems,
-            getRowKey,
             emitClickItem,
             scrollToItem,
             hasScroll,

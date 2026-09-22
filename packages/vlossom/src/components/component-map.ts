@@ -27,8 +27,6 @@ import VsFooter from './vs-footer/VsFooter.vue';
 import VsForm from './vs-form/VsForm.vue';
 import VsGrid from './vs-grid/VsGrid.vue';
 import VsGroupedList from './vs-grouped-list/VsGroupedList.vue';
-import VsGroupedListGroupRow from './vs-grouped-list/VsGroupedListGroupRow.vue';
-import VsGroupedListItemRow from './vs-grouped-list/VsGroupedListItemRow.vue';
 import VsHeader from './vs-header/VsHeader.vue';
 import VsImage from './vs-image/VsImage.vue';
 import VsIndexView from './vs-index-view/VsIndexView.vue';
@@ -87,8 +85,6 @@ export const VlossomComponents = {
     VsForm,
     VsGrid,
     VsGroupedList,
-    VsGroupedListGroupRow,
-    VsGroupedListItemRow,
     VsHeader,
     VsImage,
     VsIndexView,
