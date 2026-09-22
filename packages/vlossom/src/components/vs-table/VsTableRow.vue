@@ -65,7 +65,7 @@ import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties
 import { objectUtil } from '@/utils';
 import { useStateClass } from '@/composables';
 import type { ColorScheme, Size, UIState } from '@/declaration';
-import type { VsTable2ColumnDef, VsTable2Item, VsTable2StyleSet } from './types';
+import type { VsTableColumnDef, VsTableItem, VsTableStyleSet } from './types';
 import { ALIGN_ITEMS, JUSTIFY_CONTENTS, TABLE_DRAG_HANDLE_CLASS } from './constants';
 import { getCellValue } from './composables/table-column-composable';
 
@@ -80,11 +80,11 @@ import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 export default defineComponent({
     components: { ChevronDownIcon, GripVerticalIcon, VsButton, VsCheckbox, VsExpandable, VsSkeleton },
     props: {
-        item: { type: null as unknown as PropType<VsTable2Item>, required: true },
+        item: { type: null as unknown as PropType<VsTableItem>, required: true },
         index: { type: Number, required: true },
-        columns: { type: Array as PropType<VsTable2ColumnDef[]>, default: () => [] },
+        columns: { type: Array as PropType<VsTableColumnDef[]>, default: () => [] },
         colorScheme: { type: String as PropType<ColorScheme> },
-        styleSet: { type: Object as PropType<VsTable2StyleSet>, default: () => ({}) },
+        styleSet: { type: Object as PropType<VsTableStyleSet>, default: () => ({}) },
         size: { type: String as PropType<Size>, default: 'md' },
         state: { type: String as PropType<UIState>, default: 'idle' },
         loading: { type: Boolean, default: false },
@@ -98,7 +98,7 @@ export default defineComponent({
     },
     emits: ['click-cell', 'click-row', 'select-row', 'expand-row'],
     setup(props, { emit, slots }) {
-        const { item, index, styleSet, state, selected } = toRefs(props);
+        const { item, index, styleSet, state, selected, loading } = toRefs(props);
 
         const { stateClasses } = useStateClass(state);
 
@@ -122,7 +122,7 @@ export default defineComponent({
             return selected.value ? objectUtil.assign(baseRow, $selected) : baseRow;
         });
 
-        function getCellStyle(column: VsTable2ColumnDef): CSSProperties {
+        function getCellStyle(column: VsTableColumnDef): CSSProperties {
             const { align, verticalAlign } = column;
             return {
                 ...cellStyle.value,
@@ -143,7 +143,10 @@ export default defineComponent({
             return candidates.find((name) => name in slots) || '';
         }
 
-        function clickCell(column: VsTable2ColumnDef, colIdx: number, event: MouseEvent): void {
+        function clickCell(column: VsTableColumnDef, colIdx: number, event: MouseEvent): void {
+            if (loading.value) {
+                return;
+            }
             emit(
                 'click-cell',
                 {
@@ -159,6 +162,9 @@ export default defineComponent({
         }
 
         function toggleSelect(nextSelected: boolean, event: MouseEvent): void {
+            if (loading.value) {
+                return;
+            }
             emit('select-row', item.value, index.value, nextSelected, event);
         }
 

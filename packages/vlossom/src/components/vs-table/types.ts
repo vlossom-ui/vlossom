@@ -16,10 +16,6 @@ export interface VsTableRef extends ComponentPublicInstance<typeof VsTable> {
     collapse: (index: number) => void;
 }
 
-export const TABLE_STYLE_SET_TOKEN = Symbol('TABLE_STYLE_SET_TOKEN');
-export const TABLE_COLOR_SCHEME_TOKEN = Symbol('TABLE_COLOR_SCHEME_TOKEN');
-export const TABLE_SIZE_TOKEN = Symbol('TABLE_SIZE_TOKEN');
-
 export interface VsTableStyleSet extends CSSProperties {
     $toolbar?: CSSProperties;
     $search?: VsSearchInputStyleSet;
@@ -36,6 +32,7 @@ export interface VsTableStyleSet extends CSSProperties {
 
 export type VsTablePageSizeOption = { label: string; value: number };
 export type VsTablePageSizeOptions = VsTablePageSizeOption[];
+
 export interface VsTablePaginationOptions {
     pageSizeOptions?: VsTablePageSizeOptions;
     showPageSizeSelect?: boolean;
@@ -64,12 +61,18 @@ type JoinDotField<T> = JoinField<T, '.'>;
  */
 export type VsTableColumnKey<I = VsTableItem> = JoinDotField<I>;
 export type VsTableItem = any;
-export type VsTableTag = 'td' | 'th';
+
+export type VsTableItemKey<I = VsTableItem> = VsTableColumnKey<I> | ((item: I) => string | number);
 
 export enum VsTableSortType {
     NONE,
     ASCEND,
     DESCEND,
+}
+
+export interface VsTableSort<I = VsTableItem> {
+    key: VsTableColumnKey<I> | '';
+    type: VsTableSortType;
 }
 
 export interface VsTableSearchOptions<I = VsTableItem> extends SearchOptions {
@@ -92,26 +95,9 @@ export interface VsTableColumnDef<I = VsTableItem> {
 }
 
 export interface VsTableCell<I = VsTableItem> {
-    tag: VsTableTag;
-    id: string;
+    item: I;
     value: unknown; // display
     colKey: VsTableColumnKey<I>;
     rowIdx: number;
     colIdx: number;
-}
-
-export interface VsTableHeaderCell extends VsTableCell {
-    tag: 'th';
-    sortable: boolean;
-}
-
-export interface VsTableBodyCell<I = VsTableItem> extends VsTableCell<I> {
-    tag: 'td';
-    item: I;
-}
-
-export interface VsTableRow<I = VsTableItem> {
-    key: string;
-    item: I;
-    cells: VsTableBodyCell<I>[];
 }

@@ -50,7 +50,6 @@ export enum VsComponent {
     VsSteps = 'VsSteps',
     VsSwitch = 'VsSwitch',
     VsTable = 'VsTable',
-    VsTable2 = 'VsTable2',
     VsTabs = 'VsTabs',
     VsTextarea = 'VsTextarea',
     VsTextWrap = 'VsTextWrap',

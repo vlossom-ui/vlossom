@@ -25,57 +25,6 @@
             <vs-table
                 :columns="tableColumns"
                 :items="tableItems"
-                :size="tableSize"
-                :primary="tablePropsSelected.includes('primary')"
-                :selectable="tablePropsSelected.includes('selectable')"
-                :responsive="tablePropsSelected.includes('responsive')"
-                :sticky-header="tablePropsSelected.includes('stickyHeader')"
-                :loading="tablePropsSelected.includes('loading')"
-                :draggable="tablePropsSelected.includes('draggable')"
-                :expandable="tablePropsSelected.includes('expandable')"
-                :search="tablePropsSelected.includes('search')"
-                :pagination="tablePropsSelected.includes('pagination')"
-                :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
-                v-model:selected-items="tableSelectedItems"
-            >
-                <template #body-row1="{ item, value }">
-                    <div v-if="tablePropsSelected.includes('customSlot')">
-                        <vs-input v-model="item.score" />
-                    </div>
-                    {{ value }}
-                </template>
-                <template #body-col2="{ item, value }">
-                    <div v-if="tablePropsSelected.includes('customSlot')">
-                        <vs-input v-model="item.score" />
-                    </div>
-                    {{ value.toUpperCase() }}
-                </template>
-                <template #body-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
-                <template #body-score="{ value }">
-                    <vs-button>{{ value }}</vs-button>
-                </template>
-                <template #expand="{ item }">
-                    <div
-                        class="flex items-center justify-center p-3 text-sm text-gray-600 dark:text-gray-400"
-                        :style="{ height: '200px' }"
-                    >
-                        {{ item.name }} — Score: {{ item.score }}
-                    </div>
-                </template>
-            </vs-table>
-        </div>
-
-        <p v-if="tablePropsSelected && tableSelectedItems.length" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
-        </p>
-
-        <vs-divider style-set="playground" />
-
-        <h3 class="mb-4 font-semibold">VsTable2</h3>
-        <div :class="tablePropsSelected.includes('stickyHeader') ? 'max-h-100 overflow-y-auto' : ''">
-            <vs-table2
-                :columns="tableColumns"
-                :items="tableItems"
                 item-key="name"
                 :size="tableSize"
                 :primary="tablePropsSelected.includes('primary')"
@@ -88,9 +37,9 @@
                 :search="tablePropsSelected.includes('search')"
                 :pagination="tablePropsSelected.includes('pagination')"
                 :state="tablePropsSelected.includes('state') ? getRowState : 'idle'"
-                v-model:selected-items="table2SelectedItems"
-                v-model:paged-items="table2PagedItems"
-                v-model:total-items="table2TotalItems"
+                v-model:selected-items="tableSelectedItems"
+                v-model:paged-items="tablePagedItems"
+                v-model:total-items="tableTotalItems"
             >
                 <template #item-role="{ value }"> vs-{{ value.toLowerCase() }} </template>
                 <template #item-score="{ item, value }">
@@ -107,13 +56,13 @@
                         {{ item.name }} — Score: {{ item.score }}
                     </div>
                 </template>
-            </vs-table2>
+            </vs-table>
         </div>
 
         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Paged: {{ table2PagedItems.length }} / Total: {{ table2TotalItems.length }}
-            <template v-if="table2SelectedItems.length">
-                / Selected: {{ table2SelectedItems.map((i) => i.name).join(', ') }}
+            Paged: {{ tablePagedItems.length }} / Total: {{ tableTotalItems.length }}
+            <template v-if="tableSelectedItems.length">
+                / Selected: {{ tableSelectedItems.map((i) => i.name).join(', ') }}
             </template>
         </p>
 
@@ -284,7 +233,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
 import type { UIState } from '@/declaration';
-import type { VsTable2Item, VsTableColumnDef, VsTableItem } from '@/components';
+import type { VsTableColumnDef, VsTableItem } from '@/components';
 
 export default defineComponent({
     name: 'DataDisplay',
@@ -334,9 +283,8 @@ export default defineComponent({
             { value: 'xl', label: 'xl' },
         ];
         const tableSelectedItems = ref<VsTableItem[]>([]);
-        const table2SelectedItems = ref<VsTable2Item[]>([]);
-        const table2PagedItems = ref<VsTable2Item[]>([]);
-        const table2TotalItems = ref<VsTable2Item[]>([]);
+        const tablePagedItems = ref<VsTableItem[]>([]);
+        const tableTotalItems = ref<VsTableItem[]>([]);
         const tableColumns = computed<VsTableColumnDef[]>(() => {
             return [
                 { key: 'name', label: 'Name', sortable: true },
@@ -394,9 +342,8 @@ export default defineComponent({
             increaseProgress,
             decreaseProgress,
             tableSelectedItems,
-            table2SelectedItems,
-            table2PagedItems,
-            table2TotalItems,
+            tablePagedItems,
+            tableTotalItems,
             tablePropsOptions,
             tablePropsSelected,
             tableSize,

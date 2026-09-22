@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { computed, nextTick, ref, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
-import { VsTable2SortType, type VsTable2ColumnDef, type VsTable2Item, type VsTable2ItemKey } from './../types';
+import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableItemKey } from './../types';
 import { getCellValue, useTableColumnComposable } from './../composables/table-column-composable';
 import { useTableDragComposable } from './../composables/table-drag-composable';
 import { useTableExpandComposable } from './../composables/table-expand-composable';
@@ -28,14 +28,14 @@ function createSearchInputRef(searchText = '') {
 
 describe('useTableItemKeyComposable', () => {
     it('itemKey가 문자열이면 해당 필드 값을 key로 쓴다', () => {
-        const { getItemKey } = useTableItemKeyComposable(ref('id') as Ref<VsTable2ItemKey>);
+        const { getItemKey } = useTableItemKeyComposable(ref('id') as Ref<VsTableItemKey>);
 
         expect(getItemKey(alice)).toBe('1');
     });
 
     it('itemKey가 함수면 함수 결과를 key로 쓴다', () => {
         const { getItemKey } = useTableItemKeyComposable(
-            ref((item: VsTable2Item) => `row-${item.id}`) as Ref<VsTable2ItemKey>,
+            ref((item: VsTableItem) => `row-${item.id}`) as Ref<VsTableItemKey>,
         );
 
         expect(getItemKey(alice)).toBe('row-1');
@@ -49,7 +49,7 @@ describe('useTableItemKeyComposable', () => {
     });
 
     it('itemKey 필드 값이 비어 있으면 객체 기준 key로 대체한다', () => {
-        const { getItemKey } = useTableItemKeyComposable(ref('missing') as Ref<VsTable2ItemKey>);
+        const { getItemKey } = useTableItemKeyComposable(ref('missing') as Ref<VsTableItemKey>);
         const item = { name: 'Alice' };
 
         expect(getItemKey(item)).toBe(getItemKey(item));
@@ -76,7 +76,7 @@ describe('useTableColumnComposable', () => {
     });
 
     it('width / minWidth / maxWidth를 grid 트랙으로 변환한다', () => {
-        const columnDefs: VsTable2ColumnDef[] = [
+        const columnDefs: VsTableColumnDef[] = [
             { key: 'a', label: 'a', width: 120 },
             { key: 'b', label: 'b', minWidth: '5rem' },
             { key: 'c', label: 'c', maxWidth: '10rem' },
@@ -107,7 +107,7 @@ describe('getCellValue', () => {
     });
 
     it('transform이 있으면 변환 결과를 반환한다', () => {
-        const column: VsTable2ColumnDef = {
+        const column: VsTableColumnDef = {
             key: 'age',
             label: 'Age',
             transform: (value, item) => `${item.name} ${value}세`,
@@ -118,12 +118,12 @@ describe('getCellValue', () => {
 });
 
 describe('useTableSearchComposable', () => {
-    const columns = computed<VsTable2ColumnDef[]>(() => [
+    const columns = computed<VsTableColumnDef[]>(() => [
         { key: 'name', label: '이름' },
         { key: 'age', label: '나이', transform: (value) => `${value}세` },
         { key: 'memo', label: '메모', skipSearch: true },
     ]);
-    const items = ref<VsTable2Item[]>([
+    const items = ref<VsTableItem[]>([
         { ...alice, memo: 'hidden', tags: 'vip' },
         { ...bob, memo: 'shown', tags: 'normal' },
     ]);
@@ -187,11 +187,11 @@ describe('useTableSearchComposable', () => {
 
     it('skipSearch 컬럼의 하위 경로는 extraKeys로도 되살아나지 않는다', () => {
         const { searchInputRef, text } = createSearchInputRef();
-        const nestedColumns = computed<VsTable2ColumnDef[]>(() => [
+        const nestedColumns = computed<VsTableColumnDef[]>(() => [
             { key: 'name', label: '이름' },
             { key: 'secret', label: '비밀', skipSearch: true },
         ]);
-        const nestedItems = ref<VsTable2Item[]>([{ name: 'Alice', secret: { code: 'classified' } }]);
+        const nestedItems = ref<VsTableItem[]>([{ name: 'Alice', secret: { code: 'classified' } }]);
         const { searchedItems } = useTableSearchComposable(
             searchInputRef,
             ref({ extraKeys: ['secret.code'] }),
@@ -209,11 +209,11 @@ describe('useTableSearchComposable', () => {
             constructor(public nickname: string) {}
         }
         const { searchInputRef, text } = createSearchInputRef();
-        const objectColumns = computed<VsTable2ColumnDef[]>(() => [
+        const objectColumns = computed<VsTableColumnDef[]>(() => [
             { key: 'profile', label: 'P' },
             { key: 'joinedAt', label: 'D' },
         ]);
-        const objectItems = ref<VsTable2Item[]>([
+        const objectItems = ref<VsTableItem[]>([
             { profile: new Profile('ally'), joinedAt: new Date('2024-01-02T03:04:05.000Z') },
         ]);
         const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), objectColumns, objectItems);
@@ -230,11 +230,11 @@ describe('useTableSearchComposable', () => {
         circular.self = circular;
 
         const { searchInputRef, text } = createSearchInputRef();
-        const circularColumns = computed<VsTable2ColumnDef[]>(() => [
+        const circularColumns = computed<VsTableColumnDef[]>(() => [
             { key: 'circular', label: 'C' },
             { key: 'run', label: 'R' },
         ]);
-        const circularItems = ref<VsTable2Item[]>([{ circular, run: () => 'secret' }]);
+        const circularItems = ref<VsTableItem[]>([{ circular, run: () => 'secret' }]);
         const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), circularColumns, circularItems);
 
         text.value = 'Alice';
@@ -258,11 +258,11 @@ describe('useTableSearchComposable', () => {
 });
 
 describe('useTableSortComposable', () => {
-    const columns = computed<VsTable2ColumnDef[]>(() => [
+    const columns = computed<VsTableColumnDef[]>(() => [
         { key: 'id', label: 'ID', sortable: true },
         { key: 'name', label: '이름', sortable: true, sortBy: 'age' },
     ]);
-    const items = computed<VsTable2Item[]>(() => [bob, alice]);
+    const items = computed<VsTableItem[]>(() => [bob, alice]);
 
     it('정렬 전에는 원본 순서를 유지한다', () => {
         const { sortedItems } = useTableSortComposable(columns, items);
@@ -274,15 +274,15 @@ describe('useTableSortComposable', () => {
         const { sort, sortedItems, updateSort } = useTableSortComposable(columns, items);
 
         updateSort('id');
-        expect(sort.value.type).toBe(VsTable2SortType.ASCEND);
+        expect(sort.value.type).toBe(VsTableSortType.ASCEND);
         expect(sortedItems.value.map((item) => item.name)).toEqual(['Alice', 'Bob']);
 
         updateSort('id');
-        expect(sort.value.type).toBe(VsTable2SortType.DESCEND);
+        expect(sort.value.type).toBe(VsTableSortType.DESCEND);
         expect(sortedItems.value.map((item) => item.name)).toEqual(['Bob', 'Alice']);
 
         updateSort('id');
-        expect(sort.value.type).toBe(VsTable2SortType.NONE);
+        expect(sort.value.type).toBe(VsTableSortType.NONE);
         expect(sortedItems.value.map((item) => item.name)).toEqual(['Bob', 'Alice']);
     });
 
@@ -292,7 +292,7 @@ describe('useTableSortComposable', () => {
         updateSort('id');
         updateSort('name');
 
-        expect(sort.value).toEqual({ key: 'name', type: VsTable2SortType.ASCEND });
+        expect(sort.value).toEqual({ key: 'name', type: VsTableSortType.ASCEND });
         // name 컬럼은 sortBy로 age를 쓴다
         expect(sortedItems.value.map((item) => item.age)).toEqual([24, 30]);
     });
@@ -302,13 +302,13 @@ describe('useTableSortComposable', () => {
 
         updateSort('unknown');
 
-        expect(sort.value).toEqual({ key: '', type: VsTable2SortType.NONE });
+        expect(sort.value).toEqual({ key: '', type: VsTableSortType.NONE });
     });
 });
 
 describe('useTableDragComposable', () => {
     it('드래그한 순서를 화면 순서로 유지한다', () => {
-        const items = ref<VsTable2Item[]>([alice, bob]);
+        const items = ref<VsTableItem[]>([alice, bob]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -318,7 +318,7 @@ describe('useTableDragComposable', () => {
     });
 
     it('페이지 시작 위치부터 그 페이지 자리 안에서만 순서를 바꾼다', () => {
-        const items = ref<VsTable2Item[]>([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]);
+        const items = ref<VsTableItem[]>([{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -328,7 +328,7 @@ describe('useTableDragComposable', () => {
     });
 
     it('아이템이 바뀌면 드래그 순서를 버린다', async () => {
-        const items = ref<VsTable2Item[]>([alice, bob]);
+        const items = ref<VsTableItem[]>([alice, bob]);
         const sortedItems = computed(() => items.value);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
 
@@ -343,7 +343,7 @@ describe('useTableDragComposable', () => {
 });
 
 describe('useTableSelectionComposable', () => {
-    const getItemKey = (item: VsTable2Item) => item.id;
+    const getItemKey = (item: VsTableItem) => item.id;
 
     it('selectable이 false면 선택 가능한 행이 없다', () => {
         const { anySelectable } = useTableSelectionComposable(ref(false), ref([]), ref([alice, bob]), getItemKey);
@@ -368,7 +368,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('selectable 조건을 만족하지 않으면 선택하지 않는다', () => {
-        const selectable = (item: VsTable2Item) => item.name === 'Bob';
+        const selectable = (item: VsTableItem) => item.name === 'Bob';
         const { selectedItems, selectItem } = useTableSelectionComposable(
             ref(selectable),
             ref([]),
@@ -381,7 +381,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('전체 선택은 선택 가능한 아이템만 담는다', () => {
-        const selectable = (item: VsTable2Item) => item.name !== 'Bob';
+        const selectable = (item: VsTableItem) => item.name !== 'Bob';
         const { selectedItems, selectedAll, selectedPartial, selectAll } = useTableSelectionComposable(
             ref(selectable),
             ref([]),
@@ -413,7 +413,7 @@ describe('useTableSelectionComposable', () => {
     });
 
     it('selectedItems prop이 바뀌면 내부 상태를 맞춘다', async () => {
-        const rawSelectedItems = ref<VsTable2Item[]>([]);
+        const rawSelectedItems = ref<VsTableItem[]>([]);
         const { selectedItems } = useTableSelectionComposable(
             ref(true),
             rawSelectedItems,
@@ -429,7 +429,7 @@ describe('useTableSelectionComposable', () => {
 });
 
 describe('useTableExpandComposable', () => {
-    const getItemKey = (item: VsTable2Item) => item.id;
+    const getItemKey = (item: VsTableItem) => item.id;
 
     it('아이템을 펼치고 접는다', () => {
         const { isExpanded, expandItem } = useTableExpandComposable(ref(true), ref([alice, bob]), getItemKey);
@@ -442,7 +442,7 @@ describe('useTableExpandComposable', () => {
     });
 
     it('expandable 조건을 만족하지 않으면 펼치지 않는다', () => {
-        const expandable = (item: VsTable2Item) => item.name === 'Bob';
+        const expandable = (item: VsTableItem) => item.name === 'Bob';
         const { isExpanded, expandItem } = useTableExpandComposable(ref(expandable), ref([alice, bob]), getItemKey);
 
         expect(expandItem(alice, 0, true)).toBe(false);

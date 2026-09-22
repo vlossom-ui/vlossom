@@ -1,18 +1,18 @@
 import { computed, type Ref } from 'vue';
 import { objectUtil, stringUtil } from '@/utils';
-import type { VsTable2ColumnDef, VsTable2Item } from './../types';
+import type { VsTableColumnDef, VsTableItem } from './../types';
 
-export function getCellValue(item: VsTable2Item, column: VsTable2ColumnDef): unknown {
+export function getCellValue(item: VsTableItem, column: VsTableColumnDef): unknown {
     const value: unknown = objectUtil.get(item, column.key);
     return column.transform ? column.transform(value, item) : value;
 }
 
 export function useTableColumnComposable(
-    rawColumns: Ref<VsTable2ColumnDef[] | string[] | undefined>,
-    items: Ref<VsTable2Item[]>,
+    rawColumns: Ref<VsTableColumnDef[] | string[] | undefined>,
+    items: Ref<VsTableItem[]>,
     handleColumns: { drag: Ref<boolean>; select: Ref<boolean>; expand: Ref<boolean> },
 ) {
-    const columns = computed<VsTable2ColumnDef[]>(() => {
+    const columns = computed<VsTableColumnDef[]>(() => {
         const columnDefs = rawColumns.value;
         if (columnDefs?.length) {
             return columnDefs.map((column) => (typeof column === 'string' ? { key: column, label: column } : column));
@@ -40,7 +40,7 @@ export function useTableColumnComposable(
         return tracks.join(' ');
     });
 
-    function getGridColumnWidth(column: VsTable2ColumnDef): string {
+    function getGridColumnWidth(column: VsTableColumnDef): string {
         const { width, minWidth, maxWidth } = column;
         if (width) {
             return stringUtil.toStringSize(width);
