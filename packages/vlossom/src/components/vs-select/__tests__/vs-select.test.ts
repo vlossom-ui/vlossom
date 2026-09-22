@@ -1062,6 +1062,51 @@ describe('VsSelect', () => {
             vi.useRealTimers();
         });
 
+        it('popup이 listbox이고 옵션이 option 역할과 선택 상태를 가진다', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options: basicOptions, modelValue: 'Apple' },
+            });
+
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            const listbox = document.getElementById(wrapper.vm.optionsId);
+            expect(listbox?.getAttribute('role')).toBe('listbox');
+            expect(listbox?.getAttribute('aria-multiselectable')).toBeNull();
+
+            const options = listbox?.querySelectorAll('[role="option"]');
+            expect(options).toHaveLength(basicOptions.length);
+            expect(options?.[0].getAttribute('aria-selected')).toBe('true');
+            expect(options?.[1].getAttribute('aria-selected')).toBe('false');
+            expect(wrapper.find('.vs-select-trigger').attributes('aria-haspopup')).toBe('listbox');
+
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+
+        it('multiple select의 listbox가 aria-multiselectable을 가진다', async () => {
+            vi.useFakeTimers();
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                props: { options: basicOptions, modelValue: ['Apple'], multiple: true },
+            });
+
+            wrapper.vm.openOptions();
+            await nextTick();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            await nextTick();
+
+            expect(document.getElementById(wrapper.vm.optionsId)?.getAttribute('aria-multiselectable')).toBe('true');
+            wrapper.unmount();
+            vi.useRealTimers();
+        });
+
         it('포커스된 옵션을 aria-activedescendant로 알려준다', async () => {
             // given
             vi.useFakeTimers();

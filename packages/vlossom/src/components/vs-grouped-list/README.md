@@ -130,6 +130,9 @@ The list detects which element actually scrolls and virtualizes against it. No p
 | `items` | `OptionItem[]` | `[]` | | Array of items to display |
 | `groupBy` | `(item: any, index: number) => string` | | | Function that returns the group name for each item |
 | `groupOrder` | `string[]` | | | Order in which groups should appear |
+| `id` | `string` | | | ID applied to the rendered list element |
+| `listRole` | `'list' | 'listbox'` | `'list'` | | Accessibility role for the rendered list |
+| `listAriaMultiselectable` | `boolean` | | | Sets `aria-multiselectable` when `listRole="listbox"` |
 
 ## Types
 
@@ -162,7 +165,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | Event | Payload | Description |
 | ----- | ------- | ----------- |
-| `click-item` | `OptionItem & { itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | Emitted when an item is clicked |
+| `click-item` | `OptionItem & { groupedIndex: number; itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | Emitted when an item is clicked. `groupedIndex` is the existing group-local index; `itemIndex` is a compatibility alias. |
 
 ## Slots
 
@@ -172,7 +175,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | `footer` | Content for the scrollable list footer |
 | `empty` | Content shown in the list body when `items` is empty |
 | `group` | Custom render for a group header. Receives `{ group: string, groupIndex: number, items: OptionItem[] }` |
-| `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ itemIndex, group, groupIndex }` |
+| `item` | Custom render for an item. Receives the `OptionItem` fields plus `{ groupedIndex, itemIndex, group, groupIndex }` |
 
 ## Methods
 

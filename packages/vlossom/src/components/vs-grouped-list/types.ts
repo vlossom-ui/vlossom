@@ -33,6 +33,7 @@ export interface VsGroupedListGroup {
 export interface GroupRow {
     type: 'group';
     name: string;
+    displayName: string;
     groupIndex: number;
     items: OptionItem[];
 }
@@ -41,6 +42,8 @@ export interface ItemRow {
     type: 'item';
     item: OptionItem;
     itemIndex: number;
+    // 기존 공개 slot/event API 이름. itemIndex는 호환을 위한 별칭이다.
+    groupedIndex: number;
     group: VsGroupedListGroup;
     groupIndex: number;
     // 가상 스크롤에서는 렌더된 아이템만 DOM에 있으므로 aria로 전체 위치를 알려준다 (1-based)

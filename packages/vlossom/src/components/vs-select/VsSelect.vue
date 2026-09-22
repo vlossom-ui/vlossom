@@ -53,6 +53,9 @@
                     :items="filteredOptions"
                     :group-by
                     :group-order
+                    list-role="listbox"
+                    :list-aria-multiselectable="multiple || undefined"
+                    :get-item-aria-selected="getItemAriaSelected"
                     @click-item="selectOptionItem"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
@@ -413,6 +416,10 @@ export default defineComponent({
             multiple,
         });
 
+        function getItemAriaSelected(item: OptionItem) {
+            return isSelected(item.id);
+        }
+
         function sanitizeValue(value: any) {
             if (value === null || value === undefined) {
                 return convertValue(value);
@@ -669,6 +676,7 @@ export default defineComponent({
             openOptions,
             closeOptions,
             isSelected,
+            getItemAriaSelected,
             toggleSelectAll,
             isUsingSearch,
             searchProps,

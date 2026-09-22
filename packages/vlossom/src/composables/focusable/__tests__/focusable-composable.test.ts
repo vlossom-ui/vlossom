@@ -29,6 +29,30 @@ function mountFocusable(keys: Ref<string[]> = ref(KEYS), renderedKeys: string[] 
 }
 
 describe('useFocusable', () => {
+    it('focusableKeys 없이도 기존 DOM 순서 기반 API를 사용할 수 있어야 한다', async () => {
+        const wrapper = mount(
+            defineComponent({
+                setup() {
+                    const wrapperRef = ref<HTMLElement | null>(null);
+                    return { ...useFocusable(wrapperRef), wrapperRef };
+                },
+                template: `
+                    <div ref="wrapperRef">
+                        <div data-focusable="first" />
+                        <div data-focusable="second" />
+                    </div>
+                `,
+            }),
+        );
+
+        wrapper.vm.updateFocusIndex(1);
+        await nextTick();
+
+        expect(wrapper.vm.focusIndex).toBe(1);
+        expect(wrapper.vm.currentFocusableElement).toBe(wrapper.find('[data-focusable="second"]').element);
+        expect(wrapper.vm.getFocusableElements()).toHaveLength(2);
+    });
+
     describe('초기 상태', () => {
         it('focusIndex가 -1로 초기화되어야 한다', () => {
             // given, when

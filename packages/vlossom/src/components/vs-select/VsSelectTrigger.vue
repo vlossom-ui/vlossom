@@ -5,6 +5,7 @@
         :style="componentInlineStyle"
         tabindex="0"
         role="combobox"
+        aria-haspopup="listbox"
         :aria-expanded="isOpen"
         :aria-controls="optionsId"
         :aria-activedescendant="isOpen ? activeOptionId : undefined"

@@ -56,7 +56,7 @@ onBeforeUnmount(removeMouseMoveListener);
 | Arg | Type | Default | Required | Description |
 | ---- | ---- | ------- | -------- | ----------- |
 | `wrapperElement` | `TemplateRef<HTMLElement>` | | Yes | Template ref pointing to the container that holds the `[data-focusable]` elements |
-| `focusableKeys` | `Ref<string[]>` | | Yes | Every focusable key in focus order. Keys do not have to be rendered |
+| `focusableKeys` | `Ref<string[]>` | — | No | Every focusable key in focus order. When omitted, focus order is read from rendered `[data-focusable]` elements. |
 
 ## Types
 
@@ -68,6 +68,7 @@ No additional exported types.
 | ---- | ---- | ----------- |
 | `focusIndex` | `DeepReadonly<Ref<number>>` | Current focus position in `focusableKeys`. `-1` means nothing is focused |
 | `currentFocusableKey` | `ComputedRef<string \| null>` | Key at `focusIndex`, or `null` when nothing is focused |
+| `currentFocusableElement` | `DeepReadonly<Ref<HTMLElement \| null>>` | The rendered element at the current focus position in DOM-order mode; use `getFocusableElement` in key-list mode |
 
 ## Return Methods
 
@@ -75,6 +76,7 @@ No additional exported types.
 | ------ | ---------- | ----------- |
 | `updateFocusIndex` | `index: number` | Sets `focusIndex`, clamped to the last key. A negative index clears focus |
 | `getFocusableElement` | `key: string` | Returns the element whose `data-focusable` equals the key, or `null` when it is not rendered |
+| `getFocusableElements` | — | Returns all rendered `[data-focusable]` elements. Available for DOM-order mode and compatibility. |
 | `addMouseMoveListener` | - | Attaches a throttled `mousemove` listener to the wrapper element |
 | `removeMouseMoveListener` | - | Removes the throttled `mousemove` listener from the wrapper element |
 
@@ -86,5 +88,5 @@ No lifecycle hooks are registered. Call `addMouseMoveListener` and `removeMouseM
 
 - Each focusable element must set `data-focusable` to its key. An element without a key is invisible to this composable, and a key that is not in `focusableKeys` is ignored on hover.
 - Keys must be unique within the wrapper, otherwise `getFocusableElement` resolves the wrong element.
-- Applying the focused style is left to the caller. Bind a class off `currentFocusableKey` instead of mutating the DOM, so the style survives re-rendering in a virtualized list.
+- In key-list mode, apply the focused style from `currentFocusableKey` so it survives virtualized re-renders. In legacy DOM-order mode, the composable retains its original `vs-focusable-active` class behavior.
 - Call `addMouseMoveListener` after the wrapper mounts and `removeMouseMoveListener` before it unmounts to avoid event listener leaks.

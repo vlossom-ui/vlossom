@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest';
-import { nextTick, ref } from 'vue';
+import { h, nextTick, ref } from 'vue';
 import { mount } from '@vue/test-utils';
 import type { OptionItem } from '@/declaration';
 import { DEFAULT_VIRTUAL_OVERSCAN, useOptionList, VIRTUAL_SCROLL_THRESHOLD } from '@/composables';
@@ -322,8 +322,25 @@ describe('vs-grouped-list', () => {
             const emittedData = wrapper.emitted('click-item')?.[0]?.[0];
             expect(emittedData).toHaveProperty('item');
             expect(emittedData).toHaveProperty('index');
+            expect(emittedData).toHaveProperty('groupedIndex', 0);
+            expect(emittedData).toHaveProperty('itemIndex', 0);
             expect(emittedData).toHaveProperty('group');
             expect(emittedData).toHaveProperty('groupIndex');
+        });
+
+        it('ungrouped custom group slot에는 표시용 번역문이 아닌 원본 group 이름을 전달한다', () => {
+            const items = createOptionItems([
+                { id: 1, name: '그룹 없음', category: null },
+                { id: 2, name: '그룹 A', category: 'A' },
+            ]);
+            const wrapper = mount(VsGroupedList, {
+                props: { items, groupBy: (item: any) => item.category },
+                slots: {
+                    group: ({ group }: { group: string }) => h('span', { class: 'group-name' }, group || 'empty'),
+                },
+            });
+
+            expect(wrapper.findAll('.group-name')[1].text()).toBe('empty');
         });
 
         it('빈 items 배열일 때 아이템이 렌더링되지 않아야 한다', () => {

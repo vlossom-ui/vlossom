@@ -17,7 +17,9 @@
             :class="['vs-grouped-list-list', { 'vs-grouped-list-virtual': isVirtual }]"
             ref="listRef"
             tabindex="-1"
-            role="list"
+            :id
+            :role="listRole"
+            :aria-multiselectable="listRole === 'listbox' ? listAriaMultiselectable : undefined"
             :style="isVirtual ? { height: `${totalSize}px` } : undefined"
         >
             <div
@@ -39,6 +41,8 @@
                     :row="row"
                     :styleSet="componentStyleSet.$item"
                     :item-count="items.length"
+                    :item-role="listRole === 'listbox' ? 'option' : 'listitem'"
+                    :aria-selected="getItemAriaSelected ? getItemAriaSelected(row.item) : undefined"
                     @click="emitClickItem(row)"
                 >
                     <template #default="slotProps">
@@ -90,12 +94,17 @@ export default defineComponent({
             type: Array as PropType<OptionItem[]>,
             default: () => [],
         },
+        id: { type: String },
+        listRole: { type: String as PropType<'list' | 'listbox'>, default: 'list' },
+        listAriaMultiselectable: { type: Boolean, default: undefined },
+        getItemAriaSelected: { type: Function as PropType<(item: OptionItem) => boolean>, default: undefined },
     },
     emits: ['click-item'],
     // expose: ['scrollToItem'],
     setup(props, { emit }) {
         const { optionMessages } = useMessages();
-        const { styleSet, items, groupBy, groupOrder } = toRefs(props);
+        const { styleSet, items, groupBy, groupOrder, id, listRole, listAriaMultiselectable, getItemAriaSelected } =
+            toRefs(props);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const listRef: TemplateRef<HTMLElement> = useTemplateRef('listRef');
@@ -184,7 +193,8 @@ export default defineComponent({
                 if (groupBy.value != null) {
                     const groupRow: GroupRow = {
                         type: 'group',
-                        name: group.name || optionMessages.value.VS_GROUPED_LIST_UNGROUPED,
+                        name: group.name,
+                        displayName: group.name || optionMessages.value.VS_GROUPED_LIST_UNGROUPED,
                         groupIndex,
                         items: group.items,
                     };
@@ -192,7 +202,15 @@ export default defineComponent({
                 }
                 group.items.forEach((item, itemIndex) => {
                     itemPosition += 1;
-                    const itemRow: ItemRow = { type: 'item', item, itemIndex, group, groupIndex, itemPosition };
+                    const itemRow: ItemRow = {
+                        type: 'item',
+                        item,
+                        itemIndex,
+                        groupedIndex: itemIndex,
+                        group,
+                        groupIndex,
+                        itemPosition,
+                    };
                     rows.push(itemRow);
                 });
             });
@@ -235,8 +253,8 @@ export default defineComponent({
             }
         }
 
-        function emitClickItem({ item, itemIndex, group, groupIndex }: ItemRow) {
-            emit('click-item', { ...item, itemIndex, group, groupIndex });
+        function emitClickItem({ item, itemIndex, groupedIndex, group, groupIndex }: ItemRow) {
+            emit('click-item', { ...item, groupedIndex, itemIndex, group, groupIndex });
         }
 
         function scrollToItem(id: string, offset: number = 0) {

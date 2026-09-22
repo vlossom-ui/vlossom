@@ -130,6 +130,9 @@ function scrollToSelected(id) {
 | `items` | `OptionItem[]` | `[]` | | 표시할 항목 배열 |
 | `groupBy` | `(item: any, index: number) => string` | | | 각 항목의 그룹 이름을 반환하는 함수 |
 | `groupOrder` | `string[]` | | | 그룹이 표시될 순서 |
+| `id` | `string` | | | 렌더된 목록 엘리먼트에 적용할 ID |
+| `listRole` | `'list' \| 'listbox'` | `'list'` | | 렌더된 목록의 접근성 role |
+| `listAriaMultiselectable` | `boolean` | | | `listRole="listbox"`일 때 `aria-multiselectable` 설정 |
 
 ## 타입
 
@@ -162,7 +165,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | 이벤트 | 페이로드 | 설명 |
 | ------ | -------- | ---- |
-| `click-item` | `OptionItem & { itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | 항목이 클릭될 때 발생 |
+| `click-item` | `OptionItem & { groupedIndex: number; itemIndex: number; group: VsGroupedListGroup; groupIndex: number }` | 항목 클릭 시 발생. `groupedIndex`가 기존 그룹 내 인덱스이며 `itemIndex`는 호환용 별칭입니다. |
 
 ## 슬롯
 
@@ -172,7 +175,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 | `footer` | 스크롤 가능한 목록 푸터의 콘텐츠 |
 | `empty` | `items`가 비어 있을 때 목록 본문에 표시되는 콘텐츠 |
 | `group` | 그룹 헤더의 사용자 정의 렌더링. `{ group: string, groupIndex: number, items: OptionItem[] }` 제공 |
-| `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ itemIndex, group, groupIndex }` 제공 |
+| `item` | 항목의 사용자 정의 렌더링. `OptionItem` 필드와 `{ groupedIndex, itemIndex, group, groupIndex }` 제공 |
 
 ## 메서드
 
