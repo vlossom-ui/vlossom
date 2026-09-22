@@ -60,6 +60,10 @@ export const scrollShadow: Directive<HTMLElement, boolean | undefined> = {
 
     updated(el, binding) {
         if (binding.value === binding.oldValue) {
+            // Not yet activated: re-check in case the element became scrollable after mount.
+            if (!el.classList.contains(SCROLL_SHADOW_MIXIN_CLASS) && verifyScrollContainer(el)) {
+                activate(el);
+            }
             return;
         }
         if (binding.value === false) {
