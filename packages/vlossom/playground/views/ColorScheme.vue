@@ -5,69 +5,69 @@
         </template>
 
         <div class="flex flex-col gap-12">
-            <vs-table :columns="tableColumns" :items="tableItems" no-virtual-scroll no-responsive>
-                <template #body-name="{ item }">
+            <vs-table :columns="tableColumns" :items="tableItems" item-key="id">
+                <template #item-name="{ item }">
                     <span class="font-mono text-xs font-semibold">{{ item.name }}</span>
                 </template>
 
-                <template #body-vs-cs-line="{ item }">
+                <template #item-vs-cs-line="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-line)' }" />
                 </template>
-                <template #body-vs-cs-line-strong="{ item }">
+                <template #item-vs-cs-line-strong="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-line-strong)' }"
                     />
                 </template>
-                <template #body-vs-cs-font="{ item }">
+                <template #item-vs-cs-font="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-font)' }" />
                 </template>
-                <template #body-vs-cs-font-colored="{ item }">
+                <template #item-vs-cs-font-colored="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-font-colored)' }"
                     />
                 </template>
-                <template #body-vs-cs-font-primary="{ item }">
+                <template #item-vs-cs-font-primary="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-font-primary)' }"
                     />
                 </template>
-                <template #body-vs-cs-bg-area="{ item }">
+                <template #item-vs-cs-bg-area="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-bg-area)' }" />
                 </template>
-                <template #body-vs-cs-bg-area-colored="{ item }">
+                <template #item-vs-cs-bg-area-colored="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-bg-area-colored)' }"
                     />
                 </template>
-                <template #body-vs-cs-bg="{ item }">
+                <template #item-vs-cs-bg="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-bg)' }" />
                 </template>
-                <template #body-vs-cs-bg-colored="{ item }">
+                <template #item-vs-cs-bg-colored="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-bg-colored)' }"
                     />
                 </template>
-                <template #body-vs-cs-bg-comp="{ item }">
+                <template #item-vs-cs-bg-comp="{ item }">
                     <div :class="['cs-swatch', item.className]" :style="{ backgroundColor: 'var(--vs-cs-bg-comp)' }" />
                 </template>
-                <template #body-vs-cs-bg-comp-colored="{ item }">
+                <template #item-vs-cs-bg-comp-colored="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-bg-comp-colored)' }"
                     />
                 </template>
-                <template #body-vs-cs-bg-primary="{ item }">
+                <template #item-vs-cs-bg-primary="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-bg-primary)' }"
                     />
                 </template>
-                <template #body-vs-cs-shadow-color="{ item }">
+                <template #item-vs-cs-shadow-color="{ item }">
                     <div
                         :class="['cs-swatch', item.className]"
                         :style="{ backgroundColor: 'var(--vs-cs-shadow-color)' }"

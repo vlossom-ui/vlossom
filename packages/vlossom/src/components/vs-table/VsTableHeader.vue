@@ -1,146 +1,159 @@
 <template>
     <thead class="vs-table-thead">
-        <template v-if="headerCells.length">
-            <tr class="vs-table-header-row" :style="headerStyle">
-                <vs-table-drag-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
-                <vs-table-checkbox-cell :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" @select-row="selectRow">
-                    <template #select="slotData">
-                        <slot name="select" v-bind="slotData" />
-                    </template>
-                </vs-table-checkbox-cell>
-                <th
-                    class="vs-table-th"
-                    v-for="(header, index) in headerCells"
-                    :key="header.id"
-                    :id="header.id"
-                    :style="getCellStyle(index)"
-                    @click.prevent.stop="clickCell(header, $event)"
-                >
-                    <slot
-                        :name="findMatchingSlotName(header)"
-                        :item="columns?.[header.colIdx]"
-                        :value="header.value"
-                        :colIdx="header.colIdx"
-                        :rowIdx="header.rowIdx"
-                    >
-                        <div>
-                            {{ header.value }}
-                            <component
-                                :is="getSortIcon(header)"
-                                v-if="header.sortable"
-                                class="vs-table-sort-icon"
-                                @click="updateSortType(header.colKey)"
-                            />
-                        </div>
-                    </slot>
-                </th>
-                <vs-table-expand-cell v-if="showExpand" :cells="headerCells" :rowIdx="HEADER_ROW_INDEX" />
-            </tr>
-        </template>
+        <tr v-if="columns.length" class="vs-table-header-row" :style="headerStyle">
+            <th v-if="showDrag" :class="['vs-table-th', TABLE_DRAG_HANDLE_CLASS]" :style="cellStyle">
+                <GripVerticalIcon />
+            </th>
+
+            <th
+                v-if="showSelect"
+                class="vs-table-th"
+                :style="cellStyle"
+                @click.stop="toggleSelectAll(!selectedAll, $event)"
+            >
+                <slot name="select" :item="null" :value="selectedAll || selectedPartial" :rowIdx="0">
+                    <vs-checkbox
+                        :color-scheme
+                        :disabled="loading"
+                        :size
+                        :style-set="checkboxStyleSet"
+                        :model-value="selectedAll"
+                        :indeterminate="selectedPartial"
+                        @toggle="toggleSelectAll"
+                    />
+                </slot>
+            </th>
+
+            <th v-for="(column, colIdx) in columns" :key="column.key" class="vs-table-th" :style="getCellStyle(column)">
+                <slot :name="getSlotName(column.key, colIdx)" :item="column" :value="column.label" :colIdx :rowIdx="0">
+                    <div>
+                        {{ column.label }}
+                        <component
+                            :is="getSortIcon(column)"
+                            v-if="column.sortable"
+                            class="vs-table-sort-icon"
+                            @click.stop="sortColumn(column.key)"
+                        />
+                    </div>
+                </slot>
+            </th>
+
+            <th v-if="showExpand" class="vs-table-th vs-table-expand-handle" :style="cellStyle" />
+        </tr>
     </thead>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, computed, type Component, type ComputedRef, type CSSProperties } from 'vue';
-import { objectUtil } from '@/utils';
 import {
-    VsTableSortType,
-    TABLE_STYLE_SET_TOKEN,
-    type VsTableHeaderCell,
-    type VsTableStyleSet,
-} from './types';
-import { HEADER_ROW_INDEX } from './models/strategy';
-import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
+    computed,
+    defineComponent,
+    toRefs,
+    type Component,
+    type ComputedRef,
+    type CSSProperties,
+    type PropType,
+} from 'vue';
+import { objectUtil } from '@/utils';
+import type { ColorScheme, Size } from '@/declaration';
+import { VsTableSortType, type VsTableColumnDef, type VsTableSort, type VsTableStyleSet } from './types';
+import { JUSTIFY_CONTENTS, TABLE_DRAG_HANDLE_CLASS } from './constants';
 
-import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@lucide/vue';
-import VsTableDragCell from './VsTableDragCell.vue';
-import VsTableExpandCell from './VsTableExpandCell.vue';
-import VsTableCheckboxCell from './VsTableCheckboxCell.vue';
+import type { VsCheckboxStyleSet } from '@/components/vs-checkbox/types';
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, GripVerticalIcon } from '@lucide/vue';
+import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
 
 export default defineComponent({
-    components: {
-        VsTableDragCell,
-        VsTableExpandCell,
-        VsTableCheckboxCell,
+    components: { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, GripVerticalIcon, VsCheckbox },
+    props: {
+        columns: { type: Array as PropType<VsTableColumnDef[]>, default: () => [] },
+        sort: { type: Object as PropType<VsTableSort>, default: () => ({ key: '', type: VsTableSortType.NONE }) },
+        colorScheme: { type: String as PropType<ColorScheme> },
+        styleSet: { type: Object as PropType<VsTableStyleSet>, default: () => ({}) },
+        size: { type: String as PropType<Size>, default: 'md' },
+        loading: { type: Boolean, default: false },
+        primary: { type: Boolean, default: false },
+        selectedAll: { type: Boolean, default: false },
+        selectedPartial: { type: Boolean, default: false },
+        showDrag: { type: Boolean, default: false },
+        showSelect: { type: Boolean, default: false },
+        showExpand: { type: Boolean, default: false },
     },
-    emits: ['click-cell', 'select-row'],
-    setup(props, { slots, emit }) {
-        const { headerCells, columns, anyExpandable, sortType, sortColumn, updateSortType } =
-            inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
+    emits: ['sort', 'select-all'],
+    setup(props, { emit, slots }) {
+        const { sort, styleSet, primary, loading } = toRefs(props);
 
-        const showExpand = computed(() => anyExpandable.value && !!slots.expand);
-        const cellStyle = computed<CSSProperties | undefined>(() => tableStyleSet?.value?.$cell);
-        const headerStyle = computed<CSSProperties | undefined>(() => {
-            const { $selected, ...baseRow } = tableStyleSet?.value?.$row ?? {};
-            return objectUtil.assign(baseRow, tableStyleSet?.value?.$header ?? {});
+        const cellStyle = computed<CSSProperties | undefined>(() => styleSet.value.$cell);
+        const headerStyle = computed<CSSProperties>(() => {
+            const { $selected, ...baseRow } = styleSet.value.$row ?? {};
+            return objectUtil.assign(baseRow, styleSet.value.$header ?? {});
+        });
+        const checkboxStyleSet: ComputedRef<VsCheckboxStyleSet> = computed(() => {
+            if (!primary.value) {
+                return {};
+            }
+            return {
+                $checkboxColor: 'var(--vs-cs-bg-area)',
+                $checkboxCheckedColor: 'var(--vs-cs-font-colored)',
+            };
         });
 
-        function getCellStyle(index: number): CSSProperties {
-            const align = columns.value?.[index]?.headerAlign;
-            const justifyContentMap: Record<string, string> = {
-                left: 'flex-start',
-                center: 'center',
-                right: 'flex-end',
-            };
+        function getCellStyle(column: VsTableColumnDef): CSSProperties {
+            const align = column.headerAlign;
             return {
                 ...cellStyle.value,
                 textAlign: align,
-                justifyContent: align ? justifyContentMap[align] : undefined,
+                justifyContent: align ? JUSTIFY_CONTENTS[align] : undefined,
             };
         }
 
-        function findMatchingSlotName(header: VsTableHeaderCell): string {
-            const { id, colIdx, rowIdx, colKey } = header;
-            const candidatePriority = [
-                `header-${id}`,
+        function getSlotName(colKey: string, colIdx: number): string {
+            const candidates = [
                 `header-${colKey}`,
-                `header-col${colIdx}-row${rowIdx}`,
-                `header-row${rowIdx}`,
+                `header-col${colIdx}-row0`,
+                'header-row0',
                 `header-col${colIdx}`,
                 'header',
-            ].filter((name) => name in slots);
-
-            return candidatePriority[0] || '';
+            ];
+            return candidates.find((name) => name in slots) || '';
         }
 
-        function getSortIcon(header: VsTableHeaderCell): Component {
-            if (!header.sortable) {
+        function getSortIcon(column: VsTableColumnDef): Component {
+            if (column.key !== sort.value.key) {
                 return ArrowUpDownIcon;
             }
-            if (header.colKey !== sortColumn.value?.key) {
-                return ArrowUpDownIcon;
-            }
-            if (sortType.value === VsTableSortType.ASCEND) {
+            if (sort.value.type === VsTableSortType.ASCEND) {
                 return ArrowUpIcon;
             }
-            if (sortType.value === VsTableSortType.DESCEND) {
+            if (sort.value.type === VsTableSortType.DESCEND) {
                 return ArrowDownIcon;
             }
             return ArrowUpDownIcon;
         }
 
-        function clickCell(cell: VsTableHeaderCell, event: MouseEvent): void {
-            emit('click-cell', { ...cell }, event);
+        function sortColumn(colKey: string): void {
+            if (loading.value) {
+                return;
+            }
+            emit('sort', colKey);
         }
 
-        function selectRow(row: VsTableHeaderCell[], event: MouseEvent): void {
-            emit('select-row', row, event);
-            emit('click-cell', { ...row[0] }, event);
+        function toggleSelectAll(selected: boolean, event: MouseEvent): void {
+            if (loading.value) {
+                return;
+            }
+            emit('select-all', selected, event);
         }
 
         return {
-            HEADER_ROW_INDEX,
-            headerCells,
-            findMatchingSlotName,
-            showExpand,
-            clickCell,
-            selectRow,
-            getSortIcon,
-            updateSortType,
-            columns,
+            TABLE_DRAG_HANDLE_CLASS,
+            cellStyle,
             headerStyle,
+            checkboxStyleSet,
             getCellStyle,
+            getSlotName,
+            getSortIcon,
+            sortColumn,
+            toggleSelectAll,
         };
     },
 });

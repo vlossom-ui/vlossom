@@ -1,80 +1,43 @@
 import { computed, reactive, type Ref } from 'vue';
-import { type VsTableItem, type VsTableCell } from './../types';
-import { isVsTableBodyRow, getRowId, getRowItem } from './../models/table-model';
+import { functionUtil } from '@/utils';
+import type { VsTableItem } from './../types';
 
-export function useTableExpand(
-    expandable: Ref<(item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean>,
+export function useTableExpandComposable(
+    rawExpandable: Ref<boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)>,
     items: Ref<VsTableItem[]>,
+    getItemKey: (item: VsTableItem) => string | number,
 ) {
-    const expanded = reactive(new Set());
+    const isExpandable = computed(() =>
+        functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawExpandable.value),
+    );
 
+    const expandedKeys = reactive(new Set<string | number>());
+
+    // expandable이 boolean이면 아이템을 순회하지 않는다 (대량 items에서는 갱신마다 전체 스캔이 된다)
     const anyExpandable = computed<boolean>(() => {
-        return items.value.some(expandable.value);
+        if (typeof rawExpandable.value === 'boolean') {
+            return rawExpandable.value && items.value.length > 0;
+        }
+        return items.value.some(isExpandable.value);
     });
 
-    function isExpanded(row: VsTableCell[]): boolean {
-        if (!isVsTableBodyRow(row)) {
-            return false;
-        }
-        const rowId = getRowId(row);
-        if (!rowId) {
-            return false;
-        }
-        return expanded.has(rowId);
+    function isExpanded(item: VsTableItem): boolean {
+        return expandedKeys.has(getItemKey(item));
     }
 
-    function toggleExpand(row: VsTableCell[]): boolean {
-        const rowId = getExpandableRowId(row);
-        if (!rowId) {
+    function expandItem(item: VsTableItem, index: number, expanded: boolean): boolean {
+        if (!item || !isExpandable.value(item, index, items.value)) {
             return false;
         }
 
-        if (expanded.has(rowId)) {
-            expanded.delete(rowId);
+        const key = getItemKey(item);
+        if (expanded) {
+            expandedKeys.add(key);
         } else {
-            expanded.add(rowId);
+            expandedKeys.delete(key);
         }
-        return expanded.has(rowId);
+        return true;
     }
 
-    function setExpand(row: VsTableCell[], shouldExpand: boolean): boolean {
-        const rowId = getExpandableRowId(row);
-        if (!rowId) {
-            return false;
-        }
-
-        if (shouldExpand) {
-            expanded.add(rowId);
-        } else {
-            expanded.delete(rowId);
-        }
-        return expanded.has(rowId);
-    }
-
-    // returns the row id only when the row is a valid, expandable body row
-    function getExpandableRowId(row: VsTableCell[]): string | undefined {
-        if (!isVsTableBodyRow(row)) {
-            return undefined;
-        }
-        const rowItem = getRowItem(row);
-        if (!rowItem) {
-            return undefined;
-        }
-        const rowId = getRowId(row);
-        if (!rowId) {
-            return undefined;
-        }
-        const rowIdx = row[0]?.rowIdx;
-        if (!expandable.value(rowItem, rowIdx, items.value)) {
-            return undefined;
-        }
-        return rowId;
-    }
-
-    return {
-        anyExpandable,
-        isExpanded,
-        toggleExpand,
-        setExpand,
-    };
+    return { isExpandable, anyExpandable, isExpanded, expandItem };
 }

@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { colorScheme } from '@/storybook';
 import VsTable from './../VsTable.vue';
-import VsInput from './../../vs-input/VsInput.vue';
 import type { VsTableItem } from './../types';
 
 const baseColumns = [
@@ -11,23 +10,20 @@ const baseColumns = [
     { key: 'metadata.email', label: 'Email' },
 ];
 
-const sortableColumns = baseColumns.map((column) => ({
-    ...column,
-    sortable: true,
-}));
+const sortableColumns = baseColumns.map((column) => ({ ...column, sortable: true }));
 
 const baseItems = [
-    { name: 'John', age: 30, metadata: { email: 'john@example.com' }, id: '1' },
-    { name: 'Jane', age: 25, metadata: { email: 'jane@example.com' }, id: '2' },
-    { name: 'Jim', age: 35, metadata: { email: 'jim@example.com' }, id: '3' },
-    { name: 'Allison', age: 28, metadata: { email: 'ally@example.com' }, id: '4' },
+    { id: '1', name: 'John', age: 30, metadata: { email: 'john@example.com' } },
+    { id: '2', name: 'Jane', age: 25, metadata: { email: 'jane@example.com' } },
+    { id: '3', name: 'Jim', age: 35, metadata: { email: 'jim@example.com' } },
+    { id: '4', name: 'Allison', age: 28, metadata: { email: 'ally@example.com' } },
 ];
 
-const paginationItems = Array.from({ length: 120 }, (_, i) => ({
-    id: `${i}`,
-    name: `User ${i + 1}`,
-    age: 20 + (i % 50),
-    metadata: { email: `user${i + 1}@example.com` },
+const paginationItems = Array.from({ length: 120 }, (_, index) => ({
+    id: `${index}`,
+    name: `User ${index + 1}`,
+    age: 20 + (index % 50),
+    metadata: { email: `user${index + 1}@example.com` },
 }));
 
 const meta: Meta<typeof VsTable> = {
@@ -37,7 +33,8 @@ const meta: Meta<typeof VsTable> = {
         docs: {
             description: {
                 component:
-                    'VsTable은 컬럼 정의와 아이템을 기반으로 데이터를 렌더링하며, 슬롯을 통해 헤더/바디를 자유롭게 커스텀할 수 있습니다.',
+                    'VsTable는 컬럼 정의와 아이템을 기반으로 데이터를 렌더링하며, 슬롯을 통해 헤더/바디를 자유롭게 커스텀할 수 있습니다. ' +
+                    '검색 · 정렬 · 드래그가 반영된 아이템은 `v-model:paged-items` / `v-model:total-items`로 가져옵니다.',
             },
         },
     },
@@ -61,6 +58,10 @@ const meta: Meta<typeof VsTable> = {
         items: {
             control: { type: 'object' },
             description: '테이블 렌더링 대상 아이템입니다.',
+        },
+        itemKey: {
+            control: { type: 'text' },
+            description: '행을 식별할 키입니다. 아이템 객체가 교체돼도 선택/확장 상태와 DOM이 유지됩니다.',
         },
         search: {
             control: { type: 'object' },
@@ -90,135 +91,57 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     args: {},
     parameters: {
-        docs: {
-            description: {
-                story: '기본 컬럼/아이템으로 테이블을 렌더링합니다.',
-            },
-        },
+        docs: { description: { story: '기본 컬럼/아이템으로 테이블을 렌더링합니다.' } },
     },
 };
+
 export const NoItemsWithHeader: Story = {
-    args: {
-        columns: baseColumns,
-        items: [],
-    },
+    args: { items: [] },
     parameters: {
-        docs: {
-            description: {
-                story: '컬럼은 있고 아이템이 없을 때 헤더만 표시되고 바디는 비어 있습니다.',
-            },
-        },
+        docs: { description: { story: '컬럼은 있고 아이템이 없을 때 헤더만 표시되고 바디는 비어 있습니다.' } },
     },
 };
 
 export const NoColumnsAndItems: Story = {
-    args: {
-        columns: [],
-        items: [],
-    },
+    args: { columns: [], items: [] },
     parameters: {
-        docs: {
-            description: {
-                story: '컬럼과 아이템이 모두 없을 때 비어 있는 테이블 상태를 보여줍니다.',
-            },
-        },
+        docs: { description: { story: '컬럼과 아이템이 모두 없을 때의 빈 테이블 상태입니다.' } },
     },
 };
 
-export const NullColumns: Story = {
-    args: {
-        columns: [],
-        items: baseItems,
-    },
+export const ColumnsFromItems: Story = {
+    args: { columns: [], items: baseItems },
     parameters: {
-        docs: {
-            description: {
-                story: 'columns가 null일 때 아이템의 키를 기반으로 컬럼이 구성되는 기본 동작을 확인합니다.',
-            },
-        },
+        docs: { description: { story: 'columns가 비어 있으면 첫 아이템의 키를 기반으로 컬럼이 구성됩니다.' } },
     },
 };
 
 export const StringColumns: Story = {
-    args: {
-        columns: baseColumns.map((column) => column.key),
-        items: baseItems,
-    },
+    args: { columns: baseColumns.map((column) => column.key), items: baseItems },
     parameters: {
-        docs: {
-            description: {
-                story: '컬럼을 문자열 배열로 전달해 자동 라벨링되는 케이스를 확인합니다.',
-            },
-        },
+        docs: { description: { story: '컬럼을 문자열 배열로 전달하면 key와 label이 동일하게 구성됩니다.' } },
     },
 };
 
 export const CustomSlots: Story = {
     render: () => ({
-        components: { VsTable, VsInput },
+        components: { VsTable },
         setup() {
-            const oddRowIndexes = computed(() => baseItems.map((_item, idx) => idx).filter((idx) => idx % 2 === 0));
-            const janesEmailEditingMode = ref(false);
-
-            const toggleJaneEmailEditingMode = () => {
-                janesEmailEditingMode.value = !janesEmailEditingMode.value;
-            };
-
-            return {
-                columns: baseColumns,
-                items: baseItems,
-                oddRowIndexes,
-                janesEmailEditingMode,
-                toggleJaneEmailEditingMode,
-            };
+            return { columns: baseColumns, items: baseItems };
         },
         template: `
             <vs-table :columns="columns" :items="items">
                 <template #caption>
                     <span class="font-bold text-blue-500">Custom Caption</span>
                 </template>
-
-                <template #header="{ value }">
-                    <span class="bg-yellow-300 font-semibold">
-                        {{ value }}
-                    </span>
-                </template>
-
                 <template #header-name="{ value }">
-                    <span class="flex items-center gap-2 text-amber-700">
-                        {{ value }} <span class="text-xs font-semibold">custom</span>
-                    </span>
+                    <span class="font-bold text-blue-500">{{ value }}</span>
                 </template>
-
-                <template #body="{ item }">
-                    <span class="bg-green-100 font-semibold">
-                        {{ item.name }}
-                    </span>
+                <template #item-name="{ item }">
+                    <span class="font-bold">{{ item.name }}</span>
                 </template>
-
-                <template #body-name-item-1="{ item }">
-                    <span class="font-semibold text-red-500">Custom Body {{ item.name }}</span>
-                </template>
-
-                <template v-for="idx in oddRowIndexes" :key="idx" #[\`body-row\${idx}\`]="{ item }">
-                    <span class="bg-purple-300 font-semibold text-purple-700">Custom Body Row - {{ item.name }}</span>
-                </template>
-
-                <template #body-age="{ item }">
-                    <span class="font-semibold text-yellow-500">{{ item.age }}</span>
-                </template>
-
-                <template #body-metadata-email-item-1="{ item }">
-                    <vs-input
-                        v-if="janesEmailEditingMode"
-                        v-model="item.metadata.email"
-                        @blur="toggleJaneEmailEditingMode"
-                    />
-                    <span v-else @click="toggleJaneEmailEditingMode">{{ item.metadata.email }}</span>
-                </template>
-
-                <template #body-metadata-email-2="{ item }">
-                    <span class="text-green-500">Custom Body {{ item.metadata }}</span>
+                <template #item-col1="{ value }">
+                    <span class="text-gray-500">{{ value }}세</span>
                 </template>
             </vs-table>
         `,
@@ -226,36 +149,50 @@ export const CustomSlots: Story = {
     parameters: {
         docs: {
             description: {
-                story: '다양한 커스텀 슬롯 예제를 확인할 수 있습니다.',
+                story:
+                    '헤더는 `header-`, 바디는 `item-` 접두사를 쓰고 `-${colKey}` → `-col{colIdx}-row{rowIdx}` → ' +
+                    '`-row{rowIdx}` → `-col{colIdx}` → 접두사 단독 순으로 매칭됩니다.',
             },
         },
     },
 };
 
 export const Selectable: Story = {
-    args: {
-        columns: baseColumns,
-        items: baseItems,
-        selectable: (item: VsTableItem) => item.name !== 'Jim',
-    },
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const selectedItems = ref<VsTableItem[]>([]);
+            const selectable = (item: VsTableItem) => item.name !== 'Jim';
+            return { columns: baseColumns, items: baseItems, selectedItems, selectable };
+        },
+        template: `
+            <div>
+                <vs-table
+                    :columns="columns"
+                    :items="items"
+                    :selectable="selectable"
+                    item-key="id"
+                    v-model:selected-items="selectedItems"
+                />
+                <p class="mt-2 text-sm">Selected: {{ selectedItems.map((item) => item.name).join(', ') || '-' }}</p>
+            </div>
+        `,
+    }),
     parameters: {
         docs: {
             description: {
-                story: 'selectable을 true/함수로 전달해 선택 가능한 행만 체크박스를 노출하고, 전체 선택 상태를 확인합니다.',
+                story: 'selectable을 true 또는 함수로 전달해 선택 가능한 행만 체크박스를 노출합니다.',
             },
         },
     },
 };
 
 export const SortableColumns: Story = {
-    args: {
-        columns: sortableColumns,
-        items: [...baseItems].reverse(),
-    },
+    args: { columns: sortableColumns, items: [...baseItems].reverse() },
     parameters: {
         docs: {
             description: {
-                story: 'sortable 컬럼을 지정하면 헤더 아이콘을 클릭해 ASC/DESC/해제 순으로 정렬을 토글할 수 있습니다.',
+                story: 'sortable 컬럼은 헤더 아이콘 클릭으로 오름차순 → 내림차순 → 해제 순으로 토글됩니다.',
             },
         },
     },
@@ -276,7 +213,7 @@ export const Searchable: Story = {
             description: {
                 story:
                     '검색은 렌더링된 셀 값을 대상으로 동작합니다. `skipSearch`가 설정된 Email 컬럼은 ' +
-                    '화면에 보이지만 검색 대상에서 제외되므로, 이메일 문자열로는 걸러지지 않습니다.',
+                    '화면에 보이지만 검색 대상에서 제외됩니다.',
             },
         },
     },
@@ -297,10 +234,7 @@ export const SearchExtraKeys: Story = {
     parameters: {
         docs: {
             description: {
-                story:
-                    '`search.extraKeys`에 지정한 키는 컬럼으로 렌더링되지 않아도 검색 대상에 포함됩니다. ' +
-                    '슬롯으로 값을 끌어와 보여주거나 숨겨진 메타데이터로 필터링할 때 사용합니다. ' +
-                    '이 예시에서 `department`는 화면에 없지만 "Design"으로 검색됩니다.',
+                story: '`search.extraKeys`에 지정한 키는 컬럼으로 렌더링되지 않아도 검색 대상에 포함됩니다.',
             },
         },
     },
@@ -310,22 +244,14 @@ export const Expandable: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const items = baseItems.map((item) => ({
-                ...item,
-                description: `${item.name} 상세 정보`,
-            }));
+            const items = baseItems.map((item) => ({ ...item, description: `${item.name} 상세 정보` }));
             const expandable = (item: VsTableItem) => Number(item.age) >= 30;
             return { columns: baseColumns, items, expandable };
         },
         template: `
-            <vs-table :columns="columns" :items="items" :expandable="expandable">
-                <template #expand="{ item, rowIdx }">
-                    <div class="p-3 bg-slate-50 rounded">
-                        <p class="font-semibold">확장 영역 (row {{ rowIdx }})</p>
-                        <p class="text-sm text-slate-600">
-                            {{ item.description }} - {{ item.metadata.email }}
-                        </p>
-                    </div>
+            <vs-table :columns="columns" :items="items" :expandable="expandable" item-key="id">
+                <template #expand="{ item }">
+                    <div class="p-4">{{ item.description }}</div>
                 </template>
             </vs-table>
         `,
@@ -333,7 +259,7 @@ export const Expandable: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'expandable을 켜면 행마다 확장 버튼이 노출되며, expand 슬롯으로 확장 영역을 커스텀합니다.',
+                story: '확장 UI는 `expand` 슬롯이 있을 때만 렌더링되고, expandable 함수로 행별 제어가 가능합니다.',
             },
         },
     },
@@ -348,19 +274,34 @@ export const Empty: Story = {
         template: `
             <vs-table :columns="columns" :items="[]">
                 <template #empty>
-                    <div class="p-4 text-center text-sm text-slate-500">
-                        일치하는 결과가 없습니다.
-                    </div>
+                    <div class="p-4">조건에 맞는 결과가 없습니다.</div>
                 </template>
             </vs-table>
         `,
     }),
     parameters: {
-        docs: {
-            description: {
-                story: 'items가 비어있을 때 기본 "NO DATA" 자리표시자 대신 empty 슬롯 내용을 표시합니다.',
-            },
-        },
+        docs: { description: { story: 'empty 슬롯으로 기본 NO DATA 자리표시자를 대체합니다.' } },
+    },
+};
+
+export const Loading: Story = {
+    args: { items: baseItems, loading: true, search: true, pagination: true },
+    parameters: {
+        docs: { description: { story: 'loading이면 셀이 스켈레톤으로 바뀌고 검색/페이지네이션이 비활성화됩니다.' } },
+    },
+};
+
+export const ColumnWidth: Story = {
+    args: {
+        columns: [
+            { key: 'name', label: 'Name', width: '10rem' },
+            { key: 'age', label: 'Age', minWidth: '4rem', maxWidth: '6rem', align: 'center' },
+            { key: 'metadata.email', label: 'Email' },
+        ],
+        items: baseItems,
+    },
+    parameters: {
+        docs: { description: { story: 'width / minWidth / maxWidth는 grid 트랙으로 변환됩니다.' } },
     },
 };
 
@@ -368,26 +309,16 @@ export const StickyHeader: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const items = Array.from({ length: 40 }).map((_, idx) => ({
-                id: `${idx + 1}`,
-                name: `User ${idx + 1}`,
-                age: 20 + (idx % 30),
-                metadata: { email: `user${idx + 1}@example.com` },
-            }));
-            return { columns: baseColumns, items };
+            return { columns: baseColumns, items: paginationItems.slice(0, 40) };
         },
         template: `
-            <div style="height: 360px; overflow: auto; border: 1px solid #e5e7eb; padding: 8px;">
-                <vs-table :columns="columns" :items="items" stickyHeader />
+            <div style="height: 20rem; overflow: auto">
+                <vs-table :columns="columns" :items="items" sticky-header item-key="id" />
             </div>
         `,
     }),
     parameters: {
-        docs: {
-            description: {
-                story: 'stickyHeader를 켜고 스크롤 시 헤더가 상단에 고정되는 동작을 확인합니다',
-            },
-        },
+        docs: { description: { story: '스크롤로 헤더가 화면에서 벗어나면 고정 헤더가 나타납니다.' } },
     },
 };
 
@@ -395,231 +326,89 @@ export const Sizes: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
-            return { sizes, columns: sortableColumns, items: baseItems };
+            return { columns: baseColumns, items: baseItems, sizes: ['xs', 'sm', 'md', 'lg', 'xl'] };
         },
         template: `
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="flex flex-col gap-6">
                 <div v-for="size in sizes" :key="size">
-                    <p style="margin: 0 0 0.5rem; font-weight: 600;">size = "{{ size }}"</p>
+                    <h4 class="mb-2 text-sm">{{ size }}</h4>
                     <vs-table :columns="columns" :items="items" :size="size" />
                 </div>
             </div>
         `,
     }),
-    parameters: {
-        docs: {
-            description: {
-                story: 'size prop으로 셀 패딩 · 폰트 · expand handle · sort icon 크기를 한꺼번에 조절합니다.',
-            },
-        },
-    },
 };
 
 export const Responsive: Story = {
-    render: () => ({
-        components: { VsTable },
-        setup() {
-            const items = Array.from({ length: 6 }).map((_, idx) => ({
-                id: `${idx + 1}`,
-                name: `User ${idx + 1}`,
-                order: (idx % 5) + 1,
-                checked: idx % 2 === 0,
-                created: `2021-0${(idx % 9) + 1}-0${(idx % 3) + 1}`,
-                desc: 'Lorem ipsum has been the industry',
-            }));
-            return { columns: ['id', 'name', 'order', 'checked', 'created', 'desc'], items };
-        },
-        template: `
-            <div style="max-width: 720px; border: 1px solid #e5e7eb; padding: 8px;">
-                <p class="text-sm text-slate-600 mb-2">브라우저 폭을 줄이면 카드형으로 변합니다.</p>
-                <vs-table :columns="columns" :items="items" responsive />
-            </div>
-        `,
-    }),
+    args: { columns: baseColumns, items: baseItems, responsive: true },
     parameters: {
-        docs: {
-            description: {
-                story: '좁은 화면에서 카드형(모바일) 테이블 레이아웃을 확인합니다. responsive를 켜면 반응형 레이아웃을 활성화합니다.',
-            },
-        },
+        docs: { description: { story: '좁은 화면에서는 컬럼을 세로로 쌓아 label과 값을 나란히 보여줍니다.' } },
     },
 };
 
 export const WithPagination: Story = {
-    args: {
-        columns: sortableColumns,
-        items: Array.from({ length: 150 }, (_, i) => ({
-            id: `${i}`,
-            name: `User ${i + 1}`,
-            age: 20 + (i % 50),
-            metadata: { email: `user${i + 1}@example.com` },
-        })),
-        pagination: true,
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: '150개 아이템에 대해 페이지네이션을 적용합니다. 기본 페이지 크기는 50입니다.',
-            },
-        },
-    },
+    args: { columns: baseColumns, items: paginationItems, pagination: true },
 };
 
 export const WithCustomPagination: Story = {
     args: {
-        columns: sortableColumns,
-        items: Array.from({ length: 100 }, (_, i) => ({
-            id: `${i}`,
-            name: `User ${i + 1}`,
-            age: 20 + (i % 50),
-            metadata: { email: `user${i + 1}@example.com` },
-        })),
-        pageSize: 25,
+        columns: baseColumns,
+        items: paginationItems,
         pagination: {
             pageSizeOptions: [
-                { label: '10 items', value: 10 },
-                { label: '25 items', value: 25 },
-                { label: '50 items', value: 50 },
+                { label: '5개씩', value: 5 },
+                { label: '10개씩', value: 10 },
             ],
             showingLength: 5,
             edgeButtons: true,
         },
     },
-    parameters: {
-        docs: {
-            description: {
-                story: '커스텀 페이지네이션 옵션을 적용합니다. 페이지 크기 25, 표시할 페이지 버튼 수 5, 첫/마지막 버튼 활성화.',
-            },
-        },
-    },
-};
-
-export const PaginationWithEvent: Story = {
-    render: () => ({
-        components: { VsTable },
-        setup() {
-            const currentPage = ref(0);
-            const currentPageSize = ref(20);
-
-            const onPageChange = (page: number, pageSize: number) => {
-                currentPage.value = page;
-                currentPageSize.value = pageSize;
-            };
-
-            return {
-                columns: sortableColumns,
-                items: paginationItems,
-                currentPage,
-                currentPageSize,
-                onPageChange,
-            };
-        },
-        template: `
-            <div class="space-y-2">
-                <vs-table
-                    :columns="columns"
-                    :items="items"
-                    :page-size="currentPageSize"
-                    :pagination="{
-                        pageSizeOptions: [
-                            { label: '10 items', value: 10 },
-                            { label: '20 items', value: 20 },
-                            { label: '50 items', value: 50 }
-                        ],
-                        showingLength: 5,
-                        edgeButtons: true,
-                        showTotal: true
-                    }"
-                    @page-change="onPageChange"
-                />
-                <p class="text-sm text-slate-600">
-                    현재 페이지: {{ currentPage + 1 }} / 페이지 크기: {{ currentPageSize }}
-                </p>
-            </div>
-        `,
-    }),
-    parameters: {
-        docs: {
-            description: {
-                story: 'page-change 이벤트를 통해 현재 페이지 인덱스와 페이지 크기를 동기화하는 예제입니다.',
-            },
-        },
-    },
 };
 
 export const WithSearchSortPagination: Story = {
-    args: {
-        columns: sortableColumns,
-        items: Array.from({ length: 200 }, (_, i) => ({
-            id: `${i}`,
-            name: i % 2 === 0 ? `Alice ${i + 1}` : `Bob ${i + 1}`,
-            age: 20 + (i % 50),
-            metadata: { email: `user${i + 1}@example.com` },
-        })),
-        search: true,
-        pageSize: 20,
-        pagination: true,
-    },
+    args: { columns: sortableColumns, items: paginationItems, search: true, pagination: true },
     parameters: {
-        docs: {
-            description: {
-                story: '검색, 정렬, 페이지네이션이 모두 활성화된 테이블입니다. 검색이나 정렬 변경 시 자동으로 첫 페이지로 리셋됩니다.',
-            },
-        },
+        docs: { description: { story: '검색 → 정렬 → 페이지네이션 순으로 적용됩니다.' } },
     },
 };
 
-export const Loading: Story = {
+export const ServerMode: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const isLoading = ref(true);
+            const page = ref(0);
+            const pageSize = ref(10);
+            const items = ref<VsTableItem[]>(paginationItems.slice(0, 10));
+            const loading = ref(false);
 
-            // 3초 후 데이터 로드 시뮬레이션
-            setTimeout(() => {
-                isLoading.value = false;
-            }, 3000);
+            const fetchData = (nextPage: number, nextPageSize: number) => {
+                loading.value = true;
+                setTimeout(() => {
+                    items.value = paginationItems.slice(nextPage * nextPageSize, (nextPage + 1) * nextPageSize);
+                    loading.value = false;
+                }, 300);
+            };
 
-            return { isLoading, baseColumns, baseItems };
+            return { columns: baseColumns, items, page, pageSize, loading, fetchData };
         },
         template: `
-            <div>
-                <p class="text-sm text-slate-600 mb-2">3초 후 데이터가 로드됩니다.</p>
-                <vs-table
-                    :columns="baseColumns"
-                    :items="baseItems"
-                    :loading="isLoading"
-                    search
-                />
-            </div>
+            <vs-table
+                :columns="columns"
+                :items="items"
+                :loading="loading"
+                server-mode
+                item-key="id"
+                :pagination="{ totalItemCount: 120 }"
+                v-model:page="page"
+                v-model:page-size="pageSize"
+                @paginate="fetchData"
+            />
         `,
     }),
     parameters: {
         docs: {
             description: {
-                story: 'loading이 true일 때 스켈레톤 UI가 표시되고, 검색 입력이 비활성화됩니다. 3초 후 실제 데이터로 전환됩니다.',
-            },
-        },
-    },
-};
-
-export const ColumnWidth: Story = {
-    args: {
-        columns: [
-            { key: 'name', label: 'Name', width: '200px' },
-            { key: 'age', label: 'Age', minWidth: '80px', maxWidth: '150px' },
-            { key: 'metadata.email', label: 'Email', minWidth: '200px' },
-        ],
-        items: baseItems,
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: `
-                    ColumnDef의 width, minWidth, maxWidth로 컬럼 너비를 제어합니다.
-                    width는 고정 크기, minWidth/maxWidth는 CSS grid minmax()로 변환됩니다.
-                `,
+                story: 'server-mode에서는 클라이언트 페이징을 하지 않고, paginate 이벤트로 받은 페이지 데이터를 그대로 렌더링합니다.',
             },
         },
     },
@@ -629,36 +418,74 @@ export const Draggable: Story = {
     render: () => ({
         components: { VsTable },
         setup() {
-            const items = ref([...baseItems]);
-
-            const onDrag = (event: any) => {
-                console.log('Drag event:', {
-                    oldIndex: event.oldIndex,
-                    newIndex: event.newIndex,
-                    from: event.from,
-                    to: event.to,
-                });
-            };
-
-            return { columns: baseColumns, items, onDrag };
+            const totalItems = ref<VsTableItem[]>([]);
+            return { columns: sortableColumns, items: baseItems, totalItems };
         },
         template: `
             <div>
-                <p class="text-sm text-slate-600 mb-2">행을 드래그해 순서를 변경할 수 있습니다. 콘솔에서 이벤트를 확인하세요.</p>
+                <p class="mb-2 text-sm">행을 드래그해 순서를 바꿔보세요. 정렬이 켜져 있어도 드래그할 수 있습니다.</p>
                 <vs-table
                     :columns="columns"
                     :items="items"
                     draggable
-                    @drag="onDrag"
+                    item-key="id"
+                    v-model:total-items="totalItems"
                 />
+                <p class="mt-2 text-sm">현재 순서: {{ totalItems.map((item) => item.name).join(' → ') }}</p>
             </div>
         `,
     }),
     parameters: {
         docs: {
             description: {
-                story: `draggable을 true로 설정하면 행을 드래그하여 순서를 변경할 수 있습니다.
-                        drag 이벤트를 통해 oldIndex, newIndex 등의 정보를 받을 수 있습니다.`,
+                story:
+                    '드래그는 `items`를 바꾸지 않고 화면에 보이는 순서를 재배열합니다. ' +
+                    '바뀐 순서는 `v-model:total-items` / `v-model:paged-items`로 가져옵니다.',
+            },
+        },
+    },
+};
+
+export const BoundItems: Story = {
+    render: () => ({
+        components: { VsTable },
+        setup() {
+            const pagedItems = ref<VsTableItem[]>([]);
+            const totalItems = ref<VsTableItem[]>([]);
+            const selectedItems = ref<VsTableItem[]>([]);
+            return {
+                columns: sortableColumns,
+                items: paginationItems.slice(0, 20),
+                pagedItems,
+                totalItems,
+                selectedItems,
+            };
+        },
+        template: `
+            <div>
+                <vs-table
+                    :columns="columns"
+                    :items="items"
+                    item-key="id"
+                    selectable
+                    search
+                    :pagination="{ pageSizeOptions: [{ label: '5개씩', value: 5 }] }"
+                    v-model:paged-items="pagedItems"
+                    v-model:total-items="totalItems"
+                    v-model:selected-items="selectedItems"
+                />
+                <ul class="mt-2 text-sm">
+                    <li>현재 페이지: {{ pagedItems.length }}개</li>
+                    <li>검색/정렬 반영 전체: {{ totalItems.length }}개</li>
+                    <li>선택: {{ selectedItems.length }}개</li>
+                </ul>
+            </div>
+        `,
+    }),
+    parameters: {
+        docs: {
+            description: {
+                story: '검색 · 정렬 · 드래그 · 선택 상태가 반영된 아이템을 세 개의 v-model로 가져옵니다.',
             },
         },
     },

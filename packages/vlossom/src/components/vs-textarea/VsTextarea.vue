@@ -101,6 +101,8 @@ export default defineComponent({
             state,
             styleSet,
             modelModifiers,
+            placeholder,
+            focusPlaceholder,
         } = toRefs(props);
 
         const textareaRef: TemplateRef<HTMLTextAreaElement> = useTemplateRef('textareaRef');
@@ -184,10 +186,10 @@ export default defineComponent({
         }));
 
         const computedPlaceholder = computed(() => {
-            if (isFocused.value && props.focusPlaceholder) {
-                return props.focusPlaceholder;
+            if (isFocused.value && focusPlaceholder.value) {
+                return focusPlaceholder.value;
             }
-            return props.placeholder ?? '';
+            return placeholder.value ?? '';
         });
 
         const { stateBoxClasses } = useStateClass(computedState);
