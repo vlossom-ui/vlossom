@@ -1,52 +1,46 @@
-import { ref, type Ref } from 'vue';
-import { VsTableSortType, type VsTableColumnDef, type VsTableRow } from './../types';
-import { objectUtil, compareUtil } from '@/utils';
+import { computed, ref, type ComputedRef } from 'vue';
+import { compareUtil, objectUtil } from '@/utils';
+import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableSort } from './../types';
 
-const SORT_TYPE_COUNT = Object.keys(VsTableSortType).filter((value) => !isNaN(Number(value))).length;
+const NEXT_SORT_TYPE: Record<VsTableSortType, VsTableSortType> = {
+    [VsTableSortType.NONE]: VsTableSortType.ASCEND,
+    [VsTableSortType.ASCEND]: VsTableSortType.DESCEND,
+    [VsTableSortType.DESCEND]: VsTableSortType.NONE,
+};
 
-export function useTableSort(columns: Ref<VsTableColumnDef[]>) {
-    const sortType = ref<VsTableSortType>(VsTableSortType.NONE);
-    const sortColumn = ref<VsTableColumnDef | null>(null);
+export function useTableSortComposable(columns: ComputedRef<VsTableColumnDef[]>, items: ComputedRef<VsTableItem[]>) {
+    const sort = ref<VsTableSort>({ key: '', type: VsTableSortType.NONE });
 
-    function compareRows(aRow: VsTableRow, bRow: VsTableRow): number {
-        if (sortType.value === VsTableSortType.NONE) {
-            return 0;
+    const sortColumn = computed<VsTableColumnDef | null>(() => {
+        if (sort.value.type === VsTableSortType.NONE || !sort.value.key) {
+            return null;
         }
-        if (!columns.value.length || !sortColumn.value) {
-            return 0;
-        }
-        const aItem = aRow.item;
-        const bItem = bRow.item;
-        if (!aItem || !bItem) {
-            return 0;
-        }
-        const sortKey = sortColumn.value.sortBy ?? sortColumn.value.key;
-        const aValue: unknown = objectUtil.get(aItem, sortKey);
-        const bValue: unknown = objectUtil.get(bItem, sortKey);
-        const direction = sortType.value === VsTableSortType.ASCEND ? 1 : -1;
+        return columns.value.find(({ key }) => key === sort.value.key) ?? null;
+    });
 
-        return direction * compareUtil.compareValues(aValue, bValue);
-    }
+    const sortedItems = computed<VsTableItem[]>(() => {
+        const column = sortColumn.value;
+        if (!column) {
+            return items.value;
+        }
 
-    function updateSortType(columnKey: string): void {
-        if (!columns.value) {
+        const sortKey = column.sortBy ?? column.key;
+        const direction = sort.value.type === VsTableSortType.ASCEND ? 1 : -1;
+        return [...items.value].sort(
+            (aItem, bItem) =>
+                direction * compareUtil.compareValues(objectUtil.get(aItem, sortKey), objectUtil.get(bItem, sortKey)),
+        );
+    });
+
+    function updateSort(columnKey: string): void {
+        if (!columns.value.some(({ key }) => key === columnKey)) {
             return;
         }
-        const targetColumn = columns.value.find((column) => column.key === columnKey);
-        if (!targetColumn) {
-            return;
-        }
-        const current: VsTableSortType = sortType.value ?? VsTableSortType.NONE;
-        const next: VsTableSortType = (current + 1) % SORT_TYPE_COUNT;
-
-        sortType.value = next;
-        sortColumn.value = targetColumn;
+        sort.value =
+            sort.value.key === columnKey
+                ? { key: columnKey, type: NEXT_SORT_TYPE[sort.value.type] }
+                : { key: columnKey, type: VsTableSortType.ASCEND };
     }
 
-    return {
-        sortType,
-        sortColumn,
-        compareRows,
-        updateSortType,
-    };
+    return { sort, sortedItems, updateSort };
 }

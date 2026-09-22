@@ -116,10 +116,14 @@
     }
 
     /* ── Body rows ── */
-    .vs-table-draggable-wrapper > .vs-table-body-row {
+    .vs-table-tbody > .vs-table-body-row {
         @apply relative box-border transition-colors duration-250 ease-in-out;
-        border: 1px solid transparent;
-        border-top-color: var(--vs-cs-line);
+
+        /* 행은 subgrid라서 좌우 border가 첫/마지막 트랙 폭을 1px씩 잠식한다.
+           폭이 고정된 핸들 셀은 그만큼 트랙을 못 채워 틈이 생기므로, 실제로 쓰는 상하 border만 둔다.
+           shorthand(border/border-block)는 선언 순서가 바뀌면 아래 색 지정을 덮으므로 쓰지 않는다. */
+        border-top: 1px solid var(--vs-cs-line);
+        border-bottom: 1px solid transparent;
 
         &:not(:first-child) {
             margin-top: -1px;
@@ -190,32 +194,34 @@
         font-size: calc(var(--vs-size-font, var(--vs-font-size-md)) * 1.25);
     }
 
-    /* ── Draggable ── */
-    .vs-table-draggable-wrapper {
-        /* display: contents를 사용하는 이유:
-           - draggable의 wrapper 엘리먼트가 DOM 구조상 table, tr, tbody 등과 섞이면서 table 레이아웃이 깨지는 문제를 막기 위해
-           - 'display: contents'는 wrapper 자체를 렌더링하지 않고 자식만 렌더링시켜 table 구조를 그대로 유지
-           - 즉, drag&drop 컴포넌트의 불필요한 wrapper가 DOM에서 제거된 효과를 줌 */
-        display: contents;
+    /* ── Handle cells ── */
+
+    /* drag 핸들: 아이콘이 테두리에 붙지 않게 다른 셀과 같은 좌측 인셋을 두고, 오른쪽은 붙여 트랙을 좁게 유지한다 */
+    .vs-table-th.vs-table-drag-handle,
+    .vs-table-td.vs-table-drag-handle {
+        @apply pr-0;
+        padding-left: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2);
+        width: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2 + 1rem);
     }
 
-    /* ── Handle cells ── */
-    .vs-table-th.vs-table-drag-handle {
-        @apply w-6 px-0!;
-
-        svg {
-            @apply hidden;
-        }
+    .vs-table-th.vs-table-drag-handle svg {
+        @apply hidden;
     }
 
     .vs-table-td.vs-table-drag-handle {
-        @apply w-4 cursor-grab px-0!;
+        @apply cursor-grab;
         color: var(--vs-cs-font-colored);
+
+        svg {
+            @apply h-4 w-4 shrink-0;
+        }
     }
 
+    /* 확장 버튼 셀은 패딩을 두지 않는다. 좌우 패딩은 버튼을 찌그러뜨리고, 상하 패딩은 버튼 높이에 더해져 행을 밀어낸다.
+       패딩이 없어도 버튼(0.75 * size-height)이 트랙/행보다 작아 가운데 정렬로 균형이 맞는다. */
     .vs-table-th.vs-table-expand-handle,
     .vs-table-td.vs-table-expand-handle {
-        @apply justify-end;
+        @apply justify-center p-0;
         width: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 1.7);
 
         .vs-table-expand-icon {
@@ -279,7 +285,6 @@
             width: auto;
         }
 
-        .vs-table-draggable-wrapper,
         .vs-table-tbody,
         .vs-table-th,
         .vs-table-td,
@@ -294,7 +299,7 @@
             @apply absolute m-0 block h-1 w-1 overflow-hidden border-0;
         }
 
-        .vs-table-draggable-wrapper > .vs-table-body-row {
+        .vs-table-tbody > .vs-table-body-row {
             @apply mx-0 mt-0 mb-3 border border-solid;
             border: 1px solid var(--vs-cs-line);
         }
@@ -325,7 +330,6 @@
         }
 
         .vs-table {
-            .vs-table-draggable-wrapper,
             .vs-table-tbody,
             .vs-table-th,
             .vs-table-td,
@@ -338,7 +342,7 @@
                 @apply static m-0 block h-auto w-auto overflow-visible border-0;
             }
 
-            .vs-table-draggable-wrapper > .vs-table-body-row {
+            .vs-table-tbody > .vs-table-body-row {
                 @apply mx-0 mb-0 border-0;
                 border: revert;
             }

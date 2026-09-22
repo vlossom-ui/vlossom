@@ -2,11 +2,11 @@
     <div class="vs-table-pagination">
         <div class="vs-table-pagination-info">
             <vs-select
-                v-if="pagination.showPageSizeSelect"
-                v-model="pageSize"
+                v-if="options.showPageSizeSelect"
                 :options="pageSizeOptions"
+                :model-value="pageSize"
                 :color-scheme
-                :style-set="tableStyleSet?.$pageSizeSelect"
+                :style-set="styleSet.$pageSizeSelect"
                 :disabled="loading"
                 :size
                 option-label="label"
@@ -14,86 +14,65 @@
                 no-clear
                 no-label
                 no-messages
+                @update:model-value="$emit('update:pageSize', $event)"
             />
-            <span v-if="pagination.showTotal" class="vs-total-items">
+            <span v-if="options.showTotal" class="vs-total-items">
                 {{
                     formatMessage(optionMessages.VS_TABLE_ITEMS_SUMMARY, {
                         start: pageStartIndex + 1,
                         end: pageEndIndex,
-                        total: totalItems,
+                        total: totalCount,
                     })
                 }}
             </span>
         </div>
 
         <vs-pagination
-            v-model="page"
+            :model-value="page"
             :color-scheme
-            :style-set="tableStyleSet?.$pagination"
+            :style-set="styleSet.$pagination"
             :disabled="loading"
             :length="totalPages"
-            :showing-length="pagination.showingLength"
-            :edge-buttons="pagination.edgeButtons"
+            :showing-length="options.showingLength"
+            :edge-buttons="options.edgeButtons"
             :size
+            @update:model-value="$emit('update:page', $event)"
         />
     </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, type ComputedRef } from 'vue';
-import type { ColorScheme } from '@/declaration';
-import { TABLE_COMPOSABLE_TOKEN, type TableComposable } from './composables/table-composable';
-import {
-    TABLE_COLOR_SCHEME_TOKEN,
-    TABLE_STYLE_SET_TOKEN,
-    type VsTablePageSizeOptions,
-    type VsTableStyleSet,
-} from './types';
+import { computed, defineComponent, toRefs, type PropType } from 'vue';
+import { useMessages } from '@/composables';
+import type { ColorScheme, Size } from '@/declaration';
+import type { VsTablePageSizeOptions, VsTablePaginationOptions, VsTableStyleSet } from './types';
 
 import VsPagination from '@/components/vs-pagination/VsPagination.vue';
 import VsSelect from '@/components/vs-select/VsSelect.vue';
-import { useMessages } from '@/composables';
 
 export default defineComponent({
     components: { VsPagination, VsSelect },
-    setup() {
+    props: {
+        options: { type: Object as PropType<VsTablePaginationOptions>, default: () => ({}) },
+        page: { type: Number, default: 0 },
+        pageSize: { type: Number, default: 0 },
+        totalPages: { type: Number, default: 0 },
+        totalCount: { type: Number, default: 0 },
+        pageStartIndex: { type: Number, default: 0 },
+        pageEndIndex: { type: Number, default: 0 },
+        colorScheme: { type: String as PropType<ColorScheme> },
+        styleSet: { type: Object as PropType<VsTableStyleSet>, default: () => ({}) },
+        size: { type: String as PropType<Size>, default: 'md' },
+        loading: { type: Boolean, default: false },
+    },
+    emits: ['update:page', 'update:pageSize'],
+    setup(props) {
+        const { options } = toRefs(props);
         const { optionMessages, formatMessage } = useMessages();
-        const {
-            pagination,
-            totalPages,
-            totalItems,
-            page,
-            pageSize,
-            pageStartIndex,
-            pageEndIndex,
-            loading,
-            primary,
-            size,
-        } = inject<TableComposable>(TABLE_COMPOSABLE_TOKEN)!;
-        const colorScheme = inject<ComputedRef<ColorScheme | undefined>>(TABLE_COLOR_SCHEME_TOKEN);
-        const tableStyleSet = inject<ComputedRef<VsTableStyleSet>>(TABLE_STYLE_SET_TOKEN);
 
-        const pageSizeOptions = computed<VsTablePageSizeOptions>(() => {
-            return pagination.value.pageSizeOptions ?? [];
-        });
+        const pageSizeOptions = computed<VsTablePageSizeOptions>(() => options.value.pageSizeOptions ?? []);
 
-        return {
-            pagination,
-            page,
-            pageSize,
-            pageSizeOptions,
-            totalPages,
-            totalItems,
-            pageStartIndex,
-            pageEndIndex,
-            loading,
-            primary,
-            size,
-            colorScheme,
-            tableStyleSet,
-            optionMessages,
-            formatMessage,
-        };
+        return { pageSizeOptions, optionMessages, formatMessage };
     },
 });
 </script>

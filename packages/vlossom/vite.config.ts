@@ -53,7 +53,7 @@ export default defineConfig({
              * → Import from @/declaration or @/components
              * → src/components/index.ts
              * → export { default as VsTable } from './vs-table/VsTable.vue'
-             * → In VsTable.vue, import type { SortableEvent } from 'sortablejs'
+             * → In constants.ts, import type { Options } from 'sortablejs'
              * → Loads sortablejs module
              * → sortablejs immediately runs navigator.userAgent.match() 💥
              *
