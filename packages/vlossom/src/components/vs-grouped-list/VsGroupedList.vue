@@ -103,8 +103,7 @@ export default defineComponent({
     // expose: ['scrollToItem'],
     setup(props, { emit }) {
         const { optionMessages } = useMessages();
-        const { styleSet, items, groupBy, groupOrder, id, listRole, listAriaMultiselectable, getItemAriaSelected } =
-            toRefs(props);
+        const { styleSet, items, groupBy, groupOrder } = toRefs(props);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const listRef: TemplateRef<HTMLElement> = useTemplateRef('listRef');

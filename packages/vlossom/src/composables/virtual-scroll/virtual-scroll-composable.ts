@@ -228,7 +228,7 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
     }
 
     onMounted(() => {
-        scheduleResolve();
+        resolveScrollElement();
         window.addEventListener('resize', scheduleResolve, { passive: true });
         window.addEventListener('scroll', onOuterScroll, { passive: true, capture: true });
     });
