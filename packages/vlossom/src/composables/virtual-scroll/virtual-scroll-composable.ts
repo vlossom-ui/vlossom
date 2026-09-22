@@ -152,7 +152,8 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
             return;
         }
 
-        const scroller = domUtil.isScrollableY(container) ? container : getScrollableParentY(container);
+        const scrollable = domUtil.isScrollableY(container);
+        const scroller = scrollable ? container : getScrollableParentY(container);
         scrollElement.value = scroller;
         isWindowScroll.value = scroller === null;
 
@@ -174,9 +175,10 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
         });
     }
 
-    // 콘텐츠 위쪽이 밀리면 scrollMargin이 어긋나므로, 바깥 스크롤을 쓸 때만 따라가며 보정한다
+    // 콘텐츠 위쪽이 밀리면 scrollMargin이 어긋나므로, 바깥 엘리먼트 스크롤을 쓸 때만 따라가며 보정한다.
+    // window 스크롤 모드에서는 scrollElement가 null이라 항상 조건이 참이 되므로 제외한다.
     function onOuterScroll() {
-        if (enabled.value && scrollElement.value !== getScrollContainer()) {
+        if (enabled.value && !isWindowScroll.value && scrollElement.value !== getScrollContainer()) {
             scheduleResolve();
         }
     }
@@ -226,7 +228,7 @@ export function useVirtualScroll(options: VirtualScrollOptions): VirtualScrollRe
     }
 
     onMounted(() => {
-        resolveScrollElement();
+        scheduleResolve();
         window.addEventListener('resize', scheduleResolve, { passive: true });
         window.addEventListener('scroll', onOuterScroll, { passive: true, capture: true });
     });
