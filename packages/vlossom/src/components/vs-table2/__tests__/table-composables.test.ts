@@ -55,6 +55,24 @@ describe('useTableItemKeyComposable', () => {
         expect(getItemKey(item)).toBe(getItemKey(item));
         expect(getItemKey(item)).toBeTypeOf('string');
     });
+
+    it('itemKey 필드 값이 string | number가 아니면 객체 기준 key로 대체한다', () => {
+        const { getItemKey } = useTableItemKeyComposable(ref('meta') as Ref<VsTable2ItemKey>);
+        const item = { meta: { id: '1' } };
+
+        expect(getItemKey(item)).toBe(getItemKey(item));
+        expect(getItemKey(item)).toBeTypeOf('string');
+    });
+
+    it('itemKey 함수 결과가 string | number가 아니면 객체 기준 key로 대체한다', () => {
+        const { getItemKey } = useTableItemKeyComposable(
+            ref((item: VsTable2Item) => item.meta) as unknown as Ref<VsTable2ItemKey>,
+        );
+        const item = { meta: { id: '1' } };
+
+        expect(getItemKey(item)).toBe(getItemKey(item));
+        expect(getItemKey(item)).toBeTypeOf('string');
+    });
 });
 
 describe('useTableColumnComposable', () => {

@@ -9,12 +9,15 @@ export function useTableItemKeyComposable(itemKey: Ref<VsTable2ItemKey | undefin
     function getItemKey(item: VsTable2Item): string | number {
         const key = itemKey.value;
         if (typeof key === 'function') {
-            return key(item);
+            const value = key(item);
+            if (isRowKey(value)) {
+                return value;
+            }
         }
-        if (key) {
+        if (typeof key === 'string' && key) {
             const value: unknown = objectUtil.get(item, key);
-            if (value !== undefined && value !== null) {
-                return value as string | number;
+            if (isRowKey(value)) {
+                return value;
             }
         }
 
@@ -27,4 +30,8 @@ export function useTableItemKeyComposable(itemKey: Ref<VsTable2ItemKey | undefin
     }
 
     return { getItemKey };
+}
+
+function isRowKey(value: unknown): value is string | number {
+    return typeof value === 'string' || typeof value === 'number';
 }
