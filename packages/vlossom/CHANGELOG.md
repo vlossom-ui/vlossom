@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.1.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.2...vlossom-v2.1.0) (2026-09-28)
+
+
+### Features
+
+* add messages option for message control ([#628](https://github.com/vlossom-ui/vlossom/issues/628)) ([94f252d](https://github.com/vlossom-ui/vlossom/commit/94f252d80cae1f24f5b1b4448a138422075e313f))
+* **input:** add focus-placeholder prop to input components ([#590](https://github.com/vlossom-ui/vlossom/issues/590)) ([fb91f83](https://github.com/vlossom-ui/vlossom/commit/fb91f8332834e41f5df81e4e9cc634cb3b329dfb))
+* **VsFileDrop:** validate min/max instead of rejecting files ([#635](https://github.com/vlossom-ui/vlossom/issues/635)) ([3e8798f](https://github.com/vlossom-ui/vlossom/commit/3e8798f9f6c37c863a975372c0e2f90ff8e50d5e))
+* **VsFileInput:** create vs-file-input component ([#631](https://github.com/vlossom-ui/vlossom/issues/631)) ([36d788f](https://github.com/vlossom-ui/vlossom/commit/36d788f37a9a21a81889ab25fbf70869e0e7cde1))
+* **VsShake:** create vs-shake directive ([#625](https://github.com/vlossom-ui/vlossom/issues/625)) ([cda72dc](https://github.com/vlossom-ui/vlossom/commit/cda72dc9c579655b49a42a49f6d5b57414e8b618))
+* **VsTable:** rewrite vs-table component ([#644](https://github.com/vlossom-ui/vlossom/issues/644)) ([cb80b23](https://github.com/vlossom-ui/vlossom/commit/cb80b238db9f1d17e0f1b7456dfe7b650d030ecd))
+* **VsTextarea:** add textarea header, footer slot ([#622](https://github.com/vlossom-ui/vlossom/issues/622)) ([494118a](https://github.com/vlossom-ui/vlossom/commit/494118ac5b2b2524e057ef5077181ae21f10679f))
+* **VsVisibleRender:** remove visible-render from package ([#613](https://github.com/vlossom-ui/vlossom/issues/613)) ([7da43c9](https://github.com/vlossom-ui/vlossom/commit/7da43c99eaf7415659eb358f69b326a4a0d21e55))
+
+
+### Bug Fixes
+
+* **input-composable:** prevent echo emit (model-value prop update) ([#641](https://github.com/vlossom-ui/vlossom/issues/641)) ([65a35cf](https://github.com/vlossom-ui/vlossom/commit/65a35cf7d6d69569213eaf3a2165758287716a5a))
+* **rules:** conditionally build defaultRules ([#633](https://github.com/vlossom-ui/vlossom/issues/633)) ([b99e61c](https://github.com/vlossom-ui/vlossom/commit/b99e61cdf7b32e45c64262204904d5a3a9fd52b5))
+* **VsDrawer:** fixed -&gt; position=fixed prop change ([#642](https://github.com/vlossom-ui/vlossom/issues/642)) ([658da21](https://github.com/vlossom-ui/vlossom/commit/658da21e318f762f8986c16f3d8fc61fe8e4eacd))
+* **VsSearchInput:** fix debounced search value ([#643](https://github.com/vlossom-ui/vlossom/issues/643)) ([a891a65](https://github.com/vlossom-ui/vlossom/commit/a891a654d6749690ccee5af782f023fdb81b2b12))
+* **VsTable:** change table padding ([#632](https://github.com/vlossom-ui/vlossom/issues/632)) ([fc754a3](https://github.com/vlossom-ui/vlossom/commit/fc754a3e407511db768bfdb36c56bcfbdfb3d2f5))
+
 ## [2.0.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.1...vlossom-v2.0.2) (2026-09-01)
 
 
