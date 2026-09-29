@@ -19,7 +19,7 @@
 
 ### VsRadio
 
-```html
+```html live
 <template>
     <vs-radio v-model="selected" :radio-value="'apple'" radio-label="사과" />
     <vs-radio v-model="selected" :radio-value="'banana'" radio-label="바나나" />
@@ -33,7 +33,7 @@ const selected = ref(null);
 
 ### VsRadioSet
 
-```html
+```html live
 <template>
     <vs-radio-set v-model="selected" :options="options" label="과일 선택" />
 </template>
@@ -47,7 +47,7 @@ const options = ['사과', '바나나', '체리'];
 
 ### 수직 레이아웃
 
-```html
+```html live
 <template>
     <vs-radio-set v-model="selected" :options="options" vertical />
 </template>
@@ -55,7 +55,7 @@ const options = ['사과', '바나나', '체리'];
 
 ### beforeChange 사용
 
-```html
+```html live
 <template>
     <vs-radio-set
         v-model="selected"
@@ -155,7 +155,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-radio-set
         v-model="selected"

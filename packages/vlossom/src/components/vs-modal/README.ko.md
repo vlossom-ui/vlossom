@@ -17,7 +17,7 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <button @click="isOpen = true">모달 열기</button>
 
@@ -38,7 +38,7 @@ const isOpen = ref(false);
 
 ### 딤드 오버레이 사용
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :dimmed="true" :dim-close="true">
         <div>외부를 클릭하면 닫힙니다.</div>
@@ -48,7 +48,7 @@ const isOpen = ref(false);
 
 ### 사전 정의된 크기
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" size="lg">
         <div>큰 모달 콘텐츠.</div>
@@ -58,7 +58,7 @@ const isOpen = ref(false);
 
 ### 커스텀 크기
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :size="{ width: '600px', height: '400px' }">
         <div>커스텀 크기 모달.</div>
@@ -68,7 +68,7 @@ const isOpen = ref(false);
 
 ### 포커스 잠금 및 ESC 닫기
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :focus-lock="true" :esc-close="true">
         <div>ESC를 눌러 닫으세요. 포커스가 내부에 고정됩니다.</div>
@@ -78,7 +78,7 @@ const isOpen = ref(false);
 
 ### Before Close Hook
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :before-close="confirmClose">
         <div>닫기를 시도해보세요.</div>
@@ -99,7 +99,7 @@ async function confirmClose() {
 
 `scroll-lock`을 `true`로 설정하면 모달이 열려 있는 동안 페이지(`body`) 스크롤을 잠급니다:
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :scroll-lock="true">
         <div>모달이 열려 있는 동안 배경 페이지 스크롤이 잠깁니다.</div>
@@ -109,7 +109,7 @@ async function confirmClose() {
 
 CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이너만 잠급니다. 페이지는 계속 스크롤되고 지정한 요소만 잠깁니다:
 
-```html
+```html live
 <template>
     <div id="scroll-area" style="height: 200px; overflow: auto">
         <!-- 스크롤 가능한 긴 콘텐츠 -->
@@ -158,7 +158,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-modal
         v-model="isOpen"

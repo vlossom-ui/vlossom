@@ -1,9 +1,17 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { defineConfig } from 'vitepress';
+import { defineConfig, type DefaultTheme } from 'vitepress';
 import { liveDemo } from './live-demo.ts';
 
-const COMPONENTS_DIR = resolve(import.meta.dirname, '../../vlossom/src/components');
+const SRC = resolve(import.meta.dirname, '../../vlossom/src');
+
+// 라이브러리 소스에서 문서로 올릴 유닛들. 디렉터리마다 README.md가 하나씩 있다.
+const SECTIONS = [
+    { dir: 'components', text: 'Components' },
+    { dir: 'composables', text: 'Composables' },
+    { dir: 'directives', text: 'Directives' },
+    { dir: 'plugins', text: 'Plugins' },
+] as const;
 
 function pascalCase(kebab: string): string {
     return kebab
@@ -12,19 +20,52 @@ function pascalCase(kebab: string): string {
         .join('');
 }
 
-const components = readdirSync(COMPONENTS_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory() && entry.name.startsWith('vs-'))
-    .map((entry) => entry.name)
-    .filter((name) => existsSync(resolve(COMPONENTS_DIR, name, 'README.md')))
-    .sort();
+function unitsIn(dir: string): string[] {
+    const root = resolve(SRC, dir);
+    if (!existsSync(root)) {
+        return [];
+    }
+
+    return readdirSync(root, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory() && existsSync(resolve(root, entry.name, 'README.md')))
+        .map((entry) => entry.name)
+        .sort();
+}
+
+function sidebarFor(base: string): DefaultTheme.SidebarItem[] {
+    const items: DefaultTheme.SidebarItem[] = SECTIONS.map((section) => ({
+        text: section.text,
+        collapsed: section.dir !== 'components',
+        items: unitsIn(section.dir).map((name) => ({
+            text: section.dir === 'components' ? pascalCase(name) : name,
+            link: `${base}/${section.dir}/${name}`,
+        })),
+    })).filter((group) => group.items && group.items.length > 0);
+
+    items.push({ text: 'Utils', items: [{ text: 'utils', link: `${base}/utils` }] });
+    items.push({ text: 'Design', items: [{ text: 'Color Palette', link: `${base}/palette` }] });
+
+    return items;
+}
+
+// README 파일 자체를 라우트로 쓴다. 영어는 루트, 한국어는 /ko 아래.
+const rewrites: Record<string, string> = {
+    'docs/pages/ko/:page.md': 'ko/:page.md',
+    'docs/pages/:page.md': ':page.md',
+    'vlossom/src/utils/README.md': 'utils.md',
+    'vlossom/src/utils/README.ko.md': 'ko/utils.md',
+};
+
+for (const section of SECTIONS) {
+    rewrites[`vlossom/src/${section.dir}/:name/README.md`] = `${section.dir}/:name.md`;
+    rewrites[`vlossom/src/${section.dir}/:name/README.ko.md`] = `ko/${section.dir}/:name.md`;
+}
 
 export default defineConfig({
     title: 'Vlossom',
     description: 'Vue 3 UI component library',
     base: '/vlossom/',
-    lang: 'en-US',
 
-    // README 파일 자체를 문서 페이지로 쓴다. 복사본을 만들지 않는다.
     srcDir: '..',
     srcExclude: [
         'docs/.vitepress/**',
@@ -35,34 +76,42 @@ export default defineConfig({
         'vlossom/dist/**',
         'vlossom/storybook-static/**',
         'vlossom/src/.claude/**',
-        'vlossom/src/components/*.md',
-        'vlossom/src/components/**/README.ko.md',
-        // 컴포넌트 외 유닛은 프로토타입 범위 밖
-        'vlossom/src/composables/**',
-        'vlossom/src/directives/**',
-        'vlossom/src/plugins/**',
-        'vlossom/src/utils/**',
+        'vlossom/src/**/*TEMPLATE*.md',
+        'vlossom/src/**/*TEMPLETE*.md',
     ],
-    rewrites: {
-        'docs/pages/:page.md': ':page.md',
-        'vlossom/src/components/:comp/README.md': 'components/:comp.md',
-    },
+    rewrites,
 
     markdown: {
         config: liveDemo,
     },
 
     themeConfig: {
-        nav: [{ text: 'Components', link: '/components/vs-button' }],
-        sidebar: [
-            {
-                text: 'Components',
-                items: components.map((name) => ({
-                    text: pascalCase(name),
-                    link: `/components/${name}`,
-                })),
-            },
-        ],
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
+    },
+
+    locales: {
+        root: {
+            label: 'English',
+            lang: 'en-US',
+            themeConfig: {
+                nav: [
+                    { text: 'Components', link: '/components/vs-button' },
+                    { text: 'Palette', link: '/palette' },
+                ],
+                sidebar: sidebarFor(''),
+            },
+        },
+        ko: {
+            label: '한국어',
+            lang: 'ko-KR',
+            description: 'Vue 3 UI 컴포넌트 라이브러리',
+            themeConfig: {
+                nav: [
+                    { text: '컴포넌트', link: '/ko/components/vs-button' },
+                    { text: '팔레트', link: '/ko/palette' },
+                ],
+                sidebar: sidebarFor('/ko'),
+            },
+        },
     },
 });

@@ -15,7 +15,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" label="날짜" />
 </template>
@@ -28,7 +28,7 @@ const date = ref('');
 
 ### 입력 타입
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" type="date" label="날짜" />
     <vs-date-picker v-model="datetime" type="datetime-local" label="일시" />
@@ -39,7 +39,7 @@ const date = ref('');
 
 ### Min / Max
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"
@@ -71,7 +71,7 @@ const date = ref('');
 
 현재 `modelValue`가 새 `type` 형식과 맞지 않으면 입력창 표시값은 비워지고, 기존 `modelValue` 자체는 유지됩니다. `type`을 동적으로 변경하는 경우 사용하는 쪽에서 새 타입에 맞는 `modelValue`를 같은 흐름에서 함께 갱신하세요.
 
-```html
+```html live
 <vs-date-picker v-model="value" :type="type" />
 ```
 
@@ -100,7 +100,7 @@ value = '2026-05';
 
 ## 커스텀 룰
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"

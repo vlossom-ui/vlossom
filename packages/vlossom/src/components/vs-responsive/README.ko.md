@@ -15,7 +15,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-responsive width="50%">
         <p>이 요소는 50% 너비를 차지합니다.</p>
@@ -25,7 +25,7 @@
 
 ### 그리드 컬럼 스팬 사용
 
-```html
+```html live
 <template>
     <vs-responsive :grid="6">
         <p>6개의 그리드 컬럼을 차지합니다.</p>
@@ -35,7 +35,7 @@
 
 ### 브레이크포인트 객체 사용
 
-```html
+```html live
 <template>
     <vs-responsive :width="{ xs: '100%', md: '50%', lg: '33%' }">
         <p>브레이크포인트별 반응형 너비를 적용합니다.</p>
@@ -45,7 +45,7 @@
 
 ### 커스텀 태그
 
-```html
+```html live
 <template>
     <vs-responsive tag="section" width="80%">
         <p>section 요소로 렌더링됩니다.</p>

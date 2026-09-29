@@ -15,7 +15,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-skeleton style="width: 200px; height: 200px; border-radius: 50%;" />
 </template>
@@ -23,7 +23,7 @@
 
 ### 콘텐츠 슬롯과 함께 사용
 
-```html
+```html live
 <template>
     <vs-skeleton style="width: 100%; height: 4rem;">
         <span>로딩 중...</span>
@@ -33,7 +33,7 @@
 
 ### 커스텀 크기 및 모양
 
-```html
+```html live
 <template>
     <vs-skeleton
         :style-set="{
@@ -61,7 +61,7 @@ interface VsSkeletonStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-skeleton
         :style-set="{

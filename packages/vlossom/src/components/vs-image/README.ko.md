@@ -18,7 +18,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="예시 이미지" />
 </template>
@@ -28,7 +28,7 @@
 
 요소가 뷰포트에 진입할 때까지 이미지 로딩을 지연합니다.
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="지연 로딩 이미지" :lazy="true" />
 </template>
@@ -40,7 +40,7 @@
 
 **prop 사용 예시**
 
-```html
+```html live
 <template>
     <vs-image
         src="https://example.com/broken.png"
@@ -52,7 +52,7 @@
 
 **slot 사용 예시**
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/broken.png" alt="커스텀 대체 UI">
         <template #fallback>
@@ -66,7 +66,7 @@
 
 로딩 중 스켈레톤 플레이스홀더를 비활성화합니다.
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="스켈레톤 없음" :no-skeleton="true" />
 </template>
@@ -100,7 +100,7 @@ interface VsImageStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-image
         src="https://example.com/image.png"

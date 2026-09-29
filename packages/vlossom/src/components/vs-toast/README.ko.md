@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-toast @close="handleClose">
         작업이 성공적으로 완료되었습니다!
@@ -26,7 +26,7 @@
 
 ### 커스텀 타임아웃
 
-```html
+```html live
 <template>
     <vs-toast :timeout="3000" @close="handleClose">
         이 토스트는 3초 후에 닫힙니다.
@@ -36,7 +36,7 @@
 
 ### 수동 닫기 전용
 
-```html
+```html live
 <template>
     <vs-toast :auto-close="false" @close="handleClose">
         X 버튼을 클릭하여 닫으세요.
@@ -48,7 +48,7 @@
 
 `VsToastView`는 모든 활성 토스트를 렌더링하는 컨테이너 컴포넌트입니다. 앱 루트에 한 번 배치하세요.
 
-```html
+```html live
 <template>
     <vs-toast-view />
 </template>
@@ -79,7 +79,7 @@ interface VsToastStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-toast
         :style-set="{

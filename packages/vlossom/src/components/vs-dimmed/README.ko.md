@@ -14,7 +14,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />
@@ -30,7 +30,7 @@ const isVisible = ref(false);
 
 ### 프로그래밍 방식 제어
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed ref="dimmedRef" v-model="isVisible" />
@@ -61,7 +61,7 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-dimmed
         v-model="isVisible"

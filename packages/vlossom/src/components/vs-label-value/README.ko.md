@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-label-value>
         <template #label>이름</template>
@@ -27,7 +27,7 @@
 
 ### Primary 모드
 
-```html
+```html live
 <template>
     <vs-label-value :primary="true">
         <template #label>상태</template>
@@ -38,7 +38,7 @@
 
 ### 수직 레이아웃
 
-```html
+```html live
 <template>
     <vs-label-value :vertical="true">
         <template #label>설명</template>
@@ -49,7 +49,7 @@
 
 ### 사이즈
 
-```html
+```html live
 <template>
     <vs-label-value size="xs">
         <template #label>ID</template>
@@ -62,7 +62,7 @@
 
 좁은 컨테이너에서 자동으로 수직 레이아웃으로 전환됩니다.
 
-```html
+```html live
 <template>
     <vs-label-value :responsive="true">
         <template #label>주소</template>
@@ -96,7 +96,7 @@ interface VsLabelValueStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-label-value
         :style-set="{

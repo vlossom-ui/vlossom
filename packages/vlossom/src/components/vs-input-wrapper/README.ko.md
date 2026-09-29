@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="사용자명">
         <input type="text" placeholder="사용자명 입력" />
@@ -26,7 +26,7 @@
 
 ### 메시지 사용
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="이메일"
@@ -39,7 +39,7 @@
 
 ### 그룹 라벨 (fieldset)
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="배송 주소" :group-label="true">
         <input type="text" placeholder="도로명" />
@@ -50,7 +50,7 @@
 
 ### 필수 필드
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="비밀번호" :required="true">
         <input type="password" />
@@ -91,7 +91,7 @@ interface VsInputWrapperStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="스타일 적용 래퍼"

@@ -15,7 +15,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-button @click="isOpen = !isOpen">토글</vs-button>
     <vs-expandable :open="isOpen">
@@ -31,7 +31,7 @@ const isOpen = ref(false);
 
 ### 사용자 정의 스타일 콘텐츠
 
-```html
+```html live
 <template>
     <vs-expandable
         :open="isOpen"
@@ -59,7 +59,7 @@ interface VsExpandableStyleSet extends CSSProperties {}
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-expandable
         :open="true"

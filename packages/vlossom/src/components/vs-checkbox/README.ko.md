@@ -17,7 +17,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-checkbox v-model="checked" check-label="약관에 동의합니다" />
 </template>
@@ -30,7 +30,7 @@ const checked = ref(false);
 
 ### 체크박스 그룹 (VsCheckboxSet)
 
-```html
+```html live
 <template>
     <vs-checkbox-set
         v-model="selectedFruits"
@@ -47,7 +47,7 @@ const selectedFruits = ref([]);
 
 ### 유효성 검사
 
-```html
+```html live
 <template>
     <vs-checkbox v-model="agreed" check-label="동의합니다" required />
 </template>
@@ -55,7 +55,7 @@ const selectedFruits = ref([]);
 
 ### Before Change 훅
 
-```html
+```html live
 <template>
     <vs-checkbox
         v-model="value"
@@ -161,7 +161,7 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-checkbox
         v-model="checked"

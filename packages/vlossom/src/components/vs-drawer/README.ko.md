@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-button @click="open = true">드로어 열기</vs-button>
     <vs-drawer v-model="open" placement="left">
@@ -35,7 +35,7 @@ const open = ref(false);
 
 ### 딤드 배경이 있는 오른쪽 드로어
 
-```html
+```html live
 <template>
     <vs-button @click="drawerOpen = true">오른쪽 드로어 열기</vs-button>
     <vs-drawer v-model="drawerOpen" placement="right" dimmed dim-close>
@@ -51,7 +51,7 @@ const drawerOpen = ref(false);
 
 ### 고정 위치 및 사용자 정의 크기 드로어
 
-```html
+```html live
 <template>
     <vs-drawer v-model="open" placement="top" :size="'30%'" position="fixed">
         <p>30% 높이의 상단 드로어.</p>
@@ -63,7 +63,7 @@ const drawerOpen = ref(false);
 
 `layout` prop을 설정하면 드로어가 레이아웃 스토어에 등록됩니다. `pushContainer`와 함께 사용하면 `VsContainer`를 옆으로 밀어 공간을 확보합니다 (overlay 대신). 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-drawer v-model="open" layout push-container placement="left" size="240px">
@@ -114,7 +114,7 @@ interface VsDrawerStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-drawer
         v-model="open"

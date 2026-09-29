@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 300px;">
         <p v-for="i in 20" :key="i">라인 {{ i }}</p>
@@ -26,7 +26,7 @@
 
 ### 헤더 및 푸터 사용
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
@@ -44,7 +44,7 @@
 
 ### 스크롤바 숨기기
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 200px;" :hide-scroll="true">
         <p v-for="i in 10" :key="i">라인 {{ i }}</p>
@@ -71,7 +71,7 @@ interface VsInnerScrollStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-inner-scroll
         style="height: 400px;"

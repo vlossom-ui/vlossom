@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="10" />
 </template>
@@ -30,7 +30,7 @@ const page = ref(0);
 
 ### Edge 버튼 사용
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="20" :showing-length="5" edge-buttons />
 </template>
@@ -38,7 +38,7 @@ const page = ref(0);
 
 ### Ghost 및 Outline 스타일 적용
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="10" ghost outline />
 </template>
@@ -75,7 +75,7 @@ interface VsPaginationStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-pagination
         v-model="page"

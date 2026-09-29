@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-accordion>
         <template #title>섹션 타이틀</template>
@@ -27,7 +27,7 @@
 
 ### v-model 사용
 
-```html
+```html live
 <template>
     <vs-accordion v-model="isOpen">
         <template #title>제어 가능한 아코디언</template>
@@ -43,7 +43,7 @@ const isOpen = ref(false);
 
 ### Primary 스타일
 
-```html
+```html live
 <template>
     <vs-accordion primary>
         <template #title>Primary 아코디언</template>
@@ -54,7 +54,7 @@ const isOpen = ref(false);
 
 ### 비활성화
 
-```html
+```html live
 <template>
     <vs-accordion disabled>
         <template #title>비활성화된 아코디언</template>
@@ -95,7 +95,7 @@ interface VsAccordionStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-accordion
         :style-set="{

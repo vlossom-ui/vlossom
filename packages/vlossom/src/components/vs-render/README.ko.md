@@ -18,7 +18,7 @@
 
 ### 일반 문자열 렌더링
 
-```html
+```html live
 <template>
     <vs-render content="안녕하세요, 세상!" />
 </template>
@@ -26,7 +26,7 @@
 
 ### HTML 문자열 렌더링
 
-```html
+```html live
 <template>
     <vs-render content="<strong>굵은 텍스트</strong>" />
 </template>
@@ -34,7 +34,7 @@
 
 ### Vue 컴포넌트 렌더링
 
-```html
+```html live
 <template>
     <vs-render :content="MyIcon" />
 </template>
@@ -46,7 +46,7 @@ import MyIcon from './MyIcon.vue';
 
 ### 컴포넌트에 Props 전달
 
-```html
+```html live
 <template>
     <vs-render :content="Greeting" :component-props="{ name: 'world', count: 3 }" />
 </template>

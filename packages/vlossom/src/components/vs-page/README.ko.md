@@ -15,7 +15,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-page>
         <template #title>페이지 제목</template>
@@ -27,7 +27,7 @@
 
 ### 슬롯 없이 사용
 
-```html
+```html live
 <template>
     <vs-page>
         <p>제목과 설명 없이 콘텐츠만 표시합니다.</p>
@@ -53,7 +53,7 @@ interface VsPageStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-page
         :style-set="{

@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-header>
         <h1>나의 애플리케이션</h1>
@@ -26,7 +26,7 @@
 
 ### 고정 위치 헤더
 
-```html
+```html live
 <template>
     <vs-header position="fixed" height="4rem">
         <nav>네비게이션</nav>
@@ -36,7 +36,7 @@
 
 ### 기본 스타일 헤더
 
-```html
+```html live
 <template>
     <vs-header primary>
         <span>브랜드 이름</span>
@@ -48,7 +48,7 @@
 
 `layout` prop을 설정하면 헤더가 레이아웃 스토어에 등록되어 `VsContainer`와 `VsDrawer`가 헤더를 기준으로 오프셋 처리합니다. 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout position="fixed" height="3rem">앱 헤더</vs-header>
@@ -85,7 +85,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-header
         :style-set="{

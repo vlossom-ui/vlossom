@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-text-wrap copy>
         <p>이 텍스트를 클립보드에 복사할 수 있습니다.</p>
@@ -26,7 +26,7 @@
 
 ### 링크 버튼 사용
 
-```html
+```html live
 <template>
     <vs-text-wrap link="https://vlossom.dev">
         웹사이트 방문하기
@@ -36,7 +36,7 @@
 
 ### 복사 및 링크 함께 사용
 
-```html
+```html live
 <template>
     <vs-text-wrap copy link="https://vlossom.dev" :width="400">
         <code>npm install vlossom</code>
@@ -46,7 +46,7 @@
 
 ### 커스텀 액션 슬롯
 
-```html
+```html live
 <template>
     <vs-text-wrap>
         <p>콘텐츠</p>
@@ -77,7 +77,7 @@ interface VsTextWrapStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-text-wrap
         copy

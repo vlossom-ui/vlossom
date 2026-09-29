@@ -19,7 +19,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" label="과일 선택" />
 </template>
@@ -33,7 +33,7 @@ const options = ['사과', '바나나', '체리'];
 
 ### 다중 선택
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" multiple label="과일 선택 (복수)" />
 </template>
@@ -41,7 +41,7 @@ const options = ['사과', '바나나', '체리'];
 
 ### 검색 기능 사용
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" :search="true" label="검색하여 선택" />
 </template>
@@ -51,7 +51,7 @@ const options = ['사과', '바나나', '체리'];
 
 셀렉트가 포커스되거나 열려 있을 때 다른 placeholder를 표시합니다. 그 외에는 `placeholder`로 폴백합니다.
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"
@@ -65,7 +65,7 @@ const options = ['사과', '바나나', '체리'];
 
 ### 커스텀 레이블이 있는 객체 옵션
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"
@@ -90,7 +90,7 @@ const options = [
 
 `options`가 비어 있거나 검색어에 일치하는 옵션이 없어서 표시할 옵션이 없으면 드롭다운에 기본 empty UI가 나타납니다. `empty` 슬롯으로 이 UI를 대체할 수 있습니다.
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="[]" label="과일 선택">
         <template #empty>
@@ -160,7 +160,7 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"

@@ -9,9 +9,13 @@ import { DEMO_SCOPE } from './demo-scope.ts';
 // 첫 토큰이 `html` 그대로라 GitHub 렌더는 바뀌지 않고,
 // vlossom-mcp는 코드펜스를 읽지 않으므로 영향이 없다.
 
-const KO_LINK_LINE = /^> 한국어 문서는 .*$\r?\n?/m;
+// README 맨 위의 "다른 언어 문서 보기" 안내. 사이트에는 언어 스위처가 있으므로 뺀다.
+const CROSS_DOC_NOTE = /^> (?:한국어 문서는|For English documentation).*$\r?\n?/m;
 // README의 상대 링크는 GitHub 기준이라 사이트에서는 깨진다.
-const SIBLING_README_LINK = /\]\(\.\.\/(vs-[a-z0-9-]+)\/README\.md(#[a-z0-9-]+)?\)/g;
+// 같은 섹션 안의 형제 문서를 가리키므로 현재 페이지의 라우트 기준으로 고쳐준다.
+const SIBLING_README_LINK = /\]\(\.\.\/([a-z0-9-]+)\/README(?:\.ko)?\.md(#[a-z0-9-]+)?\)/g;
+// 플러그인 문서가 컴포넌트 문서를 가리키는 식의 섹션 간 링크.
+const CROSS_SECTION_README_LINK = /\]\(\.\.\/\.\.\/([a-z0-9-]+)\/([a-z0-9-]+)\/README(?:\.ko)?\.md(#[a-z0-9-]+)?\)/g;
 const LIVE_MARKER = /(^|\s)live(?=\s|$)/;
 const LIVE_FENCE = /```[a-z]*[^\n]*\blive\b[^\n]*\r?\n([\s\S]*?)```/g;
 const SCRIPT_BLOCK = /<script[^>]*>([\s\S]*?)<\/script>/;
@@ -48,6 +52,14 @@ function componentOf(relativePath: string): string {
         normalized.match(/components\/(vs-[a-z0-9-]+)\/README\.md$/)?.[1] ??
         ''
     );
+}
+
+// 'ko/components/vs-button.md' -> '/ko/components'
+function routeBaseOf(relativePath: string): string {
+    const parts = relativePath.replace(/\\/g, '/').split('/');
+    parts.pop();
+
+    return `/${parts.join('/')}`;
 }
 
 // 예제의 루트 <template> 안쪽만 꺼낸다.
@@ -172,9 +184,16 @@ function buildPageSetup(source: string, component: string): string {
 
 export function liveDemo(md: MarkdownRenderer) {
     md.core.ruler.before('normalize', 'vlossom-demo-scope', (state) => {
-        state.src = state.src.replace(KO_LINK_LINE, '').replace(SIBLING_README_LINK, '](/components/$1$2)');
+        const relativePath = state.env?.relativePath ?? '';
+        const routeBase = routeBaseOf(relativePath);
+        const localeBase = relativePath.startsWith('ko/') ? '/ko' : '';
 
-        const setup = buildPageSetup(state.src, componentOf(state.env?.relativePath ?? ''));
+        state.src = state.src
+            .replace(CROSS_DOC_NOTE, '')
+            .replace(CROSS_SECTION_README_LINK, `](${localeBase}/$1/$2$3)`)
+            .replace(SIBLING_README_LINK, `](${routeBase}/$1$2)`);
+
+        const setup = buildPageSetup(state.src, componentOf(relativePath));
         if (setup) {
             state.src = `<script setup>\n${setup}\n</script>\n\n${state.src}`;
         }

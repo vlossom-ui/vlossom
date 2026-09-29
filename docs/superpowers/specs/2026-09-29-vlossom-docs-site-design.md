@@ -29,6 +29,27 @@
 | 1 | README 예제의 `<script setup>` | 페이지 스코프로 끌어올린다. 과일 배열·테이블 컬럼 등 문서가 이미 적어둔 데이터를 그대로 쓴다 |
 | 2 | `demo-scope.ts` | README가 선언하지 않는 것(`handleClick`, `isOpen` 등) 16개 컴포넌트분. 같은 이름이면 이쪽이 이긴다 |
 
+## 2차 확장
+
+리뷰 후 아래를 추가했다.
+
+| # | 항목 | 내용 |
+| --- | --- | --- |
+| 1 | **다크 테마 연동** | VitePress `html.dark` ↔ vlossom `html.vs-dark`. 이게 없으면 문서만 어두워지고 컴포넌트는 밝은 채로 남는다 |
+| 2 | **컬러 스킴 스위처** | 컴포넌트 페이지 상단 19색 바. 고르면 그 페이지의 모든 데모에 `colorScheme` 적용 |
+| 3 | **컬러 팔레트 페이지** | `/palette`. 19색 × 11스텝 × 3토큰. playground의 ColorPalette를 옮겨왔다 |
+| 4 | **컴포넌트 외 유닛** | composables 21 / directives 2 / plugins 5 / utils 1 |
+| 5 | **한국어 i18n** | `README.ko.md`를 `/ko` 아래로. 언어 스위처 포함 |
+
+결과: **164페이지 / 데모 470개 / JS 에러 0건**
+
+### 연동에서 걸린 것 2가지
+
+1. **`createVlossom()`은 인스턴스가 아니라 `{ install }`을 돌려준다.** 반환값에 `.theme`이나 `.colorScheme`을 써도 아무 일도 일어나지 않는다. 실제 인스턴스는 `useVlossom()`이 주며, inject가 아니라 모듈 싱글턴이라 setup 밖에서도 부를 수 있다.
+2. **VitePress 2의 `useData()`에는 `isDark`가 없다.** 1.x에서 바뀌었다. `html` 클래스를 MutationObserver로 관찰하면 버전에 의존하지 않는다.
+
+> `README.ko.md`는 MCP 계약 밖이다. 파서는 `README.md`만 읽는다. ko 문서는 섹션 헤딩도 한국어(`## 이벤트` 등)라 영문 계약과 형태가 다르다.
+
 ## 안 만드는 것
 
 프로토타입이므로 아래는 전부 뺀다. 가능성 증명에 필요 없고, 하나씩이 별도의 설계 거리다.

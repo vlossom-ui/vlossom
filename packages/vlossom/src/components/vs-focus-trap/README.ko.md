@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-focus-trap>
         <div>
@@ -30,7 +30,7 @@
 
 ### 조건부 비활성화
 
-```html
+```html live
 <template>
     <vs-focus-trap :disabled="!isModalOpen">
         <div class="modal-content">
