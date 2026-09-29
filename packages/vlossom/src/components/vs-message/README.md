@@ -15,7 +15,7 @@ A small message display component that shows an icon and text for different UI s
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-message text="This is an informational message." state="info" />
     <vs-message text="Operation successful!" state="success" />
@@ -28,7 +28,7 @@ A small message display component that shows an icon and text for different UI s
 
 When no state is specified, the `idle` state is used (default color).
 
-```html
+```html live
 <template>
     <vs-message text="Default idle message." />
 </template>
@@ -52,7 +52,7 @@ interface VsMessageStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-message
         text="Custom sized message"

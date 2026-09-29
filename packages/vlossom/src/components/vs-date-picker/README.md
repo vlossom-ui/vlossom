@@ -15,7 +15,7 @@ A native-first date picker component with form validation and format-validated s
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" label="Date" />
 </template>
@@ -28,7 +28,7 @@ const date = ref('');
 
 ### Input Types
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" type="date" label="Date" />
     <vs-date-picker v-model="datetime" type="datetime-local" label="Datetime" />
@@ -39,7 +39,7 @@ const date = ref('');
 
 ### Min / Max
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"
@@ -71,7 +71,7 @@ const date = ref('');
 
 If the current `modelValue` does not match the new `type` format, the displayed input is blanked out and the original `modelValue` is preserved. When changing `type` dynamically, update `modelValue` to match the new type format in the same consumer flow.
 
-```html
+```html live
 <vs-date-picker v-model="value" :type="type" />
 ```
 
@@ -100,7 +100,7 @@ The picker closes when a value is selected or the field loses focus. When `disab
 
 ## Custom Rules
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"

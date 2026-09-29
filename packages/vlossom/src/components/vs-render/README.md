@@ -18,7 +18,7 @@ A utility component that renders a string (HTML), a Vue component, or a render f
 
 ### Render a Plain String
 
-```html
+```html live
 <template>
     <vs-render content="Hello, World!" />
 </template>
@@ -26,7 +26,7 @@ A utility component that renders a string (HTML), a Vue component, or a render f
 
 ### Render an HTML String
 
-```html
+```html live
 <template>
     <vs-render content="<strong>Bold Text</strong>" />
 </template>
@@ -34,7 +34,7 @@ A utility component that renders a string (HTML), a Vue component, or a render f
 
 ### Render a Vue Component
 
-```html
+```html live
 <template>
     <vs-render :content="MyIcon" />
 </template>
@@ -46,7 +46,7 @@ import MyIcon from './MyIcon.vue';
 
 ### Render a Component with Props
 
-```html
+```html live
 <template>
     <vs-render :content="Greeting" :component-props="{ name: 'world', count: 3 }" />
 </template>

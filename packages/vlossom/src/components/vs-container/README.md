@@ -16,7 +16,7 @@ A layout container component that automatically adjusts its padding when opted i
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout>Header</vs-header>
@@ -30,7 +30,7 @@ A layout container component that automatically adjusts its padding when opted i
 
 ### Custom Tag
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-container layout tag="main">

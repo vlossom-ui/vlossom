@@ -16,7 +16,7 @@ A page footer bar component that supports fixed, sticky, and absolute positionin
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-footer>
         <p>© 2024 My App</p>
@@ -26,7 +26,7 @@ A page footer bar component that supports fixed, sticky, and absolute positionin
 
 ### Fixed Footer
 
-```html
+```html live
 <template>
     <vs-footer position="fixed" height="4rem">
         <nav>Navigation links</nav>
@@ -36,7 +36,7 @@ A page footer bar component that supports fixed, sticky, and absolute positionin
 
 ### Primary Styled Footer
 
-```html
+```html live
 <template>
     <vs-footer primary>
         <span>App v1.0.0</span>
@@ -48,7 +48,7 @@ A page footer bar component that supports fixed, sticky, and absolute positionin
 
 Set the `layout` prop to register the footer with the layout store so `VsContainer` and `VsDrawer` can offset around it. Wrapping the footer in another component is supported.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-container layout>
@@ -85,7 +85,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-footer
         :style-set="{

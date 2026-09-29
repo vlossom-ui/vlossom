@@ -19,7 +19,7 @@ A radio button component (`VsRadio`) and a group component (`VsRadioSet`) for se
 
 ### VsRadio
 
-```html
+```html live
 <template>
     <vs-radio v-model="selected" :radio-value="'apple'" radio-label="Apple" />
     <vs-radio v-model="selected" :radio-value="'banana'" radio-label="Banana" />
@@ -33,7 +33,7 @@ const selected = ref(null);
 
 ### VsRadioSet
 
-```html
+```html live
 <template>
     <vs-radio-set v-model="selected" :options="options" label="Choose a fruit" />
 </template>
@@ -47,7 +47,7 @@ const options = ['Apple', 'Banana', 'Cherry'];
 
 ### Vertical Layout
 
-```html
+```html live
 <template>
     <vs-radio-set v-model="selected" :options="options" vertical />
 </template>
@@ -55,7 +55,7 @@ const options = ['Apple', 'Banana', 'Cherry'];
 
 ### With beforeChange
 
-```html
+```html live
 <template>
     <vs-radio-set
         v-model="selected"
@@ -155,7 +155,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-radio-set
         v-model="selected"

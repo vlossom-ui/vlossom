@@ -17,7 +17,7 @@ A pagination component that allows navigation through a series of pages.
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="10" />
 </template>
@@ -30,7 +30,7 @@ const page = ref(0);
 
 ### With Edge Buttons
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="20" :showing-length="5" edge-buttons />
 </template>
@@ -38,7 +38,7 @@ const page = ref(0);
 
 ### With Ghost and Outline Style
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="10" ghost outline />
 </template>
@@ -75,7 +75,7 @@ interface VsPaginationStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-pagination
         v-model="page"

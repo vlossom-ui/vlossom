@@ -15,7 +15,7 @@ A horizontal or vertical line separator used to visually divide content sections
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <p>Section A</p>
     <vs-divider />
@@ -25,7 +25,7 @@ A horizontal or vertical line separator used to visually divide content sections
 
 ### Vertical Divider
 
-```html
+```html live
 <template>
     <div style="display: flex; align-items: center; height: 2rem;">
         <span>Item 1</span>
@@ -37,7 +37,7 @@ A horizontal or vertical line separator used to visually divide content sections
 
 ### Responsive Vertical Divider
 
-```html
+```html live
 <template>
     <div style="display: flex; align-items: center;">
         <span>Left</span>
@@ -71,7 +71,7 @@ interface VsDividerStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-divider
         :style-set="{

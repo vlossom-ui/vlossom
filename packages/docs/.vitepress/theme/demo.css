@@ -10,6 +10,26 @@
     margin-top: 0.75rem;
 }
 
+/* 모달·드로어처럼 열기 전에는 아무것도 렌더하지 않는 예제는 빈 상자만 남는다.
+   그런 경우 상자를 감추고 코드 블록만 보여준다. */
+.vs-demo:empty {
+    display: none;
+}
+
+.vs-demo:empty + div[class*='language-'] {
+    border-radius: 8px;
+}
+
+/* <slot /> 아웃렛 자리 표시 */
+.vs-demo-slot {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px dashed var(--vp-c-divider);
+    border-radius: 4px;
+    color: var(--vp-c-text-3);
+    font-size: 0.85rem;
+}
+
 /* 데모 바로 아래 붙는 코드 블록은 위쪽 라운드를 없애 한 덩어리로 보이게 */
 .vs-demo + div[class*='language-'] {
     margin-top: 0;

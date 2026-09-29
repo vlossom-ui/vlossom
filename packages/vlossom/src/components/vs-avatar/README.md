@@ -14,7 +14,7 @@ A circular or rounded display element for showing user profile images, initials,
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-avatar>
         <img src="/profile.png" alt="User Avatar" />
@@ -24,7 +24,7 @@ A circular or rounded display element for showing user profile images, initials,
 
 ### Text Initials
 
-```html
+```html live
 <template>
     <vs-avatar>JD</vs-avatar>
 </template>
@@ -32,7 +32,7 @@ A circular or rounded display element for showing user profile images, initials,
 
 ### With Color Scheme
 
-```html
+```html live
 <template>
     <vs-avatar color-scheme="blue">
         <img src="/profile.png" alt="User" />
@@ -57,7 +57,7 @@ interface VsAvatarStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-avatar
         :style-set="{

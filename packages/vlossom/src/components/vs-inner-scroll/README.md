@@ -16,7 +16,7 @@ A layout component that provides a scrollable content area with optional sticky 
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 300px;">
         <p v-for="i in 20" :key="i">Line {{ i }}</p>
@@ -26,7 +26,7 @@ A layout component that provides a scrollable content area with optional sticky 
 
 ### With Header and Footer
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 400px;">
         <template #header>
@@ -44,7 +44,7 @@ A layout component that provides a scrollable content area with optional sticky 
 
 ### Hide Scrollbar
 
-```html
+```html live
 <template>
     <vs-inner-scroll style="height: 200px;" :hide-scroll="true">
         <p v-for="i in 10" :key="i">Line {{ i }}</p>
@@ -71,7 +71,7 @@ interface VsInnerScrollStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-inner-scroll
         style="height: 400px;"

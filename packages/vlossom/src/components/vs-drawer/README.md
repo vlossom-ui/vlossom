@@ -17,7 +17,7 @@ A slide-in panel component that overlays content from any edge of the screen wit
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-button @click="open = true">Open Drawer</vs-button>
     <vs-drawer v-model="open" placement="left">
@@ -35,7 +35,7 @@ const open = ref(false);
 
 ### Right-side Drawer with Dimmed Backdrop
 
-```html
+```html live
 <template>
     <vs-button @click="drawerOpen = true">Open Right Drawer</vs-button>
     <vs-drawer v-model="drawerOpen" placement="right" dimmed dim-close>
@@ -51,7 +51,7 @@ const drawerOpen = ref(false);
 
 ### Fixed-Position Drawer with Custom Size
 
-```html
+```html live
 <template>
     <vs-drawer v-model="open" placement="top" :size="'30%'" position="fixed">
         <p>Top drawer at 30% height.</p>
@@ -63,7 +63,7 @@ const drawerOpen = ref(false);
 
 Set the `layout` prop to register the drawer with the layout store. Combine with `pushContainer` to push the sibling `VsContainer` aside instead of overlaying it. Wrapping the drawer in another component is supported.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-drawer v-model="open" layout push-container placement="left" size="240px">
@@ -114,7 +114,7 @@ interface VsDrawerStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-drawer
         v-model="open"

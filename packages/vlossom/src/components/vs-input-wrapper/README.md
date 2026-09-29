@@ -16,7 +16,7 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Username">
         <input type="text" placeholder="Enter username" />
@@ -26,7 +26,7 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ### With Messages
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="Email"
@@ -39,7 +39,7 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ### Group Label (fieldset)
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Shipping Address" :group-label="true">
         <input type="text" placeholder="Street" />
@@ -50,7 +50,7 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ### Required Field
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Password" :required="true">
         <input type="password" />
@@ -91,7 +91,7 @@ interface VsInputWrapperStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="Styled Wrapper"

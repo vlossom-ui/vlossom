@@ -18,7 +18,7 @@ An input-style file selector component that opens a file dialog on click or keyb
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" label="Attachment" placeholder="Select a file" />
 </template>
@@ -31,7 +31,7 @@ const files = ref([]);
 
 ### Multiple File Selection
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" multiple label="Attachments" placeholder="Select files" />
 </template>
@@ -39,7 +39,7 @@ const files = ref([]);
 
 ### File Type Restriction
 
-```html
+```html live
 <template>
     <!-- Images only -->
     <vs-file-input v-model="files" accept="image/*" label="Image" />
@@ -51,7 +51,7 @@ const files = ref([]);
 
 ### Collapse Chips
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" multiple collapse-chips label="Attachments" />
 </template>
@@ -59,7 +59,7 @@ const files = ref([]);
 
 ### Form Integration
 
-```html
+```html live
 <template>
     <vs-form ref="formRef">
         <vs-file-input v-model="files" label="Required File" required />
@@ -116,7 +116,7 @@ interface VsFileInputStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-file-input
         v-model="files"

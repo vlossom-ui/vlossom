@@ -17,7 +17,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <button @click="isOpen = true">Open Modal</button>
 
@@ -38,7 +38,7 @@ const isOpen = ref(false);
 
 ### With Dimmed Overlay
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :dimmed="true" :dim-close="true">
         <div>Click outside to close.</div>
@@ -48,7 +48,7 @@ const isOpen = ref(false);
 
 ### Predefined Size
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" size="lg">
         <div>Large modal content.</div>
@@ -58,7 +58,7 @@ const isOpen = ref(false);
 
 ### Custom Size
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :size="{ width: '600px', height: '400px' }">
         <div>Custom size modal.</div>
@@ -68,7 +68,7 @@ const isOpen = ref(false);
 
 ### Focus Lock and ESC Close
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :focus-lock="true" :esc-close="true">
         <div>Press ESC to close. Focus is trapped inside.</div>
@@ -78,7 +78,7 @@ const isOpen = ref(false);
 
 ### Before Close Hook
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :before-close="confirmClose">
         <div>Try to close me.</div>
@@ -99,7 +99,7 @@ async function confirmClose() {
 
 Set `scroll-lock` to `true` to lock the page (`body`) scroll while the modal is open:
 
-```html
+```html live
 <template>
     <vs-modal v-model="isOpen" :scroll-lock="true">
         <div>Background page scroll is locked while open.</div>
@@ -109,7 +109,7 @@ Set `scroll-lock` to `true` to lock the page (`body`) scroll while the modal is 
 
 Pass a CSS selector string to lock a specific scroll container instead of `body`. The page keeps scrolling while only the targeted element is locked:
 
-```html
+```html live
 <template>
     <div id="scroll-area" style="height: 200px; overflow: auto">
         <!-- long scrollable content -->
@@ -158,7 +158,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-modal
         v-model="isOpen"

@@ -17,7 +17,7 @@ A positioned floating element that renders in a teleport overlay and automatical
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <div id="my-anchor">Hover me</div>
     <vs-floating v-model="show" target="#my-anchor" placement="bottom">
@@ -33,7 +33,7 @@ const show = ref(false);
 
 ### Follow Width with Top Placement
 
-```html
+```html live
 <template>
     <input id="search-input" type="text" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
     <vs-floating v-model="dropdownOpen" target="#search-input" placement="bottom" follow-width>
@@ -49,7 +49,7 @@ const dropdownOpen = ref(false);
 
 ### With Enter/Leave Delay
 
-```html
+```html live
 <template>
     <button id="delayed-btn">Hover for tooltip</button>
     <vs-floating v-model="visible" target="#delayed-btn" placement="top" :enter-delay="300" :leave-delay="200">

@@ -22,7 +22,7 @@ A floating tooltip component that attaches to a target element and supports hove
 
 When `target` is omitted, the default slot is wrapped by an element that becomes the trigger.
 
-```html
+```html live
 <template>
     <vs-tooltip>
         <button>Hover me</button>
@@ -35,7 +35,7 @@ When `target` is omitted, the default slot is wrapped by an element that becomes
 
 Pass `target` as a CSS selector to attach the tooltip to an external element.
 
-```html
+```html live
 <template>
     <button id="my-btn">Hover me</button>
     <vs-tooltip target="#my-btn">
@@ -46,7 +46,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ### Click-to-Open Tooltip
 
-```html
+```html live
 <template>
     <vs-tooltip clickable>
         <button>Click me</button>
@@ -57,7 +57,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ### Bottom Placement
 
-```html
+```html live
 <template>
     <vs-tooltip placement="bottom" align="start">
         <button>Hover me</button>
@@ -68,7 +68,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ### Contents Hover
 
-```html
+```html live
 <template>
     <vs-tooltip contents-hover>
         <button>Hover me</button>
@@ -81,7 +81,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ### Custom Wrapper Tag
 
-```html
+```html live
 <template>
     <vs-tooltip tag="div">
         <div class="trigger-area">Block-level trigger</div>
@@ -123,7 +123,7 @@ interface VsTooltipStyleSet {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-tooltip
         :style-set="{

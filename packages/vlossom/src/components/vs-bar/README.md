@@ -15,7 +15,7 @@ A full-width horizontal bar component typically used as a header, footer, or too
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-bar>
         <span>My Application Title</span>
@@ -25,7 +25,7 @@ A full-width horizontal bar component typically used as a header, footer, or too
 
 ### Fixed Position Header
 
-```html
+```html live
 <template>
     <vs-bar position="fixed" primary>
         <span>Fixed Header Bar</span>
@@ -35,7 +35,7 @@ A full-width horizontal bar component typically used as a header, footer, or too
 
 ### Custom Tag
 
-```html
+```html live
 <template>
     <vs-bar tag="header">
         <nav>Navigation content</nav>
@@ -61,7 +61,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-bar
         :style-set="{

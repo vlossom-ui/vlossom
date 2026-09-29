@@ -14,7 +14,7 @@ A semi-transparent overlay component that covers its parent container with a fad
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />
@@ -30,7 +30,7 @@ const isVisible = ref(false);
 
 ### Programmatic Control
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed ref="dimmedRef" v-model="isVisible" />
@@ -61,7 +61,7 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-dimmed
         v-model="isVisible"

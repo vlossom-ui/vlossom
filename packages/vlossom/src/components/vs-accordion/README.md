@@ -16,7 +16,7 @@ A collapsible content panel that shows or hides its content through a toggle int
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-accordion>
         <template #title>Section Title</template>
@@ -27,7 +27,7 @@ A collapsible content panel that shows or hides its content through a toggle int
 
 ### With v-model
 
-```html
+```html live
 <template>
     <vs-accordion v-model="isOpen">
         <template #title>Controlled Accordion</template>
@@ -43,7 +43,7 @@ const isOpen = ref(false);
 
 ### Primary Style
 
-```html
+```html live
 <template>
     <vs-accordion primary>
         <template #title>Primary Accordion</template>
@@ -54,7 +54,7 @@ const isOpen = ref(false);
 
 ### Disabled
 
-```html
+```html live
 <template>
     <vs-accordion disabled>
         <template #title>Disabled Accordion</template>
@@ -95,7 +95,7 @@ interface VsAccordionStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-accordion
         :style-set="{

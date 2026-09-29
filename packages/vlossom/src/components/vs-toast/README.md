@@ -16,7 +16,7 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-toast @close="handleClose">
         Operation completed successfully!
@@ -26,7 +26,7 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 ### With Custom Timeout
 
-```html
+```html live
 <template>
     <vs-toast :timeout="3000" @close="handleClose">
         This toast closes in 3 seconds.
@@ -36,7 +36,7 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 ### Manual Close Only
 
-```html
+```html live
 <template>
     <vs-toast :auto-close="false" @close="handleClose">
         Click the X button to close.
@@ -48,7 +48,7 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 `VsToastView` is the container component that renders all active toasts. Place it once at the app root.
 
-```html
+```html live
 <template>
     <vs-toast-view />
 </template>
@@ -79,7 +79,7 @@ interface VsToastStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-toast
         :style-set="{

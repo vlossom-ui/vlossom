@@ -19,7 +19,7 @@ A dropdown select component supporting single and multiple selection with search
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" label="Choose a fruit" />
 </template>
@@ -33,7 +33,7 @@ const options = ['Apple', 'Banana', 'Cherry'];
 
 ### Multiple Selection
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" multiple label="Choose fruits" />
 </template>
@@ -41,7 +41,7 @@ const options = ['Apple', 'Banana', 'Cherry'];
 
 ### With Search
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="options" :search="true" label="Search and select" />
 </template>
@@ -51,7 +51,7 @@ const options = ['Apple', 'Banana', 'Cherry'];
 
 Show a different placeholder while the select is focused or open. It falls back to `placeholder` otherwise.
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"
@@ -65,7 +65,7 @@ Show a different placeholder while the select is focused or open. It falls back 
 
 ### Object Options with Custom Labels
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"
@@ -90,7 +90,7 @@ const options = [
 
 When there is no option to show — because `options` is empty or the search keyword matches nothing — the dropdown shows a default empty UI. Use the `empty` slot to replace it.
 
-```html
+```html live
 <template>
     <vs-select v-model="selected" :options="[]" label="Choose a fruit">
         <template #empty>
@@ -160,7 +160,7 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-select
         v-model="selected"

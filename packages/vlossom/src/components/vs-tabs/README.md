@@ -17,7 +17,7 @@ A tab navigation component with animated indicator, prev/next control buttons, a
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" />
 </template>
@@ -31,7 +31,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ### Custom Tab Content
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs">
         <template #tab="{ tab, index }">
@@ -43,7 +43,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ### Vertical Tabs
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" vertical />
 </template>
@@ -51,7 +51,7 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ### With Disabled Tabs
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" :disabled="(tab) => tab === 'Tab 2'" />
 </template>
@@ -93,7 +93,7 @@ interface VsTabsStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-tabs
         v-model="activeTab"
