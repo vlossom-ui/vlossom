@@ -44,16 +44,16 @@ const defaultStubs = {
         props: ['disabled'],
         emits: ['search'],
         data() {
-            return { searchText: '' };
+            return { debouncedText: '' };
         },
         template: '<input data-testid="search-input" :disabled="disabled" @input="onInput" />',
         methods: {
             onInput(event: Event) {
-                (this as any).searchText = (event.target as HTMLInputElement).value;
-                (this as any).$emit('search', (this as any).searchText);
+                (this as any).debouncedText = (event.target as HTMLInputElement).value;
+                (this as any).$emit('search', (this as any).debouncedText);
             },
             match(text: string) {
-                const keyword = (this as any).searchText;
+                const keyword = (this as any).debouncedText;
                 return !keyword || String(text).toLowerCase().includes(String(keyword).toLowerCase());
             },
         },
