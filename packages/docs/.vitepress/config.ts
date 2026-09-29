@@ -1,7 +1,7 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, type DefaultTheme } from 'vitepress';
-import { liveDemo } from './live-demo.ts';
+import { liveDemo, vlossomDemoPlugin } from './live-demo.ts';
 
 const SRC = resolve(import.meta.dirname, '../../vlossom/src');
 
@@ -81,11 +81,20 @@ export default defineConfig({
     ],
     rewrites,
 
+    head: [['link', { rel: 'icon', href: '/vlossom/vlossom-logo.png' }]],
+
     markdown: {
         config: liveDemo,
     },
 
+    vite: {
+        // srcDir이 packages/ 라서 기본 publicDir(srcDir/public)이 엉뚱한 곳을 가리킨다.
+        publicDir: resolve(import.meta.dirname, '../public'),
+        plugins: [vlossomDemoPlugin()],
+    },
+
     themeConfig: {
+        logo: { src: '/vlossom-logo.png', alt: 'Vlossom' },
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 

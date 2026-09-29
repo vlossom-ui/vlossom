@@ -14,7 +14,7 @@
 
 ## Basic Usage
 
-```html live
+```html
 <template>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />

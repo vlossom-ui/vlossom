@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html live
+```html
 <template>
     <div id="my-anchor">마우스를 올려보세요</div>
     <vs-floating v-model="show" target="#my-anchor" placement="bottom">
@@ -49,7 +49,7 @@ const dropdownOpen = ref(false);
 
 ### 표시/숨김 지연 설정
 
-```html live
+```html
 <template>
     <button id="delayed-btn">툴팁을 위해 마우스를 올려보세요</button>
     <vs-floating v-model="visible" target="#delayed-btn" placement="top" :enter-delay="300" :leave-delay="200">

@@ -48,7 +48,7 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 `VsToastView` is the container component that renders all active toasts. Place it once at the app root.
 
-```html live
+```html
 <template>
     <vs-toast-view />
 </template>

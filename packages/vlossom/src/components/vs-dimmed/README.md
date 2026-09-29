@@ -14,7 +14,7 @@ A semi-transparent overlay component that covers its parent container with a fad
 
 ## Basic Usage
 
-```html live
+```html
 <template>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />

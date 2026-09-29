@@ -48,7 +48,7 @@
 
 `VsToastView`는 모든 활성 토스트를 렌더링하는 컨테이너 컴포넌트입니다. 앱 루트에 한 번 배치하세요.
 
-```html live
+```html
 <template>
     <vs-toast-view />
 </template>

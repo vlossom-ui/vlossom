@@ -109,7 +109,7 @@ Set `scroll-lock` to `true` to lock the page (`body`) scroll while the modal is 
 
 Pass a CSS selector string to lock a specific scroll container instead of `body`. The page keeps scrolling while only the targeted element is locked:
 
-```html live
+```html
 <template>
     <div id="scroll-area" style="height: 200px; overflow: auto">
         <!-- long scrollable content -->

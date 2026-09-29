@@ -1,32 +1,39 @@
+import { resolve } from 'node:path';
 import type { MarkdownRenderer } from 'vitepress';
 import { DEMO_SCOPE } from './demo-scope.ts';
 
-// VitePress는 마크다운 페이지를 Vue SFC 템플릿으로 컴파일한다.
-// 그래서 코드펜스 안의 <template> 내용을 HTML로 그대로 흘려보내면
-// Vue가 알아서 실제 컴포넌트로 컴파일해준다. 가상 모듈도 런타임 SFC 컴파일도 필요 없다.
-//
-// 마커는 펜스 info string에 `live`를 덧붙이는 방식이다.
+// README 코드펜스의 info string에 `live`가 붙은 예제를 실제 동작하는 데모로 만든다.
 // 첫 토큰이 `html` 그대로라 GitHub 렌더는 바뀌지 않고,
 // vlossom-mcp는 코드펜스를 읽지 않으므로 영향이 없다.
+//
+// 데모마다 **자기 컴포넌트**로 컴파일한다. 한 페이지에 스코프 하나를 공유하면
+// 같은 이름을 쓰는 예제끼리 상태가 붙어버린다(VsInput의 `value`가 그랬다).
+// 펜스별로 가상 .vue 모듈을 만들어 등록하고, 페이지에서 import해 쓴다.
+
+// 가상 모듈이지만 **실재하는 디렉터리 아래** 경로를 써야 한다.
+// `/@vs-demo/...` 같은 가상 경로를 쓰면 그 안의 `import { ref } from 'vue'`를
+// 해석할 기준 디렉터리가 없어서 번들러가 실패한다.
+const DEMO_DIR = resolve(import.meta.dirname, '.demos').replace(/\\/g, '/');
+const demoModules = new Map<string, string>();
 
 // README 맨 위의 "다른 언어 문서 보기" 안내. 사이트에는 언어 스위처가 있으므로 뺀다.
 const CROSS_DOC_NOTE = /^> (?:한국어 문서는|For English documentation).*$\r?\n?/m;
 // README의 상대 링크는 GitHub 기준이라 사이트에서는 깨진다.
-// 같은 섹션 안의 형제 문서를 가리키므로 현재 페이지의 라우트 기준으로 고쳐준다.
 const SIBLING_README_LINK = /\]\(\.\.\/([a-z0-9-]+)\/README(?:\.ko)?\.md(#[a-z0-9-]+)?\)/g;
 // 플러그인 문서가 컴포넌트 문서를 가리키는 식의 섹션 간 링크.
 const CROSS_SECTION_README_LINK = /\]\(\.\.\/\.\.\/([a-z0-9-]+)\/([a-z0-9-]+)\/README(?:\.ko)?\.md(#[a-z0-9-]+)?\)/g;
+
 const LIVE_MARKER = /(^|\s)live(?=\s|$)/;
 const LIVE_FENCE = /```[a-z]*[^\n]*\blive\b[^\n]*\r?\n([\s\S]*?)```/g;
 const SCRIPT_BLOCK = /<script[^>]*>([\s\S]*?)<\/script>/;
 const VUE_IMPORT = /^import\s*\{([^}]*)\}\s*from\s*['"]vue['"]/;
+const RELATIVE_IMPORT = /from\s*['"]\.{1,2}\//;
 const OPEN_TAG = '<template>';
 const CLOSE_TAG = '</template>';
 
 // README 예제의 이미지 경로는 실재하지 않는다(`/profile.png`, `example.com`).
 // Vite는 `/profile.png`를 에셋 import로 바꾸려다 빌드를 실패시키고,
 // 외부 URL은 그냥 깨진 이미지로 보인다. 데모 렌더에서만 플레이스홀더로 바꾼다.
-// 코드 블록에는 README 원문이 그대로 보인다.
 // `broken.png`는 폴백 동작을 보여주는 예제이므로 일부러 건드리지 않는다.
 const PLACEHOLDER_SVG =
     '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">' +
@@ -43,7 +50,6 @@ const SLOT_PLACEHOLDER = '<span class="vs-demo-slot">slot content</span>';
 
 // markdown-it이 받는 env.relativePath는 rewrites가 적용된 뒤의 경로다.
 // 즉 `vlossom/src/components/vs-button/README.md`가 아니라 `components/vs-button.md`.
-// (env.filePath는 이 시점에 존재하지 않는다.)
 function componentOf(relativePath: string): string {
     const normalized = relativePath.replace(/\\/g, '/');
 
@@ -60,6 +66,10 @@ function routeBaseOf(relativePath: string): string {
     parts.pop();
 
     return `/${parts.join('/')}`;
+}
+
+function slugOf(relativePath: string): string {
+    return relativePath.replace(/\\/g, '/').replace(/\.md$/, '').replace(/[^a-zA-Z0-9]+/g, '_');
 }
 
 // 예제의 루트 <template> 안쪽만 꺼낸다.
@@ -126,24 +136,21 @@ function declaredName(statement: string): string | undefined {
     );
 }
 
-// live 펜스들이 저마다 들고 있는 <script setup>을 페이지 스코프 하나로 합친다.
-// README가 예제와 함께 적어둔 데이터(과일 배열, 테이블 컬럼 등)를 그대로 쓸 수 있다.
+// 데모 하나가 쓸 <script setup>을 조립한다. 앞에 오는 쪽이 이긴다.
 //
-// DEMO_SCOPE를 맨 앞에 두어 같은 이름은 손으로 쓴 쪽이 이긴다.
-// README 예제 중에는 정의되지 않은 함수를 호출하는 것들이 있어서 덮어써야 한다.
-function buildPageSetup(source: string, component: string): string {
-    const scripts = [DEMO_SCOPE[component] ?? ''];
-    for (const match of source.matchAll(LIVE_FENCE)) {
-        scripts.push(SCRIPT_BLOCK.exec(match[1])?.[1] ?? '');
-    }
+// 1. DEMO_SCOPE  — README가 선언하지 않거나, 선언했지만 실행 불가능한 것을 덮어쓴다
+// 2. 자기 펜스의 스크립트 — 그 예제가 직접 정의한 데이터
+// 3. 문서 안의 다른 펜스들 — 앞선 예제가 만든 데이터를 물려받는 예제들을 위해
+function buildScope(component: string, ownScript: string, allScripts: string[]): string {
+    const sources = [DEMO_SCOPE[component] ?? '', ownScript, ...allScripts].filter(Boolean);
 
     const vueImports = new Set<string>();
     const otherImports = new Set<string>();
     const declared = new Set<string>();
     const body: string[] = [];
 
-    for (const script of scripts.filter(Boolean)) {
-        for (const statement of splitStatements(script)) {
+    for (const source of sources) {
+        for (const statement of splitStatements(source)) {
             const vueNames = VUE_IMPORT.exec(statement)?.[1];
             if (vueNames) {
                 for (const name of vueNames.split(',')) {
@@ -152,11 +159,8 @@ function buildPageSetup(source: string, component: string): string {
                 continue;
             }
             if (statement.startsWith('import ')) {
-                // 예제의 상대 경로 import(`./Greeting.vue`)는 문서 사이트 컨텍스트에
-                // 존재하지 않는 파일이다. 버리고 DEMO_SCOPE가 대신 공급한다.
-                if (!/from\s*['"]\.{1,2}\//.test(statement)) {
-                    otherImports.add(statement);
-                }
+                // 예제의 상대 경로 import(`./Greeting.vue`)는 존재하지 않는 파일이다.
+                if (!RELATIVE_IMPORT.test(statement)) otherImports.add(statement);
                 continue;
             }
 
@@ -169,10 +173,6 @@ function buildPageSetup(source: string, component: string): string {
         }
     }
 
-    if (!body.length) {
-        return '';
-    }
-
     return [
         vueImports.size ? `import { ${[...vueImports].join(', ')} } from 'vue';` : '',
         ...otherImports,
@@ -182,8 +182,23 @@ function buildPageSetup(source: string, component: string): string {
         .join('\n');
 }
 
+// 가상 .vue 모듈을 Vite에 넘겨준다. 확장자가 .vue라 plugin-vue가 그대로 컴파일한다.
+// vite는 docs의 직접 의존이 아니라서(vitepress가 물고 온다) 타입을 여기서 최소한으로 둔다.
+export function vlossomDemoPlugin() {
+    return {
+        name: 'vlossom-demo-modules',
+        enforce: 'pre' as const,
+        resolveId(id: string) {
+            return demoModules.has(id) ? id : undefined;
+        },
+        load(id: string) {
+            return demoModules.get(id);
+        },
+    };
+}
+
 export function liveDemo(md: MarkdownRenderer) {
-    md.core.ruler.before('normalize', 'vlossom-demo-scope', (state) => {
+    md.core.ruler.before('normalize', 'vlossom-live-demo', (state) => {
         const relativePath = state.env?.relativePath ?? '';
         const routeBase = routeBaseOf(relativePath);
         const localeBase = relativePath.startsWith('ko/') ? '/ko' : '';
@@ -193,9 +208,34 @@ export function liveDemo(md: MarkdownRenderer) {
             .replace(CROSS_SECTION_README_LINK, `](${localeBase}/$1/$2$3)`)
             .replace(SIBLING_README_LINK, `](${routeBase}/$1$2)`);
 
-        const setup = buildPageSetup(state.src, componentOf(relativePath));
-        if (setup) {
-            state.src = `<script setup>\n${setup}\n</script>\n\n${state.src}`;
+        const fences = [...state.src.matchAll(LIVE_FENCE)].map((match) => match[1]);
+        const allScripts = fences.map((fence) => SCRIPT_BLOCK.exec(fence)?.[1] ?? '').filter(Boolean);
+
+        const component = componentOf(relativePath);
+        const slug = slugOf(relativePath);
+        const imports: string[] = [];
+
+        fences.forEach((fence, index) => {
+            const body = templateBody(fence);
+            if (!body) {
+                return;
+            }
+
+            const scope = buildScope(component, SCRIPT_BLOCK.exec(fence)?.[1] ?? '', allScripts);
+            const id = `${DEMO_DIR}/${slug}-${index}.vue`;
+
+            demoModules.set(
+                id,
+                `${scope ? `<script setup>\n${scope}\n</script>\n\n` : ''}<template>\n${body}\n</template>\n`,
+            );
+            imports.push(`import VsDemo${index} from '${id}';`);
+        });
+
+        // env에 담아 fence 렌더러가 몇 번 데모인지 알 수 있게 한다.
+        state.env.vlossomDemoIndex = 0;
+
+        if (imports.length) {
+            state.src = `<script setup>\n${imports.join('\n')}\n</script>\n\n${state.src}`;
         }
     });
 
@@ -210,15 +250,17 @@ export function liveDemo(md: MarkdownRenderer) {
             return renderFence(tokens, idx, options, env, self);
         }
 
+        const index = env.vlossomDemoIndex ?? 0;
+        env.vlossomDemoIndex = index + 1;
+
         // 마커를 떼고 원래 렌더러에 넘겨야 shiki가 언어를 인식한다.
         token.info = token.info.replace(LIVE_MARKER, '').trim();
         const code = renderFence(tokens, idx, options, env, self);
 
-        const body = templateBody(token.content);
-        if (!body) {
+        if (!templateBody(token.content)) {
             return code;
         }
 
-        return `<ClientOnly><div class="vs-demo">\n${body}\n</div></ClientOnly>\n${code}`;
+        return `<ClientOnly><div class="vs-demo"><VsDemo${index} /></div></ClientOnly>\n${code}`;
     };
 }

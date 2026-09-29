@@ -109,7 +109,7 @@ async function confirmClose() {
 
 CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이너만 잠급니다. 페이지는 계속 스크롤되고 지정한 요소만 잠깁니다:
 
-```html live
+```html
 <template>
     <div id="scroll-area" style="height: 200px; overflow: auto">
         <!-- 스크롤 가능한 긴 콘텐츠 -->
