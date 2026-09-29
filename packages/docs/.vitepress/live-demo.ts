@@ -16,8 +16,17 @@ const LIVE_MARKER = /(^|\s)live(?=\s|$)/;
 const OPEN_TAG = '<template>';
 const CLOSE_TAG = '</template>';
 
+// markdown-it이 받는 env.relativePath는 rewrites가 적용된 뒤의 경로다.
+// 즉 `vlossom/src/components/vs-button/README.md`가 아니라 `components/vs-button.md`.
+// (env.filePath는 이 시점에 존재하지 않는다.)
 function componentOf(relativePath: string): string {
-    return relativePath.replace(/\\/g, '/').match(/components\/([^/]+)\/README\.md$/)?.[1] ?? '';
+    const normalized = relativePath.replace(/\\/g, '/');
+
+    return (
+        normalized.match(/(?:^|\/)components\/(vs-[a-z0-9-]+)\.md$/)?.[1] ??
+        normalized.match(/components\/(vs-[a-z0-9-]+)\/README\.md$/)?.[1] ??
+        ''
+    );
 }
 
 // 예제의 루트 <template> 안쪽만 꺼낸다.
