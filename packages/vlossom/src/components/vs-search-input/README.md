@@ -111,12 +111,12 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Events
 
-| Event                  | Payload   | Description                                      |
-| ---------------------- | --------- | ------------------------------------------------ |
-| `search`               | `string`  | Emitted (debounced) when the search text changes |
-| `update:modelValue`    | `string`  | Emitted when the search text changes             |
-| `update:caseSensitive` | `boolean` | Emitted when the case-sensitive toggle changes   |
-| `update:regex`         | `boolean` | Emitted when the regex toggle changes            |
+| Event                  | Payload   | Description                                                                                 |
+| ---------------------- | --------- | ------------------------------------------------------------------------------------------- |
+| `search`               | `string`  | Emitted (debounced) when the search text changes; not emitted for `modelValue` prop updates |
+| `update:modelValue`    | `string`  | Emitted (debounced) when the search text changes; not emitted for `modelValue` prop updates |
+| `update:caseSensitive` | `boolean` | Emitted when the case-sensitive toggle changes                                              |
+| `update:regex`         | `boolean` | Emitted when the regex toggle changes                                                       |
 
 ## Slots
 
