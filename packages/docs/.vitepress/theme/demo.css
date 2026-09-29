@@ -1,0 +1,17 @@
+/* `html live` 마커가 붙은 예제가 렌더되는 영역 */
+.vs-demo {
+    padding: 1.5rem;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px 8px 0 0;
+    background-color: var(--vp-c-bg-soft);
+}
+
+.vs-demo > * + * {
+    margin-top: 0.75rem;
+}
+
+/* 데모 바로 아래 붙는 코드 블록은 위쪽 라운드를 없애 한 덩어리로 보이게 */
+.vs-demo + div[class*='language-'] {
+    margin-top: 0;
+    border-radius: 0 0 8px 8px;
+}
