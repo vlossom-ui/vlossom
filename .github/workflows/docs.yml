@@ -35,16 +35,19 @@ jobs:
               working-directory: ./packages/docs
               run: pnpm build
             - name: Configure Pages
-              if: github.ref == 'refs/heads/main'
+              if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
               uses: actions/configure-pages@v5
             - name: Upload artifact
-              if: github.ref == 'refs/heads/main'
+              if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
               uses: actions/upload-pages-artifact@v3
               with:
                   path: packages/docs/.vitepress/dist
 
     deploy:
-        if: github.ref == 'refs/heads/main'
+        # 평소에는 main만 배포한다. 수동 실행(workflow_dispatch)은 머지 전 확인용 예외다.
+        # 실제 안전장치는 github-pages 환경의 배포 허용 브랜치 정책이며,
+        # 거기에 없는 브랜치는 수동으로 돌려도 배포되지 않는다.
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         needs: build
         timeout-minutes: 10
         runs-on: ubuntu-latest
