@@ -5,6 +5,9 @@ import { liveDemo, vlossomDemoPlugin } from './live-demo.ts';
 
 const SRC = resolve(import.meta.dirname, '../../vlossom/src');
 
+// `vue` 와 그 하위 경로(`vue/server-renderer` 등)를 모두 잡는다.
+const VUE_SUBPATH = /^vue(\/.*)?$/;
+
 // 라이브러리 소스에서 문서로 올릴 유닛들. 디렉터리마다 README.md가 하나씩 있다.
 const SECTIONS = [
     { dir: 'components', text: 'Components' },
@@ -91,6 +94,13 @@ export default defineConfig({
         // srcDir이 packages/ 라서 기본 publicDir(srcDir/public)이 엉뚱한 곳을 가리킨다.
         publicDir: resolve(import.meta.dirname, '../public'),
         plugins: [vlossomDemoPlugin()],
+        resolve: {
+            // README에서 만들어진 페이지 모듈은 경로상 packages/vlossom 아래에 놓인다.
+            // 그래서 거기서 나온 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
+            // CI는 packages/docs에만 install하므로 그 경로가 없어 빌드가 깨진다.
+            // (로컬은 vlossom을 개발하며 install해둔 게 있어서 우연히 통과했다.)
+            alias: [{ find: VUE_SUBPATH, replacement: `${resolve(import.meta.dirname, '../node_modules/vue')}$1` }],
+        },
     },
 
     themeConfig: {
