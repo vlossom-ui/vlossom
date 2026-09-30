@@ -111,12 +111,12 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ## Events
 
-| Event                  | Payload   | 설명                                      |
-| ---------------------- | --------- | ----------------------------------------- |
-| `search`               | `string`  | 검색 텍스트가 변경될 때 디바운스되어 발생 |
-| `update:modelValue`    | `string`  | 검색 텍스트가 변경될 때 발생              |
-| `update:caseSensitive` | `boolean` | 대소문자 구분 토글이 변경될 때 발생       |
-| `update:regex`         | `boolean` | 정규식 토글이 변경될 때 발생              |
+| Event                  | Payload   | 설명                                                                                      |
+| ---------------------- | --------- | ----------------------------------------------------------------------------------------- |
+| `search`               | `string`  | 검색 텍스트가 변경될 때 디바운스되어 발생하며, `modelValue` prop 변경으로는 발생하지 않음 |
+| `update:modelValue`    | `string`  | 검색 텍스트가 변경될 때 디바운스되어 발생하며, `modelValue` prop 변경으로는 발생하지 않음 |
+| `update:caseSensitive` | `boolean` | 대소문자 구분 토글이 변경될 때 발생                                                       |
+| `update:regex`         | `boolean` | 정규식 토글이 변경될 때 발생                                                              |
 
 ## Slots
 
