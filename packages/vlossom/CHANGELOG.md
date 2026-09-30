@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.1.0...vlossom-v2.1.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **VsTable:** fix debounced search ([#648](https://github.com/vlossom-ui/vlossom/issues/648)) ([1506503](https://github.com/vlossom-ui/vlossom/commit/15065030c2c166dea2aed72e524081fb9318cd60))
+
 ## [2.1.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.0.2...vlossom-v2.1.0) (2026-09-28)
 
 
