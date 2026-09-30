@@ -42,8 +42,7 @@ export function useTableSearchComposable(
 
     const searchedItems = computed<VsTableItem[]>(() => {
         const searchInput = searchInputRef.value;
-        // 검색어가 없으면 어차피 전부 통과하므로, 아이템마다 검색 텍스트를 만드는 비용을 건너뛴다
-        if (!searchInput?.searchText) {
+        if (!searchInput?.debouncedText) {
             return items.value;
         }
         return items.value.filter((item) => searchInput.match(getItemSearchText(item)));

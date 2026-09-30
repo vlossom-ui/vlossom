@@ -18,7 +18,7 @@ const bob = { id: '2', name: 'Bob', age: 30 };
 function createSearchInputRef(searchText = '') {
     const text = ref(searchText);
     const searchInput = {
-        get searchText() {
+        get debouncedText() {
             return text.value;
         },
         match: (target: string) => !text.value || target.toLowerCase().includes(text.value.toLowerCase()),
@@ -131,6 +131,22 @@ describe('useTableSearchComposable', () => {
     it('검색어가 없으면 모든 아이템을 그대로 반환한다', () => {
         const { searchInputRef } = createSearchInputRef();
         const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), columns, items);
+
+        expect(searchedItems.value).toBe(items.value);
+    });
+
+    it('입력 중이어도 debounce된 검색어가 없으면 아이템 배열을 새로 만들지 않는다', () => {
+        const typingText = ref('');
+        const searchInputRef = ref({
+            get searchText() {
+                return typingText.value;
+            },
+            debouncedText: '',
+            match: () => true,
+        }) as unknown as Ref<VsSearchInputRef | null>;
+        const { searchedItems } = useTableSearchComposable(searchInputRef, ref(true), columns, items);
+
+        typingText.value = 'bo';
 
         expect(searchedItems.value).toBe(items.value);
     });

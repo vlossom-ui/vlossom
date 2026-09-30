@@ -47,6 +47,78 @@ describe('VsSearchInput', () => {
             // then
             expect(wrapper.vm.searchText).toBe('updated');
         });
+
+        it('modelValue prop이 변경되어도 search, update:modelValue를 다시 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, { props: { modelValue: '' } });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ modelValue: 'banana' });
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.debouncedText).toBe('banana');
+            expect(wrapper.emitted('search')).toBeFalsy();
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+        });
+
+        it('debounce 대기 중 modelValue prop이 변경되면 대기 중이던 입력값을 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, { props: { modelValue: '' } });
+            await nextTick();
+            await wrapper.find('input').setValue('apple');
+            vi.advanceTimersByTime(100);
+
+            // when
+            await wrapper.setProps({ modelValue: 'banana' });
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.debouncedText).toBe('banana');
+            expect(wrapper.emitted('search')).toBeFalsy();
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+        });
+
+        it('modelValue prop 동기화 이후 같은 값을 다시 입력하면 search를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, { props: { modelValue: '' } });
+            await nextTick();
+            await wrapper.setProps({ modelValue: 'banana' });
+            await nextTick();
+            const input = wrapper.find('input');
+
+            // when
+            await input.setValue('bananas');
+            vi.advanceTimersByTime(400);
+            await input.setValue('banana');
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('search')).toEqual([['bananas'], ['banana']]);
+        });
+
+        it('v-model 없이 쓸 때 clear 하면 400ms 후 빈 검색어로 search를 emit해야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            await nextTick();
+            await wrapper.find('input').setValue('apple');
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then - 다른 debounce된 search와 순서가 뒤바뀌지 않도록 clear도 지연된다
+            expect(wrapper.emitted('search')).toEqual([['apple']]);
+            vi.advanceTimersByTime(400);
+            await nextTick();
+            expect(wrapper.emitted('search')).toEqual([['apple'], ['']]);
+        });
     });
 
     describe('v-model:caseSensitive', () => {
@@ -232,6 +304,23 @@ describe('VsSearchInput', () => {
             // then
             expect(wrapper.vm.isRegexOn).toBe(true);
         });
+
+        it('검색어가 modelValue와 같아도 토글을 바꾸면 search만 emit하고 update:modelValue는 emit하지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput, {
+                props: { modelValue: 'apple', useCaseSensitive: true },
+            });
+            await nextTick();
+
+            // when
+            await wrapper.find('.vs-search-input-toggle').trigger('click');
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('search')).toEqual([['apple']]);
+            expect(wrapper.emitted('update:modelValue')).toBeFalsy();
+        });
     });
 
     describe('placeholder', () => {
@@ -387,7 +476,8 @@ describe('VsSearchInput', () => {
             // when - 입력했지만 debounce 아직 미완료
             await input.setValue('apple');
 
-            // then - appliedSearchText가 아직 '' 이므로 모두 true
+            // then - debouncedText가 아직 '' 이므로 모두 true
+            expect(wrapper.vm.debouncedText).toBe('');
             expect(wrapper.vm.match('apple')).toBe(true);
             expect(wrapper.vm.match('banana')).toBe(true);
         });
@@ -404,6 +494,7 @@ describe('VsSearchInput', () => {
             await nextTick();
 
             // then
+            expect(wrapper.vm.debouncedText).toBe('apple');
             expect(wrapper.vm.match('apple')).toBe(true);
             expect(wrapper.vm.match('banana')).toBe(false);
         });
@@ -448,6 +539,24 @@ describe('VsSearchInput', () => {
 
             // then - 즉시 전체 일치
             expect(wrapper.vm.match('banana')).toBe(true);
+        });
+
+        it('debounce 대기 중 clear 해도 이전 입력값이 뒤늦게 적용되지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsSearchInput);
+            await nextTick();
+            await wrapper.find('input').setValue('apple');
+            vi.advanceTimersByTime(100);
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+            vi.advanceTimersByTime(400);
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.debouncedText).toBe('');
+            expect(wrapper.emitted('search')).toEqual([['']]);
         });
 
         it('modelValue prop 변경 시 debounce 없이 즉시 match에 반영되어야 한다', async () => {

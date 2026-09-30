@@ -69,6 +69,7 @@ import {
     defineComponent,
     toRefs,
     ref,
+    onBeforeUnmount,
     useTemplateRef,
     watch,
     type PropType,
@@ -138,15 +139,29 @@ export default defineComponent({
             baseStyleSet,
         );
 
-        const debouncedEmitSearch = functionUtil.debounce({ delay: 400 }, (value: string) => {
-            debouncedText.value = value;
-            emit('search', value);
-            emit('update:modelValue', value);
-        });
+        // 부모가 modelValue로 넣은 값은 VsInput을 거쳐 change로 되돌아오므로, 그 값은 다시 emit하지 않도록 기억해 둔다.
+        // 건너뛰더라도 debounce는 거쳐야 대기 중이던 이전 입력값이 뒤늦게 emit되지 않는다.
+        let syncedText: string | null = null;
+
+        const debouncedEmitSearch = functionUtil.debounce(
+            { delay: 400 },
+            (value: string, isSyncedFromModel = false) => {
+                debouncedText.value = value;
+                if (isSyncedFromModel) {
+                    return;
+                }
+                emit('search', value);
+                if (value !== modelValue.value) {
+                    emit('update:modelValue', value);
+                }
+            },
+        );
 
         function onInputChange(value: string | number | null) {
             const stringValue = value === null || value === undefined ? '' : String(value);
-            debouncedEmitSearch(stringValue);
+            const isSyncedFromModel = stringValue === syncedText;
+            syncedText = null;
+            debouncedEmitSearch(stringValue, isSyncedFromModel);
         }
 
         function matchByText(text: string): boolean {
@@ -203,6 +218,9 @@ export default defineComponent({
         });
 
         watch(modelValue, (value) => {
+            if (value !== searchText.value) {
+                syncedText = value;
+            }
             searchText.value = value;
             debouncedText.value = value;
         });
@@ -215,9 +233,14 @@ export default defineComponent({
             isRegexOn.value = value;
         });
 
+        onBeforeUnmount(() => {
+            debouncedEmitSearch.cancel();
+        });
+
         return {
             inputRef,
             searchText,
+            debouncedText,
             isCaseSensitiveOn,
             isRegexOn,
             optionMessages,
