@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@vueuse/core':
+        specifier: ^14.4.0
+        version: 14.4.0(vue@3.5.43)
+      vlossom:
+        specifier: 2.1.1
+        version: 2.1.1(@vueuse/core@14.4.0(vue@3.5.43))(vue@3.5.43)
       vue:
         specifier: ^3.5.43
         version: 3.5.43
@@ -17,7 +23,7 @@ importers:
         version: 24.19.0
       vitepress:
         specifier: 2.0.0-alpha.20
-        version: 2.0.0-alpha.20(@types/node@24.19.0)(postcss@8.5.28)
+        version: 2.0.0-alpha.20(@types/node@24.19.0)(change-case@5.4.4)(postcss@8.5.28)(sortablejs@1.14.0)
       vitest:
         specifier: ^4.1.11
         version: 4.1.11(@types/node@24.19.0)(vite@8.3.1(@types/node@24.19.0))
@@ -58,6 +64,11 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.6.0':
     resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
+
+  '@lucide/vue@1.49.0':
+    resolution: {integrity: sha512-7xS5gYnLoIx0jlmlRE3Rb71fIHaNqhVBiKMpOlqrYt6nMPy3C/62HJHo5XNsV3HTK+9l3M0hXICrIA7S5v6y5Q==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   '@oxc-project/types@0.151.0':
     resolution: {integrity: sha512-J1yXrIlNDZVzE3ada310xeAw7nH8yCAyLPuUIsjKatFPmfn5bS1oW+cM+QsGOtVWd5nhSpbwZWx/rue+r5Z+PA==}
@@ -370,6 +381,9 @@ packages:
     resolution: {integrity: sha512-XWAtwJ6OHO+tj0EKCs0Y2UamnyOxseZWltU4x2U2wh8g4AigdjwvtUjvLP2tqkA/avxHEtzxNaqGq/YGNwckKg==}
     engines: {node: '>=18'}
 
+  change-case@5.4.4:
+    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
+
   character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
 
@@ -544,6 +558,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@6.0.1:
+    resolution: {integrity: sha512-3wVS3i51pE2pi1k5FFL/95BGfVS0kSsvDVuGXHOtxox/TywUmtgq+3qiTOTbs9J7KfHaXPiN171k/A6dBnaXFw==}
+    engines: {node: ^22 || ^24 || >=26}
+    hasBin: true
+
   obug@2.2.1:
     resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
     engines: {node: '>=12.20.0'}
@@ -574,6 +593,10 @@ packages:
   property-information@7.2.0:
     resolution: {integrity: sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg==}
 
+  radash@12.1.1:
+    resolution: {integrity: sha512-h36JMxKRqrAxVD8201FrCpyeNuUY9Y5zZwujr20fFO77tpUtGa6EZzfKw/3WaiBX95fq7+MpsuMLNdSnORAwSA==}
+    engines: {node: '>=14.18.0'}
+
   regex-recursion@6.0.2:
     resolution: {integrity: sha512-0YCaSCq2VRIebiaUviZNs0cBz1kg5kVS2UKUfNIx8YVs1cN3AV7NTctO5FOKBA+UT2BPJIWZauYHPqJODG50cg==}
 
@@ -594,6 +617,9 @@ packages:
 
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
+
+  sortablejs@1.14.0:
+    resolution: {integrity: sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -752,6 +778,12 @@ packages:
       jsdom:
         optional: true
 
+  vlossom@2.1.1:
+    resolution: {integrity: sha512-/JwVt9j49fEIsktfgNPhJ4kxQCcvg3LmMbmpqc9Em6avL7EF9M0vsUWM28OVSV8m+1T30XW1uEUB6E5qwdCAHw==}
+    peerDependencies:
+      '@vueuse/core': ^14.0.0
+      vue: ^3.5.0
+
   vue@3.5.43:
     resolution: {integrity: sha512-o5qZoksdnjIKvW1srZ3ab7pcDNYAerBjRe54D0LBLfRdCYFrSgBHVXokMas35czQc0//lmx4/tuY4ZNQ+Rf2Ng==}
     peerDependencies:
@@ -759,6 +791,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuedraggable@4.1.0:
+    resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}
+    peerDependencies:
+      vue: ^3.0.1
 
   why-is-node-running@2.3.0:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
@@ -796,6 +833,10 @@ snapshots:
   '@iconify/types@2.0.0': {}
 
   '@jridgewell/sourcemap-codec@1.6.0': {}
+
+  '@lucide/vue@1.49.0(vue@3.5.43)':
+    dependencies:
+      vue: 3.5.43
 
   '@oxc-project/types@0.151.0': {}
 
@@ -1050,13 +1091,15 @@ snapshots:
       '@vueuse/shared': 14.4.0(vue@3.5.43)
       vue: 3.5.43
 
-  '@vueuse/integrations@14.4.0(focus-trap@8.2.2)(vue@3.5.43)':
+  '@vueuse/integrations@14.4.0(change-case@5.4.4)(focus-trap@8.2.2)(sortablejs@1.14.0)(vue@3.5.43)':
     dependencies:
       '@vueuse/core': 14.4.0(vue@3.5.43)
       '@vueuse/shared': 14.4.0(vue@3.5.43)
       vue: 3.5.43
     optionalDependencies:
+      change-case: 5.4.4
       focus-trap: 8.2.2
+      sortablejs: 1.14.0
 
   '@vueuse/metadata@14.4.0': {}
 
@@ -1071,6 +1114,8 @@ snapshots:
   ccount@2.0.1: {}
 
   chai@6.3.0: {}
+
+  change-case@5.4.4: {}
 
   character-entities-html4@2.1.0: {}
 
@@ -1223,6 +1268,8 @@ snapshots:
 
   nanoid@3.3.19: {}
 
+  nanoid@6.0.1: {}
+
   obug@2.2.1: {}
 
   oniguruma-parser@0.12.2: {}
@@ -1248,6 +1295,8 @@ snapshots:
       source-map-js: 1.2.1
 
   property-information@7.2.0: {}
+
+  radash@12.1.1: {}
 
   regex-recursion@6.0.2:
     dependencies:
@@ -1292,6 +1341,8 @@ snapshots:
       '@types/hast': 3.0.5
 
   siginfo@2.0.0: {}
+
+  sortablejs@1.14.0: {}
 
   source-map-js@1.2.1: {}
 
@@ -1367,7 +1418,7 @@ snapshots:
       '@types/node': 24.19.0
       fsevents: 2.3.3
 
-  vitepress@2.0.0-alpha.20(@types/node@24.19.0)(postcss@8.5.28):
+  vitepress@2.0.0-alpha.20(@types/node@24.19.0)(change-case@5.4.4)(postcss@8.5.28)(sortablejs@1.14.0):
     dependencies:
       '@docsearch/css': 4.7.0
       '@docsearch/js': 4.7.0
@@ -1379,7 +1430,7 @@ snapshots:
       '@vue/devtools-api': 8.2.1
       '@vue/shared': 3.5.43
       '@vueuse/core': 14.4.0(vue@3.5.43)
-      '@vueuse/integrations': 14.4.0(focus-trap@8.2.2)(vue@3.5.43)
+      '@vueuse/integrations': 14.4.0(change-case@5.4.4)(focus-trap@8.2.2)(sortablejs@1.14.0)(vue@3.5.43)
       focus-trap: 8.2.2
       mark.js: 8.11.1
       minisearch: 7.2.0
@@ -1441,6 +1492,16 @@ snapshots:
     transitivePeerDependencies:
       - msw
 
+  vlossom@2.1.1(@vueuse/core@14.4.0(vue@3.5.43))(vue@3.5.43):
+    dependencies:
+      '@lucide/vue': 1.49.0(vue@3.5.43)
+      '@vueuse/core': 14.4.0(vue@3.5.43)
+      change-case: 5.4.4
+      nanoid: 6.0.1
+      radash: 12.1.1
+      vue: 3.5.43
+      vuedraggable: 4.1.0(vue@3.5.43)
+
   vue@3.5.43:
     dependencies:
       '@vue/compiler-dom': 3.5.43
@@ -1448,6 +1509,11 @@ snapshots:
       '@vue/runtime-dom': 3.5.43
       '@vue/server-renderer': 3.5.43
       '@vue/shared': 3.5.43
+
+  vuedraggable@4.1.0(vue@3.5.43):
+    dependencies:
+      sortablejs: 1.14.0
+      vue: 3.5.43
 
   why-is-node-running@2.3.0:
     dependencies:

@@ -1,5 +1,7 @@
 import { resolve } from 'node:path';
 import { defineConfig, type DefaultTheme } from 'vitepress';
+import { DEMO_SCOPE } from './demo-scope.ts';
+import { DemoRegistry, liveDemos } from './live-demo.ts';
 import {
     listMarkdownFiles,
     pageLink,
@@ -15,6 +17,8 @@ const PACKAGES_DIR = resolve(import.meta.dirname, '../..');
 const VUE_SUBPATH = /^vue(\/.*)?$/;
 const markdownFiles = listMarkdownFiles(PACKAGES_DIR);
 const readmePages = selectReadmePages(markdownFiles);
+// 데모 모듈은 메모리에만 있지만, 안쪽의 bare import를 풀 기준 디렉터리가 필요해 실제 경로 아래 id를 쓴다.
+const demoRegistry = new DemoRegistry(resolve(import.meta.dirname, '.demos'));
 
 function componentsNav(locale: ReadmeLocale, text: string): DefaultTheme.NavItem[] {
     const first = readmePages.find((page) => page.locale === locale && page.section === 'components');
@@ -54,10 +58,12 @@ export default defineConfig({
     markdown: {
         config: (md) => {
             md.use(readmeLinks, { srcDir: PACKAGES_DIR, pages: readmePages });
+            md.use(liveDemos, { srcDir: PACKAGES_DIR, pages: readmePages, scope: DEMO_SCOPE, registry: demoRegistry });
         },
     },
 
     vite: {
+        plugins: [demoRegistry.vitePlugin()],
         resolve: {
             // README 페이지 모듈은 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
             // CI처럼 docs 패키지만 설치한 환경에서는 그 경로가 없어 빌드가 깨지므로 docs의 vue로 고정한다.

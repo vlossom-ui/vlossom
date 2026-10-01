@@ -1,0 +1,11 @@
+.vs-demo {
+    padding: 1.5rem;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 8px 8px 0 0;
+    background-color: var(--vp-c-bg);
+}
+
+.vs-demo + div[class*='language-'] {
+    margin-top: 0;
+    border-radius: 0 0 8px 8px;
+}
