@@ -17,19 +17,40 @@ pnpm dev
 | `pnpm dev`     | Start the dev server with hot reload         |
 | `pnpm build`   | Build the static site into `.vitepress/dist` |
 | `pnpm preview` | Serve the built site from `.vitepress/dist`  |
+| `pnpm test`    | Run unit tests for the README page helpers   |
 
 ## Structure
 
 ```txt
 packages/vlossom-docs/
 ├── .vitepress/
-│   └── config.ts   # Site config: title, source directory, theme options
-├── pages/          # Markdown source; each file becomes a route
-│   └── index.md    # Home page (/)
-└── package.json
+│   ├── config.ts            # Site config: source directory, rewrites, sidebar, theme options
+│   ├── readme-pages.ts      # Finds README pages, builds the sidebar, rewrites README links
+│   └── readme-pages.test.ts
+├── pages/                   # Pages that belong only to the site
+│   └── index.md             # Home page (/)
+├── package.json
+└── tsconfig.json
 ```
 
 VitePress generates `.vitepress/cache` and `.vitepress/dist`. Both are ignored by git.
+
+## README Pages
+
+The site renders README files from `packages/vlossom` in place. They are not copied.
+
+| Source                                              | Route                 |
+| --------------------------------------------------- | --------------------- |
+| `packages/vlossom/src/components/<name>/README.md`  | `/components/<name>`  |
+| `packages/vlossom/src/composables/<name>/README.md` | `/composables/<name>` |
+| `packages/vlossom/src/directives/<name>/README.md`  | `/directives/<name>`  |
+| `packages/vlossom/src/plugins/<name>/README.md`     | `/plugins/<name>`     |
+| `packages/vlossom/src/utils/README.md`              | `/utils`              |
+
+- The VitePress source directory is `packages/`. Markdown files that are not in this table or in `pages/` are excluded, for example templates, `README.ko.md`, and `CHANGELOG.md`.
+- The sidebar is built from the same list. A new unit directory with a `README.md` appears without config changes.
+- Relative links between READMEs are rewritten to site routes at build time. Links to repository files that are not pages, such as `README.ko.md`, point to the file on GitHub.
+- A relative link to a missing file is left as is, so VitePress reports it as a dead link and `pnpm build` fails.
 
 ## Deployment
 
