@@ -7,9 +7,10 @@ import { DEMO_CLASS } from './live-demo.ts';
 const SITE_WIDE_SELECTOR = /^(?:html|body|::-webkit-scrollbar[\w:-]*)$/;
 const EXTERNAL_URL = /^(?:url\(\s*)?["']?https?:/;
 // utilities 레이어에는 vlossom 소스에서 만들어진 Tailwind 유틸리티(.container, .outline 등)가 있어 VitePress 클래스와 겹친다.
-// vlossom 자신의 클래스(.vs-*)와 :root 규칙만 전역으로 두고, 나머지는 데모 안에서만 걸리게 한다.
+// vlossom 자신의 클래스(.vs-*)와 :root 규칙만 전역으로 두고, 나머지는 데모 안과 VitePress 앱(#app) 밖에서만 걸리게 한다.
+// alert·confirm·prompt 플러그인이 body에 띄우는 대화상자가 이 유틸리티로 배치되기 때문이다.
 const VLOSSOM_SELECTOR = /^(?::root\b|\.vs-)/;
-const DEMO_SCOPE = `:where(.${DEMO_CLASS})`;
+const UTILITY_SCOPE = `:where(.${DEMO_CLASS}, body > :not(#app))`;
 const VLOSSOM_CSS = /\/vlossom\/dist\/vlossom\.css(?:\?|$)/;
 
 function isSiteWide(node: ChildNode): boolean {
@@ -20,7 +21,7 @@ function isSiteWide(node: ChildNode): boolean {
 }
 
 function scopeSelector(selector: string): string {
-    return VLOSSOM_SELECTOR.test(selector) ? selector : `${DEMO_SCOPE} ${selector}`;
+    return VLOSSOM_SELECTOR.test(selector) ? selector : `${UTILITY_SCOPE} ${selector}`;
 }
 
 export function containVlossomStyles(css: string): string {

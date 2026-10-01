@@ -5,7 +5,8 @@ import { describe, expect, it } from 'vitest';
 import { containVlossomStyles, vlossomSiteStyles } from './vlossom-css.ts';
 
 const SITE_WIDE = /^(?:html|body|::-webkit-scrollbar)/;
-const CONTAINED = /^(?::where\(\.vs-demo\) |\.vs-|:root\b)/;
+const SCOPED = /^:where\(\.vs-demo, body > :not\(#app\)\) /;
+const GLOBAL = /^(?:\.vs-|:root\b)/;
 
 describe('containVlossomStyles', () => {
     it('레이어 밖의 html·body·스크롤바 규칙과 외부 @import만 뺀다', () => {
@@ -46,7 +47,7 @@ describe('containVlossomStyles', () => {
         expect(containVlossomStyles('.vs-x:before{content:"{;}"}body{color:red}')).toBe('.vs-x:before{content:"{;}"}');
     });
 
-    it('utilities 레이어의 일반 유틸리티는 데모 안에서만 걸리게 한다', () => {
+    it('utilities 레이어의 일반 유틸리티는 데모 안과 VitePress 앱 밖(body에 띄운 대화상자 등)에서만 걸리게 한다', () => {
         const css = [
             '@layer utilities{',
             '.container{width:100%}',
@@ -55,14 +56,15 @@ describe('containVlossomStyles', () => {
             '.dark\\:bg-x:where(.vs-dark,.vs-dark *){color:red}',
             '}',
         ].join('');
+        const scope = ':where(.vs-demo, body > :not(#app))';
 
         expect(containVlossomStyles(css)).toBe(
             [
                 '@layer utilities{',
-                ':where(.vs-demo) .container{width:100%}',
-                '@media (width>=40rem){:where(.vs-demo) .container{max-width:40rem}}',
-                ':where(.vs-demo) .flex-shrink,:where(.vs-demo) .shrink{flex-shrink:1}',
-                ':where(.vs-demo) .dark\\:bg-x:where(.vs-dark,.vs-dark *){color:red}',
+                `${scope} .container{width:100%}`,
+                `@media (width>=40rem){${scope} .container{max-width:40rem}}`,
+                `${scope} .flex-shrink,${scope} .shrink{flex-shrink:1}`,
+                `${scope} .dark\\:bg-x:where(.vs-dark,.vs-dark *){color:red}`,
                 '}',
             ].join(''),
         );
@@ -74,10 +76,11 @@ describe('containVlossomStyles', () => {
         expect(containVlossomStyles(css)).toBe(css);
     });
 
-    it('설치된 vlossom.css를 바꾸면 사이트 전역 규칙이 없고 유틸리티는 데모나 vlossom 클래스에만 걸린다', () => {
+    it('설치된 vlossom.css를 바꾸면 사이트 전역 규칙이 없고 유틸리티는 한정된 범위나 vlossom 클래스에만 걸린다', () => {
         const css = readFileSync(createRequire(import.meta.url).resolve('vlossom/styles'), 'utf8');
         const root = postcss.parse(containVlossomStyles(css));
         const leaks: string[] = [];
+        const scoped: string[] = [];
 
         root.each((node) => {
             if (node.type === 'atrule' && node.name === 'import') {
@@ -88,12 +91,17 @@ describe('containVlossomStyles', () => {
             }
             if (node.type === 'atrule' && node.name === 'layer' && node.params === 'utilities') {
                 node.walkRules((rule) => {
-                    leaks.push(...rule.selectors.filter((selector) => !CONTAINED.test(selector)));
+                    scoped.push(...rule.selectors.filter((selector) => SCOPED.test(selector)));
+                    leaks.push(
+                        ...rule.selectors.filter((selector) => !SCOPED.test(selector) && !GLOBAL.test(selector)),
+                    );
                 });
             }
         });
 
         expect(leaks).toEqual([]);
+        // utilities 레이어 이름이 바뀌면 위 검사가 아무것도 보지 않고 통과하므로, 한정한 선택자가 있는지도 본다.
+        expect(scoped.length).toBeGreaterThan(0);
     });
 });
 
