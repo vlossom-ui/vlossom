@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-input v-model="text" label="이름" placeholder="이름을 입력하세요" />
 </template>
@@ -29,7 +29,7 @@ const text = ref('');
 
 ### 입력 타입
 
-```html
+```html live
 <template>
     <vs-input v-model="email" type="email" label="이메일" />
     <vs-input v-model="password" type="password" label="비밀번호" />
@@ -39,7 +39,7 @@ const text = ref('');
 
 ### Prepend 및 Append 사용
 
-```html
+```html live
 <template>
     <vs-input v-model="value" label="검색">
         <template #prepend>
@@ -54,7 +54,7 @@ const text = ref('');
 
 ### 유효성 검사
 
-```html
+```html live
 <template>
     <vs-input
         v-model="value"
@@ -67,7 +67,7 @@ const text = ref('');
 
 ### 비활성화 및 읽기 전용
 
-```html
+```html live
 <template>
     <vs-input v-model="value" label="비활성화" :disabled="true" />
     <vs-input v-model="value" label="읽기 전용" :readonly="true" />
@@ -76,7 +76,7 @@ const text = ref('');
 
 ### 포커스 플레이스홀더
 
-```html
+```html live
 <template>
     <vs-input v-model="value" placeholder="검색" focus-placeholder="키워드를 입력하세요..." />
 </template>
@@ -131,7 +131,7 @@ interface VsInputStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-input
         v-model="value"

@@ -7,7 +7,7 @@
         "strict": true,
         "skipLibCheck": true,
         "noEmit": true,
-        "types": ["node"]
+        "types": ["node", "vitepress/client"]
     },
     "include": [".vitepress/**/*.ts"]
 }
