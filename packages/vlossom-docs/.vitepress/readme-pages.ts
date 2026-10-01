@@ -2,11 +2,14 @@ import { existsSync, readdirSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
 import type { DefaultTheme, MarkdownRenderer } from 'vitepress';
 
+export type ReadmeLocale = 'root' | 'ko';
+
 export interface ReadmePage {
     source: string;
     route: string;
     section: string;
     name: string;
+    locale: ReadmeLocale;
 }
 
 export interface ReadmeLinksOptions {
@@ -15,18 +18,21 @@ export interface ReadmeLinksOptions {
     exists?: (file: string) => boolean;
 }
 
+const LOCALES: ReadmeLocale[] = ['root', 'ko'];
+const LOCALE_ROUTE_PREFIX: Record<ReadmeLocale, string> = { root: '', ko: 'ko/' };
+
 const SECTIONS = [
-    { dir: 'components', text: 'Components' },
-    { dir: 'composables', text: 'Composables' },
-    { dir: 'directives', text: 'Directives' },
-    { dir: 'plugins', text: 'Plugins' },
-    { dir: 'utils', text: 'Utils' },
+    { dir: 'components', text: { root: 'Components', ko: '컴포넌트' } },
+    { dir: 'composables', text: { root: 'Composables', ko: '컴포저블' } },
+    { dir: 'directives', text: { root: 'Directives', ko: '디렉티브' } },
+    { dir: 'plugins', text: { root: 'Plugins', ko: '플러그인' } },
+    { dir: 'utils', text: { root: 'Utils', ko: '유틸리티' } },
 ] as const;
 
 const UTILS_SECTION = 'utils';
 const UNIT_SECTIONS = SECTIONS.map((section) => section.dir).filter((dir) => dir !== UTILS_SECTION);
-const UNIT_README = new RegExp(`^vlossom/src/(${UNIT_SECTIONS.join('|')})/([^/]+)/README\\.md$`);
-const UTILS_README = `vlossom/src/${UTILS_SECTION}/README.md`;
+const UNIT_README = new RegExp(`^vlossom/src/(${UNIT_SECTIONS.join('|')})/([^/]+)/README(\\.ko)?\\.md$`);
+const UTILS_README = new RegExp(`^vlossom/src/${UTILS_SECTION}/README(\\.ko)?\\.md$`);
 const DOCS_PAGES_DIR = 'vlossom-docs/pages/';
 const REPOSITORY_BLOB_URL = 'https://github.com/vlossom-ui/vlossom/blob/main';
 const URL_SCHEME = /^[a-z][a-z\d+.-]*:/i;
@@ -44,16 +50,23 @@ export function listMarkdownFiles(root: string, dir = ''): string[] {
     });
 }
 
+function createPage(source: string, section: string, name: string, korean: string | undefined): ReadmePage {
+    const locale: ReadmeLocale = korean ? 'ko' : 'root';
+    const path = section === UTILS_SECTION ? UTILS_SECTION : `${section}/${name}`;
+    return { source, route: `${LOCALE_ROUTE_PREFIX[locale]}${path}.md`, section, name, locale };
+}
+
 function toPage(source: string): ReadmePage | undefined {
-    if (source === UTILS_README) {
-        return { source, route: `${UTILS_SECTION}.md`, section: UTILS_SECTION, name: UTILS_SECTION };
+    const utils = UTILS_README.exec(source);
+    if (utils) {
+        return createPage(source, UTILS_SECTION, UTILS_SECTION, utils[1]);
     }
-    const match = UNIT_README.exec(source);
-    if (!match) {
+    const unit = UNIT_README.exec(source);
+    if (!unit) {
         return undefined;
     }
-    const [, section, name] = match;
-    return { source, route: `${section}/${name}.md`, section, name };
+    const [, section, name, korean] = unit;
+    return createPage(source, section, name, korean);
 }
 
 function sectionIndex(page: ReadmePage): number {
@@ -61,6 +74,10 @@ function sectionIndex(page: ReadmePage): number {
 }
 
 function comparePages(a: ReadmePage, b: ReadmePage): number {
+    const byLocale = LOCALES.indexOf(a.locale) - LOCALES.indexOf(b.locale);
+    if (byLocale !== 0) {
+        return byLocale;
+    }
     const bySection = sectionIndex(a) - sectionIndex(b);
     if (bySection !== 0) {
         return bySection;
@@ -101,17 +118,31 @@ function pascalCase(kebab: string): string {
         .join('');
 }
 
-export function toSidebar(pages: ReadmePage[]): DefaultTheme.SidebarItem[] {
+export function toSidebar(pages: ReadmePage[], locale: ReadmeLocale): DefaultTheme.SidebarItem[] {
+    const localePages = pages.filter((page) => page.locale === locale);
     return SECTIONS.map((section) => ({
-        text: section.text,
+        text: section.text[locale],
         collapsed: section.dir !== 'components',
-        items: pages
+        items: localePages
             .filter((page) => page.section === section.dir)
             .map((page) => ({
                 text: section.dir === 'components' ? pascalCase(page.name) : page.name,
                 link: pageLink(page),
             })),
     })).filter((group) => group.items.length > 0);
+}
+
+function isSameUnit(a: ReadmePage, b: ReadmePage): boolean {
+    return a.section === b.section && a.name === b.name;
+}
+
+function inSourceLocale(target: ReadmePage, source: string, pages: ReadmePage[]): ReadmePage {
+    const from = pages.find((page) => page.source === source);
+    // README 맨 위의 언어 안내(./README.md, ./README.ko.md)는 같은 문서의 다른 언어로 가는 링크라 언어를 바꾸지 않는다.
+    if (!from || from.locale === target.locale || isSameUnit(from, target)) {
+        return target;
+    }
+    return pages.find((page) => page.locale === from.locale && isSameUnit(page, target)) ?? target;
 }
 
 export function resolveReadmeLink(
@@ -129,9 +160,9 @@ export function resolveReadmeLink(
     const hash = hashIndex === -1 ? '' : href.slice(hashIndex);
     const target = posix.normalize(posix.join(posix.dirname(source), path));
 
-    const page = pages.find((candidate) => candidate.source === target);
-    if (page) {
-        return `/${page.route}${hash}`;
+    const targetPage = pages.find((candidate) => candidate.source === target);
+    if (targetPage) {
+        return `/${inSourceLocale(targetPage, source, pages).route}${hash}`;
     }
     if (target.startsWith(DOCS_PAGES_DIR)) {
         return undefined;
