@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { relative, sep } from 'node:path';
 import type { MarkdownRenderer, Plugin } from 'vitepress';
+import { babelParse, extractIdentifiers } from 'vue/compiler-sfc';
 import type { ReadmePage } from './readme-pages.ts';
 
 export interface LiveDemoOptions {
@@ -8,6 +9,7 @@ export interface LiveDemoOptions {
     pages: ReadmePage[];
     scope: Record<string, string>;
     registry: DemoRegistry;
+    runtime: string;
 }
 
 interface ScopeSources {
@@ -16,14 +18,40 @@ interface ScopeSources {
     fallback: string;
 }
 
+type ScriptStatement = ReturnType<typeof babelParse>['program']['body'][number];
+type ImportStatement = Extract<ScriptStatement, { type: 'ImportDeclaration' }>;
+type ImportSpecifierNode = ImportStatement['specifiers'][number];
+type Slice = (node: { start?: number | null; end?: number | null }) => string;
+
+interface ScriptItem {
+    code: string;
+    names: string[];
+}
+
+interface ImportBinding extends ScriptItem {
+    source: string;
+    kind: 'default' | 'namespace' | 'named';
+    typeOnly: boolean;
+}
+
+interface ParsedScript {
+    sideEffects: string[];
+    bindings: ImportBinding[];
+    items: ScriptItem[];
+}
+
+export const DEMO_CLASS = 'vs-demo';
+const IMPORT_KINDS = {
+    ImportDefaultSpecifier: 'default',
+    ImportNamespaceSpecifier: 'namespace',
+    ImportSpecifier: 'named',
+} as const;
 const LIVE_MARKER = 'live';
 const SCRIPT_BLOCK = /<script\b[^>]*>([\s\S]*?)<\/script>/;
 const SCRIPT_BLOCKS = /<script\b[\s\S]*?<\/script>/g;
 const STYLE_BLOCKS = /<style\b[\s\S]*?<\/style>/g;
 const OPEN_TEMPLATE = '<template>';
 const CLOSE_TEMPLATE = '</template>';
-const VUE_IMPORT = /^import\s*\{([^}]*)\}\s*from\s*['"]vue['"]/;
-const RELATIVE_IMPORT = /from\s*['"]\.{1,2}\//;
 
 function infoParts(info: string): string[] {
     return info.trim().split(/\s+/).filter(Boolean);
@@ -54,96 +82,114 @@ export function fenceScript(source: string): string {
     return SCRIPT_BLOCK.exec(source)?.[1].trim() ?? '';
 }
 
-function splitStatements(code: string): string[] {
-    const statements: string[] = [];
-    let depth = 0;
-    let start = 0;
-
-    for (let index = 0; index < code.length; index += 1) {
-        const char = code[index];
-        if (char === "'" || char === '"' || char === '`') {
-            index += 1;
-            while (index < code.length && code[index] !== char) {
-                index += code[index] === '\\' ? 2 : 1;
-            }
-            continue;
-        }
-        if (char === '/' && code[index + 1] === '/') {
-            while (index < code.length && code[index] !== '\n') {
-                index += 1;
-            }
-            continue;
-        }
-        if (char === '/' && code[index + 1] === '*') {
-            index = code.indexOf('*/', index + 2) + 1;
-            continue;
-        }
-        if ('([{'.includes(char)) {
-            depth += 1;
-        } else if (')]}'.includes(char)) {
-            depth -= 1;
-        } else if ((char === ';' || char === '\n') && depth === 0) {
-            statements.push(code.slice(start, index + 1).trim());
-            start = index + 1;
-        }
+function declarationNames(node: ScriptStatement): string[] {
+    switch (node.type) {
+        case 'VariableDeclaration':
+            return node.declarations.flatMap((declarator) =>
+                extractIdentifiers(declarator.id).map((identifier) => identifier.name),
+            );
+        case 'FunctionDeclaration':
+        case 'ClassDeclaration':
+        case 'TSEnumDeclaration':
+        case 'TSTypeAliasDeclaration':
+        case 'TSInterfaceDeclaration':
+            return node.id ? [node.id.name] : [];
+        default:
+            return [];
     }
-    statements.push(code.slice(start).trim());
-
-    return statements.filter(Boolean);
 }
 
-function declaredName(statement: string): string | undefined {
-    return (
-        statement.match(/^(?:const|let|var)\s+([A-Za-z_$][\w$]*)/)?.[1] ??
-        statement.match(/^(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/)?.[1]
+function toBinding(node: ImportStatement, specifier: ImportSpecifierNode, slice: Slice): ImportBinding {
+    return {
+        source: node.source.value,
+        kind: IMPORT_KINDS[specifier.type],
+        typeOnly: node.importKind === 'type',
+        code: slice(specifier),
+        names: [specifier.local.name],
+    };
+}
+
+function toItems(node: ScriptStatement, slice: Slice): ScriptItem[] {
+    if (node.type === 'VariableDeclaration' && node.declarations.length > 1) {
+        return node.declarations.map((declarator) => ({
+            code: `${node.declare ? 'declare ' : ''}${node.kind} ${slice(declarator)};`,
+            names: extractIdentifiers(declarator.id).map((identifier) => identifier.name),
+        }));
+    }
+    return [{ code: slice(node), names: declarationNames(node) }];
+}
+
+function parseScript(code: string): ParsedScript {
+    if (!code.trim()) {
+        return { sideEffects: [], bindings: [], items: [] };
+    }
+
+    const slice: Slice = (node) => code.slice(node.start ?? 0, node.end ?? 0);
+    const body = babelParse(code, { sourceType: 'module', plugins: ['typescript'] }).program.body;
+    // README 예제의 상대 경로 import(./Greeting.vue 등)는 실제로 없는 파일이라 뺀다.
+    const imports = body.filter(
+        (node): node is ImportStatement => node.type === 'ImportDeclaration' && !node.source.value.startsWith('.'),
     );
+    return {
+        sideEffects: imports.filter((node) => node.specifiers.length === 0).map((node) => node.source.value),
+        bindings: imports.flatMap((node) => node.specifiers.map((specifier) => toBinding(node, specifier, slice))),
+        items: body.flatMap((node) => (node.type === 'ImportDeclaration' ? [] : toItems(node, slice))),
+    };
+}
+
+function quote(source: string): string {
+    return `'${source.replace(/['\\]/g, '\\$&')}'`;
+}
+
+function importLines(sideEffects: string[], bindings: ImportBinding[]): string[] {
+    const keyword = (binding: ImportBinding) => (binding.typeOnly ? 'import type' : 'import');
+    const groupKey = (binding: ImportBinding) => `${keyword(binding)} ${quote(binding.source)}`;
+    const named = bindings.filter((binding) => binding.kind === 'named');
+
+    return [
+        ...[...new Set(sideEffects)].map((source) => `import ${quote(source)};`),
+        ...bindings
+            .filter((binding) => binding.kind !== 'named')
+            .map((binding) => `${keyword(binding)} ${binding.code} from ${quote(binding.source)};`),
+        ...[...new Set(named.map(groupKey))].map((key) => {
+            const group = named.filter((binding) => groupKey(binding) === key);
+            const specifiers = group.map((binding) => binding.code).join(', ');
+            return `${keyword(group[0])} { ${specifiers} } from ${quote(group[0].source)};`;
+        }),
+    ];
 }
 
 export function buildScope({ own, others, fallback }: ScopeSources): string {
-    const vueImports = new Set<string>();
-    const otherImports = new Set<string>();
+    const ownScript = parseScript(own);
+    const otherScripts = others.map(parseScript);
+    const fallbackScript = parseScript(fallback);
+
     const declared = new Set<string>();
+    const take = (entry: ScriptItem): boolean => {
+        if (entry.names.some((name) => declared.has(name))) {
+            return false;
+        }
+        entry.names.forEach((name) => declared.add(name));
+        return true;
+    };
 
-    const collect = (source: string): string[] =>
-        splitStatements(source).filter((statement) => {
-            const vueNames = VUE_IMPORT.exec(statement)?.[1];
-            if (vueNames) {
-                vueNames
-                    .split(',')
-                    .map((name) => name.trim())
-                    .filter(Boolean)
-                    .forEach((name) => vueImports.add(name));
-                return false;
-            }
-            if (statement.startsWith('import ')) {
-                // README 예제의 상대 경로 import(./Greeting.vue 등)는 실제로 없는 파일이다.
-                if (!RELATIVE_IMPORT.test(statement)) {
-                    otherImports.add(statement);
-                }
-                return false;
-            }
-            const name = declaredName(statement);
-            if (!name) {
-                return true;
-            }
-            if (declared.has(name)) {
-                return false;
-            }
-            declared.add(name);
-            return true;
-        });
-
-    const readmeBody = [own, ...others].flatMap(collect);
-    const fallbackBody = collect(fallback);
+    // 이름이 겹치면 먼저 가져간 쪽이 이기므로, 자기 펜스 → 다른 펜스 → 데모 스코프 순서로 가져간다.
+    const ownPart = { bindings: ownScript.bindings.filter(take), items: ownScript.items.filter(take) };
+    const otherParts = otherScripts.map((script) => ({
+        bindings: script.bindings.filter(take),
+        items: script.items.filter((item) => item.names.length > 0 && take(item)),
+    }));
+    const fallbackPart = { bindings: fallbackScript.bindings.filter(take), items: fallbackScript.items.filter(take) };
 
     return [
-        vueImports.size ? `import { ${[...vueImports].join(', ')} } from 'vue';` : '',
-        ...otherImports,
-        ...fallbackBody,
-        ...readmeBody,
-    ]
-        .filter(Boolean)
-        .join('\n');
+        ...importLines(
+            [ownScript, ...otherScripts, fallbackScript].flatMap((script) => script.sideEffects),
+            [...ownPart.bindings, ...otherParts.flatMap((part) => part.bindings), ...fallbackPart.bindings],
+        ),
+        ...fallbackPart.items.map((item) => item.code),
+        ...ownPart.items.map((item) => item.code),
+        ...otherParts.flatMap((part) => part.items.map((item) => item.code)),
+    ].join('\n');
 }
 
 export function createDemoSfc(scope: string, body: string): string {
@@ -187,7 +233,7 @@ export class DemoRegistry {
 }
 
 export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void {
-    const { srcDir, pages, scope, registry } = options;
+    const { srcDir, pages, scope, registry, runtime } = options;
 
     md.core.ruler.push('vlossom_live_demos', (state) => {
         const file: string | undefined = state.env?.realPath ?? state.env?.path;
@@ -197,33 +243,42 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
         }
 
         const source = relative(srcDir, file).split(sep).join('/');
+        const label = (index: number) => `${source}: live fence #${index + 1}`;
         const fallback = scope[pages.find((page) => page.source === source)?.name ?? ''] ?? '';
-        const scripts = fences.map((token) => fenceScript(token.content));
-        const imports: string[] = [];
+        const scripts = fences.map((token, index) => {
+            const script = fenceScript(token.content);
+            try {
+                parseScript(script);
+            } catch (error) {
+                throw new Error(`${label(index)} has an invalid <script setup>: ${(error as Error).message}`);
+            }
+            return script;
+        });
 
-        fences.forEach((token, index) => {
+        const imports = fences.map((token, index) => {
             token.info = stripLiveMarker(token.info);
             const body = templateBody(token.content);
             if (!body) {
-                return;
+                throw new Error(`${label(index)} needs a root <template>`);
             }
             const others = scripts.filter((_, other) => other !== index);
-            const id = registry.register(
-                source,
-                index,
-                createDemoSfc(buildScope({ own: scripts[index], others, fallback }), body),
-            );
+            const sfc = createDemoSfc(buildScope({ own: scripts[index], others, fallback }), body);
+            const id = registry.register(source, index, sfc);
             const name = `VsDemo${index}`;
             token.meta = { ...token.meta, demo: name };
-            imports.push(`const ${name} = defineAsyncComponent(() => import('${id}'));`);
+            return `const ${name} = defineAsyncComponent(() => whenVlossomReady().then(() => import(${JSON.stringify(id)})));`;
         });
 
-        if (imports.length === 0) {
-            return;
-        }
-        // vlossom은 SSR에서 불러올 수 없으므로 데모는 ClientOnly 안에서 비동기로만 불러온다.
+        // vlossom은 SSR에서 불러올 수 없으므로, 데모는 ClientOnly 안에서 vlossom 준비를 기다린 뒤 불러온다.
         const script = new state.Token('html_block', '', 0);
-        script.content = `<script setup>\nimport { defineAsyncComponent } from 'vue';\n${imports.join('\n')}\n</script>\n`;
+        script.content = [
+            '<script setup>',
+            "import { defineAsyncComponent } from 'vue';",
+            `import { whenVlossomReady } from ${JSON.stringify(runtime)};`,
+            ...imports,
+            '</script>',
+            '',
+        ].join('\n');
         state.tokens.unshift(script);
     });
 
@@ -234,6 +289,6 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
     md.renderer.rules.fence = (tokens, idx, renderOptions, env, self) => {
         const code = renderFence(tokens, idx, renderOptions, env, self);
         const demo = tokens[idx].meta?.demo;
-        return demo ? `<ClientOnly><div class="vs-demo"><${demo} /></div></ClientOnly>\n${code}` : code;
+        return demo ? `<ClientOnly><div class="${DEMO_CLASS}"><${demo} /></div></ClientOnly>\n${code}` : code;
     };
 }

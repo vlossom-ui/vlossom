@@ -1,20 +1,19 @@
+// VitePress 테마 CSS보다 먼저 와야 레이어 순서가 정해진다.
+import './layers.css';
 import type { Theme } from 'vitepress';
 import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import { watch } from 'vue';
 import './demo.css';
-import { installVlossom, syncVlossomTheme } from './vlossom.ts';
+import { attachVlossom, syncVlossomTheme } from './vlossom.ts';
 
 export default {
     extends: DefaultTheme,
-    async enhanceApp({ app }) {
-        if (import.meta.env.SSR) {
-            return;
-        }
-        await installVlossom(app);
+    enhanceApp({ app }) {
+        attachVlossom(app);
     },
     setup() {
         const { isDark } = useData();
-        watch(isDark, syncVlossomTheme, { immediate: true });
+        watch(isDark, syncVlossomTheme);
     },
 } satisfies Theme;

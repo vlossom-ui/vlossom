@@ -12,12 +12,12 @@ pnpm install
 pnpm dev
 ```
 
-| Command        | Description                                              |
-| -------------- | -------------------------------------------------------- |
-| `pnpm dev`     | Start the dev server with hot reload                     |
-| `pnpm build`   | Build the static site into `.vitepress/dist`             |
-| `pnpm preview` | Serve the built site from `.vitepress/dist`              |
-| `pnpm test`    | Run unit tests for the README page and live demo helpers |
+| Command        | Description                                  |
+| -------------- | -------------------------------------------- |
+| `pnpm dev`     | Start the dev server with hot reload         |
+| `pnpm build`   | Build the static site into `.vitepress/dist` |
+| `pnpm preview` | Serve the built site from `.vitepress/dist`  |
+| `pnpm test`    | Run unit tests for the site helpers          |
 
 ## Structure
 
@@ -30,9 +30,13 @@ packages/vlossom-docs/
 │   ├── live-demo.ts         # Turns `live` code fences into demo components
 │   ├── live-demo.test.ts
 │   ├── demo-scope.ts        # Names that README examples use without declaring them
+│   ├── vlossom-css.ts       # Keeps vlossom.css from changing the site outside demos
+│   ├── vlossom-css.test.ts
 │   └── theme/
-│       ├── index.ts         # Default theme + Vlossom install + dark mode sync
-│       ├── vlossom.ts       # Installs Vlossom in the browser
+│       ├── index.ts         # Default theme, Vlossom app hook, dark mode sync
+│       ├── vlossom.ts       # Loads Vlossom in the browser when the first demo needs it
+│       ├── layers.css       # Puts the vlossom.css base layer below the VitePress base styles
+│       ├── layers.test.ts
 │       └── demo.css         # Demo area styles
 ├── pages/                   # Pages that belong only to the site
 │   ├── index.md             # English home page (/)
@@ -79,9 +83,33 @@ Add `live` to an `html` code fence in a README to render the example as a workin
 
 - GitHub uses only the first word of the fence info as the language, so the README looks the same there. vlossom-mcp reads fences by their opening backticks, so its README parsing does not change.
 - Each fence becomes its own component, so demos on the same page do not share state.
-- A demo uses the `<script setup>` of its own fence first, then the scripts of the other fences on the page. Names that the examples use without declaring them come from [`demo-scope.ts`](.vitepress/demo-scope.ts), keyed by unit name. Names declared in the README always win.
-- Vlossom reads `document` and `localStorage` when it loads, so it is installed only in the browser and demos render inside `<ClientOnly>`.
+- A live fence needs a root `<template>`. If a live fence has no `<template>` or has a `<script setup>` that does not parse, `pnpm build` fails with the README path and the fence number.
+- Each demo gets a script built from these sources:
+    - Everything in the `<script setup>` of its own fence.
+    - Declarations from the other live fences on the page, such as variables, functions, and types, that its own fence does not declare. Other statements, such as function calls, stay in their own fence.
+    - Names that the examples use without declaring them, from [`demo-scope.ts`](.vitepress/demo-scope.ts), keyed by unit name. A name that the README declares always wins.
+    - Imports from all live fences on the page and from `demo-scope.ts`, merged by local name. Relative imports, such as `./MyForm.vue`, are removed because those files are not in the repository.
+- The Vlossom script loads only when a page with a demo renders, so other pages do not download it. Vlossom reads `document` and `localStorage` when it loads, so demos render inside `<ClientOnly>`.
+- If Vlossom fails to load, the demos stay empty until the page is reloaded. The code blocks and the rest of the page still work.
 - The site's dark mode switches the Vlossom theme.
+
+### Vlossom Version
+
+Demos use the `vlossom` version from npm that [`package.json`](package.json) pins, not the workspace source. README text comes from the workspace, so a demo of a feature that the pinned version does not have can fail or look different. To update the version:
+
+1. Change the `vlossom` version in `package.json` and run `pnpm install`.
+2. Run `pnpm test` and `pnpm build`.
+3. Run `pnpm preview` and check the demo pages and a page without demos.
+
+### Styles
+
+Every page loads vlossom.css, because VitePress bundles all CSS of the site into one file. vlossom.css does not change the VitePress parts of the site:
+
+- [`vlossom-css.ts`](.vitepress/vlossom-css.ts) removes the vlossom.css rules that style the whole app: the unlayered `html`, `body`, and scrollbar rules, and the external font `@import`.
+- It also limits the Tailwind utility classes of vlossom.css, such as `.container` and `.outline`, to the demo areas, because the VitePress theme uses the same class names. Vlossom classes (`.vs-*`) and `:root` rules stay global.
+- [`layers.css`](.vitepress/theme/layers.css) puts the vlossom.css `base` layer (Tailwind preflight) below the VitePress base styles, so the site and the demos use the VitePress fonts. The theme entry must load it before the VitePress theme.
+
+`pnpm test` checks these rules. It runs the transform on the installed vlossom.css and fails if an `html`, `body`, or scrollbar rule, an external `@import`, or an unscoped utility class remains. It also fails if vlossom.css declares a layer that `layers.css` does not order, or if the theme entry loads `layers.css` after the VitePress theme.
 
 ## Languages
 

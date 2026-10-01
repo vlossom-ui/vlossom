@@ -116,6 +116,86 @@ describe('buildScope', () => {
             ["import { useVlossom } from 'vlossom';", 'const $vs = useVlossom();'].join('\n'),
         );
     });
+
+    it('vue import의 별칭을 그대로 둔다', () => {
+        expect(buildScope({ own: "import { ref as r } from 'vue';\nconst a = r(1);", others: [], fallback: '' })).toBe(
+            ["import { ref as r } from 'vue';", 'const a = r(1);'].join('\n'),
+        );
+    });
+
+    it('vue가 아닌 모듈의 import도 지역 이름으로 합친다', () => {
+        const own = "import { useVlossom } from 'vlossom';\nconst $vs = useVlossom();";
+        const others = ['import { useVlossom, type StyleSet } from "vlossom"\nconst style: StyleSet = {};'];
+
+        expect(buildScope({ own, others, fallback: '' })).toBe(
+            [
+                "import { useVlossom, type StyleSet } from 'vlossom';",
+                'const $vs = useVlossom();',
+                'const style: StyleSet = {};',
+            ].join('\n'),
+        );
+    });
+
+    it('default와 namespace import는 지역 이름마다 한 번만 넣는다', () => {
+        const own = "import Draggable from 'vuedraggable';";
+        const others = ['import Draggable from "vuedraggable"\nimport * as icons from \'@vicons/ionicons5\';'];
+
+        expect(buildScope({ own, others, fallback: '' })).toBe(
+            ["import Draggable from 'vuedraggable';", "import * as icons from '@vicons/ionicons5';"].join('\n'),
+        );
+    });
+
+    it('부수 효과 import는 한 번만 넣는다', () => {
+        const own = "import 'some-lib/style.css';";
+        const others = ['import "some-lib/style.css"'];
+
+        expect(buildScope({ own, others, fallback: '' })).toBe("import 'some-lib/style.css';");
+    });
+
+    it('다른 펜스의 선언문 하나에 여러 변수가 있으면 겹치지 않는 변수는 남긴다', () => {
+        expect(buildScope({ own: 'const a = 1;', others: ['const a = 2, b = 3;'], fallback: '' })).toBe(
+            ['const a = 1;', 'const b = 3;'].join('\n'),
+        );
+    });
+
+    it('주석이 앞에 붙은 선언도 같은 이름이면 한 번만 남긴다', () => {
+        const own = '// 카운터\nconst count = ref(0);';
+        const fallback = "import { ref } from 'vue';\n/* 기본값 */\nconst count = ref(5);";
+
+        expect(buildScope({ own, others: [], fallback })).toBe(
+            ["import { ref } from 'vue';", 'const count = ref(0);'].join('\n'),
+        );
+    });
+
+    it('구조 분해와 타입 선언도 이름으로 중복을 막는다', () => {
+        const own = 'const { a, b } = useThing();\ntype Item = { id: number };';
+        const others = ['const a = 1;\ninterface Item {\n    id: number;\n}\nconst c = 2;'];
+
+        expect(buildScope({ own, others, fallback: '' })).toBe(
+            ['const { a, b } = useThing();', 'type Item = { id: number };', 'const c = 2;'].join('\n'),
+        );
+    });
+
+    it('여러 줄에 걸친 문장을 나누지 않는다', () => {
+        const own = 'const items = list\n    .map((item) => item * 2)\n    .filter(Boolean);';
+
+        expect(buildScope({ own, others: [], fallback: '' })).toBe(own);
+    });
+
+    it('다른 펜스에서는 선언만 물려받고 실행 문장은 물려받지 않는다', () => {
+        const own = 'onMounted(() => start());';
+        const others = ["const text = ref('');\nonMounted(() => other());"];
+
+        expect(buildScope({ own, others, fallback: '' })).toBe(
+            ['onMounted(() => start());', "const text = ref('');"].join('\n'),
+        );
+    });
+
+    it('문법 오류가 있으면 멈추지 않고 오류를 던진다', () => {
+        expect(() => buildScope({ own: 'const a = /* unclosed', others: [], fallback: '' })).toThrow(
+            /Unterminated comment/,
+        );
+    });
 });
 
 describe('createDemoSfc', () => {
@@ -130,31 +210,51 @@ describe('createDemoSfc', () => {
     });
 });
 
-describe('liveDemos', () => {
-    // createMarkdownRenderer는 렌더러를 모듈 단위로 캐시하므로, 테스트마다 비워야 플러그인 옵션이 반영된다.
-    afterEach(() => {
-        disposeMdItInstance();
-    });
+describe('DemoRegistry', () => {
+    it('vite 플러그인은 등록한 모듈만 찾아 내용을 돌려준다', () => {
+        const registry = new DemoRegistry('C:/repo/.demos');
+        const id = registry.register('vlossom/src/components/vs-button/README.md', 0, '<template>A</template>');
+        const plugin = registry.vitePlugin();
+        const resolveId = plugin.resolveId as (id: string) => string | undefined;
+        const load = plugin.load as (id: string) => string | undefined;
 
-    it('live 펜스를 데모 컴포넌트와 코드 블록으로 렌더하고 페이지 script에 데모를 등록한다', async () => {
-        const srcDir = resolve('/repo/packages');
-        const registry = new DemoRegistry(resolve('/repo/packages/vlossom-docs/.vitepress/.demos'));
-        const md = await createMarkdownRenderer(srcDir, {
+        expect(resolveId(id)).toBe(id);
+        expect(load(id)).toBe('<template>A</template>');
+        expect(resolveId('C:/repo/.demos/unknown.vue')).toBeUndefined();
+    });
+});
+
+describe('liveDemos', () => {
+    const srcDir = resolve('/repo/packages');
+    const runtime = "C:/repo/O'Brien/theme/vlossom.ts";
+    const env = (): Record<string, any> => ({
+        path: resolve(srcDir, BUTTON.route),
+        realPath: resolve(srcDir, BUTTON.source),
+        relativePath: BUTTON.route,
+        cleanUrls: false,
+    });
+    const createRenderer = (registry: DemoRegistry) =>
+        createMarkdownRenderer(srcDir, {
             config: (instance) => {
                 instance.use(liveDemos, {
                     srcDir,
                     pages: [BUTTON],
                     scope: { 'vs-button': 'function handleClick() {}' },
                     registry,
+                    runtime,
                 });
             },
         });
-        const env: Record<string, any> = {
-            path: resolve(srcDir, BUTTON.route),
-            realPath: resolve(srcDir, BUTTON.source),
-            relativePath: BUTTON.route,
-            cleanUrls: false,
-        };
+
+    // createMarkdownRenderer는 렌더러를 모듈 단위로 캐시하므로, 테스트마다 비워야 플러그인 옵션이 반영된다.
+    afterEach(() => {
+        disposeMdItInstance();
+    });
+
+    it('live 펜스를 데모 컴포넌트와 코드 블록으로 렌더하고, 데모는 vlossom 준비 뒤에 불러온다', async () => {
+        const registry = new DemoRegistry(resolve('/repo/packages/vlossom-docs/.vitepress/.demos'));
+        const md = await createRenderer(registry);
+        const pageEnv = env();
         const markdown = [
             '```html live',
             '<template>',
@@ -167,16 +267,36 @@ describe('liveDemos', () => {
             '```',
         ].join('\n');
 
-        const html = await md.renderAsync(markdown, env);
+        const html = await md.renderAsync(markdown, pageEnv);
         const [id] = registry.ids();
+        const script = pageEnv.sfcBlocks.scriptSetup.content;
 
         expect(html.match(/<ClientOnly><div class="vs-demo"><VsDemo0 \/><\/div><\/ClientOnly>/g)).toHaveLength(1);
         expect(html.match(/class="language-html/g)).toHaveLength(2);
         expect(registry.get(id)).toBe(
             '<script setup lang="ts">\nfunction handleClick() {}\n</script>\n\n<template>\n<vs-button @click="handleClick">Click</vs-button>\n</template>\n',
         );
-        expect(env.sfcBlocks.scriptSetup.content).toContain(
-            `const VsDemo0 = defineAsyncComponent(() => import('${id}'));`,
+        expect(script).toContain('import { whenVlossomReady } from "C:/repo/O\'Brien/theme/vlossom.ts";');
+        expect(script).toContain(
+            `const VsDemo0 = defineAsyncComponent(() => whenVlossomReady().then(() => import("${id}")));`,
+        );
+    });
+
+    it('루트 template이 없는 live 펜스는 파일과 펜스 번호를 밝혀 실패한다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+
+        await expect(md.renderAsync('```html live\n<p>no template</p>\n```', env())).rejects.toThrow(
+            'vlossom/src/components/vs-button/README.md: live fence #1 needs a root <template>',
+        );
+    });
+
+    it('데모 스크립트에 문법 오류가 있으면 파일과 펜스 번호를 밝혀 실패한다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+        const markdown =
+            '```html live\n<template><p>A</p></template>\n<script setup>\nconst a = /* unclosed\n</script>\n```';
+
+        await expect(md.renderAsync(markdown, env())).rejects.toThrow(
+            'vlossom/src/components/vs-button/README.md: live fence #1 has an invalid <script setup>',
         );
     });
 });

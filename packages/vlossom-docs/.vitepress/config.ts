@@ -1,7 +1,8 @@
-import { resolve } from 'node:path';
+import { relative, resolve, sep } from 'node:path';
 import { defineConfig, type DefaultTheme } from 'vitepress';
 import { DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
+import { vlossomSiteStyles } from './vlossom-css.ts';
 import {
     listMarkdownFiles,
     pageLink,
@@ -15,6 +16,7 @@ import {
 
 const PACKAGES_DIR = resolve(import.meta.dirname, '../..');
 const VUE_SUBPATH = /^vue(\/.*)?$/;
+const VLOSSOM_RUNTIME = resolve(import.meta.dirname, 'theme/vlossom.ts');
 const markdownFiles = listMarkdownFiles(PACKAGES_DIR);
 const readmePages = selectReadmePages(markdownFiles);
 // 데모 모듈은 메모리에만 있지만, 안쪽의 bare import를 풀 기준 디렉터리가 필요해 실제 경로 아래 id를 쓴다.
@@ -58,12 +60,21 @@ export default defineConfig({
     markdown: {
         config: (md) => {
             md.use(readmeLinks, { srcDir: PACKAGES_DIR, pages: readmePages });
-            md.use(liveDemos, { srcDir: PACKAGES_DIR, pages: readmePages, scope: DEMO_SCOPE, registry: demoRegistry });
+            md.use(liveDemos, {
+                srcDir: PACKAGES_DIR,
+                pages: readmePages,
+                scope: DEMO_SCOPE,
+                registry: demoRegistry,
+                runtime: VLOSSOM_RUNTIME,
+            });
         },
     },
 
     vite: {
-        plugins: [demoRegistry.vitePlugin()],
+        plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
+        // vlossom은 동적 import로만 불러와서, 스캐너가 모르면 dev 서버가 첫 로드 뒤에 의존성을 다시 묶고 새로고침한다.
+        // include: ['vlossom']은 Vite root(packages/) 기준으로 풀려 워크스페이스의 packages/vlossom을 가리키므로, import하는 파일을 entries로 준다.
+        optimizeDeps: { entries: [relative(PACKAGES_DIR, VLOSSOM_RUNTIME).split(sep).join('/')] },
         resolve: {
             // README 페이지 모듈은 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
             // CI처럼 docs 패키지만 설치한 환경에서는 그 경로가 없어 빌드가 깨지므로 docs의 vue로 고정한다.
