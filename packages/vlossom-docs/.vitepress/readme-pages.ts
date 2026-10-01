@@ -1,4 +1,4 @@
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { posix, relative, resolve, sep } from 'node:path';
 import type { DefaultTheme, MarkdownRenderer } from 'vitepress';
 
@@ -16,7 +16,10 @@ export interface ReadmeLinksOptions {
     srcDir: string;
     pages: ReadmePage[];
     exists?: (file: string) => boolean;
+    readFile?: (file: string) => string;
 }
+
+export type HasAnchor = (file: string, id: string) => boolean;
 
 const LOCALES: ReadmeLocale[] = ['root', 'ko'];
 const LOCALE_ROUTE_PREFIX: Record<ReadmeLocale, string> = { root: '', ko: 'ko/' };
@@ -136,13 +139,40 @@ function isSameUnit(a: ReadmePage, b: ReadmePage): boolean {
     return a.section === b.section && a.name === b.name;
 }
 
-function inSourceLocale(target: ReadmePage, source: string, pages: ReadmePage[]): ReadmePage {
-    const from = pages.find((page) => page.source === source);
+function docsPageLocale(source: string): ReadmeLocale {
+    const prefixed = LOCALES.find(
+        (locale) => LOCALE_ROUTE_PREFIX[locale] && source.startsWith(`${DOCS_PAGES_DIR}${LOCALE_ROUTE_PREFIX[locale]}`),
+    );
+    return prefixed ?? 'root';
+}
+
+function inSourceLocale(
+    target: ReadmePage,
+    source: string,
+    pages: ReadmePage[],
+    anchor: string,
+    hasAnchor: HasAnchor,
+): ReadmePage {
+    const fromPage = pages.find((page) => page.source === source);
+    const fromLocale = fromPage?.locale ?? (source.startsWith(DOCS_PAGES_DIR) ? docsPageLocale(source) : undefined);
     // README 맨 위의 언어 안내(./README.md, ./README.ko.md)는 같은 문서의 다른 언어로 가는 링크라 언어를 바꾸지 않는다.
-    if (!from || from.locale === target.locale || isSameUnit(from, target)) {
+    if (!fromLocale || fromLocale === target.locale || (fromPage && isSameUnit(fromPage, target))) {
         return target;
     }
-    return pages.find((page) => page.locale === from.locale && isSameUnit(page, target)) ?? target;
+    const counterpart = pages.find((page) => page.locale === fromLocale && isSameUnit(page, target));
+    // 앵커 id는 언어마다 제목에서 만들어진다(예: "## 타입" → #타입). 대응 페이지에 같은 앵커가 없으면 원래 대상으로 둔다.
+    if (!counterpart || (anchor && !hasAnchor(counterpart.source, anchor))) {
+        return target;
+    }
+    return counterpart;
+}
+
+function decodeAnchor(hash: string): string {
+    try {
+        return decodeURIComponent(hash.slice(1));
+    } catch {
+        return hash.slice(1);
+    }
 }
 
 export function resolveReadmeLink(
@@ -150,6 +180,7 @@ export function resolveReadmeLink(
     source: string,
     pages: ReadmePage[],
     exists: (file: string) => boolean,
+    hasAnchor: HasAnchor = () => true,
 ): string | undefined {
     if (!href || href.startsWith('#') || href.startsWith('/') || URL_SCHEME.test(href)) {
         return undefined;
@@ -162,7 +193,8 @@ export function resolveReadmeLink(
 
     const targetPage = pages.find((candidate) => candidate.source === target);
     if (targetPage) {
-        return `/${inSourceLocale(targetPage, source, pages).route}${hash}`;
+        const anchor = hash ? decodeAnchor(hash) : '';
+        return `/${inSourceLocale(targetPage, source, pages, anchor, hasAnchor).route}${hash}`;
     }
     if (target.startsWith(DOCS_PAGES_DIR)) {
         return undefined;
@@ -174,7 +206,15 @@ export function resolveReadmeLink(
 }
 
 export function readmeLinks(md: MarkdownRenderer, options: ReadmeLinksOptions): void {
-    const { srcDir, pages, exists = (file: string) => existsSync(resolve(srcDir, file)) } = options;
+    const {
+        srcDir,
+        pages,
+        exists = (file: string) => existsSync(resolve(srcDir, file)),
+        readFile = (file: string) => readFileSync(resolve(srcDir, file), 'utf8'),
+    } = options;
+    // 제목 id는 VitePress 렌더러가 만든 것과 같아야 하므로, 같은 렌더러로 대상 README를 파싱해 확인한다.
+    const hasAnchor: HasAnchor = (file, id) =>
+        md.parse(readFile(file), {}).some((token) => token.type === 'heading_open' && token.attrGet('id') === id);
 
     md.core.ruler.push('vlossom_readme_links', (state) => {
         // env.path는 rewrites가 적용된 경로다. README 기준 상대 링크는 원본 위치(env.realPath)로 풀어야 한다.
@@ -190,7 +230,7 @@ export function readmeLinks(md: MarkdownRenderer, options: ReadmeLinksOptions): 
                     continue;
                 }
                 const href = child.attrGet('href');
-                const resolved = href ? resolveReadmeLink(href, source, pages, exists) : undefined;
+                const resolved = href ? resolveReadmeLink(href, source, pages, exists, hasAnchor) : undefined;
                 if (resolved) {
                     child.attrSet('href', resolved);
                 }

@@ -52,7 +52,8 @@ The site renders README files from `packages/vlossom` in place. They are not cop
 - The VitePress source directory is `packages/`. Markdown files that are not in this table or in `pages/` are excluded, for example templates and `CHANGELOG.md`.
 - Each language has its own sidebar and nav, built from the same list. A new unit directory with README files appears without config changes. The list is read when the config loads, so restart `pnpm dev` after adding or removing README files.
 - Relative links between READMEs are rewritten to site routes at build time.
-    - A link to another unit opens that unit in the language of the current page. For example, a link to `../vs-input/README.md` in a Korean README opens `/ko/components/vs-input`.
+    - A link to another unit opens that unit in the language of the current page. For example, a link to `../vs-input/README.md` in a Korean README opens `/ko/components/vs-input`. Korean site pages under `pages/ko/` follow the same rule.
+    - If the link has an anchor that the page in the current language does not have, the link keeps its original target. Headings differ by language, so `#types` may not exist on a Korean page whose heading is `## 타입`.
     - A link to the other language of the same README, such as the language note at the top of each README, opens that language.
     - A link to a repository file that is not a page points to the file on GitHub.
 - A relative link to a missing file is left as is, so VitePress reports it as a dead link and `pnpm build` fails.

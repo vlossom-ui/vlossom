@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
-import { createMarkdownRenderer, resolveConfig } from 'vitepress';
-import { describe, expect, it } from 'vitest';
+import { createMarkdownRenderer, disposeMdItInstance, resolveConfig } from 'vitepress';
+import { afterEach, describe, expect, it } from 'vitest';
 import {
     readmeLinks,
     resolveReadmeLink,
@@ -79,6 +79,20 @@ const UTILS_KO: ReadmePage = {
     route: 'ko/utils.md',
     section: 'utils',
     name: 'utils',
+    locale: 'ko',
+};
+const SCROLL_LOCK_KO: ReadmePage = {
+    source: 'vlossom/src/composables/scroll-lock/README.ko.md',
+    route: 'ko/composables/scroll-lock.md',
+    section: 'composables',
+    name: 'scroll-lock',
+    locale: 'ko',
+};
+const SHAKE_KO: ReadmePage = {
+    source: 'vlossom/src/directives/vs-shake/README.ko.md',
+    route: 'ko/directives/vs-shake.md',
+    section: 'directives',
+    name: 'vs-shake',
     locale: 'ko',
 };
 
@@ -204,7 +218,9 @@ describe('toSidebar', () => {
     });
 
     it('한국어 사이드바는 한국어 페이지만 한국어 섹션 이름으로 묶는다', () => {
-        expect(toSidebar([BUTTON, BUTTON_KO, INPUT_WRAPPER_KO, UTILS_KO], 'ko')).toEqual([
+        const pages = [BUTTON, BUTTON_KO, INPUT_WRAPPER_KO, SCROLL_LOCK_KO, SHAKE_KO, MODAL_PLUGIN_KO, UTILS_KO];
+
+        expect(toSidebar(pages, 'ko')).toEqual([
             {
                 text: '컴포넌트',
                 collapsed: false,
@@ -212,6 +228,21 @@ describe('toSidebar', () => {
                     { text: 'VsButton', link: '/ko/components/vs-button' },
                     { text: 'VsInputWrapper', link: '/ko/components/vs-input-wrapper' },
                 ],
+            },
+            {
+                text: '컴포저블',
+                collapsed: true,
+                items: [{ text: 'scroll-lock', link: '/ko/composables/scroll-lock' }],
+            },
+            {
+                text: '디렉티브',
+                collapsed: true,
+                items: [{ text: 'vs-shake', link: '/ko/directives/vs-shake' }],
+            },
+            {
+                text: '플러그인',
+                collapsed: true,
+                items: [{ text: 'modal-plugin', link: '/ko/plugins/modal-plugin' }],
             },
             {
                 text: '유틸리티',
@@ -310,9 +341,39 @@ describe('resolveReadmeLink', () => {
 
         expect(resolveReadmeLink(href, 'vlossom-docs/pages/guide.md', pages, exists)).toBe('/components/vs-button.md');
     });
+
+    it('한국어 문서 사이트 페이지에서 README로 가는 링크는 한국어 페이지로 바꾼다', () => {
+        const href = '../../../vlossom/src/components/vs-button/README.md';
+
+        expect(resolveReadmeLink(href, 'vlossom-docs/pages/ko/guide.md', pages, exists)).toBe(
+            '/ko/components/vs-button.md',
+        );
+    });
+
+    it('언어를 바꿀 때 대응 페이지에 같은 앵커가 없으면 원래 대상으로 연결한다', () => {
+        const hasAnchor = () => false;
+
+        expect(
+            resolveReadmeLink('../vs-input-wrapper/README.md#types', BUTTON_KO.source, pages, exists, hasAnchor),
+        ).toBe('/components/vs-input-wrapper.md#types');
+    });
+
+    it('대응 페이지의 앵커는 디코딩한 id로 확인한다', () => {
+        const hasAnchor = (file: string, id: string) => file === INPUT_WRAPPER_KO.source && id === '타입';
+        const href = '../vs-input-wrapper/README.md#%ED%83%80%EC%9E%85';
+
+        expect(resolveReadmeLink(href, BUTTON_KO.source, pages, exists, hasAnchor)).toBe(
+            '/ko/components/vs-input-wrapper.md#%ED%83%80%EC%9E%85',
+        );
+    });
 });
 
 describe('readmeLinks', () => {
+    // createMarkdownRenderer는 렌더러를 모듈 단위로 캐시하므로, 테스트마다 비워야 플러그인 옵션이 반영된다.
+    afterEach(() => {
+        disposeMdItInstance();
+    });
+
     it('VitePress 렌더러에서 rewrites 전 README 위치를 기준으로 링크를 바꾼다', async () => {
         const srcDir = resolve('/repo/packages');
         const pages = [BUTTON, INPUT_WRAPPER];
@@ -330,6 +391,42 @@ describe('readmeLinks', () => {
         });
 
         expect(html).toContain('href="/components/vs-input-wrapper.html#types"');
+    });
+
+    it.each([
+        [
+            '대응 페이지에 같은 앵커가 있으면 현재 언어 페이지로',
+            '## Types',
+            'href="/ko/components/vs-input-wrapper.html#types"',
+        ],
+        [
+            '대응 페이지 제목이 달라 앵커가 없으면 원래 대상으로',
+            '## 타입',
+            'href="/components/vs-input-wrapper.html#types"',
+        ],
+    ])('%s 연결한다', async (_, koreanHeading, expected) => {
+        const srcDir = resolve('/repo/packages');
+        const pages = [BUTTON_KO, INPUT_WRAPPER, INPUT_WRAPPER_KO];
+        const sources: Record<string, string> = { [INPUT_WRAPPER_KO.source]: `# VsInputWrapper\n\n${koreanHeading}\n` };
+        const md = await createMarkdownRenderer(srcDir, {
+            config: (instance) => {
+                instance.use(readmeLinks, {
+                    srcDir,
+                    pages,
+                    exists: () => true,
+                    readFile: (file: string) => sources[file] ?? '',
+                });
+            },
+        });
+
+        const html = await md.renderAsync('[Wrapper](../vs-input-wrapper/README.md#types)', {
+            path: resolve(srcDir, BUTTON_KO.route),
+            realPath: resolve(srcDir, BUTTON_KO.source),
+            relativePath: BUTTON_KO.route,
+            cleanUrls: false,
+        });
+
+        expect(html).toContain(expected);
     });
 });
 
@@ -355,5 +452,21 @@ describe('docs site config', () => {
             text: '컴포넌트',
             items: expect.arrayContaining([{ text: 'VsButton', link: '/ko/components/vs-button' }]),
         });
+    });
+
+    it('테마 문구는 한국어 locale에만 한국어로 둔다', async () => {
+        const config = await resolveConfig(resolve(import.meta.dirname, '..'), 'build', 'production');
+        const { root, ko } = config.site.locales;
+
+        expect(ko.themeConfig).toMatchObject({
+            outline: { label: '이 페이지에서' },
+            docFooter: { prev: '이전 페이지', next: '다음 페이지' },
+            navMenuLabel: '주 메뉴',
+            mobileMenuLabel: '메뉴',
+            extraMenuLabel: '더 보기',
+        });
+        expect(root.themeConfig).not.toHaveProperty('outline');
+        expect(root.themeConfig).not.toHaveProperty('docFooter');
+        expect(config.site.themeConfig).not.toHaveProperty('outline');
     });
 });
