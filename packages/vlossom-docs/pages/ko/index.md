@@ -3,7 +3,7 @@ layout: home
 
 hero:
     name: Vlossom
-    tagline: 웹 애플리케이션을 우아하고 손쉽게 꽃피우도록 설계한, 생동감 넘치고 다재다능한 Vue 3 UI 라이브러리입니다.
+    tagline: Vue 3 UI 컴포넌트 라이브러리
     actions:
         - theme: brand
           text: 시작하기
