@@ -10,6 +10,7 @@ Do not add temporary notes or version-specific cleanup history.
 ## Project Map
 
 - `packages/vlossom` is the main UI library package.
+- `packages/vlossom-docs` is the VitePress documentation site.
 - `packages/vlossom-mcp` is a separate MCP server for Vlossom reference data.
 - `CLAUDE.md` imports this file for Claude Code; keep shared guidance here.
 - Source code and package docs are the source of truth when this file is stale.
@@ -17,6 +18,7 @@ Do not add temporary notes or version-specific cleanup history.
 ## Commands
 
 Run Vlossom commands from `packages/vlossom`.
+Run docs site commands from `packages/vlossom-docs`.
 Run MCP commands from `packages/vlossom-mcp`.
 
 Each package's `package.json` scripts are the source of truth for what is available.

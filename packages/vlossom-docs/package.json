@@ -1,0 +1,15 @@
+{
+    "name": "vlossom-docs",
+    "private": true,
+    "version": "0.0.0",
+    "description": "Vlossom documentation site",
+    "type": "module",
+    "scripts": {
+        "dev": "vitepress dev",
+        "build": "vitepress build",
+        "preview": "vitepress preview"
+    },
+    "devDependencies": {
+        "vitepress": "2.0.0-alpha.20"
+    }
+}
