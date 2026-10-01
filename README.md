@@ -84,6 +84,8 @@ Current release targets:
 - `packages/vlossom` publishes [`vlossom`](https://www.npmjs.com/package/vlossom)
 - `packages/vlossom-mcp` publishes [`vlossom-mcp`](https://www.npmjs.com/package/vlossom-mcp)
 
+`packages/vlossom-docs` is not a release target. Pushes to `main` deploy it to GitHub Pages with [docs.yml](.github/workflows/docs.yml), separately from package releases.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, commit conventions, and PR guidelines.
