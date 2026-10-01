@@ -24,11 +24,13 @@ pnpm dev
 ```txt
 packages/vlossom-docs/
 ├── .vitepress/
-│   ├── config.ts            # Site config: source directory, rewrites, sidebar, theme options
+│   ├── config.ts            # Site config: source directory, rewrites, locales, theme options
 │   ├── readme-pages.ts      # Finds README pages, builds the sidebar, rewrites README links
 │   └── readme-pages.test.ts
 ├── pages/                   # Pages that belong only to the site
-│   └── index.md             # Home page (/)
+│   ├── index.md             # English home page (/)
+│   └── ko/
+│       └── index.md         # Korean home page (/ko/)
 ├── package.json
 └── tsconfig.json
 ```
@@ -39,18 +41,26 @@ VitePress generates `.vitepress/cache` and `.vitepress/dist`. Both are ignored b
 
 The site renders README files from `packages/vlossom` in place. They are not copied.
 
-| Source                                              | Route                 |
-| --------------------------------------------------- | --------------------- |
-| `packages/vlossom/src/components/<name>/README.md`  | `/components/<name>`  |
-| `packages/vlossom/src/composables/<name>/README.md` | `/composables/<name>` |
-| `packages/vlossom/src/directives/<name>/README.md`  | `/directives/<name>`  |
-| `packages/vlossom/src/plugins/<name>/README.md`     | `/plugins/<name>`     |
-| `packages/vlossom/src/utils/README.md`              | `/utils`              |
+| Source directory                           | `README.md` route     | `README.ko.md` route     |
+| ------------------------------------------ | --------------------- | ------------------------ |
+| `packages/vlossom/src/components/<name>/`  | `/components/<name>`  | `/ko/components/<name>`  |
+| `packages/vlossom/src/composables/<name>/` | `/composables/<name>` | `/ko/composables/<name>` |
+| `packages/vlossom/src/directives/<name>/`  | `/directives/<name>`  | `/ko/directives/<name>`  |
+| `packages/vlossom/src/plugins/<name>/`     | `/plugins/<name>`     | `/ko/plugins/<name>`     |
+| `packages/vlossom/src/utils/`              | `/utils`              | `/ko/utils`              |
 
-- The VitePress source directory is `packages/`. Markdown files that are not in this table or in `pages/` are excluded, for example templates, `README.ko.md`, and `CHANGELOG.md`.
-- The sidebar is built from the same list. A new unit directory with a `README.md` appears without config changes. The list is read when the config loads, so restart `pnpm dev` after adding or removing README files.
-- Relative links between READMEs are rewritten to site routes at build time. Links to repository files that are not pages, such as `README.ko.md`, point to the file on GitHub.
+- The VitePress source directory is `packages/`. Markdown files that are not in this table or in `pages/` are excluded, for example templates and `CHANGELOG.md`.
+- Each language has its own sidebar and nav, built from the same list. A new unit directory with README files appears without config changes. The list is read when the config loads, so restart `pnpm dev` after adding or removing README files.
+- Relative links between READMEs are rewritten to site routes at build time.
+    - A link to another unit opens that unit in the language of the current page. For example, a link to `../vs-input/README.md` in a Korean README opens `/ko/components/vs-input`. Korean site pages under `pages/ko/` follow the same rule.
+    - If the link has an anchor that the page in the current language does not have, the link keeps its original target. Headings differ by language, so `#types` may not exist on a Korean page whose heading is `## 타입`.
+    - A link to the other language of the same README, such as the language note at the top of each README, opens that language.
+    - A link to a repository file that is not a page points to the file on GitHub.
 - A relative link to a missing file is left as is, so VitePress reports it as a dead link and `pnpm build` fails.
+
+## Languages
+
+The site uses VitePress `locales`: English at `/` and Korean at `/ko/`. The language menu in the nav opens the same page in the other language. On Korean pages, theme labels such as the outline title and the previous and next page links are in Korean.
 
 ## Deployment
 
