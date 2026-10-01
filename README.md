@@ -22,11 +22,11 @@ This repository is the top-level home for Vlossom packages. The root README is i
 
 ## Package Index
 
-| Package                               | Purpose                                                                                                                                   | Docs                                     | Registry                                         |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------ |
-| [`vlossom`](packages/vlossom)         | Vue 3 UI component library with components, composables, directives, overlay plugins, theming, and validation utilities.                  | [README](packages/vlossom/README.md)     | [npm](https://www.npmjs.com/package/vlossom)     |
-| [`vlossom-docs`](packages/docs)       | VitePress documentation site for Vlossom.                                                                                                 | [README](packages/docs/README.md)        | Not published                                    |
-| [`vlossom-mcp`](packages/vlossom-mcp) | Model Context Protocol server that helps AI agents discover, reference, scaffold, and validate Vlossom usage from source-backed metadata. | [README](packages/vlossom-mcp/README.md) | [npm](https://www.npmjs.com/package/vlossom-mcp) |
+| Package                                 | Purpose                                                                                                                                   | Docs                                      | Registry                                         |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------ |
+| [`vlossom`](packages/vlossom)           | Vue 3 UI component library with components, composables, directives, overlay plugins, theming, and validation utilities.                  | [README](packages/vlossom/README.md)      | [npm](https://www.npmjs.com/package/vlossom)     |
+| [`vlossom-docs`](packages/vlossom-docs) | VitePress documentation site for Vlossom.                                                                                                 | [README](packages/vlossom-docs/README.md) | Not published                                    |
+| [`vlossom-mcp`](packages/vlossom-mcp)   | Model Context Protocol server that helps AI agents discover, reference, scaffold, and validate Vlossom usage from source-backed metadata. | [README](packages/vlossom-mcp/README.md)  | [npm](https://www.npmjs.com/package/vlossom-mcp) |
 
 ## Documentation Model
 
@@ -55,8 +55,8 @@ vlossom/
 ├── evals/                     # Evaluation assets
 ├── guidelines/                # Project guidelines
 ├── packages/                  # Package directories
-│   ├── docs/                  # VitePress documentation site
 │   ├── vlossom/               # Vue 3 UI component library
+│   ├── vlossom-docs/          # VitePress documentation site
 │   └── vlossom-mcp/           # MCP server for Vlossom-aware agents
 ├── .github/                   # GitHub templates and workflows
 ├── release-please-config.json # Release automation

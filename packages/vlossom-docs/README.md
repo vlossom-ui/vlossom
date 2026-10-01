@@ -7,7 +7,7 @@ This package is private. It is not published to npm.
 ## Local Development
 
 ```bash
-cd packages/docs
+cd packages/vlossom-docs
 pnpm install
 pnpm dev
 ```
@@ -21,7 +21,7 @@ pnpm dev
 ## Structure
 
 ```txt
-packages/docs/
+packages/vlossom-docs/
 ├── .vitepress/
 │   └── config.ts   # Site config: title, source directory, theme options
 ├── pages/          # Markdown source; each file becomes a route
