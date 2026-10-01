@@ -23,8 +23,10 @@ const SECTIONS = [
     { dir: 'utils', text: 'Utils' },
 ] as const;
 
-const UNIT_README = /^vlossom\/src\/(components|composables|directives|plugins)\/([^/]+)\/README\.md$/;
-const UTILS_README = 'vlossom/src/utils/README.md';
+const UTILS_SECTION = 'utils';
+const UNIT_SECTIONS = SECTIONS.map((section) => section.dir).filter((dir) => dir !== UTILS_SECTION);
+const UNIT_README = new RegExp(`^vlossom/src/(${UNIT_SECTIONS.join('|')})/([^/]+)/README\\.md$`);
+const UTILS_README = `vlossom/src/${UTILS_SECTION}/README.md`;
 const DOCS_PAGES_DIR = 'vlossom-docs/pages/';
 const REPOSITORY_BLOB_URL = 'https://github.com/vlossom-ui/vlossom/blob/main';
 const URL_SCHEME = /^[a-z][a-z\d+.-]*:/i;
@@ -44,7 +46,7 @@ export function listMarkdownFiles(root: string, dir = ''): string[] {
 
 function toPage(source: string): ReadmePage | undefined {
     if (source === UTILS_README) {
-        return { source, route: 'utils.md', section: 'utils', name: 'utils' };
+        return { source, route: `${UTILS_SECTION}.md`, section: UTILS_SECTION, name: UTILS_SECTION };
     }
     const match = UNIT_README.exec(source);
     if (!match) {
@@ -79,6 +81,13 @@ export function selectReadmePages(files: string[]): ReadmePage[] {
 export function toSrcExclude(files: string[], pages: ReadmePage[]): string[] {
     const sources = new Set(pages.map((page) => page.source));
     return files.filter((file) => !file.startsWith(DOCS_PAGES_DIR) && !sources.has(file));
+}
+
+export function toRewrites(files: string[], pages: ReadmePage[]): Record<string, string> {
+    const docsPages = files
+        .filter((file) => file.startsWith(DOCS_PAGES_DIR))
+        .map((file) => [file, file.slice(DOCS_PAGES_DIR.length)]);
+    return Object.fromEntries([...docsPages, ...pages.map((page) => [page.source, page.route])]);
 }
 
 export function pageLink(page: ReadmePage): string {
@@ -123,6 +132,9 @@ export function resolveReadmeLink(
     const page = pages.find((candidate) => candidate.source === target);
     if (page) {
         return `/${page.route}${hash}`;
+    }
+    if (target.startsWith(DOCS_PAGES_DIR)) {
+        return undefined;
     }
     if (exists(target)) {
         return `${REPOSITORY_BLOB_URL}/${posix.normalize(`packages/${target}`)}${hash}`;

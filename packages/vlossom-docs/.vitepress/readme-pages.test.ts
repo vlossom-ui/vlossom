@@ -1,10 +1,11 @@
 import { resolve } from 'node:path';
-import { createMarkdownRenderer } from 'vitepress';
+import { createMarkdownRenderer, resolveConfig } from 'vitepress';
 import { describe, expect, it } from 'vitest';
 import {
     readmeLinks,
     resolveReadmeLink,
     selectReadmePages,
+    toRewrites,
     toSidebar,
     toSrcExclude,
     type ReadmePage,
@@ -118,6 +119,23 @@ describe('toSrcExclude', () => {
     });
 });
 
+describe('toRewrites', () => {
+    it('문서 사이트 페이지는 깊이와 상관없이 사이트 루트로, README는 섹션 경로로 매핑한다', () => {
+        const files = [
+            'vlossom-docs/pages/index.md',
+            'vlossom-docs/pages/guide/intro.md',
+            'vlossom-docs/README.md',
+            'vlossom/src/components/vs-button/README.md',
+        ];
+
+        expect(toRewrites(files, [BUTTON])).toEqual({
+            'vlossom-docs/pages/index.md': 'index.md',
+            'vlossom-docs/pages/guide/intro.md': 'guide/intro.md',
+            'vlossom/src/components/vs-button/README.md': 'components/vs-button.md',
+        });
+    });
+});
+
 describe('toSidebar', () => {
     it('페이지가 있는 섹션만 그룹으로 만들고 컴포넌트 이름은 PascalCase로 보여 준다', () => {
         expect(toSidebar([BUTTON, INPUT_WRAPPER, SCROLL_LOCK, UTILS])).toEqual([
@@ -178,14 +196,27 @@ describe('resolveReadmeLink', () => {
         expect(resolveReadmeLink(href, source, pages, exists)).toBe(expected);
     });
 
+    it('없는 파일로 가는 링크는 바꾸지 않는다', () => {
+        expect(resolveReadmeLink('../vs-nope/README.md', BUTTON.source, pages, exists)).toBeUndefined();
+    });
+
     it.each([
-        ['없는 파일', '../vs-nope/README.md'],
         ['외부 링크', 'https://vuejs.org/guide/'],
         ['사이트 절대 경로', '/components/vs-button'],
         ['앵커만 있는 링크', '#props'],
         ['메일 링크', 'mailto:hello@example.com'],
-    ])('%s는 바꾸지 않는다', (_, href) => {
-        expect(resolveReadmeLink(href, BUTTON.source, pages, exists)).toBeUndefined();
+    ])('%s는 같은 경로에 파일이 있어도 바꾸지 않는다', (_, href) => {
+        expect(resolveReadmeLink(href, BUTTON.source, pages, () => true)).toBeUndefined();
+    });
+
+    it('문서 사이트 페이지끼리의 링크는 바꾸지 않는다', () => {
+        expect(resolveReadmeLink('./index.md', 'vlossom-docs/pages/guide.md', pages, () => true)).toBeUndefined();
+    });
+
+    it('문서 사이트 페이지에서 README로 가는 링크는 사이트 경로로 바꾼다', () => {
+        const href = '../../vlossom/src/components/vs-button/README.md';
+
+        expect(resolveReadmeLink(href, 'vlossom-docs/pages/guide.md', pages, exists)).toBe('/components/vs-button.md');
     });
 });
 
@@ -207,5 +238,20 @@ describe('readmeLinks', () => {
         });
 
         expect(html).toContain('href="/components/vs-input-wrapper.html#types"');
+    });
+});
+
+describe('docs site config', () => {
+    it('README 페이지와 문서 사이트 페이지만 페이지로 잡고 사이트 경로로 매핑한다', async () => {
+        const config = await resolveConfig(resolve(import.meta.dirname, '..'), 'build', 'production');
+        const allowed =
+            /^(vlossom\/src\/(components|composables|directives|plugins)\/[^/]+\/README\.md|vlossom\/src\/utils\/README\.md|vlossom-docs\/pages\/.+\.md)$/;
+
+        expect(config.pages.filter((page) => !allowed.test(page))).toEqual([]);
+        expect(config.rewrites.map).toMatchObject({
+            'vlossom-docs/pages/index.md': 'index.md',
+            'vlossom/src/components/vs-button/README.md': 'components/vs-button.md',
+            'vlossom/src/utils/README.md': 'utils.md',
+        });
     });
 });

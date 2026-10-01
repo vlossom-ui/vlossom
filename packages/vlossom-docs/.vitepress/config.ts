@@ -5,6 +5,7 @@ import {
     pageLink,
     readmeLinks,
     selectReadmePages,
+    toRewrites,
     toSidebar,
     toSrcExclude,
 } from './readme-pages.ts';
@@ -23,10 +24,7 @@ export default defineConfig({
     // VitePress는 srcDir 안의 파일만 페이지로 만든다. README를 복사하지 않으려고 srcDir를 packages/로 넓힌다.
     srcDir: '..',
     srcExclude: toSrcExclude(markdownFiles, readmePages),
-    rewrites: {
-        'vlossom-docs/pages/:page.md': ':page.md',
-        ...Object.fromEntries(readmePages.map((page) => [page.source, page.route])),
-    },
+    rewrites: toRewrites(markdownFiles, readmePages),
 
     markdown: {
         config: (md) => {

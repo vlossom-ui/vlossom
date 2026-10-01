@@ -48,7 +48,7 @@ The site renders README files from `packages/vlossom` in place. They are not cop
 | `packages/vlossom/src/utils/README.md`              | `/utils`              |
 
 - The VitePress source directory is `packages/`. Markdown files that are not in this table or in `pages/` are excluded, for example templates, `README.ko.md`, and `CHANGELOG.md`.
-- The sidebar is built from the same list. A new unit directory with a `README.md` appears without config changes.
+- The sidebar is built from the same list. A new unit directory with a `README.md` appears without config changes. The list is read when the config loads, so restart `pnpm dev` after adding or removing README files.
 - Relative links between READMEs are rewritten to site routes at build time. Links to repository files that are not pages, such as `README.ko.md`, point to the file on GitHub.
 - A relative link to a missing file is left as is, so VitePress reports it as a dead link and `pnpm build` fails.
 
