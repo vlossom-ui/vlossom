@@ -61,7 +61,7 @@ const drawerOpen = ref(false);
 
 ### Inside VsLayout
 
-Set the `layout` prop to register the drawer with the layout store. Combine with `pushContainer` to push the sibling `VsContainer` aside instead of overlaying it. Wrapping the drawer in another component is supported.
+Set the `layout` prop to register the drawer with the layout store. Combine with `pushContainer` to push the sibling `VsContainer` aside instead of overlaying it. Left and right drawers only push the container when the viewport is at least 768px wide; on narrower screens they overlay it. Wrapping the drawer in another component is supported.
 
 ```html
 <template>
@@ -78,24 +78,24 @@ Set the `layout` prop to register the drawer with the layout store. Combine with
 
 ## Props
 
-| Prop            | Type                                     | Default      | Required | Description                                                                                                                     |
-| --------------- | ---------------------------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                                 |              |          | Color scheme for the component                                                                                                  |
-| `styleSet`      | `string \| VsDrawerStyleSet`             |              |          | Custom style set for the component                                                                                              |
-| `callbacks`     | `OverlayCallbacks`                       | `{}`         |          | Callback functions for overlay events                                                                                           |
-| `dimClose`      | `boolean`                                | `false`      |          | Close the drawer when the dimmed backdrop is clicked                                                                            |
-| `dimmed`        | `boolean`                                | `false`      |          | Show a dimmed backdrop behind the drawer                                                                                        |
-| `escClose`      | `boolean`                                | `false`      |          | Close the drawer when the Escape key is pressed                                                                                 |
-| `focusLock`     | `boolean`                                | `false`      |          | Trap focus inside the drawer while it is open                                                                                   |
-| `hideScroll`    | `boolean`                                | `false`      |          | Hide the scrollbar inside the drawer                                                                                            |
-| `id`            | `string`                                 | `''`         |          | HTML id attribute for the drawer                                                                                                |
-| `position`      | `'absolute' \| 'fixed'`                  | `'absolute'` |          | CSS position of the drawer panel                                                                                                |
-| `open`          | `boolean`                                | `false`      |          | Open the drawer on mount                                                                                                        |
-| `layout`        | `boolean`                                | `false`      |          | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect                           |
-| `pushContainer` | `boolean`                                | `false`      |          | When used with `layout`, push the sibling `VsContainer` to make room for the drawer instead of overlaying it                    |
-| `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |          | Edge from which the drawer slides in                                                                                            |
-| `size`          | `string \| number`                       |              |          | Width (left/right) or height (top/bottom) of the drawer panel. Accepts size tokens (`xs`, `sm`, `md`, `lg`, `xl`) or CSS values |
-| `modelValue`    | `boolean`                                | `false`      |          | v-model binding to control open state                                                                                           |
+| Prop            | Type                                     | Default      | Required | Description                                                                                                                                      |
+| --------------- | ---------------------------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `colorScheme`   | `string`                                 |              |          | Color scheme for the component                                                                                                                   |
+| `styleSet`      | `string \| VsDrawerStyleSet`             |              |          | Custom style set for the component                                                                                                               |
+| `callbacks`     | `OverlayCallbacks`                       | `{}`         |          | Callback functions for overlay events                                                                                                            |
+| `dimClose`      | `boolean`                                | `false`      |          | Close the drawer when the dimmed backdrop is clicked                                                                                             |
+| `dimmed`        | `boolean`                                | `false`      |          | Show a dimmed backdrop behind the drawer                                                                                                         |
+| `escClose`      | `boolean`                                | `false`      |          | Close the drawer when the Escape key is pressed                                                                                                  |
+| `focusLock`     | `boolean`                                | `false`      |          | Trap focus inside the drawer while it is open                                                                                                    |
+| `hideScroll`    | `boolean`                                | `false`      |          | Hide the scrollbar inside the drawer                                                                                                             |
+| `id`            | `string`                                 | `''`         |          | HTML id attribute for the drawer                                                                                                                 |
+| `position`      | `'absolute' \| 'fixed'`                  | `'absolute'` |          | CSS position of the drawer panel                                                                                                                 |
+| `open`          | `boolean`                                | `false`      |          | Open the drawer on mount                                                                                                                         |
+| `layout`        | `boolean`                                | `false`      |          | Opt in to `VsLayout` integration. Requires a `VsLayout` ancestor; without one this prop has no effect                                            |
+| `pushContainer` | `boolean`                                | `false`      |          | When used with `layout`, push the sibling `VsContainer` to make room for the drawer instead of overlaying it (left/right: viewport ≥ 768px only) |
+| `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |          | Edge from which the drawer slides in                                                                                                             |
+| `size`          | `string \| number`                       |              |          | Width (left/right) or height (top/bottom) of the drawer panel. Accepts size tokens (`xs`, `sm`, `md`, `lg`, `xl`) or CSS values                  |
+| `modelValue`    | `boolean`                                | `false`      |          | v-model binding to control open state                                                                                                            |
 
 ## Types
 

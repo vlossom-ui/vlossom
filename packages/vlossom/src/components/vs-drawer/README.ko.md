@@ -61,7 +61,7 @@ const drawerOpen = ref(false);
 
 ### VsLayout 내부에서 사용
 
-`layout` prop을 설정하면 드로어가 레이아웃 스토어에 등록됩니다. `pushContainer`와 함께 사용하면 `VsContainer`를 옆으로 밀어 공간을 확보합니다 (overlay 대신). 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
+`layout` prop을 설정하면 드로어가 레이아웃 스토어에 등록됩니다. `pushContainer`와 함께 사용하면 `VsContainer`를 옆으로 밀어 공간을 확보합니다 (overlay 대신). left/right 드로어는 viewport 너비가 768px 이상일 때만 밀어내고, 그보다 좁으면 overlay로 표시됩니다. 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
 
 ```html
 <template>
@@ -78,24 +78,24 @@ const drawerOpen = ref(false);
 
 ## Props
 
-| Prop            | 타입                                     | 기본값       | 필수 | 설명                                                                                                           |
-| --------------- | ---------------------------------------- | ------------ | ---- | -------------------------------------------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                                 |              |      | 컴포넌트의 색상 스킴                                                                                           |
-| `styleSet`      | `string \| VsDrawerStyleSet`             |              |      | 컴포넌트의 사용자 정의 스타일 셋                                                                               |
-| `callbacks`     | `OverlayCallbacks`                       | `{}`         |      | 오버레이 이벤트 콜백 함수                                                                                      |
-| `dimClose`      | `boolean`                                | `false`      |      | 딤드 배경 클릭 시 드로어 닫기                                                                                  |
-| `dimmed`        | `boolean`                                | `false`      |      | 드로어 뒤에 딤드 배경 표시                                                                                     |
-| `escClose`      | `boolean`                                | `false`      |      | Escape 키 입력 시 드로어 닫기                                                                                  |
-| `focusLock`     | `boolean`                                | `false`      |      | 드로어가 열려 있는 동안 포커스 가두기                                                                          |
-| `hideScroll`    | `boolean`                                | `false`      |      | 드로어 내부 스크롤바 숨기기                                                                                    |
-| `id`            | `string`                                 | `''`         |      | 드로어의 HTML id 속성                                                                                          |
-| `position`      | `'absolute' \| 'fixed'`                  | `'absolute'` |      | 드로어 패널의 CSS position                                                                                     |
-| `open`          | `boolean`                                | `false`      |      | 마운트 시 드로어 열기                                                                                          |
-| `layout`        | `boolean`                                | `false`      |      | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다                                   |
-| `pushContainer` | `boolean`                                | `false`      |      | `layout`과 함께 사용 시 드로어가 `VsContainer`를 옆으로 밀어 공간을 확보 (overlay 대신)                        |
-| `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |      | 드로어가 슬라이드 인되는 가장자리 방향                                                                         |
-| `size`          | `string \| number`                       |              |      | 드로어 패널의 너비(left/right) 또는 높이(top/bottom). 크기 토큰(`xs`, `sm`, `md`, `lg`, `xl`) 또는 CSS 값 허용 |
-| `modelValue`    | `boolean`                                | `false`      |      | 열기 상태를 제어하는 v-model 바인딩                                                                            |
+| Prop            | 타입                                     | 기본값       | 필수 | 설명                                                                                                                            |
+| --------------- | ---------------------------------------- | ------------ | ---- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `colorScheme`   | `string`                                 |              |      | 컴포넌트의 색상 스킴                                                                                                            |
+| `styleSet`      | `string \| VsDrawerStyleSet`             |              |      | 컴포넌트의 사용자 정의 스타일 셋                                                                                                |
+| `callbacks`     | `OverlayCallbacks`                       | `{}`         |      | 오버레이 이벤트 콜백 함수                                                                                                       |
+| `dimClose`      | `boolean`                                | `false`      |      | 딤드 배경 클릭 시 드로어 닫기                                                                                                   |
+| `dimmed`        | `boolean`                                | `false`      |      | 드로어 뒤에 딤드 배경 표시                                                                                                      |
+| `escClose`      | `boolean`                                | `false`      |      | Escape 키 입력 시 드로어 닫기                                                                                                   |
+| `focusLock`     | `boolean`                                | `false`      |      | 드로어가 열려 있는 동안 포커스 가두기                                                                                           |
+| `hideScroll`    | `boolean`                                | `false`      |      | 드로어 내부 스크롤바 숨기기                                                                                                     |
+| `id`            | `string`                                 | `''`         |      | 드로어의 HTML id 속성                                                                                                           |
+| `position`      | `'absolute' \| 'fixed'`                  | `'absolute'` |      | 드로어 패널의 CSS position                                                                                                      |
+| `open`          | `boolean`                                | `false`      |      | 마운트 시 드로어 열기                                                                                                           |
+| `layout`        | `boolean`                                | `false`      |      | `VsLayout` 통합 opt-in. `VsLayout` 조상이 있어야 동작하며, 없으면 무시됩니다                                                    |
+| `pushContainer` | `boolean`                                | `false`      |      | `layout`과 함께 사용 시 드로어가 `VsContainer`를 옆으로 밀어 공간을 확보 (overlay 대신, left/right는 viewport 768px 이상에서만) |
+| `placement`     | `'left' \| 'right' \| 'top' \| 'bottom'` | `'left'`     |      | 드로어가 슬라이드 인되는 가장자리 방향                                                                                          |
+| `size`          | `string \| number`                       |              |      | 드로어 패널의 너비(left/right) 또는 높이(top/bottom). 크기 토큰(`xs`, `sm`, `md`, `lg`, `xl`) 또는 CSS 값 허용                  |
+| `modelValue`    | `boolean`                                | `false`      |      | 열기 상태를 제어하는 v-model 바인딩                                                                                             |
 
 ## 타입
 
