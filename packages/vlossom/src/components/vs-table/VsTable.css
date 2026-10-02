@@ -274,7 +274,7 @@
 }
 
 /* ── Responsive layout ── */
-@container (max-width: 1024px) {
+@container (width < 1024px) {
     .vs-table.vs-responsive {
         > .vs-table-content {
             @apply overflow-x-visible;

@@ -1,8 +1,21 @@
 @reference 'tailwindcss';
 
 .vs-container {
+    --vs-container-push-left: initial;
+    --vs-container-push-right: initial;
+
     @apply relative h-full w-full;
 
     transition: padding 0.3s ease-in-out;
     container-type: inline-size;
+}
+
+@media (width >= 768px) {
+    .vs-container.vs-container-push-left {
+        padding-left: var(--vs-container-push-left);
+    }
+
+    .vs-container.vs-container-push-right {
+        padding-right: var(--vs-container-push-right);
+    }
 }

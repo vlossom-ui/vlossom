@@ -23,7 +23,7 @@
         height: var(--vs-divider-verticalHeight, 100%);
     }
 }
-@container (max-width: 768px) {
+@container (width < 768px) {
     .vs-divider.vs-vertical.vs-divider-responsive {
         @apply border-t border-l-0;
 

@@ -8,7 +8,7 @@
     grid-column-start: span var(--vs-grid-xs, 12);
     width: var(--vs-width-xs, 100%);
 
-    @container (min-width: 640px) {
+    @container (width >= 640px) {
         &.vs-width-sm {
             width: var(--vs-width-sm);
         }
@@ -17,7 +17,7 @@
         }
     }
 
-    @container (min-width: 768px) {
+    @container (width >= 768px) {
         &.vs-width-md {
             width: var(--vs-width-md);
         }
@@ -26,7 +26,7 @@
         }
     }
 
-    @container (min-width: 1024px) {
+    @container (width >= 1024px) {
         &.vs-width-lg {
             width: var(--vs-width-lg);
         }
@@ -35,7 +35,7 @@
         }
     }
 
-    @container (min-width: 1280px) {
+    @container (width >= 1280px) {
         &.vs-width-xl {
             width: var(--vs-width-xl);
         }
