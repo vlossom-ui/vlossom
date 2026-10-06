@@ -13,7 +13,6 @@ export type { VsGroupedList };
 export interface VsGroupedListRef extends ComponentPublicInstance<typeof VsGroupedList> {
     scrollToItem: (id: string, offset?: number) => void;
     hasScroll: () => boolean;
-    groupedItems: VsGroupedListGroup[];
 }
 
 export interface VsGroupedListStyleSet extends CSSProperties {

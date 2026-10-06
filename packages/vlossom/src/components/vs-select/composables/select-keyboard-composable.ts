@@ -1,4 +1,4 @@
-import { computed, nextTick, type ComputedRef, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
+import { computed, nextTick, ref, watch, type ComputedRef, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
 import type { OptionItem } from '@/declaration';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import { SELECT_FOCUS_KEY } from './../constants';
@@ -40,6 +40,22 @@ export function useSelectKeyboard({
     toggleSelectAll,
     selectOptionItem,
 }: UseSelectKeyboardParams) {
+    // 선택된 옵션으로의 점프는 목록을 연 뒤 옵션 영역에 처음 들어갈 때만 한다.
+    // 이후 select-all/search에서 내려올 때는 바로 아래 옵션으로 이동해야 자연스럽다.
+    const hasEnteredOptions = ref(false);
+
+    watch(isOpen, (opened) => {
+        if (opened) {
+            hasEnteredOptions.value = false;
+        }
+    });
+
+    watch(focusedKey, (key) => {
+        if (isOptionKey(key)) {
+            hasEnteredOptions.value = true;
+        }
+    });
+
     function isSearchFocused() {
         return focusedKey.value === SELECT_FOCUS_KEY.search;
     }
@@ -59,7 +75,7 @@ export function useSelectKeyboard({
 
     function getNextFocusIndex() {
         const next = focusableKeys.value[focusIndex.value + 1];
-        if (focusedKey.value && !isOptionKey(focusedKey.value) && isOptionKey(next)) {
+        if (!hasEnteredOptions.value && focusedKey.value && !isOptionKey(focusedKey.value) && isOptionKey(next)) {
             return findInitialOptionFocusIndex();
         }
         return focusIndex.value + 1;

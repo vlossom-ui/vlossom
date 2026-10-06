@@ -35,189 +35,6 @@ describe('vs-grouped-list', () => {
         defaultItems = createOptionItems(rawItems);
     });
 
-    describe('groupedItems', () => {
-        it('groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환해야 한다', () => {
-            // given, when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items: defaultItems,
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(1);
-            expect(groupedItems[0].name).toBe('');
-            expect(groupedItems[0].items).toHaveLength(5);
-        });
-
-        it('groupBy가 있으면 그룹별로 아이템이 분류되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items: defaultItems,
-                    groupBy: (item: any) => item.category,
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(3);
-            expect(groupedItems[0].name).toBe('A');
-            expect(groupedItems[0].items).toHaveLength(2);
-            expect(groupedItems[1].name).toBe('B');
-            expect(groupedItems[1].items).toHaveLength(2);
-            expect(groupedItems[2].name).toBe('C');
-            expect(groupedItems[2].items).toHaveLength(1);
-        });
-
-        it('groupBy가 null을 반환하면 ungrouped 그룹에 포함되어야 한다', () => {
-            // given
-            const rawItemsWithNull = [
-                { id: 1, name: '아이템 1', category: 'A' },
-                { id: 2, name: '아이템 2', category: null },
-                { id: 3, name: '아이템 3', category: 'B' },
-            ];
-            const itemsWithNull = createOptionItems(rawItemsWithNull);
-
-            // when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items: itemsWithNull,
-                    groupBy: (item: any) => item.category,
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(3);
-            // ungrouped는 제일 밑에 있어야 함
-            expect(groupedItems[2].name).toBe('');
-            expect(groupedItems[2].items).toHaveLength(1);
-            expect(groupedItems[2].items[0].item.id).toBe(2);
-        });
-
-        it('groupOrder가 있으면 그룹 순서가 지정된 순서대로 정렬되어야 한다', () => {
-            // given, when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items: defaultItems,
-                    groupBy: (item: any) => item.category,
-                    groupOrder: ['C', 'A', 'B'],
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(3);
-            expect(groupedItems[0].name).toBe('C');
-            expect(groupedItems[1].name).toBe('A');
-            expect(groupedItems[2].name).toBe('B');
-        });
-
-        it('groupOrder에 없는 그룹은 등장 순서대로 뒤에 추가되어야 한다', () => {
-            // given
-            const rawItems = [
-                { id: 1, name: '아이템 1', category: 'A' },
-                { id: 2, name: '아이템 2', category: 'B' },
-                { id: 3, name: '아이템 3', category: 'C' },
-                { id: 4, name: '아이템 4', category: 'D' },
-            ];
-            const items = createOptionItems(rawItems);
-
-            // when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items,
-                    groupBy: (item: any) => item.category,
-                    groupOrder: ['C', 'A'],
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(4);
-            expect(groupedItems[0].name).toBe('C');
-            expect(groupedItems[1].name).toBe('A');
-            expect(groupedItems[2].name).toBe('B'); // 등장 순서대로
-            expect(groupedItems[3].name).toBe('D'); // 등장 순서대로
-        });
-
-        it('groupOrder에 중복된 그룹이 있어도 그룹은 한 번만 나와야 한다', () => {
-            // given
-            const rawItems = [
-                { id: 1, name: '아이템 1', category: 'A' },
-                { id: 2, name: '아이템 2', category: 'B' },
-            ];
-            const items = createOptionItems(rawItems);
-
-            // when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items,
-                    groupBy: (item: any) => item.category,
-                    groupOrder: ['A', 'A', 'B'],
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(2);
-            expect(groupedItems.map((group) => group.name)).toEqual(['A', 'B']);
-        });
-
-        it('ungrouped 아이템은 항상 제일 밑에 위치해야 한다', () => {
-            // given
-            const rawItems = [
-                { id: 1, name: '아이템 1', category: 'A' },
-                { id: 2, name: '아이템 2', category: null },
-                { id: 3, name: '아이템 3', category: 'B' },
-                { id: 4, name: '아이템 4', category: null },
-            ];
-            const items = createOptionItems(rawItems);
-
-            // when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items,
-                    groupBy: (item: any) => item.category,
-                    groupOrder: ['B', 'A'],
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems).toHaveLength(3);
-            expect(groupedItems[0].name).toBe('B');
-            expect(groupedItems[1].name).toBe('A');
-            expect(groupedItems[2].name).toBe(''); // ungrouped는 제일 밑
-            expect(groupedItems[2].items).toHaveLength(2);
-        });
-
-        it('OptionItem의 disabled 속성이 올바르게 반영되어야 한다', () => {
-            // given
-            const itemsWithDisabled = defaultItems.map((item, index) => ({
-                ...item,
-                disabled: item.item.id === 2 || index === 3,
-            }));
-
-            // when
-            const wrapper = mount(VsGroupedList, {
-                props: {
-                    items: itemsWithDisabled,
-                },
-            });
-
-            // then
-            const groupedItems: VsGroupedListGroup[] = wrapper.vm.groupedItems;
-            expect(groupedItems[0].items[0].disabled).toBe(false); // id: 1
-            expect(groupedItems[0].items[1].disabled).toBe(true); // id: 2
-            expect(groupedItems[0].items[2].disabled).toBe(false); // id: 3
-            expect(groupedItems[0].items[3].disabled).toBe(true); // index: 3
-            expect(groupedItems[0].items[4].disabled).toBe(false); // id: 5
-        });
-    });
-
     describe('vs-grouped-list-list 렌더링', () => {
         it('vs-grouped-list-list가 올바르게 렌더링되어야 한다', () => {
             // given, when
@@ -463,6 +280,35 @@ describe('vs-grouped-list', () => {
             const renderedItems = wrapper.findAll('.vs-grouped-list-item');
             expect(renderedItems.length).toBeGreaterThan(0);
             expect(renderedItems.length).toBeLessThan(1000);
+        });
+
+        it('items 개수가 기준을 넘나들면 virtual 모드가 전환되어야 한다', async () => {
+            // given
+            const wrapper = mount(VsGroupedList, {
+                props: { items: createManyOptionItems(1000) },
+            });
+            await nextTick();
+            expect(wrapper.vm.isVirtual).toBe(true);
+
+            // when: 기준 이하로 줄어듦
+            await wrapper.setProps({ items: createManyOptionItems(50) });
+
+            // then
+            expect(wrapper.vm.isVirtual).toBe(false);
+            expect(wrapper.findAll('.vs-grouped-list-item')).toHaveLength(50);
+
+            // when: 다시 기준을 넘음
+            await wrapper.setProps({ items: createManyOptionItems(1000) });
+            await nextTick();
+
+            // then
+            const list = wrapper.find('.vs-grouped-list-list');
+            expect(wrapper.vm.isVirtual).toBe(true);
+            expect(list.attributes('style')).toContain('height: 32000px');
+            const renderedItems = wrapper.findAll('.vs-grouped-list-item');
+            expect(renderedItems.length).toBeGreaterThan(0);
+            expect(renderedItems.length).toBeLessThan(1000);
+            expect(renderedItems[0].text()).toBe('아이템 1');
         });
 
         it('noVirtual이 true이면 items가 많아도 모든 아이템을 렌더링해야 한다', () => {

@@ -56,13 +56,14 @@
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
                         <div
+                            v-if="isUsingSearch"
                             :class="[
                                 'vs-select-search',
                                 { 'vs-focusable-active': isFocusedKey(SELECT_FOCUS_KEY.search) },
                             ]"
-                            :data-focusable="isUsingSearch ? SELECT_FOCUS_KEY.search : undefined"
+                            :data-focusable="SELECT_FOCUS_KEY.search"
                         >
-                            <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" :size />
+                            <vs-search-input ref="searchInputRef" v-bind="searchProps" :size />
                         </div>
                         <div
                             v-if="isUsingSelectAll"
@@ -170,6 +171,7 @@ import {
     useInputOption,
     useOptionList,
     useFocusable,
+    useGroupedItems,
     useOverlayCallback,
     useClickOutside,
     useSizeClass,
@@ -257,6 +259,8 @@ export default defineComponent({
             placeholder,
             focusPlaceholder,
             selectAll,
+            groupBy,
+            groupOrder,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -299,10 +303,8 @@ export default defineComponent({
 
         const isUsingSelectAll = computed(() => multiple.value && selectAll.value);
 
-        const displayedOptions: ComputedRef<OptionItem[]> = computed(() => {
-            const groupedItems = optionsListRef.value?.groupedItems;
-            return groupedItems ? groupedItems.flatMap((group) => group.items) : filteredOptions.value;
-        });
+        const { groupedItems } = useGroupedItems(filteredOptions, groupBy, groupOrder);
+        const displayedOptions = computed(() => groupedItems.value.flatMap((group) => group.items));
 
         const focusableKeys = computed(() => [
             ...(isUsingSearch.value ? [SELECT_FOCUS_KEY.search] : []),
@@ -532,8 +534,7 @@ export default defineComponent({
                 nextTick(() => {
                     addMouseMoveListener();
 
-                    const selectedFocusIndex = focusableKeys.value.findIndex(isSelected);
-                    const selectedId = focusableKeys.value[selectedFocusIndex];
+                    const selectedId = displayedOptions.value.find((option) => isSelected(option.id))?.id;
                     if (selectedId && optionsListRef.value?.hasScroll()) {
                         optionsListRef.value?.scrollToItem(selectedId, 50);
                     }
@@ -541,8 +542,8 @@ export default defineComponent({
                     if (isUsingSearch.value) {
                         searchInputRef.value?.focus();
                         updateFocusIndex(0);
-                    } else if (selectedFocusIndex !== -1) {
-                        updateFocusIndex(selectedFocusIndex);
+                    } else if (selectedId) {
+                        updateFocusIndex(focusableKeys.value.indexOf(selectedId));
                     }
                 });
             }, 50);
