@@ -1,15 +1,22 @@
 import { computed, nextTick, type ComputedRef, type DeepReadonly, type Ref, type TemplateRef } from 'vue';
 import type { OptionItem } from '@/declaration';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
+import { SELECT_FOCUS_KEY } from './../constants';
+
+function isOptionKey(key: string | null | undefined): key is string {
+    return !!key && key !== SELECT_FOCUS_KEY.search && key !== SELECT_FOCUS_KEY.selectAll;
+}
 
 interface UseSelectKeyboardParams {
     isOpen: Ref<boolean>;
-    focusIndex: Ref<number>;
-    currentFocusableElement: DeepReadonly<Ref<HTMLElement | null>>;
+    focusIndex: DeepReadonly<Ref<number>>;
+    focusableKeys: ComputedRef<string[]>;
+    focusedKey: ComputedRef<string | null>;
     searchInputRef: TemplateRef<VsSearchInputRef>;
     filteredOptions: ComputedRef<OptionItem[]>;
+    isSelected: (optionId: string) => boolean;
     updateFocusIndex: (index: number) => void;
-    getFocusableElements: () => HTMLElement[];
+    scrollToOption: (optionId: string) => void;
     openOptions: () => void;
     closeOptions: () => void;
     focusTrigger: () => void;
@@ -20,30 +27,54 @@ interface UseSelectKeyboardParams {
 export function useSelectKeyboard({
     isOpen,
     focusIndex,
-    currentFocusableElement,
+    focusableKeys,
+    focusedKey,
     searchInputRef,
     filteredOptions,
+    isSelected,
     updateFocusIndex,
-    getFocusableElements,
+    scrollToOption,
     openOptions,
     closeOptions,
     focusTrigger,
     toggleSelectAll,
     selectOptionItem,
 }: UseSelectKeyboardParams) {
-    function getCurrentFocusableRole() {
-        return currentFocusableElement.value?.dataset['role'];
+    function isSearchFocused() {
+        return focusedKey.value === SELECT_FOCUS_KEY.search;
     }
 
-    function isSearchFocused() {
-        return getCurrentFocusableRole() === 'search';
+    function findFirstOptionFocusIndex() {
+        return focusableKeys.value.findIndex(isOptionKey);
+    }
+
+    function findLastOptionFocusIndex() {
+        return focusableKeys.value.map(isOptionKey).lastIndexOf(true);
+    }
+
+    function findInitialOptionFocusIndex() {
+        const selectedFocusIndex = focusableKeys.value.findIndex(isSelected);
+        return selectedFocusIndex !== -1 ? selectedFocusIndex : findFirstOptionFocusIndex();
+    }
+
+    function getNextFocusIndex() {
+        const next = focusableKeys.value[focusIndex.value + 1];
+        if (focusedKey.value && !isOptionKey(focusedKey.value) && isOptionKey(next)) {
+            return findInitialOptionFocusIndex();
+        }
+        return focusIndex.value + 1;
     }
 
     function moveSelectFocus(index: number) {
+        if (index === -1) {
+            return;
+        }
         updateFocusIndex(index);
 
         nextTick(() => {
-            currentFocusableElement.value?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (isOptionKey(focusedKey.value)) {
+                scrollToOption(focusedKey.value);
+            }
             if (isSearchFocused()) {
                 searchInputRef.value?.focus();
             } else {
@@ -54,18 +85,13 @@ export function useSelectKeyboard({
 
     function handleSelectionKey() {
         if (isOpen.value) {
-            const role = getCurrentFocusableRole();
-            if (role === 'search') {
-                return;
-            } else if (role === 'select-all') {
+            const key = focusedKey.value;
+            if (key === SELECT_FOCUS_KEY.selectAll) {
                 toggleSelectAll();
-            } else {
-                const optionId = currentFocusableElement.value?.dataset['id'];
-                if (optionId) {
-                    const optionItem = filteredOptions.value.find((o) => o.id === optionId);
-                    if (optionItem) {
-                        selectOptionItem(optionItem);
-                    }
+            } else if (isOptionKey(key)) {
+                const optionItem = filteredOptions.value.find((o) => o.id === key);
+                if (optionItem) {
+                    selectOptionItem(optionItem);
                 }
             }
         } else {
@@ -88,7 +114,7 @@ export function useSelectKeyboard({
                 e.stopPropagation();
 
                 if (isOpen.value) {
-                    moveSelectFocus(focusIndex.value + 1);
+                    moveSelectFocus(getNextFocusIndex());
                 } else {
                     openOptions();
                 }
@@ -97,21 +123,23 @@ export function useSelectKeyboard({
                 if (!isOpen.value) {
                     return;
                 }
-                if (!isSearchFocused()) {
-                    e.preventDefault();
-                }
                 e.stopPropagation();
-                moveSelectFocus(0);
+                if (isSearchFocused()) {
+                    return;
+                }
+                e.preventDefault();
+                moveSelectFocus(findFirstOptionFocusIndex());
             },
             'key-End': (e: KeyboardEvent) => {
                 if (!isOpen.value) {
                     return;
                 }
-                if (!isSearchFocused()) {
-                    e.preventDefault();
-                }
                 e.stopPropagation();
-                moveSelectFocus(getFocusableElements().length - 1);
+                if (isSearchFocused()) {
+                    return;
+                }
+                e.preventDefault();
+                moveSelectFocus(findLastOptionFocusIndex());
             },
             'key-Enter': (e: KeyboardEvent) => {
                 if (!isSearchFocused()) {

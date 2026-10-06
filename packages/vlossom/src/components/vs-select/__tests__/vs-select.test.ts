@@ -1093,4 +1093,244 @@ describe('VsSelect', () => {
             expect(wrapper.find('.vs-select-placeholder').text()).toBe('Select a fruit');
         });
     });
+
+    describe('noVirtual', () => {
+        it('noVirtual을 VsGroupedList에 전달하여 옵션이 많아도 모든 옵션을 렌더링한다', async () => {
+            // given, when
+            const wrapper = mount(VsSelect, {
+                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                props: {
+                    options: Array.from({ length: 150 }, (_, i) => `Option ${i + 1}`),
+                    modelValue: null,
+                    noVirtual: true,
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.findComponent({ name: 'VsGroupedList' }).props('noVirtual')).toBe(true);
+            expect(wrapper.findAll('.vs-select-option-wrap')).toHaveLength(150);
+        });
+    });
+
+    describe('keyboard navigation', () => {
+        const manyOptions = Array.from({ length: 1000 }, (_, i) => `Option ${i + 1}`);
+
+        // jsdom은 레이아웃을 계산하지 않으므로 옵션 목록 스크롤 영역(320px)과 행 높이(32px)를 흉내낸다
+        beforeEach(() => {
+            vi.useFakeTimers();
+            const isScrollBody = (el: HTMLElement) => el.classList.contains('vs-inner-scroll-body');
+            vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (this: HTMLElement) {
+                return isScrollBody(this) ? 320 : 32;
+            });
+            vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockImplementation(function (this: HTMLElement) {
+                return isScrollBody(this) ? 320 : 32;
+            });
+            vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockImplementation(function (this: HTMLElement) {
+                return isScrollBody(this) ? 100000 : 32;
+            });
+            Element.prototype.scrollIntoView = vi.fn();
+        });
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+            vi.useRealTimers();
+        });
+
+        async function mountOpenedSelect(props: Record<string, any>) {
+            const wrapper = mount(VsSelect, {
+                attachTo: document.body,
+                global: { stubs: { VsFloating: { template: '<div><slot /></div>' } } },
+                props: { modelValue: null, ...props },
+            });
+            await nextTick();
+            wrapper.vm.openOptions();
+            vi.advanceTimersByTime(100);
+            await nextTick();
+            return wrapper;
+        }
+
+        async function pressKey(code: string) {
+            document.dispatchEvent(new KeyboardEvent('keydown', { code }));
+            await nextTick();
+        }
+
+        it('ArrowDown과 Enter로 포커스된 옵션을 선택할 수 있다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 2']);
+            wrapper.unmount();
+        });
+
+        it('virtual로 렌더링되지 않은 마지막 옵션도 End 키로 포커스하고 선택할 수 있다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions });
+            expect(wrapper.find('[data-id]').exists()).toBe(true);
+            const lastOption = wrapper.vm.filteredOptions[manyOptions.length - 1];
+            expect(wrapper.find(`[data-id="${lastOption?.id}"]`).exists()).toBe(false);
+            const scrollToItemSpy = vi.spyOn(wrapper.vm.optionsListRef as any, 'scrollToItem');
+
+            // when
+            await pressKey('End');
+            await nextTick();
+            await pressKey('Enter');
+
+            // then
+            expect(scrollToItemSpy).toHaveBeenCalledWith(lastOption?.id);
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 1000']);
+            wrapper.unmount();
+        });
+
+        it('search에서 ArrowDown을 누르면 선택된 옵션으로 포커스가 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true, modelValue: 'Option 500' });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 501']);
+            wrapper.unmount();
+        });
+
+        it('search에서 ArrowDown을 누르면 선택된 옵션이 없을 때 첫 번째 옵션으로 포커스가 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 1']);
+            wrapper.unmount();
+        });
+
+        it('search에서 ArrowDown을 누르면 select-all로 포커스가 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({
+                options: manyOptions,
+                search: true,
+                multiple: true,
+                selectAll: true,
+                modelValue: ['Option 30', 'Option 10'],
+            });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]?.[0]).toHaveLength(manyOptions.length);
+            wrapper.unmount();
+        });
+
+        it('옵션에서 Home 키를 누르면 select-all이 아닌 첫 번째 옵션으로 포커스를 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({
+                options: manyOptions,
+                search: true,
+                multiple: true,
+                selectAll: true,
+                modelValue: [],
+            });
+
+            // when: search → select-all → Option 1 → Option 2 → Home
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('Home');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([['Option 1']]);
+            wrapper.unmount();
+        });
+
+        it('search에 포커스가 있으면 Home/End는 입력창 커서 이동을 위해 포커스를 옮기지 않는다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+            const homeEvent = new KeyboardEvent('keydown', { code: 'Home', cancelable: true });
+            const endEvent = new KeyboardEvent('keydown', { code: 'End', cancelable: true });
+
+            // when
+            document.dispatchEvent(homeEvent);
+            document.dispatchEvent(endEvent);
+            await nextTick();
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(homeEvent.defaultPrevented).toBe(false);
+            expect(endEvent.defaultPrevented).toBe(false);
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 1']);
+            wrapper.unmount();
+        });
+
+        it('select-all에서 ArrowDown을 누르면 목록상 첫 번째 선택된 옵션으로 포커스가 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({
+                options: manyOptions,
+                search: true,
+                multiple: true,
+                selectAll: true,
+                modelValue: ['Option 30', 'Option 10'],
+            });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([['Option 30']]);
+            wrapper.unmount();
+        });
+
+        it('마우스를 올린 옵션으로 포커스가 이동하고 Enter로 선택할 수 있다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({ options: manyOptions, search: true });
+            const thirdOption = wrapper.findAll('.vs-select-option-wrap')[2];
+
+            // when
+            thirdOption.element.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then
+            expect(thirdOption.classes()).toContain('vs-focusable-active');
+
+            // when
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['Option 3']);
+            wrapper.unmount();
+        });
+
+        it('groupBy가 있으면 화면에 표시되는 그룹 순서대로 포커스가 이동한다', async () => {
+            // given
+            const wrapper = await mountOpenedSelect({
+                options: ['a1', 'b1', 'a2'],
+                groupBy: (option: string) => option[0],
+            });
+
+            // when
+            await pressKey('ArrowDown');
+            await pressKey('ArrowDown');
+            await pressKey('Enter');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['a2']);
+            wrapper.unmount();
+        });
+    });
 });

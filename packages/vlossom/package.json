@@ -58,6 +58,7 @@
     },
     "dependencies": {
         "@lucide/vue": "^1.42.0",
+        "@tanstack/vue-virtual": "^3.13.39",
         "change-case": "^5.4.4",
         "dompurify": "^3.4.16",
         "nanoid": "^6.0.1",
