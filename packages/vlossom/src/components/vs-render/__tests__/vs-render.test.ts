@@ -60,6 +60,48 @@ describe('VsRender', () => {
             expect(wrapper.find('div').exists()).toBe(true);
             expect(wrapper.find('div').text()).toBe('닫히지 않은 div');
         });
+
+        it('이벤트 핸들러 속성이 포함된 HTML이 주어지면 해당 속성이 제거되어야 한다', () => {
+            //given, when
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: '<img src="x" onerror="alert(1)">',
+                },
+            });
+
+            // then
+            const img = wrapper.find('img');
+            expect(img.exists()).toBe(true);
+            expect(img.attributes('onerror')).toBeUndefined();
+        });
+
+        it('javascript: URL이 포함된 HTML이 주어지면 해당 URL이 제거되어야 한다', () => {
+            //given, when
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: '<a href="javascript:alert(1)">링크</a>',
+                },
+            });
+
+            // then
+            const a = wrapper.find('a');
+            expect(a.exists()).toBe(true);
+            expect(a.attributes('href')).toBeUndefined();
+            expect(a.text()).toBe('링크');
+        });
+
+        it('script 태그가 포함된 HTML이 주어지면 script 요소가 렌더링되지 않아야 한다', () => {
+            //given, when
+            const wrapper = mount(VsRender, {
+                props: {
+                    content: '<div>안전한 내용<script>alert(1)</script></div>',
+                },
+            });
+
+            // then
+            expect(wrapper.find('script').exists()).toBe(false);
+            expect(wrapper.find('div').text()).toBe('안전한 내용');
+        });
     });
 
     describe('컴포넌트 content 렌더링', () => {
