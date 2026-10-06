@@ -163,4 +163,24 @@ describe('string-util', () => {
             expect(stringUtil.kebabCase('foo.bar')).toBe('foo-bar');
         });
     });
+
+    describe('sanitizeHtml', () => {
+        it('안전한 HTML은 그대로 유지한다', () => {
+            expect(stringUtil.sanitizeHtml('<strong class="bold">텍스트</strong>')).toBe(
+                '<strong class="bold">텍스트</strong>',
+            );
+        });
+
+        it('script 태그를 제거한다', () => {
+            expect(stringUtil.sanitizeHtml('<div>내용<script>alert(1)</script></div>')).toBe('<div>내용</div>');
+        });
+
+        it('이벤트 핸들러 속성을 제거한다', () => {
+            expect(stringUtil.sanitizeHtml('<img src="x" onerror="alert(1)">')).toBe('<img src="x">');
+        });
+
+        it('javascript: URL을 제거한다', () => {
+            expect(stringUtil.sanitizeHtml('<a href="javascript:alert(1)">링크</a>')).toBe('<a>링크</a>');
+        });
+    });
 });

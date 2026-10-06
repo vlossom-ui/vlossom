@@ -9,7 +9,7 @@
 ## 기능
 
 - 일반 텍스트, HTML 문자열, Vue 컴포넌트, 렌더 함수 렌더링 지원
-- `DOMParser`를 사용하여 HTML 문자열을 파싱하고 Vue 가상 DOM으로 변환
+- `stringUtil.sanitizeHtml`로 HTML 문자열을 sanitize한 뒤 Vue 가상 DOM으로 변환 (script, 이벤트 핸들러 속성, `javascript:` URL 제거)
 - `attrs`를 통해 루트 렌더링 요소에 HTML 속성 전달
 - `componentProps`로 컴포넌트 콘텐츠에 명시적 props 전달
 - 일반 텍스트 또는 파싱 실패 시 `<span>` 래퍼로 폴백

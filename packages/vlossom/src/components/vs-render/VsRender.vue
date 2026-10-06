@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, h, toRefs, type Component, type PropType } from 'vue';
 import { VsComponent } from '@/declaration';
+import { stringUtil } from '@/utils';
 
 const componentName = VsComponent.VsRender;
 export default defineComponent({
@@ -50,7 +51,7 @@ export default defineComponent({
             // HTML이 있는 경우 파싱하여 적절한 태그로 렌더링
             try {
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlString.trim(), 'text/html');
+                const doc = parser.parseFromString(stringUtil.sanitizeHtml(htmlString.trim()), 'text/html');
                 const needRootElement = doc.body.childNodes.length > 1;
                 if (needRootElement) {
                     return renderStringAsComponent(`<div>${htmlString}</div>`);

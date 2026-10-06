@@ -113,6 +113,7 @@ const size = stringUtil.toStringSize(100); // '100px'
 | stringUtil | `toFileSizeFormat` | `bytes: number`             | 바이트 수를 사람이 읽기 쉬운 문자열로 포맷합니다 (예: `1024` → `'1 KB'`).                                    |
 | stringUtil | `hash`             | `str: string`               | `vs-` 접두사가 붙은 짧은 결정론적 해시 문자열을 계산합니다 (base-36 인코딩).                                 |
 | stringUtil | `kebabCase`        | _(change-case에서 가져옴)_  | 문자열을 kebab-case로 변환합니다 (예: `'fooBar'` → `'foo-bar'`).                                             |
+| stringUtil | `sanitizeHtml`     | `html: string`              | HTML 문자열에서 XSS 위험 요소(script, 이벤트 핸들러 속성, `javascript:` URL)를 제거한 HTML 문자열을 반환합니다. |
 
 ## 주의사항
 
@@ -120,3 +121,4 @@ const size = stringUtil.toStringSize(100); // '100px'
 - `functionUtil.throttle`과 `functionUtil.debounce`는 [radash](https://radash-docs.vercel.app/)에서 재내보내집니다. 전체 API는 radash 문서를 참고하세요.
 - `objectUtil` 메서드는 [radash](https://radash-docs.vercel.app/)에서 재내보내집니다. 자세한 동작은 radash 문서를 참고하세요.
 - `stringUtil.kebabCase`는 [change-case](https://github.com/blakeembrey/change-case)에서 재내보내집니다.
+- `stringUtil.sanitizeHtml`은 [DOMPurify](https://github.com/cure53/DOMPurify)의 기본 설정을 사용합니다. DOM 환경이 필요합니다.

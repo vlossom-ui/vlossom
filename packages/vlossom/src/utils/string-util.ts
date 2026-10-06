@@ -1,4 +1,5 @@
 import { kebabCase } from 'change-case';
+import DOMPurify from 'dompurify';
 import { customAlphabet } from 'nanoid';
 
 export const stringUtil = {
@@ -48,5 +49,8 @@ export const stringUtil = {
     },
     kebabCase(input: string): string {
         return kebabCase(input);
+    },
+    sanitizeHtml(html: string): string {
+        return DOMPurify.sanitize(html);
     },
 };

@@ -9,7 +9,7 @@ A utility component that renders a string (HTML), a Vue component, or a render f
 ## Feature
 
 - Renders plain text, HTML strings, Vue components, and render functions
-- Parses HTML strings using `DOMParser` and converts them to Vue virtual DOM
+- Sanitizes HTML strings with `stringUtil.sanitizeHtml` and converts them to Vue virtual DOM (scripts, event handler attributes, and `javascript:` URLs are removed)
 - Passes through HTML attributes via `attrs` to the root rendered element
 - Forwards explicit props to component content via `componentProps`
 - Falls back to a `<span>` wrapper for plain text or parse failures

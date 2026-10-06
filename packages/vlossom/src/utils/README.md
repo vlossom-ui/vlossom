@@ -113,6 +113,7 @@ const size = stringUtil.toStringSize(100); // '100px'
 | stringUtil | `toFileSizeFormat` | `bytes: number`              | Formats a byte count into a human-readable string (e.g. `1024` → `'1 KB'`).                                        |
 | stringUtil | `hash`             | `str: string`                | Computes a short deterministic hash string prefixed with `vs-` (base-36 encoded).                                  |
 | stringUtil | `kebabCase`        | _(from change-case)_         | Converts a string to kebab-case (e.g. `'fooBar'` → `'foo-bar'`).                                                   |
+| stringUtil | `sanitizeHtml`     | `html: string`               | Removes XSS vectors (scripts, event handler attributes, `javascript:` URLs) from an HTML string and returns the sanitized HTML string. |
 
 ## Caution
 
@@ -120,3 +121,4 @@ const size = stringUtil.toStringSize(100); // '100px'
 - `functionUtil.throttle` and `functionUtil.debounce` are re-exported from [radash](https://radash-docs.vercel.app/). Refer to the radash documentation for the full API.
 - `objectUtil` methods are re-exported from [radash](https://radash-docs.vercel.app/). Refer to the radash documentation for detailed behavior.
 - `stringUtil.kebabCase` is re-exported from [change-case](https://github.com/blakeembrey/change-case).
+- `stringUtil.sanitizeHtml` uses [DOMPurify](https://github.com/cure53/DOMPurify) with its default configuration. It requires a DOM environment.
