@@ -1,8 +1,0 @@
-/* 사이트 글꼴을 vlossom 앱의 html·body 글꼴(Pretendard)에 맞춘다. 글꼴 파일은 vlossom.css의 @import가 불러온다.
-   VitePress는 언어별 글꼴을 [lang]:where(:lang(ko)) 등에서 다시 정하므로, 그보다 구체적인 :root[lang]으로 덮는다. */
-:root[lang] {
-    --vp-font-family-base:
-        'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Helvetica Neue', 'Segoe UI',
-        'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', sans-serif;
-}

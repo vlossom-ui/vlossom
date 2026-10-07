@@ -30,15 +30,14 @@ packages/vlossom-docs/
 │   ├── live-demo.ts         # Turns `live` code fences into demo components
 │   ├── live-demo.test.ts
 │   ├── demo-scope.ts        # Names that README examples use without declaring them
-│   ├── vlossom-css.ts       # Keeps vlossom.css from changing the site outside demos
+│   ├── vlossom-css.ts       # Adapts vlossom.css to the site: page styles, dark mode, utilities
 │   ├── vlossom-css.test.ts
 │   └── theme/
 │       ├── index.ts         # Default theme, Vlossom app hook, dark mode sync
 │       ├── vlossom.ts       # Loads Vlossom in the browser when the first demo needs it
 │       ├── layers.css       # Puts the vlossom.css base layer below the VitePress base styles
 │       ├── layers.test.ts
-│       ├── font.css         # Uses the vlossom font (Pretendard) for the site
-│       ├── font.test.ts
+│       ├── vars.css         # Sets the VitePress background to the vlossom background
 │       └── demo.css         # Demo area styles
 ├── pages/                   # Pages that belong only to the site
 │   ├── index.md             # English home page (/)
@@ -105,14 +104,15 @@ Demos use the `vlossom` version from npm that [`package.json`](package.json) pin
 
 ### Styles
 
-Every page loads vlossom.css, because VitePress bundles all CSS of the site into one file. Of the VitePress parts of the site, vlossom.css changes only the font:
+Every page loads vlossom.css, because VitePress bundles all CSS of the site into one file. The site takes the vlossom page styles and keeps the VitePress layout:
 
-- [`vlossom-css.ts`](.vitepress/vlossom-css.ts) removes the vlossom.css rules that style the whole app: the unlayered `html` and `body` rules, and the `::-webkit-` pseudo-element rules without an element, such as the scrollbar rules. It keeps the `@import` of the Pretendard font.
-- It also limits the Tailwind utility classes of vlossom.css, such as `.container` and `.outline`, because the VitePress theme uses the same class names. They apply only inside the demo areas and outside the VitePress app root (`#app`), where Vlossom renders dialogs such as the ones from the alert plugin. Vlossom classes (`.vs-*`) and `:root` rules stay global.
+- [`vlossom-css.ts`](.vitepress/vlossom-css.ts) keeps only the background color, text color, font, and font size of the unlayered `html` and `body` rules in vlossom.css. It removes their other declarations, such as `line-height`, `min-height`, and `position`. The scrollbar rules and the `@import` of the Pretendard font stay.
+- It reads the vlossom dark mode selector `.vs-dark` as `:is(.vs-dark, .dark)`, so the vlossom styles follow the VitePress dark mode on every page, also on pages that do not load the Vlossom script.
+- It limits the Tailwind utility classes of vlossom.css, such as `.container` and `.outline`, because the VitePress theme uses the same class names. They apply only inside the demo areas and outside the VitePress app root (`#app`), where Vlossom renders dialogs such as the ones from the alert plugin. Vlossom classes (`.vs-*`) and `:root` rules stay global.
 - [`layers.css`](.vitepress/theme/layers.css) puts the vlossom.css `base` layer (Tailwind preflight) below the VitePress base styles, so the VitePress base styles stay in effect. The theme entry must load it before the VitePress theme.
-- [`font.css`](.vitepress/theme/font.css) sets the VitePress font variable to the font of the vlossom `html` and `body` rules (Pretendard), so the site and the demos use the vlossom font.
+- [`vars.css`](.vitepress/theme/vars.css) sets the VitePress background variable to the vlossom background, so the nav bar and other VitePress parts match the page background.
 
-`pnpm test` checks these rules on the installed vlossom.css. It fails if an `html`, `body`, or `::-webkit-` rule or an unscoped utility class remains after the transform, or if the Pretendard `@import` is gone. It also fails if vlossom.css declares a layer that `layers.css` does not order, if the theme entry loads `layers.css` after the VitePress theme, or if `font.css` no longer matches the vlossom font.
+`pnpm test` checks these rules on the installed vlossom.css. It fails if an `html` or `body` rule keeps another property, if a `.vs-dark` selector is left as it is, if an unscoped utility class remains, or if an `@import` is lost. It also fails if vlossom.css declares a layer that `layers.css` does not order, or if the theme entry loads `layers.css` after the VitePress theme.
 
 ## Languages
 
