@@ -14,19 +14,19 @@
     }
 }
 
-@container (max-width: 1024px) {
+@container (width < 1024px) {
     .vs-page {
         padding: 1.8rem 2.5rem;
     }
 }
 
-@container (max-width: 768px) {
+@container (width < 768px) {
     .vs-page {
         padding: 1.4rem 2rem;
     }
 }
 
-@container (max-width: 640px) {
+@container (width < 640px) {
     .vs-page {
         padding: 1rem 1.5rem;
     }
