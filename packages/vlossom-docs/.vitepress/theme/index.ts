@@ -5,6 +5,7 @@ import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import { watch } from 'vue';
 import './demo.css';
+import './font.css';
 import { attachVlossom, syncVlossomTheme } from './vlossom.ts';
 
 export default {

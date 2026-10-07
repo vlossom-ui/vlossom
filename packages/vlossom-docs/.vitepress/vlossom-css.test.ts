@@ -9,7 +9,7 @@ const SCOPED = /^:where\(\.vs-demo, body > :not\(#app\)\) /;
 const GLOBAL = /^(?:\.vs-|:root\b)/;
 
 describe('containVlossomStyles', () => {
-    it('레이어 밖의 html·body·스크롤바 규칙과 외부 @import만 뺀다', () => {
+    it('레이어 밖의 html·body·스크롤바 규칙만 빼고 글꼴 @import는 둔다', () => {
         const css = [
             '@import "https://cdn.example.com/font.css";',
             '@layer components;',
@@ -27,6 +27,7 @@ describe('containVlossomStyles', () => {
 
         expect(containVlossomStyles(css)).toBe(
             [
+                '@import "https://cdn.example.com/font.css";',
                 '@layer components;',
                 '@layer base{html{line-height:1}}',
                 '.vs-button{color:blue}',
@@ -49,9 +50,9 @@ describe('containVlossomStyles', () => {
     });
 
     it('앞에 주석이 붙은 사이트 전역 규칙도 뺀다', () => {
-        expect(
-            containVlossomStyles('/*! a */html{color:red}/* b */@import "https://x.test/a.css";.vs-a{color:blue}'),
-        ).toBe('/*! a *//* b */.vs-a{color:blue}');
+        expect(containVlossomStyles('/*! a */html{color:red}/* b */body{color:red}.vs-a{color:blue}')).toBe(
+            '/*! a *//* b */.vs-a{color:blue}',
+        );
     });
 
     it('문자열 안의 중괄호와 세미콜론은 규칙 경계로 보지 않는다', () => {
@@ -94,9 +95,6 @@ describe('containVlossomStyles', () => {
         const scoped: string[] = [];
 
         root.each((node) => {
-            if (node.type === 'atrule' && node.name === 'import') {
-                leaks.push(`@import ${node.params}`);
-            }
             if (node.type === 'rule' && node.selectors.some((selector) => SITE_WIDE.test(selector))) {
                 leaks.push(node.selector);
             }
@@ -113,6 +111,17 @@ describe('containVlossomStyles', () => {
         expect(leaks).toEqual([]);
         // utilities 레이어 이름이 바뀌면 위 검사가 아무것도 보지 않고 통과하므로, 한정한 선택자가 있는지도 본다.
         expect(scoped.length).toBeGreaterThan(0);
+    });
+
+    it('설치된 vlossom.css를 바꿔도 사이트 글꼴로 쓰는 Pretendard의 @import는 남는다', () => {
+        const css = readFileSync(createRequire(import.meta.url).resolve('vlossom/styles'), 'utf8');
+        const imports: string[] = [];
+
+        postcss.parse(containVlossomStyles(css)).walkAtRules('import', (rule) => {
+            imports.push(rule.params);
+        });
+
+        expect(imports.some((params) => params.includes('pretendard'))).toBe(true);
     });
 });
 
