@@ -2,7 +2,7 @@
 
 # VsGroupedList
 
-A scrollable list component that renders items with optional grouping, virtual visibility rendering for performance, and full slot customization.
+A scrollable list component that renders items with optional grouping, automatic virtual scrolling for large lists, and full slot customization.
 
 **Available Version**: 2.0.0+
 
@@ -11,6 +11,7 @@ A scrollable list component that renders items with optional grouping, virtual v
 - Renders a flat or grouped list from an `items` array of `OptionItem`
 - Optional grouping via the `groupBy` function and `groupOrder` array
 - Scrollable via the embedded `VsInnerScroll` component
+- Automatically switches to virtual scrolling when there are more than 100 items, in both flat and grouped lists
 - Full slot customization for group headers and individual items
 - Exposes `scrollToItem` and `hasScroll` methods for programmatic control
 
@@ -65,6 +66,19 @@ function onClickItem(item) {
 </template>
 ```
 
+### Virtual Scroll
+
+When `items` has more than 100 entries, only the rows near the visible area are rendered. Group headers and items are virtualized together, and row heights are measured after rendering, so custom `group` and `item` slots with different heights work as well. Give the list a bounded height (for example `maxHeight`) so it can scroll.
+
+```html
+<template>
+    <vs-grouped-list :items="largeList" :style-set="{ maxHeight: '300px' }" />
+
+    <!-- render every item at once -->
+    <vs-grouped-list :items="largeList" :style-set="{ maxHeight: '300px' }" no-virtual />
+</template>
+```
+
 ## Props
 
 | Prop | Type | Default | Required | Description |
@@ -73,6 +87,7 @@ function onClickItem(item) {
 | `items` | `OptionItem[]` | `[]` | | Array of items to display |
 | `groupBy` | `(item: any, index: number) => string` | | | Function that returns the group name for each item |
 | `groupOrder` | `string[]` | | | Order in which groups should appear |
+| `noVirtual` | `boolean` | `false` | | Disable automatic virtual scrolling and render every item |
 
 ## Types
 
@@ -121,5 +136,5 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 | Method | Parameters | Description |
 | ------ | ---------- | ----------- |
-| `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id. `offset` shifts the scroll position up by the given pixels (default: `0`) |
+| `scrollToItem` | `id: string, offset?: number` | Scroll the list to the item with the given id, including items not yet rendered by virtual scrolling. `offset` shifts the scroll position up by the given pixels (default: `0`) |
 | `hasScroll` | - | Returns `boolean` — `true` if the list has a scrollbar |

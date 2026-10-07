@@ -2,6 +2,7 @@ export * from './click-outside/click-outside-composable';
 export * from './color-scheme/color-scheme-composable';
 export * from './file-rules/file-rules-composable';
 export * from './focusable/focusable-composable';
+export * from './grouped-items/grouped-items-composable';
 export * from './input/input-composable';
 export * from './input-form/input-form-composable';
 export * from './input-messages/input-messages-composable';

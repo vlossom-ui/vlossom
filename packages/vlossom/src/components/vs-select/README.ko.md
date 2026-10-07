@@ -15,6 +15,7 @@
 - 다중 선택 모드에서 선택 값을 닫기 버튼이 있는 칩으로 표시
 - 내장 유효성 검사 지원 (필수값, 최소/최대 선택 수)
 - 드롭다운 목록 내 키보드 탐색
+- 옵션이 100개를 초과하면 자동으로 가상 스크롤 적용 (`noVirtual`로 비활성화)
 - 옵션, 선택된 옵션, 칩 스타일 커스터마이징 가능
 
 ## 기본 사용법
@@ -135,6 +136,7 @@ const options = [
 | `collapseChips`    | `boolean`                                                              | `false`                   | -        | 선택된 칩을 개수 표시로 접기                                                                   |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | 다중 선택 모드 활성화                                                                          |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | 초기화 버튼 숨김                                                                               |
+| `noVirtual`        | `boolean`                                                              | `false`                   | -        | 옵션 목록의 자동 가상 스크롤 비활성화                                                                   |
 | `optionsDisabled`  | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | 개별 옵션 비활성화                                                                             |
 | `selectAll`        | `boolean`                                                              | `false`                   | -        | 전체 선택 체크박스 표시 (다중 선택 모드)                                                       |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | 트리거 높이 · 패딩 · 폰트 · 모서리 반경 및 옵션 드롭다운(패딩 · 폰트 · 모서리 반경) 제어       |

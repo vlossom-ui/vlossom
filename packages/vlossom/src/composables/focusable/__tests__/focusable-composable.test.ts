@@ -697,4 +697,100 @@ describe('useFocusable', () => {
             expect(focusableElements).toHaveLength(0);
         });
     });
+
+    describe('focusableKeys (key 모드)', () => {
+        // virtual scroll처럼 key 목록 중 일부(c, d)만 DOM에 렌더링된 상황
+        function mountKeyed() {
+            return mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        const keys = ref(['a', 'b', 'c', 'd']);
+                        return { wrapperRef, keys, ...useFocusable(wrapperRef, keys) };
+                    },
+                    template: `
+                        <div ref="wrapperRef">
+                            <div data-focusable="c">C</div>
+                            <div data-focusable="d"><span class="child">D</span></div>
+                        </div>
+                    `,
+                }),
+            );
+        }
+
+        it('focusIndex 범위는 DOM이 아닌 key 개수 기준이어야 한다', async () => {
+            // given
+            const wrapper = mountKeyed();
+            await nextTick();
+
+            // when
+            wrapper.vm.updateFocusIndex(10);
+
+            // then
+            expect(wrapper.vm.focusIndex).toBe(3);
+            expect(wrapper.vm.focusedKey).toBe('d');
+        });
+
+        it('isFocused는 현재 포커스된 key와 일치하는지 반환해야 한다', async () => {
+            // given
+            const wrapper = mountKeyed();
+            await nextTick();
+
+            // when
+            wrapper.vm.updateFocusIndex(1);
+
+            // then
+            expect(wrapper.vm.isFocused('b')).toBe(true);
+            expect(wrapper.vm.isFocused('c')).toBe(false);
+        });
+
+        it('마우스를 올린 요소의 data-focusable 값으로 key 기준 focusIndex를 찾아야 한다', async () => {
+            // given
+            const wrapper = mountKeyed();
+            await nextTick();
+            wrapper.vm.addMouseMoveListener();
+
+            // when
+            wrapper.find('.child').element.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.focusIndex).toBe(3);
+            expect(wrapper.vm.focusedKey).toBe('d');
+        });
+
+        it('vs-focusable-active 클래스를 직접 붙이지 않아야 한다', async () => {
+            // given
+            const wrapper = mountKeyed();
+            await nextTick();
+
+            // when
+            wrapper.vm.updateFocusIndex(2);
+            await nextTick();
+
+            // then
+            expect(wrapper.find('.vs-focusable-active').exists()).toBe(false);
+            expect(wrapper.vm.currentFocusableElement).toBe(null);
+        });
+
+        it('key 목록이 없으면 focusedKey는 null이어야 한다', async () => {
+            // given
+            const wrapper = mount(
+                defineComponent({
+                    setup() {
+                        const wrapperRef = ref<HTMLElement | null>(null);
+                        return { wrapperRef, ...useFocusable(wrapperRef) };
+                    },
+                    template: '<div ref="wrapperRef"><div data-focusable>Item</div></div>',
+                }),
+            );
+            await nextTick();
+
+            // when
+            wrapper.vm.updateFocusIndex(0);
+
+            // then
+            expect(wrapper.vm.focusedKey).toBe(null);
+        });
+    });
 });
