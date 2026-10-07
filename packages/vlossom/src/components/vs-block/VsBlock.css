@@ -29,7 +29,7 @@
     }
 }
 
-@container (max-width: 1024px) {
+@container (width < 1024px) {
     .vs-block {
         .vs-block-title {
             padding: 0.4rem 1rem;
@@ -40,7 +40,7 @@
     }
 }
 
-@container (max-width: 768px) {
+@container (width < 768px) {
     .vs-block {
         .vs-block-title {
             padding: 0.3rem 0.9rem;
@@ -51,7 +51,7 @@
     }
 }
 
-@container (max-width: 640px) {
+@container (width < 640px) {
     .vs-block {
         .vs-block-title {
             padding: 0.2rem 0.8rem;

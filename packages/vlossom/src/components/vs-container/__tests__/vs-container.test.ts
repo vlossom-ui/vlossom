@@ -145,7 +145,7 @@ describe('VsContainer', () => {
         });
 
         describe('각 방향별 drawer 테스트', () => {
-            it('left drawer가 열려있고 pushContainer이면 왼쪽 패딩이 적용되어야 한다', () => {
+            it('left drawer가 열려있고 pushContainer이면 왼쪽 push 변수와 class가 적용되어야 한다', () => {
                 // given
                 layoutStore.setDrawer({ placement: 'left', isOpen: true, size: '200px', pushContainer: true });
 
@@ -154,7 +154,8 @@ describe('VsContainer', () => {
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({ paddingLeft: '200px' });
+                expect(container.vm.layoutStyles).toEqual({ '--vs-container-push-left': '200px' });
+                expect(container.classes()).toContain('vs-container-push-left');
             });
 
             it('top drawer가 열려있고 pushContainer이면 위쪽 패딩이 적용되어야 한다', () => {
@@ -169,7 +170,7 @@ describe('VsContainer', () => {
                 expect(container.vm.layoutStyles).toEqual({ paddingTop: '150px' });
             });
 
-            it('right drawer가 열려있고 pushContainer이면 오른쪽 패딩이 적용되어야 한다', () => {
+            it('right drawer가 열려있고 pushContainer이면 오른쪽 push 변수와 class가 적용되어야 한다', () => {
                 // given
                 layoutStore.setDrawer({ placement: 'right', isOpen: true, size: '250px', pushContainer: true });
 
@@ -178,7 +179,8 @@ describe('VsContainer', () => {
 
                 // then
                 const container = wrapper.findComponent(VsContainer);
-                expect(container.vm.layoutStyles).toEqual({ paddingRight: '250px' });
+                expect(container.vm.layoutStyles).toEqual({ '--vs-container-push-right': '250px' });
+                expect(container.classes()).toContain('vs-container-push-right');
             });
 
             it('bottom drawer가 열려있고 pushContainer이면 아래쪽 패딩이 적용되어야 한다', () => {
@@ -217,6 +219,7 @@ describe('VsContainer', () => {
                 // then
                 const container = wrapper.findComponent(VsContainer);
                 expect(container.vm.layoutStyles).toEqual({});
+                expect(container.classes()).not.toContain('vs-container-push-left');
             });
 
             it('drawer의 size가 빈 문자열이면 패딩이 적용되지 않아야 한다', () => {
@@ -246,10 +249,10 @@ describe('VsContainer', () => {
                 // then
                 const container = wrapper.findComponent(VsContainer);
                 expect(container.vm.layoutStyles).toEqual({
-                    paddingLeft: '200px',
+                    '--vs-container-push-left': '200px',
                     paddingTop: '150px',
                     paddingBottom: '100px',
-                    paddingRight: '250px',
+                    '--vs-container-push-right': '250px',
                 });
             });
         });
@@ -281,8 +284,8 @@ describe('VsContainer', () => {
             expect(container.vm.layoutStyles).toEqual({
                 paddingTop: '70px',
                 paddingBottom: '90px',
-                paddingLeft: '200px',
-                paddingRight: '250px',
+                '--vs-container-push-left': '200px',
+                '--vs-container-push-right': '250px',
             });
         });
 
@@ -328,7 +331,7 @@ describe('VsContainer', () => {
 
             // then
             const container = wrapper.findComponent(VsContainer);
-            expect(container.vm.layoutStyles).toEqual({ paddingBottom: '80px', paddingRight: '250px' });
+            expect(container.vm.layoutStyles).toEqual({ paddingBottom: '80px', '--vs-container-push-right': '250px' });
         });
     });
 });

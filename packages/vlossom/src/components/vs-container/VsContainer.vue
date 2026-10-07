@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" class="vs-container" :style="layoutStyles">
+    <component :is="tag" :class="['vs-container', layoutClasses]" :style="layoutStyles">
         <slot />
     </component>
 </template>
@@ -7,7 +7,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, toRefs } from 'vue';
 import { useLayoutChild } from '@/composables';
-import { LAYOUT_STORE_KEY, VsComponent } from '@/declaration';
+import { LAYOUT_STORE_KEY, VsComponent, type DrawerLayout } from '@/declaration';
 import { getLayoutProps } from '@/props';
 import { LayoutStore } from '@/stores';
 import { objectUtil } from '@/utils';
@@ -26,11 +26,15 @@ export default defineComponent({
 
         const { header, footer, drawers } = inject(LAYOUT_STORE_KEY, LayoutStore.getDefaultLayoutStore());
 
-        function getDrawerPadding(drawerSize: string, isOpen: boolean, pushContainer: boolean, barPadding?: string) {
-            if (!pushContainer || !isOpen || !drawerSize) {
+        function isPushing({ size, isOpen, pushContainer }: DrawerLayout) {
+            return pushContainer && isOpen && !!size;
+        }
+
+        function getDrawerPadding(drawer: DrawerLayout, barPadding?: string) {
+            if (!isPushing(drawer)) {
                 return undefined;
             }
-            return barPadding ? `calc(${barPadding} + ${drawerSize})` : drawerSize;
+            return barPadding ? `calc(${barPadding} + ${drawer.size})` : drawer.size;
         }
 
         const layoutStyles = computed(() => {
@@ -50,17 +54,26 @@ export default defineComponent({
             const { left, top, bottom, right } = drawers.value;
 
             return objectUtil.shake({
-                paddingTop:
-                    getDrawerPadding(top.size, top.isOpen, top.pushContainer, headerPaddingTop) ?? headerPaddingTop,
-                paddingBottom:
-                    getDrawerPadding(bottom.size, bottom.isOpen, bottom.pushContainer, footerPaddingBottom) ??
-                    footerPaddingBottom,
-                paddingLeft: getDrawerPadding(left.size, left.isOpen, left.pushContainer),
-                paddingRight: getDrawerPadding(right.size, right.isOpen, right.pushContainer),
+                paddingTop: getDrawerPadding(top, headerPaddingTop) ?? headerPaddingTop,
+                paddingBottom: getDrawerPadding(bottom, footerPaddingBottom) ?? footerPaddingBottom,
+                '--vs-container-push-left': isPushing(left) ? left.size : undefined,
+                '--vs-container-push-right': isPushing(right) ? right.size : undefined,
             });
         });
 
-        return { layoutStyles };
+        const layoutClasses = computed(() => {
+            if (!isLayoutChild.value) {
+                return {};
+            }
+
+            const { left, right } = drawers.value;
+            return {
+                'vs-container-push-left': isPushing(left),
+                'vs-container-push-right': isPushing(right),
+            };
+        });
+
+        return { layoutStyles, layoutClasses };
     },
 });
 </script>

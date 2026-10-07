@@ -58,7 +58,7 @@
         --vs-label-value-label-border-bottom: var(--vs-label-value-inner-line);
     }
 
-    @container (max-width: 768px) {
+    @container (width < 768px) {
         &.vs-responsive-vertical {
             --vs-label-value-direction: column;
             --vs-label-value-cell-justify: flex-start;

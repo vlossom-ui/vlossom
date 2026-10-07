@@ -70,7 +70,7 @@
         height: var(--vs-size-height, var(--vs-comp-height-md));
     }
 
-    @container (max-width: 768px) {
+    @container (width < 768px) {
         &.vs-responsive {
             @apply w-full;
         }
