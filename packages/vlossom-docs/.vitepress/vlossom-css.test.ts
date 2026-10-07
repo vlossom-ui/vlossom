@@ -4,7 +4,7 @@ import postcss from 'postcss';
 import { describe, expect, it } from 'vitest';
 import { containVlossomStyles, vlossomSiteStyles } from './vlossom-css.ts';
 
-const SITE_WIDE = /^(?:html|body|::-webkit-scrollbar)/;
+const SITE_WIDE = /^(?:html|body|::-webkit-)/;
 const SCOPED = /^:where\(\.vs-demo, body > :not\(#app\)\) /;
 const GLOBAL = /^(?:\.vs-|:root\b)/;
 
@@ -35,6 +35,17 @@ describe('containVlossomStyles', () => {
                 '[data-focusable]{border:1px solid #0000}',
             ].join(''),
         );
+    });
+
+    it('스크롤바가 아니어도 ::-webkit-으로 시작하는 전역 규칙은 빼고, 요소에 붙은 규칙은 둔다', () => {
+        const css = [
+            '::-webkit-resizer{display:none}',
+            '::-webkit-scrollbar-corner{background:red}',
+            'input::-webkit-search-decoration{display:none}',
+            '.vs-a{color:blue}',
+        ].join('');
+
+        expect(containVlossomStyles(css)).toBe('input::-webkit-search-decoration{display:none}.vs-a{color:blue}');
     });
 
     it('앞에 주석이 붙은 사이트 전역 규칙도 뺀다', () => {

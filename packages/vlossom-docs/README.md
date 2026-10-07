@@ -105,11 +105,11 @@ Demos use the `vlossom` version from npm that [`package.json`](package.json) pin
 
 Every page loads vlossom.css, because VitePress bundles all CSS of the site into one file. vlossom.css does not change the VitePress parts of the site:
 
-- [`vlossom-css.ts`](.vitepress/vlossom-css.ts) removes the vlossom.css rules that style the whole app: the unlayered `html`, `body`, and scrollbar rules, and the external font `@import`.
+- [`vlossom-css.ts`](.vitepress/vlossom-css.ts) removes the vlossom.css rules that style the whole app: the unlayered `html` and `body` rules, the `::-webkit-` pseudo-element rules without an element (such as the scrollbar rules), and the external font `@import`.
 - It also limits the Tailwind utility classes of vlossom.css, such as `.container` and `.outline`, because the VitePress theme uses the same class names. They apply only inside the demo areas and outside the VitePress app root (`#app`), where Vlossom renders dialogs such as the ones from the alert plugin. Vlossom classes (`.vs-*`) and `:root` rules stay global.
 - [`layers.css`](.vitepress/theme/layers.css) puts the vlossom.css `base` layer (Tailwind preflight) below the VitePress base styles, so the site and the demos use the VitePress fonts. The theme entry must load it before the VitePress theme.
 
-`pnpm test` checks these rules. It runs the transform on the installed vlossom.css and fails if an `html`, `body`, or scrollbar rule, an external `@import`, or an unscoped utility class remains. It also fails if vlossom.css declares a layer that `layers.css` does not order, or if the theme entry loads `layers.css` after the VitePress theme.
+`pnpm test` checks these rules. It runs the transform on the installed vlossom.css and fails if an `html`, `body`, or `::-webkit-` rule, an external `@import`, or an unscoped utility class remains. It also fails if vlossom.css declares a layer that `layers.css` does not order, or if the theme entry loads `layers.css` after the VitePress theme.
 
 ## Languages
 
