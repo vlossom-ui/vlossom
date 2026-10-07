@@ -207,7 +207,6 @@ export class DemoRegistry {
 
     register(source: string, index: number, code: string): string {
         const slug = source.replace(/\.md$/, '').replace(/[^a-zA-Z0-9]+/g, '_');
-        // 내용이 바뀌면 id도 바뀌어서, dev 서버가 이전 데모를 캐시에서 다시 쓰지 않는다.
         const hash = createHash('sha256').update(code).digest('hex').slice(0, 8);
         const id = `${this.dir}/${slug}-${index}-${hash}.vue`;
         this.modules.set(id, code);
@@ -269,7 +268,6 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
             return `const ${name} = defineAsyncComponent(() => whenVlossomReady().then(() => import(${JSON.stringify(id)})));`;
         });
 
-        // vlossom은 SSR에서 불러올 수 없으므로, 데모는 ClientOnly 안에서 vlossom 준비를 기다린 뒤 불러온다.
         const script = new state.Token('html_block', '', 0);
         script.content = [
             '<script setup>',

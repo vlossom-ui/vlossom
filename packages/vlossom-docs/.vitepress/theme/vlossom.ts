@@ -21,7 +21,6 @@ async function loadVlossom(): Promise<void> {
     const { createVlossom, useVlossom, VlossomComponents } = await import('vlossom');
     app.use(createVlossom({ components: VlossomComponents }));
     vlossom = useVlossom();
-    // VitePress는 다크 모드를 html.dark로 표시한다. createVlossom이 OS 설정으로 정한 테마를 바로 맞춘다.
     syncVlossomTheme(document.documentElement.classList.contains('dark'));
 }
 
