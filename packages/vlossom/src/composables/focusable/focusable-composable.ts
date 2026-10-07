@@ -87,8 +87,10 @@ export function useFocusable(
         wrapperElement.value?.removeEventListener('mousemove', throttledTrackMouseMove);
     }
 
-    // key 모드에서는 요소가 다시 렌더링될 수 있어(virtual scroll 등) 직접 붙인 class가 유지되지 않으므로,
-    // 사용하는 쪽에서 isFocused로 vs-focusable-active를 바인딩한다
+    // key 모드(virtual scroll 등)에서는 DOM 요소가 언제든 언마운트/재활용될 수 있다.
+    // 이 경우 watch 안에서 직접 붙인 class는 재렌더 시 사라지고, currentFocusableElement에
+    // 저장된 참조도 stale해져 신뢰할 수 없다. 따라서 key 모드에서는 watcher 자체를 등록하지 않고,
+    // 사용하는 쪽에서 isFocused(key)로 vs-focusable-active를 반응형 바인딩한다.
     if (!focusableKeys) {
         watch(focusIndex, () => {
             if (!wrapperElement.value) {

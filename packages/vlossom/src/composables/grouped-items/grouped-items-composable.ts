@@ -10,7 +10,6 @@ export function useGroupedItems(
 } {
     const groupedItems = computed(() => {
         const groupByFn = groupBy.value;
-        // groupBy가 없으면 모든 아이템을 하나의 그룹으로 반환
         if (!groupByFn) {
             return [
                 {
@@ -20,9 +19,7 @@ export function useGroupedItems(
             ];
         }
 
-        // 그룹별로 아이템 분류 및 등장 순서 기록
         const groupMap = new Map<string, OptionItem[]>();
-        // item에서 등장하는 그룹 순서
         const groupOrderInItems: string[] = [];
 
         items.value.forEach((item, index) => {
@@ -32,20 +29,17 @@ export function useGroupedItems(
             }
             groupMap.get(groupName)?.push(item);
 
-            // 처음 등장하는 그룹이면 순서에 추가 (빈 스트링 제외)
             if (groupName !== '' && !groupOrderInItems.includes(groupName)) {
                 groupOrderInItems.push(groupName);
             }
         });
 
-        // 그룹 순서 결정
         const allGroups: string[] = Array.from(groupMap.keys()).filter((g) => g !== '');
         let orderedGroups: string[] = [];
 
         if (!groupOrder.value || groupOrder.value.length === 0) {
             orderedGroups = groupOrderInItems;
         } else {
-            // groupOrder가 있으면 그 순서대로, 나머지는 순서대로
             const orderedSet = new Set<string>();
             for (const groupName of groupOrder.value) {
                 if (!orderedSet.has(groupName) && allGroups.includes(groupName)) {
@@ -53,7 +47,6 @@ export function useGroupedItems(
                     orderedGroups.push(groupName);
                 }
             }
-            // 나머지 그룹들 추가 (item에서 등장하는 순서대로)
             for (const groupName of groupOrderInItems) {
                 if (!orderedSet.has(groupName)) {
                     orderedGroups.push(groupName);
@@ -69,7 +62,7 @@ export function useGroupedItems(
             }
         }
 
-        // ungrouped는 제일 밑으로
+        // ungrouped('')는 항상 마지막
         const ungroupedItems = groupMap.get('') || [];
         if (ungroupedItems.length > 0) {
             result.push({ name: '', items: ungroupedItems });
