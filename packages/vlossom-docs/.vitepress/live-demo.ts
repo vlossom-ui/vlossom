@@ -8,6 +8,7 @@ export interface LiveDemoOptions {
     srcDir: string;
     pages: ReadmePage[];
     scope: Record<string, string>;
+    images: Record<string, string>;
     registry: DemoRegistry;
     runtime: string;
 }
@@ -192,6 +193,13 @@ export function buildScope({ own, others, fallback }: ScopeSources): string {
     ].join('\n');
 }
 
+export function replaceImages(body: string, images: Record<string, string>): string {
+    return Object.entries(images).reduce(
+        (markup, [from, to]) => markup.replaceAll(`"${from}"`, () => `"${to}"`),
+        body,
+    );
+}
+
 export function createDemoSfc(scope: string, body: string): string {
     const template = `<template>\n${body}\n</template>\n`;
     return scope ? `<script setup lang="ts">\n${scope}\n</script>\n\n${template}` : template;
@@ -232,7 +240,7 @@ export class DemoRegistry {
 }
 
 export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void {
-    const { srcDir, pages, scope, registry, runtime } = options;
+    const { srcDir, pages, scope, images, registry, runtime } = options;
 
     md.core.ruler.push('vlossom_live_demos', (state) => {
         const file: string | undefined = state.env?.realPath ?? state.env?.path;
@@ -261,7 +269,8 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
                 throw new Error(`${label(index)} needs a root <template>`);
             }
             const others = scripts.filter((_, other) => other !== index);
-            const sfc = createDemoSfc(buildScope({ own: scripts[index], others, fallback }), body);
+            const demoScope = buildScope({ own: scripts[index], others, fallback });
+            const sfc = createDemoSfc(demoScope, replaceImages(body, images));
             const id = registry.register(source, index, sfc);
             const name = `VsDemo${index}`;
             token.meta = { ...token.meta, demo: name };

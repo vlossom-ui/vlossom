@@ -1,8 +1,23 @@
+/* README 예제에는 position fixed·absolute인 헤더, 푸터, 드로어가 있다. 문서 화면 대신 데모 상자를 기준으로 놓이게 한다. */
 .vs-demo {
+    contain: layout;
+    overflow-x: auto;
     padding: 1.5rem;
     border: 1px solid var(--vp-c-divider);
     border-radius: 8px 8px 0 0;
     background-color: var(--vp-c-bg);
+}
+
+/* 고정 위치 요소는 상자 높이에 들어가지 않는다. vlossom이 position을 인라인 스타일로 넣는 것에 기댄다. */
+.vs-demo:has(> [style*='position: fixed']) {
+    overflow: hidden;
+    min-height: 8rem;
+}
+
+/* 드로어는 열리면 상자를 덮으므로 헤더, 내용, 푸터가 들어갈 높이를 준다. */
+.vs-demo:has(.vs-drawer) {
+    overflow: hidden;
+    min-height: 24rem;
 }
 
 .vs-demo + div[class*='language-'] {

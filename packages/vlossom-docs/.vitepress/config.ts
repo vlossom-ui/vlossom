@@ -1,6 +1,6 @@
 import { relative, resolve, sep } from 'node:path';
 import { defineConfig, type DefaultTheme } from 'vitepress';
-import { DEMO_SCOPE } from './demo-scope.ts';
+import { DEMO_IMAGES, DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
 import { vlossomSiteStyles } from './vlossom-css.ts';
 import {
@@ -64,6 +64,7 @@ export default defineConfig({
                 srcDir: PACKAGES_DIR,
                 pages: readmePages,
                 scope: DEMO_SCOPE,
+                images: DEMO_IMAGES,
                 registry: demoRegistry,
                 runtime: VLOSSOM_RUNTIME,
             });

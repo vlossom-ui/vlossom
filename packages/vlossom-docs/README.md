@@ -29,11 +29,12 @@ packages/vlossom-docs/
 │   ├── readme-pages.test.ts
 │   ├── live-demo.ts         # Turns `live` code fences into demo components
 │   ├── live-demo.test.ts
-│   ├── demo-scope.ts        # Names that README examples use without declaring them
+│   ├── readme-demos.test.ts # Compiles every component README demo and compares EN/KO live marks
+│   ├── demo-scope.ts        # Names and images that README examples use but do not provide
 │   ├── vlossom-css.ts       # Adapts vlossom.css to the site: page styles, dark mode, utilities
 │   ├── vlossom-css.test.ts
 │   └── theme/
-│       ├── index.ts         # Default theme, Vlossom app hook, dark mode sync
+│       ├── index.ts         # Default theme, Vlossom app hook, dark mode sync, modal cleanup on route change
 │       ├── vlossom.ts       # Loads Vlossom in the browser when the first demo needs it
 │       ├── layers.css       # Puts the vlossom.css base layer below the VitePress base styles
 │       ├── layers.test.ts
@@ -83,6 +84,7 @@ Add `live` to an `html` code fence in a README to render the example as a workin
 ````
 
 - GitHub uses only the first word of the fence info as the language, so the README looks the same there. vlossom-mcp reads fences by their opening backticks, so its README parsing does not change.
+- Every `html` example in the component READMEs is live, except examples that cannot show anything on their own: the VsDatePicker type switching fragment, which has no `<template>`, and the VsToastView example, which only shows toasts that the toast plugin opens. Composables, directives, plugins, and utils keep plain code blocks. The [component README template](../vlossom/src/components/COMPONENT_README_TEMPLATE.md) explains the rules for new examples.
 - Each fence becomes its own component, so demos on the same page do not share state.
 - A live fence needs a root `<template>`. If a live fence has no `<template>` or has a `<script setup>` that does not parse, `pnpm build` fails with the README path and the fence number.
 - Each demo gets a script built from these sources:
@@ -90,6 +92,10 @@ Add `live` to an `html` code fence in a README to render the example as a workin
     - Declarations from the other live fences on the page, such as variables, functions, and types, that its own fence does not declare. Other statements, such as function calls, stay in their own fence.
     - Names that the examples use without declaring them, from [`demo-scope.ts`](.vitepress/demo-scope.ts), keyed by unit name. A name that the README declares always wins.
     - Imports from all live fences on the page and from `demo-scope.ts`, merged by local name. Relative imports, such as `./MyForm.vue`, are removed because those files are not in the repository.
+- Some README examples use image URLs that do not exist, such as `/profile.png`. Demos replace the URLs in `DEMO_IMAGES` of `demo-scope.ts` with a placeholder image. The code block keeps the README text.
+- The demo area is the containing block for `position: fixed` and `position: absolute` elements, so fixed headers, footers, and drawers stay inside it.
+- Vlossom keeps a modal open after the demo that opened it unmounts, so the site closes all Vlossom modals when the route changes.
+- `pnpm test` renders every component README and compiles each demo. It fails if a demo template uses a name that the demo does not declare, a component that Vlossom does not register, or a custom directive. It also fails if `README.md` and `README.ko.md` of a component mark different examples as live.
 - The Vlossom script loads only when a page with a demo renders, so other pages do not download it. Vlossom reads `document` and `localStorage` when it loads, so demos render inside `<ClientOnly>`.
 - If Vlossom fails to load, the demos stay empty until the page is reloaded. The code blocks and the rest of the page still work.
 - The site's dark mode switches the Vlossom theme.

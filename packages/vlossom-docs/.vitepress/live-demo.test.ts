@@ -8,6 +8,7 @@ import {
     fenceScript,
     isLiveFence,
     liveDemos,
+    replaceImages,
     stripLiveMarker,
     templateBody,
 } from './live-demo.ts';
@@ -210,6 +211,24 @@ describe('createDemoSfc', () => {
     });
 });
 
+describe('replaceImages', () => {
+    it('따옴표 안의 주소가 목록과 정확히 같을 때만 바꾼다', () => {
+        const images = { '/profile.png': 'data:image/svg+xml,A' };
+
+        expect(replaceImages('<img src="/profile.png" /><img src="/profile.png?v=2" />', images)).toBe(
+            '<img src="data:image/svg+xml,A" /><img src="/profile.png?v=2" />',
+        );
+    });
+
+    it('같은 주소가 여러 번 나오면 모두 바꾼다', () => {
+        const images = { 'https://example.com/image.png': 'data:,B' };
+
+        expect(
+            replaceImages('<a src="https://example.com/image.png" /><b src="https://example.com/image.png" />', images),
+        ).toBe('<a src="data:,B" /><b src="data:,B" />');
+    });
+});
+
 describe('DemoRegistry', () => {
     it('vite 플러그인은 등록한 모듈만 찾아 내용을 돌려준다', () => {
         const registry = new DemoRegistry('C:/repo/.demos');
@@ -240,6 +259,7 @@ describe('liveDemos', () => {
                     srcDir,
                     pages: [BUTTON],
                     scope: { 'vs-button': 'function handleClick() {}' },
+                    images: { '/profile.png': 'data:,P' },
                     registry,
                     runtime,
                 });
@@ -280,6 +300,16 @@ describe('liveDemos', () => {
         expect(script).toContain(
             `const VsDemo0 = defineAsyncComponent(() => whenVlossomReady().then(() => import("${id}")));`,
         );
+    });
+
+    it('데모에서만 이미지 주소를 대체 이미지로 바꾸고, 코드 블록은 README 그대로 보여 준다', async () => {
+        const registry = new DemoRegistry('C:/repo/.demos');
+        const md = await createRenderer(registry);
+        const html = await md.renderAsync('```html live\n<template><img src="/profile.png" /></template>\n```', env());
+
+        expect(registry.get(registry.ids()[0])).toContain('<img src="data:,P" />');
+        expect(html).toContain('/profile.png');
+        expect(html).not.toContain('data:,P');
     });
 
     it('루트 template이 없는 live 펜스는 파일과 펜스 번호를 밝혀 실패한다', async () => {
