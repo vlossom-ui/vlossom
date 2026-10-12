@@ -16,7 +16,7 @@ A feature-rich text input component with validation, clear button, prepend/appen
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-input v-model="text" label="Name" placeholder="Enter your name" />
 </template>
@@ -29,7 +29,7 @@ const text = ref('');
 
 ### Input Types
 
-```html
+```html live
 <template>
     <vs-input v-model="email" type="email" label="Email" />
     <vs-input v-model="password" type="password" label="Password" />
@@ -39,7 +39,7 @@ const text = ref('');
 
 ### With Prepend and Append
 
-```html
+```html live
 <template>
     <vs-input v-model="value" label="Search">
         <template #prepend>
@@ -54,7 +54,7 @@ const text = ref('');
 
 ### Validation
 
-```html
+```html live
 <template>
     <vs-input
         v-model="value"
@@ -67,7 +67,7 @@ const text = ref('');
 
 ### Disabled and Readonly
 
-```html
+```html live
 <template>
     <vs-input v-model="value" label="Disabled" :disabled="true" />
     <vs-input v-model="value" label="Readonly" :readonly="true" />
@@ -76,7 +76,7 @@ const text = ref('');
 
 ### Focus Placeholder
 
-```html
+```html live
 <template>
     <vs-input v-model="value" placeholder="Search" focus-placeholder="Type a keyword..." />
 </template>
@@ -131,7 +131,7 @@ interface VsInputStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-input
         v-model="value"

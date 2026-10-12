@@ -1,0 +1,6 @@
+/* vlossom.css의 html·body 배경색(--vs-app-bg)을 사이트에도 쓰므로, VitePress 배경 변수도 같은 값으로 맞춘다.
+   맞추지 않으면 다크 모드에서 본문만 vlossom 배경이 되고, 내비 막대와 목차 아래 그라데이션은 VitePress 배경으로 남는다.
+   VitePress는 :root와 .dark에서 이 변수를 정하므로, 순서와 관계없이 이기도록 html:root를 쓴다. */
+html:root {
+    --vp-c-bg: var(--vs-app-bg);
+}

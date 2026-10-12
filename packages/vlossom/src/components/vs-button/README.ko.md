@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-button @click="handleClick">클릭하세요</vs-button>
 </template>
@@ -24,7 +24,7 @@
 
 ### Primary
 
-```html
+```html live
 <template>
     <vs-button primary>Primary 버튼</vs-button>
 </template>
@@ -32,7 +32,7 @@
 
 ### 로딩 상태
 
-```html
+```html live
 <template>
     <vs-button :loading="isLoading" @click="submit">제출</vs-button>
 </template>
@@ -51,7 +51,7 @@ async function submit() {
 
 ### Outline과 Ghost
 
-```html
+```html live
 <template>
     <vs-button outline>Outline</vs-button>
     <vs-button ghost>Ghost</vs-button>
@@ -60,7 +60,7 @@ async function submit() {
 
 ### 크기
 
-```html
+```html live
 <template>
     <vs-button size="xs">XS</vs-button>
     <vs-button size="sm">SM</vs-button>
@@ -100,7 +100,7 @@ interface VsButtonStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-button
         :style-set="{
