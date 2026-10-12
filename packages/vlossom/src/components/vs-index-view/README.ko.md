@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex">
         <div>페이지 0</div>
@@ -35,7 +35,7 @@ const currentIndex = ref(0);
 
 뷰 전환 시 컴포넌트 상태를 보존합니다.
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex" :keep-alive="true">
         <ComponentA />
@@ -47,7 +47,7 @@ const currentIndex = ref(0);
 
 ### 반응형 Width
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex" width="50%">
         <div>뷰 A</div>

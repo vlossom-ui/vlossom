@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" label="기능 활성화" />
 </template>
@@ -29,7 +29,7 @@ const isOn = ref(false);
 
 ### 커스텀 레이블
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" true-label="YES" false-label="NO" />
 </template>
@@ -37,7 +37,7 @@ const isOn = ref(false);
 
 ### beforeChange 훅 사용
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" :before-change="confirmChange" />
 </template>
@@ -53,7 +53,7 @@ async function confirmChange(from, to) {
 
 ### 다중 모드
 
-```html
+```html live
 <template>
     <vs-switch v-model="selected" :true-value="'apple'" multiple />
 </template>
@@ -107,7 +107,7 @@ interface VsSwitchStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-switch
         v-model="isOn"

@@ -16,7 +16,7 @@ A data table component with sorting, searching, pagination, selection, drag-and-
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" />
 </template>
@@ -39,15 +39,22 @@ const items = [
 
 `itemKey` decides what a row is. Pass a field name (dot paths allowed) or a function. Without it, rows fall back to the identity of the item object, so replacing items with newly created objects (a refetch, for example) drops selection and expansion state and remounts rows.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" :item-key="(item) => item.user.id" />
 </template>
+
+<script setup>
+const items = [
+    { user: { id: 101 }, name: 'Alice', age: 30 },
+    { user: { id: 102 }, name: 'Bob', age: 25 },
+];
+</script>
 ```
 
 ### With Search and Pagination
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" search pagination />
 </template>
@@ -60,7 +67,7 @@ Search matches against the values rendered in the table body, so a column's `tra
 - `skipSearch` on a column excludes a rendered column from the search.
 - `search.extraKeys` adds item fields that no column renders — useful when a slot pulls the value into another cell, or when you want to filter on hidden metadata.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" :search="{ extraKeys: ['tags'] }">
         <template #item-name="{ item }">{{ item.name }} ({{ item.tags }})</template>
@@ -72,6 +79,10 @@ const columns = [
     { key: 'name', label: 'Name' },
     { key: 'note', label: 'Note', skipSearch: true },
 ];
+const items = [
+    { id: 1, name: 'Alice', tags: 'admin, editor', note: 'Team lead' },
+    { id: 2, name: 'Bob', tags: 'viewer', note: 'On leave' },
+];
 </script>
 ```
 
@@ -81,7 +92,7 @@ When a key points at an object or array, every nested value inside it is searche
 
 ### Selectable Rows
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" selectable v-model:selected-items="selected" />
 </template>
@@ -96,7 +107,7 @@ const selected = ref([]);
 
 `expandable` is `true` by default, but the expand UI (toggle button and expanded panel) is rendered only when the `expand` slot is provided. Pass `:expandable="false"` to disable expansion entirely.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id">
         <template #expand="{ item }">
@@ -104,13 +115,20 @@ const selected = ref([]);
         </template>
     </vs-table>
 </template>
+
+<script setup>
+const items = [
+    { id: 1, name: 'Alice', age: 30, detail: 'Joined in 2021. Works on the design system.' },
+    { id: 2, name: 'Bob', age: 25, detail: 'Joined in 2023. Works on the data team.' },
+];
+</script>
 ```
 
 ### Reading What the Table Shows
 
 `items` is the input and the table never mutates it. To read what the table currently shows — search, sort and drag order applied — bind the output models:
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"
@@ -134,7 +152,7 @@ const selected = ref([]);
 
 Dragging reorders the rows on screen — including while a column is sorted — and leaves `items` untouched. Read the new order from `totalItems` / `pagedItems`, or from the `drag` event. The order is dropped when `items`, the search text, or the sort changes, and a drag within a paginated page only reorders that page's slots.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" draggable v-model:total-items="orderedItems" />
 </template>
@@ -144,7 +162,7 @@ Dragging reorders the rows on screen — including while a column is sorted — 
 
 Provide an `empty` slot to replace the default "NO DATA" placeholder when there are no rows. When `loading` is true, the loading indicator takes priority over this slot.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="[]">
         <template #empty>
@@ -156,7 +174,7 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when there 
 
 ### Server Mode
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"
@@ -259,7 +277,7 @@ interface VsTablePaginationOptions {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"

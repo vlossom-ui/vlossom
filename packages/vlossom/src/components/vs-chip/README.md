@@ -16,7 +16,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-chip>Label</vs-chip>
 </template>
@@ -24,7 +24,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### Closable Chip
 
-```html
+```html live
 <template>
     <vs-chip closable @close="removeChip">Removable</vs-chip>
 </template>
@@ -32,7 +32,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### With Icon
 
-```html
+```html live
 <template>
     <vs-chip>
         <template #icon>★</template>
@@ -43,7 +43,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### Primary and Outline
 
-```html
+```html live
 <template>
     <vs-chip primary>Primary</vs-chip>
     <vs-chip outline>Outline</vs-chip>
@@ -52,7 +52,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### Sizes
 
-```html
+```html live
 <template>
     <vs-chip size="xs">XS</vs-chip>
     <vs-chip size="sm">SM</vs-chip>
@@ -85,7 +85,7 @@ interface VsChipStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-chip
         closable

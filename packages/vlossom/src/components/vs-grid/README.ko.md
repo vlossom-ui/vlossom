@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-grid :grid-size="12" :column-gap="16" :row-gap="8">
         <div style="grid-column: span 6">왼쪽</div>
@@ -28,7 +28,7 @@
 
 ### 사용자 정의 너비와 높이
 
-```html
+```html live
 <template>
     <vs-grid width="800px" height="400px" :grid-size="3" :column-gap="8">
         <div>열 1</div>
@@ -40,7 +40,7 @@
 
 ### 다른 태그로 렌더링
 
-```html
+```html live
 <template>
     <vs-grid tag="ul" :grid-size="4">
         <li v-for="item in items" :key="item.id">{{ item.name }}</li>
@@ -70,7 +70,7 @@ interface VsGridStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-grid
         :style-set="{

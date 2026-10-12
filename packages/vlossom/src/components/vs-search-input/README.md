@@ -17,7 +17,7 @@ A search input component with optional case-sensitive and regex toggle buttons.
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-search-input v-model="query" @search="onSearch" />
 </template>
@@ -33,7 +33,7 @@ function onSearch(value) {
 
 ### With Case Sensitive and Regex Toggles
 
-```html
+```html live
 <template>
     <vs-search-input
         v-model="query"
@@ -48,7 +48,7 @@ function onSearch(value) {
 
 ### Using match() for Filtering
 
-```html
+```html live
 <template>
     <vs-search-input ref="searchRef" v-model="query" />
     <ul>
@@ -97,7 +97,7 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-search-input
         v-model="query"

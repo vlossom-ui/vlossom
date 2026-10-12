@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-theme-button />
 </template>
@@ -24,7 +24,7 @@
 
 ### 커스텀 크기
 
-```html
+```html live
 <template>
     <vs-theme-button
         :style-set="{
@@ -38,7 +38,7 @@
 
 ### 비활성화 상태
 
-```html
+```html live
 <template>
     <vs-theme-button disabled />
 </template>
@@ -74,7 +74,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-theme-button
         :style-set="{

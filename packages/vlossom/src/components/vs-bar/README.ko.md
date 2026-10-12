@@ -15,7 +15,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-bar>
         <span>나의 애플리케이션 타이틀</span>
@@ -25,7 +25,7 @@
 
 ### 고정 위치 헤더
 
-```html
+```html live
 <template>
     <vs-bar position="fixed" primary>
         <span>고정 헤더 바</span>
@@ -35,7 +35,7 @@
 
 ### 커스텀 태그
 
-```html
+```html live
 <template>
     <vs-bar tag="header">
         <nav>네비게이션 콘텐츠</nav>
@@ -61,7 +61,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-bar
         :style-set="{

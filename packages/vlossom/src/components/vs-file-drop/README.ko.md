@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-file-drop v-model="files" label="파일 업로드" />
 </template>
@@ -30,7 +30,7 @@ const files = ref([]);
 
 ### 파일 타입 필터와 함께 다중 파일
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -50,7 +50,7 @@ const files = ref([]);
 
 ### 유효성 검사 메시지 포함
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -66,7 +66,7 @@ const files = ref([]);
 
 파일을 영역 위로 드래그하거나 파일 다이얼로그가 열려 있는 동안 다른 안내 문구를 표시합니다:
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -128,7 +128,7 @@ interface VsFileDropStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"

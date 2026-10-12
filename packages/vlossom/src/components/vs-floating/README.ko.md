@@ -17,9 +17,9 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
-    <div id="my-anchor">마우스를 올려보세요</div>
+    <div id="my-anchor" @mouseenter="show = true" @mouseleave="show = false">마우스를 올려보세요</div>
     <vs-floating v-model="show" target="#my-anchor" placement="bottom">
         <div class="tooltip-box">플로팅 콘텐츠</div>
     </vs-floating>
@@ -33,7 +33,7 @@ const show = ref(false);
 
 ### 상단 배치와 너비 따라가기
 
-```html
+```html live
 <template>
     <input id="search-input" type="text" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
     <vs-floating v-model="dropdownOpen" target="#search-input" placement="bottom" follow-width>
@@ -49,9 +49,11 @@ const dropdownOpen = ref(false);
 
 ### 표시/숨김 지연 설정
 
-```html
+```html live
 <template>
-    <button id="delayed-btn">툴팁을 위해 마우스를 올려보세요</button>
+    <button id="delayed-btn" @mouseenter="visible = true" @mouseleave="visible = false">
+        툴팁을 위해 마우스를 올려보세요
+    </button>
     <vs-floating v-model="visible" target="#delayed-btn" placement="top" :enter-delay="300" :leave-delay="200">
         <div>지연된 툴팁</div>
     </vs-floating>

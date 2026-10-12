@@ -17,7 +17,7 @@ A file input component that supports both drag-and-drop and click-to-browse file
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-file-drop v-model="files" label="Upload Files" />
 </template>
@@ -30,7 +30,7 @@ const files = ref([]);
 
 ### Multiple Files with Accept Filter
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -50,7 +50,7 @@ const files = ref([]);
 
 ### With Validation Messages
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -66,7 +66,7 @@ const files = ref([]);
 
 Show a different hint while a file is being dragged over the area or the file dialog is open:
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"
@@ -128,7 +128,7 @@ interface VsFileDropStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-file-drop
         v-model="files"

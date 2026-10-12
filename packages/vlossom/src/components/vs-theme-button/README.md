@@ -16,7 +16,7 @@ A toggle button that switches the application between light and dark themes.
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-theme-button />
 </template>
@@ -24,7 +24,7 @@ A toggle button that switches the application between light and dark themes.
 
 ### With Custom Size
 
-```html
+```html live
 <template>
     <vs-theme-button
         :style-set="{
@@ -38,7 +38,7 @@ A toggle button that switches the application between light and dark themes.
 
 ### Disabled State
 
-```html
+```html live
 <template>
     <vs-theme-button disabled />
 </template>
@@ -74,7 +74,7 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-theme-button
         :style-set="{

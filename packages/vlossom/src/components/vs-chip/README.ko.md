@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-chip>라벨</vs-chip>
 </template>
@@ -24,7 +24,7 @@
 
 ### 닫기 가능한 Chip
 
-```html
+```html live
 <template>
     <vs-chip closable @close="removeChip">제거 가능</vs-chip>
 </template>
@@ -32,7 +32,7 @@
 
 ### 아이콘과 함께 사용
 
-```html
+```html live
 <template>
     <vs-chip>
         <template #icon>★</template>
@@ -43,7 +43,7 @@
 
 ### Primary와 Outline
 
-```html
+```html live
 <template>
     <vs-chip primary>Primary</vs-chip>
     <vs-chip outline>Outline</vs-chip>
@@ -52,7 +52,7 @@
 
 ### 크기
 
-```html
+```html live
 <template>
     <vs-chip size="xs">XS</vs-chip>
     <vs-chip size="sm">SM</vs-chip>
@@ -85,7 +85,7 @@ interface VsChipStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-chip
         closable

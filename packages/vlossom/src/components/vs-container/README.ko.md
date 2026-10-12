@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout>헤더</vs-header>
@@ -30,7 +30,7 @@
 
 ### 커스텀 태그
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-container layout tag="main">

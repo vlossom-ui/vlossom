@@ -15,7 +15,7 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-responsive width="50%">
         <p>This takes 50% width.</p>
@@ -25,7 +25,7 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ### With Grid Column Span
 
-```html
+```html live
 <template>
     <vs-responsive :grid="6">
         <p>This spans 6 grid columns.</p>
@@ -35,7 +35,7 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ### With Breakpoint Object
 
-```html
+```html live
 <template>
     <vs-responsive :width="{ xs: '100%', md: '50%', lg: '33%' }">
         <p>Responsive width per breakpoint.</p>
@@ -45,7 +45,7 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ### Custom Tag
 
-```html
+```html live
 <template>
     <vs-responsive tag="section" width="80%">
         <p>Rendered as a section element.</p>

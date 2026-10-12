@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" />
 </template>
@@ -39,15 +39,22 @@ const items = [
 
 `itemKey`는 무엇을 하나의 행으로 볼지 정합니다. 필드 이름(중첩 경로 가능) 또는 함수를 전달합니다. 지정하지 않으면 아이템 객체의 동일성을 기준으로 하기 때문에, 데이터를 다시 조회해 아이템 객체를 새로 만들어 교체하면 선택/확장 상태가 사라지고 행이 다시 마운트됩니다.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" :item-key="(item) => item.user.id" />
 </template>
+
+<script setup>
+const items = [
+    { user: { id: 101 }, name: 'Alice', age: 30 },
+    { user: { id: 102 }, name: 'Bob', age: 25 },
+];
+</script>
 ```
 
 ### 검색 및 페이지네이션
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" search pagination />
 </template>
@@ -60,7 +67,7 @@ const items = [
 - 컬럼의 `skipSearch`: 렌더링되는 컬럼을 검색 대상에서 제외합니다.
 - `search.extraKeys`: 어떤 컬럼으로도 렌더링되지 않는 아이템 필드를 검색 대상에 추가합니다. 슬롯으로 값을 다른 셀에 끌어와 보여주거나, 숨겨진 메타데이터로 필터링할 때 사용합니다.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" :search="{ extraKeys: ['tags'] }">
         <template #item-name="{ item }">{{ item.name }} ({{ item.tags }})</template>
@@ -72,6 +79,10 @@ const columns = [
     { key: 'name', label: 'Name' },
     { key: 'note', label: 'Note', skipSearch: true },
 ];
+const items = [
+    { id: 1, name: 'Alice', tags: 'admin, editor', note: 'Team lead' },
+    { id: 2, name: 'Bob', tags: 'viewer', note: 'On leave' },
+];
 </script>
 ```
 
@@ -81,7 +92,7 @@ const columns = [
 
 ### 선택 가능한 행
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" selectable v-model:selected-items="selected" />
 </template>
@@ -96,7 +107,7 @@ const selected = ref([]);
 
 `expandable`의 기본값은 `true`지만, 확장 UI(토글 버튼과 확장 패널)는 `expand` 슬롯이 있을 때만 렌더링됩니다. `:expandable="false"`를 전달하면 확장 기능을 완전히 끕니다.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id">
         <template #expand="{ item }">
@@ -104,13 +115,20 @@ const selected = ref([]);
         </template>
     </vs-table>
 </template>
+
+<script setup>
+const items = [
+    { id: 1, name: 'Alice', age: 30, detail: 'Joined in 2021. Works on the design system.' },
+    { id: 2, name: 'Bob', age: 25, detail: 'Joined in 2023. Works on the data team.' },
+];
+</script>
 ```
 
 ### 테이블이 보여주는 아이템 가져오기
 
 `items`는 입력이며 테이블은 이 배열을 변경하지 않습니다. 검색 · 정렬 · 드래그가 반영된 현재 상태는 출력용 v-model로 가져옵니다.
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"
@@ -134,7 +152,7 @@ const selected = ref([]);
 
 드래그는 화면에 보이는 순서를 재배열하며, 정렬이 켜져 있어도 동작합니다. `items`는 그대로 유지되므로 바뀐 순서는 `totalItems` / `pagedItems`나 `drag` 이벤트로 읽습니다. `items`, 검색어, 정렬이 바뀌면 드래그 순서는 버려지고, 페이지네이션이 있으면 드래그는 현재 페이지가 차지한 자리 안에서만 순서를 바꿉니다.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="items" item-key="id" draggable v-model:total-items="orderedItems" />
 </template>
@@ -144,7 +162,7 @@ const selected = ref([]);
 
 행이 없을 때 기본 "NO DATA" 자리표시자 대신 `empty` 슬롯을 렌더링합니다. `loading`이 true이면 로딩 인디케이터가 우선합니다.
 
-```html
+```html live
 <template>
     <vs-table :columns="columns" :items="[]">
         <template #empty>
@@ -156,7 +174,7 @@ const selected = ref([]);
 
 ### 서버 모드
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"
@@ -259,7 +277,7 @@ interface VsTablePaginationOptions {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-table
         :columns="columns"
