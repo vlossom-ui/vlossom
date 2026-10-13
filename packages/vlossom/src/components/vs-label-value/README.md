@@ -64,10 +64,12 @@ Switch to vertical layout on small containers automatically.
 
 ```html live
 <template>
-    <vs-label-value :responsive="true">
-        <template #label>Address</template>
-        123 Main Street
-    </vs-label-value>
+    <vs-container style="max-width: 360px">
+        <vs-label-value :responsive="true">
+            <template #label>Address</template>
+            123 Main Street
+        </vs-label-value>
+    </vs-container>
 </template>
 ```
 

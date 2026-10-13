@@ -22,7 +22,7 @@
     <vs-layout>
         <vs-header layout>앱 헤더</vs-header>
         <vs-container layout>
-            <slot />
+            <p>메인 콘텐츠</p>
         </vs-container>
         <vs-footer layout>푸터</vs-footer>
     </vs-layout>

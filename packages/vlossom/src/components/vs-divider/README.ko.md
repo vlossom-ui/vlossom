@@ -39,11 +39,13 @@
 
 ```html live
 <template>
-    <div style="display: flex; align-items: center;">
-        <span>왼쪽</span>
-        <vs-divider vertical responsive />
-        <span>오른쪽</span>
-    </div>
+    <vs-container style="max-width: 360px">
+        <div style="display: flex; align-items: center; gap: 0.5rem; height: 2rem;">
+            <span>왼쪽</span>
+            <vs-divider vertical responsive />
+            <span>오른쪽</span>
+        </div>
+    </vs-container>
 </template>
 ```
 

@@ -25,7 +25,7 @@ When `target` is omitted, the default slot is wrapped by an element that becomes
 ```html live
 <template>
     <vs-tooltip>
-        <button>Hover me</button>
+        <vs-button>Hover me</vs-button>
         <template #tooltip>This is a tooltip</template>
     </vs-tooltip>
 </template>
@@ -37,7 +37,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 
 ```html live
 <template>
-    <button id="my-btn">Hover me</button>
+    <vs-button id="my-btn">Hover me</vs-button>
     <vs-tooltip target="#my-btn">
         <template #tooltip>This is a tooltip</template>
     </vs-tooltip>
@@ -49,7 +49,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 ```html live
 <template>
     <vs-tooltip clickable>
-        <button>Click me</button>
+        <vs-button>Click me</vs-button>
         <template #tooltip>Opened by click</template>
     </vs-tooltip>
 </template>
@@ -60,7 +60,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 ```html live
 <template>
     <vs-tooltip placement="bottom" align="start">
-        <button>Hover me</button>
+        <vs-button>Hover me</vs-button>
         <template #tooltip>Bottom-start tooltip</template>
     </vs-tooltip>
 </template>
@@ -71,7 +71,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 ```html live
 <template>
     <vs-tooltip contents-hover>
-        <button>Hover me</button>
+        <vs-button>Hover me</vs-button>
         <template #tooltip>
             <a href="#">Click this link inside the tooltip</a>
         </template>
@@ -84,7 +84,7 @@ Pass `target` as a CSS selector to attach the tooltip to an external element.
 ```html live
 <template>
     <vs-tooltip tag="div">
-        <div class="trigger-area">Block-level trigger</div>
+        <div style="padding: 0.75rem 1rem; border: 1px dashed #9ca3af; border-radius: 0.375rem">Block-level trigger</div>
         <template #tooltip>Wrapped by a div</template>
     </vs-tooltip>
 </template>
@@ -137,7 +137,7 @@ interface VsTooltipStyleSet {
             },
         }"
     >
-        <button>Hover me</button>
+        <vs-button>Hover me</vs-button>
         <template #tooltip>Custom tooltip</template>
     </vs-tooltip>
 </template>

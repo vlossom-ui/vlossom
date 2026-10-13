@@ -45,8 +45,10 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ```html live
 <template>
-    <vs-chip primary>Primary</vs-chip>
-    <vs-chip outline>Outline</vs-chip>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-chip primary>Primary</vs-chip>
+        <vs-chip outline>Outline</vs-chip>
+    </div>
 </template>
 ```
 
@@ -54,11 +56,13 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ```html live
 <template>
-    <vs-chip size="xs">XS</vs-chip>
-    <vs-chip size="sm">SM</vs-chip>
-    <vs-chip size="md">MD</vs-chip>
-    <vs-chip size="lg">LG</vs-chip>
-    <vs-chip size="xl">XL</vs-chip>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-chip size="xs">XS</vs-chip>
+        <vs-chip size="sm">SM</vs-chip>
+        <vs-chip size="md">MD</vs-chip>
+        <vs-chip size="lg">LG</vs-chip>
+        <vs-chip size="xl">XL</vs-chip>
+    </div>
 </template>
 ```
 
@@ -95,9 +99,12 @@ interface VsChipStyleSet extends CSSProperties {
             backgroundColor: '#e8f5e9',
             color: '#2e7d32',
             $icon: {
+                backgroundColor: '#ffffff',
                 color: '#2e7d32',
             },
             $closeButton: {
+                backgroundColor: '#ffffff',
+                color: '#2e7d32',
                 opacity: '0.7',
             },
         }"

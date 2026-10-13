@@ -19,10 +19,10 @@
 ```html live
 <template>
     <vs-focus-trap>
-        <div>
-            <input type="text" placeholder="첫 번째 필드" />
-            <input type="text" placeholder="두 번째 필드" />
-            <button>제출</button>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-input placeholder="첫 번째 필드" />
+            <vs-input placeholder="두 번째 필드" />
+            <vs-button>제출</vs-button>
         </div>
     </vs-focus-trap>
 </template>
@@ -33,9 +33,9 @@
 ```html live
 <template>
     <vs-focus-trap :disabled="!isModalOpen">
-        <div class="modal-content">
-            <button>액션</button>
-            <button @click="isModalOpen = false">닫기</button>
+        <div class="modal-content" style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-button>액션</vs-button>
+            <vs-button @click="isModalOpen = false">닫기</vs-button>
         </div>
     </vs-focus-trap>
 </template>

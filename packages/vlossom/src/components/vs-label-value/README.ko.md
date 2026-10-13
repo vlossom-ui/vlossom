@@ -64,10 +64,12 @@
 
 ```html live
 <template>
-    <vs-label-value :responsive="true">
-        <template #label>주소</template>
-        서울시 강남구 123번지
-    </vs-label-value>
+    <vs-container style="max-width: 360px">
+        <vs-label-value :responsive="true">
+            <template #label>주소</template>
+            서울시 강남구 123번지
+        </vs-label-value>
+    </vs-container>
 </template>
 ```
 

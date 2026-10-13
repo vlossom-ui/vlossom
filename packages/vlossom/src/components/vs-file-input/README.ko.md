@@ -61,9 +61,11 @@ const files = ref([]);
 
 ```html live
 <template>
-    <vs-form ref="formRef">
+    <vs-form ref="formRef" :row-gap="8">
         <vs-file-input v-model="files" label="필수 파일" required />
-        <vs-button @click="formRef.validate()">제출</vs-button>
+        <vs-responsive :grid="12">
+            <vs-button @click="formRef.validate()">제출</vs-button>
+        </vs-responsive>
     </vs-form>
 </template>
 ```

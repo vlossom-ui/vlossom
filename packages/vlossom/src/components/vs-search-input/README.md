@@ -101,9 +101,12 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 <template>
     <vs-search-input
         v-model="query"
+        use-case-sensitive
+        use-regex
         :style-set="{
             borderRadius: '1rem',
-            $input: { height: '2.5rem' },
+            height: '2.5rem',
+            $toggle: { color: '#2563eb' },
         }"
     />
 </template>

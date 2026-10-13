@@ -71,9 +71,10 @@ interface VsProgressStyleSet extends CSSProperties {
         :max="100"
         label="60%"
         :style-set="{
-            $barBackgroundColor: '#e5e7eb',
+            $barBackgroundColor: '#9ca3af',
             $barBorderRadius: '0.5rem',
             $valueBackgroundColor: '#6366f1',
+            $labelTextShadow: 'none',
             $labelFontColor: '#ffffff',
             height: '1.5rem',
         }"

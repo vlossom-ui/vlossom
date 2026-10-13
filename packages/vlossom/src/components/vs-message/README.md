@@ -58,7 +58,7 @@ interface VsMessageStyleSet extends CSSProperties {
         text="Custom sized message"
         state="info"
         :style-set="{
-            $size: '1rem',
+            $size: '1.5rem',
             padding: '0.25rem 0',
         }"
     />

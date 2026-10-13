@@ -18,6 +18,11 @@
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">페이지 0</vs-button>
+        <vs-button @click="currentIndex = 1">페이지 1</vs-button>
+        <vs-button @click="currentIndex = 2">페이지 2</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex">
         <div>페이지 0</div>
         <div>페이지 1</div>
@@ -37,6 +42,11 @@ const currentIndex = ref(0);
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">컴포넌트 A</vs-button>
+        <vs-button @click="currentIndex = 1">컴포넌트 B</vs-button>
+        <vs-button @click="currentIndex = 2">컴포넌트 C</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex" :keep-alive="true">
         <ComponentA />
         <ComponentB />
@@ -49,9 +59,13 @@ const currentIndex = ref(0);
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">뷰 A</vs-button>
+        <vs-button @click="currentIndex = 1">뷰 B</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex" width="50%">
-        <div>뷰 A</div>
-        <div>뷰 B</div>
+        <div style="padding: 1rem; border: 1px solid #9ca3af">뷰 A</div>
+        <div style="padding: 1rem; border: 1px solid #9ca3af">뷰 B</div>
     </vs-index-view>
 </template>
 ```

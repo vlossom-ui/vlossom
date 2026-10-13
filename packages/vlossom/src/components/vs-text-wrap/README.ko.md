@@ -51,7 +51,7 @@
     <vs-text-wrap>
         <p>콘텐츠</p>
         <template #actions>
-            <button @click="doSomething">커스텀 액션</button>
+            <vs-button size="xs" @click="doSomething">커스텀 액션</vs-button>
         </template>
     </vs-text-wrap>
 </template>
@@ -82,7 +82,7 @@ interface VsTextWrapStyleSet extends CSSProperties {
     <vs-text-wrap
         copy
         :style-set="{
-            backgroundColor: '#f5f5f5', borderRadius: '0.5rem', padding: '1rem',
+            backgroundColor: '#f5f5f5', color: '#1f2937', borderRadius: '0.5rem', padding: '1rem',
             $copyIcon: { color: '#1976d2', fontSize: '1.2rem' },
             $linkIcon: { color: '#4caf50' },
         }"

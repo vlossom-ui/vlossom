@@ -20,7 +20,7 @@
 
 ```html live
 <template>
-    <vs-image src="https://example.com/image.png" alt="예시 이미지" />
+    <vs-image src="https://example.com/image.png" alt="예시 이미지" width="120px" height="120px" />
 </template>
 ```
 
@@ -30,7 +30,7 @@
 
 ```html live
 <template>
-    <vs-image src="https://example.com/image.png" alt="지연 로딩 이미지" :lazy="true" />
+    <vs-image src="https://example.com/image.png" alt="지연 로딩 이미지" width="120px" height="120px" :lazy="true" />
 </template>
 ```
 
@@ -46,6 +46,8 @@
         src="https://example.com/broken.png"
         fallback="https://example.com/fallback.png"
         alt="대체 이미지 포함"
+        width="120px"
+        height="120px"
     />
 </template>
 ```
@@ -68,7 +70,7 @@
 
 ```html live
 <template>
-    <vs-image src="https://example.com/image.png" alt="스켈레톤 없음" :no-skeleton="true" />
+    <vs-image src="https://example.com/image.png" alt="스켈레톤 없음" width="120px" height="120px" :no-skeleton="true" />
 </template>
 ```
 

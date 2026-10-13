@@ -19,13 +19,13 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen">
         <div>
             <h2>모달 제목</h2>
             <p>모달 콘텐츠가 여기에 들어갑니다.</p>
-            <button @click="isOpen = false">닫기</button>
+            <vs-button @click="isOpen = false">닫기</vs-button>
         </div>
     </vs-modal>
 </template>
@@ -40,7 +40,7 @@ const isOpen = ref(false);
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" :dimmed="true" :dim-close="true">
         <div>외부를 클릭하면 닫힙니다.</div>
@@ -52,11 +52,11 @@ const isOpen = ref(false);
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" size="lg">
         <div>큰 모달 콘텐츠.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 ```
@@ -65,11 +65,11 @@ const isOpen = ref(false);
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" :size="{ width: '600px', height: '400px' }">
         <div>커스텀 크기 모달.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 ```
@@ -78,7 +78,7 @@ const isOpen = ref(false);
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" :focus-lock="true" :esc-close="true">
         <div>ESC를 눌러 닫으세요. 포커스가 내부에 고정됩니다.</div>
@@ -90,11 +90,11 @@ const isOpen = ref(false);
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" :before-close="confirmClose">
         <div>닫기를 시도해보세요.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 
@@ -114,11 +114,11 @@ async function confirmClose() {
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal v-model="isOpen" :scroll-lock="true">
         <div>모달이 열려 있는 동안 배경 페이지 스크롤이 잠깁니다.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 ```
@@ -127,7 +127,7 @@ CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <div id="scroll-area" style="height: 200px; overflow: auto">
         <p v-for="n in 20" :key="n">{{ n }}번째 줄</p>
@@ -135,7 +135,7 @@ CSS 선택자 문자열을 전달하면 `body` 대신 특정 스크롤 컨테이
 
     <vs-modal v-model="isOpen" scroll-lock="#scroll-area">
         <div>#scroll-area만 잠기고 페이지는 계속 스크롤됩니다.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 
@@ -179,7 +179,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
 
 ```html live
 <template>
-    <button @click="isOpen = true">모달 열기</button>
+    <vs-button @click="isOpen = true">모달 열기</vs-button>
 
     <vs-modal
         v-model="isOpen"
@@ -188,6 +188,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
             borderRadius: '16px',
             padding: '2rem',
             backgroundColor: '#fff',
+            color: '#1f2937',
             boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
             $dimmed: {
                 backgroundColor: 'rgba(0,0,0,0.6)',
@@ -195,7 +196,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
         }"
     >
         <div>스타일 적용 모달 콘텐츠.</div>
-        <button @click="isOpen = false">닫기</button>
+        <vs-button @click="isOpen = false">닫기</vs-button>
     </vs-modal>
 </template>
 ```

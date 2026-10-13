@@ -139,11 +139,18 @@ interface VsInputStyleSet extends CSSProperties {
         :style-set="{
             borderRadius: '20px', height: '3rem',
             $input: { fontSize: '1rem' },
-            $prepend: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            $append: { backgroundColor: '#eee', padding: '0 0.5rem' },
-            $wrapper: { $label: { color: 'blue' } },
+            $prepend: { backgroundColor: '#eee', color: '#1f2937', padding: '0 0.5rem' },
+            $append: { backgroundColor: '#eee', color: '#1f2937', padding: '0 0.5rem' },
+            $wrapper: { $label: { color: '#2563eb' } },
         }"
-    />
+    >
+        <template #prepend>
+            <span>🔍</span>
+        </template>
+        <template #append>
+            <span>Go</span>
+        </template>
+    </vs-input>
 </template>
 ```
 

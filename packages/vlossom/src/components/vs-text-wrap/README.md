@@ -51,7 +51,7 @@ A container component that wraps text content and provides copy-to-clipboard and
     <vs-text-wrap>
         <p>Content here</p>
         <template #actions>
-            <button @click="doSomething">Custom Action</button>
+            <vs-button size="xs" @click="doSomething">Custom Action</vs-button>
         </template>
     </vs-text-wrap>
 </template>
@@ -82,7 +82,7 @@ interface VsTextWrapStyleSet extends CSSProperties {
     <vs-text-wrap
         copy
         :style-set="{
-            backgroundColor: '#f5f5f5', borderRadius: '0.5rem', padding: '1rem',
+            backgroundColor: '#f5f5f5', color: '#1f2937', borderRadius: '0.5rem', padding: '1rem',
             $copyIcon: { color: '#1976d2', fontSize: '1.2rem' },
             $linkIcon: { color: '#4caf50' },
         }"

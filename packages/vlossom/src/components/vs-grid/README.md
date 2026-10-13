@@ -75,7 +75,7 @@ interface VsGridStyleSet extends CSSProperties {
     <vs-grid
         :style-set="{
             $gridSize: 6,
-            backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px',
+            backgroundColor: '#f5f5f5', color: '#1f2937', padding: '1rem', borderRadius: '8px',
         }"
     >
         <div>Item 1</div>

@@ -39,11 +39,13 @@ A horizontal or vertical line separator used to visually divide content sections
 
 ```html live
 <template>
-    <div style="display: flex; align-items: center;">
-        <span>Left</span>
-        <vs-divider vertical responsive />
-        <span>Right</span>
-    </div>
+    <vs-container style="max-width: 360px">
+        <div style="display: flex; align-items: center; gap: 0.5rem; height: 2rem;">
+            <span>Left</span>
+            <vs-divider vertical responsive />
+            <span>Right</span>
+        </div>
+    </vs-container>
 </template>
 ```
 

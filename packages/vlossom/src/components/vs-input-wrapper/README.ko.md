@@ -19,7 +19,11 @@
 ```html live
 <template>
     <vs-input-wrapper label="사용자명">
-        <input type="text" placeholder="사용자명 입력" />
+        <input
+            type="text"
+            placeholder="사용자명 입력"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
@@ -32,7 +36,11 @@
         label="이메일"
         :messages="[{ state: 'error', text: '유효하지 않은 이메일 주소입니다' }]"
     >
-        <input type="email" />
+        <input
+            type="email"
+            placeholder="이메일 입력"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
@@ -42,8 +50,18 @@
 ```html live
 <template>
     <vs-input-wrapper label="배송 주소" :group-label="true">
-        <input type="text" placeholder="도로명" />
-        <input type="text" placeholder="도시" />
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <input
+                type="text"
+                placeholder="도로명"
+                style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+            />
+            <input
+                type="text"
+                placeholder="도시"
+                style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+            />
+        </div>
     </vs-input-wrapper>
 </template>
 ```
@@ -53,7 +71,11 @@
 ```html live
 <template>
     <vs-input-wrapper label="비밀번호" :required="true">
-        <input type="password" />
+        <input
+            type="password"
+            placeholder="비밀번호 입력"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
@@ -96,13 +118,17 @@ interface VsInputWrapperStyleSet extends CSSProperties {
     <vs-input-wrapper
         label="스타일 적용 래퍼"
         :style-set="{
-            padding: '1rem', backgroundColor: '#f9f9f9',
+            padding: '1rem', backgroundColor: '#f9f9f9', color: '#1f2937',
             $label: { color: '#333', fontWeight: '600' },
             $messages: { marginTop: '0.5rem' },
             $message: { fontSize: '0.75rem' },
         }"
     >
-        <input type="text" />
+        <input
+            type="text"
+            placeholder="텍스트 입력"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```

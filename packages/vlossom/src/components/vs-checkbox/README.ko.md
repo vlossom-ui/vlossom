@@ -168,7 +168,7 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
         check-label="커스텀 체크박스"
         :style-set="{
             $checkboxSize: '1.5rem',
-            $checkboxColor: '#e0e0e0',
+            $checkboxColor: '#9ca3af',
             $checkboxCheckedColor: '#6200ea',
             $checkboxLabel: {
                 fontSize: '1rem',

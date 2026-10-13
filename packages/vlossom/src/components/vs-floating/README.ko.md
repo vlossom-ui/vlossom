@@ -19,9 +19,11 @@
 
 ```html live
 <template>
-    <div id="my-anchor" @mouseenter="show = true" @mouseleave="show = false">마우스를 올려보세요</div>
+    <vs-button id="my-anchor" @mouseenter="show = true" @mouseleave="show = false">마우스를 올려보세요</vs-button>
     <vs-floating v-model="show" target="#my-anchor" placement="bottom">
-        <div class="tooltip-box">플로팅 콘텐츠</div>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            플로팅 콘텐츠
+        </div>
     </vs-floating>
 </template>
 
@@ -35,9 +37,11 @@ const show = ref(false);
 
 ```html live
 <template>
-    <input id="search-input" type="text" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
-    <vs-floating v-model="dropdownOpen" target="#search-input" placement="bottom" follow-width>
-        <div class="dropdown-list">드롭다운 항목들</div>
+    <vs-input id="search-input" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
+    <vs-floating v-model="dropdownOpen" target="#search-input" placement="top" follow-width>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            드롭다운 항목들
+        </div>
     </vs-floating>
 </template>
 
@@ -51,11 +55,13 @@ const dropdownOpen = ref(false);
 
 ```html live
 <template>
-    <button id="delayed-btn" @mouseenter="visible = true" @mouseleave="visible = false">
+    <vs-button id="delayed-btn" @mouseenter="visible = true" @mouseleave="visible = false">
         툴팁을 위해 마우스를 올려보세요
-    </button>
+    </vs-button>
     <vs-floating v-model="visible" target="#delayed-btn" placement="top" :enter-delay="300" :leave-delay="200">
-        <div>지연된 툴팁</div>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            지연된 툴팁
+        </div>
     </vs-floating>
 </template>
 ```

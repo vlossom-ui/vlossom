@@ -20,10 +20,12 @@
 
 ```html live
 <template>
-    <vs-form ref="formRef" @error="onError">
+    <vs-form ref="formRef" :row-gap="8" @error="onError">
         <vs-input v-model="name" label="이름" required :grid="{ sm: 12, md: 6 }" />
         <vs-input v-model="email" label="이메일" required :grid="{ sm: 12, md: 6 }" />
-        <vs-button @click="submit">제출</vs-button>
+        <vs-responsive :grid="12">
+            <vs-button @click="submit">제출</vs-button>
+        </vs-responsive>
     </vs-form>
 </template>
 
@@ -51,7 +53,7 @@ function onError(invalidIds) {
 ```html live
 <template>
     <vs-form :disabled="isDisabled">
-        <vs-input v-model="value" label="읽기 전용 필드" />
+        <vs-input v-model="value" label="비활성화된 필드" />
     </vs-form>
 </template>
 

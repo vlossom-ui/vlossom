@@ -40,8 +40,17 @@ const page = ref(0);
 
 ```html live
 <template>
-    <vs-pagination v-model="page" :length="10" ghost outline />
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-pagination v-model="ghostPage" :length="10" ghost />
+        <vs-pagination v-model="outlinePage" :length="10" outline />
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const ghostPage = ref(0);
+const outlinePage = ref(0);
+</script>
 ```
 
 ## Props

@@ -18,30 +18,54 @@ A toast notification component with auto-close, hover pause, and a close button.
 
 ```html live
 <template>
-    <vs-toast @close="handleClose">
-        Operation completed successfully!
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">Show Toast</vs-button>
+        <vs-toast v-if="visible" @close="visible = false">
+            Operation completed successfully!
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### With Custom Timeout
 
 ```html live
 <template>
-    <vs-toast :timeout="3000" @close="handleClose">
-        This toast closes in 3 seconds.
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">Show Toast</vs-button>
+        <vs-toast v-if="visible" :timeout="3000" @close="visible = false">
+            This toast closes in 3 seconds.
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### Manual Close Only
 
 ```html live
 <template>
-    <vs-toast :auto-close="false" @close="handleClose">
-        Click the X button to close.
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">Show Toast</vs-button>
+        <vs-toast v-if="visible" :auto-close="false" @close="visible = false">
+            Click the X button to close.
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### Using VsToastView
@@ -81,20 +105,30 @@ interface VsToastStyleSet extends CSSProperties {
 
 ```html live
 <template>
-    <vs-toast
-        :style-set="{
-            backgroundColor: '#323232',
-            color: '#ffffff',
-            borderRadius: '0.5rem',
-            padding: '0.75rem 1rem',
-            $closeButton: {
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">Show Toast</vs-button>
+        <vs-toast
+            v-if="visible"
+            :style-set="{
+                backgroundColor: '#323232',
                 color: '#ffffff',
-            },
-        }"
-    >
-        Custom styled toast
-    </vs-toast>
+                borderRadius: '0.5rem',
+                padding: '0.75rem 1rem',
+                $closeButton: {
+                    color: '#ffffff',
+                },
+            }"
+            @close="visible = false"
+        >
+            Custom styled toast
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ## Events

@@ -22,7 +22,7 @@ Descendants must explicitly opt in with the `layout` prop to participate in layo
     <vs-layout>
         <vs-header layout>My App Header</vs-header>
         <vs-container layout>
-            <slot />
+            <p>Main content</p>
         </vs-container>
         <vs-footer layout>Footer</vs-footer>
     </vs-layout>

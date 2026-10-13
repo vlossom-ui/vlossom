@@ -44,10 +44,10 @@ function onClickItem(item) {
         :group-order="['fruit', 'vegetable']"
     >
         <template #group="{ group }">
-            <div class="group-header">{{ group.toUpperCase() }}</div>
+            <div style="padding: 0.5rem 0 0.25rem; font-weight: 700">{{ group.toUpperCase() }}</div>
         </template>
         <template #item="{ label }">
-            <div class="list-item">{{ label }}</div>
+            <div style="padding: 0.25rem 1rem">{{ label }}</div>
         </template>
     </vs-grouped-list>
 </template>
@@ -92,9 +92,10 @@ interface VsGroupedListStyleSet extends CSSProperties {
 <template>
     <vs-grouped-list
         :items="items"
+        :group-by="(item) => item.category"
         :style-set="{
             maxHeight: '400px',
-            $group: { backgroundColor: '#f0f0f0', fontWeight: 'bold', padding: '0.5rem 1rem' },
+            $group: { backgroundColor: '#f0f0f0', color: '#1f2937', fontWeight: 'bold', padding: '0.5rem 1rem' },
             $item: { padding: '0.4rem 1.2rem' },
         }"
     />

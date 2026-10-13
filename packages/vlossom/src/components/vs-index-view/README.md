@@ -18,6 +18,11 @@ A container component that shows only the child element at the current index, wi
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">Page 0</vs-button>
+        <vs-button @click="currentIndex = 1">Page 1</vs-button>
+        <vs-button @click="currentIndex = 2">Page 2</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex">
         <div>Page 0</div>
         <div>Page 1</div>
@@ -37,6 +42,11 @@ Preserve component state when switching between views.
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">Component A</vs-button>
+        <vs-button @click="currentIndex = 1">Component B</vs-button>
+        <vs-button @click="currentIndex = 2">Component C</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex" :keep-alive="true">
         <ComponentA />
         <ComponentB />
@@ -49,9 +59,13 @@ Preserve component state when switching between views.
 
 ```html live
 <template>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem">
+        <vs-button @click="currentIndex = 0">View A</vs-button>
+        <vs-button @click="currentIndex = 1">View B</vs-button>
+    </div>
     <vs-index-view v-model="currentIndex" width="50%">
-        <div>View A</div>
-        <div>View B</div>
+        <div style="padding: 1rem; border: 1px solid #9ca3af">View A</div>
+        <div style="padding: 1rem; border: 1px solid #9ca3af">View B</div>
     </vs-index-view>
 </template>
 ```

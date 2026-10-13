@@ -53,8 +53,10 @@ async function submit() {
 
 ```html live
 <template>
-    <vs-button outline>Outline</vs-button>
-    <vs-button ghost>Ghost</vs-button>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button outline>Outline</vs-button>
+        <vs-button ghost>Ghost</vs-button>
+    </div>
 </template>
 ```
 
@@ -62,11 +64,13 @@ async function submit() {
 
 ```html live
 <template>
-    <vs-button size="xs">XS</vs-button>
-    <vs-button size="sm">SM</vs-button>
-    <vs-button>MD (기본값)</vs-button>
-    <vs-button size="lg">LG</vs-button>
-    <vs-button size="xl">XL</vs-button>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button size="xs">XS</vs-button>
+        <vs-button size="sm">SM</vs-button>
+        <vs-button>MD (기본값)</vs-button>
+        <vs-button size="lg">LG</vs-button>
+        <vs-button size="xl">XL</vs-button>
+    </div>
 </template>
 ```
 

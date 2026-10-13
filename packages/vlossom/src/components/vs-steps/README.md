@@ -106,12 +106,12 @@ interface VsStepsStyleSet extends CSSProperties {
         :style-set="{
             $stepSize: '2rem',
             $step: {
-                border: '2px solid #d1d5db',
-                $completed: { backgroundColor: '#a5b4fc', borderColor: '#a5b4fc', color: '#fff' },
+                border: '2px solid #9ca3af',
+                $completed: { backgroundColor: '#a5b4fc', borderColor: '#a5b4fc', color: '#1e1b4b' },
                 $active: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
             },
             $progress: {
-                backgroundColor: '#e5e7eb',
+                backgroundColor: '#9ca3af',
                 $active: { backgroundColor: '#6366f1' },
             },
         }"

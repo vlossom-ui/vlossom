@@ -35,8 +35,10 @@ const isVisible = ref(false);
 <template>
     <div class="relative">
         <vs-dimmed ref="dimmedRef" v-model="isVisible" />
-        <vs-button @click="dimmedRef.show()">Show Dimmed</vs-button>
-        <vs-button @click="dimmedRef.hide()">Hide Dimmed</vs-button>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-button @click="dimmedRef.show()">Show Dimmed</vs-button>
+            <vs-button @click="dimmedRef.hide()">Hide Dimmed</vs-button>
+        </div>
     </div>
 </template>
 

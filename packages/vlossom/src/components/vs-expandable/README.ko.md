@@ -37,7 +37,7 @@ const isOpen = ref(false);
     <vs-expandable
         :open="isOpen"
         :style-set="{
-            backgroundColor: '#f0f4ff', padding: '1.5rem', borderRadius: '8px',
+            backgroundColor: '#f0f4ff', color: '#1f2937', padding: '1.5rem', borderRadius: '8px',
         }"
     >
         <p>스타일이 적용된 확장 가능한 콘텐츠.</p>
@@ -65,7 +65,7 @@ interface VsExpandableStyleSet extends CSSProperties {}
     <vs-expandable
         :open="true"
         :style-set="{
-            backgroundColor: '#fff8e1', padding: '2rem', borderLeft: '4px solid orange',
+            backgroundColor: '#fff8e1', color: '#1f2937', padding: '2rem', borderLeft: '4px solid orange',
         }"
     >
         <p>강조된 확장 가능한 콘텐츠.</p>

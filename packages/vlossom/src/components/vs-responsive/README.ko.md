@@ -17,7 +17,7 @@
 
 ```html live
 <template>
-    <vs-responsive width="50%">
+    <vs-responsive width="50%" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
         <p>이 요소는 50% 너비를 차지합니다.</p>
     </vs-responsive>
 </template>
@@ -27,9 +27,11 @@
 
 ```html live
 <template>
-    <vs-responsive :grid="6">
-        <p>6개의 그리드 컬럼을 차지합니다.</p>
-    </vs-responsive>
+    <vs-grid>
+        <vs-responsive :grid="6" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
+            <p>6개의 그리드 컬럼을 차지합니다.</p>
+        </vs-responsive>
+    </vs-grid>
 </template>
 ```
 
@@ -37,7 +39,10 @@
 
 ```html live
 <template>
-    <vs-responsive :width="{ xs: '100%', md: '50%', lg: '33%' }">
+    <vs-responsive
+        :width="{ xs: '100%', md: '50%', lg: '33%' }"
+        style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)"
+    >
         <p>브레이크포인트별 반응형 너비를 적용합니다.</p>
     </vs-responsive>
 </template>
@@ -47,7 +52,7 @@
 
 ```html live
 <template>
-    <vs-responsive tag="section" width="80%">
+    <vs-responsive tag="section" width="80%" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
         <p>section 요소로 렌더링됩니다.</p>
     </vs-responsive>
 </template>

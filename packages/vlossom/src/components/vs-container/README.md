@@ -19,11 +19,11 @@ A layout container component that automatically adjusts its padding when opted i
 ```html live
 <template>
     <vs-layout>
-        <vs-header layout>Header</vs-header>
+        <vs-header layout position="fixed">Header</vs-header>
         <vs-container layout>
             <p>Main content area</p>
         </vs-container>
-        <vs-footer layout>Footer</vs-footer>
+        <vs-footer layout position="fixed">Footer</vs-footer>
     </vs-layout>
 </template>
 ```

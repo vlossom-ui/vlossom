@@ -92,9 +92,6 @@ const selected = ref([]);
     'vs-table': `
 import { ref } from 'vue';
 
-const pagedItems = ref([]);
-const totalItems = ref([]);
-const selectedItems = ref([]);
 const orderedItems = ref([]);
 const page = ref(0);
 const pageSize = ref(10);
@@ -104,9 +101,6 @@ function fetchData() {}
 `,
     'vs-text-wrap': `
 function doSomething() {}
-`,
-    'vs-toast': `
-function handleClose() {}
 `,
     'vs-toggle': `
 import { ref } from 'vue';

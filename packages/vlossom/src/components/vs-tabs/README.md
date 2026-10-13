@@ -99,7 +99,7 @@ interface VsTabsStyleSet extends CSSProperties {
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            $divider: '2px solid #e0e0e0',
+            $divider: '2px solid #9ca3af',
             $tabs: { gap: '0.5rem' },
             $tab: {
                 borderRadius: '0.25rem',

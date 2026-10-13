@@ -137,11 +137,22 @@ const items = [
         search
         pagination
         draggable
+        selectable
         v-model:paged-items="pagedItems"
         v-model:total-items="totalItems"
         v-model:selected-items="selectedItems"
     />
+    <p>pagedItems: {{ pagedItems.map((item) => item.name).join(', ') }}</p>
+    <p>totalItems: {{ totalItems.map((item) => item.name).join(', ') }}</p>
+    <p>selectedItems: {{ selectedItems.map((item) => item.name).join(', ') }}</p>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const pagedItems = ref([]);
+const totalItems = ref([]);
+const selectedItems = ref([]);
+</script>
 ```
 
 - `pagedItems`: 현재 페이지에 보이는 행

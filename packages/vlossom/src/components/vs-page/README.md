@@ -57,7 +57,7 @@ interface VsPageStyleSet extends CSSProperties {
 <template>
     <vs-page
         :style-set="{
-            backgroundColor: '#f9f9f9', padding: '2rem',
+            backgroundColor: '#f9f9f9', color: '#1f2937', padding: '2rem',
             $title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
             $description: { color: '#666', fontSize: '0.9rem' },
             $content: { paddingTop: '1rem' },

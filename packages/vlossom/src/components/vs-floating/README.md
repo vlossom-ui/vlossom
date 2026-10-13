@@ -19,9 +19,11 @@ A positioned floating element that renders in a teleport overlay and automatical
 
 ```html live
 <template>
-    <div id="my-anchor" @mouseenter="show = true" @mouseleave="show = false">Hover me</div>
+    <vs-button id="my-anchor" @mouseenter="show = true" @mouseleave="show = false">Hover me</vs-button>
     <vs-floating v-model="show" target="#my-anchor" placement="bottom">
-        <div class="tooltip-box">Floating content</div>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            Floating content
+        </div>
     </vs-floating>
 </template>
 
@@ -35,9 +37,11 @@ const show = ref(false);
 
 ```html live
 <template>
-    <input id="search-input" type="text" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
-    <vs-floating v-model="dropdownOpen" target="#search-input" placement="bottom" follow-width>
-        <div class="dropdown-list">Dropdown items</div>
+    <vs-input id="search-input" @focus="dropdownOpen = true" @blur="dropdownOpen = false" />
+    <vs-floating v-model="dropdownOpen" target="#search-input" placement="top" follow-width>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            Dropdown items
+        </div>
     </vs-floating>
 </template>
 
@@ -51,9 +55,13 @@ const dropdownOpen = ref(false);
 
 ```html live
 <template>
-    <button id="delayed-btn" @mouseenter="visible = true" @mouseleave="visible = false">Hover for tooltip</button>
+    <vs-button id="delayed-btn" @mouseenter="visible = true" @mouseleave="visible = false">
+        Hover for tooltip
+    </vs-button>
     <vs-floating v-model="visible" target="#delayed-btn" placement="top" :enter-delay="300" :leave-delay="200">
-        <div>Delayed tooltip</div>
+        <div style="padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; background: #fff; color: #1f2937">
+            Delayed tooltip
+        </div>
     </vs-floating>
 </template>
 ```
