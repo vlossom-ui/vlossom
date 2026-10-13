@@ -15,6 +15,7 @@ A dropdown select component supporting single and multiple selection with search
 - Closable chip display for selected values in multiple mode
 - Built-in validation support (required, min, max)
 - Keyboard navigation within the dropdown list
+- Automatic virtual scrolling when there are more than 100 options (disable with `noVirtual`)
 - Customizable option, selected option, and chip styles
 
 ## Basic Usage
@@ -135,6 +136,7 @@ When there is no option to show — because `options` is empty or the search key
 | `collapseChips`    | `boolean`                                                              | `false`                   | -        | Collapses selected chips into a count display                                                       |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | Enables multiple selection mode                                                                     |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | Hides the clear button                                                                              |
+| `noVirtual`        | `boolean`                                                              | `false`                   | -        | Disables automatic virtual scrolling of the options list                                            |
 | `optionsDisabled`  | `boolean \| ((option: any, index: number, options: any[]) => boolean)` | `false`                   | -        | Disables individual options                                                                         |
 | `selectAll`        | `boolean`                                                              | `false`                   | -        | Shows a select-all checkbox (multiple mode)                                                         |
 | `size`             | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`                                 | `'md'`                    | -        | Trigger height, padding, font, border-radius, and the options dropdown (padding/font/border-radius) |
