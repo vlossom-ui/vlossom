@@ -312,6 +312,24 @@ describe('liveDemos', () => {
         expect(html).not.toContain('data:,P');
     });
 
+    it('live 펜스가 있는 페이지는 frontmatter를 유지하고 liveDemos를 표시한다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+        const pageEnv = env();
+
+        await md.renderAsync('---\ntitle: A\n---\n\n```html live\n<template><p>A</p></template>\n```', pageEnv);
+
+        expect(pageEnv.frontmatter).toEqual({ title: 'A', liveDemos: true });
+    });
+
+    it('live 펜스가 없는 페이지는 liveDemos를 표시하지 않는다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+        const pageEnv = env();
+
+        await md.renderAsync('---\ntitle: A\n---\n\n```html\n<template><p>A</p></template>\n```', pageEnv);
+
+        expect(pageEnv.frontmatter).toEqual({ title: 'A' });
+    });
+
     it('루트 template이 없는 live 펜스는 파일과 펜스 번호를 밝혀 실패한다', async () => {
         const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
 

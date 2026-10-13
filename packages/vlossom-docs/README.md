@@ -35,9 +35,12 @@ packages/vlossom-docs/
 │   ├── demo-scope.ts        # Names and images for README examples
 │   ├── vlossom-css.ts       # Changes vlossom.css for the site
 │   ├── vlossom-css.test.ts
+│   ├── shims.d.ts           # Lets TypeScript import .vue files
 │   └── theme/
-│       ├── index.ts         # Theme entry: Vlossom app, dark mode, modal cleanup
-│       ├── vlossom.ts       # Loads Vlossom when the first demo needs it
+│       ├── index.ts         # Theme entry: Vlossom app, dark mode, modal cleanup, demo options
+│       ├── vlossom.ts       # Loads Vlossom when the first demo needs it, sets its options
+│       ├── vlossom.test.ts
+│       ├── DemoOptions.vue  # Demo options console
 │       ├── layers.css       # Puts the vlossom.css base layer below the VitePress styles
 │       ├── layers.test.ts
 │       ├── vars.css         # Sets the VitePress background to the vlossom background
@@ -93,6 +96,17 @@ The [component README template](../vlossom/src/components/COMPONENT_README_TEMPL
 Some examples use names that they do not declare. [`demo-scope.ts`](.vitepress/demo-scope.ts) gives these names to the demos. It also replaces some image URLs that do not exist with a placeholder image.
 
 `pnpm test` compiles all component demos. The test fails if a demo uses a name that nothing declares. It also fails if a demo uses a component that Vlossom does not register. It also fails if `README.md` and `README.ko.md` mark different examples.
+
+### Demo Options
+
+A page with live demos shows a round button at the bottom right. The button opens the demo options console. The console sets these Vlossom options for all demos on the site:
+
+- **Theme**: light or dark. The VitePress theme switch and the `vs-theme-button` demos change the same setting.
+- **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
+
+The color scheme stays when you open other pages. A reload sets it back to `default`.
+
+The live demo plugin adds `liveDemos: true` to the frontmatter of each page with a live demo. The console shows only on these pages.
 
 ### Vlossom Version
 
