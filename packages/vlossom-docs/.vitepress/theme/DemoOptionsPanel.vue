@@ -1,8 +1,22 @@
+<script lang="ts">
+import { ref } from 'vue';
+
+// 패널은 데모가 없는 페이지에서 사라졌다가 다시 생긴다. 입력한 style-set을 유지하려고 모듈에 둔다.
+const styleSetSource = ref('');
+</script>
+
 <script setup lang="ts">
 import type { ColorScheme } from 'vlossom';
 import { useData } from 'vitepress';
-import { computed, ref, useTemplateRef, type ComponentPublicInstance } from 'vue';
-import { defaultColorScheme, setDefaultColorScheme, vlossomColors } from './vlossom.ts';
+import { computed, useTemplateRef, type ComponentPublicInstance } from 'vue';
+import { parseStyleSet, type StyleSetInputError } from './style-set-input.ts';
+import {
+    defaultColorScheme,
+    setDefaultColorScheme,
+    setDemoStyleSet,
+    styleSetComponents,
+    vlossomColors,
+} from './vlossom.ts';
 
 const LABELS = {
     root: {
@@ -12,6 +26,16 @@ const LABELS = {
         dark: 'Dark',
         colorScheme: 'Color scheme',
         default: 'default',
+        styleSet: 'Style set',
+        apply: 'Apply',
+        reset: 'Reset',
+        applied: 'Applied to the demos.',
+        errors: {
+            syntax: 'This is not a valid object: ',
+            'not-object': 'Enter an object, for example { VsButton: { ... } }.',
+            'unknown-component': 'These components do not take a style set: ',
+            'not-style-object': 'Give each component an object: ',
+        },
     },
     ko: {
         title: 'Vlossom 옵션',
@@ -20,17 +44,51 @@ const LABELS = {
         dark: '다크',
         colorScheme: '색상 스킴',
         default: '기본값',
+        styleSet: '스타일 세트',
+        apply: '적용',
+        reset: '초기화',
+        applied: '데모에 적용했습니다.',
+        errors: {
+            syntax: '객체 문법이 아닙니다: ',
+            'not-object': '객체를 입력하세요. 예: { VsButton: { ... } }',
+            'unknown-component': '스타일 세트를 받지 않는 컴포넌트입니다: ',
+            'not-style-object': '컴포넌트마다 객체를 주세요: ',
+        },
     },
+} satisfies Record<string, { errors: Record<StyleSetInputError, string> } & Record<string, unknown>>;
+const STYLE_SET_PLACEHOLDER = "{ VsButton: { backgroundColor: '#e11d48', color: '#fff' } }";
+// 콘솔 자신은 콘솔에서 넣은 style-set을 받지 않는다. style-set을 객체로 직접 주면 기본값(콘솔 style-set 이름)을 쓰지 않는다.
+const NO_DOCS_STYLE_SET = {};
+const TEXTAREA_STYLE_SET = {
+    $textarea: { minHeight: '6rem', fontFamily: 'var(--vp-font-family-mono)', fontSize: '0.75rem' },
 };
 
 const { isDark, localeIndex } = useData();
 const open = ref(false);
 const opened = ref(false);
+const status = ref<{ kind: 'error' | 'applied'; text: string }>();
+const source = styleSetSource;
 const toggleButton = useTemplateRef<ComponentPublicInstance>('toggleButton');
 const swatchGroup = useTemplateRef<HTMLElement>('swatchGroup');
 const labels = computed(() => (localeIndex.value === 'ko' ? LABELS.ko : LABELS.root));
 const options = computed<(ColorScheme | undefined)[]>(() => [undefined, ...vlossomColors.value]);
 const selectedIndex = computed(() => options.value.indexOf(defaultColorScheme.value));
+
+function applyStyleSet(): void {
+    const result = parseStyleSet(source.value, styleSetComponents.value);
+    if (!result.ok) {
+        status.value = { kind: 'error', text: `${labels.value.errors[result.error]}${result.detail}` };
+        return;
+    }
+    setDemoStyleSet(result.value);
+    status.value = result.value ? { kind: 'applied', text: labels.value.applied } : undefined;
+}
+
+function resetStyleSet(): void {
+    source.value = '';
+    setDemoStyleSet(undefined);
+    status.value = undefined;
+}
 
 function toggle(): void {
     open.value = !open.value;
@@ -66,12 +124,19 @@ function move(step: number): void {
             <span class="wheel" />
             <span class="toggle-label">{{ labels.title }}</span>
         </vs-button>
-        <vs-block v-show="open" id="demo-options-panel" class="panel" role="region" :aria-label="labels.title">
+        <vs-block
+            v-show="open"
+            id="demo-options-panel"
+            class="panel"
+            role="region"
+            :aria-label="labels.title"
+            :style-set="NO_DOCS_STYLE_SET"
+        >
             <template #title>{{ labels.title }}</template>
             <div class="row">
                 <span class="label">{{ labels.theme }}</span>
                 <span class="value">{{ isDark ? labels.dark : labels.light }}</span>
-                <vs-theme-button class="theme-button" />
+                <vs-theme-button class="theme-button" :style-set="NO_DOCS_STYLE_SET" />
             </div>
             <div class="row">
                 <span class="label">{{ labels.colorScheme }}</span>
@@ -101,8 +166,33 @@ function move(step: number): void {
                     :aria-label="option ?? labels.default"
                     :aria-checked="index === selectedIndex"
                     :tabindex="index === selectedIndex ? 0 : -1"
+                    :style-set="NO_DOCS_STYLE_SET"
                     @click="setDefaultColorScheme(option)"
                 />
+            </div>
+            <div class="style-set">
+                <vs-textarea
+                    v-model="source"
+                    :label="labels.styleSet"
+                    :placeholder="STYLE_SET_PLACEHOLDER"
+                    no-messages
+                    :style-set="TEXTAREA_STYLE_SET"
+                />
+                <div class="actions">
+                    <span
+                        v-if="status"
+                        :class="['status', status.kind]"
+                        :role="status.kind === 'error' ? 'alert' : 'status'"
+                    >
+                        {{ status.text }}
+                    </span>
+                    <vs-button size="sm" :style-set="NO_DOCS_STYLE_SET" @click="resetStyleSet">
+                        {{ labels.reset }}
+                    </vs-button>
+                    <vs-button size="sm" primary :style-set="NO_DOCS_STYLE_SET" @click="applyStyleSet">
+                        {{ labels.apply }}
+                    </vs-button>
+                </div>
             </div>
         </vs-block>
     </div>
@@ -164,8 +254,35 @@ function move(step: number): void {
    배경을 사이트의 떠 있는 면 색으로 두어 다크 모드에서도 페이지와 구분하고, 선택 링의 간격 색과 맞춘다. */
 .panel {
     width: min(21rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 6rem);
+    overflow-y: auto;
     background-color: var(--vp-c-bg-elv);
     box-shadow: var(--vp-shadow-3);
+}
+
+.style-set {
+    margin-top: 0.75rem;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.status {
+    margin-right: auto;
+    font-size: 0.75rem;
+}
+
+.status.error {
+    color: var(--vp-c-danger-1);
+}
+
+.status.applied {
+    color: var(--vp-c-text-2);
 }
 
 .row {

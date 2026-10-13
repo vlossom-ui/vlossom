@@ -41,6 +41,8 @@ packages/vlossom-docs/
 │       ├── index.ts             # Theme entry: Vlossom app, dark mode, modal cleanup, Vlossom options console
 │       ├── vlossom.ts           # Loads Vlossom when the first demo needs it, sets its options
 │       ├── vlossom.test.ts
+│       ├── style-set-input.ts   # Reads and checks the style set that you enter in the console
+│       ├── style-set-input.test.ts
 │       ├── DemoOptions.vue      # Shows the Vlossom options console on pages with live demos
 │       ├── DemoOptionsPanel.vue # Vlossom options console, made of Vlossom components
 │       ├── layers.css           # Puts the vlossom.css base layer below the VitePress styles
@@ -108,8 +110,11 @@ A page with live demos shows a **Vlossom options** button at the bottom right. O
 
 - **Theme**: light or dark. The VitePress theme switch and the `vs-theme-button` demos change the same setting.
 - **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
+- **Style set**: a style set for each component, for example `{ VsButton: { backgroundColor: '#e11d48' } }`. Write it in the object syntax of the README examples (JSON5), then select **Apply**. The console does not run the text as code. It shows an error if the text is not an object or names a component that does not take a style set.
 
-The color scheme stays when you open other pages. A reload sets it back to `default`.
+The color scheme and the style set stay when you open other pages. A reload resets them.
+
+The console adds the style set to the global `styleSet` option with the name `vlossom-docs`. On the site, each Vlossom component that takes a style set uses this name by default, so the style set applies to all demos. A demo that sets `:style-set` keeps its own style set. The components in the console do not use it.
 
 The console is made of Vlossom components: `VsButton`, `VsBlock`, and `VsThemeButton`. Thus the console also uses the selected color scheme. Each color swatch sets its own `color-scheme`, so the swatch colors do not change. The swatches are a radio group: Tab goes to the selected swatch, and the arrow keys select the next or previous one.
 

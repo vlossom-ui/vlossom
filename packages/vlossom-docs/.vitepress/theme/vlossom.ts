@@ -1,6 +1,7 @@
 import type { ColorScheme } from 'vlossom';
-import { shallowRef, watch, type App, type Ref, type WatchStopHandle } from 'vue';
+import { shallowRef, watch, type App, type Component, type Ref, type WatchStopHandle } from 'vue';
 import 'vlossom/styles';
+import type { StyleSetValue } from './style-set-input.ts';
 
 type VlossomInstance = ReturnType<(typeof import('vlossom'))['useVlossom']>;
 
@@ -12,6 +13,37 @@ const vlossom = shallowRef<VlossomInstance>();
 // DemoOptions는 이 목록이 채워진 뒤에만 나타난다. 서버 렌더와 vlossom을 불러오기 전에는 비어 있다.
 export const vlossomColors = shallowRef<readonly ColorScheme[]>([]);
 export const defaultColorScheme = shallowRef<ColorScheme>();
+
+// 콘솔이 넣는 style-set의 이름이다. README 예제는 이름으로 style-set을 고르지 않으므로 겹치지 않는다.
+export const DOCS_STYLE_SET = 'vlossom-docs';
+export const styleSetComponents = shallowRef<readonly string[]>([]);
+export const demoStyleSet = shallowRef<StyleSetValue>();
+
+type ComponentWithProps = Component & { props?: Record<string, object> };
+
+function styleSetProp(component: Component): object | undefined {
+    return (component as ComponentWithProps).props?.styleSet;
+}
+
+// 전역 style-set은 컴포넌트가 style-set="이름"으로 고를 때만 걸린다. 콘솔에서 넣은 style-set이 데모에 걸리도록,
+// style-set을 받는 컴포넌트는 콘솔의 style-set 이름을 기본값으로 쓰는 복사본으로 등록한다.
+// Vue 3의 extends는 setup과 render를 물려주지 않으므로, 컴포넌트 객체를 얕게 복사하고 props만 바꾼다.
+// 직접 :style-set을 준 데모는 그 값을 쓰고, vlossom 컴포넌트 안에서 쓰는 자식 컴포넌트는 원래 컴포넌트라서 영향이 없다.
+export function withDocsStyleSet(components: Record<string, Component>): Record<string, Component> {
+    return Object.fromEntries(
+        Object.entries(components).map(([name, component]) => {
+            const styleSet = styleSetProp(component);
+            if (!styleSet) {
+                return [name, component];
+            }
+            const props = {
+                ...(component as ComponentWithProps).props,
+                styleSet: { ...styleSet, default: DOCS_STYLE_SET },
+            };
+            return [name, { ...component, props }];
+        }),
+    );
+}
 
 export function attachVlossom(target: App): void {
     app = target;
@@ -25,7 +57,10 @@ async function loadVlossom(): Promise<void> {
         throw new Error('Vlossom is not attached to the app.');
     }
     const { COLORS, createVlossom, useVlossom, VlossomComponents } = await import('vlossom');
-    app.use(createVlossom({ components: VlossomComponents }));
+    app.use(createVlossom({ components: withDocsStyleSet(VlossomComponents) }));
+    styleSetComponents.value = Object.keys(VlossomComponents).filter((name) =>
+        styleSetProp((VlossomComponents as Record<string, Component>)[name]),
+    );
     const instance = useVlossom();
     // vlossom은 저장해 둔 자기 테마로 시작한다. 사이트 테마로 먼저 맞춘 뒤에 내보내야 테마 감시가 사이트 테마를 바꾸지 않는다.
     instance.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -69,5 +104,13 @@ export function setDefaultColorScheme(colorScheme: ColorScheme | undefined): voi
         const { default: _default, ...components } = vlossom.value.colorScheme;
         vlossom.value.colorScheme = colorScheme ? { ...components, default: colorScheme } : components;
         defaultColorScheme.value = colorScheme;
+    }
+}
+
+export function setDemoStyleSet(styleSet: StyleSetValue | undefined): void {
+    if (vlossom.value) {
+        const { [DOCS_STYLE_SET]: _previous, ...others } = vlossom.value.styleSet;
+        vlossom.value.styleSet = styleSet ? { ...others, [DOCS_STYLE_SET]: styleSet } : others;
+        demoStyleSet.value = styleSet;
     }
 }
