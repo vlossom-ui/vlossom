@@ -1,5 +1,5 @@
 import { relative, resolve, sep } from 'node:path';
-import { defineConfig, type DefaultTheme } from 'vitepress';
+import { defineConfig, postcssIsolateStyles, type DefaultTheme } from 'vitepress';
 import { DEMO_IMAGES, DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
 import { vlossomSiteStyles } from './vlossom-css.ts';
@@ -71,8 +71,16 @@ export default defineConfig({
         },
     },
 
+    // favicon은 base 아래에 있어야 해서 경로를 직접 적는다. 브라우저가 기본으로 찾는 /favicon.ico는 base가 /vlossom/일 때 사이트 밖이다.
+    transformHead: ({ siteConfig }) => [['link', { rel: 'icon', href: `${siteConfig.site.base}favicon.ico` }]],
+
     vite: {
+        // 로고와 favicon은 vlossom 패키지의 assets에 있다. 복사본을 두지 않으려고 그 폴더를 public으로 쓴다(srcDir 기준 경로).
+        publicDir: 'vlossom/assets',
         plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
+        // vp-doc.css는 레이어 밖에 있어서 레이어 안의 vlossom 컴포넌트 스타일을 이긴다(예: VsTabs 탭에 목록 점).
+        // 이 파일의 규칙이 .vp-raw 안에서는 걸리지 않게 해서, 데모가 일반 앱에서처럼 보이게 한다.
+        css: { postcss: { plugins: [postcssIsolateStyles({ includeFiles: [/vp-doc\.css/] })] } },
         // vlossom은 동적 import로만 불러와서, 스캐너가 모르면 dev 서버가 첫 로드 뒤에 의존성을 다시 묶고 새로고침한다.
         // include: ['vlossom']은 Vite root(packages/) 기준으로 풀려 워크스페이스의 packages/vlossom을 가리키므로, import하는 파일을 entries로 준다.
         optimizeDeps: { entries: [relative(PACKAGES_DIR, VLOSSOM_RUNTIME).split(sep).join('/')] },
@@ -84,6 +92,7 @@ export default defineConfig({
     },
 
     themeConfig: {
+        logo: '/vlossom-logo.png',
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 

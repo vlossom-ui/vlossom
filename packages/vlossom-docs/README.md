@@ -26,29 +26,31 @@ pnpm dev
 ```txt
 packages/vlossom-docs/
 ├── .vitepress/
-│   ├── config.ts            # Site settings: source directory, routes, languages
-│   ├── readme-pages.ts      # Finds README pages, makes the sidebar, changes README links
+│   ├── config.ts                # Site settings: source directory, routes, languages, logo
+│   ├── readme-pages.ts          # Finds README pages, makes the sidebar, changes README links
 │   ├── readme-pages.test.ts
-│   ├── live-demo.ts         # Makes demo components from `live` code blocks
+│   ├── home-pages.test.ts       # Checks the links of the home page buttons
+│   ├── live-demo.ts             # Makes demo components from `live` code blocks
 │   ├── live-demo.test.ts
-│   ├── readme-demos.test.ts # Compiles all component demos
-│   ├── demo-scope.ts        # Names and images for README examples
-│   ├── vlossom-css.ts       # Changes vlossom.css for the site
+│   ├── readme-demos.test.ts     # Compiles all component demos
+│   ├── demo-scope.ts            # Names and images for README examples
+│   ├── vlossom-css.ts           # Changes vlossom.css for the site
 │   ├── vlossom-css.test.ts
-│   ├── shims.d.ts           # Lets TypeScript import .vue files
+│   ├── shims.d.ts               # Lets TypeScript import .vue files
 │   └── theme/
-│       ├── index.ts         # Theme entry: Vlossom app, dark mode, modal cleanup, demo options
-│       ├── vlossom.ts       # Loads Vlossom when the first demo needs it, sets its options
+│       ├── index.ts             # Theme entry: Vlossom app, dark mode, modal cleanup, demo options
+│       ├── vlossom.ts           # Loads Vlossom when the first demo needs it, sets its options
 │       ├── vlossom.test.ts
-│       ├── DemoOptions.vue  # Demo options console
-│       ├── layers.css       # Puts the vlossom.css base layer below the VitePress styles
+│       ├── DemoOptions.vue      # Shows the demo options console on pages with live demos
+│       ├── DemoOptionsPanel.vue # Demo options console, made of Vlossom components
+│       ├── layers.css           # Puts the vlossom.css base layer below the VitePress styles
 │       ├── layers.test.ts
-│       ├── vars.css         # Sets the VitePress background to the vlossom background
-│       └── demo.css         # Demo area styles
-├── pages/                   # Pages that only the site has
-│   ├── index.md             # English home page (/)
+│       ├── vars.css             # VitePress background and brand colors from the vlossom palette
+│       └── demo.css             # Demo area styles
+├── pages/                       # Pages that only the site has
+│   ├── index.md                 # English home page (/)
 │   └── ko/
-│       └── index.md         # Korean home page (/ko/)
+│       └── index.md             # Korean home page (/ko/)
 ├── package.json
 └── tsconfig.json
 ```
@@ -70,6 +72,7 @@ The site reads the README files from `packages/vlossom`. It does not copy them.
 - A new directory with README files becomes a page. You do not change the settings. Restart `pnpm dev` after you add or remove README files.
 - The language menu opens the same page in the other language.
 - The site changes the relative links between README files to site links. A link to a missing README page causes an error in `pnpm build`. A link to another missing file or to a missing heading does not cause an error.
+- The home pages have a button to the first component page. `pnpm build` does not examine these links, because they are in the frontmatter. `pnpm test` makes sure that the button goes to the same page as the Components link in the nav.
 
 ## Live Demos
 
@@ -95,16 +98,20 @@ The [component README template](../vlossom/src/components/COMPONENT_README_TEMPL
 
 Some examples use names that they do not declare. [`demo-scope.ts`](.vitepress/demo-scope.ts) gives these names to the demos. It also replaces some image URLs that do not exist with a placeholder image.
 
+Each demo box has the `vp-raw` class. With `postcssIsolateStyles` in [`config.ts`](.vitepress/config.ts), the VitePress document styles (`vp-doc.css`) do not apply in the box. Thus a demo shows no list bullets or table borders from the page, and looks as it does in an app.
+
 `pnpm test` compiles all component demos. The test fails if a demo uses a name that nothing declares. It also fails if a demo uses a component that Vlossom does not register. It also fails if `README.md` and `README.ko.md` mark different examples.
 
 ### Demo Options
 
-A page with live demos shows a round button at the bottom right. The button opens the demo options console. The console sets these Vlossom options for all demos on the site:
+A page with live demos shows a **Demo options** button at the bottom right. On a narrow screen, the button shows only its icon. The button pulses until you open the console for the first time. It does not pulse when the system setting asks for less motion. The console sets these Vlossom options for all demos on the site:
 
 - **Theme**: light or dark. The VitePress theme switch and the `vs-theme-button` demos change the same setting.
 - **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
 
 The color scheme stays when you open other pages. A reload sets it back to `default`.
+
+The console is made of Vlossom components: `VsButton`, `VsBlock`, and `VsThemeButton`. Thus the console also uses the selected color scheme. Each color swatch sets its own `color-scheme`, so the swatch colors do not change. The swatches are a radio group: Tab goes to the selected swatch, and the arrow keys select the next or previous one.
 
 The live demo plugin adds `liveDemos: true` to the frontmatter of each page with a live demo. The console shows only on these pages.
 
@@ -124,6 +131,8 @@ To update the version:
 ## Styles
 
 The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The VitePress layout does not change. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
+
+The brand color of the site comes from the vlossom `pink` and `rose` palettes, which match the Vlossom logo. [`vars.css`](.vitepress/theme/vars.css) sets it. The logo and the favicon come from `packages/vlossom/assets`, because `config.ts` uses that directory as the public directory. The site does not keep copies of them.
 
 ## CI
 

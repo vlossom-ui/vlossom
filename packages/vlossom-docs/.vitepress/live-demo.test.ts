@@ -291,7 +291,9 @@ describe('liveDemos', () => {
         const [id] = registry.ids();
         const script = pageEnv.sfcBlocks.scriptSetup.content;
 
-        expect(html.match(/<ClientOnly><div class="vs-demo"><VsDemo0 \/><\/div><\/ClientOnly>/g)).toHaveLength(1);
+        const demoBoxes = html.match(/<ClientOnly><div class="vs-demo vp-raw"><VsDemo0 \/><\/div><\/ClientOnly>/g);
+
+        expect(demoBoxes).toHaveLength(1);
         expect(html.match(/class="language-html/g)).toHaveLength(2);
         expect(registry.get(id)).toBe(
             '<script setup lang="ts">\nfunction handleClick() {}\n</script>\n\n<template>\n<vs-button @click="handleClick">Click</vs-button>\n</template>\n',

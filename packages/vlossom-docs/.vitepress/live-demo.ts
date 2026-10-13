@@ -295,9 +295,10 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
     if (!renderFence) {
         throw new Error('markdown-it fence renderer is missing');
     }
+    // vp-raw는 config의 postcssIsolateStyles와 짝이다. VitePress 문서 스타일(목록 점, 표 테두리)이 데모 안에 걸리지 않게 한다.
     md.renderer.rules.fence = (tokens, idx, renderOptions, env, self) => {
         const code = renderFence(tokens, idx, renderOptions, env, self);
         const demo = tokens[idx].meta?.demo;
-        return demo ? `<ClientOnly><div class="${DEMO_CLASS}"><${demo} /></div></ClientOnly>\n${code}` : code;
+        return demo ? `<ClientOnly><div class="${DEMO_CLASS} vp-raw"><${demo} /></div></ClientOnly>\n${code}` : code;
     };
 }
