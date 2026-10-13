@@ -41,6 +41,7 @@ export default defineConfig({
     },
     test: {
         environment: 'jsdom',
+        pool: 'vmThreads',
         root: fileURLToPath(new URL('./', import.meta.url)),
         setupFiles: ['src/test/test-setup.ts'],
         include: ['src/**/*.test.ts'],
