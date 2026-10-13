@@ -30,7 +30,7 @@ export function whenVlossomReady(): Promise<void> {
     return ready;
 }
 
-// VsModal은 데모 컴포넌트가 사라져도 열어 둔 모달을 닫지 않아서, 다른 페이지로 가면 모달과 스크롤 잠금이 남는다.
+// VsModal은 데모 컴포넌트가 사라져도 열어 둔 모달을 닫지 않아서, 다른 페이지로 가면 모달과 스크롤 잠금이 남는다(#670).
 export function closeVlossomModals(): void {
     vlossom?.modal.clear();
 }
