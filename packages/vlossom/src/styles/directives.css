@@ -21,8 +21,8 @@
         margin-bottom: -1.5rem;
         background: linear-gradient(
             to bottom,
-            color-mix(in srgb, var(--vs-cs-shadow-color) 60%, transparent) 0%,
-            color-mix(in srgb, var(--vs-cs-shadow-color) 0%, transparent) 100%
+            color-mix(in srgb, var(--vs-cs-shadow) 60%, transparent) 0%,
+            color-mix(in srgb, var(--vs-cs-shadow) 0%, transparent) 100%
         );
 
         @container scroll-state(scrollable: top) {
@@ -35,8 +35,8 @@
         margin-top: -1.5rem;
         background: linear-gradient(
             to top,
-            color-mix(in srgb, var(--vs-cs-shadow-color) 60%, transparent) 0%,
-            color-mix(in srgb, var(--vs-cs-shadow-color) 0%, transparent) 100%
+            color-mix(in srgb, var(--vs-cs-shadow) 60%, transparent) 0%,
+            color-mix(in srgb, var(--vs-cs-shadow) 0%, transparent) 100%
         );
 
         @container scroll-state(scrollable: bottom) {

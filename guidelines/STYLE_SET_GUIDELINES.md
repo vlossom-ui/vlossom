@@ -167,7 +167,7 @@ export default defineComponent({
         // `computed` is fine when defaults depend on other props.
         const baseStyleSet: ComputedRef<VsButtonStyleSet> = computed(() => ({
             $loading: {
-                $barColor: primary.value ? 'var(--vs-cs-font-primary)' : undefined,
+                $barColor: primary.value ? 'var(--vs-cs-text-primary)' : undefined,
                 width: '30%',
                 height: '60%',
             },

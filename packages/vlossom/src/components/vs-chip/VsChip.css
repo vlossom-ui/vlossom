@@ -10,13 +10,13 @@
     @apply relative box-border inline-flex items-center justify-center select-none hover:brightness-96
         active:brightness-92;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-border);
     border-radius: calc(var(--vs-chip-computed-height) / 2);
     background-color: var(--vs-cs-bg);
     width: auto;
     height: var(--vs-chip-computed-height);
     min-height: var(--vs-chip-computed-height);
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-text-tinted);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
     line-height: 2;
     user-select: none;
@@ -24,14 +24,14 @@
     .vs-chip-icon {
         @apply flex items-center justify-center;
 
-        border: 1px solid var(--vs-cs-line);
+        border: 1px solid var(--vs-cs-border);
         border-radius: 50%;
-        background-color: var(--vs-cs-bg-area-colored);
+        background-color: var(--vs-cs-surface-tinted);
         min-width: var(--vs-chip-icon-size);
         max-width: var(--vs-chip-icon-size);
         min-height: var(--vs-chip-icon-size);
         max-height: var(--vs-chip-icon-size);
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
     }
 
     .vs-chip-close-button {
@@ -59,8 +59,8 @@
     &.vs-outline {
         @apply bg-transparent;
 
-        border: 1px solid var(--vs-cs-line);
-        color: var(--vs-cs-font-colored);
+        border: 1px solid var(--vs-cs-border);
+        color: var(--vs-cs-text-tinted);
 
         &:hover {
             background-color: var(--vs-cs-bg);
@@ -70,13 +70,13 @@
     &.vs-primary {
         @apply hover:brightness-104 active:brightness-108;
 
-        border: 1px solid var(--vs-cs-bg-primary);
-        background-color: var(--vs-cs-bg-primary);
-        color: var(--vs-cs-font-primary);
+        border: 1px solid var(--vs-cs-primary);
+        background-color: var(--vs-cs-primary);
+        color: var(--vs-cs-text-primary);
 
         .vs-chip-icon {
-            border: 1px solid var(--vs-cs-bg-primary);
-            color: var(--vs-cs-font);
+            border: 1px solid var(--vs-cs-primary);
+            color: var(--vs-cs-text);
         }
     }
 

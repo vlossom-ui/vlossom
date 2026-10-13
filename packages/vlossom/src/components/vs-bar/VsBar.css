@@ -3,13 +3,13 @@
 .vs-bar {
     @apply relative box-border h-auto w-full rounded-none p-0;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-border);
     background-color: var(--vs-cs-bg);
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-text-tinted);
 
     &.vs-primary {
-        border: 1px solid var(--vs-cs-bg-primary);
-        background-color: var(--vs-cs-bg-primary);
-        color: var(--vs-cs-font-primary);
+        border: 1px solid var(--vs-cs-primary);
+        background-color: var(--vs-cs-primary);
+        color: var(--vs-cs-text-primary);
     }
 }

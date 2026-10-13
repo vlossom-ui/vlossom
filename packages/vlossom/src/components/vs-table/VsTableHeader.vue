@@ -92,8 +92,8 @@ export default defineComponent({
                 return {};
             }
             return {
-                $checkboxColor: 'var(--vs-cs-bg-area)',
-                $checkboxCheckedColor: 'var(--vs-cs-font-colored)',
+                $checkboxColor: 'var(--vs-cs-surface)',
+                $checkboxCheckedColor: 'var(--vs-cs-text-tinted)',
             };
         });
 

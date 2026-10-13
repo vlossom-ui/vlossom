@@ -4,8 +4,8 @@
     --vs-steps-stepSize: initial;
 
     --step-size: var(--vs-steps-stepSize, 1.6rem);
-    --step-line-color: color-mix(in oklch, var(--vs-cs-bg-primary) 20%, transparent 80%);
-    --step-progress-color: var(--vs-cs-bg-primary);
+    --step-line-color: color-mix(in oklch, var(--vs-cs-primary) 20%, transparent 80%);
+    --step-progress-color: var(--vs-cs-primary);
     --step-transition: 0.2s;
 
     @apply relative select-none;
@@ -46,14 +46,14 @@
                 .vs-step-num::after {
                     position: absolute;
                     inset: 2px;
-                    border: 1px solid var(--vs-cs-line-strong);
+                    border: 1px solid var(--vs-cs-border-strong);
                     border-radius: 100%;
                     pointer-events: none;
                     content: '';
                 }
 
                 &.vs-selected .vs-step-num::after {
-                    border-color: var(--vs-cs-font-primary);
+                    border-color: var(--vs-cs-text-primary);
                 }
             }
 
@@ -61,48 +61,48 @@
                 @apply relative flex items-center justify-center font-semibold;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 
-                border: 1px solid var(--vs-cs-line);
+                border: 1px solid var(--vs-cs-border);
                 border-radius: 100%;
-                background-color: var(--vs-cs-bg-area);
+                background-color: var(--vs-cs-surface);
                 width: var(--step-size);
                 height: var(--step-size);
-                color: var(--vs-cs-font-colored);
+                color: var(--vs-cs-text-tinted);
                 font-size: var(--vs-font-size-sm);
             }
 
             .vs-step-label {
                 @apply absolute top-3/2 left-1/2 -translate-x-1/2 whitespace-nowrap;
 
-                color: var(--vs-cs-font);
+                color: var(--vs-cs-text);
                 font-size: var(--vs-font-size-md);
             }
 
             &.vs-previous {
                 .vs-step-num {
-                    border-color: var(--vs-cs-bg-primary);
-                    background-color: var(--vs-cs-bg-primary);
-                    color: var(--vs-cs-font-primary);
+                    border-color: var(--vs-cs-primary);
+                    background-color: var(--vs-cs-primary);
+                    color: var(--vs-cs-text-primary);
                 }
 
                 .vs-step-label {
-                    color: var(--vs-cs-font-colored);
+                    color: var(--vs-cs-text-tinted);
                 }
             }
 
             &.vs-selected {
                 .vs-step-num {
                     transition-delay: 0.15s;
-                    outline: 3px solid var(--vs-cs-bg-primary);
+                    outline: 3px solid var(--vs-cs-primary);
                     outline-offset: 3px;
-                    border-color: var(--vs-cs-bg-primary);
-                    background-color: var(--vs-cs-bg-primary);
-                    color: var(--vs-cs-font-primary);
+                    border-color: var(--vs-cs-primary);
+                    background-color: var(--vs-cs-primary);
+                    color: var(--vs-cs-text-primary);
                 }
 
                 .vs-step-label {
                     @apply font-semibold;
 
-                    color: var(--vs-cs-bg-primary);
+                    color: var(--vs-cs-primary);
                 }
             }
         }

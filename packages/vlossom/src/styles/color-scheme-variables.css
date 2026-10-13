@@ -4,20 +4,20 @@
  * and must be kept in sync with that file.
  */
 :root {
-    --vs-cs-line: initial;
-    --vs-cs-line-strong: initial;
+    --vs-cs-border: initial;
+    --vs-cs-border-strong: initial;
 
-    --vs-cs-font: initial;
-    --vs-cs-font-colored: initial;
-    --vs-cs-font-primary: initial;
+    --vs-cs-text: initial;
+    --vs-cs-text-tinted: initial;
+    --vs-cs-text-primary: initial;
 
-    --vs-cs-bg-area: initial;
-    --vs-cs-bg-area-colored: initial;
+    --vs-cs-surface: initial;
+    --vs-cs-surface-tinted: initial;
     --vs-cs-bg: initial;
-    --vs-cs-bg-colored: initial;
+    --vs-cs-bg-tinted: initial;
     --vs-cs-bg-comp: initial;
-    --vs-cs-bg-comp-colored: initial;
-    --vs-cs-bg-primary: initial;
+    --vs-cs-bg-comp-tinted: initial;
+    --vs-cs-primary: initial;
 
-    --vs-cs-shadow-color: initial;
+    --vs-cs-shadow: initial;
 }
