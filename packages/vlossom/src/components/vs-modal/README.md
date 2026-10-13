@@ -14,6 +14,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 - Optionally locks page scroll, or a specific scroll container by CSS selector, via `scroll-lock`.
 - Configurable size via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values.
 - Emits `open` and `close` events for lifecycle hooks.
+- Removes its open modal when the component unmounts, and when it is deactivated inside `KeepAlive` (reopened on activation if `v-model` is still `true`).
 
 ## Basic Usage
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ref, nextTick } from 'vue';
+import { effectScope, ref, nextTick } from 'vue';
 import * as stores from '@/stores';
 import { OverlayCallbackStore } from '@/stores';
 import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
@@ -222,6 +222,24 @@ describe('useOverlayCallback', () => {
             expect(isUnmounting.value).toBe(false);
 
             vi.useRealTimers();
+        });
+    });
+
+    describe('scope dispose', () => {
+        it('활성 상태로 scope가 정리되면 store에서 콜백이 제거되어야 한다', async () => {
+            // given
+            const scope = effectScope();
+            const id = ref('test-id');
+            const { activate } = scope.run(() => useOverlayCallback(id))!;
+            activate();
+            await nextTick();
+            expect(overlayCallbackStore.overlays.value).toHaveLength(1);
+
+            // when
+            scope.stop();
+
+            // then
+            expect(overlayCallbackStore.overlays.value).toHaveLength(0);
         });
     });
 });
