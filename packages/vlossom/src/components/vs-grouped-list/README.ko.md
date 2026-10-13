@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-grouped-list :items="items" @click-item="onClickItem" />
 </template>
@@ -36,7 +36,7 @@ function onClickItem(item) {
 
 ### 그룹화된 목록
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"
@@ -55,7 +55,7 @@ function onClickItem(item) {
 
 ### 사용자 정의 높이와 스크롤
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="longList"
@@ -88,7 +88,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"

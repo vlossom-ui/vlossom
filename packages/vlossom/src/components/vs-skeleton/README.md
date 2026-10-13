@@ -15,7 +15,7 @@ A skeleton loading placeholder component that displays an animated background wh
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-skeleton style="width: 200px; height: 200px; border-radius: 50%;" />
 </template>
@@ -23,7 +23,7 @@ A skeleton loading placeholder component that displays an animated background wh
 
 ### With Content Slot
 
-```html
+```html live
 <template>
     <vs-skeleton style="width: 100%; height: 4rem;">
         <span>Loading...</span>
@@ -33,7 +33,7 @@ A skeleton loading placeholder component that displays an animated background wh
 
 ### Custom Size and Shape
 
-```html
+```html live
 <template>
     <vs-skeleton
         :style-set="{
@@ -61,7 +61,7 @@ interface VsSkeletonStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-skeleton
         :style-set="{

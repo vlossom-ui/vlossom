@@ -22,7 +22,7 @@
 
 `target`을 지정하지 않으면 default slot이 wrapper 엘리먼트로 감싸져 trigger 역할을 합니다.
 
-```html
+```html live
 <template>
     <vs-tooltip>
         <button>마우스를 올려보세요</button>
@@ -35,7 +35,7 @@
 
 `target` prop에 CSS selector를 지정하면 외부 요소에 툴팁이 붙습니다.
 
-```html
+```html live
 <template>
     <button id="my-btn">마우스를 올려보세요</button>
     <vs-tooltip target="#my-btn">
@@ -46,7 +46,7 @@
 
 ### 클릭 열기 툴팁
 
-```html
+```html live
 <template>
     <vs-tooltip clickable>
         <button>클릭하세요</button>
@@ -57,7 +57,7 @@
 
 ### 하단 배치
 
-```html
+```html live
 <template>
     <vs-tooltip placement="bottom" align="start">
         <button>마우스를 올려보세요</button>
@@ -68,7 +68,7 @@
 
 ### 콘텐츠 호버
 
-```html
+```html live
 <template>
     <vs-tooltip contents-hover>
         <button>마우스를 올려보세요</button>
@@ -81,7 +81,7 @@
 
 ### Wrapper 태그 변경
 
-```html
+```html live
 <template>
     <vs-tooltip tag="div">
         <div class="trigger-area">Block-level trigger</div>
@@ -123,7 +123,7 @@ interface VsTooltipStyleSet {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-tooltip
         :style-set="{

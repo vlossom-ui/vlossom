@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="설명" placeholder="설명을 입력하세요..." />
 </template>
@@ -30,7 +30,7 @@ const text = ref('');
 
 ### 유효성 검사
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"
@@ -45,7 +45,7 @@ const text = ref('');
 
 ### 헤더 · 푸터
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="메시지" placeholder="무엇이든 작업하세요">
         <template #footer>
@@ -58,7 +58,7 @@ const text = ref('');
 
 ### 읽기 전용 모드
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="메모" readonly />
 </template>
@@ -66,7 +66,7 @@ const text = ref('');
 
 ### 포커스 플레이스홀더
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"
@@ -128,7 +128,7 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"

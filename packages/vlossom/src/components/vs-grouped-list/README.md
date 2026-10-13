@@ -16,7 +16,7 @@ A scrollable list component that renders items with optional grouping, virtual v
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-grouped-list :items="items" @click-item="onClickItem" />
 </template>
@@ -36,7 +36,7 @@ function onClickItem(item) {
 
 ### Grouped List
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"
@@ -55,7 +55,7 @@ function onClickItem(item) {
 
 ### With Custom Height and Scrolling
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="longList"
@@ -88,7 +88,7 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"

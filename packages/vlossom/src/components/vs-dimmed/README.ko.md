@@ -14,8 +14,9 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
+    <vs-button @click="isVisible = !isVisible">딤드 토글</vs-button>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />
         <p>딤드 오버레이 뒤의 콘텐츠</p>
@@ -30,7 +31,7 @@ const isVisible = ref(false);
 
 ### 프로그래밍 방식 제어
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed ref="dimmedRef" v-model="isVisible" />
@@ -61,16 +62,20 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
-    <vs-dimmed
-        v-model="isVisible"
-        :style-set="{
-            backgroundColor: '#000000',
-            opacity: 0.6,
-            backdropFilter: 'blur(4px)',
-        }"
-    />
+    <vs-button @click="isVisible = !isVisible">딤드 토글</vs-button>
+    <div class="relative">
+        <vs-dimmed
+            v-model="isVisible"
+            :style-set="{
+                backgroundColor: '#000000',
+                opacity: 0.6,
+                backdropFilter: 'blur(4px)',
+            }"
+        />
+        <p>딤드 오버레이 뒤의 콘텐츠</p>
+    </div>
 </template>
 ```
 

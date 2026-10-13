@@ -18,7 +18,7 @@ A component for displaying images with support for lazy loading, fallback images
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="Example image" />
 </template>
@@ -28,7 +28,7 @@ A component for displaying images with support for lazy loading, fallback images
 
 Defer image loading until the element enters the viewport.
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="Lazy image" :lazy="true" />
 </template>
@@ -40,7 +40,7 @@ Provide fallback UI shown when the primary source fails, using either the `fallb
 
 **Prop usage example**
 
-```html
+```html live
 <template>
     <vs-image
         src="https://example.com/broken.png"
@@ -52,7 +52,7 @@ Provide fallback UI shown when the primary source fails, using either the `fallb
 
 **Slot usage example**
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/broken.png" alt="Custom fallback">
         <template #fallback>
@@ -66,7 +66,7 @@ Provide fallback UI shown when the primary source fails, using either the `fallb
 
 Disable the skeleton placeholder during loading.
 
-```html
+```html live
 <template>
     <vs-image src="https://example.com/image.png" alt="No skeleton" :no-skeleton="true" />
 </template>
@@ -100,7 +100,7 @@ interface VsImageStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-image
         src="https://example.com/image.png"

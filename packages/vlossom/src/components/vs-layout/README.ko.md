@@ -17,7 +17,7 @@
 
 레이아웃 스토어 연동에 참여하려면 하위 컴포넌트에 `layout` prop을 명시적으로 설정해야 합니다. 중간에 일반 wrapper 컴포넌트가 몇 단계 끼어 있어도 동작하지만, 다른 레이아웃 컴포넌트가 중간에 끼면 그 안쪽으로는 차단되어 의도치 않은 연동이 발생하지 않습니다.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout>앱 헤더</vs-header>

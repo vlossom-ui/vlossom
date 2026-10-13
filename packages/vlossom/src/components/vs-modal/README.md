@@ -17,7 +17,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <button @click="isOpen = true">Open Modal</button>
 
@@ -38,8 +38,10 @@ const isOpen = ref(false);
 
 ### With Dimmed Overlay
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" :dimmed="true" :dim-close="true">
         <div>Click outside to close.</div>
     </vs-modal>
@@ -48,28 +50,36 @@ const isOpen = ref(false);
 
 ### Predefined Size
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" size="lg">
         <div>Large modal content.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 ```
 
 ### Custom Size
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" :size="{ width: '600px', height: '400px' }">
         <div>Custom size modal.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 ```
 
 ### Focus Lock and ESC Close
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" :focus-lock="true" :esc-close="true">
         <div>Press ESC to close. Focus is trapped inside.</div>
     </vs-modal>
@@ -78,10 +88,13 @@ const isOpen = ref(false);
 
 ### Before Close Hook
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" :before-close="confirmClose">
         <div>Try to close me.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 
@@ -99,24 +112,30 @@ async function confirmClose() {
 
 Set `scroll-lock` to `true` to lock the page (`body`) scroll while the modal is open:
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal v-model="isOpen" :scroll-lock="true">
         <div>Background page scroll is locked while open.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 ```
 
 Pass a CSS selector string to lock a specific scroll container instead of `body`. The page keeps scrolling while only the targeted element is locked:
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <div id="scroll-area" style="height: 200px; overflow: auto">
-        <!-- long scrollable content -->
+        <p v-for="n in 20" :key="n">Line {{ n }}</p>
     </div>
 
     <vs-modal v-model="isOpen" scroll-lock="#scroll-area">
         <div>Only #scroll-area is locked; the page can still scroll.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 
@@ -158,8 +177,10 @@ interface VsModalNodeStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
+    <button @click="isOpen = true">Open Modal</button>
+
     <vs-modal
         v-model="isOpen"
         :dimmed="true"
@@ -174,6 +195,7 @@ interface VsModalNodeStyleSet extends CSSProperties {
         }"
     >
         <div>Styled modal content.</div>
+        <button @click="isOpen = false">Close</button>
     </vs-modal>
 </template>
 ```

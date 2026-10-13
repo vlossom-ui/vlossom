@@ -15,7 +15,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <p>섹션 A</p>
     <vs-divider />
@@ -25,7 +25,7 @@
 
 ### 수직 구분자
 
-```html
+```html live
 <template>
     <div style="display: flex; align-items: center; height: 2rem;">
         <span>항목 1</span>
@@ -37,7 +37,7 @@
 
 ### 반응형 수직 구분자
 
-```html
+```html live
 <template>
     <div style="display: flex; align-items: center;">
         <span>왼쪽</span>
@@ -71,7 +71,7 @@ interface VsDividerStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-divider
         :style-set="{

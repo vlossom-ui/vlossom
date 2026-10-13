@@ -15,7 +15,7 @@ idle, info, success, warning, error 등 다양한 UI 상태에 맞는 아이콘�
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-message text="정보 메시지입니다." state="info" />
     <vs-message text="작업이 성공했습니다!" state="success" />
@@ -28,7 +28,7 @@ idle, info, success, warning, error 등 다양한 UI 상태에 맞는 아이콘�
 
 상태를 지정하지 않으면 `idle` 상태가 사용됩니다 (기본 색상).
 
-```html
+```html live
 <template>
     <vs-message text="기본 idle 메시지." />
 </template>
@@ -52,7 +52,7 @@ interface VsMessageStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-message
         text="커스텀 크기 메시지"

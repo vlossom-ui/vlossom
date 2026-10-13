@@ -14,7 +14,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-avatar>
         <img src="/profile.png" alt="사용자 아바타" />
@@ -24,7 +24,7 @@
 
 ### 텍스트 이니셜
 
-```html
+```html live
 <template>
     <vs-avatar>JD</vs-avatar>
 </template>
@@ -32,7 +32,7 @@
 
 ### 색상 테마 적용
 
-```html
+```html live
 <template>
     <vs-avatar color-scheme="blue">
         <img src="/profile.png" alt="사용자" />
@@ -57,7 +57,7 @@ interface VsAvatarStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-avatar
         :style-set="{

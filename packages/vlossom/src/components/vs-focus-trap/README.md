@@ -16,7 +16,7 @@ A utility component that traps keyboard focus within its single child element, e
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-focus-trap>
         <div>
@@ -30,7 +30,7 @@ A utility component that traps keyboard focus within its single child element, e
 
 ### Conditionally Disabled
 
-```html
+```html live
 <template>
     <vs-focus-trap :disabled="!isModalOpen">
         <div class="modal-content">

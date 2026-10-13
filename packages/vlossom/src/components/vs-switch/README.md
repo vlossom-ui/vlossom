@@ -16,7 +16,7 @@ A toggle switch component that supports single and multiple value binding with l
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" label="Enable feature" />
 </template>
@@ -29,7 +29,7 @@ const isOn = ref(false);
 
 ### Custom Labels
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" true-label="YES" false-label="NO" />
 </template>
@@ -37,7 +37,7 @@ const isOn = ref(false);
 
 ### With beforeChange Hook
 
-```html
+```html live
 <template>
     <vs-switch v-model="isOn" :before-change="confirmChange" />
 </template>
@@ -53,7 +53,7 @@ async function confirmChange(from, to) {
 
 ### Multiple Mode
 
-```html
+```html live
 <template>
     <vs-switch v-model="selected" :true-value="'apple'" multiple />
 </template>
@@ -107,7 +107,7 @@ interface VsSwitchStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-switch
         v-model="isOn"

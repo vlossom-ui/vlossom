@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-loading />
 </template>
@@ -24,7 +24,7 @@
 
 ### 커스텀 크기
 
-```html
+```html live
 <template>
     <vs-loading width="4rem" height="5rem" />
 </template>
@@ -32,7 +32,7 @@
 
 ### 색상 스킴
 
-```html
+```html live
 <template>
     <vs-loading color-scheme="green" />
 </template>
@@ -58,7 +58,7 @@ interface VsLoadingStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-loading
         :style-set="{

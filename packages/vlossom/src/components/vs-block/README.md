@@ -16,7 +16,7 @@ A content block component with an optional title area and a scrollable content r
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-block>
         <p>Block content goes here.</p>
@@ -26,7 +26,7 @@ A content block component with an optional title area and a scrollable content r
 
 ### With Title
 
-```html
+```html live
 <template>
     <vs-block>
         <template #title>Block Title</template>
@@ -37,7 +37,7 @@ A content block component with an optional title area and a scrollable content r
 
 ### Fixed Height
 
-```html
+```html live
 <template>
     <vs-block height="300px">
         <template #title>Scrollable Block</template>
@@ -68,7 +68,7 @@ interface VsBlockStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-block
         :style-set="{

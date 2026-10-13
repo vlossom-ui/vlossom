@@ -16,7 +16,7 @@ A container component that shows only the child element at the current index, wi
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex">
         <div>Page 0</div>
@@ -35,7 +35,7 @@ const currentIndex = ref(0);
 
 Preserve component state when switching between views.
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex" :keep-alive="true">
         <ComponentA />
@@ -47,7 +47,7 @@ Preserve component state when switching between views.
 
 ### Responsive Width
 
-```html
+```html live
 <template>
     <vs-index-view v-model="currentIndex" width="50%">
         <div>View A</div>

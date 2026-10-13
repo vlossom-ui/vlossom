@@ -16,7 +16,7 @@ An animated loading indicator composed of five vertical bars with a wave animati
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-loading />
 </template>
@@ -24,7 +24,7 @@ An animated loading indicator composed of five vertical bars with a wave animati
 
 ### Custom Size
 
-```html
+```html live
 <template>
     <vs-loading width="4rem" height="5rem" />
 </template>
@@ -32,7 +32,7 @@ An animated loading indicator composed of five vertical bars with a wave animati
 
 ### Color Scheme
 
-```html
+```html live
 <template>
     <vs-loading color-scheme="green" />
 </template>
@@ -58,7 +58,7 @@ interface VsLoadingStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-loading
         :style-set="{
