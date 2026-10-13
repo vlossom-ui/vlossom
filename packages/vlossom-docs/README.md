@@ -69,7 +69,7 @@ The site reads the README files from `packages/vlossom`. It does not copy them.
 
 - A new directory with README files becomes a page. You do not change the settings. Restart `pnpm dev` after you add or remove README files.
 - The language menu opens the same page in the other language.
-- The site changes the relative links between README files to site links. A link to a missing file causes an error in `pnpm build`.
+- The site changes the relative links between README files to site links. A link to a missing README page causes an error in `pnpm build`. A link to another missing file or to a missing heading does not cause an error.
 
 ## Live Demos
 
@@ -124,6 +124,13 @@ To update the version:
 ## Styles
 
 The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The VitePress layout does not change. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
+
+## CI
+
+The `vlossom-docs-build` and `vlossom-docs-test` jobs in [`ci.yml`](../../.github/workflows/ci.yml) run `pnpm build` and `pnpm test` on each push.
+
+- `vlossom-docs-build` fails if a README links to a missing README page.
+- `vlossom-docs-test` fails if a demo uses a name that nothing declares or a component that the pinned `vlossom` version does not register. Thus a live example of a new component fails until you update the pinned version after the release. See [Vlossom Version](#vlossom-version).
 
 ## Deployment
 
