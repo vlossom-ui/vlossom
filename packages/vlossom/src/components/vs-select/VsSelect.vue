@@ -51,17 +51,27 @@
                     :items="filteredOptions"
                     :group-by
                     :group-order
+                    :no-virtual
                     @click-item="selectOptionItem"
                 >
                     <template #header v-if="isUsingSearch || $slots['options-header']">
-                        <div class="vs-select-search" data-focusable data-role="search">
-                            <vs-search-input v-if="isUsingSearch" ref="searchInputRef" v-bind="searchProps" :size />
+                        <div
+                            v-if="isUsingSearch"
+                            :class="[
+                                'vs-select-search',
+                                { 'vs-focusable-active': isFocusedKey(SELECT_FOCUS_KEY.search) },
+                            ]"
+                            :data-focusable="SELECT_FOCUS_KEY.search"
+                        >
+                            <vs-search-input ref="searchInputRef" v-bind="searchProps" :size />
                         </div>
                         <div
-                            v-if="multiple && selectAll"
-                            class="vs-select-all"
-                            data-focusable
-                            data-role="select-all"
+                            v-if="isUsingSelectAll"
+                            :class="[
+                                'vs-select-all',
+                                { 'vs-focusable-active': isFocusedKey(SELECT_FOCUS_KEY.selectAll) },
+                            ]"
+                            :data-focusable="SELECT_FOCUS_KEY.selectAll"
                             @click.prevent.stop="toggleSelectAll"
                         >
                             <vs-checkbox
@@ -84,10 +94,16 @@
                     </template>
                     <template #item="{ item, ...itemSlotProps }">
                         <div
-                            :class="['vs-select-option-wrap', { selected: isSelected(itemSlotProps.id) }]"
+                            :class="[
+                                'vs-select-option-wrap',
+                                {
+                                    selected: isSelected(itemSlotProps.id),
+                                    'vs-focusable-active': isFocusedKey(itemSlotProps.id),
+                                },
+                            ]"
                             :style="getOptionStyleSet(itemSlotProps.id)"
                             :data-id="itemSlotProps.id"
-                            :data-focusable="itemSlotProps.disabled ? undefined : true"
+                            :data-focusable="itemSlotProps.disabled ? undefined : itemSlotProps.id"
                         >
                             <slot
                                 name="option"
@@ -155,6 +171,7 @@ import {
     useInputOption,
     useOptionList,
     useFocusable,
+    useGroupedItems,
     useOverlayCallback,
     useClickOutside,
     useSizeClass,
@@ -164,6 +181,7 @@ import { logUtil, objectUtil } from '@/utils';
 import type { VsSelectStyleSet, VsSelectTriggerRef } from './types';
 import { useSelectRules } from './vs-select-rules';
 import { useSelectValue, useSelectSearch, useSelectKeyboard } from './composables';
+import { SELECT_FOCUS_KEY } from './constants';
 
 import { BanIcon } from '@lucide/vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
@@ -192,6 +210,7 @@ export default defineComponent({
         collapseChips: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
+        noVirtual: { type: Boolean, default: false },
         optionsDisabled: {
             type: [Boolean, Function] as PropType<boolean | ((option: any, index: number, options: any[]) => boolean)>,
             default: false,
@@ -239,6 +258,9 @@ export default defineComponent({
             size,
             placeholder,
             focusPlaceholder,
+            selectAll,
+            groupBy,
+            groupOrder,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -279,14 +301,34 @@ export default defineComponent({
 
         const optionsListElement = computed(() => optionsListRef.value?.$el as HTMLElement);
 
+        const isUsingSelectAll = computed(() => multiple.value && selectAll.value);
+
+        const { groupedItems } = useGroupedItems(filteredOptions, groupBy, groupOrder);
+        const displayedOptions = computed(() => groupedItems.value.flatMap((group) => group.items));
+
+        const focusableKeys = computed(() => [
+            ...(isUsingSearch.value ? [SELECT_FOCUS_KEY.search] : []),
+            ...(isUsingSelectAll.value ? [SELECT_FOCUS_KEY.selectAll] : []),
+            ...displayedOptions.value.filter((option) => !option.disabled).map((option) => option.id),
+        ]);
+
         const {
             focusIndex,
+            focusedKey,
+            isFocused: isFocusedKey,
             updateFocusIndex,
-            currentFocusableElement,
-            getFocusableElements,
             addMouseMoveListener,
             removeMouseMoveListener,
-        } = useFocusable(optionsListElement);
+        } = useFocusable(optionsListElement, focusableKeys);
+
+        function scrollToOption(optionId: string) {
+            const optionElement = optionsListElement.value?.querySelector(`[data-id="${optionId}"]`);
+            if (optionElement) {
+                optionElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                optionsListRef.value?.scrollToItem(optionId);
+            }
+        }
 
         const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
 
@@ -394,11 +436,13 @@ export default defineComponent({
         const { computedCallbacks } = useSelectKeyboard({
             isOpen,
             focusIndex,
-            currentFocusableElement,
+            focusableKeys,
+            focusedKey,
             searchInputRef,
             filteredOptions,
+            isSelected,
             updateFocusIndex,
-            getFocusableElements,
+            scrollToOption,
             openOptions,
             closeOptions,
             focusTrigger: focus,
@@ -490,7 +534,7 @@ export default defineComponent({
                 nextTick(() => {
                     addMouseMoveListener();
 
-                    const selectedId = selectedOptionIds.value[0];
+                    const selectedId = displayedOptions.value.find((option) => isSelected(option.id))?.id;
                     if (selectedId && optionsListRef.value?.hasScroll()) {
                         optionsListRef.value?.scrollToItem(selectedId, 50);
                     }
@@ -499,10 +543,7 @@ export default defineComponent({
                         searchInputRef.value?.focus();
                         updateFocusIndex(0);
                     } else if (selectedId) {
-                        const targetFocusIndex = getFocusableElements().findIndex(
-                            (element) => element.dataset['id'] === selectedId,
-                        );
-                        updateFocusIndex(targetFocusIndex);
+                        updateFocusIndex(focusableKeys.value.indexOf(selectedId));
                     }
                 });
             }, 50);
@@ -510,7 +551,7 @@ export default defineComponent({
 
         function getOptionStyleSet(optionId: string): CSSProperties {
             const { $focused = {}, $selected = {}, ...base } = componentStyleSet.value.$option ?? {};
-            const isOptionFocused = currentFocusableElement.value?.dataset?.['id'] === optionId;
+            const isOptionFocused = focusedKey.value === optionId;
             if (isSelected(optionId)) {
                 return objectUtil.assign(base, $selected);
             }
@@ -629,6 +670,9 @@ export default defineComponent({
             isSelected,
             toggleSelectAll,
             isUsingSearch,
+            isUsingSelectAll,
+            isFocusedKey,
+            SELECT_FOCUS_KEY,
             searchProps,
             toggleOpen,
             selectOptionItem,

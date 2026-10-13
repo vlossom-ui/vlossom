@@ -33,6 +33,8 @@ type Story = StoryObj<VsSelectArgs>;
 
 const basicOptions = ['Apple', 'Banana', 'Orange', 'Mango', 'Pineapple', 'Strawberry'];
 
+const manyOptions = Array.from({ length: 10000 }, (_, i) => `Option ${i + 1}`);
+
 const objectOptions = [
     { id: 1, name: 'Apple', category: 'Fruits', unavailable: false },
     { id: 2, name: 'Banana', category: 'Fruits', unavailable: false },
@@ -244,6 +246,26 @@ export const NoClear: Story = {
         placeholder: 'Select an option',
         noClear: true,
         modelValue: 'Apple',
+    },
+};
+
+export const ManyOptions: Story = {
+    args: {
+        label: 'Many Options (virtual scroll)',
+        options: manyOptions,
+        placeholder: 'Select an option',
+        search: true,
+        modelValue: null,
+    },
+};
+
+export const NoVirtual: Story = {
+    args: {
+        label: 'No Virtual',
+        options: manyOptions.slice(0, 1000),
+        placeholder: 'Select an option',
+        noVirtual: true,
+        modelValue: null,
     },
 };
 
