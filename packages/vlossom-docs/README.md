@@ -36,7 +36,6 @@ packages/vlossom-docs/
 │   ├── demo-scope.ts            # Names and images for README examples
 │   ├── vlossom-css.ts           # Changes vlossom.css for the site
 │   ├── vlossom-css.test.ts
-│   ├── shims.d.ts               # Lets TypeScript import .vue files
 │   └── theme/
 │       ├── index.ts             # Theme entry: Vlossom app, dark mode, modal cleanup, Vlossom options console
 │       ├── vlossom.ts           # Loads Vlossom when the first demo needs it, sets its options
