@@ -11,6 +11,7 @@ Manages the active/inactive lifecycle of an overlay component and registers its 
 - Generates a unique overlay id from the provided `id` ref or an auto-generated fallback
 - Registers callbacks in `useOverlayCallbackStore` when the overlay is activated
 - Removes callbacks from the store when deactivated, with a brief `isUnmounting` window matching `ANIMATION_DURATION`
+- Removes callbacks from the store when the owning scope is disposed while still active
 - Exposes simple `activate` / `deactivate` methods for controlling visibility
 
 ## Basic Usage
@@ -40,10 +41,10 @@ const { overlayId, isActivated, isUnmounting, activate, deactivate } = useOverla
 
 ## Args
 
-| Arg         | Type                      | Default    | Required | Description                                                                    |
-| ----------- | ------------------------- | ---------- | -------- | ------------------------------------------------------------------------------ |
-| `id`        | `Ref<string>`             | —          | Yes      | Reactive ref for the overlay id. Falls back to an auto-generated id when empty.|
-| `callbacks` | `Ref<OverlayCallbacks>`   | `ref({})` | No       | Object containing optional lifecycle callbacks for the overlay.                |
+| Arg         | Type                    | Default   | Required | Description                                                                     |
+| ----------- | ----------------------- | --------- | -------- | ------------------------------------------------------------------------------- |
+| `id`        | `Ref<string>`           | —         | Yes      | Reactive ref for the overlay id. Falls back to an auto-generated id when empty. |
+| `callbacks` | `Ref<OverlayCallbacks>` | `ref({})` | No       | Object containing optional lifecycle callbacks for the overlay.                 |
 
 ## Types
 
@@ -58,23 +59,24 @@ interface OverlayCallbacks {
 
 ## Return Refs
 
-| RefType        | Type              | Description                                                                          |
-| -------------- | ----------------- | ------------------------------------------------------------------------------------ |
-| `overlayId`    | `ComputedRef<string>` | The resolved overlay id (prop value or auto-generated).                          |
-| `isActivated`  | `Ref<boolean>`    | `true` while the overlay is active.                                                  |
-| `isUnmounting` | `Ref<boolean>`    | `true` during the closing animation window (`ANIMATION_DURATION` ms after deactivation). |
+| RefType        | Type                  | Description                                                                              |
+| -------------- | --------------------- | ---------------------------------------------------------------------------------------- |
+| `overlayId`    | `ComputedRef<string>` | The resolved overlay id (prop value or auto-generated).                                  |
+| `isActivated`  | `Ref<boolean>`        | `true` while the overlay is active.                                                      |
+| `isUnmounting` | `Ref<boolean>`        | `true` during the closing animation window (`ANIMATION_DURATION` ms after deactivation). |
 
 ## Return Methods
 
-| Method       | Parameters | Description                                                               |
-| ------------ | ---------- | ------------------------------------------------------------------------- |
-| `activate`   | —          | Sets `isActivated` to `true` and registers callbacks in the store.        |
-| `deactivate` | —          | Sets `isActivated` to `false` and removes callbacks from the store.       |
+| Method       | Parameters | Description                                                         |
+| ------------ | ---------- | ------------------------------------------------------------------- |
+| `activate`   | —          | Sets `isActivated` to `true` and registers callbacks in the store.  |
+| `deactivate` | —          | Sets `isActivated` to `false` and removes callbacks from the store. |
 
 ## Hooks
 
-| Hook    | Description                                                                            |
-| ------- | -------------------------------------------------------------------------------------- |
-| `watch` | Watches `isActivated` to push/remove callbacks from `useOverlayCallbackStore`.         |
+| Hook             | Description                                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| `watch`          | Watches `isActivated` to push/remove callbacks from `useOverlayCallbackStore`.                                |
+| `onScopeDispose` | Removes callbacks from the store if the overlay is still active when its scope is disposed (e.g. on unmount). |
 
 ## Cautions

@@ -1,4 +1,4 @@
-import { computed, type Ref, ref, watch } from 'vue';
+import { computed, onScopeDispose, type Ref, ref, watch } from 'vue';
 import { useOverlayCallbackStore } from '@/stores';
 import { stringUtil } from '@/utils';
 import { ANIMATION_DURATION, type OverlayCallbacks } from '@/declaration';
@@ -31,6 +31,13 @@ export function useOverlayCallback(id: Ref<string>, callbacks: Ref<OverlayCallba
             }, ANIMATION_DURATION);
         }
     });
+
+    // 활성 상태로 언마운트되면 watch가 함께 정리되어 deactivate 경로가 실행되지 않으므로 스토어에서 직접 제거한다
+    onScopeDispose(() => {
+        if (isActivated.value) {
+            overlayCallbackStore.remove(overlayId.value);
+        }
+    }, true);
 
     return { overlayId, isActivated, isUnmounting, activate, deactivate };
 }

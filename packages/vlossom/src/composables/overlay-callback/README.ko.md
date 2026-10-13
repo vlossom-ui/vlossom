@@ -11,6 +11,7 @@
 - 제공된 `id` ref 또는 자동 생성된 폴백에서 고유한 오버레이 id를 생성합니다
 - 오버레이가 활성화될 때 `useOverlayCallbackStore`에 콜백을 등록합니다
 - 비활성화 시 `ANIMATION_DURATION`에 맞는 짧은 `isUnmounting` 창과 함께 스토어에서 콜백을 제거합니다
+- 활성 상태에서 소유 scope가 정리되면 스토어에서 콜백을 제거합니다
 - 가시성 제어를 위한 간단한 `activate` / `deactivate` 메서드를 노출합니다
 
 ## Basic Usage
@@ -40,10 +41,10 @@ const { overlayId, isActivated, isUnmounting, activate, deactivate } = useOverla
 
 ## Args
 
-| 인자        | 타입                    | 기본값     | 필수 | 설명                                                                         |
-| ----------- | ----------------------- | ---------- | ---- | ---------------------------------------------------------------------------- |
-| `id`        | `Ref<string>`           | —          | Yes  | 오버레이 id를 위한 반응형 ref. 비어있을 때 자동 생성된 id로 폴백합니다.      |
-| `callbacks` | `Ref<OverlayCallbacks>` | `ref({})` | No   | 오버레이의 선택적 라이프사이클 콜백을 포함하는 객체.                         |
+| 인자        | 타입                    | 기본값    | 필수 | 설명                                                                    |
+| ----------- | ----------------------- | --------- | ---- | ----------------------------------------------------------------------- |
+| `id`        | `Ref<string>`           | —         | Yes  | 오버레이 id를 위한 반응형 ref. 비어있을 때 자동 생성된 id로 폴백합니다. |
+| `callbacks` | `Ref<OverlayCallbacks>` | `ref({})` | No   | 오버레이의 선택적 라이프사이클 콜백을 포함하는 객체.                    |
 
 ## Types
 
@@ -58,11 +59,11 @@ interface OverlayCallbacks {
 
 ## Return Refs
 
-| RefType        | 타입                  | 설명                                                                                |
-| -------------- | --------------------- | ----------------------------------------------------------------------------------- |
-| `overlayId`    | `ComputedRef<string>` | 결정된 오버레이 id (prop 값 또는 자동 생성).                                         |
-| `isActivated`  | `Ref<boolean>`        | 오버레이가 활성화된 동안 `true`.                                                     |
-| `isUnmounting` | `Ref<boolean>`        | 비활성화 후 닫힘 애니메이션 창(`ANIMATION_DURATION` ms) 동안 `true`.                 |
+| RefType        | 타입                  | 설명                                                                 |
+| -------------- | --------------------- | -------------------------------------------------------------------- |
+| `overlayId`    | `ComputedRef<string>` | 결정된 오버레이 id (prop 값 또는 자동 생성).                         |
+| `isActivated`  | `Ref<boolean>`        | 오버레이가 활성화된 동안 `true`.                                     |
+| `isUnmounting` | `Ref<boolean>`        | 비활성화 후 닫힘 애니메이션 창(`ANIMATION_DURATION` ms) 동안 `true`. |
 
 ## Return Methods
 
@@ -73,8 +74,9 @@ interface OverlayCallbacks {
 
 ## Hooks
 
-| Hook    | 설명                                                                           |
-| ------- | ------------------------------------------------------------------------------ |
-| `watch` | `isActivated`를 감시하여 `useOverlayCallbackStore`에서 콜백을 추가/제거합니다. |
+| Hook             | 설명                                                                           |
+| ---------------- | ------------------------------------------------------------------------------ |
+| `watch`          | `isActivated`를 감시하여 `useOverlayCallbackStore`에서 콜백을 추가/제거합니다. |
+| `onScopeDispose` | 활성 상태에서 scope가 정리되면(예: 언마운트) 스토어에서 콜백을 제거합니다.     |
 
 ## Cautions
