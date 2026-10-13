@@ -124,7 +124,6 @@ const PLACEHOLDER_SVG =
     '<circle cx="48" cy="38" r="18" fill="#94a3b8"/>' +
     '<path d="M16 96c0-17.7 14.3-32 32-32s32 14.3 32 32z" fill="#94a3b8"/></svg>';
 const PLACEHOLDER_IMAGE = `data:image/svg+xml,${encodeURIComponent(PLACEHOLDER_SVG)}`;
-// VsImage fallback 예제에서 대체 이미지가 원래 자리의 그림과 같으면 대체됐는지 알 수 없어서 다르게 그린다.
 const FALLBACK_SVG =
     '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">' +
     '<rect width="96" height="96" fill="#fde68a"/>' +

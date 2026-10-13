@@ -284,7 +284,6 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
             '',
         ].join('\n');
         state.tokens.unshift(script);
-        // VitePress는 렌더가 끝난 env.frontmatter를 페이지 데이터로 쓴다. 테마는 이 값으로 Vlossom 옵션 콘솔을 띄운다.
         state.env.frontmatter = { ...state.env.frontmatter, liveDemos: true };
     });
 

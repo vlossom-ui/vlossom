@@ -106,25 +106,11 @@ Each demo box has the `vp-raw` class. With `postcssIsolateStyles` in [`config.ts
 
 ### Vlossom Options
 
-A page with live demos shows a **Vlossom options** button at the bottom right. On a narrow screen, the button shows only its icon. The button pulses until you open the console for the first time. It does not pulse when the system setting asks for less motion. The console sets these Vlossom options for all demos on the site:
+On pages with live demos, the **Vlossom options** console sets these options for all demos on the site:
 
 - **Theme**: light or dark. The VitePress theme switch and the `vs-theme-button` demos change the same setting.
 - **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
 - **Style set**: a style set for each component, for example `{ VsButton: { backgroundColor: '#e11d48' } }`. Write it in the object syntax of the README examples (JSON5), then select **Apply**. The console does not run the text as code. It shows an error if the text is not an object or names a component that does not take a style set.
-
-The color scheme and the style set stay when you open other pages. A reload resets them.
-
-The console adds the style set to the global `styleSet` option with the name `vlossom-docs`. On the site, each registered Vlossom component that takes a style set uses this name by default, so the style set applies to the components in the demos. These components do not use it:
-
-- A component in a demo that sets `:style-set`. It keeps its own style set.
-- A component that you open with a plugin (`$vs.modal`, `$vs.toast`, `$vs.alert`, `$vs.confirm`, `$vs.prompt`). The plugins use the original components.
-- The components of the console.
-
-`vs-modal` opens its modal with `$vs.modal`, but it gives its style set to the modal. The modal is a `VsModalNode` and finds its style set with that name. Thus write `VsModalNode` as the key for a modal. The console tells you this if you write `VsModal`.
-
-The console is made of Vlossom components: `VsButton`, `VsBlock`, `VsThemeButton`, and `VsTextarea`. Thus the console also uses the selected color scheme. Each color swatch sets its own `color-scheme`, so the swatch colors do not change. The swatches are a radio group: Tab goes to the selected swatch, and the arrow keys select the next or previous one.
-
-The live demo plugin adds `liveDemos: true` to the frontmatter of each page with a live demo. The console shows only on these pages.
 
 ### Vlossom Version
 
@@ -142,8 +128,6 @@ To update the version:
 ## Styles
 
 The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The VitePress layout does not change. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
-
-The brand color of the site comes from the vlossom `pink` and `rose` palettes, which match the Vlossom logo. [`vars.css`](.vitepress/theme/vars.css) sets it. The logo and the favicon come from `packages/vlossom/assets`, because `config.ts` uses that directory as the public directory. The site does not keep copies of them.
 
 ## CI
 
