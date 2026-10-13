@@ -24,10 +24,14 @@
         z-index: var(--vs-table-sticky-header-z-index);
         padding-bottom: 1rem;
 
+        /* thead는 display: contents라 박스가 없으므로 그림자는 컬럼 폭과 같은 머리글 행에 둔다. */
         .vs-table-sticky-header {
-            @apply pointer-events-auto w-full;
-            box-shadow: 0 0 0.8rem 0 var(--vs-cs-shadow-color);
-            background-color: var(--vs-no-color);
+            @apply pointer-events-auto;
+
+            /* 래퍼가 위/옆을 잘라내므로 그림자는 아래로만 드리운다. 퍼짐 범위는 래퍼의 padding-bottom(1rem) 안에 둔다. */
+            .vs-table-header-row {
+                box-shadow: 0 0.25rem 0.5rem 0 var(--vs-cs-shadow-color);
+            }
 
             .vs-table-th {
                 border-bottom: 1px solid var(--vs-cs-line-strong);
@@ -70,8 +74,12 @@
         border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         background-color: var(--vs-cs-bg-colored);
+        color: var(--vs-cs-font-colored);
+        font-weight: 500;
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
     }
 
+    /* 글꼴/글자색 기본값은 행에 두고 셀은 상속한다. 그래야 행에 인라인으로 붙는 styleSet.$header가 셀 글자에 적용된다. */
     .vs-table-th {
         @apply flex items-center;
         grid-row: 1;
@@ -82,9 +90,9 @@
 
         /* min-width: auto 무력화 */
         min-width: 0;
-        color: var(--vs-cs-font-colored);
-        font-weight: 500;
-        font-size: var(--vs-size-font, var(--vs-font-size-md));
+        color: inherit;
+        font-weight: inherit;
+        font-size: inherit;
         text-align: left;
 
         /* width/minWidth/maxWidth로 폭을 제한한 컬럼에서 긴 토큰이 옆 칸으로 삐져나오지(bleeding) 않도록 줄바꿈.
@@ -110,12 +118,14 @@
 
         /* min-width: auto 무력화 */
         min-width: 0;
-        font-size: var(--vs-size-font, var(--vs-font-size-md));
+        font-size: inherit;
         text-align: left;
         overflow-wrap: anywhere;
     }
 
     /* ── Body rows ── */
+
+    /* 글꼴 기본값은 행에 두고 셀은 상속한다. 그래야 행에 인라인으로 붙는 styleSet.$row가 셀 글자에 적용된다. */
     .vs-table-tbody > .vs-table-body-row {
         @apply relative box-border transition-colors duration-250 ease-in-out;
 
@@ -124,6 +134,7 @@
            shorthand(border/border-block)는 선언 순서가 바뀌면 아래 색 지정을 덮으므로 쓰지 않는다. */
         border-top: 1px solid var(--vs-cs-line);
         border-bottom: 1px solid transparent;
+        font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         &:not(:first-child) {
             margin-top: -1px;
@@ -264,11 +275,14 @@
     }
 
     &.vs-primary {
-        .vs-table-thead > .vs-table-header-row > .vs-table-th {
-            border-color: var(--vs-cs-line);
+        .vs-table-thead > .vs-table-header-row {
             background-color: var(--vs-cs-bg-primary);
             color: var(--vs-cs-font-primary);
             font-weight: var(--vs-font-weight-bold);
+
+            > .vs-table-th {
+                border-color: var(--vs-cs-line);
+            }
         }
     }
 }

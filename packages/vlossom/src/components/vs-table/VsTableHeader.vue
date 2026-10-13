@@ -101,8 +101,7 @@ export default defineComponent({
             const align = column.headerAlign;
             return {
                 ...cellStyle.value,
-                textAlign: align,
-                justifyContent: align ? JUSTIFY_CONTENTS[align] : undefined,
+                ...(align && { textAlign: align, justifyContent: JUSTIFY_CONTENTS[align] }),
             };
         }
 
