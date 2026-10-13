@@ -6,7 +6,7 @@ import { defaultColorScheme, setDefaultColorScheme, vlossomColors } from './vlos
 
 const LABELS = {
     root: {
-        title: 'Demo options',
+        title: 'Vlossom options',
         theme: 'Theme',
         light: 'Light',
         dark: 'Dark',
@@ -14,7 +14,7 @@ const LABELS = {
         default: 'default',
     },
     ko: {
-        title: '데모 옵션',
+        title: 'Vlossom 옵션',
         theme: '테마',
         light: '라이트',
         dark: '다크',

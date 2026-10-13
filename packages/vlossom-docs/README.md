@@ -38,11 +38,11 @@ packages/vlossom-docs/
 │   ├── vlossom-css.test.ts
 │   ├── shims.d.ts               # Lets TypeScript import .vue files
 │   └── theme/
-│       ├── index.ts             # Theme entry: Vlossom app, dark mode, modal cleanup, demo options
+│       ├── index.ts             # Theme entry: Vlossom app, dark mode, modal cleanup, Vlossom options console
 │       ├── vlossom.ts           # Loads Vlossom when the first demo needs it, sets its options
 │       ├── vlossom.test.ts
-│       ├── DemoOptions.vue      # Shows the demo options console on pages with live demos
-│       ├── DemoOptionsPanel.vue # Demo options console, made of Vlossom components
+│       ├── DemoOptions.vue      # Shows the Vlossom options console on pages with live demos
+│       ├── DemoOptionsPanel.vue # Vlossom options console, made of Vlossom components
 │       ├── layers.css           # Puts the vlossom.css base layer below the VitePress styles
 │       ├── layers.test.ts
 │       ├── vars.css             # VitePress background and brand colors from the vlossom palette
@@ -102,9 +102,9 @@ Each demo box has the `vp-raw` class. With `postcssIsolateStyles` in [`config.ts
 
 `pnpm test` compiles all component demos. The test fails if a demo uses a name that nothing declares. It also fails if a demo uses a component that Vlossom does not register. It also fails if `README.md` and `README.ko.md` mark different examples.
 
-### Demo Options
+### Vlossom Options
 
-A page with live demos shows a **Demo options** button at the bottom right. On a narrow screen, the button shows only its icon. The button pulses until you open the console for the first time. It does not pulse when the system setting asks for less motion. The console sets these Vlossom options for all demos on the site:
+A page with live demos shows a **Vlossom options** button at the bottom right. On a narrow screen, the button shows only its icon. The button pulses until you open the console for the first time. It does not pulse when the system setting asks for less motion. The console sets these Vlossom options for all demos on the site:
 
 - **Theme**: light or dark. The VitePress theme switch and the `vs-theme-button` demos change the same setting.
 - **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
