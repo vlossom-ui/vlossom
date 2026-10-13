@@ -11,7 +11,11 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 // README의 style-set 예제는 JS 객체 문법(따옴표 없는 키, 작은따옴표)이라서 JSON5로 읽는다. 입력을 코드로 실행하지 않는다.
-export function parseStyleSet(source: string, components: readonly string[]): StyleSetInput {
+export function parseStyleSet(
+    source: string,
+    components: readonly string[],
+    aliases: Readonly<Record<string, string>> = {},
+): StyleSetInput {
     if (!source.trim()) {
         return { ok: true, value: undefined };
     }
@@ -28,7 +32,8 @@ export function parseStyleSet(source: string, components: readonly string[]): St
     }
     const unknown = Object.keys(parsed).filter((key) => !components.includes(key));
     if (unknown.length > 0) {
-        return { ok: false, error: 'unknown-component', detail: unknown.join(', ') };
+        const detail = unknown.map((key) => (aliases[key] ? `${key} → ${aliases[key]}` : key)).join(', ');
+        return { ok: false, error: 'unknown-component', detail };
     }
     const invalid = Object.keys(parsed).filter((key) => !isPlainObject(parsed[key]));
     if (invalid.length > 0) {

@@ -38,6 +38,14 @@ describe('parseStyleSet', () => {
         });
     });
 
+    it('다른 이름으로 style-set을 찾는 컴포넌트는 올바른 이름을 함께 알려 준다', () => {
+        expect(parseStyleSet('{ VsModal: {} }', ['VsModalNode'], { VsModal: 'VsModalNode' })).toEqual({
+            ok: false,
+            error: 'unknown-component',
+            detail: 'VsModal → VsModalNode',
+        });
+    });
+
     it('컴포넌트의 값이 객체가 아니면 not-style-object 오류로 알려 준다', () => {
         expect(parseStyleSet("{ VsButton: 'red', VsInput: [] }", COMPONENTS)).toEqual({
             ok: false,

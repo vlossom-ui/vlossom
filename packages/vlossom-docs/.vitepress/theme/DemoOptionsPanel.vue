@@ -6,14 +6,17 @@ const styleSetSource = ref('');
 </script>
 
 <script setup lang="ts">
-import type { ColorScheme } from 'vlossom';
+// 사이트에 등록된 vlossom 컴포넌트는 콘솔 style-set을 기본값으로 쓰는 복사본이다(vlossom.ts의 withDocsStyleSet).
+// 콘솔이 자기 입력으로 바뀌지 않도록 원래 컴포넌트를 직접 가져와 쓴다. 패널은 vlossom을 불러온 뒤에만 로드된다.
+import { VsBlock, VsButton, VsTextarea, VsThemeButton, type ColorScheme } from 'vlossom';
 import { useData } from 'vitepress';
-import { computed, useTemplateRef, type ComponentPublicInstance } from 'vue';
+import { computed, useTemplateRef, watch, type ComponentPublicInstance } from 'vue';
 import { parseStyleSet, type StyleSetInputError } from './style-set-input.ts';
 import {
     defaultColorScheme,
     setDefaultColorScheme,
     setDemoStyleSet,
+    STYLE_SET_NAMES,
     styleSetComponents,
     vlossomColors,
 } from './vlossom.ts';
@@ -57,31 +60,45 @@ const LABELS = {
     },
 } satisfies Record<string, { errors: Record<StyleSetInputError, string> } & Record<string, unknown>>;
 const STYLE_SET_PLACEHOLDER = "{ VsButton: { backgroundColor: '#e11d48', color: '#fff' } }";
-// 콘솔 자신은 콘솔에서 넣은 style-set을 받지 않는다. style-set을 객체로 직접 주면 기본값(콘솔 style-set 이름)을 쓰지 않는다.
-const NO_DOCS_STYLE_SET = {};
 const TEXTAREA_STYLE_SET = {
     $textarea: { minHeight: '6rem', fontFamily: 'var(--vp-font-family-mono)', fontSize: '0.75rem' },
 };
 
+type StyleSetStatus = { kind: 'applied' } | { kind: 'error'; error: StyleSetInputError; detail: string };
+
 const { isDark, localeIndex } = useData();
 const open = ref(false);
 const opened = ref(false);
-const status = ref<{ kind: 'error' | 'applied'; text: string }>();
+const status = ref<StyleSetStatus>();
 const source = styleSetSource;
 const toggleButton = useTemplateRef<ComponentPublicInstance>('toggleButton');
 const swatchGroup = useTemplateRef<HTMLElement>('swatchGroup');
 const labels = computed(() => (localeIndex.value === 'ko' ? LABELS.ko : LABELS.root));
 const options = computed<(ColorScheme | undefined)[]>(() => [undefined, ...vlossomColors.value]);
 const selectedIndex = computed(() => options.value.indexOf(defaultColorScheme.value));
+// 문구는 상태에서 매번 만든다. 언어를 바꿔도 이전 언어의 문구가 남지 않는다.
+const statusText = computed(() => {
+    if (!status.value) {
+        return '';
+    }
+    return status.value.kind === 'applied'
+        ? labels.value.applied
+        : `${labels.value.errors[status.value.error]}${status.value.detail}`;
+});
+
+// 입력을 고치면 이전 결과("적용했습니다", 오류)가 지금 입력과 맞지 않으므로 지운다.
+watch(source, () => {
+    status.value = undefined;
+});
 
 function applyStyleSet(): void {
-    const result = parseStyleSet(source.value, styleSetComponents.value);
+    const result = parseStyleSet(source.value, styleSetComponents.value, STYLE_SET_NAMES);
     if (!result.ok) {
-        status.value = { kind: 'error', text: `${labels.value.errors[result.error]}${result.detail}` };
+        status.value = { kind: 'error', error: result.error, detail: result.detail };
         return;
     }
     setDemoStyleSet(result.value);
-    status.value = result.value ? { kind: 'applied', text: labels.value.applied } : undefined;
+    status.value = result.value ? { kind: 'applied' } : undefined;
 }
 
 function resetStyleSet(): void {
@@ -124,19 +141,12 @@ function move(step: number): void {
             <span class="wheel" />
             <span class="toggle-label">{{ labels.title }}</span>
         </vs-button>
-        <vs-block
-            v-show="open"
-            id="demo-options-panel"
-            class="panel"
-            role="region"
-            :aria-label="labels.title"
-            :style-set="NO_DOCS_STYLE_SET"
-        >
+        <vs-block v-show="open" id="demo-options-panel" class="panel" role="region" :aria-label="labels.title">
             <template #title>{{ labels.title }}</template>
             <div class="row">
                 <span class="label">{{ labels.theme }}</span>
                 <span class="value">{{ isDark ? labels.dark : labels.light }}</span>
-                <vs-theme-button class="theme-button" :style-set="NO_DOCS_STYLE_SET" />
+                <vs-theme-button class="theme-button" />
             </div>
             <div class="row">
                 <span class="label">{{ labels.colorScheme }}</span>
@@ -166,30 +176,29 @@ function move(step: number): void {
                     :aria-label="option ?? labels.default"
                     :aria-checked="index === selectedIndex"
                     :tabindex="index === selectedIndex ? 0 : -1"
-                    :style-set="NO_DOCS_STYLE_SET"
                     @click="setDefaultColorScheme(option)"
                 />
             </div>
             <div class="style-set">
+                <!-- VsTextarea의 라벨은 div라서 입력란과 연결되지 않는다. 슬롯에 label을 넣고 id로 잇는다. -->
                 <vs-textarea
+                    id="demo-options-style-set"
                     v-model="source"
-                    :label="labels.styleSet"
                     :placeholder="STYLE_SET_PLACEHOLDER"
                     no-messages
                     :style-set="TEXTAREA_STYLE_SET"
-                />
+                >
+                    <template #label>
+                        <label for="demo-options-style-set">{{ labels.styleSet }}</label>
+                    </template>
+                </vs-textarea>
                 <div class="actions">
-                    <span
-                        v-if="status"
-                        :class="['status', status.kind]"
-                        :role="status.kind === 'error' ? 'alert' : 'status'"
-                    >
-                        {{ status.text }}
-                    </span>
-                    <vs-button size="sm" :style-set="NO_DOCS_STYLE_SET" @click="resetStyleSet">
+                    <!-- 화면 읽기 프로그램이 바뀐 결과를 읽도록 영역은 항상 두고 내용만 바꾼다. -->
+                    <span :class="['status', status?.kind]" role="status">{{ statusText }}</span>
+                    <vs-button size="sm" @click="resetStyleSet">
                         {{ labels.reset }}
                     </vs-button>
-                    <vs-button size="sm" primary :style-set="NO_DOCS_STYLE_SET" @click="applyStyleSet">
+                    <vs-button size="sm" primary @click="applyStyleSet">
                         {{ labels.apply }}
                     </vs-button>
                 </div>
@@ -251,10 +260,11 @@ function move(step: number): void {
 }
 
 /* VsBlock은 container-type: inline-size라서, 크기가 내용에 맞춰지는 fixed 부모 안에서는 너비를 주지 않으면 2px로 줄어든다.
-   배경을 사이트의 떠 있는 면 색으로 두어 다크 모드에서도 페이지와 구분하고, 선택 링의 간격 색과 맞춘다. */
+   배경을 사이트의 떠 있는 면 색으로 두어 다크 모드에서도 페이지와 구분하고, 선택 링의 간격 색과 맞춘다.
+   넓은 화면의 내비는 콘솔보다 위층에 고정되므로, 패널이 그 아래로 들어가지 않게 내비 높이를 뺀다. */
 .panel {
     width: min(21rem, calc(100vw - 2rem));
-    max-height: calc(100dvh - 6rem);
+    max-height: calc(100dvh - var(--vp-nav-height) - 6rem);
     overflow-y: auto;
     background-color: var(--vp-c-bg-elv);
     box-shadow: var(--vp-shadow-3);

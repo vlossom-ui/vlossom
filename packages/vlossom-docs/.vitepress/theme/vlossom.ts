@@ -14,10 +14,11 @@ const vlossom = shallowRef<VlossomInstance>();
 export const vlossomColors = shallowRef<readonly ColorScheme[]>([]);
 export const defaultColorScheme = shallowRef<ColorScheme>();
 
-// 콘솔이 넣는 style-set의 이름이다. README 예제는 이름으로 style-set을 고르지 않으므로 겹치지 않는다.
+// README 예제는 이름으로 style-set을 고르지 않으므로, 이 이름은 예제와 겹치지 않는다.
 export const DOCS_STYLE_SET = 'vlossom-docs';
 export const styleSetComponents = shallowRef<readonly string[]>([]);
-export const demoStyleSet = shallowRef<StyleSetValue>();
+// VsModal은 VsModalNode로 그려지고, 전역 style-set도 VsModalNode 이름으로 찾는다.
+export const STYLE_SET_NAMES: Readonly<Record<string, string>> = { VsModal: 'VsModalNode' };
 
 type ComponentWithProps = Component & { props?: Record<string, object> };
 
@@ -36,9 +37,12 @@ export function withDocsStyleSet(components: Record<string, Component>): Record<
             if (!styleSet) {
                 return [name, component];
             }
+            // prop을 생성자나 배열로 줄여 쓴 정의도 type을 잃지 않게 객체로 바꾼다.
+            const definition =
+                typeof styleSet === 'function' || Array.isArray(styleSet) ? { type: styleSet } : styleSet;
             const props = {
                 ...(component as ComponentWithProps).props,
-                styleSet: { ...styleSet, default: DOCS_STYLE_SET },
+                styleSet: { ...definition, default: DOCS_STYLE_SET },
             };
             return [name, { ...component, props }];
         }),
@@ -58,9 +62,14 @@ async function loadVlossom(): Promise<void> {
     }
     const { COLORS, createVlossom, useVlossom, VlossomComponents } = await import('vlossom');
     app.use(createVlossom({ components: withDocsStyleSet(VlossomComponents) }));
-    styleSetComponents.value = Object.keys(VlossomComponents).filter((name) =>
-        styleSetProp((VlossomComponents as Record<string, Component>)[name]),
-    );
+    // VsModalNode도 따로 등록되어 있어서, VsModal을 바꿔 넣은 이름과 겹치지 않게 한 번만 남긴다.
+    styleSetComponents.value = [
+        ...new Set(
+            Object.keys(VlossomComponents)
+                .filter((name) => styleSetProp((VlossomComponents as Record<string, Component>)[name]))
+                .map((name) => STYLE_SET_NAMES[name] ?? name),
+        ),
+    ];
     const instance = useVlossom();
     // vlossom은 저장해 둔 자기 테마로 시작한다. 사이트 테마로 먼저 맞춘 뒤에 내보내야 테마 감시가 사이트 테마를 바꾸지 않는다.
     instance.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -111,6 +120,5 @@ export function setDemoStyleSet(styleSet: StyleSetValue | undefined): void {
     if (vlossom.value) {
         const { [DOCS_STYLE_SET]: _previous, ...others } = vlossom.value.styleSet;
         vlossom.value.styleSet = styleSet ? { ...others, [DOCS_STYLE_SET]: styleSet } : others;
-        demoStyleSet.value = styleSet;
     }
 }

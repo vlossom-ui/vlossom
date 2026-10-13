@@ -5,7 +5,6 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vites
 import {
     attachVlossom,
     defaultColorScheme,
-    demoStyleSet,
     DOCS_STYLE_SET,
     followVlossomTheme,
     setDefaultColorScheme,
@@ -39,6 +38,8 @@ vi.mock('vlossom', async () => {
         VlossomComponents: {
             VsFake: { name: 'VsFake', props: { styleSet: { type: [String, Object] } }, render: () => null },
             VsPlain: { name: 'VsPlain', props: {}, render: () => null },
+            VsModal: { name: 'VsModal', props: { styleSet: { type: [String, Object] } }, render: () => null },
+            VsModalNode: { name: 'VsModalNode', props: { styleSet: { type: [String, Object] } }, render: () => null },
         },
         createVlossom: (options: unknown) => {
             (globalThis as Record<string, unknown>).__vlossomOptions = options;
@@ -81,7 +82,7 @@ describe('vlossom.ts', () => {
         expect(fake.render).toBe((mockedComponents.VsFake as { render: unknown }).render);
         expect(fake.props.styleSet.default).toBe(DOCS_STYLE_SET);
         expect(registered().VsPlain).toBe(mockedComponents.VsPlain);
-        expect(styleSetComponents.value).toEqual(['VsFake']);
+        expect(styleSetComponents.value).toEqual(['VsFake', 'VsModalNode']);
     });
 
     it('콘솔 style-set만 바꾸고, 다른 이름의 style-set은 남긴다', () => {
@@ -92,11 +93,9 @@ describe('vlossom.ts', () => {
             brand: { VsButton: { color: 'red' } },
             [DOCS_STYLE_SET]: { VsButton: { backgroundColor: 'blue' } },
         });
-        expect(demoStyleSet.value).toStrictEqual({ VsButton: { backgroundColor: 'blue' } });
 
         setDemoStyleSet(undefined);
         expect(vlossom.styleSet).toStrictEqual({ brand: { VsButton: { color: 'red' } } });
-        expect(demoStyleSet.value).toBeUndefined();
     });
 
     it('고른 색상 스킴을 기본값으로 쓰고, 컴포넌트별 설정은 남긴다', () => {
@@ -161,6 +160,16 @@ describe('withDocsStyleSet', () => {
         expect(await renderToString(createSSRApp({ render: () => h(VsBase, { styleSet: 'mine' }) }))).toBe(
             '<span>mine</span>',
         );
+    });
+
+    it('줄여 쓴 prop 정의도 type을 유지한 채 기본값을 붙인다', () => {
+        const short = { name: 'VsShort', props: { styleSet: [String, Object] }, render: () => null };
+        const { VsShort } = withDocsStyleSet({ VsShort: short as unknown as Component });
+
+        expect((VsShort as { props: { styleSet: object } }).props.styleSet).toStrictEqual({
+            type: [String, Object],
+            default: DOCS_STYLE_SET,
+        });
     });
 });
 
