@@ -10,7 +10,7 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-// README의 style-set 예제는 JS 객체 문법(따옴표 없는 키, 작은따옴표)이라서 JSON5로 읽는다. 입력을 코드로 실행하지 않는다.
+// README의 style-set 예제가 JS 객체 문법이라서 JSON5로 읽는다. 입력을 코드로 실행하지 않는다.
 export function parseStyleSet(
     source: string,
     components: readonly string[],

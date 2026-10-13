@@ -17,8 +17,6 @@ import {
 } from './vlossom.ts';
 
 // vlossom은 import될 때 document를 건드려 node에서 불러올 수 없다. 테마 코드가 쓰는 부분만 흉내 낸다.
-// theme은 vlossom처럼 ref를 읽는 getter라서, 값이 바뀌면 감시하는 쪽이 알 수 있다.
-// createVlossom에 넘긴 옵션은 등록된 컴포넌트를 확인하려고 전역에 남긴다.
 vi.mock('vlossom', async () => {
     const { ref } = await import('vue');
     const theme = ref('light');
@@ -136,7 +134,6 @@ describe('vlossom.ts', () => {
         });
         const stop = followVlossomTheme(isDark);
 
-        // VitePress 스위치로 바꾸면 테마 진입점이 vlossom 테마를 맞춘다.
         site.value = true;
         syncVlossomTheme(true);
         await nextTick();

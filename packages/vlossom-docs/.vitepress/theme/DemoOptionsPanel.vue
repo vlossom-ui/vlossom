@@ -76,7 +76,6 @@ const swatchGroup = useTemplateRef<HTMLElement>('swatchGroup');
 const labels = computed(() => (localeIndex.value === 'ko' ? LABELS.ko : LABELS.root));
 const options = computed<(ColorScheme | undefined)[]>(() => [undefined, ...vlossomColors.value]);
 const selectedIndex = computed(() => options.value.indexOf(defaultColorScheme.value));
-// 문구는 상태에서 매번 만든다. 언어를 바꿔도 이전 언어의 문구가 남지 않는다.
 const statusText = computed(() => {
     if (!status.value) {
         return '';
@@ -86,7 +85,6 @@ const statusText = computed(() => {
         : `${labels.value.errors[status.value.error]}${status.value.detail}`;
 });
 
-// 입력을 고치면 이전 결과("적용했습니다", 오류)가 지금 입력과 맞지 않으므로 지운다.
 watch(source, () => {
     status.value = undefined;
 });
@@ -117,7 +115,6 @@ function close(): void {
     toggleButton.value?.$el.focus();
 }
 
-// v-for 안의 ref 배열은 순서를 보장하지 않으므로, 옮겨 갈 스와치는 DOM 순서로 찾는다.
 function move(step: number): void {
     const next = (selectedIndex.value + step + options.value.length) % options.value.length;
     setDefaultColorScheme(options.value[next]);
@@ -152,7 +149,6 @@ function move(step: number): void {
                 <span class="label">{{ labels.colorScheme }}</span>
                 <span class="value">{{ defaultColorScheme ?? labels.default }}</span>
             </div>
-            <!-- 스와치는 color-scheme을 직접 받아서 전역 기본값과 관계없이 자기 색을 보인다. -->
             <div
                 ref="swatchGroup"
                 class="swatches"
@@ -180,7 +176,7 @@ function move(step: number): void {
                 />
             </div>
             <div class="style-set">
-                <!-- VsTextarea의 라벨은 div라서 입력란과 연결되지 않는다. 슬롯에 label을 넣고 id로 잇는다. -->
+                <!-- VsTextarea의 라벨은 div라서 입력란과 연결되지 않으므로, label을 직접 넣는다. -->
                 <vs-textarea
                     id="demo-options-style-set"
                     v-model="source"
@@ -193,7 +189,6 @@ function move(step: number): void {
                     </template>
                 </vs-textarea>
                 <div class="actions">
-                    <!-- 화면 읽기 프로그램이 바뀐 결과를 읽도록 영역은 항상 두고 내용만 바꾼다. -->
                     <span :class="['status', status?.kind]" role="status">{{ statusText }}</span>
                     <vs-button size="sm" @click="resetStyleSet">
                         {{ labels.reset }}
@@ -260,7 +255,6 @@ function move(step: number): void {
 }
 
 /* VsBlock은 container-type: inline-size라서, 크기가 내용에 맞춰지는 fixed 부모 안에서는 너비를 주지 않으면 2px로 줄어든다.
-   배경을 사이트의 떠 있는 면 색으로 두어 다크 모드에서도 페이지와 구분하고, 선택 링의 간격 색과 맞춘다.
    넓은 화면의 내비는 콘솔보다 위층에 고정되므로, 패널이 그 아래로 들어가지 않게 내비 높이를 뺀다. */
 .panel {
     width: min(21rem, calc(100vw - 2rem));
@@ -326,9 +320,8 @@ function move(step: number): void {
         0 0 0 4px var(--vp-c-text-1);
 }
 
-/* vlossom의 포커스 링은 각 스와치 색의 1px이라 밝은 스와치에서 거의 보이지 않는다. 그 규칙은 utilities 레이어의 !important라서
-   레이어 밖에서는 두께를 바꿀 수 없으므로, 링 색 변수를 브랜드 색으로 바꾸고 box-shadow로 2px 링을 더한다.
-   VsBlock이 넘치는 부분을 자르므로 링은 4px 안에 둔다. 파동 애니메이션은 box-shadow를 덮으므로 포커스 중에는 멈춘다. */
+/* vlossom 포커스 링은 스와치 색의 1px이고 utilities 레이어의 !important라서 두께를 바꿀 수 없다.
+   링 색 변수를 브랜드 색으로 바꾸고 box-shadow로 2px 링을 더한다. VsBlock이 넘치는 부분을 자르므로 링은 4px 안에 둔다. */
 .toggle:focus-visible,
 .theme-button:focus-visible,
 .swatch:focus-visible {

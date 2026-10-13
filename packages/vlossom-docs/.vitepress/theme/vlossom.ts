@@ -26,10 +26,8 @@ function styleSetProp(component: Component): object | undefined {
     return (component as ComponentWithProps).props?.styleSet;
 }
 
-// 전역 style-set은 컴포넌트가 style-set="이름"으로 고를 때만 걸린다. 콘솔에서 넣은 style-set이 데모에 걸리도록,
-// style-set을 받는 컴포넌트는 콘솔의 style-set 이름을 기본값으로 쓰는 복사본으로 등록한다.
-// Vue 3의 extends는 setup과 render를 물려주지 않으므로, 컴포넌트 객체를 얕게 복사하고 props만 바꾼다.
-// 직접 :style-set을 준 데모는 그 값을 쓰고, vlossom 컴포넌트 안에서 쓰는 자식 컴포넌트는 원래 컴포넌트라서 영향이 없다.
+// vlossom의 전역 style-set은 컴포넌트가 style-set="이름"으로 고를 때만 걸린다. 콘솔 style-set이 데모에 걸리도록,
+// style-set을 받는 컴포넌트는 콘솔 style-set 이름을 기본값으로 쓰는 복사본으로 등록한다.
 export function withDocsStyleSet(components: Record<string, Component>): Record<string, Component> {
     return Object.fromEntries(
         Object.entries(components).map(([name, component]) => {
@@ -37,7 +35,6 @@ export function withDocsStyleSet(components: Record<string, Component>): Record<
             if (!styleSet) {
                 return [name, component];
             }
-            // prop을 생성자나 배열로 줄여 쓴 정의도 type을 잃지 않게 객체로 바꾼다.
             const definition =
                 typeof styleSet === 'function' || Array.isArray(styleSet) ? { type: styleSet } : styleSet;
             const props = {
@@ -55,7 +52,6 @@ export function attachVlossom(target: App): void {
 
 // vlossom은 import될 때 document에 이벤트를 걸고, createVlossom에서 localStorage와 matchMedia를 읽는다.
 // 그래서 SSR에서는 부르지 않고, 브라우저에서 첫 데모가 필요할 때 한 번만 불러온다.
-// 스타일은 정적으로 둔다. VitePress가 CSS를 한 파일로 묶어서(cssCodeSplit: false) 지연 로드해도 모든 페이지가 받는다.
 async function loadVlossom(): Promise<void> {
     if (!app) {
         throw new Error('Vlossom is not attached to the app.');
@@ -77,7 +73,6 @@ async function loadVlossom(): Promise<void> {
     vlossomColors.value = COLORS;
 }
 
-// 브라우저는 같은 문서에서 가져오기에 실패한 모듈을 다시 받지 않으므로, 실패해도 다시 시도하지 않는다.
 export function whenVlossomReady(): Promise<void> {
     ready ??= loadVlossom();
     return ready;
