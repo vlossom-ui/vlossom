@@ -1,10 +1,11 @@
 /**
  * OKLCH 팔레트 생성기
  *
- * 3그룹:
- *   standard  L-500 = 60%  (red, brown, green, teal, blue, indigo, violet, purple, fuchsia, pink, rose)
- *   semi      L-500 = 70%  (orange, amber, emerald, sky)
- *   bright    L-500 = 80%  (yellow, lime, cyan)
+ * 4그룹:
+ *   standard  L-500 = 60%  (gray, brown, emerald, teal, blue, indigo, violet, purple, fuchsia, pink, rose)
+ *   semi      L-500 = 70%  (red, orange, green, sky)
+ *   bright    L-500 = 80%  (amber, lime, cyan)
+ *   vivid     L-500 = 85%  (yellow)
  *
  * 채도: 각 stop의 명도에서 culori clampChroma로 sRGB 최대치를 구한 뒤
  *       그룹별 피크 비율(GROUP_PEAK_FRACTION) × stop별 스케일(CHROMA_SCALE) 적용
@@ -45,18 +46,18 @@ const CHROMA_SCALE = [0.05, 0.15, 0.35, 0.6, 0.85, 1.0, 0.9, 0.75, 0.55, 0.35, 0
 // peakFraction: 그룹 기본값 대신 이 색만 다른 비율을 쓸 때
 const COLORS = [
     { name: 'gray', h: null, group: 'standard', maxC: 0 },
-    { name: 'red', h: 25, group: 'standard' },
+    { name: 'red', h: 25, group: 'semi', peakFraction: 1.2 }, // 1 초과 → 600~950도 gamut 한계 가까이 → 선명한 빨강
     { name: 'brown', h: 40, group: 'standard', maxC: 0.13 }, // H=25(red)에서 H=40으로 → 흙갈색
     { name: 'orange', h: 50, group: 'semi', peakFraction: 1.0 }, // max chroma → 싱싱한 주황
     { name: 'amber', h: 70, group: 'bright', peakFraction: 1.0 },
-    { name: 'yellow', h: 85, group: 'vivid' }, // L-500=85%, 황토 방지
+    { name: 'yellow', h: 85, group: 'vivid', peakFraction: 1.2 }, // L-500=85%, 황토 방지
     { name: 'lime', h: 120, group: 'bright' },
-    { name: 'green', h: 152.5, group: 'semi', peakFraction: 1.0 }, // 싱그럽고 밝은 초록
+    { name: 'green', h: 152.5, group: 'semi', peakFraction: 1.2 }, // 싱그럽고 밝은 초록
     { name: 'emerald', h: 151.5, group: 'standard' }, // 깊고 진한 보석 톤
     { name: 'teal', h: 185, group: 'standard' },
     { name: 'cyan', h: 194.8, group: 'bright' },
     { name: 'sky', h: 240, group: 'semi' },
-    { name: 'blue', h: 262, group: 'standard' },
+    { name: 'blue', h: 262, group: 'standard', peakFraction: 1.0 },
     { name: 'indigo', h: 275, group: 'standard' },
     { name: 'violet', h: 295, group: 'standard' },
     { name: 'purple', h: 310, group: 'standard' },

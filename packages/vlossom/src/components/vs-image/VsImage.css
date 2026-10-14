@@ -8,11 +8,16 @@
     height: 100%;
 
     .vs-image-fallback {
-        @apply flex h-full w-full items-center justify-center bg-gray-100 text-gray-500;
+        @apply flex h-full w-full items-center justify-center;
+
+        background-color: var(--vs-gray-soft);
+        color: var(--vs-gray-strong);
     }
 
     .vs-image-fallback-icon {
-        @apply h-1/2 w-1/2 text-red-400;
+        @apply h-1/2 w-1/2;
+
+        color: var(--vs-red);
     }
 
     .vs-image-tag {
