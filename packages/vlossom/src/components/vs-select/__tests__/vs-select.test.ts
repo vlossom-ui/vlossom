@@ -11,6 +11,72 @@ describe('VsSelect', () => {
         { id: 3, name: 'Orange', disabled: true },
     ];
 
+    describe('loading', () => {
+        it('loading이면 트리거에 로딩 표시를 보여 주고 clear 버튼과 닫기 가능한 칩을 숨긴다', () => {
+            // given, when
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    multiple: true,
+                    closableChips: true,
+                    modelValue: ['Apple'],
+                    loading: true,
+                },
+            });
+            const trigger = wrapper.find('.vs-select-trigger');
+
+            // then
+            expect(trigger.find('.vs-loading').exists()).toBe(true);
+            expect(trigger.find('.vs-select-icon').exists()).toBe(false);
+            expect(trigger.find('.vs-select-clear-button').exists()).toBe(false);
+            expect(trigger.find('.vs-chip').exists()).toBe(true);
+            expect(trigger.find('.vs-chip-close-button').exists()).toBe(false);
+            expect(trigger.attributes('aria-busy')).toBe('true');
+        });
+
+        it('loading이면 옵션 목록을 열 수 없다', async () => {
+            // given
+            const wrapper = mount(VsSelect, { props: { options: basicOptions, modelValue: null, loading: true } });
+
+            // when
+            wrapper.vm.openOptions();
+            await wrapper.find('.vs-select-trigger').trigger('click');
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(false);
+            expect(wrapper.emitted('open')).toBeUndefined();
+        });
+
+        it('옵션 목록이 열린 상태에서 loading이 되면 목록을 닫는다', async () => {
+            // given
+            const wrapper = mount(VsSelect, { props: { options: basicOptions, modelValue: null } });
+            wrapper.vm.openOptions();
+            await nextTick();
+            expect(wrapper.vm.isOpen).toBe(true);
+
+            // when
+            await wrapper.setProps({ loading: true });
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(false);
+        });
+
+        it('loading이 끝나면 다시 옵션 목록을 열 수 있다', async () => {
+            // given
+            const wrapper = mount(VsSelect, { props: { options: basicOptions, modelValue: null, loading: true } });
+
+            // when
+            await wrapper.setProps({ loading: false });
+            wrapper.vm.openOptions();
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.find('.vs-select-trigger').attributes('aria-busy')).toBeUndefined();
+        });
+    });
+
     describe('비동기 options', () => {
         it('options가 비어 있으면 초기값을 정리하지 않고, options가 들어오면 해당 옵션을 선택한다', async () => {
             // given

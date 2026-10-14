@@ -51,6 +51,14 @@
             }
         }
 
+        .vs-select-loading {
+            @apply shrink-0;
+        }
+
+        &.vs-loading-state {
+            @apply cursor-default;
+        }
+
         .vs-select-icon {
             @apply flex size-4 shrink-0 items-center justify-center;
 

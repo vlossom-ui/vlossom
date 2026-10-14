@@ -1,6 +1,11 @@
 @reference 'tailwindcss';
 
 .vs-radio-set {
+    .vs-radio-set-skeleton {
+        width: 100%;
+        height: var(--vs-size-height, var(--vs-comp-height-md));
+    }
+
     @apply flex flex-wrap items-center;
 
     gap: calc(var(--vs-size-padding, var(--vs-padding-md)) * 2);

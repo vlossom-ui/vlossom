@@ -1,6 +1,7 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
+import type { VsSkeletonStyleSet } from '@/components/vs-skeleton/types';
 import type VsRadio from './VsRadio.vue';
 import type VsRadioSet from './VsRadioSet.vue';
 
@@ -27,5 +28,6 @@ export interface VsRadioStyleSet {
 
 export interface VsRadioSetStyleSet extends CSSProperties {
     $radio?: VsRadioStyleSet;
+    $skeleton?: VsSkeletonStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }

@@ -17,36 +17,53 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-checkbox-set', colorSchemeClass, sizeClass, classObj]" :style="componentInlineStyle">
-            <vs-checkbox
-                v-for="(option, index) in options"
-                :key="getOptionValue(option)"
-                ref="checkboxRefs"
-                class="vs-checkbox-item"
-                width="unset"
-                :model-value="inputValue"
-                :true-value="getOptionValue(option)"
-                :before-change="beforeChange"
-                :style-set="checkboxStyleSet"
-                :check-label="getOptionLabel(option)"
-                :disabled="computedDisabled"
-                :readonly="computedReadonly"
-                :id="`${computedId}-${index}`"
-                :state="computedState"
-                multiple
-                no-label
-                no-messages
+        <div
+            :class="['vs-checkbox-set', colorSchemeClass, sizeClass, classObj]"
+            :style="componentInlineStyle"
+            :aria-busy="loading || undefined"
+        >
+            <vs-skeleton
+                v-if="loading"
+                class="vs-checkbox-set-skeleton"
                 :color-scheme
-                :name
-                :size
-                @update:modelValue="onCheckboxUpdate"
-                @focus="onFocus(option, $event)"
-                @blur="onBlur(option, $event)"
-            >
-                <template #check-label v-if="$slots['check-label']">
-                    <slot name="check-label" :value="getOptionValue(option)" :label="getOptionLabel(option)" :option />
-                </template>
-            </vs-checkbox>
+                :style-set="componentStyleSet.$skeleton"
+            />
+            <template v-else>
+                <vs-checkbox
+                    v-for="(option, index) in options"
+                    :key="getOptionValue(option)"
+                    ref="checkboxRefs"
+                    class="vs-checkbox-item"
+                    width="unset"
+                    :model-value="inputValue"
+                    :true-value="getOptionValue(option)"
+                    :before-change="beforeChange"
+                    :style-set="checkboxStyleSet"
+                    :check-label="getOptionLabel(option)"
+                    :disabled="computedDisabled"
+                    :readonly="computedReadonly"
+                    :id="`${computedId}-${index}`"
+                    :state="computedState"
+                    multiple
+                    no-label
+                    no-messages
+                    :color-scheme
+                    :name
+                    :size
+                    @update:modelValue="onCheckboxUpdate"
+                    @focus="onFocus(option, $event)"
+                    @blur="onBlur(option, $event)"
+                >
+                    <template #check-label v-if="$slots['check-label']">
+                        <slot
+                            name="check-label"
+                            :value="getOptionValue(option)"
+                            :label="getOptionLabel(option)"
+                            :option
+                        />
+                    </template>
+                </vs-checkbox>
+            </template>
         </div>
 
         <template #messages v-if="!noMessages">
@@ -74,12 +91,13 @@ import { useVsCheckboxSetRules } from './vs-checkbox-set-rules';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsCheckbox from '@/components/vs-checkbox/VsCheckbox.vue';
+import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 const componentName = VsComponent.VsCheckboxSet;
 
 export default defineComponent({
     name: componentName,
-    components: { VsInputWrapper, VsCheckbox },
+    components: { VsInputWrapper, VsCheckbox, VsSkeleton },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsCheckboxSetStyleSet>(),
@@ -91,6 +109,7 @@ export default defineComponent({
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
+        loading: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         vertical: { type: Boolean, default: false },
         // v-model

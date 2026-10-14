@@ -107,6 +107,15 @@ export const Disabled: Story = {
     },
 };
 
+export const Loading: Story = {
+    args: {
+        label: 'Loading Checkbox Set',
+        options: ['Option 1', 'Option 2', 'Option 3'],
+        loading: true,
+        modelValue: ['Option 1'],
+    },
+};
+
 export const Readonly: Story = {
     args: {
         label: 'Readonly Checkbox Set',

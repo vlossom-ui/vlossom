@@ -3,6 +3,7 @@
         ref="triggerRef"
         :class="['vs-select-trigger', stateBoxClasses, triggerClassObj]"
         :style="componentInlineStyle"
+        :aria-busy="loading || undefined"
         tabindex="0"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"
@@ -16,7 +17,7 @@
                 <template v-if="collapseChips && selectedOptions.length > 1">
                     <vs-chip
                         :color-scheme
-                        :closable="closableChips"
+                        :closable="closableChips && !loading"
                         :style-set="componentStyleSet.$chip"
                         size="xs"
                         @close="$emit('deselect', selectedOptions[0].id)"
@@ -30,7 +31,7 @@
                         v-for="option in selectedOptions"
                         :key="option.id"
                         :color-scheme
-                        :closable="closableChips"
+                        :closable="closableChips && !loading"
                         :style-set="componentStyleSet.$chip"
                         size="xs"
                         @close="$emit('deselect', option.id)"
@@ -52,7 +53,8 @@
         >
             <XIcon class="vs-select-clear-icon" />
         </button>
-        <div :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
+        <vs-loading v-if="loading" class="vs-select-loading" :color-scheme :style-set="componentStyleSet.$loading" />
+        <div v-else :class="['vs-select-icon', { 'vs-select-icon-open': isOpen }]">
             <ChevronDownIcon color="gray" />
         </div>
     </div>
@@ -66,10 +68,11 @@ import type { VsSelectStyleSet } from './types';
 
 import { ChevronDownIcon, XIcon } from '@lucide/vue';
 import VsChip from '@/components/vs-chip/VsChip.vue';
+import VsLoading from '@/components/vs-loading/VsLoading.vue';
 
 export default defineComponent({
     name: 'VsSelectTrigger',
-    components: { VsChip, ChevronDownIcon, XIcon },
+    components: { VsChip, VsLoading, ChevronDownIcon, XIcon },
     props: {
         styleSet: { type: Object as PropType<VsSelectStyleSet> },
         colorScheme: { type: String as PropType<ColorScheme> },
@@ -78,6 +81,7 @@ export default defineComponent({
         disabled: { type: Boolean, default: false },
         isEmpty: { type: Boolean, default: false },
         isOpen: { type: Boolean, default: false },
+        loading: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         placeholder: { type: String, default: '' },
@@ -91,7 +95,7 @@ export default defineComponent({
     emits: ['click', 'deselect', 'clear', 'focus', 'blur'],
     setup(props) {
         const { optionMessages } = useMessages();
-        const { isEmpty, selectedOptions, state, noClear, disabled, readonly, styleSet } = toRefs(props);
+        const { isEmpty, selectedOptions, state, noClear, disabled, readonly, loading, styleSet } = toRefs(props);
 
         const triggerRef: TemplateRef<HTMLElement> = useTemplateRef('triggerRef');
 
@@ -103,12 +107,13 @@ export default defineComponent({
         );
 
         const renderClearButton = computed(
-            () => !noClear.value && !readonly.value && !disabled.value && !isEmpty.value,
+            () => !noClear.value && !readonly.value && !disabled.value && !loading.value && !isEmpty.value,
         );
 
         const triggerClassObj = computed(() => ({
             'vs-focusable': !disabled.value && !readonly.value,
             'vs-focus-within': !disabled.value && !readonly.value,
+            'vs-loading-state': loading.value,
         }));
 
         const displayLabel = computed(() => {

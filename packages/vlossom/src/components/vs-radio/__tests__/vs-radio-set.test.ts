@@ -6,6 +6,28 @@ import VsRadioSet from './../VsRadioSet.vue';
 import VsForm from '@/components/vs-form/VsForm.vue';
 
 describe('VsRadioSet', () => {
+    describe('loading', () => {
+        it('loading이면 radio 대신 skeleton을 보여 주고, 끝나면 radio를 보여 준다', async () => {
+            // given
+            const wrapper = mount(VsRadioSet, { props: { options: ['A', 'B'], modelValue: 'A', loading: true } });
+            const container = wrapper.find('.vs-radio-set');
+
+            // then
+            expect(container.findAll('.vs-skeleton')).toHaveLength(1);
+            expect(container.find('input[type="radio"]').exists()).toBe(false);
+            expect(container.attributes('aria-busy')).toBe('true');
+
+            // when
+            await wrapper.setProps({ loading: false });
+
+            // then
+            expect(container.find('.vs-skeleton').exists()).toBe(false);
+            expect(container.findAll('input[type="radio"]')).toHaveLength(2);
+            expect(container.attributes('aria-busy')).toBeUndefined();
+            expect(wrapper.props('modelValue')).toBe('A');
+        });
+    });
+
     describe('비동기 options', () => {
         it('options가 비어 있으면 초기값을 정리하지 않고, options가 들어오면 그 기준으로 정리한다', async () => {
             // given

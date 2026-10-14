@@ -1,6 +1,7 @@
 import type { ComponentPublicInstance, CSSProperties } from 'vue';
 import type { FocusableRef, FormChildRef } from '@/declaration';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
+import type { VsSkeletonStyleSet } from '@/components/vs-skeleton/types';
 import type VsCheckbox from './VsCheckbox.vue';
 import type VsCheckboxSet from './VsCheckboxSet.vue';
 
@@ -31,5 +32,6 @@ export interface VsCheckboxStyleSet extends CSSProperties {
 
 export interface VsCheckboxSetStyleSet extends CSSProperties {
     $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
+    $skeleton?: VsSkeletonStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }
