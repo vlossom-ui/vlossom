@@ -33,7 +33,7 @@ A toggle button that switches the application between light and dark themes.
 
 ### Ghost / Outline
 
-```html
+```html live
 <template>
     <vs-theme-button ghost />
     <vs-theme-button outline color-scheme="blue" />
