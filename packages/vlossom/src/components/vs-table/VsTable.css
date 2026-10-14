@@ -172,8 +172,14 @@
         > .vs-table-td.vs-table-expanded-row {
             grid-row: 2;
             grid-column: 1 / -1;
+            contain: inline-size;
             border: none;
             padding: 0;
+
+            /* 테이블보다 넓은 콘텐츠는 VsExpandable의 overflow: hidden에 잘리지 않도록 확장 영역 안에서 가로 스크롤한다. */
+            .vs-table-expand-content {
+                @apply overflow-x-auto;
+            }
 
             .vs-table-expand-fallback {
                 margin: 0;

@@ -53,7 +53,9 @@
             </td>
             <td class="vs-table-td vs-table-expanded-row">
                 <vs-expandable :open="expanded" :size :style-set="expandedPanelStyleSet">
-                    <slot name="expand" :item :value="expanded" :rowIdx="index" />
+                    <div class="vs-table-expand-content">
+                        <slot name="expand" :item :value="expanded" :rowIdx="index" />
+                    </div>
                 </vs-expandable>
             </td>
         </template>
