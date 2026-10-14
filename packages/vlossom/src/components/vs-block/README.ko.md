@@ -16,7 +16,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-block>
         <p>블록 콘텐츠가 여기에 들어갑니다.</p>
@@ -26,7 +26,7 @@
 
 ### 타이틀과 함께 사용
 
-```html
+```html live
 <template>
     <vs-block>
         <template #title>블록 타이틀</template>
@@ -37,7 +37,7 @@
 
 ### 고정 높이
 
-```html
+```html live
 <template>
     <vs-block height="300px">
         <template #title>스크롤 가능한 블록</template>
@@ -68,7 +68,7 @@ interface VsBlockStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-block
         :style-set="{

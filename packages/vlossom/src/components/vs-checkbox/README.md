@@ -17,7 +17,7 @@ A checkbox form input component supporting single and multiple selection modes, 
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-checkbox v-model="checked" check-label="Accept Terms" />
 </template>
@@ -30,7 +30,7 @@ const checked = ref(false);
 
 ### Checkbox Group (VsCheckboxSet)
 
-```html
+```html live
 <template>
     <vs-checkbox-set
         v-model="selectedFruits"
@@ -47,7 +47,7 @@ const selectedFruits = ref([]);
 
 ### With Validation
 
-```html
+```html live
 <template>
     <vs-checkbox v-model="agreed" check-label="I agree" required />
 </template>
@@ -55,7 +55,7 @@ const selectedFruits = ref([]);
 
 ### Before Change Hook
 
-```html
+```html live
 <template>
     <vs-checkbox
         v-model="value"
@@ -161,14 +161,14 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-checkbox
         v-model="checked"
         check-label="Custom Checkbox"
         :style-set="{
             $checkboxSize: '1.5rem',
-            $checkboxColor: '#e0e0e0',
+            $checkboxColor: '#9ca3af',
             $checkboxCheckedColor: '#6200ea',
             $checkboxLabel: {
                 fontSize: '1rem',

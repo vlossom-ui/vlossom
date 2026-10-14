@@ -16,21 +16,21 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-layout>
-        <vs-header layout>헤더</vs-header>
+        <vs-header layout position="fixed">헤더</vs-header>
         <vs-container layout>
             <p>메인 콘텐츠 영역</p>
         </vs-container>
-        <vs-footer layout>푸터</vs-footer>
+        <vs-footer layout position="fixed">푸터</vs-footer>
     </vs-layout>
 </template>
 ```
 
 ### 커스텀 태그
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-container layout tag="main">

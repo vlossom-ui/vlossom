@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" />
 </template>
@@ -31,7 +31,7 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ### 커스텀 탭 내용
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs">
         <template #tab="{ tab, index }">
@@ -43,7 +43,7 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ### 세로 탭
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" vertical />
 </template>
@@ -51,7 +51,7 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ### 비활성화된 탭
 
-```html
+```html live
 <template>
     <vs-tabs v-model="activeTab" :tabs="tabs" :disabled="(tab) => tab === '탭 2'" />
 </template>
@@ -93,13 +93,13 @@ interface VsTabsStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-tabs
         v-model="activeTab"
         :tabs="tabs"
         :style-set="{
-            $divider: '2px solid #e0e0e0',
+            $divider: '2px solid #9ca3af',
             $tabs: { gap: '0.5rem' },
             $tab: {
                 borderRadius: '0.25rem',

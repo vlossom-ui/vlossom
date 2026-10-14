@@ -16,7 +16,7 @@ A versatile button component supporting multiple visual variants and a built-in 
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-button @click="handleClick">Click Me</vs-button>
 </template>
@@ -24,7 +24,7 @@ A versatile button component supporting multiple visual variants and a built-in 
 
 ### Primary
 
-```html
+```html live
 <template>
     <vs-button primary>Primary Button</vs-button>
 </template>
@@ -32,7 +32,7 @@ A versatile button component supporting multiple visual variants and a built-in 
 
 ### Loading State
 
-```html
+```html live
 <template>
     <vs-button :loading="isLoading" @click="submit">Submit</vs-button>
 </template>
@@ -51,22 +51,26 @@ async function submit() {
 
 ### Outline and Ghost
 
-```html
+```html live
 <template>
-    <vs-button outline>Outline</vs-button>
-    <vs-button ghost>Ghost</vs-button>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button outline>Outline</vs-button>
+        <vs-button ghost>Ghost</vs-button>
+    </div>
 </template>
 ```
 
 ### Sizes
 
-```html
+```html live
 <template>
-    <vs-button size="xs">XS</vs-button>
-    <vs-button size="sm">SM</vs-button>
-    <vs-button>MD (default)</vs-button>
-    <vs-button size="lg">LG</vs-button>
-    <vs-button size="xl">XL</vs-button>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button size="xs">XS</vs-button>
+        <vs-button size="sm">SM</vs-button>
+        <vs-button>MD (default)</vs-button>
+        <vs-button size="lg">LG</vs-button>
+        <vs-button size="xl">XL</vs-button>
+    </div>
 </template>
 ```
 
@@ -100,7 +104,7 @@ interface VsButtonStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-button
         :style-set="{

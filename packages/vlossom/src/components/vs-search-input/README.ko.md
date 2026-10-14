@@ -17,7 +17,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-search-input v-model="query" @search="onSearch" />
 </template>
@@ -33,7 +33,7 @@ function onSearch(value) {
 
 ### 대소문자 구분 및 정규식 토글 사용
 
-```html
+```html live
 <template>
     <vs-search-input
         v-model="query"
@@ -48,7 +48,7 @@ function onSearch(value) {
 
 ### match()를 사용한 필터링
 
-```html
+```html live
 <template>
     <vs-search-input ref="searchRef" v-model="query" />
     <ul>
@@ -97,13 +97,16 @@ interface VsSearchInputStyleSet extends VsInputStyleSet {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-search-input
         v-model="query"
+        use-case-sensitive
+        use-regex
         :style-set="{
             borderRadius: '1rem',
-            $input: { height: '2.5rem' },
+            height: '2.5rem',
+            $toggle: { color: '#2563eb' },
         }"
     />
 </template>

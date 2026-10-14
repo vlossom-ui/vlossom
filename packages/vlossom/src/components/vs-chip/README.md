@@ -16,7 +16,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-chip>Label</vs-chip>
 </template>
@@ -24,7 +24,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### Closable Chip
 
-```html
+```html live
 <template>
     <vs-chip closable @close="removeChip">Removable</vs-chip>
 </template>
@@ -32,7 +32,7 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### With Icon
 
-```html
+```html live
 <template>
     <vs-chip>
         <template #icon>★</template>
@@ -43,22 +43,26 @@ A compact element for displaying tags, labels, or status indicators with optiona
 
 ### Primary and Outline
 
-```html
+```html live
 <template>
-    <vs-chip primary>Primary</vs-chip>
-    <vs-chip outline>Outline</vs-chip>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-chip primary>Primary</vs-chip>
+        <vs-chip outline>Outline</vs-chip>
+    </div>
 </template>
 ```
 
 ### Sizes
 
-```html
+```html live
 <template>
-    <vs-chip size="xs">XS</vs-chip>
-    <vs-chip size="sm">SM</vs-chip>
-    <vs-chip size="md">MD</vs-chip>
-    <vs-chip size="lg">LG</vs-chip>
-    <vs-chip size="xl">XL</vs-chip>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-chip size="xs">XS</vs-chip>
+        <vs-chip size="sm">SM</vs-chip>
+        <vs-chip size="md">MD</vs-chip>
+        <vs-chip size="lg">LG</vs-chip>
+        <vs-chip size="xl">XL</vs-chip>
+    </div>
 </template>
 ```
 
@@ -85,7 +89,7 @@ interface VsChipStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-chip
         closable
@@ -95,9 +99,12 @@ interface VsChipStyleSet extends CSSProperties {
             backgroundColor: '#e8f5e9',
             color: '#2e7d32',
             $icon: {
+                backgroundColor: '#ffffff',
                 color: '#2e7d32',
             },
             $closeButton: {
+                backgroundColor: '#ffffff',
+                color: '#2e7d32',
                 opacity: '0.7',
             },
         }"

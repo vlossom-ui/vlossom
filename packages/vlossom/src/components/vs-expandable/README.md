@@ -15,7 +15,7 @@ A content container with animated expand and collapse transitions controlled by 
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-button @click="isOpen = !isOpen">Toggle</vs-button>
     <vs-expandable :open="isOpen">
@@ -31,12 +31,13 @@ const isOpen = ref(false);
 
 ### Custom Styled Content
 
-```html
+```html live
 <template>
+    <vs-button @click="isOpen = !isOpen">Toggle</vs-button>
     <vs-expandable
         :open="isOpen"
         :style-set="{
-            backgroundColor: '#f0f4ff', padding: '1.5rem', borderRadius: '8px',
+            backgroundColor: '#f0f4ff', color: '#1f2937', padding: '1.5rem', borderRadius: '8px',
         }"
     >
         <p>Styled expandable content.</p>
@@ -59,12 +60,12 @@ interface VsExpandableStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-expandable
         :open="true"
         :style-set="{
-            backgroundColor: '#fff8e1', padding: '2rem', borderLeft: '4px solid orange',
+            backgroundColor: '#fff8e1', color: '#1f2937', padding: '2rem', borderLeft: '4px solid orange',
         }"
     >
         <p>Highlighted expandable content.</p>

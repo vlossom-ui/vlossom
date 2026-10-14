@@ -17,7 +17,7 @@ A pagination component that allows navigation through a series of pages.
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="10" />
 </template>
@@ -30,7 +30,7 @@ const page = ref(0);
 
 ### With Edge Buttons
 
-```html
+```html live
 <template>
     <vs-pagination v-model="page" :length="20" :showing-length="5" edge-buttons />
 </template>
@@ -38,10 +38,19 @@ const page = ref(0);
 
 ### With Ghost and Outline Style
 
-```html
+```html live
 <template>
-    <vs-pagination v-model="page" :length="10" ghost outline />
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-pagination v-model="ghostPage" :length="10" ghost />
+        <vs-pagination v-model="outlinePage" :length="10" outline />
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const ghostPage = ref(0);
+const outlinePage = ref(0);
+</script>
 ```
 
 ## Props
@@ -75,7 +84,7 @@ interface VsPaginationStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-pagination
         v-model="page"

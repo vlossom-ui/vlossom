@@ -17,7 +17,7 @@ A multi-line text input component with validation, string modifiers, and min/max
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="Description" placeholder="Enter description..." />
 </template>
@@ -30,7 +30,7 @@ const text = ref('');
 
 ### With Validation
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"
@@ -45,7 +45,7 @@ const text = ref('');
 
 ### With Header and Footer
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="Message" placeholder="Ask anything">
         <template #footer>
@@ -58,7 +58,7 @@ const text = ref('');
 
 ### Read-only Mode
 
-```html
+```html live
 <template>
     <vs-textarea v-model="text" label="Notes" readonly />
 </template>
@@ -66,7 +66,7 @@ const text = ref('');
 
 ### Focus Placeholder
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"
@@ -128,7 +128,7 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-textarea
         v-model="text"

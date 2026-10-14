@@ -16,7 +16,7 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-text-wrap copy>
         <p>This text can be copied to the clipboard.</p>
@@ -26,7 +26,7 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ### With Link Button
 
-```html
+```html live
 <template>
     <vs-text-wrap link="https://vlossom.dev">
         Visit our website
@@ -36,7 +36,7 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ### Copy and Link Together
 
-```html
+```html live
 <template>
     <vs-text-wrap copy link="https://vlossom.dev" :width="400">
         <code>npm install vlossom</code>
@@ -46,12 +46,12 @@ A container component that wraps text content and provides copy-to-clipboard and
 
 ### Custom Actions Slot
 
-```html
+```html live
 <template>
     <vs-text-wrap>
         <p>Content here</p>
         <template #actions>
-            <button @click="doSomething">Custom Action</button>
+            <vs-button size="xs" @click="doSomething">Custom Action</vs-button>
         </template>
     </vs-text-wrap>
 </template>
@@ -77,12 +77,12 @@ interface VsTextWrapStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-text-wrap
         copy
         :style-set="{
-            backgroundColor: '#f5f5f5', borderRadius: '0.5rem', padding: '1rem',
+            backgroundColor: '#f5f5f5', color: '#1f2937', borderRadius: '0.5rem', padding: '1rem',
             $copyIcon: { color: '#1976d2', fontSize: '1.2rem' },
             $linkIcon: { color: '#4caf50' },
         }"

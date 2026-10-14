@@ -18,12 +18,14 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
-    <vs-form ref="formRef" @error="onError">
+    <vs-form ref="formRef" :row-gap="8" @error="onError">
         <vs-input v-model="name" label="이름" required :grid="{ sm: 12, md: 6 }" />
         <vs-input v-model="email" label="이메일" required :grid="{ sm: 12, md: 6 }" />
-        <vs-button @click="submit">제출</vs-button>
+        <vs-responsive :grid="12">
+            <vs-button @click="submit">제출</vs-button>
+        </vs-responsive>
     </vs-form>
 </template>
 
@@ -48,10 +50,10 @@ function onError(invalidIds) {
 
 ### 비활성화된 폼
 
-```html
+```html live
 <template>
     <vs-form :disabled="isDisabled">
-        <vs-input v-model="value" label="읽기 전용 필드" />
+        <vs-input v-model="value" label="비활성화된 필드" />
     </vs-form>
 </template>
 
@@ -64,7 +66,7 @@ const value = ref('');
 
 ### 그리드 레이아웃 사용
 
-```html
+```html live
 <template>
     <vs-form :grid-size="12" :column-gap="16" :row-gap="8">
         <vs-input v-model="firstName" label="이름" :grid="6" />

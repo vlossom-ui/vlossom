@@ -12,7 +12,7 @@
 
 <!-- Component usage example -->
 
-```html
+```html live
 <template></template>
 ```
 

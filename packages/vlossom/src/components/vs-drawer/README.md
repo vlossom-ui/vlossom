@@ -17,12 +17,13 @@ A slide-in panel component that overlays content from any edge of the screen wit
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-button @click="open = true">Open Drawer</vs-button>
     <vs-drawer v-model="open" placement="left">
         <template #header>Header</template>
         <p>Drawer content goes here.</p>
+        <vs-button @click="open = false">Close</vs-button>
         <template #footer>Footer</template>
     </vs-drawer>
 </template>
@@ -35,7 +36,7 @@ const open = ref(false);
 
 ### Right-side Drawer with Dimmed Backdrop
 
-```html
+```html live
 <template>
     <vs-button @click="drawerOpen = true">Open Right Drawer</vs-button>
     <vs-drawer v-model="drawerOpen" placement="right" dimmed dim-close>
@@ -51,10 +52,12 @@ const drawerOpen = ref(false);
 
 ### Fixed-Position Drawer with Custom Size
 
-```html
+```html live
 <template>
+    <vs-button @click="open = true">Open Drawer</vs-button>
     <vs-drawer v-model="open" placement="top" :size="'30%'" position="fixed">
         <p>Top drawer at 30% height.</p>
+        <vs-button @click="open = false">Close</vs-button>
     </vs-drawer>
 </template>
 ```
@@ -63,13 +66,14 @@ const drawerOpen = ref(false);
 
 Set the `layout` prop to register the drawer with the layout store. Combine with `pushContainer` to push the sibling `VsContainer` aside instead of overlaying it. Wrapping the drawer in another component is supported.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-drawer v-model="open" layout push-container placement="left" size="240px">
             <p>Sidebar</p>
         </vs-drawer>
         <vs-container layout>
+            <vs-button @click="open = !open">Toggle Sidebar</vs-button>
             <p>Content</p>
         </vs-container>
     </vs-layout>
@@ -114,8 +118,9 @@ interface VsDrawerStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
+    <vs-button @click="open = true">Open Drawer</vs-button>
     <vs-drawer
         v-model="open"
         :style-set="{
@@ -128,6 +133,7 @@ interface VsDrawerStyleSet extends CSSProperties {
     >
         <template #header>My Header</template>
         <p>Content area</p>
+        <vs-button @click="open = false">Close</vs-button>
         <template #footer>My Footer</template>
     </vs-drawer>
 </template>

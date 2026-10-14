@@ -22,10 +22,10 @@
 
 `target`을 지정하지 않으면 default slot이 wrapper 엘리먼트로 감싸져 trigger 역할을 합니다.
 
-```html
+```html live
 <template>
     <vs-tooltip>
-        <button>마우스를 올려보세요</button>
+        <vs-button>마우스를 올려보세요</vs-button>
         <template #tooltip>툴팁입니다</template>
     </vs-tooltip>
 </template>
@@ -35,9 +35,9 @@
 
 `target` prop에 CSS selector를 지정하면 외부 요소에 툴팁이 붙습니다.
 
-```html
+```html live
 <template>
-    <button id="my-btn">마우스를 올려보세요</button>
+    <vs-button id="my-btn">마우스를 올려보세요</vs-button>
     <vs-tooltip target="#my-btn">
         <template #tooltip>툴팁입니다</template>
     </vs-tooltip>
@@ -46,10 +46,10 @@
 
 ### 클릭 열기 툴팁
 
-```html
+```html live
 <template>
     <vs-tooltip clickable>
-        <button>클릭하세요</button>
+        <vs-button>클릭하세요</vs-button>
         <template #tooltip>클릭으로 열림</template>
     </vs-tooltip>
 </template>
@@ -57,10 +57,10 @@
 
 ### 하단 배치
 
-```html
+```html live
 <template>
     <vs-tooltip placement="bottom" align="start">
-        <button>마우스를 올려보세요</button>
+        <vs-button>마우스를 올려보세요</vs-button>
         <template #tooltip>하단-시작 툴팁</template>
     </vs-tooltip>
 </template>
@@ -68,10 +68,10 @@
 
 ### 콘텐츠 호버
 
-```html
+```html live
 <template>
     <vs-tooltip contents-hover>
-        <button>마우스를 올려보세요</button>
+        <vs-button>마우스를 올려보세요</vs-button>
         <template #tooltip>
             <a href="#">툴팁 내부의 링크를 클릭하세요</a>
         </template>
@@ -81,10 +81,10 @@
 
 ### Wrapper 태그 변경
 
-```html
+```html live
 <template>
     <vs-tooltip tag="div">
-        <div class="trigger-area">Block-level trigger</div>
+        <div style="padding: 0.75rem 1rem; border: 1px dashed #9ca3af; border-radius: 0.375rem">Block-level trigger</div>
         <template #tooltip>div로 감싸짐</template>
     </vs-tooltip>
 </template>
@@ -123,7 +123,7 @@ interface VsTooltipStyleSet {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-tooltip
         :style-set="{
@@ -137,7 +137,7 @@ interface VsTooltipStyleSet {
             },
         }"
     >
-        <button>마우스를 올려보세요</button>
+        <vs-button>마우스를 올려보세요</vs-button>
         <template #tooltip>커스텀 툴팁</template>
     </vs-tooltip>
 </template>

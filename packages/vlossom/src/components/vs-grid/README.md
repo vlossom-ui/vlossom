@@ -17,7 +17,7 @@ A responsive CSS grid container that supports a configurable number of columns, 
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-grid :grid-size="12" :column-gap="16" :row-gap="8">
         <div style="grid-column: span 6">Left</div>
@@ -28,7 +28,7 @@ A responsive CSS grid container that supports a configurable number of columns, 
 
 ### Custom Width and Height
 
-```html
+```html live
 <template>
     <vs-grid width="800px" height="400px" :grid-size="3" :column-gap="8">
         <div>Col 1</div>
@@ -40,7 +40,7 @@ A responsive CSS grid container that supports a configurable number of columns, 
 
 ### Rendering as a Different Tag
 
-```html
+```html live
 <template>
     <vs-grid tag="ul" :grid-size="4">
         <li v-for="item in items" :key="item.id">{{ item.name }}</li>
@@ -70,12 +70,12 @@ interface VsGridStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-grid
         :style-set="{
             $gridSize: 6,
-            backgroundColor: '#f5f5f5', padding: '1rem', borderRadius: '8px',
+            backgroundColor: '#f5f5f5', color: '#1f2937', padding: '1rem', borderRadius: '8px',
         }"
     >
         <div>Item 1</div>

@@ -18,12 +18,14 @@ A form container component that manages validation state and propagates `disable
 
 ## Basic Usage
 
-```html
+```html live
 <template>
-    <vs-form ref="formRef" @error="onError">
+    <vs-form ref="formRef" :row-gap="8" @error="onError">
         <vs-input v-model="name" label="Name" required :grid="{ sm: 12, md: 6 }" />
         <vs-input v-model="email" label="Email" required :grid="{ sm: 12, md: 6 }" />
-        <vs-button @click="submit">Submit</vs-button>
+        <vs-responsive :grid="12">
+            <vs-button @click="submit">Submit</vs-button>
+        </vs-responsive>
     </vs-form>
 </template>
 
@@ -48,10 +50,10 @@ function onError(invalidIds) {
 
 ### Disabled Form
 
-```html
+```html live
 <template>
     <vs-form :disabled="isDisabled">
-        <vs-input v-model="value" label="Read-only field" />
+        <vs-input v-model="value" label="Disabled field" />
     </vs-form>
 </template>
 
@@ -64,7 +66,7 @@ const value = ref('');
 
 ### With Grid Layout
 
-```html
+```html live
 <template>
     <vs-form :grid-size="12" :column-gap="16" :row-gap="8">
         <vs-input v-model="firstName" label="First Name" :grid="6" />

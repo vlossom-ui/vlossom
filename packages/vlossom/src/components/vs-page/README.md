@@ -15,7 +15,7 @@ A layout component that provides a structured page container with title, descrip
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-page>
         <template #title>Page Title</template>
@@ -27,7 +27,7 @@ A layout component that provides a structured page container with title, descrip
 
 ### Without Slots
 
-```html
+```html live
 <template>
     <vs-page>
         <p>Only content, no title or description.</p>
@@ -53,11 +53,11 @@ interface VsPageStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-page
         :style-set="{
-            backgroundColor: '#f9f9f9', padding: '2rem',
+            backgroundColor: '#f9f9f9', color: '#1f2937', padding: '2rem',
             $title: { color: '#333', fontSize: '1.5rem', fontWeight: 'bold' },
             $description: { color: '#666', fontSize: '0.9rem' },
             $content: { paddingTop: '1rem' },

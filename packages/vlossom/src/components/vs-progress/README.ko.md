@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-progress :value="50" :max="100" />
 </template>
@@ -24,7 +24,7 @@
 
 ### 레이블과 함께 사용
 
-```html
+```html live
 <template>
     <vs-progress :value="75" :max="100" label="75%" />
 </template>
@@ -32,7 +32,7 @@
 
 ### 색상 스킴 적용
 
-```html
+```html live
 <template>
     <vs-progress :value="30" :max="100" color-scheme="blue" />
 </template>
@@ -64,16 +64,17 @@ interface VsProgressStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-progress
         :value="60"
         :max="100"
         label="60%"
         :style-set="{
-            $barBackgroundColor: '#e5e7eb',
+            $barBackgroundColor: '#9ca3af',
             $barBorderRadius: '0.5rem',
             $valueBackgroundColor: '#6366f1',
+            $labelTextShadow: 'none',
             $labelFontColor: '#ffffff',
             height: '1.5rem',
         }"

@@ -16,7 +16,7 @@ A stateful button that toggles between active and inactive states, wrapping `VsB
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-toggle v-model="isActive">
         Toggle Me
@@ -31,18 +31,20 @@ const isActive = ref(false);
 
 ### Different Variants
 
-```html
+```html live
 <template>
-    <vs-toggle v-model="a" primary>Primary</vs-toggle>
-    <vs-toggle v-model="b" outline>Outline</vs-toggle>
-    <vs-toggle v-model="c" ghost>Ghost</vs-toggle>
-    <vs-toggle v-model="d" circle>⭐</vs-toggle>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-toggle v-model="a" primary>Primary</vs-toggle>
+        <vs-toggle v-model="b" outline>Outline</vs-toggle>
+        <vs-toggle v-model="c" ghost>Ghost</vs-toggle>
+        <vs-toggle v-model="d" circle>⭐</vs-toggle>
+    </div>
 </template>
 ```
 
 ### Disabled State
 
-```html
+```html live
 <template>
     <vs-toggle v-model="isActive" disabled>Disabled</vs-toggle>
 </template>
@@ -76,7 +78,7 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-toggle
         v-model="isActive"

@@ -16,32 +16,56 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
-    <vs-toast @close="handleClose">
-        작업이 성공적으로 완료되었습니다!
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">토스트 표시</vs-button>
+        <vs-toast v-if="visible" @close="visible = false">
+            작업이 성공적으로 완료되었습니다!
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### 커스텀 타임아웃
 
-```html
+```html live
 <template>
-    <vs-toast :timeout="3000" @close="handleClose">
-        이 토스트는 3초 후에 닫힙니다.
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">토스트 표시</vs-button>
+        <vs-toast v-if="visible" :timeout="3000" @close="visible = false">
+            이 토스트는 3초 후에 닫힙니다.
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### 수동 닫기 전용
 
-```html
+```html live
 <template>
-    <vs-toast :auto-close="false" @close="handleClose">
-        X 버튼을 클릭하여 닫으세요.
-    </vs-toast>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">토스트 표시</vs-button>
+        <vs-toast v-if="visible" :auto-close="false" @close="visible = false">
+            X 버튼을 클릭하여 닫으세요.
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ### VsToastView 사용
@@ -79,22 +103,32 @@ interface VsToastStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
-    <vs-toast
-        :style-set="{
-            backgroundColor: '#323232',
-            color: '#ffffff',
-            borderRadius: '0.5rem',
-            padding: '0.75rem 1rem',
-            $closeButton: {
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-button @click="visible = true">토스트 표시</vs-button>
+        <vs-toast
+            v-if="visible"
+            :style-set="{
+                backgroundColor: '#323232',
                 color: '#ffffff',
-            },
-        }"
-    >
-        커스텀 스타일 토스트
-    </vs-toast>
+                borderRadius: '0.5rem',
+                padding: '0.75rem 1rem',
+                $closeButton: {
+                    color: '#ffffff',
+                },
+            }"
+            @close="visible = false"
+        >
+            커스텀 스타일 토스트
+        </vs-toast>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const visible = ref(true);
+</script>
 ```
 
 ## 이벤트

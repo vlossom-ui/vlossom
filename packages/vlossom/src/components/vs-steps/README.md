@@ -17,7 +17,7 @@ A step indicator component that displays a sequence of steps with progress track
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-steps v-model="currentStep" :steps="steps" />
 </template>
@@ -31,7 +31,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 ### Vertical Layout
 
-```html
+```html live
 <template>
     <vs-steps v-model="currentStep" :steps="steps" vertical height="12rem" />
 </template>
@@ -39,7 +39,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 ### Without Labels
 
-```html
+```html live
 <template>
     <vs-steps v-model="currentStep" :steps="steps" no-label />
 </template>
@@ -47,7 +47,7 @@ const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 ### With Disabled Steps
 
-```html
+```html live
 <template>
     <vs-steps
         v-model="currentStep"
@@ -98,7 +98,7 @@ interface VsStepsStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-steps
         v-model="currentStep"
@@ -106,12 +106,12 @@ interface VsStepsStyleSet extends CSSProperties {
         :style-set="{
             $stepSize: '2rem',
             $step: {
-                border: '2px solid #d1d5db',
-                $completed: { backgroundColor: '#a5b4fc', borderColor: '#a5b4fc', color: '#fff' },
+                border: '2px solid #9ca3af',
+                $completed: { backgroundColor: '#a5b4fc', borderColor: '#a5b4fc', color: '#1e1b4b' },
                 $active: { backgroundColor: '#6366f1', borderColor: '#6366f1', color: '#fff' },
             },
             $progress: {
-                backgroundColor: '#e5e7eb',
+                backgroundColor: '#9ca3af',
                 $active: { backgroundColor: '#6366f1' },
             },
         }"

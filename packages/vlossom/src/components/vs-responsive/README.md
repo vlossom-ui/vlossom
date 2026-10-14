@@ -15,9 +15,9 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ## Basic Usage
 
-```html
+```html live
 <template>
-    <vs-responsive width="50%">
+    <vs-responsive width="50%" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
         <p>This takes 50% width.</p>
     </vs-responsive>
 </template>
@@ -25,19 +25,24 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ### With Grid Column Span
 
-```html
+```html live
 <template>
-    <vs-responsive :grid="6">
-        <p>This spans 6 grid columns.</p>
-    </vs-responsive>
+    <vs-grid>
+        <vs-responsive :grid="6" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
+            <p>This spans 6 grid columns.</p>
+        </vs-responsive>
+    </vs-grid>
 </template>
 ```
 
 ### With Breakpoint Object
 
-```html
+```html live
 <template>
-    <vs-responsive :width="{ xs: '100%', md: '50%', lg: '33%' }">
+    <vs-responsive
+        :width="{ xs: '100%', md: '50%', lg: '33%' }"
+        style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)"
+    >
         <p>Responsive width per breakpoint.</p>
     </vs-responsive>
 </template>
@@ -45,9 +50,9 @@ A layout wrapper component that applies responsive width and grid column setting
 
 ### Custom Tag
 
-```html
+```html live
 <template>
-    <vs-responsive tag="section" width="80%">
+    <vs-responsive tag="section" width="80%" style="padding: 0.5rem; border: 1px dashed var(--vs-gray-400)">
         <p>Rendered as a section element.</p>
     </vs-responsive>
 </template>

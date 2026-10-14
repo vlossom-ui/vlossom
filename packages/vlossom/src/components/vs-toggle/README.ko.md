@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-toggle v-model="isActive">
         토글
@@ -31,18 +31,20 @@ const isActive = ref(false);
 
 ### 다양한 변형
 
-```html
+```html live
 <template>
-    <vs-toggle v-model="a" primary>Primary</vs-toggle>
-    <vs-toggle v-model="b" outline>Outline</vs-toggle>
-    <vs-toggle v-model="c" ghost>Ghost</vs-toggle>
-    <vs-toggle v-model="d" circle>⭐</vs-toggle>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+        <vs-toggle v-model="a" primary>Primary</vs-toggle>
+        <vs-toggle v-model="b" outline>Outline</vs-toggle>
+        <vs-toggle v-model="c" ghost>Ghost</vs-toggle>
+        <vs-toggle v-model="d" circle>⭐</vs-toggle>
+    </div>
 </template>
 ```
 
 ### 비활성화 상태
 
-```html
+```html live
 <template>
     <vs-toggle v-model="isActive" disabled>비활성화</vs-toggle>
 </template>
@@ -76,7 +78,7 @@ interface VsToggleStyleSet extends VsButtonStyleSet {}
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-toggle
         v-model="isActive"

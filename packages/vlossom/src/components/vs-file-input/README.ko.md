@@ -18,7 +18,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" label="첨부 파일" placeholder="파일을 선택하세요" />
 </template>
@@ -31,7 +31,7 @@ const files = ref([]);
 
 ### 복수 파일 선택
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" multiple label="첨부 파일" placeholder="파일을 선택하세요" />
 </template>
@@ -39,7 +39,7 @@ const files = ref([]);
 
 ### 파일 타입 제한
 
-```html
+```html live
 <template>
     <!-- 이미지만 -->
     <vs-file-input v-model="files" accept="image/*" label="이미지" />
@@ -51,7 +51,7 @@ const files = ref([]);
 
 ### 칩 접기
 
-```html
+```html live
 <template>
     <vs-file-input v-model="files" multiple collapse-chips label="첨부 파일" />
 </template>
@@ -59,11 +59,13 @@ const files = ref([]);
 
 ### 폼 연동
 
-```html
+```html live
 <template>
-    <vs-form ref="formRef">
+    <vs-form ref="formRef" :row-gap="8">
         <vs-file-input v-model="files" label="필수 파일" required />
-        <vs-button @click="formRef.validate()">제출</vs-button>
+        <vs-responsive :grid="12">
+            <vs-button @click="formRef.validate()">제출</vs-button>
+        </vs-responsive>
     </vs-form>
 </template>
 ```
@@ -116,7 +118,7 @@ interface VsFileInputStyleSet extends CSSProperties {
 
 ### StyleSet 사용 예시
 
-```html
+```html live
 <template>
     <vs-file-input
         v-model="files"

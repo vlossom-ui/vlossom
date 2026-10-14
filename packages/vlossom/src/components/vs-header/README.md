@@ -16,7 +16,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-header>
         <h1>My Application</h1>
@@ -26,7 +26,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 
 ### Fixed Header
 
-```html
+```html live
 <template>
     <vs-header position="fixed" height="4rem">
         <nav>Navigation</nav>
@@ -36,7 +36,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 
 ### Primary Styled Header
 
-```html
+```html live
 <template>
     <vs-header primary>
         <span>Brand Name</span>
@@ -48,7 +48,7 @@ A page header bar component that supports fixed, sticky, and absolute positionin
 
 Set the `layout` prop to register the header with the layout store so `VsContainer` and `VsDrawer` can offset around it. Wrapping the header in another component is supported.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout position="fixed" height="3rem">My App</vs-header>
@@ -85,7 +85,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-header
         :style-set="{

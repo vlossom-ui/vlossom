@@ -16,7 +16,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-label-value>
         <template #label>Name</template>
@@ -27,7 +27,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 ### Primary Mode
 
-```html
+```html live
 <template>
     <vs-label-value :primary="true">
         <template #label>Status</template>
@@ -38,7 +38,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 ### Vertical Layout
 
-```html
+```html live
 <template>
     <vs-label-value :vertical="true">
         <template #label>Description</template>
@@ -49,7 +49,7 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 ### Sizes
 
-```html
+```html live
 <template>
     <vs-label-value size="xs">
         <template #label>ID</template>
@@ -62,12 +62,14 @@ A two-column display component that pairs a label cell with a value cell, useful
 
 Switch to vertical layout on small containers automatically.
 
-```html
+```html live
 <template>
-    <vs-label-value :responsive="true">
-        <template #label>Address</template>
-        123 Main Street
-    </vs-label-value>
+    <vs-container style="max-width: 360px">
+        <vs-label-value :responsive="true">
+            <template #label>Address</template>
+            123 Main Street
+        </vs-label-value>
+    </vs-container>
 </template>
 ```
 
@@ -96,7 +98,7 @@ interface VsLabelValueStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-label-value
         :style-set="{

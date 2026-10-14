@@ -14,8 +14,9 @@ A semi-transparent overlay component that covers its parent container with a fad
 
 ## Basic Usage
 
-```html
+```html live
 <template>
+    <vs-button @click="isVisible = !isVisible">Toggle Dimmed</vs-button>
     <div class="relative">
         <vs-dimmed v-model="isVisible" />
         <p>Content behind the dimmed overlay</p>
@@ -30,12 +31,14 @@ const isVisible = ref(false);
 
 ### Programmatic Control
 
-```html
+```html live
 <template>
     <div class="relative">
         <vs-dimmed ref="dimmedRef" v-model="isVisible" />
-        <vs-button @click="dimmedRef.show()">Show Dimmed</vs-button>
-        <vs-button @click="dimmedRef.hide()">Hide Dimmed</vs-button>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-button @click="dimmedRef.show()">Show Dimmed</vs-button>
+            <vs-button @click="dimmedRef.hide()">Hide Dimmed</vs-button>
+        </div>
     </div>
 </template>
 
@@ -61,16 +64,20 @@ interface VsDimmedStyleSet extends CSSProperties {}
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
-    <vs-dimmed
-        v-model="isVisible"
-        :style-set="{
-            backgroundColor: '#000000',
-            opacity: 0.6,
-            backdropFilter: 'blur(4px)',
-        }"
-    />
+    <vs-button @click="isVisible = !isVisible">Toggle Dimmed</vs-button>
+    <div class="relative">
+        <vs-dimmed
+            v-model="isVisible"
+            :style-set="{
+                backgroundColor: '#000000',
+                opacity: 0.6,
+                backdropFilter: 'blur(4px)',
+            }"
+        />
+        <p>Content behind the dimmed overlay</p>
+    </div>
 </template>
 ```
 

@@ -16,44 +16,66 @@ A layout wrapper for form inputs that provides a label, validation messages area
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Username">
-        <input type="text" placeholder="Enter username" />
+        <input
+            type="text"
+            placeholder="Enter username"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
 
 ### With Messages
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="Email"
         :messages="[{ state: 'error', text: 'Invalid email address' }]"
     >
-        <input type="email" />
+        <input
+            type="email"
+            placeholder="Enter email"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
 
 ### Group Label (fieldset)
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Shipping Address" :group-label="true">
-        <input type="text" placeholder="Street" />
-        <input type="text" placeholder="City" />
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <input
+                type="text"
+                placeholder="Street"
+                style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+            />
+            <input
+                type="text"
+                placeholder="City"
+                style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+            />
+        </div>
     </vs-input-wrapper>
 </template>
 ```
 
 ### Required Field
 
-```html
+```html live
 <template>
     <vs-input-wrapper label="Password" :required="true">
-        <input type="password" />
+        <input
+            type="password"
+            placeholder="Enter password"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```
@@ -91,18 +113,22 @@ interface VsInputWrapperStyleSet extends CSSProperties {
 
 ### StyleSet Example
 
-```html
+```html live
 <template>
     <vs-input-wrapper
         label="Styled Wrapper"
         :style-set="{
-            padding: '1rem', backgroundColor: '#f9f9f9',
+            padding: '1rem', backgroundColor: '#f9f9f9', color: '#1f2937',
             $label: { color: '#333', fontWeight: '600' },
             $messages: { marginTop: '0.5rem' },
             $message: { fontSize: '0.75rem' },
         }"
     >
-        <input type="text" />
+        <input
+            type="text"
+            placeholder="Enter text"
+            style="width: 100%; padding: 0.375rem 0.5rem; border: 1px solid var(--vs-gray-400); border-radius: 0.375rem"
+        />
     </vs-input-wrapper>
 </template>
 ```

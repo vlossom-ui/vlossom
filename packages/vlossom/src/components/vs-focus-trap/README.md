@@ -16,13 +16,13 @@ A utility component that traps keyboard focus within its single child element, e
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-focus-trap>
-        <div>
-            <input type="text" placeholder="First field" />
-            <input type="text" placeholder="Second field" />
-            <button>Submit</button>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-input placeholder="First field" />
+            <vs-input placeholder="Second field" />
+            <vs-button>Submit</vs-button>
         </div>
     </vs-focus-trap>
 </template>
@@ -30,12 +30,12 @@ A utility component that traps keyboard focus within its single child element, e
 
 ### Conditionally Disabled
 
-```html
+```html live
 <template>
     <vs-focus-trap :disabled="!isModalOpen">
-        <div class="modal-content">
-            <button>Action</button>
-            <button @click="isModalOpen = false">Close</button>
+        <div class="modal-content" style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center">
+            <vs-button>Action</vs-button>
+            <vs-button @click="isModalOpen = false">Close</vs-button>
         </div>
     </vs-focus-trap>
 </template>

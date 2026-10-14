@@ -17,12 +17,12 @@ A root layout container that provides the layout store context required by `VsHe
 
 Descendants must explicitly opt in with the `layout` prop to participate in layout-store coordination. The opt-in works through any number of intermediate wrapper components, but does **not** propagate through another layout primitive (the inner one is barriered to prevent unintended coupling).
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-header layout>My App Header</vs-header>
         <vs-container layout>
-            <slot />
+            <p>Main content</p>
         </vs-container>
         <vs-footer layout>Footer</vs-footer>
     </vs-layout>

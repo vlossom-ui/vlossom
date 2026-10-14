@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-footer>
         <p>© 2024 My App</p>
@@ -26,7 +26,7 @@
 
 ### 고정 위치 푸터
 
-```html
+```html live
 <template>
     <vs-footer position="fixed" height="4rem">
         <nav>네비게이션 링크</nav>
@@ -36,7 +36,7 @@
 
 ### 기본 스타일 푸터
 
-```html
+```html live
 <template>
     <vs-footer primary>
         <span>App v1.0.0</span>
@@ -48,7 +48,7 @@
 
 `layout` prop을 설정하면 푸터가 레이아웃 스토어에 등록되어 `VsContainer`와 `VsDrawer`가 푸터를 기준으로 오프셋 처리합니다. 다른 컴포넌트로 한 번 감싼 경우에도 동작합니다.
 
-```html
+```html live
 <template>
     <vs-layout>
         <vs-container layout>
@@ -85,7 +85,7 @@ interface VsBarStyleSet extends CSSProperties {}
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-footer
         :style-set="{

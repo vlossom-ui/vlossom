@@ -16,7 +16,7 @@
 
 ## 기본 사용법
 
-```html
+```html live
 <template>
     <vs-grouped-list :items="items" @click-item="onClickItem" />
 </template>
@@ -36,7 +36,7 @@ function onClickItem(item) {
 
 ### 그룹화된 목록
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"
@@ -44,10 +44,10 @@ function onClickItem(item) {
         :group-order="['과일', '채소']"
     >
         <template #group="{ group }">
-            <div class="group-header">{{ group.toUpperCase() }}</div>
+            <div style="padding: 0.5rem 0 0.25rem; font-weight: 700">{{ group.toUpperCase() }}</div>
         </template>
         <template #item="{ label }">
-            <div class="list-item">{{ label }}</div>
+            <div style="padding: 0.25rem 1rem">{{ label }}</div>
         </template>
     </vs-grouped-list>
 </template>
@@ -55,7 +55,7 @@ function onClickItem(item) {
 
 ### 사용자 정의 높이와 스크롤
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="longList"
@@ -88,13 +88,14 @@ interface VsGroupedListStyleSet extends CSSProperties {
 
 ### StyleSet 예시
 
-```html
+```html live
 <template>
     <vs-grouped-list
         :items="items"
+        :group-by="(item) => item.category"
         :style-set="{
             maxHeight: '400px',
-            $group: { backgroundColor: '#f0f0f0', fontWeight: 'bold', padding: '0.5rem 1rem' },
+            $group: { backgroundColor: '#f0f0f0', color: '#1f2937', fontWeight: 'bold', padding: '0.5rem 1rem' },
             $item: { padding: '0.4rem 1.2rem' },
         }"
     />

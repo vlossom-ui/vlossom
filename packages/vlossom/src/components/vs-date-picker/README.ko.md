@@ -15,7 +15,7 @@
 
 ## Basic Usage
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" label="날짜" />
 </template>
@@ -28,7 +28,7 @@ const date = ref('');
 
 ### 입력 타입
 
-```html
+```html live
 <template>
     <vs-date-picker v-model="date" type="date" label="날짜" />
     <vs-date-picker v-model="datetime" type="datetime-local" label="일시" />
@@ -39,7 +39,7 @@ const date = ref('');
 
 ### Min / Max
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"
@@ -100,7 +100,7 @@ value = '2026-05';
 
 ## 커스텀 룰
 
-```html
+```html live
 <template>
     <vs-date-picker
         v-model="date"
