@@ -88,6 +88,48 @@ jobs:
               working-directory: ./packages/vlossom
               run: pnpm test
 
+    vlossom-docs-build:
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v5
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom-docs/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom-docs
+              run: pnpm install --frozen-lockfile
+            - name: Build docs
+              working-directory: ./packages/vlossom-docs
+              run: pnpm build
+
+    vlossom-docs-test:
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+            - uses: actions/setup-node@v5
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: 'pnpm'
+                  cache-dependency-path: ./packages/vlossom-docs/pnpm-lock.yaml
+            - name: Install dependencies
+              working-directory: ./packages/vlossom-docs
+              run: pnpm install --frozen-lockfile
+            - name: Run tests
+              working-directory: ./packages/vlossom-docs
+              run: pnpm test
+
     vlossom-mcp-test:
         timeout-minutes: 10
         runs-on: ubuntu-latest

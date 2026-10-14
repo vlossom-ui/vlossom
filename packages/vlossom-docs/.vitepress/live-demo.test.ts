@@ -291,7 +291,9 @@ describe('liveDemos', () => {
         const [id] = registry.ids();
         const script = pageEnv.sfcBlocks.scriptSetup.content;
 
-        expect(html.match(/<ClientOnly><div class="vs-demo"><VsDemo0 \/><\/div><\/ClientOnly>/g)).toHaveLength(1);
+        const demoBoxes = html.match(/<ClientOnly><div class="vs-demo vp-raw"><VsDemo0 \/><\/div><\/ClientOnly>/g);
+
+        expect(demoBoxes).toHaveLength(1);
         expect(html.match(/class="language-html/g)).toHaveLength(2);
         expect(registry.get(id)).toBe(
             '<script setup lang="ts">\nfunction handleClick() {}\n</script>\n\n<template>\n<vs-button @click="handleClick">Click</vs-button>\n</template>\n',
@@ -310,6 +312,24 @@ describe('liveDemos', () => {
         expect(registry.get(registry.ids()[0])).toContain('<img src="data:,P" />');
         expect(html).toContain('/profile.png');
         expect(html).not.toContain('data:,P');
+    });
+
+    it('live 펜스가 있는 페이지는 frontmatter를 유지하고 liveDemos를 표시한다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+        const pageEnv = env();
+
+        await md.renderAsync('---\ntitle: A\n---\n\n```html live\n<template><p>A</p></template>\n```', pageEnv);
+
+        expect(pageEnv.frontmatter).toEqual({ title: 'A', liveDemos: true });
+    });
+
+    it('live 펜스가 없는 페이지는 liveDemos를 표시하지 않는다', async () => {
+        const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
+        const pageEnv = env();
+
+        await md.renderAsync('---\ntitle: A\n---\n\n```html\n<template><p>A</p></template>\n```', pageEnv);
+
+        expect(pageEnv.frontmatter).toEqual({ title: 'A' });
     });
 
     it('루트 template이 없는 live 펜스는 파일과 펜스 번호를 밝혀 실패한다', async () => {

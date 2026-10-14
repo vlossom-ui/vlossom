@@ -1,6 +1,40 @@
 /* vlossom.css의 html·body 배경색(--vs-app-bg)을 사이트에도 쓰므로, VitePress 배경 변수도 같은 값으로 맞춘다.
-   맞추지 않으면 다크 모드에서 본문만 vlossom 배경이 되고, 내비 막대와 목차 아래 그라데이션은 VitePress 배경으로 남는다.
    VitePress는 :root와 .dark에서 이 변수를 정하므로, 순서와 관계없이 이기도록 html:root를 쓴다. */
 html:root {
     --vp-c-bg: var(--vs-app-bg);
+}
+
+/* vlossom.css가 모든 페이지에 정적으로 들어오므로(theme/vlossom.ts) --vs-* 변수를 바로 쓸 수 있다. */
+html:root {
+    --vp-c-brand-1: var(--vs-pink-600);
+    --vp-c-brand-2: color-mix(in oklch, var(--vs-pink-600), var(--vs-pink-500));
+    --vp-c-brand-3: var(--vs-pink-500);
+    --vp-c-brand-soft: color-mix(in oklch, var(--vs-pink-500) 14%, transparent);
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: linear-gradient(120deg, var(--vs-rose-400) 20%, var(--vs-pink-500) 80%);
+    --vp-home-hero-image-background-image: linear-gradient(
+        -45deg,
+        color-mix(in oklch, var(--vs-pink-300) 8%, transparent) 50%,
+        color-mix(in oklch, var(--vs-rose-400) 8%, transparent) 50%
+    );
+    --vp-home-hero-image-filter: blur(44px);
+}
+
+html.dark {
+    --vp-c-brand-1: var(--vs-pink-300);
+    --vp-c-brand-2: var(--vs-pink-500);
+    --vp-c-brand-3: var(--vs-pink-600);
+    --vp-c-brand-soft: color-mix(in oklch, var(--vs-pink-500) 16%, transparent);
+}
+
+@media (min-width: 640px) {
+    html:root {
+        --vp-home-hero-image-filter: blur(56px);
+    }
+}
+
+@media (min-width: 960px) {
+    html:root {
+        --vp-home-hero-image-filter: blur(68px);
+    }
 }

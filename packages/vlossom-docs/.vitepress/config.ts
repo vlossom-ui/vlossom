@@ -1,5 +1,5 @@
 import { relative, resolve, sep } from 'node:path';
-import { defineConfig, type DefaultTheme } from 'vitepress';
+import { defineConfig, postcssIsolateStyles, type DefaultTheme } from 'vitepress';
 import { DEMO_IMAGES, DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
 import { vlossomSiteStyles } from './vlossom-css.ts';
@@ -52,7 +52,7 @@ export default defineConfig({
     title: 'Vlossom',
     description: 'Vue 3 UI component library',
 
-    // VitePress는 srcDir 안의 파일만 페이지로 만든다. README를 복사하지 않으려고 srcDir를 packages/로 넓힌다.
+    // README를 복사하지 않으려고 srcDir를 packages/로 넓힌다.
     srcDir: '..',
     srcExclude: toSrcExclude(markdownFiles, readmePages),
     rewrites: toRewrites(markdownFiles, readmePages),
@@ -71,8 +71,14 @@ export default defineConfig({
         },
     },
 
+    // docs.yml이 Pages 경로를 base로 주고 빌드하므로, favicon 링크에도 base를 붙인다.
+    transformHead: ({ siteConfig }) => [['link', { rel: 'icon', href: `${siteConfig.site.base}favicon.ico` }]],
+
     vite: {
+        publicDir: 'vlossom/assets',
         plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
+        // live-demo.ts가 vp-raw를 붙인 데모 상자에는 VitePress 문서 스타일(목록 점, 표 테두리)이 걸리지 않게 한다.
+        css: { postcss: { plugins: [postcssIsolateStyles({ includeFiles: [/vp-doc\.css/] })] } },
         // vlossom은 동적 import로만 불러와서, 스캐너가 모르면 dev 서버가 첫 로드 뒤에 의존성을 다시 묶고 새로고침한다.
         // include: ['vlossom']은 Vite root(packages/) 기준으로 풀려 워크스페이스의 packages/vlossom을 가리키므로, import하는 파일을 entries로 준다.
         optimizeDeps: { entries: [relative(PACKAGES_DIR, VLOSSOM_RUNTIME).split(sep).join('/')] },
@@ -84,6 +90,7 @@ export default defineConfig({
     },
 
     themeConfig: {
+        logo: '/vlossom-logo.png',
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 

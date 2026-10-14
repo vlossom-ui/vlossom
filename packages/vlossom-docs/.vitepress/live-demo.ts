@@ -194,10 +194,7 @@ export function buildScope({ own, others, fallback }: ScopeSources): string {
 }
 
 export function replaceImages(body: string, images: Record<string, string>): string {
-    return Object.entries(images).reduce(
-        (markup, [from, to]) => markup.replaceAll(`"${from}"`, () => `"${to}"`),
-        body,
-    );
+    return Object.entries(images).reduce((markup, [from, to]) => markup.replaceAll(`"${from}"`, () => `"${to}"`), body);
 }
 
 export function createDemoSfc(scope: string, body: string): string {
@@ -287,15 +284,17 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
             '',
         ].join('\n');
         state.tokens.unshift(script);
+        state.env.frontmatter = { ...state.env.frontmatter, liveDemos: true };
     });
 
     const renderFence = md.renderer.rules.fence;
     if (!renderFence) {
         throw new Error('markdown-it fence renderer is missing');
     }
+    // vp-raw는 config.ts의 postcssIsolateStyles와 짝이다.
     md.renderer.rules.fence = (tokens, idx, renderOptions, env, self) => {
         const code = renderFence(tokens, idx, renderOptions, env, self);
         const demo = tokens[idx].meta?.demo;
-        return demo ? `<ClientOnly><div class="${DEMO_CLASS}"><${demo} /></div></ClientOnly>\n${code}` : code;
+        return demo ? `<ClientOnly><div class="${DEMO_CLASS} vp-raw"><${demo} /></div></ClientOnly>\n${code}` : code;
     };
 }

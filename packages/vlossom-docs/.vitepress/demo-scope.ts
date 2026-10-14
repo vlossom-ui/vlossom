@@ -124,11 +124,16 @@ const PLACEHOLDER_SVG =
     '<circle cx="48" cy="38" r="18" fill="#94a3b8"/>' +
     '<path d="M16 96c0-17.7 14.3-32 32-32s32 14.3 32 32z" fill="#94a3b8"/></svg>';
 const PLACEHOLDER_IMAGE = `data:image/svg+xml,${encodeURIComponent(PLACEHOLDER_SVG)}`;
+const FALLBACK_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">' +
+    '<rect width="96" height="96" fill="#fde68a"/>' +
+    '<text x="48" y="53" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#92400e">fallback</text></svg>';
+const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent(FALLBACK_SVG)}`;
 
 // README 예제의 이미지 주소는 실제로 없다. 데모에서만 대체 이미지로 바꾼다.
 // https://example.com/broken.png는 이미지를 못 불러올 때의 동작을 보여 주는 예제라서 그대로 둔다.
 export const DEMO_IMAGES: Record<string, string> = {
     '/profile.png': PLACEHOLDER_IMAGE,
-    'https://example.com/fallback.png': PLACEHOLDER_IMAGE,
+    'https://example.com/fallback.png': FALLBACK_IMAGE,
     'https://example.com/image.png': PLACEHOLDER_IMAGE,
 };
