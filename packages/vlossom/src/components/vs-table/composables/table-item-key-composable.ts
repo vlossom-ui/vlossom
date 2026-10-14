@@ -1,4 +1,4 @@
-import type { Ref } from 'vue';
+import { toRaw, type Ref } from 'vue';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTableItem, VsTableItemKey } from './../types';
 
@@ -18,10 +18,11 @@ export function useTableItemKeyComposable(itemKey: Ref<VsTableItemKey | undefine
             }
         }
 
-        let autoKey = autoKeys.get(item);
+        const rawItem = toRaw(item);
+        let autoKey = autoKeys.get(rawItem);
         if (autoKey === undefined) {
             autoKey = stringUtil.createID();
-            autoKeys.set(item, autoKey);
+            autoKeys.set(rawItem, autoKey);
         }
         return autoKey;
     }

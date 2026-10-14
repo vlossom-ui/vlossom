@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { computed, nextTick, ref, type Ref } from 'vue';
+import { computed, nextTick, reactive, ref, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableItemKey } from './../types';
 import { getCellValue, useTableColumnComposable } from './../composables/table-column-composable';
@@ -46,6 +46,13 @@ describe('useTableItemKeyComposable', () => {
 
         expect(getItemKey(alice)).toBe(getItemKey(alice));
         expect(getItemKey(alice)).not.toBe(getItemKey({ ...alice }));
+    });
+
+    it('itemKey가 없으면 reactive Proxy와 원본 객체에 같은 key를 준다', () => {
+        const { getItemKey } = useTableItemKeyComposable(ref(undefined));
+        const item = { name: 'Alice' };
+
+        expect(getItemKey(reactive(item))).toBe(getItemKey(item));
     });
 
     it('itemKey 필드 값이 비어 있으면 객체 기준 key로 대체한다', () => {
