@@ -216,3 +216,6 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 - `VsCheckboxSet`의 `modelValue`에 `options`에 없는 값이 포함되면 (마운트 시 또는 프로그래매틱하게) 해당 값들은 제거되고 콘솔 경고가 출력됩니다.
 - `options`가 변경되어 현재 선택된 일부 값이 더 이상 존재하지 않으면 해당 항목이 제거되고 콘솔 경고가 출력됩니다.
+- `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 컴포넌트를 비활성화하세요.
+  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.

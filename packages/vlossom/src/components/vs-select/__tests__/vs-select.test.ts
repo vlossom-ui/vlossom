@@ -11,6 +11,111 @@ describe('VsSelect', () => {
         { id: 3, name: 'Orange', disabled: true },
     ];
 
+    describe('비동기 options', () => {
+        it('options가 비어 있으면 초기값을 정리하지 않고, options가 들어오면 해당 옵션을 선택한다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: [],
+                    modelValue: 'Apple',
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(warnSpy).not.toHaveBeenCalled();
+
+            // when
+            await wrapper.setProps({ options: basicOptions });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('Apple');
+            expect(wrapper.vm.selectedOptions.map((o: any) => o.value)).toEqual(['Apple']);
+            warnSpy.mockRestore();
+        });
+
+        it('다중 선택에서 options가 들어오면 없는 값만 경고와 함께 제거한다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: [],
+                    multiple: true,
+                    modelValue: ['A', 'B'],
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+            expect(warnSpy).not.toHaveBeenCalled();
+
+            // when
+            await wrapper.setProps({ options: ['A', 'C', 'D'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toEqual(['A']);
+            expect(wrapper.vm.selectedOptions.map((o: any) => o.value)).toEqual(['A']);
+            expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('["B"]'));
+            warnSpy.mockRestore();
+        });
+
+        it('다중 선택에서 options를 불러오는 중에는 options에 있는 값만 세어 검증한다', async () => {
+            // given
+            vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: [],
+                    multiple: true,
+                    required: true,
+                    max: 1,
+                    modelValue: ['A', 'B'],
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // then: 선택된 옵션이 없으므로 required 실패, max는 0개로 통과
+            expect(wrapper.vm.validate()).toBe(false);
+            expect(wrapper.vm.computedMessages.map((m: any) => m.text)).toEqual(['required']);
+
+            // when
+            await wrapper.setProps({ options: ['A', 'C', 'D'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+            vi.restoreAllMocks();
+        });
+
+        it('객체 options를 다시 불러오면(빈 배열을 거쳐도) 같은 값의 선택이 유지된다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: objectOptions,
+                    optionLabel: 'name',
+                    optionValue: 'id',
+                    modelValue: 1,
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // when
+            await wrapper.setProps({ options: [] });
+            await nextTick();
+            await wrapper.setProps({ options: objectOptions.map((o) => ({ ...o })) });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe(1);
+            expect(wrapper.vm.selectedOptions.map((o: any) => o.value)).toEqual([1]);
+        });
+    });
+
     describe('v-model', () => {
         it('modelValue를 변경하여 선택된 값을 업데이트할 수 있다', async () => {
             // given
@@ -1059,6 +1164,217 @@ describe('VsSelect', () => {
             // then
             expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Tried to set "invalid"'));
             warnSpy.mockRestore();
+        });
+    });
+
+    describe('emptyValue', () => {
+        it('modelValue가 emptyValue와 같으면 마운트 시 값을 바꾸지 않고 경고도 출력하지 않는다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            const wrapper = mount(VsSelect, {
+                props: { options: basicOptions, modelValue: '', emptyValue: '' },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(wrapper.vm.isEmpty).toBe(true);
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it('clear 시 emptyValue를 emit한다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: 'Apple',
+                    emptyValue: '',
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('');
+        });
+
+        it('options에 없는 값은 emptyValue로 초기화된다', async () => {
+            // given
+            vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: basicOptions,
+                    modelValue: 'invalid',
+                    emptyValue: '',
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['']);
+            vi.restoreAllMocks();
+        });
+
+        it('emptyValue와 같은 값이 options에 있으면 해당 옵션이 선택된다', async () => {
+            // given, when
+            const wrapper = mount(VsSelect, {
+                props: { options: ['', ...basicOptions], modelValue: '', emptyValue: '' },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.isEmpty).toBe(false);
+        });
+
+        describe('multiple', () => {
+            it('modelValue가 emptyValue(null)면 마운트 시 []로 바꾸지 않는다', async () => {
+                // given, when
+                const wrapper = mount(VsSelect, {
+                    props: { options: basicOptions, multiple: true, modelValue: null, emptyValue: null },
+                });
+                await nextTick();
+
+                // then
+                expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+                expect(wrapper.vm.isEmpty).toBe(true);
+            });
+
+            it('마지막 선택을 해제하거나 clear하면 emptyValue를 emit한다', async () => {
+                // given
+                const wrapper = mount(VsSelect, {
+                    props: {
+                        options: basicOptions,
+                        multiple: true,
+                        modelValue: ['Apple', 'Banana'],
+                        emptyValue: null,
+                        'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                    },
+                });
+                await nextTick();
+
+                // when
+                wrapper.vm.deselectOption(wrapper.vm.selectedOptions[0].id);
+                await nextTick();
+
+                // then
+                expect(wrapper.props('modelValue')).toEqual(['Banana']);
+
+                // when
+                wrapper.vm.clear();
+                await nextTick();
+
+                // then
+                expect(wrapper.props('modelValue')).toBe(null);
+            });
+
+            it('options에 없는 값만 있으면 emptyValue로 초기화된다', async () => {
+                // given
+                vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const wrapper = mount(VsSelect, {
+                    props: { options: basicOptions, multiple: true, modelValue: ['invalid'], emptyValue: null },
+                });
+                await nextTick();
+
+                // then
+                expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([null]);
+                vi.restoreAllMocks();
+            });
+
+            it('options 변경으로 모든 선택이 사라지면 emptyValue로 초기화된다', async () => {
+                // given
+                vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const wrapper = mount(VsSelect, {
+                    props: {
+                        options: basicOptions,
+                        multiple: true,
+                        modelValue: ['Apple'],
+                        emptyValue: null,
+                        'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                    },
+                });
+                await nextTick();
+
+                // when
+                await wrapper.setProps({ options: ['Kiwi'] });
+                await nextTick();
+
+                // then
+                expect(wrapper.props('modelValue')).toBe(null);
+                vi.restoreAllMocks();
+            });
+
+            it('emptyValue(null) 상태에서 required와 min 검증에 실패한다', async () => {
+                // given
+                const wrapper = mount(VsSelect, {
+                    props: { options: basicOptions, multiple: true, modelValue: null, emptyValue: null, min: 1 },
+                });
+                await nextTick();
+
+                // then
+                expect(wrapper.vm.validate()).toBe(false);
+                await wrapper.setProps({ min: 0, required: true });
+                expect(wrapper.vm.validate()).toBe(false);
+            });
+
+            it('emptyValue를 지정하지 않으면 기존처럼 []를 사용한다', async () => {
+                // given
+                const wrapper = mount(VsSelect, {
+                    props: { options: basicOptions, multiple: true, modelValue: null },
+                });
+                await nextTick();
+
+                // then
+                expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([[]]);
+            });
+        });
+
+        it('emptyValue와 같은 값의 옵션이 있으면 clear 후 해당 옵션이 선택된 상태로 남는다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: {
+                    options: ['', ...basicOptions],
+                    modelValue: '',
+                    emptyValue: '',
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('');
+            expect(wrapper.vm.selectedOptions.map((o: any) => o.value)).toEqual(['']);
+        });
+
+        it('required일 때 빈 문자열 옵션을 선택하면 통과한다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: { options: ['', ...basicOptions], modelValue: '', required: true },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+        });
+
+        it('required일 때 emptyValue는 빈 값으로 검증된다', async () => {
+            // given
+            const wrapper = mount(VsSelect, {
+                props: { options: basicOptions, modelValue: 'NONE', emptyValue: 'NONE', required: true },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
         });
     });
 

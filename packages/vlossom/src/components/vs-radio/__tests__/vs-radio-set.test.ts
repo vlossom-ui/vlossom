@@ -1,10 +1,141 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount, type VueWrapper } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 
 import VsRadioSet from './../VsRadioSet.vue';
+import VsForm from '@/components/vs-form/VsForm.vue';
 
 describe('VsRadioSet', () => {
+    describe('비동기 options', () => {
+        it('options가 비어 있으면 초기값을 정리하지 않고, options가 들어오면 그 기준으로 정리한다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: [],
+                    modelValue: 'A',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+            await nextTick();
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(warnSpy).not.toHaveBeenCalled();
+
+            // when
+            await wrapper.setProps({ options: ['A', 'B'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('A');
+            expect(wrapper.find('input:checked').exists()).toBe(true);
+
+            // when
+            await wrapper.setProps({ options: ['C'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe(null);
+            warnSpy.mockRestore();
+        });
+    });
+
+    describe('emptyValue', () => {
+        it('modelValue가 emptyValue와 같으면 마운트 시 값을 바꾸지 않고 경고도 출력하지 않는다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            const wrapper = mount(VsRadioSet, {
+                props: { options: ['A', 'B'], modelValue: '', emptyValue: '' },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
+        it('clear 시 emptyValue를 emit한다', async () => {
+            // given
+            const wrapper: VueWrapper<InstanceType<typeof VsRadioSet>> = mount(VsRadioSet, {
+                props: {
+                    options: ['A', 'B'],
+                    modelValue: 'A',
+                    emptyValue: '',
+                    'onUpdate:modelValue': (value) => wrapper.setProps({ modelValue: value }),
+                },
+            });
+
+            // when
+            wrapper.vm.clear();
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toBe('');
+        });
+
+        it('options에 없는 값은 emptyValue로 초기화된다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            const wrapper = mount(VsRadioSet, {
+                props: { options: ['A', 'B'], modelValue: 'invalid', emptyValue: '' },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual(['']);
+            warnSpy.mockRestore();
+        });
+
+        it('required일 때 emptyValue는 빈 값으로 검증된다', () => {
+            // given
+            const wrapper = mount(VsRadioSet, {
+                props: { options: ['A', 'B'], modelValue: '', emptyValue: '', required: true },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
+        });
+
+        it('VsForm clear 시 자식 radio도 같은 emptyValue를 써서 다른 값을 emit하지 않는다', async () => {
+            // given
+            const values: any[] = [];
+            const Form = defineComponent({
+                components: { VsForm, VsRadioSet },
+                setup() {
+                    const model = ref('');
+                    return { model, onUpdate: (v: any) => values.push(v) };
+                },
+                template: `<vs-form ref="formRef">
+                    <vs-radio-set v-model="model" :options="['A', 'B', 'C']" empty-value="" @update:modelValue="onUpdate" />
+                </vs-form>`,
+            });
+            const wrapper = mount(Form);
+            await nextTick();
+
+            // when
+            (wrapper.vm.$refs.formRef as any).clear();
+            await nextTick();
+            await nextTick();
+
+            // then
+            expect(values).toEqual([]);
+        });
+
+        it('required일 때 빈 문자열 옵션을 선택하면 통과한다', () => {
+            // given
+            const wrapper = mount(VsRadioSet, {
+                props: { options: ['', 'A'], modelValue: '', required: true },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+        });
+    });
+
     describe('v-model', () => {
         it('modelValue 변경으로 라디오 선택 상태를 제어할 수 있다', async () => {
             // given

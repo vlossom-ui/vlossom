@@ -31,7 +31,7 @@
                 :readonly="computedReadonly"
                 :name
                 :placeholder="computedPlaceholder"
-                :value="inputValue"
+                :value="isEmpty ? '' : inputValue"
                 :aria-required="required"
                 :autocomplete="autocomplete ? 'on' : 'off'"
                 @input.stop="updateValue"
@@ -74,9 +74,10 @@ export default defineComponent({
         ...getResponsiveProps(),
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
+        emptyValue: { type: String as PropType<VsTextareaValueType>, default: '' },
         size: { type: String as PropType<Size>, default: 'md' },
         // v-model
-        modelValue: { type: String, default: '' },
+        modelValue: { type: String as PropType<VsTextareaValueType>, default: '' },
         modelModifiers: {
             type: Object as PropType<StringModifiers>,
             default: () => ({}),
@@ -88,6 +89,7 @@ export default defineComponent({
         const {
             colorScheme,
             disabled,
+            emptyValue,
             id,
             messages,
             modelValue,
@@ -114,7 +116,13 @@ export default defineComponent({
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTextareaStyleSet>(componentName, styleSet);
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
-        const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min);
+        function isEmptyValue(v: VsTextareaValueType | undefined) {
+            return v === undefined || v === null || v === '' || v === emptyValue.value;
+        }
+
+        const isEmpty = computed(() => isEmptyValue(inputValue.value));
+
+        const { requiredCheck, maxCheck, minCheck } = useVsTextareaRules(required, max, min, isEmptyValue);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -130,12 +138,12 @@ export default defineComponent({
             return arr;
         });
 
-        function convertValue(v: string): string {
-            if (!v) {
-                return '';
+        function convertValue(v: VsTextareaValueType | undefined): VsTextareaValueType {
+            if (isEmptyValue(v)) {
+                return emptyValue.value;
             }
 
-            return modifyStringValue(v.toString());
+            return modifyStringValue(String(v));
         }
 
         const {
@@ -163,13 +171,13 @@ export default defineComponent({
                 state,
                 callbacks: {
                     onMounted: () => {
-                        inputValue.value = convertValue(modelValue.value || '');
+                        inputValue.value = convertValue(modelValue.value);
                     },
                     onChange: () => {
                         inputValue.value = convertValue(inputValue.value);
                     },
                     onClear: () => {
-                        inputValue.value = '';
+                        inputValue.value = emptyValue.value;
                     },
                 },
             },
@@ -239,6 +247,7 @@ export default defineComponent({
             computedState,
             computedPlaceholder,
             inputValue,
+            isEmpty,
             shake,
 
             // Methods

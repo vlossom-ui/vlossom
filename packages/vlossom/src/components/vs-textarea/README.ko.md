@@ -86,6 +86,7 @@ const text = ref('');
 | `autocomplete` | `boolean` | `false` | | 브라우저 자동완성 활성화 |
 | `changed` | `boolean` | `false` | | changed 상태의 v-model |
 | `disabled` | `boolean` | `false` | | textarea 비활성화 |
+| `emptyValue` | `string \| null` | `''` | | textarea가 비었을 때 사용하는 값 |
 | `grid` | `string \| number \| Breakpoints` | | | 그리드 열 스팬 |
 | `hidden` | `boolean` | `false` | | 컴포넌트 숨김 |
 | `id` | `string` | `''` | | HTML `id` 속성 |
@@ -93,7 +94,7 @@ const text = ref('');
 | `max` | `number \| string` | | | 최대 글자 수 |
 | `messages` | `Message[]` | `[]` | | 유효성 검사 메시지 |
 | `min` | `number \| string` | | | 최소 글자 수 |
-| `modelValue` | `string` | `''` | | v-model 값 |
+| `modelValue` | `string \| null` | `''` | | v-model 값 |
 | `modelModifiers` | `StringModifiers` | `{}` | | 문자열 수정자 플래그 |
 | `name` | `string` | `''` | | HTML `name` 속성 |
 | `noDefaultRules` | `boolean` | `false` | | 내장 min/max/required 규칙 비활성화 |
@@ -150,7 +151,7 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 | 이벤트 | 페이로드 | 설명 |
 | ------ | -------- | ---- |
-| `update:modelValue` | `string` | 값 변경 시 발생 |
+| `update:modelValue` | `string \| null` | 값 변경 시 발생 |
 | `update:changed` | `boolean` | changed 상태 업데이트 시 발생 |
 | `update:valid` | `boolean` | valid 상태 업데이트 시 발생 |
 | `change` | `string` | 값 변경 시 발생 |
