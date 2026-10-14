@@ -148,6 +148,14 @@ describe('Vlossom class', () => {
             // then
             expect(vlossom.radiusRatio).toBe(0.5);
         });
+
+        it('radiusRatio를 설정하면 --vs-radius-ratio CSS 변수가 반영된다', () => {
+            // when
+            vlossom.radiusRatio = 0.25;
+
+            // then
+            expect(document.documentElement.style.getPropertyValue('--vs-radius-ratio')).toBe('0.25');
+        });
     });
 
     describe('toggleTheme 메서드는 테마를 토글한다', () => {

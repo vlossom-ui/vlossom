@@ -33,9 +33,9 @@ export class Vlossom {
 
         this._optionsStore.setColorScheme(colorScheme);
         this._optionsStore.setStyleSet(styleSet);
-        this._optionsStore.setRadiusRatio(radiusRatio);
         this._optionsStore.resetMessages();
         this._optionsStore.setMessages(messages);
+        this.radiusRatio = radiusRatio;
 
         this.setDefaultTheme(theme);
     }
@@ -87,6 +87,7 @@ export class Vlossom {
 
     set radiusRatio(radiusRatio: number) {
         this._optionsStore.setRadiusRatio(radiusRatio);
+        document.documentElement.style.setProperty('--vs-radius-ratio', `${this._optionsStore.radiusRatio.value}`);
     }
 
     get radiusRatio(): number {
@@ -110,10 +111,10 @@ export class Vlossom {
         localStorage.setItem(THEME_KEY, this.theme);
     }
 
-    private setDefaultTheme(optionTheme: Theme = 'light') {
+    private setDefaultTheme(optionTheme: Theme) {
         const savedTheme = localStorage.getItem(THEME_KEY);
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        if (savedTheme === 'dark' || (!savedTheme && mediaQuery.matches) || (!savedTheme && optionTheme === 'dark')) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && (prefersDark || optionTheme === 'dark'))) {
             this.theme = 'dark';
         }
     }
