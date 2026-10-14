@@ -126,9 +126,8 @@ export default defineComponent({
             const { align, verticalAlign } = column;
             return {
                 ...cellStyle.value,
-                textAlign: align,
-                justifyContent: align ? JUSTIFY_CONTENTS[align] : undefined,
-                alignItems: verticalAlign ? ALIGN_ITEMS[verticalAlign] : undefined,
+                ...(align && { textAlign: align, justifyContent: JUSTIFY_CONTENTS[align] }),
+                ...(verticalAlign && { alignItems: ALIGN_ITEMS[verticalAlign] }),
             };
         }
 
