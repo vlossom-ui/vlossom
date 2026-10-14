@@ -28,7 +28,7 @@
                 :style="componentStyleSet.$input"
                 :id="computedId"
                 :type
-                :value="inputValue"
+                :value="isEmpty ? '' : inputValue"
                 :autocomplete="autocomplete ? 'on' : 'off'"
                 :name
                 :disabled="computedDisabled"
@@ -46,9 +46,9 @@
                 type="button"
                 class="vs-clear-button"
                 :aria-label="optionMessages.VS_ARIA_INPUT_CLEAR"
-                :class="{ show: inputValue }"
-                :disabled="!inputValue"
-                :tabindex="!!inputValue ? 0 : -1"
+                :class="{ show: !isEmpty }"
+                :disabled="isEmpty"
+                :tabindex="isEmpty ? -1 : 0"
                 @click.stop="clearWithFocus"
             >
                 <XIcon class="vs-clear-icon" />
@@ -107,6 +107,7 @@ export default defineComponent({
         ...getStyleSetProps<VsInputStyleSet>(),
         ...getMinMaxProps(componentName),
         autocomplete: { type: Boolean, default: false },
+        emptyValue: { type: [String, Number] as PropType<VsInputValueType> },
         noClear: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         type: { type: String as PropType<VsInputType>, default: 'text' },
@@ -128,6 +129,7 @@ export default defineComponent({
             colorScheme,
             styleSet,
             type,
+            emptyValue,
             modelValue,
             modelModifiers,
             required,
@@ -160,7 +162,20 @@ export default defineComponent({
         );
 
         const { modifyStringValue } = useStringModifier(modelModifiers);
-        const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type);
+        const computedEmptyValue = computed(() => {
+            if (emptyValue.value !== undefined) {
+                return emptyValue.value;
+            }
+            return isNumberInput.value ? null : '';
+        });
+
+        function isEmptyValue(v: VsInputValueType | undefined) {
+            return v === undefined || v === null || v === '' || v === computedEmptyValue.value;
+        }
+
+        const isEmpty = computed(() => isEmptyValue(inputValue.value));
+
+        const { requiredCheck, maxCheck, minCheck } = useVsInputRules(required, max, min, type, isEmptyValue);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -177,15 +192,15 @@ export default defineComponent({
         });
 
         function convertValue(v: VsInputValueType | undefined): VsInputValueType {
-            if (v === undefined || v === null || v === '') {
-                return isNumberInput.value ? null : '';
+            if (isEmptyValue(v)) {
+                return computedEmptyValue.value;
             }
 
             if (isNumberInput.value) {
                 return Number(v);
             }
 
-            return modifyStringValue(v.toString());
+            return modifyStringValue(String(v));
         }
 
         const {
@@ -219,7 +234,7 @@ export default defineComponent({
                         inputValue.value = convertValue(inputValue.value);
                     },
                     onClear: () => {
-                        inputValue.value = isNumberInput.value ? null : '';
+                        inputValue.value = computedEmptyValue.value;
                     },
                 },
             },
@@ -238,7 +253,7 @@ export default defineComponent({
         const { stateBoxClasses } = useStateClass(computedState);
 
         const renderClearButton = computed(
-            () => !!inputValue.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
+            () => !isEmpty.value && !noClear.value && !computedReadonly.value && !computedDisabled.value,
         );
 
         const computedPlaceholder: ComputedRef<string> = computed(() => {
@@ -292,6 +307,7 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             inputValue,
+            isEmpty,
             computedMessages,
             computedDisabled,
             computedReadonly,

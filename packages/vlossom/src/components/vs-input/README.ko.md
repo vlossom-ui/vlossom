@@ -98,6 +98,7 @@ const text = ref('');
 | `required`        | `boolean`                                         | `false`  | -        | 필드를 필수로 표시합니다 (유효성 검사 추가).                         |
 | `noClear`         | `boolean`                                         | `false`  | -        | 지우기 버튼을 숨깁니다.                                              |
 | `autocomplete`    | `boolean`                                         | `false`  | -        | 브라우저 자동완성을 활성화합니다.                                    |
+| `emptyValue`      | `string \| number \| null`                        | -        | -        | 입력이 비었을 때 사용하는 값. 기본값은 `''` (`number`는 `null`).     |
 | `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`   | -        | 입력 영역 높이 · 패딩 · 폰트 · 모서리 반경 제어.                     |
 | `noLabel`         | `boolean`                                         | `false`  | -        | 라벨 영역을 숨깁니다.                                                |
 | `noMessages`      | `boolean`                                         | `false`  | -        | 메시지 영역을 숨깁니다.                                              |
