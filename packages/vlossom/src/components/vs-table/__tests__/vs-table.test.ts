@@ -143,6 +143,45 @@ describe('VsTable', () => {
             expect(caption.text()).toBe('Caption');
             expect(caption.attributes('style')).toContain('color: red');
         });
+
+        it('컬럼 정렬이 없으면 styleSet의 $cell 정렬을 머리글/본문 셀에 유지한다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    styleSet: { $cell: { textAlign: 'center', justifyContent: 'center', alignItems: 'flex-end' } },
+                },
+            });
+
+            await nextTick();
+
+            const th = wrapper.find('.vs-table-th').element as HTMLElement;
+            const td = wrapper.find('.vs-table-td').element as HTMLElement;
+            expect(th.style.textAlign).toBe('center');
+            expect(th.style.justifyContent).toBe('center');
+            expect(td.style.textAlign).toBe('center');
+            expect(td.style.justifyContent).toBe('center');
+            expect(td.style.alignItems).toBe('flex-end');
+        });
+
+        it('컬럼 정렬이 있으면 styleSet의 $cell 정렬보다 우선한다', async () => {
+            const wrapper = mountTable({
+                props: {
+                    columns: [
+                        { key: 'name', label: '이름', headerAlign: 'right', align: 'right', verticalAlign: 'top' },
+                    ],
+                    styleSet: { $cell: { textAlign: 'center', justifyContent: 'center', alignItems: 'flex-end' } },
+                },
+            });
+
+            await nextTick();
+
+            const th = wrapper.find('.vs-table-th').element as HTMLElement;
+            const td = wrapper.find('.vs-table-td').element as HTMLElement;
+            expect(th.style.textAlign).toBe('right');
+            expect(th.style.justifyContent).toBe('flex-end');
+            expect(td.style.textAlign).toBe('right');
+            expect(td.style.justifyContent).toBe('flex-end');
+            expect(td.style.alignItems).toBe('flex-start');
+        });
     });
 
     describe('empty', () => {
@@ -1059,7 +1098,6 @@ describe('VsTable', () => {
                 fire(false);
                 await nextTick();
                 expect(wrapper.find('.vs-table-sticky-header').exists()).toBe(true);
-
                 wrapper.unmount();
             } finally {
                 restore();
