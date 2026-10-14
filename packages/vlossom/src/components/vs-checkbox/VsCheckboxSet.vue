@@ -133,17 +133,13 @@ export default defineComponent({
 
         const inputValue = ref<any[]>(modelValue.value || []);
 
-        const { getOptionLabel, getOptionValue } = useInputOption(
+        const { getOptionLabel, getOptionValue, isOptionValue } = useInputOption(
             inputValue,
             options,
             optionLabel,
             optionValue,
             ref(true),
         );
-
-        function isOptionValue(value: any) {
-            return options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-        }
 
         const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min, isOptionValue);
 

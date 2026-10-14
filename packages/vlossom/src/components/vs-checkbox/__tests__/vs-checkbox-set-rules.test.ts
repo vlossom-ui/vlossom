@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { useVsCheckboxSetRules } from './../vs-checkbox-set-rules';
 
 describe('useVsCheckboxSetRules', () => {
+    const isAnyValue = () => true;
+
     describe('isOptionValue', () => {
         it('options에 있는 값만 세어 required, min, max를 판단한다', () => {
             // given
@@ -27,7 +29,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(0);
-            const { requiredCheck } = useVsCheckboxSetRules(required, max, min);
+            const { requiredCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = requiredCheck([]);
@@ -41,7 +43,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(true);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(0);
-            const { requiredCheck } = useVsCheckboxSetRules(required, max, min);
+            const { requiredCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = requiredCheck([]);
@@ -55,7 +57,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(true);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(0);
-            const { requiredCheck } = useVsCheckboxSetRules(required, max, min);
+            const { requiredCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = requiredCheck(['A', 'B']);
@@ -69,7 +71,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(true);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(0);
-            const { requiredCheck } = useVsCheckboxSetRules(required, max, min);
+            const { requiredCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = requiredCheck(null as any);
@@ -83,7 +85,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(true);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(0);
-            const { requiredCheck } = useVsCheckboxSetRules(required, max, min);
+            const { requiredCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = requiredCheck(undefined as any);
@@ -99,7 +101,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(3);
             const min = ref(0);
-            const { maxCheck } = useVsCheckboxSetRules(required, max, min);
+            const { maxCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = maxCheck(['A', 'B']);
@@ -113,7 +115,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(2);
             const min = ref(0);
-            const { maxCheck } = useVsCheckboxSetRules(required, max, min);
+            const { maxCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = maxCheck(['A', 'B']);
@@ -127,7 +129,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(2);
             const min = ref(0);
-            const { maxCheck } = useVsCheckboxSetRules(required, max, min);
+            const { maxCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = maxCheck(['A', 'B', 'C']);
@@ -141,7 +143,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref('3');
             const min = ref(0);
-            const { maxCheck } = useVsCheckboxSetRules(required, max, min);
+            const { maxCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = maxCheck(['A', 'B', 'C', 'D']);
@@ -155,7 +157,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(2);
             const min = ref(0);
-            const { maxCheck } = useVsCheckboxSetRules(required, max, min);
+            const { maxCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = maxCheck(null as any);
@@ -171,7 +173,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(2);
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck(['A', 'B', 'C']);
@@ -185,7 +187,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(2);
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck(['A', 'B']);
@@ -199,7 +201,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(2);
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck(['A']);
@@ -213,7 +215,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(1);
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck([]);
@@ -227,7 +229,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref('2');
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck(['A']);
@@ -241,7 +243,7 @@ describe('useVsCheckboxSetRules', () => {
             const required = ref(false);
             const max = ref(Number.MAX_SAFE_INTEGER);
             const min = ref(2);
-            const { minCheck } = useVsCheckboxSetRules(required, max, min);
+            const { minCheck } = useVsCheckboxSetRules(required, max, min, isAnyValue);
 
             // when
             const result = minCheck(null as any);

@@ -12,6 +12,10 @@ export function useInputOption(
 ) {
     const { getOptionLabel, getOptionValue } = useOptionLabelValue(optionLabel, optionValue);
 
+    function isOptionValue(value: any) {
+        return options.value.some((option) => objectUtil.isEqual(getOptionValue(option), value));
+    }
+
     watch(options, (newOptions, oldOptions) => {
         // 빈 options는 아직 불러오는 중(또는 다시 불러오는 중)일 수 있어 정리를 미룬다
         if (objectUtil.isEqual(newOptions, oldOptions) || newOptions.length === 0) {
@@ -21,7 +25,7 @@ export function useInputOption(
         if (multiple.value && Array.isArray(inputValue.value)) {
             const removedValues: any[] = [];
             const keptValues = inputValue.value.filter((value) => {
-                const found = newOptions.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+                const found = isOptionValue(value);
                 if (!found) {
                     removedValues.push(value);
                 }
@@ -34,29 +38,23 @@ export function useInputOption(
                 );
             }
             inputValue.value = keptValues.length > 0 ? keptValues : emptyValue.value;
-        } else {
-            const option = newOptions.find((o) => objectUtil.isEqual(getOptionValue(o), inputValue.value));
-
-            if (!option) {
-                const isEmpty =
-                    inputValue.value === null ||
-                    inputValue.value === undefined ||
-                    objectUtil.isEqual(inputValue.value, emptyValue.value);
-                if (!isEmpty) {
-                    const current = JSON.stringify(inputValue.value);
-                    const resetTo = JSON.stringify(emptyValue.value);
-                    logUtil.warning(
-                        'modelValue',
-                        `Current value ${current} is no longer in options. Reset to ${resetTo}.`,
-                    );
-                }
-                inputValue.value = emptyValue.value;
+        } else if (!isOptionValue(inputValue.value)) {
+            const isEmpty =
+                inputValue.value === null ||
+                inputValue.value === undefined ||
+                objectUtil.isEqual(inputValue.value, emptyValue.value);
+            if (!isEmpty) {
+                const current = JSON.stringify(inputValue.value);
+                const resetTo = JSON.stringify(emptyValue.value);
+                logUtil.warning('modelValue', `Current value ${current} is no longer in options. Reset to ${resetTo}.`);
             }
+            inputValue.value = emptyValue.value;
         }
     });
 
     return {
         getOptionLabel,
         getOptionValue,
+        isOptionValue,
     };
 }

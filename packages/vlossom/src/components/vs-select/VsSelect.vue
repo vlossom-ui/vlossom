@@ -339,9 +339,16 @@ export default defineComponent({
             }
         }
 
-        const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max, computedOptions);
+        const { isOptionValue } = useInputOption(
+            inputValue,
+            options,
+            optionLabel,
+            optionValue,
+            multiple,
+            computedEmptyValue,
+        );
 
-        useInputOption(inputValue, options, optionLabel, optionValue, multiple, computedEmptyValue);
+        const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max, isOptionValue);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -407,7 +414,6 @@ export default defineComponent({
             isEmpty,
             selectedOptions,
             convertValue,
-            isExistingValue,
             isEmptyValue,
             deselectOption,
             toggleSelect,
@@ -419,6 +425,7 @@ export default defineComponent({
             computedOptions,
             filteredOptions,
             multiple,
+            isOptionValue,
             emptyValue: computedEmptyValue,
         });
 
@@ -432,7 +439,7 @@ export default defineComponent({
                 return multiple.value && !isArrayMultiple ? [value] : value;
             }
             const valueArray = isArrayMultiple ? value : [value];
-            const removed = valueArray.filter((v: any) => !isExistingValue(v));
+            const removed = valueArray.filter((v: any) => !isOptionValue(v));
             if (removed.length > 0) {
                 const attempted = JSON.stringify(value);
                 if (isArrayMultiple) {

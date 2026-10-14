@@ -55,6 +55,7 @@ No additional exported types.
 | ---------------- | -------------- | ------------------------------------------------------------------- |
 | `getOptionLabel` | `option: any`  | Returns the display label string for a given option.                |
 | `getOptionValue` | `option: any`  | Returns the value for a given option using `optionValue` key path.  |
+| `isOptionValue`  | `value: any`   | Returns whether the value exists in the current options.            |
 
 ## Hooks
 

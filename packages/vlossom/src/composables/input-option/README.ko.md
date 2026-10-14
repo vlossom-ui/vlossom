@@ -55,6 +55,7 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 | ---------------- | ------------- | ------------------------------------------------------------------ |
 | `getOptionLabel` | `option: any` | 주어진 옵션의 표시 레이블 문자열을 반환합니다.                      |
 | `getOptionValue` | `option: any` | `optionValue` 키 경로를 사용하여 주어진 옵션의 값을 반환합니다.    |
+| `isOptionValue`  | `value: any`  | 값이 현재 옵션에 있는지 반환합니다.                                |
 
 ## Hooks
 

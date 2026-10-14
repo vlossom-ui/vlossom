@@ -5,7 +5,7 @@ export function useVsCheckboxSetRules(
     required: Ref<boolean>,
     max: Ref<number | string>,
     min: Ref<number | string>,
-    isOptionValue: (value: any) => boolean = () => true,
+    isOptionValue: (value: any) => boolean,
 ) {
     const { optionMessages, formatMessage } = useMessages();
 

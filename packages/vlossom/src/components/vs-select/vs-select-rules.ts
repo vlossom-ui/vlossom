@@ -1,20 +1,14 @@
 import type { Ref } from 'vue';
-import type { OptionItem } from '@/declaration';
 import { useMessages } from '@/composables';
-import { objectUtil } from '@/utils';
 
 export function useSelectRules(
     required: Ref<boolean>,
     multiple: Ref<boolean>,
     min: Ref<number | string>,
     max: Ref<number | string>,
-    options: Ref<OptionItem[]>,
+    isOptionValue: (value: any) => boolean,
 ) {
     const { optionMessages, formatMessage } = useMessages();
-
-    function isOptionValue(value: any) {
-        return options.value.some((option) => objectUtil.isEqual(option.value, value));
-    }
 
     // 선택이 없으면 inputValue가 배열이 아닌 emptyValue(null 등)일 수 있고,
     // options를 불러오는 중에는 정리되지 않은 값이 남아 있을 수 있어 options에 있는 값만 센다

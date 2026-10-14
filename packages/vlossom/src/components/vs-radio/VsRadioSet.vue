@@ -127,7 +127,7 @@ export default defineComponent({
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
 
-        const { getOptionLabel, getOptionValue } = useInputOption(
+        const { getOptionLabel, getOptionValue, isOptionValue } = useInputOption(
             inputValue,
             options,
             optionLabel,
@@ -135,10 +135,6 @@ export default defineComponent({
             ref(false),
             emptyValue,
         );
-
-        function isOptionValue(value: any) {
-            return options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-        }
 
         function sanitizeValue(value: any) {
             if (isOptionValue(value)) {
