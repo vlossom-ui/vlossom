@@ -7,8 +7,9 @@
     @apply rounded-full;
 
     background-color: var(--vs-no-color);
-    width: 2rem;
-    height: 2rem;
+    width: var(--vs-size-height, var(--vs-comp-height-md));
+    height: var(--vs-size-height, var(--vs-comp-height-md));
+    padding: 0;
 
     .vs-theme-icon {
         @apply absolute top-1/2 left-1/2 flex items-center justify-center opacity-0;
@@ -17,8 +18,8 @@
         transition:
             opacity 0.4s ease-out,
             transform 0.4s ease-out;
-        width: var(--vs-theme-button-iconSize, calc(2rem * 2 / 3));
-        height: var(--vs-theme-button-iconSize, calc(2rem * 2 / 3));
+        width: var(--vs-theme-button-iconSize, 66%);
+        height: var(--vs-theme-button-iconSize, 66%);
         color: var(--vs-theme-button-iconColor, var(--vs-orange-400));
 
         &.vs-on {

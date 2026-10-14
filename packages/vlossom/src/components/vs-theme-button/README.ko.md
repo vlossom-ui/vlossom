@@ -12,7 +12,8 @@
 - 테마 변경 시 해/달 아이콘의 애니메이션 전환
 - `VsToggle`에 모든 버튼 동작 위임
 - 로딩 및 비활성화 상태 지원
-- `styleSet`을 통한 크기 및 아이콘 색상 커스터마이징
+- `size` prop으로 사전 정의된 크기, `ghost` / `outline`으로 시각 변형 지원
+- `styleSet`을 통한 아이콘 크기 및 색상 추가 커스터마이징
 
 ## 기본 사용법
 
@@ -22,17 +23,20 @@
 </template>
 ```
 
-### 커스텀 크기
+### 크기
 
 ```html
 <template>
-    <vs-theme-button
-        :style-set="{
-            $iconSize: '1.5rem',
-            $iconColor: '#ff9800',
-            width: '3rem', height: '3rem',
-        }"
-    />
+    <vs-theme-button size="lg" />
+</template>
+```
+
+### Ghost / Outline
+
+```html
+<template>
+    <vs-theme-button ghost />
+    <vs-theme-button outline color-scheme="blue" />
 </template>
 ```
 
@@ -50,15 +54,11 @@
 | ---- | ---- | ------ | ---- | ---- |
 | `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
 | `styleSet` | `string \| VsThemeButtonStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `circle` | `boolean` | `false` | | 버튼을 원형으로 렌더링 |
 | `disabled` | `boolean` | `false` | | 버튼 비활성화 |
 | `ghost` | `boolean` | `false` | | 고스트(투명) 스타일 적용 |
 | `loading` | `boolean` | `false` | | 로딩 인디케이터 표시 |
 | `outline` | `boolean` | `false` | | 아웃라인 스타일 적용 |
-| `primary` | `boolean` | `false` | | Primary 색상 스타일 적용 |
-| `responsive` | `boolean` | `false` | | 버튼을 반응형으로 설정 |
 | `size` | `Size` | `'md'` | | 버튼 크기 (`xs`, `sm`, `md`, `lg`, `xl`) |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML 버튼 타입 |
 
 ## 타입
 
