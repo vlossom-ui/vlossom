@@ -69,6 +69,7 @@ export default defineComponent({
             default: null,
         },
         checked: { type: Boolean, default: false },
+        emptyValue: { type: null, default: null },
         radioLabel: { type: String, default: '' },
         radioValue: { type: null, required: true },
         size: { type: String as PropType<Size>, default: 'md' },
@@ -83,6 +84,7 @@ export default defineComponent({
             beforeChange,
             checked,
             colorScheme,
+            emptyValue,
             id,
             disabled,
             readonly,
@@ -150,7 +152,7 @@ export default defineComponent({
                         }
                     },
                     onClear: () => {
-                        inputValue.value = null;
+                        inputValue.value = emptyValue.value;
                     },
                 },
             },

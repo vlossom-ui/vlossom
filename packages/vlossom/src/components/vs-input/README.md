@@ -98,6 +98,7 @@ const text = ref('');
 | `required`        | `boolean`                                         | `false`  | -        | Marks the field as required (adds validation).                   |
 | `noClear`         | `boolean`                                         | `false`  | -        | Hides the clear button.                                          |
 | `autocomplete`    | `boolean`                                         | `false`  | -        | Enables browser autocomplete.                                    |
+| `emptyValue`      | `string \| number \| null`                        | -        | -        | Value used when the input is empty. Defaults to `''` (`null` for `number`). |
 | `size`            | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`            | `'md'`   | -        | Input height, padding, font, and border-radius.                  |
 | `noLabel`         | `boolean`                                         | `false`  | -        | Hides the label area.                                            |
 | `noMessages`      | `boolean`                                         | `false`  | -        | Hides the messages area.                                         |

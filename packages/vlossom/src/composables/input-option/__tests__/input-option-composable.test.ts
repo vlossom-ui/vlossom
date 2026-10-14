@@ -3,6 +3,29 @@ import { ref, nextTick } from 'vue';
 import { useInputOption } from './../input-option-composable';
 
 describe('useInputOption', () => {
+    describe('isOptionValue', () => {
+        it('optionValue 기준으로 현재 options에 있는 값인지 판단한다', async () => {
+            // given
+            const options = ref([
+                { id: 1, name: 'A' },
+                { id: 2, name: 'B' },
+            ]);
+            const { isOptionValue } = useInputOption(ref(null), options, ref('name'), ref('id'));
+
+            // then
+            expect(isOptionValue(1)).toBe(true);
+            expect(isOptionValue(3)).toBe(false);
+
+            // when
+            options.value = [{ id: 3, name: 'C' }];
+            await nextTick();
+
+            // then
+            expect(isOptionValue(1)).toBe(false);
+            expect(isOptionValue(3)).toBe(true);
+        });
+    });
+
     describe('options watch - 옵션 변경 시 inputValue 정리', () => {
         describe('multiple이 false인 경우', () => {
             it('options가 변경되고 현재 inputValue가 새 options에 없으면 null로 설정한다', async () => {
@@ -19,6 +42,37 @@ describe('useInputOption', () => {
 
                 // then
                 expect(inputValue.value).toBeNull();
+            });
+
+            it('options가 빈 배열로 바뀌면 불러오는 중일 수 있어 inputValue를 정리하지 않는다', async () => {
+                // given
+                const inputValue = ref('A');
+                const options = ref(['A', 'B']);
+                useInputOption(inputValue, options, ref(''), ref(''));
+
+                // when
+                options.value = [];
+                await nextTick();
+
+                // then
+                expect(inputValue.value).toBe('A');
+            });
+
+            it('emptyValue가 주어지면 null 대신 emptyValue로 설정하고, 이미 emptyValue면 경고하지 않는다', async () => {
+                // given
+                const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+                const inputValue = ref('');
+                const options = ref(['A', 'B', 'C']);
+                useInputOption(inputValue, options, ref(''), ref(''), ref(false), ref(''));
+
+                // when
+                options.value = ['D', 'E', 'F'];
+                await nextTick();
+
+                // then
+                expect(inputValue.value).toBe('');
+                expect(warnSpy).not.toHaveBeenCalled();
+                warnSpy.mockRestore();
             });
 
             it('options가 변경되고 현재 inputValue가 새 options에 있으면 유지한다', async () => {

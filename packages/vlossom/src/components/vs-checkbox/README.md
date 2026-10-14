@@ -216,3 +216,6 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 - If `modelValue` of `VsCheckboxSet` is set to values not present in `options` — either on mount or programmatically — the invalid values are removed and a console warning is printed.
 - If `options` changes and some selected values are no longer present, the missing entries are removed and a console warning is printed.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+  - In the meantime, validation treats no option as selected, so `required` and `min` fail.

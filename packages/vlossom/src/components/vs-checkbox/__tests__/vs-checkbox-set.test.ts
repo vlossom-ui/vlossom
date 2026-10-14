@@ -5,6 +5,56 @@ import { nextTick } from 'vue';
 import VsCheckboxSet from './../VsCheckboxSet.vue';
 
 describe('VsCheckboxSet', () => {
+    describe('비동기 options', () => {
+        it('options가 비어 있으면 초기값을 정리하지 않고, options가 들어오면 없는 값만 제거한다', async () => {
+            // given
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: [],
+                    modelValue: ['A', 'B'],
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(warnSpy).not.toHaveBeenCalled();
+
+            // when
+            await wrapper.setProps({ options: ['A', 'C', 'D'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.props('modelValue')).toEqual(['A']);
+            warnSpy.mockRestore();
+        });
+
+        it('options를 불러오는 중에는 options에 있는 값만 세어 검증한다', async () => {
+            // given
+            vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const wrapper = mount(VsCheckboxSet, {
+                props: {
+                    options: [],
+                    required: true,
+                    modelValue: ['A', 'B'],
+                    'onUpdate:modelValue': (e: any) => wrapper.setProps({ modelValue: e }),
+                },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
+
+            // when
+            await wrapper.setProps({ options: ['A', 'C', 'D'] });
+            await nextTick();
+
+            // then
+            expect(wrapper.vm.validate()).toBe(true);
+            vi.restoreAllMocks();
+        });
+    });
+
     describe('v-model', () => {
         it('modelValue를 바꿔서 체크박스 세트 값을 업데이트할 수 있다', async () => {
             // given

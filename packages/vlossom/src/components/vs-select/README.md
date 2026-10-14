@@ -134,6 +134,7 @@ When there is no option to show — because `options` is empty or the search key
 | `search`           | `boolean \| SearchProps`                                               | `false`                   | -        | Enables built-in search                                                                             |
 | `closableChips`    | `boolean`                                                              | `false`                   | -        | Shows a close button on selected chips                                                              |
 | `collapseChips`    | `boolean`                                                              | `false`                   | -        | Collapses selected chips into a count display                                                       |
+| `emptyValue`       | `any`                                                                  | -                         | -        | Value used when nothing is selected. Defaults to `null` (`[]` in multiple mode)                     |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | Enables multiple selection mode                                                                     |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | Hides the clear button                                                                              |
 | `noVirtual`        | `boolean`                                                              | `false`                   | -        | Disables automatic virtual scrolling of the options list                                            |
@@ -219,5 +220,9 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ## Cautions
 
-- If `modelValue` is set to a value not present in `options` — either on mount or programmatically — the invalid value is reset to `null` (single) or the invalid entries are removed (multiple), and a console warning is printed.
-- If `options` changes and the current `modelValue` is no longer present, the value is reset to `null` (single) or the missing entries are removed (multiple), and a console warning is printed.
+- If `modelValue` is set to a value not present in `options` — either on mount or programmatically — the invalid value is reset to `emptyValue` (single) or the invalid entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
+- If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` (single) or the missing entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+  - In the meantime, validation treats no option as selected, so `required` and `min` fail.
+- If an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

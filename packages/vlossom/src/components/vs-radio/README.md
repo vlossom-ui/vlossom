@@ -99,6 +99,7 @@ async function confirmChange(from, to) {
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | Validation state                                  |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
 | `checked`      | `boolean`                                                         | `false`  | -        | Pre-selects this radio on mount                   |
+| `emptyValue`   | `any`                                                             | `null`   | -        | Value set when the radio is cleared               |
 | `radioLabel`   | `string`                                                          | `''`     | -        | Label displayed next to the radio circle          |
 | `radioValue`   | `any`                                                             | -        | Yes      | The value this radio represents                   |
 | `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
@@ -129,6 +130,7 @@ async function confirmChange(from, to) {
 | `optionLabel`  | `string`                                                          | -        | -        | Key name for the label when options are objects   |
 | `optionValue`  | `string`                                                          | -        | -        | Key name for the value when options are objects   |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
+| `emptyValue`   | `any`                                                             | `null`   | -        | Value used when nothing is selected               |
 | `vertical`     | `boolean`                                                         | `false`  | -        | Displays radio buttons in a vertical layout       |
 | `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
 | `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
@@ -240,5 +242,9 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ## Cautions
 
-- If `modelValue` of `VsRadioSet` is set to a value not present in `options` — either on mount or programmatically — the value is reset to `null` and a console warning is printed.
-- If `options` changes and the current `modelValue` is no longer present, the value is reset to `null` and a console warning is printed.
+- If `modelValue` of `VsRadioSet` is set to a value not present in `options` — either on mount or programmatically — the value is reset to `emptyValue` and a console warning is printed.
+- If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` and a console warning is printed.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+  - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
+  - In the meantime, validation treats no option as selected, so `required` of `VsRadioSet` fails.
+- In `VsRadioSet`, if an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

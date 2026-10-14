@@ -15,7 +15,7 @@ export interface VsTextareaRef extends ComponentPublicInstance<typeof VsTextarea
     select: () => void;
 }
 
-export type VsTextareaValueType = string;
+export type VsTextareaValueType = string | null;
 
 export interface VsTextareaStyleSet extends CSSProperties {
     $header?: CSSProperties;

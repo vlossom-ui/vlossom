@@ -86,6 +86,7 @@ const text = ref('');
 | `autocomplete` | `boolean` | `false` | | Enables browser autocomplete |
 | `changed` | `boolean` | `false` | | v-model for changed state |
 | `disabled` | `boolean` | `false` | | Disables the textarea |
+| `emptyValue` | `string \| null` | `''` | | Value used when the textarea is empty |
 | `grid` | `string \| number \| Breakpoints` | | | Grid column span |
 | `hidden` | `boolean` | `false` | | Hides the component |
 | `id` | `string` | `''` | | HTML `id` attribute |
@@ -93,7 +94,7 @@ const text = ref('');
 | `max` | `number \| string` | | | Maximum character length |
 | `messages` | `Message[]` | `[]` | | Validation messages |
 | `min` | `number \| string` | | | Minimum character length |
-| `modelValue` | `string` | `''` | | v-model value |
+| `modelValue` | `string \| null` | `''` | | v-model value |
 | `modelModifiers` | `StringModifiers` | `{}` | | String modifier flags |
 | `name` | `string` | `''` | | HTML `name` attribute |
 | `noDefaultRules` | `boolean` | `false` | | Disables built-in min/max/required rules |
@@ -150,7 +151,7 @@ interface VsTextareaStyleSet extends CSSProperties {
 
 | Event | Payload | Description |
 | ----- | ------- | ----------- |
-| `update:modelValue` | `string` | Emitted when the value changes |
+| `update:modelValue` | `string \| null` | Emitted when the value changes |
 | `update:changed` | `boolean` | Emitted when the changed state updates |
 | `update:valid` | `boolean` | Emitted when the valid state updates |
 | `change` | `string` | Emitted on value change |

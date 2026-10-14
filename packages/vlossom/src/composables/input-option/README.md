@@ -38,6 +38,7 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 | `optionLabel` | `Ref<string>`       | —           | Yes      | Key path to extract the display label from an option object.             |
 | `optionValue` | `Ref<string>`       | —           | Yes      | Key path to extract the value from an option object.                     |
 | `multiple`    | `Ref<boolean>`      | `ref(false)` | No      | When `true`, `inputValue` is treated as an array and filtered on change. |
+| `emptyValue`  | `Ref<any>`          | `null` / `[]` | No      | Value set when no selected value remains in options. Defaults to `[]` when `multiple` is `true`. |
 
 ## Types
 
@@ -54,6 +55,7 @@ No additional exported types.
 | ---------------- | -------------- | ------------------------------------------------------------------- |
 | `getOptionLabel` | `option: any`  | Returns the display label string for a given option.                |
 | `getOptionValue` | `option: any`  | Returns the value for a given option using `optionValue` key path.  |
+| `isOptionValue`  | `value: any`   | Returns whether the value exists in the current options.            |
 
 ## Hooks
 
@@ -63,6 +65,7 @@ No additional exported types.
 
 ## Cautions
 
-- When `multiple` is `false` and the current value is not found in the new options, `inputValue` is set to `null`.
-- When `multiple` is `true`, only values that still exist in the new options are retained.
+- When `multiple` is `false` and the current value is not found in the new options, `inputValue` is set to `emptyValue`. No warning is printed if it was already empty.
+- When `multiple` is `true`, only values that still exist in the new options are retained. If none remain, `inputValue` is set to `emptyValue`.
+- When the new `options` is empty, `inputValue` is left unchanged because options may still be loading.
 - When a value is cleared because it is no longer in the new options, a console warning is printed.

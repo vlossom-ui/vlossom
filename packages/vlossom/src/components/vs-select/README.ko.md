@@ -134,6 +134,7 @@ const options = [
 | `search`           | `boolean \| SearchProps`                                               | `false`                   | -        | 내장 검색 기능 활성화                                                                          |
 | `closableChips`    | `boolean`                                                              | `false`                   | -        | 선택된 칩에 닫기 버튼 표시                                                                     |
 | `collapseChips`    | `boolean`                                                              | `false`                   | -        | 선택된 칩을 개수 표시로 접기                                                                   |
+| `emptyValue`       | `any`                                                                  | -                         | -        | 선택이 없을 때 사용하는 값. 기본값은 `null` (다중 선택은 `[]`)                                 |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | 다중 선택 모드 활성화                                                                          |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | 초기화 버튼 숨김                                                                               |
 | `noVirtual`        | `boolean`                                                              | `false`                   | -        | 옵션 목록의 자동 가상 스크롤 비활성화                                                                   |
@@ -219,5 +220,9 @@ interface VsSelectStyleSet extends CSSProperties {
 
 ## Cautions
 
-- `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `null`로 초기화되거나 (단일 선택) 유효하지 않은 항목이 제거되며 (다중 선택) 콘솔 경고가 출력됩니다.
-- `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면, 단일 선택 모드에서는 `null`로 초기화되고 다중 선택 모드에서는 없어진 항목이 제거되며 콘솔 경고가 출력됩니다.
+- `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `emptyValue`로 초기화되거나 (단일 선택) 유효하지 않은 항목이 제거되며 (다중 선택, 남는 항목이 없으면 `emptyValue`) 콘솔 경고가 출력됩니다.
+- `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면, 단일 선택 모드에서는 `emptyValue`로 초기화되고 다중 선택 모드에서는 없어진 항목이 제거되며 (남는 항목이 없으면 `emptyValue`) 콘솔 경고가 출력됩니다.
+- `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 컴포넌트를 비활성화하세요.
+  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `required`와 `min`은 실패합니다.
+- `emptyValue`와 같은 값의 옵션이 있으면 그 값은 해당 옵션을 선택합니다. `required`는 옵션이 선택되어 있으면 `''`나 `0` 같은 값이어도 통과합니다.

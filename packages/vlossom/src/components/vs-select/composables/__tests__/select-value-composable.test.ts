@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref } from 'vue';
 import type { OptionItem } from '@/declaration';
+import { objectUtil } from '@/utils';
 import { useSelectValue } from './../select-value-composable';
 
 describe('useSelectValue', () => {
@@ -41,6 +42,10 @@ describe('useSelectValue', () => {
         ];
     }
 
+    function isOptionValueOf(options: Ref<OptionItem[]>) {
+        return (value: any) => options.value.some((option) => objectUtil.isEqual(option.value, value));
+    }
+
     describe('초기 상태', () => {
         it('selectedOptionIds가 빈 배열로 초기화되어야 한다', () => {
             // given
@@ -53,6 +58,7 @@ describe('useSelectValue', () => {
             const { selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -72,6 +78,7 @@ describe('useSelectValue', () => {
             const { isEmpty } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -91,6 +98,7 @@ describe('useSelectValue', () => {
             const { isSelectedAll } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -111,6 +119,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -132,6 +141,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -155,6 +165,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -177,6 +188,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -198,6 +210,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -221,6 +234,7 @@ describe('useSelectValue', () => {
             const { selectOption, deselectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -245,6 +259,7 @@ describe('useSelectValue', () => {
             const { selectOption, deselectOption, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -270,6 +285,7 @@ describe('useSelectValue', () => {
             const { toggleSelect, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -291,6 +307,7 @@ describe('useSelectValue', () => {
             const { toggleSelect, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -314,6 +331,7 @@ describe('useSelectValue', () => {
             const { toggleSelect, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -337,6 +355,7 @@ describe('useSelectValue', () => {
             const { toggleSelect, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -360,6 +379,7 @@ describe('useSelectValue', () => {
             const { selectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -381,6 +401,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -404,6 +425,7 @@ describe('useSelectValue', () => {
             const { selectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -427,6 +449,7 @@ describe('useSelectValue', () => {
             const { selectAll, deselectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -452,6 +475,7 @@ describe('useSelectValue', () => {
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -473,6 +497,7 @@ describe('useSelectValue', () => {
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -496,6 +521,7 @@ describe('useSelectValue', () => {
             const { toggleSelectAll, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -519,6 +545,7 @@ describe('useSelectValue', () => {
             const { selectOption, isSelected } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -539,6 +566,7 @@ describe('useSelectValue', () => {
             const { isSelected } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -559,6 +587,7 @@ describe('useSelectValue', () => {
             const { isEmpty } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -577,6 +606,7 @@ describe('useSelectValue', () => {
             const { selectOption, isEmpty } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -599,6 +629,7 @@ describe('useSelectValue', () => {
             const { selectOption, isSelectedAll } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -619,6 +650,7 @@ describe('useSelectValue', () => {
             const { selectAll, isSelectedAll } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -640,6 +672,7 @@ describe('useSelectValue', () => {
             const { selectOption, isSelectedAll } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -662,6 +695,7 @@ describe('useSelectValue', () => {
             const { selectOption, selectedOptions } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -683,6 +717,7 @@ describe('useSelectValue', () => {
             const { selectedOptions } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -703,6 +738,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -721,6 +757,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -739,6 +776,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -758,6 +796,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -776,6 +815,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -794,6 +834,7 @@ describe('useSelectValue', () => {
             const { convertValue } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -815,6 +856,7 @@ describe('useSelectValue', () => {
             const { selectAll, clearSelected, selectedOptionIds } = useSelectValue({
                 isSelectUnavailable,
                 computedOptions,
+                isOptionValue: isOptionValueOf(computedOptions),
                 filteredOptions,
                 multiple,
             });
@@ -841,6 +883,7 @@ describe('useSelectValue', () => {
                 useSelectValue({
                     isSelectUnavailable,
                     computedOptions,
+                    isOptionValue: isOptionValueOf(computedOptions),
                     filteredOptions,
                     multiple,
                 });
