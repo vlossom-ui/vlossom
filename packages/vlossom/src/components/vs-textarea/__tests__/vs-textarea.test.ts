@@ -4,6 +4,56 @@ import { mount } from '@vue/test-utils';
 import VsTextarea from './../VsTextarea.vue';
 
 describe('VsTextarea', () => {
+    describe('emptyValue', () => {
+        it('emptyValue가 null이면 null modelValue를 마운트 시 바꾸지 않는다', async () => {
+            // given, when
+            const wrapper = mount(VsTextarea, {
+                props: { modelValue: null, emptyValue: null },
+            });
+            await nextTick();
+
+            // then
+            expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+            expect(wrapper.find('textarea').element.value).toBe('');
+        });
+
+        it('입력값을 모두 지우면 emptyValue를 emit한다', async () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: { modelValue: 'a', emptyValue: null },
+            });
+
+            // when
+            await wrapper.find('textarea').setValue('');
+
+            // then
+            expect(wrapper.emitted('update:modelValue')?.slice(-1)[0]).toEqual([null]);
+        });
+
+        it('clear 시 emptyValue로 초기화된다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: { modelValue: 'a', emptyValue: null },
+            });
+
+            // when
+            wrapper.vm.clear();
+
+            // then
+            expect(wrapper.vm.inputValue).toBe(null);
+        });
+
+        it('required일 때 emptyValue는 빈 값으로 검증된다', () => {
+            // given
+            const wrapper = mount(VsTextarea, {
+                props: { modelValue: null, emptyValue: null, required: true },
+            });
+
+            // then
+            expect(wrapper.vm.validate()).toBe(false);
+        });
+    });
+
     describe('v-model', () => {
         it('textarea 값 변경 시 update:modelValue 이벤트가 emit되어야 한다', async () => {
             // given
@@ -349,7 +399,7 @@ describe('VsTextarea', () => {
 
         it('custom rule 적용 시 메시지가 올바르게 표시되어야 한다', async () => {
             // given
-            const customRule = (value: string) => {
+            const customRule = (value: string | null) => {
                 if (value === 'test') {
                     return 'custom error message';
                 }
