@@ -135,6 +135,7 @@ When there is no option to show — because `options` is empty or the search key
 | `closableChips`    | `boolean`                                                              | `false`                   | -        | Shows a close button on selected chips                                                              |
 | `collapseChips`    | `boolean`                                                              | `false`                   | -        | Collapses selected chips into a count display                                                       |
 | `emptyValue`       | `any`                                                                  | -                         | -        | Value used when nothing is selected. Defaults to `null` (`[]` in multiple mode)                     |
+| `loading`          | `boolean`                                                              | `false`                   | -        | Shows a loading indicator in the trigger and prevents opening the options                           |
 | `multiple`         | `boolean`                                                              | `false`                   | -        | Enables multiple selection mode                                                                     |
 | `noClear`          | `boolean`                                                              | `false`                   | -        | Hides the clear button                                                                              |
 | `noVirtual`        | `boolean`                                                              | `false`                   | -        | Disables automatic virtual scrolling of the options list                                            |
@@ -149,6 +150,7 @@ When there is no option to show — because `options` is empty or the search key
 interface VsSelectStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
     $chip?: VsChipStyleSet;
+    $loading?: VsLoadingStyleSet;
     $selectAllCheckbox?: VsCheckboxStyleSet;
     $options?: VsGroupedListStyleSet;
     $option?: CSSProperties & {
@@ -159,7 +161,7 @@ interface VsSelectStyleSet extends CSSProperties {
 ```
 
 > [!NOTE]
-> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `$chip` uses [VsChipStyleSet](../vs-chip/README.md#types), `$selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types), and `$options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types). The `$option.$focused` style is applied to the keyboard-focused option, and `$option.$selected` is applied to selected options.
+> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types), `$chip` uses [VsChipStyleSet](../vs-chip/README.md#types), `$selectAllCheckbox` uses [VsCheckboxStyleSet](../vs-checkbox/README.md#types), and `$options` uses [VsGroupedListStyleSet](../vs-grouped-list/README.md#types). The `$option.$focused` style is applied to the keyboard-focused option, and `$option.$selected` is applied to selected options. `$loading` uses [VsLoadingStyleSet](../vs-loading/README.md#types).
 
 ### StyleSet Example
 
@@ -222,7 +224,7 @@ interface VsSelectStyleSet extends CSSProperties {
 
 - If `modelValue` is set to a value not present in `options` — either on mount or programmatically — the invalid value is reset to `emptyValue` (single) or the invalid entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
 - If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` (single) or the missing entries are removed (multiple; `emptyValue` if none remain), and a console warning is printed.
-- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
   - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
   - In the meantime, validation treats no option as selected, so `required` and `min` fail.
 - If an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

@@ -7,6 +7,7 @@ import type { VsChipStyleSet } from '@/components/vs-chip/types';
 import type { VsGroupedListStyleSet } from '@/components/vs-grouped-list/types';
 import type { VsCheckboxStyleSet } from '@/components/vs-checkbox/types';
 import type { VsInputWrapperStyleSet } from '@/components/vs-input-wrapper/types';
+import type { VsLoadingStyleSet } from '@/components/vs-loading/types';
 declare module 'vue' {
     interface GlobalComponents {
         VsSelect: typeof VsSelect;
@@ -25,6 +26,7 @@ export interface VsSelectTriggerRef extends ComponentPublicInstance<typeof VsSel
 export interface VsSelectStyleSet extends CSSProperties {
     $wrapper?: VsInputWrapperStyleSet;
     $chip?: VsChipStyleSet;
+    $loading?: VsLoadingStyleSet;
     $selectAllCheckbox?: VsCheckboxStyleSet;
     $options?: VsGroupedListStyleSet;
     $option?: CSSProperties & {

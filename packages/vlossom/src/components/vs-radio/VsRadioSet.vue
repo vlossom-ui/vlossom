@@ -17,37 +17,54 @@
             <slot name="label" />
         </template>
 
-        <div :class="['vs-radio-set', colorSchemeClass, sizeClass, classObj]" :style="componentInlineStyle">
-            <vs-radio
-                v-for="(option, index) in options"
-                :key="getOptionValue(option)"
-                ref="radioRefs"
-                class="vs-radio-item"
-                width="unset"
-                :id="`${computedId}-${index}`"
-                :model-value="inputValue"
-                :empty-value
-                :radio-value="getOptionValue(option)"
-                :radio-label="getOptionLabel(option)"
-                :style-set="componentStyleSet.$radio"
-                :disabled="computedDisabled"
-                :readonly="computedReadonly"
-                :state="computedState"
-                :name="resolvedName"
-                no-label
-                no-messages
-                :before-change
+        <div
+            :class="['vs-radio-set', colorSchemeClass, sizeClass, classObj]"
+            :style="componentInlineStyle"
+            :aria-busy="loading || undefined"
+        >
+            <vs-skeleton
+                v-if="loading"
+                class="vs-radio-set-skeleton"
                 :color-scheme
-                :required
-                :size
-                @update:modelValue="onRadioUpdate"
-                @focus="onFocus(option, $event)"
-                @blur="onBlur(option, $event)"
-            >
-                <template #radio-label v-if="$slots['radio-label']">
-                    <slot name="radio-label" :option :value="getOptionValue(option)" :label="getOptionLabel(option)" />
-                </template>
-            </vs-radio>
+                :style-set="componentStyleSet.$skeleton"
+            />
+            <template v-else>
+                <vs-radio
+                    v-for="(option, index) in options"
+                    :key="getOptionValue(option)"
+                    ref="radioRefs"
+                    class="vs-radio-item"
+                    width="unset"
+                    :id="`${computedId}-${index}`"
+                    :model-value="inputValue"
+                    :empty-value
+                    :radio-value="getOptionValue(option)"
+                    :radio-label="getOptionLabel(option)"
+                    :style-set="componentStyleSet.$radio"
+                    :disabled="computedDisabled"
+                    :readonly="computedReadonly"
+                    :state="computedState"
+                    :name="resolvedName"
+                    no-label
+                    no-messages
+                    :before-change
+                    :color-scheme
+                    :required
+                    :size
+                    @update:modelValue="onRadioUpdate"
+                    @focus="onFocus(option, $event)"
+                    @blur="onBlur(option, $event)"
+                >
+                    <template #radio-label v-if="$slots['radio-label']">
+                        <slot
+                            name="radio-label"
+                            :option
+                            :value="getOptionValue(option)"
+                            :label="getOptionLabel(option)"
+                        />
+                    </template>
+                </vs-radio>
+            </template>
         </div>
 
         <template #messages v-if="!noMessages">
@@ -66,11 +83,12 @@ import type { VsRadioSetStyleSet } from './types';
 
 import VsInputWrapper from '@/components/vs-input-wrapper/VsInputWrapper.vue';
 import VsRadio from '@/components/vs-radio/VsRadio.vue';
+import VsSkeleton from '@/components/vs-skeleton/VsSkeleton.vue';
 
 const componentName = VsComponent.VsRadioSet;
 export default defineComponent({
     name: componentName,
-    components: { VsInputWrapper, VsRadio },
+    components: { VsInputWrapper, VsRadio, VsSkeleton },
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsRadioSetStyleSet>(),
@@ -82,6 +100,7 @@ export default defineComponent({
             default: null,
         },
         emptyValue: { type: null, default: null },
+        loading: { type: Boolean, default: false },
         size: { type: String as PropType<Size>, default: 'md' },
         vertical: { type: Boolean, default: false },
         // v-model

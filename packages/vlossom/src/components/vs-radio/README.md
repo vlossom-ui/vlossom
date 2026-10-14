@@ -131,6 +131,7 @@ async function confirmChange(from, to) {
 | `optionValue`  | `string`                                                          | -        | -        | Key name for the value when options are objects   |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | Async callback called before value changes        |
 | `emptyValue`   | `any`                                                             | `null`   | -        | Value used when nothing is selected               |
+| `loading`      | `boolean`                                                         | `false`  | -        | Shows a skeleton instead of radio buttons         |
 | `vertical`     | `boolean`                                                         | `false`  | -        | Displays radio buttons in a vertical layout       |
 | `modelValue`   | `any`                                                             | `null`   | -        | Currently selected value (v-model)                |
 | `width`        | `string \| number \| Breakpoints`                                 | -        | -        | Width of the component                            |
@@ -148,12 +149,13 @@ interface VsRadioStyleSet {
 
 interface VsRadioSetStyleSet extends CSSProperties {
     $radio?: VsRadioStyleSet;
+    $skeleton?: VsSkeletonStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types).
+> `$wrapper` uses [VsInputWrapperStyleSet](../vs-input-wrapper/README.md#types). `$skeleton` uses [VsSkeletonStyleSet](../vs-skeleton/README.md#types).
 
 ### StyleSet Example
 
@@ -244,7 +246,7 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 - If `modelValue` of `VsRadioSet` is set to a value not present in `options` — either on mount or programmatically — the value is reset to `emptyValue` and a console warning is printed.
 - If `options` changes and the current `modelValue` is no longer present, the value is reset to `emptyValue` and a console warning is printed.
-- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
   - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
   - In the meantime, validation treats no option as selected, so `required` of `VsRadioSet` fails.
 - In `VsRadioSet`, if an option has the same value as `emptyValue`, that value selects the option. `required` passes whenever an option is selected, including options such as `''` or `0`.

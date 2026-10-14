@@ -120,6 +120,7 @@ async function confirmChange(from, to) {
 | `hidden` | `boolean` | `false` | | Hides the component |
 | `id` | `string` | `''` | | HTML id attribute |
 | `label` | `string` | `''` | | Field label |
+| `loading` | `boolean` | `false` |  | Shows a skeleton instead of checkboxes |
 | `max` | `number \| null` | `null` | | Maximum number of selectable items |
 | `messages` | `Message[]` | `[]` | | Validation messages |
 | `min` | `number \| null` | `null` | | Minimum number of selectable items |
@@ -152,12 +153,13 @@ interface VsCheckboxStyleSet extends CSSProperties {
 
 interface VsCheckboxSetStyleSet extends CSSProperties {
     $checkbox?: Omit<VsCheckboxStyleSet, '$wrapper'>;
+    $skeleton?: VsSkeletonStyleSet;
     $wrapper?: VsInputWrapperStyleSet;
 }
 ```
 
 > [!NOTE]
-> `$wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper documentation](../vs-input-wrapper/README.md) for details.
+> `$wrapper` uses `VsInputWrapperStyleSet`. See the [VsInputWrapper documentation](../vs-input-wrapper/README.md) for details. `$skeleton` uses [VsSkeletonStyleSet](../vs-skeleton/README.md#types).
 
 ### StyleSet Example
 
@@ -216,6 +218,6 @@ interface VsCheckboxSetStyleSet extends CSSProperties {
 
 - If `modelValue` of `VsCheckboxSet` is set to values not present in `options` — either on mount or programmatically — the invalid values are removed and a console warning is printed.
 - If `options` changes and some selected values are no longer present, the missing entries are removed and a console warning is printed.
-- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Disable the component while options are loading if users should not interact with it.
+- While `options` is empty, values are not checked against it, so values set before asynchronously loaded options arrive are kept. Once `options` is provided, missing values are cleaned up as described above. Use `loading` (or `disabled`) while options are loading if users should not interact with it. `loading` only affects display and interaction; it does not change when values are cleaned up.
   - An empty `options` cannot be told apart from options that are still loading. If `options` stays empty, the value is kept as is.
   - In the meantime, validation treats no option as selected, so `required` and `min` fail.

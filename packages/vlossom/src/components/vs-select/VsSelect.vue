@@ -35,6 +35,7 @@
                 :no-clear
                 :disabled="computedDisabled"
                 :readonly="computedReadonly"
+                :loading
                 @click="toggleOpen"
                 @deselect="deselectOption"
                 @clear="clear"
@@ -209,6 +210,7 @@ export default defineComponent({
         closableChips: { type: Boolean, default: false },
         collapseChips: { type: Boolean, default: false },
         emptyValue: { type: null },
+        loading: { type: Boolean, default: false },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         noVirtual: { type: Boolean, default: false },
@@ -263,6 +265,7 @@ export default defineComponent({
             groupBy,
             groupOrder,
             emptyValue,
+            loading,
         } = toRefs(props);
 
         const isOpen = ref(false);
@@ -286,6 +289,7 @@ export default defineComponent({
 
         const baseStyleSet: ComputedRef<VsSelectStyleSet> = computed(() => {
             return {
+                $loading: { width: '1.25em', height: '1em' },
                 $options: { maxHeight: '20rem' },
             };
         });
@@ -405,7 +409,7 @@ export default defineComponent({
         );
 
         const isSelectUnavailable = computed(() => {
-            return computedDisabled.value || computedReadonly.value;
+            return computedDisabled.value || computedReadonly.value || loading.value;
         });
 
         const {
@@ -673,7 +677,7 @@ export default defineComponent({
             syncSelectedOptionIds(inputValue.value);
         });
 
-        watch([computedDisabled, computedReadonly], () => {
+        watch([computedDisabled, computedReadonly, loading], () => {
             closeOptions();
         });
 

@@ -1,6 +1,11 @@
 @reference 'tailwindcss';
 
 .vs-checkbox-set {
+    .vs-checkbox-set-skeleton {
+        width: 100%;
+        height: var(--vs-size-height, var(--vs-comp-height-md));
+    }
+
     @apply flex flex-wrap items-center;
 
     flex-wrap: wrap;

@@ -229,6 +229,16 @@ export const Disabled: Story = {
     },
 };
 
+export const Loading: Story = {
+    args: {
+        label: 'Loading Select',
+        options: basicOptions,
+        placeholder: 'Loading options...',
+        loading: true,
+        modelValue: 'Apple',
+    },
+};
+
 export const Readonly: Story = {
     args: {
         label: 'Readonly Select',
