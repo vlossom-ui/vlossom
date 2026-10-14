@@ -7,11 +7,13 @@ export function useSelectValue({
     computedOptions,
     filteredOptions,
     multiple,
+    emptyValue = computed(() => (multiple.value ? [] : null)),
 }: {
     isSelectUnavailable: Ref<boolean>;
     computedOptions: Ref<OptionItem[]>;
     filteredOptions: Ref<OptionItem[]>;
     multiple: Ref<boolean>;
+    emptyValue?: Ref<any>;
 }) {
     const selectedOptionIds: Ref<string[]> = ref([]);
 
@@ -122,17 +124,19 @@ export function useSelectValue({
     function convertValue(v: any) {
         if (multiple.value) {
             if (v === undefined || v === null) {
-                return [];
+                return emptyValue.value;
             }
 
             const arrayValue = Array.isArray(v) ? v : [v];
-            return arrayValue.filter((value) => isExistingValue(value));
+            const existingValues = arrayValue.filter((value) => isExistingValue(value));
+            return existingValues.length > 0 ? existingValues : emptyValue.value;
         }
 
-        if (v === undefined || v === null) {
-            return null;
-        }
-        return isExistingValue(v) ? v : null;
+        return isExistingValue(v) ? v : emptyValue.value;
+    }
+
+    function isEmptyValue(v: any) {
+        return v === undefined || v === null || objectUtil.isEqual(v, emptyValue.value);
     }
 
     return {
@@ -143,6 +147,7 @@ export function useSelectValue({
         selectedOptions,
         convertValue,
         isExistingValue,
+        isEmptyValue,
         isSelected,
         selectOption,
         deselectOption,

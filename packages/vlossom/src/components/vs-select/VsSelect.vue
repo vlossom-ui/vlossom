@@ -208,6 +208,7 @@ export default defineComponent({
         ...getSearchProps(),
         closableChips: { type: Boolean, default: false },
         collapseChips: { type: Boolean, default: false },
+        emptyValue: { type: null },
         multiple: { type: Boolean, default: false },
         noClear: { type: Boolean, default: false },
         noVirtual: { type: Boolean, default: false },
@@ -261,11 +262,19 @@ export default defineComponent({
             selectAll,
             groupBy,
             groupOrder,
+            emptyValue,
         } = toRefs(props);
 
         const isOpen = ref(false);
         const isFocused = ref(false);
         const inputValue: Ref<any> = ref(modelValue.value);
+
+        const computedEmptyValue = computed(() => {
+            if (emptyValue.value !== undefined) {
+                return emptyValue.value;
+            }
+            return multiple.value ? [] : null;
+        });
 
         const triggerRef: TemplateRef<VsSelectTriggerRef> = useTemplateRef('triggerRef');
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
@@ -330,9 +339,9 @@ export default defineComponent({
             }
         }
 
-        const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max);
+        const { requiredCheck, maxCheck, minCheck } = useSelectRules(required, multiple, min, max, computedOptions);
 
-        useInputOption(inputValue, options, optionLabel, optionValue, multiple);
+        useInputOption(inputValue, options, optionLabel, optionValue, multiple, computedEmptyValue);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -399,6 +408,7 @@ export default defineComponent({
             selectedOptions,
             convertValue,
             isExistingValue,
+            isEmptyValue,
             deselectOption,
             toggleSelect,
             clearSelected,
@@ -409,13 +419,18 @@ export default defineComponent({
             computedOptions,
             filteredOptions,
             multiple,
+            emptyValue: computedEmptyValue,
         });
 
         function sanitizeValue(value: any) {
-            if (value === null || value === undefined) {
+            if (isEmptyValue(value)) {
                 return convertValue(value);
             }
             const isArrayMultiple = multiple.value && Array.isArray(value);
+            // options를 비동기로 불러오는 중일 수 있어 정리를 미루고, options가 들어오면 useInputOption이 정리한다
+            if (computedOptions.value.length === 0) {
+                return multiple.value && !isArrayMultiple ? [value] : value;
+            }
             const valueArray = isArrayMultiple ? value : [value];
             const removed = valueArray.filter((v: any) => !isExistingValue(v));
             if (removed.length > 0) {
@@ -427,7 +442,11 @@ export default defineComponent({
                         `Tried to set ${attempted}, but some values are not in options: ${missing}. Removed them.`,
                     );
                 } else {
-                    logUtil.warning('VsSelect', `Tried to set ${attempted}, but it is not in options. Reset to null.`);
+                    const resetTo = JSON.stringify(computedEmptyValue.value);
+                    logUtil.warning(
+                        'VsSelect',
+                        `Tried to set ${attempted}, but it is not in options. Reset to ${resetTo}.`,
+                    );
                 }
             }
             return convertValue(value);
@@ -586,21 +605,46 @@ export default defineComponent({
         watch(
             selectedOptionIds,
             () => {
-                if (multiple.value) {
-                    inputValue.value = selectedOptionIds.value
-                        .map((optionId) => {
-                            const option = computedOptions.value.find((o) => o.id === optionId);
-                            return option ? option.value : null;
-                        })
-                        .filter((v) => v !== null);
+                const nextValue = getSelectedValue();
+
+                // emptyValue와 같은 값의 옵션이 있으면 clear 후에도 값이 그대로라 inputValue watch가 돌지 않는다
+                if (objectUtil.isEqual(nextValue, inputValue.value)) {
+                    syncSelectedOptionIds(nextValue);
                 } else {
-                    const selectedOptionId = selectedOptionIds.value[0];
-                    const selectedOption = computedOptions.value.find((o) => o.id === selectedOptionId);
-                    inputValue.value = selectedOption ? selectedOption.value : null;
+                    inputValue.value = nextValue;
                 }
             },
             { deep: true },
         );
+
+        function getSelectedValue() {
+            if (multiple.value) {
+                const values = selectedOptionIds.value
+                    .map((optionId) => {
+                        const option = computedOptions.value.find((o) => o.id === optionId);
+                        return option ? option.value : null;
+                    })
+                    .filter((v) => v !== null);
+                return values.length > 0 ? values : computedEmptyValue.value;
+            }
+
+            const selectedOptionId = selectedOptionIds.value[0];
+            const selectedOption = computedOptions.value.find((o) => o.id === selectedOptionId);
+            return selectedOption ? selectedOption.value : computedEmptyValue.value;
+        }
+
+        function syncSelectedOptionIds(value: any) {
+            const isArrayMultiple = multiple.value && Array.isArray(value);
+            const valueArray = value === undefined || value === null ? [] : isArrayMultiple ? value : [value];
+
+            const nextIds = valueArray
+                .map((v: any) => computedOptions.value.find((option) => objectUtil.isEqual(option.value, v))?.id)
+                .filter((optionId: string | undefined): optionId is string => optionId !== undefined);
+
+            if (!objectUtil.isEqual(nextIds, selectedOptionIds.value)) {
+                selectedOptionIds.value = nextIds;
+            }
+        }
 
         watch(
             inputValue,
@@ -608,28 +652,19 @@ export default defineComponent({
                 if (objectUtil.isEqual(newInputValue, oldInputValue)) {
                     return;
                 }
-
-                if (newInputValue === undefined || newInputValue === null) {
-                    selectedOptionIds.value = [];
-                    return;
-                }
-
-                const isArrayMultiple = multiple.value && Array.isArray(inputValue.value);
-                const inputValueArray = isArrayMultiple ? inputValue.value : [inputValue.value];
-
-                selectedOptionIds.value = inputValueArray
-                    .map((v: any) => {
-                        for (const option of computedOptions.value) {
-                            if (objectUtil.isEqual(option.value, v)) {
-                                return option.id;
-                            }
-                        }
-                        return null;
-                    })
-                    .filter((v: any) => v !== null);
+                syncSelectedOptionIds(newInputValue);
             },
             { immediate: true },
         );
+
+        // options가 나중에 들어오거나 다시 불러와지면 값은 그대로여도 선택된 옵션 id를 다시 찾아야 한다
+        watch(computedOptions, () => {
+            // 빈 options로 동기화하면 선택이 비워지면서 값까지 emptyValue로 덮어쓰게 된다
+            if (computedOptions.value.length === 0) {
+                return;
+            }
+            syncSelectedOptionIds(inputValue.value);
+        });
 
         watch([computedDisabled, computedReadonly], () => {
             closeOptions();
