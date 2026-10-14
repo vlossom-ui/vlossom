@@ -12,7 +12,8 @@ A toggle button that switches the application between light and dark themes.
 - Animated sun/moon icon transition on theme change
 - Delegates all button behavior to `VsToggle`
 - Supports loading and disabled states
-- Customizable size and icon color through `styleSet`
+- `size` prop for preset sizes, `ghost` / `outline` for visual variants
+- Further customization of icon size and color through `styleSet`
 
 ## Basic Usage
 
@@ -22,17 +23,20 @@ A toggle button that switches the application between light and dark themes.
 </template>
 ```
 
-### With Custom Size
+### Size
 
 ```html live
 <template>
-    <vs-theme-button
-        :style-set="{
-            $iconSize: '1.5rem',
-            $iconColor: '#ff9800',
-            width: '3rem', height: '3rem',
-        }"
-    />
+    <vs-theme-button size="lg" />
+</template>
+```
+
+### Ghost / Outline
+
+```html
+<template>
+    <vs-theme-button ghost />
+    <vs-theme-button outline color-scheme="blue" />
 </template>
 ```
 
@@ -50,15 +54,11 @@ A toggle button that switches the application between light and dark themes.
 | ---- | ---- | ------- | -------- | ----------- |
 | `colorScheme` | `string` | | | Color scheme for the component |
 | `styleSet` | `string \| VsThemeButtonStyleSet` | | | Custom style set for the component |
-| `circle` | `boolean` | `false` | | Renders the button as a circle |
 | `disabled` | `boolean` | `false` | | Disables the button |
 | `ghost` | `boolean` | `false` | | Applies ghost (transparent) style |
 | `loading` | `boolean` | `false` | | Shows loading indicator |
 | `outline` | `boolean` | `false` | | Applies outline style |
-| `primary` | `boolean` | `false` | | Applies primary color style |
-| `responsive` | `boolean` | `false` | | Makes the button responsive |
 | `size` | `Size` | `'md'` | | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
-| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | | HTML button type |
 
 ## Types
 

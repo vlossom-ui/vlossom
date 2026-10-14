@@ -30,4 +30,30 @@ describe('vs-theme-button', () => {
             expect(wrapper.find('.vs-theme-icon.vs-theme-dark').classes()).toContain('vs-on');
         });
     });
+
+    describe('버튼 prop 전달', () => {
+        it('size prop이 하위 버튼의 size 클래스로 전달되어야 한다', () => {
+            // given & when
+            const wrapper = mount(VsThemeButton, { props: { size: 'lg' } });
+
+            // then
+            expect(wrapper.find('.vs-theme-button').classes()).toContain('vs-lg');
+        });
+
+        it('ghost prop이 하위 버튼의 ghost 클래스로 전달되어야 한다', () => {
+            // given & when
+            const wrapper = mount(VsThemeButton, { props: { ghost: true } });
+
+            // then
+            expect(wrapper.find('.vs-theme-button').classes()).toContain('vs-ghost');
+        });
+
+        it('outline prop이 하위 버튼의 outline 클래스로 전달되어야 한다', () => {
+            // given & when
+            const wrapper = mount(VsThemeButton, { props: { outline: true } });
+
+            // then
+            expect(wrapper.find('.vs-theme-button').classes()).toContain('vs-outline');
+        });
+    });
 });
