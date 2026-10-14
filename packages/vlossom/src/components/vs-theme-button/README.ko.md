@@ -33,7 +33,7 @@
 
 ### Ghost / Outline
 
-```html
+```html live
 <template>
     <vs-theme-button ghost />
     <vs-theme-button outline color-scheme="blue" />
@@ -50,15 +50,15 @@
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsThemeButtonStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `disabled` | `boolean` | `false` | | 버튼 비활성화 |
-| `ghost` | `boolean` | `false` | | 고스트(투명) 스타일 적용 |
-| `loading` | `boolean` | `false` | | 로딩 인디케이터 표시 |
-| `outline` | `boolean` | `false` | | 아웃라인 스타일 적용 |
-| `size` | `Size` | `'md'` | | 버튼 크기 (`xs`, `sm`, `md`, `lg`, `xl`) |
+| Prop          | 타입                              | 기본값  | 필수 | 설명                                     |
+| ------------- | --------------------------------- | ------- | ---- | ---------------------------------------- |
+| `colorScheme` | `string`                          |         |      | 컴포넌트 색상 스키마                     |
+| `styleSet`    | `string \| VsThemeButtonStyleSet` |         |      | 컴포넌트 커스텀 스타일 세트              |
+| `disabled`    | `boolean`                         | `false` |      | 버튼 비활성화                            |
+| `ghost`       | `boolean`                         | `false` |      | 고스트(투명) 스타일 적용                 |
+| `loading`     | `boolean`                         | `false` |      | 로딩 인디케이터 표시                     |
+| `outline`     | `boolean`                         | `false` |      | 아웃라인 스타일 적용                     |
+| `size`        | `Size`                            | `'md'`  |      | 버튼 크기 (`xs`, `sm`, `md`, `lg`, `xl`) |
 
 ## 타입
 
@@ -88,8 +88,8 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
+| 이벤트   | 페이로드  | 설명                                       |
+| -------- | --------- | ------------------------------------------ |
 | `change` | `boolean` | 테마 변경 시 발생. 다크 모드인 경우 `true` |
 
 ## 슬롯

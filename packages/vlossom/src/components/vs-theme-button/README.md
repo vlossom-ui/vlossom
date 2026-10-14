@@ -33,7 +33,7 @@ A toggle button that switches the application between light and dark themes.
 
 ### Ghost / Outline
 
-```html
+```html live
 <template>
     <vs-theme-button ghost />
     <vs-theme-button outline color-scheme="blue" />
@@ -50,15 +50,15 @@ A toggle button that switches the application between light and dark themes.
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsThemeButtonStyleSet` | | | Custom style set for the component |
-| `disabled` | `boolean` | `false` | | Disables the button |
-| `ghost` | `boolean` | `false` | | Applies ghost (transparent) style |
-| `loading` | `boolean` | `false` | | Shows loading indicator |
-| `outline` | `boolean` | `false` | | Applies outline style |
-| `size` | `Size` | `'md'` | | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
+| Prop          | Type                              | Default | Required | Description                                |
+| ------------- | --------------------------------- | ------- | -------- | ------------------------------------------ |
+| `colorScheme` | `string`                          |         |          | Color scheme for the component             |
+| `styleSet`    | `string \| VsThemeButtonStyleSet` |         |          | Custom style set for the component         |
+| `disabled`    | `boolean`                         | `false` |          | Disables the button                        |
+| `ghost`       | `boolean`                         | `false` |          | Applies ghost (transparent) style          |
+| `loading`     | `boolean`                         | `false` |          | Shows loading indicator                    |
+| `outline`     | `boolean`                         | `false` |          | Applies outline style                      |
+| `size`        | `Size`                            | `'md'`  |          | Button size (`xs`, `sm`, `md`, `lg`, `xl`) |
 
 ## Types
 
@@ -88,8 +88,8 @@ interface VsThemeButtonStyleSet extends VsToggleStyleSet {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event    | Payload   | Description                                                     |
+| -------- | --------- | --------------------------------------------------------------- |
 | `change` | `boolean` | Emitted when the theme changes. Payload is `true` for dark mode |
 
 ## Slots
