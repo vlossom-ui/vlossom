@@ -3,12 +3,12 @@
 .vs-toast {
     @apply pointer-events-auto relative flex w-fit items-center justify-center;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-lg));
     background-color: var(--vs-cs-bg);
     padding: 0.5rem 3.6rem;
     height: auto;
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-text-tinted);
 
     .vs-toast-close {
         @apply absolute top-1/2 right-4 flex items-center justify-center opacity-0 transition-opacity;
@@ -16,7 +16,7 @@
         transform: translateY(-50%);
         width: 1.2rem;
         height: 1.2rem;
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
 
         .vs-toast-close-icon {
             @apply size-5;
@@ -28,12 +28,12 @@
     }
 
     &.vs-toast-primary {
-        border: 1px solid var(--vs-cs-bg-primary);
-        background-color: var(--vs-cs-bg-primary);
-        color: var(--vs-cs-font-primary);
+        border: 1px solid var(--vs-cs-primary);
+        background-color: var(--vs-cs-primary);
+        color: var(--vs-cs-text-primary);
 
         .vs-toast-close {
-            color: var(--vs-cs-font-primary);
+            color: var(--vs-cs-text-primary);
         }
     }
 }

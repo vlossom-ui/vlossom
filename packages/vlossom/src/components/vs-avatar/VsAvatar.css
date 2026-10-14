@@ -5,12 +5,12 @@
 
     @apply relative inline-flex items-center justify-center overflow-hidden whitespace-nowrap select-none;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    background-color: var(--vs-cs-bg-area);
+    background-color: var(--vs-cs-surface);
     width: 3.6rem;
     height: 3.6rem;
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-text-tinted);
 
     img {
         @apply block h-full w-full;

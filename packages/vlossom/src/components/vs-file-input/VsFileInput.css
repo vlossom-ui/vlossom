@@ -3,20 +3,20 @@
 .vs-file-input {
     @apply relative box-border flex cursor-pointer items-center overflow-hidden outline-none;
 
-    border: solid 1px var(--vs-cs-line);
+    border: solid 1px var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-no-color);
     min-height: var(--vs-size-height, var(--vs-comp-height-md));
-    color: var(--vs-cs-font);
+    color: var(--vs-cs-text);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     &.vs-focus-visible:focus-visible {
-        outline: 2px solid var(--vs-cs-font);
+        outline: 2px solid var(--vs-cs-text);
         outline-offset: 1px;
     }
 
     &.vs-focus-within:focus-within {
-        outline: 2px solid var(--vs-cs-font);
+        outline: 2px solid var(--vs-cs-text);
         outline-offset: 1px;
     }
 
@@ -31,9 +31,9 @@
     .vs-file-input-prepend {
         @apply flex shrink-0 flex-nowrap items-center justify-center self-stretch border-none whitespace-nowrap;
 
-        background-color: var(--vs-cs-bg-colored);
+        background-color: var(--vs-cs-bg-tinted);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
-        color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-primary);
 
         .vs-file-input-icon {
             width: 1em;
@@ -52,7 +52,7 @@
         .vs-file-input-placeholder {
             @apply truncate;
 
-            color: var(--vs-cs-font);
+            color: var(--vs-cs-text);
             opacity: 0.4;
         }
 
@@ -66,9 +66,9 @@
     .vs-file-input-append {
         @apply flex shrink-0 flex-nowrap items-center justify-center self-stretch border-none whitespace-nowrap;
 
-        background-color: var(--vs-cs-bg-colored);
+        background-color: var(--vs-cs-bg-tinted);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
-        color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-primary);
     }
 
     .vs-file-input-clear {

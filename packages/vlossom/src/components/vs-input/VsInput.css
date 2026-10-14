@@ -3,18 +3,18 @@
 .vs-input {
     @apply relative box-border flex items-center overflow-hidden;
 
-    border: solid 1px var(--vs-cs-line);
+    border: solid 1px var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-no-color);
     height: var(--vs-size-height, var(--vs-comp-height-md));
-    color: var(--vs-cs-font);
+    color: var(--vs-cs-text);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     input {
         @apply h-full w-full border-none bg-transparent outline-none;
 
         padding: 0 var(--vs-size-padding, var(--vs-padding-md));
-        color: var(--vs-cs-font);
+        color: var(--vs-cs-text);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
     }
 
@@ -26,9 +26,9 @@
     .vs-prepend,
     .vs-append {
         opacity: 1;
-        background-color: var(--vs-cs-bg-colored);
+        background-color: var(--vs-cs-bg-tinted);
         padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
-        color: var(--vs-cs-bg-primary);
+        color: var(--vs-cs-primary);
     }
 
     .vs-clear-button {
@@ -49,7 +49,7 @@
         }
 
         &:focus-visible {
-            outline: 2px solid var(--vs-cs-font);
+            outline: 2px solid var(--vs-cs-text);
         }
     }
 
@@ -75,9 +75,9 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
-    -webkit-text-fill-color: var(--vs-cs-font);
+    -webkit-text-fill-color: var(--vs-cs-text);
     box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
-    caret-color: var(--vs-cs-font);
+    caret-color: var(--vs-cs-text);
 }
 
 input:autofill,
@@ -85,7 +85,7 @@ input:autofill:hover,
 input:autofill:focus,
 input:autofill:active {
     -webkit-box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
-    -webkit-text-fill-color: var(--vs-cs-font);
+    -webkit-text-fill-color: var(--vs-cs-text);
     box-shadow: 0 0 0 1000px var(--vs-no-color) inset;
-    caret-color: var(--vs-cs-font);
+    caret-color: var(--vs-cs-text);
 }

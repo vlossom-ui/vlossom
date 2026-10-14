@@ -4,11 +4,11 @@
     @apply relative box-border inline-flex cursor-pointer items-center justify-center overflow-hidden font-normal
         select-none hover:brightness-96 active:brightness-92;
 
-    border: 1px solid var(--vs-cs-line);
+    border: 1px solid var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-size-radius, var(--vs-radius-md)));
     background-color: var(--vs-cs-bg);
     height: var(--vs-size-height, var(--vs-comp-height-md));
-    color: var(--vs-cs-font-colored);
+    color: var(--vs-cs-text-tinted);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     .vs-button-loading {
@@ -34,32 +34,32 @@
     &.vs-ghost {
         @apply border-transparent bg-transparent;
 
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
 
         &:hover {
-            background-color: var(--vs-cs-bg-colored);
+            background-color: var(--vs-cs-bg-tinted);
         }
     }
 
     &.vs-outline {
         @apply bg-transparent;
 
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
 
         &:hover {
-            background-color: var(--vs-cs-bg-colored);
+            background-color: var(--vs-cs-bg-tinted);
         }
     }
 
     &.vs-primary {
         @apply font-medium hover:brightness-104 active:brightness-108;
 
-        border: 1px solid var(--vs-cs-bg-primary);
-        background-color: var(--vs-cs-bg-primary);
-        color: var(--vs-cs-font-primary);
+        border: 1px solid var(--vs-cs-primary);
+        background-color: var(--vs-cs-primary);
+        color: var(--vs-cs-text-primary);
 
         &:hover {
-            background-color: var(--vs-cs-bg-primary);
+            background-color: var(--vs-cs-primary);
         }
     }
 
