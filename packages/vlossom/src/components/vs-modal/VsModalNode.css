@@ -10,12 +10,12 @@
 
         transform: translate(-50%, -50%);
         opacity: 1;
-        border: 1px solid var(--vs-cs-line-strong);
+        border: 1px solid var(--vs-cs-border-strong);
         border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        background-color: var(--vs-cs-bg-area);
+        background-color: var(--vs-cs-surface);
         padding: 1.8rem 2.4rem;
         width: auto;
         height: auto;
-        color: var(--vs-cs-font);
+        color: var(--vs-cs-text);
     }
 }

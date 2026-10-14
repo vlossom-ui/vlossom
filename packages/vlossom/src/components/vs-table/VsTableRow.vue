@@ -107,13 +107,13 @@ export default defineComponent({
             border: 'none',
             width: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
             height: 'calc(var(--vs-size-height, var(--vs-comp-height-md)) * 0.75)',
-            backgroundColor: 'var(--vs-cs-bg-colored)',
-            color: 'var(--vs-cs-font-colored)',
+            backgroundColor: 'var(--vs-cs-bg-tinted)',
+            color: 'var(--vs-cs-text-tinted)',
         }));
         const expandedPanelStyleSet: ComputedRef<VsExpandableStyleSet> = computed(() => ({
-            borderTop: '1px dashed var(--vs-cs-line)',
+            borderTop: '1px dashed var(--vs-cs-border)',
             backgroundColor: 'var(--vs-no-color)',
-            boxShadow: 'inset 0 0 0.6rem 0 var(--vs-cs-shadow-color)',
+            boxShadow: 'inset 0 0 0.6rem 0 var(--vs-cs-shadow)',
         }));
 
         const cellStyle = computed<CSSProperties | undefined>(() => styleSet.value.$cell);

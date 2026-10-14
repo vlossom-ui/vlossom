@@ -16,14 +16,14 @@
 
     .vs-switch-button {
         @apply relative inline-grid cursor-pointer items-center transition-all duration-300 select-none;
-        border: 1px solid var(--vs-cs-line);
+        border: 1px solid var(--vs-cs-border);
         border-radius: var(--vs-switch-button-height);
-        background-color: var(--vs-cs-bg-area);
+        background-color: var(--vs-cs-surface);
         padding: 0 calc(var(--vs-switch-button-height) * 0.3);
         width: auto;
         min-width: calc(var(--vs-switch-button-height) * 1.75);
         height: var(--vs-switch-button-height);
-        color: var(--vs-cs-font);
+        color: var(--vs-cs-text);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
 
         .vs-status-label {
@@ -43,7 +43,7 @@
             @apply absolute rounded-full transition-all duration-300;
 
             left: calc(var(--vs-switch-button-height) * 0.15);
-            background-color: var(--vs-cs-bg-primary);
+            background-color: var(--vs-cs-primary);
             width: var(--vs-switch-computed-handle);
             height: var(--vs-switch-computed-handle);
             content: '';
@@ -56,13 +56,13 @@
 
     &.vs-checked {
         .vs-switch-button {
-            border: 1px solid var(--vs-cs-bg-primary);
-            background-color: var(--vs-cs-bg-primary);
-            color: var(--vs-cs-font-primary);
+            border: 1px solid var(--vs-cs-primary);
+            background-color: var(--vs-cs-primary);
+            color: var(--vs-cs-text-primary);
 
             &::before {
                 left: calc(100% - (var(--vs-switch-computed-handle) + var(--vs-switch-button-height) * 0.15));
-                background-color: var(--vs-switch-handleColor, var(--vs-cs-font-primary));
+                background-color: var(--vs-switch-handleColor, var(--vs-cs-text-primary));
             }
 
             .vs-status-label {
@@ -81,7 +81,7 @@
     &:focus-within {
         .vs-switch-button {
             @apply outline-offset-2;
-            outline: 1px solid var(--vs-cs-line-strong) !important;
+            outline: 1px solid var(--vs-cs-border-strong) !important;
         }
     }
 }

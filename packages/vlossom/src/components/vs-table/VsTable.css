@@ -30,11 +30,11 @@
 
             /* 래퍼가 위/옆을 잘라내므로 그림자는 아래로만 드리운다. 퍼짐 범위는 래퍼의 padding-bottom(1rem) 안에 둔다. */
             .vs-table-header-row {
-                box-shadow: 0 0.25rem 0.5rem 0 var(--vs-cs-shadow-color);
+                box-shadow: 0 0.25rem 0.5rem 0 var(--vs-cs-shadow);
             }
 
             .vs-table-th {
-                border-bottom: 1px solid var(--vs-cs-line-strong);
+                border-bottom: 1px solid var(--vs-cs-border-strong);
             }
         }
     }
@@ -73,8 +73,8 @@
     .vs-table-thead > .vs-table-header-row {
         border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-        background-color: var(--vs-cs-bg-colored);
-        color: var(--vs-cs-font-colored);
+        background-color: var(--vs-cs-bg-tinted);
+        color: var(--vs-cs-text-tinted);
         font-weight: 500;
         font-size: var(--vs-size-font, var(--vs-font-size-md));
     }
@@ -83,8 +83,8 @@
     .vs-table-th {
         @apply flex items-center;
         grid-row: 1;
-        border-top: 1px solid var(--vs-cs-line);
-        border-bottom: 1px solid var(--vs-cs-line);
+        border-top: 1px solid var(--vs-cs-border);
+        border-bottom: 1px solid var(--vs-cs-border);
         padding: calc(var(--vs-size-padding, var(--vs-padding-md)) * 0.8)
             calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.2);
 
@@ -100,12 +100,12 @@
         overflow-wrap: anywhere;
 
         &:first-child {
-            border-left: 1px solid var(--vs-cs-line);
+            border-left: 1px solid var(--vs-cs-border);
             border-top-left-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
 
         &:last-child {
-            border-right: 1px solid var(--vs-cs-line);
+            border-right: 1px solid var(--vs-cs-border);
             border-top-right-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
         }
     }
@@ -132,7 +132,7 @@
         /* 행은 subgrid라서 좌우 border가 첫/마지막 트랙 폭을 1px씩 잠식한다.
            폭이 고정된 핸들 셀은 그만큼 트랙을 못 채워 틈이 생기므로, 실제로 쓰는 상하 border만 둔다.
            shorthand(border/border-block)는 선언 순서가 바뀌면 아래 색 지정을 덮으므로 쓰지 않는다. */
-        border-top: 1px solid var(--vs-cs-line);
+        border-top: 1px solid var(--vs-cs-border);
         border-bottom: 1px solid transparent;
         font-size: var(--vs-size-font, var(--vs-font-size-md));
 
@@ -150,12 +150,12 @@
         }
 
         &.vs-selected {
-            background-color: var(--vs-cs-bg-area-colored);
-            color: var(--vs-cs-font);
+            background-color: var(--vs-cs-surface-tinted);
+            color: var(--vs-cs-text);
         }
 
         &:last-child {
-            border-bottom-color: var(--vs-cs-line);
+            border-bottom-color: var(--vs-cs-border);
         }
 
         &:hover {
@@ -165,7 +165,7 @@
                 content: '';
                 @apply pointer-events-none absolute;
                 inset: 0;
-                border: 1px solid var(--vs-cs-bg-primary);
+                border: 1px solid var(--vs-cs-primary);
             }
         }
 
@@ -192,7 +192,7 @@
 
     .vs-table-no-data {
         @apply flex flex-col items-center justify-center;
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
 
         .vs-table-no-data-icon {
             width: calc(var(--vs-size-font, var(--vs-font-size-md)) * 2.5);
@@ -221,7 +221,7 @@
 
     .vs-table-td.vs-table-drag-handle {
         @apply cursor-grab;
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
 
         svg {
             @apply h-4 w-4 shrink-0;
@@ -260,7 +260,7 @@
 
     .vs-total-items {
         @apply text-sm whitespace-nowrap opacity-70;
-        color: var(--vs-cs-font);
+        color: var(--vs-cs-text);
     }
 
     .vs-table-caption {
@@ -276,12 +276,12 @@
 
     &.vs-primary {
         .vs-table-thead > .vs-table-header-row {
-            background-color: var(--vs-cs-bg-primary);
-            color: var(--vs-cs-font-primary);
+            background-color: var(--vs-cs-primary);
+            color: var(--vs-cs-text-primary);
             font-weight: var(--vs-font-weight-bold);
 
             > .vs-table-th {
-                border-color: var(--vs-cs-line);
+                border-color: var(--vs-cs-border);
             }
         }
     }
@@ -315,7 +315,7 @@
 
         .vs-table-tbody > .vs-table-body-row {
             @apply mx-0 mt-0 mb-3 border border-solid;
-            border: 1px solid var(--vs-cs-line);
+            border: 1px solid var(--vs-cs-border);
         }
 
         .vs-table-td {
@@ -323,7 +323,7 @@
             grid-column: minmax(6rem, 9rem) 1fr;
 
             /* 구분선 색을 명시하지 않으면 currentColor를 따라 셀 텍스트색에 따라 달라진다. */
-            border-bottom-color: var(--vs-cs-line);
+            border-bottom-color: var(--vs-cs-border);
         }
 
         .vs-table-td:first-child {

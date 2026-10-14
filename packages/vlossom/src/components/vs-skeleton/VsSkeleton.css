@@ -12,13 +12,13 @@
         @apply absolute h-full w-full;
 
         animation: skeleton-blink 1.2s ease infinite alternate;
-        background-color: var(--vs-cs-bg-comp-colored);
+        background-color: var(--vs-cs-bg-comp-tinted);
     }
 
     .vs-skeleton-content {
         @apply relative flex h-full w-full items-center justify-center;
 
-        color: var(--vs-cs-font);
+        color: var(--vs-cs-text);
     }
 }
 

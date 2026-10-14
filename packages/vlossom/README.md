@@ -335,16 +335,16 @@ same weight. Each color scheme and theme defines both.
 
 | Variable              | Used for                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------ |
-| `--vs-cs-line`        | Default. Everything at rest: borders, dividers and form controls.                          |
-| `--vs-cs-line-strong` | Lines that need to be noticed: focus, hover, active, and separators that delimit a region. |
+| `--vs-cs-border`        | Default. Everything at rest: borders, dividers and form controls.                          |
+| `--vs-cs-border-strong` | Lines that need to be noticed: focus, hover, active, and separators that delimit a region. |
 
 Both tiers come straight from the palette, and the resting tier is always exactly one palette step weaker than the
 strong one, in every scheme and theme:
 
 ```css
 .my-scope {
-    --vs-cs-line: #c8c8c8;
-    --vs-cs-line-strong: #a3a3a3;
+    --vs-cs-border: #c8c8c8;
+    --vs-cs-border-strong: #a3a3a3;
 }
 ```
 

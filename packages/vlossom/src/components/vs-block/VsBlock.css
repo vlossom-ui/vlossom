@@ -6,19 +6,19 @@
     @apply relative w-full overflow-auto;
 
     container-type: inline-size;
-    border: var(--vs-block-blockBorder, 1px solid var(--vs-cs-line));
+    border: var(--vs-block-blockBorder, 1px solid var(--vs-cs-border));
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
 
-    color: var(--vs-cs-font);
+    color: var(--vs-cs-text);
 
     .vs-block-title {
         @apply relative w-full;
 
-        border-bottom: var(--vs-block-blockBorder, 1px solid var(--vs-cs-line));
-        background-color: var(--vs-cs-bg-colored);
+        border-bottom: var(--vs-block-blockBorder, 1px solid var(--vs-cs-border));
+        background-color: var(--vs-cs-bg-tinted);
         padding: 0.5rem 1.2rem;
-        color: var(--vs-cs-font-colored);
+        color: var(--vs-cs-text-tinted);
         font-weight: 500;
     }
 

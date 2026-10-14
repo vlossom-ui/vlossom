@@ -3,13 +3,13 @@
 .vs-textarea {
     @apply relative flex w-full resize-y flex-col overflow-hidden;
 
-    border: solid 1px var(--vs-cs-line);
+    border: solid 1px var(--vs-cs-border);
     border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
     background-color: var(--vs-no-color);
 
     /* Keeps the resize handle from dragging the box smaller than its header + textarea + footer. */
     min-height: fit-content;
-    color: var(--vs-cs-font);
+    color: var(--vs-cs-text);
     font-size: var(--vs-size-font, var(--vs-font-size-md));
 
     textarea {
