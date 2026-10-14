@@ -46,6 +46,7 @@ When adding a new package, add its package directory under `packages/`, include 
 - [Vlossom UI usage guide](packages/vlossom/VLOSSOM_USAGE_GUIDE.md)
 - [Vlossom UI components](packages/vlossom/src/components)
 - [Vlossom MCP README](packages/vlossom-mcp/README.md)
+- [Vlossom Docs page](https://vlossom-ui.github.io/vlossom/)
 
 ## Repository Structure
 
