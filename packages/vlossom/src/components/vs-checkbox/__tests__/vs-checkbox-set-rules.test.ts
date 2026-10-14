@@ -3,6 +3,24 @@ import { ref } from 'vue';
 import { useVsCheckboxSetRules } from './../vs-checkbox-set-rules';
 
 describe('useVsCheckboxSetRules', () => {
+    describe('isOptionValue', () => {
+        it('options에 있는 값만 세어 required, min, max를 판단한다', () => {
+            // given
+            const isOptionValue = (value: string) => value === 'A';
+            const { requiredCheck, minCheck, maxCheck } = useVsCheckboxSetRules(
+                ref(true),
+                ref(1),
+                ref(1),
+                isOptionValue,
+            );
+
+            // then
+            expect(requiredCheck(['B', 'C'])).toBe('required');
+            expect(minCheck(['B', 'C'])).not.toBe('');
+            expect(maxCheck(['A', 'B', 'C'])).toBe('');
+        });
+    });
+
     describe('requiredCheck', () => {
         it('required가 false이면 빈 문자열을 반환한다', () => {
             // given

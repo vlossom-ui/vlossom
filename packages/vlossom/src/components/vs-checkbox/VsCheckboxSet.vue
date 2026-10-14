@@ -131,9 +131,21 @@ export default defineComponent({
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsCheckboxSetStyleSet>(componentName, styleSet);
 
-        const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min);
-
         const inputValue = ref<any[]>(modelValue.value || []);
+
+        const { getOptionLabel, getOptionValue } = useInputOption(
+            inputValue,
+            options,
+            optionLabel,
+            optionValue,
+            ref(true),
+        );
+
+        function isOptionValue(value: any) {
+            return options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+        }
+
+        const { requiredCheck, maxCheck, minCheck } = useVsCheckboxSetRules(required, max, min, isOptionValue);
 
         const defaultRules = computed(() => {
             const arr = [];
@@ -149,21 +161,17 @@ export default defineComponent({
             return arr;
         });
 
-        const { getOptionLabel, getOptionValue } = useInputOption(
-            inputValue,
-            options,
-            optionLabel,
-            optionValue,
-            ref(true),
-        );
-
         function sanitizeValue(value: any) {
             if (!Array.isArray(value)) {
                 return [];
             }
+            // options를 비동기로 불러오는 중일 수 있어 정리를 미루고, options가 들어오면 useInputOption이 정리한다
+            if (options.value.length === 0) {
+                return value;
+            }
             const removed: any[] = [];
             const kept = value.filter((v: any) => {
-                const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), v));
+                const found = isOptionValue(v);
                 if (!found) {
                     removed.push(v);
                 }
