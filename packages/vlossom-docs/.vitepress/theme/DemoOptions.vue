@@ -3,7 +3,6 @@ import { useData } from 'vitepress';
 import { computed, defineAsyncComponent } from 'vue';
 import { vlossomColors } from './vlossom.ts';
 
-// 패널은 json5를 함께 쓰므로, 데모가 있는 페이지에서 처음 보일 때 따로 받는다.
 const DemoOptionsPanel = defineAsyncComponent(() => import('./DemoOptionsPanel.vue'));
 
 const { frontmatter } = useData();

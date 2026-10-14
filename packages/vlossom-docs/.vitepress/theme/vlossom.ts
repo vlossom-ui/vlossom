@@ -7,14 +7,11 @@ type VlossomInstance = ReturnType<(typeof import('vlossom'))['useVlossom']>;
 
 let app: App | undefined;
 let ready: Promise<void> | undefined;
-// 테마 감시(followVlossomTheme)는 vlossom을 불러오기 전에 시작하므로, 인스턴스가 생기는 것도 알 수 있게 ref로 둔다.
 const vlossom = shallowRef<VlossomInstance>();
 
-// DemoOptions는 이 목록이 채워진 뒤에만 나타난다. 서버 렌더와 vlossom을 불러오기 전에는 비어 있다.
 export const vlossomColors = shallowRef<readonly ColorScheme[]>([]);
 export const defaultColorScheme = shallowRef<ColorScheme>();
 
-// README 예제는 이름으로 style-set을 고르지 않으므로, 이 이름은 예제와 겹치지 않는다.
 export const DOCS_STYLE_SET = 'vlossom-docs';
 export const styleSetComponents = shallowRef<readonly string[]>([]);
 // VsModal은 VsModalNode로 그려지고, 전역 style-set도 VsModalNode 이름으로 찾는다.
@@ -26,8 +23,7 @@ function styleSetProp(component: Component): object | undefined {
     return (component as ComponentWithProps).props?.styleSet;
 }
 
-// vlossom의 전역 style-set은 컴포넌트가 style-set="이름"으로 고를 때만 걸린다. 콘솔 style-set이 데모에 걸리도록,
-// style-set을 받는 컴포넌트는 콘솔 style-set 이름을 기본값으로 쓰는 복사본으로 등록한다.
+// vlossom의 전역 style-set은 컴포넌트가 style-set="이름"으로 고를 때만 걸린다.
 export function withDocsStyleSet(components: Record<string, Component>): Record<string, Component> {
     return Object.fromEntries(
         Object.entries(components).map(([name, component]) => {
@@ -50,15 +46,13 @@ export function attachVlossom(target: App): void {
     app = target;
 }
 
-// vlossom은 import될 때 document에 이벤트를 걸고, createVlossom에서 localStorage와 matchMedia를 읽는다.
-// 그래서 SSR에서는 부르지 않고, 브라우저에서 첫 데모가 필요할 때 한 번만 불러온다.
+// vlossom은 import될 때 document에 이벤트를 걸고, createVlossom에서 localStorage와 matchMedia를 읽어 SSR에서 부를 수 없다.
 async function loadVlossom(): Promise<void> {
     if (!app) {
         throw new Error('Vlossom is not attached to the app.');
     }
     const { COLORS, createVlossom, useVlossom, VlossomComponents } = await import('vlossom');
     app.use(createVlossom({ components: withDocsStyleSet(VlossomComponents) }));
-    // VsModalNode도 따로 등록되어 있어서, VsModal을 바꿔 넣은 이름과 겹치지 않게 한 번만 남긴다.
     styleSetComponents.value = [
         ...new Set(
             Object.keys(VlossomComponents)
@@ -67,7 +61,6 @@ async function loadVlossom(): Promise<void> {
         ),
     ];
     const instance = useVlossom();
-    // vlossom은 저장해 둔 자기 테마로 시작한다. 사이트 테마로 먼저 맞춘 뒤에 내보내야 테마 감시가 사이트 테마를 바꾸지 않는다.
     instance.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
     vlossom.value = instance;
     vlossomColors.value = COLORS;
@@ -89,7 +82,6 @@ export function syncVlossomTheme(isDark: boolean): void {
     }
 }
 
-// VsThemeButton 데모는 vlossom 테마만 바꾼다. 사이트 테마가 따라가지 않으면 본문 배경만 어두워진다.
 export function followVlossomTheme(isDark: Ref<boolean>): WatchStopHandle {
     return watch(
         () => vlossom.value?.theme,

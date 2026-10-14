@@ -10,7 +10,6 @@ const HOME_PAGES: [ReadmeLocale, string][] = [
 ];
 const readmePages = selectReadmePages(listMarkdownFiles(PACKAGES_DIR));
 
-// 홈의 hero 버튼은 frontmatter에 있어서 VitePress의 깨진 링크 검사를 받지 않는다.
 function heroLinks(file: string): string[] {
     const source = readFileSync(resolve(PACKAGES_DIR, file), 'utf8');
     return [...source.matchAll(/^\s+link:\s*(\S+)\s*$/gm)].map((match) => match[1]);

@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 import { babelParse } from 'vue/compiler-sfc';
 
 const LAYER_NAMES = /@layer\s+([\w-]+(?:\s*,\s*[\w-]+)*)\s*[;{]/g;
-// 컴포넌트와 유틸리티 스타일은 VitePress의 preflight 리셋에 지지 않도록 그보다 위에 남긴다.
 const ABOVE_SITE_BASE = new Set(['components', 'utilities']);
 
 function layerNames(css: string): string[] {

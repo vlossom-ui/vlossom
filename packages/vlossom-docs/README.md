@@ -94,7 +94,7 @@ Obey these rules when you write a live example:
 - Mark the same examples in `README.md` and `README.ko.md`.
 - Do not mark an example that cannot show anything alone, for example a code fragment.
 
-The [component README template](../vlossom/src/components/COMPONENT_README_TEMPLATE.md) shows the same rules. Composable, directive, plugin, and util pages show only code blocks.
+The [component README template](../vlossom/src/components/COMPONENT_README_TEMPLATE.md) marks its example as live. Composable, directive, plugin, and util pages show only code blocks.
 
 Some examples use names that they do not declare. [`demo-scope.ts`](.vitepress/demo-scope.ts) gives these names to the demos. It also replaces some image URLs that do not exist with a placeholder image.
 

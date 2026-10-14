@@ -1,4 +1,3 @@
-// VitePress 테마 CSS보다 먼저 와야 레이어 순서가 정해진다.
 import './layers.css';
 import type { Theme } from 'vitepress';
 import { useData, useRoute } from 'vitepress';

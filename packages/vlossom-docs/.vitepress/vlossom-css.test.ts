@@ -103,6 +103,12 @@ describe('containVlossomStyles', () => {
         expect(containVlossomStyles(css)).toBe(css);
     });
 
+    it('utilities 레이어에서 .vs-dark로 시작하는 vlossom 규칙은 전역으로 두고 다크 모드 선택자만 바꾼다', () => {
+        expect(containVlossomStyles('@layer utilities{.vs-dark .vs-disabled{opacity:.3}}')).toBe(
+            `@layer utilities{${DARK} .vs-disabled{opacity:.3}}`,
+        );
+    });
+
     it('설치된 vlossom.css를 바꾸면 html·body에는 정한 속성만 남고 유틸리티는 한정된 범위나 vlossom 클래스에만 걸린다', () => {
         const root = postcss.parse(containVlossomStyles(installedCss()));
         const leaks: string[] = [];
@@ -127,7 +133,6 @@ describe('containVlossomStyles', () => {
         });
 
         expect(leaks).toEqual([]);
-        // utilities 레이어 이름이 바뀌면 위 검사가 아무것도 보지 않고 통과하므로, 한정한 선택자가 있는지도 본다.
         expect(scoped.length).toBeGreaterThan(0);
     });
 

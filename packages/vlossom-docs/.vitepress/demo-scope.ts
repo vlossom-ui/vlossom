@@ -1,4 +1,3 @@
-// README 예제가 선언하지 않고 쓰는 이름을 컴포넌트별로 채운다. README가 선언한 이름이 항상 먼저다.
 export const DEMO_SCOPE: Record<string, string> = {
     'vs-button': `
 function handleClick() {}
@@ -55,7 +54,6 @@ const longList = Array.from({ length: 30 }, (_, index) => ({
 
 function handleClick() {}
 `,
-    // 예제의 ComponentA~C는 실제 컴포넌트가 아니라 자리 표시다.
     'vs-index-view': `
 import { h } from 'vue';
 
@@ -71,7 +69,6 @@ const password = ref('');
 const count = ref(0);
 const value = ref('');
 `,
-    // 예제가 import하는 ./MyIcon.vue, ./Greeting.vue는 없는 파일이라 같은 이름으로 대신한다.
     'vs-render': `
 import { h } from 'vue';
 
@@ -124,8 +121,6 @@ const FALLBACK_SVG =
     '<text x="48" y="53" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#92400e">fallback</text></svg>';
 const FALLBACK_IMAGE = `data:image/svg+xml,${encodeURIComponent(FALLBACK_SVG)}`;
 
-// README 예제의 이미지 주소는 실제로 없다. 데모에서만 대체 이미지로 바꾼다.
-// https://example.com/broken.png는 이미지를 못 불러올 때의 동작을 보여 주는 예제라서 그대로 둔다.
 export const DEMO_IMAGES: Record<string, string> = {
     '/profile.png': PLACEHOLDER_IMAGE,
     'https://example.com/fallback.png': FALLBACK_IMAGE,

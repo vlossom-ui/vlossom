@@ -9,7 +9,6 @@ import { DemoRegistry, isLiveFence, liveDemos } from './live-demo.ts';
 import { listMarkdownFiles, selectReadmePages, type ReadmePage } from './readme-pages.ts';
 
 const PACKAGES_DIR = resolve(import.meta.dirname, '../..');
-// $vs는 vlossom 플러그인이 붙이는 전역 속성이다.
 const GLOBAL_NAMES = new Set(['$attrs', '$el', '$emit', '$props', '$refs', '$slots', '$vs']);
 const COMPONENT_PAGES = selectReadmePages(listMarkdownFiles(PACKAGES_DIR)).filter(
     (page) => page.section === 'components',
@@ -25,8 +24,8 @@ class LabeledRegistry extends DemoRegistry {
     }
 }
 
-// createVlossom({ components: VlossomComponents })가 등록하는 이름이다. vlossom을 Node에서 import하면 document를 찾다 실패해서 선언 파일을 읽는다.
-function vlossomComponents(): Set<string> {
+// vlossom을 Node에서 import하면 document를 찾다 실패해서 선언 파일을 읽는다.
+function registeredVlossomComponents(): Set<string> {
     const entry = createRequire(import.meta.url).resolve('vlossom');
     const declaration = resolve(dirname(entry), 'components/component-map.d.ts');
     const names = readFileSync(declaration, 'utf8').matchAll(/^ {4}readonly (Vs\w+):/gm);
@@ -107,7 +106,7 @@ describe('컴포넌트 README 데모', () => {
             });
         }
 
-        const components = vlossomComponents();
+        const components = registeredVlossomComponents();
         const problems = registry
             .ids()
             .flatMap((id) =>

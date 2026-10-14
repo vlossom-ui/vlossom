@@ -40,14 +40,13 @@ const DOCS_PAGES_DIR = 'vlossom-docs/pages/';
 const REPOSITORY_BLOB_URL = 'https://github.com/vlossom-ui/vlossom/blob/main';
 const URL_SCHEME = /^[a-z][a-z\d+.-]*:/i;
 
-// VitePress 페이지 탐색(glob)이 건너뛰는 디렉터리와 같다.
-const SKIPPED_DIRS = new Set(['node_modules', 'dist']);
+const VITEPRESS_IGNORED_DIRS = new Set(['node_modules', 'dist']);
 
 export function listMarkdownFiles(root: string, dir = ''): string[] {
     return readdirSync(resolve(root, dir), { withFileTypes: true }).flatMap((entry) => {
         const path = dir ? `${dir}/${entry.name}` : entry.name;
         if (entry.isDirectory()) {
-            return SKIPPED_DIRS.has(entry.name) ? [] : listMarkdownFiles(root, path);
+            return VITEPRESS_IGNORED_DIRS.has(entry.name) ? [] : listMarkdownFiles(root, path);
         }
         return entry.name.endsWith('.md') ? [path] : [];
     });
@@ -155,12 +154,11 @@ function inSourceLocale(
 ): ReadmePage {
     const fromPage = pages.find((page) => page.source === source);
     const fromLocale = fromPage?.locale ?? (source.startsWith(DOCS_PAGES_DIR) ? docsPageLocale(source) : undefined);
-    // README 맨 위의 언어 안내(./README.md, ./README.ko.md)는 같은 문서의 다른 언어로 가는 링크라 언어를 바꾸지 않는다.
-    if (!fromLocale || fromLocale === target.locale || (fromPage && isSameUnit(fromPage, target))) {
+    const isLanguageSwitchLink = fromPage !== undefined && isSameUnit(fromPage, target);
+    if (!fromLocale || fromLocale === target.locale || isLanguageSwitchLink) {
         return target;
     }
     const counterpart = pages.find((page) => page.locale === fromLocale && isSameUnit(page, target));
-    // 앵커 id는 언어마다 제목에서 만들어진다(예: "## 타입" → #타입). 대응 페이지에 같은 앵커가 없으면 원래 대상으로 둔다.
     if (!counterpart || (anchor && !hasAnchor(counterpart.source, anchor))) {
         return target;
     }
@@ -212,12 +210,10 @@ export function readmeLinks(md: MarkdownRenderer, options: ReadmeLinksOptions): 
         exists = (file: string) => existsSync(resolve(srcDir, file)),
         readFile = (file: string) => readFileSync(resolve(srcDir, file), 'utf8'),
     } = options;
-    // 제목 id는 VitePress 렌더러가 만든 것과 같아야 하므로, 같은 렌더러로 대상 README를 파싱해 확인한다.
     const hasAnchor: HasAnchor = (file, id) =>
         md.parse(readFile(file), {}).some((token) => token.type === 'heading_open' && token.attrGet('id') === id);
 
     md.core.ruler.push('vlossom_readme_links', (state) => {
-        // env.path는 rewrites가 적용된 경로다. README 기준 상대 링크는 원본 위치(env.realPath)로 풀어야 한다.
         const file: string | undefined = state.env?.realPath ?? state.env?.path;
         if (!file) {
             return;

@@ -71,7 +71,6 @@ export function stripLiveMarker(info: string): string {
 export function templateBody(source: string): string | undefined {
     const markup = source.replace(SCRIPT_BLOCKS, '').replace(STYLE_BLOCKS, '');
     const start = markup.indexOf(OPEN_TEMPLATE);
-    // 슬롯용 <template #name>이 안에 중첩되므로 루트는 마지막 닫는 태그에서 끝난다.
     const end = markup.lastIndexOf(CLOSE_TEMPLATE);
     if (start === -1 || end <= start) {
         return undefined;
@@ -127,13 +126,14 @@ function parseScript(code: string): ParsedScript {
 
     const slice: Slice = (node) => code.slice(node.start ?? 0, node.end ?? 0);
     const body = babelParse(code, { sourceType: 'module', plugins: ['typescript'] }).program.body;
-    // README 예제의 상대 경로 import(./Greeting.vue 등)는 실제로 없는 파일이라 뺀다.
-    const imports = body.filter(
+    const packageImports = body.filter(
         (node): node is ImportStatement => node.type === 'ImportDeclaration' && !node.source.value.startsWith('.'),
     );
     return {
-        sideEffects: imports.filter((node) => node.specifiers.length === 0).map((node) => node.source.value),
-        bindings: imports.flatMap((node) => node.specifiers.map((specifier) => toBinding(node, specifier, slice))),
+        sideEffects: packageImports.filter((node) => node.specifiers.length === 0).map((node) => node.source.value),
+        bindings: packageImports.flatMap((node) =>
+            node.specifiers.map((specifier) => toBinding(node, specifier, slice)),
+        ),
         items: body.flatMap((node) => (node.type === 'ImportDeclaration' ? [] : toItems(node, slice))),
     };
 }
@@ -174,7 +174,6 @@ export function buildScope({ own, others, fallback }: ScopeSources): string {
         return true;
     };
 
-    // 이름이 겹치면 먼저 가져간 쪽이 이기므로, 자기 펜스 → 다른 펜스 → 데모 스코프 순서로 가져간다.
     const ownPart = { bindings: ownScript.bindings.filter(take), items: ownScript.items.filter(take) };
     const otherParts = otherScripts.map((script) => ({
         bindings: script.bindings.filter(take),
@@ -291,7 +290,6 @@ export function liveDemos(md: MarkdownRenderer, options: LiveDemoOptions): void 
     if (!renderFence) {
         throw new Error('markdown-it fence renderer is missing');
     }
-    // vp-raw는 config.ts의 postcssIsolateStyles와 짝이다.
     md.renderer.rules.fence = (tokens, idx, renderOptions, env, self) => {
         const code = renderFence(tokens, idx, renderOptions, env, self);
         const demo = tokens[idx].meta?.demo;

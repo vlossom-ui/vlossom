@@ -16,7 +16,6 @@ import {
     withDocsStyleSet,
 } from './vlossom.ts';
 
-// vlossom은 import될 때 document를 건드려 node에서 불러올 수 없다. 테마 코드가 쓰는 부분만 흉내 낸다.
 vi.mock('vlossom', async () => {
     const { ref } = await import('vue');
     const theme = ref('light');
@@ -170,7 +169,6 @@ describe('withDocsStyleSet', () => {
     });
 });
 
-// 사이트는 테마 진입점에서 감시를 시작하고, 첫 데모가 필요할 때 vlossom을 불러온다. 모듈을 새로 불러와 그 순서를 따른다.
 describe('vlossom.ts (불러오기 전에 감시 시작)', () => {
     async function freshModules() {
         vi.resetModules();

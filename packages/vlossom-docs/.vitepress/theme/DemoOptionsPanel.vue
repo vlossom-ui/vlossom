@@ -1,13 +1,12 @@
 <script lang="ts">
 import { ref } from 'vue';
 
-// 패널은 데모가 없는 페이지에서 사라졌다가 다시 생긴다. 입력한 style-set을 유지하려고 모듈에 둔다.
 const styleSetSource = ref('');
 </script>
 
 <script setup lang="ts">
 // 사이트에 등록된 vlossom 컴포넌트는 콘솔 style-set을 기본값으로 쓰는 복사본이다(vlossom.ts의 withDocsStyleSet).
-// 콘솔이 자기 입력으로 바뀌지 않도록 원래 컴포넌트를 직접 가져와 쓴다. 패널은 vlossom을 불러온 뒤에만 로드된다.
+// 콘솔이 자기 입력으로 바뀌지 않도록 원래 컴포넌트를 직접 가져와 쓴다.
 import { VsBlock, VsButton, VsTextarea, VsThemeButton, type ColorScheme } from 'vlossom';
 import { useData } from 'vitepress';
 import { computed, useTemplateRef, watch, type ComponentPublicInstance } from 'vue';
@@ -203,8 +202,6 @@ function move(step: number): void {
 </template>
 
 <style scoped>
-/* 모바일 사이드바와 그 배경막(z-index 50, 60)이 콘솔을 덮어야 하므로 그보다 낮은 층에 둔다.
-   Tab 순서가 버튼 → 패널이 되도록 마크업은 버튼을 먼저 두고, 화면에서는 패널을 버튼 위에 놓는다. */
 .demo-options {
     position: fixed;
     right: 1rem;
@@ -254,8 +251,7 @@ function move(step: number): void {
     font-weight: 600;
 }
 
-/* VsBlock은 container-type: inline-size라서, 크기가 내용에 맞춰지는 fixed 부모 안에서는 너비를 주지 않으면 2px로 줄어든다.
-   넓은 화면의 내비는 콘솔보다 위층에 고정되므로, 패널이 그 아래로 들어가지 않게 내비 높이를 뺀다. */
+/* VsBlock은 container-type: inline-size라서, 크기가 내용에 맞춰지는 fixed 부모 안에서는 너비를 주지 않으면 2px로 줄어든다. */
 .panel {
     width: min(21rem, calc(100vw - 2rem));
     max-height: calc(100dvh - var(--vp-nav-height) - 6rem);
@@ -321,7 +317,7 @@ function move(step: number): void {
 }
 
 /* vlossom 포커스 링은 스와치 색의 1px이고 utilities 레이어의 !important라서 두께를 바꿀 수 없다.
-   링 색 변수를 브랜드 색으로 바꾸고 box-shadow로 2px 링을 더한다. VsBlock이 넘치는 부분을 자르므로 링은 4px 안에 둔다. */
+   VsBlock이 넘치는 부분을 자르므로 링은 4px 안에 둔다. */
 .toggle:focus-visible,
 .theme-button:focus-visible,
 .swatch:focus-visible {
