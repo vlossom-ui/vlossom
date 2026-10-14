@@ -99,6 +99,7 @@ async function confirmChange(from, to) {
 | `state`        | `'idle' \| 'info' \| 'success' \| 'warning' \| 'error'`         | `'idle'` | -        | 유효성 검사 상태                                   |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | 값 변경 전 호출되는 비동기 콜백                    |
 | `checked`      | `boolean`                                                         | `false`  | -        | 마운트 시 이 라디오를 미리 선택                    |
+| `emptyValue`   | `any`                                                             | `null`   | -        | clear 시 설정되는 값                               |
 | `radioLabel`   | `string`                                                          | `''`     | -        | 라디오 원 옆에 표시되는 레이블                     |
 | `radioValue`   | `any`                                                             | -        | Yes      | 이 라디오가 나타내는 값                            |
 | `modelValue`   | `any`                                                             | `null`   | -        | 현재 선택된 값 (v-model)                           |
@@ -129,6 +130,7 @@ async function confirmChange(from, to) {
 | `optionLabel`  | `string`                                                          | -        | -        | 옵션이 객체일 때 레이블에 사용할 키 이름           |
 | `optionValue`  | `string`                                                          | -        | -        | 옵션이 객체일 때 값에 사용할 키 이름               |
 | `beforeChange` | `(from: any, to: any, optionValue: any) => Promise<boolean> \| null` | `null` | -     | 값 변경 전 호출되는 비동기 콜백                    |
+| `emptyValue`   | `any`                                                             | `null`   | -        | 선택이 없을 때 사용하는 값                         |
 | `vertical`     | `boolean`                                                         | `false`  | -        | 라디오 버튼을 수직으로 배치                        |
 | `modelValue`   | `any`                                                             | `null`   | -        | 현재 선택된 값 (v-model)                           |
 | `width`        | `string \| number \| Breakpoints`                                 | -        | -        | 컴포넌트의 너비                                    |
@@ -240,5 +242,9 @@ interface VsRadioSetStyleSet extends CSSProperties {
 
 ## Cautions
 
-- `VsRadioSet`의 `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `null`로 초기화되고 콘솔 경고가 출력됩니다.
-- `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면 값이 `null`로 초기화되고 콘솔 경고가 출력됩니다.
+- `VsRadioSet`의 `modelValue`에 `options`에 없는 값을 설정하면 (마운트 시 또는 프로그래매틱하게) 해당 값은 `emptyValue`로 초기화되고 콘솔 경고가 출력됩니다.
+- `options`가 변경되어 현재 `modelValue`가 더 이상 존재하지 않으면 값이 `emptyValue`로 초기화되고 콘솔 경고가 출력됩니다.
+- `options`가 비어 있는 동안에는 값을 정리하지 않으므로, 비동기로 불러오는 options보다 먼저 설정된 값이 유지됩니다. `options`가 들어오면 위 규칙대로 없는 값이 정리됩니다. 불러오는 동안 사용자가 조작하지 못하게 하려면 컴포넌트를 비활성화하세요.
+  - 비어 있는 `options`와 아직 불러오는 중인 `options`는 구분되지 않습니다. `options`가 계속 비어 있으면 값도 그대로 유지됩니다.
+  - 그동안 검증은 선택된 옵션이 없는 것으로 판단하므로 `VsRadioSet`의 `required`는 실패합니다.
+- `VsRadioSet`에서 `emptyValue`와 같은 값의 옵션이 있으면 그 값은 해당 옵션을 선택합니다. `required`는 옵션이 선택되어 있으면 `''`나 `0` 같은 값이어도 통과합니다.

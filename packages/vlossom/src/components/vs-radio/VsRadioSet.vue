@@ -26,6 +26,7 @@
                 width="unset"
                 :id="`${computedId}-${index}`"
                 :model-value="inputValue"
+                :empty-value
                 :radio-value="getOptionValue(option)"
                 :radio-label="getOptionLabel(option)"
                 :style-set="componentStyleSet.$radio"
@@ -80,6 +81,7 @@ export default defineComponent({
             type: Function as PropType<(from: any, to: any, optionValue: any) => Promise<boolean> | null>,
             default: null,
         },
+        emptyValue: { type: null, default: null },
         size: { type: String as PropType<Size>, default: 'md' },
         vertical: { type: Boolean, default: false },
         // v-model
@@ -93,6 +95,7 @@ export default defineComponent({
             colorScheme,
             styleSet,
             disabled,
+            emptyValue,
             grid,
             hidden,
             id,
@@ -124,19 +127,35 @@ export default defineComponent({
 
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsRadioSetStyleSet>(componentName, styleSet);
 
-        const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, optionLabel, optionValue);
+        const { getOptionLabel, getOptionValue } = useInputOption(
+            inputValue,
+            options,
+            optionLabel,
+            optionValue,
+            ref(false),
+            emptyValue,
+        );
+
+        function isOptionValue(value: any) {
+            return options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
+        }
 
         function sanitizeValue(value: any) {
-            if (value === null || value === undefined) {
+            if (isOptionValue(value)) {
                 return value;
             }
-            const found = options.value.some((o) => objectUtil.isEqual(getOptionValue(o), value));
-            if (!found) {
-                const attempted = JSON.stringify(value);
-                logUtil.warning('VsRadioSet', `Tried to set ${attempted}, but it is not in options. Reset to null.`);
-                return null;
+            const isEmpty = value === null || value === undefined || objectUtil.isEqual(value, emptyValue.value);
+            if (isEmpty) {
+                return emptyValue.value;
             }
-            return value;
+            // options를 비동기로 불러오는 중일 수 있어 정리를 미루고, options가 들어오면 useInputOption이 정리한다
+            if (options.value.length === 0) {
+                return value;
+            }
+            const attempted = JSON.stringify(value);
+            const resetTo = JSON.stringify(emptyValue.value);
+            logUtil.warning('VsRadioSet', `Tried to set ${attempted}, but it is not in options. Reset to ${resetTo}.`);
+            return emptyValue.value;
         }
 
         function requiredCheck(value: any) {
@@ -144,7 +163,7 @@ export default defineComponent({
                 return '';
             }
 
-            return value === null || value === undefined ? optionMessages.value.VS_VALIDATION_REQUIRED : '';
+            return isOptionValue(value) ? '' : optionMessages.value.VS_VALIDATION_REQUIRED;
         }
 
         const {
@@ -178,7 +197,7 @@ export default defineComponent({
                         inputValue.value = sanitizeValue(inputValue.value);
                     },
                     onClear: () => {
-                        inputValue.value = null;
+                        inputValue.value = emptyValue.value;
                     },
                 },
             },
