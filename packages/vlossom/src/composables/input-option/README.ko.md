@@ -38,6 +38,7 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 | `optionLabel` | `Ref<string>`   | —             | Yes  | 옵션 객체에서 표시 레이블을 추출하는 키 경로.                            |
 | `optionValue` | `Ref<string>`   | —             | Yes  | 옵션 객체에서 값을 추출하는 키 경로.                                     |
 | `multiple`    | `Ref<boolean>`  | `ref(false)`  | No   | `true`일 때 `inputValue`는 배열로 처리되고 변경 시 필터링됩니다.         |
+| `emptyValue`  | `Ref<any>`      | `null` / `[]` | No   | 선택된 값이 옵션에 남지 않을 때 설정되는 값. `multiple`이 `true`면 기본값은 `[]` |
 
 ## Types
 
@@ -63,6 +64,7 @@ const { getOptionLabel, getOptionValue } = useInputOption(inputValue, options, o
 
 ## Cautions
 
-- `multiple`이 `false`이고 현재 값이 새 옵션에서 찾을 수 없는 경우, `inputValue`는 `null`로 설정됩니다.
-- `multiple`이 `true`인 경우, 새 옵션에 여전히 존재하는 값만 유지됩니다.
+- `multiple`이 `false`이고 현재 값이 새 옵션에서 찾을 수 없는 경우, `inputValue`는 `emptyValue`로 설정됩니다. 이미 빈 값이었다면 경고를 출력하지 않습니다.
+- `multiple`이 `true`인 경우, 새 옵션에 여전히 존재하는 값만 유지되며, 남는 값이 없으면 `emptyValue`로 설정됩니다.
+- 새 `options`가 비어 있으면 아직 불러오는 중일 수 있으므로 `inputValue`를 변경하지 않습니다.
 - 값이 새 옵션에 없어서 제거될 때 콘솔 경고가 출력됩니다.
