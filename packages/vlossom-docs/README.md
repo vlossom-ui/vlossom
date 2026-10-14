@@ -73,7 +73,6 @@ The site reads the README files from `packages/vlossom`. It does not copy them.
 - A new directory with README files becomes a page. You do not change the settings. Restart `pnpm dev` after you add or remove README files.
 - The language menu opens the same page in the other language.
 - The site changes the relative links between README files to site links. A link to a missing README page causes an error in `pnpm build`. A link to another missing file or to a missing heading does not cause an error.
-- The home pages have a button to the first component page. `pnpm build` does not examine these links, because they are in the frontmatter. `pnpm test` makes sure that the button goes to the same page as the Components link in the nav.
 
 ## Live Demos
 
@@ -98,8 +97,6 @@ Obey these rules when you write a live example:
 The [component README template](../vlossom/src/components/COMPONENT_README_TEMPLATE.md) shows the same rules. Composable, directive, plugin, and util pages show only code blocks.
 
 Some examples use names that they do not declare. [`demo-scope.ts`](.vitepress/demo-scope.ts) gives these names to the demos. It also replaces some image URLs that do not exist with a placeholder image.
-
-Each demo box has the `vp-raw` class. With `postcssIsolateStyles` in [`config.ts`](.vitepress/config.ts), the VitePress document styles (`vp-doc.css`) do not apply in the box. Thus a demo shows no list bullets or table borders from the page, and looks as it does in an app.
 
 `pnpm test` compiles all component demos. The test fails if a demo uses a name that nothing declares. It also fails if a demo uses a component that Vlossom does not register. It also fails if `README.md` and `README.ko.md` mark different examples.
 
