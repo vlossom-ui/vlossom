@@ -29,7 +29,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
                 input: inputOptions,
                 ...modalOptions
             } = options;
-            const { colorScheme, styleSet, escClose = true } = modalOptions;
+            const { colorScheme, styleSet, escClose = true, backClose = true } = modalOptions;
 
             const inputRef = ref<VsInputRef | null>(null);
             const inputValue = ref<VsInputValueType>(inputOptions?.initialValue ?? null);
@@ -89,6 +89,7 @@ export function createPromptPlugin(modalPlugin: ModalPlugin): PromptPlugin {
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(prompt, {
                     ...modalOptions,
+                    backClose,
                     escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,

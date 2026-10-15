@@ -22,7 +22,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
         open(content: string | Component, options: AlertModalOptions = {}): Promise<void> {
             const optionsStore = useOptionsStore();
             const { componentProps, okText = optionsStore.messages.value.VS_ALERT_OK, ...modalOptions } = options;
-            const { colorScheme, styleSet, escClose = true } = modalOptions;
+            const { colorScheme, styleSet, escClose = true, backClose = true } = modalOptions;
 
             const baseStyleSet: Ref<Partial<VsAlertStyleSet>> = ref({
                 $okButton: { minWidth: '8rem' },
@@ -49,6 +49,7 @@ export function createAlertPlugin(modalPlugin: ModalPlugin): AlertPlugin {
             return new Promise((resolve) => {
                 const modalId = modalPlugin.open(alert, {
                     ...modalOptions,
+                    backClose,
                     escClose: false,
                     callbacks: {
                         ...modalOptions.callbacks,
