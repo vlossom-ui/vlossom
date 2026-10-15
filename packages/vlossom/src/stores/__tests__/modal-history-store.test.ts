@@ -8,7 +8,7 @@ describe('ModalHistoryStore', () => {
     const overlayCallbackStore = new OverlayCallbackStore();
     const store = new ModalHistoryStore(overlayCallbackStore);
 
-    function openOverlay(id: string, onBack?: () => boolean) {
+    function openOverlay(id: string, onBack?: () => boolean | Promise<boolean>) {
         const callbacks: OverlayCallbacks = onBack ? { [MODAL_BACK]: onBack } : {};
         overlayCallbackStore.push(id, ref(callbacks));
     }
@@ -62,6 +62,24 @@ describe('ModalHistoryStore', () => {
 
         // then
         expect(pushState).toHaveBeenCalledTimes(2);
+    });
+
+    it('back 콜백이 예외를 발생시키면 history entry를 복구한다', async () => {
+        // given
+        const onBack = vi.fn(async () => {
+            throw new Error('beforeClose failed');
+        });
+        openOverlay('modal', onBack);
+        store.push('modal');
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+        // when
+        await pressBack();
+
+        // then
+        expect(onBack).toHaveBeenCalledTimes(1);
+        expect(pushState).toHaveBeenCalledTimes(2);
+        expect(errorSpy).toHaveBeenCalledWith('[Vlossom] ModalHistoryStore: Modal back-close callback failed.');
     });
 
     it('back 콜백이 없는 overlay가 위에 있어도 그 아래 entry의 back 콜백을 실행한다', async () => {

@@ -1,4 +1,5 @@
 import { MODAL_BACK } from '@/declaration';
+import { logUtil } from '@/utils';
 import type { OverlayCallbackStore } from './overlay-callback-store';
 
 const MODAL_HISTORY_STATE_KEY = '__vlossomModalId';
@@ -79,7 +80,16 @@ export class ModalHistoryStore {
 
         const isTopBackHandler = this.findTopBackHandlerId() === topEntry.id;
         this._backId = topEntry.id;
-        const closed = isTopBackHandler && (await this.overlayCallbackStore.run<boolean>(topEntry.id, MODAL_BACK));
+        let closed = false;
+
+        if (isTopBackHandler) {
+            try {
+                closed = (await this.overlayCallbackStore.run<boolean>(topEntry.id, MODAL_BACK)) === true;
+            } catch {
+                logUtil.error('ModalHistoryStore', 'Modal back-close callback failed.');
+            }
+        }
+
         if (!closed) {
             this._backId = '';
             this.pushHistory(topEntry.id);
