@@ -44,7 +44,7 @@ export type DrawerPlacement = 'top' | 'bottom' | 'left' | 'right';
 
 export type OverlayTuple = [string, Ref<OverlayCallbacks>];
 
-export type OverlayCallbacks<T = void> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
+export type OverlayCallbacks<T = unknown> = { [eventName: string]: (...args: any[]) => T | Promise<T> };
 
 export interface DrawerLayout {
     isOpen: boolean;
