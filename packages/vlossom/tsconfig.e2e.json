@@ -1,0 +1,11 @@
+{
+    "extends": "@vue/tsconfig/tsconfig.dom.json",
+    "include": ["e2e/**/*", "e2e.html", "shims.d.ts"],
+    "compilerOptions": {
+        "noEmit": true,
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.e2e.tsbuildinfo",
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    }
+}

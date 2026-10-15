@@ -32,3 +32,4 @@ visualizer*
 *storybook.log
 storybook-static
 .playwright-mcp
+test-results/
