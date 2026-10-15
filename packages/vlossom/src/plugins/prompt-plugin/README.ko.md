@@ -13,8 +13,9 @@
 - 확인(또는 Enter 키) 시 입력 값을 반환하고, 취소(또는 Escape 키) 시 `null`을 반환합니다
 - resolve 전에 입력의 유효성을 검사합니다 — 유효성 검사 실패 시 모달이 열린 상태로 유지됩니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
+- 기본적으로 브라우저 뒤로가기로 닫히며(`backClose: true`) `null`로 resolve됩니다
 - 커스텀 버튼 텍스트, 버튼 순서 교체, `$buttons` CSSProperties로 버튼 컨테이너 스타일링을 지원합니다
-- Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
+- Modal 플러그인 기반으로 동작 — `beforeClose`를 제외한 모든 `ModalOptions`를 상속합니다
 
 ## 기본 사용법
 
@@ -99,7 +100,7 @@ interface VsPromptStyleSet extends VsModalNodeStyleSet {
     $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
-interface PromptModalOptions extends ModalOptions {
+interface PromptModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsPromptStyleSet;
     colorScheme?: ColorScheme;
     input?: PropsOf<VsComponent.VsInput> & { initialValue?: VsInputValueType };
@@ -116,12 +117,14 @@ interface PromptPlugin {
 
 > [!NOTE]
 > `VsPromptStyleSet`은 `VsModalNodeStyleSet`을 확장합니다. 사용 가능한 모달 스타일 옵션은 [VsModal 컴포넌트 문서](../../components/vs-modal/README.md)를 참고하세요.
-> `PromptModalOptions`는 [Modal 플러그인](../modal-plugin/README.md)의 `ModalOptions`를 확장합니다.
+> `PromptModalOptions`는 [Modal 플러그인](../modal-plugin/README.md)의 `ModalOptions`에서 `beforeClose`를 제외하고 확장합니다.
 > `input`은 `VsInput`에 유효한 모든 props와 함께 `initialValue`를 추가로 허용합니다.
 
 ## 주의사항
 
 - Prompt 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
 - 확인/Enter 시 입력의 유효성 검사가 실패하면 모달이 열린 상태로 유지되고 Promise는 아직 resolve되지 않습니다.
-- Escape 키를 누르거나 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) Promise가 `null`로 resolve되고 입력이 초기화됩니다.
+- 취소 또는 Escape 키를 누르면 입력이 초기화되고 Promise가 `null`로 resolve됩니다.
+- 모달 외부를 클릭하거나(`dimClose`가 활성화된 경우), 브라우저 뒤로가기를 실행해도 `null`로 resolve됩니다.
 - Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.
+- 브라우저 뒤로가기 닫기는 기본적으로 활성화되어 있습니다. `backClose: false`를 전달하면 뒤로가기로 Prompt가 닫히지 않습니다.

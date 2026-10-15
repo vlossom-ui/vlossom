@@ -13,7 +13,8 @@ Displays a modal alert dialog with a single OK button. Returns a `Promise<void>`
 - Supports custom OK button text, color scheme, and style set
 - Keyboard support: Enter and Escape keys also resolve the promise and close the dialog
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
-- Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Closes on browser Back by default (`backClose: true`); set `backClose: false` to disable it
+- Built on top of the Modal Plugin — all `ModalOptions` except `beforeClose` are inherited
 
 ## Basic Usage
 
@@ -89,7 +90,7 @@ interface VsAlertStyleSet extends VsModalNodeStyleSet {
     $okButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
-interface AlertModalOptions extends ModalOptions {
+interface AlertModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsAlertStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;
@@ -103,10 +104,11 @@ interface AlertPlugin {
 
 > [!NOTE]
 > `VsAlertStyleSet` extends `VsModalNodeStyleSet`. Refer to the [VsModal component docs](../../components/vs-modal/README.md) for available modal style options.
-> `AlertModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md).
+> `AlertModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md), except `beforeClose`.
 
 ## Caution
 
 - The alert plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
-- Pressing Escape or clicking outside the modal (if `dimClose` is enabled) also resolves the promise and closes the dialog.
+- Pressing Escape, clicking outside the modal (if `dimClose` is enabled), or triggering browser Back also resolves the promise.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
+- Browser Back closing is enabled by default. Pass `backClose: false` to keep browser Back from closing the alert.

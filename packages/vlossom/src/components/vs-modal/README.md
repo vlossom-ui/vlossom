@@ -10,7 +10,7 @@ A modal dialog component that renders content in an overlay layer via the Vlosso
 
 - Opens and closes a modal dialog controlled by a `v-model` boolean.
 - Content is teleported to a configurable container element (default: `body`).
-- Supports dimmed overlay background, focus locking, ESC key close, and dim click close.
+- Supports dimmed overlay background, focus locking, browser back close, ESC key close, and dim click close.
 - Optionally locks page scroll, or a specific scroll container by CSS selector, via `scroll-lock`.
 - Configurable size via predefined size keywords (`xs`, `sm`, `md`, `lg`, `xl`) or custom values.
 - Emits `open` and `close` events for lifecycle hooks.
@@ -135,6 +135,7 @@ const isOpen = ref(false);
 | `styleSet`    | `string \| VsModalNodeStyleSet`                                                                       | -        | -        | Custom style set for the modal node.                                                                       |
 | `modelValue`  | `boolean`                                                                                             | `false`  | -        | Controls the visibility of the modal (v-model).                                                            |
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | Hook invoked before the modal closes. Resolve `false` to abort the close. Bypassed by `$vs.modal.clear()`. |
+| `backClose`   | `boolean`                                                                                             | `false`  | -        | Closes the modal when the browser back button is pressed while it is the topmost modal.                    |
 | `container`   | `string`                                                                                              | `'body'` | -        | CSS selector of the element to teleport the modal into.                                                    |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | Closes the modal when the ESC key is pressed.                                                              |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | Modal size as a predefined keyword or custom width/height.                                                 |

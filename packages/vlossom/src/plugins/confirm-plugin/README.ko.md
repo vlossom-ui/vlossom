@@ -12,9 +12,10 @@
 - 레이블과 스타일을 구성할 수 있는 확인 및 취소 버튼을 제공합니다
 - 확인(또는 Enter 키) 시 `true`, 취소(또는 Escape 키) 시 `false`로 resolve됩니다
 - 기본적으로 Escape 키로 닫힙니다(`escClose: true`). `escClose: false`로 비활성화할 수 있습니다
+- 기본적으로 브라우저 뒤로가기로 닫히며(`backClose: true`) `false`로 resolve됩니다
 - `swapButtons`를 통해 버튼 순서를 교체할 수 있습니다
 - `$buttons` CSSProperties로 버튼 컨테이너 스타일을 커스터마이징할 수 있습니다
-- Modal 플러그인 기반으로 동작 — 모든 `ModalOptions`를 상속합니다
+- Modal 플러그인 기반으로 동작 — `beforeClose`를 제외한 모든 `ModalOptions`를 상속합니다
 
 ## 기본 사용법
 
@@ -98,7 +99,7 @@ interface VsConfirmStyleSet extends VsModalNodeStyleSet {
     $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
-interface ConfirmModalOptions extends ModalOptions {
+interface ConfirmModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsConfirmStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;
@@ -114,11 +115,12 @@ interface ConfirmPlugin {
 
 > [!NOTE]
 > `VsConfirmStyleSet`은 `VsModalNodeStyleSet`을 확장합니다. 사용 가능한 모달 스타일 옵션은 [VsModal 컴포넌트 문서](../../components/vs-modal/README.md)를 참고하세요.
-> `ConfirmModalOptions`는 [Modal 플러그인](../modal-plugin/README.md)의 `ModalOptions`를 확장합니다.
+> `ConfirmModalOptions`는 [Modal 플러그인](../modal-plugin/README.md)의 `ModalOptions`에서 `beforeClose`를 제외하고 확장합니다.
 
 ## 주의사항
 
 - Confirm 플러그인은 Modal 플러그인에 의존합니다. Vlossom 플러그인 설정 시 두 플러그인 모두 등록되어 있는지 확인하세요.
 - Enter 키를 누르면 Promise가 `true`로 resolve되고, Escape 키를 누르면 `false`로 resolve됩니다.
 - Escape 키 닫기는 기본적으로 활성화되어 있습니다. `escClose: false`를 전달하면 Escape 키를 눌러도 모달이 닫히지 않습니다.
-- 모달 외부를 클릭해도(`dimClose`가 활성화된 경우) `false`로 resolve됩니다.
+- 모달 외부를 클릭하거나(`dimClose`가 활성화된 경우), 브라우저 뒤로가기를 실행해도 `false`로 resolve됩니다.
+- 브라우저 뒤로가기 닫기는 기본적으로 활성화되어 있습니다. `backClose: false`를 전달하면 뒤로가기로 Confirm이 닫히지 않습니다.

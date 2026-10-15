@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { useModalHistoryStore, useOverlayCallbackStore } from '@/stores';
 import VsModalNode from './../VsModalNode.vue';
 
 describe('VsModalNode', () => {
@@ -240,6 +241,69 @@ describe('VsModalNode', () => {
             // then
             expect(target.style.overflow).toBe('');
             target.remove();
+        });
+    });
+
+    describe('backClose 기능', () => {
+        let pushState: ReturnType<typeof vi.spyOn>;
+
+        async function pressBack() {
+            window.dispatchEvent(new PopStateEvent('popstate'));
+            await new Promise((resolve) => setTimeout(resolve));
+        }
+
+        beforeEach(() => {
+            useOverlayCallbackStore().clear();
+            useModalHistoryStore().clear();
+            pushState = vi.spyOn(window.history, 'pushState').mockImplementation(() => undefined);
+            vi.spyOn(window.history, 'go').mockImplementation(() => undefined);
+        });
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        it('backClose가 true이면 뒤로가기 시 close 이벤트가 발생해야 한다', async () => {
+            // given
+            const wrapper = mount(VsModalNode, {
+                props: { backClose: true },
+            });
+            await wrapper.vm.$nextTick();
+
+            // when
+            await pressBack();
+
+            // then
+            expect(pushState).toHaveBeenCalledTimes(1);
+            expect(wrapper.emitted('close')).toBeTruthy();
+        });
+
+        it('beforeClose가 false를 반환하면 뒤로가기 시 닫지 않고 history entry를 복구해야 한다', async () => {
+            // given
+            const wrapper = mount(VsModalNode, {
+                props: { backClose: true, beforeClose: () => false },
+            });
+            await wrapper.vm.$nextTick();
+
+            // when
+            await pressBack();
+
+            // then
+            expect(wrapper.emitted('close')).toBeFalsy();
+            expect(pushState).toHaveBeenCalledTimes(2);
+        });
+
+        it('backClose가 false(기본값)이면 history entry를 추가하지 않고 뒤로가기에도 닫히지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsModalNode, {});
+            await wrapper.vm.$nextTick();
+
+            // when
+            await pressBack();
+
+            // then
+            expect(pushState).not.toHaveBeenCalled();
+            expect(wrapper.emitted('close')).toBeFalsy();
         });
     });
 });

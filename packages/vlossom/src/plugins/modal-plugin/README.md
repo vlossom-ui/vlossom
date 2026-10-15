@@ -12,7 +12,7 @@ Programmatically opens and manages modal dialogs. Supports mounting any string o
 - Supports custom callbacks for events (e.g. button clicks, keyboard shortcuts)
 - Multiple modals can be stacked inside the same or different containers
 - Provides imperative API to emit events, close specific modals, or clear all modals
-- Configurable overlay behavior: dim, dim-close, focus lock, scroll hiding, scroll lock, size
+- Configurable overlay behavior: back-button close, dim, dim-close, focus lock, scroll hiding, scroll lock, size
 - All Alert, Confirm, and Prompt plugins are built on top of this plugin
 
 ## Basic Usage
@@ -104,6 +104,26 @@ function closeModal() {
 </script>
 ```
 
+### Closing with Browser Back
+
+Set `backClose: true` to close the modal instead of navigating away when the browser back button is pressed:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('This modal closes on browser back.', {
+        backClose: true,
+    });
+}
+</script>
+```
+
+Browser back applies to the topmost modal. Non-modal overlays such as select dropdowns, drawers, and tooltips do not block it, so the modal still closes when one of them is open above it. If a modal without `backClose` is stacked above, the back navigation is cancelled and the modal below stays open. Closing the modal with ESC, dim click, `close`, `closeWithId`, or `clear` also rewinds its history entry. If `beforeClose` returns `false`, the modal stays open and its history entry is restored.
+
 ### Locking Scroll
 
 Set `scrollLock: true` to lock the page (`body`) scroll while the modal is open:
@@ -140,14 +160,14 @@ function openModal() {
 
 ## Methods
 
-| Method          | Parameters                                                                 | Description                                                                                                   |
-| --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `open`          | `content: string \| Component, options?: ModalOptions`      | Opens a modal with the given content and options. Returns the modal's unique string ID. When `content` is a component, pass `componentProps` in options to forward props. |
-| `emit`          | `eventName: string, ...args: any[]`                                        | Emits a named event on the most recently opened modal's callback store.                                       |
-| `emitWithId`    | `id: string, eventName: string, ...args: any[]`                            | Emits a named event on a specific modal by its ID.                                                            |
-| `close`         | `container?: string`                                                       | Closes the most recently opened modal. Omit `container` to close the last-opened modal across all containers; pass a `container` to close the last modal in that container. Returns `Promise<boolean>` indicating whether the modal actually closed (a `beforeClose` hook can abort by resolving `false`). |
-| `closeWithId`   | `id: string`                                                               | Closes a specific modal by its ID, regardless of container. Returns `Promise<boolean>` indicating whether the modal actually closed. |
-| `clear`         | `container?: string`                                                       | Closes all modals. Omit `container` to close every modal across all containers; pass a `container` to close only that container's modals. Bypasses `beforeClose`. |
+| Method        | Parameters                                             | Description                                                                                                                                                                                                                                                                                                |
+| ------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`        | `content: string \| Component, options?: ModalOptions` | Opens a modal with the given content and options. Returns the modal's unique string ID. When `content` is a component, pass `componentProps` in options to forward props.                                                                                                                                  |
+| `emit`        | `eventName: string, ...args: any[]`                    | Emits a named event on the most recently opened modal's callback store.                                                                                                                                                                                                                                    |
+| `emitWithId`  | `id: string, eventName: string, ...args: any[]`        | Emits a named event on a specific modal by its ID.                                                                                                                                                                                                                                                         |
+| `close`       | `container?: string`                                   | Closes the most recently opened modal. Omit `container` to close the last-opened modal across all containers; pass a `container` to close the last modal in that container. Returns `Promise<boolean>` indicating whether the modal actually closed (a `beforeClose` hook can abort by resolving `false`). |
+| `closeWithId` | `id: string`                                           | Closes a specific modal by its ID, regardless of container. Returns `Promise<boolean>` indicating whether the modal actually closed.                                                                                                                                                                       |
+| `clear`       | `container?: string`                                   | Closes all modals. Omit `container` to close every modal across all containers; pass a `container` to close only that container's modals. Bypasses `beforeClose`.                                                                                                                                          |
 
 ## Types
 
@@ -158,6 +178,7 @@ interface ModalOptions {
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
     callbacks?: OverlayCallbacks;
+    backClose?: boolean;
     dimClose?: boolean;
     dimmed?: boolean;
     escClose?: boolean;

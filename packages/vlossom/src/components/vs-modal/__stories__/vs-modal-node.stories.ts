@@ -56,6 +56,10 @@ const meta: Meta<typeof VsModalNode> = {
             options: ['xs', 'sm', 'md', 'lg', 'xl'],
             description: '모달 크기 설정',
         },
+        backClose: {
+            control: 'boolean',
+            description: '브라우저 뒤로가기로 모달 닫기 기능 활성화 여부',
+        },
         escClose: {
             control: 'boolean',
             description: 'ESC 키로 모달 닫기 기능 활성화 여부',

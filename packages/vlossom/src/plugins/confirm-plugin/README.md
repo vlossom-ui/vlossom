@@ -12,9 +12,10 @@ Displays a modal confirmation dialog with OK and Cancel buttons. Returns a `Prom
 - Provides OK and Cancel buttons with configurable labels and styles
 - Resolves `true` on OK (or Enter key) and `false` on Cancel (or Escape key)
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
+- Closes on browser Back by default (`backClose: true`) and resolves `false`
 - Supports swapping the button order via `swapButtons`
 - Supports custom button container styling via `$buttons` CSSProperties
-- Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Built on top of the Modal Plugin — all `ModalOptions` except `beforeClose` are inherited
 
 ## Basic Usage
 
@@ -98,7 +99,7 @@ interface VsConfirmStyleSet extends VsModalNodeStyleSet {
     $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
-interface ConfirmModalOptions extends ModalOptions {
+interface ConfirmModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsConfirmStyleSet;
     colorScheme?: ColorScheme;
     okText?: string;
@@ -114,11 +115,12 @@ interface ConfirmPlugin {
 
 > [!NOTE]
 > `VsConfirmStyleSet` extends `VsModalNodeStyleSet`. Refer to the [VsModal component docs](../../components/vs-modal/README.md) for available modal style options.
-> `ConfirmModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md).
+> `ConfirmModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md), except `beforeClose`.
 
 ## Caution
 
 - The confirm plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - Pressing Enter resolves the promise with `true`; pressing Escape resolves with `false`.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
-- Clicking outside the modal (if `dimClose` is enabled) resolves with `false`.
+- Clicking outside the modal (if `dimClose` is enabled) or triggering browser Back resolves with `false`.
+- Browser Back closing is enabled by default. Pass `backClose: false` to keep browser Back from closing the confirm dialog.

@@ -10,7 +10,7 @@ Vlossom 모달 플러그인을 통해 오버레이 레이어에 콘텐츠를 렌
 
 - `v-model` boolean으로 제어되는 모달 다이얼로그를 열고 닫습니다.
 - 설정 가능한 컨테이너 요소(기본: `body`)로 콘텐츠를 텔레포트합니다.
-- 딤드 오버레이 배경, 포커스 잠금, ESC 키 닫기, 딤 클릭 닫기를 지원합니다.
+- 딤드 오버레이 배경, 포커스 잠금, 브라우저 뒤로가기 닫기, ESC 키 닫기, 딤 클릭 닫기를 지원합니다.
 - `scroll-lock`으로 페이지 스크롤 또는 CSS 선택자로 지정한 특정 스크롤 컨테이너를 잠글 수 있습니다.
 - 사전 정의된 크기 키워드(`xs`, `sm`, `md`, `lg`, `xl`) 또는 커스텀 값으로 크기를 설정할 수 있습니다.
 - 라이프사이클 훅을 위한 `open` 및 `close` 이벤트를 발생시킵니다.
@@ -135,6 +135,7 @@ const isOpen = ref(false);
 | `styleSet`    | `string \| VsModalNodeStyleSet`                                                                       | -        | -        | 모달 노드의 커스텀 스타일 셋.                                                                                     |
 | `modelValue`  | `boolean`                                                                                             | `false`  | -        | 모달의 표시 여부를 제어합니다 (v-model).                                                                          |
 | `beforeClose` | `() => Promise<boolean> \| boolean`                                                                   | -        | -        | 모달이 닫히기 전에 호출되는 훅. `false`를 반환하면 닫기를 취소합니다. `$vs.modal.clear()` 호출 시에는 무시됩니다. |
+| `backClose`   | `boolean`                                                                                             | `false`  | -        | 최상단 모달일 때 브라우저 뒤로가기를 누르면 모달을 닫습니다.                                                   |
 | `container`   | `string`                                                                                              | `'body'` | -        | 모달을 텔레포트할 요소의 CSS 선택자.                                                                              |
 | `escClose`    | `boolean`                                                                                             | `false`  | -        | ESC 키를 누르면 모달을 닫습니다.                                                                                  |
 | `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string \| number \| { width?: SizeProp; height?: SizeProp }` | -        | -        | 사전 정의된 키워드 또는 커스텀 width/height로 모달 크기를 설정합니다.                                             |

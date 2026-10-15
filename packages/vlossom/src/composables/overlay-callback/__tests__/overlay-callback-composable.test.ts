@@ -223,6 +223,21 @@ describe('useOverlayCallback', () => {
 
             vi.useRealTimers();
         });
+
+        it('활성화된 상태로 scope가 정리되면 store에서 overlay를 제거해야 한다', async () => {
+            // given
+            const scope = effectScope();
+            const overlay = scope.run(() => useOverlayCallback(ref('disposed-overlay'), ref<OverlayCallbacks>({})));
+            overlay?.activate();
+            await nextTick();
+            expect(overlayCallbackStore.getLastOverlayId()).toBe('disposed-overlay');
+
+            // when
+            scope.stop();
+
+            // then
+            expect(overlayCallbackStore.overlays.value).toHaveLength(0);
+        });
     });
 
     describe('scope dispose', () => {

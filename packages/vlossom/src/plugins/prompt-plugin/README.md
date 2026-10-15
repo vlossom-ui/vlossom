@@ -13,8 +13,9 @@ Displays a modal dialog with an input field and OK / Cancel buttons. Returns a `
 - Returns the input value on OK (or Enter key) and `null` on Cancel (or Escape key)
 - Validates input before resolving — if validation fails, the modal stays open
 - Closes on Escape by default (`escClose: true`); set `escClose: false` to disable it
+- Closes on browser Back by default (`backClose: true`) and resolves `null`
 - Supports custom button text, button order swap, and button container styling via `$buttons` CSSProperties
-- Built on top of the Modal Plugin — all `ModalOptions` are inherited
+- Built on top of the Modal Plugin — all `ModalOptions` except `beforeClose` are inherited
 
 ## Basic Usage
 
@@ -99,7 +100,7 @@ interface VsPromptStyleSet extends VsModalNodeStyleSet {
     $cancelButton?: Omit<VsButtonStyleSet, '$loading'>;
 }
 
-interface PromptModalOptions extends ModalOptions {
+interface PromptModalOptions extends Omit<ModalOptions, 'beforeClose'> {
     styleSet?: VsPromptStyleSet;
     colorScheme?: ColorScheme;
     input?: PropsOf<VsComponent.VsInput> & { initialValue?: VsInputValueType };
@@ -116,12 +117,14 @@ interface PromptPlugin {
 
 > [!NOTE]
 > `VsPromptStyleSet` extends `VsModalNodeStyleSet`. Refer to the [VsModal component docs](../../components/vs-modal/README.md) for available modal style options.
-> `PromptModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md).
+> `PromptModalOptions` extends `ModalOptions` from the [Modal Plugin](../modal-plugin/README.md), except `beforeClose`.
 > `input` accepts any props valid for `VsInput` in addition to an `initialValue`.
 
 ## Caution
 
 - The prompt plugin depends on the Modal Plugin. Ensure both are registered when setting up the Vlossom plugin.
 - If the input fails validation on OK/Enter, the modal remains open and the promise is not yet resolved.
-- Pressing Escape or clicking outside the modal (if `dimClose` is enabled) resolves the promise with `null` and clears the input.
+- Pressing Cancel or Escape clears the input and resolves the promise with `null`.
+- Clicking outside the modal (if `dimClose` is enabled) or triggering browser Back resolves with `null`.
 - Escape closing is enabled by default. Pass `escClose: false` to keep the modal open on Escape.
+- Browser Back closing is enabled by default. Pass `backClose: false` to keep browser Back from closing the prompt dialog.

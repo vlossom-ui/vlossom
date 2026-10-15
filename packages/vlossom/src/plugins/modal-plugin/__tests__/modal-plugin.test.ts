@@ -115,6 +115,15 @@ describe('modal-plugin', () => {
             expect(await modal.closeWithId('unknown-id')).toBe(false);
             expect(modalStore.get('body')).toHaveLength(1);
         });
+
+        it('beforeClose가 false를 반환하면 ID로 닫을 때도 모달을 닫지 않는다', async () => {
+            const modalId = open('keep-open', { beforeClose: () => false });
+
+            const closed = await modal.closeWithId(modalId);
+
+            expect(closed).toBe(false);
+            expect(modalStore.get('body')).toHaveLength(1);
+        });
     });
 
     describe('clear', () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { defineComponent } from 'vue';
-import { PROMPT_CANCEL } from '@/declaration';
+import { OVERLAY_CLOSE, PROMPT_CANCEL } from '@/declaration';
 import { createPromptPlugin } from './../prompt-plugin';
 import type { ModalPlugin } from '@/plugins/modal-plugin';
 
@@ -54,12 +54,38 @@ describe('prompt-plugin', () => {
         expect(registeredCallbacks['key-Escape']).toBeUndefined();
     });
 
+    it('overlay close 콜백이 호출되면 null로 resolve되고 직접 닫기 호출은 하지 않는다', async () => {
+        const promptPlugin = createPromptPlugin(modalPlugin);
+        const promise = promptPlugin.open('이름을 입력하세요.');
+
+        registeredCallbacks[OVERLAY_CLOSE]?.();
+
+        await expect(promise).resolves.toBeNull();
+        expect(closeWithId).not.toHaveBeenCalled();
+    });
+
     it('모달 노드의 자체 Escape 닫기를 비활성화하기 위해 escClose: false로 모달을 연다', () => {
         const promptPlugin = createPromptPlugin(modalPlugin);
         promptPlugin.open('이름을 입력하세요.');
 
         const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
         expect(passedOptions.escClose).toBe(false);
+    });
+
+    it('기본적으로 backClose: true로 모달을 연다', () => {
+        const promptPlugin = createPromptPlugin(modalPlugin);
+        promptPlugin.open('이름을 입력하세요.');
+
+        const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
+        expect(passedOptions.backClose).toBe(true);
+    });
+
+    it('backClose가 false이면 그대로 모달을 연다', () => {
+        const promptPlugin = createPromptPlugin(modalPlugin);
+        promptPlugin.open('이름을 입력하세요.', { backClose: false });
+
+        const passedOptions = (modalPlugin.open as any).mock.calls[0][1];
+        expect(passedOptions.backClose).toBe(false);
     });
 
     it('componentProps와 플러그인 전용 옵션은 modalPlugin.open에 전달되지 않고, ModalOptions는 전달된다', () => {

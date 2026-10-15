@@ -12,7 +12,7 @@
 - 이벤트(예: 버튼 클릭, 키보드 단축키)에 대한 커스텀 콜백을 지원합니다
 - 동일하거나 다른 컨테이너 내에 여러 모달을 스택할 수 있습니다
 - 이벤트 emit, 특정 모달 닫기, 모든 모달 닫기를 위한 명령형 API를 제공합니다
-- 오버레이 동작 구성 가능: 딤, 딤 닫기, 포커스 잠금, 스크롤 숨기기, 스크롤 잠금, 크기 설정
+- 오버레이 동작 구성 가능: 뒤로가기 닫기, 딤, 딤 닫기, 포커스 잠금, 스크롤 숨기기, 스크롤 잠금, 크기 설정
 - Alert, Confirm, Prompt 플러그인이 모두 이 플러그인 위에 구축됩니다
 
 ## 기본 사용법
@@ -104,6 +104,26 @@ function closeModal() {
 </script>
 ```
 
+### 브라우저 뒤로가기로 닫기
+
+`backClose: true`를 설정하면 브라우저 뒤로가기 실행 시 페이지 이동 대신 최상단 모달을 닫습니다:
+
+```html
+<script setup>
+import { useVlossom } from 'vlossom';
+
+const $vs = useVlossom();
+
+function openModal() {
+    $vs.modal.open('뒤로가기로 닫을 수 있는 모달입니다.', {
+        backClose: true,
+    });
+}
+</script>
+```
+
+뒤로가기는 가장 위에 열린 모달에 적용됩니다. 셀렉트 드롭다운, 드로어, 툴팁처럼 모달이 아닌 오버레이가 위에 열려 있어도 모달은 닫힙니다. `backClose`가 없는 모달이 위에 쌓여 있으면 뒤로가기는 취소되고 아래 모달도 닫히지 않습니다. ESC, 딤 클릭, `close`, `closeWithId`, `clear`로 모달을 닫으면 대응되는 history entry도 함께 되감깁니다. `beforeClose`가 `false`를 반환하면 모달은 열린 상태로 유지되고 history entry도 복구됩니다.
+
 ### 스크롤 잠금
 
 `scrollLock: true`로 설정하면 모달이 열려 있는 동안 페이지(`body`) 스크롤을 잠급니다:
@@ -158,6 +178,7 @@ interface ModalOptions {
     colorScheme?: ColorScheme;
     styleSet?: string | VsModalNodeStyleSet;
     callbacks?: OverlayCallbacks;
+    backClose?: boolean;
     dimClose?: boolean;
     dimmed?: boolean;
     escClose?: boolean;
