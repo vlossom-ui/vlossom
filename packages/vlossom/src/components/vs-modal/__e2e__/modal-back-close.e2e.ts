@@ -6,13 +6,13 @@ async function establishHistoryBaseline(page: Page): Promise<void> {
     });
 }
 
-test.describe('modal backClose', () => {
+test.describe('모달 backClose', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/e2e.html');
         await establishHistoryBaseline(page);
     });
 
-    test('closes a backClose modal with browser Back', async ({ page }) => {
+    test('브라우저 뒤로가기로 backClose 모달을 닫는다', async ({ page }) => {
         await page.getByTestId('open-back-close').click();
         await expect(page.getByTestId('back-close-modal')).toBeVisible();
 
@@ -21,7 +21,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('back-close-modal')).toBeHidden();
     });
 
-    test('keeps a backClose false modal open after browser Back', async ({ page }) => {
+    test('backClose가 false인 모달은 브라우저 뒤로가기 후에도 열린 상태를 유지한다', async ({ page }) => {
         await page.getByTestId('open-no-back-close').click();
         await expect(page.getByTestId('no-back-close-modal')).toBeVisible();
 
@@ -30,7 +30,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('no-back-close-modal')).toBeVisible();
     });
 
-    test('closes only the top modal in a backClose stack', async ({ page }) => {
+    test('backClose 모달이 쌓여 있을 때 최상단 모달만 닫는다', async ({ page }) => {
         await page.getByTestId('open-stack').click();
         await expect(page.getByTestId('stack-bottom')).toBeVisible();
         await expect(page.getByTestId('stack-top')).toBeVisible();
@@ -41,7 +41,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('stack-bottom')).toBeVisible();
     });
 
-    test('closes the modal even when a select dropdown is open above it', async ({ page }) => {
+    test('모달 위에 셀렉트 드롭다운이 열려 있어도 모달을 닫는다', async ({ page }) => {
         await page.getByTestId('open-select-modal').click();
         await expect(page.getByTestId('select-modal')).toBeVisible();
         await page.getByTestId('modal-select').click();
@@ -51,7 +51,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('select-modal')).toBeHidden();
     });
 
-    test('resolves confirm with false when closed by browser Back', async ({ page }) => {
+    test('브라우저 뒤로가기로 닫으면 Confirm을 false로 resolve한다', async ({ page }) => {
         await page.getByTestId('open-confirm').click();
         await expect(page.getByRole('dialog').last()).toBeVisible();
 
@@ -60,7 +60,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('status')).toHaveText('confirm-resolved-false');
     });
 
-    test('resolves alert when closed by browser Back', async ({ page }) => {
+    test('브라우저 뒤로가기로 닫으면 Alert를 resolve한다', async ({ page }) => {
         await page.getByTestId('open-alert').click();
         await expect(page.getByRole('dialog')).toBeVisible();
 
@@ -69,7 +69,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('status')).toHaveText('alert-resolved');
     });
 
-    test('resolves prompt with null when closed by browser Back', async ({ page }) => {
+    test('브라우저 뒤로가기로 닫으면 Prompt를 null로 resolve한다', async ({ page }) => {
         await page.getByTestId('open-prompt').click();
         await expect(page.getByRole('dialog')).toBeVisible();
 
@@ -78,7 +78,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('status')).toHaveText('prompt-resolved-null');
     });
 
-    test('closes an inner confirm before its host modal', async ({ page }) => {
+    test('호스트 모달보다 내부 Confirm을 먼저 닫는다', async ({ page }) => {
         await page.getByTestId('open-confirm-host').click();
         await page.getByTestId('open-inner-confirm').click();
         await expect(page.getByRole('dialog').last()).toBeVisible();
@@ -89,7 +89,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('confirm-host')).toBeVisible();
     });
 
-    test('keeps history synchronized after ESC closes a modal', async ({ page }) => {
+    test('ESC로 모달을 닫은 후에도 history를 동기화한다', async ({ page }) => {
         await page.getByTestId('open-esc-sync').click();
         await expect(page.getByTestId('esc-sync-modal')).toBeVisible();
 
@@ -101,7 +101,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('esc-sync-modal')).toBeHidden();
     });
 
-    test('keeps history synchronized after dim click closes a modal', async ({ page }) => {
+    test('딤 영역 클릭으로 모달을 닫은 후에도 history를 동기화한다', async ({ page }) => {
         await page.getByTestId('open-dim-sync').click();
         await expect(page.getByTestId('dim-sync-modal')).toBeVisible();
 
@@ -113,7 +113,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('dim-sync-modal')).toBeHidden();
     });
 
-    test('clears stacked modal history without leaving a stale modal', async ({ page }) => {
+    test('clear로 쌓인 모달과 history를 모두 정리하면 뒤로가기를 해도 모달을 다시 열리지 않는다', async ({ page }) => {
         await page.getByTestId('open-clear-stack').click();
         await expect(page.getByTestId('clear-bottom')).toBeVisible();
         await expect(page.getByTestId('clear-top')).toBeVisible();
@@ -128,7 +128,7 @@ test.describe('modal backClose', () => {
         await expect(page.getByTestId('clear-top')).toBeHidden();
     });
 
-    test('restores history when beforeClose rejects', async ({ page }) => {
+    test('beforeClose가 닫기를 거부하면 history를 복구한다', async ({ page }) => {
         await page.getByTestId('open-reject-modal').click();
         await expect(page.getByText('Rejecting modal', { exact: true })).toBeVisible();
 
@@ -138,7 +138,7 @@ test.describe('modal backClose', () => {
         await expect(page).toHaveURL(/#e2e-base$/);
     });
 
-    test('does not leave a stale history entry after button close', async ({ page }) => {
+    test('버튼으로 닫은 모달의 history를 정리하면 뒤로가기로 다시 열리지 않는다', async ({ page }) => {
         await page.getByTestId('open-back-close').click();
         await expect(page.getByTestId('back-close-modal')).toBeVisible();
         await page.getByTestId('close-by-button').click();
