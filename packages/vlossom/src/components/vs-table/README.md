@@ -37,7 +37,7 @@ const items = [
 
 ### Row Identity
 
-`itemKey` decides what a row is. Pass a field name (dot paths allowed) or a function. Without it, rows fall back to the identity of the item object, so replacing items with newly created objects (a refetch, for example) drops selection and expansion state and remounts rows.
+`itemKey` decides what a row is. Pass a field name (dot paths allowed) or a function. Without it, rows fall back to the identity of the item object, so replacing items with newly created objects (a refetch, for example) drops selection and expansion state and remounts rows. With it, selection survives such a replacement, and `selectedItems` is updated to hold the new item objects. Selected items whose key is no longer in `items` are kept as they are.
 
 ```html
 <template>
@@ -91,6 +91,8 @@ import { ref } from 'vue';
 const selected = ref([]);
 </script>
 ```
+
+The header checkbox selects or clears only the selectable rows currently rendered, that is, the rows left after search on the current page. Selections on rows that are not rendered stay as they are.
 
 ### Expandable Rows
 
@@ -197,6 +199,8 @@ Provide an `empty` slot to replace the default "NO DATA" placeholder when there 
 | `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | Row state for styling                                                                                                                     |
 | `stickyHeader`  | `boolean`                                      | `false`  | Makes the table header sticky on scroll                                                                                                   |
 | `totalItems`    | `VsTableItem[]`                                | `[]`     | All rows in display order after search and sorting, v-model (output only)                                                                 |
+
+When `selectable`, `expandable`, or `state` is a function, `index` is the row's position among the rows currently displayed and `items` is that displayed list, so `items[index]` is always `item`.
 
 ## Types
 
