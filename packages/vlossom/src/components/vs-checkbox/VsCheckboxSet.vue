@@ -37,7 +37,7 @@
                     width="unset"
                     :model-value="inputValue"
                     :true-value="getOptionValue(option)"
-                    :before-change="beforeChange"
+                    :before-change
                     :style-set="checkboxStyleSet"
                     :check-label="getOptionLabel(option)"
                     :disabled="computedDisabled"

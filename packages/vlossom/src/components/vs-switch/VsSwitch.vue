@@ -27,7 +27,7 @@
                     class="vs-switch-input"
                     :id="computedId"
                     :disabled="computedDisabled || computedReadonly"
-                    :name="name"
+                    :name
                     :value="String(trueValue)"
                     :checked="isChecked"
                     :aria-required="required"

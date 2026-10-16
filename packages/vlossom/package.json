@@ -29,6 +29,7 @@
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
         "lint": "eslint . && stylelint \"src/**/*.{css,scss}\"",
+        "lint:fix": "eslint . --fix && stylelint \"src/**/*.{css,scss}\" --fix",
         "format": "prettier --write src/**/*.{js,ts,vue,json}",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",

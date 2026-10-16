@@ -6,7 +6,7 @@
         <img
             :class="['vs-image-tag', { 'vs-hidden': isLoading || isNoImage }]"
             :src="computedSrc"
-            :alt="alt"
+            :alt
             :style="componentStyleSet.$image"
             @load.stop="onImageLoad"
             @error.stop="onImageError"

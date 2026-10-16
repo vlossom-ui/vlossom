@@ -47,7 +47,7 @@
             />
 
             <div class="vs-file-drop-content">
-                <slot :dragging="dragging">
+                <slot :dragging>
                     <div class="vs-file-drop-placeholder" :style="componentStyleSet.$placeholder">
                         <PaperclipIcon class="placeholder-icon" :stroke-width="2.5" />
                         <span class="placeholder-text">{{ computedPlaceholder }}</span>
