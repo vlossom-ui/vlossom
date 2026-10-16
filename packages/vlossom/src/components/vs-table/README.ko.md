@@ -37,7 +37,7 @@ const items = [
 
 ### 행 식별
 
-`itemKey`는 무엇을 하나의 행으로 볼지 정합니다. 필드 이름(중첩 경로 가능) 또는 함수를 전달합니다. 지정하지 않으면 아이템 객체의 동일성을 기준으로 하기 때문에, 데이터를 다시 조회해 아이템 객체를 새로 만들어 교체하면 선택/확장 상태가 사라지고 행이 다시 마운트됩니다.
+`itemKey`는 무엇을 하나의 행으로 볼지 정합니다. 필드 이름(중첩 경로 가능) 또는 함수를 전달합니다. 지정하지 않으면 아이템 객체의 동일성을 기준으로 하기 때문에, 데이터를 다시 조회해 아이템 객체를 새로 만들어 교체하면 선택/확장 상태가 사라지고 행이 다시 마운트됩니다. 지정하면 이렇게 교체해도 선택이 유지되고, `selectedItems`도 새 아이템 객체로 갱신됩니다. `items`에 더 이상 없는 key의 선택 아이템은 그대로 유지됩니다.
 
 ```html live
 <template>
@@ -102,6 +102,8 @@ import { ref } from 'vue';
 const selected = ref([]);
 </script>
 ```
+
+헤더 체크박스는 현재 렌더된 행, 즉 검색 후 현재 페이지에 남은 행 중 선택 가능한 행만 전체 선택하거나 해제합니다. 렌더되지 않은 행의 선택 상태는 그대로 유지됩니다.
 
 ### 확장 가능한 행
 
@@ -226,6 +228,8 @@ const selectedItems = ref([]);
 | `state`         | `UIState \| (item, index?, items?) => UIState` | `'idle'` | 행 상태 스타일                                                                                                     |
 | `stickyHeader`  | `boolean`                                      | `false`  | 스크롤 시 헤더 고정                                                                                                |
 | `totalItems`    | `VsTableItem[]`                                | `[]`     | 검색과 정렬을 거친 전체 행(화면 순서), v-model (출력 전용)                                                         |
+
+`selectable`, `expandable`, `state`를 함수로 전달하면 `index`는 현재 화면에 표시된 행 중 위치이고 `items`는 그 표시된 행 목록이므로, `items[index]`는 항상 `item`입니다.
 
 ## Types
 

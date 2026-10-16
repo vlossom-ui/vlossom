@@ -1,8 +1,12 @@
 import { describe, it, expect, vi } from 'vitest';
-import { computed, nextTick, reactive, ref, type Ref } from 'vue';
+import { computed, nextTick, reactive, ref, shallowRef, type Ref } from 'vue';
 import type { VsSearchInputRef } from '@/components/vs-search-input/types';
 import { VsTableSortType, type VsTableColumnDef, type VsTableItem, type VsTableItemKey } from './../types';
-import { getCellValue, useTableColumnComposable } from './../composables/table-column-composable';
+import {
+    getCellValue,
+    useTableColumnComposable,
+    useTableGridTemplateComposable,
+} from './../composables/table-column-composable';
 import { useTableDragComposable } from './../composables/table-drag-composable';
 import { useTableExpandComposable } from './../composables/table-expand-composable';
 import { useTableItemKeyComposable } from './../composables/table-item-key-composable';
@@ -68,7 +72,7 @@ describe('useTableColumnComposable', () => {
     const handleColumns = { drag: ref(false), select: ref(false), expand: ref(false) };
 
     it('문자열 컬럼을 ColumnDef로 변환한다', () => {
-        const { columns } = useTableColumnComposable(ref(['name', 'age']), ref([]), handleColumns);
+        const { columns } = useTableColumnComposable(ref(['name', 'age']), ref([]));
 
         expect(columns.value).toEqual([
             { key: 'name', label: 'name' },
@@ -77,7 +81,7 @@ describe('useTableColumnComposable', () => {
     });
 
     it('컬럼 정의가 없으면 첫 아이템의 키로 컬럼을 만든다', () => {
-        const { columns } = useTableColumnComposable(ref([]), ref([alice]), handleColumns);
+        const { columns } = useTableColumnComposable(ref([]), ref([alice]));
 
         expect(columns.value.map((column) => column.key)).toEqual(['id', 'name', 'age']);
     });
@@ -90,7 +94,7 @@ describe('useTableColumnComposable', () => {
             { key: 'd', label: 'd', minWidth: '5rem', maxWidth: '10rem' },
             { key: 'e', label: 'e' },
         ];
-        const { gridTemplateColumns } = useTableColumnComposable(ref(columnDefs), ref([]), handleColumns);
+        const { gridTemplateColumns } = useTableGridTemplateComposable(ref(columnDefs), handleColumns);
 
         expect(gridTemplateColumns.value).toBe(
             '120px minmax(5rem, 1fr) minmax(auto, 10rem) minmax(5rem, 10rem) minmax(max-content, 1fr)',
@@ -98,7 +102,7 @@ describe('useTableColumnComposable', () => {
     });
 
     it('drag / select / expand 트랙을 필요한 경우에만 추가한다', () => {
-        const { gridTemplateColumns } = useTableColumnComposable(ref(['name']), ref([]), {
+        const { gridTemplateColumns } = useTableGridTemplateComposable(ref([{ key: 'name', label: 'name' }]), {
             drag: ref(true),
             select: ref(true),
             expand: ref(true),
@@ -369,7 +373,13 @@ describe('useTableSelectionComposable', () => {
     const getItemKey = (item: VsTableItem) => item.id;
 
     it('selectable이 false면 선택 가능한 행이 없다', () => {
-        const { anySelectable } = useTableSelectionComposable(ref(false), ref([]), ref([alice, bob]), getItemKey);
+        const { anySelectable } = useTableSelectionComposable(
+            ref(false),
+            ref([]),
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+        );
 
         expect(anySelectable.value).toBe(false);
     });
@@ -378,6 +388,7 @@ describe('useTableSelectionComposable', () => {
         const { selectedItems, isSelected, selectItem } = useTableSelectionComposable(
             ref(true),
             ref([]),
+            ref([alice, bob]),
             ref([alice, bob]),
             getItemKey,
         );
@@ -396,6 +407,7 @@ describe('useTableSelectionComposable', () => {
             ref(selectable),
             ref([]),
             ref([alice, bob]),
+            ref([alice, bob]),
             getItemKey,
         );
 
@@ -408,6 +420,7 @@ describe('useTableSelectionComposable', () => {
         const { selectedItems, selectedAll, selectedPartial, selectAll } = useTableSelectionComposable(
             ref(selectable),
             ref([]),
+            ref([alice, bob]),
             ref([alice, bob]),
             getItemKey,
         );
@@ -422,10 +435,33 @@ describe('useTableSelectionComposable', () => {
         expect(selectedItems.value).toEqual([]);
     });
 
+    it('전체 선택은 보이는 아이템만 대상으로 하고 보이지 않는 선택은 유지한다', () => {
+        const carol = { id: 3, name: 'Carol' };
+        const visibleItems = ref<VsTableItem[]>([alice, bob]);
+        const { selectedItems, selectedAll, selectedPartial, selectAll } = useTableSelectionComposable(
+            ref(true),
+            ref([carol]),
+            ref([alice, bob, carol]),
+            visibleItems,
+            getItemKey,
+        );
+
+        expect(selectedAll.value).toBe(false);
+        expect(selectedPartial.value).toBe(false);
+
+        selectAll(true);
+        expect(selectedItems.value).toEqual([carol, alice, bob]);
+        expect(selectedAll.value).toBe(true);
+
+        selectAll(false);
+        expect(selectedItems.value).toEqual([carol]);
+    });
+
     it('선택 아이템이 일부면 partial 상태가 된다', () => {
         const { selectedPartial, selectItem } = useTableSelectionComposable(
             ref(true),
             ref([]),
+            ref([alice, bob]),
             ref([alice, bob]),
             getItemKey,
         );
@@ -441,6 +477,7 @@ describe('useTableSelectionComposable', () => {
             ref(true),
             rawSelectedItems,
             ref([alice, bob]),
+            ref([alice, bob]),
             getItemKey,
         );
 
@@ -449,13 +486,49 @@ describe('useTableSelectionComposable', () => {
 
         expect(selectedItems.value).toEqual([bob]);
     });
+
+    it('items가 새 객체로 바뀌면 같은 key의 선택은 최신 객체로 갱신하고 없는 key는 유지한다', async () => {
+        const carol = { id: 3, name: 'Carol' };
+        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const { selectedItems } = useTableSelectionComposable(
+            ref(true),
+            shallowRef([bob, carol]),
+            items,
+            items,
+            getItemKey,
+        );
+        const renamedBob = { ...bob, name: 'Bobby' };
+
+        items.value = [{ ...alice }, renamedBob];
+        await nextTick();
+
+        expect(selectedItems.value).toHaveLength(2);
+        expect(selectedItems.value[0]).toBe(renamedBob);
+        expect(selectedItems.value[1]).toBe(carol);
+    });
+
+    it('items가 바뀌어도 선택 아이템이 그대로면 선택 배열을 교체하지 않는다', async () => {
+        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const { selectedItems } = useTableSelectionComposable(ref(true), ref([bob]), items, items, getItemKey);
+        const before = selectedItems.value;
+
+        items.value = [bob, alice];
+        await nextTick();
+
+        expect(selectedItems.value).toBe(before);
+    });
 });
 
 describe('useTableExpandComposable', () => {
     const getItemKey = (item: VsTableItem) => item.id;
 
     it('아이템을 펼치고 접는다', () => {
-        const { isExpanded, expandItem } = useTableExpandComposable(ref(true), ref([alice, bob]), getItemKey);
+        const { isExpanded, expandItem } = useTableExpandComposable(
+            ref(true),
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+        );
 
         expect(expandItem(alice, 0, true)).toBe(true);
         expect(isExpanded(alice)).toBe(true);
@@ -466,14 +539,19 @@ describe('useTableExpandComposable', () => {
 
     it('expandable 조건을 만족하지 않으면 펼치지 않는다', () => {
         const expandable = (item: VsTableItem) => item.name === 'Bob';
-        const { isExpanded, expandItem } = useTableExpandComposable(ref(expandable), ref([alice, bob]), getItemKey);
+        const { isExpanded, expandItem } = useTableExpandComposable(
+            ref(expandable),
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+        );
 
         expect(expandItem(alice, 0, true)).toBe(false);
         expect(isExpanded(alice)).toBe(false);
     });
 
     it('아이템이 없으면 확장 가능한 행도 없다', () => {
-        const { anyExpandable } = useTableExpandComposable(ref(true), ref([]), getItemKey);
+        const { anyExpandable } = useTableExpandComposable(ref(true), ref([]), ref([]), getItemKey);
 
         expect(anyExpandable.value).toBe(false);
     });

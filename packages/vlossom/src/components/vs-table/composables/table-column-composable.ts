@@ -10,7 +10,6 @@ export function getCellValue(item: VsTableItem, column: VsTableColumnDef): unkno
 export function useTableColumnComposable(
     rawColumns: Ref<VsTableColumnDef[] | string[] | undefined>,
     items: Ref<VsTableItem[]>,
-    handleColumns: { drag: Ref<boolean>; select: Ref<boolean>; expand: Ref<boolean> },
 ) {
     const columns = computed<VsTableColumnDef[]>(() => {
         const columnDefs = rawColumns.value;
@@ -25,6 +24,13 @@ export function useTableColumnComposable(
         return Object.keys(firstItem).map((key) => ({ key, label: key }));
     });
 
+    return { columns };
+}
+
+export function useTableGridTemplateComposable(
+    columns: Ref<VsTableColumnDef[]>,
+    handleColumns: { drag: Ref<boolean>; select: Ref<boolean>; expand: Ref<boolean> },
+) {
     const gridTemplateColumns = computed<string>(() => {
         const tracks: string[] = [];
         if (handleColumns.drag.value) {
@@ -59,5 +65,5 @@ export function useTableColumnComposable(
         return 'minmax(max-content, 1fr)';
     }
 
-    return { columns, gridTemplateColumns };
+    return { gridTemplateColumns };
 }

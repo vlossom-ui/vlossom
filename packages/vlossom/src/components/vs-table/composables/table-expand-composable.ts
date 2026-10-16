@@ -5,6 +5,7 @@ import type { VsTableItem } from './../types';
 export function useTableExpandComposable(
     rawExpandable: Ref<boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)>,
     items: Ref<VsTableItem[]>,
+    visibleItems: Ref<VsTableItem[]>,
     getItemKey: (item: VsTableItem) => string | number,
 ) {
     const isExpandable = computed(() =>
@@ -26,7 +27,7 @@ export function useTableExpandComposable(
     }
 
     function expandItem(item: VsTableItem, index: number, expanded: boolean): boolean {
-        if (!item || !isExpandable.value(item, index, items.value)) {
+        if (!item || !isExpandable.value(item, index, visibleItems.value)) {
             return false;
         }
 
