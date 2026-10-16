@@ -8,7 +8,7 @@ A tab navigation component with animated indicator, prev/next control buttons, a
 
 ## Feature
 
-- Animated active tab indicator that tracks the selected tab
+- Tab background fills on hover and selection, with a bottom indicator on the selected tab
 - Automatic or manual control buttons for navigating overflow tab lists
 - Vertical tab layout support
 - Keyboard navigation between tabs
@@ -59,20 +59,20 @@ const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
 
 ## Props
 
-| Prop | Type | Default | Required | Description |
-| ---- | ---- | ------- | -------- | ----------- |
-| `colorScheme` | `string` | | | Color scheme for the component |
-| `styleSet` | `string \| VsTabsStyleSet` | | | Custom style set for the component |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | Tab size (controls height, padding, font, and control button) |
-| `disabled` | `boolean \| (tab: string, index: number) => boolean` | `false` | | Disables all or specific tabs |
-| `grid` | `string \| number \| Breakpoints` | | | Grid column span |
-| `height` | `string \| number` | `'auto'` | | Height of the tab bar |
-| `modelValue` | `number` | `0` | | Index of the active tab, v-model |
-| `primary` | `boolean` | `false` | | Applies primary color styling |
-| `controls` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | Visibility of prev/next control buttons |
-| `tabs` | `string[]` | `[]` | | Tab labels |
-| `vertical` | `boolean` | `false` | | Renders tabs vertically |
-| `width` | `string \| number \| Breakpoints` | | | Component width |
+| Prop          | Type                                                 | Default  | Required | Description                                                   |
+| ------------- | ---------------------------------------------------- | -------- | -------- | ------------------------------------------------------------- |
+| `colorScheme` | `string`                                             |          |          | Color scheme for the component                                |
+| `styleSet`    | `string \| VsTabsStyleSet`                           |          |          | Custom style set for the component                            |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`               | `'md'`   |          | Tab size (controls height, padding, font, and control button) |
+| `disabled`    | `boolean \| (tab: string, index: number) => boolean` | `false`  |          | Disables all or specific tabs                                 |
+| `grid`        | `string \| number \| Breakpoints`                    |          |          | Grid column span                                              |
+| `height`      | `string \| number`                                   | `'auto'` |          | Height of the tab bar                                         |
+| `modelValue`  | `number`                                             | `0`      |          | Index of the active tab, v-model                              |
+| `primary`     | `boolean`                                            | `false`  |          | Applies primary color styling                                 |
+| `controls`    | `'hide' \| 'show' \| 'auto'`                         | `'auto'` |          | Visibility of prev/next control buttons                       |
+| `tabs`        | `string[]`                                           | `[]`     |          | Tab labels                                                    |
+| `vertical`    | `boolean`                                            | `false`  |          | Renders tabs vertically                                       |
+| `width`       | `string \| number \| Breakpoints`                    |          |          | Component width                                               |
 
 ## Types
 
@@ -83,13 +83,14 @@ interface VsTabsStyleSet extends CSSProperties {
     $tabs?: CSSProperties;
     $tab?: CSSProperties & {
         $active?: CSSProperties;
+        $indicator?: CSSProperties;
     };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$control` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`). The `$tab.$active` style is applied to the currently selected tab.
+> `$control` uses [`VsButtonStyleSet`](../vs-button/README.md) (excluding `$loading`). `$tab` is applied to the tab, `$tab.$active` is applied to the selected fill layer, and `$tab.$indicator` is applied to the selected tab's indicator.
 
 ### StyleSet Example
 
@@ -104,7 +105,8 @@ interface VsTabsStyleSet extends CSSProperties {
             $tab: {
                 borderRadius: '0.25rem',
                 padding: '0.5rem 1.25rem',
-                $active: { backgroundColor: '#1976d2', color: '#ffffff' },
+                $active: { '--vs-tabs-fill-bg': '#1976d2', color: '#ffffff' },
+                $indicator: { backgroundColor: '#1976d2' },
             },
         }"
     />
@@ -113,20 +115,20 @@ interface VsTabsStyleSet extends CSSProperties {
 
 ## Events
 
-| Event | Payload | Description |
-| ----- | ------- | ----------- |
+| Event               | Payload  | Description                               |
+| ------------------- | -------- | ----------------------------------------- |
 | `update:modelValue` | `number` | Emitted when the active tab index changes |
-| `change` | `number` | Emitted when the selected tab changes |
+| `change`            | `number` | Emitted when the selected tab changes     |
 
 ## Slots
 
-| Slot | Description |
-| ---- | ----------- |
+| Slot  | Description                                                        |
+| ----- | ------------------------------------------------------------------ |
 | `tab` | Custom tab item content. Receives `{ tab: string, index: number }` |
 
 ## Methods
 
-| Method | Parameters | Description |
-| ------ | ---------- | ----------- |
-| `goPrev` | | Navigates to the previous tab |
-| `goNext` | | Navigates to the next tab |
+| Method   | Parameters | Description                   |
+| -------- | ---------- | ----------------------------- |
+| `goPrev` |            | Navigates to the previous tab |
+| `goNext` |            | Navigates to the next tab     |

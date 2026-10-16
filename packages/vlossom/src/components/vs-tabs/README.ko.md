@@ -8,7 +8,7 @@
 
 ## 기능
 
-- 선택된 탭을 추적하는 애니메이션 활성 탭 인디케이터
+- hover 및 선택 시 차오르는 탭 배경과 선택된 탭의 하단 인디케이터
 - 탭 목록 오버플로우 시 자동 또는 수동 컨트롤 버튼
 - 세로 탭 레이아웃 지원
 - 탭 간 키보드 내비게이션
@@ -59,20 +59,20 @@ const tabs = ['탭 1', '탭 2', '탭 3'];
 
 ## Props
 
-| Prop | 타입 | 기본값 | 필수 | 설명 |
-| ---- | ---- | ------ | ---- | ---- |
-| `colorScheme` | `string` | | | 컴포넌트 색상 스키마 |
-| `styleSet` | `string \| VsTabsStyleSet` | | | 컴포넌트 커스텀 스타일 세트 |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | | 탭 크기 (높이 · 패딩 · 폰트 · 컨트롤 버튼 제어) |
-| `disabled` | `boolean \| (tab: string, index: number) => boolean` | `false` | | 전체 또는 특정 탭 비활성화 |
-| `grid` | `string \| number \| Breakpoints` | | | 그리드 열 스팬 |
-| `height` | `string \| number` | `'auto'` | | 탭 바의 높이 |
-| `modelValue` | `number` | `0` | | 활성 탭의 인덱스, v-model |
-| `primary` | `boolean` | `false` | | Primary 색상 스타일 적용 |
-| `controls` | `'hide' \| 'show' \| 'auto'` | `'auto'` | | 이전/다음 탭 컨트롤 버튼 표시 여부 |
-| `tabs` | `string[]` | `[]` | | 탭 레이블 목록 |
-| `vertical` | `boolean` | `false` | | 세로 방향으로 탭 렌더링 |
-| `width` | `string \| number \| Breakpoints` | | | 컴포넌트 너비 |
+| Prop          | 타입                                                 | 기본값   | 필수 | 설명                                            |
+| ------------- | ---------------------------------------------------- | -------- | ---- | ----------------------------------------------- |
+| `colorScheme` | `string`                                             |          |      | 컴포넌트 색상 스키마                            |
+| `styleSet`    | `string \| VsTabsStyleSet`                           |          |      | 컴포넌트 커스텀 스타일 세트                     |
+| `size`        | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`               | `'md'`   |      | 탭 크기 (높이 · 패딩 · 폰트 · 컨트롤 버튼 제어) |
+| `disabled`    | `boolean \| (tab: string, index: number) => boolean` | `false`  |      | 전체 또는 특정 탭 비활성화                      |
+| `grid`        | `string \| number \| Breakpoints`                    |          |      | 그리드 열 스팬                                  |
+| `height`      | `string \| number`                                   | `'auto'` |      | 탭 바의 높이                                    |
+| `modelValue`  | `number`                                             | `0`      |      | 활성 탭의 인덱스, v-model                       |
+| `primary`     | `boolean`                                            | `false`  |      | Primary 색상 스타일 적용                        |
+| `controls`    | `'hide' \| 'show' \| 'auto'`                         | `'auto'` |      | 이전/다음 탭 컨트롤 버튼 표시 여부              |
+| `tabs`        | `string[]`                                           | `[]`     |      | 탭 레이블 목록                                  |
+| `vertical`    | `boolean`                                            | `false`  |      | 세로 방향으로 탭 렌더링                         |
+| `width`       | `string \| number \| Breakpoints`                    |          |      | 컴포넌트 너비                                   |
 
 ## 타입
 
@@ -83,13 +83,14 @@ interface VsTabsStyleSet extends CSSProperties {
     $tabs?: CSSProperties;
     $tab?: CSSProperties & {
         $active?: CSSProperties;
+        $indicator?: CSSProperties;
     };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
 ```
 
 > [!NOTE]
-> `$control`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외). `$tab.$active`는 현재 선택된 탭에 적용됩니다.
+> `$control`은 [`VsButtonStyleSet`](../vs-button/README.ko.md)을 사용합니다(`$loading` 제외). `$tab`은 탭에 적용되고 `$tab.$active`는 선택된 fill 레이어에 적용됩니다. `$tab.$indicator`는 선택된 탭의 indicator에 적용됩니다.
 
 ### StyleSet 예시
 
@@ -104,7 +105,8 @@ interface VsTabsStyleSet extends CSSProperties {
             $tab: {
                 borderRadius: '0.25rem',
                 padding: '0.5rem 1.25rem',
-                $active: { backgroundColor: '#1976d2', color: '#ffffff' },
+                $active: { '--vs-tabs-fill-bg': '#1976d2', color: '#ffffff' },
+                $indicator: { backgroundColor: '#1976d2' },
             },
         }"
     />
@@ -113,20 +115,20 @@ interface VsTabsStyleSet extends CSSProperties {
 
 ## 이벤트
 
-| 이벤트 | 페이로드 | 설명 |
-| ------ | -------- | ---- |
+| 이벤트              | 페이로드 | 설명                        |
+| ------------------- | -------- | --------------------------- |
 | `update:modelValue` | `number` | 활성 탭 인덱스 변경 시 발생 |
-| `change` | `number` | 선택된 탭 변경 시 발생 |
+| `change`            | `number` | 선택된 탭 변경 시 발생      |
 
 ## 슬롯
 
-| 슬롯 | 설명 |
-| ---- | ---- |
+| 슬롯  | 설명                                                         |
+| ----- | ------------------------------------------------------------ |
 | `tab` | 커스텀 탭 아이템 내용. `{ tab: string, index: number }` 수신 |
 
 ## 메서드
 
-| 메서드 | 매개변수 | 설명 |
-| ------ | -------- | ---- |
-| `goPrev` | | 이전 탭으로 이동 |
-| `goNext` | | 다음 탭으로 이동 |
+| 메서드   | 매개변수 | 설명             |
+| -------- | -------- | ---------------- |
+| `goPrev` |          | 이전 탭으로 이동 |
+| `goNext` |          | 다음 탭으로 이동 |
