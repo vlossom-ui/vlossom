@@ -273,6 +273,7 @@ function openEditor() {
 
 | Component                                                       | Description                  |
 | --------------------------------------------------------------- | ---------------------------- |
+| [vs-dropzone](src/components/vs-dropzone/README.md)             | File drop target area        |
 | [vs-floating](src/components/vs-floating/README.md)             | Floating positioned element  |
 | [vs-focus-trap](src/components/vs-focus-trap/README.md)         | Focus trap for accessibility |
 | [vs-inner-scroll](src/components/vs-inner-scroll/README.md)     | Inner scrollable area        |

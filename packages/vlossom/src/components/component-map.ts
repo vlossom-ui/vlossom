@@ -18,6 +18,7 @@ import VsDatePicker from './vs-date-picker/VsDatePicker.vue';
 import VsDimmed from './vs-dimmed/VsDimmed.vue';
 import VsDivider from './vs-divider/VsDivider.vue';
 import VsDrawer from './vs-drawer/VsDrawer.vue';
+import VsDropzone from './vs-dropzone/VsDropzone.vue';
 import VsExpandable from './vs-expandable/VsExpandable.vue';
 import VsFileDrop from './vs-file-drop/VsFileDrop.vue';
 import VsFileInput from './vs-file-input/VsFileInput.vue';
@@ -76,6 +77,7 @@ export const VlossomComponents = {
     VsDimmed,
     VsDivider,
     VsDrawer,
+    VsDropzone,
     VsExpandable,
     VsFileDrop,
     VsFileInput,

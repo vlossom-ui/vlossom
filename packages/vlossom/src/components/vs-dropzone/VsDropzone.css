@@ -1,0 +1,24 @@
+@reference 'tailwindcss';
+
+.vs-dropzone {
+    @apply relative;
+
+    .vs-dropzone-overlay {
+        @apply pointer-events-none absolute inset-0 z-10 box-border flex items-center justify-center p-4 text-center;
+
+        border: 3px dashed var(--vs-cs-primary);
+        border-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
+        background-color: color-mix(in srgb, var(--vs-cs-surface-tinted) 85%, transparent);
+        color: var(--vs-cs-text);
+    }
+}
+
+.vs-dropzone-overlay-enter-active,
+.vs-dropzone-overlay-leave-active {
+    transition: opacity 0.15s;
+}
+
+.vs-dropzone-overlay-enter-from,
+.vs-dropzone-overlay-leave-to {
+    opacity: 0;
+}
