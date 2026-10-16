@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.2.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.1.1...vlossom-v2.2.0) (2026-10-16)
+
+
+### Features
+
+* add loading prop to VsSelect, VsRadioSet and VsCheckboxSet ([#691](https://github.com/vlossom-ui/vlossom/issues/691)) ([8267247](https://github.com/vlossom-ui/vlossom/commit/826724732331db474bf5f5545ca099d0bca4a0b0))
+* **color-scheme:** rename CSS custom properties for clarity ([#686](https://github.com/vlossom-ui/vlossom/issues/686)) ([da7a905](https://github.com/vlossom-ui/vlossom/commit/da7a9054e0125e469a9ca3a745c369c5b7b6d2c3))
+* **input:** add emptyValue to input components and keep values until async options load ([#689](https://github.com/vlossom-ui/vlossom/issues/689)) ([e4edd46](https://github.com/vlossom-ui/vlossom/commit/e4edd4626d54129b36b758b6b6840b89a4271fbb))
+* **VsDrawer:** push-container pushes only on md breakpoint above ([#666](https://github.com/vlossom-ui/vlossom/issues/666)) ([1bac8f2](https://github.com/vlossom-ui/vlossom/commit/1bac8f2e473d9d59fcb4e308b44ead607642210e))
+* **VsGroupedList:** add virtual scroll and key-based focus for VsSelect ([#668](https://github.com/vlossom-ui/vlossom/issues/668)) ([c59fbf4](https://github.com/vlossom-ui/vlossom/commit/c59fbf488177e322157d1eef07acf326b41adf4f))
+* **VsRender:** add string sanitizer ([#665](https://github.com/vlossom-ui/vlossom/issues/665)) ([caab1f7](https://github.com/vlossom-ui/vlossom/commit/caab1f7d453a69bb3a5d09334c7934fd29bf7a52))
+* **VsTabs:** renewal vs-tabs design ([#694](https://github.com/vlossom-ui/vlossom/issues/694)) ([241a20f](https://github.com/vlossom-ui/vlossom/commit/241a20f3045d44eb0c3b99611e6d26107410151b))
+
+
+### Bug Fixes
+
+* **colors:** fix vs-image fallback color & update palette ([#684](https://github.com/vlossom-ui/vlossom/issues/684)) ([f44f599](https://github.com/vlossom-ui/vlossom/commit/f44f599c8db361a2624b1dc1ef976d9577176cdd))
+* lint ([62e0b45](https://github.com/vlossom-ui/vlossom/commit/62e0b4514c150d99a1a513a39d4a2f868b8ee78f))
+* **scroll-shadow:** change scroll-shadow color ([#667](https://github.com/vlossom-ui/vlossom/issues/667)) ([49bde19](https://github.com/vlossom-ui/vlossom/commit/49bde19778085b5f91676f9dad0a8a53e4d54a02))
+* **VlossomOptions:** make reactive radiusRatio option ([#681](https://github.com/vlossom-ui/vlossom/issues/681)) ([8f83970](https://github.com/vlossom-ui/vlossom/commit/8f83970e635f3f1cac7a9c23058e81e626a5b1e9))
+* **VsModal:** overlay control on modal unmount ([#672](https://github.com/vlossom-ui/vlossom/issues/672)) ([6bde38c](https://github.com/vlossom-ui/vlossom/commit/6bde38c8ecfab7896f3d959db5241dc7ece37c3a))
+* **VsTable:** apply style-set font, alignment and background to cells ([#685](https://github.com/vlossom-ui/vlossom/issues/685)) ([58b34e0](https://github.com/vlossom-ui/vlossom/commit/58b34e0db9074d27463c18206e3e371601c61287))
+* **VsTable:** compare item raw key on selectable table ([c8a5276](https://github.com/vlossom-ui/vlossom/commit/c8a52768322c964dc94293234f065b034d509479))
+* **VsTable:** scope select-all to rendered rows ([#697](https://github.com/vlossom-ui/vlossom/issues/697)) ([3d01021](https://github.com/vlossom-ui/vlossom/commit/3d0102126d467d866485a94e6ece131c2ee8beb4))
+* **VsTable:** table expand slot overflow ([f8af00a](https://github.com/vlossom-ui/vlossom/commit/f8af00a305ae331ba3cb2311683bdb386a172d0d))
+* **VsThemeButton:** re-define button props ([#683](https://github.com/vlossom-ui/vlossom/issues/683)) ([8a7be44](https://github.com/vlossom-ui/vlossom/commit/8a7be442a508505989707eeb03f969f6d83a11c1))
+
 ## [2.1.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.1.0...vlossom-v2.1.1) (2026-09-30)
 
 
