@@ -108,6 +108,7 @@
 
             &.vs-selected {
                 .vs-step-num {
+                    animation: vs-step-pulse 1.8s ease-out infinite;
                     transition-delay: 0.15s;
                     outline: 3px solid var(--vs-cs-primary);
                     outline-offset: 3px;
@@ -159,5 +160,23 @@
 @layer utilities {
     .vs-steps .vs-step-item.vs-disabled {
         opacity: 1 !important;
+    }
+}
+
+@keyframes vs-step-pulse {
+    0% {
+        box-shadow: 0 0 0 0 color-mix(in oklch, var(--vs-cs-primary) 50%, transparent);
+    }
+    70% {
+        box-shadow: 0 0 0 10px color-mix(in oklch, var(--vs-cs-primary) 0%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 0 color-mix(in oklch, var(--vs-cs-primary) 0%, transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vs-steps .vs-step-item.vs-selected .vs-step-num {
+        animation: none;
     }
 }
