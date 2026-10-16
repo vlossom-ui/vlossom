@@ -1,4 +1,4 @@
-import { computed, ref, watch, type Ref } from 'vue';
+import { computed, shallowRef, toRaw, watch, type Ref } from 'vue';
 import { functionUtil } from '@/utils';
 import type { VsTableItem } from './../types';
 
@@ -6,29 +6,33 @@ export function useTableSelectionComposable(
     rawSelectable: Ref<boolean | ((item: VsTableItem, index?: number, items?: VsTableItem[]) => boolean)>,
     rawSelectedItems: Ref<VsTableItem[]>,
     items: Ref<VsTableItem[]>,
+    visibleItems: Ref<VsTableItem[]>,
     getItemKey: (item: VsTableItem) => string | number,
 ) {
     const isSelectable = computed(() =>
         functionUtil.toCallable<[VsTableItem, number?, VsTableItem[]?], boolean>(rawSelectable.value),
     );
 
-    const selectedItems = ref<VsTableItem[]>([...rawSelectedItems.value]);
+    // 사용자 객체를 프록시로 감싸지 않은 채 그대로 emit하기 위해 shallowRef를 쓴다
+    const selectedItems = shallowRef<VsTableItem[]>([...rawSelectedItems.value]);
     const selectedKeys = computed(() => new Set(selectedItems.value.map(getItemKey)));
 
     // selectable이 boolean이면 아이템을 순회하지 않는다 (대량 items에서는 갱신마다 전체 스캔이 된다)
-    const selectableCount = computed<number>(() => {
+    function filterSelectable(list: VsTableItem[]): VsTableItem[] {
         if (typeof rawSelectable.value === 'boolean') {
-            return rawSelectable.value ? items.value.length : 0;
+            return rawSelectable.value ? list : [];
         }
-        return items.value.filter(isSelectable.value).length;
-    });
+        return list.filter((item, index) => isSelectable.value(item, index, list));
+    }
 
-    const anySelectable = computed<boolean>(() => selectableCount.value > 0);
+    const anySelectable = computed<boolean>(() => filterSelectable(items.value).length > 0);
+    const selectableVisibleItems = computed<VsTableItem[]>(() => filterSelectable(visibleItems.value));
+
     const selectedAll = computed<boolean>(
-        () => selectableCount.value > 0 && selectedItems.value.length === selectableCount.value,
+        () => selectableVisibleItems.value.length > 0 && selectableVisibleItems.value.every(isSelected),
     );
     const selectedPartial = computed<boolean>(
-        () => selectedItems.value.length > 0 && selectedItems.value.length < selectableCount.value,
+        () => !selectedAll.value && selectableVisibleItems.value.some(isSelected),
     );
 
     function isSelected(item: VsTableItem): boolean {
@@ -36,7 +40,7 @@ export function useTableSelectionComposable(
     }
 
     function selectItem(item: VsTableItem, index: number, selected: boolean): boolean {
-        if (!isSelectable.value(item, index, items.value)) {
+        if (!isSelectable.value(item, index, visibleItems.value)) {
             return false;
         }
 
@@ -47,8 +51,30 @@ export function useTableSelectionComposable(
     }
 
     function selectAll(selected: boolean): void {
-        selectedItems.value = selected ? items.value.filter(isSelectable.value) : [];
+        const visibleKeys = new Set(visibleItems.value.map(getItemKey));
+        const rest = selectedItems.value.filter((selectedItem) => !visibleKeys.has(getItemKey(selectedItem)));
+        selectedItems.value = selected ? [...rest, ...selectableVisibleItems.value] : rest;
     }
+
+    // server mode의 items는 현재 페이지뿐이므로 items에 없는 key의 선택은 지우지 않는다
+    watch(items, (nextItems) => {
+        if (!selectedItems.value.length) {
+            return;
+        }
+        const itemsByKey = new Map(nextItems.map((item) => [getItemKey(item), item]));
+        let changed = false;
+        const nextSelectedItems = selectedItems.value.map((selectedItem) => {
+            const latestItem = itemsByKey.get(getItemKey(selectedItem));
+            if (!latestItem || toRaw(latestItem) === toRaw(selectedItem)) {
+                return selectedItem;
+            }
+            changed = true;
+            return latestItem;
+        });
+        if (changed) {
+            selectedItems.value = nextSelectedItems;
+        }
+    });
 
     watch(rawSelectedItems, (nextSelectedItems) => {
         const current = selectedItems.value;

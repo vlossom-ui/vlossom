@@ -401,6 +401,52 @@ describe('VsTable', () => {
             expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[tableItems[0]]]);
         });
 
+        it('검색 중 전체 선택은 검색 결과에 남은 행만 선택한다', async () => {
+            const wrapper = mountTable({ props: { selectable: true, search: true } });
+
+            await nextTick();
+            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await wrapper.get('thead th').trigger('click');
+
+            expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[tableItems[1]]]);
+        });
+
+        it('pagination 중 전체 선택은 현재 페이지 행만 선택하고 다른 페이지 선택은 유지한다', async () => {
+            const items = Array.from({ length: 4 }, (_, index) => ({ id: `${index}`, name: `User ${index}` }));
+            const wrapper = mountTable({
+                props: {
+                    items,
+                    selectable: true,
+                    selectedItems: [items[3]],
+                    pagination: { pageSizeOptions: [{ label: '2', value: 2 }] },
+                },
+            });
+
+            await nextTick();
+            await wrapper.get('thead th').trigger('click');
+
+            expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[items[3], items[0], items[1]]]);
+
+            await wrapper.get('thead th').trigger('click');
+
+            expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[items[3]]]);
+        });
+
+        it('selectable 함수는 현재 렌더된 행 기준의 index와 목록을 받는다', async () => {
+            const selectable = vi.fn(
+                (item: VsTableItem, index?: number, items?: VsTableItem[]) => items![index!] === item,
+            );
+            const wrapper = mountTable({ props: { selectable, search: true } });
+
+            await nextTick();
+            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            selectable.mockClear();
+            await wrapper.get('tbody tr td').trigger('click');
+
+            expect(selectable).toHaveBeenCalledWith(tableItems[1], 0, [tableItems[1]]);
+            expect(lastEmit(wrapper, 'update:selectedItems')).toEqual([[tableItems[1]]]);
+        });
+
         it('selectedItems prop이 바뀌면 선택 상태를 따라간다', async () => {
             const wrapper = mountTable({ props: { selectable: true } });
 

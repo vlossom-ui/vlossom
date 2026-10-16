@@ -155,7 +155,7 @@ import type {
     VsTableStyleSet,
 } from './types';
 import { DEFAULT_SORTABLE_OPTIONS, VS_TABLE_HEADER_SLOT_PREFIXES, VS_TABLE_ITEM_SLOT_PREFIXES } from './constants';
-import { useTableColumnComposable } from './composables/table-column-composable';
+import { useTableColumnComposable, useTableGridTemplateComposable } from './composables/table-column-composable';
 import { useTableDragComposable } from './composables/table-drag-composable';
 import { useTableExpandComposable } from './composables/table-expand-composable';
 import { useTableItemKeyComposable } from './composables/table-item-key-composable';
@@ -348,28 +348,7 @@ export default defineComponent({
         );
 
         const { getItemKey } = useTableItemKeyComposable(itemKey);
-        const {
-            isSelectable,
-            selectedItems,
-            anySelectable,
-            selectedAll,
-            selectedPartial,
-            isSelected,
-            selectItem,
-            selectAll,
-        } = useTableSelectionComposable(selectable, rawSelectedItems, items, getItemKey);
-        const { isExpandable, anyExpandable, isExpanded, expandItem } = useTableExpandComposable(
-            expandable,
-            items,
-            getItemKey,
-        );
-        const showExpand = computed<boolean>(() => anyExpandable.value && !!slots.expand);
-
-        const { columns, gridTemplateColumns } = useTableColumnComposable(rawColumns, items, {
-            drag: isDraggable,
-            select: anySelectable,
-            expand: showExpand,
-        });
+        const { columns } = useTableColumnComposable(rawColumns, items);
         const { searchOptions, searchedItems } = useTableSearchComposable(searchInputRef, rawSearch, columns, items);
         const { sort, sortedItems, updateSort } = useTableSortComposable(columns, searchedItems);
         const { viewItems, setDragOrder } = useTableDragComposable(sortedItems, items);
@@ -393,6 +372,29 @@ export default defineComponent({
         const draggableItems = computed<VsTableItem[]>({
             get: () => displayItems.value,
             set: (nextItems: VsTableItem[]) => setDragOrder(nextItems, isClientPaged.value ? pageStartIndex.value : 0),
+        });
+
+        const {
+            isSelectable,
+            selectedItems,
+            anySelectable,
+            selectedAll,
+            selectedPartial,
+            isSelected,
+            selectItem,
+            selectAll,
+        } = useTableSelectionComposable(selectable, rawSelectedItems, items, displayItems, getItemKey);
+        const { isExpandable, anyExpandable, isExpanded, expandItem } = useTableExpandComposable(
+            expandable,
+            items,
+            displayItems,
+            getItemKey,
+        );
+        const showExpand = computed<boolean>(() => anyExpandable.value && !!slots.expand);
+        const { gridTemplateColumns } = useTableGridTemplateComposable(columns, {
+            drag: isDraggable,
+            select: anySelectable,
+            expand: showExpand,
         });
 
         const classObj = computed(() => ({
@@ -437,11 +439,11 @@ export default defineComponent({
                 styleSet: componentStyleSet.value,
                 size: size.value,
                 loading: loading.value,
-                state: getItemState.value(item, index, items.value),
+                state: getItemState.value(item, index, displayItems.value),
                 selected: isSelected(item),
                 expanded: isExpanded(item),
-                selectable: isSelectable.value(item, index, items.value),
-                expandable: isExpandable.value(item, index, items.value),
+                selectable: isSelectable.value(item, index, displayItems.value),
+                expandable: isExpandable.value(item, index, displayItems.value),
                 showDrag: isDraggable.value,
                 showSelect: anySelectable.value,
                 showExpand: showExpand.value,
