@@ -89,6 +89,23 @@
                 }
             }
 
+            &.vs-disabled {
+                cursor: not-allowed;
+
+                .vs-step-num {
+                    box-shadow: none;
+                    border-style: dashed;
+                    border-color: var(--vs-cs-border);
+                    background-color: var(--vs-cs-surface);
+                    color: var(--vs-cs-text-tinted);
+                }
+
+                .vs-step-label {
+                    color: var(--vs-cs-text-tinted);
+                    font-style: italic;
+                }
+            }
+
             &.vs-selected {
                 .vs-step-num {
                     transition-delay: 0.15s;
@@ -136,5 +153,11 @@
                 }
             }
         }
+    }
+}
+
+@layer utilities {
+    .vs-steps .vs-step-item.vs-disabled {
+        opacity: 1 !important;
     }
 }
