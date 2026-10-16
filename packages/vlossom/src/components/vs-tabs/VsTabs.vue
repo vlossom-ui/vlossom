@@ -130,6 +130,7 @@ export default defineComponent({
         const visibleTabCount = ref(0);
 
         let resizeObserver: ResizeObserver | null = null;
+        let resizeFrame: number | null = null;
 
         const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
             $control: {
@@ -212,6 +213,10 @@ export default defineComponent({
         }
 
         function calculateVisibleTabCount() {
+            if (controls.value !== 'auto') {
+                return;
+            }
+
             const tabListSize = vertical.value ? tabsRef.value?.clientHeight : tabsRef.value?.clientWidth;
 
             if (!tabListSize) {
@@ -239,6 +244,23 @@ export default defineComponent({
             visibleTabCount.value = visibleTabsCount;
         }
 
+        function scheduleVisibleTabCountCalculation() {
+            if (controls.value !== 'auto') {
+                return;
+            }
+
+            if (resizeFrame !== null) {
+                // 예약되었지만 아직 실행되지 않은 이전 작업을 취소해 중복 계산을 방지합니다.
+                cancelAnimationFrame(resizeFrame);
+            }
+
+            // requestAnimationFrame은 예약된 작업의 ID를 반환합니다.
+            resizeFrame = requestAnimationFrame(() => {
+                resizeFrame = null;
+                calculateVisibleTabCount();
+            });
+        }
+
         function getTabActiveStyleSet(index: number): CSSProperties {
             const { $active = {} } = componentStyleSet.value.$tab ?? {};
             return isSelected(index) ? $active : {};
@@ -251,12 +273,17 @@ export default defineComponent({
 
         onMounted(() => {
             if (tabsRef.value) {
-                resizeObserver = new ResizeObserver(calculateVisibleTabCount);
+                resizeObserver = new ResizeObserver(scheduleVisibleTabCountCalculation);
                 resizeObserver.observe(tabsRef.value);
             }
         });
 
         onUnmounted(() => {
+            if (resizeFrame !== null) {
+                cancelAnimationFrame(resizeFrame);
+                resizeFrame = null;
+            }
+
             if (resizeObserver) {
                 resizeObserver.disconnect();
                 resizeObserver = null;
@@ -271,7 +298,7 @@ export default defineComponent({
 
         watch(modelValue, syncIndex, { immediate: true });
 
-        watch(tabs, calculateVisibleTabCount, { deep: true, flush: 'post' });
+        watch([tabs, controls], scheduleVisibleTabCountCalculation, { deep: true, flush: 'post' });
 
         return {
             // Style
