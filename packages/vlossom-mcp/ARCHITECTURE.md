@@ -140,18 +140,12 @@ vlossom://mcp/usage-examples
 
 ## Tests
 
-Acceptance coverage lives in `test/*.test.ts`.
+Acceptance coverage lives in `test/*.test.ts`. Tests do not call GitHub.
 
 Important checks include:
 
 - only the four core tools are registered by default
 - side-workflow tools are not registered
-- search and scaffold use registry-backed components only
-- search, reference, scaffold, and validation expose project-version support checks
-- unknown ids are rejected
-- default Vlossom-first validation reports native and third-party UI usage when Vlossom coverage exists
-- empty code is skipped, not valid
-- project setup import/options are validated
 - docs describe the same current public contract
 - build output is cleaned so removed tool modules do not remain in the package tarball
 - package source, scripts, and tests do not use authored JS files
