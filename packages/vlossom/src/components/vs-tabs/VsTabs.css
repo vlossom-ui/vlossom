@@ -4,9 +4,6 @@
     --vs-tabs-divider: initial;
 
     --tab-radius: calc(var(--vs-radius-ratio) * var(--vs-radius-md));
-    --tab-border: 1px solid transparent;
-    --tab-border-color: var(--vs-cs-border-strong);
-    --tab-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     @apply relative flex w-full items-start gap-2 select-none;
 
@@ -29,25 +26,46 @@
         .vs-tab-list {
             @apply relative m-0 flex flex-1 flex-nowrap items-center gap-1;
 
-            border-bottom: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
+            border-bottom: var(--vs-tabs-divider, 1px solid var(--vs-cs-border-strong));
 
             .vs-tab-item {
-                @apply relative flex cursor-pointer items-center justify-center bg-transparent text-center
-                    whitespace-nowrap;
+                @apply relative isolate flex cursor-pointer items-center justify-center text-center whitespace-nowrap;
 
-                transition: var(--tab-transition);
-                transition-property: border-color, background-color, color;
-                border: var(--tab-border);
-                border-bottom: transparent;
-                border-top-right-radius: var(--tab-radius);
-                border-top-left-radius: var(--tab-radius);
+                transition: color 0.2s ease;
                 padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
                 height: var(--vs-size-height, var(--vs-comp-height-md));
                 color: var(--vs-cs-text);
                 font-size: var(--vs-size-font, var(--vs-font-size-md));
 
-                &:hover:not(.vs-disabled):not(.vs-selected) {
-                    border-color: var(--tab-border-color);
+                .vs-tab-fill {
+                    @apply pointer-events-none absolute inset-0 -z-1;
+
+                    transform: scaleY(0);
+                    transform-origin: bottom;
+                    transition:
+                        transform 0.2s ease,
+                        background-color 0.2s ease;
+                    border-radius: var(--tab-radius) var(--tab-radius) 0 0;
+                    background-color: var(--vs-cs-bg-tinted);
+                }
+
+                .vs-tab-indicator {
+                    @apply pointer-events-none absolute inset-x-0 bottom-0 h-0.5;
+
+                    transform: scaleX(0);
+                    transition: transform 0.2s ease;
+                    background-color: var(--vs-cs-primary);
+                }
+
+                &:hover:not(.vs-disabled) .vs-tab-fill,
+                &.vs-selected .vs-tab-fill,
+                &.vs-selected .vs-tab-indicator {
+                    transform: none;
+                }
+
+                &.vs-selected {
+                    @apply font-bold;
+                    color: var(--vs-cs-text);
                 }
 
                 &:focus {
@@ -58,18 +76,6 @@
                     outline: 1px solid var(--vs-cs-border-strong);
                     outline-offset: -3px;
                 }
-            }
-
-            .vs-tab-indicator {
-                @apply pointer-events-none absolute z-0 h-full;
-
-                transition: var(--tab-transition);
-                border: var(--tab-border);
-                border-color: var(--tab-border-color);
-                border-bottom: transparent;
-                border-top-right-radius: var(--tab-radius);
-                border-top-left-radius: var(--tab-radius);
-                background-color: var(--vs-cs-bg-tinted);
             }
         }
     }
@@ -91,32 +97,28 @@
             .vs-tab-list {
                 @apply flex-col items-stretch;
 
-                border-right: var(--vs-tabs-divider, 1px solid var(--tab-border-color));
+                border-right: var(--vs-tabs-divider, 1px solid var(--vs-cs-border-strong));
                 border-bottom: 0;
 
                 .vs-tab-item {
                     @apply w-full justify-start text-start whitespace-normal;
 
-                    border-right: transparent;
-                    border-bottom: var(--tab-border);
-                    border-top-right-radius: 0;
-                    border-bottom-left-radius: var(--tab-radius);
-
-                    &:hover:not(.vs-disabled):not(.vs-selected) {
-                        border-right-color: var(--tab-border-color);
+                    .vs-tab-fill {
+                        transform: scaleX(0);
+                        transform-origin: right;
+                        border-radius: var(--tab-radius) 0 0 var(--tab-radius);
                     }
-                }
 
-                .vs-tab-indicator {
-                    border-right: transparent;
-                    border-bottom: var(--tab-border);
-                    border-bottom-color: var(--tab-border-color);
-                    border-top-right-radius: 0;
-                    border-top-left-radius: var(--tab-radius);
-                    border-bottom-left-radius: var(--tab-radius);
+                    .vs-tab-indicator {
+                        @apply inset-y-0 right-0 left-auto h-auto w-0.5;
+                        transform: scaleY(0);
+                    }
 
-                    width: 100%;
-                    height: auto;
+                    &:hover:not(.vs-disabled):not(.vs-selected) .vs-tab-fill,
+                    &.vs-selected .vs-tab-fill,
+                    &.vs-selected .vs-tab-indicator {
+                        transform: none;
+                    }
                 }
             }
         }
@@ -125,28 +127,17 @@
     &.vs-primary {
         .vs-tabs-wrap {
             .vs-tab-list {
-                border-bottom-color: var(--tab-border-color);
-
                 .vs-tab-item.vs-selected {
                     color: var(--vs-cs-text-primary);
-                }
 
-                .vs-tab-item.vs-selected:focus-visible:not(.vs-disabled) {
-                    outline-color: var(--vs-cs-text-primary);
-                }
+                    .vs-tab-fill {
+                        background-color: var(--vs-cs-primary);
+                    }
 
-                .vs-tab-indicator {
-                    border-color: var(--vs-cs-primary);
-                    background-color: var(--vs-cs-primary);
+                    &:focus-visible:not(.vs-disabled) {
+                        outline-color: var(--vs-cs-text-primary);
+                    }
                 }
-            }
-        }
-    }
-
-    &.vs-primary.vs-vertical {
-        .vs-tabs-wrap {
-            .vs-tab-list {
-                border-right-color: var(--tab-border-color);
             }
         }
     }

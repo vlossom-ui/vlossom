@@ -24,11 +24,10 @@
 
         <div ref="tabsRef" class="vs-tabs-wrap">
             <ul role="tablist" class="vs-tab-list" :style="componentStyleSet.$tabs">
-                <li v-if="indicatorStyle" class="vs-tab-indicator" :style="indicatorStyle" aria-hidden="true" />
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
-                    :style="getTabStyleSet(index)"
+                    :style="tabStyleSet"
                     :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
                     role="tab"
                     :aria-selected="isSelected(index)"
@@ -37,9 +36,13 @@
                     @click.stop="selectTab(index)"
                     @keydown.stop="(e) => handleKeydown(e, vertical)"
                 >
-                    <slot name="tab" :tab :index>
-                        {{ tab }}
-                    </slot>
+                    <span :style="getTabActiveStyleSet(index)" class="vs-tab-fill" aria-hidden="true" />
+                    <span class="vs-tab-label">
+                        <slot name="tab" :tab :index>
+                            {{ tab }}
+                        </slot>
+                    </span>
+                    <span :style="getTabIndicatorStyleSet(index)" class="vs-tab-indicator" aria-hidden="true" />
                 </li>
             </ul>
         </div>
@@ -70,7 +73,6 @@ import {
     watch,
     onMounted,
     onUnmounted,
-    nextTick,
     type Ref,
     type PropType,
     type ComputedRef,
@@ -78,7 +80,7 @@ import {
 } from 'vue';
 import { useColorScheme, useSizeClass, useStyleSet, useIndexSelector, useMessages } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps, getResponsiveProps } from '@/props';
-import { NOT_SELECTED, VsComponent, type Size } from '@/declaration';
+import { VsComponent, type Size } from '@/declaration';
 import { objectUtil, stringUtil } from '@/utils';
 import type { VsTabsStyleSet } from './types';
 
@@ -126,7 +128,9 @@ export default defineComponent({
 
         const tabsRef: Ref<HTMLElement | null> = ref(null);
         const visibleTabCount = ref(0);
-        const indicatorStyle = ref<Record<string, string> | null>(null);
+
+        let resizeObserver: ResizeObserver | null = null;
+        let resizeFrame: number | null = null;
 
         const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
             $control: {
@@ -177,6 +181,11 @@ export default defineComponent({
             return controls.value === 'show';
         });
 
+        const tabStyleSet = computed<CSSProperties>(() => {
+            const base = objectUtil.omit({ ...(componentStyleSet.value.$tab ?? {}) }, ['$active']);
+            return base;
+        });
+
         function getTabItems(): HTMLElement[] {
             return Array.from(tabsRef.value?.querySelectorAll<HTMLElement>(TAB_ITEM_SELECTOR) ?? []);
         }
@@ -204,6 +213,10 @@ export default defineComponent({
         }
 
         function calculateVisibleTabCount() {
+            if (controls.value !== 'auto') {
+                return;
+            }
+
             const tabListSize = vertical.value ? tabsRef.value?.clientHeight : tabsRef.value?.clientWidth;
 
             if (!tabListSize) {
@@ -231,63 +244,46 @@ export default defineComponent({
             visibleTabCount.value = visibleTabsCount;
         }
 
-        function updateIndicatorPosition() {
-            if (selectedIndex.value === NOT_SELECTED) {
-                indicatorStyle.value = null;
+        function scheduleVisibleTabCountCalculation() {
+            if (controls.value !== 'auto') {
                 return;
             }
 
-            const tabItems = getTabItems();
-            const selectedTab = tabItems[selectedIndex.value];
-            const tabList = selectedTab.parentElement;
-
-            if (!tabList || !selectedTab) {
-                indicatorStyle.value = null;
-                return;
+            if (resizeFrame !== null) {
+                // 예약되었지만 아직 실행되지 않은 이전 작업을 취소해 중복 계산을 방지합니다.
+                cancelAnimationFrame(resizeFrame);
             }
 
-            const tabRect = selectedTab.getBoundingClientRect();
-            const tabListRect = tabList.getBoundingClientRect();
-            const hasRenderedRect = tabRect.width > 0 || tabRect.height > 0;
-
-            if (vertical.value) {
-                indicatorStyle.value = {
-                    top: `${hasRenderedRect ? tabRect.top - tabListRect.top : selectedTab.offsetTop}px`,
-                    height: `${hasRenderedRect ? tabRect.height : selectedTab.offsetHeight}px`,
-                };
-            } else {
-                indicatorStyle.value = {
-                    left: `${hasRenderedRect ? tabRect.left - tabListRect.left : selectedTab.offsetLeft}px`,
-                    width: `${hasRenderedRect ? tabRect.width : selectedTab.offsetWidth}px`,
-                };
-            }
+            // requestAnimationFrame은 예약된 작업의 ID를 반환합니다.
+            resizeFrame = requestAnimationFrame(() => {
+                resizeFrame = null;
+                calculateVisibleTabCount();
+            });
         }
 
-        function handleResize() {
-            calculateVisibleTabCount();
-            updateIndicatorPosition();
+        function getTabActiveStyleSet(index: number): CSSProperties {
+            const { $active = {} } = componentStyleSet.value.$tab ?? {};
+            return isSelected(index) ? $active : {};
         }
 
-        let resizeObserver: ResizeObserver | null = null;
-
-        function getTabStyleSet(index: number): CSSProperties {
-            const { $active = {}, ...base } = componentStyleSet.value.$tab ?? {};
-            return isSelected(index) ? objectUtil.assign(base, $active) : base;
-        }
-
-        function updateTabsLayout() {
-            calculateVisibleTabCount();
-            updateIndicatorPosition();
+        function getTabIndicatorStyleSet(index: number): CSSProperties {
+            const { $indicator = {} } = componentStyleSet.value.$tab ?? {};
+            return isSelected(index) ? $indicator : {};
         }
 
         onMounted(() => {
             if (tabsRef.value) {
-                resizeObserver = new ResizeObserver(handleResize);
+                resizeObserver = new ResizeObserver(scheduleVisibleTabCountCalculation);
                 resizeObserver.observe(tabsRef.value);
             }
         });
 
         onUnmounted(() => {
+            if (resizeFrame !== null) {
+                cancelAnimationFrame(resizeFrame);
+                resizeFrame = null;
+            }
+
             if (resizeObserver) {
                 resizeObserver.disconnect();
                 resizeObserver = null;
@@ -298,14 +294,11 @@ export default defineComponent({
             scrollTo(index);
             emit('update:modelValue', index);
             emit('change', index);
-            nextTick(() => {
-                updateIndicatorPosition();
-            });
         });
 
         watch(modelValue, syncIndex, { immediate: true });
 
-        watch(tabs, updateTabsLayout, { deep: true, flush: 'post' });
+        watch([tabs, controls], scheduleVisibleTabCountCalculation, { deep: true, flush: 'post' });
 
         return {
             // Style
@@ -314,7 +307,9 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             classObj,
-            getTabStyleSet,
+            tabStyleSet,
+            getTabActiveStyleSet,
+            getTabIndicatorStyleSet,
 
             // Selection
             isSelected,
@@ -336,9 +331,6 @@ export default defineComponent({
             showControls,
             goPrev,
             goNext,
-
-            // Indicator
-            indicatorStyle,
         };
     },
 });

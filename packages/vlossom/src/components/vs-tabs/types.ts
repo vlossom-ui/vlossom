@@ -21,6 +21,7 @@ export interface VsTabsStyleSet extends CSSProperties {
     $tabs?: CSSProperties;
     $tab?: CSSProperties & {
         $active?: CSSProperties;
+        $indicator?: CSSProperties;
     };
     $control?: Omit<VsButtonStyleSet, '$loading'>;
 }
