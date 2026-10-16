@@ -27,7 +27,7 @@
                 <li
                     v-for="(tab, index) in tabs"
                     :key="tab"
-                    :style="getTabStyleSet()"
+                    :style="tabStyleSet"
                     :class="['vs-tab-item', { 'vs-selected': isSelected(index), 'vs-disabled': isDisabled(index) }]"
                     role="tab"
                     :aria-selected="isSelected(index)"
@@ -129,6 +129,8 @@ export default defineComponent({
         const tabsRef: Ref<HTMLElement | null> = ref(null);
         const visibleTabCount = ref(0);
 
+        let resizeObserver: ResizeObserver | null = null;
+
         const baseStyleSet: ComputedRef<VsTabsStyleSet> = computed(() => ({
             $control: {
                 $content: {
@@ -176,6 +178,11 @@ export default defineComponent({
                 return visibleTabCount.value < tabs.value.length;
             }
             return controls.value === 'show';
+        });
+
+        const tabStyleSet = computed<CSSProperties>(() => {
+            const base = objectUtil.omit({ ...(componentStyleSet.value.$tab ?? {}) }, ['$active']);
+            return base;
         });
 
         function getTabItems(): HTMLElement[] {
@@ -232,13 +239,6 @@ export default defineComponent({
             visibleTabCount.value = visibleTabsCount;
         }
 
-        let resizeObserver: ResizeObserver | null = null;
-        function getTabStyleSet(): CSSProperties {
-            const base = { ...(componentStyleSet.value.$tab ?? {}) };
-            delete base.$active;
-            return base;
-        }
-
         function getTabActiveStyleSet(index: number): CSSProperties {
             const { $active = {} } = componentStyleSet.value.$tab ?? {};
             return isSelected(index) ? $active : {};
@@ -280,7 +280,7 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
             classObj,
-            getTabStyleSet,
+            tabStyleSet,
             getTabActiveStyleSet,
             getTabIndicatorStyleSet,
 
