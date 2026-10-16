@@ -2,7 +2,7 @@
     <div class="vs-toast-view" :class="{ 'vs-toast-fixed': isFixed }">
         <div
             v-for="[key, toasts] in Object.entries(toastsByPosition)"
-            :key="key"
+            :key
             :class="['vs-toast-container', ...getPositionClass(key)]"
         >
             <TransitionGroup name="toasts" appear>

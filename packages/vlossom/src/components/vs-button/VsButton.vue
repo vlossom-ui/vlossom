@@ -1,7 +1,7 @@
 <template>
     <button
         ref="buttonRef"
-        :type="type"
+        :type
         :class="['vs-button', colorSchemeClass, classObj]"
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :disabled

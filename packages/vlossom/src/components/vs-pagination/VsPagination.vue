@@ -49,7 +49,7 @@
                 :size
                 @click.prevent.stop="selectIndex(page - 1)"
             >
-                <slot name="page" :page="page">
+                <slot name="page" :page>
                     {{ page }}
                 </slot>
             </vs-button>

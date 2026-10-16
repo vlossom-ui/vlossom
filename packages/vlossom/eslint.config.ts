@@ -100,6 +100,7 @@ export default defineConfigWithVueTs(
             ],
             'vue/multi-word-component-names': 'off',
             'vue/block-order': ['error', { order: ['template', 'script', 'style'] }],
+            'vue/v-bind-style': ['error', 'shorthand', { sameNameShorthand: 'always' }],
         },
     },
 );

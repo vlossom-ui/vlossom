@@ -111,10 +111,10 @@
             :options="paginationOptions"
             :page="currentPage"
             :page-size="currentPageSize"
-            :total-pages="totalPages"
-            :total-count="totalCount"
-            :page-start-index="pageStartIndex"
-            :page-end-index="pageEndIndex"
+            :total-pages
+            :total-count
+            :page-start-index
+            :page-end-index
             :color-scheme="computedColorScheme"
             :style-set="componentStyleSet"
             :size
