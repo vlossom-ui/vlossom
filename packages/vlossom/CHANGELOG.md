@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.0...vlossom-v2.2.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* **VsSteps:** change disabled step style & add animation on active step ([#701](https://github.com/vlossom-ui/vlossom/issues/701)) ([4a0fe02](https://github.com/vlossom-ui/vlossom/commit/4a0fe02d9c0be9fed21ee749425b05aa0462b18f))
+* **VsTabs:** improve tabs animation ([#702](https://github.com/vlossom-ui/vlossom/issues/702)) ([5d3ed7e](https://github.com/vlossom-ui/vlossom/commit/5d3ed7e59cfbcba866288c0fa4e2c8113698adc8))
+
 ## [2.2.0](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.1.1...vlossom-v2.2.0) (2026-10-16)
 
 
