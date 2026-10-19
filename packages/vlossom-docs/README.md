@@ -47,6 +47,7 @@ packages/vlossom-docs/
 │       ├── layers.css           # Puts the vlossom.css base layer below the VitePress styles
 │       ├── layers.test.ts
 │       ├── vars.css             # VitePress background and brand colors from the vlossom palette
+│       ├── layout.css           # Smaller page padding and wider content for the demos
 │       └── demo.css             # Demo area styles
 ├── pages/                       # Pages that only the site has
 │   ├── index.md                 # English home page (/)
@@ -123,7 +124,7 @@ To update the version:
 
 ## Styles
 
-The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The VitePress layout does not change. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
+The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. To make the demos wider, the site makes the left and right padding of the page smaller and removes the maximum width of the content. It also sets the maximum width of the layout to 1440px. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
 
 ## CI
 

@@ -1,0 +1,21 @@
+/* vlossom.css가 html 글자 크기를 15px로 바꿔서 90rem이 1350px가 되고, VitePress의 90rem(1440px) 미디어 쿼리와 어긋난다. */
+html:root {
+    --vp-layout-max-width: 1440px;
+}
+
+/* VitePress 컴포넌트의 scoped 스타일(클래스와 data-v 속성)보다 앞서도록 선택자를 길게 쓴다. */
+html .VPContent .VPDoc {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
+
+@media (min-width: 960px) {
+    html .VPDoc .content {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}
+
+html .VPDoc.has-aside .content .content-container {
+    max-width: none;
+}
