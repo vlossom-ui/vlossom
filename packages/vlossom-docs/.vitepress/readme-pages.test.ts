@@ -469,4 +469,24 @@ describe('docs site config', () => {
         expect(root.themeConfig).not.toHaveProperty('docFooter');
         expect(config.site.themeConfig).not.toHaveProperty('outline');
     });
+
+    it('검색 문구는 한국어 locale에만 한국어로 둔다', async () => {
+        const config = await resolveConfig(resolve(import.meta.dirname, '..'), 'build', 'production');
+        const { search } = config.site.themeConfig;
+
+        expect(search).toMatchObject({
+            provider: 'local',
+            options: {
+                locales: {
+                    ko: {
+                        translations: {
+                            button: { buttonText: '검색', buttonAriaLabel: '검색' },
+                            modal: { noResultsText: '검색 결과 없음', footer: { closeText: '닫기' } },
+                        },
+                    },
+                },
+            },
+        });
+        expect(search.options).not.toHaveProperty('translations');
+    });
 });

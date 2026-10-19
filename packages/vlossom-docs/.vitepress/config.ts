@@ -48,6 +48,25 @@ const KOREAN_THEME_LABELS: DefaultTheme.Config = {
     },
 };
 
+const KOREAN_SEARCH_LABELS: DefaultTheme.LocalSearchOptions['translations'] = {
+    button: { buttonText: '검색', buttonAriaLabel: '검색' },
+    modal: {
+        displayDetails: '자세한 목록 보기',
+        resetButtonTitle: '검색어 지우기',
+        backButtonTitle: '검색 닫기',
+        noResultsText: '검색 결과 없음',
+        footer: {
+            selectText: '선택',
+            selectKeyAriaLabel: 'Enter 키',
+            navigateText: '이동',
+            navigateUpKeyAriaLabel: '위쪽 화살표 키',
+            navigateDownKeyAriaLabel: '아래쪽 화살표 키',
+            closeText: '닫기',
+            closeKeyAriaLabel: 'Esc 키',
+        },
+    },
+};
+
 export default defineConfig({
     title: 'Vlossom',
     description: 'Vue 3 UI component library',
@@ -88,6 +107,7 @@ export default defineConfig({
 
     themeConfig: {
         logo: '/vlossom-logo.png',
+        search: { provider: 'local', options: { locales: { ko: { translations: KOREAN_SEARCH_LABELS } } } },
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 
