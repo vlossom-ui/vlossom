@@ -1,4 +1,4 @@
-import { relative, resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { defineConfig, postcssIsolateStyles, type DefaultTheme } from 'vitepress';
 import { DEMO_IMAGES, DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
@@ -76,12 +76,9 @@ export default defineConfig({
         publicDir: 'vlossom/assets',
         plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
         css: { postcss: { plugins: [postcssIsolateStyles({ includeFiles: [/vp-doc\.css/] })] } },
-        // vlossom은 동적 import로만 불러와서, 스캐너가 모르면 dev 서버가 첫 로드 뒤에 의존성을 다시 묶고 새로고침한다.
-        // include: ['vlossom']은 Vite root(packages/) 기준으로 풀려 워크스페이스의 packages/vlossom을 가리키므로, import하는 파일을 entries로 준다.
-        optimizeDeps: { entries: [relative(PACKAGES_DIR, VLOSSOM_RUNTIME).split(sep).join('/')] },
         resolve: {
-            // README 페이지 모듈은 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
-            // CI처럼 docs 패키지만 설치한 환경에서는 그 경로가 없어 빌드가 깨지므로 docs의 vue로 고정한다.
+            // README 페이지 모듈과 링크한 vlossom dist는 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
+            // 그쪽에 설치된 vue와 상관없이 사이트 전체가 docs의 vue 하나를 쓰도록 고정한다.
             alias: [{ find: VUE_SUBPATH, replacement: `${resolve(import.meta.dirname, '../node_modules/vue')}$1` }],
         },
     },

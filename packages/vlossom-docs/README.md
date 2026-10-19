@@ -8,8 +8,14 @@ This package is private. It is not on npm.
 
 ## Local Development
 
+The site uses the Vlossom source in this repository. Build `packages/vlossom` before you start the site.
+
 ```bash
-cd packages/vlossom-docs
+cd packages/vlossom
+pnpm install
+pnpm build-only
+
+cd ../vlossom-docs
 pnpm install
 pnpm dev
 ```
@@ -108,18 +114,13 @@ On pages with live demos, the **Vlossom options** console sets these options for
 - **Color scheme**: the default color scheme of the components (`colorScheme.default`). A demo that sets `color-scheme` keeps its own color.
 - **Style set**: a style set for each component, for example `{ VsButton: { backgroundColor: '#e11d48' } }`. Write it in the object syntax of the README examples (JSON5), then select **Apply**. The console does not run the text as code. It shows an error if the text is not an object or names a component that does not take a style set.
 
-### Vlossom Version
+### Vlossom Source
 
-The demos use the `vlossom` version that [`package.json`](package.json) pins. They do not use the workspace source. A demo can fail if the README shows a feature that the pinned version does not have.
+The demos use the Vlossom source in this repository. [`package.json`](package.json) links `vlossom` to `packages/vlossom` (`link:../vlossom`), and the site loads the build in `packages/vlossom/dist`. The site does not use a version from npm.
 
-To update the version:
-
-1. Change the `vlossom` version in `package.json`.
-2. Run `pnpm install`.
-3. Run `pnpm test`.
-4. Run `pnpm build`.
-5. Run `pnpm preview`.
-6. Examine the demo pages and a page without demos.
+- Build `packages/vlossom` before you run `pnpm dev`, `pnpm build`, or `pnpm test`. See [Local Development](#local-development).
+- After you change the Vlossom source, run `pnpm build-only` in `packages/vlossom` again. Then reload the page.
+- The deployed site follows `main`. It can show changes that are not released yet.
 
 ## Styles
 
@@ -127,14 +128,14 @@ The site uses some page styles of vlossom.css: the background color, the text co
 
 ## CI
 
-The `vlossom-docs-build` and `vlossom-docs-test` jobs in [`ci.yml`](../../.github/workflows/ci.yml) run `pnpm build` and `pnpm test` on each push.
+On each push, the `vlossom-docs-build` and `vlossom-docs-test` jobs in [`ci.yml`](../../.github/workflows/ci.yml) build `packages/vlossom`. Then they run `pnpm build` and `pnpm test`.
 
 - `vlossom-docs-build` fails if a README links to a missing README page.
-- `vlossom-docs-test` fails if a demo uses a name that nothing declares or a component that the pinned `vlossom` version does not register. Thus a live example of a new component fails until you update the pinned version after the release. See [Vlossom Version](#vlossom-version).
+- `vlossom-docs-test` fails if a demo uses a name that nothing declares or a component that Vlossom does not register.
 
 ## Deployment
 
-[`docs.yml`](../../.github/workflows/docs.yml) builds the site and deploys it to GitHub Pages. It runs on each push to `main`. You can also start it manually on `main`.
+[`docs.yml`](../../.github/workflows/docs.yml) builds `packages/vlossom` and the site. Then it deploys the site to GitHub Pages. It runs on each push to `main`. You can also start it manually on `main`.
 
 The workflow gives the Pages base path to `vitepress build --base`. Without a custom domain, the site is at [vlossom-ui.github.io/vlossom](https://vlossom-ui.github.io/vlossom/). With a custom domain, the base path is `/`. The workflow does not publish packages or make releases.
 

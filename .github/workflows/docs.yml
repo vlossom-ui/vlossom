@@ -27,8 +27,17 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'pnpm'
-                  cache-dependency-path: ./packages/vlossom-docs/pnpm-lock.yaml
-            - name: Install dependencies
+                  cache-dependency-path: |
+                      ./packages/vlossom/pnpm-lock.yaml
+                      ./packages/vlossom-docs/pnpm-lock.yaml
+            - name: Install vlossom dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install --frozen-lockfile
+            # docs는 저장소의 vlossom을 링크해서 쓰므로, 데모가 불러올 dist를 먼저 만든다.
+            - name: Build vlossom
+              working-directory: ./packages/vlossom
+              run: pnpm build-only
+            - name: Install docs dependencies
               working-directory: ./packages/vlossom-docs
               run: pnpm install --frozen-lockfile
             - name: Configure Pages
