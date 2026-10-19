@@ -18,7 +18,7 @@ Do not add temporary notes or version-specific cleanup history.
 ## Commands
 
 Run Vlossom commands from `packages/vlossom`.
-Run docs site commands from `packages/vlossom-docs`.
+Run docs site commands from `packages/vlossom-docs`. Build `packages/vlossom` first with `pnpm build-only`, because the docs site uses that build.
 Run MCP commands from `packages/vlossom-mcp`.
 
 Each package's `package.json` scripts are the source of truth for what is available.
@@ -56,6 +56,7 @@ Each package's `package.json` scripts are the source of truth for what is availa
 - Add regression tests for fixed bugs and public contract changes.
 - Avoid tests that only restate implementation structure.
 - Use the narrowest reliable check first; run broader checks for shared behavior, public API, build output, or visual contract changes.
+- Changes in `packages/vlossom` can fail `vlossom-docs-test` and `vlossom-docs-build`, because the docs site runs on the Vlossom source.
 
 ## Git
 

@@ -107,7 +107,6 @@ jobs:
             - name: Install vlossom dependencies
               working-directory: ./packages/vlossom
               run: pnpm install --frozen-lockfile
-            # docs는 저장소의 vlossom을 링크해서 쓰므로, 데모가 불러올 dist를 먼저 만든다.
             - name: Build vlossom
               working-directory: ./packages/vlossom
               run: pnpm build-only
@@ -137,7 +136,6 @@ jobs:
             - name: Install vlossom dependencies
               working-directory: ./packages/vlossom
               run: pnpm install --frozen-lockfile
-            # docs는 저장소의 vlossom을 링크해서 쓰므로, 데모가 불러올 dist를 먼저 만든다.
             - name: Build vlossom
               working-directory: ./packages/vlossom
               run: pnpm build-only

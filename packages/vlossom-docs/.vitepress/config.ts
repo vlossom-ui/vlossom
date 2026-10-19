@@ -77,8 +77,8 @@ export default defineConfig({
         plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
         css: { postcss: { plugins: [postcssIsolateStyles({ includeFiles: [/vp-doc\.css/] })] } },
         resolve: {
-            // README 페이지 모듈과 링크한 vlossom dist는 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
-            // 그쪽에 설치된 vue와 상관없이 사이트 전체가 docs의 vue 하나를 쓰도록 고정한다.
+            // README 페이지 모듈은 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
+            // CI처럼 docs 패키지만 설치한 환경에서는 그 경로가 없어 빌드가 깨지므로 docs의 vue로 고정한다.
             alias: [{ find: VUE_SUBPATH, replacement: `${resolve(import.meta.dirname, '../node_modules/vue')}$1` }],
         },
     },
