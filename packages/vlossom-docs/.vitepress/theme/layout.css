@@ -4,13 +4,13 @@ html:root {
 }
 
 /* VitePress 컴포넌트의 scoped 스타일(클래스와 data-v 속성)보다 앞서도록 선택자를 길게 쓴다. */
-html .VPContent .VPDoc {
-    padding-right: 1rem;
-    padding-left: 1rem;
-}
+@media (min-width: 60rem) {
+    html .VPContent .VPDoc {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
 
-@media (min-width: 960px) {
-    html .VPDoc .content {
+    html .VPDoc > .container > .content {
         padding-right: 1rem;
         padding-left: 1rem;
     }
