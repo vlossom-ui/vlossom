@@ -124,7 +124,7 @@ To update the version:
 
 ## Styles
 
-The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The site also changes the VitePress layout to make the live demos wider. On screens that are 960px or wider, it makes the left and right padding around the content smaller. It removes the maximum width of the content. It sets the maximum width of the layout to 1440px. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
+The site uses some page styles of vlossom.css: the background color, the text color, the font, the font size, and the scrollbar. The VitePress layout does not change. The comments in [`vlossom-css.ts`](.vitepress/vlossom-css.ts) and in the files in `theme/` explain the rules.
 
 ## CI
 
