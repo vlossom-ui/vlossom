@@ -336,7 +336,7 @@ export default defineComponent({
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(
             componentName,
             styleSet,
-            computed(() => ({ $pageSizeSelect: { minWidth: '120px' } })),
+            computed(() => ({ $pageSizeSelect: { minWidth: '8rem' } })),
         );
         const { sizeClass } = useSizeClass(size);
 
