@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, toRefs, type PropType, type ComputedRef } from 'vue';
 import { useMessages } from '@/composables';
 import type { ColorScheme, Size } from '@/declaration';
 import type { VsTablePageSizeOptions, VsTablePaginationOptions, VsTableStyleSet } from './types';
@@ -70,7 +70,9 @@ export default defineComponent({
         const { options } = toRefs(props);
         const { optionMessages, formatMessage } = useMessages();
 
-        const pageSizeOptions = computed<VsTablePageSizeOptions>(() => options.value.pageSizeOptions ?? []);
+        const pageSizeOptions: ComputedRef<VsTablePageSizeOptions> = computed(
+            () => options.value.pageSizeOptions ?? [],
+        );
 
         return { pageSizeOptions, optionMessages, formatMessage };
     },
