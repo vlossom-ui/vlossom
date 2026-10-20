@@ -1,6 +1,9 @@
 @reference 'tailwindcss';
 
 .vs-breadcrumb {
+    /* 라벨과 1em 아이콘이 함께 커지고 작아지도록 루트에서만 크기를 정하고 상속시킨다 */
+    font-size: var(--vs-font-size-md);
+
     .vs-breadcrumb-list {
         @apply flex list-none flex-wrap items-center gap-x-2 gap-y-1;
     }
@@ -13,8 +16,6 @@
     .vs-breadcrumb-link,
     .vs-breadcrumb-current {
         @apply min-w-0 truncate;
-
-        font-size: var(--vs-font-size-md);
     }
 
     .vs-breadcrumb-link,

@@ -5,7 +5,15 @@
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :aria-label="optionMessages.VS_ARIA_BREADCRUMB"
     >
-        <ol ref="listRef" class="vs-breadcrumb-list" :style="componentStyleSet.$list">
+        <!-- WebKit은 list-style이 없는 목록의 시맨틱을 버리므로 role="list"를 명시한다.
+             tabindex="-1"은 펼친 뒤 focus할 활성 항목이 없을 때의 대상이다. -->
+        <ol
+            ref="listRef"
+            class="vs-breadcrumb-list vs-focus-visible"
+            role="list"
+            tabindex="-1"
+            :style="componentStyleSet.$list"
+        >
             <!-- 같은 문자열이 반복될 수 있어 index를 key로 쓴다 -->
             <template v-for="(path, index) in paths" :key="index">
                 <!-- 접힌 구간(1 ~ lastHiddenIndex)은 첫 번째 숨김 위치에 펼치기 버튼 하나로 대신한다 -->
@@ -69,7 +77,7 @@ import { computed, defineComponent, nextTick, ref, toRefs, watch, type PropType,
 import { useColorScheme, useIndexSelector, useMessages, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
-import { logUtil } from '@/utils';
+import { logUtil, objectUtil } from '@/utils';
 import type { VsBreadcrumbStyleSet } from './types';
 
 import { ChevronRightIcon, EllipsisIcon } from '@lucide/vue';
@@ -136,14 +144,22 @@ export default defineComponent({
         const listRef: Ref<HTMLOListElement | null> = ref(null);
         const expanded = ref(false);
 
-        const isCollapsed = computed(() => {
-            if (showingLength.value === undefined || expanded.value) {
-                return false;
+        // validator는 dev 빌드에서만 돌고 null은 검사하지 않으므로, 끄기(null)와 범위 밖 값을 여기서 보정한다.
+        const visibleLength = computed(() => {
+            if (showingLength.value === undefined || showingLength.value === null) {
+                return undefined;
             }
-            return paths.value.length > showingLength.value;
+            return Math.max(2, Math.floor(showingLength.value));
         });
 
-        const lastHiddenIndex = computed(() => paths.value.length - (showingLength.value ?? paths.value.length));
+        const isCollapsed = computed(() => {
+            if (visibleLength.value === undefined || expanded.value) {
+                return false;
+            }
+            return paths.value.length > visibleLength.value;
+        });
+
+        const lastHiddenIndex = computed(() => paths.value.length - (visibleLength.value ?? paths.value.length));
 
         function isHidden(index: number): boolean {
             return isCollapsed.value && index >= 1 && index <= lastHiddenIndex.value;
@@ -152,17 +168,22 @@ export default defineComponent({
         async function expand() {
             expanded.value = true;
             await nextTick();
-            // 펼치기 버튼이 사라져 focus를 잃으므로, 숨겨졌던 첫 항목(index 1)으로 옮긴다.
-            listRef.value?.children[1]?.querySelector('button')?.focus();
+            // 펼치기 버튼이 사라져 focus를 잃으므로, index 1부터 첫 활성 항목으로 옮기고 없으면 목록으로 옮긴다.
+            const items = Array.from(listRef.value?.children ?? []).slice(1);
+            const target = items
+                .map((item) => item.querySelector<HTMLButtonElement>('.vs-breadcrumb-link:not(:disabled)'))
+                .find((button) => button !== null);
+            (target ?? listRef.value)?.focus();
         }
 
-        // 다른 경로로 바뀌면 새 경로를 다시 접는다.
+        // 내용이 다른 경로로 바뀔 때만 다시 접는다. 부모가 같은 내용의 새 배열(inline 리터럴)로 다시 렌더링해도 유지한다.
         watch(
-            paths,
-            () => {
-                expanded.value = false;
+            () => [...paths.value],
+            (next, prev) => {
+                if (!objectUtil.isEqual(next, prev)) {
+                    expanded.value = false;
+                }
             },
-            { deep: true },
         );
 
         return {
