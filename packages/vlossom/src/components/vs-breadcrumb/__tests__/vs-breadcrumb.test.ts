@@ -159,7 +159,8 @@ describe('VsBreadcrumb', () => {
 
         it('emit된 배열을 변경해도 paths prop과 다음 emit 값이 바뀌지 않아야 한다', async () => {
             // given
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+            const paths = ['Home', 'Components', 'Breadcrumb'];
+            const wrapper = mount(VsBreadcrumb, { props: { paths } });
             const button = wrapper.findAll('button.vs-breadcrumb-link')[1];
             await button.trigger('click');
             const [clicked, all] = wrapper.emitted('click-path')![0] as string[][];
@@ -170,8 +171,14 @@ describe('VsBreadcrumb', () => {
             await button.trigger('click');
 
             // then
-            expect(wrapper.props('paths')).toEqual(PATHS);
-            expect(wrapper.emitted('click-path')![1]).toEqual([['Home', 'Components'], PATHS]);
+            // 비교 기준이 prop과 같은 배열이면 참조로 넘겨도 통과하므로, 참조와 리터럴로 함께 검증한다.
+            expect(all).not.toBe(paths);
+            expect(clicked).not.toBe(paths);
+            expect(paths).toEqual(['Home', 'Components', 'Breadcrumb']);
+            expect(wrapper.emitted('click-path')![1]).toEqual([
+                ['Home', 'Components'],
+                ['Home', 'Components', 'Breadcrumb'],
+            ]);
         });
     });
 
@@ -243,6 +250,21 @@ describe('VsBreadcrumb', () => {
             // then
             expect(wrapper.findAll('button.vs-breadcrumb-link')[0].text()).toBe('Home-0-false-true');
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
+        });
+
+        it('현재 항목의 item-label 슬롯은 disabled와 관계없이 isDisabled false를 받아야 한다', () => {
+            // given
+            const disabled = vi.fn(() => true);
+
+            // when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: PATHS, disabled },
+                slots: { 'item-label': '{{ path }}-{{ isDisabled }}' },
+            });
+
+            // then
+            expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-false');
+            expect(disabled).not.toHaveBeenCalledWith('Breadcrumb', 2);
         });
 
         it('item-label 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {

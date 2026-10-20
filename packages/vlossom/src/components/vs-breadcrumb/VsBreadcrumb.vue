@@ -14,7 +14,7 @@
                 :aria-current="isCurrent(index) ? 'page' : undefined"
             >
                 <span v-if="isCurrent(index)" class="vs-breadcrumb-current" :style="componentStyleSet.$current">
-                    <slot name="item-label" :path :index :is-current="true" :is-disabled="isDisabled(index)">
+                    <slot name="item-label" :path :index :is-current="true" :is-disabled="false">
                         {{ path }}
                     </slot>
                 </span>
