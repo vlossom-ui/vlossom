@@ -81,7 +81,7 @@
 
     /* 글꼴/글자색 기본값은 행에 두고 셀은 상속한다. 그래야 행에 인라인으로 붙는 styleSet.$header가 셀 글자에 적용된다. */
     .vs-table-th {
-        @apply flex items-center;
+        @apply flex items-center gap-2;
         grid-row: 1;
         border-top: 1px solid var(--vs-cs-border);
         border-bottom: 1px solid var(--vs-cs-border);

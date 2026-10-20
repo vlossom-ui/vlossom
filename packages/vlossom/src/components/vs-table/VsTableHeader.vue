@@ -26,16 +26,14 @@
 
             <th v-for="(column, colIdx) in columns" :key="column.key" class="vs-table-th" :style="getCellStyle(column)">
                 <slot :name="getSlotName(column.key, colIdx)" :item="column" :value="column.label" :colIdx :rowIdx="0">
-                    <div>
-                        {{ column.label }}
-                        <component
-                            :is="getSortIcon(column)"
-                            v-if="column.sortable"
-                            class="vs-table-sort-icon"
-                            @click.stop="sortColumn(column.key)"
-                        />
-                    </div>
+                    {{ column.label }}
                 </slot>
+                <component
+                    :is="getSortIcon(column)"
+                    v-if="column.sortable"
+                    class="vs-table-sort-icon"
+                    @click.stop="sortColumn(column.key)"
+                />
             </th>
 
             <th v-if="showExpand" class="vs-table-th vs-table-expand-handle" :style="cellStyle" />
