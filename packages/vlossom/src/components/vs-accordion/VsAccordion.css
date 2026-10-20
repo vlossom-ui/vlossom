@@ -16,8 +16,12 @@
             active:brightness-92;
 
         background-color: var(--vs-cs-bg);
-        padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
-        min-height: var(--vs-size-height, var(--vs-comp-height-md));
+        padding-left: calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25);
+        padding-right: calc(
+            var(--vs-accordion-arrowSpacing, calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.25)) +
+                var(--vs-size-font, var(--vs-font-size-md)) + var(--vs-size-padding, var(--vs-padding-md))
+        );
+        min-height: calc(var(--vs-size-height, var(--vs-comp-height-md)) * 1.2);
         color: var(--vs-cs-text-tinted);
         font-size: var(--vs-size-font, var(--vs-font-size-md));
 
