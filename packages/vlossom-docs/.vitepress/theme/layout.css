@@ -1,0 +1,19 @@
+html:root {
+    --vp-layout-max-width: 1440px;
+}
+
+@media (min-width: 60rem) {
+    html .VPContent .VPDoc {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+
+    html .VPDoc > .container > .content {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}
+
+html .VPDoc.has-aside .content .content-container {
+    max-width: none;
+}

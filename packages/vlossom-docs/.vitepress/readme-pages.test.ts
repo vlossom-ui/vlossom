@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { createMarkdownRenderer, disposeMdItInstance, resolveConfig } from 'vitepress';
+import { createMarkdownRenderer, disposeMdItInstance, resolveConfig, resolveSiteDataByRoute } from 'vitepress';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
     readmeLinks,
@@ -95,6 +95,31 @@ const SHAKE_KO: ReadmePage = {
     name: 'vs-shake',
     locale: 'ko',
 };
+const SEARCH_LABEL_KEYS = [
+    'button.buttonAriaLabel',
+    'button.buttonText',
+    'modal.backButtonTitle',
+    'modal.displayDetails',
+    'modal.footer.closeKeyAriaLabel',
+    'modal.footer.closeText',
+    'modal.footer.navigateDownKeyAriaLabel',
+    'modal.footer.navigateText',
+    'modal.footer.navigateUpKeyAriaLabel',
+    'modal.footer.selectKeyAriaLabel',
+    'modal.footer.selectText',
+    'modal.noResultsText',
+    'modal.resetButtonTitle',
+];
+
+function leafTexts(value: unknown, prefix = ''): Record<string, string> {
+    if (typeof value === 'string') {
+        return { [prefix]: value };
+    }
+    return Object.entries(value ?? {}).reduce<Record<string, string>>(
+        (texts, [key, child]) => ({ ...texts, ...leafTexts(child, prefix ? `${prefix}.${key}` : key) }),
+        {},
+    );
+}
 
 describe('selectReadmePages', () => {
     it('섹션 단위 디렉터리의 README.md와 README.ko.md를 언어별 사이트 경로로 매핑한다', () => {
@@ -468,5 +493,30 @@ describe('docs site config', () => {
         expect(root.themeConfig).not.toHaveProperty('outline');
         expect(root.themeConfig).not.toHaveProperty('docFooter');
         expect(config.site.themeConfig).not.toHaveProperty('outline');
+    });
+
+    it('검색 문구는 한국어 페이지에만 모두 한국어로 둔다', async () => {
+        const config = await resolveConfig(resolve(import.meta.dirname, '..'), 'build', 'production');
+        const translationsAt = (relativePath: string) => {
+            const site = resolveSiteDataByRoute(config.site, relativePath);
+            const { options } = site.themeConfig.search;
+            return options.locales?.[site.localeIndex ?? 'root']?.translations ?? options.translations;
+        };
+        const korean = leafTexts(translationsAt('ko/components/vs-button.md'));
+
+        expect(Object.keys(korean).sort()).toEqual(SEARCH_LABEL_KEYS);
+        expect(Object.values(korean).filter((text) => !/[가-힣]/.test(text))).toEqual([]);
+        expect(translationsAt('components/vs-button.md')).toBeUndefined();
+    });
+
+    it('검색은 VsButton 같은 컴포넌트 이름의 낱말로도 찾는다', async () => {
+        const config = await resolveConfig(resolve(import.meta.dirname, '..'), 'build', 'production');
+        const source = String(config.site.themeConfig.search?.options?.miniSearch?.options?.tokenize);
+        // VitePress는 함수 옵션을 소스 문자열로 검색 상자에 넣으므로, 같은 방식으로 되살려 함수 밖 이름에 기대지 않는지도 확인한다.
+        const tokenize = new Function(`return (${source})`)();
+
+        expect(tokenize).toBeTypeOf('function');
+        expect(tokenize('VsButton')).toEqual(['VsButton', 'Vs', 'Button']);
+        expect(tokenize('vs-button 버튼을')).toEqual(['vs', 'button', '버튼을']);
     });
 });

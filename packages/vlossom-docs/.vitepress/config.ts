@@ -1,4 +1,4 @@
-import { relative, resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 import { defineConfig, postcssIsolateStyles, type DefaultTheme } from 'vitepress';
 import { DEMO_IMAGES, DEMO_SCOPE } from './demo-scope.ts';
 import { DemoRegistry, liveDemos } from './live-demo.ts';
@@ -48,6 +48,25 @@ const KOREAN_THEME_LABELS: DefaultTheme.Config = {
     },
 };
 
+const KOREAN_SEARCH_LABELS: DefaultTheme.LocalSearchOptions['translations'] = {
+    button: { buttonText: '검색', buttonAriaLabel: '검색' },
+    modal: {
+        displayDetails: '자세한 목록 보기',
+        resetButtonTitle: '검색어 지우기',
+        backButtonTitle: '검색 닫기',
+        noResultsText: '검색 결과 없음',
+        footer: {
+            selectText: '선택',
+            selectKeyAriaLabel: 'Enter 키',
+            navigateText: '이동',
+            navigateUpKeyAriaLabel: '위쪽 화살표 키',
+            navigateDownKeyAriaLabel: '아래쪽 화살표 키',
+            closeText: '닫기',
+            closeKeyAriaLabel: 'Esc 키',
+        },
+    },
+};
+
 export default defineConfig({
     title: 'Vlossom',
     description: 'Vue 3 UI component library',
@@ -76,18 +95,31 @@ export default defineConfig({
         publicDir: 'vlossom/assets',
         plugins: [demoRegistry.vitePlugin(), vlossomSiteStyles()],
         css: { postcss: { plugins: [postcssIsolateStyles({ includeFiles: [/vp-doc\.css/] })] } },
-        // vlossom은 동적 import로만 불러와서, 스캐너가 모르면 dev 서버가 첫 로드 뒤에 의존성을 다시 묶고 새로고침한다.
-        // include: ['vlossom']은 Vite root(packages/) 기준으로 풀려 워크스페이스의 packages/vlossom을 가리키므로, import하는 파일을 entries로 준다.
-        optimizeDeps: { entries: [relative(PACKAGES_DIR, VLOSSOM_RUNTIME).split(sep).join('/')] },
         resolve: {
             // README 페이지 모듈은 packages/vlossom 아래에 있어 bare import 'vue'를 packages/vlossom/node_modules부터 찾는다.
-            // CI처럼 docs 패키지만 설치한 환경에서는 그 경로가 없어 빌드가 깨지므로 docs의 vue로 고정한다.
             alias: [{ find: VUE_SUBPATH, replacement: `${resolve(import.meta.dirname, '../node_modules/vue')}$1` }],
         },
     },
 
     themeConfig: {
         logo: '/vlossom-logo.png',
+        search: {
+            provider: 'local',
+            options: {
+                locales: { ko: { translations: KOREAN_SEARCH_LABELS } },
+                miniSearch: {
+                    options: {
+                        // 예: 'VsButton'을 ['VsButton', 'Vs', 'Button']으로 나눠서 'button'이나 'vs-button'으로도 VsButton을 찾게 한다.
+                        // VitePress가 이 함수를 소스 문자열로 검색 상자에 넣으므로, 함수 밖의 이름을 쓰면 안 된다.
+                        tokenize: (text: string) =>
+                            text.split(/[\n\r\p{Z}\p{P}]+/u).flatMap((word) => {
+                                const parts = word.replace(/([a-z\d])([A-Z])/g, '$1 $2').split(' ');
+                                return parts.length > 1 ? [word, ...parts] : [word];
+                            }),
+                    },
+                },
+            },
+        },
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 
