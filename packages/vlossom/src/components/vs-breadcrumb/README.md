@@ -12,7 +12,7 @@ A breadcrumb component that shows the path to the current page and reports ances
 - Does not navigate by itself: clicking an ancestor emits `click-path` with the clicked path and the full path, so you decide what happens (router, new tab, in-app action)
 - Disables ancestors with a boolean or a per-item function
 - Truncates long labels with an ellipsis; limit item width with `$item.minWidth` / `$item.maxWidth`
-- Customizable item content and separator via slots, and color scheme / style set support
+- Customizable item label and separator via slots, and color scheme / style set support
 
 ## Basic Usage
 
@@ -83,7 +83,7 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 </template>
 ```
 
-### Custom Item
+### Custom Item Label
 
 ```html live
 <template>
@@ -157,5 +157,5 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 - `VsBreadcrumb` does not navigate. Handle navigation in the `click-path` handler.
 - The last item of `paths` is always the current page and is not clickable.
-- The `item-label` slot replaces only the label inside each item, so the click behavior stays.
+- The `item-label` slot replaces only the label inside each item, so the click behavior stays. Do not put links or buttons in it, because ancestor labels render inside a `<button>`.
 - Clicks on ancestor buttons do not propagate to parent elements.

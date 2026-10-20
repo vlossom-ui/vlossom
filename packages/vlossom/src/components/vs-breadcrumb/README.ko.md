@@ -12,7 +12,7 @@
 - 직접 이동하지 않음: 조상 항목을 클릭하면 클릭한 단계까지의 경로와 전체 경로로 `click-path`를 보내므로, 동작(라우터, 새 탭, 앱 내부 동작)은 사용하는 쪽이 정함
 - boolean 또는 항목별 함수로 조상 항목 비활성화
 - 긴 라벨은 말줄임으로 자르고, `$item.minWidth` / `$item.maxWidth`로 항목 폭 제한
-- 슬롯으로 항목 내용과 구분자를 커스터마이징하고, color scheme / style set 지원
+- 슬롯으로 항목 라벨과 구분자를 커스터마이징하고, color scheme / style set 지원
 
 ## 기본 사용법
 
@@ -83,7 +83,7 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 </template>
 ```
 
-### 커스텀 항목
+### 커스텀 항목 라벨
 
 ```html live
 <template>
@@ -157,5 +157,5 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 - `VsBreadcrumb`는 이동하지 않습니다. 이동은 `click-path` 핸들러에서 처리합니다.
 - `paths`의 마지막 항목은 항상 현재 페이지이며 클릭할 수 없습니다.
-- `item-label` 슬롯은 항목 안의 라벨만 바꾸므로 클릭 동작은 유지됩니다.
+- `item-label` 슬롯은 항목 안의 라벨만 바꾸므로 클릭 동작은 유지됩니다. 조상 항목의 라벨은 `<button>` 안에 렌더링되므로 슬롯 안에 링크나 버튼을 넣지 마세요.
 - 조상 항목 버튼의 클릭은 부모 요소로 전파되지 않습니다.

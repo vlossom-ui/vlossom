@@ -186,7 +186,7 @@ export const CustomSeparator: Story = {
     },
 };
 
-export const CustomItem: Story = {
+export const CustomItemLabel: Story = {
     parameters: {
         docs: {
             description: {
