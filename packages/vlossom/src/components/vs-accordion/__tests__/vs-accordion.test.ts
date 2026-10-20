@@ -351,6 +351,29 @@ describe('VsAccordion', () => {
             expect(wrapper.vm.isOpen).toBe(initialState);
             expect(wrapper.emitted()).not.toHaveProperty('toggle');
         });
+
+        it('content 내부 요소에서 Enter/Space 키를 누르면 토글되지 않아야 한다', async () => {
+            // given
+            wrapper = mount(VsAccordion, {
+                ...defaultOptions,
+                props: { modelValue: true },
+                slots: { default: '<input class="inner-input" />' },
+            });
+
+            // when
+            const input = wrapper.find('.inner-input');
+            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+            const spaceEvent = new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true });
+            input.element.dispatchEvent(enterEvent);
+            input.element.dispatchEvent(spaceEvent);
+            await wrapper.vm.$nextTick();
+
+            // then
+            expect(wrapper.vm.isOpen).toBe(true);
+            expect(wrapper.emitted()).not.toHaveProperty('toggle');
+            expect(enterEvent.defaultPrevented).toBe(false);
+            expect(spaceEvent.defaultPrevented).toBe(false);
+        });
     });
 
     describe('상태 관리', () => {
