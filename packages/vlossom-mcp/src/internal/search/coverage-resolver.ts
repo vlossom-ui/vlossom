@@ -85,7 +85,7 @@ export const UI_PATTERN_COVERAGE: UiPatternCoverage[] = [
     },
     {
         requirement: 'breadcrumb navigation',
-        keywords: ['breadcrumb', 'breadcrumbs', 'trail'],
+        keywords: ['breadcrumb', 'breadcrumb trail'],
         components: ['VsBreadcrumb'],
         alternatives: ['el-breadcrumb', 'v-breadcrumbs', 'n-breadcrumb', 'a-breadcrumb'],
     },
