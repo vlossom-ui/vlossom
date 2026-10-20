@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.1...vlossom-v2.2.2) (2026-10-20)
+
+
+### Bug Fixes
+
+* **VsAccordion:** prevent toggle on keydown from inner elements ([#716](https://github.com/vlossom-ui/vlossom/issues/716)) ([4540e4a](https://github.com/vlossom-ui/vlossom/commit/4540e4acf7761d9bbefb979000df2d8e49c6f8e6))
+* **VsTable:** page size select min-width ([#715](https://github.com/vlossom-ui/vlossom/issues/715)) ([ec1eaa1](https://github.com/vlossom-ui/vlossom/commit/ec1eaa11dd6d5d40191b1fd7c8697ebf9afa9460))
+
 ## [2.2.1](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.0...vlossom-v2.2.1) (2026-10-19)
 
 
