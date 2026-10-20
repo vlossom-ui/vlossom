@@ -254,10 +254,6 @@
         height: calc(var(--vs-size-font, var(--vs-font-size-md)) * 0.75);
     }
 
-    .vs-table-header-content {
-        @apply flex w-full items-center gap-2;
-    }
-
     /* ── Pagination ── */
     .vs-table-pagination {
         @apply flex items-center justify-between py-4;
