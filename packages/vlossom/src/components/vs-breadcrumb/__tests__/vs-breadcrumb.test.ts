@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { nextTick } from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 import { logUtil } from '@/utils';
 import VsBreadcrumb from './../VsBreadcrumb.vue';
 
@@ -81,6 +81,14 @@ describe('VsBreadcrumb', () => {
             // then
             expect(wrapper.find('nav > ol > li').exists()).toBe(true);
             expect(wrapper.find('nav').attributes('aria-label')).toBe('Breadcrumb');
+        });
+
+        it('list-style을 없앤 ol도 목록으로 읽히도록 role="list"를 가져야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+
+            // then
+            expect(wrapper.find('ol').attributes('role')).toBe('list');
         });
 
         it('aria-label 속성을 전달하면 기본값을 덮어써야 한다', () => {
@@ -335,6 +343,99 @@ describe('VsBreadcrumb', () => {
 
             // then
             expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(true);
+        });
+
+        it('부모가 같은 내용의 새 paths 배열로 다시 렌더링해도 펼친 상태를 유지해야 한다', async () => {
+            // given
+            const Parent = defineComponent({
+                components: { VsBreadcrumb },
+                setup() {
+                    const counter = ref(0);
+                    return { counter };
+                },
+                template: `
+                    <div>
+                        <span class="counter">{{ counter }}</span>
+                        <vs-breadcrumb :paths="['A', 'B', 'C', 'D', 'E', 'F']" :showing-length="3" />
+                    </div>
+                `,
+            });
+            const wrapper = mount(Parent);
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+
+            // when
+            (wrapper.vm as unknown as { counter: number }).counter++;
+            await nextTick();
+
+            // then
+            expect(wrapper.find('.counter').text()).toBe('1');
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(false);
+        });
+
+        it('펼친 뒤 첫 번째로 드러난 항목이 비활성이면 다음 활성 항목에 focus를 옮겨야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 3, disabled: (_path: string, index: number) => index === 1 },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+            await nextTick();
+
+            // then
+            expect(document.activeElement?.textContent?.trim()).toBe('C');
+
+            wrapper.unmount();
+        });
+
+        it('펼친 뒤 활성 항목이 없으면 목록에 focus를 옮겨야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 3, disabled: true },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+            await nextTick();
+
+            // then
+            expect(document.activeElement).toBe(wrapper.find('ol').element);
+
+            wrapper.unmount();
+        });
+
+        it('showingLength가 null이면 접지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: null as unknown as number },
+            });
+
+            // then
+            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(6);
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(false);
+        });
+
+        it('showingLength가 유효 범위를 벗어나도 현재 항목과 정수 index를 유지해야 한다', () => {
+            // given
+            vi.spyOn(logUtil, 'propError').mockImplementation(() => {});
+            vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            const tooSmall = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 1 },
+                slots: { separator: '{{ index }}' },
+            });
+            const fractional = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 2.5 },
+                slots: { separator: '{{ index }}' },
+            });
+
+            // then
+            expect(tooSmall.find('li[aria-current="page"]').text()).toBe('F');
+            expect(tooSmall.findAll('.vs-breadcrumb-separator').map((s) => s.text())).toEqual(['0', '4']);
+            expect(fractional.findAll('.vs-breadcrumb-separator').map((s) => s.text())).toEqual(['0', '4']);
         });
 
         it('showingLength가 2보다 작으면 prop 에러를 기록해야 한다', () => {
