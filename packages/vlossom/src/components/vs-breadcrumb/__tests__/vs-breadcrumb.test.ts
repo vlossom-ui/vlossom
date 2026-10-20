@@ -1,5 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
+import { logUtil } from '@/utils';
 import VsBreadcrumb from './../VsBreadcrumb.vue';
 
 const PATHS = ['Home', 'Components', 'Breadcrumb'];
@@ -236,6 +238,115 @@ describe('VsBreadcrumb', () => {
             const separators = wrapper.findAll('.vs-breadcrumb-separator');
             expect(separators.map((separator) => separator.text())).toEqual(['/0', '/1']);
             expect(wrapper.findAll('.vs-breadcrumb-separator svg')).toHaveLength(0);
+        });
+    });
+
+    describe('collapse', () => {
+        const LONG = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+        afterEach(() => {
+            vi.restoreAllMocks();
+        });
+
+        it('showingLength보다 항목이 많으면 첫 항목과 마지막 showingLength-1개 사이에 펼치기 버튼을 렌더링해야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 3, styleSet: { $ellipsis: { color: 'red' } } },
+            });
+
+            // then
+            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(4);
+            expect(wrapper.findAll('button.vs-breadcrumb-link').map((button) => button.text())).toEqual(['A', 'E']);
+            expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('F');
+
+            const ellipsis = wrapper.find('button.vs-breadcrumb-ellipsis');
+            expect(ellipsis.attributes('type')).toBe('button');
+            expect(ellipsis.attributes('aria-label')).toBe('show hidden paths');
+            expect(ellipsis.attributes('style')).toContain('color: red');
+        });
+
+        it('showingLength가 항목 수 이상이면 접지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS, showingLength: 3 } });
+
+            // then
+            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(3);
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(false);
+        });
+
+        it('showingLength가 없으면 항목이 많아도 접지 않아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, { props: { paths: LONG } });
+
+            // then
+            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(6);
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(false);
+        });
+
+        it('펼치기 버튼을 누르면 모든 항목을 보여주고 첫 번째로 드러난 항목에 focus를 옮겨야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 3 },
+                attachTo: document.body,
+            });
+
+            // when
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+            await nextTick();
+
+            // then
+            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(6);
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(false);
+            expect(document.activeElement?.textContent?.trim()).toBe('B');
+
+            wrapper.unmount();
+        });
+
+        it('접힌 상태에서도 click 이벤트는 원래 index 기준으로 paths를 보내야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: LONG, showingLength: 3 } });
+
+            // when
+            await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
+
+            // then
+            expect(wrapper.emitted('click')![0]).toEqual([['A', 'B', 'C', 'D', 'E'], LONG]);
+        });
+
+        it('접힌 상태에서 펼치기 버튼 뒤 separator는 마지막으로 숨겨진 항목의 index를 받아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: LONG, showingLength: 3 },
+                slots: { separator: '{{ index }}' },
+            });
+
+            // then
+            const separators = wrapper.findAll('.vs-breadcrumb-separator');
+            expect(separators.map((separator) => separator.text())).toEqual(['0', '3', '4']);
+        });
+
+        it('paths가 바뀌면 다시 접혀야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: LONG, showingLength: 3 } });
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+
+            // when
+            await wrapper.setProps({ paths: ['A', 'B', 'C', 'D', 'E', 'G'] });
+
+            // then
+            expect(wrapper.find('.vs-breadcrumb-ellipsis').exists()).toBe(true);
+        });
+
+        it('showingLength가 2보다 작으면 prop 에러를 기록해야 한다', () => {
+            // given
+            const propError = vi.spyOn(logUtil, 'propError').mockImplementation(() => {});
+            vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            // when
+            mount(VsBreadcrumb, { props: { paths: LONG, showingLength: 1 } });
+
+            // then
+            expect(propError).toHaveBeenCalledWith('VsBreadcrumb', 'showingLength', expect.any(String));
         });
     });
 

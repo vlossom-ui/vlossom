@@ -17,4 +17,5 @@ export interface VsBreadcrumbStyleSet extends CSSProperties {
     $link?: CSSProperties;
     $current?: CSSProperties;
     $separator?: CSSProperties;
+    $ellipsis?: CSSProperties;
 }

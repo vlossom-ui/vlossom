@@ -17,7 +17,8 @@
         font-size: var(--vs-font-size-md);
     }
 
-    .vs-breadcrumb-link {
+    .vs-breadcrumb-link,
+    .vs-breadcrumb-ellipsis {
         cursor: pointer;
         border: none;
         background: none;
@@ -27,6 +28,15 @@
         &:hover:not(:disabled) {
             color: var(--vs-cs-primary);
             text-decoration: underline;
+        }
+    }
+
+    .vs-breadcrumb-ellipsis {
+        @apply inline-flex shrink-0 items-center;
+
+        .vs-breadcrumb-ellipsis-icon {
+            width: 1em;
+            height: 1em;
         }
     }
 
