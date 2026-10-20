@@ -81,10 +81,6 @@
                 </vs-breadcrumb>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6 }">
-                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Collapsed</h4>
-                <vs-breadcrumb :paths="longBreadcrumbPaths" :showing-length="3" />
-            </vs-responsive>
-            <vs-responsive :grid="{ xs: 12, md: 6 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Max Width</h4>
                 <vs-breadcrumb :paths="longBreadcrumbPaths" :style-set="{ $item: { maxWidth: '6rem' } }" />
             </vs-responsive>

@@ -18,8 +18,7 @@
         @apply min-w-0 truncate;
     }
 
-    .vs-breadcrumb-link,
-    .vs-breadcrumb-ellipsis {
+    .vs-breadcrumb-link {
         @apply cursor-pointer;
 
         color: var(--vs-cs-text-tinted);
@@ -27,15 +26,6 @@
         &:hover:not(:disabled) {
             color: var(--vs-cs-primary);
             text-decoration: underline;
-        }
-    }
-
-    .vs-breadcrumb-ellipsis {
-        @apply inline-flex shrink-0 items-center;
-
-        .vs-breadcrumb-ellipsis-icon {
-            width: 1em;
-            height: 1em;
         }
     }
 

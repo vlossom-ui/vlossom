@@ -11,7 +11,6 @@ A breadcrumb component that shows the path to the current page and reports ances
 - Renders a semantic `nav > ol > li` breadcrumb from a string array; the last item is the current page (`aria-current="page"`)
 - Does not navigate by itself: clicking an ancestor emits `click-path` with the clicked path and the full path, so you decide what happens (router, new tab, in-app action)
 - Disables ancestors with a boolean or a per-item function
-- Collapses the middle of a deep path with `showingLength` and expands it with the ellipsis button
 - Truncates long labels with an ellipsis; limit item width with `$item.minWidth` / `$item.maxWidth`
 - Customizable item content and separator via slots, and color scheme / style set support
 
@@ -61,19 +60,6 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 </template>
 ```
 
-### Collapse
-
-When `paths` has more items than `showingLength`, the first item and the last `showingLength - 1` items stay visible and the rest collapse into an ellipsis button.
-
-```html live
-<template>
-    <vs-breadcrumb
-        :paths="['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb', 'Examples']"
-        :showing-length="3"
-    />
-</template>
-```
-
 ### Long Labels
 
 Labels stay on one line and are truncated with an ellipsis when there is not enough space. Set `minWidth` / `maxWidth` on `$item` to control item width.
@@ -117,7 +103,6 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 | `styleSet`      | `string \| VsBreadcrumbStyleSet`                        | -       | -        | Custom style set for the component                                           |
 | `disabled`      | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | Disables ancestor items; a boolean for all or a per-item function            |
 | `paths`         | `string[]`                                              | `[]`    | -        | Path labels from the root to the current page. The last item is the current page |
-| `showingLength` | `number`                                                | -       | -        | Number of visible items before the middle collapses (integer, 2 or more). Leave unset to never collapse |
 
 ## Types
 
@@ -128,12 +113,11 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
     $link?: CSSProperties;
     $current?: CSSProperties;
     $separator?: CSSProperties;
-    $ellipsisButton?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `$item` styles each list item (including the collapsed item), `$link` styles ancestor buttons, `$current` styles the current page label, and `$ellipsisButton` styles the expand button.
+> `$list` styles the list, `$item` styles each list item, `$link` styles ancestor buttons, `$current` styles the current page label, and `$separator` styles each separator.
 
 ### StyleSet Example
 
@@ -155,7 +139,7 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 | Event   | Payload                                       | Description                                                                                  |
 | ------- | --------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `click-path` | `(clickedPaths: string[], paths: string[])`   | Emitted when an ancestor is clicked. Not emitted for the current item, disabled items, or the expand button |
+| `click-path` | `(clickedPaths: string[], paths: string[])`   | Emitted when an ancestor is clicked. Not emitted for the current item or disabled items |
 
 ## Slots
 
@@ -174,5 +158,4 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 - `VsBreadcrumb` does not navigate. Handle navigation in the `click-path` handler.
 - The last item of `paths` is always the current page and is not clickable.
 - The `path` slot replaces only the content inside each item, so the click behavior stays.
-- Clicks on the ancestor and expand buttons do not propagate to parent elements.
-- After the ellipsis button expands the path, the path collapses again when `paths` changes.
+- Clicks on ancestor buttons do not propagate to parent elements.

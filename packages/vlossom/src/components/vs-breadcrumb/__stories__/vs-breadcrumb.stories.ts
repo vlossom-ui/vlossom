@@ -68,10 +68,6 @@ const meta: Meta<typeof VsBreadcrumb> = {
             description:
                 '조상 항목 비활성화 여부. boolean이면 전체에 적용되고, (path: string, index: number) => boolean 함수면 항목마다 조건부 적용',
         },
-        showingLength: {
-            control: 'number',
-            description: '가운데를 접기 전까지 보여줄 항목 수(2 이상의 정수)',
-        },
     },
 };
 
@@ -139,22 +135,6 @@ export const DisabledByCondition: Story = {
     args: {
         paths: ['Home', 'Components', 'Navigation', 'Breadcrumb'],
         disabled: (_path: string, index: number) => index === 0,
-    },
-};
-
-export const Collapsed: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story:
-                    'showingLength보다 항목이 많으면 첫 항목과 마지막 showingLength - 1개만 보이고 가운데는 말줄임 버튼으로 접힙니다. ' +
-                    '버튼을 누르면 모든 항목이 펼쳐집니다.',
-            },
-        },
-    },
-    args: {
-        paths: ['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb', 'Examples'],
-        showingLength: 3,
     },
 };
 
@@ -250,19 +230,17 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'styleSet prop에 스타일 객체를 직접 전달해 목록, 항목, 링크, 현재 항목, 구분자, 펼치기 버튼을 꾸밀 수 있습니다.',
+                story: 'styleSet prop에 스타일 객체를 직접 전달해 목록, 항목, 링크, 현재 항목, 구분자를 꾸밀 수 있습니다.',
             },
         },
     },
     args: {
         paths: ['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb'],
-        showingLength: 3,
         styleSet: {
             $list: { gap: '0.25rem 0.75rem' },
             $link: { color: '#e91e63' },
             $current: { color: '#880e4f', fontWeight: '700' },
             $separator: { color: '#f48fb1' },
-            $ellipsisButton: { color: '#e91e63' },
         },
     },
 };

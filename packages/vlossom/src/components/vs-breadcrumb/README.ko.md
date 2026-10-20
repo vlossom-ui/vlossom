@@ -11,7 +11,6 @@
 - 문자열 배열로 시맨틱한 `nav > ol > li` breadcrumb를 렌더링하고, 마지막 항목을 현재 페이지(`aria-current="page"`)로 표시
 - 직접 이동하지 않음: 조상 항목을 클릭하면 클릭한 단계까지의 경로와 전체 경로로 `click-path`를 보내므로, 동작(라우터, 새 탭, 앱 내부 동작)은 사용하는 쪽이 정함
 - boolean 또는 항목별 함수로 조상 항목 비활성화
-- `showingLength`로 깊은 경로의 가운데를 접고, 말줄임 버튼으로 펼침
 - 긴 라벨은 말줄임으로 자르고, `$item.minWidth` / `$item.maxWidth`로 항목 폭 제한
 - 슬롯으로 항목 내용과 구분자를 커스터마이징하고, color scheme / style set 지원
 
@@ -61,19 +60,6 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 </template>
 ```
 
-### 접기
-
-`paths`의 항목 수가 `showingLength`보다 많으면 첫 항목과 마지막 `showingLength - 1`개만 보이고, 나머지는 말줄임 버튼 하나로 접힙니다.
-
-```html live
-<template>
-    <vs-breadcrumb
-        :paths="['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb', 'Examples']"
-        :showing-length="3"
-    />
-</template>
-```
-
 ### 긴 라벨
 
 라벨은 한 줄로 표시되고, 공간이 부족하면 말줄임으로 잘립니다. `$item`의 `minWidth` / `maxWidth`로 항목 폭을 조절합니다.
@@ -117,7 +103,6 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 | `styleSet`      | `string \| VsBreadcrumbStyleSet`                        | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                              |
 | `disabled`      | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | 조상 항목 비활성화. boolean이면 전체, 함수면 항목별로 적용        |
 | `paths`         | `string[]`                                              | `[]`    | -        | 루트부터 현재 페이지까지의 경로 라벨. 마지막 항목이 현재 페이지   |
-| `showingLength` | `number`                                                | -       | -        | 가운데를 접기 전까지 보여줄 항목 수(2 이상의 정수). 지정하지 않으면 접지 않음 |
 
 ## Types
 
@@ -128,12 +113,11 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
     $link?: CSSProperties;
     $current?: CSSProperties;
     $separator?: CSSProperties;
-    $ellipsisButton?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `$item`은 각 목록 항목(접힌 항목 포함), `$link`는 조상 항목 버튼, `$current`는 현재 페이지 라벨, `$ellipsisButton`은 펼치기 버튼에 적용됩니다.
+> `$list`는 목록, `$item`은 각 목록 항목, `$link`는 조상 항목 버튼, `$current`는 현재 페이지 라벨, `$separator`는 각 구분자에 적용됩니다.
 
 ### StyleSet 사용 예시
 
@@ -155,7 +139,7 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 | Event   | Payload                                     | 설명                                                                              |
 | ------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
-| `click-path` | `(clickedPaths: string[], paths: string[])` | 조상 항목을 클릭하면 발생. 현재 항목, 비활성 항목, 펼치기 버튼에서는 발생하지 않음 |
+| `click-path` | `(clickedPaths: string[], paths: string[])` | 조상 항목을 클릭하면 발생. 현재 항목과 비활성 항목에서는 발생하지 않음 |
 
 ## Slots
 
@@ -174,5 +158,4 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 - `VsBreadcrumb`는 이동하지 않습니다. 이동은 `click-path` 핸들러에서 처리합니다.
 - `paths`의 마지막 항목은 항상 현재 페이지이며 클릭할 수 없습니다.
 - `path` 슬롯은 항목 안의 내용만 바꾸므로 클릭 동작은 유지됩니다.
-- 조상 항목 버튼과 펼치기 버튼의 클릭은 부모 요소로 전파되지 않습니다.
-- 말줄임 버튼으로 펼친 경로는 `paths`가 바뀌면 다시 접힙니다.
+- 조상 항목 버튼의 클릭은 부모 요소로 전파되지 않습니다.
