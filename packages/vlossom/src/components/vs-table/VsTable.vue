@@ -333,7 +333,11 @@ export default defineComponent({
 
         const { optionMessages } = useMessages();
         const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
-        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(componentName, styleSet);
+        const { componentStyleSet, componentInlineStyle } = useStyleSet<VsTableStyleSet>(
+            componentName,
+            styleSet,
+            computed(() => ({ $pageSizeSelect: { minWidth: '120px' } })),
+        );
         const { sizeClass } = useSizeClass(size);
 
         const searchInputRef: TemplateRef<VsSearchInputRef> = useTemplateRef('searchInputRef');
