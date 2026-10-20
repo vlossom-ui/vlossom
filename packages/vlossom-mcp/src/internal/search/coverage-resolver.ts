@@ -84,6 +84,12 @@ export const UI_PATTERN_COVERAGE: UiPatternCoverage[] = [
         alternatives: ['el-tabs', 'v-tabs', 'n-tabs', 'a-tabs'],
     },
     {
+        requirement: 'breadcrumb navigation',
+        keywords: ['breadcrumb', 'breadcrumbs', 'trail'],
+        components: ['VsBreadcrumb'],
+        alternatives: ['el-breadcrumb', 'v-breadcrumbs', 'n-breadcrumb', 'a-breadcrumb'],
+    },
+    {
         requirement: 'accordion or expandable content',
         keywords: ['accordion', 'collapse', 'expand', 'faq'],
         components: ['VsAccordion', 'VsExpandable'],
