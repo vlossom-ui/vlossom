@@ -15,7 +15,9 @@
                 :aria-current="isCurrent(index) ? 'page' : undefined"
             >
                 <span v-if="isCurrent(index)" class="vs-breadcrumb-current" :style="componentStyleSet.$current">
-                    {{ path }}
+                    <slot name="item" :path :index :is-current="true" :is-disabled="isDisabled(index)">
+                        {{ path }}
+                    </slot>
                 </span>
                 <template v-else>
                     <button
@@ -25,10 +27,14 @@
                         :disabled="isDisabled(index)"
                         @click="clickPath(index)"
                     >
-                        {{ path }}
+                        <slot name="item" :path :index :is-current="false" :is-disabled="isDisabled(index)">
+                            {{ path }}
+                        </slot>
                     </button>
                     <span class="vs-breadcrumb-separator" aria-hidden="true" :style="componentStyleSet.$separator">
-                        <ChevronRightIcon class="vs-breadcrumb-separator-icon" />
+                        <slot name="separator" :index>
+                            <ChevronRightIcon class="vs-breadcrumb-separator-icon" />
+                        </slot>
                     </span>
                 </template>
             </li>

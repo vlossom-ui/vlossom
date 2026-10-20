@@ -196,6 +196,49 @@ describe('VsBreadcrumb', () => {
         });
     });
 
+    describe('slot', () => {
+        it('item 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: PATHS, disabled: (_path: string, index: number) => index === 0 },
+                slots: {
+                    item: '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
+                },
+            });
+
+            // then
+            expect(wrapper.findAll('button.vs-breadcrumb-link')[0].text()).toBe('Home-0-false-true');
+            expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
+        });
+
+        it('item 슬롯을 사용해도 조상 항목 클릭 시 click 이벤트를 보내야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: PATHS },
+                slots: { item: '<b class="custom-item">{{ path }}</b>' },
+            });
+
+            // when
+            await wrapper.findAll('button.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
+
+            // then
+            expect(wrapper.emitted('click')![0]).toEqual([['Home'], PATHS]);
+        });
+
+        it('separator 슬롯은 기본 아이콘을 대체하고 index를 받아야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: { paths: PATHS },
+                slots: { separator: '/{{ index }}' },
+            });
+
+            // then
+            const separators = wrapper.findAll('.vs-breadcrumb-separator');
+            expect(separators.map((separator) => separator.text())).toEqual(['/0', '/1']);
+            expect(wrapper.findAll('.vs-breadcrumb-separator svg')).toHaveLength(0);
+        });
+    });
+
     describe('style', () => {
         it('colorScheme prop이 주어지면 color scheme 클래스를 적용해야 한다', () => {
             // given, when
