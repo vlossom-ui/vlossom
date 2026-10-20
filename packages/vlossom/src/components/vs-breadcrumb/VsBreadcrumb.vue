@@ -52,11 +52,7 @@
                                 {{ path }}
                             </slot>
                         </button>
-                        <span
-                            class="vs-breadcrumb-separator"
-                            aria-hidden="true"
-                            :style="componentStyleSet.$separator"
-                        >
+                        <span class="vs-breadcrumb-separator" aria-hidden="true" :style="componentStyleSet.$separator">
                             <slot name="separator" :index>
                                 <ChevronRightIcon class="vs-breadcrumb-separator-icon" />
                             </slot>
@@ -100,7 +96,11 @@ export default defineComponent({
                 // 첫 항목과 현재 항목은 항상 보여야 하므로 2개 이상이어야 한다.
                 const isValid = Number.isInteger(value) && value >= 2;
                 if (!isValid) {
-                    logUtil.propError(componentName, 'showingLength', 'showingLength must be an integer greater than 1');
+                    logUtil.propError(
+                        componentName,
+                        'showingLength',
+                        'showingLength must be an integer greater than 1',
+                    );
                 }
                 return isValid;
             },

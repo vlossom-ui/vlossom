@@ -64,7 +64,10 @@
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-breadcrumb :paths="breadcrumbPaths" @click="(clicked) => (lastBreadcrumbClick = clicked.join(' / '))" />
+                <vs-breadcrumb
+                    :paths="breadcrumbPaths"
+                    @click="(clicked) => (lastBreadcrumbClick = clicked.join(' / '))"
+                />
                 <p class="mt-2 text-sm">Clicked: {{ lastBreadcrumbClick || '-' }}</p>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
