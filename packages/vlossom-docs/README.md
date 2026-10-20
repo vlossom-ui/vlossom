@@ -32,7 +32,7 @@ pnpm dev
 ```txt
 packages/vlossom-docs/
 ├── .vitepress/
-│   ├── config.ts                # Site settings: source directory, routes, languages, logo
+│   ├── config.ts                # Site settings: source directory, routes, languages, logo, search
 │   ├── readme-pages.ts          # Finds README pages, makes the sidebar, changes README links
 │   ├── readme-pages.test.ts
 │   ├── home-pages.test.ts       # Checks the links of the home page buttons
@@ -79,6 +79,7 @@ The site reads the README files from `packages/vlossom`. It does not copy them.
 
 - A new directory with README files becomes a page. You do not change the settings. Restart `pnpm dev` after you add or remove README files.
 - The language menu opens the same page in the other language.
+- The **Search** button in the navigation bar opens the VitePress local search. The search finds headings and text in the README pages of the current language. A part of a component name also works, for example `button` for `VsButton`.
 - The site changes the relative links between README files to site links. A link to a missing README page causes an error in `pnpm build`. A link to another missing file or to a missing heading does not cause an error.
 
 ## Live Demos

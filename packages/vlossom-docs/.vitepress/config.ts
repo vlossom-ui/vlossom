@@ -48,6 +48,25 @@ const KOREAN_THEME_LABELS: DefaultTheme.Config = {
     },
 };
 
+const KOREAN_SEARCH_LABELS: DefaultTheme.LocalSearchOptions['translations'] = {
+    button: { buttonText: '검색', buttonAriaLabel: '검색' },
+    modal: {
+        displayDetails: '자세한 목록 보기',
+        resetButtonTitle: '검색어 지우기',
+        backButtonTitle: '검색 닫기',
+        noResultsText: '검색 결과 없음',
+        footer: {
+            selectText: '선택',
+            selectKeyAriaLabel: 'Enter 키',
+            navigateText: '이동',
+            navigateUpKeyAriaLabel: '위쪽 화살표 키',
+            navigateDownKeyAriaLabel: '아래쪽 화살표 키',
+            closeText: '닫기',
+            closeKeyAriaLabel: 'Esc 키',
+        },
+    },
+};
+
 export default defineConfig({
     title: 'Vlossom',
     description: 'Vue 3 UI component library',
@@ -84,6 +103,23 @@ export default defineConfig({
 
     themeConfig: {
         logo: '/vlossom-logo.png',
+        search: {
+            provider: 'local',
+            options: {
+                locales: { ko: { translations: KOREAN_SEARCH_LABELS } },
+                miniSearch: {
+                    options: {
+                        // 예: 'VsButton'을 ['VsButton', 'Vs', 'Button']으로 나눠서 'button'이나 'vs-button'으로도 VsButton을 찾게 한다.
+                        // VitePress가 이 함수를 소스 문자열로 검색 상자에 넣으므로, 함수 밖의 이름을 쓰면 안 된다.
+                        tokenize: (text: string) =>
+                            text.split(/[\n\r\p{Z}\p{P}]+/u).flatMap((word) => {
+                                const parts = word.replace(/([a-z\d])([A-Z])/g, '$1 $2').split(' ');
+                                return parts.length > 1 ? [word, ...parts] : [word];
+                            }),
+                    },
+                },
+            },
+        },
         socialLinks: [{ icon: 'github', link: 'https://github.com/vlossom-ui/vlossom' }],
     },
 

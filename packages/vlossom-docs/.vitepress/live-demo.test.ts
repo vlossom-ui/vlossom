@@ -314,6 +314,21 @@ describe('liveDemos', () => {
         expect(html).not.toContain('data:,P');
     });
 
+    it('검색 색인처럼 realPath 없이 README 경로만 받아도 데모 스코프를 채운다', async () => {
+        const registry = new DemoRegistry('C:/repo/.demos');
+        const md = await createRenderer(registry);
+        const markdown = '```html live\n<template><vs-button @click="handleClick">Click</vs-button></template>\n```';
+
+        const html = await md.renderAsync(markdown, {
+            path: resolve(srcDir, BUTTON.source),
+            relativePath: BUTTON.source,
+            cleanUrls: false,
+        });
+
+        expect(html).toContain('<VsDemo0 />');
+        expect(registry.get(registry.ids()[0])).toContain('function handleClick() {}');
+    });
+
     it('live 펜스가 있는 페이지는 frontmatter를 유지하고 liveDemos를 표시한다', async () => {
         const md = await createRenderer(new DemoRegistry('C:/repo/.demos'));
         const pageEnv = env();
