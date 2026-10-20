@@ -101,8 +101,17 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'pnpm'
-                  cache-dependency-path: ./packages/vlossom-docs/pnpm-lock.yaml
-            - name: Install dependencies
+                  cache-dependency-path: |
+                      ./packages/vlossom/pnpm-lock.yaml
+                      ./packages/vlossom-docs/pnpm-lock.yaml
+            # docs는 link:../vlossom으로 저장소의 vlossom dist를 쓰므로, docs보다 먼저 vlossom을 설치하고 빌드한다.
+            - name: Install vlossom dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install --frozen-lockfile
+            - name: Build vlossom
+              working-directory: ./packages/vlossom
+              run: pnpm build-only
+            - name: Install docs dependencies
               working-directory: ./packages/vlossom-docs
               run: pnpm install --frozen-lockfile
             - name: Build docs
@@ -122,8 +131,17 @@ jobs:
               with:
                   node-version-file: '.nvmrc'
                   cache: 'pnpm'
-                  cache-dependency-path: ./packages/vlossom-docs/pnpm-lock.yaml
-            - name: Install dependencies
+                  cache-dependency-path: |
+                      ./packages/vlossom/pnpm-lock.yaml
+                      ./packages/vlossom-docs/pnpm-lock.yaml
+            # docs는 link:../vlossom으로 저장소의 vlossom dist를 쓰므로, docs보다 먼저 vlossom을 설치하고 빌드한다.
+            - name: Install vlossom dependencies
+              working-directory: ./packages/vlossom
+              run: pnpm install --frozen-lockfile
+            - name: Build vlossom
+              working-directory: ./packages/vlossom
+              run: pnpm build-only
+            - name: Install docs dependencies
               working-directory: ./packages/vlossom-docs
               run: pnpm install --frozen-lockfile
             - name: Run tests

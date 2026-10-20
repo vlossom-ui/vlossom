@@ -10,7 +10,7 @@ const DARK = ':is(.vs-dark,.dark)';
 const SCOPED = /^:where\(\.vs-demo, body > :not\(#app\)\) /;
 const GLOBAL = /^(?:\.vs-|:root\b|:is\(\.vs-dark,\.dark\) )/;
 
-function installedCss(): string {
+function builtCss(): string {
     return readFileSync(createRequire(import.meta.url).resolve('vlossom/styles'), 'utf8');
 }
 
@@ -109,8 +109,8 @@ describe('containVlossomStyles', () => {
         );
     });
 
-    it('설치된 vlossom.css를 바꾸면 html·body에는 정한 속성만 남고 유틸리티는 한정된 범위나 vlossom 클래스에만 걸린다', () => {
-        const root = postcss.parse(containVlossomStyles(installedCss()));
+    it('빌드한 vlossom.css를 바꾸면 html·body에는 정한 속성만 남고 유틸리티는 한정된 범위나 vlossom 클래스에만 걸린다', () => {
+        const root = postcss.parse(containVlossomStyles(builtCss()));
         const leaks: string[] = [];
         const scoped: string[] = [];
 
@@ -136,10 +136,10 @@ describe('containVlossomStyles', () => {
         expect(scoped.length).toBeGreaterThan(0);
     });
 
-    it('설치된 vlossom.css를 바꾸면 모든 다크 모드 선택자가 html.dark에서도 걸린다', () => {
+    it('빌드한 vlossom.css를 바꾸면 모든 다크 모드 선택자가 html.dark에서도 걸린다', () => {
         const selectors: string[] = [];
 
-        postcss.parse(containVlossomStyles(installedCss())).walkRules((rule) => {
+        postcss.parse(containVlossomStyles(builtCss())).walkRules((rule) => {
             selectors.push(...rule.selectors);
         });
 
@@ -147,7 +147,7 @@ describe('containVlossomStyles', () => {
         expect(selectors.filter((selector) => /\.vs-dark(?![\w-])/.test(selector.replaceAll(DARK, '')))).toEqual([]);
     });
 
-    it('설치된 vlossom.css의 @import는 그대로 남는다', () => {
+    it('빌드한 vlossom.css의 @import는 그대로 남는다', () => {
         const imports = (css: string) => {
             const params: string[] = [];
             postcss.parse(css).walkAtRules('import', (rule) => {
@@ -156,7 +156,7 @@ describe('containVlossomStyles', () => {
             return params;
         };
 
-        expect(imports(containVlossomStyles(installedCss()))).toEqual(imports(installedCss()));
+        expect(imports(containVlossomStyles(builtCss()))).toEqual(imports(builtCss()));
     });
 });
 
@@ -164,8 +164,8 @@ describe('vlossomSiteStyles', () => {
     it('vlossom 패키지의 CSS에만 적용한다', () => {
         const transform = vlossomSiteStyles().transform as (code: string, id: string) => string | undefined;
 
-        expect(transform('body{position:relative}', 'C:/repo/node_modules/vlossom/dist/vlossom.css')).toBe('');
-        expect(transform('body{position:relative}', 'C:/repo/node_modules/vlossom/dist/vlossom.css?direct')).toBe('');
+        expect(transform('body{position:relative}', 'C:/repo/packages/vlossom/dist/vlossom.css')).toBe('');
+        expect(transform('body{position:relative}', 'C:/repo/packages/vlossom/dist/vlossom.css?direct')).toBe('');
         expect(transform('body{position:relative}', 'C:/repo/src/other.css')).toBeUndefined();
     });
 });

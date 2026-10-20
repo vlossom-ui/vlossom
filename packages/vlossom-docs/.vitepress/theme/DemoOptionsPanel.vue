@@ -243,7 +243,7 @@ function move(step: number): void {
         var(--vs-pink-500),
         var(--vs-red-500)
     );
-    box-shadow: 0 0 0 2px var(--vs-cs-font-primary);
+    box-shadow: 0 0 0 2px var(--vs-cs-text-primary);
 }
 
 .toggle-label {
@@ -321,7 +321,7 @@ function move(step: number): void {
 .toggle:focus-visible,
 .theme-button:focus-visible,
 .swatch:focus-visible {
-    --vs-cs-line-strong: var(--vp-c-brand-1);
+    --vs-cs-border-strong: var(--vp-c-brand-1);
     box-shadow:
         0 0 0 2px var(--vp-c-bg-elv),
         0 0 0 4px var(--vp-c-brand-1);
