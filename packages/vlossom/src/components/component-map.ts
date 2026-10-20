@@ -9,6 +9,7 @@ import VsAccordion from './vs-accordion/VsAccordion.vue';
 import VsAvatar from './vs-avatar/VsAvatar.vue';
 import VsBar from './vs-bar/VsBar.vue';
 import VsBlock from './vs-block/VsBlock.vue';
+import VsBreadcrumb from './vs-breadcrumb/VsBreadcrumb.vue';
 import VsButton from './vs-button/VsButton.vue';
 import VsCheckbox from './vs-checkbox/VsCheckbox.vue';
 import VsCheckboxSet from './vs-checkbox/VsCheckboxSet.vue';
@@ -68,6 +69,7 @@ export const VlossomComponents = {
     VsBar,
     VsButton,
     VsBlock,
+    VsBreadcrumb,
     VsCheckbox,
     VsCheckboxSet,
     VsChip,
