@@ -5,8 +5,8 @@
         :grid
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :tabindex="disabled ? -1 : 0"
-        @keydown.enter.prevent.stop="toggle"
-        @keydown.space.prevent.stop="toggle"
+        @keydown.enter.self.prevent.stop="toggle"
+        @keydown.space.self.prevent.stop="toggle"
     >
         <div class="vs-accordion-title" :style="componentStyleSet.$title" @click.stop="toggle">
             <slot name="title" />
