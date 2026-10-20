@@ -53,6 +53,7 @@ packages/vlossom-docs/
 │       ├── layers.css           # Puts the vlossom.css base layer below the VitePress styles
 │       ├── layers.test.ts
 │       ├── vars.css             # VitePress background and brand colors from the vlossom palette
+│       ├── layout.css           # Smaller page padding and wider content for the demos
 │       └── demo.css             # Demo area styles
 ├── pages/                       # Pages that only the site has
 │   ├── index.md                 # English home page (/)

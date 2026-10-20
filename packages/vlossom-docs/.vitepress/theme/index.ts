@@ -5,6 +5,7 @@ import DefaultTheme from 'vitepress/theme';
 import { h, watch } from 'vue';
 import DemoOptions from './DemoOptions.vue';
 import './demo.css';
+import './layout.css';
 import './vars.css';
 import { attachVlossom, closeVlossomModals, followVlossomTheme, syncVlossomTheme } from './vlossom.ts';
 
