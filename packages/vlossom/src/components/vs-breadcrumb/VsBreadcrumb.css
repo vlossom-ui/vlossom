@@ -20,10 +20,8 @@
 
     .vs-breadcrumb-link,
     .vs-breadcrumb-ellipsis {
-        cursor: pointer;
-        border: none;
-        background: none;
-        padding: 0;
+        @apply cursor-pointer;
+
         color: var(--vs-cs-text-tinted);
 
         &:hover:not(:disabled) {

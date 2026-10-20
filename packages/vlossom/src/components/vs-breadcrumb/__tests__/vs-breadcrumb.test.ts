@@ -124,7 +124,7 @@ describe('VsBreadcrumb', () => {
     });
 
     describe('events', () => {
-        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 전체 paths로 click 이벤트를 보내야 한다', async () => {
+        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 전체 paths로 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
@@ -132,10 +132,10 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click')![0]).toEqual([['Home', 'Components'], PATHS]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], PATHS]);
         });
 
-        it('현재 항목을 클릭하면 click 이벤트를 보내지 않아야 한다', async () => {
+        it('현재 항목을 클릭하면 click-path 이벤트를 보내지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
@@ -143,7 +143,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.find('.vs-breadcrumb-current').trigger('click');
 
             // then
-            expect(wrapper.emitted('click')).toBeUndefined();
+            expect(wrapper.emitted('click-path')).toBeUndefined();
         });
 
         it('같은 문자열이 반복돼도 클릭한 위치까지의 paths를 보내야 한다', async () => {
@@ -155,7 +155,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click')![0]).toEqual([['Docs', 'Docs'], paths]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Docs', 'Docs'], paths]);
         });
 
         it('emit된 배열을 변경해도 paths prop과 다음 emit 값이 바뀌지 않아야 한다', async () => {
@@ -163,7 +163,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
             const button = wrapper.findAll('button.vs-breadcrumb-link')[1];
             await button.trigger('click');
-            const [clicked, all] = wrapper.emitted('click')![0] as string[][];
+            const [clicked, all] = wrapper.emitted('click-path')![0] as string[][];
 
             // when
             clicked.push('X');
@@ -172,7 +172,47 @@ describe('VsBreadcrumb', () => {
 
             // then
             expect(wrapper.props('paths')).toEqual(PATHS);
-            expect(wrapper.emitted('click')![1]).toEqual([['Home', 'Components'], PATHS]);
+            expect(wrapper.emitted('click-path')![1]).toEqual([['Home', 'Components'], PATHS]);
+        });
+    });
+
+    describe('event propagation', () => {
+        function mountInClickableParent(props: Record<string, unknown>) {
+            const onParentClick = vi.fn();
+            const Parent = defineComponent({
+                components: { VsBreadcrumb },
+                setup() {
+                    return { props, onParentClick };
+                },
+                template: '<div @click="onParentClick"><vs-breadcrumb v-bind="props" /></div>',
+            });
+            return { wrapper: mount(Parent), onParentClick };
+        }
+
+        it('조상 항목 클릭은 부모 요소로 전파되지 않아야 한다', async () => {
+            // given
+            const { wrapper, onParentClick } = mountInClickableParent({ paths: PATHS });
+
+            // when
+            await wrapper.find('button.vs-breadcrumb-link').trigger('click');
+
+            // then
+            expect(onParentClick).not.toHaveBeenCalled();
+        });
+
+        it('펼치기 버튼 클릭은 부모 요소로 전파되지 않고 click-path 이벤트도 보내지 않아야 한다', async () => {
+            // given
+            const { wrapper, onParentClick } = mountInClickableParent({
+                paths: ['A', 'B', 'C', 'D', 'E', 'F'],
+                showingLength: 3,
+            });
+
+            // when
+            await wrapper.find('button.vs-breadcrumb-ellipsis').trigger('click');
+
+            // then
+            expect(onParentClick).not.toHaveBeenCalled();
+            expect(wrapper.findComponent(VsBreadcrumb).emitted('click-path')).toBeUndefined();
         });
     });
 
@@ -188,7 +228,7 @@ describe('VsBreadcrumb', () => {
             // then
             expect(buttons.every((button) => button.attributes('disabled') !== undefined)).toBe(true);
             expect(buttons.every((button) => button.classes().includes('vs-disabled'))).toBe(true);
-            expect(wrapper.emitted('click')).toBeUndefined();
+            expect(wrapper.emitted('click-path')).toBeUndefined();
         });
 
         it('disabled 함수는 (path, index)를 받아 해당 조상만 비활성화해야 한다', () => {
@@ -207,12 +247,12 @@ describe('VsBreadcrumb', () => {
     });
 
     describe('slot', () => {
-        it('item 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
+        it('path 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS, disabled: (_path: string, index: number) => index === 0 },
                 slots: {
-                    item: '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
+                    path: '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
                 },
             });
 
@@ -221,18 +261,18 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
         });
 
-        it('item 슬롯을 사용해도 조상 항목 클릭 시 click 이벤트를 보내야 한다', async () => {
+        it('path 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS },
-                slots: { item: '<b class="custom-item">{{ path }}</b>' },
+                slots: { path: '<b class="custom-item">{{ path }}</b>' },
             });
 
             // when
             await wrapper.findAll('button.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
 
             // then
-            expect(wrapper.emitted('click')![0]).toEqual([['Home'], PATHS]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Home'], PATHS]);
         });
 
         it('separator 슬롯은 기본 아이콘을 대체하고 index를 받아야 한다', () => {
@@ -259,7 +299,7 @@ describe('VsBreadcrumb', () => {
         it('showingLength보다 항목이 많으면 첫 항목과 마지막 showingLength-1개 사이에 펼치기 버튼을 렌더링해야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, {
-                props: { paths: LONG, showingLength: 3, styleSet: { $ellipsis: { color: 'red' } } },
+                props: { paths: LONG, showingLength: 3, styleSet: { $ellipsisButton: { color: 'red' } } },
             });
 
             // then
@@ -310,7 +350,7 @@ describe('VsBreadcrumb', () => {
             wrapper.unmount();
         });
 
-        it('접힌 상태에서도 click 이벤트는 원래 index 기준으로 paths를 보내야 한다', async () => {
+        it('접힌 상태에서도 click-path 이벤트는 원래 index 기준으로 paths를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: LONG, showingLength: 3 } });
 
@@ -318,7 +358,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click')![0]).toEqual([['A', 'B', 'C', 'D', 'E'], LONG]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['A', 'B', 'C', 'D', 'E'], LONG]);
         });
 
         it('접힌 상태에서 펼치기 버튼 뒤 separator는 마지막으로 숨겨진 항목의 index를 받아야 한다', () => {

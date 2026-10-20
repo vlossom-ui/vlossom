@@ -9,7 +9,7 @@ A breadcrumb component that shows the path to the current page and reports ances
 ## Feature
 
 - Renders a semantic `nav > ol > li` breadcrumb from a string array; the last item is the current page (`aria-current="page"`)
-- Does not navigate by itself: clicking an ancestor emits `click` with the clicked path and the full path, so you decide what happens (router, new tab, in-app action)
+- Does not navigate by itself: clicking an ancestor emits `click-path` with the clicked path and the full path, so you decide what happens (router, new tab, in-app action)
 - Disables ancestors with a boolean or a per-item function
 - Collapses the middle of a deep path with `showingLength` and expands it with the ellipsis button
 - Truncates long labels with an ellipsis; limit item width with `$item.minWidth` / `$item.maxWidth`
@@ -19,7 +19,7 @@ A breadcrumb component that shows the path to the current page and reports ances
 
 ```html live
 <template>
-    <vs-breadcrumb :paths="paths" @click="onClick" />
+    <vs-breadcrumb :paths="paths" @click-path="onClick" />
     <p>Clicked: {{ clicked }}</p>
 </template>
 
@@ -37,11 +37,11 @@ function onClick(clickedPaths) {
 
 ### With a Router
 
-`VsBreadcrumb` does not depend on `vue-router`. Keep the route of each path yourself and navigate in the `click` handler.
+`VsBreadcrumb` does not depend on `vue-router`. Keep the route of each path yourself and navigate in the `click-path` handler.
 
 ```html
 <template>
-    <vs-breadcrumb :paths="paths" @click="(clickedPaths) => router.push(routes[clickedPaths.length - 1])" />
+    <vs-breadcrumb :paths="paths" @click-path="(clickedPaths) => router.push(routes[clickedPaths.length - 1])" />
 </template>
 
 <script setup>
@@ -102,7 +102,7 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 ```html live
 <template>
     <vs-breadcrumb :paths="['Home', 'Components', 'Breadcrumb']">
-        <template #item="{ path, isCurrent }">
+        <template #path="{ path, isCurrent }">
             <span :style="{ textTransform: isCurrent ? 'uppercase' : 'none' }">{{ path }}</span>
         </template>
     </vs-breadcrumb>
@@ -117,7 +117,7 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 | `styleSet`      | `string \| VsBreadcrumbStyleSet`                        | -       | -        | Custom style set for the component                                           |
 | `disabled`      | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | Disables ancestor items; a boolean for all or a per-item function            |
 | `paths`         | `string[]`                                              | `[]`    | -        | Path labels from the root to the current page. The last item is the current page |
-| `showingLength` | `number`                                                | -       | -        | Number of visible items before the middle collapses (integer, 2 or more)    |
+| `showingLength` | `number`                                                | -       | -        | Number of visible items before the middle collapses (integer, 2 or more). Leave unset to never collapse |
 
 ## Types
 
@@ -128,12 +128,12 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
     $link?: CSSProperties;
     $current?: CSSProperties;
     $separator?: CSSProperties;
-    $ellipsis?: CSSProperties;
+    $ellipsisButton?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `$item` styles each list item (including the collapsed item), `$link` styles ancestor buttons, `$current` styles the current page label, and `$ellipsis` styles the expand button.
+> `$item` styles each list item (including the collapsed item), `$link` styles ancestor buttons, `$current` styles the current page label, and `$ellipsisButton` styles the expand button.
 
 ### StyleSet Example
 
@@ -155,13 +155,13 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 | Event   | Payload                                       | Description                                                                                  |
 | ------- | --------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `click` | `(clickedPaths: string[], paths: string[])`   | Emitted when an ancestor is clicked. Not emitted for the current item, disabled items, or the expand button |
+| `click-path` | `(clickedPaths: string[], paths: string[])`   | Emitted when an ancestor is clicked. Not emitted for the current item, disabled items, or the expand button |
 
 ## Slots
 
 | Slot        | Description                                                                                 |
 | ----------- | ------------------------------------------------------------------------------------------- |
-| `item`      | Content of each item; receives `{ path, index, isCurrent, isDisabled }`                     |
+| `path`      | Content of each item; receives `{ path, index, isCurrent, isDisabled }`                     |
 | `separator` | Separator after each item; receives `{ index }` (the index of the item before the separator) |
 
 ## Methods
@@ -171,7 +171,8 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 ## Caution
 
-- `VsBreadcrumb` does not navigate. Handle navigation in the `click` handler.
+- `VsBreadcrumb` does not navigate. Handle navigation in the `click-path` handler.
 - The last item of `paths` is always the current page and is not clickable.
-- The `item` slot replaces only the content inside each item, so the click behavior stays.
+- The `path` slot replaces only the content inside each item, so the click behavior stays.
+- Clicks on the ancestor and expand buttons do not propagate to parent elements.
 - After the ellipsis button expands the path, the path collapses again when `paths` changes.

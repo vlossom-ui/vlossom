@@ -23,7 +23,7 @@ const meta: Meta<typeof VsBreadcrumb> = {
         docs: {
             description: {
                 component:
-                    'VsBreadcrumb는 현재 페이지까지의 경로를 보여주는 breadcrumb 컴포넌트입니다. 직접 이동하지 않고, 조상 항목 클릭을 click 이벤트로 알립니다.',
+                    'VsBreadcrumb는 현재 페이지까지의 경로를 보여주는 breadcrumb 컴포넌트입니다. 직접 이동하지 않고, 조상 항목 클릭을 click-path 이벤트로 알립니다.',
             },
         },
     },
@@ -49,7 +49,7 @@ const meta: Meta<typeof VsBreadcrumb> = {
         },
         template: `
             <div>
-                <vs-breadcrumb v-bind="args" @click="onClick" />
+                <vs-breadcrumb v-bind="args" @click-path="onClick" />
                 <div style="margin-top: 2rem; padding: 1rem; background-color: #f5f5f5; border-radius: 4px;">
                     <p style="margin: 0;">클릭한 경로: <strong>{{ clicked }}</strong></p>
                 </div>
@@ -82,7 +82,7 @@ export const Default: Story = {
     parameters: {
         docs: {
             description: {
-                story: '기본 breadcrumb입니다. 조상 항목을 클릭하면 클릭한 단계까지의 경로가 click 이벤트로 전달됩니다.',
+                story: '기본 breadcrumb입니다. 조상 항목을 클릭하면 클릭한 단계까지의 경로가 click-path 이벤트로 전달됩니다.',
             },
         },
     },
@@ -210,7 +210,7 @@ export const CustomItem: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'item 슬롯으로 항목 내용을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
+                story: 'path 슬롯으로 항목 내용을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
             },
         },
     },
@@ -221,7 +221,7 @@ export const CustomItem: Story = {
         },
         template: `
             <vs-breadcrumb v-bind="args">
-                <template #item="{ path, index, isCurrent }">
+                <template #path="{ path, index, isCurrent }">
                     <span :style="{ fontStyle: isCurrent ? 'normal' : 'italic' }">{{ index + 1 }}. {{ path }}</span>
                 </template>
             </vs-breadcrumb>
@@ -262,7 +262,7 @@ export const StyleSet: Story = {
             $link: { color: '#e91e63' },
             $current: { color: '#880e4f', fontWeight: '700' },
             $separator: { color: '#f48fb1' },
-            $ellipsis: { color: '#e91e63' },
+            $ellipsisButton: { color: '#e91e63' },
         },
     },
 };

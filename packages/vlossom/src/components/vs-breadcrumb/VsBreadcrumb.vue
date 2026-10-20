@@ -3,10 +3,8 @@
         v-if="paths.length > 0"
         :class="['vs-breadcrumb', colorSchemeClass]"
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
-        :aria-label="optionMessages.VS_ARIA_BREADCRUMB"
+        :aria-label="optionMessages.VS_ARIA_BREADCRUMB_LABEL"
     >
-        <!-- WebKit은 list-style이 없는 목록의 시맨틱을 버리므로 role="list"를 명시한다.
-             tabindex="-1"은 펼친 뒤 focus할 활성 항목이 없을 때의 대상이다. -->
         <ol
             ref="listRef"
             class="vs-breadcrumb-list vs-focus-visible"
@@ -14,9 +12,7 @@
             tabindex="-1"
             :style="componentStyleSet.$list"
         >
-            <!-- 같은 문자열이 반복될 수 있어 index를 key로 쓴다 -->
             <template v-for="(path, index) in paths" :key="index">
-                <!-- 접힌 구간(1 ~ lastHiddenIndex)은 첫 번째 숨김 위치에 펼치기 버튼 하나로 대신한다 -->
                 <li
                     v-if="isCollapsed && index === 1"
                     class="vs-breadcrumb-item vs-breadcrumb-collapsed"
@@ -25,9 +21,9 @@
                     <button
                         type="button"
                         class="vs-breadcrumb-ellipsis vs-focus-visible"
-                        :style="componentStyleSet.$ellipsis"
+                        :style="componentStyleSet.$ellipsisButton"
                         :aria-label="optionMessages.VS_ARIA_BREADCRUMB_EXPAND"
-                        @click="expand"
+                        @click.stop="expand"
                     >
                         <EllipsisIcon class="vs-breadcrumb-ellipsis-icon" />
                     </button>
@@ -44,19 +40,22 @@
                     :aria-current="isCurrent(index) ? 'page' : undefined"
                 >
                     <span v-if="isCurrent(index)" class="vs-breadcrumb-current" :style="componentStyleSet.$current">
-                        <slot name="item" :path :index :is-current="true" :is-disabled="isDisabled(index)">
+                        <slot name="path" :path :index :is-current="true" :is-disabled="isDisabled(index)">
                             {{ path }}
                         </slot>
                     </span>
                     <template v-else>
                         <button
                             type="button"
-                            :class="['vs-breadcrumb-link', 'vs-focus-visible', { 'vs-disabled': isDisabled(index) }]"
+                            :class="[
+                                'vs-breadcrumb-link',
+                                { 'vs-focus-visible': !isDisabled(index), 'vs-disabled': isDisabled(index) },
+                            ]"
                             :style="componentStyleSet.$link"
                             :disabled="isDisabled(index)"
-                            @click="clickPath(index)"
+                            @click.stop="clickPath(index)"
                         >
-                            <slot name="item" :path :index :is-current="false" :is-disabled="isDisabled(index)">
+                            <slot name="path" :path :index :is-current="false" :is-disabled="isDisabled(index)">
                                 {{ path }}
                             </slot>
                         </button>
@@ -76,13 +75,14 @@
 import { computed, defineComponent, nextTick, ref, toRefs, watch, type PropType, type Ref } from 'vue';
 import { useColorScheme, useIndexSelector, useMessages, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
-import { VsComponent } from '@/declaration';
+import { NOT_SELECTED, VsComponent } from '@/declaration';
 import { logUtil, objectUtil } from '@/utils';
 import type { VsBreadcrumbStyleSet } from './types';
 
 import { ChevronRightIcon, EllipsisIcon } from '@lucide/vue';
 
 const componentName = VsComponent.VsBreadcrumb;
+const LINK_SELECTOR = '.vs-breadcrumb-link';
 
 export default defineComponent({
     name: componentName,
@@ -114,7 +114,7 @@ export default defineComponent({
             },
         },
     },
-    emits: ['click'],
+    emits: ['click-path'],
     setup(props, { emit }) {
         const { optionMessages } = useMessages();
         const { colorScheme, styleSet, disabled, paths, showingLength } = toRefs(props);
@@ -126,7 +126,7 @@ export default defineComponent({
         );
 
         // disabled(boolean | 함수) 판정 규칙을 VsTabs/VsSteps와 공유하려고 재사용한다. 선택 상태는 쓰지 않는다.
-        const { isDisabled } = useIndexSelector(paths, disabled);
+        const { isDisabled, findActiveIndexForwardFrom } = useIndexSelector(paths, disabled);
 
         function isCurrent(index: number): boolean {
             return index === paths.value.length - 1;
@@ -138,9 +138,10 @@ export default defineComponent({
             }
 
             // 핸들러가 받은 배열을 바꿔도 paths prop에 영향이 없도록 새 배열로 넘긴다.
-            emit('click', paths.value.slice(0, index + 1), [...paths.value]);
+            emit('click-path', paths.value.slice(0, index + 1), [...paths.value]);
         }
 
+        // ol은 펼친 뒤 focus할 활성 항목이 없을 때의 대상(tabindex="-1")이고, WebKit이 list-style 없는 목록의 시맨틱을 버려 role="list"를 둔다.
         const listRef: Ref<HTMLOListElement | null> = ref(null);
         const expanded = ref(false);
 
@@ -161,6 +162,7 @@ export default defineComponent({
 
         const lastHiddenIndex = computed(() => paths.value.length - (visibleLength.value ?? paths.value.length));
 
+        // 접힌 구간(1 ~ lastHiddenIndex)은 템플릿에서 index 1 자리의 펼치기 버튼 하나로 대신한다.
         function isHidden(index: number): boolean {
             return isCollapsed.value && index >= 1 && index <= lastHiddenIndex.value;
         }
@@ -168,11 +170,12 @@ export default defineComponent({
         async function expand() {
             expanded.value = true;
             await nextTick();
-            // 펼치기 버튼이 사라져 focus를 잃으므로, index 1부터 첫 활성 항목으로 옮기고 없으면 목록으로 옮긴다.
-            const items = Array.from(listRef.value?.children ?? []).slice(1);
-            const target = items
-                .map((item) => item.querySelector<HTMLButtonElement>('.vs-breadcrumb-link:not(:disabled)'))
-                .find((button) => button !== null);
+            // 펼치기 버튼이 사라져 focus를 잃으므로, index 1부터 첫 활성 조상으로 옮기고 없으면 목록으로 옮긴다.
+            const targetIndex = findActiveIndexForwardFrom(1);
+            const target =
+                targetIndex !== NOT_SELECTED && !isCurrent(targetIndex)
+                    ? listRef.value?.children[targetIndex]?.querySelector<HTMLElement>(LINK_SELECTOR)
+                    : null;
             (target ?? listRef.value)?.focus();
         }
 
