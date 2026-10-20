@@ -27,6 +27,7 @@ export const DEFAULT_MESSAGES = {
     VS_ARIA_CHIP_CLOSE: 'close',
     VS_ARIA_TEXT_WRAP_COPY: 'copy',
     VS_ARIA_TEXT_WRAP_LINK: 'link',
+    VS_ARIA_BREADCRUMB: 'Breadcrumb',
     VS_ARIA_PAGINATION_FIRST: 'go to first page',
     VS_ARIA_PAGINATION_PREVIOUS: 'go to previous page',
     VS_ARIA_PAGINATION_PAGE: ({ page }: MessageParams) => `go to page ${page}`,
