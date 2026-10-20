@@ -87,7 +87,6 @@ export const SYNONYM_MAP: Record<string, string[]> = {
     separator: ['divider'],
     splitter: ['divider', 'layout'],
     backdrop: ['dimmed'],
-    breadcrumb: ['steps', 'header'],
     loader: ['loading', 'skeleton'],
     preloader: ['loading', 'skeleton'],
     'pre-loader': ['loading', 'skeleton'],
