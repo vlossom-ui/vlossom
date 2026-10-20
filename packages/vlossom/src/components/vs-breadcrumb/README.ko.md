@@ -88,7 +88,7 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 ```html live
 <template>
     <vs-breadcrumb :paths="['Home', 'Components', 'Breadcrumb']">
-        <template #path="{ path, isCurrent }">
+        <template #item-label="{ path, isCurrent }">
             <span :style="{ textTransform: isCurrent ? 'uppercase' : 'none' }">{{ path }}</span>
         </template>
     </vs-breadcrumb>
@@ -145,7 +145,7 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 | Slot        | 설명                                                                       |
 | ----------- | -------------------------------------------------------------------------- |
-| `path`      | 각 항목의 내용. `{ path, index, isCurrent, isDisabled }` 수신              |
+| `item-label` | 각 항목 안의 라벨(조상 항목 버튼 또는 현재 페이지 라벨). `{ path, index, isCurrent, isDisabled }` 수신 |
 | `separator` | 각 항목 뒤의 구분자. `{ index }`(구분자 앞 항목의 index) 수신              |
 
 ## Methods
@@ -157,5 +157,5 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 - `VsBreadcrumb`는 이동하지 않습니다. 이동은 `click-path` 핸들러에서 처리합니다.
 - `paths`의 마지막 항목은 항상 현재 페이지이며 클릭할 수 없습니다.
-- `path` 슬롯은 항목 안의 내용만 바꾸므로 클릭 동작은 유지됩니다.
+- `item-label` 슬롯은 항목 안의 라벨만 바꾸므로 클릭 동작은 유지됩니다.
 - 조상 항목 버튼의 클릭은 부모 요소로 전파되지 않습니다.

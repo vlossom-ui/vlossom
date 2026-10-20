@@ -190,7 +190,7 @@ export const CustomItem: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'path 슬롯으로 항목 내용을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
+                story: 'item-label 슬롯으로 항목 라벨을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
             },
         },
     },
@@ -201,7 +201,7 @@ export const CustomItem: Story = {
         },
         template: `
             <vs-breadcrumb v-bind="args">
-                <template #path="{ path, index, isCurrent }">
+                <template #item-label="{ path, index, isCurrent }">
                     <span :style="{ fontStyle: isCurrent ? 'normal' : 'italic' }">{{ index + 1 }}. {{ path }}</span>
                 </template>
             </vs-breadcrumb>

@@ -231,12 +231,12 @@ describe('VsBreadcrumb', () => {
     });
 
     describe('slot', () => {
-        it('path 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
+        it('item-label 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS, disabled: (_path: string, index: number) => index === 0 },
                 slots: {
-                    path: '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
+                    'item-label': '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
                 },
             });
 
@@ -245,11 +245,11 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
         });
 
-        it('path 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {
+        it('item-label 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS },
-                slots: { path: '<b class="custom-item">{{ path }}</b>' },
+                slots: { 'item-label': '<b class="custom-item">{{ path }}</b>' },
             });
 
             // when
