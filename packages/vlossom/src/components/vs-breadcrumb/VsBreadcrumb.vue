@@ -20,8 +20,10 @@
                 <template v-else>
                     <button
                         type="button"
-                        class="vs-breadcrumb-link vs-focus-visible"
+                        :class="['vs-breadcrumb-link', 'vs-focus-visible', { 'vs-disabled': isDisabled(index) }]"
                         :style="componentStyleSet.$link"
+                        :disabled="isDisabled(index)"
+                        @click="clickPath(index)"
                     >
                         {{ path }}
                     </button>
@@ -36,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, type PropType } from 'vue';
-import { useColorScheme, useMessages, useStyleSet } from '@/composables';
+import { useColorScheme, useIndexSelector, useMessages, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import type { VsBreadcrumbStyleSet } from './types';
@@ -51,14 +53,19 @@ export default defineComponent({
     props: {
         ...getColorSchemeProps(),
         ...getStyleSetProps<VsBreadcrumbStyleSet>(),
+        disabled: {
+            type: [Boolean, Function] as PropType<boolean | ((path: string, index: number) => boolean)>,
+            default: false,
+        },
         paths: {
             type: Array as PropType<string[]>,
             default: () => [],
         },
     },
-    setup(props) {
+    emits: ['click'],
+    setup(props, { emit }) {
         const { optionMessages } = useMessages();
-        const { colorScheme, styleSet, paths } = toRefs(props);
+        const { colorScheme, styleSet, disabled, paths } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
         const { componentStyleSet, styleSetVariables, componentInlineStyle } = useStyleSet<VsBreadcrumbStyleSet>(
@@ -66,8 +73,20 @@ export default defineComponent({
             styleSet,
         );
 
+        // disabled(boolean | 함수) 판정 규칙을 VsTabs/VsSteps와 공유하려고 재사용한다. 선택 상태는 쓰지 않는다.
+        const { isDisabled } = useIndexSelector(paths, disabled);
+
         function isCurrent(index: number): boolean {
             return index === paths.value.length - 1;
+        }
+
+        function clickPath(index: number) {
+            if (isCurrent(index) || isDisabled(index)) {
+                return;
+            }
+
+            // 핸들러가 받은 배열을 바꿔도 paths prop에 영향이 없도록 새 배열로 넘긴다.
+            emit('click', paths.value.slice(0, index + 1), [...paths.value]);
         }
 
         return {
@@ -79,7 +98,11 @@ export default defineComponent({
 
             // State
             isCurrent,
+            isDisabled,
             optionMessages,
+
+            // Actions
+            clickPath,
         };
     },
 });

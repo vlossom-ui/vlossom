@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import VsBreadcrumb from './../VsBreadcrumb.vue';
 
@@ -110,6 +110,89 @@ describe('VsBreadcrumb', () => {
             // then
             const separators = wrapper.findAll('.vs-breadcrumb-separator');
             expect(separators.every((separator) => separator.attributes('aria-hidden') === 'true')).toBe(true);
+        });
+    });
+
+    describe('events', () => {
+        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 전체 paths로 click 이벤트를 보내야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+
+            // when
+            await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
+
+            // then
+            expect(wrapper.emitted('click')![0]).toEqual([['Home', 'Components'], PATHS]);
+        });
+
+        it('현재 항목을 클릭하면 click 이벤트를 보내지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+
+            // when
+            await wrapper.find('.vs-breadcrumb-current').trigger('click');
+
+            // then
+            expect(wrapper.emitted('click')).toBeUndefined();
+        });
+
+        it('같은 문자열이 반복돼도 클릭한 위치까지의 paths를 보내야 한다', async () => {
+            // given
+            const paths = ['Docs', 'Docs', 'Intro'];
+            const wrapper = mount(VsBreadcrumb, { props: { paths } });
+
+            // when
+            await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
+
+            // then
+            expect(wrapper.emitted('click')![0]).toEqual([['Docs', 'Docs'], paths]);
+        });
+
+        it('emit된 배열을 변경해도 paths prop과 다음 emit 값이 바뀌지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+            const button = wrapper.findAll('button.vs-breadcrumb-link')[1];
+            await button.trigger('click');
+            const [clicked, all] = wrapper.emitted('click')![0] as string[][];
+
+            // when
+            clicked.push('X');
+            all.push('Y');
+            await button.trigger('click');
+
+            // then
+            expect(wrapper.props('paths')).toEqual(PATHS);
+            expect(wrapper.emitted('click')![1]).toEqual([['Home', 'Components'], PATHS]);
+        });
+    });
+
+    describe('disabled', () => {
+        it('disabled가 true면 모든 조상 버튼이 비활성화되고 클릭해도 이벤트를 보내지 않아야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS, disabled: true } });
+            const buttons = wrapper.findAll('button.vs-breadcrumb-link');
+
+            // when
+            await buttons[0].trigger('click');
+
+            // then
+            expect(buttons.every((button) => button.attributes('disabled') !== undefined)).toBe(true);
+            expect(buttons.every((button) => button.classes().includes('vs-disabled'))).toBe(true);
+            expect(wrapper.emitted('click')).toBeUndefined();
+        });
+
+        it('disabled 함수는 (path, index)를 받아 해당 조상만 비활성화해야 한다', () => {
+            // given
+            const disabled = vi.fn((_path: string, index: number) => index === 0);
+
+            // when
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS, disabled } });
+
+            // then
+            const buttons = wrapper.findAll('button.vs-breadcrumb-link');
+            expect(buttons[0].attributes('disabled')).toBeDefined();
+            expect(buttons[1].attributes('disabled')).toBeUndefined();
+            expect(disabled).toHaveBeenCalledWith('Home', 0);
         });
     });
 
