@@ -1,0 +1,49 @@
+@reference 'tailwindcss';
+
+.vs-breadcrumb {
+    .vs-breadcrumb-list {
+        @apply flex list-none flex-wrap items-center gap-x-2 gap-y-1;
+    }
+
+    .vs-breadcrumb-item {
+        /* min-width: auto 무력화: $item maxWidth나 좁은 컨테이너에서 라벨이 말줄임되도록 줄어들게 한다 */
+        @apply inline-flex min-w-0 items-center gap-2;
+    }
+
+    .vs-breadcrumb-link,
+    .vs-breadcrumb-current {
+        @apply min-w-0 truncate;
+
+        font-size: var(--vs-font-size-md);
+    }
+
+    .vs-breadcrumb-link {
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        color: var(--vs-cs-text-tinted);
+
+        &:hover:not(:disabled) {
+            color: var(--vs-cs-primary);
+            text-decoration: underline;
+        }
+    }
+
+    .vs-breadcrumb-current {
+        @apply font-semibold;
+
+        color: var(--vs-cs-text);
+    }
+
+    .vs-breadcrumb-separator {
+        @apply inline-flex shrink-0 items-center;
+
+        color: var(--vs-cs-text-tinted);
+
+        .vs-breadcrumb-separator-icon {
+            width: 1em;
+            height: 1em;
+        }
+    }
+}
