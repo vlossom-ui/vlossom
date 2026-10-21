@@ -21,10 +21,8 @@
                 <template v-else>
                     <button
                         type="button"
-                        :class="[
-                            'vs-breadcrumb-link',
-                            { 'vs-focus-visible': !isDisabled(index), 'vs-disabled': isDisabled(index) },
-                        ]"
+                        class="vs-breadcrumb-link"
+                        :class="isDisabled(index) ? 'vs-disabled' : 'vs-focus-visible'"
                         :style="componentStyleSet.$link"
                         :disabled="isDisabled(index)"
                         @click.stop="clickPath(index)"
@@ -104,13 +102,15 @@ export default defineComponent({
             styleSetVariables,
             componentInlineStyle,
 
-            // State
+            // Item State
             isCurrent,
             isDisabled,
-            optionMessages,
 
             // Actions
             clickPath,
+
+            // Messages
+            optionMessages,
         };
     },
 });

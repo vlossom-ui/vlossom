@@ -9,7 +9,7 @@
     }
 
     .vs-breadcrumb-item {
-        /* min-width: auto 무력화: $item maxWidth나 좁은 컨테이너에서 라벨이 말줄임되도록 줄어들게 한다 */
+        /* item과 라벨이 모두 min-w-0이어야 좁은 공간이나 $item maxWidth에서 라벨이 말줄임된다 */
         @apply inline-flex min-w-0 items-center gap-2;
     }
 
