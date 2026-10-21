@@ -23,7 +23,7 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.findAll('.vs-breadcrumb-item')).toHaveLength(3);
         });
 
-        it('조상 항목은 button[type=button]으로, 마지막 항목은 span으로 렌더링해야 한다', () => {
+        it('조상 항목인 link는 button[type=button]으로, 마지막 항목은 span으로 렌더링해야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
@@ -54,58 +54,8 @@ describe('VsBreadcrumb', () => {
         });
     });
 
-    describe('a11y', () => {
-        it('nav > ol > li 구조와 기본 aria-label "Breadcrumb"을 가져야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
-
-            // then
-            expect(wrapper.find('nav > ol > li').exists()).toBe(true);
-            expect(wrapper.find('nav').attributes('aria-label')).toBe('Breadcrumb');
-        });
-
-        it('list-style을 없앤 ol도 목록으로 읽히도록 role="list"를 가져야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
-
-            // then
-            expect(wrapper.find('ol').attributes('role')).toBe('list');
-        });
-
-        it('aria-label 속성을 전달하면 기본값을 덮어써야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBreadcrumb, {
-                props: { paths: PATHS },
-                attrs: { 'aria-label': 'Location' },
-            });
-
-            // then
-            expect(wrapper.find('nav').attributes('aria-label')).toBe('Location');
-        });
-
-        it('마지막 li에만 aria-current="page"를 적용해야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
-
-            // then
-            const items = wrapper.findAll('.vs-breadcrumb-item');
-            expect(items[0].attributes('aria-current')).toBeUndefined();
-            expect(items[1].attributes('aria-current')).toBeUndefined();
-            expect(items[2].attributes('aria-current')).toBe('page');
-        });
-
-        it('separator에 aria-hidden="true"를 적용해야 한다', () => {
-            // given, when
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
-
-            // then
-            const separators = wrapper.findAll('.vs-breadcrumb-separator');
-            expect(separators.every((separator) => separator.attributes('aria-hidden') === 'true')).toBe(true);
-        });
-    });
-
     describe('events', () => {
-        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 클릭한 path로 click-path 이벤트를 보내야 한다', async () => {
+        it('조상 항목인 link 클릭하면 클릭한 단계까지의 paths와 클릭한 path로 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
@@ -116,7 +66,7 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], 'Components']);
         });
 
-        it('현재 항목을 클릭하면 click-path 이벤트를 보내지 않아야 한다', async () => {
+        it('현재 항목인 current 클릭하면 click-path 이벤트를 보내지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 

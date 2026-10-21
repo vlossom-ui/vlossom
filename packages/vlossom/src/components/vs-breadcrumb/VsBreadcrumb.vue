@@ -87,7 +87,6 @@ export default defineComponent({
             return objectUtil.assign(base, $current);
         });
 
-        // disabled(boolean | 함수) 판정 규칙을 VsTabs/VsSteps와 공유하려고 재사용한다. 선택 상태는 쓰지 않는다.
         const { isDisabled } = useIndexSelector(paths, disabled);
 
         function isCurrent(index: number): boolean {
@@ -99,19 +98,16 @@ export default defineComponent({
                 return;
             }
 
-            emit('click-path', paths.value.slice(0, index + 1), paths.value[index]);
+            emit('click-path', paths.value[index], paths.value.slice(0, index + 1));
         }
 
         return {
-            // Style
             colorSchemeClass,
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
             itemStyleSet,
             currentItemStyleSet,
-
-            // Item State
             isCurrent,
             isDisabled,
 
