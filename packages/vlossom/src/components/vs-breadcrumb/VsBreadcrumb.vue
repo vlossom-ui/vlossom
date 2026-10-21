@@ -3,7 +3,6 @@
         v-if="paths.length > 0"
         :class="['vs-breadcrumb', colorSchemeClass]"
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
-        :aria-label="optionMessages.VS_ARIA_BREADCRUMB_LABEL"
     >
         <ol class="vs-breadcrumb-list" role="list" :style="componentStyleSet.$list">
             <li
@@ -43,7 +42,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties, type PropType } from 'vue';
-import { useColorScheme, useIndexSelector, useMessages, useStyleSet } from '@/composables';
+import { useColorScheme, useIndexSelector, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
 import { objectUtil } from '@/utils';
@@ -70,7 +69,6 @@ export default defineComponent({
     },
     emits: ['click-path'],
     setup(props, { emit }) {
-        const { optionMessages } = useMessages();
         const { colorScheme, styleSet, disabled, paths } = toRefs(props);
         const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
 
@@ -119,9 +117,6 @@ export default defineComponent({
 
             // Actions
             clickPath,
-
-            // Messages
-            optionMessages,
         };
     },
 });
