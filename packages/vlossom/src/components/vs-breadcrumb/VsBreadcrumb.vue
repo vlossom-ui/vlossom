@@ -10,11 +10,10 @@
                 v-for="(path, index) in paths"
                 :key="index"
                 class="vs-breadcrumb-item"
-                :style="componentStyleSet.$item"
                 :aria-current="isCurrent(index) ? 'page' : undefined"
             >
-                <span v-if="isCurrent(index)" class="vs-breadcrumb-current" :style="componentStyleSet.$current">
-                    <slot name="item-label" :path :index :is-current="true" :is-disabled="false">
+                <span v-if="isCurrent(index)" class="vs-breadcrumb-current" :style="currentItemStyleSet">
+                    <slot name="item" :path :index :is-current="true" :is-disabled="false">
                         {{ path }}
                     </slot>
                 </span>
@@ -23,11 +22,11 @@
                         type="button"
                         class="vs-breadcrumb-link"
                         :class="isDisabled(index) ? 'vs-disabled' : 'vs-focus-visible'"
-                        :style="componentStyleSet.$link"
+                        :style="itemStyleSet"
                         :disabled="isDisabled(index)"
                         @click.stop="clickPath(index)"
                     >
-                        <slot name="item-label" :path :index :is-current="false" :is-disabled="isDisabled(index)">
+                        <slot name="item" :path :index :is-current="false" :is-disabled="isDisabled(index)">
                             {{ path }}
                         </slot>
                     </button>
@@ -43,10 +42,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, type PropType } from 'vue';
+import { computed, defineComponent, toRefs, type ComputedRef, type CSSProperties, type PropType } from 'vue';
 import { useColorScheme, useIndexSelector, useMessages, useStyleSet } from '@/composables';
 import { getColorSchemeProps, getStyleSetProps } from '@/props';
 import { VsComponent } from '@/declaration';
+import { objectUtil } from '@/utils';
 import type { VsBreadcrumbStyleSet } from './types';
 
 import { ChevronRightIcon } from '@lucide/vue';
@@ -79,6 +79,16 @@ export default defineComponent({
             styleSet,
         );
 
+        const itemStyleSet: ComputedRef<CSSProperties> = computed(() => {
+            const { $current, ...base } = componentStyleSet.value.$item ?? {};
+            return base;
+        });
+
+        const currentItemStyleSet: ComputedRef<CSSProperties> = computed(() => {
+            const { $current = {}, ...base } = componentStyleSet.value.$item ?? {};
+            return objectUtil.assign(base, $current);
+        });
+
         // disabled(boolean | 함수) 판정 규칙을 VsTabs/VsSteps와 공유하려고 재사용한다. 선택 상태는 쓰지 않는다.
         const { isDisabled } = useIndexSelector(paths, disabled);
 
@@ -91,8 +101,7 @@ export default defineComponent({
                 return;
             }
 
-            // 핸들러가 받은 배열을 바꿔도 paths prop에 영향이 없도록 새 배열로 넘긴다.
-            emit('click-path', paths.value.slice(0, index + 1), [...paths.value]);
+            emit('click-path', paths.value.slice(0, index + 1), paths.value[index]);
         }
 
         return {
@@ -101,6 +110,8 @@ export default defineComponent({
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,
+            itemStyleSet,
+            currentItemStyleSet,
 
             // Item State
             isCurrent,

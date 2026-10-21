@@ -9,7 +9,7 @@ A breadcrumb component that shows the path to the current page and reports ances
 ## Feature
 
 - Renders a semantic `nav > ol > li` breadcrumb from a string array; the last item is the current page (`aria-current="page"`)
-- Does not navigate by itself: clicking an ancestor emits `click-path` with the clicked path and the full path, so you decide what happens (router, new tab, in-app action)
+- Does not navigate by itself: clicking an ancestor emits `click-path` with the paths up to the clicked item and the clicked path, so you decide what happens (router, new tab, in-app action)
 - Disables ancestors with a boolean or a per-item function
 - Truncates long labels with an ellipsis; limit item width with `$item.minWidth` / `$item.maxWidth`
 - Customizable item label and separator via slots, and color scheme / style set support
@@ -87,12 +87,12 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 </template>
 ```
 
-### Custom Item Label
+### Custom Item
 
 ```html live
 <template>
     <vs-breadcrumb :paths="['Home', 'Components', 'Breadcrumb']">
-        <template #item-label="{ path, isCurrent }">
+        <template #item="{ path, isCurrent }">
             <span :style="{ textTransform: isCurrent ? 'uppercase' : 'none' }">{{ path }}</span>
         </template>
     </vs-breadcrumb>
@@ -113,15 +113,15 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 ```typescript
 interface VsBreadcrumbStyleSet extends CSSProperties {
     $list?: CSSProperties;
-    $item?: CSSProperties;
-    $link?: CSSProperties;
-    $current?: CSSProperties;
+    $item?: CSSProperties & {
+        $current?: CSSProperties;
+    };
     $separator?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `$list` styles the list, `$item` styles each list item, `$link` styles ancestor buttons, `$current` styles the current page label, and `$separator` styles each separator.
+> `$list` styles the list, `$item` styles each item label (ancestor buttons and the current page label), `$item.$current` is merged over `$item` for the current page only, and `$separator` styles each separator.
 
 ### StyleSet Example
 
@@ -131,8 +131,10 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
         :paths="['Home', 'Components', 'Breadcrumb']"
         :style-set="{
             $list: { gap: '0.25rem 0.75rem' },
-            $link: { color: '#6366f1' },
-            $current: { color: '#1e1b4b', fontWeight: '700' },
+            $item: {
+                color: '#6366f1',
+                $current: { color: '#1e1b4b', fontWeight: '700' },
+            },
             $separator: { color: '#a5b4fc' },
         }"
     />
@@ -141,16 +143,16 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 ## Events
 
-| Event        | Payload                                     | Description                                                                             |
-| ------------ | ------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `click-path` | `(clickedPaths: string[], paths: string[])` | Emitted when an ancestor is clicked. Not emitted for the current item or disabled items |
+| Event        | Payload                                  | Description                                                                                                                                         |
+| ------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `click-path` | `(clickedPaths: string[], path: string)` | Emitted when an ancestor is clicked, with the paths up to the clicked item and the clicked path. Not emitted for the current item or disabled items |
 
 ## Slots
 
-| Slot         | Description                                                                                                               |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `item-label` | Label inside each item (the ancestor button or the current page label); receives `{ path, index, isCurrent, isDisabled }` |
-| `separator`  | Separator after each item; receives `{ index }` (the index of the item before the separator)                              |
+| Slot        | Description                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `item`      | Label inside each item (the ancestor button or the current page label); receives `{ path, index, isCurrent, isDisabled }` |
+| `separator` | Separator after each item; receives `{ index }` (the index of the item before the separator)                              |
 
 ## Methods
 
@@ -161,5 +163,5 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 - `VsBreadcrumb` does not navigate. Handle navigation in the `click-path` handler.
 - The last item of `paths` is always the current page and is not clickable.
-- The `item-label` slot replaces only the label inside each item, so the click behavior stays. Do not put links or buttons in it, because ancestor labels render inside a `<button>`.
+- The `item` slot replaces only the label inside each item, so the click behavior stays. Do not put links or buttons in it, because ancestor labels render inside a `<button>`.
 - Clicks on ancestor buttons do not propagate to parent elements.

@@ -9,7 +9,7 @@
 ## 기능
 
 - 문자열 배열로 시맨틱한 `nav > ol > li` breadcrumb를 렌더링하고, 마지막 항목을 현재 페이지(`aria-current="page"`)로 표시
-- 직접 이동하지 않음: 조상 항목을 클릭하면 클릭한 단계까지의 경로와 전체 경로로 `click-path`를 보내므로, 동작(라우터, 새 탭, 앱 내부 동작)은 사용하는 쪽이 정함
+- 직접 이동하지 않음: 조상 항목을 클릭하면 클릭한 단계까지의 경로와 클릭한 경로로 `click-path`를 보내므로, 동작(라우터, 새 탭, 앱 내부 동작)은 사용하는 쪽이 정함
 - boolean 또는 항목별 함수로 조상 항목 비활성화
 - 긴 라벨은 말줄임으로 자르고, `$item.minWidth` / `$item.maxWidth`로 항목 폭 제한
 - 슬롯으로 항목 라벨과 구분자를 커스터마이징하고, color scheme / style set 지원
@@ -87,12 +87,12 @@ function onClickPath(clickedPaths) {
 </template>
 ```
 
-### 커스텀 항목 라벨
+### 커스텀 항목
 
 ```html live
 <template>
     <vs-breadcrumb :paths="['Home', 'Components', 'Breadcrumb']">
-        <template #item-label="{ path, isCurrent }">
+        <template #item="{ path, isCurrent }">
             <span :style="{ textTransform: isCurrent ? 'uppercase' : 'none' }">{{ path }}</span>
         </template>
     </vs-breadcrumb>
@@ -113,15 +113,15 @@ function onClickPath(clickedPaths) {
 ```typescript
 interface VsBreadcrumbStyleSet extends CSSProperties {
     $list?: CSSProperties;
-    $item?: CSSProperties;
-    $link?: CSSProperties;
-    $current?: CSSProperties;
+    $item?: CSSProperties & {
+        $current?: CSSProperties;
+    };
     $separator?: CSSProperties;
 }
 ```
 
 > [!NOTE]
-> `$list`는 목록, `$item`은 각 목록 항목, `$link`는 조상 항목 버튼, `$current`는 현재 페이지 라벨, `$separator`는 각 구분자에 적용됩니다.
+> `$list`는 목록, `$item`은 각 항목 라벨(조상 항목 버튼과 현재 페이지 라벨), `$item.$current`는 현재 페이지에만 `$item` 위에 덮어쓰고, `$separator`는 각 구분자에 적용됩니다.
 
 ### StyleSet 사용 예시
 
@@ -131,8 +131,10 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
         :paths="['Home', 'Components', 'Breadcrumb']"
         :style-set="{
             $list: { gap: '0.25rem 0.75rem' },
-            $link: { color: '#6366f1' },
-            $current: { color: '#1e1b4b', fontWeight: '700' },
+            $item: {
+                color: '#6366f1',
+                $current: { color: '#1e1b4b', fontWeight: '700' },
+            },
             $separator: { color: '#a5b4fc' },
         }"
     />
@@ -141,16 +143,16 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 ## Events
 
-| Event        | Payload                                     | 설명                                                                   |
-| ------------ | ------------------------------------------- | ---------------------------------------------------------------------- |
-| `click-path` | `(clickedPaths: string[], paths: string[])` | 조상 항목을 클릭하면 발생. 현재 항목과 비활성 항목에서는 발생하지 않음 |
+| Event        | Payload                                  | 설명                                                                                                          |
+| ------------ | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `click-path` | `(clickedPaths: string[], path: string)` | 조상 항목을 클릭하면 클릭한 단계까지의 경로와 클릭한 경로로 발생. 현재 항목과 비활성 항목에서는 발생하지 않음 |
 
 ## Slots
 
-| Slot         | 설명                                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------------------ |
-| `item-label` | 각 항목 안의 라벨(조상 항목 버튼 또는 현재 페이지 라벨). `{ path, index, isCurrent, isDisabled }` 수신 |
-| `separator`  | 각 항목 뒤의 구분자. `{ index }`(구분자 앞 항목의 index) 수신                                          |
+| Slot        | 설명                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------ |
+| `item`      | 각 항목 안의 라벨(조상 항목 버튼 또는 현재 페이지 라벨). `{ path, index, isCurrent, isDisabled }` 수신 |
+| `separator` | 각 항목 뒤의 구분자. `{ index }`(구분자 앞 항목의 index) 수신                                          |
 
 ## Methods
 
@@ -161,5 +163,5 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 - `VsBreadcrumb`는 이동하지 않습니다. 이동은 `click-path` 핸들러에서 처리합니다.
 - `paths`의 마지막 항목은 항상 현재 페이지이며 클릭할 수 없습니다.
-- `item-label` 슬롯은 항목 안의 라벨만 바꾸므로 클릭 동작은 유지됩니다. 조상 항목의 라벨은 `<button>` 안에 렌더링되므로 슬롯 안에 링크나 버튼을 넣지 마세요.
+- `item` 슬롯은 항목 안의 라벨만 바꾸므로 클릭 동작은 유지됩니다. 조상 항목의 라벨은 `<button>` 안에 렌더링되므로 슬롯 안에 링크나 버튼을 넣지 마세요.
 - 조상 항목 버튼의 클릭은 부모 요소로 전파되지 않습니다.

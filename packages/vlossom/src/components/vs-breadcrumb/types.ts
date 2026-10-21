@@ -13,8 +13,8 @@ export interface VsBreadcrumbRef extends ComponentPublicInstance<typeof VsBreadc
 
 export interface VsBreadcrumbStyleSet extends CSSProperties {
     $list?: CSSProperties;
-    $item?: CSSProperties;
-    $link?: CSSProperties;
-    $current?: CSSProperties;
+    $item?: CSSProperties & {
+        $current?: CSSProperties;
+    };
     $separator?: CSSProperties;
 }

@@ -31,8 +31,10 @@ const meta: Meta<typeof VsBreadcrumb> = {
         components: { VsBreadcrumb },
         setup() {
             const preDefinedStyleSet: VsBreadcrumbStyleSet = {
-                $link: { color: '#1e88e5' },
-                $current: { color: '#0d47a1', fontWeight: '700' },
+                $item: {
+                    color: '#1e88e5',
+                    $current: { color: '#0d47a1', fontWeight: '700' },
+                },
                 $separator: { color: '#90caf9' },
             } as const;
 
@@ -185,11 +187,11 @@ export const CustomSeparator: Story = {
     }),
 };
 
-export const CustomItemLabel: Story = {
+export const CustomItem: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'item-label 슬롯으로 항목 라벨을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
+                story: 'item 슬롯으로 항목 라벨을 바꿀 수 있습니다. 슬롯은 항목 안쪽만 바꾸므로 클릭 동작은 유지됩니다.',
             },
         },
     },
@@ -200,7 +202,7 @@ export const CustomItemLabel: Story = {
         },
         template: `
             <vs-breadcrumb v-bind="args">
-                <template #item-label="{ path, index, isCurrent }">
+                <template #item="{ path, index, isCurrent }">
                     <span :style="{ fontStyle: isCurrent ? 'normal' : 'italic' }">{{ index + 1 }}. {{ path }}</span>
                 </template>
             </vs-breadcrumb>
@@ -225,7 +227,7 @@ export const StyleSet: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'styleSet prop에 스타일 객체를 직접 전달해 목록, 항목, 링크, 현재 항목, 구분자를 꾸밀 수 있습니다.',
+                story: 'styleSet prop에 스타일 객체를 직접 전달해 목록, 항목(현재 항목은 $item.$current), 구분자를 꾸밀 수 있습니다.',
             },
         },
     },
@@ -233,8 +235,10 @@ export const StyleSet: Story = {
         paths: ['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb'],
         styleSet: {
             $list: { gap: '0.25rem 0.75rem' },
-            $link: { color: '#e91e63' },
-            $current: { color: '#880e4f', fontWeight: '700' },
+            $item: {
+                color: '#e91e63',
+                $current: { color: '#880e4f', fontWeight: '700' },
+            },
             $separator: { color: '#f48fb1' },
         },
     },

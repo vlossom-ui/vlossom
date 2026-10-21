@@ -105,7 +105,7 @@ describe('VsBreadcrumb', () => {
     });
 
     describe('events', () => {
-        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 전체 paths로 click-path 이벤트를 보내야 한다', async () => {
+        it('조상 항목을 클릭하면 클릭한 단계까지의 paths와 클릭한 path로 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
@@ -113,7 +113,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], PATHS]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], 'Components']);
         });
 
         it('현재 항목을 클릭하면 click-path 이벤트를 보내지 않아야 한다', async () => {
@@ -136,26 +136,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Docs', 'Docs'], paths]);
-        });
-
-        it('emit된 배열을 변경해도 paths prop과 다음 emit 값이 바뀌지 않아야 한다', async () => {
-            // given
-            // 기대값으로 쓰는 PATHS가 컴포넌트에 넘어가지 않도록 복사본을 prop으로 넘긴다.
-            const paths = [...PATHS];
-            const wrapper = mount(VsBreadcrumb, { props: { paths } });
-            const button = wrapper.findAll('.vs-breadcrumb-link')[1];
-            await button.trigger('click');
-            const [clickedPaths, fullPaths] = wrapper.emitted('click-path')![0] as string[][];
-
-            // when
-            clickedPaths.push('X');
-            fullPaths.push('Y');
-            await button.trigger('click');
-
-            // then
-            expect(paths).toEqual(PATHS);
-            expect(wrapper.emitted('click-path')![1]).toEqual([['Home', 'Components'], PATHS]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Docs', 'Docs'], 'Docs']);
         });
 
         it('조상 항목 클릭은 부모 요소로 전파되지 않아야 한다', async () => {
@@ -208,12 +189,12 @@ describe('VsBreadcrumb', () => {
     });
 
     describe('slot', () => {
-        it('item-label 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
+        it('item 슬롯은 path, index, isCurrent, isDisabled를 받아야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS, disabled: (_path: string, index: number) => index === 0 },
                 slots: {
-                    'item-label': '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
+                    item: '{{ path }}-{{ index }}-{{ isCurrent }}-{{ isDisabled }}',
                 },
             });
 
@@ -222,14 +203,14 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
         });
 
-        it('현재 항목의 item-label 슬롯은 disabled와 관계없이 isDisabled false를 받아야 한다', () => {
+        it('현재 항목의 item 슬롯은 disabled와 관계없이 isDisabled false를 받아야 한다', () => {
             // given
             const disabled = vi.fn(() => true);
 
             // when
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS, disabled },
-                slots: { 'item-label': '{{ path }}-{{ isDisabled }}' },
+                slots: { item: '{{ path }}-{{ isDisabled }}' },
             });
 
             // then
@@ -237,18 +218,18 @@ describe('VsBreadcrumb', () => {
             expect(disabled).not.toHaveBeenCalledWith('Breadcrumb', 2);
         });
 
-        it('item-label 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {
+        it('item 슬롯을 사용해도 조상 항목 클릭 시 click-path 이벤트를 보내야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, {
                 props: { paths: PATHS },
-                slots: { 'item-label': '<b class="custom-item">{{ path }}</b>' },
+                slots: { item: '<b class="custom-item">{{ path }}</b>' },
             });
 
             // when
             await wrapper.findAll('.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Home'], PATHS]);
+            expect(wrapper.emitted('click-path')![0]).toEqual([['Home'], 'Home']);
         });
 
         it('separator 슬롯은 기본 아이콘을 대체하고 index를 받아야 한다', () => {
@@ -294,16 +275,14 @@ describe('VsBreadcrumb', () => {
             expect(wrapper.find('nav').classes()).toContain('vs-cs-red');
         });
 
-        it('styleSet의 각 키를 해당 요소에 적용해야 한다', () => {
+        it('styleSet의 $list, $item, $separator를 해당 요소에 적용해야 한다', () => {
             // given, when
             const wrapper = mount(VsBreadcrumb, {
                 props: {
                     paths: PATHS,
                     styleSet: {
                         $list: { gap: '1rem' },
-                        $item: { maxWidth: '8rem' },
-                        $link: { color: 'red' },
-                        $current: { fontWeight: '700' },
+                        $item: { maxWidth: '8rem', color: 'red' },
                         $separator: { opacity: '0.5' },
                     },
                 },
@@ -311,10 +290,28 @@ describe('VsBreadcrumb', () => {
 
             // then
             expect(wrapper.find('ol').attributes('style')).toContain('gap: 1rem');
-            expect(wrapper.find('.vs-breadcrumb-item').attributes('style')).toContain('max-width: 8rem');
+            expect(wrapper.find('.vs-breadcrumb-link').attributes('style')).toContain('max-width: 8rem');
             expect(wrapper.find('.vs-breadcrumb-link').attributes('style')).toContain('color: red');
-            expect(wrapper.find('.vs-breadcrumb-current').attributes('style')).toContain('font-weight: 700');
+            expect(wrapper.find('.vs-breadcrumb-current').attributes('style')).toContain('color: red');
             expect(wrapper.find('.vs-breadcrumb-separator').attributes('style')).toContain('opacity: 0.5');
+        });
+
+        it('$item.$current는 현재 항목에만 $item 위에 덮어써야 한다', () => {
+            // given, when
+            const wrapper = mount(VsBreadcrumb, {
+                props: {
+                    paths: PATHS,
+                    styleSet: { $item: { color: 'red', $current: { color: 'blue', fontWeight: '700' } } },
+                },
+            });
+
+            // then
+            const current = wrapper.find('.vs-breadcrumb-current').attributes('style');
+            const link = wrapper.find('.vs-breadcrumb-link').attributes('style');
+            expect(current).toContain('color: blue');
+            expect(current).toContain('font-weight: 700');
+            expect(link).toContain('color: red');
+            expect(link).not.toContain('font-weight');
         });
     });
 });
