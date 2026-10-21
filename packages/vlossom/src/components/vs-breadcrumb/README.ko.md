@@ -18,18 +18,18 @@
 
 ```html live
 <template>
-    <vs-breadcrumb :paths="paths" @click-path="onClick" />
-    <p>Clicked: {{ clicked }}</p>
+    <vs-breadcrumb :paths="paths" @click-path="onClickPath" />
+    <p>Clicked: {{ clickedPathText }}</p>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 
 const paths = ['Home', 'Components', 'Breadcrumb'];
-const clicked = ref('-');
+const clickedPathText = ref('-');
 
-function onClick(clickedPaths) {
-    clicked.value = clickedPaths.join(' / ');
+function onClickPath(clickedPaths) {
+    clickedPathText.value = clickedPaths.join(' / ');
 }
 </script>
 ```
@@ -40,7 +40,7 @@ function onClick(clickedPaths) {
 
 ```html
 <template>
-    <vs-breadcrumb :paths="paths" @click-path="(clickedPaths) => router.push(routes[clickedPaths.length - 1])" />
+    <vs-breadcrumb :paths="paths" @click-path="onClickPath" />
 </template>
 
 <script setup>
@@ -49,6 +49,10 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const paths = ['Home', 'Components', 'Breadcrumb'];
 const routes = ['/', '/components', '/components/breadcrumb'];
+
+function onClickPath(clickedPaths) {
+    router.push(routes[clickedPaths.length - 1]);
+}
 </script>
 ```
 
@@ -97,12 +101,12 @@ const routes = ['/', '/components', '/components/breadcrumb'];
 
 ## Props
 
-| Prop            | Type                                                    | Default | Required | 설명                                                              |
-| --------------- | ------------------------------------------------------- | ------- | -------- | ----------------------------------------------------------------- |
-| `colorScheme`   | `string`                                                | -       | -        | 컴포넌트의 색상 스킴                                              |
-| `styleSet`      | `string \| VsBreadcrumbStyleSet`                        | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                              |
-| `disabled`      | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | 조상 항목 비활성화. boolean이면 전체, 함수면 항목별로 적용        |
-| `paths`         | `string[]`                                              | `[]`    | -        | 루트부터 현재 페이지까지의 경로 라벨. 마지막 항목이 현재 페이지   |
+| Prop          | Type                                                    | Default | Required | 설명                                                            |
+| ------------- | ------------------------------------------------------- | ------- | -------- | --------------------------------------------------------------- |
+| `colorScheme` | `string`                                                | -       | -        | 컴포넌트의 색상 스킴                                            |
+| `styleSet`    | `string \| VsBreadcrumbStyleSet`                        | -       | -        | 컴포넌트에 적용할 커스텀 스타일 세트                            |
+| `disabled`    | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | 조상 항목 비활성화. boolean이면 전체, 함수면 항목별로 적용      |
+| `paths`       | `string[]`                                              | `[]`    | -        | 루트부터 현재 페이지까지의 경로 라벨. 마지막 항목이 현재 페이지 |
 
 ## Types
 
@@ -137,16 +141,16 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 ## Events
 
-| Event   | Payload                                     | 설명                                                                              |
-| ------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
+| Event        | Payload                                     | 설명                                                                   |
+| ------------ | ------------------------------------------- | ---------------------------------------------------------------------- |
 | `click-path` | `(clickedPaths: string[], paths: string[])` | 조상 항목을 클릭하면 발생. 현재 항목과 비활성 항목에서는 발생하지 않음 |
 
 ## Slots
 
-| Slot        | 설명                                                                       |
-| ----------- | -------------------------------------------------------------------------- |
+| Slot         | 설명                                                                                                   |
+| ------------ | ------------------------------------------------------------------------------------------------------ |
 | `item-label` | 각 항목 안의 라벨(조상 항목 버튼 또는 현재 페이지 라벨). `{ path, index, isCurrent, isDisabled }` 수신 |
-| `separator` | 각 항목 뒤의 구분자. `{ index }`(구분자 앞 항목의 index) 수신              |
+| `separator`  | 각 항목 뒤의 구분자. `{ index }`(구분자 앞 항목의 index) 수신                                          |
 
 ## Methods
 

@@ -18,18 +18,18 @@ A breadcrumb component that shows the path to the current page and reports ances
 
 ```html live
 <template>
-    <vs-breadcrumb :paths="paths" @click-path="onClick" />
-    <p>Clicked: {{ clicked }}</p>
+    <vs-breadcrumb :paths="paths" @click-path="onClickPath" />
+    <p>Clicked: {{ clickedPathText }}</p>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 
 const paths = ['Home', 'Components', 'Breadcrumb'];
-const clicked = ref('-');
+const clickedPathText = ref('-');
 
-function onClick(clickedPaths) {
-    clicked.value = clickedPaths.join(' / ');
+function onClickPath(clickedPaths) {
+    clickedPathText.value = clickedPaths.join(' / ');
 }
 </script>
 ```
@@ -40,7 +40,7 @@ function onClick(clickedPaths) {
 
 ```html
 <template>
-    <vs-breadcrumb :paths="paths" @click-path="(clickedPaths) => router.push(routes[clickedPaths.length - 1])" />
+    <vs-breadcrumb :paths="paths" @click-path="onClickPath" />
 </template>
 
 <script setup>
@@ -49,6 +49,10 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const paths = ['Home', 'Components', 'Breadcrumb'];
 const routes = ['/', '/components', '/components/breadcrumb'];
+
+function onClickPath(clickedPaths) {
+    router.push(routes[clickedPaths.length - 1]);
+}
 </script>
 ```
 
@@ -97,12 +101,12 @@ Labels stay on one line and are truncated with an ellipsis when there is not eno
 
 ## Props
 
-| Prop            | Type                                                    | Default | Required | Description                                                                  |
-| --------------- | ------------------------------------------------------- | ------- | -------- | ---------------------------------------------------------------------------- |
-| `colorScheme`   | `string`                                                | -       | -        | Color scheme for the component                                               |
-| `styleSet`      | `string \| VsBreadcrumbStyleSet`                        | -       | -        | Custom style set for the component                                           |
-| `disabled`      | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | Disables ancestor items; a boolean for all or a per-item function            |
-| `paths`         | `string[]`                                              | `[]`    | -        | Path labels from the root to the current page. The last item is the current page |
+| Prop          | Type                                                    | Default | Required | Description                                                                      |
+| ------------- | ------------------------------------------------------- | ------- | -------- | -------------------------------------------------------------------------------- |
+| `colorScheme` | `string`                                                | -       | -        | Color scheme for the component                                                   |
+| `styleSet`    | `string \| VsBreadcrumbStyleSet`                        | -       | -        | Custom style set for the component                                               |
+| `disabled`    | `boolean \| ((path: string, index: number) => boolean)` | `false` | -        | Disables ancestor items; a boolean for all or a per-item function                |
+| `paths`       | `string[]`                                              | `[]`    | -        | Path labels from the root to the current page. The last item is the current page |
 
 ## Types
 
@@ -137,16 +141,16 @@ interface VsBreadcrumbStyleSet extends CSSProperties {
 
 ## Events
 
-| Event   | Payload                                       | Description                                                                                  |
-| ------- | --------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `click-path` | `(clickedPaths: string[], paths: string[])`   | Emitted when an ancestor is clicked. Not emitted for the current item or disabled items |
+| Event        | Payload                                     | Description                                                                             |
+| ------------ | ------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `click-path` | `(clickedPaths: string[], paths: string[])` | Emitted when an ancestor is clicked. Not emitted for the current item or disabled items |
 
 ## Slots
 
-| Slot        | Description                                                                                 |
-| ----------- | ------------------------------------------------------------------------------------------- |
+| Slot         | Description                                                                                                               |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
 | `item-label` | Label inside each item (the ancestor button or the current page label); receives `{ path, index, isCurrent, isDisabled }` |
-| `separator` | Separator after each item; receives `{ index }` (the index of the item before the separator) |
+| `separator`  | Separator after each item; receives `{ index }` (the index of the item before the separator)                              |
 
 ## Methods
 

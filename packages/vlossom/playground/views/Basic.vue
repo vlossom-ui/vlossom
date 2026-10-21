@@ -64,11 +64,8 @@
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
-                <vs-breadcrumb
-                    :paths="breadcrumbPaths"
-                    @click-path="(clicked) => (lastBreadcrumbClick = clicked.join(' / '))"
-                />
-                <p class="mt-2 text-sm">Clicked: {{ lastBreadcrumbClick || '-' }}</p>
+                <vs-breadcrumb :paths="breadcrumbPaths" @click-path="onClickPath" />
+                <p class="mt-2 text-sm">Clicked: {{ clickedPathText }}</p>
             </vs-responsive>
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
                 <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Disabled</h4>
@@ -291,7 +288,7 @@ export default defineComponent({
 
         const breadcrumbPaths = ['Home', 'Components', 'Breadcrumb'];
         const longBreadcrumbPaths = ['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb', 'Examples'];
-        const lastBreadcrumbClick = ref('');
+        const clickedPathText = ref('-');
 
         const selectedTabDefault = ref(0);
         const selectedTabPrimary = ref(0);
@@ -303,6 +300,10 @@ export default defineComponent({
 
         const toggleValue = ref(false);
 
+        function onClickPath(clickedPaths: string[]) {
+            clickedPathText.value = clickedPaths.join(' / ');
+        }
+
         function onChipClose() {
             $vs.toast.info('Chip closed!');
         }
@@ -313,7 +314,7 @@ export default defineComponent({
             accordion3,
             breadcrumbPaths,
             longBreadcrumbPaths,
-            lastBreadcrumbClick,
+            clickedPathText,
             selectedTabDefault,
             selectedTabPrimary,
             selectedTabSmall,
@@ -322,6 +323,7 @@ export default defineComponent({
             selectedTabControlsShow,
             scrollTabs,
             toggleValue,
+            onClickPath,
             onChipClose,
         };
     },

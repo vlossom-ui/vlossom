@@ -40,23 +40,26 @@ const meta: Meta<typeof VsBreadcrumb> = {
                 myStyleSet: { VsBreadcrumb: { ...preDefinedStyleSet } },
             };
 
-            const clicked = ref('-');
-            function onClick(clickedPaths: string[]) {
-                clicked.value = clickedPaths.join(' / ');
+            const clickedPathText = ref('-');
+            function onClickPath(clickedPaths: string[]) {
+                clickedPathText.value = clickedPaths.join(' / ');
             }
 
-            return { args, clicked, onClick };
+            return { args, clickedPathText, onClickPath };
         },
         template: `
             <div>
-                <vs-breadcrumb v-bind="args" @click-path="onClick" />
+                <vs-breadcrumb v-bind="args" @click-path="onClickPath" />
                 <div style="margin-top: 2rem; padding: 1rem; background-color: #f5f5f5; border-radius: 4px;">
-                    <p style="margin: 0;">클릭한 경로: <strong>{{ clicked }}</strong></p>
+                    <p style="margin: 0;">클릭한 경로: <strong>{{ clickedPathText }}</strong></p>
                 </div>
             </div>
         `,
     }),
     tags: ['autodocs'],
+    args: {
+        paths: ['Home', 'Components', 'Breadcrumb'],
+    },
     argTypes: {
         colorScheme,
         paths: {
@@ -81,9 +84,6 @@ export const Default: Story = {
                 story: '기본 breadcrumb입니다. 조상 항목을 클릭하면 클릭한 단계까지의 경로가 click-path 이벤트로 전달됩니다.',
             },
         },
-    },
-    args: {
-        paths: ['Home', 'Components', 'Breadcrumb'],
     },
 };
 
@@ -119,7 +119,6 @@ export const Disabled: Story = {
         },
     },
     args: {
-        paths: ['Home', 'Components', 'Breadcrumb'],
         disabled: true,
     },
 };
@@ -151,15 +150,18 @@ export const LongPaths: Story = {
     render: (args: any) => ({
         components: { VsBreadcrumb },
         setup() {
-            return { args, LONG_PATHS };
+            return { args };
         },
         template: `
             <div style="display: flex; flex-direction: column; gap: 1.5rem; width: 320px; border: 1px dashed #ccc; padding: 0.5rem;">
-                <vs-breadcrumb v-bind="args" :paths="LONG_PATHS" />
-                <vs-breadcrumb v-bind="args" :paths="LONG_PATHS" :style-set="{ $item: { maxWidth: '8rem' } }" />
+                <vs-breadcrumb v-bind="args" />
+                <vs-breadcrumb v-bind="args" :style-set="{ $item: { maxWidth: '8rem' } }" />
             </div>
         `,
     }),
+    args: {
+        paths: LONG_PATHS,
+    },
 };
 
 export const CustomSeparator: Story = {
@@ -181,9 +183,6 @@ export const CustomSeparator: Story = {
             </vs-breadcrumb>
         `,
     }),
-    args: {
-        paths: ['Home', 'Components', 'Breadcrumb'],
-    },
 };
 
 export const CustomItemLabel: Story = {
@@ -207,9 +206,6 @@ export const CustomItemLabel: Story = {
             </vs-breadcrumb>
         `,
     }),
-    args: {
-        paths: ['Home', 'Components', 'Breadcrumb'],
-    },
 };
 
 export const PreDefinedStyleSet: Story = {
@@ -221,7 +217,6 @@ export const PreDefinedStyleSet: Story = {
         },
     },
     args: {
-        paths: ['Home', 'Components', 'Breadcrumb'],
         styleSet: 'myStyleSet',
     },
 };
