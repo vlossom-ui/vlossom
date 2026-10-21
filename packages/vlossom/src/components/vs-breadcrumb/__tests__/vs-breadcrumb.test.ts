@@ -63,7 +63,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], 'Components']);
+            expect(wrapper.emitted('click-path')![0]).toEqual(['Components', ['Home', 'Components']]);
         });
 
         it('현재 항목인 current 클릭하면 click-path 이벤트를 보내지 않아야 한다', async () => {
@@ -86,7 +86,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Docs', 'Docs'], 'Docs']);
+            expect(wrapper.emitted('click-path')![0]).toEqual(['Docs', ['Docs', 'Docs']]);
         });
 
         it('조상 항목 클릭은 부모 요소로 전파되지 않아야 한다', async () => {
@@ -179,7 +179,7 @@ describe('VsBreadcrumb', () => {
             await wrapper.findAll('.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
 
             // then
-            expect(wrapper.emitted('click-path')![0]).toEqual([['Home'], 'Home']);
+            expect(wrapper.emitted('click-path')![0]).toEqual(['Home', ['Home']]);
         });
 
         it('separator 슬롯은 기본 아이콘을 대체하고 index를 받아야 한다', () => {
