@@ -42,7 +42,7 @@
                 @apply outline-none;
             }
 
-            &:focus-visible:not(.vs-disabled) {
+            &:focus-visible:not(.vs-step-disabled) {
                 .vs-step-num::after {
                     position: absolute;
                     inset: 2px;
@@ -89,8 +89,8 @@
                 }
             }
 
-            &.vs-disabled {
-                cursor: not-allowed;
+            &.vs-step-disabled {
+                @apply pointer-events-none cursor-default grayscale-80 select-none;
 
                 .vs-step-num {
                     box-shadow: none;
@@ -154,12 +154,6 @@
                 }
             }
         }
-    }
-}
-
-@layer utilities {
-    .vs-steps .vs-step-item.vs-disabled {
-        opacity: 1 !important;
     }
 }
 
