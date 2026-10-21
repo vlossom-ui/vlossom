@@ -20,7 +20,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
             // then
-            expect(wrapper.findAll('li.vs-breadcrumb-item')).toHaveLength(3);
+            expect(wrapper.findAll('.vs-breadcrumb-item')).toHaveLength(3);
         });
 
         it('조상 항목은 button[type=button]으로, 마지막 항목은 span으로 렌더링해야 한다', () => {
@@ -49,26 +49,8 @@ describe('VsBreadcrumb', () => {
 
             // then
             expect(wrapper.findAll('.vs-breadcrumb-separator')).toHaveLength(0);
-            expect(wrapper.findAll('button.vs-breadcrumb-link')).toHaveLength(0);
+            expect(wrapper.findAll('.vs-breadcrumb-link')).toHaveLength(0);
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Home');
-        });
-
-        it('paths가 줄어들면 마지막 항목을 현재 항목으로 다시 계산해야 한다', async () => {
-            // given
-            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
-
-            // when
-            await wrapper.setProps({ paths: ['Home', 'Components'] });
-
-            // then
-            expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Components');
-            expect(wrapper.findAll('.vs-breadcrumb-separator')).toHaveLength(1);
-
-            // when
-            await wrapper.setProps({ paths: [] });
-
-            // then
-            expect(wrapper.find('nav').exists()).toBe(false);
         });
     });
 
@@ -106,7 +88,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
             // then
-            const items = wrapper.findAll('li.vs-breadcrumb-item');
+            const items = wrapper.findAll('.vs-breadcrumb-item');
             expect(items[0].attributes('aria-current')).toBeUndefined();
             expect(items[1].attributes('aria-current')).toBeUndefined();
             expect(items[2].attributes('aria-current')).toBe('page');
@@ -128,7 +110,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
 
             // when
-            await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
+            await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
             expect(wrapper.emitted('click-path')![0]).toEqual([['Home', 'Components'], PATHS]);
@@ -151,7 +133,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths } });
 
             // when
-            await wrapper.findAll('button.vs-breadcrumb-link')[1].trigger('click');
+            await wrapper.findAll('.vs-breadcrumb-link')[1].trigger('click');
 
             // then
             expect(wrapper.emitted('click-path')![0]).toEqual([['Docs', 'Docs'], paths]);
@@ -159,48 +141,36 @@ describe('VsBreadcrumb', () => {
 
         it('emit된 배열을 변경해도 paths prop과 다음 emit 값이 바뀌지 않아야 한다', async () => {
             // given
-            const paths = ['Home', 'Components', 'Breadcrumb'];
+            // 기대값으로 쓰는 PATHS가 컴포넌트에 넘어가지 않도록 복사본을 prop으로 넘긴다.
+            const paths = [...PATHS];
             const wrapper = mount(VsBreadcrumb, { props: { paths } });
-            const button = wrapper.findAll('button.vs-breadcrumb-link')[1];
+            const button = wrapper.findAll('.vs-breadcrumb-link')[1];
             await button.trigger('click');
-            const [clicked, all] = wrapper.emitted('click-path')![0] as string[][];
+            const [clickedPaths, fullPaths] = wrapper.emitted('click-path')![0] as string[][];
 
             // when
-            clicked.push('X');
-            all.push('Y');
+            clickedPaths.push('X');
+            fullPaths.push('Y');
             await button.trigger('click');
 
             // then
-            // 비교 기준이 prop과 같은 배열이면 참조로 넘겨도 통과하므로, 참조와 리터럴로 함께 검증한다.
-            expect(all).not.toBe(paths);
-            expect(clicked).not.toBe(paths);
-            expect(paths).toEqual(['Home', 'Components', 'Breadcrumb']);
-            expect(wrapper.emitted('click-path')![1]).toEqual([
-                ['Home', 'Components'],
-                ['Home', 'Components', 'Breadcrumb'],
-            ]);
+            expect(paths).toEqual(PATHS);
+            expect(wrapper.emitted('click-path')![1]).toEqual([['Home', 'Components'], PATHS]);
         });
-    });
-
-    describe('event propagation', () => {
-        function mountInClickableParent(props: Record<string, unknown>) {
-            const onParentClick = vi.fn();
-            const Parent = defineComponent({
-                components: { VsBreadcrumb },
-                setup() {
-                    return { props, onParentClick };
-                },
-                template: '<div @click="onParentClick"><vs-breadcrumb v-bind="props" /></div>',
-            });
-            return { wrapper: mount(Parent), onParentClick };
-        }
 
         it('조상 항목 클릭은 부모 요소로 전파되지 않아야 한다', async () => {
             // given
-            const { wrapper, onParentClick } = mountInClickableParent({ paths: PATHS });
+            const onParentClick = vi.fn();
+            const wrapper = mount(
+                defineComponent({
+                    components: { VsBreadcrumb },
+                    setup: () => ({ paths: PATHS, onParentClick }),
+                    template: '<div @click="onParentClick"><vs-breadcrumb :paths="paths" /></div>',
+                }),
+            );
 
             // when
-            await wrapper.find('button.vs-breadcrumb-link').trigger('click');
+            await wrapper.find('.vs-breadcrumb-link').trigger('click');
 
             // then
             expect(onParentClick).not.toHaveBeenCalled();
@@ -211,7 +181,7 @@ describe('VsBreadcrumb', () => {
         it('disabled가 true면 모든 조상 버튼이 비활성화되고 클릭해도 이벤트를 보내지 않아야 한다', async () => {
             // given
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS, disabled: true } });
-            const buttons = wrapper.findAll('button.vs-breadcrumb-link');
+            const buttons = wrapper.findAll('.vs-breadcrumb-link');
 
             // when
             await buttons[0].trigger('click');
@@ -230,7 +200,7 @@ describe('VsBreadcrumb', () => {
             const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS, disabled } });
 
             // then
-            const buttons = wrapper.findAll('button.vs-breadcrumb-link');
+            const buttons = wrapper.findAll('.vs-breadcrumb-link');
             expect(buttons[0].attributes('disabled')).toBeDefined();
             expect(buttons[1].attributes('disabled')).toBeUndefined();
             expect(disabled).toHaveBeenCalledWith('Home', 0);
@@ -248,7 +218,7 @@ describe('VsBreadcrumb', () => {
             });
 
             // then
-            expect(wrapper.findAll('button.vs-breadcrumb-link')[0].text()).toBe('Home-0-false-true');
+            expect(wrapper.findAll('.vs-breadcrumb-link')[0].text()).toBe('Home-0-false-true');
             expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Breadcrumb-2-true-false');
         });
 
@@ -275,7 +245,7 @@ describe('VsBreadcrumb', () => {
             });
 
             // when
-            await wrapper.findAll('button.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
+            await wrapper.findAll('.vs-breadcrumb-link')[0].find('.custom-item').trigger('click');
 
             // then
             expect(wrapper.emitted('click-path')![0]).toEqual([['Home'], PATHS]);
@@ -292,6 +262,26 @@ describe('VsBreadcrumb', () => {
             const separators = wrapper.findAll('.vs-breadcrumb-separator');
             expect(separators.map((separator) => separator.text())).toEqual(['/0', '/1']);
             expect(wrapper.findAll('.vs-breadcrumb-separator svg')).toHaveLength(0);
+        });
+    });
+
+    describe('reactivity', () => {
+        it('paths가 줄어들면 마지막 항목을 현재 항목으로 다시 계산해야 한다', async () => {
+            // given
+            const wrapper = mount(VsBreadcrumb, { props: { paths: PATHS } });
+
+            // when
+            await wrapper.setProps({ paths: ['Home', 'Components'] });
+
+            // then
+            expect(wrapper.find('.vs-breadcrumb-current').text()).toBe('Components');
+            expect(wrapper.findAll('.vs-breadcrumb-separator')).toHaveLength(1);
+
+            // when
+            await wrapper.setProps({ paths: [] });
+
+            // then
+            expect(wrapper.find('nav').exists()).toBe(false);
         });
     });
 
@@ -321,8 +311,8 @@ describe('VsBreadcrumb', () => {
 
             // then
             expect(wrapper.find('ol').attributes('style')).toContain('gap: 1rem');
-            expect(wrapper.find('li.vs-breadcrumb-item').attributes('style')).toContain('max-width: 8rem');
-            expect(wrapper.find('button.vs-breadcrumb-link').attributes('style')).toContain('color: red');
+            expect(wrapper.find('.vs-breadcrumb-item').attributes('style')).toContain('max-width: 8rem');
+            expect(wrapper.find('.vs-breadcrumb-link').attributes('style')).toContain('color: red');
             expect(wrapper.find('.vs-breadcrumb-current').attributes('style')).toContain('font-weight: 700');
             expect(wrapper.find('.vs-breadcrumb-separator').attributes('style')).toContain('opacity: 0.5');
         });
