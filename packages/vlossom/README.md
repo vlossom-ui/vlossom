@@ -268,6 +268,7 @@ function openEditor() {
 | [vs-pagination](src/components/vs-pagination/README.md) | Page pagination           |
 | [vs-steps](src/components/vs-steps/README.md)           | Step indicator            |
 | [vs-index-view](src/components/vs-index-view/README.md) | Index-based view switcher |
+| [vs-breadcrumb](src/components/vs-breadcrumb/README.md) | Breadcrumb navigation     |
 
 ### Utility
 
