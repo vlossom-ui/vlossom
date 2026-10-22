@@ -32,7 +32,8 @@
             border-bottom: var(--vs-tabs-divider, 1px solid var(--vs-cs-border-strong));
 
             .vs-tab-item {
-                @apply relative isolate flex cursor-pointer items-center justify-center text-center whitespace-nowrap;
+                @apply relative isolate flex shrink-0 cursor-pointer items-center justify-center text-center
+                    whitespace-nowrap;
 
                 transition: color 0.25s ease;
                 padding: 0 calc(var(--vs-size-padding, var(--vs-padding-md)) * 1.5);
@@ -50,6 +51,10 @@
                         background-color 0.3s ease;
                     border-radius: var(--tab-radius) var(--tab-radius) 0 0;
                     background-color: var(--vs-cs-bg-tinted);
+                }
+
+                .vs-tab-label {
+                    @apply w-full;
                 }
 
                 .vs-tab-indicator {
