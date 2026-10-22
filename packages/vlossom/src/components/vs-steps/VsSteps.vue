@@ -21,7 +21,7 @@
                 :class="[
                     {
                         'vs-previous': isPrevious(index),
-                        'vs-disabled': isDisabled(index),
+                        'vs-step-disabled': isDisabled(index),
                         'vs-selected': isSelected(index),
                     },
                 ]"
