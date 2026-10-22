@@ -97,10 +97,11 @@
                     border-style: dashed;
                     border-color: var(--vs-cs-border);
                     background-color: var(--vs-cs-surface);
-                    color: var(--vs-cs-text-tinted);
+                    color: color-mix(in oklch, var(--vs-cs-text-tinted) 50%, transparent);
                 }
 
                 .vs-step-label {
+                    opacity: 0.5;
                     color: var(--vs-cs-text-tinted);
                     font-style: italic;
                 }
