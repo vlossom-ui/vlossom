@@ -300,7 +300,7 @@ export default defineComponent({
 
         const toggleValue = ref(false);
 
-        function onClickPath(clickedPaths: string[]) {
+        function onClickPath(_: string, clickedPaths: string[]) {
             clickedPathText.value = clickedPaths.join(' / ');
         }
 
