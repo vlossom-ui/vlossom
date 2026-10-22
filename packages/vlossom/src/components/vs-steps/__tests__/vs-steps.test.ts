@@ -160,7 +160,7 @@ describe('VsSteps', () => {
             expect(labels).toHaveLength(0);
         });
 
-        it('disabled prop에 true가 주어지면 모든 스텝에 vs-disabled 클래스가 적용되어야 한다', async () => {
+        it('disabled prop에 true가 주어지면 모든 스텝에 vs-step-disabled 클래스가 적용되어야 한다', async () => {
             // given, when
             const wrapper = mount(VsSteps, {
                 props: {
@@ -173,12 +173,12 @@ describe('VsSteps', () => {
 
             // then
             const stepItems = wrapper.findAll('.vs-step-item');
-            expect(stepItems[0].classes()).toContain('vs-disabled');
-            expect(stepItems[1].classes()).toContain('vs-disabled');
-            expect(stepItems[2].classes()).toContain('vs-disabled');
+            expect(stepItems[0].classes()).toContain('vs-step-disabled');
+            expect(stepItems[1].classes()).toContain('vs-step-disabled');
+            expect(stepItems[2].classes()).toContain('vs-step-disabled');
         });
 
-        it('disabled prop에 false가 주어지면 모든 스텝에 vs-disabled 클래스가 적용되지 않아야 한다', () => {
+        it('disabled prop에 false가 주어지면 모든 스텝에 vs-step-disabled 클래스가 적용되지 않아야 한다', () => {
             // given, when
             const wrapper = mount(VsSteps, {
                 props: {
@@ -189,12 +189,12 @@ describe('VsSteps', () => {
 
             // then
             const stepItems = wrapper.findAll('.vs-step-item');
-            expect(stepItems[0].classes()).not.toContain('vs-disabled');
-            expect(stepItems[1].classes()).not.toContain('vs-disabled');
-            expect(stepItems[2].classes()).not.toContain('vs-disabled');
+            expect(stepItems[0].classes()).not.toContain('vs-step-disabled');
+            expect(stepItems[1].classes()).not.toContain('vs-step-disabled');
+            expect(stepItems[2].classes()).not.toContain('vs-step-disabled');
         });
 
-        it('disabled prop에 함수가 주어지면 해당 인덱스의 스텝에 vs-disabled 클래스가 적용되어야 한다', () => {
+        it('disabled prop에 함수가 주어지면 해당 인덱스의 스텝에 vs-step-disabled 클래스가 적용되어야 한다', () => {
             // given, when
             const wrapper = mount(VsSteps, {
                 props: {
@@ -205,10 +205,10 @@ describe('VsSteps', () => {
 
             // then
             const stepItems = wrapper.findAll('.vs-step-item');
-            expect(stepItems[0].classes()).not.toContain('vs-disabled');
-            expect(stepItems[1].classes()).toContain('vs-disabled');
-            expect(stepItems[2].classes()).not.toContain('vs-disabled');
-            expect(stepItems[3].classes()).toContain('vs-disabled');
+            expect(stepItems[0].classes()).not.toContain('vs-step-disabled');
+            expect(stepItems[1].classes()).toContain('vs-step-disabled');
+            expect(stepItems[2].classes()).not.toContain('vs-step-disabled');
+            expect(stepItems[3].classes()).toContain('vs-step-disabled');
         });
 
         it('height prop이 주어지면 component 스타일에 height가 적용되어야 한다', () => {
