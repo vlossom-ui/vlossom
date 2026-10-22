@@ -60,6 +60,30 @@
         </vs-grid>
         <vs-divider style-set="playground" />
 
+        <h3 class="mb-4 font-semibold">VsBreadcrumb</h3>
+        <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Default</h4>
+                <vs-breadcrumb :paths="breadcrumbPaths" @click-path="onClickPath" />
+                <p class="mt-2 text-sm">Clicked: {{ clickedPathText }}</p>
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Disabled</h4>
+                <vs-breadcrumb :paths="breadcrumbPaths" :disabled="(_, index) => index === 0" />
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Custom Separator</h4>
+                <vs-breadcrumb :paths="breadcrumbPaths">
+                    <template #separator>/</template>
+                </vs-breadcrumb>
+            </vs-responsive>
+            <vs-responsive :grid="{ xs: 12, md: 6 }">
+                <h4 class="mb-2 text-sm text-gray-500 dark:text-gray-400">Max Width</h4>
+                <vs-breadcrumb :paths="longBreadcrumbPaths" :style-set="{ $item: { maxWidth: '6rem' } }" />
+            </vs-responsive>
+        </vs-grid>
+        <vs-divider style-set="playground" />
+
         <h3 class="mb-4 font-semibold">VsButton</h3>
         <vs-grid :grid-size="12" column-gap="1.5rem" row-gap="3rem">
             <vs-responsive :grid="{ xs: 12, md: 6, lg: 4 }">
@@ -262,6 +286,10 @@ export default defineComponent({
         const accordion2 = ref(false);
         const accordion3 = ref(false);
 
+        const breadcrumbPaths = ['Home', 'Components', 'Breadcrumb'];
+        const longBreadcrumbPaths = ['Home', 'Documentation', 'Components', 'Navigation', 'Breadcrumb', 'Examples'];
+        const clickedPathText = ref('-');
+
         const selectedTabDefault = ref(0);
         const selectedTabPrimary = ref(0);
         const selectedTabSmall = ref(0);
@@ -272,6 +300,10 @@ export default defineComponent({
 
         const toggleValue = ref(false);
 
+        function onClickPath(_: string, clickedPaths: string[]) {
+            clickedPathText.value = clickedPaths.join(' / ');
+        }
+
         function onChipClose() {
             $vs.toast.info('Chip closed!');
         }
@@ -280,6 +312,9 @@ export default defineComponent({
             accordion1,
             accordion2,
             accordion3,
+            breadcrumbPaths,
+            longBreadcrumbPaths,
+            clickedPathText,
             selectedTabDefault,
             selectedTabPrimary,
             selectedTabSmall,
@@ -288,6 +323,7 @@ export default defineComponent({
             selectedTabControlsShow,
             scrollTabs,
             toggleValue,
+            onClickPath,
             onChipClose,
         };
     },

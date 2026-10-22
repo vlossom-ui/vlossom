@@ -20,6 +20,7 @@ export const COMPONENT_RELATIONSHIPS: RelationshipsData = {
     VsAccordion: { children: ['VsExpandable', 'VsResponsive'], siblings: ['VsBlock', 'VsTabs'] },
     VsBar: { children: [], siblings: ['VsHeader', 'VsFooter'] },
     VsBlock: { children: ['VsInnerScroll', 'VsResponsive'], siblings: ['VsAccordion', 'VsPage', 'VsContainer'] },
+    VsBreadcrumb: { children: [], siblings: ['VsTabs', 'VsSteps', 'VsPagination'] },
     VsButton: { children: ['VsLoading'], siblings: ['VsForm', 'VsInput', 'VsToast', 'VsPagination', 'VsTabs'] },
     VsCheckbox: { children: ['VsInputWrapper'], siblings: ['VsRadio', 'VsSwitch', 'VsSelect'] },
     VsChip: { children: [], siblings: ['VsSelect', 'VsFileDrop'] },
