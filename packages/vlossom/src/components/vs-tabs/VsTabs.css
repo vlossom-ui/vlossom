@@ -24,7 +24,7 @@
     }
 
     .vs-tabs-wrap {
-        @apply relative flex w-full overflow-auto pb-1;
+        @apply relative flex w-full overflow-auto px-0.5;
 
         .vs-tab-list {
             @apply relative m-0 flex flex-1 flex-nowrap items-center gap-1;
@@ -124,7 +124,7 @@
         }
 
         .vs-tabs-wrap {
-            @apply pr-1 pb-0;
+            @apply px-0 py-0.5;
 
             .vs-tab-list {
                 @apply flex-col items-stretch;
