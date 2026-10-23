@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.3](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.2...vlossom-v2.2.3) (2026-10-23)
+
+
+### Bug Fixes
+
+* **vs-table:** preserve sorting with custom headers ([#723](https://github.com/vlossom-ui/vlossom/issues/723)) ([fc3a0f9](https://github.com/vlossom-ui/vlossom/commit/fc3a0f91b84e025df137e7ad3a2e47c6cadf14a1))
+* **vs-tabs:** improve tab layout and prevent transient scrollbars ([#730](https://github.com/vlossom-ui/vlossom/issues/730)) ([1f5f68c](https://github.com/vlossom-ui/vlossom/commit/1f5f68c49d2db6037624f3793e90fc078b23a4fd))
+* **VsAccordion:** add padding right on title slot ([#727](https://github.com/vlossom-ui/vlossom/issues/727)) ([a1cf18c](https://github.com/vlossom-ui/vlossom/commit/a1cf18c094d0fe6aadeec13c518738a20d63c71c))
+* **VsSteps:** remove layered disabled style ([#728](https://github.com/vlossom-ui/vlossom/issues/728)) ([631da8c](https://github.com/vlossom-ui/vlossom/commit/631da8ca03b7244d4d46aaf0434a07c6da7bf0ef))
+
 ## [2.2.2](https://github.com/vlossom-ui/vlossom/compare/vlossom-v2.2.1...vlossom-v2.2.2) (2026-10-20)
 
 
