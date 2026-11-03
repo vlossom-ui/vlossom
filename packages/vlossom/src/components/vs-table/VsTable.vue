@@ -137,6 +137,7 @@ import {
     useTemplateRef,
     watch,
     type PropType,
+    type Ref,
     type TemplateRef,
 } from 'vue';
 import { useIntersectionObserver, useResizeObserver } from '@vueuse/core';
@@ -387,7 +388,8 @@ export default defineComponent({
             isSelected,
             selectItem,
             selectAll,
-        } = useTableSelectionComposable(selectable, rawSelectedItems, items, displayItems, getItemKey);
+            isSameItems,
+        } = useTableSelectionComposable(selectable, rawSelectedItems, items, displayItems, getItemKey, serverMode);
         const { isExpandable, anyExpandable, isExpanded, expandItem } = useTableExpandComposable(
             expandable,
             items,
@@ -532,19 +534,29 @@ export default defineComponent({
         });
 
         watch(selectedItems, (nextSelectedItems) => emit('update:selectedItems', nextSelectedItems));
-        // 인라인 search/pagination/columns는 부모 렌더마다 새 배열을 만들므로, 내용이 같으면 emit을 생략해 v-model 무한 갱신을 끊는다
-        const isSameItems = (a: VsTableItem[], b: VsTableItem[]) =>
-            a.length === b.length && a.every((item, index) => item === b[index]);
-        watch(
-            displayItems,
-            (nextItems) => !isSameItems(nextItems, props.pagedItems) && emit('update:pagedItems', nextItems),
-            { immediate: true },
-        );
-        watch(
-            viewItems,
-            (nextItems) => !isSameItems(nextItems, props.totalItems) && emit('update:totalItems', nextItems),
-            { immediate: true },
-        );
+        // 초기 selectedItems가 items 기준으로 정리됐다면 부모에도 알린다
+        if (!isSameItems(selectedItems.value, rawSelectedItems.value)) {
+            emit('update:selectedItems', selectedItems.value);
+        }
+
+        // 인라인 search/pagination/columns는 부모 렌더마다 새 배열을 만들므로, 직전 emit과 내용이 같으면 생략해 v-model 무한 갱신을 끊는다
+        // prop과 비교하면 v-model 없이 이벤트만 듣는 경우 prop이 늘 기본값 []라서 빈 결과 emit이 빠진다
+        function emitOnItemsChange(source: Ref<VsTableItem[]>, event: 'update:pagedItems' | 'update:totalItems') {
+            let lastItems: VsTableItem[] | null = null;
+            watch(
+                source,
+                (nextItems) => {
+                    if (lastItems && isSameItems(nextItems, lastItems)) {
+                        return;
+                    }
+                    lastItems = nextItems;
+                    emit(event, nextItems);
+                },
+                { immediate: true },
+            );
+        }
+        emitOnItemsChange(displayItems, 'update:pagedItems');
+        emitOnItemsChange(viewItems, 'update:totalItems');
         // pageSize 변경은 page를 0으로 리셋하지만 두 변경이 같은 tick에 일어나므로 콜백은 한 번만 실행된다.
         watch([page, pageSize], ([nextPage, nextPageSize]) => emit('paginate', nextPage, nextPageSize));
 

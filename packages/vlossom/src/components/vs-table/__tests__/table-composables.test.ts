@@ -471,6 +471,47 @@ describe('useTableSelectionComposable', () => {
         expect(selectedPartial.value).toBe(true);
     });
 
+    it('selectedItems로 items에 없는 아이템을 넘기면 제외하고, server mode에서는 유지한다', async () => {
+        const carol = { id: 3, name: 'Carol' };
+        const clientSelected = ref<VsTableItem[]>([]);
+        const serverSelected = ref<VsTableItem[]>([]);
+        const client = useTableSelectionComposable(
+            ref(true),
+            clientSelected,
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+        );
+        const server = useTableSelectionComposable(
+            ref(true),
+            serverSelected,
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+            ref(true),
+        );
+
+        clientSelected.value = [bob, carol];
+        serverSelected.value = [bob, carol];
+        await nextTick();
+
+        expect(client.selectedItems.value).toEqual([bob]);
+        expect(server.selectedItems.value).toEqual([bob, carol]);
+    });
+
+    it('초기 selectedItems도 items에 없는 아이템은 제외한다', () => {
+        const carol = { id: 3, name: 'Carol' };
+        const { selectedItems } = useTableSelectionComposable(
+            ref(true),
+            ref([bob, carol]),
+            ref([alice, bob]),
+            ref([alice, bob]),
+            getItemKey,
+        );
+
+        expect(selectedItems.value).toEqual([bob]);
+    });
+
     it('selectedItems prop이 바뀌면 내부 상태를 맞춘다', async () => {
         const rawSelectedItems = ref<VsTableItem[]>([]);
         const { selectedItems } = useTableSelectionComposable(
@@ -487,7 +528,7 @@ describe('useTableSelectionComposable', () => {
         expect(selectedItems.value).toEqual([bob]);
     });
 
-    it('items가 새 객체로 바뀌면 같은 key의 선택은 최신 객체로 갱신하고 없는 key는 유지한다', async () => {
+    it('items가 새 객체로 바뀌면 같은 key의 선택은 최신 객체로 갱신하고 없는 key는 해제한다', async () => {
         const carol = { id: 3, name: 'Carol' };
         const items = shallowRef<VsTableItem[]>([alice, bob]);
         const { selectedItems } = useTableSelectionComposable(
@@ -502,9 +543,39 @@ describe('useTableSelectionComposable', () => {
         items.value = [{ ...alice }, renamedBob];
         await nextTick();
 
+        expect(selectedItems.value).toHaveLength(1);
+        expect(selectedItems.value[0]).toBe(renamedBob);
+    });
+
+    it('server mode에서는 items에 없는 key의 선택을 유지한다', async () => {
+        const carol = { id: 3, name: 'Carol' };
+        const items = shallowRef<VsTableItem[]>([alice, bob]);
+        const { selectedItems } = useTableSelectionComposable(
+            ref(true),
+            shallowRef([bob, carol]),
+            items,
+            items,
+            getItemKey,
+            ref(true),
+        );
+        const renamedBob = { ...bob, name: 'Bobby' };
+
+        items.value = [{ ...alice }, renamedBob];
+        await nextTick();
+
         expect(selectedItems.value).toHaveLength(2);
         expect(selectedItems.value[0]).toBe(renamedBob);
         expect(selectedItems.value[1]).toBe(carol);
+    });
+
+    it('선택된 아이템을 splice로 제거해도 선택을 해제한다', async () => {
+        const items = ref<VsTableItem[]>([alice, bob]);
+        const { selectedItems } = useTableSelectionComposable(ref(true), ref([bob]), items, items, getItemKey);
+
+        items.value.splice(1, 1);
+        await nextTick();
+
+        expect(selectedItems.value).toEqual([]);
     });
 
     it('items가 바뀌어도 선택 아이템이 그대로면 선택 배열을 교체하지 않는다', async () => {
