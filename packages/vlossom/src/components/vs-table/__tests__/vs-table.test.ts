@@ -884,6 +884,40 @@ describe('VsTable', () => {
             expect(lastEmit(wrapper, 'update:pagedItems')).toEqual([items.slice(0, 2)]);
             expect(lastEmit(wrapper, 'update:totalItems')).toEqual([items]);
         });
+
+        it('search/pagination을 인라인 객체로 넘겨도 v-model 갱신이 무한 반복되지 않는다', async () => {
+            const onUpdateTotalItems = vi.fn();
+            const onUpdatePagedItems = vi.fn();
+            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            const Parent = {
+                components: { VsTable },
+                data: () => ({ items: tableItems, totalItems: [], pagedItems: [] }),
+                methods: { onUpdateTotalItems, onUpdatePagedItems },
+                template: `<vs-table
+                    :columns="['name', 'age']"
+                    :items="items"
+                    :search="{ extraKeys: ['id'] }"
+                    :pagination="{ showTotal: true }"
+                    v-model:total-items="totalItems"
+                    v-model:paged-items="pagedItems"
+                    @update:total-items="onUpdateTotalItems"
+                    @update:paged-items="onUpdatePagedItems"
+                />`,
+            };
+            const wrapper = mount(Parent, { global: { stubs: defaultStubs } });
+
+            await nextTick();
+            await wrapper.get('[data-testid="search-input"]').setValue('Bob');
+            await nextTick();
+
+            expect(onUpdateTotalItems).toHaveBeenLastCalledWith([tableItems[1]]);
+            expect(onUpdateTotalItems.mock.calls.length).toBeLessThan(5);
+            expect(onUpdatePagedItems.mock.calls.length).toBeLessThan(5);
+            expect([...consoleSpy.mock.calls, ...errorSpy.mock.calls].flat().join(' ')).not.toMatch(
+                /Maximum recursive updates/,
+            );
+        });
     });
 
     describe('draggable', () => {
