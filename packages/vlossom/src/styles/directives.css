@@ -11,17 +11,17 @@
         z-index: 1;
         transition: opacity 0.3s ease;
         width: 100%;
-        height: 1.5rem;
+        height: 1.2rem;
         pointer-events: none;
         content: '';
     }
 
     &::before {
         top: 0;
-        margin-bottom: -1.5rem;
+        margin-bottom: -1.2rem;
         background: linear-gradient(
             to bottom,
-            color-mix(in srgb, var(--vs-cs-shadow) 60%, transparent) 0%,
+            color-mix(in srgb, var(--vs-cs-shadow) 30%, transparent) 0%,
             color-mix(in srgb, var(--vs-cs-shadow) 0%, transparent) 100%
         );
 
@@ -32,10 +32,10 @@
 
     &::after {
         bottom: 0;
-        margin-top: -1.5rem;
+        margin-top: -1.2rem;
         background: linear-gradient(
             to top,
-            color-mix(in srgb, var(--vs-cs-shadow) 60%, transparent) 0%,
+            color-mix(in srgb, var(--vs-cs-shadow) 30%, transparent) 0%,
             color-mix(in srgb, var(--vs-cs-shadow) 0%, transparent) 100%
         );
 
