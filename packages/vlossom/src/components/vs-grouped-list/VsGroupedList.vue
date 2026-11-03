@@ -2,6 +2,7 @@
     <vs-inner-scroll
         ref="innerScrollRef"
         class="vs-grouped-list"
+        :color-scheme="computedColorScheme"
         :style="{ ...styleSetVariables, ...componentInlineStyle }"
         :style-set="{
             $header: componentStyleSet.$header,
@@ -83,8 +84,8 @@ import {
 import { useVirtualizer } from '@tanstack/vue-virtual';
 import type { OptionItem } from '@/declaration';
 import { VsComponent } from '@/declaration';
-import { getGroupByProps, getStyleSetProps } from '@/props';
-import { useStyleSet, useMessages, useGroupedItems } from '@/composables';
+import { getColorSchemeProps, getGroupByProps, getStyleSetProps } from '@/props';
+import { useColorScheme, useStyleSet, useMessages, useGroupedItems } from '@/composables';
 import type { VsGroupedListGroup, VsGroupedListRow, VsGroupedListStyleSet } from './types';
 import { ESTIMATED_ROW_HEIGHT, VIRTUAL_THRESHOLD } from './constants';
 
@@ -96,6 +97,7 @@ export default defineComponent({
     name: componentName,
     components: { VsInnerScroll },
     props: {
+        ...getColorSchemeProps(),
         ...getStyleSetProps<VsGroupedListStyleSet>(),
         ...getGroupByProps(),
         items: {
@@ -108,7 +110,9 @@ export default defineComponent({
     // expose: ['scrollToItem'],
     setup(props, { emit }) {
         const { optionMessages } = useMessages();
-        const { styleSet, items, groupBy, groupOrder, noVirtual } = toRefs(props);
+        const { colorScheme, styleSet, items, groupBy, groupOrder, noVirtual } = toRefs(props);
+
+        const { computedColorScheme } = useColorScheme(componentName, colorScheme);
 
         const innerScrollRef: TemplateRef<VsInnerScrollRef> = useTemplateRef('innerScrollRef');
         const listRef: TemplateRef<HTMLElement> = useTemplateRef('listRef');
@@ -232,6 +236,7 @@ export default defineComponent({
         return {
             listRef,
             innerScrollRef,
+            computedColorScheme,
             componentStyleSet,
             optionMessages,
             styleSetVariables,

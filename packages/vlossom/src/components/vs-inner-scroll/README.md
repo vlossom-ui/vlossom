@@ -55,10 +55,11 @@ A layout component that provides a scrollable content area with optional sticky 
 
 ## Props
 
-| Prop         | Type                              | Default | Required | Description                                      |
-| ------------ | --------------------------------- | ------- | -------- | ------------------------------------------------ |
-| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style set for the component.              |
-| `hideScroll` | `boolean`                         | `false` | -        | Hides the scrollbar while keeping scrollability. |
+| Prop          | Type                              | Default | Required | Description                                      |
+| ------------- | --------------------------------- | ------- | -------- | ------------------------------------------------ |
+| `colorScheme` | `ColorScheme`                     | -       | -        | Color scheme for the component.                  |
+| `styleSet`    | `string \| VsInnerScrollStyleSet` | -       | -        | Custom style set for the component.              |
+| `hideScroll`  | `boolean`                         | `false` | -        | Hides the scrollbar while keeping scrollability. |
 
 ## Types
 

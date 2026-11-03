@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-inner-scroll" :style="componentInlineStyle">
+    <div :class="['vs-inner-scroll', colorSchemeClass]" :style="componentInlineStyle">
         <div v-if="$slots['header']" class="vs-inner-scroll-header" :style="componentStyleSet.$header">
             <slot name="header" />
         </div>
@@ -22,8 +22,8 @@
 <script lang="ts">
 import { defineComponent, toRefs, useTemplateRef, type TemplateRef } from 'vue';
 import { VsComponent } from '@/declaration';
-import { getStyleSetProps } from '@/props';
-import { useStyleSet } from '@/composables';
+import { getColorSchemeProps, getStyleSetProps } from '@/props';
+import { useColorScheme, useStyleSet } from '@/composables';
 import { scrollShadow } from '@/directives';
 import type { VsInnerScrollStyleSet } from './types';
 
@@ -32,14 +32,16 @@ export default defineComponent({
     name: componentName,
     directives: { scrollShadow },
     props: {
+        ...getColorSchemeProps(),
         ...getStyleSetProps<VsInnerScrollStyleSet>(),
         hideScroll: { type: Boolean, default: false },
     },
     // expose: ['hasScroll'],
     setup(props) {
-        const { styleSet } = toRefs(props);
+        const { colorScheme, styleSet } = toRefs(props);
         const bodyRef: TemplateRef<HTMLElement> = useTemplateRef('bodyRef');
 
+        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
         const { componentStyleSet, componentInlineStyle } = useStyleSet<VsInnerScrollStyleSet>(componentName, styleSet);
 
         function hasScroll() {
@@ -50,7 +52,7 @@ export default defineComponent({
             return bodyRef.value.scrollHeight > bodyRef.value.clientHeight;
         }
 
-        return { componentStyleSet, componentInlineStyle, hasScroll, bodyRef };
+        return { colorSchemeClass, componentStyleSet, componentInlineStyle, hasScroll, bodyRef };
     },
 });
 </script>

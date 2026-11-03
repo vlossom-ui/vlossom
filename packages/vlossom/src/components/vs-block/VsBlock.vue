@@ -5,7 +5,7 @@
         :grid
         :width
     >
-        <vs-inner-scroll :style-set="innerScrollStyleSet">
+        <vs-inner-scroll :color-scheme="computedColorScheme" :style-set="innerScrollStyleSet">
             <template #header v-if="$slots['title']">
                 <div class="vs-block-title" :style="componentStyleSet.$title">
                     <slot name="title" />
@@ -43,7 +43,7 @@ export default defineComponent({
     setup(props) {
         const { colorScheme, styleSet, height } = toRefs(props);
 
-        const { colorSchemeClass } = useColorScheme(componentName, colorScheme);
+        const { colorSchemeClass, computedColorScheme } = useColorScheme(componentName, colorScheme);
 
         const baseStyleSet: ComputedRef<VsBlockStyleSet> = computed(() => ({}));
         const additionalStyleSet: ComputedRef<Partial<VsBlockStyleSet>> = computed(() => {
@@ -64,6 +64,7 @@ export default defineComponent({
         return {
             innerScrollStyleSet,
             colorSchemeClass,
+            computedColorScheme,
             componentStyleSet,
             styleSetVariables,
             componentInlineStyle,

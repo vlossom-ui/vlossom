@@ -55,10 +55,11 @@
 
 ## Props
 
-| Prop         | Type                              | Default | Required | Description                                   |
-| ------------ | --------------------------------- | ------- | -------- | --------------------------------------------- |
-| `styleSet`   | `string \| VsInnerScrollStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                  |
-| `hideScroll` | `boolean`                         | `false` | -        | 스크롤 기능을 유지하면서 스크롤바를 숨깁니다. |
+| Prop          | Type                              | Default | Required | Description                                   |
+| ------------- | --------------------------------- | ------- | -------- | --------------------------------------------- |
+| `colorScheme` | `ColorScheme`                     | -       | -        | 컴포넌트 색상 테마.                           |
+| `styleSet`    | `string \| VsInnerScrollStyleSet` | -       | -        | 컴포넌트의 커스텀 스타일 셋.                  |
+| `hideScroll`  | `boolean`                         | `false` | -        | 스크롤 기능을 유지하면서 스크롤바를 숨깁니다. |
 
 ## Types
 
